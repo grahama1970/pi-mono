@@ -1,0 +1,1173 @@
+{
+  "meta": {
+    "video_id": "ORnnufNjw10",
+    "language": "en",
+    "took_ms": 1306,
+    "method": "direct",
+    "title": "Transcription Models Zero to Hero - Data Prep, Train + Serve",
+    "channel": "Trelis Research",
+    "upload_date": "20260115",
+    "duration_sec": 1157,
+    "description": "Try it out at: studio.Trelis.com\n\nLearn more about fine-tuning fundamentals, see Trelis.com/advanced-audio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nDone-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\nStarting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nGet Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Introduction and overview of pipeline\n1:11 Data requirements: audio recordings and transcripts\n2:18 Uploading audio-text pairs and dataset preparation\n3:17 Saving word swaps and transcribing with model for better training\n4:20 Warning about clean text being out-of-distribution for small models\n5:20 Setting up Hugging Face token and Weights & Biases key\n6:21 Creating validation set using ChatGPT to rephrase text\n7:40 Configuring training settings and advanced parameters\n8:41 Baseline evaluation shows 7.09% word error rate\n9:46 Training begins with falling loss and word error rate\n10:47 Model training progress and high grad norm observation\n11:53 Model and logs pushed to Hugging Face Hub\n12:53 Inspecting evaluation results and specific corrections\n14:11 Spelling improvements and regressions in fine-tuned model\n15:16 Deploying model to endpoint with keep warm feature\n16:17 Auto-sleep containers and API key access options\n17:23 Testing endpoint and transcript download formats\n18:26 Evaluation tab features and future text-to-speech plans",
+    "view_count": 1291
+  },
+  "transcript": [
+    {
+      "text": " This is an early release of Trelis Studio, which makes it easy to train and deploy voice models, starting off with transcription models, namely Whisper.",
+      "start": 0.0,
+      "duration": 8.5
+    },
+    {
+      "text": " I'm going to walk you through the full pipeline from zero to hero, as they say, of preparing data, then using it to train or fine tune a model, and then deploying the model so you can inference it on a server that wakes up or goes to sleep if there is no usage.",
+      "start": 8.5,
+      "duration": 15.9
+    },
+    {
+      "text": " The easiest thing to do is just walk you through the four steps, data prep training, optionally evaluation to evaluate performance versus some other model, and then we'll take a look at deploying endpoints that wake and sleep.",
+      "start": 25.1,
+      "duration": 11.52
+    },
+    {
+      "text": " Now, if you want to tune a model, this is going to be relevant if you've bad performance on transcription.",
+      "start": 36.62,
+      "duration": 6.26
+    },
+    {
+      "text": " So if your application transcribes audio, but it creates a lot of errors, maybe because of the accent, like my accent, or maybe because of new vocabulary, this is a way that you can easily improve the performance of such a model.",
+      "start": 42.88,
+      "duration": 13.06
+    },
+    {
+      "text": " To do so, you will need to have some data.",
+      "start": 58.16,
+      "duration": 2.22
+    },
+    {
+      "text": " That means having recordings of somebody, or ideally the user, or the same person that is talking in the audio in the commercial examples you have.",
+      "start": 60.38,
+      "duration": 11.18
+    },
+    {
+      "text": " You will want a recording of that audio.",
+      "start": 71.56,
+      "duration": 1.84
+    },
+    {
+      "text": " Now, you can also have a transcript that will be useful for training, but if you don't have a transcript, you can create one, and I'll show you how to do that.",
+      "start": 73.4,
+      "duration": 7.9
+    },
+    {
+      "text": " Now, later on, I will also allow for generating datasets starting off just with text, where I will allow you to create synthetic voices, because to train a model, you need both text and audio, and that combination is what allows you to train a model.",
+      "start": 81.5,
+      "duration": 14.04
+    },
+    {
+      "text": " Here, what I've done is I have read out some text.",
+      "start": 95.54,
+      "duration": 3.96
+    },
+    {
+      "text": " I've actually used the news from SmallAI, thanks to SWIX for permission to do some training here, and I've just read out some of this text right here and recorded myself.",
+      "start": 99.5,
+      "duration": 9.16
+    },
+    {
+      "text": " And because I've read this out, I can just copy-paste that text and use it as ground truth.",
+      "start": 109.12,
+      "duration": 5.2
+    },
+    {
+      "text": " So, in Visual Studio, well, in any text editor, I've just literally copy-pasted that text, and yeah, you can remove the new lines or not, that will be normalized, and I'll use that as ground truth.",
+      "start": 114.32,
+      "duration": 12.16
+    },
+    {
+      "text": " So, here, I can upload, let me see where I have some samples, I've got some training audio, and some text, so I'll upload that.",
+      "start": 126.48,
+      "duration": 10.32
+    },
+    {
+      "text": " And it should appear here as a pair, which I can now review.",
+      "start": 138.26,
+      "duration": 3.68
+    },
+    {
+      "text": " But in this case, there's no review needed, because this is already ground truth text, so I'm ready to go ahead and prepare a dataset out of this.",
+      "start": 141.94,
+      "duration": 9.56
+    },
+    {
+      "text": " The preparation will involve aligning it, splitting it into clean chunks of 20 to 30 seconds, and pushing it up to HuggingFace.",
+      "start": 151.5,
+      "duration": 6.88
+    },
+    {
+      "text": " Now, if you don't have any text, so let me show you that example.",
+      "start": 159.04,
+      "duration": 3.68
+    },
+    {
+      "text": " So, let's say that you just have audio.",
+      "start": 162.72,
+      "duration": 1.56
+    },
+    {
+      "text": " In that case, you can transcribe here, just by clicking transcribe, which will use third-party endpoint fireworks to generate a transcription, and then you can review.",
+      "start": 164.28,
+      "duration": 12.04
+    },
+    {
+      "text": " And while reviewing, you can seek policy optimization, GRPO, to improve efficiency, or you can press option and forward or backward to move five seconds forward or backwards.",
+      "start": 177.4,
+      "duration": 10.46
+    },
+    {
+      "text": " That's alt and left or right arrow on Windows.",
+      "start": 187.86,
+      "duration": 3.84
+    },
+    {
+      "text": " You can also make edits.",
+      "start": 192.08,
+      "duration": 1.32
+    },
+    {
+      "text": " So, for example, if I want to edit here, I see vLLM.",
+      "start": 193.4,
+      "duration": 3.72
+    },
+    {
+      "text": " And this should be tensorRT, tensorRT, LLM.",
+      "start": 197.96,
+      "duration": 5.04
+    },
+    {
+      "text": " Now, when I save, should be a space, when I save that, it's going to save some swaps.",
+      "start": 203.0,
+      "duration": 8.76
+    },
+    {
+      "text": " So, down here, if I check my word swaps, you'll see it has saved these word swaps.",
+      "start": 211.76,
+      "duration": 5.16
+    },
+    {
+      "text": " And I can delete them if I want, or I can use them in future.",
+      "start": 216.92,
+      "duration": 3.36
+    },
+    {
+      "text": " So, if I have some saved word swaps from the past, I could decide to apply those word swaps, and those will now all be applied.",
+      "start": 220.76,
+      "duration": 7.08
+    },
+    {
+      "text": " So, you can see here, just by applying some swaps I've saved, I can clean up the data set.",
+      "start": 227.84,
+      "duration": 5.38
+    },
+    {
+      "text": " And, obviously, you will improve over time because you'll save your swaps, and you'll be able then to reuse them.",
+      "start": 233.22,
+      "duration": 4.64
+    },
+    {
+      "text": " So, let's go back to data prep.",
+      "start": 237.86,
+      "duration": 3.92
+    },
+    {
+      "text": " And, actually, I'm going to, I do recommend if you use, if you're going to train a very small model, which we'll see in a moment,",
+      "start": 241.78,
+      "duration": 7.64
+    },
+    {
+      "text": " it can be good to actually transcribe and correct it, because when you transcribe, it will be in the same,",
+      "start": 249.84,
+      "duration": 5.36
+    },
+    {
+      "text": " it will have the same flavor as the model, and that means it will be less out of distribution.",
+      "start": 255.2,
+      "duration": 5.48
+    },
+    {
+      "text": " If you provide it with clean text file, the formatting might just be a bit too much out of distribution for the model,",
+      "start": 260.68,
+      "duration": 6.42
+    },
+    {
+      "text": " and it may train a bit less well.",
+      "start": 267.1,
+      "duration": 1.4
+    },
+    {
+      "text": " So, just a caveat there that it can be better to have a transcript that you transcribe and correct,",
+      "start": 268.5,
+      "duration": 7.32
+    },
+    {
+      "text": " rather than to use a transcript, which may just have a different distribution than the model may have.",
+      "start": 276.22,
+      "duration": 6.18
+    },
+    {
+      "text": " But, what I'm going to do here for speed, because I'm not going to correct the full transcript, is I will upload the TXT file and the audio.",
+      "start": 284.2,
+      "duration": 7.88
+    },
+    {
+      "text": " And, yes, I will go ahead with that.",
+      "start": 293.6,
+      "duration": 2.68
+    },
+    {
+      "text": " And, I'm going to now push this as a training data set up to Hugging Face.",
+      "start": 296.28,
+      "duration": 4.84
+    },
+    {
+      "text": " And, to do so, I need to add a Hugging Face token, which you can get by just clicking on Get Token here.",
+      "start": 301.58,
+      "duration": 4.94
+    },
+    {
+      "text": " You'll need to log in.",
+      "start": 306.52,
+      "duration": 1.38
+    },
+    {
+      "text": " Or, you can also set your token up here in Settings.",
+      "start": 307.9,
+      "duration": 3.12
+    },
+    {
+      "text": " And, then it will be applied across Trelis Studio for you.",
+      "start": 311.96,
+      "duration": 2.94
+    },
+    {
+      "text": " You need to set your organization name, or it will use the default otherwise, I think.",
+      "start": 314.9,
+      "duration": 6.02
+    },
+    {
+      "text": " And, you can also set a Weight and Biases key.",
+      "start": 320.92,
+      "duration": 2.5
+    },
+    {
+      "text": " That's for logs during training, which we'll see a bit later.",
+      "start": 323.42,
+      "duration": 2.54
+    },
+    {
+      "text": " So, let's go back to Dataprep.",
+      "start": 325.96,
+      "duration": 2.5
+    },
+    {
+      "text": " We should have our data loaded.",
+      "start": 328.46,
+      "duration": 2.78
+    },
+    {
+      "text": " And, I'm now going to click Process, and it's going to push it up to Hub.",
+      "start": 331.24,
+      "duration": 3.68
+    },
+    {
+      "text": " Now, if you had a larger data set, this is not large enough to split off a validation split, because probably each new word is only appearing once.",
+      "start": 335.42,
+      "duration": 7.48
+    },
+    {
+      "text": " So, I'm going to have to create a separate validation set.",
+      "start": 342.9,
+      "duration": 3.48
+    },
+    {
+      "text": " But, if you had a very big data set, you would just split off some of it here into a new split that would appear up in Hugging Face when done.",
+      "start": 346.38,
+      "duration": 7.52
+    },
+    {
+      "text": " Now, what's happening here is all of that text and audio has been aligned, and then it's been cleanly chunked up.",
+      "start": 353.9,
+      "duration": 5.64
+    },
+    {
+      "text": " And, then it's been pushed up to Hugging Face.",
+      "start": 359.54,
+      "duration": 2.74
+    },
+    {
+      "text": " So, you can see it's being sent to the GPU alignment service, and then it should be set up to Hub.",
+      "start": 362.86,
+      "duration": 5.28
+    },
+    {
+      "text": " Now, to create a validation set, what I did was, I just took this text, I copied it into ChatGPT, and I got ChatGPT to maintain the meaning and words, but change the phrasing and the order of the phrases.",
+      "start": 368.14,
+      "duration": 13.58
+    },
+    {
+      "text": " And, then I read that out, and that gave me a validation audio.",
+      "start": 381.72,
+      "duration": 4.56
+    },
+    {
+      "text": " And, the corresponding text is my ground truth for the text.",
+      "start": 386.28,
+      "duration": 3.12
+    },
+    {
+      "text": " So, that's how I did it.",
+      "start": 389.4,
+      "duration": 2.12
+    },
+    {
+      "text": " Probably, it's more likely that you will just have audio and transcripts, or you will have audio and you need to transcribe it and then review.",
+      "start": 391.8,
+      "duration": 6.1
+    },
+    {
+      "text": " But, yeah, this is another way to do it.",
+      "start": 399.3,
+      "duration": 2.04
+    },
+    {
+      "text": " So, our training data set is ready.",
+      "start": 401.34,
+      "duration": 1.7
+    },
+    {
+      "text": " And, I'm very quickly, well, I can just show you what I did.",
+      "start": 403.04,
+      "duration": 5.1
+    },
+    {
+      "text": " I won't do it to save the time, but I basically uploaded validation audio and text.",
+      "start": 408.14,
+      "duration": 4.26
+    },
+    {
+      "text": " And, I processed that data set, but pushing it as a validation split, and I pushed it up to Hub.",
+      "start": 413.1,
+      "duration": 6.2
+    },
+    {
+      "text": " And, what I have now is, I have my training data set, which is nicely in 20 to 30 second chunks.",
+      "start": 419.3,
+      "duration": 5.38
+    },
+    {
+      "text": " You can see it also pushes up the word timestamps for convenience.",
+      "start": 425.54,
+      "duration": 3.0
+    },
+    {
+      "text": " And, it will do some basic cleaning of new lines and spaces.",
+      "start": 428.54,
+      "duration": 3.82
+    },
+    {
+      "text": " And, also, earlier, before this video was recorded, I pushed up a validation set as well, which is just a rephrased version of the training set.",
+      "start": 432.36,
+      "duration": 10.9
+    },
+    {
+      "text": " It also has nine rows, but the phrases are different, and they're in different orders, so it can serve as a validation.",
+      "start": 443.38,
+      "duration": 7.38
+    },
+    {
+      "text": " Now, with that done, I can move to using that data set for training.",
+      "start": 450.76,
+      "duration": 4.84
+    },
+    {
+      "text": " So, what I'll do is copy the name of the data set I want to use for validation.",
+      "start": 455.6,
+      "duration": 5.0
+    },
+    {
+      "text": " Check the split, training, check the split.",
+      "start": 460.6,
+      "duration": 2.9
+    },
+    {
+      "text": " And, I'm going to train the largest model for best quality.",
+      "start": 463.5,
+      "duration": 3.16
+    },
+    {
+      "text": " I'm going to use my default Hocking Face token that's in settings.",
+      "start": 466.66,
+      "duration": 4.46
+    },
+    {
+      "text": " I'm going to push to Trelis.org.",
+      "start": 471.12,
+      "duration": 1.78
+    },
+    {
+      "text": " This will be the name of the model.",
+      "start": 472.9,
+      "duration": 2.08
+    },
+    {
+      "text": " I will log in weights and biases, and I will use these advanced settings here.",
+      "start": 474.98,
+      "duration": 7.14
+    },
+    {
+      "text": " Now, actually, before I did that, I probably should have reset to recommended.",
+      "start": 482.12,
+      "duration": 7.2
+    },
+    {
+      "text": " It's not a big deal, but you can use the recommended settings just by having clicked there, or you can modify them.",
+      "start": 489.32,
+      "duration": 8.28
+    },
+    {
+      "text": " And, we should be able to see, if we view on weights and biases, what's happening.",
+      "start": 499.22,
+      "duration": 3.66
+    },
+    {
+      "text": " It won't show anything just yet, because the pipeline is starting.",
+      "start": 502.88,
+      "duration": 3.0
+    },
+    {
+      "text": " And, there are a few phases to the pipeline.",
+      "start": 505.88,
+      "duration": 1.84
+    },
+    {
+      "text": " First of all, the model will be evaluated for performance, just the base model.",
+      "start": 507.72,
+      "duration": 4.32
+    },
+    {
+      "text": " Then, it will be trained, and then it will be re-evaluated, so you can compare the performance before and after, and it will measure the word error rate.",
+      "start": 512.04,
+      "duration": 6.68
+    },
+    {
+      "text": " So, here you can see we're doing baseline evaluation.",
+      "start": 519.0,
+      "duration": 2.52
+    },
+    {
+      "text": " It's loading the seven validation samples, and quite shortly, it should output or show here the results.",
+      "start": 521.52,
+      "duration": 7.8
+    },
+    {
+      "text": " So, yeah, 7.09% word error rate.",
+      "start": 529.32,
+      "duration": 3.62
+    },
+    {
+      "text": " So, it's already performing fairly well.",
+      "start": 532.94,
+      "duration": 1.48
+    },
+    {
+      "text": " Only 7% of the words are incorrect when compared with the ground truth.",
+      "start": 534.42,
+      "duration": 4.52
+    },
+    {
+      "text": " The model is now loading, and once it's up and loaded, it will then start to issue the loss, which we will see appear on the weights and biases logs.",
+      "start": 539.94,
+      "duration": 10.06
+    },
+    {
+      "text": " Now, in the meantime, the way the billing works, there are some free credits if you log in.",
+      "start": 550.0,
+      "duration": 4.62
+    },
+    {
+      "text": " I think there's $5 of free credits when you log in for the first time.",
+      "start": 554.7,
+      "duration": 3.1
+    },
+    {
+      "text": " The credits are then adjusted according to how you use the GPUs.",
+      "start": 557.8,
+      "duration": 7.0
+    },
+    {
+      "text": " The GPUs are currently, it's one GPU, it's billed at $4.99 per hour, which is a little bit above what, a margin above what modal charges.",
+      "start": 564.8,
+      "duration": 7.32
+    },
+    {
+      "text": " And, for data preparation, the way that is billed is on the basis of hours of cleaned audio plus text.",
+      "start": 572.12,
+      "duration": 7.86
+    },
+    {
+      "text": " So, for every hour of audio you have that you push up to HuggingFace, that's billed at $4.99 currently.",
+      "start": 579.98,
+      "duration": 6.4
+    },
+    {
+      "text": " And that, I'm sure, will update if you're watching this video later.",
+      "start": 586.38,
+      "duration": 3.14
+    },
+    {
+      "text": " Probably that will be quite different.",
+      "start": 589.52,
+      "duration": 1.52
+    },
+    {
+      "text": " Okay, so training is underway.",
+      "start": 591.04,
+      "duration": 2.28
+    },
+    {
+      "text": " Weights and biases should be up and running.",
+      "start": 593.32,
+      "duration": 4.1
+    },
+    {
+      "text": " It's going to load the project, and we should be able to see the loss curves.",
+      "start": 597.42,
+      "duration": 5.5
+    },
+    {
+      "text": " Weights and biases taking a little bit of time.",
+      "start": 602.92,
+      "duration": 2.76
+    },
+    {
+      "text": " You can see the loss is falling, the word error rate that's been evaluated during the training is falling as well.",
+      "start": 605.68,
+      "duration": 9.84
+    },
+    {
+      "text": " And once training is done, it will merge the lore awaits and push up the HuggingFace.",
+      "start": 615.52,
+      "duration": 5.18
+    },
+    {
+      "text": " It will also push up a C Translate 2 version, which can be used for the endpoint deployment we'll see in a moment.",
+      "start": 620.7,
+      "duration": 5.18
+    },
+    {
+      "text": " And then it will reevaluate performance on the trained model.",
+      "start": 626.34,
+      "duration": 2.46
+    },
+    {
+      "text": " So, here we have the model.",
+      "start": 628.8,
+      "duration": 3.94
+    },
+    {
+      "text": " And you can see, in purple, the eval loss should be falling.",
+      "start": 632.74,
+      "duration": 6.12
+    },
+    {
+      "text": " The grad norm should be falling during training as well.",
+      "start": 638.86,
+      "duration": 2.86
+    },
+    {
+      "text": " In the meantime, you can see here, yeah, we're converting to C Translate 2.",
+      "start": 641.72,
+      "duration": 4.88
+    },
+    {
+      "text": " And then it should move to push that up to Hub, to a separate branch.",
+      "start": 647.52,
+      "duration": 3.74
+    },
+    {
+      "text": " And here, yeah, you can see in purple, the eval error rate is falling.",
+      "start": 651.26,
+      "duration": 6.48
+    },
+    {
+      "text": " Hopefully, it should fall more by the end of training.",
+      "start": 657.74,
+      "duration": 3.3
+    },
+    {
+      "text": " It looks like I only trained for two epochs there, because I didn't use the default recommended settings.",
+      "start": 661.04,
+      "duration": 5.52
+    },
+    {
+      "text": " The grad norm is also a little bit high.",
+      "start": 666.56,
+      "duration": 2.22
+    },
+    {
+      "text": " So, perhaps not ideal in terms of my training settings that I've used.",
+      "start": 669.78,
+      "duration": 5.72
+    },
+    {
+      "text": " We can refresh the page and see the performance of the model.",
+      "start": 675.5,
+      "duration": 6.78
+    },
+    {
+      "text": " Now, it looks like it's a little bit worse.",
+      "start": 682.28,
+      "duration": 3.4
+    },
+    {
+      "text": " We can check the model on Hugging Face.",
+      "start": 685.68,
+      "duration": 2.5
+    },
+    {
+      "text": " We can check the evaluation results.",
+      "start": 688.18,
+      "duration": 1.82
+    },
+    {
+      "text": " And in the meantime, I'm just going to train it again.",
+      "start": 690.0,
+      "duration": 2.84
+    },
+    {
+      "text": " So, I will reset to recommended and restart the training.",
+      "start": 692.84,
+      "duration": 6.24
+    },
+    {
+      "text": " And in the meantime, we can take a look here.",
+      "start": 699.78,
+      "duration": 2.44
+    },
+    {
+      "text": " The model has been pushed.",
+      "start": 702.22,
+      "duration": 1.46
+    },
+    {
+      "text": " You can see the word error rate has increased a little bit.",
+      "start": 703.68,
+      "duration": 3.4
+    },
+    {
+      "text": " Now, you also should inspect the file to see if actually it is worse.",
+      "start": 707.08,
+      "duration": 6.14
+    },
+    {
+      "text": " And you can see everything has been pushed up to Hugging Face, including the training logs, if you're interested in seeing that.",
+      "start": 713.22,
+      "duration": 8.46
+    },
+    {
+      "text": " And then you can inspect the evaluation data.",
+      "start": 723.16,
+      "duration": 2.12
+    },
+    {
+      "text": " So, you can see here, base error rate on each of the rows of validation data set and the fine-tuned error rate.",
+      "start": 725.28,
+      "duration": 7.62
+    },
+    {
+      "text": " And we can take a look here just to inspect.",
+      "start": 733.74,
+      "duration": 4.44
+    },
+    {
+      "text": " This here looks very similar.",
+      "start": 738.18,
+      "duration": 2.98
+    },
+    {
+      "text": " It's the same word error rate.",
+      "start": 741.16,
+      "duration": 1.04
+    },
+    {
+      "text": " This one here, it apparently is a little bit lower in word error rate.",
+      "start": 742.2,
+      "duration": 6.7
+    },
+    {
+      "text": " I don't obviously see the differences.",
+      "start": 749.62,
+      "duration": 2.1
+    },
+    {
+      "text": " This one here is the same word error rate.",
+      "start": 751.72,
+      "duration": 3.16
+    },
+    {
+      "text": " This one here is a little bit better.",
+      "start": 754.88,
+      "duration": 1.28
+    },
+    {
+      "text": " You can see cog.ai is now corrected to cog space.ai.",
+      "start": 756.16,
+      "duration": 2.98
+    },
+    {
+      "text": " The rest looks fairly similar.",
+      "start": 759.14,
+      "duration": 3.96
+    },
+    {
+      "text": " Here looks similar.",
+      "start": 763.1,
+      "duration": 2.78
+    },
+    {
+      "text": " So, yeah, it's because we haven't trained for enough epochs in this case.",
+      "start": 768.06,
+      "duration": 3.64
+    },
+    {
+      "text": " This is corrected.",
+      "start": 771.7,
+      "duration": 1.56
+    },
+    {
+      "text": " Augustus Audina is now Augustus Audina.",
+      "start": 773.26,
+      "duration": 2.32
+    },
+    {
+      "text": " And then this one here is kind of similar as well, maybe a little bit better.",
+      "start": 775.58,
+      "duration": 6.78
+    },
+    {
+      "text": " Some of the formatting here may be slightly better.",
+      "start": 782.36,
+      "duration": 4.42
+    },
+    {
+      "text": " So, yeah, you can see the results here of the training.",
+      "start": 786.78,
+      "duration": 3.74
+    },
+    {
+      "text": " And we have underway now another training, which should be completed fairly shortly.",
+      "start": 792.06,
+      "duration": 7.38
+    },
+    {
+      "text": " Looks like if we look at the weights and biases, we can maybe see a comparison of those two runs",
+      "start": 799.44,
+      "duration": 7.08
+    },
+    {
+      "text": " using the recommended parameters.",
+      "start": 806.52,
+      "duration": 4.78
+    },
+    {
+      "text": " And I'll just hide the other runs.",
+      "start": 811.3,
+      "duration": 3.06
+    },
+    {
+      "text": " Okay, so, yeah, the word error rate goes down quite a bit lower.",
+      "start": 814.36,
+      "duration": 6.26
+    },
+    {
+      "text": " The eval loss is lower.",
+      "start": 821.76,
+      "duration": 1.38
+    },
+    {
+      "text": " The training grad norm does spike maybe a bit at the end, suggesting maybe a lower learning rate is warranted.",
+      "start": 823.14,
+      "duration": 7.3
+    },
+    {
+      "text": " But I expect that probably will perform better.",
+      "start": 830.44,
+      "duration": 2.88
+    },
+    {
+      "text": " So here, yeah, it is performing better.",
+      "start": 833.32,
+      "duration": 5.64
+    },
+    {
+      "text": " It's closer to the baseline word error rate.",
+      "start": 838.96,
+      "duration": 4.54
+    },
+    {
+      "text": " You can see the word error rates here are quite similar.",
+      "start": 843.5,
+      "duration": 2.78
+    },
+    {
+      "text": " So really, you have to check the manual inspection.",
+      "start": 846.28,
+      "duration": 4.38
+    },
+    {
+      "text": " To see if there's a difference.",
+      "start": 851.46,
+      "duration": 1.72
+    },
+    {
+      "text": " And let's see now if we get any improvements.",
+      "start": 853.18,
+      "duration": 5.2
+    },
+    {
+      "text": " So, yeah, already there's an improvement.",
+      "start": 858.38,
+      "duration": 3.06
+    },
+    {
+      "text": " Haishan Su is correctly spelled instead of Haishan.",
+      "start": 861.44,
+      "duration": 2.8
+    },
+    {
+      "text": " Google Collab is correctly spelled with one L.",
+      "start": 864.24,
+      "duration": 2.74
+    },
+    {
+      "text": " So that's good.",
+      "start": 866.98,
+      "duration": 1.42
+    },
+    {
+      "text": " Cog AI is correct.",
+      "start": 868.4,
+      "duration": 1.5
+    },
+    {
+      "text": " Discord, there's an error introduced here.",
+      "start": 869.9,
+      "duration": 2.74
+    },
+    {
+      "text": " A la marina instead of a la marina.",
+      "start": 876.84,
+      "duration": 3.06
+    },
+    {
+      "text": " So that's now correct.",
+      "start": 879.9,
+      "duration": 1.04
+    },
+    {
+      "text": " Lands major.",
+      "start": 880.94,
+      "duration": 2.94
+    },
+    {
+      "text": " So lands is wrong here.",
+      "start": 883.88,
+      "duration": 1.52
+    },
+    {
+      "text": " That's an error introduced.",
+      "start": 885.4,
+      "duration": 1.06
+    },
+    {
+      "text": " So you can see there's some improvements.",
+      "start": 886.46,
+      "duration": 2.06
+    },
+    {
+      "text": " There's definitely more improvements than regressions here.",
+      "start": 888.52,
+      "duration": 2.9
+    },
+    {
+      "text": " So an improvement here as well.",
+      "start": 891.42,
+      "duration": 1.54
+    },
+    {
+      "text": " And if you were to generate more data, to give more examples, we're just giving probably just one example of each word, which is not a whole lot for it to learn from.",
+      "start": 893.9,
+      "duration": 7.16
+    },
+    {
+      "text": " And because we have very few rows of data, you can see the optimal batch size is just one.",
+      "start": 901.62,
+      "duration": 6.96
+    },
+    {
+      "text": " If you had more data, the optimal batch size will be larger, and that will allow for better smoothing of the data and better performance as well.",
+      "start": 910.46,
+      "duration": 6.5
+    },
+    {
+      "text": " So you can see already, though, how this works.",
+      "start": 916.96,
+      "duration": 3.08
+    },
+    {
+      "text": " And now, given we have this model, we can take it and we can deploy it to an endpoint.",
+      "start": 920.04,
+      "duration": 5.96
+    },
+    {
+      "text": " So, for example, here, if we have the HuggingFace token to access this private model, this is keep warm.",
+      "start": 926.0,
+      "duration": 7.56
+    },
+    {
+      "text": " So this means when you deploy the server, the server will stay warm for this long afterwards.",
+      "start": 933.68,
+      "duration": 4.14
+    },
+    {
+      "text": " It is cached with modal, so it should be fairly fast to start up.",
+      "start": 937.82,
+      "duration": 7.4
+    },
+    {
+      "text": " The first time it starts up, it can take some time, even 30 seconds or a minute.",
+      "start": 945.22,
+      "duration": 3.46
+    },
+    {
+      "text": " But after that, later restarts should be fairly fast, within ideally a few seconds.",
+      "start": 948.68,
+      "duration": 4.94
+    },
+    {
+      "text": " But keep warm means that it literally will keep it warm so that the requests are almost instantaneous.",
+      "start": 953.62,
+      "duration": 5.12
+    },
+    {
+      "text": " So you'll want to make this longer if you want to have the best latency.",
+      "start": 958.74,
+      "duration": 4.64
+    },
+    {
+      "text": " You want to make it shorter if you want to make it sleep pretty quickly, so you save more on cost.",
+      "start": 963.68,
+      "duration": 4.2
+    },
+    {
+      "text": " So I'm going to deploy the endpoint.",
+      "start": 967.88,
+      "duration": 3.4
+    },
+    {
+      "text": " This is an advanced thing here.",
+      "start": 971.28,
+      "duration": 1.46
+    },
+    {
+      "text": " If you train it with conditioning on previous text, which is currently not supported,",
+      "start": 972.74,
+      "duration": 5.12
+    },
+    {
+      "text": " you can tag this to allow for conditioning on previous text, which can improve a little bit the performance.",
+      "start": 977.86,
+      "duration": 6.72
+    },
+    {
+      "text": " And now we will deploy this endpoint.",
+      "start": 986.62,
+      "duration": 2.36
+    },
+    {
+      "text": " And with that deployed, it should be possible to select a file and run a quick transcription.",
+      "start": 988.98,
+      "duration": 11.64
+    },
+    {
+      "text": " Now, the first time it will take 30 seconds to a minute because everything, the server needs to be deployed.",
+      "start": 1000.62,
+      "duration": 8.04
+    },
+    {
+      "text": " But then things will be cached.",
+      "start": 1008.76,
+      "duration": 0.98
+    },
+    {
+      "text": " And after that, even if the server cools down, it should be fairly fast, within 5 to 10 seconds to restart.",
+      "start": 1009.74,
+      "duration": 5.48
+    },
+    {
+      "text": " But if you do want to get even faster restart, then it makes sense to keep warm the server for longer after a request is received.",
+      "start": 1015.22,
+      "duration": 8.26
+    },
+    {
+      "text": " So these containers will auto-sleep so that you're not paying for server time, which is built per second, when you are not making requests to the model.",
+      "start": 1024.34,
+      "duration": 9.08
+    },
+    {
+      "text": " The other thing you can do is get an API key, and you can hit your endpoint using a Python script or using curl requests like this.",
+      "start": 1033.42,
+      "duration": 9.62
+    },
+    {
+      "text": " So you can pass in audio and send it up.",
+      "start": 1043.82,
+      "duration": 2.28
+    },
+    {
+      "text": " But this feature here is just allowed to, allows you to make some quick requests.",
+      "start": 1046.1,
+      "duration": 5.46
+    },
+    {
+      "text": " And I do recommend that you make one to test your endpoint because that will cache, it will cache the deployment, which means it will be faster for getting set up the next time you come around.",
+      "start": 1051.56,
+      "duration": 10.94
+    },
+    {
+      "text": " And here you have the transcript, just as the sample.",
+      "start": 1063.78,
+      "duration": 2.72
+    },
+    {
+      "text": " You also can download it as a text file, VTT or SRT.",
+      "start": 1066.5,
+      "duration": 4.18
+    },
+    {
+      "text": " But of course, you might find it handier to just hit the endpoint using an API key as well.",
+      "start": 1070.68,
+      "duration": 5.18
+    },
+    {
+      "text": " So last of all, I'll just show you that evaluation tab.",
+      "start": 1075.86,
+      "duration": 3.4
+    },
+    {
+      "text": " You can specify different models.",
+      "start": 1079.26,
+      "duration": 2.32
+    },
+    {
+      "text": " For example, you could specify the same model that you want to train here.",
+      "start": 1081.58,
+      "duration": 3.96
+    },
+    {
+      "text": " So if you have this model name, you could compare it to a base model like OpenAI Whisper Tiny.",
+      "start": 1085.64,
+      "duration": 5.9
+    },
+    {
+      "text": " And then you can decide to run on a data set, a certain split of a data set.",
+      "start": 1091.54,
+      "duration": 5.68
+    },
+    {
+      "text": " You can set your batch size as well for faster inference.",
+      "start": 1097.22,
+      "duration": 2.72
+    },
+    {
+      "text": " And you can also set the maximum number of samples.",
+      "start": 1099.94,
+      "duration": 3.12
+    },
+    {
+      "text": " So if you have a very large data set, you don't have to evaluate on all of it.",
+      "start": 1103.06,
+      "duration": 3.3
+    },
+    {
+      "text": " You can just pick, say, the first 10 rows or 50 rows or whatever you wish.",
+      "start": 1106.36,
+      "duration": 3.42
+    },
+    {
+      "text": " And you can also push the results to Hugging Face as a data set if you want to inspect them,",
+      "start": 1109.78,
+      "duration": 4.82
+    },
+    {
+      "text": " which I recommend doing as well.",
+      "start": 1114.6,
+      "duration": 1.7
+    },
+    {
+      "text": " Of course, we've already evaluated the model versus the base because that happened at the end of training.",
+      "start": 1116.3,
+      "duration": 5.56
+    },
+    {
+      "text": " And we already have access to the results that come out here as well.",
+      "start": 1121.86,
+      "duration": 4.22
+    },
+    {
+      "text": " That wraps it up for a Trelis Studio demo.",
+      "start": 1126.08,
+      "duration": 3.12
+    },
+    {
+      "text": " I do plan to add further features, including text-to-speech models.",
+      "start": 1129.2,
+      "duration": 4.86
+    },
+    {
+      "text": " So you can train those easily and also enhance the data preparation.",
+      "start": 1134.06,
+      "duration": 3.76
+    },
+    {
+      "text": " You can let me know any questions, comments below.",
+      "start": 1137.82,
+      "duration": 2.9
+    },
+    {
+      "text": " You can try it out at studio.Trelis.com.",
+      "start": 1140.72,
+      "duration": 2.76
+    },
+    {
+      "text": " And once you're logged in, you can also submit feedback here through the Help button.",
+      "start": 1143.48,
+      "duration": 3.44
+    },
+    {
+      "text": " You should also see other opportunities to send in error reports.",
+      "start": 1146.92,
+      "duration": 3.5
+    },
+    {
+      "text": " If things do go wrong, that should be automated as well.",
+      "start": 1150.42,
+      "duration": 2.86
+    },
+    {
+      "text": " That's it for Trelis Studio, folks.",
+      "start": 1153.28,
+      "duration": 2.42
+    }
+  ],
+  "full_text": " This is an early release of Trelis Studio, which makes it easy to train and deploy voice models, starting off with transcription models, namely Whisper.  I'm going to walk you through the full pipeline from zero to hero, as they say, of preparing data, then using it to train or fine tune a model, and then deploying the model so you can inference it on a server that wakes up or goes to sleep if there is no usage.  The easiest thing to do is just walk you through the four steps, data prep training, optionally evaluation to evaluate performance versus some other model, and then we'll take a look at deploying endpoints that wake and sleep.  Now, if you want to tune a model, this is going to be relevant if you've bad performance on transcription.  So if your application transcribes audio, but it creates a lot of errors, maybe because of the accent, like my accent, or maybe because of new vocabulary, this is a way that you can easily improve the performance of such a model.  To do so, you will need to have some data.  That means having recordings of somebody, or ideally the user, or the same person that is talking in the audio in the commercial examples you have.  You will want a recording of that audio.  Now, you can also have a transcript that will be useful for training, but if you don't have a transcript, you can create one, and I'll show you how to do that.  Now, later on, I will also allow for generating datasets starting off just with text, where I will allow you to create synthetic voices, because to train a model, you need both text and audio, and that combination is what allows you to train a model.  Here, what I've done is I have read out some text.  I've actually used the news from SmallAI, thanks to SWIX for permission to do some training here, and I've just read out some of this text right here and recorded myself.  And because I've read this out, I can just copy-paste that text and use it as ground truth.  So, in Visual Studio, well, in any text editor, I've just literally copy-pasted that text, and yeah, you can remove the new lines or not, that will be normalized, and I'll use that as ground truth.  So, here, I can upload, let me see where I have some samples, I've got some training audio, and some text, so I'll upload that.  And it should appear here as a pair, which I can now review.  But in this case, there's no review needed, because this is already ground truth text, so I'm ready to go ahead and prepare a dataset out of this.  The preparation will involve aligning it, splitting it into clean chunks of 20 to 30 seconds, and pushing it up to HuggingFace.  Now, if you don't have any text, so let me show you that example.  So, let's say that you just have audio.  In that case, you can transcribe here, just by clicking transcribe, which will use third-party endpoint fireworks to generate a transcription, and then you can review.  And while reviewing, you can seek policy optimization, GRPO, to improve efficiency, or you can press option and forward or backward to move five seconds forward or backwards.  That's alt and left or right arrow on Windows.  You can also make edits.  So, for example, if I want to edit here, I see vLLM.  And this should be tensorRT, tensorRT, LLM.  Now, when I save, should be a space, when I save that, it's going to save some swaps.  So, down here, if I check my word swaps, you'll see it has saved these word swaps.  And I can delete them if I want, or I can use them in future.  So, if I have some saved word swaps from the past, I could decide to apply those word swaps, and those will now all be applied.  So, you can see here, just by applying some swaps I've saved, I can clean up the data set.  And, obviously, you will improve over time because you'll save your swaps, and you'll be able then to reuse them.  So, let's go back to data prep.  And, actually, I'm going to, I do recommend if you use, if you're going to train a very small model, which we'll see in a moment,  it can be good to actually transcribe and correct it, because when you transcribe, it will be in the same,  it will have the same flavor as the model, and that means it will be less out of distribution.  If you provide it with clean text file, the formatting might just be a bit too much out of distribution for the model,  and it may train a bit less well.  So, just a caveat there that it can be better to have a transcript that you transcribe and correct,  rather than to use a transcript, which may just have a different distribution than the model may have.  But, what I'm going to do here for speed, because I'm not going to correct the full transcript, is I will upload the TXT file and the audio.  And, yes, I will go ahead with that.  And, I'm going to now push this as a training data set up to Hugging Face.  And, to do so, I need to add a Hugging Face token, which you can get by just clicking on Get Token here.  You'll need to log in.  Or, you can also set your token up here in Settings.  And, then it will be applied across Trelis Studio for you.  You need to set your organization name, or it will use the default otherwise, I think.  And, you can also set a Weight and Biases key.  That's for logs during training, which we'll see a bit later.  So, let's go back to Dataprep.  We should have our data loaded.  And, I'm now going to click Process, and it's going to push it up to Hub.  Now, if you had a larger data set, this is not large enough to split off a validation split, because probably each new word is only appearing once.  So, I'm going to have to create a separate validation set.  But, if you had a very big data set, you would just split off some of it here into a new split that would appear up in Hugging Face when done.  Now, what's happening here is all of that text and audio has been aligned, and then it's been cleanly chunked up.  And, then it's been pushed up to Hugging Face.  So, you can see it's being sent to the GPU alignment service, and then it should be set up to Hub.  Now, to create a validation set, what I did was, I just took this text, I copied it into ChatGPT, and I got ChatGPT to maintain the meaning and words, but change the phrasing and the order of the phrases.  And, then I read that out, and that gave me a validation audio.  And, the corresponding text is my ground truth for the text.  So, that's how I did it.  Probably, it's more likely that you will just have audio and transcripts, or you will have audio and you need to transcribe it and then review.  But, yeah, this is another way to do it.  So, our training data set is ready.  And, I'm very quickly, well, I can just show you what I did.  I won't do it to save the time, but I basically uploaded validation audio and text.  And, I processed that data set, but pushing it as a validation split, and I pushed it up to Hub.  And, what I have now is, I have my training data set, which is nicely in 20 to 30 second chunks.  You can see it also pushes up the word timestamps for convenience.  And, it will do some basic cleaning of new lines and spaces.  And, also, earlier, before this video was recorded, I pushed up a validation set as well, which is just a rephrased version of the training set.  It also has nine rows, but the phrases are different, and they're in different orders, so it can serve as a validation.  Now, with that done, I can move to using that data set for training.  So, what I'll do is copy the name of the data set I want to use for validation.  Check the split, training, check the split.  And, I'm going to train the largest model for best quality.  I'm going to use my default Hocking Face token that's in settings.  I'm going to push to Trelis.org.  This will be the name of the model.  I will log in weights and biases, and I will use these advanced settings here.  Now, actually, before I did that, I probably should have reset to recommended.  It's not a big deal, but you can use the recommended settings just by having clicked there, or you can modify them.  And, we should be able to see, if we view on weights and biases, what's happening.  It won't show anything just yet, because the pipeline is starting.  And, there are a few phases to the pipeline.  First of all, the model will be evaluated for performance, just the base model.  Then, it will be trained, and then it will be re-evaluated, so you can compare the performance before and after, and it will measure the word error rate.  So, here you can see we're doing baseline evaluation.  It's loading the seven validation samples, and quite shortly, it should output or show here the results.  So, yeah, 7.09% word error rate.  So, it's already performing fairly well.  Only 7% of the words are incorrect when compared with the ground truth.  The model is now loading, and once it's up and loaded, it will then start to issue the loss, which we will see appear on the weights and biases logs.  Now, in the meantime, the way the billing works, there are some free credits if you log in.  I think there's $5 of free credits when you log in for the first time.  The credits are then adjusted according to how you use the GPUs.  The GPUs are currently, it's one GPU, it's billed at $4.99 per hour, which is a little bit above what, a margin above what modal charges.  And, for data preparation, the way that is billed is on the basis of hours of cleaned audio plus text.  So, for every hour of audio you have that you push up to HuggingFace, that's billed at $4.99 currently.  And that, I'm sure, will update if you're watching this video later.  Probably that will be quite different.  Okay, so training is underway.  Weights and biases should be up and running.  It's going to load the project, and we should be able to see the loss curves.  Weights and biases taking a little bit of time.  You can see the loss is falling, the word error rate that's been evaluated during the training is falling as well.  And once training is done, it will merge the lore awaits and push up the HuggingFace.  It will also push up a C Translate 2 version, which can be used for the endpoint deployment we'll see in a moment.  And then it will reevaluate performance on the trained model.  So, here we have the model.  And you can see, in purple, the eval loss should be falling.  The grad norm should be falling during training as well.  In the meantime, you can see here, yeah, we're converting to C Translate 2.  And then it should move to push that up to Hub, to a separate branch.  And here, yeah, you can see in purple, the eval error rate is falling.  Hopefully, it should fall more by the end of training.  It looks like I only trained for two epochs there, because I didn't use the default recommended settings.  The grad norm is also a little bit high.  So, perhaps not ideal in terms of my training settings that I've used.  We can refresh the page and see the performance of the model.  Now, it looks like it's a little bit worse.  We can check the model on Hugging Face.  We can check the evaluation results.  And in the meantime, I'm just going to train it again.  So, I will reset to recommended and restart the training.  And in the meantime, we can take a look here.  The model has been pushed.  You can see the word error rate has increased a little bit.  Now, you also should inspect the file to see if actually it is worse.  And you can see everything has been pushed up to Hugging Face, including the training logs, if you're interested in seeing that.  And then you can inspect the evaluation data.  So, you can see here, base error rate on each of the rows of validation data set and the fine-tuned error rate.  And we can take a look here just to inspect.  This here looks very similar.  It's the same word error rate.  This one here, it apparently is a little bit lower in word error rate.  I don't obviously see the differences.  This one here is the same word error rate.  This one here is a little bit better.  You can see cog.ai is now corrected to cog space.ai.  The rest looks fairly similar.  Here looks similar.  So, yeah, it's because we haven't trained for enough epochs in this case.  This is corrected.  Augustus Audina is now Augustus Audina.  And then this one here is kind of similar as well, maybe a little bit better.  Some of the formatting here may be slightly better.  So, yeah, you can see the results here of the training.  And we have underway now another training, which should be completed fairly shortly.  Looks like if we look at the weights and biases, we can maybe see a comparison of those two runs  using the recommended parameters.  And I'll just hide the other runs.  Okay, so, yeah, the word error rate goes down quite a bit lower.  The eval loss is lower.  The training grad norm does spike maybe a bit at the end, suggesting maybe a lower learning rate is warranted.  But I expect that probably will perform better.  So here, yeah, it is performing better.  It's closer to the baseline word error rate.  You can see the word error rates here are quite similar.  So really, you have to check the manual inspection.  To see if there's a difference.  And let's see now if we get any improvements.  So, yeah, already there's an improvement.  Haishan Su is correctly spelled instead of Haishan.  Google Collab is correctly spelled with one L.  So that's good.  Cog AI is correct.  Discord, there's an error introduced here.  A la marina instead of a la marina.  So that's now correct.  Lands major.  So lands is wrong here.  That's an error introduced.  So you can see there's some improvements.  There's definitely more improvements than regressions here.  So an improvement here as well.  And if you were to generate more data, to give more examples, we're just giving probably just one example of each word, which is not a whole lot for it to learn from.  And because we have very few rows of data, you can see the optimal batch size is just one.  If you had more data, the optimal batch size will be larger, and that will allow for better smoothing of the data and better performance as well.  So you can see already, though, how this works.  And now, given we have this model, we can take it and we can deploy it to an endpoint.  So, for example, here, if we have the HuggingFace token to access this private model, this is keep warm.  So this means when you deploy the server, the server will stay warm for this long afterwards.  It is cached with modal, so it should be fairly fast to start up.  The first time it starts up, it can take some time, even 30 seconds or a minute.  But after that, later restarts should be fairly fast, within ideally a few seconds.  But keep warm means that it literally will keep it warm so that the requests are almost instantaneous.  So you'll want to make this longer if you want to have the best latency.  You want to make it shorter if you want to make it sleep pretty quickly, so you save more on cost.  So I'm going to deploy the endpoint.  This is an advanced thing here.  If you train it with conditioning on previous text, which is currently not supported,  you can tag this to allow for conditioning on previous text, which can improve a little bit the performance.  And now we will deploy this endpoint.  And with that deployed, it should be possible to select a file and run a quick transcription.  Now, the first time it will take 30 seconds to a minute because everything, the server needs to be deployed.  But then things will be cached.  And after that, even if the server cools down, it should be fairly fast, within 5 to 10 seconds to restart.  But if you do want to get even faster restart, then it makes sense to keep warm the server for longer after a request is received.  So these containers will auto-sleep so that you're not paying for server time, which is built per second, when you are not making requests to the model.  The other thing you can do is get an API key, and you can hit your endpoint using a Python script or using curl requests like this.  So you can pass in audio and send it up.  But this feature here is just allowed to, allows you to make some quick requests.  And I do recommend that you make one to test your endpoint because that will cache, it will cache the deployment, which means it will be faster for getting set up the next time you come around.  And here you have the transcript, just as the sample.  You also can download it as a text file, VTT or SRT.  But of course, you might find it handier to just hit the endpoint using an API key as well.  So last of all, I'll just show you that evaluation tab.  You can specify different models.  For example, you could specify the same model that you want to train here.  So if you have this model name, you could compare it to a base model like OpenAI Whisper Tiny.  And then you can decide to run on a data set, a certain split of a data set.  You can set your batch size as well for faster inference.  And you can also set the maximum number of samples.  So if you have a very large data set, you don't have to evaluate on all of it.  You can just pick, say, the first 10 rows or 50 rows or whatever you wish.  And you can also push the results to Hugging Face as a data set if you want to inspect them,  which I recommend doing as well.  Of course, we've already evaluated the model versus the base because that happened at the end of training.  And we already have access to the results that come out here as well.  That wraps it up for a Trelis Studio demo.  I do plan to add further features, including text-to-speech models.  So you can train those easily and also enhance the data preparation.  You can let me know any questions, comments below.  You can try it out at studio.Trelis.com.  And once you're logged in, you can also submit feedback here through the Help button.  You should also see other opportunities to send in error reports.  If things do go wrong, that should be automated as well.  That's it for Trelis Studio, folks.",
+  "errors": []
+}

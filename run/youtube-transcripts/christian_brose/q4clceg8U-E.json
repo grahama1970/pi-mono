@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q4clceg8U-E",
+    "language": "en",
+    "took_ms": 8834,
+    "method": null,
+    "title": "Global Remittances: Improving Where You're From, From Where You Are",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 3764,
+    "description": "For nearly a decade, Hudson Institute’s Center for Global Prosperity (CGP) has been the leading source on remittances from developed to developing countries, including new and creative ways that remittances are used to grow economies and reduce poverty. CGP Research Fellow Yulya Spantchak presented the latest available numbers from our just-released 2011 Index of Global Philanthropy and Remittances, showing that in 2009, U.S. remittances to developing countries were remarkably recession-resilient, in fact, larger than government aid, philanthropy, and even private capital investment.",
+    "view_count": 123
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q4clceg8U-E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

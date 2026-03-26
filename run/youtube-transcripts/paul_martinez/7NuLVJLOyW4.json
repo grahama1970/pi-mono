@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7NuLVJLOyW4",
+    "language": "en",
+    "took_ms": 9447,
+    "method": null,
+    "title": "Less ... The Answer To ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20210428",
+    "duration_sec": 608,
+    "description": "The ICS CYBERSEC 2021 event in Israel challenged speakers by limiting sessions to ten minutes. So Dale Peterson went with the theme and focused on how doing less in two important areas can actually help improve OT and ICS security.\n1) Requiring less of engineers and operators (security is not everyone's responsibility)\n2) Less cyber hygiene, more efficient risk reduction driven action",
+    "view_count": 580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7NuLVJLOyW4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

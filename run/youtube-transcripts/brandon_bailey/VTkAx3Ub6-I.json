@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VTkAx3Ub6-I",
+    "language": "en",
+    "took_ms": 9689,
+    "method": null,
+    "title": "DEF CON 32 - DIY Pharmaceuticals - Michael Laufer",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2868,
+    "description": "A quarter million people die from Hepatitis C yearly, and it's getting worse. But for the first time in history there is a cure (not just a treatment) for a virus, and it is for Hepatitis C. Take one 400mg pill of Sofosbuvir every day for twelve weeks, and you will be free of the virus. The catch? Those pills are $1,000 USD apiece because the molecule is the so-called \"Intellectual Property\" of Gilead Pharmaceuticals, and they refuse to share. If you have $84,000 USD, Hep C is not your problem. We have developed a way to make the entire course of treatment for $300 USD. This methodology also applies to other diseases. Like any science, the method of manufacture of drugs can be replicated, and we are going to give you all the necessary tools and show you the process top-to-bottom. Watch it happen live, participate, and learn to do it yourself: Use our digital research assistant to help you navigate the scientific literature, get a chemical synthesis pathway, generate code for the the MicroLab to run, and watch the medicine form in the reaction chamber. Finally, press some tablets. The feds say saving a life this way is BioTerrorism. We say: So Be It.",
+    "view_count": 1779
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VTkAx3Ub6-I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

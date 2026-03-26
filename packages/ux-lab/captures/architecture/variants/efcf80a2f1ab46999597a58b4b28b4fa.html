@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Space+Grotesk', sans-serif;
+                background-color: var(--bg-deep);
+                color: var(--text-main);
+            }
+            code, .mono {
+                font-family: 'JetBrains Mono', monospace;
+            }
+        }
+        :root {
+            --bg-deep: #0f110c;
+            --bg-surface: #1a1d16;
+            --bg-panel: #24281f;
+            --text-main: #d1d5c9;
+            --text-muted: #7a826e;
+            --accent-human: #a3b18a;
+            --accent-agent: #d4a373;
+            --border-color: #343a2d;
+            --grid-color: rgba(52, 58, 45, 0.3);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+<header class="h-48 border-b border-[var(--border-color)] bg-[var(--bg-surface)] flex flex-col">
+<div class="px-6 py-3 flex justify-between items-center border-b border-[var(--border-color)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[var(--accent-human)]">history_edu</span>
+<h1 class="text-sm font-bold uppercase tracking-widest text-[var(--text-muted)]">Archival Logbook — System Pipeline</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[var(--accent-human)]"></span>
+<span class="text-[10px] uppercase tracking-tighter mono">Human Operator</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[var(--accent-agent)]"></span>
+<span class="text-[10px] uppercase tracking-tighter mono">AI Agent</span>
+</div>
+<button class="px-3 py-1 bg-[var(--border-color)] text-[var(--text-main)] text-xs mono border border-[var(--text-muted)]">EXPORT_LOG</button>
+</div>
+</div>
+<div class="flex-1 relative overflow-x-auto overflow-y-hidden custom-scrollbar flex items-center px-12">
+<div class="absolute top-1/2 left-0 w-[200%] h-[1px] bg-[var(--border-color)] -translate-y-1/2"></div>
+<div class="relative flex items-center gap-32">
+<div class="relative group cursor-pointer">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] mono text-[var(--text-muted)]">2023.10.24 09:12</div>
+<div class="w-4 h-4 rounded-full bg-[var(--accent-human)] ring-4 ring-[var(--bg-surface)] z-10 relative"></div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="text-xs font-bold block">V1: Initial Scaffold</span>
+<span class="text-[10px] mono text-[var(--accent-human)]">@operator_alpha</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] mono text-[var(--text-muted)]">2023.10.24 10:45</div>
+<div class="w-4 h-4 rounded-full bg-[var(--accent-agent)] ring-4 ring-[var(--bg-surface)] z-10 relative"></div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-60">
+<span class="text-xs font-bold block">V2: Latency Optimization</span>
+<span class="text-[10px] mono text-[var(--accent-agent)]">@agent_v4_patch</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] mono text-[var(--text-main)]">2023.10.25 14:20</div>
+<div class="w-6 h-6 rounded-full bg-[var(--accent-agent)] ring-8 ring-[var(--bg-surface)] z-10 relative flex items-center justify-center">
+<div class="w-2 h-2 bg-[var(--bg-deep)] rounded-full animate-pulse"></div>
+</div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="text-xs font-bold block text-white underline underline-offset-4">V3: Load Balancer Node</span>
+<span class="text-[10px] mono text-[var(--accent-agent)]">@agent_v4_patch</span>
+</div>
+</div>
+<div class="relative group cursor-pointer opacity-30">
+<div class="w-4 h-4 rounded-full border-2 border-[var(--text-muted)] bg-transparent ring-4 ring-[var(--bg-surface)] z-10 relative"></div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="text-xs font-bold block">V4: Drafting...</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<div class="flex-1 relative bg-[var(--bg-deep)] overflow-hidden" style="background-image: radial-gradient(var(--grid-color) 1px, transparent 1px); background-size: 32px 32px;">
+<div class="absolute top-6 left-6 flex flex-col gap-1 bg-[var(--bg-panel)] border border-[var(--border-color)] p-1">
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">near_me</span></button>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">square_foot</span></button>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">polyline</span></button>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">text_fields</span></button>
+<div class="h-[1px] bg-[var(--border-color)] my-1"></div>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">image</span></button>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative w-[600px] h-[400px]">
+<div class="absolute top-10 left-10 w-48 h-24 border-2 border-[var(--accent-human)] bg-[var(--bg-surface)] p-3 pointer-events-auto cursor-move">
+<div class="text-[10px] mono text-[var(--accent-human)] mb-1">PRODUCER_01</div>
+<div class="text-sm font-bold">API Gateway</div>
+<div class="mt-2 flex gap-1">
+<span class="px-1 text-[8px] border border-[var(--border-color)] mono">REST</span>
+<span class="px-1 text-[8px] border border-[var(--border-color)] mono">TLS_1.3</span>
+</div>
+</div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path d="M 232 90 L 350 90 L 350 200" fill="none" stroke="var(--border-color)" stroke-dasharray="4 4" stroke-width="2"></path>
+<polygon fill="var(--border-color)" points="350,205 346,195 354,195"></polygon>
+</svg>
+<div class="absolute top-48 left-64 w-56 h-32 border-2 border-[var(--accent-agent)] bg-[var(--bg-surface)] p-3 pointer-events-auto cursor-move">
+<div class="flex justify-between items-start">
+<div class="text-[10px] mono text-[var(--accent-agent)] mb-1">CONSUMER_02_AUTO</div>
+<span class="material-symbols-outlined text-[var(--accent-agent)] text-xs">auto_awesome</span>
+</div>
+<div class="text-sm font-bold">Load Balancer (V3 Add)</div>
+<div class="mt-2 text-[10px] text-[var(--text-muted)] leading-tight">
+                            Auto-scaled group attached to US-EAST-1 cluster.
+                        </div>
+<div class="mt-2 flex gap-1">
+<span class="px-1 text-[8px] border border-[var(--accent-agent)] text-[var(--accent-agent)] mono">WRR_ALGO</span>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-6 left-6 flex items-center gap-4 bg-[var(--bg-panel)] border border-[var(--border-color)] px-3 py-2 text-[var(--text-muted)] mono text-xs">
+<span>X: 1240.2</span>
+<span>Y: -842.1</span>
+<span class="text-[var(--text-main)]">100%</span>
+</div>
+</div>
+<aside class="w-80 border-l border-[var(--border-color)] bg-[var(--bg-surface)] flex flex-col">
+<div class="p-4 border-b border-[var(--border-color)] flex justify-between items-center">
+<span class="text-xs font-bold uppercase tracking-widest text-[var(--text-muted)]">Component Specs</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-white">close</span>
+</div>
+<div class="flex-1 overflow-y-auto p-5 space-y-8">
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Identification</label>
+<div class="space-y-4">
+<div>
+<div class="text-[11px] text-[var(--text-muted)] mb-1">Entity Name</div>
+<div class="text-sm mono text-[var(--text-main)] bg-[var(--bg-deep)] p-2 border border-[var(--border-color)]">lb-v3-cluster-main</div>
+</div>
+<div>
+<div class="text-[11px] text-[var(--text-muted)] mb-1">Contribution</div>
+<div class="flex items-center gap-2 px-2 py-1 bg-[var(--accent-agent)]/10 border border-[var(--accent-agent)]/20 rounded-sm">
+<span class="material-symbols-outlined text-xs text-[var(--accent-agent)]">auto_awesome</span>
+<span class="text-[10px] mono text-[var(--accent-agent)]">Agent Generated (v3)</span>
+</div>
+</div>
+</div>
+</section>
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Log Metrics</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-[var(--bg-panel)] p-3 border border-[var(--border-color)]">
+<div class="text-[9px] text-[var(--text-muted)] uppercase">Latency</div>
+<div class="text-lg mono text-[var(--accent-agent)]">12ms</div>
+</div>
+<div class="bg-[var(--bg-panel)] p-3 border border-[var(--border-color)]">
+<div class="text-[9px] text-[var(--text-muted)] uppercase">Throughput</div>
+<div class="text-lg mono text-[var(--text-main)]">4.2k/s</div>
+</div>
+</div>
+</section>
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Documentation Ref</label>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] cursor-pointer group">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="flex-1 border-b border-dotted border-[var(--border-color)] group-hover:border-[var(--text-muted)]">infra/lb_config.yaml</span>
+</li>
+<li class="flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] cursor-pointer group">
+<span class="material-symbols-outlined text-sm">link</span>
+<span class="flex-1 border-b border-dotted border-[var(--border-color)] group-hover:border-[var(--text-muted)]">service-mesh-spec.md</span>
+</li>
+</ul>
+</section>
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Incoming Edges</label>
+<div class="p-3 bg-[var(--bg-deep)] border border-[var(--border-color)]">
+<div class="flex items-center justify-between text-[10px] mono mb-2">
+<span class="text-[var(--accent-human)]">FROM: API_GTW</span>
+<span class="text-[var(--text-muted)]">p99: 45ms</span>
+</div>
+<div class="h-1 bg-[var(--border-color)] w-full relative">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-[var(--accent-agent)]"></div>
+</div>
+</div>
+</section>
+</div>
+<div class="p-4 border-t border-[var(--border-color)] bg-[var(--bg-panel)]">
+<div class="flex justify-between items-center text-[10px] mono text-[var(--text-muted)]">
+<span>STATUS: DRAFT_REV_3</span>
+<span class="text-[var(--accent-agent)]">● AGENT_SYNCED</span>
+</div>
+</div>
+</aside>
+</main>
+<footer class="h-8 bg-[var(--bg-deep)] border-t border-[var(--border-color)] px-4 flex items-center justify-between text-[10px] mono text-[var(--text-muted)]">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-900"></span> ENGINE_ACTIVE</span>
+<span>MEM: 2.4GB / 8GB</span>
+</div>
+<div class="flex gap-4">
+<span class="hover:text-[var(--text-main)] cursor-pointer">SHORTCUTS_CMD+K</span>
+<span class="text-[var(--text-main)]">LOG_REV: 0xFD29A</span>
+</div>
+</footer>
+
+</body></html>

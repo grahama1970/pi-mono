@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "j5gxdWd5sMg",
+    "language": "en",
+    "took_ms": 8679,
+    "method": null,
+    "title": "DEF CON 33 - Blurred Lines: Evolving Tactics of North Korean Cyber Threat Actors - Seongsu Park",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1612,
+    "description": "Attributing cyber threats to a specific nation-state remains one of the most complex challenges in cybersecurity. Cyber attribution relies on analyzing digital artifacts, infrastructure patterns, and adversary tactics, none of which provide definitive proof on their own. Threat actors continuously evolve, adopting new methodologies and obfuscation techniques that make attribution increasingly difficult. Over the past decade, North Korea’s cyber operations have transformed from rudimentary attacks into highly sophisticated campaigns that rival the capabilities of established cyber powers. Initially, DPRK’s cyber program consisted of loosely organized groups with limited technical capacity, but today, these actors operate under a structured, state-controlled framework with clear strategic objectives. This research presents an in-depth analysis of how DPRK threat actors have adapted, restructured, and collaborated, shedding light on the complexities of nation-state attribution.",
+    "view_count": 1711
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] j5gxdWd5sMg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hiMh3trQAz0",
+    "language": "en",
+    "took_ms": 7739,
+    "method": null,
+    "title": "Cuba: Post-Castro Transition",
+    "channel": "Hudson Institute",
+    "upload_date": "20180516",
+    "duration_sec": 5228,
+    "description": "In April, Miguel Díaz-Canel became the 19th President of Cuba and the first in over 40 years who was not a member of the Castro family. This appointment--not election--of a new Cuban president raises a number of important questions about the future and stability of the regime. In a post-Castro era, Cuban politics will likely change, though the direction and magnitude of those changes remains to be seen.\n\nOn May 16, Hudson Institute hosted a panel to explore these issues and discuss the possibility of a democratic transition on the island. Panelists will include Eduardo Ulibarri, a Costa Rican journalist, diplomat, university professor, and international consultant; Hector E. Schamis, a teacher at Georgetown University’s Center for Latin American Studies and Democracy & Governance Program; and Ambassador Jaime Daremblum, senior fellow and director of Hudson Institute’s Center for Latin American Studies.",
+    "view_count": 287
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hiMh3trQAz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

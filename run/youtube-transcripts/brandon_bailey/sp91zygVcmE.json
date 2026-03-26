@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sp91zygVcmE",
+    "language": "en",
+    "took_ms": 9586,
+    "method": null,
+    "title": "DEF CON 32 - Curious Case of Alice&Bob: What You Can Do as Digital Investigators - Catherine Ullman",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3233,
+    "description": "The game is afoot! The curious case of Alice and Bob will explore beyond the surface of technical know-how. Attendees will navigate the intricate labyrinth of digital investigation, learning not just 'where' to seek digital clues – perhaps hidden in the registry – but crucially, 'why' these details matter and 'how' they fit into the larger puzzle of our investigation. Join me on a narrative adventure illuminating the practical use of tools in a real-world scenario. For both seasoned and aspiring digital sleuths, this talk aims to sharpen investigative skills, setting or recalibrating your expectations of what digital forensics can realistically achieve.",
+    "view_count": 1288
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sp91zygVcmE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

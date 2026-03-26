@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i9a4WqC9G8Y",
+    "language": "en",
+    "took_ms": 9756,
+    "method": null,
+    "title": "Giving USA 2012: Who Gave, How Much, and to Whom in 2011?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120629",
+    "duration_sec": 5863,
+    "description": "Charitable giving as a form of civic engagement in the United States attracts greater participation than many other types of civic involvement—even voting. For more than fifty years, the annual publication Giving USA has documented who gives what to whom. But 2011 was no ordinary year. How did charitable giving fare as the economy struggled to recover? What shifts took place in giving by individuals, corporations, and foundations? More importantly, what do the results tell us about who we are, w",
+    "view_count": 69
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i9a4WqC9G8Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

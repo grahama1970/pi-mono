@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "53qLZZeIlIk",
+    "language": "en",
+    "took_ms": 8719,
+    "method": null,
+    "title": "A Walk Around The S4x19 Welcome Party",
+    "channel": "S4 Events",
+    "upload_date": "20190930",
+    "duration_sec": 817,
+    "description": "Join Dale as he shows you what happens at the Welcome Party after the first day of S4x19. See the cigar rollers, truck bars, dominos, game room, smores, the Miami Beach Botanical Gardens and of course the death star fire pit.",
+    "view_count": 304
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 53qLZZeIlIk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

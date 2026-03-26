@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UchUANuLk4s",
+    "language": "en",
+    "took_ms": 2676,
+    "method": null,
+    "title": "Air Force Basic Training 2020",
+    "channel": "Sandboxx",
+    "upload_date": "20200914",
+    "duration_sec": 52,
+    "description": "Are you considering joining the United States Air Force? Here's a look at what  Air Force basic training is like. \n\nAir Force Basic Training Schedule: 8.5 Weeks to Airman Status\nhttps://bit.ly/2FFh38U\n\nPreparing for Air Force Basic Training\nhttps://bit.ly/35zgPLD",
+    "view_count": 25580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UchUANuLk4s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

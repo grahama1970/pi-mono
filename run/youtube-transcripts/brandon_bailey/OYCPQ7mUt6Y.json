@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OYCPQ7mUt6Y",
+    "language": "en",
+    "took_ms": 8940,
+    "method": null,
+    "title": "DEF CON 29 Voting Village -  Brianna Lennon and Eric Fey - High Turnout, Wide Margins",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1554,
+    "description": "Local election officials faced unprecedented challenges while administering elections in 2020, from widespread disinformation to COVID-19 safety precautions. Unlike in previous election cycles, though, the global pandemic prevented officials from connecting in person to commiserate, share best practices, and support each other. \n\nIn December of 2020, the High Turnout Wide Margins podcast launched to fill the void and give administrators an outlet for discussing the nuts and bolts of elections. Co-hosts Brianna Lennon, an elected county clerk in Boone County, Missouri and Eric Fey, an appointed director of elections in St. Louis County, Missouri, talk to subject-matter experts on topics like cybersecurity, disinformation, and elections integrity. In this presentation, Lennon and Fey share key takeaways from these discussions. \n\nHigh Turnout Wide Margins is not a commercial podcast.",
+    "view_count": 233
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OYCPQ7mUt6Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

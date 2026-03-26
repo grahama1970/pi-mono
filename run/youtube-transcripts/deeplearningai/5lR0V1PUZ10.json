@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5lR0V1PUZ10",
+    "language": "en",
+    "took_ms": 8977,
+    "method": null,
+    "title": "Learn to implement multi-vector retrieval for image data in this new course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251210",
+    "duration_sec": 127,
+    "description": "Learn more: https://bit.ly/44b5kHS\n\nOur new short course, Multi-Vector Image Retrieval, created in collaboration with Qdrant, is now live!\n\nMost retrieval systems represent an image with a single vector. This course shows how multi-vector methods represent images as collections of patch-level embeddings, enabling much more precise matching between text queries and visual content, especially in documents that mix images, diagrams, and text.\n\nYou’ll learn how to:\n\n- Implement ColBERT to understand multi-vector text retrieval and late-interaction search.\n- Apply ColPali to extract patch-level image embeddings for fine-grained visual search.\n- Optimize memory with quantization and pooling techniques.\n- Speed up retrieval by converting multi-vector outputs into MUVERA embeddings for fast HNSW search.\n- Build a multi-modal RAG pipeline that retrieves and reasons over complex visual documents.\n\nThis course is taught by Kacper Łukawski, Senior Developer Advocate at Qdrant. By the end, you’ll know how to implement production-ready multi-vector retrieval systems that understand images at the patch level and support accurate multi-modal search.\n\nEnroll now: https://bit.ly/44b5kHS",
+    "view_count": 2741
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5lR0V1PUZ10: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

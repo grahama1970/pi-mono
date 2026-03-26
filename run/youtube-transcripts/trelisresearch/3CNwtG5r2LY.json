@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3CNwtG5r2LY",
+    "language": "en",
+    "took_ms": 9270,
+    "method": null,
+    "title": "Training Recursive Models - A Frontier in Adaptive Compute",
+    "channel": "Trelis Research",
+    "upload_date": "20251218",
+    "duration_sec": 2282,
+    "description": "Github Repo (see `recursive` branch): https://github.com/TrelisResearch/nanochat\nOne-click Runpod Template: https://console.runpod.io/deploy?template=ikas3s2cii&ref=jmfkcdio\nOriginal Karpathy Repo: https://github.com/karpathy/nanochat\nWandb logs: https://wandb.ai/trelis/nanochat\nModel repo: https://huggingface.co/Trelis/nanochat-recursive\n\nReferences:\n- Recursion & Adaptive Compute: https://arxiv.org/abs/2502.05171\n- TRM Paper: https://arxiv.org/abs/2510.04871\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nLearn more about Trelis ADVANCED-fine-tuning repo: https://trelis.com/advanced-fine-tuning\n\n💡 Done-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Recursive Nanochat - a comparison with Karpathy’s 500M parameter model\n3:07 Benchmark Results on Recursive Nanochat\n5:54 What are the benefits of recursive models?\n6:52 Recursive Models allow inference on smaller devices and fewer GPUs\n8:07 Recursive Models open a pathway to adaptive compute\n9:39 Recursive vs Non-recursive Architecture\n13:48 How to handle the recursive stream via an adapter\n16:49 Training for adaptive compute / recursions - Poisson log-normal recursion sampling\n18:14 Handling torch.compile with recursive models\n20:07 Implementing adaptive compute (stopping recursions early)\n22:14 kv cache strategies for recursive models\n24:16 Inference engine (vLLM) implications for recursive models\n26:20 Training dynamics of recursive models (Wandb overview), incl. flops utilisation\n31:21 Code Review of Trelis/nanochat\n32:05 Truncated backpropagation through time\n33:56 Recursive loop adapter initialisation\n35:25 Dynamic torch compile\n37:06 Wrap up",
+    "view_count": 3010
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3CNwtG5r2LY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

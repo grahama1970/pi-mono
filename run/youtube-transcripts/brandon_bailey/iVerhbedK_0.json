@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iVerhbedK_0",
+    "language": "en",
+    "took_ms": 9073,
+    "method": null,
+    "title": "DEF CON 33 - Unveiling the  Perils of the TorchScript Engine in PyTorch - Ji'an Zhou, Lishuo Song",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2086,
+    "description": "PyTorch is a machine learning library based on the Torch library, used for applications such as computer vision and natural language processing. It is one of the most popular deep learning frameworks.\n\nHowever, beneath its powerful capabilities lies a potential security risk. Initially, PyTorch used pickle to save models, but due to the insecurity of pickle deserialization, there was a risk of Remote Code Execution (RCE) when loading models. Subsequently, PyTorch introduced the weights_only parameter to enhance security. The official documentation states that weights_only=True is considered safe and recommends using it over weights_only=False.\n\nFor years, the security of weights_only=True remained unchallenged. Our research, however, uncovered unsettling truths. We discovered that torch.load with weights_only=True supports TorchScript, leading us to delve into TorchScript's inner workings. After a period of research, we discovered several vulnerabilities and ultimately achieved RCE. We promptly reported this finding to PyTorch, who acknowledged the vulnerability and assigned us CVE-2025-32434. This revelation overturns established understandings and has profound implications for numerous AI applications. We will provide an in-depth analysis of the impact of this vulnerability.\n\nIn this sharing, we will introduce how we gained inspiration and discovered this interesting vulnerability. Meanwhile, our findings once again confirm the statement, \"The Safe Harbor you once thought was actually Hostile Waters.\"",
+    "view_count": 287
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iVerhbedK_0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OES9RU0WTH0",
+    "language": "en",
+    "took_ms": 9088,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Karl Fosaaen -   Extracting all the Azure Passwords",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2815,
+    "description": "Whether it's the migration of legacy systems or creation of brand-new applications, many organizations are turning to Microsoft’s Azure cloud as their platform of choice. This brings new challenges for penetration testers who are less familiar with the platform, and now have more attack surfaces to exploit. In an attempt to automate some of the common Azure escalation tasks, the MicroBurst toolkit was created to contain tools for attacking different layers of an Azure tenant. In this talk, we will be focusing on the password extraction functionality included in MicroBurst. We will review many of the places that passwords can hide in Azure, and the ways to manually extract them. For convenience, we will also show how the Get-AzPasswords function can be used to automate the extraction of credentials from an Azure tenant. Finally, we will review a case study on how this tool was recently used to find a critical issue in the Azure permissions model that resulted in a fix from Microsoft.",
+    "view_count": 1895
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OES9RU0WTH0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

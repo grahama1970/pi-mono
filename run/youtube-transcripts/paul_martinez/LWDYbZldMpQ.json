@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LWDYbZldMpQ",
+    "language": "en",
+    "took_ms": 7475,
+    "method": null,
+    "title": "The Reality of Water System Outages",
+    "channel": "S4 Events",
+    "upload_date": "20240409",
+    "duration_sec": 109,
+    "description": "There are thousands of water system outages in the US every year ... how many of those are from cyber incidents? #crumbs",
+    "view_count": 175
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LWDYbZldMpQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

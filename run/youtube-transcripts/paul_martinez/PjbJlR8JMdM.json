@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PjbJlR8JMdM",
+    "language": "en",
+    "took_ms": 8927,
+    "method": null,
+    "title": "S4x26 POC Pavilion",
+    "channel": "S4 Events",
+    "upload_date": "20250507",
+    "duration_sec": 903,
+    "description": "What it is, what's required, and the rules",
+    "view_count": 314
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PjbJlR8JMdM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

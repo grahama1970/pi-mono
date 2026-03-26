@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6nv7jZjrub8",
+    "language": "en",
+    "took_ms": 8052,
+    "method": null,
+    "title": "AoD Podcast | Balancing Drones, Carriers, and the Future of Defense Tech (feat. Raj Shah)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240724",
+    "duration_sec": 2604,
+    "description": "How can the Department of Defense build a strategy and budget around the increasing scenario of using $3,000,000 missiles to shoot down $15,000 drones? Host Marshall Kosloff talks with former Defense Innovation Unit (DIU) Director, Raj Shah, about how to find innovation at the intersection of the government and private sectors to ensure that U.S. servicemembers never find themselves in a fair fight.  \n\nExplore Shah's upcoming book titled, \"Unit X: How the Pentagon and Silicon Valley Are Transforming the Future of War:\" https://www.amazon.com/Unit-Pentagon-Silicon-Valley-Transforming/dp/1668031388",
+    "view_count": 1138
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6nv7jZjrub8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "30Ofh-Myte4",
+    "language": "en",
+    "took_ms": 9166,
+    "method": null,
+    "title": "AI Dev 25 | Apoorva Joshi: Building Agents That Learn—Managing Memory in AI Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1927,
+    "description": "AI agents are redefining what’s possible with LLM-powered applications—moving beyond automation toward systems that can adapt, personalize, and learn over time.\n\nIn this talk, Apoorva Joshi, Senior AI Developer Advocate at MongoDB, explores the central role of memory in enabling these intelligent behaviors. \n\nShe breaks down the differences between short-term and long-term memory in agentic systems, and shares practical strategies for building agents that can retain knowledge, learn from their past, and evolve with each interaction.\n\nThis session is ideal for developers interested in building more capable, context-aware AI agents—and understanding the memory mechanisms that power them.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 5853
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 30Ofh-Myte4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

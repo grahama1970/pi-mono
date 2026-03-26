@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8Wlj0a_Kqw0",
+    "language": "en",
+    "took_ms": 9697,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Stephan Wampouille - Autonomous Lateral Movement",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 807,
+    "description": "See autonomous lateral movement in a live environment. In this Linux-based attack, multiple benign behaviors - each designed not to be detected - are chained together to complete a lateral movement action. Using a creative approach to parsing indicators of compromise out of RAT responses and injecting them automatically into commands later down the kill chain, this lateral movement demonstration will be fully hands-off. The techniques and TTPs in this demonstration will be made open-source following the talk.",
+    "view_count": 864
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8Wlj0a_Kqw0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

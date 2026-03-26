@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dNfRUNPluxU",
+    "language": "en",
+    "took_ms": 7674,
+    "method": null,
+    "title": "Hardware Hacking - Extracting Information From Chips",
+    "channel": "S4 Events",
+    "upload_date": "20160912",
+    "duration_sec": 2577,
+    "description": "This was one of the most popular talks at S4xEurope.\n\nDmitry Nedospasov went into non-invasive, semi-invasive and fully invasive methods to extract information from hardware. A couple of highlights:\n\n5:30 An answer to \"what are the levels and effectiveness of security for chips\"? BTW, among the most secure is your pay TV card.\n\n11:00 A nice chart with the classes of attack\n\nJust watch the whole thing if this is something you are interested in. Dmitry knows his stuff and gets into a lot of detail.",
+    "view_count": 9359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dNfRUNPluxU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

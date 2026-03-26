@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V9kae0iTr6E",
+    "language": "en",
+    "took_ms": 8171,
+    "method": null,
+    "title": "DEF CON 2020 NYE   Yesterday & Tomorrow   DJ Music Video",
+    "channel": "DEFCONConference",
+    "upload_date": "20210128",
+    "duration_sec": 3037,
+    "description": "Yesterday & Tomorrow's live DJ set from DEF CON's 2021 New Year's Eve Party",
+    "view_count": 2441
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V9kae0iTr6E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AU21wwYIt9E",
+    "language": "en",
+    "took_ms": 8328,
+    "method": null,
+    "title": "Gemma 3",
+    "channel": "Trelis Research",
+    "upload_date": "20250313",
+    "duration_sec": 1303,
+    "description": "📧 Get Trelis AI Tutorials by Email: https://trelis.substack.com\n\n🛠 Build & Deploy Faster\nFine-tuning, Inference, Audio, Evals, and Vision Tools: https://trelis.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📸 Thumbnail Tutorial\nSee How It’s Made: https://youtu.be/ThKYjTdkyP8\n\nVideo Links:\n- Colab: https://colab.research.google.com/drive/1bUXCxYefsk5tG8PgMIvA-UYptn1qPslW?usp=sharing\n- Gemma 3 Paper: https://storage.googleapis.com/deepmind-media/gemma/Gemma3Report.pdf\n- HF Repo: https://huggingface.co/google/gemma-3-1b-it\n\nTIMESTAMPS:\n00:00 Introduction to Gemma 3\n00:29 Technical Paper Overview\n01:05 Model Architecture and Attention Mechanism\n02:14 Training and Hardware Details\n03:08 Quantization and Memory Efficiency\n04:49 Pre-Training and Distillation\n06:59 Performance Benchmarks\n08:43 Comparative Analysis with Other Models\n09:00 Ablation Studies and Memory Savings\n10:10 Long Context Handling\n11:26 Distillation Phase Insights\n13:21 Regurgitation Rate and Post-Training\n14:25 Test Methodology and Comparisons\n15:01 Results and Comparisons with Quinn and Deep Seek\n19:19 Inference and Fine-Tuning Tips\n21:35 Conclusion and Future Plans",
+    "view_count": 3700
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AU21wwYIt9E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

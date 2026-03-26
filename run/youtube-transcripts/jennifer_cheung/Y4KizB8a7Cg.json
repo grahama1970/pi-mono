@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y4KizB8a7Cg",
+    "language": "en",
+    "took_ms": 7935,
+    "method": null,
+    "title": "DEF CON Safe Mode - Badass Bowden - Fireside Lounge Shrek Juggs and Toxic Trolls Q& A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3801,
+    "description": "In this panel discussion, the BADASS army team will be talking about the intersection between security and sex, the problem of online exploitation and harassment, and what needs to be done to address these issues. After an introduction to the org and the culture of NOn Consensual Pornography, The panel will be a free form conversation with audience participation, covering a wide variety of topics related to NCP and online sexual abuse.",
+    "view_count": 529
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y4KizB8a7Cg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

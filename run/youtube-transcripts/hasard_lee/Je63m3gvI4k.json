@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Je63m3gvI4k",
+    "language": "en",
+    "took_ms": 8838,
+    "method": null,
+    "title": "Test Pilot: My Proudest Moment",
+    "channel": "Hasard Lee",
+    "upload_date": "20230512",
+    "duration_sec": 37,
+    "description": "",
+    "view_count": 20329
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Je63m3gvI4k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

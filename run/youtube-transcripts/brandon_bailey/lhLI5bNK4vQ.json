@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lhLI5bNK4vQ",
+    "language": "en",
+    "took_ms": 9255,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Fredrick “Flee” Lee  -  What Bruce Lee Can Teach Us About AppSec",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2440,
+    "description": "Every few years, security “thought leaders” tell us what is the one, proper way to practice application security. I’m just as guilty of this as anyone else in the “industry”. But, it turns out there isn’t just one true style of effective AppSec. This talk walks through my path of letting go of dogma, finding my style, and returning back to always being a student of the game. “Absorb what is useful, reject what is useless, add what is essentially your own.”",
+    "view_count": 303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lhLI5bNK4vQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

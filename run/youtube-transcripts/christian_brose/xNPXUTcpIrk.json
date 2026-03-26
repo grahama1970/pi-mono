@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xNPXUTcpIrk",
+    "language": "en",
+    "took_ms": 8778,
+    "method": null,
+    "title": "North American Energy Infrastructure: Will Congress Act?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140529",
+    "duration_sec": 2130,
+    "description": "With ongoing questions surrounding the adequacy of energy infrastructure and the Keystone XL pipeline still on hold, Hudson Institute is pleased to host a senior member of the House Energy and Commerce Committee, Representative Gene Green (D-TX-29). Rep. Green is principal co-sponsor of bipartisan legislation, the North American Energy Infrastructure Act (H.R. 3301), which aims to modernize the current permitting process for the construction of natural gas and petroleum pipelines and electrical",
+    "view_count": 162
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xNPXUTcpIrk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eKSMKSZkN-I",
+    "language": "en",
+    "took_ms": 9984,
+    "method": null,
+    "title": "I Tested Every GPU",
+    "channel": "Trelis Research",
+    "upload_date": "20241223",
+    "duration_sec": 2793,
+    "description": "➡️ Get access to the ADVANCED-fine-tuning Repo (incl. future additions): https://trelis.com/ADVANCED-fine-tuning/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click LLM Templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Explore Developer Tools/Scripts: https://Trelis.com/\n➡️ Trelis Newsletter: https://trelis.substack.com\n➡️ Collaborate with Trelis: https://Trelis.com/developer-collaborations\n➡️ Consulting: https://Trelis.com/\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1UBuJvhTZKUTgP1Z-volhsG-monovjDNiyo6iXfc5-Ms/edit?usp=sharing\n- Original llmperf repo: https://github.com/ray-project/llmperf\n- Trelis' forked llmperf repo: https://github.com/TrelisResearch/llmperf\n- sglang repo: https://github.com/sgl-project/sglang\n- vLLM docs: https://docs.vllm.ai/\n- llm compressor repo: https://github.com/vllm-project/llm-compressor\n\nTIMESTAMPS:\n00:00 - Introduction to GPU benchmarking test\n00:36 - Test methodology and parameters\n01:25 - Results: Time to first token\n02:43 - Results: Token generation throughput\n03:46 - Results: Price per million tokens\n04:59 - Analysis of results ordering and trends\n06:09 - Detailed discussion topics overview\n07:00 - Why FP8 format is beneficial\n08:19 - Technical explanation of FP8\n10:45 - Comparison of different floating point formats\n12:04 - GPU architecture support for FP8\n14:21 - How FP8 works on different GPU architectures\n17:13 - Live demonstration with RTX 3090\n24:34 - SGLang vs vLLM comparison\n32:17 - Caveats and limitations of benchmarking\n37:34 - How to create FP8 models\n39:09 - Using LLM Compressor for quantization\n42:29 - Evaluating quantized models\n45:48 - Conclusion and resources",
+    "view_count": 3209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eKSMKSZkN-I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

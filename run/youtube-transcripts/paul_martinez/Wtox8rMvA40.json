@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Wtox8rMvA40",
+    "language": "en",
+    "took_ms": 8852,
+    "method": null,
+    "title": "Dino on DCOM Patch and ICS",
+    "channel": "S4 Events",
+    "upload_date": "20221214",
+    "duration_sec": 2648,
+    "description": "Dino Busalachi of Velta Technology talks to Dale about a 2021 security patch to DCOM that broke a number of ICS systems including Rockwell Automation and Siemens. Microsoft had a registry setting that disabled the patch and the incompatibility problem, but this ability to disable the patch goes away on 14 March 2023.\n\nOf course this topic leads us down the patching in ICS rabbit hole, hopefully with some informed and helpful information.",
+    "view_count": 349
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Wtox8rMvA40: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

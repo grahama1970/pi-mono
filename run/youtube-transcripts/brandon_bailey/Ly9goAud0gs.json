@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ly9goAud0gs",
+    "language": "en",
+    "took_ms": 9055,
+    "method": null,
+    "title": "DEF CON 30 - Christopher Panayi - Pulling Passwords out of Configuration Manager",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3268,
+    "description": "System Center Configuration Manager, now Microsoft Endpoint Configuration Manager (MECM), is a software management product that has been widely adopted by large organizations to deploy, update, and manage software; it is commonly responsible for the deployment and management of the majority of server and workstation machines in enterprise Windows environments.\n\nThis talk will provide an outline of how MECM is used to deploy machines into enterprise environments (typically through network booting, although it supports various Operating System deployment techniques), and will explore attacks that allow Active Directory credentials to be extracted from this process. The common MECM misconfigurations leading to these attacks will be detailed and, in so doing, the talk will aim to show how to identify and exploit these misconfigurations and how to defend against these attacks. Each viable attack will be discussed in depth (mostly by discussing the protocols and architecture in use, but sometimes by diving into relevant code, if necessary) so that the context of how and why the attack works will be understood. These concepts will be illustrated through the demo and release of a tool that allows for the extraction of credentials from several of the onsite deployment techniques that MECM supports.",
+    "view_count": 4098
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ly9goAud0gs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

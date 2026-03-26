@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KJNNb0BF8Rw",
+    "language": "en",
+    "took_ms": 8740,
+    "method": null,
+    "title": "A Conversation with Rep. Marsha Blackburn on Rural Broadband and Infrastructure Development",
+    "channel": "Hudson Institute",
+    "upload_date": "20170523",
+    "duration_sec": 1653,
+    "description": "A central theme of the 2016 election cycle was infrastructure development and economic revitalization. An important part of that is broadband access. Broadband speeds in rural America tend to be much slower than in urban areas, limiting industries ranging from health care and education to manufacturing and transportation. Obtaining high quality broadband is seen in many rural areas as a key foundation for economic development throughout the country.\n\nAs Chairman of the House Energy and Commerce Committee's Communications and Technology Subcommittee and a small businesswoman serving a rural district in Tennessee, U.S. Representative Marsha Blackburn is a strong advocate of rural broadband development. On Tuesday, May 23, Hudson Institute's Center for the Economics of the Internet hosted Rep. Blackburn for a conversation on unlocking the economic potential of rural America. Harold Furchtgott-Roth, director of Hudson's Center for the Economics of the Internet and former FCC Commissioner, moderated the discussion.",
+    "view_count": 2076
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KJNNb0BF8Rw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

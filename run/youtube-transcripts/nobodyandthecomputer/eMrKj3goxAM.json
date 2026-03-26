@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eMrKj3goxAM",
+    "language": "en",
+    "took_ms": 8212,
+    "method": null,
+    "title": "GPT Jazz (Generative Pre-trained Transformer Jazz Music)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230718",
+    "duration_sec": 801,
+    "description": "Join me once more on this exhilarating adventure of creating music with artificial intelligence. \nIn this video, we'll harness the power of OpenAI's GPT models to generate text that will be transformed into mesmerizing MIDI music. And guess what? It's the birth of a new genre: GPT Jazz! \nGet ready for an incredible blend of excitement, thrill, and an electrifying experience like never before!\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n__________________________________________________\n\nchatGPT:\nhttps://openai.com/blog/chatgpt\n\nColab Notebook:\nhttps://www.patreon.com/posts/gpt-jazz-colab-86296554\n\nPrompt:\nhttps://www.patreon.com/posts/gpt-jazz-prompt-86296638\n\nOpenAI playground preset:\nhttps://www.patreon.com/posts/open-ai-preset-86296693\n__________________________________________________\n\n00:00 Intro\n01:18 Introducing GPT Jazz\n02:08 Text representation to MIDI\n02:57 Twinkle but Jazz \n04:58 MF DOOM over GPT Jazz\n05:53 Jazz Ballad\n08:16 Open AI Playground\n10:46 Coltrane Ballad\n11:35 Video with Pika Labs\n12:25 Outro",
+    "view_count": 126433
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eMrKj3goxAM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

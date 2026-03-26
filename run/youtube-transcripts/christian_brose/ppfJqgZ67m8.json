@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ppfJqgZ67m8",
+    "language": "en",
+    "took_ms": 9038,
+    "method": null,
+    "title": "A Conversation with Assistant Special Envoy Ellie Cohanim on Combating Anti-Semitism",
+    "channel": "Hudson Institute",
+    "upload_date": "20200901",
+    "duration_sec": 2860,
+    "description": "Join Hudson Institute for a conversation with U.S. Assistant Special Envoy to Monitor and Combat Anti-Semitism Ellie Cohanim on the challenges the United States faces in turning the tide on global anti-Semitism. The conversation will be hosted by Hudson Director for South and Central Asia Husain Haqqani.",
+    "view_count": 1476
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ppfJqgZ67m8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gga15m41ERA",
+    "language": "en",
+    "took_ms": 9503,
+    "method": null,
+    "title": "Train Voxtral Transcription (ASR) Models",
+    "channel": "Trelis Research",
+    "upload_date": "20260227",
+    "duration_sec": 1039,
+    "description": "Get repo access at Trelis.com/ADVANCED-audio\n\nData Prep + Training via UI or with Claude Code:\nTry it out: https://studio.trelis.com\n\nWhite Glove Data Preparation + Training Services\nLearn More: https://trelis.com/fine-tuning-services/\n\nVideo Links:\nVoxtral ASR Comparisons: https://research.trelis.com/asr/\n\nGet Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis' Private Discord\n3. Early access to Trelis videos via Discord\n\nRunpod Affiliate Link, incl. bonus on signup: https://runpod.io?ref=jmfkcdio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nStarting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nGet Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Introduction: Real-time vs batch transcription models\n1:05 Voxtral performance comparison vs Whisper on multilingual tasks\n2:07 Voxtral model variants: Small (24B), Mini (4B), and Transcribe versions\n3:08 Voxtral Real-Time release and V2 features (diarization, timestamping)\n3:35 OpenWeights availability for Mini, Small, and Real-Time models\n4:39 Real-time transcription accuracy vs delay tradeoffs\n5:43 Voxtral V2 improvements and fine-tuning support overview\n6:43 Training options: Advanced Audio scripts and Transformers limitations\n7:59 Voxtral architecture: Whisper encoder with MiniStral decoder\n9:00 Multimodal input support and real-time delay injection mechanism\n10:00 Real-time model features: multiple delay values and custom audio encoder\n11:02 vLLM support for high-throughput inference and continuous batching\n12:02 Trelis Studio no-code platform for training and deployment\n13:19 Advanced transcription repo and Modal training script walkthrough\n15:25 Training dataset and baseline 7.6% word error rate results\n16:25 Evaluation comparison: base vs fine-tuned model performance\n17:06 Recommendations: Voxtral and Qwen ASR alternatives",
+    "view_count": 1078
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gga15m41ERA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

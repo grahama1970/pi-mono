@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NgjyBKfqJEs",
+    "language": "en",
+    "took_ms": 8559,
+    "method": null,
+    "title": "DEF CON 33 - Mind the Data Voids: Hijacking Copilot Trust - Tobias Diehl",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1168,
+    "description": "In this session, Tobias Diehl will demonstrate a critical vulnerability in Microsoft’s CoPilot AI, exposing how data voids can be hijacked to manipulate AI-generated responses. By exploiting CoPilot’s reliance on limited data sources, Tobias will show how attackers can inject persistent malicious content, associating it with legitimate Microsoft topics, and how AI fails to validate key terms. The presentation will cover the mechanics of key term association attacks, data void exploitation, and their real-world implications, including the risk of CoPilot delivering dangerous installation instructions for command-and-control (C2) beacons for initial access. Using a proof-of-concept from Microsoft’s Zero Day Quest event, attendees will see how the hijacking process works in practice, how threat actors can target enterprise users, and how AI systems can be tricked into guiding users toward compromised actions.",
+    "view_count": 928
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NgjyBKfqJEs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

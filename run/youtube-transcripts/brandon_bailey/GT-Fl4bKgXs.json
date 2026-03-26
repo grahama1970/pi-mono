@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GT-Fl4bKgXs",
+    "language": "en",
+    "took_ms": 9183,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Jason Whelan - Defending the Unmanned Aerial Vehicle",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1544,
+    "description": "Many attacks against the UAV are becoming commonplace as they are simple to conduct with inexpensive hardware, such as spoofing and jamming. Unfortunately, many of the vulnerabilities UAVs suffer from are based on security flaws in the underlying technologies, including GPS and ADS-B. An intrusion detection system (IDS) for UAVs can increase security rapidly without the need to re-engineer underlying technologies. UAVs are cyber-physical systems which introduce a number of challenges for IDS development as they utilize a wide variety of sensors, communication protocols, platforms, and control configurations. Commercial off-the-shelf IDS solutions can be strategically implemented within the Unmanned aerial system (UAS) to detect threats to the underlying traditional IT infrastructure, however, the UAV itself requires specialized detection techniques. This talk discusses advancements in UAV intrusion detection, including proposed solutions in academics, pitfalls of these solutions, and how a practical technique using machine learning can be used to detect attacks across UAV platforms. A fully developed IDS is presented which makes use of flight logs and an onboard agent for autonomous detection and mitigation. The topics covered come from lessons learned in UAS penetration testing, live experiments, and academic research in the UAV security space.",
+    "view_count": 1279
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GT-Fl4bKgXs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

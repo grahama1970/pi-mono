@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EOlYDwwTo_c",
+    "language": "en",
+    "took_ms": 8146,
+    "method": null,
+    "title": "Governor Tom Ridge and Senator Joe Lieberman Release Biodefense Report",
+    "channel": "Hudson Institute",
+    "upload_date": "20151028",
+    "duration_sec": 4538,
+    "description": "Former Governor Tom Ridge and Senator Joe Lieberman released a major biodefense report, sponsored by Hudson Institute, that outlines national vulnerabilities and provides recommendations to improve U.S. defense against the use of biological weapons and naturally-occurring infectious diseases with pandemic potential.The report, titled A National Blueprint for Biodefense: Leadership and Major Reform Needed to Optimize Efforts, was developed, written and released by the Blue Ribbon Study Panel on Biodefense, which was formed to recommend changes to U.S. policy and law to strengthen national biodefense while optimizing resource investments.",
+    "view_count": 267
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EOlYDwwTo_c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

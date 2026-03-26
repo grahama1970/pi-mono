@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QSLh7CUEfXA",
+    "language": "en",
+    "took_ms": 8920,
+    "method": null,
+    "title": "Break into AI: I took an online course, what's next?",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201119",
+    "duration_sec": 5105,
+    "description": "Welcome to the virtual Learner Community Event hosted by DeepLearning.AI. We have assembled a panel of machine learning practitioners who have gotten into the field from different paths.  They will be sharing their first-hand experience and suggestions on how to transition from online courses to landing your first ML job! Topics that you can expect include:\n- How they started in AI and what they are working on now\n- Besides taking courses, what else they did as part of building the portfolio\n- How to know when someone's ready to work in ML industry\n- The hardest part of learning ML\n- How to prepare for interviews and make resumes more attractive\n\nThe event will start off with a panel discussion and follow with a Q&A session. We’ll be using Slido for Q&A. Please note that only the people who sign up for the Slido ticket will be able to access Slido to post and upvote questions. If you have signed up for the Slido + YouTube ticket, please check your inbox for an email including an access link to Slido.\n\nEvent agenda: (*subject to change)\nHost: Sandhya Simhan, Director of Marketing, DeepLearning.AI\n\n40 minutes: Panel discussion:\nNitin Pasumarthy,  Senior Applied Machine Learning Engineer at Linkedin\nDaniel Popescu, Machine Learning Engineer at Arkris\nKennedy Wangari, Data Scientist at SafeBoda; Incoming Data Science Intern at NVIDIA\n\n30 minutes: Q&A \n\nCheck out the previous events on Landing an ML Job featuring a panel of AI recruiters: https://www.youtube.com/watch?v=V9fjtkPWD4E\n\nTo learn more about us, \nDeepLearning.AI: https://www.deeplearning.ai/\n\nTo learn more about AI skills assessment, check out Workera at https://bit.ly/35JtEmc\nTo download the report on AI Career Pathways: Put Yourself on the Right Track from Workera https://bit.ly/2UGhQL4",
+    "view_count": 16518
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QSLh7CUEfXA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FNxpyI-_3vc",
+    "language": "en",
+    "took_ms": 9760,
+    "method": null,
+    "title": "New free course: Build Long-Context AI Apps with Jamba",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250108",
+    "duration_sec": 124,
+    "description": "Enroll for free: https://bit.ly/49Cd8E5\n\nLearn to build AI applications capable of processing entire books with efficiency and high-quality outputs using the Jamba model, a hybrid of transformer and Mamba architectures.\n\nMost large language models struggle with long contexts due to computational limits or quality loss. Jamba, developed by AI21 Labs, solves this by combining the efficiency of Mamba with the precision of transformers.\n\nIn this short course, Build Long-Context AI Apps with Jamba, built in partnership with AI21 Labs and taught by Chen Wang and Chen Almagor, you’ll:\n\n- Learn how the hybrid Jamba architecture processes long contexts efficiently.\n- Gain practical experience in tasks like processing large documents, tool-calling, and building RAG pipelines.\n- Explore the training process and performance metrics for long-context models.\n\nTaught by experts Chen Wang and Chen Almagor from AI21 Labs, this course includes hands-on labs and real-world applications to help you build better AI.\n\nLearn more: https://bit.ly/49Cd8E5",
+    "view_count": 4213
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FNxpyI-_3vc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

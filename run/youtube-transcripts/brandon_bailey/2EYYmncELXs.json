@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2EYYmncELXs",
+    "language": "en",
+    "took_ms": 8699,
+    "method": null,
+    "title": "DEF CON 33 - TotalTest Simulations 2 Oh!   From Exploits to Economics - Nebu Varghese",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1532,
+    "description": "Production halted. SCADA alarms blaring. The CEO demands answers. Your theoretical cyberattack? It just became reality. Point-in-time penetration tests are fundamentally inadequate against today's advanced persistent threats. This talk outlines a framework to build an intelligence-led, integrated attack and crisis simulation program, not just a reactive security strategy.\n\nDrawing from our extensive experience (including hundreds of red team engagements for some of the world's largest organizations, with anonymized real-world case studies), we will unveil TotalTest – a revolutionary, metrics-driven framework that transforms breach simulations from isolated exercises into a continuous, strategic program for unparalleled organizational resilience.",
+    "view_count": 116
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2EYYmncELXs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

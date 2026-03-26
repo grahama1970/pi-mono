@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vM71rFgQfeY",
+    "language": "en",
+    "took_ms": 8629,
+    "method": null,
+    "title": "OnRamp: Vulnerability Management – What To Patch When",
+    "channel": "S4 Events",
+    "upload_date": "20250430",
+    "duration_sec": 1891,
+    "description": "All systems, IT, OT, any type of T, have a large number of vulnerabilities disclosed every year. The number of vulnerabilities is going to increase if SBOMs have us considering component vulnerabilities. You need to efficiently and effectively patch the vulnerabilities that will result in major risk reduction... and perhaps defer patching on those that will have trivial risk reduction.\n\nLogan Carpenter walks you through the Never, Next, Now patching concept that was originally presented at S4x19 by Art Manion. He introduced some of the factors that will affect your decision tree process, and hopefully ease your security patching burden.\n\nThe OnRamp is S4's 101-Level Training Course. Check out the OnRamp playlist on the S4 Events Youtube Channel. This year's 5 sessions update the OnRamp training with topics that have become more important the last two years.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 372
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vM71rFgQfeY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

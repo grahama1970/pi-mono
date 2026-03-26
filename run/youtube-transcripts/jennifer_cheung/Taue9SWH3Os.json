@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Taue9SWH3Os",
+    "language": "en",
+    "took_ms": 8166,
+    "method": null,
+    "title": "DEF CON 33 Video Team  - Illumicon",
+    "channel": "DEFCONConference",
+    "upload_date": "20250820",
+    "duration_sec": 944,
+    "description": "d3dboot brings you an interview with the fine folks behind the brand new Illumicon!",
+    "view_count": 646
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Taue9SWH3Os: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

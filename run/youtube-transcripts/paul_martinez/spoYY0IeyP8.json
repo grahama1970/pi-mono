@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "spoYY0IeyP8",
+    "language": "en",
+    "took_ms": 8436,
+    "method": null,
+    "title": "EVE OS: Avoiding The Vendor Lock In Problem At The Edge",
+    "channel": "S4 Events",
+    "upload_date": "20221130",
+    "duration_sec": 1864,
+    "description": "On the S4x22 Main Stage, Jason Shepherd urges industry to not make the same mistake of locking in to a specific vendor OS at the edge. Don't lock into AWS or Azure. Don't fall into the cheap edge, easy cloud trap.\n\nHis recommendation is the open source EVE OS for the edge device.\n\n14:00 he begins talking about the ELF Edge and its Project EVE. This second half is the important part of the talk with some great slides and detail. Watch it at 1.5x if you have limited time.",
+    "view_count": 536
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] spoYY0IeyP8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

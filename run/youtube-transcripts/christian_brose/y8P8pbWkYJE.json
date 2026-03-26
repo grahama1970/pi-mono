@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y8P8pbWkYJE",
+    "language": "en",
+    "took_ms": 8752,
+    "method": null,
+    "title": "Dragon in the North: Assessing the Growing Chinese Threat to the Arctic Region",
+    "channel": "Hudson Institute",
+    "upload_date": "20221012",
+    "duration_sec": 11658,
+    "description": "The China Center will host a conference, entitled “The Dragon in the North: Assessing the Growing Chinese Threat to the Arctic Region,” organized by Hudson Senior Fellow Dr. Arthur Herman.\n\nHudson Senior Fellow and Director of the China Center Dr. Miles Yu will host this event. Hudson Distinguished Fellow and 70th Secretary of State Michael R. Pompeo will deliver the keynote address.\n\nArthur Herman and Dr. Roslyn Layton of China Tech Threat will moderate panels consisting of the world’s leading experts on China’s march toward the Arctic.",
+    "view_count": 4568
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y8P8pbWkYJE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

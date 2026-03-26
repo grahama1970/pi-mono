@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Mk-KFP0r3oM",
+    "language": "en",
+    "took_ms": 9111,
+    "method": null,
+    "title": "Branching out of the Notebook: ML Application Development with GitHub",
+    "channel": "DeepLearningAI",
+    "upload_date": "20221109",
+    "duration_sec": 3641,
+    "description": "Welcome to your first week on the job as a Silicon Valley Machine Learning Engineer!  Your first task is to use code from an existing containerized ML web application to deploy a new state-of-the-art, open-source text-to-image diffusion model for internal stakeholders. Join us for a live, interactive workshop that covers how to accomplish this task using industry-standard version control best practices, including GitHub branch development and pull requests.\n\nWe will be taking questions during the event. Please submit your question or upvote others' here:\nhttps://app.sli.do/event/xAPQPHTUHkjMHTyZaGFAUh\n\nSpeakers\nDr. Greg Loughnane, Head of Product & Curriculum at FourthBrain\nhttps://www.linkedin.com/in/gregloughnane/\n\nMilica Cvetkovic,  Instructor ML Engineering Program at FourthBrain\nhttps://www.linkedin.com/in/iammilica/\n\nChris Alexiuk, Instructor ML Engineering Program at FourthBrain\nhttps://www.linkedin.com/in/csalexiuk/\n\nLet us know how we're doing? We will be giving out discount codes for a selected number of people who fill out the survey: \nhttps://forms.gle/uWJfQ76KrK92qiGf7\n\nLooking to connect with your peer learners, share projects, and swap advice? Join our AI community: \nhttps://community.deeplearning.ai/invites/ddzDLVa2jv\n\nTo learn more about us and signup for future events:\nDeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 11887
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Mk-KFP0r3oM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

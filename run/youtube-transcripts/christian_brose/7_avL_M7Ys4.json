@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7_avL_M7Ys4",
+    "language": "en",
+    "took_ms": 12350,
+    "method": null,
+    "title": "Recent Developments in Cyberwarfare",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 4009,
+    "description": "Please join Hudson Institute's Center on Economics of the Internet for an address by Gen. James Cartwright (USMC, ret.), Harold Brown Chair in Defense Policy Studies at CSIS. General Cartwright served as Commander, U.S. Strategic Command, before being nominated and appointed as the eighth Vice Chairman of the Joint Chiefs of Staff, the nation's second-highest military officer. During his four-year tenure as Vice Chairman, spanning two presidential administrations and overseeing constant military",
+    "view_count": 1275
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7_avL_M7Ys4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

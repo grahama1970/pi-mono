@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zSgeSR-e8aE",
+    "language": "en",
+    "took_ms": 8564,
+    "method": null,
+    "title": "Critical Attack Flow Modeling",
+    "channel": "S4 Events",
+    "upload_date": "20200323",
+    "duration_sec": 1961,
+    "description": "Bryan Singer is one of the real pioneers in cyber / physical attacks on ICS, and still is on the leading edge in thinking about and figuring out how to stop these attacks.\n\nIn this session he introduces his Critical Attack Flow Modeling, including some interesting questions. For example, \"what happens if we mess with this?\" The model includes looking at the likelihood of attack , likelihood of successful compromise, and likelihood of creating damage.",
+    "view_count": 936
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zSgeSR-e8aE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

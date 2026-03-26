@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4FecAiofbHY",
+    "language": "en",
+    "took_ms": 7798,
+    "method": null,
+    "title": "DEF CON 31 - Private Until Presumed Guilty - Allison Young, Diane Akerman",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2690,
+    "description": "Dobbs has significantly heightened the fear that everyday private data can be leveraged by law enforcement to prosecute pregnancy outcomes. However, this data is already being used in investigating other criminalized activities. In this talk, we will show you examples of information that can easily be extracted from many phones to surveil personal reproductive decisions.\n\nWe will also show you how the government obtains your not-so-private thoughts using forensic extraction and reporting tools, with a focus on health and lifestyle apps. This will include a review of the output of common forensic tools, demonstrating both the practical ease of reviewing sensitive data and the technical limitations of interpreting their meaning. Warning: you may find this peek into digital investigations disturbing.\n\nWe will discuss the different laws that do, or do not, protect your private health data, but will focus primarily on the limitations of the 4th Amendment in the digital world. The talk will provide a brief overview of traditional warrant practice and the \"reasonable expectation of privacy\" in digital data. But because the law has no bearing on reality, we'll look at excerpts from search warrants for digital devices and cloud data that illustrate the flawed nature of warrant practice in general, the limitations of the practice in the digital context, and the ease with which the government can obtain your data without any real oversight.",
+    "view_count": 2689
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4FecAiofbHY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

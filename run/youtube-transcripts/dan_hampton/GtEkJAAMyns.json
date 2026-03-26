@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GtEkJAAMyns",
+    "language": "en",
+    "took_ms": 9587,
+    "method": null,
+    "title": "Air Force Basic Military Training",
+    "channel": "Sandboxx",
+    "upload_date": "20201018",
+    "duration_sec": 205,
+    "description": "The 737th Training Group revamped U.S. Air Force basic military training to inspire and develop MACH-21 Airmen. In order to achieve this goal, BMT curriculum changes improve all aspects of training across an 8.5-week program that focuses on readiness, lethality, airmanship, fitness and warrior ethos. (U.S. Air Force video by Staff Sgt. Marianique Santos)\n\nThe appearance of U.S. Department of Defense (DoD) visual information does not imply or constitute DoD endorsement.",
+    "view_count": 26386
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GtEkJAAMyns: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

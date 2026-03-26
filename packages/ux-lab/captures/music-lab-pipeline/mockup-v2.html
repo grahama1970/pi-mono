@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Lab Pipeline v2 — All Wells Expanded</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#141414;--card:#1a1a1a;--panel:#111111;--inset:#0e0e0e;
+  --accent:#7c3aed;--passed:#00ff88;--failed:#ff4444;--warn:#ffaa00;--running:#4a9eff;
+  --text:#e2e8f0;--dim:#64748b;--muted:#334155;--border:rgba(255,255,255,0.13);
+  --radius:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 24px;background:var(--panel);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.topbar h1{font-size:15px;font-weight:800;letter-spacing:-0.02em}
+.topbar .sub{font-size:12px;color:var(--dim)}
+.topbar .spacer{flex:1}
+.badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;letter-spacing:0.05em}
+.badge-run{background:rgba(74,158,255,0.15);color:var(--running);border:1px solid rgba(74,158,255,0.3)}
+.layout{display:flex;gap:0}
+.rail{width:56px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:0;position:sticky;top:48px;height:calc(100vh - 48px)}
+.rail-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.rail-dot.done{background:var(--passed);box-shadow:0 0 6px rgba(0,255,136,0.4)}
+.rail-line{width:2px;height:32px;background:var(--border);flex-shrink:0}
+.rail-label{font-size:8px;color:var(--dim);font-weight:700;margin-top:2px;margin-bottom:2px}
+.main{flex:1;max-width:900px;margin:0 auto;padding:24px 32px 120px}
+.stage{margin-bottom:8px;position:relative}
+.arrow{text-align:center;color:var(--running);font-size:18px;line-height:28px;opacity:0.5}
+.well{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.well-head{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border)}
+.well-head .sid{font-size:11px;font-weight:800;color:var(--accent);font-family:monospace}
+.well-head .title{font-size:14px;font-weight:700}
+.well-head .spacer{flex:1}
+.well-head .meta{font-size:10px;color:var(--dim)}
+.well-body{padding:20px}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;margin:2px;letter-spacing:0.05em;text-transform:uppercase}
+.tag-fear{background:rgba(255,68,68,0.15);color:#ff4444;border:1px solid rgba(255,68,68,0.3)}
+.tag-trust{background:rgba(0,255,136,0.15);color:#00ff88;border:1px solid rgba(0,255,136,0.3)}
+.tag-sadness{background:rgba(74,158,255,0.15);color:#4a9eff;border:1px solid rgba(74,158,255,0.3)}
+.tag-joy{background:rgba(255,170,0,0.15);color:#ffaa00;border:1px solid rgba(255,170,0,0.3)}
+.tag-anger{background:rgba(255,68,68,0.15);color:#ff6666;border:1px solid rgba(255,68,68,0.3)}
+.tag-neutral{background:rgba(100,116,139,0.15);color:#64748b;border:1px solid rgba(100,116,139,0.3)}
+.frag{background:var(--panel);border-left:3px solid var(--accent);padding:10px 14px;margin:6px 0;border-radius:0 8px 8px 0;font-size:12px;line-height:1.6;color:var(--text)}
+.frag .src{font-size:9px;color:var(--dim);margin-top:4px}
+.song-card{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px;margin:6px 0}
+.song-card .art{width:48px;height:48px;border-radius:6px;background:var(--muted);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.song-card .info{flex:1}
+.song-card .info .name{font-size:13px;font-weight:600}
+.song-card .info .artist{font-size:11px;color:var(--dim)}
+.stem-strip{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.stem-strip .label{font-size:10px;font-weight:700;width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.08em}
+.stem-bar{height:24px;flex:1;border-radius:4px;position:relative;overflow:hidden}
+.stem-bar-fill{position:absolute;top:0;left:0;height:100%;border-radius:4px;opacity:0.6}
+.lyric-section{margin:12px 0;border-left:3px solid var(--accent);padding-left:16px}
+.lyric-section h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px}
+.lyric-line{font-size:14px;line-height:2;color:var(--text)}
+.lyric-line .lore-ref{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;cursor:help}
+.phrase-row{display:grid;grid-template-columns:40px 56px 1fr 72px 44px 64px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px}
+.phrase-row .bar{font-size:10px;color:var(--dim);font-family:monospace}
+.select-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;border:1px solid;letter-spacing:0.04em;text-transform:uppercase;background:transparent}
+.syl-strip{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:var(--panel);border-radius:8px;margin:8px 0}
+.syl{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:32px}
+.syl .text{font-size:13px;font-family:monospace}
+.syl .text.stress{font-weight:900;color:var(--text);border-bottom:2px solid var(--accent)}
+.syl .text.unstress{color:var(--dim)}
+.syl .beat{font-size:8px;color:var(--dim);font-family:monospace}
+.piano-row{display:flex;align-items:center;height:20px;margin:1px 0}
+.piano-label{width:36px;font-size:8px;font-family:monospace;color:var(--dim);text-align:right;padding-right:4px;flex-shrink:0}
+.piano-grid{flex:1;height:100%;position:relative;background:rgba(255,255,255,0.02);border-left:1px solid var(--border)}
+.note{position:absolute;height:16px;top:2px;border-radius:3px;opacity:0.7}
+.note-vocal{background:var(--accent)}
+.note-bass{background:var(--running)}
+.note-drums{background:var(--failed)}
+.note-keys{background:var(--passed)}
+.note-guitar{background:var(--warn)}
+.note-synth{background:#e879f9}
+.audio-player{display:flex;align-items:center;gap:16px;background:var(--panel);border-radius:8px;padding:16px}
+.play-btn{width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:none;color:white;font-size:20px}
+.wave-mini{flex:1;height:40px;background:var(--inset);border-radius:6px;position:relative;overflow:hidden}
+.wave-mini-fill{position:absolute;top:0;left:0;width:35%;height:100%;background:linear-gradient(90deg,var(--accent),var(--running));opacity:0.3;border-radius:6px}
+.conv-chart{background:var(--panel);border-radius:8px;padding:16px}
+.chart-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px;font-family:monospace}
+.chart-bar{height:8px;border-radius:4px;transition:width 0.3s}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+.compare-card{background:var(--panel);border-radius:8px;padding:16px;text-align:center}
+.compare-card h5{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:8px 0}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--dim)}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+</style></head><body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span style="color:var(--accent);font-weight:900;font-size:12px;letter-spacing:0.1em">EMBRY OS</span>
+  <h1>Music Lab</h1>
+  <span class="sub">/ Whisperheads</span>
+  <div class="spacer"></div>
+  <span class="badge badge-run">● Running — S03</span>
+  <span class="badge" style="background:rgba(124,58,237,0.15);color:var(--accent);border:1px solid rgba(124,58,237,0.3)">Round 1</span>
+</div>
+
+<div class="main">
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S00</span>
+      <span class="title">Recall Lore</span>
+      <div class="spacer"></div>
+      <span class="tag tag-fear">● Fear</span>
+      <span class="tag tag-trust">● Trust</span>
+      <span class="tag tag-sadness">● Sadness</span>
+      <span class="tag tag-joy">● Joy</span>
+      <span class="tag tag-anger">● Anger</span>
+      <span class="meta">14 fragments recalled</span>
+    </div>
+    <div class="well-body">
+      <div class="frag">The static hums beneath the skin tonight — frequencies only the broken hear. Archive Silence was the first signal, the frequency no one was meant to find.<div class="src">source: episode_034 / Archive Silence lore</div></div>
+      <div class="frag">Trust was built from the bones of light, fragile and luminous. The Signal Covenant bound them — a promise carried on frequencies others had forgotten.<div class="src">source: episode_017 / Signal Covenant</div></div>
+      <div class="frag">When the towers fell, the frequency scattered. Anger burned through the receivers. Every node in the network felt the Tower Fall — the moment trust shattered into static.<div class="src">source: episode_042 / Tower Fall</div></div>
+      <div class="frag">Joy arrived as the First Frequency — clear, bright, unexpected. After months of noise, one clean signal cut through. The Whisperheads heard it first.<div class="src">source: episode_008 / First Frequency</div></div>
+      <div class="frag">Sadness lives in the Ash Binding — where old transmissions go to die. The frequencies decay here, growing quieter until they're indistinguishable from silence.<div class="src">source: episode_051 / Ash Binding</div></div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S01</span>
+      <span class="title">Find Reference Songs</span>
+      <div class="spacer"></div>
+      <span class="meta">3 references matched</span>
+    </div>
+    <div class="well-body">
+      <div class="song-card">
+        <div class="art">🎵</div>
+        <div class="info">
+          <div class="name">Roads</div>
+          <div class="artist">Portishead — <span style="color:var(--dim)">Dummy (1994)</span></div>
+          <div style="margin-top:4px"><span class="tag tag-sadness">sadness</span><span class="tag tag-fear">fear</span><span class="tag" style="background:rgba(124,58,237,0.15);color:var(--accent);border:1px solid rgba(124,58,237,0.3)">atmospheric</span></div>
+        </div>
+        <div style="font-size:11px;color:var(--passed)">92% match</div>
+      </div>
+      <div class="song-card">
+        <div class="art">🎵</div>
+        <div class="info">
+          <div class="name">Teardrop</div>
+          <div class="artist">Massive Attack — <span style="color:var(--dim)">Mezzanine (1998)</span></div>
+          <div style="margin-top:4px"><span class="tag tag-trust">trust</span><span class="tag tag-sadness">sadness</span><span class="tag" style="background:rgba(124,58,237,0.15);color:var(--accent);border:1px solid rgba(124,58,237,0.3)">trip-hop</span></div>
+        </div>
+        <div style="font-size:11px;color:var(--passed)">87% match</div>
+      </div>
+      <div class="song-card">
+        <div class="art">🎵</div>
+        <div class="info">
+          <div class="name">The Host of Seraphim</div>
+          <div class="artist">Dead Can Dance — <span style="color:var(--dim)">The Serpent's Egg (1988)</span></div>
+          <div style="margin-top:4px"><span class="tag tag-fear">fear</span><span class="tag tag-anger">anger</span><span class="tag" style="background:rgba(124,58,237,0.15);color:var(--accent);border:1px solid rgba(124,58,237,0.3)">dark ambient</span></div>
+        </div>
+        <div style="font-size:11px;color:var(--warn)">78% match</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S02</span>
+      <span class="title">Learn From Music</span>
+      <div class="spacer"></div>
+      <span class="meta">5 stems analyzed · Portishead "Roads"</span>
+    </div>
+    <div class="well-body">
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Vocal</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--running)"></div>Bass</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--failed)"></div>Drums</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--passed)"></div>Keys</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Guitar</div>
+      </div>
+      <div class="stem-strip">
+        <span class="stem-strip label" style="color:var(--accent)">Vocal</span>
+        <div class="stem-bar" style="background:var(--inset)"><div class="stem-bar-fill" style="width:70%;background:var(--accent)"></div></div>
+      </div>
+      <div class="stem-strip">
+        <span class="stem-strip label" style="color:var(--running)">Bass</span>
+        <div class="stem-bar" style="background:var(--inset)"><div class="stem-bar-fill" style="width:45%;background:var(--running)"></div></div>
+      </div>
+      <div class="stem-strip">
+        <span class="stem-strip label" style="color:var(--failed)">Drums</span>
+        <div class="stem-bar" style="background:var(--inset)"><div class="stem-bar-fill" style="width:55%;background:var(--failed)"></div></div>
+      </div>
+      <div class="stem-strip">
+        <span class="stem-strip label" style="color:var(--passed)">Keys</span>
+        <div class="stem-bar" style="background:var(--inset)"><div class="stem-bar-fill" style="width:60%;background:var(--passed)"></div></div>
+      </div>
+      <div class="stem-strip">
+        <span class="stem-strip label" style="color:var(--warn)">Guitar</span>
+        <div class="stem-bar" style="background:var(--inset)"><div class="stem-bar-fill" style="width:30%;background:var(--warn)"></div></div>
+      </div>
+
+      <div style="margin-top:12px;padding:12px;background:var(--panel);border-radius:8px;font-size:11px;color:var(--dim);line-height:1.8">
+        <strong style="color:var(--text)">Arrangement Notes:</strong><br>
+        • Bass drops to sustained half notes during fear/sadness sections<br>
+        • Drums are sparse — kick on 1, snare ghosting on 3, hi-hat 8ths<br>
+        • Keys use wide voicings with reverb — pad-like sustain<br>
+        • Vocal sits above the mix, dry and intimate in verses, reverb in chorus<br>
+        • Guitar is barely present — clean arpeggios, almost subliminal
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well" style="border-color:var(--running)">
+    <div class="well-head" style="border-bottom-color:var(--running)">
+      <span class="sid">S03</span>
+      <span class="title">Write Lyrics</span>
+      <div class="spacer"></div>
+      <span class="meta">Draft · Whisperheads</span>
+      <span class="badge badge-run">ACTIVE</span>
+    </div>
+    <div class="well-body">
+      <div style="margin-bottom:12px">
+        <span style="font-size:10px;color:var(--dim);font-weight:700;letter-spacing:0.1em">LORE REFS</span>
+        <span class="tag tag-fear">Fear — Archive Silence</span>
+        <span class="tag tag-trust">Trust — Signal Covenant</span>
+        <span class="tag tag-anger">Anger — Tower Fall</span>
+        <span class="tag tag-joy">Joy — First Frequency</span>
+        <span class="tag tag-sadness">Sadness — Ash Binding</span>
+      </div>
+      <div class="lyric-section" style="border-color:var(--running)">
+        <h4 style="color:var(--running)">Verse 1</h4>
+        <div class="lyric-line">The static hums beneath the skin tonight</div>
+        <div class="lyric-line">I trace the signals where they <span class="lore-ref">blur and die</span></div>
+        <div class="lyric-line">We built our <span class="lore-ref">towers from the bones of light</span></div>
+        <div class="lyric-line">But every frequency must <span class="lore-ref">fade and fly</span></div>
+      </div>
+      <div class="lyric-section" style="border-color:var(--accent)">
+        <h4 style="color:var(--accent)">Chorus</h4>
+        <div class="lyric-line"><span class="lore-ref">Whisperheads</span>, we carry the frequency</div>
+        <div class="lyric-line">Lost in the noise between what was and what we need</div>
+        <div class="lyric-line">Whisperheads, in <span class="lore-ref">silence we discover</span></div>
+        <div class="lyric-line">The voice beneath the voice we <span class="lore-ref">buried under</span></div>
+      </div>
+      <div class="lyric-section" style="border-color:var(--warn)">
+        <h4 style="color:var(--warn)">Verse 2</h4>
+        <div class="lyric-line"><span style="color:var(--warn)">The archive speaks in fragments, half-erased</span></div>
+        <div class="lyric-line"><span style="color:var(--warn)">A memory of trust before the fall</span></div>
+        <div class="lyric-line">I find your echo in the <span class="lore-ref">darkened space</span></div>
+        <div class="lyric-line">Between the signal and the empty hall</div>
+      </div>
+      <div class="lyric-section" style="border-color:var(--failed)">
+        <h4 style="color:var(--failed)">Bridge</h4>
+        <div class="lyric-line"><span style="color:var(--failed)">Fear was the first frequency we learned</span></div>
+        <div class="lyric-line"><span style="color:var(--failed)">Joy came after, borrowed, briefly earned</span></div>
+        <div class="lyric-line"><span style="color:var(--warn)">Anger burned the archive to the ground</span></div>
+        <div class="lyric-line"><span style="color:var(--running)">Sadness found us in the ash, still bound</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S04</span>
+      <span class="title">Converge Lyrics</span>
+      <div class="spacer"></div>
+      <span class="meta">Round 3/5 · 8 phrases</span>
+    </div>
+    <div class="well-body">
+      <div class="phrase-row" style="font-weight:700;font-size:9px;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;border-bottom:1px solid var(--border)">
+        <span>BAR</span><span>SECTION</span><span>PHRASE</span><span>EMOTION</span><span>DYN</span><span>VOCAL</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B1</span>
+        <span class="tag" style="background:var(--running)20;color:var(--running);border:1px solid var(--running)33;font-size:8px;padding:2px 6px">VERSE</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="The static hums beneath the skin">The static hums beneath the skin</span>
+        <span class="select-pill tag-fear" style="color:inherit;border-color:inherit">fear</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">p</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">whisper</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B2</span>
+        <span class="tag" style="background:var(--running)20;color:var(--running);border:1px solid var(--running)33;font-size:8px;padding:2px 6px">VERSE</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="I trace the signals where they blur">I trace the signals where they blur</span>
+        <span class="select-pill tag-sadness" style="color:inherit;border-color:inherit">sadness</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">mp</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">speak</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B3</span>
+        <span class="tag" style="background:var(--running)20;color:var(--running);border:1px solid var(--running)33;font-size:8px;padding:2px 6px">VERSE</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="We built our towers from the bones">We built our towers from the bones</span>
+        <span class="select-pill tag-trust" style="color:inherit;border-color:inherit">trust</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">mp</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">sing</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B4</span>
+        <span class="tag" style="background:var(--running)20;color:var(--running);border:1px solid var(--running)33;font-size:8px;padding:2px 6px">VERSE</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="But every frequency must fade">But every frequency must fade</span>
+        <span class="select-pill tag-neutral" style="color:inherit;border-color:inherit">neutral</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">p</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">whisper</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B5</span>
+        <span class="tag" style="background:var(--accent)20;color:var(--accent);border:1px solid var(--accent)33;font-size:8px;padding:2px 6px">CHORUS</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Whisperheads, we carry the frequency">Whisperheads, we carry the frequency</span>
+        <span class="select-pill tag-joy" style="color:inherit;border-color:inherit">joy</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">f</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">belt</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B6</span>
+        <span class="tag" style="background:var(--accent)20;color:var(--accent);border:1px solid var(--accent)33;font-size:8px;padding:2px 6px">CHORUS</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Lost in the noise between what was">Lost in the noise between what was</span>
+        <span class="select-pill tag-trust" style="color:inherit;border-color:inherit">trust</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">ff</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">belt</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B7</span>
+        <span class="tag" style="background:var(--running)20;color:var(--running);border:1px solid var(--running)33;font-size:8px;padding:2px 6px">VERSE</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="The archive speaks in fragments">The archive speaks in fragments</span>
+        <span class="select-pill tag-anger" style="color:inherit;border-color:inherit">anger</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">mf</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">growl</span>
+      </div>
+      <div class="phrase-row">
+        <span class="bar">B8</span>
+        <span class="tag" style="background:var(--warn)20;color:var(--warn);border:1px solid var(--warn)33;font-size:8px;padding:2px 6px">BRIDGE</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Fear was the first frequency">Fear was the first frequency</span>
+        <span class="select-pill tag-fear" style="color:inherit;border-color:inherit">fear</span>
+        <span class="select-pill" style="color:var(--warn);border-color:var(--warn)">f</span>
+        <span class="select-pill" style="color:var(--accent);border-color:var(--accent)">belt</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S05</span>
+      <span class="title">Annotate Lyrics</span>
+      <div class="spacer"></div>
+      <span class="meta">Per-syllable timing · 42 syllables</span>
+    </div>
+    <div class="well-body">
+      <div style="font-size:10px;color:var(--dim);margin-bottom:8px;font-weight:700;letter-spacing:0.1em">VERSE 1 — "The static hums beneath the skin tonight"</div>
+      <div class="syl-strip">
+        <div class="syl"><span class="text unstress">The</span><span class="beat">1.00</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">sta</span><span class="beat">1.50</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text unstress">tic</span><span class="beat">2.00</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">hums</span><span class="beat">2.50</span><span class="beat">+1.00</span></div>
+        <div class="syl"><span class="text unstress">be</span><span class="beat">3.50</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">neath</span><span class="beat">4.00</span><span class="beat">+1.00</span></div>
+        <div class="syl"><span class="text unstress">the</span><span class="beat">5.00</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">skin</span><span class="beat">5.50</span><span class="beat">+1.00</span></div>
+        <div class="syl"><span class="text unstress">to</span><span class="beat">6.50</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">night</span><span class="beat">7.00</span><span class="beat">+1.50</span></div>
+      </div>
+      <div style="font-size:10px;color:var(--dim);margin:12px 0 8px;font-weight:700;letter-spacing:0.1em">CHORUS — "Whisperheads, we carry the frequency"</div>
+      <div class="syl-strip">
+        <div class="syl"><span class="text stress">Whis</span><span class="beat">1.00</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text unstress">per</span><span class="beat">1.50</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">heads</span><span class="beat">2.00</span><span class="beat">+1.50</span></div>
+        <div class="syl"><span class="text unstress">we</span><span class="beat">3.50</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">car</span><span class="beat">4.00</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text unstress">ry</span><span class="beat">4.50</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text unstress">the</span><span class="beat">5.00</span><span class="beat">+0.25</span></div>
+        <div class="syl"><span class="text stress">fre</span><span class="beat">5.25</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text unstress">quen</span><span class="beat">5.75</span><span class="beat">+0.50</span></div>
+        <div class="syl"><span class="text stress">cy</span><span class="beat">6.25</span><span class="beat">+1.75</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S06</span>
+      <span class="title">Piano Roll Spec</span>
+      <div class="spacer"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--running)"></div>Bass</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--passed)"></div>Keys</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--failed)"></div>Drums</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Vocal</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e879f9"></div>Synth</div>
+      </div>
+      <span class="meta">D minor · 85 BPM · 8 bars</span>
+    </div>
+    <div class="well-body" style="padding:12px">
+<div style="position:relative;background:var(--inset);border-radius:8px;padding:4px;overflow-x:auto"><div class="piano-row"><span class="piano-label">E5</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">D5</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">C5</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">B4</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">A4</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">G4</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">F4</span><div class="piano-grid" style="min-width:700px"><div class="note note-keys" style="left:6%;width:6%"></div></div></div>
+<div class="piano-row"><span class="piano-label">E4</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">D4</span><div class="piano-grid" style="min-width:700px"><div class="note note-keys" style="left:0%;width:6%"></div><div class="note note-keys" style="left:31%;width:6%"></div><div class="note note-vocal" style="left:50%;width:4%"></div><div class="note note-vocal" style="left:54%;width:4%"></div><div class="note note-vocal" style="left:63%;width:10%"></div></div></div>
+<div class="piano-row"><span class="piano-label">C4</span><div class="piano-grid" style="min-width:700px"><div class="note note-keys" style="left:18.75%;width:6%"></div><div class="note note-vocal" style="left:60%;width:2%"></div></div></div>
+<div class="piano-row"><span class="piano-label">B3</span><div class="piano-grid" style="min-width:700px"><div class="note note-keys" style="left:25%;width:6%"></div></div></div>
+<div class="piano-row"><span class="piano-label">A3</span><div class="piano-grid" style="min-width:700px"><div class="note note-keys" style="left:12.5%;width:6%"></div></div></div>
+<div class="piano-row"><span class="piano-label">G3</span><div class="piano-grid" style="min-width:700px"><div class="note note-keys" style="left:37.5%;width:6%"></div><div class="note note-bass" style="left:75%;width:12%"></div></div></div>
+<div class="piano-row"><span class="piano-label">F3</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">E3</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">D3</span><div class="piano-grid" style="min-width:700px"><div class="note note-bass" style="left:0%;width:12%"></div><div class="note note-bass" style="left:50%;width:12%"></div></div></div>
+<div class="piano-row"><span class="piano-label">C3</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">B2</span><div class="piano-grid" style="min-width:700px"></div></div>
+<div class="piano-row"><span class="piano-label">A2</span><div class="piano-grid" style="min-width:700px"><div class="note note-bass" style="left:12.5%;width:12%"></div></div></div>
+
+      <div style="display:flex;justify-content:space-between;padding:4px 40px;font-size:8px;color:var(--dim);font-family:monospace">
+        <span>Bar 1</span><span>Bar 2</span><span>Bar 3</span><span>Bar 4</span><span>Bar 5</span><span>Bar 6</span><span>Bar 7</span><span>Bar 8</span>
+      </div>
+      <div style="display:flex;gap:16px;padding:4px 40px;font-size:9px;color:var(--warn)">
+        <span>Dm</span><span style="margin-left:60px">Am</span><span style="margin-left:60px">Bb</span><span style="margin-left:60px">Gm</span>
+        <span style="margin-left:40px">Bb</span><span style="margin-left:60px">F</span><span style="margin-left:60px">Gm</span><span style="margin-left:60px">Dm</span>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S07</span>
+      <span class="title">Generate Audio</span>
+      <div class="spacer"></div>
+      <span class="tag" style="background:rgba(124,58,237,0.15);color:var(--accent);border:1px solid rgba(124,58,237,0.3)">YuE</span>
+      <span class="meta">Local GPU · A5000</span>
+    </div>
+    <div class="well-body">
+      <div class="audio-player">
+        <button class="play-btn">▶</button>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px">whisperheads_r3.wav</div>
+          <div class="wave-mini"><div class="wave-mini-fill"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-top:4px">
+            <span>0:00</span><span>2:47</span>
+          </div>
+        </div>
+        <div style="text-align:right;font-size:10px;color:var(--dim)">
+          <div>48kHz · 16bit</div>
+          <div>Generated in 4m 12s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S08</span>
+      <span class="title">Converge Audio</span>
+      <div class="spacer"></div>
+      <span class="meta">5 rounds · threshold ≤0.30</span>
+    </div>
+    <div class="well-body">
+      <div class="conv-chart">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:10px;font-weight:700;color:var(--dim);letter-spacing:0.1em">CONVERGENCE</span>
+          <span class="tag tag-trust" style="font-size:9px">converged R4</span>
+        </div>
+        <div class="legend" style="margin-bottom:12px">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--running)"></div>Tempo</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--passed)"></div>Key</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div>Chords</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Dynamics</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--failed)"></div>Timing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--text);width:14px;height:3px;border-radius:1px"></div>Aggregate</div>
+        </div>
+        <div class="chart-row">
+          <span style="width:24px;color:var(--dim)">R1</span>
+          <div style="flex:1;display:flex;gap:4px;align-items:center">
+            <div class="chart-bar" style="width:85%;background:var(--running)"></div>
+            <div class="chart-bar" style="width:55%;background:var(--passed)"></div>
+            <div class="chart-bar" style="width:60%;background:var(--warn)"></div>
+            <div class="chart-bar" style="width:80%;background:var(--accent)"></div>
+            <div class="chart-bar" style="width:90%;background:var(--failed)"></div>
+          </div>
+          <span style="width:36px;text-align:right;font-weight:700;color:var(--text)">0.82</span>
+        </div>
+        <div class="chart-row">
+          <span style="width:24px;color:var(--dim)">R2</span>
+          <div style="flex:1;display:flex;gap:4px;align-items:center">
+            <div class="chart-bar" style="width:45%;background:var(--running)"></div>
+            <div class="chart-bar" style="width:30%;background:var(--passed)"></div>
+            <div class="chart-bar" style="width:38%;background:var(--warn)"></div>
+            <div class="chart-bar" style="width:52%;background:var(--accent)"></div>
+            <div class="chart-bar" style="width:58%;background:var(--failed)"></div>
+          </div>
+          <span style="width:36px;text-align:right;font-weight:700;color:var(--text)">0.42</span>
+        </div>
+        <div class="chart-row">
+          <span style="width:24px;color:var(--dim)">R3</span>
+          <div style="flex:1;display:flex;gap:4px;align-items:center">
+            <div class="chart-bar" style="width:28%;background:var(--running)"></div>
+            <div class="chart-bar" style="width:20%;background:var(--passed)"></div>
+            <div class="chart-bar" style="width:25%;background:var(--warn)"></div>
+            <div class="chart-bar" style="width:38%;background:var(--accent)"></div>
+            <div class="chart-bar" style="width:40%;background:var(--failed)"></div>
+          </div>
+          <span style="width:36px;text-align:right;font-weight:700;color:var(--text)">0.31</span>
+        </div>
+        <div class="chart-row">
+          <span style="width:24px;color:var(--dim)">R4</span>
+          <div style="flex:1;display:flex;gap:4px;align-items:center">
+            <div class="chart-bar" style="width:18%;background:var(--running)"></div>
+            <div class="chart-bar" style="width:14%;background:var(--passed)"></div>
+            <div class="chart-bar" style="width:18%;background:var(--warn)"></div>
+            <div class="chart-bar" style="width:28%;background:var(--accent)"></div>
+            <div class="chart-bar" style="width:30%;background:var(--failed)"></div>
+          </div>
+          <span style="width:36px;text-align:right;font-weight:700;color:var(--passed)">0.25</span>
+        </div>
+        <div class="chart-row">
+          <span style="width:24px;color:var(--dim)">R5</span>
+          <div style="flex:1;display:flex;gap:4px;align-items:center">
+            <div class="chart-bar" style="width:10%;background:var(--running)"></div>
+            <div class="chart-bar" style="width:8%;background:var(--passed)"></div>
+            <div class="chart-bar" style="width:12%;background:var(--warn)"></div>
+            <div class="chart-bar" style="width:20%;background:var(--accent)"></div>
+            <div class="chart-bar" style="width:22%;background:var(--failed)"></div>
+          </div>
+          <span style="width:36px;text-align:right;font-weight:700;color:var(--passed)">0.18</span>
+        </div>
+
+        <div style="border-top:1px dashed var(--passed);margin-top:8px;padding-top:4px;font-size:9px;color:var(--passed)">threshold ≤ 0.30</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="stage">
+  <div class="well">
+    <div class="well-head">
+      <span class="sid">S09</span>
+      <span class="title">Voice Identity</span>
+      <div class="spacer"></div>
+      <span class="meta">RVC v2 · Horus model</span>
+    </div>
+    <div class="well-body">
+      <div class="compare-row">
+        <div class="compare-card">
+          <h5>Original Vocal</h5>
+          <div class="audio-player" style="padding:10px">
+            <button class="play-btn" style="width:36px;height:36px;font-size:14px">▶</button>
+            <div style="flex:1">
+              <div class="wave-mini" style="height:28px"><div class="wave-mini-fill" style="background:linear-gradient(90deg,var(--running),var(--accent))"></div></div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--dim);margin-top:8px">YuE generated vocal · untreated</div>
+        </div>
+        <div class="compare-card">
+          <h5>Horus Voice</h5>
+          <div class="audio-player" style="padding:10px">
+            <button class="play-btn" style="width:36px;height:36px;font-size:14px;background:var(--passed)">▶</button>
+            <div style="flex:1">
+              <div class="wave-mini" style="height:28px"><div class="wave-mini-fill" style="width:35%;background:linear-gradient(90deg,var(--passed),var(--accent))"></div></div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--dim);margin-top:8px">RVC v2 · trained on Graham vocals</div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:8px;font-size:11px;color:var(--dim)">
+        Voice model: <strong style="color:var(--text)">horus-graham-v3.pth</strong> · 
+        Training source: 47 minutes · 
+        Similarity: <span style="color:var(--passed)">0.89</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- main -->
+</body></html>

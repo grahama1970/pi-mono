@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vJWzTt2ANAQ",
+    "language": "en",
+    "took_ms": 9002,
+    "method": null,
+    "title": "DEF CON 32 - Analyzing the Security of Satellite Based Air Traffic Control -Martin Strohmeier",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1445,
+    "description": "Automatic Dependent Surveillance – Contract (ADS-C) is a satellite-based aviation datalink application used to monitor aircraft in remote regions. It is a crucial method for air traffic control to track aircraft where other protocols such as ADS-B lack connectivity. Even though it has been conceived more than 30 years ago, and other legacy communication protocols in aviation have shown to be vulnerable, ADS-C’s security has not been investigated so far in the literature. We conduct a first investigation to close this gap. First, we compile a comprehensive overview of the history, impact, and technical details of ADS-C and its lower layers. Second, we build two software-defined radio receivers in order to analyze over 120’000 real-world ADS-C messages. We further illustrate ADS-C’s lack of authentication by implementing an ADS-C transmitter, which is capable of generating and sending arbitrary ADS-C messages. Finally, we use the channel control offered through a software-defined ADS-C receiver and transmitter as a basis for an in-depth analysis of the protocol weaknesses of the ADS-C system. The found vulnerabilities range from passively tracking aircraft to actively altering the position of actual aircraft through attacks on the downlink and the uplink. We assess the difficulty and impact of these attacks and discuss potential countermeasures.\n\nWe will further look at satellite-based ADS-B receivers and discuss their security and how they relate to ADS-C.",
+    "view_count": 1042
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vJWzTt2ANAQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s06gWy3oZNg",
+    "language": "en",
+    "took_ms": 9118,
+    "method": null,
+    "title": "Dialogues on American Strategy and Statesmanship: Senator Tom Cotton & Walter Russell Mead",
+    "channel": "Hudson Institute",
+    "upload_date": "20150318",
+    "duration_sec": 3596,
+    "description": "Walter Russell Mead, Hudson Institute Distinguished Scholar in American Strategy and Statesmanship, hosts Senator Tom Cotton of Arkansas for a one-on-one discussion of U.S. national security challenges. Mead will explore Senator Cotton’s perspective on America’s role in the world and recommendations for handling global hot spots, including the rapid rise of the Islamic State, the U.S.-Iran nuclear talks, Russian aggression against Ukraine, and other challenges facing American policymakers today",
+    "view_count": 1580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s06gWy3oZNg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

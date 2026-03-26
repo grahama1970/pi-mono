@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BQf0ASq573A",
+    "language": "en",
+    "took_ms": 11086,
+    "method": null,
+    "title": "Short course on Gemini CLI: Code & Create with an Open-Source Agent",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260121",
+    "duration_sec": 171,
+    "description": "Learn more: https://bit.ly/4qJapAx\n\nJoin this new short course on Gemini CLI, taught by Jack Wotherspoon, Developer Advocate at Google.\n\nGemini CLI is an open-source agentic coding assistant that works from your terminal, giving it access to your local filesystem, development tools, and cloud services. This lets you delegate complex workflows—from building web features to creating marketing materials—through high-level instructions while the agent autonomously plans and executes multiple steps.\n\nIn this course, you'll apply Gemini CLI to software development and creative tasks by building features for an AI conference. You'll develop a website session catalog, create a data dashboard combining local and cloud data sources, and generate social media content from recordings. You'll master context management, integrate MCP servers, and orchestrate across multiple services with Gemini CLI extensions.\n\nIn detail, you'll:\n\n- Install Gemini CLI, explore its open-source architecture, and learn how it reasons through tasks, calls tools, and leverages the command line to power complex workflows.\n- Automate coding workflows with GitHub Actions for pull request reviews and apply Gemini CLI to creative tasks like generating social media content from conference recordings and organizing multimedia study materials.\n- Manage the context window with gemini.md files and extend capabilities by connecting Model Context Protocol (MCP) servers and Gemini CLI extensions to orchestrate across local files, cloud databases, and services like GitHub, Canva and Google Workspace.\n- Build complete software features including a conference session catalog and an interactive data dashboard that combines local CSV files with cloud data sources—experiencing the full development workflow from research to testing.\n- Use Gemini CLI as a learning tool by organizing course materials on your filesystem and grounding responses with web search for accurate, cited information.\n\nWhether you're prototyping applications, automating development workflows, or studying topics in agentic ai, this course gives you hands-on experience coordinating multiple tools to build faster and work more efficiently.\n\nEnroll now: https://bit.ly/4qJapAx",
+    "view_count": 6579
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BQf0ASq573A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

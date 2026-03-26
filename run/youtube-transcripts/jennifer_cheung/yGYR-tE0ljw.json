@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yGYR-tE0ljw",
+    "language": "en",
+    "took_ms": 9866,
+    "method": null,
+    "title": "DEF CON 33 - Defending Reddit at Scale - Pratik Lotia & Spencer Koch",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1587,
+    "description": "Join us to explore Reddit's defense strategy to handle massive traffic and sophisticated abuse. We'll delve into how Reddit tackles this challenge, from traffic analysis to innovative resiliency techniques, all while understanding why a tailored, in-house approach is vital for such a high-scale platform.",
+    "view_count": 518
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yGYR-tE0ljw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

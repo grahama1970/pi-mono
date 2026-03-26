@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7Sbx8okI9Xw",
+    "language": "en",
+    "took_ms": 8496,
+    "method": null,
+    "title": "DEF CON Safe Mode Crypto and Privacy Village - Hanno Böck - STARTTLS is Dangerous",
+    "channel": "DEFCONConference",
+    "upload_date": "20200822",
+    "duration_sec": 2720,
+    "description": "The STARTTLS mechanism allows upgrading insecure protocols to a TLS encrypted connection. This mechanism is incredibly fragile and almost by default leads to vulnerable implementations. In 2011 Wietse Venema discovered a flaw in Postfix that allowed a man in the middle attacker to inject commands into an encrypted connection [1].\n\nWe discovered that the flaw is still widely present in E-Mail servers and also, previously unknown, the same flaw exists in many mail clients. In some cases these flaws allow stealing E-Mail credentials. Furthermore the STARTTLS mechanism is weakly specified and in part contradictory, which allows other attacks.\n\nThe talk will give an overview on why STARTTLS is dangerous and should be avoided.",
+    "view_count": 1264
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7Sbx8okI9Xw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

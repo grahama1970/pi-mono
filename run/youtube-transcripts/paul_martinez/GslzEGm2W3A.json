@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GslzEGm2W3A",
+    "language": "en",
+    "took_ms": 8788,
+    "method": null,
+    "title": "Public Ledger Technology: Code Signing and Device Birth Certificates",
+    "channel": "S4 Events",
+    "upload_date": "20190624",
+    "duration_sec": 1402,
+    "description": "Clay Carter of GE shows how they are using Certificate Transparency (CT) and Binary Transparency (BT) to prove software integrity. Code signing alone is not enough due to risk of CA compromise.\n\nThis technical session on S4's Stage 2 walks you through how the process works.",
+    "view_count": 250
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GslzEGm2W3A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

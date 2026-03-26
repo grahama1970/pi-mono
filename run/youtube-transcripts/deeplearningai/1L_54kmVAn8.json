@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1L_54kmVAn8",
+    "language": "en",
+    "took_ms": 8827,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Benjamin Han: Snowflake: A SQL Engine to Talk to Your Data",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251203",
+    "duration_sec": 1321,
+    "description": "Benjamin Han, Senior Software Engineer for ML at Snowflake, introduced AISQL, a paradigm that extends traditional SQL functionality with semantic awareness through a suite of LLM-powered SQL functions implemented on the Snowflake platform. \n\nAt AI Dev 25 x NYC, Han shared that the goal of AISQL is to provide efficiency, ease of use, and trust benefits from the full Snowflake SQL platform to generative AI features. It integrates Large Language Models (LLMs) with the database by providing new primitive operators into the query language.\n\n-------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 411
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1L_54kmVAn8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

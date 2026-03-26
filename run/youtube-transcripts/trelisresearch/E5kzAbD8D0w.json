@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E5kzAbD8D0w",
+    "language": "en",
+    "took_ms": 8393,
+    "method": null,
+    "title": "Direct Preference Optimization (DPO)",
+    "channel": "Trelis Research",
+    "upload_date": "20231113",
+    "duration_sec": 2569,
+    "description": "Get the Dataset: https://huggingface.co/datasets/Trelis/hh-rlhf-dpo\nGet the DPO Script + Dataset: https://buy.stripe.com/cN2cNyg8t0zp2gobJo\nGet the full Advanced Fine Tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n\nResources:\n- Google Slides Presentation: https://tinyurl.com/mtd2ehnp\n- Anthropic Helpful and Harmless Dataset: https://huggingface.co/datasets/Anthropic/hh-rlhf\n- Ultrachat dataset: https://huggingface.co/datasets/HuggingFaceH4/ultrachat_200k \n- DPO Trainer: https://huggingface.co/docs/trl/dpo_trainer\n- Runpod Affiliate link (helps support the channel): https://runpod.io?ref=jmfkcdio\n\nChapters:\n0:00 Direct Preference Optimisation\n0:37 Video Overview\n1:37 How does “normal” fine-tuning work?\n3:41 How does DPO work?\n8:31 DPO Datasets: UltraChat\n10:59 DPO Datasets: Helpful and Harmless\n14:00 DPO vs RLHF\n15:25 Required datasets and SFT models\n18:26 DPO Notebook Run through\n28:22 DPO Evaluation Results\n31:15 Weights and Biases Results Interpretation\n35:16 Runpod Setup for 1 epoch Training Run\n41:58 Resources",
+    "view_count": 8612
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E5kzAbD8D0w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

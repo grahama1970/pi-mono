@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u8V4ofWpHZk",
+    "language": "en",
+    "took_ms": 9757,
+    "method": null,
+    "title": "DEF CON 31 - Ringhopper - How We Almost Zero day’d the World - Benny Zeltser, Jonathan Lusky",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2389,
+    "description": "Last year we almost zero-day’d the world with the publication of RingHopper. Now we can finally share some juicy details and invite you for an illuminating journey as we delve into the realm of RingHopper, a method to hop from user-land to SMM.\n\nWe will survey the discovery and disclosure of a family of industry-wide vulnerabilities in various UEFI implementations, affecting more than eight major vendors, making billions of devices vulnerable to our attack. Then, we will deep-dive into the innards of SMM exploitation and discuss methods to use and abuse various functionalities and properties of edk2 to gain code execution. We will unveil both our futile and fruitful quests of crafting our way to SMM, and detail both the paths that lead to dead-ends, and the route to success.\n\nWe will give a detailed overview of different ways to elevate this kind of attack to user-land both on Windows and Linux by chaining multiple vulnerabilities together.\n\nFinally, we will show RingHopper hopping from user-space to… SMM.",
+    "view_count": 76111
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u8V4ofWpHZk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

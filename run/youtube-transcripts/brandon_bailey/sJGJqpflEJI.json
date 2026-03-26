@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sJGJqpflEJI",
+    "language": "en",
+    "took_ms": 7827,
+    "method": null,
+    "title": "DEF CON 30 - Jonghyuk Song, Soohwan Oh, Woongjo Choi -  Automotive Ethernet Fuzzing",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1248,
+    "description": "Car hacking is a tricky subject to hackers because it requires lots of money and hardware knowledge to research with a real car. An alternative way would be to research with an ECU but it also difficult to know how to setup the equipment. Moreover, in order to communicate with Automotive Ethernet services running on the ECU, you need additional devices such as media converters and Ethernet adapters supporting Virtual LAN(VLAN).\nEven if you succeed in building the hardware environment, you can't communicate with the ECU over SOME/IP protocol of Automotive Ethernet if you don't know the network configuration, such as VLAN ID, service IDs and IP/port mapped to each service.\n\nThis talk describes how to do fuzzing on the SOME/IP services step by step.\nFirst, we demonstrate how to buy an ECU, how to power and wire it.\nSecond, we explain network configurations to communicate between ECU and PC.\nThird, we describe how to find out the information required to perform SOME/IP fuzzing and how to implement SOME/IP Fuzzer.\nWe have conducted the fuzzing with the BMW ECUs purchased by official BMW sales channels, not used products.\n\nWe hope this talk will make more people to try car hacking and will not go through the trials and errors that we have experienced.",
+    "view_count": 1464
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sJGJqpflEJI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

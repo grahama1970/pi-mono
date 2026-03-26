@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f2sThEAA7xs",
+    "language": "en",
+    "took_ms": 8181,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Cassandra Young - Exploiting the O365 Duo 2FA Misconfiguration",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 822,
+    "description": "A common methodology used by companies to implement Duo 2-factor authentication for O365 can, if not configured properly, result in a loophole that allows mobile clients to authenticate without being prompted. This short talk will provide background on the authentication types involved, show the incomplete configuration, and demonstrate how to exploit using mobile devices.",
+    "view_count": 754
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f2sThEAA7xs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

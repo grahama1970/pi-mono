@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S-xEgbBb95I",
+    "language": "en",
+    "took_ms": 7814,
+    "method": null,
+    "title": "Security Added To CIP / EtherNet/IP Protocol",
+    "channel": "S4 Events",
+    "upload_date": "20180207",
+    "duration_sec": 1311,
+    "description": "For decades ICS protocols have lacked even those most basic security features such as authentication. Jack Visoky shows how this is changing with the ODVA adding security to CIP (EtherNet/IP is part of CIP).\n\nThey decided to use TLS and DTLS to wrap the protocol, and used it in a \"pure and unmodified\" form. The idea is CIP Security would leverage the tested and accepted security of TLS. (Note there was a debate session at S4x18 on whether wrap it in TLS is the right approach for ICS).\n\nAll endpoints be deployed with a default certificate, most likely signed by the vendor. And there are a variety of push and pull models that Jack goes over some of these. There are some less secure certificate management that are allowed such as self-signed certificates and trust on first use.\n\nJack finishes the session discussing proposed features in the next version of CIP Security. The ICS authorization, think passing role information, is intriguing.",
+    "view_count": 3160
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S-xEgbBb95I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

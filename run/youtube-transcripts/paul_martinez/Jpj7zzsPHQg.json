@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Jpj7zzsPHQg",
+    "language": "en",
+    "took_ms": 9334,
+    "method": null,
+    "title": "Quantifying Risk For Devices Without Published Vulns",
+    "channel": "S4 Events",
+    "upload_date": "20250807",
+    "duration_sec": 1400,
+    "description": "How does an asset owner determine the amount and criticality of vulnerabilities in OT devices and applications that have received little or no attention? Yair presents an approach to answering this question.\n\nCommon devices from leading vendors such as Siemens, Rockwell, and Schneider Electric are rigorously assessed and supported by detailed advisories, many less common OT devices are not. 67% of vendors in CISA OT advisories have appeared only once in the past seven years. It's not unusual to find an OT vendor with no CVEs whose devices harbor low-hanging vulnerabilities—such as broken authentication, insecure channels, and hardcoded credentials—that attackers can easily exploit.\n\nYair introduces a new open-source framework designed to assess risks in OT/IoT networks more realistically. The framework takes into account both static data about the vendor and specific device family (including vendor size, number of identified vulnerabilities, model/family distribution, and availability to the public) and dynamic attributes related to the specific device detected (such as open services, service types, firmware release date, and the specific nature of the device).\n\nIf this catches on it could be a community driven project, with open sharing of the attributes and algorithms used for public critique and customization.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 223
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Jpj7zzsPHQg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

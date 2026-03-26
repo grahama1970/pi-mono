@@ -1,0 +1,120 @@
+{
+  "app": "SPARTA Explorer Component Gallery",
+  "total": 10,
+  "passed": 10,
+  "failed": 0,
+  "warned": 0,
+  "skipped": 0,
+  "interactions": [
+    {
+      "surface": "threat-map",
+      "element": "threat-map-grid",
+      "action": "screenshot",
+      "description": "ThreatMap full 9-tactic grid rendering",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/threat-map/threat-map-grid_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/threat-map/threat-map-grid_screenshot.png",
+      "duration_ms": 402,
+      "assertions": []
+    },
+    {
+      "surface": "control-table",
+      "element": "control-table-view",
+      "action": "screenshot",
+      "description": "ControlTable with 12 controls, framework badges, sort headers",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/control-table/control-table-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/control-table/control-table-view_screenshot.png",
+      "duration_ms": 402,
+      "assertions": []
+    },
+    {
+      "surface": "chat-well",
+      "element": "chat-well-view",
+      "action": "screenshot",
+      "description": "ChatWell with 4 sample messages (natural + AQL modes)",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/chat-well/chat-well-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/chat-well/chat-well-view_screenshot.png",
+      "duration_ms": 393,
+      "assertions": []
+    },
+    {
+      "surface": "lemma-graph",
+      "element": "lemma-graph-view",
+      "action": "screenshot",
+      "description": "LemmaGraph SVG with 10 nodes, 10 edges, framework colors",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/lemma-graph/lemma-graph-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/lemma-graph/lemma-graph-view_screenshot.png",
+      "duration_ms": 453,
+      "assertions": []
+    },
+    {
+      "surface": "integrity-card",
+      "element": "integrity-card-view",
+      "action": "screenshot",
+      "description": "IntegrityCard in NOMINAL state with green status",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/integrity-card/integrity-card-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/integrity-card/integrity-card-view_screenshot.png",
+      "duration_ms": 398,
+      "assertions": []
+    },
+    {
+      "surface": "control-detail",
+      "element": "control-detail-view",
+      "action": "screenshot",
+      "description": "ControlDetail for REC-0001 with metadata grid and related controls",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/control-detail/control-detail-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/control-detail/control-detail-view_screenshot.png",
+      "duration_ms": 422,
+      "assertions": []
+    },
+    {
+      "surface": "inspector-with-edges",
+      "element": "inspector-edges-view",
+      "action": "screenshot",
+      "description": "InspectorPanel with 4 edges, 3 parameter buttons, bool toggle",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/inspector-with-edges/inspector-edges-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/inspector-with-edges/inspector-edges-view_screenshot.png",
+      "duration_ms": 396,
+      "assertions": []
+    },
+    {
+      "surface": "inspector-with-results",
+      "element": "inspector-results-view",
+      "action": "screenshot",
+      "description": "InspectorPanel with pre-populated cascade results (4 chains, 2 broken, 2 held)",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/inspector-with-results/inspector-results-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/inspector-with-results/inspector-results-view_screenshot.png",
+      "duration_ms": 381,
+      "assertions": []
+    },
+    {
+      "surface": "inspector-no-params",
+      "element": "inspector-no-params-view",
+      "action": "screenshot",
+      "description": "InspectorPanel for AC-2 with no parameterized predicates message",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/inspector-no-params/inspector-no-params-view_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/inspector-no-params/inspector-no-params-view_screenshot.png",
+      "duration_ms": 382,
+      "assertions": []
+    },
+    {
+      "surface": "composed-explorer",
+      "element": "composed-layout",
+      "action": "screenshot",
+      "description": "Full 3-pane SPARTA Explorer layout with ThoughtTrace bar",
+      "status": "PASS",
+      "evidence": "captured /home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/composed-explorer/composed-layout_screenshot.png",
+      "screenshot": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/composed-explorer/composed-layout_screenshot.png",
+      "duration_ms": 435,
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FfvKpevnLng",
+    "language": "en",
+    "took_ms": 8338,
+    "method": null,
+    "title": "SpaceX VP of Starship Engineering, Bill Riley’s description of catching the Super Heavy Booster!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20250210",
+    "duration_sec": 51,
+    "description": "",
+    "view_count": 63672
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FfvKpevnLng: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

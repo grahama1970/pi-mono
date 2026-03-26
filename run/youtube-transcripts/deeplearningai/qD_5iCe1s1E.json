@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qD_5iCe1s1E",
+    "language": "en",
+    "took_ms": 9553,
+    "method": null,
+    "title": "Learn to equip AI agents with reusable skills",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260128",
+    "duration_sec": 119,
+    "description": "Enroll now in Agent Skills with Anthropic: https://bit.ly/469a15J\n\nIn this course, built in collaboration with Anthropic and taught by Elie Schoppik, Head of Technical Education at Anthropic.\n\nThis course shows how to make AI agents more reliable, reusable, and easier to scale by equipping them with agent skills –structured folders of instructions that package expert workflows and load on demand. Instead of repeatedly re-prompting agents or managing bloated context, you define skills once and reuse them across agents and environments using an open standard format.\n\nThis course covers how to design, build, and apply agent skills across real workflows for coding, data analysis, research, and many other practical scenarios. You’ll work hands-on with Claude.ai, Claude Code, the Claude API, and the Claude Agent SDK, and see how skills fit alongside tools, MCP, and subagents in modern agentic systems.\n\nYou’ll learn how to:\n\n- Turn general-purpose agents into specialists when needed\n- Structure skill folders and SKILL.md files for efficient context management\n- Use pre-built Anthropic skills and create custom ones following best practices\n- Combine skills with MCP and subagents for multi-step workflows\n- Build code generation, review, testing, and research agents with isolated context\n\nYou’ll leave with concrete patterns for making agents more consistent, reusable, and easier to work with.\n\nLearn more: https://bit.ly/469a15J",
+    "view_count": 10173
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qD_5iCe1s1E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

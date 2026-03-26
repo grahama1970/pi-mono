@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I1HpkZ7Jmt0",
+    "language": "en",
+    "took_ms": 8230,
+    "method": null,
+    "title": "Understanding the Strategic Surprise of October 7",
+    "channel": "Hudson Institute",
+    "upload_date": "20251107",
+    "duration_sec": 3543,
+    "description": "Brigadier General (Res.) Itai Brun will join Senior Fellow Dr. Michael Doran to examine the strategic, organizational, and analytical factors that enabled Hamas’s October 7 surprise attack. They will explore how Israel’s security apparatus failed to adapt to Hamas’s evolving strategy due to institutional blind spots and an inaccurate threat perception. They will also identify meaningful lessons Israel and other nations should learn to strengthen their preparedness.",
+    "view_count": 5125
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I1HpkZ7Jmt0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

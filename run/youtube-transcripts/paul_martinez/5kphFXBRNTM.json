@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5kphFXBRNTM",
+    "language": "en",
+    "took_ms": 8130,
+    "method": null,
+    "title": "Five Blind People and an Elephant called ICS Supply Chain Security",
+    "channel": "S4 Events",
+    "upload_date": "20200626",
+    "duration_sec": 1505,
+    "description": "Eric Byres of aDolus briefly lays out the ICS supply chain problem, and then he dives into what aDolus is doing to help solve it. Their FACT score tells asset owners how trustworthy software and firmware is. It is a DHS funded project and is live now.",
+    "view_count": 244
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5kphFXBRNTM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

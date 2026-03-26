@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P-6XXUgvqng",
+    "language": "en",
+    "took_ms": 9290,
+    "method": null,
+    "title": "DEF CON 29 HHV -  rehr -  Walkthrough of DC28 HHV Challenge Solutions",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 2933,
+    "description": "Last year we (the HHV) released a series of hardware hacking challenges for DEF CON attendees to solve during the conference (and after). Many attempted the challenges, but only a few (3) solved all 5! Join us as we will walk through how to solve all 5 of the DC 28 HHV challenges, and attempt to demystify the world of hardware hacking. We may even drop a hint or two for this years’ challenges.",
+    "view_count": 1775
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P-6XXUgvqng: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D7_zsTOhGuE",
+    "language": "en",
+    "took_ms": 7877,
+    "method": null,
+    "title": "Taiwan, Trans-Pacific Partnership, and an Uncertain Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20161107",
+    "duration_sec": 5542,
+    "description": "Lotta Danielsson, Harry Krejsa, Robert S. Wang, and Seth Cropsey discuss Taiwan, China, free trade, and the Trans-Pacific Partnership.",
+    "view_count": 420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D7_zsTOhGuE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

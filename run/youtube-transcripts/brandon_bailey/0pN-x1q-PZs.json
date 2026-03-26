@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0pN-x1q-PZs",
+    "language": "en",
+    "took_ms": 8312,
+    "method": null,
+    "title": "DEF CON 30 -  Dagan Henderson, Will Kline - The Call is Coming From Inside The Cluster",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2253,
+    "description": "Kubernetes has taken the DevOps world by storm, but its rapid uptake has created an ecosystem where many popular solutions for common challenges—storage, release management, observability, etc.—are either somewhat immature or have been “lifted and shifted” to Kubernetes. What critical security smells can pentesters look for when looking at the security of a cluster?\n\nWe are going to talk through five different security problems that we have found (and reported, no 0-days here) in popular open-source projects and how you can look for similar vulnerabilities in other projects.",
+    "view_count": 1655
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0pN-x1q-PZs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

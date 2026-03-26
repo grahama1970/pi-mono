@@ -1,0 +1,14 @@
+[
+  {
+    "severity": "MEDIUM",
+    "category": "Visual Clarity / Scalability",
+    "description": "The use of semi-transparent fills for overlapping waveforms (e.g., Vocal and Bass) works well for two layers, but may lead to visual confusion if many (e.g., all five) stems are enabled simultaneously. The additive blending of multiple colored, transparent layers could produce unpredictable colors and obscure the shapes of individual waveforms.",
+    "suggestion": "Consider an alternative rendering mode when more than two or three stems are active. One option is to switch from filled areas to just strokes, which would reduce the amount of overlapping color. Another option could be to 'solo' a primary waveform and render others as a monocolor background context. For now, this is not a blocker, but should be noted for implementation and future enhancement."
+  },
+  {
+    "severity": "LOW",
+    "category": "Accessibility (A11y)",
+    "description": "The `<svg>` element itself is missing a `<title>` and `<desc>` element. For a complex data visualization, this makes it difficult for screen reader users to understand the content and purpose of the SVG graphic.",
+    "suggestion": "Add a `<title>` element inside the `<svg>` that gives a concise name to the visualization (e.g., `<title>Audio Waveform Analysis</title>`). Optionally, add a `<desc>` element to provide a more detailed explanation of the chart's structure and data."
+  }
+]

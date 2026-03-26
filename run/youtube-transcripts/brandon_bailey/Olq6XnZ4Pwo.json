@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Olq6XnZ4Pwo",
+    "language": "en",
+    "took_ms": 7958,
+    "method": null,
+    "title": "DEF CON 30 - Aaditya Purani, Max Garrett - ElectroVolt - Pwning Popular Desktop Apps",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2687,
+    "description": "Electron based apps are becoming a norm these days as it allows encapsulating web applications into a desktop app which is rendered using chromium. However, if Electron apps load remote content of attackers choice either via feature or misconfiguration of Deep Link or Open redirect or XSS it would lead to Remote Code Execution on the OS.\n\nPreviously, it was known that lack of certain feature flags and inefficiency to apply best practices would cause this behavior but we have identified sophisticated novel attack vectors within the core electron framework which could be leveraged to gain remote code execution on Electron apps despite all feature flags being set correctly under certain circumstances.\n\nThis presentation covers the vulnerabilities found in twenty commonly used Electron applications and demonstrates Remote Code Execution within apps such as Discord, Teams(local file read), VSCode, Basecamp, Mattermost, Element, Notion, and others.\n\nThe speaker's would like to thank Mohan Sri Rama Krishna Pedhapati, Application Security Auditor, Cure53 and William Bowling, Senior Software Developer, Biteable for their contributions to this presentation.",
+    "view_count": 2269
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Olq6XnZ4Pwo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

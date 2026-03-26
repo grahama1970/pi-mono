@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gqT2VOorxrc",
+    "language": "en",
+    "took_ms": 9438,
+    "method": null,
+    "title": "New course with StatQuest with Josh Starmer! Attention in Transformers: Concepts and Code in PyTorch",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250212",
+    "duration_sec": 162,
+    "description": "Learn more: https://bit.ly/4jK250b\n\nThis course clearly explains the ideas behind the attention mechanism. It walks through the algorithm itself and how to code it in Pytorch. Attention in Transformers: Concepts and Code in PyTorch, was built in collaboration with StatQuest, and taught by its Founder and CEO, Josh Starmer.\n\nThe attention mechanism was a breakthrough that led to transformers, the architecture powering large language models like ChatGPT. Transformers, introduced in the 2017 paper \"Attention is All You Need\" by Ashish Viswani and others, revolutionized AI with their scalable design. \n\nLearn how this foundational architecture works to improve your intuition about building reliable, functional, and scalable AI applications.\n\nWhat you’ll do: \n\n- Understand the evolution of the attention mechanism, a key breakthrough that led to transformers.\n- Learn the relationships between word embeddings, positional embeddings, and attention.\n- Learn about the Query, Key, and Value matrices, how to produce them, and how to use them in attention.\n- Go through the math required to calculate self-attention and masked self-attention to learn how and why the equation works the way it does.\n- Understand the difference between self-attention and masked self-attention, and how one is used in the encoder to build context-aware embeddings and the other is used in the decoder for generative outputs.\n- Learn the details of the encoder-decoder architecture, cross-attention, and multi-head attention, and how they are incorporated into a transformer.\n- Use PyTorch to code a class that implements self-attention, masked self-attention, and multi-head attention.\n\nEnroll now: https://bit.ly/4jK250b",
+    "view_count": 10597
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gqT2VOorxrc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

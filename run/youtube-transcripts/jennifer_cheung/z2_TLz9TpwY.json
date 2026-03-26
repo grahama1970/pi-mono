@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z2_TLz9TpwY",
+    "language": "en",
+    "took_ms": 8124,
+    "method": null,
+    "title": "DEF CON 30 - Sick Codes -  Hacking the Farm = Breaking Badly into Agricultural Devices",
+    "channel": "DEFCONConference",
+    "upload_date": "20220909",
+    "duration_sec": 2879,
+    "description": "Hacking the farm. In this session, I'll demonstrate tractor-sized hardware hacking techniques, firmware extraction, duplication, emulation, and cloning. We'll be diving into how the inner workings of agricultural cyber security; how such low-tech devices are now high-tech devices. The \"connected farm\" is now a reality; a slurry of EOL devices, trade secrets, data transfer, and overall shenanigans in an industry that accounts for roughly one-fifth of the US economic activity. We'll be discussing hacking into tractors, combines, cotton harvesters, sugar cane and more.",
+    "view_count": 99738
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z2_TLz9TpwY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

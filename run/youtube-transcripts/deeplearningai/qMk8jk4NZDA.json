@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qMk8jk4NZDA",
+    "language": "en",
+    "took_ms": 9697,
+    "method": null,
+    "title": "Learn best practices for multimodal prompting using Google's Gemini model family!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240828",
+    "duration_sec": 169,
+    "description": "Enroll now: https://bit.ly/3YPKAUa\n\nIntroducing Large Multimodal Model Prompting with Gemini, a new short course built in collaboration with Google Cloud, and taught by Erwin Huizenga, Developer Advocate for Generative AI at Google Cloud.\n\nLarge Multimodal Models (LMMs) represent a significant evolution from language models by integrating different data modalities, allowing for more comprehensive outputs based on varied input types such as text, images, and video.\n\nFor LMMs, prompt structure becomes even more important. For example, placing text inputs, such as a patient’s medical history, before image inputs like an X-ray, can improve the model’s interpretation. Conversely, for tasks like image captioning, leading with the image may yield better results. In this course, you'll explore best practices for multimodal prompting, and learn how to properly set parameters for optimized results.\n\nAdditionally, you’ll learn how to integrate Gemini with external APIs and databases using function calling, with the ability to infuse your applications with real-time data and dynamic content.\n\nIn detail, you’ll explore:\n\n- Introduction to Gemini Models: Learn the differences and use cases for Gemini Nano, Pro, Flash, and Ultra. Understand how to select optimal models based on capability, latency, and cost.\n\n- Multimodal Prompting and Parameter Control: Learn techniques for structuring effective text-image-video prompts. Fine-tune key parameters like temperature, top_p, top_k to control model creativity vs determinism.\n\n- Best Practices for Multimodal Prompting: Get hands-on experience with prompt engineering for Gemini multimodal models, and role assignment, task decomposition, and formatting. \n\n- Creating Use Cases with Images: Build engaging multimodal applications like interior design assistants and receipt itemization tools. \n\n- Developing Use Cases with Videos: Implement \"needle in the haystack\" semantic video search powered by Gemini's large context window. \n\n- Integrating Real-Time Data with Function Calling: Extend Gemini with external knowledge and live data via function calling and API integration. \n\nStart building advanced AI applications that can reason across multiple data modalities today!\n\nNote that due to technical requirements, this course features downloadable-only notebooks on the learning platform. You are free to download, review, and run these notebooks on your own.\n\nLearn more: https://bit.ly/3YPKAUa",
+    "view_count": 3711
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qMk8jk4NZDA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xcbKIWXThT4",
+    "language": "en",
+    "took_ms": 8586,
+    "method": null,
+    "title": "DEF CON 32 - Master Splinter’s initial physical access dojo - Daniel Isler",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1473,
+    "description": "Storytelling of a highly complex Red Team with multiple initial accesses only with Social Engineering. could anyone do it? Yes.\n\nUnder the format of Storytelling this presentation aims to take attendees first person through a RedTeam service with multiple initial accesses with 100% Social Engineering. How to present critical vulnerabilities in a public way without exposing the target company? This live comic will show us how, through one of its protagonists and with practical examples made with the attendees themselves. How does a professional Social Engineering unit work? What are the roles and tasks? How to emulate the reach of a cybercriminal gang in less than three weeks? This dojo aims to show the methodologies and techniques applied in the field to obtain relevant findings, even reaching critical infrastructure without raising alerts and in an extremely limited time. From the first meeting with the client, information gathering, vector selection, exploitation, pretexting to the physical intrusion, even reaching the datacenter. We will demonstrate how luck is no longer an element to consider when your work is SE from Monday to Friday and you have to perform this type of service every month.",
+    "view_count": 374
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xcbKIWXThT4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

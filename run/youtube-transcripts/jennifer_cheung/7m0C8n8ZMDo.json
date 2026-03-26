@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7m0C8n8ZMDo",
+    "language": "en",
+    "took_ms": 9346,
+    "method": null,
+    "title": "DEF CON 29 Payment Village - Hector Cuevas Cruz - ATM Transaction Reversal Frauds",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 2465,
+    "description": "Transaction Reversal Frauds (TRF) are a type of attack that doesn't require a malware, complex physical attacks or even opening an ATM, instead they abuse some business and operational rules defined by the financial institutions to cash-out an ATM. This presentation describe what Transaction Reversal Frauds are, why this type of attacks are on rise and more important, how to detect them through an integral analysis of journaling and some other logs",
+    "view_count": 2256
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7m0C8n8ZMDo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

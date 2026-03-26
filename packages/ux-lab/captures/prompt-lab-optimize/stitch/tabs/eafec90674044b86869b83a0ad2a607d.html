@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROMPT_LAB_v2.1 - Tactical Observer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#93000a",
+                        "surface": "#0c1321",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "surface-container": "#19202e",
+                        "surface-bright": "#323949",
+                        "on-primary": "#3f008e",
+                        "primary-fixed": "#eaddff",
+                        "inverse-on-surface": "#2a3040",
+                        "tertiary-fixed-dim": "#00e479",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-primary-fixed": "#25005a",
+                        "tertiary-fixed": "#60ff99",
+                        "on-error": "#690005",
+                        "surface-tint": "#d2bbff",
+                        "on-secondary-container": "#002a52",
+                        "surface-variant": "#2e3544",
+                        "on-background": "#dce2f6",
+                        "surface-container-high": "#232a39",
+                        "on-secondary-fixed-variant": "#004884",
+                        "primary": "#d2bbff",
+                        "on-primary-container": "#ede0ff",
+                        "primary-container": "#7c3aed",
+                        "on-tertiary": "#003919",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d4e3ff",
+                        "surface-container-highest": "#2e3544",
+                        "on-surface": "#dce2f6",
+                        "on-error-container": "#ffdad6",
+                        "secondary-container": "#3b93f3",
+                        "surface-dim": "#0c1321",
+                        "inverse-surface": "#dce2f6",
+                        "on-tertiary-fixed": "#00210c",
+                        "inverse-primary": "#732ee4",
+                        "on-surface-variant": "#ccc3d8",
+                        "background": "#0c1321",
+                        "outline": "#958da1",
+                        "on-secondary": "#00315d",
+                        "tertiary": "#00e479",
+                        "secondary": "#a4c9ff",
+                        "tertiary-container": "#00773c",
+                        "surface-container-low": "#151b2a",
+                        "primary-fixed-dim": "#d2bbff",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "on-tertiary-container": "#84ffa8",
+                        "on-secondary-fixed": "#001c39",
+                        "outline-variant": "#4a4455",
+                        "surface-container-lowest": "#070e1c"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+        .scanline-progress {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanline-progress::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 2px;
+            background: #00e479;
+            box-shadow: 0 0 10px #00e479;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-[#0c1321] text-[#7c3aed] font-['Space_Grotesk'] text-sm tracking-tight uppercase font-medium flex justify-between items-center w-full px-6 h-16 fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#d2bbff]">PROMPT_LAB_v2.1</span>
+<div class="flex gap-6 items-end h-16">
+<a class="text-[#4a4455] hover:text-[#d2bbff] transition-colors pb-5" href="#">Setup</a>
+<a class="text-[#d2bbff] border-b-2 border-[#7c3aed] pb-5 flex items-center gap-2" href="#">
+                    Running
+                    <span class="w-1.5 h-1.5 bg-tertiary rounded-full shadow-[0_0_8px_#00e479]"></span>
+</a>
+<a class="text-[#4a4455] hover:text-[#d2bbff] transition-colors pb-5" href="#">Results</a>
+<a class="text-[#4a4455] hover:text-[#d2bbff] transition-colors pb-5" href="#">History</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-low px-3 py-1.5 flex items-center gap-2 text-outline-variant">
+<span class="material-symbols-outlined text-sm" data-icon="search">search</span>
+<span class="text-xs">SEARCH_LAB_RESOURCES</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-[#4a4455] hover:bg-[#2e3544] transition-all"><span class="material-symbols-outlined" data-icon="terminal">terminal</span></button>
+<button class="p-2 text-[#4a4455] hover:bg-[#2e3544] transition-all"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<button class="p-2 text-[#4a4455] hover:bg-[#2e3544] transition-all"><span class="material-symbols-outlined" data-icon="help_outline">help_outline</span></button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-16 z-40 bg-[#151b2a] font-['Space_Grotesk'] text-xs font-medium uppercase tracking-widest w-64">
+<div class="p-6 border-b border-outline-variant/10">
+<div class="text-lg font-black text-[#d2bbff]">TACTICAL_OBSERVER</div>
+<div class="text-[10px] text-tertiary opacity-80">NVIS_ACTIVE</div>
+</div>
+<nav class="flex-1 py-4">
+<div class="text-[#4a4455] px-4 py-3 flex items-center gap-3 hover:bg-[#19202e] cursor-pointer">
+<span class="material-symbols-outlined" data-icon="code">code</span> System Prompt
+            </div>
+<div class="bg-[#19202e] text-[#00ff88] border-l-4 border-[#00ff88] px-4 py-3 flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="memory">memory</span> Model Config
+            </div>
+<div class="text-[#4a4455] px-4 py-3 flex items-center gap-3 hover:bg-[#19202e] cursor-pointer">
+<span class="material-symbols-outlined" data-icon="shutter_speed">shutter_speed</span> Variables
+            </div>
+<div class="text-[#4a4455] px-4 py-3 flex items-center gap-3 hover:bg-[#19202e] cursor-pointer">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span> Telemetry
+            </div>
+</nav>
+<div class="p-4 bg-surface-container-lowest mt-auto">
+<div class="flex justify-between text-[10px] mb-2 text-outline">
+<span>SYSTEM_LOAD</span>
+<span>42%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary h-full w-[42%]"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 min-h-screen flex">
+<!-- Left Pane: Configuration -->
+<section class="w-[400px] bg-surface-container-low p-6 flex flex-col gap-6 overflow-y-auto border-r border-outline-variant/10">
+<div>
+<label class="text-[10px] text-outline uppercase tracking-widest font-bold mb-2 block">System Prompt Editor</label>
+<div class="relative group">
+<textarea class="w-full h-48 bg-surface-container p-4 text-sm font-mono border-b border-outline-variant focus:border-primary focus:ring-0 transition-colors resize-none" spellcheck="false">You are a cybersecurity taxonomy classifier. Your objective is to map incoming alerts to MITRE ATT&amp;CK techniques with high precision. Analyze headers, registry paths, and execution context.</textarea>
+<div class="absolute top-2 right-2 text-[10px] text-outline-variant bg-surface-container-highest px-1">LOCKED</div>
+</div>
+</div>
+<div>
+<label class="text-[10px] text-outline uppercase tracking-widest font-bold mb-3 block">Active Test Cases</label>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 bg-surface-container p-3 border-l-2 border-primary">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="lab_profile">lab_profile</span>
+<div class="flex flex-col">
+<span class="text-xs font-bold">T1547.001 Registry Run Keys</span>
+<span class="text-[10px] text-outline uppercase">Persistence_Validation</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container p-3 border-l-2 border-secondary">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="security">security</span>
+<div class="flex flex-col">
+<span class="text-xs font-bold">SI-2 Flaw Remediation</span>
+<span class="text-[10px] text-outline uppercase">Control_Compliance</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container p-3 border-l-2 border-tertiary">
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="lan">lan</span>
+<div class="flex flex-col">
+<span class="text-xs font-bold">d3f:NetworkIsolation</span>
+<span class="text-[10px] text-outline uppercase">Detection_Logic</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="text-[10px] text-outline uppercase tracking-widest font-bold mb-3 block">Selected Model Array</label>
+<div class="flex flex-wrap gap-2">
+<div class="bg-surface-container-highest px-3 py-1 flex items-center gap-2 border-l-2 border-tertiary">
+<span class="text-[10px] font-bold">DeepSeek-V3</span>
+</div>
+<div class="bg-surface-container-highest px-3 py-1 flex items-center gap-2 border-l-2 border-secondary">
+<span class="text-[10px] font-bold">qwen2.5:7b</span>
+</div>
+<div class="bg-surface-container-highest px-3 py-1 flex items-center gap-2 border-l-2 border-primary">
+<span class="text-[10px] font-bold">text-gemini</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<button class="w-full bg-tertiary-container/30 text-tertiary border border-tertiary/20 flex items-center justify-center gap-3 py-4 font-bold uppercase tracking-widest cursor-not-allowed group" disabled="">
+<span class="material-symbols-outlined animate-spin text-lg" data-icon="settings_slow_motion">settings_slow_motion</span>
+                    Optimizing...
+                </button>
+<div class="mt-2 text-[9px] text-center text-outline uppercase tracking-tighter">EST_COMPLETION: 00:04:12</div>
+</div>
+</section>
+<!-- Right Pane: Live Progress -->
+<section class="flex-1 bg-surface p-8 overflow-y-auto">
+<div class="max-w-5xl mx-auto space-y-8">
+<!-- Overall Progress Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<h1 class="text-2xl font-bold tracking-tighter text-on-background uppercase">Live Optimization Telemetry</h1>
+<span class="text-tertiary font-mono text-sm">25% GLOBAL_PROGRESS</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 relative scanline-progress">
+<div class="bg-tertiary h-full w-1/4 transition-all duration-500"></div>
+</div>
+</div>
+<!-- Model Comparison Table -->
+<div class="bg-surface-container border border-outline-variant/10 overflow-hidden">
+<div class="grid grid-cols-4 bg-surface-container-high p-4 border-b border-outline-variant/20 text-[10px] font-black uppercase tracking-widest text-outline">
+<span>Model_Identifier</span>
+<span>Phase_Status</span>
+<span>F1_Score</span>
+<span class="text-right">Action</span>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<div class="grid grid-cols-4 p-4 items-center bg-tertiary/5">
+<span class="text-sm font-bold text-tertiary">DeepSeek-V3</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary animate-spin text-sm" data-icon="refresh">refresh</span>
+<span class="text-xs uppercase font-mono">Round 2 of 5</span>
+</div>
+<span class="text-sm font-mono font-bold">0.619</span>
+<div class="text-right">
+<span class="bg-tertiary/20 text-tertiary text-[10px] px-2 py-0.5 font-bold">IN_PROGRESS</span>
+</div>
+</div>
+<div class="grid grid-cols-4 p-4 items-center">
+<span class="text-sm font-bold text-secondary">qwen2.5:7b</span>
+<div class="flex items-center gap-2 text-outline">
+<span class="material-symbols-outlined animate-pulse text-sm" data-icon="hourglass_empty">hourglass_empty</span>
+<span class="text-xs uppercase font-mono">Round 1 of 5</span>
+</div>
+<span class="text-sm font-mono text-outline">---</span>
+<div class="text-right">
+<span class="bg-surface-variant text-outline-variant text-[10px] px-2 py-0.5 font-bold">INITIATING</span>
+</div>
+</div>
+<div class="grid grid-cols-4 p-4 items-center">
+<span class="text-sm font-bold text-primary">text-gemini</span>
+<div class="flex items-center gap-2 text-outline-variant">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-xs uppercase font-mono">Pending</span>
+</div>
+<span class="text-sm font-mono text-outline-variant">---</span>
+<div class="text-right">
+<span class="text-outline-variant text-[10px] px-2 py-0.5 font-bold">QUEUED</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Streaming Results -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Historical Context -->
+<div class="bg-surface-container-low border border-outline-variant/20">
+<div class="bg-surface-container-high p-3 border-b border-outline-variant/10 flex justify-between items-center">
+<h3 class="text-[10px] font-black uppercase tracking-widest">DeepSeek-V3: Round 1 Results</h3>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="history">history</span>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-center p-3 bg-surface-container">
+<div class="flex flex-col">
+<span class="text-xs font-bold">Registry Run Keys</span>
+<span class="text-[10px] text-outline">T1547.001</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-sm font-mono font-bold text-outline">0.333</span>
+<span class="text-error font-black text-[10px] tracking-tighter">FAIL</span>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container">
+<div class="flex flex-col">
+<span class="text-xs font-bold">Flaw Remediation</span>
+<span class="text-[10px] text-outline">SI-2</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-sm font-mono font-bold text-outline">0.857</span>
+<span class="text-tertiary font-black text-[10px] tracking-tighter">PASS</span>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container">
+<div class="flex flex-col">
+<span class="text-xs font-bold">Network Isolation</span>
+<span class="text-[10px] text-outline">d3f:NetIso</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-sm font-mono font-bold text-outline">0.667</span>
+<span class="text-tertiary font-black text-[10px] tracking-tighter">PASS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Stream -->
+<div class="bg-surface-container-low border border-outline-variant/20 relative overflow-hidden">
+<div class="bg-surface-container-high p-3 border-b border-outline-variant/10 flex justify-between items-center">
+<h3 class="text-[10px] font-black uppercase tracking-widest text-tertiary">DeepSeek-V3: Round 2 (Streaming...)</h3>
+<span class="w-2 h-2 bg-tertiary animate-pulse rounded-full"></span>
+</div>
+<div class="p-4 font-mono text-[11px] leading-relaxed text-on-surface-variant overflow-hidden h-[200px] relative">
+<div class="opacity-40">&gt;&gt; Initializing inference engine... done.</div>
+<div class="opacity-40">&gt;&gt; Loading T1547.001 dataset... 420 samples found.</div>
+<div class="opacity-60">&gt;&gt; PROMPT_OVERRIDE_ACTIVE: Injecting contextual taxonomy.</div>
+<div class="text-tertiary/80">&gt;&gt; EVALUATING: sample_id_0x83F2... [MATCH]</div>
+<div class="text-tertiary/80">&gt;&gt; EVALUATING: sample_id_0x83F3... [MATCH]</div>
+<div class="text-error/80">&gt;&gt; EVALUATING: sample_id_0x83F4... [MISMATCH]</div>
+<div class="text-tertiary/80">&gt;&gt; EVALUATING: sample_id_0x83F5... [MATCH]</div>
+<div class="animate-pulse border-l-2 border-tertiary pl-2 mt-2">STREAMING_TOKEN: {"confidence": 0.892, "class": "T1547.001", "logic": "detected_reg_path_HKCU\Software\Microsoft\Windows\CurrentVersion\Run"}</div>
+<div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+</div>
+</div>
+</div>
+<!-- Footer Telemetry -->
+<div class="flex justify-between text-[10px] text-outline font-mono tracking-widest uppercase">
+<div class="flex gap-4">
+<span>OPS_STATUS: NOMINAL</span>
+<span>LATENCY: 42ms</span>
+<span>BUFFER: 0.01%</span>
+</div>
+<span>UTC: 2024-05-20T14:42:01Z</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Tactical Overlay Elements -->
+<div class="fixed top-20 right-8 z-50 pointer-events-none opacity-20 hidden xl:block">
+<div class="p-4 border border-primary/30 flex flex-col gap-2">
+<div class="w-16 h-1 bg-primary/20"></div>
+<div class="w-24 h-1 bg-primary/20"></div>
+<div class="w-12 h-1 bg-primary/20"></div>
+</div>
+</div>
+</body></html>

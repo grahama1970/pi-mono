@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "htFK9Nvsbgc",
+    "language": "en",
+    "took_ms": 8737,
+    "method": null,
+    "title": "Winning the Telecommunications Revolution",
+    "channel": "Hudson Institute",
+    "upload_date": "20220304",
+    "duration_sec": 5608,
+    "description": "The next generation of wireless networks, 5G, is being rolled out around the world, including in communities across the United States. As demonstrated by the fierce competition from Huawei—the Chinese telecom equipment giant leading China’s 5G effort and a pernicious security threat—American preeminence in this vital technology is not guaranteed. Join Hudson Institute Senior Fellow Arthur Herman for a discussion with former National Security Advisor Robert O’Brien on how the U.S. can maintain its economic and technological edge in the new age of 5G.\n\nWatch on Hudson.org: https://www.hudson.org/events/2081-virtual-event-winning-the-telecommunications-revolution32022",
+    "view_count": 579
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] htFK9Nvsbgc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

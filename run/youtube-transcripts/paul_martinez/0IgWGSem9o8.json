@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0IgWGSem9o8",
+    "language": "en",
+    "took_ms": 7775,
+    "method": null,
+    "title": "Tips For Your S4x26 CFP Submissions",
+    "channel": "S4 Events",
+    "upload_date": "20250616",
+    "duration_sec": 1062,
+    "description": "Watch and follow the video to improve your chances of getting selected for the S4x26 stage. I go over the Top 10 list quickly in the first three minutes and then in more detail for the remainder of the video.",
+    "view_count": 349
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0IgWGSem9o8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m23pyoSe9Vo",
+    "language": "en",
+    "took_ms": 9203,
+    "method": null,
+    "title": "High School Students Learn To Secure Critical Infrrastructure",
+    "channel": "S4 Events",
+    "upload_date": "20170402",
+    "duration_sec": 3290,
+    "description": "15 high school students spent 2 days learning how to hack and secure industrial control systems that run the critical infrastructure.\n\nMatthew Luallen of Cybati performed the training at Seminole Ridge High School in Palm Beach County Florida. Then we brought Matthew, the teachers and students to the S4x17 Main Stage to see how it went.\n\nMatt gives an intro, and then at 14:30 you get to hear from the students and teachers. It was a big success from all parties point of view, and you really see the students interest and learning.\n\nThe real question is how does this scale in what is taught and how many are taught",
+    "view_count": 409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m23pyoSe9Vo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UHFTY0B718s",
+    "language": "en",
+    "took_ms": 8940,
+    "method": null,
+    "title": "Evaluating and Debugging Generative AI, Now Available!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230802",
+    "duration_sec": 115,
+    "description": "Enroll today: https://bit.ly/3KqkCyp\n\nIntroducing our new course created in collaboration with Weights & Biases: Evaluating and Debugging Generative AI!\n\nLearn the tools to manage and track your data sources and volumes, debug your models, and conduct tests and evaluations quickly and easily. You’ll learn from Carey Phelps, founding product manager at Weights and Biases. \n\nWhat will you gain from this course?\n\n- Learn to monitor and debug experiments to facilitate rapid iterations and validate models for deployment.\n- Trace, debug, and evaluate generative models while visually comparing outputs during the iterative process.\n- Acquire best practices for reproducible model development, ensuring you achieve consistent results.\n- Transition from individual notebook hacking to collaborative model validation and sharing with your team.\n\nBy the end, you will have a systematic workflow at your disposal, boosting your productivity and accelerating your journey toward breakthrough results.\n\nPrepare to improve your MLOps chops with this course!\n\nLearn more: https://bit.ly/3KqkCyp",
+    "view_count": 7153
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UHFTY0B718s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

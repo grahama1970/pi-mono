@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dbt68v7oxi0",
+    "language": "en",
+    "took_ms": 9343,
+    "method": null,
+    "title": "10. ICS in the Cloud with Bryan Owen",
+    "channel": "S4 Events",
+    "upload_date": "20201125",
+    "duration_sec": 1735,
+    "description": "Bryan Owen closes out the OnRamp sessions with looking at the use of cloud services today and in the future. He provides a structured way of evaluating the benefits and the security of these offerings. It was the clearest and easiest to understand presentation of ICS in the cloud that I've yet seen.\n\nQuestions and topics to consider:\n\n1. What is the difference between Open Loop and Closed Loop Cloud Services as Bryan defines them? What are the security implications between these two approaches?\n\n2. Thinking back to my architecture video (2nd in the series), what would be some security options to secure the perimeter between the ICS and the cloud in an Open Loop offering? A Closed Loop offering?\n\n3. What are examples where Cloud Services can reduce risk? (Bryan mentions one, others can be more controversial).",
+    "view_count": 860
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dbt68v7oxi0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

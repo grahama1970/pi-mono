@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3V-URruNQck",
+    "language": "en",
+    "took_ms": 10533,
+    "method": null,
+    "title": "DEF CON 33 - Secure Code Is Critical Infrastructure: Hacking Policy for Public Good - Tanya Janca",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1760,
+    "description": "Tanya Janca, aka SheHacksPurple, is the best-selling author of 'Alice and Bob Learn Secure Coding', 'Alice and Bob Learn Application Security’ and the ‘AppSec Antics’ card game. Over her 28-year IT career she has won countless awards (including OWASP Lifetime Distinguished Member and Hacker of the Year), spoken all over the planet, and is a prolific blogger. Tanya has trained thousands of software developers and IT security professionals, via her online academies (We Hack Purple and Semgrep Academy), and her live training programs. Having performed counter-terrorism, led security for the 52nd Canadian general election, developed or secured countless applications, Tanya Janca is widely considered an international authority on the security of software. Tanya currently works at Semgrep as a Security Advocate.",
+    "view_count": 862
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3V-URruNQck: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

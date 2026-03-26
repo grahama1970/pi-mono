@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rCxRjjLs6z0",
+    "language": "en",
+    "took_ms": 9485,
+    "method": null,
+    "title": "DEF CON 31 War Stories - Legend of Zelda  Use After Free - Allan Cecil",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 2803,
+    "description": "How can a Use After Free exploit in Ocarina of Time lead to a cute robot taking over an entire N64 to put the future (and the Triforce) in the game using only button presses? This talk dives into the technical details of how a Use After Free exploit, Arbitrary Code Execution, and multiple bootstrap stages allowed TASBot to take full control of an original, unmodified cart and console in front of a live audience during SGDQ 2022 with the help of Sauraen and Savestate, helping raise more than $228k for charity. This talk uses engaging explainer graphics courtesy of RGME to dig into how a Use After Free vulnerability can be exploited as well as a live demo showing the significant social impact of the exploit Here Together, in the past year and into the future.",
+    "view_count": 2889
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rCxRjjLs6z0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r1eQOwkTuFE",
+    "language": "en",
+    "took_ms": 9597,
+    "method": null,
+    "title": "How'd we do predicting 2024's spaceflight milestones?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20250101",
+    "duration_sec": 1096,
+    "description": "On January 1st, 2024, I tweeted a set of polls and wanted to see how well we in the spaceflight community could predict what would happen in 2024... results were... well, let's find out!\n\nTAKE THE 2025 POLL NOW! - https://x.com/Erdayastronaut/status/1874511422602027379\n\nHere were last year's polls so you can play along and see how you did! - https://x.com/erdayastronaut/status/1741924066204782932?s=46\n\nGet your tickets for the first annual Astro Awards in Austin, TX - January 25th and 26th! - http://astroawards.live\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 107034
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r1eQOwkTuFE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

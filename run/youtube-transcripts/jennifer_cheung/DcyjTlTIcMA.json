@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DcyjTlTIcMA",
+    "language": "en",
+    "took_ms": 8832,
+    "method": null,
+    "title": "DEF CON 30 - Billy Jheng, Muhammad Ramdhan - All Roads Lead to GKEs Host -   4+ Ways to Escape",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2667,
+    "description": "Container security is a prevalent topic in security research. Due to the great design and long-term effort, containers have been more and more secure. Usage of container technology is increasingly being used. Container security is a topic that has started to be discussed a lot lately.\n\nIn late 2021, Google increased the vulnerability reward program in kCTF infrastructure, which was built on top of Kubernetes and Google Container Optimized OS, with a minimum reward of $31,337 per submission.\n\nIn this talk, we will share about how we managed to have 4 successful submissions on kCTF VRP by exploiting four Linux kernel bugs to perform container escape on kCTF cluster, we will explain some interesting kernel exploit techniques and tricks that can be used to bypass the latest security mitigation in Linux kernel. We will also share what we did wrong that causes us to nearly lose 1 of the bounty.\n\nAs of writing, there are 14 successful entries to kCTF. In this presentation, we are willing to share our full, in-depth details on the research of kCTF.\n\nTo the best of our knowledge, this presentation will be the first to talk about a complete methodology to pwn kCTF (find and exploit bugs within 0-day and 1-day) in public.",
+    "view_count": 644
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DcyjTlTIcMA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

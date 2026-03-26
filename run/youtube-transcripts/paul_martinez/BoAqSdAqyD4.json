@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BoAqSdAqyD4",
+    "language": "en",
+    "took_ms": 8903,
+    "method": null,
+    "title": "Denial of Surface: Shodan and ICS",
+    "channel": "S4 Events",
+    "upload_date": "20180308",
+    "duration_sec": 2193,
+    "description": "A S4 classic from Eireann Leverett. He gave the first presentation on what ICS devices were Internet connected back at S4x12 (January 2012).\n\nThis is the presentation to watch if you want to learn about Shodan finding ICS components on the Internet. It spawned a few articles including Wired's 10K Reasons To Worry About Critical Infrastructure.\n\nEireann Leverett's presentation is based on his dissertation for a Masters in Advanced Computer Science under Dr. Ross Anderson at Cambridge University. The hard statistics and visualization of the ICS components connected to the Internet begin at the 18 minute mark. Here are a small number of the interesting stats:\n\n- $2.18 cost per Internet node discovered\n- Scanned for 33 different banners (products)\n- Found 10,358 ICS devices around the world\n- Visualization tool shows what is found where on a map",
+    "view_count": 588
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BoAqSdAqyD4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

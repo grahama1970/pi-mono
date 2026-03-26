@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0Wa-v5eWaNg",
+    "language": "en",
+    "took_ms": 9061,
+    "method": null,
+    "title": "A Secure ICS Protocol in a Chip ... because ICS people don't patch",
+    "channel": "S4 Events",
+    "upload_date": "20200604",
+    "duration_sec": 1404,
+    "description": "Andrew Zonenberg of IOActive has designed the SSP21 BitW protocol into a FPGA. SSP21 is a purpose built algorithm for ICS with much less than typical complexity, as opposed to the wrap existing ICS protocol in TLS approach. His goal is to design something that you provision once, deploy and never touch again, since ICS people don't patch.\n\nAndrew's FPGA approach limits what the attacker can use to modify or tamper with the chip.If you have no CPU, you can't do code execution exploits. He makes other hardware and architecture choices that eliminate whole classes of attacks. The result is an open source design and the code is on GitHub.",
+    "view_count": 344
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0Wa-v5eWaNg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

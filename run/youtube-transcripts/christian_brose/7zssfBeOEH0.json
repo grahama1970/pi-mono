@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7zssfBeOEH0",
+    "language": "en",
+    "took_ms": 8905,
+    "method": null,
+    "title": "Maintaining U.S. Leadership Amid Shifting Geopolitics: A Conversation with Ambassador Kelly Craft",
+    "channel": "Hudson Institute",
+    "upload_date": "20200521",
+    "duration_sec": 2514,
+    "description": "Join Hudson Institute for a discussion with U.S. Ambassador to the United Nations Kelly Craft and Hudson Senior Fellow Heather Nauert on the challenges and policy priorities facing the United States as the coronavirus strains geopolitical tensions",
+    "view_count": 1188
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7zssfBeOEH0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

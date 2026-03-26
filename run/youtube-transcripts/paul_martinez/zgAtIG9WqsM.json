@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zgAtIG9WqsM",
+    "language": "en",
+    "took_ms": 8888,
+    "method": null,
+    "title": "BrickerBot - The IoT Vigilante",
+    "channel": "S4 Events",
+    "upload_date": "20170616",
+    "duration_sec": 2919,
+    "description": "If you are a IoT vendor or user you need to know about Mirai, Hajime and BrickerBot. If you have Internet connected PLC's, RTU's or other ICS controllers, BrickerBot is a forewarning to a PLCbot that bricks your devices.\n\nPascal Geenens of Radware gave this presentation at S4xEurope. He describes:\n\n- Mirai: the bad and well known IoT malware that caused the famous DDoS \n- Hajime: the \"good\". It cleans infected IoT ... but it also maintains control of the cleaned devices and now has 300K+ devices under its control. Why? We shall see.\n- BrickerBot: the vigilante. After a compromised IoT device connects to and tries to infect one of the Janit0r's devices, he then connects back, compromises and bricks the infected IoT device. You have to return to factory or throw the device out.\n\nThe Janit0r claims to be \"chemotherapy\" because he is preventing future botnets.",
+    "view_count": 927
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zgAtIG9WqsM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

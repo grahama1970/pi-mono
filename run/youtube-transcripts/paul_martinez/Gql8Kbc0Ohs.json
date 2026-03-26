@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gql8Kbc0Ohs",
+    "language": "en",
+    "took_ms": 7896,
+    "method": null,
+    "title": "First S4, Real Connections",
+    "channel": "S4 Events",
+    "upload_date": "20251103",
+    "duration_sec": 160,
+    "description": "First time at S4x25 as a manufacturing security lead.\n\nThe Birds of a Feather session wasn’t just discussion—it was shared strategy from peers solving the same problems.\n\nIf you're in OT manufacturing and it’s your first S4, that’s where you start.",
+    "view_count": 91
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gql8Kbc0Ohs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

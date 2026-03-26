@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VARe8flqbjE",
+    "language": "en",
+    "took_ms": 8274,
+    "method": null,
+    "title": "Explore Canvas, OpenAI’s latest interface in this new short course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241204",
+    "duration_sec": 109,
+    "description": "Enroll now: https://bit.ly/3VaJG1M\n\nWe saw your interest in the ChatGPT Prompt Engineering for Developers course and thought you’d love what’s next. OpenAI Canvas, a new workspace available on ChatGPT, furthers your creative collaboration with AI.\n\nIn this free video-only short course, Collaborative Writing and Coding with OpenAI Canvas, you’ll watch, explore, and learn how to:\n\n- Use a side-by-side workspace to brainstorm, refine, and edit text and code with AI in real-time.\n- Build practical applications like creating game apps, generating Python code from plot screenshots, and designing SQL databases from architecture images.\n- Unlock new possibilities for debugging, targeted editing, and automating workflows.\n- Learn how GPT-4o powers these advanced tools and functionalities.\n\nWhether you’re looking to expand your coding toolkit or enhance your writing, OpenAI Canvas is the perfect next step in your AI journey.\n\nLearn more: https://bit.ly/3VaJG1M",
+    "view_count": 3853
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VARe8flqbjE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

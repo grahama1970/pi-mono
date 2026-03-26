@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E0OCpVfgWto",
+    "language": "en",
+    "took_ms": 9020,
+    "method": null,
+    "title": "The FCC – Then and Now",
+    "channel": "Hudson Institute",
+    "upload_date": "20180501",
+    "duration_sec": 2818,
+    "description": "The Federal Communications Commission is an independent agency of five commissioners with many important responsibilities including network neutrality, media ownership, spectrum policy, universal service, and broadband deployment. These and other issues have often divided the commissioners on public, sometimes partisan, disputes about the direction of the Commission. What role does politics play in the FCC? How has the influence of Congress and the White House affected the Commission? Have the respective roles of the Chairman and Commissioners varied over the years? How has the FCC and the industries and services that it regulates changed over time?\n\nOn May 1, Hudson Institute's Center for the Economics of the Internet hosted a discussion with Richard Wiley, former chairman of the Commission, to answer these questions and more on how the FCC has changed over time. Mr. Wiley is co-founder of the Wiley Rein communications law firm and an active leader in the Federal Communications Bar Association. With a career spanning five decades, Mr. Wiley is uniquely positioned to comment on the conduct of the FCC. The discussion was moderated by Hudson’s Harold Furchtgott-Roth, senior fellow and director of the Center for the Economics of the Internet.",
+    "view_count": 232
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E0OCpVfgWto: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

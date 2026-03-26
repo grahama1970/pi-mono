@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "05MfomjVKlo",
+    "language": "en",
+    "took_ms": 7736,
+    "method": null,
+    "title": "Watch Virgin Orbit launch a rocket from a 747!!!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20210630",
+    "duration_sec": 13199,
+    "description": "Virgin Orbit will be conducting its second operational launch of their LauncherOne rocket on the Tubular Bells, Part One mission. Its previous launch attempt was in early 2021. The payload consists of a few small satellites from the United States and Netherlands governments as well as nanosatellites from SatRevolution, a Poland based satellite building company. LauncherOne will launch from underneath a modified Boeing 747-400 aircraft named “Cosmic Girl”.\n\nNeed to know more information? Check out our Prelaunch Preview - \nhttps://everydayastronaut.com/tubular-bells-part-one-launcherone/\n\n-------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 616465
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 05MfomjVKlo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

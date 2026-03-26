@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mwL5Yzg6UJE",
+    "language": "en",
+    "took_ms": 8123,
+    "method": null,
+    "title": "Building AI Voice Agents for Production",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250507",
+    "duration_sec": 162,
+    "description": "Learn more: https://bit.ly/3EELtr7\n\nJoin Building AI Voice Agents for Production, created in collaboration with LiveKit and RealAvatar, and taught by Russ d’Sa (Co-founder & CEO of LiveKit), Shayne Parmelee (Developer Advocate, LiveKit), and Nedelina Teneva (Head of AI at RealAvatar, an AI Fund portfolio company). The course also incorporates voice technology from ElevenLabs, a supporting contributor to the project.\n\nVoice agents combine speech and reasoning capabilities to enable real-time, human-like conversations. They're already being used to enhance learning, support customer service, and improve accessibility in healthcare and talk therapy.\n\nIn this course, you’ll learn how to build voice agents that listen, reason, and respond naturally. You’ll follow the architecture used to create Andrew Avatar, a collaborative project between DeepLearning.AI and RealAvatar that responds to users in Andrew Ng’s voice. You’ll build a voice agent from scratch and deploy it to the cloud, enabling support for many simultaneous users.\n\nWhat you’ll learn:\n\n- Understand the fundamentals of voice agents, including key components like speech-to-text (STT), text-to-speech (TTS), and LLMs, and how latency is introduced at each layer.\n- Explore voice agent architectures and the trade-offs between modular pipelines and speech-to-speech APIs.\n- Explore how platforms like LiveKit mitigate latency issues with optimized networking infrastructure and low-latency communication protocols.\n- Learn how to connect client devices to voice agents using WebRTC—and why it outperforms HTTP and WebSocket for low-latency audio streaming.\n- Incorporate voice activity detection (VAD), end-of-turn detection, and context management to detect turns, handle interruptions, and manage conversational flow.\n- Understand the trade-offs between latency, quality, and cost in an example in which you build a voice agent and change its voice.\n- Equip your agent with metrics to measure latency at each stage of the voice pipeline and learn the key levers you can pull to make your agent faster and more responsive.\n\nBy the end of this course, you'll have learned the components of an AI voice agent pipeline, combined them into a system with low-latency communication, and deployed them on cloud infrastructure so it scales to many users.\n\nStart building your voice agent today with LiveKit.\n\nEnroll now: https://bit.ly/3EELtr7",
+    "view_count": 5236
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mwL5Yzg6UJE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

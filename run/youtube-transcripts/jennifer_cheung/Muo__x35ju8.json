@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Muo__x35ju8",
+    "language": "en",
+    "took_ms": 7714,
+    "method": null,
+    "title": "DEF CON 31 Policy -  Demystifing Hacking for Government Officials - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2873,
+    "description": "Most of us acknowledge that collaboration between hackers and policymakers is necessary and beneficial. Specifically, the security research community is more effective in supporting security improvements for state and local government entities when they work collaboratively with government officials. We also know building bridges between these communities, each of which includes a diverse makeup of individuals and organizations, is not a simple task. Several years ago, the National Association of Secretaries of State (NASS) and a small group of hackers began construction on one such bridge. This session shares lessons learned from that experience. NASS created an interactive event, called Hacking Demystified, which complements broader efforts to educate and foster relationship-building. We will provide examples of where we have found success and seek input from the audience on how to further expand our work. We will generate ideas for how everyone in the room may create more opportunities for productive collaboration between security researchers and state government officials. Join us to learn more about how NASS is demystifying hacking and participate in a brainstorming session on how we may all work together to further increase knowledge and understanding across our communities.",
+    "view_count": 719
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Muo__x35ju8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

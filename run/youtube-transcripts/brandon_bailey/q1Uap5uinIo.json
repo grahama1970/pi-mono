@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q1Uap5uinIo",
+    "language": "en",
+    "took_ms": 8227,
+    "method": null,
+    "title": "DEF CON 32 - Color Blasted Badge Making: How Hard Could It Be - Abhinav Panda, Bradán Lane",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3047,
+    "description": "Without plan or intent, three Makers took three paths to achieve colorful badges and none were smart enough to turn back. Join our panel discussion to learn our different approaches, the strengths and weaknesses of each, and ask your probing questions. Perhaps you too will be foolish enough to venture into the technicolor labyrinth.",
+    "view_count": 323
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q1Uap5uinIo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

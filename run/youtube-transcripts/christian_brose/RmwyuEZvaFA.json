@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RmwyuEZvaFA",
+    "language": "en",
+    "took_ms": 8095,
+    "method": null,
+    "title": "Richard Weitz on the Moscow Metro Bombings",
+    "channel": "Hudson Institute",
+    "upload_date": "20100330",
+    "duration_sec": 228,
+    "description": "Hudson Institute Senior Fellow and Director of the Center for Political-Military Analysis Richard Weitz discusses the March 29th terrorist bombings on the Moscow metro system.",
+    "view_count": 122
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RmwyuEZvaFA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sgy7jSbPUWY",
+    "language": "en",
+    "took_ms": 9391,
+    "method": null,
+    "title": "New short course: Reinforcement Fine-Tuning with GRPO",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250521",
+    "duration_sec": 162,
+    "description": "Learn more: https://bit.ly/43p1WIa\n\nDeepSeek has put reinforcement learning at the top of the minds of developers, machine learning engineers, and data-driven professionals in the AI space.\n\nThat’s why we’re happy to launch a new short course: Reinforcement Fine-Tuning LLMs with GRPO, built in collaboration with @Predibase and taught by Travis Addair, its Co-Founder and CTO, and Arnav Garg, its Senior Machine Learning Engineer.\n\nMany LLM applications rely on reasoning, whether in solving math problems, generating code, or completing multi-step tasks. But fine-tuning models for reasoning is often constrained by the availability of high-quality labeled examples.\n\nThis course introduces a different approach: Reinforcement Fine-Tuning (RFT) using Group Relative Policy Optimization (GRPO). GRPO is a scalable reinforcement learning algorithm that lets you train models using reward functions instead of human-labeled data or preference scores.\n\nYou’ll learn:\n\n- When reinforcement fine-tuning is a better fit than supervised fine-tuning\n- How to build and use programmable reward functions in GRPO\n- How to guide model behavior on structured tasks like the Wordle game\n- How to evaluate subjective outputs, like summaries, using LLMs as judges\n- How to avoid reward hacking by combining reward and penalty signals\n- How to implement GRPO loss: token ratios, clipping, advantages, and KL divergence\n- How to run RFT jobs using Predibase’s training platform\n\nBy the end of the course, you’ll know how to fine-tune LLMs for complex reasoning tasks without needing large datasets or manual preference data.\n\nEnroll now: https://bit.ly/43p1WIa",
+    "view_count": 4444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sgy7jSbPUWY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

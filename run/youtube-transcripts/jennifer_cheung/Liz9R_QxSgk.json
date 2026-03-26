@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Liz9R_QxSgk",
+    "language": "en",
+    "took_ms": 8919,
+    "method": null,
+    "title": "DEF CON 29 - Bill Graydon - Defeating Physical Intrusion Detection Alarm Wires",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2711,
+    "description": "Alarm systems are ubiquitous - no longer the realm of banks and vaults only, many people now have them in their homes or workplaces. But how do they work? And the logical follow-up question - how can they be hacked?\n\nThis talk focuses on the communication lines in physical intrusion detection systems: how they are secured, and what vulnerabilities exist. We’ll discuss the logic implemented in the controllers and protections on the communication lines including end of line resistors - and all the ways that this aspect of the system can be exploited.\n\nIn particular, we’ll release schematics for a tool we’ve developed that will enable measuring end-of-line resistor systems covertly, determining the necessary re-wiring to defeat the sensors, and deploy it without setting off the alarm.\n\nAfter the talk, you can head over to the Lock Bypass Village to try these techniques out for yourself!",
+    "view_count": 49062
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Liz9R_QxSgk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

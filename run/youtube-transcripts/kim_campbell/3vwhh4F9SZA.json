@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3vwhh4F9SZA",
+    "language": "en",
+    "took_ms": 8707,
+    "method": null,
+    "title": "Welcome to Marine Corps Boot Camp at Parris Island",
+    "channel": "Sandboxx",
+    "upload_date": "20211116",
+    "duration_sec": 51,
+    "description": "Sand fleas, fire ants, and temperatures soaring into the 100-degree Fahrenheit mark with what feels like 100 percent humidity, is where many Marines begin their career in the Marine Corps. Welcome to MCRD Parris Island,  your future starts here.\n\nU.S. Marine Corps video by Lance Cpl. Christopher McMurry",
+    "view_count": 11684
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3vwhh4F9SZA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RpkYQDaEKMo",
+    "language": "en",
+    "took_ms": 9246,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - McJumpBox Leveraging free corporate Wifi  for fun/profit - Loaning",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2678,
+    "description": "In this talk we'll explore the capabilities of several of the new 802.11AH radios/chipsets that have come onto the market and examine what is needed to develop an ultra low cost/power minimum viable point-to-point wifi repeater using 802.11AH as the backhaul connection. We'll consider and review the constraints of the various AH modules and their associated software libraries, as well as hardware and software considerations for the 802.11a/b/n wifi side as well. We'll review my initial stumblings and failed attempts and then examine some COTS hardware. We'll review both COTS modules as well as a purpose built finished product that largely does what we're trying to replicate -- we'll reverse engineer their schematics and firmware and ultimately design our own purpose-built custom battery/solar powered PCB and firmware running OpenWRT and supporting 900Mhz, 2.4Ghz, and 5Ghz wifi. We'll then cover deployment and operational characteristics/performance of pairs of these devices when connected to the internet via the free corporate wifi provided at retail and dining establishments.",
+    "view_count": 2699
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RpkYQDaEKMo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

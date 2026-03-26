@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YtExxB-ayo0",
+    "language": "en",
+    "took_ms": 7768,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Ronald Brobert - Fuzzing NASA Core Flight System Software",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1597,
+    "description": "NASA Core Flight System (cFS) provides an open source software framework used in multiple NASA missions including the Lunar Reconnaissance Orbiter, the Parker Solar Probe, and the protoype Mighty Eagle robotic lunar lander. The cFS suite includes Command Ingest (CI_Lab) and Telemetry Output (TO_Lab) applications which are only representative of similar applications in actual mission software. Fuzzing techniques applied to cFS reveal issues in the Command Ingest application (CI_Lab).",
+    "view_count": 1056
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YtExxB-ayo0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

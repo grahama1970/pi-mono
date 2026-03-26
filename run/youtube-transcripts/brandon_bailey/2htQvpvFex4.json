@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2htQvpvFex4",
+    "language": "en",
+    "took_ms": 8371,
+    "method": null,
+    "title": "DEF CON 30 - Sam Quinn, Steve Povolny  - Perimeter Breached Hacking an Access Control System",
+    "channel": "DEFCONConference",
+    "upload_date": "20221017",
+    "duration_sec": 2590,
+    "description": "The first critical component to any attack is an entry point. As we lock down firewalls and routers, it can be easy to overlook the network-connected physical access control systems. A study done by IBM in 2021 showed that the average cost of a physical security compromise is $3.54 million and takes an average of 223 days to identify a breach.\n\nHID Mercury is a global distributor of access control systems with more than 20 OEM partners, deployed across multiple industries and certified for use in federal and state government facilities.\n\nTrellix's Advanced Threat Research team uncovered 4 unique 0-day vulnerabilities and 4 additional undisclosed vulnerabilities leading to remote, unauthenticated code execution on multiple HID Mercury access control panels. These findings lead to full system control including the ability for an attacker to remotely manipulate door locks. During this presentation, we will briefly cover the hardware debugging process, leading to a root shell on the target. We will explore in greater depth the vulnerability discovery techniques, including emulation, fuzzing, static and dynamic reverse engineering, and a detailed walkthrough of several of the most critical vulnerabilities. We’ll address our approach to exploitation using simplistic malware we designed to control system functionality and culminate the talk with a live demo featuring full system control, unlocking doors remotely without triggering any software notification",
+    "view_count": 33115
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2htQvpvFex4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

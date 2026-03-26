@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ssLu8xHMwSk",
+    "language": "en",
+    "took_ms": 9148,
+    "method": null,
+    "title": "DEF CON 32 - Psychic Paper: Making eink access badges accessible for anyone - Joshua Herman",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1610,
+    "description": "To make RFID access badges vendors in China have created eink badges where instead of printing a badge out you instead program the eink portion of the badge with an smartphone app and then program the RFID portion. At this time the ones that are sold are either black and white or black and white and red. There is no security implemented so all you need to do is download the app to reprogram the front of the badge. This makes anyone able to reprogram both the front and back of the badge.",
+    "view_count": 3542
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ssLu8xHMwSk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vad7FiHlgMU",
+    "language": "en",
+    "took_ms": 7859,
+    "method": null,
+    "title": "DEF CON 32 - Welcome to DEF CON 32 - The Dark Tangent",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1216,
+    "description": "Opening remarks from our founder The Dark Tangent.",
+    "view_count": 4097
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vad7FiHlgMU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y1zZtEm_rvk",
+    "language": "en",
+    "took_ms": 8672,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - Regulatory Failures with Ballot Marking Devices - Marnie Mahoney",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 1669,
+    "description": "The most obvious, fundamental problem with Ballot Marking Devices is encoding voters’ choices in images voters cannot read and tabulating from those images. Compounding BMD problems, these systems produce at least three distinct images of voters’ selections: the choices in QR/bar code images, a printed text list purporting to show those encoded choices, and a ballot image produced by precinct scanners. These images and printed list may be subject to different possible",
+    "view_count": 256
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y1zZtEm_rvk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

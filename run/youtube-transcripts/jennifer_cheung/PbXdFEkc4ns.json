@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PbXdFEkc4ns",
+    "language": "en",
+    "took_ms": 8565,
+    "method": null,
+    "title": "DEF CON 33 - Live Music - Saturday Night - 0xdade",
+    "channel": "DEFCONConference",
+    "upload_date": "20251020",
+    "duration_sec": 1733,
+    "description": "Live set from 0xdade  from Saturday Night at the LVCC!",
+    "view_count": 666
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PbXdFEkc4ns: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

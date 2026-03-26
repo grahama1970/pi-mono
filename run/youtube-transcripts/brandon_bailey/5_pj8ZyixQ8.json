@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5_pj8ZyixQ8",
+    "language": "en",
+    "took_ms": 8896,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - Maurice Turner - Why Hacking Voters Is Easier Than Hacking Ballots",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1713,
+    "description": "Vulnerabilities in US election infrastructure not only expose the nation’s elections to hybrid physical and network attacks, but its voters to influence campaigns designed to cast doubt in the process itself. Authoritarian regimes such as Russia, Iran, and China are capable of conducting both sophisticated disinformation operations and cyber campaigns, and using both methods can be a particularly effective strategy for disrupting an election. Despite significant attention and more (but insufficient) funding in recent years, the overall defensive posture of election infrastructure operators lags behind the offensive cyber capabilities of sophisticated adversaries and criminals. \n\nElections are not alone. Other critical infrastructure sectors have sustained major disruptions because of cyber attacks like ransomware. However, elections are unique in that a sizable segment of the American public views the electoral process suspiciously and is primed to believe any errors or inconsistencies presented that supports that belief. As a result, adversaries now have at least three distinct attack strategies at their disposal: quietly change enough actual ballots to alter the outcome of a contest, loudly manipulate a small number of ballots to provide “evidence” of a systemic failure to suspicious voters, or launch a pure perception hack through the dissemination of false information to convince voters of widespread fraud absent any evidence. \n\nBy analyzing state-backed government messaging across various information mediums using a tool called Hamilton, researchers can track narratives and topics promoted by Russian, Chinese, and Iranian government officials and state-funded media. These trends can help provide context and insights into publicly-available information of breaches, ransomware, or other related attacks against election infrastructure. Election officials and network defenders can work together to improve the resilience of the most important component of the electoral system: voters.",
+    "view_count": 647
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5_pj8ZyixQ8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

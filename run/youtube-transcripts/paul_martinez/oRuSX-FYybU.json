@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oRuSX-FYybU",
+    "language": "en",
+    "took_ms": 9216,
+    "method": null,
+    "title": "WebAssembly at the IoT Edge",
+    "channel": "S4 Events",
+    "upload_date": "20230323",
+    "duration_sec": 1748,
+    "description": "Colin Breck gives a technical presentation on WebAssembly and how it will be helpful for IoT edge devices. The S4 crew believes this session will age well as did some of the early sessions on Rust at S4.\n\nColin covers:\n- What problems WebAssembly solves\n- What is WebAssembly?\n- Component modes\n- and then an example of the use and benefits of WebAssembly\n\nHe ends with addressing concerns, such as changing code at run time.",
+    "view_count": 4912
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oRuSX-FYybU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

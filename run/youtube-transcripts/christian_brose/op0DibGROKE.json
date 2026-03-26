@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "op0DibGROKE",
+    "language": "en",
+    "took_ms": 9353,
+    "method": null,
+    "title": "The Future of Venezuela: A Conversation with Special Representative Elliott Abrams",
+    "channel": "Hudson Institute",
+    "upload_date": "20200430",
+    "duration_sec": 2500,
+    "description": "Join Hudson Institute for a conversation with Special Representative for Venezuela Elliott Abrams and Hudson Senior Fellow Heather Nauert as they discuss the Trump administration’s proposed Democratic Transition Framework for peace and stability in Venezuela.",
+    "view_count": 2338
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] op0DibGROKE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

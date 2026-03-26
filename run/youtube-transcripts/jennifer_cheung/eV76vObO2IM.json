@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eV76vObO2IM",
+    "language": "en",
+    "took_ms": 7960,
+    "method": null,
+    "title": "DEF CON 31 - Contactless Overflow Code Execution in Payment Terminals & ATMs - Josep Rodriguez",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2383,
+    "description": "We conducted a research to assess the current security of NFC payment readers that are present in most of the major ATM brands, portable point of sales, gas stations, vending machines, transportation and other kind of point of sales in the US, Europe and worldwide. In particular, we found code execution vulnerabilities exploitable through NFC when handling a special application protocol data unit (APDU) that affect most NFC payment vendors. The vulnerabilities affect baremetal firmware devices and Android/Linux devices as well.\n\nAfter waiting more than 1 year and a half once we disclosed it to all the affected vendors, we are ready to disclose all the technical details to the public. This research was covered in the media by wired.com but without the technical details that we can share now https://www.wired.com/story/atm-hack-nfc-bugs-point-of-sale/\n\nSome of the affected vendors are: IDtech - https://idtechproducts.com/ Ingenico - https://www.ingenico.com/ Verifone - https://www.verifone.com/ CPI - https://www.cranepi.com/ BBPOS - https://www.bbpos.com/ Wiseasy - https://www.wiseasy.com/ Nexgo - https://www.nexgoglobal.com/\n\nIn this presentation we will describe the vulnerabilities and also demo how the readers can be compromised, using a special Android app we created, by just tapping an Android phone to the reader. We will discuss the consequences such as financial impact in reader’s users/owners and card data stealing once the firmware is compromised. Also, we will show how to compromise the host that is connected to the reader through USB by manipulating the reader’s firmware, chaining stack buffer overflow vulnerabilities in the SDK provided by the vendor that is running in the host machine.\n\nFinally, since one of the affected vendors (IDtech) is present in most ATM brands in the world, the talk will cover different scenarios of how possible can be jackpotting ATMs just tapping a smartphone into the reader of the ATM. We have many years of experience jackpotting all brands of ATMs in multiple different ways and we will show how this is technically possible.",
+    "view_count": 117918
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eV76vObO2IM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>S04: Write + Converge | Sonic Observatory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#a70138",
+                        "error-dim": "#d73357",
+                        "on-error": "#490013",
+                        "tertiary-container": "#499dfe",
+                        "inverse-on-surface": "#565555",
+                        "tertiary-fixed": "#7bb3ff",
+                        "secondary-dim": "#00ed7e",
+                        "on-primary-fixed": "#000000",
+                        "on-background": "#ffffff",
+                        "outline": "#767575",
+                        "on-surface-variant": "#adaaaa",
+                        "secondary": "#00fd87",
+                        "primary": "#bd9dff",
+                        "primary-fixed-dim": "#a67aff",
+                        "primary-dim": "#8a4cfc",
+                        "surface-tint": "#bd9dff",
+                        "secondary-fixed": "#00fd87",
+                        "outline-variant": "#484848",
+                        "secondary-container": "#006d37",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "on-secondary": "#005b2c",
+                        "on-secondary-container": "#e3ffe4",
+                        "surface-container-highest": "#262626",
+                        "surface-container-low": "#131313",
+                        "on-error-container": "#ffb2b9",
+                        "primary-container": "#b28cff",
+                        "surface-bright": "#2c2c2c",
+                        "surface-dim": "#0e0e0e",
+                        "inverse-primary": "#742fe5",
+                        "surface-container-lowest": "#000000",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "on-secondary-fixed-variant": "#006632",
+                        "surface-container-high": "#202020",
+                        "on-secondary-fixed": "#004621",
+                        "surface": "#0e0e0e",
+                        "on-tertiary-fixed": "#001833",
+                        "on-tertiary": "#002a52",
+                        "tertiary": "#6aabff",
+                        "on-primary": "#3c0089",
+                        "on-primary-fixed-variant": "#390083",
+                        "error": "#ff6e84",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-variant": "#262626",
+                        "on-surface": "#ffffff",
+                        "on-primary-container": "#2e006c",
+                        "background": "#0e0e0e",
+                        "surface-container": "#191a1a",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "tertiary-dim": "#4fa0ff",
+                        "primary-fixed": "#b28cff",
+                        "on-tertiary-container": "#001e3c"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .technical-gradient {
+            background: linear-gradient(135deg, #131313 0%, #0e0e0e 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface select-none">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#131313] flex flex-col py-6 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold tracking-tighter text-zinc-100 font-sans">Sonic Observatory</h1>
+<p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Technical Operator</p>
+</div>
+<nav class="flex-1 space-y-1 px-3 overflow-y-auto no-scrollbar">
+<!-- S00 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">radio</span>
+<span class="font-label text-xs">S00: Initialization</span>
+</div>
+<!-- S01 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">waves</span>
+<span class="font-label text-xs">S01: Sound Design</span>
+</div>
+<!-- S02 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">grid_view</span>
+<span class="font-label text-xs">S02: Rhythm Arch</span>
+</div>
+<!-- S03 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">piano</span>
+<span class="font-label text-xs">S03: Melodic Layer</span>
+</div>
+<!-- S04 ACTIVE -->
+<div class="flex items-center px-3 py-2 text-[#00fd87] border-l-2 border-[#00fd87] bg-zinc-900 font-medium cursor-pointer rounded-r-lg">
+<span class="material-symbols-outlined text-sm mr-3">edit_note</span>
+<span class="font-label text-xs">S04: Write + Converge</span>
+</div>
+<!-- S05 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">reorder</span>
+<span class="font-label text-xs">S05: Harmonic Grid</span>
+</div>
+<!-- S06 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">mic_external_on</span>
+<span class="font-label text-xs">S06: Vocal Synthesis</span>
+</div>
+<!-- S07 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">settings_input_component</span>
+<span class="font-label text-xs">S07: Spatial Mix</span>
+</div>
+<!-- S08 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">equalizer</span>
+<span class="font-label text-xs">S08: Master Chain</span>
+</div>
+<!-- S09 -->
+<div class="flex items-center px-3 py-2 text-zinc-500 font-light hover:bg-zinc-800 transition-colors duration-200 cursor-pointer rounded-lg group">
+<span class="material-symbols-outlined text-sm mr-3">ios_share</span>
+<span class="font-label text-xs">S09: Export Output</span>
+</div>
+</nav>
+<div class="px-6 pt-6 border-t border-zinc-800/30">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Operator profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpDinr49BgUMZJyVvu5YOtZ3_Ky-X7yBeS00a26HyWB7qf_-63egpqQCrhTD0IMXT3Wthfw3hp61PKAKvbAHupI_LwYcWVJX5N-VvXkElsC_zmYd0ZLGGi79euYO2dKvO352lPwk0rAAO-SWGFrGsMUKtdfbOMmLx5uuKks5kneLqrEyQCnfYvhkeHBiU99dxsBSEG5JzlAvwj-OAPtylE4bojxMTWVcW4xhkxkpYqTxXu9AMGBkqDpaCNd4CERbb_V_x2ovQcDLw"/>
+</div>
+<div>
+<p class="text-[10px] font-label text-on-surface leading-none">Operator #702</p>
+<p class="text-[9px] font-label text-on-surface-variant uppercase mt-1 tracking-tighter">System Ready</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 right-0 left-64 h-16 flex justify-between items-center px-8 z-40 bg-[#0e0e0e]/80 backdrop-blur-xl border-b border-zinc-800/20">
+<div class="flex items-center space-x-8">
+<div class="flex items-center space-x-2">
+<span class="font-label text-primary-dim text-xs font-bold tracking-widest">S04</span>
+<span class="h-4 w-px bg-zinc-700"></span>
+<h2 class="font-headline font-bold text-lg tracking-tight">Write + Converge Lyrics</h2>
+</div>
+<nav class="flex items-center space-x-6">
+<a class="text-white font-bold border-b border-primary-dim text-xs uppercase tracking-widest pb-1" href="#">Dashboard</a>
+<a class="text-zinc-500 hover:text-zinc-300 text-xs uppercase tracking-widest pb-1 transition-colors" href="#">Pipeline</a>
+<a class="text-zinc-500 hover:text-zinc-300 text-xs uppercase tracking-widest pb-1 transition-colors" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-3 px-3 py-1.5 bg-surface-container-low rounded-lg">
+<span class="font-label text-[10px] text-on-surface-variant">ROUND</span>
+<span class="font-label text-xs text-secondary font-bold">3/5</span>
+</div>
+<div class="px-3 py-1 bg-tertiary-container/10 border-l-2 border-tertiary text-tertiary font-label text-[10px] font-bold tracking-widest uppercase">
+                CONVERGING
+            </div>
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-white transition-colors">settings</span>
+<span class="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-white transition-colors">notifications</span>
+<span class="material-symbols-outlined text-zinc-400 cursor-pointer hover:text-white transition-colors">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 p-8 min-h-screen">
+<div class="max-w-5xl mx-auto">
+<!-- Lyric Workspace Card -->
+<div class="bg-[#1a1a1a] rounded-xl overflow-hidden border border-zinc-800/20">
+<!-- Toolbar -->
+<div class="flex items-center justify-between px-6 py-4 bg-surface-container-low border-b border-zinc-800/40">
+<div class="flex items-center space-x-4">
+<span class="font-label text-[11px] text-on-surface-variant uppercase tracking-widest">Global Seed: "Whisperheads"</span>
+<div class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></div>
+</div>
+<div class="flex items-center space-x-2">
+<button class="px-4 py-2 bg-primary text-on-primary font-label text-[10px] font-bold uppercase tracking-widest rounded-md hover:scale-105 transition-transform active:scale-95">Generate Iteration</button>
+<button class="px-4 py-2 bg-zinc-800 text-zinc-400 font-label text-[10px] font-bold uppercase tracking-widest rounded-md hover:bg-zinc-700 transition-colors">Reset</button>
+</div>
+</div>
+<!-- Lyric Content -->
+<div class="p-8 space-y-12">
+<!-- VERSE 1 Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label text-[10px] font-bold tracking-[0.2em] text-tertiary uppercase">VERSE 1</span>
+<span class="font-label text-[9px] text-zinc-600">ID: 440-S04-V1</span>
+</div>
+<div class="p-6 bg-surface-container-lowest border-l-[3px] border-tertiary rounded-r-lg">
+<div class="space-y-4 font-body text-xl text-[#e2e8f0] tracking-tight leading-relaxed">
+<p>The static hums beneath the skin tonight</p>
+<p>I trace the signals where they blur and die</p>
+<p>We built our towers from the bones of light</p>
+<p>But every frequency must fade and fly</p>
+</div>
+</div>
+<!-- Controls -->
+<div class="grid grid-cols-3 gap-6 pt-2">
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Emotion</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:border-tertiary cursor-pointer transition-all">fear</span>
+<span class="px-2 py-1 bg-zinc-900 border border-tertiary/40 text-tertiary rounded text-[9px] font-label cursor-pointer">sadness</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:border-error cursor-pointer">anger</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:border-secondary cursor-pointer">joy</span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Dynamics</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">pp</span>
+<span class="px-2 py-1 bg-zinc-900 border border-secondary text-secondary rounded text-[9px] font-label cursor-pointer">p</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">mp</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">mf</span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Vocal Direction</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-primary/20 border border-primary text-primary rounded text-[9px] font-label cursor-pointer">whisper</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">speak</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">belt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CHORUS Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label text-[10px] font-bold tracking-[0.2em] text-primary uppercase">CHORUS</span>
+<span class="font-label text-[9px] text-zinc-600">ID: 440-S04-C1</span>
+</div>
+<div class="p-6 bg-surface-container-lowest border-l-[3px] border-primary rounded-r-lg">
+<div class="space-y-4 font-headline italic font-bold text-2xl text-white tracking-tight leading-relaxed">
+<p>"Whisperheads, we carry the frequency</p>
+<p>Lost in the noise between what was and what we need"</p>
+</div>
+</div>
+<!-- Controls -->
+<div class="grid grid-cols-3 gap-6 pt-2">
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Emotion</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:border-tertiary cursor-pointer transition-all">fear</span>
+<span class="px-2 py-1 bg-primary/30 border border-primary text-primary rounded text-[9px] font-label cursor-pointer">trust</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:border-secondary cursor-pointer">joy</span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Dynamics</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400">mf</span>
+<span class="px-2 py-1 bg-zinc-900 border border-primary text-primary rounded text-[9px] font-label cursor-pointer">f</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">ff</span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Vocal Direction</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">whisper</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:bg-zinc-800 cursor-pointer">speak</span>
+<span class="px-2 py-1 bg-primary/20 border border-primary text-primary rounded text-[9px] font-label cursor-pointer">belt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- BRIDGE Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label text-[10px] font-bold tracking-[0.2em] text-error uppercase">BRIDGE</span>
+<span class="font-label text-[9px] text-zinc-600">ID: 440-S04-B1</span>
+</div>
+<div class="p-6 bg-surface-container-lowest border-l-[3px] border-error rounded-r-lg">
+<div class="space-y-4 font-body text-xl text-[#e2e8f0] tracking-tight leading-relaxed opacity-80">
+<p>Fear was the first frequency we learned</p>
+<p>Anger burned the archive to the ground</p>
+</div>
+</div>
+<!-- Controls -->
+<div class="grid grid-cols-3 gap-6 pt-2">
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Emotion</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-error/20 border border-error text-error rounded text-[9px] font-label cursor-pointer">fear</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400 hover:border-tertiary cursor-pointer">sadness</span>
+<span class="px-2 py-1 bg-error/10 border border-error/50 text-error rounded text-[9px] font-label cursor-pointer">anger</span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Dynamics</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400">pp</span>
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400">mp</span>
+<span class="px-2 py-1 bg-error/20 border border-error text-error rounded text-[9px] font-label cursor-pointer">ff</span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase mb-2 block tracking-widest">Vocal Direction</label>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-label text-zinc-400">speak</span>
+<span class="px-2 py-1 bg-error/30 border border-error text-error rounded text-[9px] font-label cursor-pointer">growl</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Action -->
+<div class="px-8 py-6 bg-surface-container-high flex justify-between items-center">
+<div class="flex items-center space-x-2 text-[10px] font-label text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">lock_open</span>
+<span class="uppercase tracking-widest">Archive Unlocked: Convergence Stage Alpha</span>
+</div>
+<button class="flex items-center space-x-3 px-8 py-3 bg-secondary text-on-secondary font-label font-bold uppercase tracking-[0.2em] rounded-md shadow-[0_0_20px_rgba(0,253,135,0.2)] hover:scale-105 transition-transform">
+<span>Commit to S05</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Contextual Metadata Grid (Asymmetric) -->
+<div class="grid grid-cols-4 gap-4 mt-8">
+<div class="col-span-1 bg-surface-container-low p-4 rounded-lg">
+<h4 class="font-label text-[9px] text-on-surface-variant uppercase tracking-widest mb-3">Phonetic Load</h4>
+<div class="space-y-2">
+<div class="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+<div class="flex justify-between font-label text-[10px] text-zinc-400">
+<span>Syllabic Density</span>
+<span>65%</span>
+</div>
+</div>
+</div>
+<div class="col-span-2 bg-surface-container-low p-4 rounded-lg flex items-center justify-between">
+<div class="space-y-1">
+<h4 class="font-label text-[9px] text-on-surface-variant uppercase tracking-widest">Semantic Consistency</h4>
+<p class="font-body text-xs text-secondary">High-frequency alignment with core theme</p>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-secondary border-t-zinc-800 flex items-center justify-center">
+<span class="font-label text-[10px] text-secondary">A+</span>
+</div>
+</div>
+<div class="col-span-1 bg-primary-dim p-4 rounded-lg text-on-primary">
+<h4 class="font-label text-[9px] uppercase tracking-widest mb-1 opacity-70">Project Delta</h4>
+<p class="font-headline font-extrabold text-lg">+12.4ms</p>
+<p class="font-label text-[9px] opacity-70">System Latency Offset</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Polish: Floating Particles -->
+<div class="fixed inset-0 pointer-events-none opacity-20 overflow-hidden z-0">
+<div class="absolute top-[20%] left-[30%] w-px h-64 bg-gradient-to-b from-transparent via-primary to-transparent"></div>
+<div class="absolute top-[40%] right-[10%] w-64 h-px bg-gradient-to-r from-transparent via-secondary to-transparent"></div>
+<div class="absolute bottom-[10%] left-[15%] w-px h-48 bg-gradient-to-b from-transparent via-tertiary to-transparent"></div>
+</div>
+</body></html>

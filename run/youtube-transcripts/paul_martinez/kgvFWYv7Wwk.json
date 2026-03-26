@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kgvFWYv7Wwk",
+    "language": "en",
+    "took_ms": 7916,
+    "method": null,
+    "title": "Secure ModBus (TCP/802)",
+    "channel": "S4 Events",
+    "upload_date": "20171127",
+    "duration_sec": 1896,
+    "description": "Daniel Clarke of Schneider Electric presents their proposal to add security to Modbus. The goals were to maintain simplicity, maintain deployed base, and allow for a mixed environment where some comms were secured and others were not based on criticality. The focus is on mutual authentication and encryption is optional.\n\n6:30  The advantages of using TLS to secure industrial protocols\n\n8:45  The Secure Modbus packet structure and basics\n\n14:15  Extending the certificates to include role based authorization\n\n16:20  PKI basics for Secure Modbus\n\nInteresting point in the Q&A that this is for Modbus TCP only, not serial. One questioner from an electric utility said they don't want TCP because it increases their NERC CIP regulatory burden.",
+    "view_count": 5612
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kgvFWYv7Wwk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

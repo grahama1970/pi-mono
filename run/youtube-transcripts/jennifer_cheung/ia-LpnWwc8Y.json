@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ia-LpnWwc8Y",
+    "language": "en",
+    "took_ms": 9399,
+    "method": null,
+    "title": "DEF CON 33 - DC101 Panel - Alethe Denis, Nikita Kronenberg , zziks, Nicole Schwartz, Nina Alli",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2108,
+    "description": "DC 101 Panel",
+    "view_count": 260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ia-LpnWwc8Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

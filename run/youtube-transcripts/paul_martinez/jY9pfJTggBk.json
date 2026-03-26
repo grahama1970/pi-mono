@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jY9pfJTggBk",
+    "language": "en",
+    "took_ms": 7615,
+    "method": null,
+    "title": "Special Access Features - A Deep Dive Into Unconstrained Code Execution on Siemens S7 PLCs",
+    "channel": "S4 Events",
+    "upload_date": "20200218",
+    "duration_sec": 1663,
+    "description": "Tobias Scharnowski presented the work that he, Ali Abbassi and others at Ruhr-University Bochum, Germany did on the Siemens S7-1200 PLC. They extracted and reverse engineered the bootloader code and found a 'special access feature'. \n\nThey go into detail on the S7-1200 architecture, where the special access feature was found, and how they can use this to get unconstrained code execution on the device. This includes a video showing how it was done.",
+    "view_count": 755
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jY9pfJTggBk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

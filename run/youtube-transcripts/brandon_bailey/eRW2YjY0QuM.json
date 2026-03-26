@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eRW2YjY0QuM",
+    "language": "en",
+    "took_ms": 9754,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - Reflections on TTBR & Everest - Bowen, Blaze, Clark, Hoke, Mulligan",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 1741,
+    "description": "This panel features several researchers that were central to the TTBR as well as the similar Ohio EVEREST Study and will delve further into the conduct of those studies, and how they may inform election security research today.",
+    "view_count": 192
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eRW2YjY0QuM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

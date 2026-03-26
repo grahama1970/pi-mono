@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SJ-kfVUoENk",
+    "language": "en",
+    "took_ms": 7827,
+    "method": null,
+    "title": "DEF CON 33 - The PowerPoint Glove - Parsia Hakimian",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1401,
+    "description": "Inspired by the cult following of the Nintendo Power Glove, this talk explores an unconventional use as a presentation remote. Using a generic ESP32 dev board and basic C code, it becomes a Bluetooth keyboard controlling presentations with ease. In fact, I will deliver this talk using the same Power Glove.\n\nIn this beginner-friendly talk, I'll share my experience \"\"hacking\"\" the Nintendo Entertainment System (NES) accessory. I'll cover:\n\nChoosing the right dev board: Arduino vs ESP32\nNES controller protocol crash course\nTranslating button presses to PowerPoint shortcuts with ESP32\nAttendees will learn how to replicate this project and add pizzazz to their presentations. I'll release the code, so you can spice up your own talks. Maybe you'll even use the Power Glove to pop a shell on a remote machine in your next Proof of Concept.\n\nNote: This is a personal project developed independently and is not affiliated with or endorsed by Microsoft, Nintendo, or any other employer.",
+    "view_count": 369
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SJ-kfVUoENk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

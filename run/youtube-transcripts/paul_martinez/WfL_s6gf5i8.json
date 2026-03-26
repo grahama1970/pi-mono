@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WfL_s6gf5i8",
+    "language": "en",
+    "took_ms": 8888,
+    "method": null,
+    "title": "Dispel - Rapid, Secure Remote Access To ICS",
+    "channel": "S4 Events",
+    "upload_date": "20200329",
+    "duration_sec": 749,
+    "description": "Ian Schmertzler of Dispel on how Dispel's solution provide rapid, secure remote access to ICS. What is unique about this session is he focuses on the time savings and user preference / happiness with being able to simply get remote access (as opposed to jumping through multiple servers and hoops to get to the ICS). \n\nOf course he also covers the security of their solution.",
+    "view_count": 1321
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WfL_s6gf5i8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

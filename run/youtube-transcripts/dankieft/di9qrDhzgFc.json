@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "di9qrDhzgFc",
+    "language": "en",
+    "took_ms": 8148,
+    "method": null,
+    "title": "I Fully Automated an AI YouTube Channel using Make Grid",
+    "channel": "Dan Kieft",
+    "upload_date": "20250630",
+    "duration_sec": 599,
+    "description": "Tutorial on how to create an AI YouTube Channel with AI POV videos posted Automatically\nTry out Make 👉 https://www.make.com/en/register?promo=dankieft&utm_source=dankieft&utm_medium=influencer&utm_campaign=dankieft-grid-release-june25\n\nI created a new AI Social media automation to automatically post YouTube videos for me. These  AI Pov videos are super easy to make thanks to Make. With the new Make grid feature you get a realtime overview of your automations. This makes it super easy to manage all your automations in one overview. To test it out I created this AI POV video. If you want this yourself I would recommend you to follow the template so you can download the automation and implement it.\n\nGuide + blueprint 👉  https://docs.google.com/document/d/1bKzWz0gvzYw7iq9KGOgFnamaOvM8LaPo4sZ63aaK8Hc/edit?usp=sharing \nTry Blotato 👉 https://blotato.com/?ref=aipov\n\n\n👉My Ai Toolkit - https://dankieft.carrd.co/\nMy toolkit gives you over 30+ ai tools that I've gathered over the years and use daily. You'll also get access to my free newsletter that educates you about the latest ai tools.\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 32856
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] di9qrDhzgFc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

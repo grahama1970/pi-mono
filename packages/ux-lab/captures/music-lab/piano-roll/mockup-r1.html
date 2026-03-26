@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Piano Roll — Horus "Whisperheads"</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0b1220;
+    font-family: -apple-system, 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: #e2e8f0;
+    width: 1280px;
+    height: 400px;
+    overflow: hidden;
+  }
+  .container {
+    width: 1280px;
+    height: 400px;
+    background: #0b1220;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px 4px 16px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  .badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(122, 58, 237, 0.15);
+    color: #7c3aed;
+    border: 1px solid rgba(122, 58, 237, 0.3);
+  }
+  .badge-bpm {
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    border-color: rgba(0, 255, 136, 0.2);
+  }
+  .song-title {
+    font-size: 11px;
+    color: #e2e8f0;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+  .roll-wrapper {
+    flex: 1;
+    padding: 0 16px;
+    min-height: 0;
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 6px 16px 8px 16px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .legend-text {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <span class="header-label">Piano Roll</span>
+      <span class="badge">D min</span>
+      <span class="badge badge-bpm">85 BPM</span>
+    </div>
+    <span class="song-title">Horus &mdash; Whisperheads</span>
+  </div>
+
+  <div class="roll-wrapper">
+    <svg id="pianoRoll" width="1248" height="332" viewBox="0 0 1248 332">
+      <defs>
+        <linearGradient id="introGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#334155" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#334155" stop-opacity="0.05"/>
+        </linearGradient>
+        <linearGradient id="verseGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4a9eff" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#4a9eff" stop-opacity="0.03"/>
+        </linearGradient>
+        <linearGradient id="chorusGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.04"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Grid constants: pitch gutter=44px, top header=40px -->
+      <!-- Playable area: x=44..1248 (1204px for 8 bars = 150.5px/bar), y=40..320 (280px) -->
+      <!-- Pitch range: C3(48) to C5(72) = 24 semitones, lane height ~11.67px -->
+
+      <!-- Section bands -->
+      <rect x="44" y="0" width="301" height="332" fill="url(#introGrad)"/>
+      <rect x="345" y="0" width="602" height="332" fill="url(#verseGrad)"/>
+      <rect x="947" y="0" width="301" height="332" fill="url(#chorusGrad)"/>
+
+      <!-- Section labels -->
+      <text x="194" y="12" text-anchor="middle" font-size="9" font-weight="600" letter-spacing="0.12em" fill="#64748b" text-transform="uppercase" style="text-transform:uppercase">INTRO</text>
+      <text x="646" y="12" text-anchor="middle" font-size="9" font-weight="600" letter-spacing="0.12em" fill="#64748b" style="text-transform:uppercase">VERSE</text>
+      <text x="1098" y="12" text-anchor="middle" font-size="9" font-weight="600" letter-spacing="0.12em" fill="#64748b" style="text-transform:uppercase">CHORUS</text>
+
+      <!-- Chord labels row (y=22) -->
+      <!-- Bar 1: Dm, Bar 2: Am, Bar 3: Dm, Bar 4: F, Bar 5: C, Bar 6: Am, Bar 7: Bb-C, Bar 8: Dm-Dm -->
+      <text x="119" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">Dm</text>
+      <text x="270" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">Am</text>
+      <text x="420" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">Dm</text>
+      <text x="571" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">F</text>
+      <text x="721" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">C</text>
+      <text x="872" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">Am</text>
+      <text x="985" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">Bb</text>
+      <text x="1060" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">C</text>
+      <text x="1135" y="26" text-anchor="middle" font-size="10" fill="#e2e8f0" opacity="0.5" font-weight="500">Dm</text>
+
+      <!-- Bar number labels -->
+      <text x="119" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">1</text>
+      <text x="270" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">2</text>
+      <text x="420" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">3</text>
+      <text x="571" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">4</text>
+      <text x="721" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">5</text>
+      <text x="872" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">6</text>
+      <text x="1022" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">7</text>
+      <text x="1173" y="38" text-anchor="middle" font-size="9" fill="#334155" font-weight="500">8</text>
+
+      <!-- Pitch gutter labels -->
+      <!-- C5=72 → y=40, C4=60 → y=40 + 12*11.67=180, C3=48 → y=320 -->
+      <text x="38" y="44" text-anchor="end" font-size="9" fill="#334155" font-weight="500">C5</text>
+      <text x="38" y="111" text-anchor="end" font-size="9" fill="#334155" font-weight="500">F4</text>
+      <text x="38" y="180" text-anchor="end" font-size="9" fill="#334155" font-weight="500">C4</text>
+      <text x="38" y="250" text-anchor="end" font-size="9" fill="#334155" font-weight="500">F3</text>
+      <text x="38" y="320" text-anchor="end" font-size="9" fill="#334155" font-weight="500">C3</text>
+
+      <!-- Horizontal pitch grid lines (every octave) -->
+      <line x1="44" y1="40" x2="1248" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <line x1="44" y1="180" x2="1248" y2="180" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+      <line x1="44" y1="320" x2="1248" y2="320" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+      <!-- C/F reference lines -->
+      <line x1="44" y1="110" x2="1248" y2="110" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+      <line x1="44" y1="250" x2="1248" y2="250" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+
+      <!-- Vertical bar lines (solid) — 8 bars, each 150.5px -->
+      <line x1="44" y1="40" x2="44" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="194.5" y1="40" x2="194.5" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="345" y1="40" x2="345" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="495.5" y1="40" x2="495.5" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="646" y1="40" x2="646" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="796.5" y1="40" x2="796.5" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="947" y1="40" x2="947" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="1097.5" y1="40" x2="1097.5" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+      <line x1="1248" y1="40" x2="1248" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+
+      <!-- Vertical beat lines (dotted) — 4 beats per bar, skip downbeats -->
+      <!-- Bar 1: 44 + 37.625, 75.25, 112.875 -->
+      <line x1="81.6" y1="40" x2="81.6" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="119.25" y1="40" x2="119.25" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="156.9" y1="40" x2="156.9" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 2 -->
+      <line x1="232.1" y1="40" x2="232.1" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="269.75" y1="40" x2="269.75" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="307.4" y1="40" x2="307.4" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 3 -->
+      <line x1="382.6" y1="40" x2="382.6" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="420.25" y1="40" x2="420.25" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="457.9" y1="40" x2="457.9" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 4 -->
+      <line x1="533.1" y1="40" x2="533.1" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="570.75" y1="40" x2="570.75" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="608.4" y1="40" x2="608.4" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 5 -->
+      <line x1="683.6" y1="40" x2="683.6" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="721.25" y1="40" x2="721.25" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="758.9" y1="40" x2="758.9" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 6 -->
+      <line x1="834.1" y1="40" x2="834.1" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="871.75" y1="40" x2="871.75" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="909.4" y1="40" x2="909.4" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 7 -->
+      <line x1="984.6" y1="40" x2="984.6" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="1022.25" y1="40" x2="1022.25" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="1059.9" y1="40" x2="1059.9" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <!-- Bar 8 -->
+      <line x1="1135.1" y1="40" x2="1135.1" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="1172.75" y1="40" x2="1172.75" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+      <line x1="1210.4" y1="40" x2="1210.4" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="2,4"/>
+
+      <!--
+        NOTES DATA — Whisperheads arrangement
+        Grid math:
+          barX(bar, beat) = 44 + (bar-1)*150.5 + (beat-1)*37.625
+          pitchY(midi) = 320 - (midi - 48) * 11.667
+          noteW(beats) = beats * 37.625
+          laneH = 10
+        Instruments: vocal=#7c3aed, bass=#4a9eff, drums=#ff4444, keys=#00ff88, synth=#ffaa00, guitar=#ff6b6b
+      -->
+
+      <!-- ====== INTRO (Bars 1-2) ====== -->
+
+      <!-- Keys: Dm chord (D3, F3, A3) — bar 1, whole notes -->
+      <rect x="44" y="250.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <rect x="44" y="226.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.5"/>
+      <rect x="44" y="203.3" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.5"/>
+
+      <!-- Keys: Am chord (A3, C4, E4) — bar 2 -->
+      <rect x="194.5" y="203.3" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <rect x="194.5" y="180.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.5"/>
+      <rect x="194.5" y="156.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.5"/>
+
+      <!-- Synth: atmospheric pad, D4 sustain bar 1-2 -->
+      <rect x="44" y="110.0" rx="2" ry="2" width="301" height="10" fill="#ffaa00" opacity="0.3"/>
+      <!-- Synth: A4 shimmer, bar 1 beat 3 to bar 2 beat 2 -->
+      <rect x="119.25" y="86.7" rx="2" ry="2" width="188.1" height="10" fill="#ffaa00" opacity="0.25"/>
+
+      <!-- Bass: D2 (would be below range, use D3=50) — bar 1, half notes -->
+      <rect x="44" y="296.7" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.7"/>
+      <rect x="119.25" y="296.7" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.55"/>
+      <!-- Bass: A2 (use A3-12 → A2=57-12=45, clamp to C3=48) bar 2 -->
+      <rect x="194.5" y="320.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.65"/>
+      <rect x="307.4" y="320.0" rx="2" ry="2" width="37.6" height="10" fill="#4a9eff" opacity="0.5"/>
+
+      <!-- Drums: kick on 1 and 3, snare on 2 and 4 (low range: kick=C3, snare=D3) -->
+      <!-- Bar 1 -->
+      <rect x="44" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.9"/>
+      <rect x="81.6" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.7"/>
+      <rect x="119.25" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.85"/>
+      <rect x="156.9" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.65"/>
+      <!-- Bar 2 -->
+      <rect x="194.5" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.9"/>
+      <rect x="232.1" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.7"/>
+      <rect x="269.75" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.8"/>
+      <rect x="307.4" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.6"/>
+
+      <!-- Hi-hat: eighth notes across bars 1-2 (E3=52) -->
+      <rect x="44" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="62.8" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="81.6" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="100.4" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="119.25" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="138" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="156.9" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="175.7" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="194.5" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="213.3" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="232.1" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="250.9" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="269.75" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="288.5" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+      <rect x="307.4" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.4"/>
+      <rect x="326.2" y="273.3" rx="1" ry="1" width="8" height="8" fill="#ff4444" opacity="0.35"/>
+
+      <!-- ====== VERSE (Bars 3-6) ====== -->
+
+      <!-- Vocal melody: D4-F4-E4-D4 phrases -->
+      <!-- Bar 3: D4 (half), E4 (quarter), F4 (quarter) -->
+      <rect x="345" y="140.0" rx="2" ry="2" width="75.25" height="10" fill="#7c3aed" opacity="0.85"/>
+      <rect x="420.25" y="128.3" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.75"/>
+      <rect x="457.9" y="120.0" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.8"/>
+      <!-- Bar 4: A4 (dotted quarter), G4 (eighth), F4 (half) -->
+      <rect x="495.5" y="86.7" rx="2" ry="2" width="56.4" height="10" fill="#7c3aed" opacity="0.9"/>
+      <rect x="551.9" y="96.7" rx="2" ry="2" width="18.8" height="10" fill="#7c3aed" opacity="0.7"/>
+      <rect x="570.75" y="120.0" rx="2" ry="2" width="75.25" height="10" fill="#7c3aed" opacity="0.8"/>
+      <!-- Bar 5: E4 (quarter), C4 (quarter), D4 (half) -->
+      <rect x="646" y="128.3" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.75"/>
+      <rect x="683.6" y="180.0" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.7"/>
+      <rect x="721.25" y="140.0" rx="2" ry="2" width="75.25" height="10" fill="#7c3aed" opacity="0.85"/>
+      <!-- Bar 6: A3 (quarter), rest, D4 (half) -->
+      <rect x="796.5" y="203.3" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.65"/>
+      <rect x="871.75" y="140.0" rx="2" ry="2" width="75.25" height="10" fill="#7c3aed" opacity="0.8"/>
+
+      <!-- Keys: verse chords — Dm (bar3), F (bar4), C (bar5), Am (bar6) -->
+      <!-- Bar 3: Dm = D3, F3, A3 -->
+      <rect x="345" y="250.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.6"/>
+      <rect x="345" y="226.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <rect x="345" y="203.3" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <!-- Bar 4: F = F3, A3, C4 -->
+      <rect x="495.5" y="226.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.6"/>
+      <rect x="495.5" y="203.3" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <rect x="495.5" y="180.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <!-- Bar 5: C = C4, E4, G4 -->
+      <rect x="646" y="180.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.6"/>
+      <rect x="646" y="156.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <rect x="646" y="96.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.5"/>
+      <!-- Bar 6: Am = A3, C4, E4 -->
+      <rect x="796.5" y="203.3" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.6"/>
+      <rect x="796.5" y="180.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+      <rect x="796.5" y="156.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+
+      <!-- Bass: verse — root notes, half note pattern -->
+      <rect x="345" y="296.7" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.75"/>
+      <rect x="420.25" y="296.7" rx="2" ry="2" width="37.6" height="10" fill="#4a9eff" opacity="0.6"/>
+      <rect x="457.9" y="285.0" rx="2" ry="2" width="37.6" height="10" fill="#4a9eff" opacity="0.55"/>
+      <!-- Bar 4: F bass -->
+      <rect x="495.5" y="285.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.75"/>
+      <rect x="570.75" y="285.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.6"/>
+      <!-- Bar 5: C bass -->
+      <rect x="646" y="320.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.75"/>
+      <rect x="721.25" y="308.3" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.6"/>
+      <!-- Bar 6: A bass -->
+      <rect x="796.5" y="320.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.7"/>
+      <rect x="871.75" y="308.3" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.55"/>
+
+      <!-- Guitar: arpeggiated fills, verse bars 3-6 -->
+      <!-- Bar 3: D4-A3-F4 arpeggiated -->
+      <rect x="345" y="140.0" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.5"/>
+      <rect x="382.6" y="203.3" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.45"/>
+      <rect x="420.25" y="120.0" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.5"/>
+      <rect x="457.9" y="203.3" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.45"/>
+      <!-- Bar 5: C-E-G arpeggio -->
+      <rect x="646" y="180.0" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.5"/>
+      <rect x="683.6" y="156.7" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.45"/>
+      <rect x="721.25" y="96.7" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.5"/>
+      <rect x="758.9" y="156.7" rx="2" ry="2" width="30" height="9" fill="#ff6b6b" opacity="0.45"/>
+
+      <!-- Drums: verse pattern (busier) -->
+      <!-- Bars 3-6: kick/snare + hi-hat continues -->
+      <!-- Bar 3 -->
+      <rect x="345" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.95"/>
+      <rect x="382.6" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.75"/>
+      <rect x="420.25" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.9"/>
+      <rect x="457.9" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.7"/>
+      <!-- Bar 4 -->
+      <rect x="495.5" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.95"/>
+      <rect x="533.1" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.75"/>
+      <rect x="570.75" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.9"/>
+      <rect x="608.4" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.7"/>
+      <!-- Bar 5 -->
+      <rect x="646" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.95"/>
+      <rect x="683.6" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.75"/>
+      <rect x="721.25" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.9"/>
+      <rect x="758.9" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.7"/>
+      <!-- Bar 6 -->
+      <rect x="796.5" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.95"/>
+      <rect x="834.1" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.75"/>
+      <rect x="871.75" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.85"/>
+      <rect x="909.4" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.7"/>
+
+      <!-- Synth: verse texture — sustained pads -->
+      <rect x="345" y="110.0" rx="2" ry="2" width="602" height="10" fill="#ffaa00" opacity="0.2"/>
+      <rect x="495.5" y="63.3" rx="2" ry="2" width="150.5" height="10" fill="#ffaa00" opacity="0.3"/>
+
+      <!-- ====== CHORUS (Bars 7-8) ====== -->
+
+      <!-- Vocal: powerful melody — Bb4, C5, D5(clamp D5=C5), A4, D4 -->
+      <!-- Bar 7: Bb4 (quarter), C5 (quarter), A4 (quarter), Bb4 (quarter) -->
+      <rect x="947" y="63.3" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.95"/>
+      <rect x="984.6" y="40.0" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="1.0"/>
+      <rect x="1022.25" y="86.7" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.9"/>
+      <rect x="1059.9" y="63.3" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.85"/>
+      <!-- Bar 8: D4 (half), rest, D4 (quarter, fade) -->
+      <rect x="1097.5" y="140.0" rx="2" ry="2" width="75.25" height="10" fill="#7c3aed" opacity="0.9"/>
+      <rect x="1210.4" y="140.0" rx="2" ry="2" width="37.6" height="10" fill="#7c3aed" opacity="0.5"/>
+
+      <!-- Keys: Bb (bar 7 first half), C (bar 7 second half), Dm (bar 8) -->
+      <!-- Bb = Bb3, D4, F4 -->
+      <rect x="947" y="215.0" rx="2" ry="2" width="75.25" height="10" fill="#00ff88" opacity="0.7"/>
+      <rect x="947" y="140.0" rx="2" ry="2" width="75.25" height="10" fill="#00ff88" opacity="0.65"/>
+      <rect x="947" y="120.0" rx="2" ry="2" width="75.25" height="10" fill="#00ff88" opacity="0.65"/>
+      <!-- C = C4, E4, G4 -->
+      <rect x="1022.25" y="180.0" rx="2" ry="2" width="75.25" height="10" fill="#00ff88" opacity="0.7"/>
+      <rect x="1022.25" y="156.7" rx="2" ry="2" width="75.25" height="10" fill="#00ff88" opacity="0.65"/>
+      <rect x="1022.25" y="96.7" rx="2" ry="2" width="75.25" height="10" fill="#00ff88" opacity="0.6"/>
+      <!-- Dm = D3, F3, A3, D4 (doubled) -->
+      <rect x="1097.5" y="250.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.7"/>
+      <rect x="1097.5" y="226.7" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.65"/>
+      <rect x="1097.5" y="203.3" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.65"/>
+      <rect x="1097.5" y="140.0" rx="2" ry="2" width="150.5" height="10" fill="#00ff88" opacity="0.55"/>
+
+      <!-- Bass: chorus — Bb, C, D, D -->
+      <rect x="947" y="285.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.85"/>
+      <rect x="1022.25" y="320.0" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.8"/>
+      <rect x="1097.5" y="296.7" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.85"/>
+      <rect x="1172.75" y="296.7" rx="2" ry="2" width="75.25" height="10" fill="#4a9eff" opacity="0.7"/>
+
+      <!-- Drums: chorus (heavy) -->
+      <rect x="947" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="1.0"/>
+      <rect x="984.6" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.85"/>
+      <rect x="1022.25" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.95"/>
+      <rect x="1059.9" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.8"/>
+      <rect x="1097.5" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="1.0"/>
+      <rect x="1135.1" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.85"/>
+      <rect x="1172.75" y="308.3" rx="2" ry="2" width="15" height="10" fill="#ff4444" opacity="0.95"/>
+      <rect x="1210.4" y="296.7" rx="2" ry="2" width="12" height="10" fill="#ff4444" opacity="0.8"/>
+
+      <!-- Crash cymbal: chorus downbeat (F#3=54) -->
+      <rect x="947" y="250.0" rx="2" ry="2" width="56.4" height="9" fill="#ff4444" opacity="0.6"/>
+
+      <!-- Synth: chorus power pad -->
+      <rect x="947" y="63.3" rx="2" ry="2" width="301" height="10" fill="#ffaa00" opacity="0.35"/>
+      <rect x="947" y="110.0" rx="2" ry="2" width="301" height="10" fill="#ffaa00" opacity="0.3"/>
+
+      <!-- Guitar: chorus power chords -->
+      <rect x="947" y="156.7" rx="2" ry="2" width="75.25" height="9" fill="#ff6b6b" opacity="0.65"/>
+      <rect x="947" y="180.0" rx="2" ry="2" width="75.25" height="9" fill="#ff6b6b" opacity="0.6"/>
+      <rect x="1022.25" y="140.0" rx="2" ry="2" width="75.25" height="9" fill="#ff6b6b" opacity="0.65"/>
+      <rect x="1022.25" y="163.3" rx="2" ry="2" width="75.25" height="9" fill="#ff6b6b" opacity="0.6"/>
+      <rect x="1097.5" y="168.3" rx="2" ry="2" width="150.5" height="9" fill="#ff6b6b" opacity="0.6"/>
+      <rect x="1097.5" y="191.7" rx="2" ry="2" width="150.5" height="9" fill="#ff6b6b" opacity="0.55"/>
+
+      <!-- Gutter border -->
+      <line x1="44" y1="40" x2="44" y2="320" stroke="rgba(255,255,255,0.13)" stroke-width="1"/>
+
+    </svg>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#7c3aed"></div>
+      <span class="legend-text">Vocal</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#4a9eff"></div>
+      <span class="legend-text">Bass</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#ff4444"></div>
+      <span class="legend-text">Drums</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#00ff88"></div>
+      <span class="legend-text">Keys</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#ffaa00"></div>
+      <span class="legend-text">Synth</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#ff6b6b"></div>
+      <span class="legend-text">Guitar</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D9hY8pZe7hk",
+    "language": "en",
+    "took_ms": 8482,
+    "method": null,
+    "title": "Step-by-Step Natural Language Processing Workshop: From Data to Deployment",
+    "channel": "DeepLearningAI",
+    "upload_date": "20211117",
+    "duration_sec": 3625,
+    "description": "Join us for a live, interactive workshop on how to build and deploy a virtual chatbot using Natural Language Processing (NLP).\n\nThe 1 hour hands-on session will be hosted by Greg Loughnane (PhD) (https://www.linkedin.com/in/gregloughnane/), Lead Instructor at FourthBrain’s Live MLOps program. Greg will walk through both the business application and the stack of ML tools required to go from project scoping to cloud-based deployment.  Attendees will learn how to replicate the end-to-end MLOps pipeline, including all necessary deployment code.\n\nSpecial announcement:\nWe are extremely excited to announce a scholarship program with our event co-host FourthBrain, who offers live, instructor-led cohort programs focused on Machine Learning.  Up to Three (3) people will be selected to receive $3,000 off the tuition and anyone who registers for the event may be eligible to apply. Click here to learn more details and apply before Nov 30, 2021: https://www.fourthbrain.ai/dl-scholarship\n\nResources:\nThe Code on Github -- https://github.com/FourthBrain/step-by-step-nlp-dialogpt-chatbot\nYouTube playlist -- https://www.youtube.com/playlist?list=PL6iGeSA2pl0WPlpUTEtaNDmzqkbipqEJ0\n\nHow can we make our events even better for you? Let us know your thoughts in the survey here https://bit.ly/3HI4G7Z. We’re giving away a limited number of promotional codes for 50% off on the first month subscription to any of our courses to 200 people who submit qualifying survey responses before Nov 24. \n\nTo learn more about FourthBrain: https://www.fourthbrain.ai/\nTo learn more about DeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 13303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D9hY8pZe7hk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

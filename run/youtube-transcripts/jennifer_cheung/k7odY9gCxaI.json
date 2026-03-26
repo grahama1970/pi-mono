@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k7odY9gCxaI",
+    "language": "en",
+    "took_ms": 8894,
+    "method": null,
+    "title": "DEF CON 32 - AppSec Considerations From the Casino Industry - Aleise McGowan, Tennisha Martin",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1103,
+    "description": "In the casino industry, a surge of ransomware attacks has marked an era of unprecedented threats and vulnerabilities. This session will focus on a critical aspect of security within this industry, exploring how ransomware has specifically impacted applications and associated systems. Attendees will gain insights into the methods used by malicious actors to compromise casino applications, the resulting financial and operational disruptions, (i.e., affected customer data security etc.) and responses developed to counter these threats. By researching industry giants like MGM and Caesars, we will highlight the importance of robust application security measures and the future landscape of cybersecurity in this sector. Unique security challenges faced by the casino industry will be explored, along with examples of vulnerabilities and their exploitation. The session will also delve into the interplay between ICT, IoT, and application security in the casino context.",
+    "view_count": 4722
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k7odY9gCxaI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

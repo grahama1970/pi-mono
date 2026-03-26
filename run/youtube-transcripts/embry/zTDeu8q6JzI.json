@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zTDeu8q6JzI",
+    "language": "en",
+    "took_ms": 7754,
+    "method": null,
+    "title": "We aimed our tracking telescope at #SpaceX's #Starship... here's what we saw",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240325",
+    "duration_sec": 56,
+    "description": "Song: \"Cryo\" by Everyday Astronaut\n\nHere’s what we captured with our tracking telescope for #Starship #flight3! We’re using a 8” Meade scope on a Ross VR600 mount and a RED Komodo-X. See the full mega cut on our YouTube channel. @CosmicPerspective  #spacex #ift3",
+    "view_count": 5305845
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zTDeu8q6JzI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

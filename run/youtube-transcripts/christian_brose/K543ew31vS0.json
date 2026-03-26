@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K543ew31vS0",
+    "language": "en",
+    "took_ms": 7728,
+    "method": null,
+    "title": "Competing with China with Chips: US Microelectronics Supplies during a Trade War",
+    "channel": "Hudson Institute",
+    "upload_date": "20230111",
+    "duration_sec": 3299,
+    "description": "Microelectronics are increasingly central to the military and economic competition between the United States and China. With the CHIPS and Science Act and its recent export controls, Washington is going on offense to improve US microelectronics resilience and undermine Beijing’s access to leading-edge semiconductors. But US government efforts do not reach every link in the microelectronics supply chain, leaving US military and national security systems dependent on overseas sources for key components and processes.\n\nPlease join Hudson Institute Senior Fellow Bryan Clark for a discussion on strengthening the US microelectronics supply chain with Neal Anderson of Chemours, Rich Ashooh of LAM Research, and Travis Kelly of the Isola Group.",
+    "view_count": 7546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K543ew31vS0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

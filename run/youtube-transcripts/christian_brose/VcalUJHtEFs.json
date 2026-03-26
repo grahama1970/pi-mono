@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VcalUJHtEFs",
+    "language": "en",
+    "took_ms": 8878,
+    "method": null,
+    "title": "Irwin Stelzer on the Economics of Europe",
+    "channel": "Hudson Institute",
+    "upload_date": "20110912",
+    "duration_sec": 222,
+    "description": "Hudson Senior Fellow Irwin Stelzer discusses the current economic crisis affecting Europe. Why is history so important to the viability of the EU?",
+    "view_count": 131
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VcalUJHtEFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

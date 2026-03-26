@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6XGk9Pfs9oI",
+    "language": "en",
+    "took_ms": 8930,
+    "method": null,
+    "title": "S4x19 Closing Panel: Government's Role",
+    "channel": "S4 Events",
+    "upload_date": "20191115",
+    "duration_sec": 156,
+    "description": "Zach Tudor and Rob Lee share their thoughts on what the .gov can and can't do in helping to secure the ICS responsible for monitoring and controlling critical infrastructure.",
+    "view_count": 115
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6XGk9Pfs9oI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

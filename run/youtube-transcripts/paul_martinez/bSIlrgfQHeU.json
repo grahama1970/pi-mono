@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bSIlrgfQHeU",
+    "language": "en",
+    "took_ms": 8966,
+    "method": null,
+    "title": "Pulling Data From Drawings Using AI",
+    "channel": "S4 Events",
+    "upload_date": "20240425",
+    "duration_sec": 1516,
+    "description": "Network sensors can have blind spots, and may not be present in some or all sections of brownfield systems. They also don't give insight into what the detected devices control in the process, context which must be supplied by other means such as reading documentation or interviews with process owners.\n\nIan Fox shows how they used LLM-based tools to create knowledge graphs from documents such as network diagrams, P&IDs, loop diagrams, and other technical drawings. The graphs helped identify attack paths and supplemented online data for a number of purposes.",
+    "view_count": 5094
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bSIlrgfQHeU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

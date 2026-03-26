@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZTj9upU0bng",
+    "language": "en",
+    "took_ms": 10079,
+    "method": null,
+    "title": "Diana Furchtgott-Roth on the Debt Deal for BBC World Service",
+    "channel": "Hudson Institute",
+    "upload_date": "20110803",
+    "duration_sec": 255,
+    "description": "Hudson Senior Fellow Diana Furchtgott-Roth joined BBC World Service on August 2nd to discuss the debt deal.",
+    "view_count": 170
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZTj9upU0bng: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

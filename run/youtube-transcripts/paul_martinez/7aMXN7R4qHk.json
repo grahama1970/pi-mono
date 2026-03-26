@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7aMXN7R4qHk",
+    "language": "en",
+    "took_ms": 8712,
+    "method": null,
+    "title": "Jumpstart Your NIST CSF Maturity",
+    "channel": "S4 Events",
+    "upload_date": "20200214",
+    "duration_sec": 1841,
+    "description": "This Forescout session on the S4x20 Sponsor Stage looks at the five functions in the NIST Cybersecurity Framework: Identify, Protect, Detect, Respond and Recover.\n\nFor each function Brian Proctor and Sandeep Lota cover industry trends and then how Forescout products can help meet the requirements for the function.",
+    "view_count": 599
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7aMXN7R4qHk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

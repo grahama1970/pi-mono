@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xWhI8RkRSGQ",
+    "language": "en",
+    "took_ms": 8945,
+    "method": null,
+    "title": "Diarization, Voice and Turn Detection",
+    "channel": "Trelis Research",
+    "upload_date": "20250317",
+    "duration_sec": 4340,
+    "description": "📜 Get repo access at Trelis.com/ADVANCED-transcription\n\n📧 Get the Trelis AI Newsletter: https://trelis.substack.com\n\n❗️If you subscribed here, click the bell to be notified of new vids\n\n🤝 Work for Trelis: https://trelis.com/jobs/\n\n🛠 Build & Deploy Faster\nFine-tuning, Inference, Audio, Evals, and Vision Tools: https://trelis.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1ONjTDXWBAIPQBqGNJ_gIdVsj8vJGFy8Q0WcRJoQnx0s/edit?usp=sharing\n- Smart Turn Repo: https://github.com/pipecat-ai/smart-turn\n- Pyannote Repo: https://github.com/pyannote/pyannote-audio\n- Nvidia Nemo Repo: https://github.com/NVIDIA/NeMo/blob/main/tutorials/speaker_tasks/Speaker_Diarization_Inference.ipynb\n\nTIMESTAMPS:\n00:00 Introduction to Turn Detection and Diarization\n00:33 Understanding Turn Detection\n01:01 Challenges in Turn Detection\n02:20 Smart Turn Project Overview\n03:28 Voice Activation Detection and Pipecat Smart Turn\n06:24 Introduction to Diarization\n06:35 Challenges in Diarization\n07:19 Diarization Pipeline and Models\n10:48 Nvidia Nemo and Multiscale Embeddings\n15:58 Running Scripts and Examples\n36:43 Setting Up the NEMO Model for Diarization\n37:07 Installing Dependencies and Preparing the Environment\n37:47 Understanding the NEMO Diarization Process\n39:09 Running the Diarization Script\n44:21 Configuring and Running the Diarization Model\n54:06 Evaluating Diarization Results\n56:58 Testing with Overlapping Speakers\n01:10:19 Final Thoughts and Recommendation",
+    "view_count": 7751
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xWhI8RkRSGQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BZLEQ-AdwR8",
+    "language": "en",
+    "took_ms": 9593,
+    "method": null,
+    "title": "A Conversation with David Albright",
+    "channel": "Hudson Institute",
+    "upload_date": "20210514",
+    "duration_sec": 3888,
+    "description": "Please join Hudson Institute Senior Fellow Michael Doran and David Albright—one of the few nuclear experts granted access to the Iranian Atomic Archive captured by Israel in 2018—for a discussion on the Iran nuclear deal.\n\nThe Biden administration is seeking to revive the Joint Comprehensive Plan of Action (JCPOA) with Iran. But what security does the agreement actually provide to the U.S. and its regional allies at this stage? New intelligence unearthed by Israel and the United Nations’ nuclear watchdog shows that Tehran was much closer to obtaining an atomic bomb than the U.S. believed six years ago. What’s more, Iran has maintained—and concealed—key elements of its crash AMAD Plan, which sought to produce five deliverable nuclear weapons. Will a re-implemented JCPOA stem the spread of nuclear technologies in the Middle East or accelerate them? Please join Hudson Institute for this important discussion.\n\nLearn more at https://www.hudson.org/",
+    "view_count": 1050
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BZLEQ-AdwR8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

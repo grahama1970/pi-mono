@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VfoSLhMrYPM",
+    "language": "en",
+    "took_ms": 9527,
+    "method": null,
+    "title": "The Organization of the Islamic Conference",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 4401,
+    "description": "The Organization of the Islamic Conference (OIC), through its Saudi-based Islamic Fiqh Academy (IFA), seeks to bring Islamic jurisprudence to bear on key matters affecting modern life and international law. Since the 1980s, IFA has been offering guidance to Muslims worldwide. IFA's goal is to unify Muslims, and restore the cultural authority of the global Muslim community. Because it consults widely with the most eminent religious scholars, and its contributing members are themselves internation",
+    "view_count": 1143
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VfoSLhMrYPM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

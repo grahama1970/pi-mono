@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280, initial-scale=1.0">
+    <title>Piano Roll R2 — Whisperheads</title>
+    <style>
+        :root {
+            --bg-deep: #0b1220;
+            --bg-card: #1a1a1a;
+            --bg-main: #141414;
+            --nvis-green: #00ff88;
+            --nvis-red: #ff4444;
+            --nvis-amber: #ffaa00;
+            --nvis-blue: #4a9eff;
+            --nvis-accent: #7c3aed;
+            --text-white: #e2e8f0;
+            --text-dim: #64748b;
+            --text-muted: #334155;
+            --border-color: rgba(255, 255, 255, 0.13);
+            --border-radius: 12px;
+
+            --instrument-vocal: #7c3aed;
+            --instrument-bass: #4a9eff;
+            --instrument-drums: #ff4444;
+            --instrument-keys: #00ff88;
+            --instrument-synth: #ffaa00;
+            --instrument-guitar: #ff6b6b;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 1280px;
+            height: 500px;
+            background-color: var(--bg-main);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .minimap {
+            height: 60px;
+            background-color: rgba(0,0,0,0.2);
+            padding: 4px 16px;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            min-height: 0;
+        }
+
+        .pitch-axis {
+            width: 50px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: space-around;
+            text-align: right;
+            padding-right: 8px;
+            font-size: 10px;
+            color: var(--text-dim);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .roll-viewport {
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roll-svg, .drum-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .note {
+            transition: all 0.05s ease-in-out;
+            stroke-width: 1px;
+            stroke: rgba(0,0,0,0.3);
+        }
+
+        .note:hover {
+            stroke: var(--text-white);
+            stroke-width: 1.5px;
+            filter: brightness(1.3);
+            cursor: pointer;
+        }
+
+        .drum-lane {
+            height: 100px;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            background-color: rgba(0,0,0,0.15);
+        }
+
+        .drum-labels {
+            width: 50px;
+            font-size: 10px;
+            color: var(--text-dim);
+            text-align: right;
+            padding-right: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .drum-grid {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .drum-note {
+             stroke-width: 1px;
+             stroke: rgba(0,0,0,0.5);
+             rx: 3px;
+             ry: 3px;
+        }
+        .drum-note:hover {
+            stroke: var(--text-white);
+            stroke-width: 1.5px;
+            filter: brightness(1.3);
+            cursor: pointer;
+        }
+
+        .legend {
+            height: 30px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            background-color: var(--bg-deep);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="minimap">
+        <svg width="100%" height="100%" viewBox="0 0 1248 52">
+            <defs>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"></feGaussianBlur>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"></feMergeNode>
+                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                    </feMerge>
+                </filter>
+            </defs>
+            <!-- Full 64 bars background -->
+            <rect x="0" y="0" width="1248" height="52" fill="transparent" />
+            <!-- Notes overview for 64 bars -->
+            <!-- Assume 1248px / 64 bars = 19.5px per bar -->
+            <g transform="scale(0.125 1)">
+                <!-- This is a simplified representation of all notes over 64 bars -->
+                <rect x="225" y="10" width="1204" height="4" fill="var(--instrument-synth)" opacity="0.3" />
+                <rect x="225" y="20" width="150" height="8" fill="var(--instrument-keys)" opacity="0.5" />
+                <rect x="972" y="15" width="602" height="6" fill="var(--instrument-bass)" opacity="0.6" />
+                <rect x="1722" y="12" width="1204" height="5" fill="var(--instrument-vocal)" opacity="0.7" />
+                 <rect x="4200" y="10" width="1800" height="8" fill="var(--instrument-guitar)" opacity="0.6" />
+            </g>
+
+            <!-- Viewport indicator -->
+            <rect x="0" y="0" width="156" height="52" fill="rgba(255, 255, 255, 0.1)" stroke="var(--nvis-amber)" stroke-width="2"/>
+        </svg>
+    </div>
+
+    <div class="main-content">
+        <div class="pitch-axis">
+            <span>C6</span><span>B5</span><span>A5</span><span>G5</span><span>F5</span><span>E5</span><span>D5</span>
+            <span>C5</span><span>B4</span><span>A4</span><span>G4</span><span>F4</span><span>E4</span><span>D4</span>
+            <span>C4</span><span>B3</span><span>A3</span><span>G3</span><span>F3</span><span>E3</span><span>D3</span>
+            <span>C3</span><span>B2</span><span>A2</span><span>G2</span><span>F2</span><span>E2</span><span>D2</span>
+            <span>C2</span>
+        </div>
+        <div class="roll-viewport">
+            <svg class="roll-svg" viewBox="0 0 1200 310" preserveAspectRatio="none">
+                <defs>
+                    <!-- Patterns for WCAG compliance -->
+                    <pattern id="bass-pattern" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+                        <rect width="8" height="8" fill="var(--instrument-bass)"/>
+                        <line x1="0" y1="4" x2="8" y2="4" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                    </pattern>
+                    <pattern id="keys-pattern" width="6" height="6" patternUnits="userSpaceOnUse">
+                        <rect width="6" height="6" fill="var(--instrument-keys)"/>
+                        <line x1="3" y1="0" x2="3" y2="6" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+                    </pattern>
+                     <pattern id="synth-pattern" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                        <rect width="5" height="5" fill="var(--instrument-synth)"/>
+                        <line x1="0" y1="2.5" x2="5" y2="2.5" stroke="rgba(0,0,0,0.4)" stroke-width="1"/>
+                    </pattern>
+                    <pattern id="guitar-pattern" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+                        <rect width="7" height="7" fill="var(--instrument-guitar)"/>
+                        <line x1="0" y1="3.5" x2="7" y2="3.5" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                    </pattern>
+                </defs>
+
+                <!-- Grid Lines -->
+                <g class="grid-lines">
+                    <!-- 8 bars, 150px per bar -->
+                    <!-- Vertical bar lines (strong) -->
+                    <line x1="0" y1="0" x2="0" y2="310" stroke="var(--text-muted)" stroke-width="1.5"/>
+                    <line x1="150" y1="0" x2="150" y2="310" stroke="var(--text-muted)" stroke-width="1"/>
+                    <line x1="300" y1="0" x2="300" y2="310" stroke="var(--text-muted)" stroke-width="1"/>
+                    <line x1="450" y1="0" x2="450" y2="310" stroke="var(--text-muted)" stroke-width="1.5"/>
+                    <line x1="600" y1="0" x2="600" y2="310" stroke="var(--text-muted)" stroke-width="1"/>
+                    <line x1="750" y1="0" x2="750" y2="310" stroke="var(--text-muted)" stroke-width="1"/>
+                    <line x1="900" y1="0" x2="900" y2="310" stroke="var(--text-muted)" stroke-width="1.5"/>
+                    <line x1="1050" y1="0" x2="1050" y2="310" stroke="var(--text-muted)" stroke-width="1"/>
+                    <line x1="1200" y1="0" x2="1200" y2="310" stroke="var(--text-muted)" stroke-width="1.5"/>
+                    <!-- Beat lines (faint) -->
+                    <path d="M 37.5 0 v 310 M 75 0 v 310 M 112.5 0 v 310 M 187.5 0 v 310 M 225 0 v 310 M 262.5 0 v 310 M 337.5 0 v 310 M 375 0 v 310 M 412.5 0 v 310 M 487.5 0 v 310 M 525 0 v 310 M 562.5 0 v 310 M 637.5 0 v 310 M 675 0 v 310 M 712.5 0 v 310 M 787.5 0 v 310 M 825 0 v 310 M 862.5 0 v 310 M 937.5 0 v 310 M 975 0 v 310 M 1012.5 0 v 310 M 1087.5 0 v 310 M 1125 0 v 310 M 1162.5 0 v 310" stroke="var(--text-muted)" stroke-width="0.5" opacity="0.3"/>
+                    
+                    <!-- Horizontal pitch lines -->
+                    <!-- C notes highlighted -->
+                    <path d="M 0 5 M 1200 5 M 0 65 M 1200 65 M 0 125 M 1200 125 M 0 185 M 1200 185 M 0 245 M 1200 245 M 0 305 M 1200 305" stroke="var(--text-muted)" stroke-width="1" opacity="0.5"/>
+                    <path d="M 0 35 M 1200 35 M 0 95 M 1200 95 M 0 155 M 1200 155 M 0 215 M 1200 215 M 0 275 M 1200 275" stroke="var(--text-muted)" stroke-width="0.5" opacity="0.2"/>
+                </g>
+
+                <!-- Notes -->
+                <!-- Pitch mapping: C2(36) -> y=305, C6(84) -> y=5. 48 semitones over 300px. 6.25px per semitone. min-height: 10px. -->
+                <g class="notes">
+                    <!-- Vocal -->
+                    <rect class="note" x="300" y="140" width="75" height="10" fill="var(--instrument-vocal)" rx="2"/>
+                    <rect class="note" x="600" y="83.75" width="56.25" height="10" fill="var(--instrument-vocal)" rx="2"/>
+
+                    <!-- Bass -->
+                    <rect class="note" x="0" y="251.25" width="75" height="12" fill="url(#bass-pattern)" rx="2"/>
+                    <rect class="note" x="150" y="282.5" width="75" height="12" fill="url(#bass-pattern)" rx="2"/>
+
+                    <!-- Keys -->
+                    <rect class="note" x="0" y="245" width="150" height="10" fill="url(#keys-pattern)" rx="2"/>
+                    <rect class="note" x="0" y="220" width="150" height="10" fill="url(#keys-pattern)" rx="2"/>
+                    <rect class="note" x="0" y="195" width="150" height="10" fill="url(#keys-pattern)" rx="2"/>
+
+                    <!-- Synth -->
+                    <rect class="note" x="300" y="58.75" width="300" height="10" fill="url(#synth-pattern)" rx="2"/>
+
+                    <!-- Guitar -->
+                    <rect class="note" x="750" y="140" width="37.5" height="10" fill="url(#guitar-pattern)" rx="2"/>
+                    <rect class="note" x="787.5" y="165" width="37.5" height="10" fill="url(#guitar-pattern)" rx="2"/>
+                </g>
+
+                <!-- Playhead -->
+                <line x1="320" y1="0" x2="320" y2="310" stroke="var(--nvis-amber)" stroke-width="2" filter="url(#glow)"/>
+
+            </svg>
+        </div>
+    </div>
+
+    <div class="drum-lane">
+        <div class="drum-labels">
+            <span>Hat</span>
+            <span>Snare</span>
+            <span>Kick</span>
+        </div>
+        <div class="drum-grid">
+            <svg class="drum-svg" viewBox="0 0 1200 100" preserveAspectRatio="none">
+                 <!-- Grid Lines -->
+                 <g class="grid-lines">
+                    <path d="M 0 0 v 100 M 150 0 v 100 M 300 0 v 100 M 450 0 v 100 M 600 0 v 100 M 750 0 v 100 M 900 0 v 100 M 1050 0 v 100 M 1200 0 v 100" stroke="var(--text-muted)" stroke-width="1"/>
+                    <path d="M 37.5 0 v 100 M 75 0 v 100 M 112.5 0 v 100 M 187.5 0 v 100 M 225 0 v 100 M 262.5 0 v 100 M 337.5 0 v 100 M 375 0 v 100 M 412.5 0 v 100 M 487.5 0 v 100 M 525 0 v 100 M 562.5 0 v 100 M 637.5 0 v 100 M 675 0 v 100 M 712.5 0 v 100 M 787.5 0 v 100 M 825 0 v 100 M 862.5 0 v 100 M 937.5 0 v 100 M 975 0 v 100 M 1012.5 0 v 100 M 1087.5 0 v 100 M 1125 0 v 100 M 1162.5 0 v 100" stroke="var(--text-muted)" stroke-width="0.5" opacity="0.3"/>
+                 </g>
+                 <!-- Drum Notes (fixed height, large targets) -->
+                 <g class="drum-notes">
+                    <!-- Kick -->
+                    <rect class="drum-note" x="0" y="70" width="25" height="24" fill="var(--instrument-drums)" />
+                    <rect class="drum-note" x="75" y="70" width="25" height="24" fill="var(--instrument-drums)" />
+                    <rect class="drum-note" x="150" y="70" width="25" height="24" fill="var(--instrument-drums)" />
+                    <rect class="drum-note" x="225" y="70" width="25" height="24" fill="var(--instrument-drums)" />
+                    <!-- Snare -->
+                    <rect class="drum-note" x="37.5" y="38" width="25" height="24" fill="var(--instrument-drums)" opacity="0.8" />
+                    <rect class="drum-note" x="112.5" y="38" width="25" height="24" fill="var(--instrument-drums)" opacity="0.8" />
+                    <rect class="drum-note" x="187.5" y="38" width="25" height="24" fill="var(--instrument-drums)" opacity="0.8" />
+                    <rect class="drum-note" x="262.5" y="38" width="25" height="24" fill="var(--instrument-drums)" opacity="0.8" />
+                    <!-- Hats (1/8 notes) -->
+                    <rect class="drum-note" x="0" y="6" width="15" height="20" fill="var(--instrument-drums)" opacity="0.6" />
+                    <rect class="drum-note" x="18.75" y="6" width="15" height="20" fill="var(--instrument-drums)" opacity="0.5" />
+                    <rect class="drum-note" x="37.5" y="6" width="15" height="20" fill="var(--instrument-drums)" opacity="0.6" />
+                    <rect class="drum-note" x="56.25" y="6" width="15" height="20" fill="var(--instrument-drums)" opacity="0.5" />
+                 </g>
+                 <!-- Playhead -->
+                <line x1="320" y1="0" x2="320" y2="100" stroke="var(--nvis-amber)" stroke-width="2" />
+            </svg>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <svg width="12" height="12"><rect width="12" height="12" fill="var(--instrument-vocal)"/></svg>
+            <span>Vocal</span>
+        </div>
+        <div class="legend-item">
+            <svg width="12" height="12"><rect width="12" height="12" fill="url(#bass-pattern)"/></svg>
+            <span>Bass</span>
+        </div>
+        <div class="legend-item">
+            <svg width="12" height="12"><rect width="12" height="12" fill="var(--instrument-drums)"/></svg>
+            <span>Drums</span>
+        </div>
+        <div class="legend-item">
+            <svg width="12" height="12"><rect width="12" height="12" fill="url(#keys-pattern)"/></svg>
+            <span>Keys</span>
+        </div>
+        <div class="legend-item">
+            <svg width="12" height="12"><rect width="12" height="12" fill="url(#synth-pattern)"/></svg>
+            <span>Synth</span>
+        </div>
+         <div class="legend-item">
+            <svg width="12" height="12"><rect width="12" height="12" fill="url(#guitar-pattern)"/></svg>
+            <span>Guitar</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

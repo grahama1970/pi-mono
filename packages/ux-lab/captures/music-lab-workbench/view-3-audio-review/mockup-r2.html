@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Audio Review Panel</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1400px; height: 900px; overflow: hidden;
+    background: #141414; color: #e0e0e0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .layout { display: flex; height: 900px; position: relative; }
+
+  /* DIMMED BACKGROUND */
+  .bg-dimmed {
+    width: 920px; height: 900px; overflow: hidden; position: relative;
+    filter: brightness(0.3) blur(1px);
+  }
+  .bg-header {
+    height: 52px; display: flex; align-items: center; gap: 14px;
+    padding: 0 20px; border-bottom: 1px solid #2a2a2a; background: #1a1a1a;
+  }
+  .bg-title { font-size: 18px; font-weight: 700; }
+  .bg-badge { padding: 3px 10px; border-radius: 10px; font-size: 10px; background: rgba(74,158,255,0.15); color: #4a9eff; }
+  .bg-subway {
+    height: 80px; display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid #2a2a2a; background: #181818; gap: 0;
+  }
+  .bg-dot {
+    width: 14px; height: 14px; border-radius: 50%; border: 2px solid #333; background: #1a1a1a;
+  }
+  .bg-dot.done { border-color: #00ff88; background: #00ff88; }
+  .bg-line { width: 80px; height: 2px; background: #333; }
+  .bg-line.done { background: #00ff88; }
+  .bg-content { padding: 20px; }
+  .bg-placeholder {
+    height: 60px; background: #1a1a1a; border: 1px solid #222; border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  /* SLIDE-OVER PANEL */
+  .panel {
+    width: 480px; height: 900px; background: #111111;
+    border-left: 1px solid #2a2a2a;
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+  }
+
+  .panel-header {
+    padding: 14px 18px; border-bottom: 1px solid #222;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-title { font-size: 15px; font-weight: 700; }
+  .panel-close { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: #555; cursor: pointer; font-size: 16px; }
+
+  /* SECTIONS */
+  .section { padding: 12px 18px; border-bottom: 1px solid #1a1a1a; }
+  .section-label {
+    font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; color: #444; margin-bottom: 8px;
+  }
+
+  /* A/B TOGGLE */
+  .ab-toggle { display: flex; gap: 0; }
+  .ab-pill {
+    flex: 1; text-align: center; padding: 8px 0; font-size: 12px;
+    color: #666; cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .ab-pill.active { color: #e0e0e0; border-bottom-color: #00ff88; }
+  .ab-pill:hover:not(.active) { color: #aaa; }
+
+  /* WAVEFORM */
+  .waveform-wrap { position: relative; height: 80px; background: #0a0a0a; border-radius: 6px; overflow: hidden; }
+  .waveform-canvas { width: 100%; height: 100%; }
+  .waveform-time {
+    position: absolute; bottom: 4px; font-size: 9px; color: #555;
+  }
+  .waveform-time.start { left: 8px; }
+  .waveform-time.end { right: 8px; }
+  .waveform-pos {
+    position: absolute; top: 0; left: 35%; width: 1px; height: 100%;
+    background: #e0e0e0;
+  }
+  .waveform-pos-label {
+    position: absolute; top: 2px; left: calc(35% + 4px);
+    font-size: 9px; color: #aaa;
+  }
+
+  /* MIR BADGES */
+  .mir-row { display: flex; gap: 6px; }
+  .mir-card {
+    flex: 1; background: #1a1a1a; border-radius: 6px; padding: 6px 8px;
+    text-align: center;
+  }
+  .mir-label { font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+  .mir-value { font-size: 14px; font-weight: 700; margin-top: 1px; }
+
+  /* CHORD TIMELINE */
+  .chord-bar { display: flex; height: 28px; border-radius: 4px; overflow: hidden; gap: 1px; }
+  .chord-block {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; color: #e0e0e0;
+  }
+
+  /* STEM MIXER */
+  .stem-row {
+    display: flex; align-items: center; gap: 8px; height: 32px;
+  }
+  .stem-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .stem-name { width: 52px; font-size: 11px; color: #aaa; flex-shrink: 0; }
+  .stem-slider-wrap {
+    flex: 1; height: 4px; background: #222; border-radius: 2px; position: relative;
+  }
+  .stem-slider-fill { height: 100%; border-radius: 2px; }
+  .stem-slider-thumb {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 10px; height: 10px; border-radius: 50%; background: #e0e0e0;
+    border: 1px solid #333;
+  }
+  .stem-db { font-size: 10px; color: #666; width: 38px; text-align: right; flex-shrink: 0; }
+  .stem-mute {
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid #333; border-radius: 4px; font-size: 9px; font-weight: 700;
+    color: #555; cursor: pointer; flex-shrink: 0;
+  }
+  .stem-mute.active { border-color: #ff4444; color: #ff4444; background: rgba(255,68,68,0.1); }
+  .stem-row.muted .stem-name { color: #444; }
+  .stem-row.muted .stem-slider-fill { opacity: 0.3; }
+
+  /* VOICE GALLERY */
+  .voice-row { display: flex; gap: 8px; }
+  .voice-card {
+    flex: 1; background: #1a1a1a; border: 1px solid #222; border-radius: 6px;
+    padding: 10px; cursor: pointer; transition: border-color 0.15s;
+  }
+  .voice-card.active { border-color: #00ff88; }
+  .voice-card:hover:not(.active) { border-color: #444; }
+  .voice-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .voice-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .voice-tag {
+    font-size: 9px; padding: 1px 5px; border-radius: 8px;
+    background: #222; color: #888;
+  }
+  .voice-card.active .voice-tag { background: rgba(0,255,136,0.1); color: #00ff88; }
+
+  /* ACTIONS */
+  .actions { display: flex; gap: 8px; padding: 14px 18px; margin-top: auto; border-top: 1px solid #1a1a1a; }
+  .action-btn {
+    flex: 1; padding: 10px 0; border-radius: 6px; text-align: center;
+    font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .btn-reject { border-color: #ff4444; color: #ff4444; background: transparent; }
+  .btn-reject:hover { background: rgba(255,68,68,0.1); }
+  .btn-approve { background: #00ff88; color: #111; border-color: #00ff88; }
+  .btn-approve:hover { background: #00dd77; }
+  .btn-again { border-color: #333; color: #888; background: transparent; }
+  .btn-again:hover { border-color: #555; color: #ccc; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- DIMMED BG: simplified pipeline view -->
+  <div class="bg-dimmed">
+    <div class="bg-header">
+      <span style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid #333;border-radius:6px;color:#888;font-size:14px">&larr;</span>
+      <span class="bg-title">Whisperheads</span>
+      <span class="bg-badge">CONVERGING</span>
+    </div>
+    <div class="bg-subway">
+      <div class="bg-dot done"></div><div class="bg-line done"></div>
+      <div class="bg-dot done"></div><div class="bg-line done"></div>
+      <div class="bg-dot done"></div><div class="bg-line done"></div>
+      <div class="bg-dot done"></div><div class="bg-line done"></div>
+      <div class="bg-dot done"></div><div class="bg-line done"></div>
+      <div class="bg-dot done" style="box-shadow:0 0 8px rgba(0,255,136,0.4)"></div><div class="bg-line"></div>
+      <div class="bg-dot"></div>
+    </div>
+    <div class="bg-content">
+      <div class="bg-placeholder" style="height:120px"></div>
+      <div class="bg-placeholder"></div>
+      <div class="bg-placeholder"></div>
+      <div class="bg-placeholder" style="height:100px"></div>
+      <div class="bg-placeholder"></div>
+      <div class="bg-placeholder"></div>
+      <div class="bg-placeholder" style="height:80px"></div>
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER PANEL -->
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">Audio Review</span>
+      <span class="panel-close">&times;</span>
+    </div>
+
+    <!-- A/B Toggle -->
+    <div class="section" style="padding-bottom:0; border-bottom:none;">
+      <div class="ab-toggle">
+        <div class="ab-pill active">Round 4 (current)</div>
+        <div class="ab-pill">Round 3 (previous)</div>
+      </div>
+    </div>
+
+    <!-- Waveform -->
+    <div class="section">
+      <div class="section-label">Waveform</div>
+      <div class="waveform-wrap">
+        <canvas class="waveform-canvas" id="waveform" width="444" height="80"></canvas>
+        <div class="waveform-pos"></div>
+        <div class="waveform-pos-label">1:18</div>
+        <span class="waveform-time start">0:00</span>
+        <span class="waveform-time end">3:42</span>
+      </div>
+    </div>
+
+    <!-- MIR Badges -->
+    <div class="section">
+      <div class="section-label">Analysis</div>
+      <div class="mir-row">
+        <div class="mir-card"><div class="mir-label">BPM</div><div class="mir-value">92</div></div>
+        <div class="mir-card"><div class="mir-label">Key</div><div class="mir-value">Am</div></div>
+        <div class="mir-card"><div class="mir-label">LUFS</div><div class="mir-value" style="color:#ffaa00">-14</div></div>
+        <div class="mir-card"><div class="mir-label">Duration</div><div class="mir-value">3:42</div></div>
+        <div class="mir-card"><div class="mir-label">Energy</div><div class="mir-value" style="color:#00ff88">0.72</div></div>
+      </div>
+    </div>
+
+    <!-- Chord Timeline -->
+    <div class="section">
+      <div class="section-label">Chord Progression</div>
+      <div class="chord-bar">
+        <div class="chord-block" style="background:rgba(124,58,237,0.3)">Am</div>
+        <div class="chord-block" style="background:rgba(74,158,255,0.25)">G</div>
+        <div class="chord-block" style="background:rgba(0,255,136,0.2)">C</div>
+        <div class="chord-block" style="background:rgba(255,170,0,0.25)">F</div>
+        <div class="chord-block" style="background:rgba(124,58,237,0.3)">Am</div>
+        <div class="chord-block" style="background:rgba(74,158,255,0.25)">G</div>
+        <div class="chord-block" style="background:rgba(255,107,107,0.25)">Em</div>
+        <div class="chord-block" style="background:rgba(255,170,0,0.25)">F</div>
+      </div>
+    </div>
+
+    <!-- Stem Mixer -->
+    <div class="section">
+      <div class="section-label">Stem Mixer</div>
+      <div class="stem-row">
+        <div class="stem-dot" style="background:#7c3aed"></div>
+        <div class="stem-name">Vocals</div>
+        <div class="stem-slider-wrap">
+          <div class="stem-slider-fill" style="width:78%; background:#7c3aed"></div>
+          <div class="stem-slider-thumb" style="left:78%"></div>
+        </div>
+        <div class="stem-db">-3.2 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+      <div class="stem-row">
+        <div class="stem-dot" style="background:#4a9eff"></div>
+        <div class="stem-name">Bass</div>
+        <div class="stem-slider-wrap">
+          <div class="stem-slider-fill" style="width:65%; background:#4a9eff"></div>
+          <div class="stem-slider-thumb" style="left:65%"></div>
+        </div>
+        <div class="stem-db">-6.1 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+      <div class="stem-row muted">
+        <div class="stem-dot" style="background:#ff4444"></div>
+        <div class="stem-name">Drums</div>
+        <div class="stem-slider-wrap">
+          <div class="stem-slider-fill" style="width:72%; background:#ff4444"></div>
+          <div class="stem-slider-thumb" style="left:72%"></div>
+        </div>
+        <div class="stem-db">-4.5 dB</div>
+        <div class="stem-mute active">M</div>
+      </div>
+      <div class="stem-row">
+        <div class="stem-dot" style="background:#00ff88"></div>
+        <div class="stem-name">Keys</div>
+        <div class="stem-slider-wrap">
+          <div class="stem-slider-fill" style="width:55%; background:#00ff88"></div>
+          <div class="stem-slider-thumb" style="left:55%"></div>
+        </div>
+        <div class="stem-db">-8.4 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+      <div class="stem-row">
+        <div class="stem-dot" style="background:#ff6b6b"></div>
+        <div class="stem-name">Guitar</div>
+        <div class="stem-slider-wrap">
+          <div class="stem-slider-fill" style="width:60%; background:#ff6b6b"></div>
+          <div class="stem-slider-thumb" style="left:60%"></div>
+        </div>
+        <div class="stem-db">-7.0 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+    </div>
+
+    <!-- Voice Gallery -->
+    <div class="section">
+      <div class="section-label">Voice Model</div>
+      <div class="voice-row">
+        <div class="voice-card active">
+          <div class="voice-name">Horus Warm</div>
+          <div class="voice-tags">
+            <span class="voice-tag">baritone</span>
+            <span class="voice-tag">smooth</span>
+          </div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-name">Horus Edge</div>
+          <div class="voice-tags">
+            <span class="voice-tag">grit</span>
+            <span class="voice-tag">mid-range</span>
+          </div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-name">Horus Whisper</div>
+          <div class="voice-tags">
+            <span class="voice-tag">breathy</span>
+            <span class="voice-tag">intimate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <div class="action-btn btn-reject">Reject</div>
+      <div class="action-btn btn-approve">Approve &amp; Archive</div>
+      <div class="action-btn btn-again">Run Again</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Waveform visualization
+const canvas = document.getElementById('waveform');
+const ctx = canvas.getContext('2d');
+const w = canvas.width, h = canvas.height;
+
+// Generate pseudo-random waveform
+function seededRandom(seed) {
+  let s = seed;
+  return function() { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+}
+const rand = seededRandom(42);
+
+ctx.fillStyle = '#0a0a0a';
+ctx.fillRect(0, 0, w, h);
+
+const barWidth = 2;
+const gap = 1;
+const bars = Math.floor(w / (barWidth + gap));
+const mid = h / 2;
+
+for (let i = 0; i < bars; i++) {
+  const x = i * (barWidth + gap);
+  // Create musical-looking waveform with envelope
+  const pos = i / bars;
+  let envelope = 1;
+  // Intro fade
+  if (pos < 0.05) envelope = pos / 0.05;
+  // Verse (low)
+  else if (pos < 0.25) envelope = 0.4 + rand() * 0.2;
+  // Pre-chorus (building)
+  else if (pos < 0.35) envelope = 0.5 + (pos - 0.25) / 0.1 * 0.3 + rand() * 0.1;
+  // Chorus (loud)
+  else if (pos < 0.55) envelope = 0.8 + rand() * 0.2;
+  // Verse 2
+  else if (pos < 0.7) envelope = 0.4 + rand() * 0.2;
+  // Bridge (intense)
+  else if (pos < 0.85) envelope = 0.7 + rand() * 0.3;
+  // Outro fade
+  else envelope = (1 - pos) / 0.15 * 0.6;
+
+  const amplitude = envelope * (mid - 4) * (0.3 + rand() * 0.7);
+
+  // gradient: center is bright amber, edges are dark
+  const gradient = ctx.createLinearGradient(x, mid - amplitude, x, mid + amplitude);
+  gradient.addColorStop(0, 'rgba(255,170,0,0.3)');
+  gradient.addColorStop(0.3, 'rgba(255,170,0,0.7)');
+  gradient.addColorStop(0.5, '#ffaa00');
+  gradient.addColorStop(0.7, 'rgba(255,170,0,0.7)');
+  gradient.addColorStop(1, 'rgba(255,170,0,0.3)');
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(x, mid - amplitude, barWidth, amplitude * 2);
+}
+</script>
+</body>
+</html>

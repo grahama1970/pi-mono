@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PD8_FDBGc54",
+    "language": "en",
+    "took_ms": 8809,
+    "method": null,
+    "title": "Future Airman - Where are you trying to go?",
+    "channel": "Sandboxx",
+    "upload_date": "20161007",
+    "duration_sec": 276,
+    "description": "The Air Force does not care about who you are or where you come from. It cares about your effort and where you are trying to go.\n\nIt provides you all the resources you will require to succeed such as education and discipline. The Air Force only accepts the best and will offer you all of the opportunities you could desire. If you are willing to work hard, you will succeed.\n\nAre you or a loved one about to become the future of the Air Force?\n\nStay connected at every step of the Air Force journey as well as getting training advice every week with the Sandboxx app: https://link.sandboxx.us/youtube",
+    "view_count": 1668
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PD8_FDBGc54: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

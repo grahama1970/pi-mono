@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ktTL7N5B8G8",
+    "language": "en",
+    "took_ms": 8812,
+    "method": null,
+    "title": "What the New Copyright Claims Board Means for Creators",
+    "channel": "Hudson Institute",
+    "upload_date": "20220630",
+    "duration_sec": 3486,
+    "description": "The Copyright Claims Board (CCB) is a newly established tribunal within the United States Copyright Office that offers a voluntary alternative to the federal district courts for certain low-value copyright disputes. The product of years of hearings and debates among various stakeholders, the CCB provides affordable, streamlined procedures designed to ensure that all creators have meaningful and effective tools to protect their rights. Please join Hudson Institute Legal Fellow Devlin Hartline and expert panelists Maya Burchette, Terrica Carrington, and Michael Klipper for a panel discussion on the CCB’s legislative and historical background, administration and functionality, and meaning for everyday creators.\n\nWatch on Hudson.org: https://www.hudson.org/events/2128-virtual-event-what-the-new-copyright-claims-board-means-for-creators62022",
+    "view_count": 754
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ktTL7N5B8G8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

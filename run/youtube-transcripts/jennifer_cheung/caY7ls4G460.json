@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "caY7ls4G460",
+    "language": "en",
+    "took_ms": 9207,
+    "method": null,
+    "title": "DEF CON 32 - What To Expect When You’re Exploiting: 0Days Baby Monitors & Wi-Fi Cams - Mager, Forte",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2401,
+    "description": "Home surveillance technology is a modern convenience that has been made accessible to the masses through the rise of IoT devices, namely cloud-connected Wi-Fi cameras. From parents monitoring their infants to homeowners watching their entryways, these cameras provide users with access to instant, high definition video from the convenience of a mobile phone, tablet, or PC. However, the affordability of these devices and relative ease of cloud access generally correlates to flawed security, putting users at risk. We set out to explore the attack surface of various Wi-Fi camera models to gain a deeper understanding of how these devices are being exploited. In the end, we devised methods to gain local root access, uncovered user privacy issues, discovered a zero-day vulnerability within a prominent IoT device management platform that allows attackers to gain remote control of millions of cameras worldwide and access sensitive user data, and revealed how these devices may be vulnerable to remote code execution attacks through completely unauthenticated means thanks to an inherently flawed implementation of their underlying peer to peer networking protocol. Along with demonstrating our exploits against live cameras, we will highlight the methods used to obtain our most significant findings and provide guidance on remediating the issues we encountered so these devices can be used safely in your household. We will also invite audience members to probe and attack a camera during our talk and earn a prize in the process!",
+    "view_count": 39452
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] caY7ls4G460: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

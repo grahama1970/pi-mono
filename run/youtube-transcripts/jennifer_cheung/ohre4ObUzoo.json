@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ohre4ObUzoo",
+    "language": "en",
+    "took_ms": 7415,
+    "method": null,
+    "title": "DEF CON 33 - From Shanghai to the Shore: Threats in Global Shipping  -K Miltenberger, N Fredericksen",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1247,
+    "description": "Ship-to-shore cranes manufactured in China have faced increased scrutiny from the United States Congress in the past year due to concerns about potential supply chain vulnerabilities, pricing practices, and the global dependence on these critical infrastructure components produced by Chinese state-owned companies.\n\nCoast Guard Cyber Protection Teams (CPTs) have been the US government’s primary resource doing technical cybersecurity work on these cranes – to include assessment, threat hunting, and incident response operations. This talk discusses findings and recommendations from over 11 crane missions conducted by US Coast Guard CPTs, to include the existence of surprise cellular modems and potential attack paths.",
+    "view_count": 232
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ohre4ObUzoo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

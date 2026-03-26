@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hh6gE0LxfO8",
+    "language": "en",
+    "took_ms": 9985,
+    "method": null,
+    "title": "#5 Machine Learning Specialization [Course 1, Week 1, Lesson 2]",
+    "channel": "DeepLearningAI",
+    "upload_date": "20221201",
+    "duration_sec": 437,
+    "description": "The Machine Learning Specialization is a foundational online program created in collaboration between DeepLearning.AI and Stanford Online. This beginner-friendly program will teach you the fundamentals of machine learning and how to use these techniques to build real-world AI applications. \n\nThis Specialization is taught by Andrew Ng, an AI visionary who has led critical research at Stanford University and groundbreaking work at Google Brain, Baidu, and Landing.AI to advance the AI field. \n\nThis video is from Course 1 (Supervised Machine Learning Regression and Classification), Week 1 (Introduction to Machine Learning), Lesson 2 (Supervised vs. Unsupervised Machine Learning), Video 3 (Supervised learning part 2). \n\nTo learn more and access the full course videos and assignments, enroll in the Machine Learning Specialization here: https://bit.ly/3ERmTAq \nDownload the course slides: https://bit.ly/3AVNHwS\nCheck out all our courses: https://bit.ly/3TTc2KA \nSubscribe to The Batch, our weekly newsletter: https://bit.ly/3TZUzju \n\nFollow us: \nFacebook: https://www.facebook.com/DeepLearningAIHQ/ \nLinkedIn: https://www.linkedin.com/company/deeplearningai/ \nTwitter: https://twitter.com/deeplearningai_",
+    "view_count": 172285
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hh6gE0LxfO8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

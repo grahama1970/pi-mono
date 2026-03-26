@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RCxa-6b9xXI",
+    "language": "en",
+    "took_ms": 9010,
+    "method": null,
+    "title": "Train & Serve Custom Multi-modal Models - IDEFICS 2 + LLaVA Llama 3",
+    "channel": "Trelis Research",
+    "upload_date": "20240506",
+    "duration_sec": 2289,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-vision/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Trelis Livestreams: Thursdays 5 pm Irish time on YouTube and X.\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- IDEFICS 2 Model: https://huggingface.co/HuggingFaceM4/idefics2-8b\n- IDEFICS 2 Blog: https://huggingface.co/blog/idefics2\n- LLaVA Llama 3 model: https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-transformers\n- Chess Dataset: https://huggingface.co/datasets/Trelis/chess_pieces\n\nTIMESTAMPS:\n0:00 Fine-tuning and server setup for multi-modal models\n0:41 Prerequisites (pre-watching)\n1:16 IDEFICS 2 Model Overview\n4:19 Model loading, evaluation and LoRA setup\n14:36 Evaluating OCR performance\n15:54 Evaluating multiple image inputs\n23:27 Training / Fine-tuning\n27:29 LLaVA Llama 3 Model Review\n31:23 Multi-modal inference endpoint\n35:08 VRAM Requirements for multi-modal models\n37:30 IDEFICS 2 - my recommended model to build on",
+    "view_count": 3045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RCxa-6b9xXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

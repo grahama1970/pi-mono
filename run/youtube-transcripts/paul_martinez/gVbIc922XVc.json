@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gVbIc922XVc",
+    "language": "en",
+    "took_ms": 9173,
+    "method": null,
+    "title": "Nicole Perlroth Interview - This Is How They Tell Me The World Ends",
+    "channel": "S4 Events",
+    "upload_date": "20210407",
+    "duration_sec": 3172,
+    "description": "Dale Peterson interviews NY Times Reporter and author of the book This Is How They Tell Me The World Ends. Some of the major highlights include:\n\n5:00 the story of how Nicole began her 0day journey at a dinner at S4x13\n20:42 was the 0day market inevitable?\n27:05 how incentives have caused the problem and good help solve the problem\n30:30 the ICS / critical infrastructure attack detail in the book\n\nFor regular followers, the last part is the most applicable. This book was not written though for the ICS security pro, so some of the earlier discussion may help you understand who the intended reader is and the message Nicole is trying to get out there.",
+    "view_count": 2186
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gVbIc922XVc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

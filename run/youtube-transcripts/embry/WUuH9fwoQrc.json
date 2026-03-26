@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WUuH9fwoQrc",
+    "language": "en",
+    "took_ms": 8698,
+    "method": null,
+    "title": "[SCRUBBED] Watch Blue Origin Launch New Glenn to Mars!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20251109",
+    "duration_sec": 8970,
+    "description": "Blue Origin's is launching their second New Glenn rocket, for mission NG-2, from Launch Complex 36 at Cape Canaveral Space Force Station. It will deploy NASA's ESCAPADE twin spacecraft to study Mars' magnetosphere and solar wind interactions, alongside a Viasat communications technology demonstration. Blue Origin is planning to propulsively land the booster down range.\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check it out anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) by searching Everyday Astronaut",
+    "view_count": 422054
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WUuH9fwoQrc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

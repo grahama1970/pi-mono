@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jBDnVEAPgF8",
+    "language": "en",
+    "took_ms": 8636,
+    "method": null,
+    "title": "Upside Down Water Pour in Jet",
+    "channel": "Hasard Lee",
+    "upload_date": "20230605",
+    "duration_sec": 27,
+    "description": "",
+    "view_count": 91392
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jBDnVEAPgF8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

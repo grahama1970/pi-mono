@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9QJXvNiJIG8",
+    "language": "en",
+    "took_ms": 8758,
+    "method": null,
+    "title": "Mastering Retrieval for LLMs - BM25, Fine-tuned Embeddings, and Re-Rankers",
+    "channel": "Trelis Research",
+    "upload_date": "20240705",
+    "duration_sec": 6608,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-fine-tuning\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click fine-tuning and API templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1-hw1e1JgYkAxc-DTxBDmF1XXXTvWc4NtWnJ8-_yHsbQ/edit?usp=sharing\n- Sentence Bert Models: https://sbert.net/index.html\n- ALL-SORT Video (LLM retrieval): https://www.youtube.com/watch?v=biJmRQF8bmY\n\nTIMESTAMPS:\n0:00 Mastering Retrieval (RAG) for LLMs\n0:44 Video Overview\n13:19 Baseline Performance with No Retrieval\n17:29 Document Chunking - Naive vs Sentence based\n24:34 BM25\n33:20 Semantic / Vector / Embeddings Search\n39:59 Cosine vs Dot Product Similarity\n43:21 Generating Chunks and Embeddings\n50:50 Running BM25 and Similarity Retrieval\n55:22 Performance with BM25 vs Similarity\n58:36 Fine-tuning embeddings / encoders\n1:04:00 Preparing fine-tuning datasets\n1:14:54 Embeddings Training Continued\n1:22:00 Performance after Fine-tuning\n1:25:58 Re-rankers\n1:27:10: Cross-encoders\n1:30:47 LLM re-rankers\n1:36:11 Re-ranking performance\n1:48:50 Final Tips",
+    "view_count": 12552
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9QJXvNiJIG8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "99t7wEYs8h0",
+    "language": "en",
+    "took_ms": 8983,
+    "method": null,
+    "title": "DEF CON 30 - Mickey Shkatov, Jesse Michael - One Bootloader to Load Them All",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3142,
+    "description": "Introduced in 2012, Secure Boot - the OG trust in boot - has become a foundational rock in modern computing and is used by millions of UEFI-enabled computers around the world due to its integration in their BIOS. \n\nThe way Secure Boot works is simple and effective, by using tightly controlled code signing certificates, OEMs like Microsoft, Lenovo, Dell and others secure their boot process, blocking unsigned code from running during boot. \n\nBut this model puts its trust in developers developing code without vulnerabilities or backdoors; in this presentation we will discuss past and current flaws in valid bootloaders, including some which misuse built-in features to inadvertently bypass Secure Boot. We will also discuss how in some cases malicious executables can hide from TPM measurements used by BitLocker and remote attestation mechanisms. \n\nCome join us as we dive deeper and explain how it all works, describe the vulnerabilities we found and walk you through how to use the new exploits and custom tools we created to allow for a consistent bypass for secure boot effective against every X86-64 UEFI platform.",
+    "view_count": 2328
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 99t7wEYs8h0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

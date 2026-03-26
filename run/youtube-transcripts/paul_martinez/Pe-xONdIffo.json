@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Pe-xONdIffo",
+    "language": "en",
+    "took_ms": 8313,
+    "method": null,
+    "title": "Cyber Security And Its Impacts On Small Utilities",
+    "channel": "S4 Events",
+    "upload_date": "20230710",
+    "duration_sec": 1787,
+    "description": "Emma Stewart begins with the difficult question of what a small electric utility would / should spend an extra $100K at the end of the year. There are many choices, cybersecurity just being one. In the first half Emma discusses the current situation:\n\n- the challenges small utilities face with cybersecurity\n- shifting responsibility but not shifting blame\n- what went right and wrong in the 100-day sprint for electric sector cybersecurity\n- how DER are new security and regulation problems\n\nIn the second half Emma gives some solutions and directions for progress (and some stories that those in the electric sector will enjoy).",
+    "view_count": 805
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Pe-xONdIffo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

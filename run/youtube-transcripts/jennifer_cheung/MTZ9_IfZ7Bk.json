@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MTZ9_IfZ7Bk",
+    "language": "en",
+    "took_ms": 7597,
+    "method": null,
+    "title": "DEF CON 33 - What is Dead May Never Die: The Immortality of SDK Bugs - Richard Lawshae",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 725,
+    "description": "in devices - a Software Development Kit (SDK). This collection of binaries, proprietary services, and code samples allows board designers to quickly and easily incorporate an otherwise complex chip into their existing environments. However, once this code is bundled into various product lines from various vendors, it becomes nearly impossible to make sure it gets updated with new versions. What happens if a vulnerability is discovered? Suddenly, hundreds of thousands of devices all from different vendors spanning years of releases are all affected by the same bug and it turns into a perpetual game of whack-a-mole trying to get them all patched. And botnet authors are definitely paying attention. In this talk, we will discuss the attack surfaces present in the SDKs from some major chipset manufacturers, talk about some exploits (both old-day and 0-day), and try to figure out what can be done to cleanse the internet of the zombie SDK vuln plague.",
+    "view_count": 179
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MTZ9_IfZ7Bk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

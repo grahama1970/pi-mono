@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Song Library</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1400px; height: 900px; overflow: hidden;
+    background: #141414; color: #e0e0e0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    height: 48px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; border-bottom: 1px solid #2a2a2a; background: #1a1a1a;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .topbar-left .logo { color: #00ff88; font-weight: 700; font-size: 16px; letter-spacing: 1px; }
+  .topbar-left .sub { color: #666; font-size: 12px; }
+  .topbar-right { display: flex; gap: 24px; font-size: 12px; color: #888; }
+  .topbar-right .stat-val { color: #e0e0e0; font-weight: 600; margin-right: 4px; }
+
+  /* LAYOUT */
+  .layout { display: flex; height: calc(900px - 48px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 200px; border-right: 1px solid #2a2a2a; padding: 16px 14px;
+    display: flex; flex-direction: column; gap: 20px; background: #181818;
+    flex-shrink: 0;
+  }
+  .sidebar h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: #555; margin-bottom: 8px; }
+  .filter-item {
+    display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 4px;
+    font-size: 12px; cursor: pointer; color: #aaa;
+  }
+  .filter-item:hover { background: #222; }
+  .filter-item.active { background: #222; color: #e0e0e0; }
+  .filter-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .filter-count { margin-left: auto; font-size: 10px; color: #555; }
+
+  .tag-chip {
+    display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px;
+    background: #222; color: #888; margin: 2px; cursor: pointer;
+  }
+  .tag-chip.active { background: #2a2a2a; color: #ccc; }
+
+  .new-song-btn {
+    margin-top: auto; padding: 8px 12px; border: 1px dashed #333; border-radius: 6px;
+    text-align: center; font-size: 12px; color: #555; cursor: pointer;
+  }
+  .new-song-btn:hover { border-color: #555; color: #888; }
+  .horus-note { font-size: 9px; color: #444; text-align: center; margin-top: 6px; font-style: italic; }
+
+  /* MAIN GRID */
+  .main { flex: 1; padding: 16px 20px; overflow-y: auto; }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, 240px); gap: 12px;
+    justify-content: start;
+  }
+
+  /* CARD */
+  .card {
+    background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px;
+    padding: 12px; height: 200px; display: flex; flex-direction: column;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .card:hover { border-color: #444; }
+
+  .card-top { display: flex; gap: 10px; margin-bottom: 8px; }
+  .card-art {
+    width: 80px; height: 80px; border-radius: 6px; flex-shrink: 0;
+  }
+  .card-meta { flex: 1; min-width: 0; }
+  .card-title {
+    font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; margin-bottom: 2px;
+  }
+  .card-subtitle { font-size: 12px; color: #666; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-badge {
+    display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 9px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  .card-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 6px; }
+  .card-row { display: flex; align-items: center; justify-content: space-between; }
+  .card-delta { font-size: 12px; color: #aaa; }
+  .card-delta span { font-weight: 600; }
+  .card-date { font-size: 11px; color: #555; }
+  .card-tags { display: flex; gap: 4px; align-items: center; }
+  .card-tag {
+    padding: 1px 6px; border-radius: 8px; font-size: 9px;
+    background: #222; color: #777;
+  }
+  .card-tag-more { font-size: 9px; color: #555; }
+
+  /* STATUS COLORS */
+  .badge-composing { background: rgba(255,170,0,0.15); color: #ffaa00; }
+  .badge-converging { background: rgba(74,158,255,0.15); color: #4a9eff; }
+  .badge-ready { background: rgba(0,255,136,0.15); color: #00ff88; }
+  .badge-archived { background: rgba(100,100,100,0.15); color: #666; }
+  .badge-rejected { background: rgba(255,68,68,0.15); color: #ff4444; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="logo">MUSIC LAB</span>
+    <span class="sub">Creative Workbench</span>
+  </div>
+  <div class="topbar-right">
+    <span><span class="stat-val">42</span>songs</span>
+    <span><span class="stat-val">0.21</span>avg delta</span>
+    <span><span class="stat-val" style="color:#00ff88">7</span>ready</span>
+    <span><span class="stat-val" style="color:#4a9eff">3</span>converging</span>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div>
+      <h4>Status</h4>
+      <div class="filter-item active">
+        <span class="filter-dot" style="background:#e0e0e0"></span>All<span class="filter-count">42</span>
+      </div>
+      <div class="filter-item">
+        <span class="filter-dot" style="background:#ffaa00"></span>Composing<span class="filter-count">8</span>
+      </div>
+      <div class="filter-item">
+        <span class="filter-dot" style="background:#4a9eff"></span>Converging<span class="filter-count">3</span>
+      </div>
+      <div class="filter-item">
+        <span class="filter-dot" style="background:#00ff88"></span>Ready<span class="filter-count">7</span>
+      </div>
+      <div class="filter-item">
+        <span class="filter-dot" style="background:#666"></span>Archived<span class="filter-count">22</span>
+      </div>
+      <div class="filter-item">
+        <span class="filter-dot" style="background:#ff4444"></span>Rejected<span class="filter-count">2</span>
+      </div>
+    </div>
+    <div>
+      <h4>Recent Activity</h4>
+      <div style="font-size:11px; color:#666; line-height:1.6;">
+        <div><span style="color:#4a9eff">Whisperheads</span> R4 gen</div>
+        <div style="color:#555; font-size:9px; margin-bottom:4px;">12 min ago</div>
+        <div><span style="color:#ffaa00">Cathedral</span> composing</div>
+        <div style="color:#555; font-size:9px; margin-bottom:4px;">1h ago</div>
+        <div><span style="color:#00ff88">Black Axiom</span> approved</div>
+        <div style="color:#555; font-size:9px;">3h ago</div>
+      </div>
+    </div>
+    <div>
+      <h4>Taxonomy</h4>
+      <span class="tag-chip active">melancholy</span>
+      <span class="tag-chip">defiant</span>
+      <span class="tag-chip">ethereal</span>
+      <span class="tag-chip">nocturnal</span>
+      <span class="tag-chip">industrial</span>
+      <span class="tag-chip">sacred</span>
+      <span class="tag-chip">cinematic</span>
+    </div>
+    <div class="new-song-btn">+ New Song</div>
+    <div class="horus-note">Horus proposes songs from lore nightly</div>
+  </div>
+
+  <div class="main">
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<script>
+const songs = [
+  { title: "Whisperheads", source: "The Signal Archive", status: "converging", delta: 0.18, tags: ["melancholy","electronic"], date: "12 min ago", colors: ["#7c3aed","#4a9eff"] },
+  { title: "Cathedral of Circuits", source: "Horus Vol. III", status: "composing", delta: 0.42, tags: ["sacred","industrial","cinematic"], date: "1h ago", colors: ["#ff4444","#ffaa00"] },
+  { title: "Midnight Protocol", source: "Black Mirror Arc", status: "ready", delta: 0.12, tags: ["nocturnal","tension"], date: "6h ago", colors: ["#1a1a4a","#4a9eff"] },
+  { title: "Black Axiom", source: "Horus Vol. II", status: "ready", delta: 0.09, tags: ["defiant","industrial"], date: "3h ago", colors: ["#222","#ff4444"] },
+  { title: "Vessel", source: "Persona: Margaret", status: "converging", delta: 0.24, tags: ["ethereal","ambient"], date: "45 min ago", colors: ["#7c3aed","#00ff88"] },
+  { title: "Ember Logic", source: "DARPA Dream", status: "composing", delta: 0.51, tags: ["cinematic","tension"], date: "2h ago", colors: ["#ff6b6b","#ffaa00"] },
+  { title: "Hollow Crown", source: "Horus Vol. I", status: "archived", delta: 0.08, tags: ["melancholy","orchestral"], date: "2d ago", colors: ["#333","#666"] },
+  { title: "Phosphor Gate", source: "The Signal Archive", status: "ready", delta: 0.11, tags: ["electronic","ethereal"], date: "18h ago", colors: ["#00ff88","#4a9eff"] },
+  { title: "Recursion Hymn", source: "Persona: Brandon", status: "composing", delta: 0.38, tags: ["sacred","electronic","defiant"], date: "4h ago", colors: ["#ffaa00","#7c3aed"] },
+  { title: "Tidal Constant", source: "Horus Vol. III", status: "converging", delta: 0.20, tags: ["ambient","nocturnal"], date: "30 min ago", colors: ["#4a9eff","#00ff88"] },
+];
+
+const statusMap = {
+  composing: "badge-composing",
+  converging: "badge-converging",
+  ready: "badge-ready",
+  archived: "badge-archived",
+  rejected: "badge-rejected"
+};
+
+function hashColor(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
+  return h;
+}
+
+const grid = document.getElementById("grid");
+songs.forEach(s => {
+  const c1 = s.colors[0], c2 = s.colors[1];
+  const visibleTags = s.tags.slice(0, 2);
+  const extraCount = s.tags.length - 2;
+  const deltaColor = s.delta < 0.15 ? "#00ff88" : s.delta < 0.30 ? "#4a9eff" : "#ffaa00";
+
+  grid.innerHTML += `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-art" style="background:linear-gradient(135deg,${c1},${c2})"></div>
+        <div class="card-meta">
+          <div class="card-title">${s.title}</div>
+          <div class="card-subtitle">from ${s.source}</div>
+          <span class="card-badge ${statusMap[s.status]}">${s.status}</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-row">
+          <span class="card-delta">delta <span style="color:${deltaColor}">${s.delta.toFixed(2)}</span></span>
+          <div class="card-tags">
+            ${visibleTags.map(t => `<span class="card-tag">${t}</span>`).join("")}
+            ${extraCount > 0 ? `<span class="card-tag-more">+${extraCount}</span>` : ""}
+          </div>
+        </div>
+        <div class="card-date">${s.date}</div>
+      </div>
+    </div>
+  `;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zxdRNtJz6kw",
+    "language": "en",
+    "took_ms": 9902,
+    "method": null,
+    "title": "Strike Eagle scores air-to-air kill with a BOMB?!",
+    "channel": "Sandboxx",
+    "upload_date": "20230225",
+    "duration_sec": 60,
+    "description": "In 1991, Air Force Capt. Tim Bennett was serving as a flight leader for the 335th Tactical Fighter Squadron out of Al Kharj Air Base in central Saudi Arabia, in support of Operation Desert Storm when he was called on to take out an Iraqi Mi-24 gunship attacking American Special Forces. \n\nRather than using the AIM-9 Sidewinder on his wing... he opted to take out the airborne helicopter with a 2,000 pound bomb, scoring the fighter's only air-to-air kill to date. \n\nYou can read the full story here: https://www.sandboxx.us/blog/how-an-f-15e-shot-down-an-iraqi-gunship-with-a-bomb/\n\n#f15 #f15e #strikeeagle #airpower #airforce #fighterjet #airpower",
+    "view_count": 406260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zxdRNtJz6kw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

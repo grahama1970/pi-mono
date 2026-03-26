@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1mScuHCSQlQ",
+    "language": "en",
+    "took_ms": 9635,
+    "method": null,
+    "title": "The Water Sector (Uniqueness, Cloud, Oldsmar, NERC CIP)",
+    "channel": "S4 Events",
+    "upload_date": "20220928",
+    "duration_sec": 3114,
+    "description": "On this episode of the Unsolicited Response show, Dale Peterson is joined by Kevin Morley of the American Water Works Association and Joel Cox of West Yost Associates to talk about ICS security and the Water Sector.\n\n- what makes the water sector unique?\n- does this uniqueness lead to early and better use of the cloud for operations?\n- how did the community deal with Oldsmar?\n- why in the world would the water sector want to follow the NERC CIP model?",
+    "view_count": 349
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1mScuHCSQlQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

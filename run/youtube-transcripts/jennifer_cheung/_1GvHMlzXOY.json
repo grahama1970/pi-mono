@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_1GvHMlzXOY",
+    "language": "en",
+    "took_ms": 8611,
+    "method": null,
+    "title": "DEF CON 32 - Solving the Lover, Stalker, Killer Murder with strings, grep, and Perl - Anthony Kava",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1316,
+    "description": "Cari Farver did not disappear off the face of the Earth. She was murdered in cold blood, and her killer went on to impersonate her online, for over three years. The suspect hid their tracks with VPNs, proxies, and anonymizing apps. This talk will go behind the scenes of Netflix's \"Lover, Stalker, Killer\" to detail the open source software and bespoke methods used to prove a no-body homicide case based almost entirely on digital evidence.\n\nDateline NBC, S26E1 \"Scorned\" (2017) Rule, Leslie. \"A Tangled Web: A Cyberstalker, a Deadly Obsession, and the Twisting Path to Justice\". Citadel Press, 2020. Netflix, \"Lover, Stalker, Killer\" (2024)",
+    "view_count": 2588
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _1GvHMlzXOY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

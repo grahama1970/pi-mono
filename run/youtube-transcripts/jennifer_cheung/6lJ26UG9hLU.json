@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6lJ26UG9hLU",
+    "language": "en",
+    "took_ms": 8766,
+    "method": null,
+    "title": "DEF CON 32 - Signature-Based Detection Using Network Timing - Josh Pyorre",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2563,
+    "description": "Malware traffic is commonly identified using signatures based off its code, strings, and associated network infrastructure. However, it's also possible to build signatures from the timing between network transactions. This presentation will explore using network captures of known malicious network activity to find similar behavior in random traffic. The talk is technical as it involves processing packets with Python and a some data science, but will be presented in a way that anyone should be able to understand and enjoy.",
+    "view_count": 590
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6lJ26UG9hLU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

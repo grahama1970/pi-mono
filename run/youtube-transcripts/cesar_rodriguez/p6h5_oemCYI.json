@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p6h5_oemCYI",
+    "language": "en",
+    "took_ms": 9235,
+    "method": null,
+    "title": "This video shows why the F-35 is the scariest fighter on the planet",
+    "channel": "Sandboxx",
+    "upload_date": "20251120",
+    "duration_sec": 363,
+    "description": "New footage released by the Department of Energy shows an F-35 being loaded with two B61-12 nuclear weapons. \n\n📱 Follow Sandboxx News on social\nTwitter: https://twitter.com/sandboxxnews\nInstagram: https://instagram.com/sandboxxnews\nFacebook: https://facebook.com/sandboxxnews\nTikTok: https://www.tiktok.com/@sandboxxnews\n\n📱 Follow Alex Hollings on social\nTwitter: https://twitter.com/AlexHollings52\nInstagram: https://www.instagram.com/alexhollings52\nFacebook: https://www.facebook.com/AlexHollings52\nTikTok: https://www.tiktok.com/alexhollings52\n\nCitations:\nhttps://www.sandia.gov/labnews/2025/11/13/b61-12-flight-tests-yield-positive-results/\nhttps://www.airforce-technology.com/projects/b61-12-nuclear-bomb/\nhttps://www.airandspaceforces.com/weapons/b61/\nhttps://www.tandfonline.com/doi/pdf/10.1177/0096340214531546\nhttps://journals.sagepub.com/doi/pdf/10.2968/059001020\nhttps://www.airandspaceforces.com/f-35-dropped-inert-nukes-in-flight-tests/",
+    "view_count": 95470
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p6h5_oemCYI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

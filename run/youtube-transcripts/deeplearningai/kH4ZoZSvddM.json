@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kH4ZoZSvddM",
+    "language": "en",
+    "took_ms": 9224,
+    "method": null,
+    "title": "Navigating LLM Threats: Detecting Prompt Injections and Jailbreaks",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240109",
+    "duration_sec": 3140,
+    "description": "*Every time a new technology emerges, some people will inevitably attempt to use it maliciously – language models are no exception. Recently, we have seen numerous examples of attacks on large language models (LLMs). These attacks elicit restricted behavior from language models, such as producing hate speech, creating misinformation, leaking private information, or misleading the model into performing a different task than intended.\r\n\r\nIn this hands-on workshop, we will examine differences in navigating natural and algorithmic adversarial attacks, concentrating on prompt injections and jailbreaks. We first explore a few examples of how such attacks are generated via state-of-the-art cipher and language suffix approaches. We then focus on adaptive strategies for detecting these attacks in LLM-based applications using LangKit, our open-source package for feature extraction for LLM and NLP applications, with practical examples and limitation considerations. Namely, semantic similarity against a set of known attacks and LLM-based proactive detection techniques.two approaches for detecting the attacks with LangKit.\r\n\r\nBy the end of this workshop, attendees will understand:\n\n*What LLM prompt injections and jailbreaks are and measures to mitigate those attacks\n*How to use semantic similarity techniques to verify incoming prompts against a set of known jailbreak and prompt injection attacks\n*How to use LLM-based proactive detection techniques to preemptively detect prompt injection attacks\n\r\n\r\nRegister for our DeepLearning.AI short courses: \nhttps://bit.ly/4aL0O4t\n\nJoin our community to learn more:\nhttps://bit.ly/3tCI2f0\n\nSlides:\nhttps://docs.google.com/presentation/d/1VZBTsUTacDUh750O_km9G_6nI1HqABGx/edit?usp=sharing&ouid=100431473348634297800&rtpof=true&sd=true\n\nNotebook:  \nhttps://colab.research.google.com/drive/1RMjiJK9Nd-tP7kBXo8h9A0vtCCdY1ikS?usp=sharing\n\r\nWhyLabs:\n\nAs teams across industries adopt AI, WhyLabs enables them to operate with certainty by providing model monitoring, preventing costly model failures, and facilitating cross-functional collaboration. Incubated at the Allen Institute for AI, WhyLabs is a privately-held, venture-funded company based in Seattle.\n\nSpeakers\r\n\r\nFelipe Adachi, Applied Scientist, WhyLabs\nLinkedIn Profile: https://br.linkedin.com/in/felipe-adachi-1450b457/en\n\nBernease Herman, Sr. Data Scientist, WhyLabs\nLinkedIn Profile: https://www.linkedin.com/in/bernease/",
+    "view_count": 9709
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kH4ZoZSvddM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

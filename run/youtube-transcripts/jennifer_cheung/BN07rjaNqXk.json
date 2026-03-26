@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BN07rjaNqXk",
+    "language": "en",
+    "took_ms": 7808,
+    "method": null,
+    "title": "DEF CON 32 - The Way To Android Root: Exploiting Smartphone GPU - Xiling Gong, Eugene Rodionov",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2778,
+    "description": "GPU security is a vital area of mobile security highlighted both by public security research as well as by in-the-wild attacks. Due to the high complexity of the GPU software/firmware along with a widely available attack surface, issues in GPU provide strong exploitation primitives for local privilege escalation attacks by the code running in unprivileged context.\n\nIn this talk, we will focus our research on the Qualcomm Adreno GPU, which is a very popular GPU implementation in mobile devices. We will do a deep dive into Adreno GPU kernel module implementation focusing on the most recent GPU versions, reveal its complex and new attack surfaces, and discuss vulnerabilities we discovered in this component.\n\nIn total we identified 9+ exploitable vulnerabilities in Adreno GPU driver leading to kernel code execution and affecting Qualcomm-based devices using the latest GPU models. We will demonstrate the exploitation of one of the race condition issues on a fully-patched widely used Android device to obtain root privileges from zero-permission application with 100% success rate.\n\nAndroid kernel mitigations such as CFI and W^X create significant hurdles for exploiting vulnerabilities in kernel to achieve code execution. Also race condition usually means unstable, low success rate. We'll explain how we overcome these challenges with a novel, generic exploit method that leverages GPU features to achieve arbitrary physical memory read/write. This technique bypasses key mitigations (CFI, W^X) and has broader implications for kernel heap buffer overflows. We will cover the technical details of the exploitation, and especially the novel generic exploit method.\n\nWe will also discuss the action items that the vendors could take to minimize the impact of this exploit method, as well as general methods to improve the overall security status of the GPU.",
+    "view_count": 2006
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BN07rjaNqXk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

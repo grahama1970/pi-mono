@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "npAcymuDmeA",
+    "language": "en",
+    "took_ms": 8831,
+    "method": null,
+    "title": "New course with Giskard: Red Teaming LLM Applications",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240403",
+    "duration_sec": 226,
+    "description": "Enroll now: https://bit.ly/3U6T7zr\n\nLearn how to make safer LLM apps with our new short course built in collaboration with Giskard: Red Teaming LLM Applications. \n\nIn this course, you'll attack various chatbot applications using prompt injections to see how the system reacts and understand security failures. LLM failures can lead to legal liability, reputational damage, and costly service disruptions. This course helps you mitigate these risks proactively. \n\nLearn industry-proven red teaming techniques to proactively test, attack, and improve the robustness of your LLM applications, and:\n\nExplore the nuances of LLM performance evaluation, and understand the differences between benchmarking foundation models and testing LLM applications.\nGet an overview of fundamental LLM application vulnerabilities and how they affect real-world deployments.\nGain hands-on experience with both manual and automated LLM red-teaming methods.\nSee a full demonstration of red-teaming assessment, and apply the concepts and techniques covered throughout the course.\n\nAfter completing this course, you will have a fundamental understanding of how to experiment with LLM vulnerability identification and evaluation on your own applications.\n\nLearn more: https://bit.ly/3U6T7zr",
+    "view_count": 4025
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] npAcymuDmeA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

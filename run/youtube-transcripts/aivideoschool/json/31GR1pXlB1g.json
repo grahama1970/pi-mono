@@ -1,0 +1,4083 @@
+{
+  "meta": {
+    "video_id": "31GR1pXlB1g",
+    "language": "en",
+    "took_ms": 1252,
+    "method": "direct",
+    "title": "My AI Filmmaking Workflow: Kling, Veo & Nano Banana",
+    "channel": "AI Video School",
+    "upload_date": "20260113",
+    "duration_sec": 2200,
+    "description": "See the step-by-step approach I took to make my AI short film \"Discarded Companion.\" Pull up a chair while I break down my entire Kling O1 and Veo 3.1 workflow, including designing consistent characters, creating start-end frame animations, story-driven use of video-to-video, acting out scenes, plus a few storytelling tips! Watch \"Discarded Companion\" https://youtu.be/YY-M5bxTY28 and dive into my Google Flow vs Kling O1 comparison https://youtu.be/kRlbbKZIMFU\n\n🛠️ AI TOOLS (some links are affiliate links — they help support the channel)\nKling AI: https://klingaiaffiliate.pxf.io/jeBGnM \nGoogle Flow: https://labs.google/fx/tools/flow \nElevenLabs: https://try.elevenlabs.io/lcol016s31sw    \nSuno: https://suno.com/invite/@aivideoschool\n\n🗣️ I use Vidu to do the behind-the-scenes footage of me with my AI characters:\nhttps://www.vidu.com/create?utm_source=cpp&utm_medium=socialmedia&utm_campaign=q1r2v&utm_term=aivideoschool2 \n(Vidu gives us both get 200 credits if you use that link, it may take 3 days)\n\n🍿 AI Movies and How I Made Them\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RzcTWyiaBqQ-zSGE-U0FsAg \n\n⭐️ Subscribe to my newsletter: AI Video School Director's Cut! \nhttps://aivideoschool.xyz/\n\n00:00 Behind-the-scenes of \"Discarded Companion\"\n00:41 Creating consistent character reference sheets in Nano Banana\n02:16 Scene: Climbing out of the garbage (Veo start/end frame animation)\n09:42 Scene: Searching for the stuffed animal (Nano Banana and Kling)\n10:50 Character Persistence using reference sheets\n13:30 Scene: Reunited with the stuffed animal (End frame only animation!)\n19:56 Scene: Traveling home with the stuffed animal (Image to video)\n24:53 Scene: Dialogue between two androids (Kling's Motion Control, Avatar 2.0, Native Audio)\n30:30 Scene: Memory Sequence of handcrafting the stuffed animal (Start-End-Return frame animation)\n31:45 Scene: Finding a new home (Veo & Kling)\n34:17 Making movies is fun and you should do it! Plus a bunch of behind-the-scenes footage.\n\n#AIFilmmaking #KlingAI #GoogleVeo #aicinema #nanobananapro #NanoBanana #googleveo #klingO1 #aivideo #googleflow #aivideotutorial #aifilmmaking #aivideocreation #aitutorialforbeginners #futureofstorytelling #cinematicai #cinematicaivideo #consistentcharacter",
+    "view_count": 25299
+  },
+  "transcript": [
+    {
+      "text": "It's a rainy day today, which is the",
+      "start": 4.64,
+      "duration": 4.8
+    },
+    {
+      "text": "perfect weather for a tutorial showing",
+      "start": 7.12,
+      "duration": 6.08
+    },
+    {
+      "text": "how I made my movie Discarded Companion.",
+      "start": 9.44,
+      "duration": 5.199
+    },
+    {
+      "text": "I'm going to do something a little",
+      "start": 13.2,
+      "duration": 3.175
+    },
+    {
+      "text": "different this time. Since I've already",
+      "start": 14.639,
+      "duration": 4.4
+    },
+    {
+      "text": "[music] done the Clling 01 versus Google",
+      "start": 16.375,
+      "duration": 4.585
+    },
+    {
+      "text": "Flow video, I'm going to walk through",
+      "start": 19.039,
+      "duration": 4.32
+    },
+    {
+      "text": "[music] my video editing timeline and go",
+      "start": 20.96,
+      "duration": 5.2
+    },
+    {
+      "text": "scene by scene to show what I did. I'll",
+      "start": 23.359,
+      "duration": 5.201
+    },
+    {
+      "text": "show what worked, but also what didn't",
+      "start": 26.16,
+      "duration": 4.625
+    },
+    {
+      "text": "work and what I did when things weren't",
+      "start": 28.56,
+      "duration": 4.4
+    },
+    {
+      "text": "[music] turning out the way I hoped. I'm",
+      "start": 30.785,
+      "duration": 4.495
+    },
+    {
+      "text": "really proud of how Discarded Companion",
+      "start": 32.96,
+      "duration": 4.0
+    },
+    {
+      "text": "turned [music] out and I'm excited to",
+      "start": 35.28,
+      "duration": 3.68
+    },
+    {
+      "text": "show you how I made it. Hopefully, this",
+      "start": 36.96,
+      "duration": 4.24
+    },
+    {
+      "text": "will help you on your AI film making",
+      "start": 38.96,
+      "duration": 5.24
+    },
+    {
+      "text": "journey.",
+      "start": 41.2,
+      "duration": 3.0
+    },
+    {
+      "text": "One of the things I did after my",
+      "start": 45.04,
+      "duration": 3.92
+    },
+    {
+      "text": "previous tutorial was to build a",
+      "start": 46.719,
+      "duration": 5.121
+    },
+    {
+      "text": "character sheet for the Android. And the",
+      "start": 48.96,
+      "duration": 5.439
+    },
+    {
+      "text": "way I did that is I used the character",
+      "start": 51.84,
+      "duration": 5.039
+    },
+    {
+      "text": "reference that I created in Clling and",
+      "start": 54.399,
+      "duration": 4.64
+    },
+    {
+      "text": "then I took a couple screenshots that I",
+      "start": 56.879,
+      "duration": 4.881
+    },
+    {
+      "text": "liked of that character. Uh, one thing I",
+      "start": 59.039,
+      "duration": 5.2
+    },
+    {
+      "text": "like about this character more is the",
+      "start": 61.76,
+      "duration": 4.96
+    },
+    {
+      "text": "the darker color and all of the wires",
+      "start": 64.239,
+      "duration": 4.641
+    },
+    {
+      "text": "there feels more like clothing and",
+      "start": 66.72,
+      "duration": 4.24
+    },
+    {
+      "text": "jewelry. I didn't really like the",
+      "start": 68.88,
+      "duration": 4.32
+    },
+    {
+      "text": "version that Nano Banana came up with.",
+      "start": 70.96,
+      "duration": 3.839
+    },
+    {
+      "text": "So, I took some of the shots that I",
+      "start": 73.2,
+      "duration": 4.48
+    },
+    {
+      "text": "liked and the reference that I had and I",
+      "start": 74.799,
+      "duration": 4.801
+    },
+    {
+      "text": "created these. Then I just downloaded",
+      "start": 77.68,
+      "duration": 4.88
+    },
+    {
+      "text": "these and created a character sheet. So",
+      "start": 79.6,
+      "duration": 4.72
+    },
+    {
+      "text": "I took the ones that I like the most and",
+      "start": 82.56,
+      "duration": 4.0
+    },
+    {
+      "text": "I think I use Canva or Photoshop to just",
+      "start": 84.32,
+      "duration": 5.839
+    },
+    {
+      "text": "arrange these on one sheet like this. So",
+      "start": 86.56,
+      "duration": 6.559
+    },
+    {
+      "text": "I've got a back view, a front view,",
+      "start": 90.159,
+      "duration": 5.201
+    },
+    {
+      "text": "close-ups of the face, a profile, and",
+      "start": 93.119,
+      "duration": 4.96
+    },
+    {
+      "text": "sort of a mid-profile view. Because Nano",
+      "start": 95.36,
+      "duration": 5.439
+    },
+    {
+      "text": "Banana has what's called a large context",
+      "start": 98.079,
+      "duration": 5.601
+    },
+    {
+      "text": "window, and it can read these images, I",
+      "start": 100.799,
+      "duration": 5.441
+    },
+    {
+      "text": "actually just say multiple angles of the",
+      "start": 103.68,
+      "duration": 4.399
+    },
+    {
+      "text": "same character. I wanted to make sure I",
+      "start": 106.24,
+      "duration": 3.919
+    },
+    {
+      "text": "understood all of these are the same",
+      "start": 108.079,
+      "duration": 4.32
+    },
+    {
+      "text": "character. So, this was the character",
+      "start": 110.159,
+      "duration": 5.681
+    },
+    {
+      "text": "sheet that I used for her. What is",
+      "start": 112.399,
+      "duration": 5.521
+    },
+    {
+      "text": "really cool to me is that I was able to",
+      "start": 115.84,
+      "duration": 4.319
+    },
+    {
+      "text": "do a prompt and just say, I want a human",
+      "start": 117.92,
+      "duration": 4.64
+    },
+    {
+      "text": "version of the same character, you know,",
+      "start": 120.159,
+      "duration": 5.761
+    },
+    {
+      "text": "wearing a comfy sweater. And this is",
+      "start": 122.56,
+      "duration": 5.199
+    },
+    {
+      "text": "what it came up with. So, now I have a",
+      "start": 125.92,
+      "duration": 4.88
+    },
+    {
+      "text": "character sheet for the other character",
+      "start": 127.759,
+      "duration": 5.681
+    },
+    {
+      "text": "on the porch. So, there's two versions.",
+      "start": 130.8,
+      "duration": 4.32
+    },
+    {
+      "text": "And that's the prompt I used in Nano",
+      "start": 133.44,
+      "duration": 4.64
+    },
+    {
+      "text": "Banana.",
+      "start": 135.12,
+      "duration": 2.96
+    },
+    {
+      "text": "A lot of the creative work for this",
+      "start": 139.76,
+      "duration": 4.559
+    },
+    {
+      "text": "movie was actually done using Nano",
+      "start": 141.52,
+      "duration": 5.439
+    },
+    {
+      "text": "Banana in Google Flow. So, if you're not",
+      "start": 144.319,
+      "duration": 5.28
+    },
+    {
+      "text": "used to the Google Flow interface, it's",
+      "start": 146.959,
+      "duration": 4.0
+    },
+    {
+      "text": "important to understand that sometimes",
+      "start": 149.599,
+      "duration": 3.601
+    },
+    {
+      "text": "I'm going to be showing this image and",
+      "start": 150.959,
+      "duration": 6.321
+    },
+    {
+      "text": "this image, which makes this image with",
+      "start": 153.2,
+      "duration": 7.039
+    },
+    {
+      "text": "this prompt. Once I have an image, I can",
+      "start": 157.28,
+      "duration": 5.679
+    },
+    {
+      "text": "click into it here and just say like",
+      "start": 160.239,
+      "duration": 5.601
+    },
+    {
+      "text": "remove the android and then that will",
+      "start": 162.959,
+      "duration": 4.721
+    },
+    {
+      "text": "get rid of the Android. So if you're new",
+      "start": 165.84,
+      "duration": 4.88
+    },
+    {
+      "text": "to using Nano Banana in Google Flow,",
+      "start": 167.68,
+      "duration": 5.199
+    },
+    {
+      "text": "that's how I'm going in and creating",
+      "start": 170.72,
+      "duration": 4.72
+    },
+    {
+      "text": "images and editing images. From the",
+      "start": 172.879,
+      "duration": 4.64
+    },
+    {
+      "text": "previous tutorial, I really liked this",
+      "start": 175.44,
+      "duration": 5.36
+    },
+    {
+      "text": "mining shaft in the garbage heap here.",
+      "start": 177.519,
+      "duration": 4.64
+    },
+    {
+      "text": "And I thought it would be interesting to",
+      "start": 180.8,
+      "duration": 4.719
+    },
+    {
+      "text": "see her first inside of this uh cave",
+      "start": 182.159,
+      "duration": 5.921
+    },
+    {
+      "text": "before she crawls out of it. I took the",
+      "start": 185.519,
+      "duration": 5.36
+    },
+    {
+      "text": "exterior shot that I had and I took the",
+      "start": 188.08,
+      "duration": 6.079
+    },
+    {
+      "text": "character reference of her and just",
+      "start": 190.879,
+      "duration": 5.601
+    },
+    {
+      "text": "said, \"Imagine you were to go inside the",
+      "start": 194.159,
+      "duration": 4.881
+    },
+    {
+      "text": "entry of this trash pile. Um, inside the",
+      "start": 196.48,
+      "duration": 5.28
+    },
+    {
+      "text": "exhuman is curled in a fetal position in",
+      "start": 199.04,
+      "duration": 4.88
+    },
+    {
+      "text": "a cleared out section. It's like an",
+      "start": 201.76,
+      "duration": 3.92
+    },
+    {
+      "text": "animal's nest or a cave made with",
+      "start": 203.92,
+      "duration": 4.88
+    },
+    {
+      "text": "trash.\" So, I got a I got a few that",
+      "start": 205.68,
+      "duration": 4.639
+    },
+    {
+      "text": "they took the nest a little too",
+      "start": 208.8,
+      "duration": 4.32
+    },
+    {
+      "text": "seriously or they kept her outside, but",
+      "start": 210.319,
+      "duration": 4.48
+    },
+    {
+      "text": "this was the one that I liked. I imagine",
+      "start": 213.12,
+      "duration": 3.52
+    },
+    {
+      "text": "it's easy to picture that's where she",
+      "start": 214.799,
+      "duration": 3.761
+    },
+    {
+      "text": "crawls out of when we see her next. I",
+      "start": 216.64,
+      "duration": 4.72
+    },
+    {
+      "text": "took that picture and said, \"Do a",
+      "start": 218.56,
+      "duration": 6.16
+    },
+    {
+      "text": "closeup of her face.\" And I got this one",
+      "start": 221.36,
+      "duration": 5.68
+    },
+    {
+      "text": "and her face was a little bit too human",
+      "start": 224.72,
+      "duration": 5.12
+    },
+    {
+      "text": "for me. So, I took that picture,",
+      "start": 227.04,
+      "duration": 4.4
+    },
+    {
+      "text": "combined it with a character reference",
+      "start": 229.84,
+      "duration": 4.16
+    },
+    {
+      "text": "sheet, and said, \"Change her to look",
+      "start": 231.44,
+      "duration": 5.12
+    },
+    {
+      "text": "more like the reference.\" And that's the",
+      "start": 234.0,
+      "duration": 4.64
+    },
+    {
+      "text": "one that I got. So, her eyes are open in",
+      "start": 236.56,
+      "duration": 3.759
+    },
+    {
+      "text": "this one, but I want her sleeping like",
+      "start": 238.64,
+      "duration": 4.159
+    },
+    {
+      "text": "this. So, I just took this image and",
+      "start": 240.319,
+      "duration": 6.081
+    },
+    {
+      "text": "said, \"Have her eyes closed.\"",
+      "start": 242.799,
+      "duration": 6.0
+    },
+    {
+      "text": "So, that's how I got this shot. For",
+      "start": 246.4,
+      "duration": 4.479
+    },
+    {
+      "text": "these first two shots, I generated the",
+      "start": 248.799,
+      "duration": 5.52
+    },
+    {
+      "text": "images in Flow in Nano Banana. And then",
+      "start": 250.879,
+      "duration": 6.001
+    },
+    {
+      "text": "you get three free videos per day in",
+      "start": 254.319,
+      "duration": 4.801
+    },
+    {
+      "text": "Gemini when you're on the pro plan. I",
+      "start": 256.88,
+      "duration": 3.84
+    },
+    {
+      "text": "tried to take advantage of those three",
+      "start": 259.12,
+      "duration": 6.519
+    },
+    {
+      "text": "videos a day. I started with this shot.",
+      "start": 260.72,
+      "duration": 4.919
+    },
+    {
+      "text": "We got that.",
+      "start": 267.6,
+      "duration": 7.319
+    },
+    {
+      "text": "There was another version",
+      "start": 270.96,
+      "duration": 3.959
+    },
+    {
+      "text": "too much water there and I didn't want",
+      "start": 276.0,
+      "duration": 3.68
+    },
+    {
+      "text": "her to wake up and she doesn't look",
+      "start": 278.0,
+      "duration": 4.0
+    },
+    {
+      "text": "right. There's that like weird light",
+      "start": 279.68,
+      "duration": 4.959
+    },
+    {
+      "text": "there. And then for this one, I have her",
+      "start": 282.0,
+      "duration": 5.12
+    },
+    {
+      "text": "sleeping and then I say after a moment",
+      "start": 284.639,
+      "duration": 4.401
+    },
+    {
+      "text": "her eyes open and she looks side to side",
+      "start": 287.12,
+      "duration": 3.68
+    },
+    {
+      "text": "as if trying to get her bearings after",
+      "start": 289.04,
+      "duration": 3.92
+    },
+    {
+      "text": "being in deep hibernation. This was",
+      "start": 290.8,
+      "duration": 4.88
+    },
+    {
+      "text": "something I added to most of the VO",
+      "start": 292.96,
+      "duration": 5.2
+    },
+    {
+      "text": "prompts because they really like to add",
+      "start": 295.68,
+      "duration": 5.44
+    },
+    {
+      "text": "music and like weird soundsscape stuff.",
+      "start": 298.16,
+      "duration": 4.96
+    },
+    {
+      "text": "Um, but I didn't want that because I was",
+      "start": 301.12,
+      "duration": 4.24
+    },
+    {
+      "text": "going to add it later. But I did want",
+      "start": 303.12,
+      "duration": 4.799
+    },
+    {
+      "text": "environmental sounds and foley sounds.",
+      "start": 305.36,
+      "duration": 4.48
+    },
+    {
+      "text": "So I would say only environmental sounds",
+      "start": 307.919,
+      "duration": 4.881
+    },
+    {
+      "text": "and foley sounds. So foley sounds are",
+      "start": 309.84,
+      "duration": 7.48
+    },
+    {
+      "text": "like footsteps and things like that.",
+      "start": 312.8,
+      "duration": 4.52
+    },
+    {
+      "text": "These three shots hopefully come off as",
+      "start": 323.12,
+      "duration": 5.44
+    },
+    {
+      "text": "a single continuous take that's 23",
+      "start": 325.84,
+      "duration": 5.6
+    },
+    {
+      "text": "seconds long. Um, and the way we did",
+      "start": 328.56,
+      "duration": 5.84
+    },
+    {
+      "text": "that is this first frame where there's",
+      "start": 331.44,
+      "duration": 6.16
+    },
+    {
+      "text": "the start frame, which then becomes the",
+      "start": 334.4,
+      "duration": 6.639
+    },
+    {
+      "text": "end frame. The end frame for this clip",
+      "start": 337.6,
+      "duration": 7.52
+    },
+    {
+      "text": "is the start frame for this clip.",
+      "start": 341.039,
+      "duration": 7.521
+    },
+    {
+      "text": "And then the end frame for this clip is",
+      "start": 345.12,
+      "duration": 5.919
+    },
+    {
+      "text": "the start frame for the next clip, which",
+      "start": 348.56,
+      "duration": 4.16
+    },
+    {
+      "text": "doesn't have an end frame cuz I like the",
+      "start": 351.039,
+      "duration": 3.761
+    },
+    {
+      "text": "idea of getting different ways of her",
+      "start": 352.72,
+      "duration": 4.72
+    },
+    {
+      "text": "climbing this trash mountain. One thing,",
+      "start": 354.8,
+      "duration": 4.32
+    },
+    {
+      "text": "if you're editing, you'll notice there's",
+      "start": 357.44,
+      "duration": 3.599
+    },
+    {
+      "text": "little like jumps because the rain",
+      "start": 359.12,
+      "duration": 5.56
+    },
+    {
+      "text": "doesn't match exactly.",
+      "start": 361.039,
+      "duration": 3.641
+    },
+    {
+      "text": "But if you just take the clips straight",
+      "start": 365.52,
+      "duration": 4.64
+    },
+    {
+      "text": "out of VO and line them up, it's a",
+      "start": 367.68,
+      "duration": 4.0
+    },
+    {
+      "text": "little bit worse. I notice it takes",
+      "start": 370.16,
+      "duration": 4.479
+    },
+    {
+      "text": "about 10 frames. So you'll see if you",
+      "start": 371.68,
+      "duration": 6.079
+    },
+    {
+      "text": "look at this, it's 720. Here's the full",
+      "start": 374.639,
+      "duration": 5.521
+    },
+    {
+      "text": "clip. So this is what it would look like",
+      "start": 377.759,
+      "duration": 7.321
+    },
+    {
+      "text": "if I just took the clip right out of VO.",
+      "start": 380.16,
+      "duration": 4.92
+    },
+    {
+      "text": "So there's more of a glitch there. Do",
+      "start": 385.759,
+      "duration": 3.601
+    },
+    {
+      "text": "you see what I mean?",
+      "start": 387.36,
+      "duration": 4.0
+    },
+    {
+      "text": "So what I found was trimming off the",
+      "start": 389.36,
+      "duration": 6.48
+    },
+    {
+      "text": "last 10 frames gets you much closer.",
+      "start": 391.36,
+      "duration": 6.399
+    },
+    {
+      "text": "All right, so that's this 20 second",
+      "start": 395.84,
+      "duration": 5.04
+    },
+    {
+      "text": "sequence. Um, this next shot here is",
+      "start": 397.759,
+      "duration": 6.801
+    },
+    {
+      "text": "just done with my character sheet and a",
+      "start": 400.88,
+      "duration": 6.24
+    },
+    {
+      "text": "text prompt.",
+      "start": 404.56,
+      "duration": 4.4
+    },
+    {
+      "text": "I generated a bunch of different options",
+      "start": 407.12,
+      "duration": 4.079
+    },
+    {
+      "text": "here. And then I said remove the android",
+      "start": 408.96,
+      "duration": 6.16
+    },
+    {
+      "text": "from the frame, which gets me here. And",
+      "start": 411.199,
+      "duration": 6.481
+    },
+    {
+      "text": "then I used this image as the start",
+      "start": 415.12,
+      "duration": 5.519
+    },
+    {
+      "text": "frame and the original image of her",
+      "start": 417.68,
+      "duration": 7.639
+    },
+    {
+      "text": "standing there as the end frame.",
+      "start": 420.639,
+      "duration": 4.68
+    },
+    {
+      "text": "So, that's how that one works. Once I",
+      "start": 431.52,
+      "duration": 3.679
+    },
+    {
+      "text": "had this shot of her that I liked",
+      "start": 433.599,
+      "duration": 4.0
+    },
+    {
+      "text": "walking down the other side of the trash",
+      "start": 435.199,
+      "duration": 4.801
+    },
+    {
+      "text": "heap, I said, \"Let's do a closeup of",
+      "start": 437.599,
+      "duration": 6.081
+    },
+    {
+      "text": "her.\" And it gave me this one, which",
+      "start": 440.0,
+      "duration": 6.08
+    },
+    {
+      "text": "wasn't She's looking the wrong way. So,",
+      "start": 443.68,
+      "duration": 5.359
+    },
+    {
+      "text": "I tried to be more specific. And this",
+      "start": 446.08,
+      "duration": 4.8
+    },
+    {
+      "text": "time, I added the character sheet. And I",
+      "start": 449.039,
+      "duration": 4.16
+    },
+    {
+      "text": "know from experience I need to say do",
+      "start": 450.88,
+      "duration": 3.759
+    },
+    {
+      "text": "not have her looking directly at the",
+      "start": 453.199,
+      "duration": 3.361
+    },
+    {
+      "text": "camera because in this character sheet",
+      "start": 454.639,
+      "duration": 4.481
+    },
+    {
+      "text": "she's looking at the camera. So it leans",
+      "start": 456.56,
+      "duration": 4.8
+    },
+    {
+      "text": "towards that. So I used that shot and",
+      "start": 459.12,
+      "duration": 3.919
+    },
+    {
+      "text": "said make her face look more like the",
+      "start": 461.36,
+      "duration": 3.76
+    },
+    {
+      "text": "character in the reference sheet. So",
+      "start": 463.039,
+      "duration": 3.921
+    },
+    {
+      "text": "she's looking directly at us again which",
+      "start": 465.12,
+      "duration": 3.359
+    },
+    {
+      "text": "I don't want. I said have her eyes",
+      "start": 466.96,
+      "duration": 4.32
+    },
+    {
+      "text": "gazing downward as if she's looking at",
+      "start": 468.479,
+      "duration": 5.361
+    },
+    {
+      "text": "the path before her. And then this shot",
+      "start": 471.28,
+      "duration": 7.72
+    },
+    {
+      "text": "becomes a start frame.",
+      "start": 473.84,
+      "duration": 5.16
+    },
+    {
+      "text": ">> [music]",
+      "start": 497.15,
+      "duration": 2.02
+    },
+    {
+      "text": ">> That's the start frame. I didn't use",
+      "start": 500.8,
+      "duration": 3.76
+    },
+    {
+      "text": "this part because what I wanted was her",
+      "start": 502.479,
+      "duration": 3.681
+    },
+    {
+      "text": "head motion. So, here's what it looks",
+      "start": 504.56,
+      "duration": 4.319
+    },
+    {
+      "text": "like. So, she slides down,",
+      "start": 506.16,
+      "duration": 4.24
+    },
+    {
+      "text": "stands up, [music] and she's leaning",
+      "start": 508.879,
+      "duration": 4.4
+    },
+    {
+      "text": "forward. That's kind of the wrong,",
+      "start": 510.4,
+      "duration": 4.079
+    },
+    {
+      "text": "you know what I mean? Like, she should",
+      "start": 513.279,
+      "duration": 4.481
+    },
+    {
+      "text": "be going upward, not downward. trimming",
+      "start": 514.479,
+      "duration": 5.841
+    },
+    {
+      "text": "that off and having her go up, it feels",
+      "start": 517.76,
+      "duration": 4.079
+    },
+    {
+      "text": "like it comes together a little bit",
+      "start": 520.32,
+      "duration": 4.519
+    },
+    {
+      "text": "nicer.",
+      "start": 521.839,
+      "duration": 3.0
+    },
+    {
+      "text": "Cutting on motion like this is a simple",
+      "start": 527.6,
+      "duration": 5.76
+    },
+    {
+      "text": "technique to make it feel like they go",
+      "start": 530.72,
+      "duration": 5.28
+    },
+    {
+      "text": "together. Cuz if you look at it, if I",
+      "start": 533.36,
+      "duration": 4.56
+    },
+    {
+      "text": "extend this clip all the way out and",
+      "start": 536.0,
+      "duration": 3.839
+    },
+    {
+      "text": "extend this clip all the way out, you'll",
+      "start": 537.92,
+      "duration": 3.919
+    },
+    {
+      "text": "see they don't cut together very well at",
+      "start": 539.839,
+      "duration": 3.841
+    },
+    {
+      "text": "all",
+      "start": 541.839,
+      "duration": 5.361
+    },
+    {
+      "text": "because we have the end frame there.",
+      "start": 543.68,
+      "duration": 7.44
+    },
+    {
+      "text": "when she leans forward and looks up.",
+      "start": 547.2,
+      "duration": 6.0
+    },
+    {
+      "text": "So, we'll just",
+      "start": 551.12,
+      "duration": 5.2
+    },
+    {
+      "text": "to me this feels more fluid. Not",
+      "start": 553.2,
+      "duration": 5.199
+    },
+    {
+      "text": "perfect, but better. One other thing I",
+      "start": 556.32,
+      "duration": 5.76
+    },
+    {
+      "text": "did here is I down here,",
+      "start": 558.399,
+      "duration": 5.601
+    },
+    {
+      "text": "I forgot to mention this before, too,",
+      "start": 562.08,
+      "duration": 4.56
+    },
+    {
+      "text": "but I have these little subtle servo",
+      "start": 564.0,
+      "duration": 5.64
+    },
+    {
+      "text": "wors.",
+      "start": 566.64,
+      "duration": 3.0
+    },
+    {
+      "text": "Um, and so I put those when she's moving",
+      "start": 571.279,
+      "duration": 4.721
+    },
+    {
+      "text": "around initially and then again with her",
+      "start": 574.08,
+      "duration": 4.92
+    },
+    {
+      "text": "neck.",
+      "start": 576.0,
+      "duration": 3.0
+    },
+    {
+      "text": "I wanted to have her walking around the",
+      "start": 585.839,
+      "duration": 5.201
+    },
+    {
+      "text": "junkyard. We have this shot of her",
+      "start": 588.399,
+      "duration": 6.081
+    },
+    {
+      "text": "walking down the trash heap and then we",
+      "start": 591.04,
+      "duration": 5.919
+    },
+    {
+      "text": "removed her from the trash heap. And now",
+      "start": 594.48,
+      "duration": 5.44
+    },
+    {
+      "text": "I use that as a reference and just say",
+      "start": 596.959,
+      "duration": 5.281
+    },
+    {
+      "text": "show a different spelled it wrong, but",
+      "start": 599.92,
+      "duration": 4.16
+    },
+    {
+      "text": "show a different part of this garbage",
+      "start": 602.24,
+      "duration": 6.0
+    },
+    {
+      "text": "junkyard. And I got this shot.",
+      "start": 604.08,
+      "duration": 5.759
+    },
+    {
+      "text": "I used the character reference sheet",
+      "start": 608.24,
+      "duration": 3.76
+    },
+    {
+      "text": "again. And there's these garbage bags",
+      "start": 609.839,
+      "duration": 3.921
+    },
+    {
+      "text": "here. I wanted her staring at the",
+      "start": 612.0,
+      "duration": 4.8
+    },
+    {
+      "text": "garbage bags. And then Nano Banana added",
+      "start": 613.76,
+      "duration": 5.28
+    },
+    {
+      "text": "more garbage bags. So instead of these,",
+      "start": 616.8,
+      "duration": 4.479
+    },
+    {
+      "text": "she's looking at these. And that's",
+      "start": 619.04,
+      "duration": 4.32
+    },
+    {
+      "text": "probably due to my prompt um not being",
+      "start": 621.279,
+      "duration": 4.24
+    },
+    {
+      "text": "great. But then I also thought I like",
+      "start": 623.36,
+      "duration": 4.32
+    },
+    {
+      "text": "that more. Actually, I want her to open",
+      "start": 625.519,
+      "duration": 4.401
+    },
+    {
+      "text": "these up, like kind of tear them open.",
+      "start": 627.68,
+      "duration": 6.04
+    },
+    {
+      "text": "It was a happy mistake.",
+      "start": 629.92,
+      "duration": 3.8
+    },
+    {
+      "text": "Now, I cut out of this early because",
+      "start": 638.64,
+      "duration": 6.319
+    },
+    {
+      "text": "when we go to her face,",
+      "start": 640.8,
+      "duration": 6.159
+    },
+    {
+      "text": "she she has a different look. It didn't",
+      "start": 644.959,
+      "duration": 3.44
+    },
+    {
+      "text": "they didn't know how to paint this part",
+      "start": 646.959,
+      "duration": 3.361
+    },
+    {
+      "text": "of her face in apparently. Here's one",
+      "start": 648.399,
+      "duration": 3.841
+    },
+    {
+      "text": "thing I tried. I tried ingredients to",
+      "start": 650.32,
+      "duration": 4.88
+    },
+    {
+      "text": "video where I took this shot of her and",
+      "start": 652.24,
+      "duration": 6.24
+    },
+    {
+      "text": "the reference sheet and then said using",
+      "start": 655.2,
+      "duration": 5.36
+    },
+    {
+      "text": "the first image as a start frame. They",
+      "start": 658.48,
+      "duration": 3.919
+    },
+    {
+      "text": "bend down and they rip open the trash",
+      "start": 660.56,
+      "duration": 4.399
+    },
+    {
+      "text": "bags. This is one of the prompts that I",
+      "start": 662.399,
+      "duration": 5.601
+    },
+    {
+      "text": "didn't use the no talking, no ambient",
+      "start": 664.959,
+      "duration": 4.56
+    },
+    {
+      "text": "soundsscape.",
+      "start": 668.0,
+      "duration": 3.12
+    },
+    {
+      "text": ">> No, not here either.",
+      "start": 669.519,
+      "duration": 3.201
+    },
+    {
+      "text": ">> She actually does look a lot more like",
+      "start": 671.12,
+      "duration": 5.159
+    },
+    {
+      "text": "the character here.",
+      "start": 672.72,
+      "duration": 3.559
+    },
+    {
+      "text": ">> No, not here either.",
+      "start": 676.399,
+      "duration": 6.481
+    },
+    {
+      "text": "And then we see her with these dolls,",
+      "start": 678.64,
+      "duration": 7.759
+    },
+    {
+      "text": "sorting through dolls and games,",
+      "start": 682.88,
+      "duration": 6.24
+    },
+    {
+      "text": "more stuff, old computers,",
+      "start": 686.399,
+      "duration": 7.68
+    },
+    {
+      "text": "and then getting frustrated. Right.",
+      "start": 689.12,
+      "duration": 7.6
+    },
+    {
+      "text": "Here's one that did not work. [laughter]",
+      "start": 694.079,
+      "duration": 4.561
+    },
+    {
+      "text": "What I did here was I used the character",
+      "start": 696.72,
+      "duration": 4.48
+    },
+    {
+      "text": "sheet and this other shot where there's",
+      "start": 698.64,
+      "duration": 5.28
+    },
+    {
+      "text": "the car and the washing machine and I",
+      "start": 701.2,
+      "duration": 6.0
+    },
+    {
+      "text": "just say medium closeup of a solo human",
+      "start": 703.92,
+      "duration": 5.28
+    },
+    {
+      "text": "solo exhuman in a completely different",
+      "start": 707.2,
+      "duration": 4.639
+    },
+    {
+      "text": "part of the same junkyard. She's looking",
+      "start": 709.2,
+      "duration": 4.8
+    },
+    {
+      "text": "in the trash for something. But what I",
+      "start": 711.839,
+      "duration": 4.641
+    },
+    {
+      "text": "wanted was these dolls now too. So I",
+      "start": 714.0,
+      "duration": 5.68
+    },
+    {
+      "text": "just took this shot and said with",
+      "start": 716.48,
+      "duration": 5.599
+    },
+    {
+      "text": "discarded toys. So now there's different",
+      "start": 719.68,
+      "duration": 4.399
+    },
+    {
+      "text": "toys here. I wanted to have her looking",
+      "start": 722.079,
+      "duration": 4.161
+    },
+    {
+      "text": "in multiple places. I use the prompt of",
+      "start": 724.079,
+      "duration": 4.161
+    },
+    {
+      "text": "her looking through those toys and the",
+      "start": 726.24,
+      "duration": 3.44
+    },
+    {
+      "text": "character reference sheet. I have her",
+      "start": 728.24,
+      "duration": 2.64
+    },
+    {
+      "text": "looking through a different pile of",
+      "start": 729.68,
+      "duration": 3.279
+    },
+    {
+      "text": "garbage and electronics. I switch it up",
+      "start": 730.88,
+      "duration": 4.16
+    },
+    {
+      "text": "by saying have her face the right side",
+      "start": 732.959,
+      "duration": 4.88
+    },
+    {
+      "text": "of the frame. The piles of garbage are",
+      "start": 735.04,
+      "duration": 4.72
+    },
+    {
+      "text": "also on the right. I want to take all of",
+      "start": 737.839,
+      "duration": 4.161
+    },
+    {
+      "text": "this stuff and move it over to this",
+      "start": 739.76,
+      "duration": 4.16
+    },
+    {
+      "text": "side. And I wanted to make sure there's",
+      "start": 742.0,
+      "duration": 3.92
+    },
+    {
+      "text": "only one cuz I didn't want another",
+      "start": 743.92,
+      "duration": 4.0
+    },
+    {
+      "text": "situation like this. This became the",
+      "start": 745.92,
+      "duration": 5.039
+    },
+    {
+      "text": "start frame for this one where she's",
+      "start": 747.92,
+      "duration": 5.28
+    },
+    {
+      "text": "tossing things aside and looking through",
+      "start": 750.959,
+      "duration": 5.12
+    },
+    {
+      "text": "them.",
+      "start": 753.2,
+      "duration": 2.879
+    },
+    {
+      "text": "That's her frustration. I didn't like",
+      "start": 758.399,
+      "duration": 4.401
+    },
+    {
+      "text": "that at first, but then I ended up using",
+      "start": 760.72,
+      "duration": 4.32
+    },
+    {
+      "text": "it cuz I want her just doing this just",
+      "start": 762.8,
+      "duration": 5.599
+    },
+    {
+      "text": "kind of picking through methodically.",
+      "start": 765.04,
+      "duration": 5.599
+    },
+    {
+      "text": "Uh, this one I didn't use cuz it's like",
+      "start": 768.399,
+      "duration": 4.481
+    },
+    {
+      "text": "I love how this little this bone keep",
+      "start": 770.639,
+      "duration": 5.841
+    },
+    {
+      "text": "your eye on that turns into the doll. Or",
+      "start": 772.88,
+      "duration": 8.72
+    },
+    {
+      "text": "actually, it's the doll, right?",
+      "start": 776.48,
+      "duration": 9.919
+    },
+    {
+      "text": "this tennis ball turns into a bone.",
+      "start": 781.6,
+      "duration": 6.4
+    },
+    {
+      "text": "So, I didn't end up using this one. This",
+      "start": 786.399,
+      "duration": 3.521
+    },
+    {
+      "text": "is the first time that cling video comes",
+      "start": 788.0,
+      "duration": 4.24
+    },
+    {
+      "text": "in.",
+      "start": 789.92,
+      "duration": 4.8
+    },
+    {
+      "text": "I feel like there's more natural motion",
+      "start": 792.24,
+      "duration": 4.48
+    },
+    {
+      "text": "in the cling one. I just did the same",
+      "start": 794.72,
+      "duration": 3.6
+    },
+    {
+      "text": "thing in Cling. I like that the camera",
+      "start": 796.72,
+      "duration": 4.72
+    },
+    {
+      "text": "is moving and she's moving in subtly",
+      "start": 798.32,
+      "duration": 5.12
+    },
+    {
+      "text": "different ways between this one and this",
+      "start": 801.44,
+      "duration": 5.0
+    },
+    {
+      "text": "one.",
+      "start": 803.44,
+      "duration": 3.0
+    },
+    {
+      "text": "For this sequence, we have her [music]",
+      "start": 813.839,
+      "duration": 6.56
+    },
+    {
+      "text": "looking around still. The camera pulls",
+      "start": 817.6,
+      "duration": 6.88
+    },
+    {
+      "text": "back and we see this stuffed animal.",
+      "start": 820.399,
+      "duration": 7.761
+    },
+    {
+      "text": "She glances over,",
+      "start": 824.48,
+      "duration": 5.599
+    },
+    {
+      "text": "reaches out,",
+      "start": 828.16,
+      "duration": 4.56
+    },
+    {
+      "text": "pulls it close to her,",
+      "start": 830.079,
+      "duration": 5.2
+    },
+    {
+      "text": "and then we cut to the shot of her",
+      "start": 832.72,
+      "duration": 4.4
+    },
+    {
+      "text": "holding it,",
+      "start": 835.279,
+      "duration": 4.081
+    },
+    {
+      "text": "squeezing it. She hugs it close to her,",
+      "start": 837.12,
+      "duration": 5.76
+    },
+    {
+      "text": "and we see a trace or like a ghost of",
+      "start": 839.36,
+      "duration": 6.479
+    },
+    {
+      "text": "the android she used to be, similar to",
+      "start": 842.88,
+      "duration": 4.56
+    },
+    {
+      "text": "the android that we're going to meet",
+      "start": 845.839,
+      "duration": 4.601
+    },
+    {
+      "text": "later.",
+      "start": 847.44,
+      "duration": 3.0
+    },
+    {
+      "text": "There's a lot going on in this sequence.",
+      "start": 850.48,
+      "duration": 6.799
+    },
+    {
+      "text": "This is actually done with an end frame",
+      "start": 853.199,
+      "duration": 7.041
+    },
+    {
+      "text": "that has no start frame, and I'll show",
+      "start": 857.279,
+      "duration": 4.8
+    },
+    {
+      "text": "you that in a second. Because she's",
+      "start": 860.24,
+      "duration": 4.08
+    },
+    {
+      "text": "going to be carrying this doll around",
+      "start": 862.079,
+      "duration": 4.401
+    },
+    {
+      "text": "the whole time, I needed a character",
+      "start": 864.32,
+      "duration": 4.639
+    },
+    {
+      "text": "reference for the doll. Um, and I didn't",
+      "start": 866.48,
+      "duration": 4.159
+    },
+    {
+      "text": "want to do the Laboo, and I was sort of",
+      "start": 868.959,
+      "duration": 3.361
+    },
+    {
+      "text": "like, hey, imagine it should be like a",
+      "start": 870.639,
+      "duration": 4.961
+    },
+    {
+      "text": "Laboo or the Muai from Gremlins, but",
+      "start": 872.32,
+      "duration": 6.0
+    },
+    {
+      "text": "feel unique. came up with this idea at",
+      "start": 875.6,
+      "duration": 4.799
+    },
+    {
+      "text": "first. And it even named it Gutterball,",
+      "start": 878.32,
+      "duration": 3.92
+    },
+    {
+      "text": "which I think is hilarious for some",
+      "start": 880.399,
+      "duration": 4.24
+    },
+    {
+      "text": "reason. Um, but I was like, Gutterball",
+      "start": 882.24,
+      "duration": 5.839
+    },
+    {
+      "text": "is too grimy and worn. Um, and then I",
+      "start": 884.639,
+      "duration": 5.601
+    },
+    {
+      "text": "said, \"Here's the Laboo that you made.\"",
+      "start": 888.079,
+      "duration": 4.0
+    },
+    {
+      "text": "And I wasn't really getting the result I",
+      "start": 890.24,
+      "duration": 4.159
+    },
+    {
+      "text": "wanted. So, I just said, \"Hey, if you",
+      "start": 892.079,
+      "duration": 3.76
+    },
+    {
+      "text": "were going to create a stuffed animal",
+      "start": 894.399,
+      "duration": 4.161
+    },
+    {
+      "text": "from scratch, what would it look like?\"",
+      "start": 895.839,
+      "duration": 4.641
+    },
+    {
+      "text": "And it gave me this one. And I",
+      "start": 898.56,
+      "duration": 3.44
+    },
+    {
+      "text": "immediately was like, \"Yep, that's it.\"",
+      "start": 900.48,
+      "duration": 3.919
+    },
+    {
+      "text": "It's just homemade and weird enough.",
+      "start": 902.0,
+      "duration": 4.56
+    },
+    {
+      "text": "There's the antlers and it's got these",
+      "start": 904.399,
+      "duration": 4.961
+    },
+    {
+      "text": "little mushrooms here and the patchwork",
+      "start": 906.56,
+      "duration": 4.959
+    },
+    {
+      "text": "of it all. Looks like this came Oh, this",
+      "start": 909.36,
+      "duration": 4.64
+    },
+    {
+      "text": "is actually from This actually looks",
+      "start": 911.519,
+      "duration": 4.721
+    },
+    {
+      "text": "like her sweater, too, which is wild. I",
+      "start": 914.0,
+      "duration": 5.279
+    },
+    {
+      "text": "just noticed that. So, back in Cling, in",
+      "start": 916.24,
+      "duration": 5.2
+    },
+    {
+      "text": "order to get this end frame to work, I",
+      "start": 919.279,
+      "duration": 5.36
+    },
+    {
+      "text": "had to use 1.6. None of the other",
+      "start": 921.44,
+      "duration": 6.0
+    },
+    {
+      "text": "options will allow you to just do an end",
+      "start": 924.639,
+      "duration": 5.76
+    },
+    {
+      "text": "frame without a start frame. So, I said,",
+      "start": 927.44,
+      "duration": 5.36
+    },
+    {
+      "text": "\"A medium close-up of the android leaned",
+      "start": 930.399,
+      "duration": 3.921
+    },
+    {
+      "text": "forward, looking to the right of the",
+      "start": 932.8,
+      "duration": 3.68
+    },
+    {
+      "text": "frame, sorting through the trash. The",
+      "start": 934.32,
+      "duration": 4.24
+    },
+    {
+      "text": "camera pulls back to reveal the doll in",
+      "start": 936.48,
+      "duration": 3.919
+    },
+    {
+      "text": "the foreground.\" So, this was the first",
+      "start": 938.56,
+      "duration": 4.705
+    },
+    {
+      "text": "version I did. [music]",
+      "start": 940.399,
+      "duration": 2.866
+    },
+    {
+      "text": "And I like this one cuz she's looking",
+      "start": 944.48,
+      "duration": 4.625
+    },
+    {
+      "text": "over there.",
+      "start": 946.24,
+      "duration": 4.885
+    },
+    {
+      "text": "[music]",
+      "start": 949.105,
+      "duration": 2.02
+    },
+    {
+      "text": "Same with this one.",
+      "start": 951.6,
+      "duration": 3.64
+    },
+    {
+      "text": "So I do that by saying she's looking to",
+      "start": 955.44,
+      "duration": 4.319
+    },
+    {
+      "text": "the right of the frame, which I didn't",
+      "start": 957.68,
+      "duration": 4.719
+    },
+    {
+      "text": "have in this initial one.",
+      "start": 959.759,
+      "duration": 4.161
+    },
+    {
+      "text": "So we get the sense that she's looking",
+      "start": 962.399,
+      "duration": 3.68
+    },
+    {
+      "text": "away. And that way it seems more natural",
+      "start": 963.92,
+      "duration": 3.68
+    },
+    {
+      "text": "that she wouldn't have noticed that",
+      "start": 966.079,
+      "duration": 4.841
+    },
+    {
+      "text": "until now.",
+      "start": 967.6,
+      "duration": 3.32
+    },
+    {
+      "text": "This is our end frame. And then we use",
+      "start": 972.079,
+      "duration": 5.921
+    },
+    {
+      "text": "that end frame as the start frame here",
+      "start": 975.279,
+      "duration": 4.8
+    },
+    {
+      "text": "to go to this one where she's holding",
+      "start": 978.0,
+      "duration": 5.079
+    },
+    {
+      "text": "it.",
+      "start": 980.079,
+      "duration": 3.0
+    },
+    {
+      "text": "The shot of her holding it is a",
+      "start": 989.92,
+      "duration": 5.839
+    },
+    {
+      "text": "reference file of this and the doll. And",
+      "start": 991.68,
+      "duration": 6.64
+    },
+    {
+      "text": "then I said, \"Show me her point of view.",
+      "start": 995.759,
+      "duration": 4.961
+    },
+    {
+      "text": "Show me her point of view of the doll in",
+      "start": 998.32,
+      "duration": 5.439
+    },
+    {
+      "text": "her hands using the reference image.\" So",
+      "start": 1000.72,
+      "duration": 4.64
+    },
+    {
+      "text": "if you've used Nano Banana, you're",
+      "start": 1003.759,
+      "duration": 3.281
+    },
+    {
+      "text": "probably familiar with this. You say,",
+      "start": 1005.36,
+      "duration": 3.839
+    },
+    {
+      "text": "\"Okay, I want this and I want her point",
+      "start": 1007.04,
+      "duration": 3.599
+    },
+    {
+      "text": "of view.\" And you look at it and it's",
+      "start": 1009.199,
+      "duration": 2.88
+    },
+    {
+      "text": "like, \"Perfect. That's what I want.\" But",
+      "start": 1010.639,
+      "duration": 3.921
+    },
+    {
+      "text": "then you realize all of this background",
+      "start": 1012.079,
+      "duration": 5.2
+    },
+    {
+      "text": "is exactly the same and it won't cut",
+      "start": 1014.56,
+      "duration": 6.0
+    },
+    {
+      "text": "together the right way.",
+      "start": 1017.279,
+      "duration": 5.041
+    },
+    {
+      "text": "I tried to remove the background and it",
+      "start": 1020.56,
+      "duration": 4.8
+    },
+    {
+      "text": "just did this. Wasn't good. So I was",
+      "start": 1022.32,
+      "duration": 5.28
+    },
+    {
+      "text": "very specific. I took this shot and said",
+      "start": 1025.36,
+      "duration": 4.24
+    },
+    {
+      "text": "remove the sky. Rearrange all of the",
+      "start": 1027.6,
+      "duration": 3.68
+    },
+    {
+      "text": "garbage in the background. Make all of",
+      "start": 1029.6,
+      "duration": 3.439
+    },
+    {
+      "text": "the garbage blurry from shallow depth of",
+      "start": 1031.28,
+      "duration": 4.559
+    },
+    {
+      "text": "field. Um and it looks like that which",
+      "start": 1033.039,
+      "duration": 5.76
+    },
+    {
+      "text": "was still the same. So, I actually drew",
+      "start": 1035.839,
+      "duration": 6.0
+    },
+    {
+      "text": "on the image using this tool that they",
+      "start": 1038.799,
+      "duration": 5.04
+    },
+    {
+      "text": "have. And I just kind of like was",
+      "start": 1041.839,
+      "duration": 5.441
+    },
+    {
+      "text": "drawing around it, you know,",
+      "start": 1043.839,
+      "duration": 5.681
+    },
+    {
+      "text": "on all of the garbage. There were still",
+      "start": 1047.28,
+      "duration": 5.759
+    },
+    {
+      "text": "a couple pieces that stayed. So, then I",
+      "start": 1049.52,
+      "duration": 5.44
+    },
+    {
+      "text": "said, \"Shuffle all of the garbage around",
+      "start": 1053.039,
+      "duration": 5.041
+    },
+    {
+      "text": "in the background. Keep the robot hands",
+      "start": 1054.96,
+      "duration": 4.48
+    },
+    {
+      "text": "and the doll, but everything else should",
+      "start": 1058.08,
+      "duration": 3.52
+    },
+    {
+      "text": "be in new locations.\" So, I got",
+      "start": 1059.44,
+      "duration": 6.44
+    },
+    {
+      "text": "something that looked more like that.",
+      "start": 1061.6,
+      "duration": 4.28
+    },
+    {
+      "text": "That's how this one works. Oh, and then",
+      "start": 1066.4,
+      "duration": 4.72
+    },
+    {
+      "text": "the other thing I had to do, there's an",
+      "start": 1068.64,
+      "duration": 4.56
+    },
+    {
+      "text": "effect on here. This is one of the I I",
+      "start": 1071.12,
+      "duration": 4.559
+    },
+    {
+      "text": "don't like to put effects on things, but",
+      "start": 1073.2,
+      "duration": 5.599
+    },
+    {
+      "text": "the problem is we're going from rainy",
+      "start": 1075.679,
+      "duration": 5.921
+    },
+    {
+      "text": "and this is raining,",
+      "start": 1078.799,
+      "duration": 4.561
+    },
+    {
+      "text": "but there's no rain in this clip and",
+      "start": 1081.6,
+      "duration": 3.92
+    },
+    {
+      "text": "there's no grain. So, I added a little",
+      "start": 1083.36,
+      "duration": 4.72
+    },
+    {
+      "text": "bit of grain. I added some rain. So,",
+      "start": 1085.52,
+      "duration": 4.32
+    },
+    {
+      "text": "this is what that looked like without",
+      "start": 1088.08,
+      "duration": 5.08
+    },
+    {
+      "text": "those effects.",
+      "start": 1089.84,
+      "duration": 3.32
+    },
+    {
+      "text": "I didn't have my character reference",
+      "start": 1107.76,
+      "duration": 3.52
+    },
+    {
+      "text": "sheet when I first started to do this,",
+      "start": 1109.28,
+      "duration": 3.44
+    },
+    {
+      "text": "so I felt like I wasn't going to be able",
+      "start": 1111.28,
+      "duration": 3.12
+    },
+    {
+      "text": "to pull it off. But once I had my",
+      "start": 1112.72,
+      "duration": 3.36
+    },
+    {
+      "text": "character reference, I was able to take",
+      "start": 1114.4,
+      "duration": 3.92
+    },
+    {
+      "text": "that character reference of this",
+      "start": 1116.08,
+      "duration": 5.76
+    },
+    {
+      "text": "character and then use Cling01 to take",
+      "start": 1118.32,
+      "duration": 7.599
+    },
+    {
+      "text": "the video of her hugging the doll and",
+      "start": 1121.84,
+      "duration": 7.8
+    },
+    {
+      "text": "the character reference.",
+      "start": 1125.919,
+      "duration": 3.721
+    },
+    {
+      "text": "And then in here, I did another",
+      "start": 1133.84,
+      "duration": 5.12
+    },
+    {
+      "text": "essentially like a background removal.",
+      "start": 1136.32,
+      "duration": 4.88
+    },
+    {
+      "text": "So, in this case, I used what's called a",
+      "start": 1138.96,
+      "duration": 5.28
+    },
+    {
+      "text": "magnetic mask in Final Cut, but it's a",
+      "start": 1141.2,
+      "duration": 5.12
+    },
+    {
+      "text": "just a way for moving the background.",
+      "start": 1144.24,
+      "duration": 4.88
+    },
+    {
+      "text": "And then I did a match color. So, that",
+      "start": 1146.32,
+      "duration": 6.08
+    },
+    {
+      "text": "way instead of these like uh warmer",
+      "start": 1149.12,
+      "duration": 6.4
+    },
+    {
+      "text": "tones that you see, um I matched the",
+      "start": 1152.4,
+      "duration": 6.399
+    },
+    {
+      "text": "color of this so she blends in a little",
+      "start": 1155.52,
+      "duration": 6.279
+    },
+    {
+      "text": "more.",
+      "start": 1158.799,
+      "duration": 3.0
+    },
+    {
+      "text": "I like the fact that you see both of",
+      "start": 1167.12,
+      "duration": 4.08
+    },
+    {
+      "text": "them at once kind of blended together",
+      "start": 1168.72,
+      "duration": 4.56
+    },
+    {
+      "text": "like this. You know, a lot of times when",
+      "start": 1171.2,
+      "duration": 4.16
+    },
+    {
+      "text": "you see video to video, it's just some",
+      "start": 1173.28,
+      "duration": 4.24
+    },
+    {
+      "text": "guy in his apartment waving his hands",
+      "start": 1175.36,
+      "duration": 4.72
+    },
+    {
+      "text": "around like this is mind-blowing.",
+      "start": 1177.52,
+      "duration": 5.279
+    },
+    {
+      "text": "But this is more of like a narrative use",
+      "start": 1180.08,
+      "duration": 6.959
+    },
+    {
+      "text": "of that same technology to really change",
+      "start": 1182.799,
+      "duration": 5.921
+    },
+    {
+      "text": "what's happening in the story. Like",
+      "start": 1187.039,
+      "duration": 4.401
+    },
+    {
+      "text": "suddenly you realize, okay, she actually",
+      "start": 1188.72,
+      "duration": 6.0
+    },
+    {
+      "text": "knows this doll and it's reminding her",
+      "start": 1191.44,
+      "duration": 7.88
+    },
+    {
+      "text": "of a former life.",
+      "start": 1194.72,
+      "duration": 4.6
+    },
+    {
+      "text": "For this scene, I wanted to have her",
+      "start": 1199.76,
+      "duration": 4.88
+    },
+    {
+      "text": "come in, peek inside this window, and",
+      "start": 1202.0,
+      "duration": 5.12
+    },
+    {
+      "text": "then see the rain jacket and decide",
+      "start": 1204.64,
+      "duration": 4.0
+    },
+    {
+      "text": "she's going to wear it. I wanted to give",
+      "start": 1207.12,
+      "duration": 4.08
+    },
+    {
+      "text": "her a wardrobe, kind of change her look",
+      "start": 1208.64,
+      "duration": 5.76
+    },
+    {
+      "text": "as she's going. Um, it's so funny. I",
+      "start": 1211.2,
+      "duration": 7.24
+    },
+    {
+      "text": "spent a lot of time on this",
+      "start": 1214.4,
+      "duration": 4.04
+    },
+    {
+      "text": "And all I did was use one clip like this",
+      "start": 1242.48,
+      "duration": 5.76
+    },
+    {
+      "text": "and then just cut to here.",
+      "start": 1244.88,
+      "duration": 3.36
+    },
+    {
+      "text": "She's taken the doll and we've got her",
+      "start": 1253.679,
+      "duration": 5.041
+    },
+    {
+      "text": "on a remote road with a garbage dump in",
+      "start": 1255.84,
+      "duration": 4.88
+    },
+    {
+      "text": "the distance holding the stuffed animal",
+      "start": 1258.72,
+      "duration": 4.16
+    },
+    {
+      "text": "by one arm. So, we've got a couple",
+      "start": 1260.72,
+      "duration": 4.72
+    },
+    {
+      "text": "references here. We've got her character",
+      "start": 1262.88,
+      "duration": 4.96
+    },
+    {
+      "text": "reference, the jacket, the stuffed",
+      "start": 1265.44,
+      "duration": 6.0
+    },
+    {
+      "text": "animal, and then the shot of her holding",
+      "start": 1267.84,
+      "duration": 6.0
+    },
+    {
+      "text": "the doll. And a lot of times I have to",
+      "start": 1271.44,
+      "duration": 5.04
+    },
+    {
+      "text": "do that to show the relative size of the",
+      "start": 1273.84,
+      "duration": 5.04
+    },
+    {
+      "text": "stuffed animal. The stuffed animal would",
+      "start": 1276.48,
+      "duration": 5.36
+    },
+    {
+      "text": "change size a lot even when I would have",
+      "start": 1278.88,
+      "duration": 4.64
+    },
+    {
+      "text": "that in there. So it took sometimes",
+      "start": 1281.84,
+      "duration": 3.52
+    },
+    {
+      "text": "multiple generations. All right. She's",
+      "start": 1283.52,
+      "duration": 4.88
+    },
+    {
+      "text": "leaving the junkyard. She's walking away",
+      "start": 1285.36,
+      "duration": 4.96
+    },
+    {
+      "text": "from the junkyard.",
+      "start": 1288.4,
+      "duration": 6.0
+    },
+    {
+      "text": "She's walking in kind of a mix of nature",
+      "start": 1290.32,
+      "duration": 5.52
+    },
+    {
+      "text": "and the city where you see the freeway",
+      "start": 1294.4,
+      "duration": 4.159
+    },
+    {
+      "text": "in the background and this deer. We're",
+      "start": 1295.84,
+      "duration": 4.0
+    },
+    {
+      "text": "kind of hinting at what's going to come",
+      "start": 1298.559,
+      "duration": 3.041
+    },
+    {
+      "text": "later. So, we're using the character",
+      "start": 1299.84,
+      "duration": 4.56
+    },
+    {
+      "text": "reference, the rain jacket, the doll,",
+      "start": 1301.6,
+      "duration": 6.319
+    },
+    {
+      "text": "and then this road shot. And this helps",
+      "start": 1304.4,
+      "duration": 5.92
+    },
+    {
+      "text": "match the cinematic style. I think I",
+      "start": 1307.919,
+      "duration": 4.481
+    },
+    {
+      "text": "like the idea that she's going with",
+      "start": 1310.32,
+      "duration": 4.0
+    },
+    {
+      "text": "traffic. So, I really like this shot a",
+      "start": 1312.4,
+      "duration": 4.48
+    },
+    {
+      "text": "lot. I like this like low angle rule of",
+      "start": 1314.32,
+      "duration": 4.16
+    },
+    {
+      "text": "thirds. It's not really a low angle",
+      "start": 1316.88,
+      "duration": 3.919
+    },
+    {
+      "text": "shot. You get lots of weird things like",
+      "start": 1318.48,
+      "duration": 5.04
+    },
+    {
+      "text": "all the cars are going one way. Her legs",
+      "start": 1320.799,
+      "duration": 5.12
+    },
+    {
+      "text": "are the wrong way. Her arm is kind of",
+      "start": 1323.52,
+      "duration": 4.159
+    },
+    {
+      "text": "the wrong way. You You definitely get",
+      "start": 1325.919,
+      "duration": 3.12
+    },
+    {
+      "text": "stuff like this. And I think it's",
+      "start": 1327.679,
+      "duration": 3.201
+    },
+    {
+      "text": "important not to get frustrated when",
+      "start": 1329.039,
+      "duration": 3.601
+    },
+    {
+      "text": "that sort of stuff happens. Even this",
+      "start": 1330.88,
+      "duration": 3.52
+    },
+    {
+      "text": "one, this is like a really good shot.",
+      "start": 1332.64,
+      "duration": 4.399
+    },
+    {
+      "text": "Um, again, the traffic's all going, both",
+      "start": 1334.4,
+      "duration": 4.159
+    },
+    {
+      "text": "sides of the freeway are going the wrong",
+      "start": 1337.039,
+      "duration": 3.601
+    },
+    {
+      "text": "way. There's a giant puddle there. So, I",
+      "start": 1338.559,
+      "duration": 3.521
+    },
+    {
+      "text": "feel like that was more water than I",
+      "start": 1340.64,
+      "duration": 2.88
+    },
+    {
+      "text": "wanted. Now, she's walking through a",
+      "start": 1342.08,
+      "duration": 3.44
+    },
+    {
+      "text": "small town. You can see I don't have a",
+      "start": 1343.52,
+      "duration": 4.24
+    },
+    {
+      "text": "reference for how big the stuffed animal",
+      "start": 1345.52,
+      "duration": 4.48
+    },
+    {
+      "text": "should be, and I'm just getting wildly",
+      "start": 1347.76,
+      "duration": 3.76
+    },
+    {
+      "text": "different sizes here. So, I think that's",
+      "start": 1350.0,
+      "duration": 3.6
+    },
+    {
+      "text": "one thing that's helpful is to give it",
+      "start": 1351.52,
+      "duration": 3.92
+    },
+    {
+      "text": "that reference. Then it sort of knows",
+      "start": 1353.6,
+      "duration": 4.24
+    },
+    {
+      "text": "like, okay, this is about how large this",
+      "start": 1355.44,
+      "duration": 4.64
+    },
+    {
+      "text": "should be in comparison to her. We're",
+      "start": 1357.84,
+      "duration": 5.36
+    },
+    {
+      "text": "really taking advantage of this large",
+      "start": 1360.08,
+      "duration": 5.599
+    },
+    {
+      "text": "context window that Dan O Banana has to",
+      "start": 1363.2,
+      "duration": 4.8
+    },
+    {
+      "text": "say, here's a lot of angles of this",
+      "start": 1365.679,
+      "duration": 4.24
+    },
+    {
+      "text": "character. Here's a jacket that you need",
+      "start": 1368.0,
+      "duration": 3.2
+    },
+    {
+      "text": "to put on the character. Here's a",
+      "start": 1369.919,
+      "duration": 3.361
+    },
+    {
+      "text": "stuffed animal, multiple angles of that.",
+      "start": 1371.2,
+      "duration": 4.4
+    },
+    {
+      "text": "And then here is a picture that shows",
+      "start": 1373.28,
+      "duration": 4.72
+    },
+    {
+      "text": "the relative size of that stuffed animal",
+      "start": 1375.6,
+      "duration": 4.319
+    },
+    {
+      "text": "to her. Then I have her walking through",
+      "start": 1378.0,
+      "duration": 4.64
+    },
+    {
+      "text": "a neighborhood. When I come back here, I",
+      "start": 1379.919,
+      "duration": 4.64
+    },
+    {
+      "text": "can use this as the reference for the",
+      "start": 1382.64,
+      "duration": 4.56
+    },
+    {
+      "text": "relative size, and I can use it for the",
+      "start": 1384.559,
+      "duration": 6.401
+    },
+    {
+      "text": "house. We've got the image of her, the",
+      "start": 1387.2,
+      "duration": 5.68
+    },
+    {
+      "text": "rain jacket, the doll, and then this",
+      "start": 1390.96,
+      "duration": 3.599
+    },
+    {
+      "text": "neighborhood. From this, it knows what",
+      "start": 1392.88,
+      "duration": 3.2
+    },
+    {
+      "text": "the neighborhood should look like and",
+      "start": 1394.559,
+      "duration": 4.24
+    },
+    {
+      "text": "the relative size of the doll to her. I",
+      "start": 1396.08,
+      "duration": 4.479
+    },
+    {
+      "text": "like having this bay window here. It",
+      "start": 1398.799,
+      "duration": 3.521
+    },
+    {
+      "text": "adds a little bit of interest to the",
+      "start": 1400.559,
+      "duration": 5.36
+    },
+    {
+      "text": "shot. Um, and then I also closed the",
+      "start": 1402.32,
+      "duration": 5.04
+    },
+    {
+      "text": "drapes because we're going to have her",
+      "start": 1405.919,
+      "duration": 3.601
+    },
+    {
+      "text": "open the drapes later. So, we use these",
+      "start": 1407.36,
+      "duration": 4.64
+    },
+    {
+      "text": "four references to get her on the porch.",
+      "start": 1409.52,
+      "duration": 4.0
+    },
+    {
+      "text": "And then we're just going to remove her",
+      "start": 1412.0,
+      "duration": 4.08
+    },
+    {
+      "text": "from the shot. So, then we use frames to",
+      "start": 1413.52,
+      "duration": 4.639
+    },
+    {
+      "text": "video. The first frame here is the one",
+      "start": 1416.08,
+      "duration": 4.0
+    },
+    {
+      "text": "where she's not in the shot. So, this is",
+      "start": 1418.159,
+      "duration": 3.921
+    },
+    {
+      "text": "where we removed her from the shot. And",
+      "start": 1420.08,
+      "duration": 4.32
+    },
+    {
+      "text": "then the last frame is her standing",
+      "start": 1422.08,
+      "duration": 4.16
+    },
+    {
+      "text": "there. So, the prompt is pretty simple.",
+      "start": 1424.4,
+      "duration": 3.92
+    },
+    {
+      "text": "I just say the Android steps up the",
+      "start": 1426.24,
+      "duration": 3.919
+    },
+    {
+      "text": "porch, rings the doorbell, then steps",
+      "start": 1428.32,
+      "duration": 4.839
+    },
+    {
+      "text": "back.",
+      "start": 1430.159,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, there was no doorbell there. Let's",
+      "start": 1438.159,
+      "duration": 6.121
+    },
+    {
+      "text": "do that again.",
+      "start": 1440.88,
+      "duration": 3.4
+    },
+    {
+      "text": "[bell]",
+      "start": 1446.911,
+      "duration": 2.02
+    },
+    {
+      "text": "I have this shot of her on the porch and",
+      "start": 1449.84,
+      "duration": 5.28
+    },
+    {
+      "text": "now I'm saying add this character in the",
+      "start": 1453.12,
+      "duration": 3.84
+    },
+    {
+      "text": "doorway. I tried a few different ones",
+      "start": 1455.12,
+      "duration": 4.24
+    },
+    {
+      "text": "and I really liked this one. I used it",
+      "start": 1456.96,
+      "duration": 4.56
+    },
+    {
+      "text": "without realizing she has this little",
+      "start": 1459.36,
+      "duration": 4.319
+    },
+    {
+      "text": "tuck where the sweater is tucked into",
+      "start": 1461.52,
+      "duration": 4.159
+    },
+    {
+      "text": "the t-shirt. When I started generating",
+      "start": 1463.679,
+      "duration": 4.561
+    },
+    {
+      "text": "the images, I realized that's going to",
+      "start": 1465.679,
+      "duration": 4.48
+    },
+    {
+      "text": "be in everything that she wears. So, I",
+      "start": 1468.24,
+      "duration": 4.88
+    },
+    {
+      "text": "decided to take that out and redo it and",
+      "start": 1470.159,
+      "duration": 4.88
+    },
+    {
+      "text": "said just remove the French tuck from",
+      "start": 1473.12,
+      "duration": 3.2
+    },
+    {
+      "text": "the front and have the sweater hang",
+      "start": 1475.039,
+      "duration": 2.961
+    },
+    {
+      "text": "naturally. Now that we have a shot of",
+      "start": 1476.32,
+      "duration": 4.959
+    },
+    {
+      "text": "them on the porch, I can use that with",
+      "start": 1478.0,
+      "duration": 5.919
+    },
+    {
+      "text": "the character reference of her and say",
+      "start": 1481.279,
+      "duration": 4.961
+    },
+    {
+      "text": "zoom in. She should be on the right side",
+      "start": 1483.919,
+      "duration": 4.64
+    },
+    {
+      "text": "of the frame facing left. Now, we've got",
+      "start": 1486.24,
+      "duration": 4.799
+    },
+    {
+      "text": "an image of her and we've got an image",
+      "start": 1488.559,
+      "duration": 7.12
+    },
+    {
+      "text": "of the discarded version of her.",
+      "start": 1491.039,
+      "duration": 4.64
+    },
+    {
+      "text": "And now we've got this dialogue",
+      "start": 1496.48,
+      "duration": 4.48
+    },
+    {
+      "text": "sequence. And in order to make this",
+      "start": 1497.84,
+      "duration": 5.68
+    },
+    {
+      "text": "realistic, I had to perform the dialogue",
+      "start": 1500.96,
+      "duration": 5.12
+    },
+    {
+      "text": "myself. When you do these motion",
+      "start": 1503.52,
+      "duration": 4.48
+    },
+    {
+      "text": "controls, you're going to get a better",
+      "start": 1506.08,
+      "duration": 5.44
+    },
+    {
+      "text": "result if the subject is facing the same",
+      "start": 1508.0,
+      "duration": 6.08
+    },
+    {
+      "text": "way as the character you're mapping the",
+      "start": 1511.52,
+      "duration": 4.56
+    },
+    {
+      "text": "performance to. So, because I'd already",
+      "start": 1514.08,
+      "duration": 3.92
+    },
+    {
+      "text": "generated the images that I was going to",
+      "start": 1516.08,
+      "duration": 4.24
+    },
+    {
+      "text": "use, I laid them out to make sure that",
+      "start": 1518.0,
+      "duration": 4.559
+    },
+    {
+      "text": "when I was recording this line of",
+      "start": 1520.32,
+      "duration": 4.8
+    },
+    {
+      "text": "dialogue, I was facing the same way as",
+      "start": 1522.559,
+      "duration": 5.441
+    },
+    {
+      "text": "the character. Same for this one. They",
+      "start": 1525.12,
+      "duration": 5.919
+    },
+    {
+      "text": "kind of go back and forth. And then for",
+      "start": 1528.0,
+      "duration": 5.52
+    },
+    {
+      "text": "this one, she's now in profile and",
+      "start": 1531.039,
+      "duration": 5.201
+    },
+    {
+      "text": "facing the opposite way. This worked as",
+      "start": 1533.52,
+      "duration": 4.96
+    },
+    {
+      "text": "a guide when I was recording it to show",
+      "start": 1536.24,
+      "duration": 5.2
+    },
+    {
+      "text": "me which direction I should be facing um",
+      "start": 1538.48,
+      "duration": 5.04
+    },
+    {
+      "text": "and my relative placement in the frame",
+      "start": 1541.44,
+      "duration": 4.32
+    },
+    {
+      "text": "to make it easier. One of the tricks",
+      "start": 1543.52,
+      "duration": 5.279
+    },
+    {
+      "text": "here was getting the delivery to be like",
+      "start": 1545.76,
+      "duration": 5.919
+    },
+    {
+      "text": "an android would without it sounding",
+      "start": 1548.799,
+      "duration": 6.24
+    },
+    {
+      "text": "like a bad AI voice. So, there's kind of",
+      "start": 1551.679,
+      "duration": 5.201
+    },
+    {
+      "text": "like a fine line. The world of the",
+      "start": 1555.039,
+      "duration": 3.601
+    },
+    {
+      "text": "movie, which is the character isn't",
+      "start": 1556.88,
+      "duration": 3.84
+    },
+    {
+      "text": "going to speak quite as naturally as a",
+      "start": 1558.64,
+      "duration": 4.24
+    },
+    {
+      "text": "human. And then there's the reality that",
+      "start": 1560.72,
+      "duration": 3.92
+    },
+    {
+      "text": "we live in, which is we're used to",
+      "start": 1562.88,
+      "duration": 5.2
+    },
+    {
+      "text": "hearing AI generated voices um and",
+      "start": 1564.64,
+      "duration": 5.279
+    },
+    {
+      "text": "performances. It was kind of a tricky",
+      "start": 1568.08,
+      "duration": 4.88
+    },
+    {
+      "text": "line to walk. You're the previous",
+      "start": 1569.919,
+      "duration": 4.401
+    },
+    {
+      "text": "companion.",
+      "start": 1572.96,
+      "duration": 4.24
+    },
+    {
+      "text": ">> I could see the resemblance to her",
+      "start": 1574.32,
+      "duration": 5.359
+    },
+    {
+      "text": "despite your current condition.",
+      "start": 1577.2,
+      "duration": 4.16
+    },
+    {
+      "text": ">> The first thing I did was create a voice",
+      "start": 1579.679,
+      "duration": 4.88
+    },
+    {
+      "text": "for her. In 11 Labs, I went to voices",
+      "start": 1581.36,
+      "duration": 5.439
+    },
+    {
+      "text": "and then I went to create or clone a",
+      "start": 1584.559,
+      "duration": 6.24
+    },
+    {
+      "text": "voice and then voice design.",
+      "start": 1586.799,
+      "duration": 5.681
+    },
+    {
+      "text": "And then",
+      "start": 1590.799,
+      "duration": 4.641
+    },
+    {
+      "text": "this was the prompt that I used. It",
+      "start": 1592.48,
+      "duration": 6.319
+    },
+    {
+      "text": "describes her voice.",
+      "start": 1595.44,
+      "duration": 5.68
+    },
+    {
+      "text": "This is what her voice sounds like.",
+      "start": 1598.799,
+      "duration": 4.0
+    },
+    {
+      "text": ">> It's",
+      "start": 1601.12,
+      "duration": 4.24
+    },
+    {
+      "text": "interesting, isn't it?",
+      "start": 1602.799,
+      "duration": 4.48
+    },
+    {
+      "text": "How everything just keeps moving.",
+      "start": 1605.36,
+      "duration": 3.52
+    },
+    {
+      "text": ">> Once I had that voice, I went over to",
+      "start": 1607.279,
+      "duration": 4.561
+    },
+    {
+      "text": "the voice changer. I exported each of",
+      "start": 1608.88,
+      "duration": 5.12
+    },
+    {
+      "text": "those dialogue sections as their own",
+      "start": 1611.84,
+      "duration": 4.319
+    },
+    {
+      "text": "wave file and then I dropped them in",
+      "start": 1614.0,
+      "duration": 4.08
+    },
+    {
+      "text": "there. Made sure that I was choosing",
+      "start": 1616.159,
+      "duration": 4.721
+    },
+    {
+      "text": "that voice and then generating the",
+      "start": 1618.08,
+      "duration": 4.88
+    },
+    {
+      "text": "speech that way. So I would go like",
+      "start": 1620.88,
+      "duration": 4.399
+    },
+    {
+      "text": "this.",
+      "start": 1622.96,
+      "duration": 4.56
+    },
+    {
+      "text": ">> You're the previous companion.",
+      "start": 1625.279,
+      "duration": 4.4
+    },
+    {
+      "text": ">> One option I highly recommend is when",
+      "start": 1627.52,
+      "duration": 4.639
+    },
+    {
+      "text": "you like one, click here and download",
+      "start": 1629.679,
+      "duration": 5.201
+    },
+    {
+      "text": "with original name. If you download, you",
+      "start": 1632.159,
+      "duration": 5.281
+    },
+    {
+      "text": "get the 11 labs and you get all of this",
+      "start": 1634.88,
+      "duration": 3.679
+    },
+    {
+      "text": "stuff in there and you don't know what",
+      "start": 1637.44,
+      "duration": 2.96
+    },
+    {
+      "text": "it means. If you download with original",
+      "start": 1638.559,
+      "duration": 4.961
+    },
+    {
+      "text": "name, it's really clear uh which clip",
+      "start": 1640.4,
+      "duration": 5.2
+    },
+    {
+      "text": "it's supposed to be. So, what I did is I",
+      "start": 1643.52,
+      "duration": 5.039
+    },
+    {
+      "text": "took all of my clips here",
+      "start": 1645.6,
+      "duration": 6.0
+    },
+    {
+      "text": "and then I lowered the volume and then I",
+      "start": 1648.559,
+      "duration": 6.081
+    },
+    {
+      "text": "added the 11 Labs audio here. So, this",
+      "start": 1651.6,
+      "duration": 5.199
+    },
+    {
+      "text": "is what it looked like.",
+      "start": 1654.64,
+      "duration": 4.0
+    },
+    {
+      "text": ">> You're the previous companion.",
+      "start": 1656.799,
+      "duration": 4.0
+    },
+    {
+      "text": ">> Now, I bring this into cling so I can",
+      "start": 1658.64,
+      "duration": 6.24
+    },
+    {
+      "text": "sync up my performance with the 11 Labs",
+      "start": 1660.799,
+      "duration": 7.681
+    },
+    {
+      "text": "voice with the image of the character.",
+      "start": 1664.88,
+      "duration": 6.0
+    },
+    {
+      "text": "You're the previous companion. I came",
+      "start": 1668.48,
+      "duration": 5.439
+    },
+    {
+      "text": "back to return this creature. She",
+      "start": 1670.88,
+      "duration": 5.36
+    },
+    {
+      "text": "handcrafted it for him when she was",
+      "start": 1673.919,
+      "duration": 3.12
+    },
+    {
+      "text": "sick.",
+      "start": 1676.24,
+      "duration": 3.36
+    },
+    {
+      "text": ">> So for her, I had to switch to the",
+      "start": 1677.039,
+      "duration": 6.161
+    },
+    {
+      "text": "avatar library. I used the image and the",
+      "start": 1679.6,
+      "duration": 6.319
+    },
+    {
+      "text": "11 Lab's voice. The Avatar voice is",
+      "start": 1683.2,
+      "duration": 4.079
+    },
+    {
+      "text": "actually a really great way of doing",
+      "start": 1685.919,
+      "duration": 2.321
+    },
+    {
+      "text": "this, too.",
+      "start": 1687.279,
+      "duration": 3.52
+    },
+    {
+      "text": ">> This creature was accidentally discarded",
+      "start": 1688.24,
+      "duration": 6.0
+    },
+    {
+      "text": "the same day I was. That's not in your",
+      "start": 1690.799,
+      "duration": 5.12
+    },
+    {
+      "text": "memories.",
+      "start": 1694.24,
+      "duration": 3.52
+    },
+    {
+      "text": "Another thing that happened was it would",
+      "start": 1695.919,
+      "duration": 4.321
+    },
+    {
+      "text": "make both characters talk.",
+      "start": 1697.76,
+      "duration": 5.44
+    },
+    {
+      "text": ">> It wasn't accidentally discarded, was",
+      "start": 1700.24,
+      "duration": 3.679
+    },
+    {
+      "text": "it?",
+      "start": 1703.2,
+      "duration": 2.32
+    },
+    {
+      "text": ">> The woman in the sweater listen",
+      "start": 1703.919,
+      "duration": 3.12
+    },
+    {
+      "text": "silently. The woman in the sweater",
+      "start": 1705.52,
+      "duration": 3.84
+    },
+    {
+      "text": "barely moves, but the LED light spins",
+      "start": 1707.039,
+      "duration": 2.961
+    },
+    {
+      "text": "softly.",
+      "start": 1709.36,
+      "duration": 3.52
+    },
+    {
+      "text": ">> It wasn't accidentally discarded, was",
+      "start": 1710.0,
+      "duration": 3.36
+    },
+    {
+      "text": "it?",
+      "start": 1712.88,
+      "duration": 2.0
+    },
+    {
+      "text": ">> So, even when I would mention that,",
+      "start": 1713.36,
+      "duration": 3.039
+    },
+    {
+      "text": "sometimes I would get both characters",
+      "start": 1714.88,
+      "duration": 2.64
+    },
+    {
+      "text": "talking.",
+      "start": 1716.399,
+      "duration": 4.241
+    },
+    {
+      "text": ">> I will give it a good home.",
+      "start": 1717.52,
+      "duration": 5.12
+    },
+    {
+      "text": ">> My workound was basically to have more",
+      "start": 1720.64,
+      "duration": 4.399
+    },
+    {
+      "text": "of a closeup. Was it?",
+      "start": 1722.64,
+      "duration": 4.159
+    },
+    {
+      "text": ">> There's really three ways that I did the",
+      "start": 1725.039,
+      "duration": 4.961
+    },
+    {
+      "text": "dialogue. One is the 11 Labs voice with",
+      "start": 1726.799,
+      "duration": 6.561
+    },
+    {
+      "text": "my performance. The second one was using",
+      "start": 1730.0,
+      "duration": 6.48
+    },
+    {
+      "text": "Avatar 2.0. And the third way was using",
+      "start": 1733.36,
+      "duration": 7.919
+    },
+    {
+      "text": "Cling 2.6 and assign a voice to the",
+      "start": 1736.48,
+      "duration": 8.079
+    },
+    {
+      "text": "character in Cling 2.6. There's this",
+      "start": 1741.279,
+      "duration": 6.64
+    },
+    {
+      "text": "option down here for select voice and",
+      "start": 1744.559,
+      "duration": 5.441
+    },
+    {
+      "text": "there are all of these presets. I",
+      "start": 1747.919,
+      "duration": 5.36
+    },
+    {
+      "text": "clicked create new voice and it says it",
+      "start": 1750.0,
+      "duration": 6.48
+    },
+    {
+      "text": "needs 5 to 30 seconds of audio. Since",
+      "start": 1753.279,
+      "duration": 5.601
+    },
+    {
+      "text": "it's the same voice for both characters,",
+      "start": 1756.48,
+      "duration": 6.72
+    },
+    {
+      "text": "I just exported 30 seconds of this audio",
+      "start": 1758.88,
+      "duration": 7.279
+    },
+    {
+      "text": "and then uploaded that here to create a",
+      "start": 1763.2,
+      "duration": 5.839
+    },
+    {
+      "text": "new voice. So once I had that voice, it",
+      "start": 1766.159,
+      "duration": 5.361
+    },
+    {
+      "text": "shows discarded companion.",
+      "start": 1769.039,
+      "duration": 5.441
+    },
+    {
+      "text": "I used this as the start frame and just",
+      "start": 1771.52,
+      "duration": 5.519
+    },
+    {
+      "text": "said she made it for him. This is its",
+      "start": 1774.48,
+      "duration": 4.72
+    },
+    {
+      "text": "home. And then I had to be very",
+      "start": 1777.039,
+      "duration": 3.841
+    },
+    {
+      "text": "specific. So I said, \"Only the android",
+      "start": 1779.2,
+      "duration": 4.16
+    },
+    {
+      "text": "in the black jacket speaks.\" The woman",
+      "start": 1780.88,
+      "duration": 4.32
+    },
+    {
+      "text": "accepts the stuffed animal and holds it",
+      "start": 1783.36,
+      "duration": 4.08
+    },
+    {
+      "text": "in front of herself. After a brief",
+      "start": 1785.2,
+      "duration": 5.04
+    },
+    {
+      "text": "pause, the android turns and walks away",
+      "start": 1787.44,
+      "duration": 5.68
+    },
+    {
+      "text": "out of frame. No music and all that",
+      "start": 1790.24,
+      "duration": 5.36
+    },
+    {
+      "text": "other stuff. So this turned out well. So",
+      "start": 1793.12,
+      "duration": 7.12
+    },
+    {
+      "text": "this was using my 11 Labs voice recloned",
+      "start": 1795.6,
+      "duration": 9.04
+    },
+    {
+      "text": "in Cling and then added as native audio",
+      "start": 1800.24,
+      "duration": 7.84
+    },
+    {
+      "text": "in Cling 2.6. In cling 2.6 six, you",
+      "start": 1804.64,
+      "duration": 6.639
+    },
+    {
+      "text": "can't really create the voice without",
+      "start": 1808.08,
+      "duration": 6.16
+    },
+    {
+      "text": "existing audio. 11 Labs is great to",
+      "start": 1811.279,
+      "duration": 4.801
+    },
+    {
+      "text": "create the voice you want and then you",
+      "start": 1814.24,
+      "duration": 4.559
+    },
+    {
+      "text": "can export 30 seconds of dialogue, bring",
+      "start": 1816.08,
+      "duration": 5.52
+    },
+    {
+      "text": "that into Cling, and then just prompt to",
+      "start": 1818.799,
+      "duration": 5.841
+    },
+    {
+      "text": "have the characters using that voice.",
+      "start": 1821.6,
+      "duration": 6.24
+    },
+    {
+      "text": ">> She made it for him.",
+      "start": 1824.64,
+      "duration": 6.919
+    },
+    {
+      "text": "This is its home.",
+      "start": 1827.84,
+      "duration": 3.719
+    },
+    {
+      "text": "I needed to give her a moment of pause",
+      "start": 1833.84,
+      "duration": 4.16
+    },
+    {
+      "text": "and kind of remember back to the",
+      "start": 1836.24,
+      "duration": 4.48
+    },
+    {
+      "text": "original owner. I was thinking of using",
+      "start": 1838.0,
+      "duration": 6.159
+    },
+    {
+      "text": "like a montage of Instagram photos of",
+      "start": 1840.72,
+      "duration": 5.36
+    },
+    {
+      "text": "her sewing it and putting it together",
+      "start": 1844.159,
+      "duration": 3.681
+    },
+    {
+      "text": "and but it felt like that was disruptive",
+      "start": 1846.08,
+      "duration": 3.839
+    },
+    {
+      "text": "to what was happening. And I also felt",
+      "start": 1847.84,
+      "duration": 3.76
+    },
+    {
+      "text": "like that's just something you could do",
+      "start": 1849.919,
+      "duration": 4.24
+    },
+    {
+      "text": "with normal video. So what I wanted to",
+      "start": 1851.6,
+      "duration": 5.28
+    },
+    {
+      "text": "do is lean into the AI piece of it a",
+      "start": 1854.159,
+      "duration": 4.721
+    },
+    {
+      "text": "little bit more. I wanted to do this",
+      "start": 1856.88,
+      "duration": 5.6
+    },
+    {
+      "text": "sequence where it starts with her. She",
+      "start": 1858.88,
+      "duration": 7.36
+    },
+    {
+      "text": "morphs into the original human who's",
+      "start": 1862.48,
+      "duration": 7.12
+    },
+    {
+      "text": "sewing the doll together. We see her",
+      "start": 1866.24,
+      "duration": 7.679
+    },
+    {
+      "text": "sewing the doll. She smiles and then",
+      "start": 1869.6,
+      "duration": 7.6
+    },
+    {
+      "text": "hugs it close to her, which then brings",
+      "start": 1873.919,
+      "duration": 5.441
+    },
+    {
+      "text": "it back to",
+      "start": 1877.2,
+      "duration": 5.44
+    },
+    {
+      "text": "the porch. This is a 10second image to",
+      "start": 1879.36,
+      "duration": 6.4
+    },
+    {
+      "text": "video and this is a 5-second. Um, so",
+      "start": 1882.64,
+      "duration": 4.96
+    },
+    {
+      "text": "we're really starting with this start",
+      "start": 1885.76,
+      "duration": 5.68
+    },
+    {
+      "text": "frame. This is the end frame. Going to",
+      "start": 1887.6,
+      "duration": 5.76
+    },
+    {
+      "text": "the end frame. Back to the start frame,",
+      "start": 1891.44,
+      "duration": 4.32
+    },
+    {
+      "text": "but in 10 seconds rather than five. I",
+      "start": 1893.36,
+      "duration": 6.039
+    },
+    {
+      "text": "did a lot of these.",
+      "start": 1895.76,
+      "duration": 3.639
+    },
+    {
+      "text": "Now we're just having her come home. So",
+      "start": 1908.559,
+      "duration": 5.281
+    },
+    {
+      "text": "again, we're just doing image to video.",
+      "start": 1910.32,
+      "duration": 5.599
+    },
+    {
+      "text": "Image to video.",
+      "start": 1913.84,
+      "duration": 5.559
+    },
+    {
+      "text": "Image to video.",
+      "start": 1915.919,
+      "duration": 3.48
+    },
+    {
+      "text": "One of my original thoughts was you",
+      "start": 1919.76,
+      "duration": 4.08
+    },
+    {
+      "text": "would see her with the stuffed animal",
+      "start": 1921.12,
+      "duration": 4.159
+    },
+    {
+      "text": "and in the distance you could see the",
+      "start": 1923.84,
+      "duration": 3.839
+    },
+    {
+      "text": "trash heap. U but since she already",
+      "start": 1925.279,
+      "duration": 4.081
+    },
+    {
+      "text": "walked away from the trash heap, I don't",
+      "start": 1927.679,
+      "duration": 3.12
+    },
+    {
+      "text": "think we need to see it again. I had",
+      "start": 1929.36,
+      "duration": 3.12
+    },
+    {
+      "text": "that shot and I just said remove the",
+      "start": 1930.799,
+      "duration": 3.201
+    },
+    {
+      "text": "garbage piles. So we got rid of the",
+      "start": 1932.48,
+      "duration": 4.24
+    },
+    {
+      "text": "garbage there. And then I got rid of her",
+      "start": 1934.0,
+      "duration": 5.36
+    },
+    {
+      "text": "and said, \"Show me a path that's leading",
+      "start": 1936.72,
+      "duration": 3.839
+    },
+    {
+      "text": "up to that.\" And I couldn't really get",
+      "start": 1939.36,
+      "duration": 4.0
+    },
+    {
+      "text": "what I wanted. So, I just said, \"Show a",
+      "start": 1940.559,
+      "duration": 5.041
+    },
+    {
+      "text": "different part of this same forest on",
+      "start": 1943.36,
+      "duration": 5.439
+    },
+    {
+      "text": "the same day. Change the scenery.\" I use",
+      "start": 1945.6,
+      "duration": 5.6
+    },
+    {
+      "text": "this as a reference with all of these",
+      "start": 1948.799,
+      "duration": 5.041
+    },
+    {
+      "text": "other ones to have her walking across",
+      "start": 1951.2,
+      "duration": 4.64
+    },
+    {
+      "text": "the stream. This is the one that I like,",
+      "start": 1953.84,
+      "duration": 4.0
+    },
+    {
+      "text": "midstride. I think the midstride helped",
+      "start": 1955.84,
+      "duration": 4.319
+    },
+    {
+      "text": "out a lot. I use this as the start image",
+      "start": 1957.84,
+      "duration": 4.88
+    },
+    {
+      "text": "and a prompt. And I said, um, it's a",
+      "start": 1960.159,
+      "duration": 5.281
+    },
+    {
+      "text": "camera tracking motion. She walks",
+      "start": 1962.72,
+      "duration": 4.319
+    },
+    {
+      "text": "through the stream, then into the",
+      "start": 1965.44,
+      "duration": 3.2
+    },
+    {
+      "text": "forest. A tree in the foreground",
+      "start": 1967.039,
+      "duration": 4.24
+    },
+    {
+      "text": "obscures her for a moment. I knew what I",
+      "start": 1968.64,
+      "duration": 5.12
+    },
+    {
+      "text": "wanted and I can't believe it actually",
+      "start": 1971.279,
+      "duration": 4.0
+    },
+    {
+      "text": "pulled it off. So, this is this is",
+      "start": 1973.76,
+      "duration": 5.159
+    },
+    {
+      "text": "great. Watch this.",
+      "start": 1975.279,
+      "duration": 3.64
+    },
+    {
+      "text": "So, the cleaning version of that was",
+      "start": 1984.159,
+      "duration": 5.681
+    },
+    {
+      "text": "also good, but maybe not as good",
+      "start": 1985.84,
+      "duration": 8.0
+    },
+    {
+      "text": "cuz it when she goes past the tree,",
+      "start": 1989.84,
+      "duration": 5.6
+    },
+    {
+      "text": "it forgets what she looks like a little",
+      "start": 1993.84,
+      "duration": 4.76
+    },
+    {
+      "text": "bit more.",
+      "start": 1995.44,
+      "duration": 3.16
+    },
+    {
+      "text": "I had a shot of her holding this doll",
+      "start": 2000.88,
+      "duration": 4.639
+    },
+    {
+      "text": "and I wanted her to turn it around",
+      "start": 2003.519,
+      "duration": 4.16
+    },
+    {
+      "text": "facing that direction. I was getting a",
+      "start": 2005.519,
+      "duration": 6.04
+    },
+    {
+      "text": "lot of results like this.",
+      "start": 2007.679,
+      "duration": 3.88
+    },
+    {
+      "text": "So, I think it helped to have her",
+      "start": 2012.559,
+      "duration": 5.161
+    },
+    {
+      "text": "slightly in profile.",
+      "start": 2014.08,
+      "duration": 3.64
+    },
+    {
+      "text": "Initially, I had this shot and then I",
+      "start": 2025.519,
+      "duration": 5.681
+    },
+    {
+      "text": "propped her up on one elbow looking out",
+      "start": 2027.76,
+      "duration": 6.399
+    },
+    {
+      "text": "and then did a start frame,",
+      "start": 2031.2,
+      "duration": 6.319
+    },
+    {
+      "text": "end frame, and then the end frame",
+      "start": 2034.159,
+      "duration": 5.841
+    },
+    {
+      "text": "becomes the start frame again. And there",
+      "start": 2037.519,
+      "duration": 6.561
+    },
+    {
+      "text": "is a nice slow camera push in.",
+      "start": 2040.0,
+      "duration": 9.64
+    },
+    {
+      "text": "And I did a bunch of bird noises.",
+      "start": 2044.08,
+      "duration": 5.56
+    },
+    {
+      "text": "If you're still here, hopefully this has",
+      "start": 2057.359,
+      "duration": 4.48
+    },
+    {
+      "text": "been helpful to see the whole process",
+      "start": 2059.359,
+      "duration": 4.641
+    },
+    {
+      "text": "that I took, just to see the process",
+      "start": 2061.839,
+      "duration": 3.84
+    },
+    {
+      "text": "someone else takes. I know there are",
+      "start": 2064.0,
+      "duration": 3.119
+    },
+    {
+      "text": "things I could have done better. There",
+      "start": 2065.679,
+      "duration": 3.361
+    },
+    {
+      "text": "are things that I learned from doing",
+      "start": 2067.119,
+      "duration": 4.641
+    },
+    {
+      "text": "this that I'll take into the next movie",
+      "start": 2069.04,
+      "duration": 5.039
+    },
+    {
+      "text": "that I make. And I hope more than",
+      "start": 2071.76,
+      "duration": 5.04
+    },
+    {
+      "text": "anything that this underscores that it's",
+      "start": 2074.079,
+      "duration": 4.8
+    },
+    {
+      "text": "actually really hard and difficult to",
+      "start": 2076.8,
+      "duration": 3.839
+    },
+    {
+      "text": "make a movie. It's [music] not just like",
+      "start": 2078.879,
+      "duration": 4.081
+    },
+    {
+      "text": "you type in your idea and then",
+      "start": 2080.639,
+      "duration": 4.561
+    },
+    {
+      "text": "everything magically happens. If you",
+      "start": 2082.96,
+      "duration": 3.919
+    },
+    {
+      "text": "haven't seen the Clling [music]",
+      "start": 2085.2,
+      "duration": 4.8
+    },
+    {
+      "text": "01 versus Google Flow video, watch that.",
+      "start": 2086.879,
+      "duration": 5.441
+    },
+    {
+      "text": "If you haven't seen Discarded Companion,",
+      "start": 2090.0,
+      "duration": 3.919
+    },
+    {
+      "text": "definitely watch that. I think it's",
+      "start": 2092.32,
+      "duration": 4.96
+    },
+    {
+      "text": "really rewarding to make movies. I think",
+      "start": 2093.919,
+      "duration": 5.38
+    },
+    {
+      "text": "we all have these movies in our head",
+      "start": 2097.28,
+      "duration": 2.559
+    },
+    {
+      "text": "[music]",
+      "start": 2099.299,
+      "duration": 2.941
+    },
+    {
+      "text": "and the technology is really getting to",
+      "start": 2099.839,
+      "duration": 5.201
+    },
+    {
+      "text": "the point where you can do a lot of",
+      "start": 2102.24,
+      "duration": 6.72
+    },
+    {
+      "text": "stuff. This was a month and a half of VO",
+      "start": 2105.04,
+      "duration": 7.12
+    },
+    {
+      "text": "credits, which was about it's $19 a",
+      "start": 2108.96,
+      "duration": 6.48
+    },
+    {
+      "text": "month, so less than $40. And then the",
+      "start": 2112.16,
+      "duration": 5.52
+    },
+    {
+      "text": "cling credits were $7,000. [music] I",
+      "start": 2115.44,
+      "duration": 4.48
+    },
+    {
+      "text": "bought them on sale, but essentially",
+      "start": 2117.68,
+      "duration": 5.6
+    },
+    {
+      "text": "$70. And the 11 Lab stuff you can do for",
+      "start": 2119.92,
+      "duration": 5.919
+    },
+    {
+      "text": "10. I think this puts cinematic film",
+      "start": 2123.28,
+      "duration": 5.6
+    },
+    {
+      "text": "making in the range of [music] a lot",
+      "start": 2125.839,
+      "duration": 5.921
+    },
+    {
+      "text": "more people who have story ideas and",
+      "start": 2128.88,
+      "duration": 5.199
+    },
+    {
+      "text": "creativity and a vision. Um, but it does",
+      "start": 2131.76,
+      "duration": 4.56
+    },
+    {
+      "text": "take work. I think the most important",
+      "start": 2134.079,
+      "duration": 4.241
+    },
+    {
+      "text": "thing to [music] remember is to enjoy",
+      "start": 2136.32,
+      "duration": 4.96
+    },
+    {
+      "text": "the process of creating it. Sometimes we",
+      "start": 2138.32,
+      "duration": 6.0
+    },
+    {
+      "text": "look at creativity as a shortcut to the",
+      "start": 2141.28,
+      "duration": 4.96
+    },
+    {
+      "text": "output. Like we want to automate the",
+      "start": 2144.32,
+      "duration": 4.16
+    },
+    {
+      "text": "creativity. There's a shift happening",
+      "start": 2146.24,
+      "duration": 5.04
+    },
+    {
+      "text": "right now where all of that stuff can be",
+      "start": 2148.48,
+      "duration": 5.68
+    },
+    {
+      "text": "done by AI, but the creative part, the",
+      "start": 2151.28,
+      "duration": 4.64
+    },
+    {
+      "text": "storytelling part [music] is something",
+      "start": 2154.16,
+      "duration": 4.56
+    },
+    {
+      "text": "that AI can't really deliver on in the",
+      "start": 2155.92,
+      "duration": 4.72
+    },
+    {
+      "text": "same way. When you finally have the",
+      "start": 2158.72,
+      "duration": 4.0
+    },
+    {
+      "text": "movie, there's a moment of satisfaction",
+      "start": 2160.64,
+      "duration": 4.24
+    },
+    {
+      "text": "of having completed it. But that's a",
+      "start": 2162.72,
+      "duration": 3.76
+    },
+    {
+      "text": "temporary fleeting [music] moment and",
+      "start": 2164.88,
+      "duration": 5.199
+    },
+    {
+      "text": "the real joy is in making and creating",
+      "start": 2166.48,
+      "duration": 6.32
+    },
+    {
+      "text": "things. I have a Substack newsletter. So",
+      "start": 2170.079,
+      "duration": 3.891
+    },
+    {
+      "text": "if you want to get emails from me",
+      "start": 2172.8,
+      "duration": 3.12
+    },
+    {
+      "text": "[music] about random AI things, I'll",
+      "start": 2173.97,
+      "duration": 3.869
+    },
+    {
+      "text": "hopefully be offering some courses soon.",
+      "start": 2175.92,
+      "duration": 4.56
+    },
+    {
+      "text": "So if you like this learning style, uh,",
+      "start": 2177.839,
+      "duration": 4.081
+    },
+    {
+      "text": "subscribe and you'll get a [music]",
+      "start": 2180.48,
+      "duration": 4.0
+    },
+    {
+      "text": "notification when courses are available.",
+      "start": 2181.92,
+      "duration": 4.159
+    },
+    {
+      "text": "Or check the description. Maybe they're",
+      "start": 2184.48,
+      "duration": 3.04
+    },
+    {
+      "text": "already available when you're watching",
+      "start": 2186.079,
+      "duration": 3.52
+    },
+    {
+      "text": "this. Thanks for watching. Have fun",
+      "start": 2187.52,
+      "duration": 5.72
+    },
+    {
+      "text": "making your own movie.",
+      "start": 2189.599,
+      "duration": 3.641
+    }
+  ],
+  "full_text": "It's a rainy day today, which is the perfect weather for a tutorial showing how I made my movie Discarded Companion. I'm going to do something a little different this time. Since I've already [music] done the Clling 01 versus Google Flow video, I'm going to walk through [music] my video editing timeline and go scene by scene to show what I did. I'll show what worked, but also what didn't work and what I did when things weren't [music] turning out the way I hoped. I'm really proud of how Discarded Companion turned [music] out and I'm excited to show you how I made it. Hopefully, this will help you on your AI film making journey. One of the things I did after my previous tutorial was to build a character sheet for the Android. And the way I did that is I used the character reference that I created in Clling and then I took a couple screenshots that I liked of that character. Uh, one thing I like about this character more is the the darker color and all of the wires there feels more like clothing and jewelry. I didn't really like the version that Nano Banana came up with. So, I took some of the shots that I liked and the reference that I had and I created these. Then I just downloaded these and created a character sheet. So I took the ones that I like the most and I think I use Canva or Photoshop to just arrange these on one sheet like this. So I've got a back view, a front view, close-ups of the face, a profile, and sort of a mid-profile view. Because Nano Banana has what's called a large context window, and it can read these images, I actually just say multiple angles of the same character. I wanted to make sure I understood all of these are the same character. So, this was the character sheet that I used for her. What is really cool to me is that I was able to do a prompt and just say, I want a human version of the same character, you know, wearing a comfy sweater. And this is what it came up with. So, now I have a character sheet for the other character on the porch. So, there's two versions. And that's the prompt I used in Nano Banana. A lot of the creative work for this movie was actually done using Nano Banana in Google Flow. So, if you're not used to the Google Flow interface, it's important to understand that sometimes I'm going to be showing this image and this image, which makes this image with this prompt. Once I have an image, I can click into it here and just say like remove the android and then that will get rid of the Android. So if you're new to using Nano Banana in Google Flow, that's how I'm going in and creating images and editing images. From the previous tutorial, I really liked this mining shaft in the garbage heap here. And I thought it would be interesting to see her first inside of this uh cave before she crawls out of it. I took the exterior shot that I had and I took the character reference of her and just said, \"Imagine you were to go inside the entry of this trash pile. Um, inside the exhuman is curled in a fetal position in a cleared out section. It's like an animal's nest or a cave made with trash.\" So, I got a I got a few that they took the nest a little too seriously or they kept her outside, but this was the one that I liked. I imagine it's easy to picture that's where she crawls out of when we see her next. I took that picture and said, \"Do a closeup of her face.\" And I got this one and her face was a little bit too human for me. So, I took that picture, combined it with a character reference sheet, and said, \"Change her to look more like the reference.\" And that's the one that I got. So, her eyes are open in this one, but I want her sleeping like this. So, I just took this image and said, \"Have her eyes closed.\" So, that's how I got this shot. For these first two shots, I generated the images in Flow in Nano Banana. And then you get three free videos per day in Gemini when you're on the pro plan. I tried to take advantage of those three videos a day. I started with this shot. We got that. There was another version too much water there and I didn't want her to wake up and she doesn't look right. There's that like weird light there. And then for this one, I have her sleeping and then I say after a moment her eyes open and she looks side to side as if trying to get her bearings after being in deep hibernation. This was something I added to most of the VO prompts because they really like to add music and like weird soundsscape stuff. Um, but I didn't want that because I was going to add it later. But I did want environmental sounds and foley sounds. So I would say only environmental sounds and foley sounds. So foley sounds are like footsteps and things like that. These three shots hopefully come off as a single continuous take that's 23 seconds long. Um, and the way we did that is this first frame where there's the start frame, which then becomes the end frame. The end frame for this clip is the start frame for this clip. And then the end frame for this clip is the start frame for the next clip, which doesn't have an end frame cuz I like the idea of getting different ways of her climbing this trash mountain. One thing, if you're editing, you'll notice there's little like jumps because the rain doesn't match exactly. But if you just take the clips straight out of VO and line them up, it's a little bit worse. I notice it takes about 10 frames. So you'll see if you look at this, it's 720. Here's the full clip. So this is what it would look like if I just took the clip right out of VO. So there's more of a glitch there. Do you see what I mean? So what I found was trimming off the last 10 frames gets you much closer. All right, so that's this 20 second sequence. Um, this next shot here is just done with my character sheet and a text prompt. I generated a bunch of different options here. And then I said remove the android from the frame, which gets me here. And then I used this image as the start frame and the original image of her standing there as the end frame. So, that's how that one works. Once I had this shot of her that I liked walking down the other side of the trash heap, I said, \"Let's do a closeup of her.\" And it gave me this one, which wasn't She's looking the wrong way. So, I tried to be more specific. And this time, I added the character sheet. And I know from experience I need to say do not have her looking directly at the camera because in this character sheet she's looking at the camera. So it leans towards that. So I used that shot and said make her face look more like the character in the reference sheet. So she's looking directly at us again which I don't want. I said have her eyes gazing downward as if she's looking at the path before her. And then this shot becomes a start frame. >> [music] >> That's the start frame. I didn't use this part because what I wanted was her head motion. So, here's what it looks like. So, she slides down, stands up, [music] and she's leaning forward. That's kind of the wrong, you know what I mean? Like, she should be going upward, not downward. trimming that off and having her go up, it feels like it comes together a little bit nicer. Cutting on motion like this is a simple technique to make it feel like they go together. Cuz if you look at it, if I extend this clip all the way out and extend this clip all the way out, you'll see they don't cut together very well at all because we have the end frame there. when she leans forward and looks up. So, we'll just to me this feels more fluid. Not perfect, but better. One other thing I did here is I down here, I forgot to mention this before, too, but I have these little subtle servo wors. Um, and so I put those when she's moving around initially and then again with her neck. I wanted to have her walking around the junkyard. We have this shot of her walking down the trash heap and then we removed her from the trash heap. And now I use that as a reference and just say show a different spelled it wrong, but show a different part of this garbage junkyard. And I got this shot. I used the character reference sheet again. And there's these garbage bags here. I wanted her staring at the garbage bags. And then Nano Banana added more garbage bags. So instead of these, she's looking at these. And that's probably due to my prompt um not being great. But then I also thought I like that more. Actually, I want her to open these up, like kind of tear them open. It was a happy mistake. Now, I cut out of this early because when we go to her face, she she has a different look. It didn't they didn't know how to paint this part of her face in apparently. Here's one thing I tried. I tried ingredients to video where I took this shot of her and the reference sheet and then said using the first image as a start frame. They bend down and they rip open the trash bags. This is one of the prompts that I didn't use the no talking, no ambient soundsscape. >> No, not here either. >> She actually does look a lot more like the character here. >> No, not here either. And then we see her with these dolls, sorting through dolls and games, more stuff, old computers, and then getting frustrated. Right. Here's one that did not work. [laughter] What I did here was I used the character sheet and this other shot where there's the car and the washing machine and I just say medium closeup of a solo human solo exhuman in a completely different part of the same junkyard. She's looking in the trash for something. But what I wanted was these dolls now too. So I just took this shot and said with discarded toys. So now there's different toys here. I wanted to have her looking in multiple places. I use the prompt of her looking through those toys and the character reference sheet. I have her looking through a different pile of garbage and electronics. I switch it up by saying have her face the right side of the frame. The piles of garbage are also on the right. I want to take all of this stuff and move it over to this side. And I wanted to make sure there's only one cuz I didn't want another situation like this. This became the start frame for this one where she's tossing things aside and looking through them. That's her frustration. I didn't like that at first, but then I ended up using it cuz I want her just doing this just kind of picking through methodically. Uh, this one I didn't use cuz it's like I love how this little this bone keep your eye on that turns into the doll. Or actually, it's the doll, right? this tennis ball turns into a bone. So, I didn't end up using this one. This is the first time that cling video comes in. I feel like there's more natural motion in the cling one. I just did the same thing in Cling. I like that the camera is moving and she's moving in subtly different ways between this one and this one. For this sequence, we have her [music] looking around still. The camera pulls back and we see this stuffed animal. She glances over, reaches out, pulls it close to her, and then we cut to the shot of her holding it, squeezing it. She hugs it close to her, and we see a trace or like a ghost of the android she used to be, similar to the android that we're going to meet later. There's a lot going on in this sequence. This is actually done with an end frame that has no start frame, and I'll show you that in a second. Because she's going to be carrying this doll around the whole time, I needed a character reference for the doll. Um, and I didn't want to do the Laboo, and I was sort of like, hey, imagine it should be like a Laboo or the Muai from Gremlins, but feel unique. came up with this idea at first. And it even named it Gutterball, which I think is hilarious for some reason. Um, but I was like, Gutterball is too grimy and worn. Um, and then I said, \"Here's the Laboo that you made.\" And I wasn't really getting the result I wanted. So, I just said, \"Hey, if you were going to create a stuffed animal from scratch, what would it look like?\" And it gave me this one. And I immediately was like, \"Yep, that's it.\" It's just homemade and weird enough. There's the antlers and it's got these little mushrooms here and the patchwork of it all. Looks like this came Oh, this is actually from This actually looks like her sweater, too, which is wild. I just noticed that. So, back in Cling, in order to get this end frame to work, I had to use 1.6. None of the other options will allow you to just do an end frame without a start frame. So, I said, \"A medium close-up of the android leaned forward, looking to the right of the frame, sorting through the trash. The camera pulls back to reveal the doll in the foreground.\" So, this was the first version I did. [music] And I like this one cuz she's looking over there. [music] Same with this one. So I do that by saying she's looking to the right of the frame, which I didn't have in this initial one. So we get the sense that she's looking away. And that way it seems more natural that she wouldn't have noticed that until now. This is our end frame. And then we use that end frame as the start frame here to go to this one where she's holding it. The shot of her holding it is a reference file of this and the doll. And then I said, \"Show me her point of view. Show me her point of view of the doll in her hands using the reference image.\" So if you've used Nano Banana, you're probably familiar with this. You say, \"Okay, I want this and I want her point of view.\" And you look at it and it's like, \"Perfect. That's what I want.\" But then you realize all of this background is exactly the same and it won't cut together the right way. I tried to remove the background and it just did this. Wasn't good. So I was very specific. I took this shot and said remove the sky. Rearrange all of the garbage in the background. Make all of the garbage blurry from shallow depth of field. Um and it looks like that which was still the same. So, I actually drew on the image using this tool that they have. And I just kind of like was drawing around it, you know, on all of the garbage. There were still a couple pieces that stayed. So, then I said, \"Shuffle all of the garbage around in the background. Keep the robot hands and the doll, but everything else should be in new locations.\" So, I got something that looked more like that. That's how this one works. Oh, and then the other thing I had to do, there's an effect on here. This is one of the I I don't like to put effects on things, but the problem is we're going from rainy and this is raining, but there's no rain in this clip and there's no grain. So, I added a little bit of grain. I added some rain. So, this is what that looked like without those effects. I didn't have my character reference sheet when I first started to do this, so I felt like I wasn't going to be able to pull it off. But once I had my character reference, I was able to take that character reference of this character and then use Cling01 to take the video of her hugging the doll and the character reference. And then in here, I did another essentially like a background removal. So, in this case, I used what's called a magnetic mask in Final Cut, but it's a just a way for moving the background. And then I did a match color. So, that way instead of these like uh warmer tones that you see, um I matched the color of this so she blends in a little more. I like the fact that you see both of them at once kind of blended together like this. You know, a lot of times when you see video to video, it's just some guy in his apartment waving his hands around like this is mind-blowing. But this is more of like a narrative use of that same technology to really change what's happening in the story. Like suddenly you realize, okay, she actually knows this doll and it's reminding her of a former life. For this scene, I wanted to have her come in, peek inside this window, and then see the rain jacket and decide she's going to wear it. I wanted to give her a wardrobe, kind of change her look as she's going. Um, it's so funny. I spent a lot of time on this And all I did was use one clip like this and then just cut to here. She's taken the doll and we've got her on a remote road with a garbage dump in the distance holding the stuffed animal by one arm. So, we've got a couple references here. We've got her character reference, the jacket, the stuffed animal, and then the shot of her holding the doll. And a lot of times I have to do that to show the relative size of the stuffed animal. The stuffed animal would change size a lot even when I would have that in there. So it took sometimes multiple generations. All right. She's leaving the junkyard. She's walking away from the junkyard. She's walking in kind of a mix of nature and the city where you see the freeway in the background and this deer. We're kind of hinting at what's going to come later. So, we're using the character reference, the rain jacket, the doll, and then this road shot. And this helps match the cinematic style. I think I like the idea that she's going with traffic. So, I really like this shot a lot. I like this like low angle rule of thirds. It's not really a low angle shot. You get lots of weird things like all the cars are going one way. Her legs are the wrong way. Her arm is kind of the wrong way. You You definitely get stuff like this. And I think it's important not to get frustrated when that sort of stuff happens. Even this one, this is like a really good shot. Um, again, the traffic's all going, both sides of the freeway are going the wrong way. There's a giant puddle there. So, I feel like that was more water than I wanted. Now, she's walking through a small town. You can see I don't have a reference for how big the stuffed animal should be, and I'm just getting wildly different sizes here. So, I think that's one thing that's helpful is to give it that reference. Then it sort of knows like, okay, this is about how large this should be in comparison to her. We're really taking advantage of this large context window that Dan O Banana has to say, here's a lot of angles of this character. Here's a jacket that you need to put on the character. Here's a stuffed animal, multiple angles of that. And then here is a picture that shows the relative size of that stuffed animal to her. Then I have her walking through a neighborhood. When I come back here, I can use this as the reference for the relative size, and I can use it for the house. We've got the image of her, the rain jacket, the doll, and then this neighborhood. From this, it knows what the neighborhood should look like and the relative size of the doll to her. I like having this bay window here. It adds a little bit of interest to the shot. Um, and then I also closed the drapes because we're going to have her open the drapes later. So, we use these four references to get her on the porch. And then we're just going to remove her from the shot. So, then we use frames to video. The first frame here is the one where she's not in the shot. So, this is where we removed her from the shot. And then the last frame is her standing there. So, the prompt is pretty simple. I just say the Android steps up the porch, rings the doorbell, then steps back. Now, there was no doorbell there. Let's do that again. [bell] I have this shot of her on the porch and now I'm saying add this character in the doorway. I tried a few different ones and I really liked this one. I used it without realizing she has this little tuck where the sweater is tucked into the t-shirt. When I started generating the images, I realized that's going to be in everything that she wears. So, I decided to take that out and redo it and said just remove the French tuck from the front and have the sweater hang naturally. Now that we have a shot of them on the porch, I can use that with the character reference of her and say zoom in. She should be on the right side of the frame facing left. Now, we've got an image of her and we've got an image of the discarded version of her. And now we've got this dialogue sequence. And in order to make this realistic, I had to perform the dialogue myself. When you do these motion controls, you're going to get a better result if the subject is facing the same way as the character you're mapping the performance to. So, because I'd already generated the images that I was going to use, I laid them out to make sure that when I was recording this line of dialogue, I was facing the same way as the character. Same for this one. They kind of go back and forth. And then for this one, she's now in profile and facing the opposite way. This worked as a guide when I was recording it to show me which direction I should be facing um and my relative placement in the frame to make it easier. One of the tricks here was getting the delivery to be like an android would without it sounding like a bad AI voice. So, there's kind of like a fine line. The world of the movie, which is the character isn't going to speak quite as naturally as a human. And then there's the reality that we live in, which is we're used to hearing AI generated voices um and performances. It was kind of a tricky line to walk. You're the previous companion. >> I could see the resemblance to her despite your current condition. >> The first thing I did was create a voice for her. In 11 Labs, I went to voices and then I went to create or clone a voice and then voice design. And then this was the prompt that I used. It describes her voice. This is what her voice sounds like. >> It's interesting, isn't it? How everything just keeps moving. >> Once I had that voice, I went over to the voice changer. I exported each of those dialogue sections as their own wave file and then I dropped them in there. Made sure that I was choosing that voice and then generating the speech that way. So I would go like this. >> You're the previous companion. >> One option I highly recommend is when you like one, click here and download with original name. If you download, you get the 11 labs and you get all of this stuff in there and you don't know what it means. If you download with original name, it's really clear uh which clip it's supposed to be. So, what I did is I took all of my clips here and then I lowered the volume and then I added the 11 Labs audio here. So, this is what it looked like. >> You're the previous companion. >> Now, I bring this into cling so I can sync up my performance with the 11 Labs voice with the image of the character. You're the previous companion. I came back to return this creature. She handcrafted it for him when she was sick. >> So for her, I had to switch to the avatar library. I used the image and the 11 Lab's voice. The Avatar voice is actually a really great way of doing this, too. >> This creature was accidentally discarded the same day I was. That's not in your memories. Another thing that happened was it would make both characters talk. >> It wasn't accidentally discarded, was it? >> The woman in the sweater listen silently. The woman in the sweater barely moves, but the LED light spins softly. >> It wasn't accidentally discarded, was it? >> So, even when I would mention that, sometimes I would get both characters talking. >> I will give it a good home. >> My workound was basically to have more of a closeup. Was it? >> There's really three ways that I did the dialogue. One is the 11 Labs voice with my performance. The second one was using Avatar 2.0. And the third way was using Cling 2.6 and assign a voice to the character in Cling 2.6. There's this option down here for select voice and there are all of these presets. I clicked create new voice and it says it needs 5 to 30 seconds of audio. Since it's the same voice for both characters, I just exported 30 seconds of this audio and then uploaded that here to create a new voice. So once I had that voice, it shows discarded companion. I used this as the start frame and just said she made it for him. This is its home. And then I had to be very specific. So I said, \"Only the android in the black jacket speaks.\" The woman accepts the stuffed animal and holds it in front of herself. After a brief pause, the android turns and walks away out of frame. No music and all that other stuff. So this turned out well. So this was using my 11 Labs voice recloned in Cling and then added as native audio in Cling 2.6. In cling 2.6 six, you can't really create the voice without existing audio. 11 Labs is great to create the voice you want and then you can export 30 seconds of dialogue, bring that into Cling, and then just prompt to have the characters using that voice. >> She made it for him. This is its home. I needed to give her a moment of pause and kind of remember back to the original owner. I was thinking of using like a montage of Instagram photos of her sewing it and putting it together and but it felt like that was disruptive to what was happening. And I also felt like that's just something you could do with normal video. So what I wanted to do is lean into the AI piece of it a little bit more. I wanted to do this sequence where it starts with her. She morphs into the original human who's sewing the doll together. We see her sewing the doll. She smiles and then hugs it close to her, which then brings it back to the porch. This is a 10second image to video and this is a 5-second. Um, so we're really starting with this start frame. This is the end frame. Going to the end frame. Back to the start frame, but in 10 seconds rather than five. I did a lot of these. Now we're just having her come home. So again, we're just doing image to video. Image to video. Image to video. One of my original thoughts was you would see her with the stuffed animal and in the distance you could see the trash heap. U but since she already walked away from the trash heap, I don't think we need to see it again. I had that shot and I just said remove the garbage piles. So we got rid of the garbage there. And then I got rid of her and said, \"Show me a path that's leading up to that.\" And I couldn't really get what I wanted. So, I just said, \"Show a different part of this same forest on the same day. Change the scenery.\" I use this as a reference with all of these other ones to have her walking across the stream. This is the one that I like, midstride. I think the midstride helped out a lot. I use this as the start image and a prompt. And I said, um, it's a camera tracking motion. She walks through the stream, then into the forest. A tree in the foreground obscures her for a moment. I knew what I wanted and I can't believe it actually pulled it off. So, this is this is great. Watch this. So, the cleaning version of that was also good, but maybe not as good cuz it when she goes past the tree, it forgets what she looks like a little bit more. I had a shot of her holding this doll and I wanted her to turn it around facing that direction. I was getting a lot of results like this. So, I think it helped to have her slightly in profile. Initially, I had this shot and then I propped her up on one elbow looking out and then did a start frame, end frame, and then the end frame becomes the start frame again. And there is a nice slow camera push in. And I did a bunch of bird noises. If you're still here, hopefully this has been helpful to see the whole process that I took, just to see the process someone else takes. I know there are things I could have done better. There are things that I learned from doing this that I'll take into the next movie that I make. And I hope more than anything that this underscores that it's actually really hard and difficult to make a movie. It's [music] not just like you type in your idea and then everything magically happens. If you haven't seen the Clling [music] 01 versus Google Flow video, watch that. If you haven't seen Discarded Companion, definitely watch that. I think it's really rewarding to make movies. I think we all have these movies in our head [music] and the technology is really getting to the point where you can do a lot of stuff. This was a month and a half of VO credits, which was about it's $19 a month, so less than $40. And then the cling credits were $7,000. [music] I bought them on sale, but essentially $70. And the 11 Lab stuff you can do for 10. I think this puts cinematic film making in the range of [music] a lot more people who have story ideas and creativity and a vision. Um, but it does take work. I think the most important thing to [music] remember is to enjoy the process of creating it. Sometimes we look at creativity as a shortcut to the output. Like we want to automate the creativity. There's a shift happening right now where all of that stuff can be done by AI, but the creative part, the storytelling part [music] is something that AI can't really deliver on in the same way. When you finally have the movie, there's a moment of satisfaction of having completed it. But that's a temporary fleeting [music] moment and the real joy is in making and creating things. I have a Substack newsletter. So if you want to get emails from me [music] about random AI things, I'll hopefully be offering some courses soon. So if you like this learning style, uh, subscribe and you'll get a [music] notification when courses are available. Or check the description. Maybe they're already available when you're watching this. Thanks for watching. Have fun making your own movie.",
+  "errors": []
+}

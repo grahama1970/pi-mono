@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kDWbNUQbAgc",
+    "language": "en",
+    "took_ms": 8192,
+    "method": null,
+    "title": "Federal Agency Independence and the Suppressed Role of Economists",
+    "channel": "Hudson Institute",
+    "upload_date": "20160622",
+    "duration_sec": 4061,
+    "description": "Former FTC Commissioner Joshua Wright and Harold Furchtgott-Roth discuss independent agencies and solutions for promoting economic analysis.",
+    "view_count": 265
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kDWbNUQbAgc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

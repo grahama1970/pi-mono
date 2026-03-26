@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KoWeYEOSBOg",
+    "language": "en",
+    "took_ms": 14898,
+    "method": null,
+    "title": "DEF CON 31 - Hacker Court Interactive Scenario - winn0na, and Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3581,
+    "description": "Be a member of the jury as two lawyers prosecute and defend a hacker (live on the stand) in a made up scenario. You, the audience, will decide if the hacker was caught in the act, or if the attribution was all a false flag. Learn through the trial what evidence you don’t want to leave behind in an op, what D&R can and should collect, and how criminals who conduct cybercrime actually get prosecuted.",
+    "view_count": 557
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KoWeYEOSBOg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

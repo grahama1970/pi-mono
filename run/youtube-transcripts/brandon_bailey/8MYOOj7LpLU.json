@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8MYOOj7LpLU",
+    "language": "en",
+    "took_ms": 8837,
+    "method": null,
+    "title": "DEF CON 30 - Cloud Village interview",
+    "channel": "DEFCONConference",
+    "upload_date": "20220814",
+    "duration_sec": 234,
+    "description": "Ali Interviews podcaster Hashish Rajan at Cloud Village",
+    "view_count": 1404
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8MYOOj7LpLU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

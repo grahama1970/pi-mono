@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_sDRoOGcrN0",
+    "language": "en",
+    "took_ms": 9355,
+    "method": null,
+    "title": "Navigating S4x26 At The Loews Miami Beach",
+    "channel": "S4 Events",
+    "upload_date": "20260217",
+    "duration_sec": 331,
+    "description": "This video will show you how to find everything at the Loews Miami Beach for S4x26 including the three stages, birds of a feather, S4 cafe, prime rooms, POC pavilion and more.",
+    "view_count": 152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _sDRoOGcrN0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

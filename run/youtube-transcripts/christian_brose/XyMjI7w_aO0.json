@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XyMjI7w_aO0",
+    "language": "en",
+    "took_ms": 9310,
+    "method": null,
+    "title": "Ann Marlowe on the U.S. Withdrawal Deadline in Afghanistan",
+    "channel": "Hudson Institute",
+    "upload_date": "20100702",
+    "duration_sec": 91,
+    "description": "Hudson Institute Visiting Fellow Ann Marlowe discussed the U.S. troop withdrawal deadline in Afghanistan. This discussion took place during Hudson's event \"Can Counterinsurgency Work in Afghanistan?\". More information can be found here: http://www.hudson.org/index.cfm?fuseaction=upcoming_events_list.",
+    "view_count": 708
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XyMjI7w_aO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wy972tWGng4",
+    "language": "en",
+    "took_ms": 8826,
+    "method": null,
+    "title": "Afghanistan: 17 Years On",
+    "channel": "Hudson Institute",
+    "upload_date": "20180823",
+    "duration_sec": 5127,
+    "description": "For four decades Afghanistan and its citizens have lived through civil war, instability, and an unending terrorist insurgency. Last year, President Trump announced his Afghanistan and South Asia strategy to help address many of the chronic issues plaguing the region. Yet the Taliban and their allies continue to conduct attacks, often from safe havens across the border in Pakistan. \n\nSome experts have suggested that the way out of this destructive cycle is through peace talks and negotiations with the Taliban. Afghanistan’s President Ashraf Ghani has repeatedly demonstrated his openness to such discussions, and has coordinated a number of them with American, Afghan, and Taliban officials in recent years. Others question the wisdom of peace talks involving the Taliban and the viability of any resolution that might require the withdrawal of foreign—especially American—troops from a still unstable Afghanistan. \n\nOn August 23, Hudson Institute’s South and Central Asia Program hosted a panel to discuss the current political climate in Afghanistan. Panelists included: Omar Samad, former Ambassador of Afghanistan to France and Canada; David Sedney, former president of American University of Afghanistan and senior associate at the Center for Strategic and international Studies; and Husain Haqqani, former Ambassador of Pakistan to the United States and director of the South and Central Asia Program at Hudson Institute.",
+    "view_count": 6723
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wy972tWGng4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

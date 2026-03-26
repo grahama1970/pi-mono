@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yFl_ScKA300",
+    "language": "en",
+    "took_ms": 7611,
+    "method": null,
+    "title": "DEF CON 30 - Rex Guo, Junyuan Zeng - Trace me if you can: Bypassing Linux Syscall Tracing",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2467,
+    "description": "In this talk, we will present novel vulnerabilities and exploitation techniques that reliably bypass Linux syscall tracing. A user mode program does not need any special privileges or capabilities to reliably avoid system call tracing detections by exploiting these vulnerabilities. The exploits work even when seccomp, SELinux, and AppArmor are enforced.\n\n\nAdvanced security monitoring solutions on Linux VMs and containers offer system call monitoring to effectively detect attack behaviors. Linux system calls can be monitored by kernel tracing technologies such as tracepoint, kprobe, ptrace, etc. These technologies intercept system calls at different places in the system call execution. These monitoring solutions can be deployed on cloud compute instances such as AWS EC2, Fargate, EKS, and the corresponding services from other cloud providers.\n\n\nWe comprehensively analyzed the Time-of-check-to-time-of-use (TOCTOU) issues in the Linux kernel syscall tracing framework and showed that these issues can be reliably exploited to bypass syscall tracing. Our exploits manipulate different system interactions that can impact the execution time of a syscall. We demonstrated that significant syscall execution delays can be introduced to make TOCTOU bypass reliable even when seccomp, SELinux, and AppArmor are enforced. Compared to the phantom attacks in DEFCON 29, the new exploit primitives we use do not require precise timing control or synchronization.\n\n\nWe will demonstrate our bypass for Falco on Linux VMs/containers and GKE. We will also demonstrate bypass for pdig on AWS Fargate. In addition, we will demonstrate exploitation techniques for syscall enter and explain the reason why certain configurations are difficult to reliably exploit. Finally, we will summarize exploitable TOCTOU scenarios and discuss potential mitigations in various cloud computing environments.",
+    "view_count": 1305
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yFl_ScKA300: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

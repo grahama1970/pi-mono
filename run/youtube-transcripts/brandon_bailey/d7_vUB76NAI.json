@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "d7_vUB76NAI",
+    "language": "en",
+    "took_ms": 9153,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village  - Ben Gardiner - Commercial Transportation Trucking Hacking",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 2766,
+    "description": "Join us for a technical review of the how-to of hacking big rig trucks. Included is an overview and introduction to commercial transportation, specifically trucking (tractors and trailers), and its technologies. It will cover the vehicle networks J1939, J1708/J1587 and J2497, how they operate and what they can be used for both intentionally and unintentionally. Several tools for truck hacking are presented and a survey of the public truck attacks are covered. Many tools are introduced and discussed, some are covered with examples. Attendees should leave with a good sense of what are the potentially fruitful areas of technical research into commercial transport cybersecurity and how they can equip themselves to successfully explore those areas. Some exposure to the CAN bus is assumed but no specific experience with commercial transport is needed.",
+    "view_count": 1746
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] d7_vUB76NAI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

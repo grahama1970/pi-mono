@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r0XfKXHrnao",
+    "language": "en",
+    "took_ms": 9269,
+    "method": null,
+    "title": "Roads to a Free Syria",
+    "channel": "Hudson Institute",
+    "upload_date": "20120907",
+    "duration_sec": 7442,
+    "description": "\"Responsibility to Protect\" (R2P), a widely acknowledged but inconsistently observed principle of international relations, obliges individual state actors to shield their populations from mass violence — and requires the international community to assist such states in the fulfillment of that duty.\r\r \r\rDoes R2P apply to the crisis in Syria? If so, how and to what practical effect? What other responsibilities and options might the United States and its allies have with respect to Syria'",
+    "view_count": 112
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r0XfKXHrnao: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

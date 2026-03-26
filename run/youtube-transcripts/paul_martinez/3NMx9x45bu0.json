@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3NMx9x45bu0",
+    "language": "en",
+    "took_ms": 7919,
+    "method": null,
+    "title": "Network Attack Simulations And You",
+    "channel": "S4 Events",
+    "upload_date": "20241017",
+    "duration_sec": 1199,
+    "description": "In 2023, 74% of CVEs published to the NVD had an attack vector of \"Network\"-- a percentage that has stayed consistent over the past several years. This doesn’t tell the full story, though, because CVSS is not designed to support a high level of organizational customizability. But what if you could know that a specific CVE was exploitable in your unique network? What if you could see the exact steps an attacker would need to take through your network to compromise a device?\n\nKylie presents the culmination of 4 years of grant research on the feasibility of network attack simulations for vulnerability remediation and prioritization. She will discuss the methodology and approach to this problem as well as ways this can be adapted into the security decision process in both small and lars as plant operations engineer in building this platform and defending against both cybersecurity and operational incidents.",
+    "view_count": 407
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3NMx9x45bu0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

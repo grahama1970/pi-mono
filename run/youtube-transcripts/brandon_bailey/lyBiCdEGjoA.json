@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lyBiCdEGjoA",
+    "language": "en",
+    "took_ms": 7576,
+    "method": null,
+    "title": "DEF CON 31 - Polynonce - An ECDSA Attack and Polynomial Dance - Nils Amiet, Marco Macchetti",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1209,
+    "description": "ECDSA is a widely used digital signature algorithm. ECDSA signatures can be found everywhere since they are public. In this talk, we tell a tale of how we discovered a novel attack against ECDSA and how we applied it to datasets we found in the wild, including the Bitcoin and Ethereum networks.\n\nAlthough we didn't recover Satoshi's private key (we’d be throwing a party on our private yacht instead of writing this abstract), we could see evidence that someone had previously attacked vulnerable wallets with a different exploit and drained them. We cover our journey, findings, and the rabbit holes we explored. We also provide an academic paper with the details of the attack and open-source code implementing it, so people building software and products using ECDSA can identify and avoid this vulnerability in their systems. We've only scratched the surface, there's still plenty of room for exploration.",
+    "view_count": 1919
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lyBiCdEGjoA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

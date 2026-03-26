@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fRH4RpvMOGk",
+    "language": "en",
+    "took_ms": 9271,
+    "method": null,
+    "title": "The Marine Corps Crucible | 54 Hours of Proving Ground",
+    "channel": "Sandboxx",
+    "upload_date": "20210412",
+    "duration_sec": 1089,
+    "description": "Marines, like metal, fit a perfect mold - leaving no room for error. \n\nAt the end of Week 10, recruits face their most significant challenge - The Crucible. \n\nThe Crucible is a 54-hour long field event designed to push recruits to their limit. Throughout The Crucible, recruits will be expected to leverage every lesson and skill they’ve developed throughout their time at Marine Corps Recruit Training. Those who complete The Crucible are awarded their Eagle, Globe, and Anchor, and the title of U.S. Marine.\n\n\nVideo production by Lance Cpl. Christopher McMurry and Cpl. Daniel Johnson.",
+    "view_count": 63502
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fRH4RpvMOGk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

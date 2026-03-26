@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DffGdrfY9gI",
+    "language": "en",
+    "took_ms": 9419,
+    "method": null,
+    "title": "Heroes of NLP: Kathleen McKeown",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201013",
+    "duration_sec": 2132,
+    "description": "Heroes of NLP is a video interview series featuring Andrew Ng, the founder of DeepLearning.AI, in conversation with thought leaders in NLP. Watch Andrew lead an enlightening discourse around how these industry and academic experts started in AI, their previous and current research projects, how their understanding of AI has changed through the decades, and what advice they can provide for learners of NLP. \n\nLooking to build a career in NLP? Enroll in the DeepLearning.AI NLP Specialization: https://bit.ly/33BaG0b\n\nComment below with links if you recognize any of the papers referenced in this interview!\n\nThis is an interview featuring Andrew Ng and Kathleen McKeown, a professor of Computer Science at Columbia University. \n\n01:02 - 04:03  How you became an NLP researcher\n04:03 - 07:44 Advice for someone trying to break into NLP themselves and wondering if they know enough or are good enough or shouldn’t be in this field\n07:45 - 12:29 Current work at Columbia University on interdisciplinary work and novel summarization \n13:00 - 19:56 How do you pick research topics to work on\n19:57 - 25:10 current work about analyzing texts from African American community \n25:12 - 29:30 Thoughts on how the field of NLP has evolved over the years\n29:40 - 34:11What do you find most exciting in terms of emerging NLP technologies?",
+    "view_count": 4974
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DffGdrfY9gI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

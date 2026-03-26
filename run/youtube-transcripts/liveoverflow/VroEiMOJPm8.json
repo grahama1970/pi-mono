@@ -1,0 +1,1083 @@
+{
+  "meta": {
+    "video_id": "VroEiMOJPm8",
+    "language": "en",
+    "took_ms": 1512,
+    "method": "direct",
+    "title": "Reversing and Cracking first simple Program - bin 0x05",
+    "channel": "LiveOverflow",
+    "upload_date": "20151230",
+    "duration_sec": 543,
+    "description": "A very simple reversing challenge for Linux\n\nGitHub: https://github.com/LiveOverflow/liveoverflow_youtube/tree/master/0x05_simple_crackme_intro_assembler\nhttp://crackmes.de\nhttp://www.hopperapp.com/\nhttps://www.hex-rays.com/products/ida/\nhttps://github.com/radare/radare2\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.\n\n#ReverseEngineering",
+    "view_count": 525803
+  },
+  "transcript": [
+    {
+      "text": "I have written a small C program.",
+      "start": 10.44,
+      "duration": 1.48
+    },
+    {
+      "text": "It’s supposed to be a simple license check.",
+      "start": 11.92,
+      "duration": 2.74
+    },
+    {
+      "text": "So you can execute it and you can supply a\nkey as argument and it will be checked.",
+      "start": 14.66,
+      "duration": 6.75
+    },
+    {
+      "text": "Our goal is to crack this program so we don’t\nhave to use a valid license key.",
+      "start": 21.41,
+      "duration": 4.03
+    },
+    {
+      "text": "I have made this program available through\na github repository.",
+      "start": 25.44,
+      "duration": 3.89
+    },
+    {
+      "text": "You can download it from github.com/liveoverflow/liveoverflow_youtube\nor you can install ‘git’ with ‘sudo",
+      "start": 29.33,
+      "duration": 8.45
+    },
+    {
+      "text": "apt-get install git’ and get the whole repository\nwith ‘git clone’ and the address you can",
+      "start": 37.78,
+      "duration": 5.68
+    },
+    {
+      "text": "see on github.",
+      "start": 43.46,
+      "duration": 1.14
+    },
+    {
+      "text": "We will probably talk more about what git\nis later.",
+      "start": 44.6,
+      "duration": 3.25
+    },
+    {
+      "text": "For now it’s enough to know, that this is\na way how developers can program together",
+      "start": 47.85,
+      "duration": 4.54
+    },
+    {
+      "text": "on a project.",
+      "start": 52.39,
+      "duration": 1.259
+    },
+    {
+      "text": "And I use it to share some stuff.",
+      "start": 53.649,
+      "duration": 3.51
+    },
+    {
+      "text": "To have a look at the binary assembler code,\nwe can use a program called gdb.",
+      "start": 57.159,
+      "duration": 4.33
+    },
+    {
+      "text": "The GNU Debugger.",
+      "start": 61.489,
+      "duration": 2.771
+    },
+    {
+      "text": "So type ‘gdb’ and the path to the binary.",
+      "start": 64.26,
+      "duration": 3.07
+    },
+    {
+      "text": "So every C program has a main function, remember?",
+      "start": 67.33,
+      "duration": 3.22
+    },
+    {
+      "text": "So let’s type in ‘disassemble main’\nwhich will display all assembler instructions",
+      "start": 70.55,
+      "duration": 4.82
+    },
+    {
+      "text": "from the main function.",
+      "start": 75.37,
+      "duration": 1.91
+    },
+    {
+      "text": "But urgh, do you see how ugly that looks?",
+      "start": 77.28,
+      "duration": 2.69
+    },
+    {
+      "text": "That’s the horrible at&t syntax.",
+      "start": 79.97,
+      "duration": 3.39
+    },
+    {
+      "text": "So type in ‘set disassembly-flavor intel’.",
+      "start": 83.36,
+      "duration": 3.47
+    },
+    {
+      "text": "Remember that you can use tab completion here\nas well.",
+      "start": 86.83,
+      "duration": 2.57
+    },
+    {
+      "text": "Now ‘disassemble main’ again, and now\nit’s much more readable.",
+      "start": 89.4,
+      "duration": 4.45
+    },
+    {
+      "text": "Ok.",
+      "start": 93.85,
+      "duration": 1.0
+    },
+    {
+      "text": "So.",
+      "start": 94.85,
+      "duration": 1.0
+    },
+    {
+      "text": "It looks complicated.",
+      "start": 95.85,
+      "duration": 1.44
+    },
+    {
+      "text": "But you can ignore most of it.",
+      "start": 97.29,
+      "duration": 2.19
+    },
+    {
+      "text": "First of all get a high-level view of it.",
+      "start": 99.48,
+      "duration": 1.79
+    },
+    {
+      "text": "It doesn’t make sense to start going through\nthis instruction by instruction.",
+      "start": 101.27,
+      "duration": 4.53
+    },
+    {
+      "text": "This main function obviously calls other functions.",
+      "start": 105.8,
+      "duration": 2.92
+    },
+    {
+      "text": "So just draw a mental picture of the rough\ncontrol flow.",
+      "start": 108.72,
+      "duration": 4.42
+    },
+    {
+      "text": "I will actually print out this assembler code\nand use a pen.",
+      "start": 113.14,
+      "duration": 3.07
+    },
+    {
+      "text": "That’s how I did it in the beginning and\nstill do it when I encounter more complex",
+      "start": 116.21,
+      "duration": 4.51
+    },
+    {
+      "text": "code.",
+      "start": 120.72,
+      "duration": 1.27
+    },
+    {
+      "text": "And remember to just ignore most of the stuff,\nconcentrate on the actual flow.",
+      "start": 121.99,
+      "duration": 6.21
+    },
+    {
+      "text": "So at the start it arrives at a compare with\nthe number 2.",
+      "start": 128.2,
+      "duration": 4.209
+    },
+    {
+      "text": "And afterwards a ‘jump not equal’.",
+      "start": 132.409,
+      "duration": 2.901
+    },
+    {
+      "text": "So something is checked if it is 2.",
+      "start": 135.31,
+      "duration": 8.42
+    },
+    {
+      "text": "If that is the case, we proceed to a ‘printf’.",
+      "start": 143.73,
+      "duration": 3.57
+    },
+    {
+      "text": "Which we know is a function to display text.",
+      "start": 147.3,
+      "duration": 4.68
+    },
+    {
+      "text": "Then comes a ‘strcmp’, if you don’t\nknow that function, read the man page of it.",
+      "start": 151.98,
+      "duration": 7.83
+    },
+    {
+      "text": "‘man 3 strcmp’ - so this compares two\nstrings and returns 0 if both strings were",
+      "start": 159.81,
+      "duration": 6.18
+    },
+    {
+      "text": "the same.",
+      "start": 165.99,
+      "duration": 3.52
+    },
+    {
+      "text": "After that call we see another ‘jump not\nequal’ so if the zero flag is not set, there",
+      "start": 169.51,
+      "duration": 10.9
+    },
+    {
+      "text": "will be a ‘puts’ call.",
+      "start": 180.41,
+      "duration": 2.82
+    },
+    {
+      "text": "Use the man page to figure out what it does,\nbut it just prints text like printf.",
+      "start": 183.23,
+      "duration": 10.85
+    },
+    {
+      "text": "So if the original compare with the number\n2 was not true, then it would jump to this",
+      "start": 194.08,
+      "duration": 5.12
+    },
+    {
+      "text": "address 0x400623, which is at offset main+102.",
+      "start": 199.2,
+      "duration": 4.59
+    },
+    {
+      "text": "So in that case it prints some other text\nwith ‘puts’ and exits.",
+      "start": 203.79,
+      "duration": 6.5
+    },
+    {
+      "text": "I always add the addresses, or at least part\nof the address, from important locations,",
+      "start": 210.29,
+      "duration": 4.34
+    },
+    {
+      "text": "so I know where I am.",
+      "start": 214.63,
+      "duration": 2.579
+    },
+    {
+      "text": "This will help you later when we step through\nthe program.",
+      "start": 217.209,
+      "duration": 3.591
+    },
+    {
+      "text": "Now we have one branch missing.",
+      "start": 220.8,
+      "duration": 1.75
+    },
+    {
+      "text": "If this compare was incorrect, this branch\nwould jump to offset main+90.",
+      "start": 222.55,
+      "duration": 4.16
+    },
+    {
+      "text": "Which also just prints text.",
+      "start": 226.71,
+      "duration": 5.68
+    },
+    {
+      "text": "Some jumps are still missing, but you can\nadd them to get a nice control-flow graph.",
+      "start": 232.39,
+      "duration": 5.52
+    },
+    {
+      "text": "Now let’s actually execute this and step\nthrough it.",
+      "start": 237.91,
+      "duration": 3.55
+    },
+    {
+      "text": "You can then draw which path through the graph\nyou have taken on your paper.",
+      "start": 241.46,
+      "duration": 4.32
+    },
+    {
+      "text": "To do do this we first set a breakpoint at\nthe start of main with ‘break *main’.",
+      "start": 245.78,
+      "duration": 6.02
+    },
+    {
+      "text": "Breakpoint is set, now use ‘run’ to start\nthe program.",
+      "start": 251.8,
+      "duration": 4.42
+    },
+    {
+      "text": "Starting program and we hit the breakpoint\n1 at this address.",
+      "start": 256.22,
+      "duration": 3.88
+    },
+    {
+      "text": "A breakpoint is a point where execution stops.",
+      "start": 260.1,
+      "duration": 4.779
+    },
+    {
+      "text": "Now look at the registers with ‘info registers’.",
+      "start": 264.879,
+      "duration": 2.701
+    },
+    {
+      "text": "Here you can see that RIP, the instruction\npointer, points to the first address in main.",
+      "start": 267.58,
+      "duration": 6.94
+    },
+    {
+      "text": "Now use ‘si’ to step one instruction.",
+      "start": 274.52,
+      "duration": 3.73
+    },
+    {
+      "text": "Now we are at a new address in main.",
+      "start": 278.25,
+      "duration": 1.74
+    },
+    {
+      "text": "‘info registers’ and you see the changed\ninstruction pointer.",
+      "start": 279.99,
+      "duration": 4.01
+    },
+    {
+      "text": "So now just step through it all and follow\nthe addresses in your control graph.",
+      "start": 284.0,
+      "duration": 6.03
+    },
+    {
+      "text": "But use ‘ni’ instead of ‘si’, because\n‘si’ would step into function calls.",
+      "start": 290.03,
+      "duration": 4.75
+    },
+    {
+      "text": "But we only want to step through this main\nfunction and not follow stuff like ‘puts’.",
+      "start": 294.78,
+      "duration": 12.72
+    },
+    {
+      "text": "Ok did you notice when we jumped?",
+      "start": 307.5,
+      "duration": 2.8
+    },
+    {
+      "text": "The jump was at 5d0, and then the next instruction\nwas at 623.",
+      "start": 310.3,
+      "duration": 5.86
+    },
+    {
+      "text": "So we followed the jump, which means whatever\nwas compared to 2, was not 2.",
+      "start": 316.16,
+      "duration": 8.68
+    },
+    {
+      "text": "And then the program printed the Usage information\nafter 628, which was the last ‘puts’ call.",
+      "start": 324.84,
+      "duration": 6.54
+    },
+    {
+      "text": "So we can write down, that this ‘puts’\nprints the ‘Usage’ information.",
+      "start": 331.38,
+      "duration": 3.97
+    },
+    {
+      "text": "Now it’s pretty clear, that we didn’t\npass a key to this program.",
+      "start": 335.35,
+      "duration": 6.21
+    },
+    {
+      "text": "Which means the check was looking at the arguments\nif we supplied a license key.",
+      "start": 341.56,
+      "duration": 4.92
+    },
+    {
+      "text": "So let’s run the program again, but this\ntime with a random license key.",
+      "start": 346.48,
+      "duration": 8.77
+    },
+    {
+      "text": "Yes we want to start the program again.",
+      "start": 355.25,
+      "duration": 1.91
+    },
+    {
+      "text": "Now do the same.",
+      "start": 357.16,
+      "duration": 3.34
+    },
+    {
+      "text": "‘ni’, ‘ni’.",
+      "start": 360.5,
+      "duration": 1.669
+    },
+    {
+      "text": "Now we are at 5d0 again, will we jump this\ntime?",
+      "start": 362.169,
+      "duration": 3.961
+    },
+    {
+      "text": "No!",
+      "start": 366.13,
+      "duration": 1.0
+    },
+    {
+      "text": "cool!",
+      "start": 367.13,
+      "duration": 1.0
+    },
+    {
+      "text": "So the next branch we expect is at 609.",
+      "start": 368.13,
+      "duration": 3.38
+    },
+    {
+      "text": "Let’s ‘ni’ and see what happens.",
+      "start": 371.51,
+      "duration": 4.37
+    },
+    {
+      "text": "AH!",
+      "start": 375.88,
+      "duration": 1.83
+    },
+    {
+      "text": "Another print text.",
+      "start": 377.71,
+      "duration": 1.0
+    },
+    {
+      "text": "So that ‘printf’ is the info that a license\nkey will be checked.",
+      "start": 378.71,
+      "duration": 6.25
+    },
+    {
+      "text": "‘ni’.",
+      "start": 384.96,
+      "duration": 2.2
+    },
+    {
+      "text": "Now comes the branch.",
+      "start": 387.16,
+      "duration": 1.63
+    },
+    {
+      "text": "Ok we arrived at 609, let’s see where we\nare afterwards.",
+      "start": 388.79,
+      "duration": 5.29
+    },
+    {
+      "text": "At 617.",
+      "start": 394.08,
+      "duration": 1.92
+    },
+    {
+      "text": "So we did jump, which means that the strcmp\nfailed.",
+      "start": 396.0,
+      "duration": 4.5
+    },
+    {
+      "text": "And when we continue with ‘ni’ we see\nthat it’s wrong.",
+      "start": 400.5,
+      "duration": 4.56
+    },
+    {
+      "text": "Ok.",
+      "start": 405.06,
+      "duration": 1.0
+    },
+    {
+      "text": "Let’s set a breakpoint just before the last\ncompare and run the program again.",
+      "start": 406.06,
+      "duration": 6.14
+    },
+    {
+      "text": "Remember that you can easily copy&paste values\nin the terminal by simply marking something",
+      "start": 412.2,
+      "duration": 5.29
+    },
+    {
+      "text": "and pressing your mousewheel.",
+      "start": 417.49,
+      "duration": 2.3
+    },
+    {
+      "text": "Now ‘run’ again.",
+      "start": 419.79,
+      "duration": 2.51
+    },
+    {
+      "text": "Breakpoint 1.",
+      "start": 422.3,
+      "duration": 1.67
+    },
+    {
+      "text": "Now ‘continue’.",
+      "start": 423.97,
+      "duration": 1.32
+    },
+    {
+      "text": "This will run the program normally again,\nuntil we hit the next breakpoint.",
+      "start": 425.29,
+      "duration": 5.07
+    },
+    {
+      "text": "Now stopped before we execute the ‘test\neax, eax’.",
+      "start": 430.36,
+      "duration": 3.96
+    },
+    {
+      "text": "EAX just refers to the first 32bit of the\n64bit RAX register.",
+      "start": 434.32,
+      "duration": 6.45
+    },
+    {
+      "text": "So it’s value is hex 0xE.",
+      "start": 440.77,
+      "duration": 2.66
+    },
+    {
+      "text": "Let’s set this to 0, which would indicate\nthat the ‘strcmp’ was correct and returned",
+      "start": 443.43,
+      "duration": 8.28
+    },
+    {
+      "text": "a 0.",
+      "start": 451.71,
+      "duration": 1.0
+    },
+    {
+      "text": "‘set $eax=0’. ‘info registers’ and\nyou can see that it’s now 0.",
+      "start": 452.71,
+      "duration": 4.75
+    },
+    {
+      "text": "Now use ‘ni’ again to step and follow\nyour control path.",
+      "start": 457.46,
+      "duration": 5.56
+    },
+    {
+      "text": "‘Access Granted!’",
+      "start": 463.02,
+      "duration": 5.13
+    },
+    {
+      "text": "YAY!",
+      "start": 468.15,
+      "duration": 2.57
+    },
+    {
+      "text": "We circumvented the license check!",
+      "start": 470.72,
+      "duration": 3.11
+    },
+    {
+      "text": "It think that’s pretty cool!",
+      "start": 473.83,
+      "duration": 4.32
+    },
+    {
+      "text": "And you can always write your own little C\nprogram trying to make it more secure, and",
+      "start": 478.15,
+      "duration": 5.9
+    },
+    {
+      "text": "then crack it yourself again.",
+      "start": 484.05,
+      "duration": 1.76
+    },
+    {
+      "text": "You will notice that it’s impossible to\nmake a program uncrackable.",
+      "start": 485.81,
+      "duration": 5.7
+    },
+    {
+      "text": "Those kind of challenges are called ‘crackme’.",
+      "start": 491.51,
+      "duration": 2.909
+    },
+    {
+      "text": "People create small programs that have to\nbe cracked.",
+      "start": 494.419,
+      "duration": 3.051
+    },
+    {
+      "text": "Or more often you have to create a valid keygen.",
+      "start": 497.47,
+      "duration": 3.02
+    },
+    {
+      "text": "If you think something like this is fun, checkout\nhttp://crackmes.de/.",
+      "start": 500.49,
+      "duration": 6.209
+    },
+    {
+      "text": "Creating control graphs like we just did is\npretty useful.",
+      "start": 506.699,
+      "duration": 3.531
+    },
+    {
+      "text": "That’s why there are some programs that\ndo that for us.",
+      "start": 510.23,
+      "duration": 3.749
+    },
+    {
+      "text": "Here are three different examples of this\nspecific control graph.",
+      "start": 513.979,
+      "duration": 5.821
+    },
+    {
+      "text": "First is HopperApp, second is IDAPro and the\nlast one is from radare2.",
+      "start": 519.8,
+      "duration": 8.59
+    },
+    {
+      "text": "See you hopefully next time when we use some\ndifferent tools to explore this licence check",
+      "start": 528.39,
+      "duration": 4.77
+    },
+    {
+      "text": "binary a bit more.",
+      "start": 533.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Let’s figure out together the basic concepts\nof a CPU.",
+      "start": 534.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Computers have different memory to store stuff\n- so first we need something to store the",
+      "start": 535.16,
+      "duration": 1.0
+    },
+    {
+      "text": "machine code in.",
+      "start": 536.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Let’s take a spreadsheet and imagine that\nthis is memory.",
+      "start": 537.16,
+      "duration": 1.0
+    },
+    {
+      "text": "You can store values in it and each memory\ncell has an address, which is the number on",
+      "start": 538.16,
+      "duration": 1.0
+    },
+    {
+      "text": "the left.",
+      "start": 539.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And I will use the 2nd column to write some\ncomments in there.",
+      "start": 540.16,
+      "duration": 1.0
+    },
+    {
+      "text": "As you can see there are some hexadecimal\nnumbers stored in this memory.",
+      "start": 541.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And at first it looks very random, but that\nis our machine code and soon you will understand",
+      "start": 542.16,
+      "duration": 1.0
+    },
+    {
+      "text": "this.",
+      "start": 543.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So the first thing the CPU needs to have is\nsomething to keep track where in memory the",
+      "start": 544.16,
+      "duration": 1.0
+    },
+    {
+      "text": "CPU currently is.",
+      "start": 545.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Which means we shoud add a little storage\nfor our CPU and call it the “Instruction",
+      "start": 546.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Pointer”.",
+      "start": 547.16,
+      "duration": 1.0
+    },
+    {
+      "text": "This little storage area will contain the\naddress of memory the CPU is looking at the",
+      "start": 548.16,
+      "duration": 1.0
+    },
+    {
+      "text": "moment.",
+      "start": 549.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So obviously our program starts from the top,\nso the address will be 1.",
+      "start": 550.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Now let’s start the CPU, it looks at address\n1 and reads 48, AA, 14.",
+      "start": 551.16,
+      "duration": 1.0
+    },
+    {
+      "text": "But what do those numbers mean?",
+      "start": 552.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The CPU knows that 48 means it has to MOVE\ndata around.",
+      "start": 553.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The AA means the destination of that move.",
+      "start": 554.16,
+      "duration": 1.0
+    },
+    {
+      "text": "and the 14 is the source.",
+      "start": 555.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So in address 14 we can see the number 42.",
+      "start": 556.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And the destination is another small storage\nunit inside the CPU.",
+      "start": 557.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So the CPU will move the 42 into it’s small\nstorage area called AA.",
+      "start": 558.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So this instruction is done, and the CPU increases\nthe Instruction pointer by one.",
+      "start": 559.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And we start over.",
+      "start": 560.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The CPU reads the current value at the address\nof it’s instruction pointer.",
+      "start": 561.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So it reads 48 again which means move, and\nthis time it’s moving the content of address",
+      "start": 562.16,
+      "duration": 1.0
+    },
+    {
+      "text": "15 into the small storage BB.",
+      "start": 563.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Notice how I use brackets around the 15.",
+      "start": 564.16,
+      "duration": 1.0
+    },
+    {
+      "text": "This indicates that 15 is an address, and\nwe actually reference the content of 15, which",
+      "start": 565.16,
+      "duration": 1.0
+    },
+    {
+      "text": "is 66.",
+      "start": 566.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And not the number 15 itself.",
+      "start": 567.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Instruction done, increase the Instruction\npointer.",
+      "start": 568.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The next address contains 83, AA and BB.",
+      "start": 569.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The CPU knows that 83 means COMPARE.",
+      "start": 570.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And it compares the values in AA and BB.",
+      "start": 571.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Now it has to somehow remember the result\nof this compare.",
+      "start": 572.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So let’s add another small storage that\nstores this result.",
+      "start": 573.16,
+      "duration": 1.0
+    },
+    {
+      "text": "We call it Zero Flag.",
+      "start": 574.16,
+      "duration": 1.0
+    },
+    {
+      "text": "You know what an intelligent way is to compare\ntwo numbers?",
+      "start": 575.16,
+      "duration": 1.0
+    },
+    {
+      "text": "If you subtract them from each other and their\nresult is 0, they were the same.",
+      "start": 576.16,
+      "duration": 1.0
+    },
+    {
+      "text": "If the result is not zero, they were different.",
+      "start": 577.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So this is what the CPU does.",
+      "start": 578.16,
+      "duration": 1.0
+    },
+    {
+      "text": "66-42 is 24, so that’s not 0.",
+      "start": 579.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So we set the zero flag to false.",
+      "start": 580.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Instruction done, next one is at address 4.",
+      "start": 581.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The CPU reads a 75 and 07.",
+      "start": 582.16,
+      "duration": 1.0
+    },
+    {
+      "text": "75 Stands for JUMP If not equal.",
+      "start": 583.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And 07 is the address where to jump to.",
+      "start": 584.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So the CPU checks the state of the Zero Flag.",
+      "start": 585.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And The Zero flag is set to FALSE, so the\nprevious compare was not equal.",
+      "start": 586.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Which means it jumps to the destination 07.",
+      "start": 587.16,
+      "duration": 1.0
+    },
+    {
+      "text": "A jump is easy.",
+      "start": 588.16,
+      "duration": 1.0
+    },
+    {
+      "text": "The CPU just sets its Instruction Pointer\nto 07.",
+      "start": 589.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Ok so the next instruction is at address 7.",
+      "start": 590.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And it reads E8 and 17.",
+      "start": 591.16,
+      "duration": 1.0
+    },
+    {
+      "text": "E8 In this case stands for print a text.",
+      "start": 592.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And the text can be found at address 17.",
+      "start": 593.16,
+      "duration": 1.0
+    },
+    {
+      "text": "But 17 doesn’t contain text?",
+      "start": 594.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Well, for a computer everything is numbers.",
+      "start": 595.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Like those instructions the CPU executes,\nthey are just numbers.",
+      "start": 596.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So text is made out of numbers too.",
+      "start": 597.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Remember how I brushed over ASCII values in\na previous video?",
+      "start": 598.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Now it’s the time to pull up the ascii man\npage again.",
+      "start": 599.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So type ‘man ascii’ In the terminal.",
+      "start": 600.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Now try to find hex 4E and 4F.",
+      "start": 601.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Haa.. ok.",
+      "start": 602.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So they stand for ‘N’ and ‘O’.",
+      "start": 603.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Which means the computer will print ‘NO’.",
+      "start": 604.16,
+      "duration": 1.0
+    },
+    {
+      "text": "So looks like this code simply compares two\nnumbers.",
+      "start": 605.16,
+      "duration": 1.0
+    },
+    {
+      "text": "I will not go over the case when those two\nnumbers are the same, but you should try it",
+      "start": 606.16,
+      "duration": 1.0
+    },
+    {
+      "text": "yourself.",
+      "start": 607.16,
+      "duration": 1.0
+    },
+    {
+      "text": "That’s crazy, huh?",
+      "start": 608.16,
+      "duration": 1.0
+    },
+    {
+      "text": "CPU simply reads the memory sequentially and\ndoes whatever it reads.",
+      "start": 609.16,
+      "duration": 1.0
+    },
+    {
+      "text": "And programmers can build crazy complex stuff\nwith that.",
+      "start": 610.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Now let me change the text a little bit so\nit reflects more the reality of how we write",
+      "start": 611.16,
+      "duration": 1.0
+    },
+    {
+      "text": "assembler.",
+      "start": 612.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Basically just abbreviation of it.",
+      "start": 613.16,
+      "duration": 1.0
+    },
+    {
+      "text": "Also don’t get confused with the order of\nparameters.",
+      "start": 614.16,
+      "duration": 1.0
+    },
+    {
+      "text": "simply think of it like a variable assignment\nin programming.",
+      "start": 615.16,
+      "duration": 1.0
+    },
+    {
+      "text": "This was a very simple example, but the real\nworld is not much different.",
+      "start": 616.16,
+      "duration": 1.0
+    },
+    {
+      "text": "People just came up with a lot more instructions\nthat might be interesting and wrote complex",
+      "start": 617.16,
+      "duration": 1.0
+    },
+    {
+      "text": "code to solve hard problems.",
+      "start": 618.16,
+      "duration": 1.0
+    },
+    {
+      "text": "But at their core they are simple like that.",
+      "start": 619.16,
+      "duration": 0.009
+    }
+  ],
+  "full_text": "I have written a small C program. It’s supposed to be a simple license check. So you can execute it and you can supply a\nkey as argument and it will be checked. Our goal is to crack this program so we don’t\nhave to use a valid license key. I have made this program available through\na github repository. You can download it from github.com/liveoverflow/liveoverflow_youtube\nor you can install ‘git’ with ‘sudo apt-get install git’ and get the whole repository\nwith ‘git clone’ and the address you can see on github. We will probably talk more about what git\nis later. For now it’s enough to know, that this is\na way how developers can program together on a project. And I use it to share some stuff. To have a look at the binary assembler code,\nwe can use a program called gdb. The GNU Debugger. So type ‘gdb’ and the path to the binary. So every C program has a main function, remember? So let’s type in ‘disassemble main’\nwhich will display all assembler instructions from the main function. But urgh, do you see how ugly that looks? That’s the horrible at&t syntax. So type in ‘set disassembly-flavor intel’. Remember that you can use tab completion here\nas well. Now ‘disassemble main’ again, and now\nit’s much more readable. Ok. So. It looks complicated. But you can ignore most of it. First of all get a high-level view of it. It doesn’t make sense to start going through\nthis instruction by instruction. This main function obviously calls other functions. So just draw a mental picture of the rough\ncontrol flow. I will actually print out this assembler code\nand use a pen. That’s how I did it in the beginning and\nstill do it when I encounter more complex code. And remember to just ignore most of the stuff,\nconcentrate on the actual flow. So at the start it arrives at a compare with\nthe number 2. And afterwards a ‘jump not equal’. So something is checked if it is 2. If that is the case, we proceed to a ‘printf’. Which we know is a function to display text. Then comes a ‘strcmp’, if you don’t\nknow that function, read the man page of it. ‘man 3 strcmp’ - so this compares two\nstrings and returns 0 if both strings were the same. After that call we see another ‘jump not\nequal’ so if the zero flag is not set, there will be a ‘puts’ call. Use the man page to figure out what it does,\nbut it just prints text like printf. So if the original compare with the number\n2 was not true, then it would jump to this address 0x400623, which is at offset main+102. So in that case it prints some other text\nwith ‘puts’ and exits. I always add the addresses, or at least part\nof the address, from important locations, so I know where I am. This will help you later when we step through\nthe program. Now we have one branch missing. If this compare was incorrect, this branch\nwould jump to offset main+90. Which also just prints text. Some jumps are still missing, but you can\nadd them to get a nice control-flow graph. Now let’s actually execute this and step\nthrough it. You can then draw which path through the graph\nyou have taken on your paper. To do do this we first set a breakpoint at\nthe start of main with ‘break *main’. Breakpoint is set, now use ‘run’ to start\nthe program. Starting program and we hit the breakpoint\n1 at this address. A breakpoint is a point where execution stops. Now look at the registers with ‘info registers’. Here you can see that RIP, the instruction\npointer, points to the first address in main. Now use ‘si’ to step one instruction. Now we are at a new address in main. ‘info registers’ and you see the changed\ninstruction pointer. So now just step through it all and follow\nthe addresses in your control graph. But use ‘ni’ instead of ‘si’, because\n‘si’ would step into function calls. But we only want to step through this main\nfunction and not follow stuff like ‘puts’. Ok did you notice when we jumped? The jump was at 5d0, and then the next instruction\nwas at 623. So we followed the jump, which means whatever\nwas compared to 2, was not 2. And then the program printed the Usage information\nafter 628, which was the last ‘puts’ call. So we can write down, that this ‘puts’\nprints the ‘Usage’ information. Now it’s pretty clear, that we didn’t\npass a key to this program. Which means the check was looking at the arguments\nif we supplied a license key. So let’s run the program again, but this\ntime with a random license key. Yes we want to start the program again. Now do the same. ‘ni’, ‘ni’. Now we are at 5d0 again, will we jump this\ntime? No! cool! So the next branch we expect is at 609. Let’s ‘ni’ and see what happens. AH! Another print text. So that ‘printf’ is the info that a license\nkey will be checked. ‘ni’. Now comes the branch. Ok we arrived at 609, let’s see where we\nare afterwards. At 617. So we did jump, which means that the strcmp\nfailed. And when we continue with ‘ni’ we see\nthat it’s wrong. Ok. Let’s set a breakpoint just before the last\ncompare and run the program again. Remember that you can easily copy&paste values\nin the terminal by simply marking something and pressing your mousewheel. Now ‘run’ again. Breakpoint 1. Now ‘continue’. This will run the program normally again,\nuntil we hit the next breakpoint. Now stopped before we execute the ‘test\neax, eax’. EAX just refers to the first 32bit of the\n64bit RAX register. So it’s value is hex 0xE. Let’s set this to 0, which would indicate\nthat the ‘strcmp’ was correct and returned a 0. ‘set $eax=0’. ‘info registers’ and\nyou can see that it’s now 0. Now use ‘ni’ again to step and follow\nyour control path. ‘Access Granted!’ YAY! We circumvented the license check! It think that’s pretty cool! And you can always write your own little C\nprogram trying to make it more secure, and then crack it yourself again. You will notice that it’s impossible to\nmake a program uncrackable. Those kind of challenges are called ‘crackme’. People create small programs that have to\nbe cracked. Or more often you have to create a valid keygen. If you think something like this is fun, checkout\nhttp://crackmes.de/. Creating control graphs like we just did is\npretty useful. That’s why there are some programs that\ndo that for us. Here are three different examples of this\nspecific control graph. First is HopperApp, second is IDAPro and the\nlast one is from radare2. See you hopefully next time when we use some\ndifferent tools to explore this licence check binary a bit more. Let’s figure out together the basic concepts\nof a CPU. Computers have different memory to store stuff\n- so first we need something to store the machine code in. Let’s take a spreadsheet and imagine that\nthis is memory. You can store values in it and each memory\ncell has an address, which is the number on the left. And I will use the 2nd column to write some\ncomments in there. As you can see there are some hexadecimal\nnumbers stored in this memory. And at first it looks very random, but that\nis our machine code and soon you will understand this. So the first thing the CPU needs to have is\nsomething to keep track where in memory the CPU currently is. Which means we shoud add a little storage\nfor our CPU and call it the “Instruction Pointer”. This little storage area will contain the\naddress of memory the CPU is looking at the moment. So obviously our program starts from the top,\nso the address will be 1. Now let’s start the CPU, it looks at address\n1 and reads 48, AA, 14. But what do those numbers mean? The CPU knows that 48 means it has to MOVE\ndata around. The AA means the destination of that move. and the 14 is the source. So in address 14 we can see the number 42. And the destination is another small storage\nunit inside the CPU. So the CPU will move the 42 into it’s small\nstorage area called AA. So this instruction is done, and the CPU increases\nthe Instruction pointer by one. And we start over. The CPU reads the current value at the address\nof it’s instruction pointer. So it reads 48 again which means move, and\nthis time it’s moving the content of address 15 into the small storage BB. Notice how I use brackets around the 15. This indicates that 15 is an address, and\nwe actually reference the content of 15, which is 66. And not the number 15 itself. Instruction done, increase the Instruction\npointer. The next address contains 83, AA and BB. The CPU knows that 83 means COMPARE. And it compares the values in AA and BB. Now it has to somehow remember the result\nof this compare. So let’s add another small storage that\nstores this result. We call it Zero Flag. You know what an intelligent way is to compare\ntwo numbers? If you subtract them from each other and their\nresult is 0, they were the same. If the result is not zero, they were different. So this is what the CPU does. 66-42 is 24, so that’s not 0. So we set the zero flag to false. Instruction done, next one is at address 4. The CPU reads a 75 and 07. 75 Stands for JUMP If not equal. And 07 is the address where to jump to. So the CPU checks the state of the Zero Flag. And The Zero flag is set to FALSE, so the\nprevious compare was not equal. Which means it jumps to the destination 07. A jump is easy. The CPU just sets its Instruction Pointer\nto 07. Ok so the next instruction is at address 7. And it reads E8 and 17. E8 In this case stands for print a text. And the text can be found at address 17. But 17 doesn’t contain text? Well, for a computer everything is numbers. Like those instructions the CPU executes,\nthey are just numbers. So text is made out of numbers too. Remember how I brushed over ASCII values in\na previous video? Now it’s the time to pull up the ascii man\npage again. So type ‘man ascii’ In the terminal. Now try to find hex 4E and 4F. Haa.. ok. So they stand for ‘N’ and ‘O’. Which means the computer will print ‘NO’. So looks like this code simply compares two\nnumbers. I will not go over the case when those two\nnumbers are the same, but you should try it yourself. That’s crazy, huh? CPU simply reads the memory sequentially and\ndoes whatever it reads. And programmers can build crazy complex stuff\nwith that. Now let me change the text a little bit so\nit reflects more the reality of how we write assembler. Basically just abbreviation of it. Also don’t get confused with the order of\nparameters. simply think of it like a variable assignment\nin programming. This was a very simple example, but the real\nworld is not much different. People just came up with a lot more instructions\nthat might be interesting and wrote complex code to solve hard problems. But at their core they are simple like that.",
+  "errors": []
+}

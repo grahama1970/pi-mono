@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G7twgn-gi9k",
+    "language": "en",
+    "took_ms": 9094,
+    "method": null,
+    "title": "DEF CON 33 - Fingerprint-Based Bot Blocking & Dynamic Deception - Adel Karimi",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2598,
+    "description": "IP blocklists rot in minutes; fingerprints persist for months. Finch is a lightweight reverse proxy that makes allow, block, or route decisions based on TLS and HTTP fingerprints (JA3, JA4, JA4H, and HTTP/2), before traffic reaches your production servers or research honeypots. Layered on top, a custom AI agent monitors Finch’s event stream, silences boring bots, auto-updates rules, and even crafts stub responses for unhandled paths; so the next probing request gets a convincing reply. The result is a self-evolving, fingerprint-aware firewall that slashes bot noise and turns passive traps into dynamic deception.",
+    "view_count": 692
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G7twgn-gi9k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sFj_BslOFIE",
+    "language": "en",
+    "took_ms": 9134,
+    "method": null,
+    "title": "Lateral Movement At Level 1",
+    "channel": "S4 Events",
+    "upload_date": "20230316",
+    "duration_sec": 1655,
+    "description": "Jos Wetzels on S4x23 Stage 2: Technical Deep Dives describes why an attacker would want lateral movement at Purdue Model Level 1 and how they could do this (in detail for some Schneider Electric environments).\n\nHe includes a variety of scenarios including scenarios to show the value of this lateral movement including bridge control and automotive.",
+    "view_count": 1361
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sFj_BslOFIE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

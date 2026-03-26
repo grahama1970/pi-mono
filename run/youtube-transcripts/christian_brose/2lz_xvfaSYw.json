@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2lz_xvfaSYw",
+    "language": "en",
+    "took_ms": 7851,
+    "method": null,
+    "title": "Irwin Stelzer on President Obama's Budget Proposal",
+    "channel": "Hudson Institute",
+    "upload_date": "20100201",
+    "duration_sec": 186,
+    "description": "Hudson Senior Fellow Irwin Stelzer discusses President Obama's recently completed budget proposal. Will Congress look at the budget more favorably due to 2010 being an election year? Is it wise for the budget to count on 3% economic growth?",
+    "view_count": 135
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2lz_xvfaSYw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

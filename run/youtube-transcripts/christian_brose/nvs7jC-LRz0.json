@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nvs7jC-LRz0",
+    "language": "en",
+    "took_ms": 9969,
+    "method": null,
+    "title": "The Long Road from Delhi: To Define the Indian Grand Strateg",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6198,
+    "description": "The arrival of India as a predominant regional power and a rapidly emerging global actor is among the great strategic transformations of the last hundred years. Despite its reputation as inward-looking and non-aligned, in the last two decades India has developed an appetite for global engagement based on its perception of dangerous and growing security challenges: China threatens; Pakistan and Afghanistan are in chaos; Iran seethes; and the Persian Gulf is an ever tenuous energy lifeline. Meanwh",
+    "view_count": 18002
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nvs7jC-LRz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

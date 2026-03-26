@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qAplELb1TAo",
+    "language": "en",
+    "took_ms": 7954,
+    "method": null,
+    "title": "Iraq: Escalating Domestic and Regional Tensions",
+    "channel": "Hudson Institute",
+    "upload_date": "20180919",
+    "duration_sec": 5712,
+    "description": "In light of the recent Iraqi elections, the Hudson Institute hosted a panel led by senior fellow Michael Pregent to examine the current state of Iraq, in particular: the new political coalitions forming; the outside influence of Iran and the U.S.; and the recent protests in Basra. A wave of demonstrations protesting a lack of public services and government corruption have tested the burgeoning government, while regional tensions have reached new heights. Making matters worse are the conflicts emerging between the country’s largest political parties and pro-Iranian Shia militias.\n\nPanelists included Michael Pregent, a senior fellow at Hudson Institute; Ahmed Ali, the director of the National Endowment for Democracy’s Iraq program; Jomana Qaddour, the co-founder of Syria Relief & Development; Omar al-Nidawi, the Iraq director at the strategic advisory firm Gryphon Partners.",
+    "view_count": 1169
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qAplELb1TAo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

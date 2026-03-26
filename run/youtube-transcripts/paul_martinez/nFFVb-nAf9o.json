@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nFFVb-nAf9o",
+    "language": "en",
+    "took_ms": 9040,
+    "method": null,
+    "title": "MUD - To Help Secure IoT",
+    "channel": "S4 Events",
+    "upload_date": "20170202",
+    "duration_sec": 1242,
+    "description": "Marc Blackmer of Cisco introduces the Manufacturer Usage Description (MUD) at S4x17. MUD is an extension to DHCP that includes a URI to the IoT manufacturer. The device then uses this URI to download configuration information that defines what the device is suppose to do. \n\nMarc uses the phrase \"keeping devices into their own swim lanes\" a few times in the video, and this is a good analogy with the goal of preventing lateral movement.\n\nIn the Mirai example, why would by IP camera be trying to go to this website? This does not fit the MUD provided configuration profile.\n\nMUD is an IETF Internet Draft available at https://tools.ietf.org/html/draft-lear-ietf-netmod-mud-04",
+    "view_count": 950
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nFFVb-nAf9o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Xel_mF5CCAo",
+    "language": "en",
+    "took_ms": 8807,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Scott Yak: Building MCP Servers That Make Agents More Effective",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1636,
+    "description": "Agents often rely on external tools to help them accomplish their tasks, and external MCP servers are convenient for getting those tools with minimal code. \n\nSince the agent-builder does not control the MCP server's interface, the responsibility now falls on the MCP server developers to help the agents that connect to it make progress on their tasks. In this talk by Scott Yak,\nSenior Software Engineer at Datadog, shared some lessons learned from building and iterating on Datadog's public MCP server, which is currently used by both internal and external agents. \n\nAttendees learned how to implement their MCP server in a way that improves the effectiveness of the agents that connect to it.\n\n-----------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 705
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Xel_mF5CCAo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

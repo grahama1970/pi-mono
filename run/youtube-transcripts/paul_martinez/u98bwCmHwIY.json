@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u98bwCmHwIY",
+    "language": "en",
+    "took_ms": 8923,
+    "method": null,
+    "title": "Reducing Reputation Risk In Cyber Incidents",
+    "channel": "S4 Events",
+    "upload_date": "20240812",
+    "duration_sec": 1774,
+    "description": "It's an increasingly common situation. The consequence of an attack scenario in human safety, financial impact, and customer impact is low, but the company rates the scenario high impact because of the perceived damage to reputation. \n\nIn these cases, reducing risk to reputation should be, but rarely is, the highest priority action. Why? because it's not another security control. \n\nIn this session, Dale Peterson interviews Jennifer Dulles on how to reduce the risk to reputation of an OT cyber incident before, during and after the incident. Jennifer is a reputation and crisis management expert, with expertise in energy, IT, tech and infrastructure.",
+    "view_count": 189
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u98bwCmHwIY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

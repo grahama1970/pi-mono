@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "luZgICpW0Kw",
+    "language": "en",
+    "took_ms": 8972,
+    "method": null,
+    "title": "DEF CON 33 - Private, Private, Private   Access Everywhere - Meghan Jacquot",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1771,
+    "description": "All human beings have three lives: public, private, and secret.” ― Gabriel García Márquez\n\nThis workshop will focus on our public and private lives, as well as things one might want to keep secret. If all of your data is public, then anyone can access everything everywhere. While access everywhere is the theme of DC 33, we will focus on shutting down access to your data. Being private can help set you free. We will go over both OSINT techniques to see what an individual’s footprint is and then also go over obfuscation techniques to lessen that footprint. Attendees of this workshop should bring their device and be ready to work on becoming more private.",
+    "view_count": 662
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] luZgICpW0Kw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

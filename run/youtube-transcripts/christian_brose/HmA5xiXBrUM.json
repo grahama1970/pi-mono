@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HmA5xiXBrUM",
+    "language": "en",
+    "took_ms": 7653,
+    "method": null,
+    "title": "Energy, Water, and Debt: Linked Problems, Common Solutions?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 10814,
+    "description": "In the last year, conflicts between energy needs and water quality and supply have increased and caught national media attention. Some of the protests against the Keystone XL pipeline were based on fears about potential for contamination of water. Opposition to shale gas development also draws heavily on worries about water pollution. And 2011 saw power plant output threatened, not by fuel shortfalls, but by shortages of cooling water. With the economic recession wreaking havoc on local budgets,",
+    "view_count": 51
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HmA5xiXBrUM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

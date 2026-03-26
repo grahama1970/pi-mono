@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e109g1uauCg",
+    "language": "en",
+    "took_ms": 8585,
+    "method": null,
+    "title": "DEF CON 33 - Designing and Participating in AI Bug Bounty Programs - Dane Sherrets, Shlomie Liberow",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3113,
+    "description": "Dane and Shlomie will showcase technical deep dives into real-world AI vulnerabilities, covering adversarial prompts, indirect prompt injection, context poisoning, and RAG manipulation. They'll illustrate why traditional defenses often fail and offer actionable techniques that hackers can leverage to uncover high-impact bugs and increase their earnings. Hackers will leave equipped with fresh attack ideas, strategies for finding unique AI flaws, and insights on effectively demonstrating their severity and value to organizations.",
+    "view_count": 1133
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e109g1uauCg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_-4OImnyQGo",
+    "language": "en",
+    "took_ms": 10398,
+    "method": null,
+    "title": "From One Invite to 87 Women",
+    "channel": "S4 Events",
+    "upload_date": "20251027",
+    "duration_sec": 302,
+    "description": "This wasn’t about tech. It was about what happens when someone opens the door—and keeps holding it open.\n\nFrom a handwritten opt-in to a computer science class to her first major conference talk at S4, this Unsolicited Response is a reminder that representation in our industry didn’t happen by accident.\n\n87 women at the S4x25 dinner. 10 scholarship recipients. And a community that's stronger for it.",
+    "view_count": 81
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _-4OImnyQGo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

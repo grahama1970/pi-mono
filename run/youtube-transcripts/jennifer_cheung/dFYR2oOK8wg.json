@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dFYR2oOK8wg",
+    "language": "en",
+    "took_ms": 8824,
+    "method": null,
+    "title": "DEF CON 33 - No VPN Needed? Cryptographic Attacks Against the OPC UA Protocol  - Tom Tervoort",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2179,
+    "description": "OPC UA is a standardized communication protocol that is widely used in the areas of industrial automation and IoT. It is used within and between OT networks, but also as a bridge between IT and OT environments or to connect field systems with the cloud. Traditionally, VPN tunnels are used to secure connections between OT trust zones (especially when they cross the internet), but this is often considered not to be neccessary when using OPC UA because the protocol offers its own cryptographic authentication and transport security layer.\n\nThis makes OPC UA a valuable target for attackers, because if they could hijack an OPC UA server they might be able to wreak havoc on whatever industrial systems are controlled by it.\n\nI decided to take a look at the cryptography used by the protocol, and managed to identify two protocol flaws which I could turn into practical authentication bypass attacks that worked against various implementations and configurations. These attacks involve signing oracles, signature spoofing padding oracles and turning \"RSA-ECB\" into a \"timing side channel amplifier\".\n\nIn this talk, I will explore the protocols and the issues I identified, as well as the process of turning two theoretical crypto flaws into highly practical exploits.",
+    "view_count": 415
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dFYR2oOK8wg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

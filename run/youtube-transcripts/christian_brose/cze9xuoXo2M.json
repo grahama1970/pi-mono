@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cze9xuoXo2M",
+    "language": "en",
+    "took_ms": 10744,
+    "method": null,
+    "title": "Securing US-Japan Supply Chains After the Pandemic",
+    "channel": "Hudson Institute",
+    "upload_date": "20210330",
+    "duration_sec": 3492,
+    "description": "Join Hudson Institute’s Japan Chair Deputy Director Riley Walters, Senior Fellows Thomas Duesterberg and John Lee, and Shihoko Goto and Jingo Kikukawa for a discussion on how the U.S. and Japan should approach the challenge of securing supply chains.\n\nThe COVID-19 pandemic and subsequent recession delivered a shock to global supply and demand for goods and services. Even now, shortages persist in both the manufacturing and labor markets, leading to delays in global supply chains. In June, the Japanese government initiated a subsidy program to assist companies looking to diversify and build resiliency for their supply networks. This February, President Joe Biden signed an executive order calling for a review of the semiconductor, high-capacity batteries, critical minerals, and pharmaceutical supply chains. What other steps are being taken to secure U.S.-Japan supply chains? How should the U.S. and Japanese governments think about building supply chain resiliency? Join our expert panelists for this timely discussion.",
+    "view_count": 799
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cze9xuoXo2M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

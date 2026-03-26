@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MnDzlb5QXGY",
+    "language": "en",
+    "took_ms": 8027,
+    "method": null,
+    "title": "General John E. Hyten on Progress and Challenges Implementing the National Defense Strategy",
+    "channel": "Hudson Institute",
+    "upload_date": "20200812",
+    "duration_sec": 2898,
+    "description": "Join Hudson Institute for a discussion with Vice Chairman of the Joint Chiefs of Staff General John E. Hyten on the Department of Defense’s progress in implementing the National Defense Strategy and remaining challenges. Hudson Senior Fellow Rebeccah L. Heinrichs will moderate the discussion.",
+    "view_count": 4237
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MnDzlb5QXGY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

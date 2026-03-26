@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NURO3NgtXUQ",
+    "language": "en",
+    "took_ms": 8757,
+    "method": null,
+    "title": "DEF CON 33 - From Pwn to Plan: Turning Physical Exploits Into Upgrades - Shawn",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3343,
+    "description": "Everyone loves breaking in—but that’s just step 7 out of 10. This session explores what it really takes to run a physical pen test that's not just exciting, but also safe, smart, and worth the money for your company or client. We'll follow the full journey - from breach-focused OSINT and recon, to delivering findings that teams act on. Expect war stories, dumb mistakes, and smart takeaways as you learn how to turn a good break-in into a lasting impact.",
+    "view_count": 3468
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NURO3NgtXUQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

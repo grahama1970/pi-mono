@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m51JrxdvEV8",
+    "language": "en",
+    "took_ms": 8023,
+    "method": null,
+    "title": "TRITON - Reverse Engineering the Tricon Controller",
+    "channel": "S4 Events",
+    "upload_date": "20180125",
+    "duration_sec": 630,
+    "description": "Reid Wightman of Dragos looks at the TRITON attack from the perspective of a reverse engineer. \n\nThe big takeaway is once the controller is compromised the code can the physical key switch no longer is an effective control. It could be programmed even if the switch was in the Run position, leaving the asset owner with a false sense of security.\n\nControllers with compiled logic carry huge risk.\n\nHe quickly covers the boot loader, inject.bin and imain.bin. Good stuff in 10 minutes.",
+    "view_count": 2364
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m51JrxdvEV8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

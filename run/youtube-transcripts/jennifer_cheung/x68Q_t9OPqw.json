@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "x68Q_t9OPqw",
+    "language": "en",
+    "took_ms": 9351,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Michael Vanguardia  - Secure Airplane Development Lifecycle",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1464,
+    "description": "The Aviation industry has always focused on safety and with the advent of the e-enabled aircraft must now also contend with cybersecurity threats. Malicious intent via cyber means is a new area of concern that needs to be accounted for during airplane design, development, and verification. This talk will provide an overview of Boeing's Secure Airplane Development Lifecycle and activities that the Commercial Airplane, Product Security organization has undertaken to enhance the cyber resiliency of commercial aircraft.",
+    "view_count": 563
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] x68Q_t9OPqw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

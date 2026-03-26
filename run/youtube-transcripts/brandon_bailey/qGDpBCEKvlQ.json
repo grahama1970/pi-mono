@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qGDpBCEKvlQ",
+    "language": "en",
+    "took_ms": 7825,
+    "method": null,
+    "title": "DEF CON 30 BiC Village - Ochuan Marshall - The Last Log4J Talk You Ever Need",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2627,
+    "description": "While this is a nightmare for defenders, those of us on the offensive side have an easy RCE to pop a shell. \nThis talk I briefly touch on impact and demonstrate how to set up a homelab in Minecraft to exploit this vulnerability. \nThe demo is going to be a homelab setup using vagrant. Essentially you clone the repo to set up an older minecraft server with an older version of java. Then exploitation is as simple as running the payload in a minecraft chat message. If time allows, I’ll add another demonstration with how to do this on a real world system.The discussion/introduction part of the presentation will be split between infosec twitter storytime and some of the effects of log4jShell on organizations.The first part is important for practitioners who want to get good at exploiting the next zero day. The second part is useful for decision makers who want to improve their application security programs and start to think about their software supply chain.",
+    "view_count": 2933
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qGDpBCEKvlQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

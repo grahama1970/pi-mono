@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wiPhvC_2oY0",
+    "language": "en",
+    "took_ms": 8472,
+    "method": null,
+    "title": "DEF CON 30 - Behind the CTF",
+    "channel": "DEFCONConference",
+    "upload_date": "20220813",
+    "duration_sec": 209,
+    "description": "Silk gets some backstage information about how the world's most prestigious CTF gets built.\n\nCheck out Silk's work at YouTube.com/alexchaveriat and YouTube.com/hackerhangouts",
+    "view_count": 1899
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wiPhvC_2oY0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f-nF-48rDIM",
+    "language": "en",
+    "took_ms": 7803,
+    "method": null,
+    "title": "Top Vision Models 2025: Qwen 2.5 VL, Moondream, & SmolVLM (Fine-Tuning & Benchmarks)",
+    "channel": "Trelis Research",
+    "upload_date": "20250203",
+    "duration_sec": 4279,
+    "description": "🔑 Get LIFETIME access to the ADVANCED-vision Repo: https://trelis.com/ADVANCED-vision/\n\n🗝️ Get LIFETIME access to the Trelis Multi-Repo Bundle (https://Trelis.com/multi-repo-bundle)\n- Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n- Support via Github Issues & Trelis’ Private Discord\n\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Work for Trelis: https://trelis.com/jobs/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n📸 Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO LINKS:\n- Florence 2 Video (best quality small VLM): https://youtu.be/2OyN-N36-E8?si=UefhkP_lu3bKxMc4\n- Data Preparation / Llava Video: https://youtu.be/eIziN2QUt8U?si=2Zx6gA5C7M5I5pSJ\n- SmolVLM Blog: https://huggingface.co/blog/smolervlm\n- SmolVLM WebGPU demo: https://huggingface.co/spaces/HuggingFaceTB/SmolVLM-256M-Instruct-WebGPU\n- Moondream Blog: https://moondream.ai/blog/introducing-a-new-moondream-1-9b-and-gpu-support\n- Qwen2.5-VL Blog: https://qwenlm.github.io/blog/qwen2.5-vl/\n- One-click-llms: https://github.com/TrelisResearch/one-click-llms/\n\nTIMESTAMPS:\n00:00 Introduction to Vision Language Models\n00:55 Model Recommendations: Small vs Large\n02:02 Exploring Moondream's Latest Features\n03:00 Inference with Moondream\n12:20 Fine-Tuning SmolVLM\n12:55 Understanding SmolVLM Architecture\n17:22 Fine-Tuning SmolVLM: Step-by-Step\n32:54 Introducing Qwen 2.5 VL\n37:48 Troubleshooting FlashAttention Installation\n38:42 Updating Transformers and Restarting Kernel\n39:50 Handling Token Limits and VRAM Issues\n40:44 Evaluating Model Performance on Chess Pieces\n42:48 Comparing Performance with Florence 2\n44:46 Training Loop and Data Collator Setup\n50:34 Addressing Memory Issues and Image Resolution\n55:39 Final Training and Evaluation\n01:04:22 Inference and Model Comparison\n01:08:27 Conclusion and WebGPU Demo",
+    "view_count": 16505
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f-nF-48rDIM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

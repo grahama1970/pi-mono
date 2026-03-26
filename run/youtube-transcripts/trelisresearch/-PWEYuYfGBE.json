@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-PWEYuYfGBE",
+    "language": "en",
+    "took_ms": 9137,
+    "method": null,
+    "title": "The magic of LoRA!",
+    "channel": "Trelis Research",
+    "upload_date": "20230907",
+    "duration_sec": 189,
+    "description": "LoRA or Low Rank Adaption is a fine-tuning method that saves on compute and memory while delivering better results.\n\nThis is a new video format - so let me know in the comments if you like it and want more explainers!\n\n0:00 Explaining LoRA\n0:15 Representing a large matrix as two compact matrices\n1:10 How LoRA works for fine-tuning\n1:25 Initiating matrix values for LoRA\n2:00 Choosing the rank size, r\n2:25 LoRA can be better than full matrix training!\n2:40 LoRA suggests LLMs could be more compact\n3:55 The benefits of LoRA",
+    "view_count": 782
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -PWEYuYfGBE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

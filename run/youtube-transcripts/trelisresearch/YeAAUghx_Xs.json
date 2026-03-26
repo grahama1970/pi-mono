@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YeAAUghx_Xs",
+    "language": "en",
+    "took_ms": 9173,
+    "method": null,
+    "title": "CONTEXT CACHING for Faster and Cheaper Inference",
+    "channel": "Trelis Research",
+    "upload_date": "20240903",
+    "duration_sec": 2125,
+    "description": "➡️ ADVANCED-inference Repo (incl. context caching scripts in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1iLAcE9tgHj-NCV7yGAggJdNtjgZFs39EYoETNeXrxns/edit?usp=sharing\n\nTIMESTAMPS:\n0:00 Introduction to context caching for LLMs\n1:06 Video Overview\n3:24 How does context caching work?\n13:20 Two types of caching\n17:42 Context caching with Claude and Google Gemini\n19:48 Context caching with Claude\n24:13 Context caching with Gemini Flash or Gemini Pro\n27:45 Context caching with SGLang (works also with vLLM)\n32:00 Cost Comparison\n34:56 Video Resources",
+    "view_count": 2799
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YeAAUghx_Xs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

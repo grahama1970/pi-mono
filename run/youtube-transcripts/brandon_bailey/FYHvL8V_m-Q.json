@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FYHvL8V_m-Q",
+    "language": "en",
+    "took_ms": 8861,
+    "method": null,
+    "title": "DEF CON 33 - Modern Odometer Manipulation - collin & oblivion",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1580,
+    "description": "While reading some automotive forums online, i stumbled upon an odometer manipulation device which claims to support 53 different car brands. curious, i purchase this tool with the sole intent of reverse engineering it. i tear down the hardware involved, explain how it is designed to be installed between the instrument panel cluster and the rest of the vehicle and use an open source exploit to extract the internal flash from the locked STM32. next, i explain the process of reverse engineering the extracted binary to find how the device is rewriting can messages to manipulate the odometer value. finally, i explain why odometer manipulation is an issue and share an example of how use of this device can potentially be detected after removal.",
+    "view_count": 716
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FYHvL8V_m-Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

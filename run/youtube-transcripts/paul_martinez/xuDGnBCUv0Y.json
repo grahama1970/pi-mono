@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xuDGnBCUv0Y",
+    "language": "en",
+    "took_ms": 2767,
+    "method": null,
+    "title": "CoDeSys Fail",
+    "channel": "S4 Events",
+    "upload_date": "20190404",
+    "duration_sec": 2037,
+    "description": "The CoDeSys Runtime System is in at least 340 different models of PLC's across a wide range of vendors. And it is a hot mess (technical term) from a security perspective. \n\nIn this S4x19 Stage 2 video, Aleksandr Nochvay of Kaspersky goes through the protocol field by field, and then at 22:20 goes over 5 of the many vulnerabilities in this system",
+    "view_count": 1326
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xuDGnBCUv0Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

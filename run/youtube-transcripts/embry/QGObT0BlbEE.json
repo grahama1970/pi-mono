@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QGObT0BlbEE",
+    "language": "en",
+    "took_ms": 8884,
+    "method": null,
+    "title": "Watch Rocket Lab launch their awesome Electron Rocket for NASA / NRO / RAAF",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20200613",
+    "duration_sec": 4860,
+    "description": "Rocket Lab’s “Don’t Stop Me Now” mission, launching from their Launch Complex 1 in New Zealand, will fly five payloads into orbit atop its Electron rocket. The payload is a combination of National Reconnaissance Office, NASA and Royal Australian Air Force smallsats.\n\nThis mission bears the name of a hit from the iconic rock band Queen. The colourful name commemorates former Rocket Lab board member, Stanford Scott Smith – who recently passed away. Smith, whose initials can be found on the mission patch, was an avid fan of the band.\n\nWant to learn more?!? Read our Prelaunch Preview - https://everydayastronaut.com/prelaunch-preview-electron-dont-stop-me-now/\n\n --------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 161764
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QGObT0BlbEE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

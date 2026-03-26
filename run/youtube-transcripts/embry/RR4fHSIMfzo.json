@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RR4fHSIMfzo",
+    "language": "en",
+    "took_ms": 9575,
+    "method": null,
+    "title": "To Eve and Back - all stock - no quicksave reverts!!! (Full livestream)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170116",
+    "duration_sec": 17623,
+    "description": "Well ladies and gentlemen. I'm very happy to report that after a few setbacks at the beginning, our wonderful Eve plane the \"Pants Destroyer\" successfully made it to Eve AND back with out reverting to a quick save once! It was crazy scary, my heart was racing the whole time, but I'm so happy it all worked out!\n\nThanks to those who watched live in Mission Control on twitch for all the support through out the 5 hour mission. You can tune in live by following me on twitch @ everydayastronaut\n\nAs always, make sure and find me on Instagram @EverydayAstronaut\n\nAll music played in the livestream was written by me (Tim Dodd) and may be available sometime in the future.",
+    "view_count": 6983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RR4fHSIMfzo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

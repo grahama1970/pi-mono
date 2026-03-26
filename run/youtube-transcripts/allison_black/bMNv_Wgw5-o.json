@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bMNv_Wgw5-o",
+    "language": "en",
+    "took_ms": 7946,
+    "method": null,
+    "title": "Germany DID NOT invent stealth in World War II",
+    "channel": "Sandboxx",
+    "upload_date": "20260211",
+    "duration_sec": 104,
+    "description": "The Horten Brothers didn't invent stealth or the flying wing. Some people just really like WWII Germany. #defense #tech #military #miltok #history",
+    "view_count": 19736
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bMNv_Wgw5-o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

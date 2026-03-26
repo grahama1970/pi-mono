@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H3kdq40PY3s",
+    "language": "en",
+    "took_ms": 8957,
+    "method": null,
+    "title": "DEF CON 29 - Michael Whiteley Katie Whiteley - Making the DEF CON 29 Badge",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1667,
+    "description": "Come meet the new badge makers and hear the story of how this year's badge was created amidst a global pandemic. We'll share tales of chip shortages, delayed parts, and late nights, as well as discuss how the badge works and what you can do with it. Maybe even some hints about the challenges within...",
+    "view_count": 2167
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H3kdq40PY3s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

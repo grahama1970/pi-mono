@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "h9ewUS6FTFQ",
+    "language": "en",
+    "took_ms": 8932,
+    "method": null,
+    "title": "DEF CON 33 BiC Village - Sydney Johns RE for the Rest of Us An Introduction to Reverse Engineering",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2460,
+    "description": "- Break into RE with hands-on demos using Arduino and Ghidra. You'll explore low-level behavior, binary analysis, and board-level understanding in a beginner-friendly way.",
+    "view_count": 3394
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] h9ewUS6FTFQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

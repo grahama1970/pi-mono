@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1yRd8fY281g",
+    "language": "en",
+    "took_ms": 7970,
+    "method": null,
+    "title": "YF-12: The SR-71's missile-packing sibling",
+    "channel": "Sandboxx",
+    "upload_date": "20210623",
+    "duration_sec": 523,
+    "description": "The Cold War had a way of everything needing to be bigger. When the F-106's Mach 2.3 wasn't fast enough, the YF-12 entered the scene.\n\nRead the full story here:\nhttps://sbxx.us/3zOaJUo",
+    "view_count": 121957
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1yRd8fY281g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

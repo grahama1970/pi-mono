@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kmtW-kUm_fg",
+    "language": "en",
+    "took_ms": 8397,
+    "method": null,
+    "title": "Technology, Innovation, and Defending America: A Conversation with Michael Brown",
+    "channel": "Hudson Institute",
+    "upload_date": "20220913",
+    "duration_sec": 3527,
+    "description": "Michael Brown, director of the Defense Innovation Unit at the Department of Defense since its founding in 2015, has been at the forefront of finding ways to field leading-edge commercial capabilities to the military faster and more cost-effectively than traditional defense acquisition methods, from artificial intelligence and hypersonics to robotics, composite materials, and quantum computing.\n\nPlease join us for a stimulating and informative discussion with Michael Brown about his accomplishments at DIU, what he envisions the future of DIU will be, and America’s defense agenda for the future.\n\nHudson Senior Fellow Arthur Herman, author of Freedom’s Forge: How American Business Produced Victory in World War II and director of the Quantum Alliance Initiative, will moderate the discussion.",
+    "view_count": 1600
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kmtW-kUm_fg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

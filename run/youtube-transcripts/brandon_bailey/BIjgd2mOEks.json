@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BIjgd2mOEks",
+    "language": "en",
+    "took_ms": 10317,
+    "method": null,
+    "title": "DEF CON 32 - Human Dignity in AI and Tech Policy  - Jan Trzaskowski",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2263,
+    "description": "Social media have been a decade-long dress rehearsal in online manipulation. AI can create information, make predictions and take decisions that will affect human behaviour, including our behaviours as citizens, workers and consumers. Safeguards are needed, since generative AI will only exacerbate the personal, social and societal harms already caused by data-driven business models.\n\nWe examine the centrality of human dignity in tech law and policy and how our mindsets and legal frameworks must be informed by psychological, technological and societal perspectives. Based on insights from market dynamics, marketing techniques, design strategies, and human frailties we demonstrate how information asymmetries have reduced individual agency and the ability to create transparency.\n\nHuman dignity is a core value in liberal democracies that must also be reflected in tech policy. Protections are required when businesses interfere with our rights to freedom, property, privacy and non-discrimination. With the digitalisation of the human experience, users have become programmable objects. We cannot rely on regulation alone and need to discuss how we can act to reclaim our dignity.",
+    "view_count": 240
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BIjgd2mOEks: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

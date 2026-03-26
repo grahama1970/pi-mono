@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gMNZiDfeRPQ",
+    "language": "en",
+    "took_ms": 8986,
+    "method": null,
+    "title": "DEF CON 33 - Breaking Wi-Fi Easy Connect: A Security Analysis of DPP - George Chatzisofroniou",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2448,
+    "description": "Wi-Fi Easy Connect is a protocol introduced by the Wi-Fi Alliance as the core replacement for Wi-Fi Protected Setup (WPS). It is designed to simplify device provisioning using user-friendly methods such as QR code scanning or short-range wireless technologies like NFC and Bluetooth. In this paper, we present a comprehensive security and privacy assessment of Wi-Fi Easy Connect (version 3.0).\n\nOur analysis uncovered several security issues, including aspects of the protocol’s design that may unintentionally expand the attack surface compared to WPS. Notably, we found that design choices intended to enhance usability can compromise security. All identified issues were disclosed to the Wi-Fi Alliance, and we incorporated their feedback regarding mitigations and risk acceptance into our evaluation.\n\nThis work underscores the critical balance between usability and security in protocol design and the dangers of prioritizing ease-of-use at the expense of robust security guarantees.",
+    "view_count": 2244
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gMNZiDfeRPQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Bq7Z3X4xwCE",
+    "language": "en",
+    "took_ms": 8022,
+    "method": null,
+    "title": "DEF CON 31 - Runtime Riddles - Abusing Manipulation Points in the Android Source - Laurie Kirk",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2519,
+    "description": "Android malware creators constantly struggle to devise innovative methods to obscure apps and impede reverse engineering. As numerous standard techniques have lost efficacy, I'll unveil the next frontier in Android obfuscation: runtime manipulation. Runtime manipulation alters standard application flow-of-control to bypass decompilers and emulators.\n\nIn this talk, I'll reveal my strategy for pinpointing manipulation targets in Android's source code. I will describe how I craft manipulators in native C++ once a suitable target has been located. This is accomplished by hooking Java methods via the Java Native Interface (JNI) and typecasting the handle to a C-style pointer. Runtime manipulation can entirely remove traces of ClassLoader calls which are unavoidable for standard Dalvik Executable (DEX) packing, but are also easily discovered and hooked. This technique also effectively breaks cross-reference calculations within all Android decompilers.\n\nI will demonstrate and equip attendees with a custom Android library for devices running Android 13, providing a new tool that enables runtime manipulation experimentation. In addition, I'll demonstrate my methodology for pinpointing Java targets and modifying their underlying native data structures.",
+    "view_count": 36983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Bq7Z3X4xwCE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

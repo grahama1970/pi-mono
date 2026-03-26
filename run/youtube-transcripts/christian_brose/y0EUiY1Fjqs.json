@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y0EUiY1Fjqs",
+    "language": "en",
+    "took_ms": 9211,
+    "method": null,
+    "title": "Fits and Starts: Reactionary Biodefense 5",
+    "channel": "Hudson Institute",
+    "upload_date": "20181010",
+    "duration_sec": 3710,
+    "description": "Blue Ribbon Panel on Biodefense\n\nPanel 2: Dealing with Dangerous Diseases\n\n- Connie Savor Price, MD\n- Jay Rappaport, PhD\n- Rear Admiral Stephen C. Redd, MD",
+    "view_count": 1655
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y0EUiY1Fjqs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

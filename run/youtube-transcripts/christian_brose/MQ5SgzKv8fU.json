@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MQ5SgzKv8fU",
+    "language": "en",
+    "took_ms": 8885,
+    "method": null,
+    "title": "Can Israel Become a Maritime Power?",
+    "channel": "Hudson Institute",
+    "upload_date": "20160926",
+    "duration_sec": 6244,
+    "description": "Adm. Ami Ayalon, Adm. Shaul Chorev, Seth Cropsey, Doug Feith and Adm. Gary Roughead discuss the Commission on the Eastern Mediterranean's report.",
+    "view_count": 1359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MQ5SgzKv8fU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

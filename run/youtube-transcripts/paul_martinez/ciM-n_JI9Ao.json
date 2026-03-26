@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ciM-n_JI9Ao",
+    "language": "en",
+    "took_ms": 8462,
+    "method": null,
+    "title": "Analyzing the ICS Asset Inventory / Detection Market",
+    "channel": "S4 Events",
+    "upload_date": "20190326",
+    "duration_sec": 2484,
+    "description": "Dale Peterson at the Protect Our Power event provides candid analysis of the most competitive security product space ... asset inventory and detection.\n\nFirst - will this be one product/market? two? or more?\n6:08 the ICS Asset Inventory / Vulnerability Management / Asset Management  products\n12:30 the ICS Detection Market\n25:42 KEY POINT ... go slow on this and prepare management that you may move to a different approach / solution in 2 years\n27:20 the current tiering / winners in the ICS detection category\n35:15 Q&A",
+    "view_count": 2361
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ciM-n_JI9Ao: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zpouLO-GXLo",
+    "language": "en",
+    "took_ms": 9370,
+    "method": null,
+    "title": "DEF CON 29 - Sick Codes - The Agricultural Data Arms Race - Exploiting a Tractor Load of Vulns",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1632,
+    "description": "Contact Sick Codes on Twitter: https://twitter.com/sickcodes\n\nHow I hacked the entire American Food Supply Chain over the course of 3 months, assembled a team of hacker strangers, and how we used a \"full house\" of exploits on almost every aspect of the agriculture industry. See the process in which it happened, the private exploits we used, the vectors we attacked from, and how it could happen again, or be happening right now.\n\nHow the ongoing analytics arms race affects everyone, and how Tractor companies have metastasized into Tech companies, with little to no cyber defenses in place. Learn how farms are not like they used to be; telemetry, crop & yield analytics, and more telemetry.\n\nREFERENCES:\n\nhttps://github.com/sickcodes/Docker-OSX\nhttps://github.com/sickcodes/osx-serial-generator\nhttps://www.vice.com/en/article/akdmb8/open-source-app-lets-anyone-create-a-virtual-army-of-hackintoshes\nhttps://www.bleepingcomputer.com/news/security/python-also-impacted-by-critical-ip-address-validation-vulnerability/\nhttps://sick.codes/sick-2021-012/\nhttps://sick.codes/sick-2021-031/\nhttps://sick.codes/leaky-john-deere-apis-serious-food-supply-chain-vulnerabilities-discovered-by-sick-codes-kevin-kenney-willie-cade/\nhttps://www.vice.com/en/article/4avy8j/bugs-allowed-hackers-to-dox-all-john-deere-owners\nhttps://www.youtube.com/watch?v=rB_SleNKBus\nwabaf3t https://twitter.com/wabafet1\nD0rkerDevil https://twitter.com/D0rkerDevil\nChiefCoolArrow https://twitter.com/ChiefCoolArrow\njohnjhacking https://twitter.com/johnjhacking\nrej_ex https://twitter.com/rej_ex\nw0rmer https://twitter.com/0x686967\nhttps://climate.com/press-releases/transform-data-into-value-with-climate-fieldview/14\nhttps://www.agriculture.com/news/business/john-deere-to-acquire-precision-plting_5-ar50937\nhttps://www.reuters.com/article/us-monsanto-m-a-deere-idUSKBN17X2FZ\nhttps://twitter.com/sickcodes/status/1385218039734423565?s=20",
+    "view_count": 27912
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zpouLO-GXLo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

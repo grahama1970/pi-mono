@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CedxZZJRcGc",
+    "language": "en",
+    "took_ms": 7939,
+    "method": null,
+    "title": "The Great Debate: Anti Virus and Monthly Security Patching Should Be Abandoned In ICS",
+    "channel": "S4 Events",
+    "upload_date": "20211117",
+    "duration_sec": 3875,
+    "description": "This is a great throwback episode from S4x12 where about 60 of the pioneers in the industry debate this product. This debate on security patching continues on nearly 10 years later.\n\nAnd you get to see how S4 has grown and how we have all aged.\n\nFYI  - The video feed is lost for the last 10 minutes and the audio is still worthwhile.",
+    "view_count": 807
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CedxZZJRcGc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

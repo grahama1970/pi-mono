@@ -1,0 +1,958 @@
+{
+  "meta": {
+    "video_id": "3NTXFUxcKPc",
+    "language": "en",
+    "took_ms": 1523,
+    "method": "direct",
+    "title": "Simple Tools and Techniques for Reversing a binary - bin 0x06",
+    "channel": "LiveOverflow",
+    "upload_date": "20160106",
+    "duration_sec": 729,
+    "description": "Exploring and comparing some common tools and techniques for reversing binaries.\n\nhttps://github.com/radare/radare2\n\n-=[ 🔴 Stuff I use ]=-\n\n→ Microphone:* https://geni.us/ntg3b\n→ Graphics tablet:* https://geni.us/wacom-intuos\n→ Camera#1 for streaming:* https://geni.us/sony-camera\n→ Lens for streaming:* https://geni.us/sony-lense\n→ Connect Camera#1 to PC:* https://geni.us/cam-link\n→ Keyboard:* https://geni.us/mech-keyboard\n→ Old Microphone:* https://geni.us/mic-at2020usb\n\nUS Store Front:* https://www.amazon.com/shop/liveoverflow\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.\n\n#Radare2 #ReverseEngineering",
+    "view_count": 369024
+  },
+  "transcript": [
+    {
+      "text": "In this video we will revisit the license\ncheck program from last time.",
+      "start": 7.11,
+      "duration": 4.83
+    },
+    {
+      "text": "You can get the same compiled 64bit binary\nfrom github and you can also watch the last",
+      "start": 11.94,
+      "duration": 4.82
+    },
+    {
+      "text": "video where I went into more detail how to\ncrack this simple program.",
+      "start": 16.76,
+      "duration": 4.26
+    },
+    {
+      "text": "I will show now different simple tools and\ntechniques that exist to analyse a program",
+      "start": 21.02,
+      "duration": 4.47
+    },
+    {
+      "text": "like that to circumvent the license check.",
+      "start": 25.49,
+      "duration": 3.22
+    },
+    {
+      "text": "This should show you that there are a variety\nof different ways how to solve this challenge.",
+      "start": 28.71,
+      "duration": 4.919
+    },
+    {
+      "text": "The file command is very useful to check what\nkind of files you have.",
+      "start": 33.629,
+      "duration": 4.121
+    },
+    {
+      "text": "So ‘file’ on our binary says it’s a\nELF 64-bit executable for Linux.",
+      "start": 37.75,
+      "duration": 5.5
+    },
+    {
+      "text": "You can also do ‘file *’ to get the information\non all files in the directory.",
+      "start": 43.25,
+      "duration": 5.73
+    },
+    {
+      "text": "And it then also finds the C source code here.",
+      "start": 48.98,
+      "duration": 2.28
+    },
+    {
+      "text": "So that’s very useful.",
+      "start": 51.26,
+      "duration": 2.19
+    },
+    {
+      "text": "Let’s open the program in a text editor\nlike vim.",
+      "start": 53.45,
+      "duration": 3.66
+    },
+    {
+      "text": "As you can see it looks very weird.",
+      "start": 57.11,
+      "duration": 2.57
+    },
+    {
+      "text": "I have introduced ASCII before, so you know\nthat every character has assigned a number.",
+      "start": 59.68,
+      "duration": 5.58
+    },
+    {
+      "text": "But there are numbers that don’t have a\nprintable character assigned.",
+      "start": 65.26,
+      "duration": 3.77
+    },
+    {
+      "text": "If you look at the man page of ascii, you\nsee that for example value 0 to hex 1f are",
+      "start": 69.03,
+      "duration": 6.461
+    },
+    {
+      "text": "not a normal characters.",
+      "start": 75.491,
+      "duration": 1.359
+    },
+    {
+      "text": "And ascii is also only defined up to hex 7F\nor 127.",
+      "start": 76.85,
+      "duration": 5.62
+    },
+    {
+      "text": "But because our computer works with bytes,\nso 8 bit, this number can range from 0 to",
+      "start": 82.47,
+      "duration": 6.77
+    },
+    {
+      "text": "255, And ascii only uses half of them.",
+      "start": 89.24,
+      "duration": 3.53
+    },
+    {
+      "text": "So all those weird blue values in vim are\nsuch numbers that don’t have a printable",
+      "start": 92.77,
+      "duration": 4.169
+    },
+    {
+      "text": "character assigned.",
+      "start": 96.939,
+      "duration": 1.761
+    },
+    {
+      "text": "You can also do a hexdump of the file, to\nget the actual values.",
+      "start": 98.7,
+      "duration": 3.76
+    },
+    {
+      "text": "‘hexdump -C license_1’ and you can see\nthat there are many many 0s in the file.",
+      "start": 102.46,
+      "duration": 6.66
+    },
+    {
+      "text": "hexdump displays them as dots, but in vim\nthey are the blue stuff.",
+      "start": 109.12,
+      "duration": 4.999
+    },
+    {
+      "text": "But when you look closely there are quite\na few meaningful strings in there.",
+      "start": 114.119,
+      "duration": 3.651
+    },
+    {
+      "text": "For example right at the beginning “ELF”,\nwhich is a magic value, hinting that this",
+      "start": 117.77,
+      "duration": 4.68
+    },
+    {
+      "text": "file is an executables.",
+      "start": 122.45,
+      "duration": 3.72
+    },
+    {
+      "text": "You also can find some strings to libraries\nsuch as libc, which defines functions such",
+      "start": 126.17,
+      "duration": 4.869
+    },
+    {
+      "text": "as printf and strcmp.",
+      "start": 131.039,
+      "duration": 2.571
+    },
+    {
+      "text": "And here we also see strings we know, the\n“Checking License”, “Access Granted”,",
+      "start": 133.61,
+      "duration": 5.27
+    },
+    {
+      "text": "“WRONG!” and “Usage” message.",
+      "start": 138.88,
+      "duration": 2.37
+    },
+    {
+      "text": "And also this weird looking “AAAA-ZION-42-OK”\nstring.",
+      "start": 141.25,
+      "duration": 4.95
+    },
+    {
+      "text": "hmmhmh…",
+      "start": 146.2,
+      "duration": 1.899
+    },
+    {
+      "text": "Remember from last video that there was a\nstring compare in it?",
+      "start": 148.099,
+      "duration": 3.231
+    },
+    {
+      "text": "Might get the license key we enter compared\nto this string?",
+      "start": 151.33,
+      "duration": 4.08
+    },
+    {
+      "text": "Let’s try it!",
+      "start": 155.41,
+      "duration": 3.22
+    },
+    {
+      "text": "Access Granted.",
+      "start": 158.63,
+      "duration": 1.0
+    },
+    {
+      "text": "Indeed!",
+      "start": 159.63,
+      "duration": 1.0
+    },
+    {
+      "text": "The license key of this program was in there\nall along.",
+      "start": 160.63,
+      "duration": 2.28
+    },
+    {
+      "text": "There is a great tool called ‘strings’\nthat is doing what we just did, just nicer.",
+      "start": 162.91,
+      "duration": 5.46
+    },
+    {
+      "text": "It will scan a file and prints out all printable\ncharacter sequences with at least a certain",
+      "start": 168.37,
+      "duration": 5.479
+    },
+    {
+      "text": "length.",
+      "start": 173.849,
+      "duration": 1.0
+    },
+    {
+      "text": "So let’s try it with ‘strings license_1’.",
+      "start": 174.849,
+      "duration": 3.141
+    },
+    {
+      "text": "And there are our strings.",
+      "start": 177.99,
+      "duration": 3.78
+    },
+    {
+      "text": "Last time we used gdb to read the disassembly\nand also debug the program.",
+      "start": 181.77,
+      "duration": 4.999
+    },
+    {
+      "text": "This time let’s just use objdump for the\ndisassembly.",
+      "start": 186.769,
+      "duration": 3.021
+    },
+    {
+      "text": "‘objdump -d license_1’.",
+      "start": 189.79,
+      "duration": 3.12
+    },
+    {
+      "text": "You notice that this file has a lot of more\ncode than just the ‘main’ function.",
+      "start": 192.91,
+      "duration": 4.25
+    },
+    {
+      "text": "That is because the compiler puts a bit more\nstuff into the actual binary.",
+      "start": 197.16,
+      "duration": 4.329
+    },
+    {
+      "text": "You know, computers are a little bit more\ncomplex than they seem at first.",
+      "start": 201.489,
+      "duration": 3.951
+    },
+    {
+      "text": "But all of this is just standard stuff you\nbasically find in any gcc compiled binary.",
+      "start": 205.44,
+      "duration": 4.09
+    },
+    {
+      "text": "And usually only the user created functions\nlike main are interesting to us.",
+      "start": 209.53,
+      "duration": 5.629
+    },
+    {
+      "text": "Objdump can be used to get a looot of more\ninformation about this program.",
+      "start": 215.159,
+      "duration": 4.19
+    },
+    {
+      "text": "Let’s print everything with ‘objdump -c\nlicense_1’ and pipe it into less for easier",
+      "start": 219.349,
+      "duration": 5.411
+    },
+    {
+      "text": "navigation.",
+      "start": 224.76,
+      "duration": 1.589
+    },
+    {
+      "text": "So first it says the file is a elf binary\nfor the x86-64 architecture.",
+      "start": 226.349,
+      "duration": 5.671
+    },
+    {
+      "text": "The stack is not executable, indicated by\nthe missing ‘x’, which is interesting",
+      "start": 232.02,
+      "duration": 4.329
+    },
+    {
+      "text": "once we will look at classic buffer overflows.",
+      "start": 236.349,
+      "duration": 3.281
+    },
+    {
+      "text": "And maybe the last interesting info are the\nsections.",
+      "start": 239.63,
+      "duration": 3.93
+    },
+    {
+      "text": "We can see here where certain data will later\nend up in memory.",
+      "start": 243.56,
+      "duration": 4.209
+    },
+    {
+      "text": "Interesting for us are the .text section.",
+      "start": 247.769,
+      "duration": 2.641
+    },
+    {
+      "text": "This section holds our code and it starts\nat address 4004d0 and is hex 1e2 big.",
+      "start": 250.41,
+      "duration": 8.59
+    },
+    {
+      "text": "And if you check the address where the main\nfunction was, you will notice that it’s",
+      "start": 259.0,
+      "duration": 3.92
+    },
+    {
+      "text": "in there.",
+      "start": 262.92,
+      "duration": 1.0
+    },
+    {
+      "text": "The other interesting section is .rodata,\nwhich is the read only data section.",
+      "start": 263.92,
+      "duration": 5.459
+    },
+    {
+      "text": "So our strings can be found in there.",
+      "start": 269.379,
+      "duration": 2.71
+    },
+    {
+      "text": "If you open up gdb and break at the strcmp,\nyou can check the registers.",
+      "start": 272.089,
+      "duration": 6.05
+    },
+    {
+      "text": "And one of the registers will have an address\nin from this .rodata section.",
+      "start": 278.139,
+      "duration": 5.571
+    },
+    {
+      "text": "You can print this address with x/s, and voila,\nthere is our key again.",
+      "start": 283.71,
+      "duration": 4.989
+    },
+    {
+      "text": "Let’s have a look at another active tool.",
+      "start": 288.699,
+      "duration": 3.02
+    },
+    {
+      "text": "It’s called strace and it can trace system\ncalls and signals.",
+      "start": 291.719,
+      "duration": 4.91
+    },
+    {
+      "text": "When I introduced programming in C, we used\nprintf to print text.",
+      "start": 296.629,
+      "duration": 4.66
+    },
+    {
+      "text": "That was a nice function that we added to\nour program from the libc library.",
+      "start": 301.289,
+      "duration": 4.731
+    },
+    {
+      "text": "But printf is just a wrapper around a function\nthat the linux system itself provides us.",
+      "start": 306.02,
+      "duration": 5.129
+    },
+    {
+      "text": "Linux itself offers many different kind of\nfunctions called syscalls.",
+      "start": 311.149,
+      "duration": 5.64
+    },
+    {
+      "text": "You can read more about them in the man page\nto syscalls.",
+      "start": 316.789,
+      "duration": 3.391
+    },
+    {
+      "text": "One of those functions is ‘write’.",
+      "start": 320.18,
+      "duration": 2.329
+    },
+    {
+      "text": "And write can be used to write text to the\nstandard output, which we can read on the",
+      "start": 322.509,
+      "duration": 4.351
+    },
+    {
+      "text": "console.",
+      "start": 326.86,
+      "duration": 1.829
+    },
+    {
+      "text": "So let’s execute the license program with\nstrace.",
+      "start": 328.689,
+      "duration": 2.84
+    },
+    {
+      "text": "The first line is execve, which is the function\nthat tells the linux kernel to now execute",
+      "start": 331.529,
+      "duration": 7.03
+    },
+    {
+      "text": "this program license_1.",
+      "start": 338.559,
+      "duration": 2.58
+    },
+    {
+      "text": "And then a lot of magic happens that we ignore\nfrom now.",
+      "start": 341.139,
+      "duration": 3.98
+    },
+    {
+      "text": "And somewhere all the way at the bottom here,\nthe code that I have written starts.",
+      "start": 345.119,
+      "duration": 6.961
+    },
+    {
+      "text": "And you can here see the write syscalls that\nwere executed with the text that we know.",
+      "start": 352.08,
+      "duration": 5.789
+    },
+    {
+      "text": "Interesting, huh?",
+      "start": 357.869,
+      "duration": 1.17
+    },
+    {
+      "text": "There is another cool tool called ltrace.",
+      "start": 359.039,
+      "duration": 4.011
+    },
+    {
+      "text": "Similar to strace it traces certain functions.",
+      "start": 363.05,
+      "duration": 3.019
+    },
+    {
+      "text": "But this time it traces library functions.",
+      "start": 366.069,
+      "duration": 2.18
+    },
+    {
+      "text": "Functions like printf or strcmp come from\nthe libc library.",
+      "start": 368.249,
+      "duration": 4.721
+    },
+    {
+      "text": "So ltrace can show us their occurrence.",
+      "start": 372.97,
+      "duration": 2.53
+    },
+    {
+      "text": "So first you can see the printf.",
+      "start": 375.5,
+      "duration": 1.59
+    },
+    {
+      "text": "And then comes the strcmp.",
+      "start": 377.09,
+      "duration": 1.689
+    },
+    {
+      "text": "And it shows us the actual strings it compares.",
+      "start": 378.779,
+      "duration": 3.0
+    },
+    {
+      "text": "So that also tells us how the license check\nworks in a cool way.",
+      "start": 381.779,
+      "duration": 4.19
+    },
+    {
+      "text": "Let’s thow this file into a graphical user\ninterface.",
+      "start": 385.969,
+      "duration": 3.23
+    },
+    {
+      "text": "I will use hopper on mac.",
+      "start": 389.199,
+      "duration": 1.78
+    },
+    {
+      "text": "As you may know IDAPro is very expensive.",
+      "start": 390.979,
+      "duration": 3.28
+    },
+    {
+      "text": "But hopper is a great alternative which is\nactually affordable.",
+      "start": 394.259,
+      "duration": 4.33
+    },
+    {
+      "text": "Hopper sees that it is a ELF executable and\nit can automatically analyse it for us.",
+      "start": 398.589,
+      "duration": 5.271
+    },
+    {
+      "text": "It places our curser at a function called\nstart.",
+      "start": 403.86,
+      "duration": 2.88
+    },
+    {
+      "text": "And not main.",
+      "start": 406.74,
+      "duration": 2.76
+    },
+    {
+      "text": "Like we have seen with objdump before, there\nare a few more functions created by the compiler",
+      "start": 409.5,
+      "duration": 4.929
+    },
+    {
+      "text": "and this here is the real entry point of the\nprogram.",
+      "start": 414.429,
+      "duration": 3.691
+    },
+    {
+      "text": "But what those functions are doing is not\nimportant right now.",
+      "start": 418.12,
+      "duration": 3.9
+    },
+    {
+      "text": "We are only interested in the main functionality.",
+      "start": 422.02,
+      "duration": 2.729
+    },
+    {
+      "text": "So we can look for the main function in the\nlist of labels.",
+      "start": 424.749,
+      "duration": 4.12
+    },
+    {
+      "text": "So here is our main function, like in gdb.",
+      "start": 428.869,
+      "duration": 2.47
+    },
+    {
+      "text": "Just a bit more colorful and hopper can also\nshow us with those arrows where branches are",
+      "start": 431.339,
+      "duration": 5.82
+    },
+    {
+      "text": "going to.",
+      "start": 437.159,
+      "duration": 1.391
+    },
+    {
+      "text": "At the end of the last video I have already\nshowed the control flow graph which you can",
+      "start": 438.55,
+      "duration": 4.359
+    },
+    {
+      "text": "access at the top right.",
+      "start": 442.909,
+      "duration": 2.23
+    },
+    {
+      "text": "And a very cool feauter from hopper is the\ndecompiler.",
+      "start": 445.139,
+      "duration": 3.831
+    },
+    {
+      "text": "Decompiling sounds like it would reverse assembler\ncode back to C code.",
+      "start": 448.97,
+      "duration": 5.58
+    },
+    {
+      "text": "But that is not easy.",
+      "start": 454.55,
+      "duration": 1.729
+    },
+    {
+      "text": "The compiler changes and optimises stuff and\nyou just cannot simply reverse it.",
+      "start": 456.279,
+      "duration": 5.741
+    },
+    {
+      "text": "But hopper can guess how it might have looked\nlike.",
+      "start": 462.02,
+      "duration": 3.359
+    },
+    {
+      "text": "Sometimes it makes mistakes, but often it\nlooks pretty good.",
+      "start": 465.379,
+      "duration": 3.79
+    },
+    {
+      "text": "So it shows us here how it checks if we have\nsupplied a license key, and then it does the",
+      "start": 469.169,
+      "duration": 5.161
+    },
+    {
+      "text": "strcmp and prints either ‘Access Granted’\nor ‘WRONG!’.",
+      "start": 474.33,
+      "duration": 3.459
+    },
+    {
+      "text": "So that’s pretty cool.",
+      "start": 477.789,
+      "duration": 1.66
+    },
+    {
+      "text": "To the left you can also find a button to\ndisplay all strings.",
+      "start": 479.449,
+      "duration": 4.3
+    },
+    {
+      "text": "And as you can see it also found the key.",
+      "start": 483.749,
+      "duration": 3.681
+    },
+    {
+      "text": "When you click on it it will jump to the address\nwhere the key is located.",
+      "start": 487.43,
+      "duration": 3.769
+    },
+    {
+      "text": "And XREF stands for cross reference, that\nmeans this address is referenced somewhere.",
+      "start": 491.199,
+      "duration": 4.661
+    },
+    {
+      "text": "We can follow that xref, and we can see that\nthis is the assembler code where the address",
+      "start": 495.86,
+      "duration": 4.709
+    },
+    {
+      "text": "of the key is moved into the esi register.",
+      "start": 500.569,
+      "duration": 3.77
+    },
+    {
+      "text": "This prepares the function parameters for\nthe strcmp.",
+      "start": 504.339,
+      "duration": 4.35
+    },
+    {
+      "text": "Some kids may have the opinion that mac users\nsuck.",
+      "start": 508.689,
+      "duration": 3.2
+    },
+    {
+      "text": "To please them we will install now radare2\nby cloning the radare2 repository with git.",
+      "start": 511.889,
+      "duration": 6.071
+    },
+    {
+      "text": "You might have to install git with sudo apt-get\ninstall git.",
+      "start": 517.96,
+      "duration": 2.889
+    },
+    {
+      "text": "To install radare run sys/install.sh and wait.",
+      "start": 520.849,
+      "duration": 9.421
+    },
+    {
+      "text": "Once it’s installed you can go to the license_1\nprogram and open it in radare with ‘r2 license_1’.",
+      "start": 530.27,
+      "duration": 6.739
+    },
+    {
+      "text": "You may remember this address from objdump\nearlier, this is the start of the text segment",
+      "start": 537.009,
+      "duration": 5.111
+    },
+    {
+      "text": "that contains our code.",
+      "start": 542.12,
+      "duration": 2.38
+    },
+    {
+      "text": "first run ‘aaa’, to automatically analyse\nan autoname functions.",
+      "start": 544.5,
+      "duration": 5.52
+    },
+    {
+      "text": "Then use ‘afl’ to print all functions\nthat radare found.",
+      "start": 550.02,
+      "duration": 4.6
+    },
+    {
+      "text": "Each character in radare means something.",
+      "start": 554.62,
+      "duration": 2.19
+    },
+    {
+      "text": "And with ? you always get information about\nwhat characters you can use.",
+      "start": 556.81,
+      "duration": 4.649
+    },
+    {
+      "text": "So ‘a’ performs analysis of code.",
+      "start": 561.459,
+      "duration": 3.201
+    },
+    {
+      "text": "‘a?’ shows us that we can append ‘f’\nto analyse functions.",
+      "start": 564.66,
+      "duration": 5.039
+    },
+    {
+      "text": "And ‘afl’ lists those functions.",
+      "start": 569.699,
+      "duration": 2.37
+    },
+    {
+      "text": "Makes sense, right?",
+      "start": 572.069,
+      "duration": 1.651
+    },
+    {
+      "text": "ok so afl shows us that it found a main function.",
+      "start": 573.72,
+      "duration": 3.35
+    },
+    {
+      "text": "Let’s change our current location with ‘s’\nto seek to the location of the function main.",
+      "start": 577.07,
+      "duration": 6.74
+    },
+    {
+      "text": "You can also use tab-completion here.",
+      "start": 583.81,
+      "duration": 3.32
+    },
+    {
+      "text": "Now the location in those brackets changed.",
+      "start": 587.13,
+      "duration": 3.189
+    },
+    {
+      "text": "With ‘pdf’ we can print the disassembly\nof the current function.",
+      "start": 590.319,
+      "duration": 4.791
+    },
+    {
+      "text": "Like hopper it shows us the disassembly with\nnice arrows where branches go to.",
+      "start": 595.11,
+      "duration": 4.599
+    },
+    {
+      "text": "And it created comments for us with strings\nthat are referenced in there.",
+      "start": 599.709,
+      "duration": 4.18
+    },
+    {
+      "text": "You can also type capital VV to enter visual\nmode.",
+      "start": 603.889,
+      "duration": 4.01
+    },
+    {
+      "text": "This shows you a control-graph view of this\nfunction.",
+      "start": 607.899,
+      "duration": 3.24
+    },
+    {
+      "text": "You can move it around with arrow keys.",
+      "start": 611.139,
+      "duration": 2.51
+    },
+    {
+      "text": "The blue border indicates that we currently\nselect this box.",
+      "start": 613.649,
+      "duration": 3.61
+    },
+    {
+      "text": "With Tab and Shift Tab you can select other\nblocks.",
+      "start": 617.259,
+      "duration": 3.671
+    },
+    {
+      "text": "When you have a block selected you can move\nthe block with Shift + hjkl.",
+      "start": 620.93,
+      "duration": 6.54
+    },
+    {
+      "text": "With ‘p’ you can cycle through different\nrepresentations.",
+      "start": 627.47,
+      "duration": 3.14
+    },
+    {
+      "text": "For example with our without the address in\nthe beginning.",
+      "start": 630.61,
+      "duration": 3.169
+    },
+    {
+      "text": "Or this minimalistic view, which is useful\nif you have a damn huge function.",
+      "start": 633.779,
+      "duration": 4.831
+    },
+    {
+      "text": "And with ? you can display a help.",
+      "start": 638.61,
+      "duration": 2.12
+    },
+    {
+      "text": "This help tells you that capital R is the\nmost important shortcut you will ever learn",
+      "start": 640.73,
+      "duration": 4.609
+    },
+    {
+      "text": "for radare…",
+      "start": 645.339,
+      "duration": 1.48
+    },
+    {
+      "text": "So press Shift+R and be happy.",
+      "start": 646.819,
+      "duration": 3.171
+    },
+    {
+      "text": "You can also use radare2 like gdb to debug\nthis program.",
+      "start": 649.99,
+      "duration": 4.289
+    },
+    {
+      "text": "To do that start radare with -d flag.",
+      "start": 654.279,
+      "duration": 3.211
+    },
+    {
+      "text": "Seek to the main function, analyse all with\n‘aaa’ and display the disassembly with",
+      "start": 657.49,
+      "duration": 4.44
+    },
+    {
+      "text": "pdf.",
+      "start": 661.93,
+      "duration": 1.43
+    },
+    {
+      "text": "Now place a breakpoint at the start with ‘db’.",
+      "start": 663.36,
+      "duration": 2.43
+    },
+    {
+      "text": "Now go into Visual View with “VV” again.",
+      "start": 665.79,
+      "duration": 4.81
+    },
+    {
+      "text": "Like with vim you can enter command mode with\n‘:’, where you type ‘:dc’ to run the",
+      "start": 670.6,
+      "duration": 6.549
+    },
+    {
+      "text": "program.",
+      "start": 677.149,
+      "duration": 1.0
+    },
+    {
+      "text": "Now we hit breakpoint 1.",
+      "start": 678.149,
+      "duration": 1.951
+    },
+    {
+      "text": "And if you look closely you notice rip in\nthe first box.",
+      "start": 680.1,
+      "duration": 4.45
+    },
+    {
+      "text": "This shows us where the instruction pointer\ncurrently points to.",
+      "start": 684.55,
+      "duration": 4.05
+    },
+    {
+      "text": "With s you can step instructions.",
+      "start": 688.6,
+      "duration": 2.22
+    },
+    {
+      "text": "But we should use capital S, otherwise we\nfollow functions which we don’t want to.",
+      "start": 690.82,
+      "duration": 5.329
+    },
+    {
+      "text": "So Shift+S to step further.",
+      "start": 696.149,
+      "duration": 1.521
+    },
+    {
+      "text": "Ah damn.",
+      "start": 697.67,
+      "duration": 1.0
+    },
+    {
+      "text": "We didn’t supply a license key.",
+      "start": 698.67,
+      "duration": 1.94
+    },
+    {
+      "text": "But you get the idea.",
+      "start": 700.61,
+      "duration": 1.99
+    },
+    {
+      "text": "I hope this helps you to explore more tools\nand techniques.",
+      "start": 702.6,
+      "duration": 3.58
+    },
+    {
+      "text": "And remember that no tool is better than the\nother.",
+      "start": 706.18,
+      "duration": 3.13
+    },
+    {
+      "text": "They all have different features and representations\nof information.",
+      "start": 709.31,
+      "duration": 3.57
+    },
+    {
+      "text": "It makes sense to master them all.",
+      "start": 712.88,
+      "duration": 2.699
+    },
+    {
+      "text": "Except radare.",
+      "start": 715.579,
+      "duration": 1.0
+    },
+    {
+      "text": "Some say radare is the best.",
+      "start": 716.579,
+      "duration": 1.62
+    },
+    {
+      "text": "But nobody ever masters radare.",
+      "start": 718.199,
+      "duration": 1.751
+    }
+  ],
+  "full_text": "In this video we will revisit the license\ncheck program from last time. You can get the same compiled 64bit binary\nfrom github and you can also watch the last video where I went into more detail how to\ncrack this simple program. I will show now different simple tools and\ntechniques that exist to analyse a program like that to circumvent the license check. This should show you that there are a variety\nof different ways how to solve this challenge. The file command is very useful to check what\nkind of files you have. So ‘file’ on our binary says it’s a\nELF 64-bit executable for Linux. You can also do ‘file *’ to get the information\non all files in the directory. And it then also finds the C source code here. So that’s very useful. Let’s open the program in a text editor\nlike vim. As you can see it looks very weird. I have introduced ASCII before, so you know\nthat every character has assigned a number. But there are numbers that don’t have a\nprintable character assigned. If you look at the man page of ascii, you\nsee that for example value 0 to hex 1f are not a normal characters. And ascii is also only defined up to hex 7F\nor 127. But because our computer works with bytes,\nso 8 bit, this number can range from 0 to 255, And ascii only uses half of them. So all those weird blue values in vim are\nsuch numbers that don’t have a printable character assigned. You can also do a hexdump of the file, to\nget the actual values. ‘hexdump -C license_1’ and you can see\nthat there are many many 0s in the file. hexdump displays them as dots, but in vim\nthey are the blue stuff. But when you look closely there are quite\na few meaningful strings in there. For example right at the beginning “ELF”,\nwhich is a magic value, hinting that this file is an executables. You also can find some strings to libraries\nsuch as libc, which defines functions such as printf and strcmp. And here we also see strings we know, the\n“Checking License”, “Access Granted”, “WRONG!” and “Usage” message. And also this weird looking “AAAA-ZION-42-OK”\nstring. hmmhmh… Remember from last video that there was a\nstring compare in it? Might get the license key we enter compared\nto this string? Let’s try it! Access Granted. Indeed! The license key of this program was in there\nall along. There is a great tool called ‘strings’\nthat is doing what we just did, just nicer. It will scan a file and prints out all printable\ncharacter sequences with at least a certain length. So let’s try it with ‘strings license_1’. And there are our strings. Last time we used gdb to read the disassembly\nand also debug the program. This time let’s just use objdump for the\ndisassembly. ‘objdump -d license_1’. You notice that this file has a lot of more\ncode than just the ‘main’ function. That is because the compiler puts a bit more\nstuff into the actual binary. You know, computers are a little bit more\ncomplex than they seem at first. But all of this is just standard stuff you\nbasically find in any gcc compiled binary. And usually only the user created functions\nlike main are interesting to us. Objdump can be used to get a looot of more\ninformation about this program. Let’s print everything with ‘objdump -c\nlicense_1’ and pipe it into less for easier navigation. So first it says the file is a elf binary\nfor the x86-64 architecture. The stack is not executable, indicated by\nthe missing ‘x’, which is interesting once we will look at classic buffer overflows. And maybe the last interesting info are the\nsections. We can see here where certain data will later\nend up in memory. Interesting for us are the .text section. This section holds our code and it starts\nat address 4004d0 and is hex 1e2 big. And if you check the address where the main\nfunction was, you will notice that it’s in there. The other interesting section is .rodata,\nwhich is the read only data section. So our strings can be found in there. If you open up gdb and break at the strcmp,\nyou can check the registers. And one of the registers will have an address\nin from this .rodata section. You can print this address with x/s, and voila,\nthere is our key again. Let’s have a look at another active tool. It’s called strace and it can trace system\ncalls and signals. When I introduced programming in C, we used\nprintf to print text. That was a nice function that we added to\nour program from the libc library. But printf is just a wrapper around a function\nthat the linux system itself provides us. Linux itself offers many different kind of\nfunctions called syscalls. You can read more about them in the man page\nto syscalls. One of those functions is ‘write’. And write can be used to write text to the\nstandard output, which we can read on the console. So let’s execute the license program with\nstrace. The first line is execve, which is the function\nthat tells the linux kernel to now execute this program license_1. And then a lot of magic happens that we ignore\nfrom now. And somewhere all the way at the bottom here,\nthe code that I have written starts. And you can here see the write syscalls that\nwere executed with the text that we know. Interesting, huh? There is another cool tool called ltrace. Similar to strace it traces certain functions. But this time it traces library functions. Functions like printf or strcmp come from\nthe libc library. So ltrace can show us their occurrence. So first you can see the printf. And then comes the strcmp. And it shows us the actual strings it compares. So that also tells us how the license check\nworks in a cool way. Let’s thow this file into a graphical user\ninterface. I will use hopper on mac. As you may know IDAPro is very expensive. But hopper is a great alternative which is\nactually affordable. Hopper sees that it is a ELF executable and\nit can automatically analyse it for us. It places our curser at a function called\nstart. And not main. Like we have seen with objdump before, there\nare a few more functions created by the compiler and this here is the real entry point of the\nprogram. But what those functions are doing is not\nimportant right now. We are only interested in the main functionality. So we can look for the main function in the\nlist of labels. So here is our main function, like in gdb. Just a bit more colorful and hopper can also\nshow us with those arrows where branches are going to. At the end of the last video I have already\nshowed the control flow graph which you can access at the top right. And a very cool feauter from hopper is the\ndecompiler. Decompiling sounds like it would reverse assembler\ncode back to C code. But that is not easy. The compiler changes and optimises stuff and\nyou just cannot simply reverse it. But hopper can guess how it might have looked\nlike. Sometimes it makes mistakes, but often it\nlooks pretty good. So it shows us here how it checks if we have\nsupplied a license key, and then it does the strcmp and prints either ‘Access Granted’\nor ‘WRONG!’. So that’s pretty cool. To the left you can also find a button to\ndisplay all strings. And as you can see it also found the key. When you click on it it will jump to the address\nwhere the key is located. And XREF stands for cross reference, that\nmeans this address is referenced somewhere. We can follow that xref, and we can see that\nthis is the assembler code where the address of the key is moved into the esi register. This prepares the function parameters for\nthe strcmp. Some kids may have the opinion that mac users\nsuck. To please them we will install now radare2\nby cloning the radare2 repository with git. You might have to install git with sudo apt-get\ninstall git. To install radare run sys/install.sh and wait. Once it’s installed you can go to the license_1\nprogram and open it in radare with ‘r2 license_1’. You may remember this address from objdump\nearlier, this is the start of the text segment that contains our code. first run ‘aaa’, to automatically analyse\nan autoname functions. Then use ‘afl’ to print all functions\nthat radare found. Each character in radare means something. And with ? you always get information about\nwhat characters you can use. So ‘a’ performs analysis of code. ‘a?’ shows us that we can append ‘f’\nto analyse functions. And ‘afl’ lists those functions. Makes sense, right? ok so afl shows us that it found a main function. Let’s change our current location with ‘s’\nto seek to the location of the function main. You can also use tab-completion here. Now the location in those brackets changed. With ‘pdf’ we can print the disassembly\nof the current function. Like hopper it shows us the disassembly with\nnice arrows where branches go to. And it created comments for us with strings\nthat are referenced in there. You can also type capital VV to enter visual\nmode. This shows you a control-graph view of this\nfunction. You can move it around with arrow keys. The blue border indicates that we currently\nselect this box. With Tab and Shift Tab you can select other\nblocks. When you have a block selected you can move\nthe block with Shift + hjkl. With ‘p’ you can cycle through different\nrepresentations. For example with our without the address in\nthe beginning. Or this minimalistic view, which is useful\nif you have a damn huge function. And with ? you can display a help. This help tells you that capital R is the\nmost important shortcut you will ever learn for radare… So press Shift+R and be happy. You can also use radare2 like gdb to debug\nthis program. To do that start radare with -d flag. Seek to the main function, analyse all with\n‘aaa’ and display the disassembly with pdf. Now place a breakpoint at the start with ‘db’. Now go into Visual View with “VV” again. Like with vim you can enter command mode with\n‘:’, where you type ‘:dc’ to run the program. Now we hit breakpoint 1. And if you look closely you notice rip in\nthe first box. This shows us where the instruction pointer\ncurrently points to. With s you can step instructions. But we should use capital S, otherwise we\nfollow functions which we don’t want to. So Shift+S to step further. Ah damn. We didn’t supply a license key. But you get the idea. I hope this helps you to explore more tools\nand techniques. And remember that no tool is better than the\nother. They all have different features and representations\nof information. It makes sense to master them all. Except radare. Some say radare is the best. But nobody ever masters radare.",
+  "errors": []
+}

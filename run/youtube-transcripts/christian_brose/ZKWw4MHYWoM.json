@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZKWw4MHYWoM",
+    "language": "en",
+    "took_ms": 8729,
+    "method": null,
+    "title": "India Connected: A Conversation with Ravi Agrawal",
+    "channel": "Hudson Institute",
+    "upload_date": "20181130",
+    "duration_sec": 4771,
+    "description": "On November 29, Hudson Institute hosted Foreign Policy Magazine’s Ravi Agrawal to discuss his recent book, India Connected: How the Smartphone is Transforming the World’s Largest Democracy. The discussion was moderated by Hudson Institute’s Director of South and Central Asia Ambassador Husain Haqqani.\r\n\r\nIn the year 2000, 20 million Indians had access to the internet. By 2017, 465 million were online, with three Indians discovering the internet every second – mostly on smartphones. One third of mobile phone users in India have a smartphone. The rise of smartphones, and with them access to the internet, has caused nothing short of a revolution in India. In the West, technological advances have progressed step-by-step:from landline phones, to dial-up connections on PCs, to broadband access, wireless, and now 4G data on phones. India leapfrogged straight to the smartphone era, disrupting centuries of tradition and barriers of wealth, language, literacy, caste, and gender. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1102
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZKWw4MHYWoM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

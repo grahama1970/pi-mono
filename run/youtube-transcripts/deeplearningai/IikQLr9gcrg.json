@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IikQLr9gcrg",
+    "language": "en",
+    "took_ms": 7884,
+    "method": null,
+    "title": "New course with E2B: Building Coding Agents with Tool Execution",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251203",
+    "duration_sec": 144,
+    "description": "Learn more: https://bit.ly/44tToAU\n\nWe’re excited to share a new course: Building Coding Agents with Tool Execution, created in collaboration with E2B, that teaches you how to build agents that can generate and execute code safely.\n\nMany agent frameworks rely on predefined tools, but coding agents work differently: they generate code, run it, inspect the results, and plan their next step. This opens up far more capability, but it also introduces risk if the code runs on your local machine. That’s why the course focuses heavily on choosing and configuring safe execution environments.\n\nIn detail, you’ll learn: \n\n- How coding agents reason, generate code, execute it, and iterate through feedback loops.\n- The differences between local execution, containers, and isolated microVM sandboxes, and when each makes sense.\n- How to run code safely in the cloud using E2B sandboxes, manage files, and control resources.\n- How to build practical coding agents, including a data analyst agent that explores datasets and a full-stack agent that assembles a working Next.js web app.\n\nStart building agents that handle more complex tasks while keeping your system protected.\n\nEnroll now: https://bit.ly/44tToAU",
+    "view_count": 1952
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IikQLr9gcrg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XhGfswtnzmY",
+    "language": "en",
+    "took_ms": 2895,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Daniel Isler - How I got COVID in a RedTeam SE and Physical Intrusion",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1805,
+    "description": "Is it correct to define as Red Team a service that only exploits vulnerabilities from a single vector without including elements typical of highly complex attacks such as social engineering and physical intrusion? By leaving out the starting point of actual attacks to create simulations of these, are we really focusing on potential threats or just particular vulnerabilities? Isn't layer eight the first layer we should consider for threats and consequently recognize vulnerabilities? Through four extremely particular and highly probable scenarios. Under a storytelling format we will immerse ourselves in a test narrated in first person, under the context of a Red Team exercise. We will understand the importance of including social engineering and physical intrusion actions for highly complex attack simulations.\n\nEven having the best preparation, state-of-the-art devices and overwhelming information gathering. Reality will always have variants and surprises that attackers know how to take advantage of. Exposure to these variants is critical for simulation practitioners to emulate and recognize potential threats.",
+    "view_count": 872
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XhGfswtnzmY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

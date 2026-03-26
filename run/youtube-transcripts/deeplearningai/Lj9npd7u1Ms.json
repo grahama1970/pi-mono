@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Lj9npd7u1Ms",
+    "language": "en",
+    "took_ms": 9017,
+    "method": null,
+    "title": "Learn how to build an agent from scratch with LangGraph",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240621",
+    "duration_sec": 762,
+    "description": "Enroll in the full course: https://bit.ly/3Xz0Hol\n\nLangChain, a popular open source framework for building LLM applications, recently introduced LangGraph. This extension allows developers to create highly controllable agents.\n\nIn this course you will learn  to build an agent from scratch using Python and an LLM, and then you will rebuild it using LangGraph, learning about  its components and how to combine them to build flow-based applications.\n\nAdditionally, you will learn about agentic search, which returns multiple answers in an agent-friendly format, enhancing the agent's built-in knowledge. This course will show you how to use agentic search in your applications.\n\nIn detail:\n\n- Build an agent from scratch, and understand the division of tasks between the LLM and the code around the LLM.\n- Implement the agent you built using LangGraph.\n- Learn how agentic search retrieves multiple answers in a predictable format, unlike traditional search engines that return links.\n- Implement persistence in agents, enabling state management across multiple threads, conversation switching, and the ability to reload previous states.\n- Incorporate human-in-the-loop into agent systems.\n- Develop an agent for essay writing, replicating the workflow of a researcher working on this task.\n\nStart building more controllable agents using LangGraph! \n\nEnroll in the full course: https://bit.ly/3Xz0Hol",
+    "view_count": 17923
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Lj9npd7u1Ms: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

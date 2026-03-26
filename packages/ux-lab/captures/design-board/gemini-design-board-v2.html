@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup Canvas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;500&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: #141414;
+      color: #e2e8f0;
+    }
+    .app {
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #111111;
+      padding: 16px;
+      border-right: 1px solid rgba(255, 255, 255, 0.13);
+    }
+    .sidebar h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      margin: 0 0 24px 0;
+      color: #e2e8f0;
+    }
+    .tab-bar {
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+    }
+    .tab-bar button {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+    }
+    .tab-bar button.active {
+      color: #e2e8f0;
+    }
+    .canvas-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background-color: #141414;
+      background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .canvas {
+      position: absolute;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+    .mockup {
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background-color: #1a1a1a;
+      cursor: pointer;
+    }
+    .mockup.selected {
+      border: 2px solid #7c3aed;
+    }
+    .mockup-label {
+      position: absolute;
+      bottom: -24px;
+      left: 0;
+      font-size: 12px;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+    }
+    .mockup-label .badge {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-left: 4px;
+    }
+    .sticky-note {
+      position: absolute;
+      background-color: #1a1a1a;
+      padding: 8px;
+      font-size: 12px;
+      color: #e2e8f0;
+      border-radius: 4px;
+      max-width: 150px;
+      cursor: pointer;
+    }
+    .zoom-indicator {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background-color: #1a1a1a;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .minimap {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      width: 100px;
+      height: 100px;
+      background-color: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      overflow: hidden;
+    }
+    .minimap .viewport {
+      position: absolute;
+      border: 1px solid #7c3aed;
+    }
+    .right-panel {
+      width: 280px;
+      background-color: #111111;
+      padding: 16px;
+      border-left: 1px solid rgba(255, 255, 255, 0.13);
+    }
+    .right-panel h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      margin: 0 0 16px 0;
+    }
+    .right-panel .details {
+      font-size: 14px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+      <h1>EMBRY OS</h1>
+      <div class="tab-bar">
+        <button class="active">Mockups</button>
+        <button>Inspirations</button>
+        <button>Tokens</button>
+        <button>Rationale</button>
+      </div>
+    </div>
+    <!-- Canvas -->
+    <div class="canvas-container">
+      <div class="canvas">
+        <!-- Mockups -->
+        <div class="mockup" style="width: 400px; height: 250px; top: 100px; left: 200px; background-color: #4a9eff;">
+          <div class="mockup-label">Graph Layout v1 <span class="badge" style="background: #00ff88;"></span></div>
+        </div>
+        <div class="mockup selected" style="width: 500px; height: 300px; top: 400px; left: 600px; background-color: #1a1a1a;">
+          <div class="mockup-label">Chat Panel v2 <span class="badge" style="background: #ffaa00;"></span></div>
+        </div>
+        <div class="mockup" style="width: 600px; height: 350px; top: 800px; left: 1000px; background-color: #7c3aed;">
+          <div class="mockup-label">Full Composite <span class="badge" style="background: #4a9eff;"></span></div>
+        </div>
+        <!-- Sticky Notes -->
+        <div class="sticky-note" style="top: 150px; left: 250px;">Steve: Try force-directed layout</div>
+        <div class="sticky-note" style="top: 450px; left: 650px;">Nico: Text too small at 11px</div>
+      </div>
+      <!-- Zoom Indicator -->
+      <div class="zoom-indicator">
+        <button onclick="zoomOut()">-</button>
+        <span id="zoom-level">100%</span>
+        <button onclick="zoomIn()">+</button>
+      </div>
+      <!-- Minimap -->
+      <div class="minimap">
+        <div class="viewport"></div>
+      </div>
+    </div>
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <h2>Mockup Details</h2>
+      <div class="details">Select a mockup to view details.</div>
+    </div>
+  </div>
+  <script>
+    const canvas = document.querySelector('.canvas');
+    const canvasContainer = document.querySelector('.canvas-container');
+    const zoomLevel = document.getElementById('zoom-level');
+    let scale = 1;
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+
+    // Panning
+    canvasContainer.addEventListener('mousedown', (e) => {
+      if (e.button === 0) { // Left click
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+      }
+    });
+    canvasContainer.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        updateCanvasTransform();
+      }
+    });
+    canvasContainer.addEventListener('mouseup', () => isDragging = false);
+    canvasContainer.addEventListener('mouseleave', () => isDragging = false);
+
+    // Zooming
+    canvasContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      scale += e.deltaY * -0.001;
+      scale = Math.min(Math.max(0.5, scale), 3); // Clamp scale
+      updateCanvasTransform();
+    });
+
+    function zoomIn() {
+      scale = Math.min(scale + 0.1, 3);
+      updateCanvasTransform();
+    }
+
+    function zoomOut() {
+      scale = Math.max(scale - 0.1, 0.5);
+      updateCanvasTransform();
+    }
+
+    function updateCanvasTransform() {
+      canvas.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      zoomLevel.textContent = `${Math.round(scale * 100)}%`;
+    }
+
+    // Mockup Selection
+    const mockups = document.querySelectorAll('.mockup');
+    const rightPanelDetails = document.querySelector('.right-panel .details');
+    mockups.forEach(mockup => {
+      mockup.addEventListener('click', () => {
+        mockups.forEach(m => m.classList.remove('selected'));
+        mockup.classList.add('selected');
+        rightPanelDetails.textContent = `Details for ${mockup.querySelector('.mockup-label').textContent}`;
+      });
+    });
+  </script>
+</body>
+</html>

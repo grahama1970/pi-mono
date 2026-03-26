@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XFTSGDkATO0",
+    "language": "en",
+    "took_ms": 9286,
+    "method": null,
+    "title": "Astro Awards LIVE in-person at Paramount Theatre, Austin, TX!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240114",
+    "duration_sec": 7620,
+    "description": "The Everyday Astronaut team is so excited to host our first in-person event and awards show in Austin, TX on January 14, 2024 at the Paramount Theatre! Our mission: to honor and celebrate the revolutionary humans behind the hardware and missions by inviting them to accept an award IN REAL LIFE! We're merging the space industry with everyday people for the ultimate party and celebration of human achievement.\n\nHuge thank you to the partners who made this event possible!\n\nFirefly Aerospace who helped so much- https://fireflyspace.com/\n\nAND\n\nStarbase Brewing - https://starbasebrewery.com/\n\nSpace Point - https://www.spacepoint.org/\n\nCosmic Perspective - https://cosmicperspective.com/\n\nSee the nominees and get tickets here -  http://astroawards2024.com\n\nRotor Visual - https://www.rotorvisual.com/\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 120983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XFTSGDkATO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

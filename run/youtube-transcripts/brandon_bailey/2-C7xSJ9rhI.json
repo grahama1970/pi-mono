@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2-C7xSJ9rhI",
+    "language": "en",
+    "took_ms": 9778,
+    "method": null,
+    "title": "DEF CON 32 - Lessons Learned from Building & Defending LLM Applications - Javan Rasokat, Andra Lezza",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1625,
+    "description": "From theory to practice: dive into the lessons learned from building and defending an LLM application. This talk offers firsthand insights into the challenges and breakthroughs experienced while developing and securing large language models in real-world settings. We'll explore critical vulnerabilities, innovative defense strategies, and practical tips for enhancing the robustness of AI applications. Join us to gain actionable knowledge that can help you navigate the evolving landscape of AI security with confidence.",
+    "view_count": 3192
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2-C7xSJ9rhI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pRq1B9mMdkE",
+    "language": "en",
+    "took_ms": 8353,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Gokul Alex, Tejaswa Rastogi - Preventing Sandwich Attacks",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 3919,
+    "description": "A sandwich attack is Upon observing a trade of asset X for asset Y, an attacker front runs the victim trade by also buying asset Y, lets the victim execute the trade, and then back runs (executes after) the victim by trading back the amount gained in the first trade. Intuitively, one uses the knowledge that someone’s going to buy an asset, and that this trade will increase its price, to make a profit. The attacker’s plan is to buy this asset cheap, let the victim buy at an increased price, and then sell the received amount again at a higher price afterwards.\n\nOur solution is the convergence of our research work in the space of Ethereum Security, Zero Knowledge Proofs, Verifiable Delay Functions, Verifiable Random Functions, Hash Time Locks, Polynomial Commitments, Pedersen Hash Functions, Hash Time Locked Contracts , Ring Signatures, Lattice Cryptography, Super Singular Isogenies etc. over the last one year. We have come up with a one of the first solution architecture combining Ring Signatures, Zero Knowledge Databases, Super Singular Isogenies and Hash Time Locks to prevent the manipulation of block time, block header and block body indexes.",
+    "view_count": 639
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pRq1B9mMdkE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

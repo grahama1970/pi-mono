@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K8fjM9k_AUY",
+    "language": "en",
+    "took_ms": 8917,
+    "method": null,
+    "title": "DEF CON 33 Video Team - KevOps Sellout Pool Party at the Sahara",
+    "channel": "DEFCONConference",
+    "upload_date": "20250816",
+    "duration_sec": 149,
+    "description": "This is what happens when you give KevOps a Pool Party. You want pirate songs and flying sharks? Because this is how you get pirate songs and flying sharks.",
+    "view_count": 3633
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K8fjM9k_AUY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

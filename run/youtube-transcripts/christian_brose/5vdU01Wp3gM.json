@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5vdU01Wp3gM",
+    "language": "en",
+    "took_ms": 8030,
+    "method": null,
+    "title": "The Coming Quantum Revolution: Security and Policy Implications (Panel I)",
+    "channel": "Hudson Institute",
+    "upload_date": "20171017",
+    "duration_sec": 4066,
+    "description": "Panel I: Quantum Computing: The Dark Side and the Bright Side\n\nDr. Christopher Monroe\nProfessor of Physics, University of Maryland and Chief Scientist, IonQ, Inc.\n\nDr. Altaf Carim\nPhysicist, Office of Science, U.S. Department of Energy\n\nMr. Michael Brett\nCo-Founder & CEO, QxBranch\n\nDr. Martin Laforest (Moderator)\nSenior Manager, Scientific Outreach, Institute for Quantum Computing, University of Waterloo\n\nA disruptive technological revolution is fast approaching: the quantum revolution. The race to develop the first quantum computer is one that America cannot afford to lose. The national security of the U.S. and its allies hangs in the balance, as well as the role of democracy in spreading information technology. Quantum computers promise advances in medicine, manufacturing, defense, imaging, sensing, and more. They also pose a severe threat to the security of nearly all existing encrypted data. At the same time, quantum cybersecurity promises unparalleled levels of data security.\n\nOn October 17, in conjunction with DC CyberWeek, Hudson Institute hosted a high-level symposium on the risks and opportunities of quantum technology. Hudson Senior Fellow Dr. Arthur Herman, author of Freedom’s Forge: How American Business Produced Victory in World War II, and Dr. Aaron VanDevender, Chief Scientist at Founders Fund, engaged with leading experts from industry, government, and academia to explore the security and policy implications of the coming quantum revolution. Speakers discussed quantum computing, quantum cybersecurity, and the international quantum scene, as well as the merits of a U.S. National Quantum Initiative.",
+    "view_count": 560
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5vdU01Wp3gM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

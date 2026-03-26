@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kDDfDF1DORU",
+    "language": "en",
+    "took_ms": 7733,
+    "method": null,
+    "title": "Mary McCord, Dept of Justice, Keynote at S4x17",
+    "channel": "S4 Events",
+    "upload_date": "20170214",
+    "duration_sec": 2067,
+    "description": "Here are some of the highlights:\n\n6:55 Breaking down the wall between law enforcement and intelligence\n11:00 DoJ's 1st of a kind indictment of 5 Chinese PLA members for hacking into major nuclear, metals and solar companies. \"A line was crossed\" \"for commercial gain\".\n14:40 Stealing the color white\n18:30 Why is public attribution (name and shame) important\n21:45 The international cyber norm recently agreed upon\n25:05 Syrian Electronic Army, 3 indicted and 1 picked up in Germany and in jail\n\nMary McCord is the Acting Assistant Attorney General for National Security at the US Department of Justice. She oversees 400 employees responsible for protecting the United States against international and domestic terrorism, espionage and cyber security threats.",
+    "view_count": 783
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kDDfDF1DORU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

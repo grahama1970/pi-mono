@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PFeqxSD7Gh8",
+    "language": "en",
+    "took_ms": 8979,
+    "method": null,
+    "title": "DEF CON 32 - Kubernetes Attack Simulation The Definitive Guide - Leo Tsaousis",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1605,
+    "description": "So your organization decided to follow the trend and switched to Kubernetes for hosting their applications. And this means that the mission for the SOC, has now changed from monitoring servers and networks, to building detective capability for a container orchestration platform. Where do you even start with for Kubernetes TTPs? What attack signatures should you alert upon, and what logs are there to look for in first place?\n\nA similar challenge arises for the offensive security practitioner: What strategies exist for performing continuous Kubernetes threat emulation? Infrastructure technologies have changed rapidly, and adversaries have adapted. Despite the novelty of attack surface, insider threats still remain relevant, and prevention alone is not enough to manage the risk posed to the modern enterprise.\n\nThis talk will explain the benefits of investing in a proactive approach to the security of your Kubernetes clusters through collaborative purple teams, and will provide a comprehensive guide for doing so – as informed by our latest research and experience in running attack simulations against large enterprises. Attendees will get up to speed with Kubernetes security monitoring concepts and will take away key advice for planning and executing successful attack detection exercises against containerized environments.",
+    "view_count": 1249
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PFeqxSD7Gh8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

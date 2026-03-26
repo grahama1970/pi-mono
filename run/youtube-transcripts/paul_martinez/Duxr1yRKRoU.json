@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Duxr1yRKRoU",
+    "language": "en",
+    "took_ms": 8528,
+    "method": null,
+    "title": "GPS As An Attack Vector",
+    "channel": "S4 Events",
+    "upload_date": "20200526",
+    "duration_sec": 1705,
+    "description": "Almost all ICS rely on a GPS clock to provide good time. Mike Toecker of Context Industrial Security looks at if this ubiquitous component could be used as an attack path to the ICS. This is not trying to spoof a GPS clock, althoughh it does leverage the fact that the GPS signal is not an authenticated signal. \n\nMike is suggesting it could be possible to create and use a command and control channel through a modified GPS clock. A way of getting into not normally accessible ICS. Proof of concept is not there yet, and Mike goes into the proposed architecture, the development path, and some of the challenges to do this. He is transparent on what is done and what remains to be done. Lots of technical detail in this session. Who is going to help make this happen?",
+    "view_count": 892
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Duxr1yRKRoU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

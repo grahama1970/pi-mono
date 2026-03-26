@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AYi5mEWAHzY",
+    "language": "en",
+    "took_ms": 9602,
+    "method": null,
+    "title": "DEF CON 33 - Reverse Engineering Marine Engines: Make powerboats do your bidding - Alex Lorman",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1473,
+    "description": "As the autonomous boat market has grown from nascent to ~$17 billion dollars, much of the infrastructure has gotten more and more accessible. Small flight controllers/autopilots are now only a click and configuration away. Servos, speed controllers and actuators have all seen wide adoption and open interfaces and standards. ArduPilot supports more control protocols in every release.\n\nMarine engines and outboard motors have remained stubbornly hard to control, and what control systems do exist are closed-source black boxes. Few if any vendors are ever given the full ICD for engine control and the vendors are frequently litigious with 3rd party accessory shops. While the safety concerns about running large gasoline or diesel engines autonomously are well-founded, the manufacturer’s could be substantially more open and encourage collaborative work with partners and hackers.\n\nThis talk examines the current state of marine propulsion (outboard, inboard, steering, proprietary controls etc…), where marine propulsion is going (metaphorically!) and how to hack it! The reverse engineering can be as simple as read-the-manual and as complicated as having to buy a full engine setup. We will walk through a few specific examples from several vendors for several classes of vehicles from jet-skis to modern outboards. This talk showcases work that is currently in progress and would hugely benefit from the types of collaboration that occur at DefCon.",
+    "view_count": 296
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AYi5mEWAHzY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KGI7K_ehHsU",
+    "language": "en",
+    "took_ms": 8308,
+    "method": null,
+    "title": "Heroes of NLP: Quoc Le",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201013",
+    "duration_sec": 2438,
+    "description": "Heroes of NLP is a video interview series featuring Andrew Ng, the founder of DeepLearning.AI, in conversation with thought leaders in NLP. Watch Andrew lead an enlightening discourse around how these industry and academic experts started in AI, their previous and current research projects, how their understanding of AI has changed through the decades, and what advice they can provide for learners of NLP. \n\nLooking to build a career in NLP? Enroll in the DeepLearning.AI NLP Specialization: https://bit.ly/33BaG0b\n\nComment below with links if you recognize any of the papers referenced in this interview!\n\nThis is an interview featuring Andrew Ng and Quoc Le, Research Scientist at Google Brain. \n\n01:12 - 08:08 Your journey getting into AI\n08:08 - 12:00 The story behind Google Cat project\n12:00 - 19:32 Sequence-to-Sequence Model\n19:32 - 28:18 Meena Chatbot project\n28:30 - 33:17 What are you most excited about in terms of NLP future? \n33:18 - 38:56 Advice for someone build their careers in AI",
+    "view_count": 8258
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KGI7K_ehHsU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

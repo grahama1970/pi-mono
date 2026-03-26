@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e__FIlfpcBU",
+    "language": "en",
+    "took_ms": 9818,
+    "method": null,
+    "title": "Jason Healey - Building A More Defensible Cyberspace",
+    "channel": "S4 Events",
+    "upload_date": "20181107",
+    "duration_sec": 1384,
+    "description": "A recent report by the New York Cyber Task Force, with senior-level experts from across New York and elsewhere, drawn from finance, cybersecurity companies, former government, and academia, included recommendations that would help make it easier to defend cyberspace without sacrificing the utility, flexibility, and convenience that has made the Internet so essential to our economies and personal lives. This talk covers the report’s findings and recommendations on how to make cyberspace more defensible.\n\n\nWhat sets this report apart? The members of the NY Cyber Task Force started from a basic premise, that we need to give cyber defenders the advantage over attackers, and a strategy to do so, based on leverage: those innovations across technology, operational, and policy which grant the greatest advantage to the defender over attackers at the least cost and greatest scale. The task force then made recommendation to achieve leverage, based on lessons drawn from five decades of past innovations, laid out in a simple but rich graphic. The report brings new insights, such as even the best innovations have an expiration date, traveling a curve “from essential to albatross,” after which it is far costlier for defenders to implement than for attackers to circumvent. The report especially stresses the importance of operational innovations (such as information sharing and creation of new organizational structures like CERTs and CISOs) and policy innovations (as through new laws or executive orders) which can unlock further operational and technology innovations.",
+    "view_count": 217
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e__FIlfpcBU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

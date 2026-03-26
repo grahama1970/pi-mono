@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MJV5FQztfi4",
+    "language": "en",
+    "took_ms": 8829,
+    "method": null,
+    "title": "DEF CON 33 - Let AI Autogenerate Neural ASR Rules for OT Attacks via NLP - Mars Cheng & Jr Wei-Huang",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1324,
+    "description": "For those ambitious threat actors targeting on OT/ICS field, their actions invariably are highly intensity planed to produce successful hacking. By abusing multiple misconfigurations and benign OT-specific nature infrastructure to evade multiple layers of protection, they can stealthily control the factory’s essential assets from IT to OT fields. For example, according to Mandiant’s report, the Russian hacker group, Sandworm, abused OT-level LoTL (Living Off the Land) to disrupt power in Ukraine. The key to success is abusing those OT-specific protocols, techniques, and LOLBins which are difficult to detect as malicious by modern AV/EDR.\n\nIn this research, instead of detecting MALICIOUS, we propose a novel multimodal AI detection, Suspicious2Vec, which archives contextual comprehension on process integrity and suspicious behaviors of OT/ICS benign operation. We use the AI model on large-scale real-world factories, to create a baseline of universal nature OT-specific operating into numerical vectors and success filter in-the-wild anonymous abuse for attacks into malicious.\n\nFrom July 2023 to July 2024, our experiment whole year to received 2,000,000 data which were detected as unique suspicious techniques by 562+ human-written expert rules. We use the AI model to project those suspicious actions into numerical vectors by well-known word embedding methods, and also model all the suspicious behaviors from the OT + IT malware family from VirusTotal to generate a set of malware templates as neural ASR (Attack Surface Reduction) rules for detection, and success capture 12+ variant OT malware from 52,438 factory program files.",
+    "view_count": 120
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MJV5FQztfi4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

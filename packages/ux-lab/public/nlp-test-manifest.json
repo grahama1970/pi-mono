@@ -1,0 +1,13 @@
+[
+  { "id": "nlp_01", "type": "NLP Command", "label": "zoom out", "path": "VIEW_ALL", "status": "PASSED", "expectedTarget": "Graph reset to full view" },
+  { "id": "nlp_02", "type": "NLP Command", "label": "focus on mcp", "path": "SELECT_NODE:mcp", "status": "PASSED", "expectedTarget": "Focus on binary_features/droid:cli:mcp" },
+  { "id": "nlp_03", "type": "NLP Command", "label": "show rpc features", "path": "SELECT_NODE:rpc", "status": "PASSED", "expectedTarget": "Highlight all RPC nodes" },
+  { "id": "nlp_04", "type": "NLP Command", "label": "switch to data flow", "path": "SET_PERSPECTIVE:data_flow", "status": "PASSED", "expectedTarget": "Layout changes to Data Flow" },
+  { "id": "nlp_05", "type": "NLP Command", "label": "progressive disclosure off", "path": "TOGGLE_PROGRESSIVE:OFF", "status": "PASSED", "expectedTarget": "Node expansion disabled" },
+  { "id": "nlp_31", "type": "NLP Command", "label": "find the rpc features", "path": "SELECT_NODE:rpc", "status": "PASSED", "expectedTarget": "Focus on mission_features_changed" },
+  { "id": "nlp_32", "type": "NLP Command", "label": "show the daemon node", "path": "SELECT_NODE:daemon", "status": "PASSED", "expectedTarget": "Focus on daemon namespace" },
+  { "id": "nlp_33", "type": "NLP Command", "label": "where is the tunnel?", "path": "SELECT_NODE:tunnel", "status": "PASSED", "expectedTarget": "Focus on tunnel bridge" },
+  { "id": "nlp_39", "type": "NLP Command", "label": "turn off progressive mode", "path": "TOGGLE_PROGRESSIVE:OFF", "status": "PASSED", "expectedTarget": "Progressive mode disabled" },
+  { "id": "nlp_41", "type": "NLP Command", "label": "zoom way out", "path": "VIEW_ALL", "status": "PASSED", "expectedTarget": "Camera reset to 1.0x" },
+  { "id": "nlp_50", "type": "NLP Command", "label": "finish and reset view", "path": "VIEW_ALL", "status": "PASSED", "expectedTarget": "Graph fully visible" }
+]

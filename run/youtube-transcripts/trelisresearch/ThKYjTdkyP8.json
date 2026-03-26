@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ThKYjTdkyP8",
+    "language": "en",
+    "took_ms": 8692,
+    "method": null,
+    "title": "Fine Tune Flux Diffusion Models with Your Photos",
+    "channel": "Trelis Research",
+    "upload_date": "20240910",
+    "duration_sec": 3117,
+    "description": "➡️ Get Life-time Access to the Trelis Scripts (and future improvements): https://Trelis.com/ADVANCED-vision/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Ostris AI Github Repo for fine-tuning: https://github.com/ostris/ai-toolkit\n- FLUX Schnell model: https://huggingface.co/black-forest-labs/FLUX.1-schnell\n- Slides: https://docs.google.com/presentation/d/1M-PtcaL5E8j9_NUpoYi32Jsm4d6tgqtWxinR2tckNys/edit?usp=sharing\n\nTIMESTAMPS:\n0:00 Introduction to Fine-tuning Diffusion Models\n1:15 Video Overview\n2:28 Flux Schnell and Flux Dev Overview\n3:37 Picking a GPU for fine-tuning Flux\n5:30 Fine-tuning notebooks for diffusion models\n7:14 Installation\n9:00 Choosing photos for a training dataset\n12:45 Running inference before fine-tuning (generating images)\n14:25 Tips for running in Google Colab\n19:01 Running fine-tuning of Flux Schnell using LoRA\n29:58 Setting up tensorboard logging\n33:34 Inspecting the training results\n35:29 Generating images with your LoRA adapter\n39:06 Explaining how diffusion models like FLUX work\n39:40 Basic diffusion models\n42:00 Diffusion in “latent space”\n43:05 How Variational Autoencoders work\n46:35 FLUX model architecture - putting it all together (CLIP, T5, transformer, VAE)\n48:08 Diffusion steps, Model size, Noise Removal Approaches (Flow), Guided generation\n51:20 Video Resources (trelis.com/ADVANCED-vision)",
+    "view_count": 9972
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ThKYjTdkyP8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

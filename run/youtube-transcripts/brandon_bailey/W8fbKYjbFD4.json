@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W8fbKYjbFD4",
+    "language": "en",
+    "took_ms": 8812,
+    "method": null,
+    "title": "DEF CON 31 - Look Ma Im the CEO - Real Time Video and Audio Deep Fake -Gal Zror",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1253,
+    "description": "Hey you, yeah you! Do you want to become a big company CEO but are too lazy to invest your life in chasing that position?\n\nNow introducing DEFCON VIDEO-ART - DEep Fake CONversation for VIDEO and Audio in Real-Time! With DEFCON VIDEO-ART you can impersonate your favorite big-company CEO without doing the hard work! You can video call anyone in the company and tell them what to do because you look and sounds like the big boss! Reset passwords, ask for the latest confidential business reports, fire people, you name it!\n\nDeep fake has been around for years, but only recently we have reached a point where real-time deep fake has become easy and accessible to execute. Join my talk where I show how I impersonate my company's CEO with videos and audio I found online. Then I'll share how with open-source tools and a decent GPU you can also impersonate your company's CEO!",
+    "view_count": 2632
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W8fbKYjbFD4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

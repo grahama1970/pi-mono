@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JrMepLUPVns",
+    "language": "en",
+    "took_ms": 9087,
+    "method": null,
+    "title": "Keynote: Budget Reform for Biodefense: Coordination and Leadership",
+    "channel": "Hudson Institute",
+    "upload_date": "20170502",
+    "duration_sec": 808,
+    "description": "Keynote address by Max Brooks, Nonresident Fellow, Modern War Institute at West Point; Senior Resident Fellow, Art of Future Warfare Project, Brent Scowcroft Center on International Security, Atlantic Council; author of World War Z and The Harlem Hellfighters",
+    "view_count": 811
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JrMepLUPVns: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

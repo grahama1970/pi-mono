@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PxAQFQgrZVg",
+    "language": "en",
+    "took_ms": 9017,
+    "method": null,
+    "title": "LLM Tool Use - GPT4o-mini, Groq & Llama.cpp",
+    "channel": "Trelis Research",
+    "upload_date": "20240723",
+    "duration_sec": 4784,
+    "description": "➡️ Get Life-time Access to the ADVANCED-inference Repo (incl. notebooks in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Trelis Runpod Affiliate Link (supports the channel): https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1_aYqoGhI1yv9GdOM5lAgq3kQQnSk70mLkQkbVoPlE20/edit?usp=sharing\n- llama.cpp repo: https://github.com/ggerganov/llama.cpp/blob/master/docs/build.md\n- groq api: https://console.groq.com/docs/api-reference\n- openai api: https://platform.openai.com/docs/models/gpt-4o-mini\n- Phi-3 Mini 128k: https://huggingface.co/microsoft/Phi-3-mini-128k-instruct\n- Phi-3 Mini 4-bit GGUF: https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nTIMESTAMPS:\n0:00 Function Calling - Cheap, Fast, Local and Enterprise\n0:58 Video Overview\n2:48 Tool Use Flow Chart\n10:18 Function preparation tips\n13:08 Resources (trelis.com/ADVANCED-inference)\n14:36 Code walk-through for function / tool preparation\n23:50 Prompt preparation and Recursive tool use\n34:58 GPT4o-mini tool use performance\n37:29 Zero shot prompting and Runpod Phi-3 endpoint setup\n49:34 Phi-3 Mini Zero Shot Performance\n53:20 Parallel function calling with Phi-3\n59:43 Low latency tool use with Groq - Zero shot\n1:01:29 Groq Llama 3 8B Zero Shot Tool Use Performance\n1:03:11 Groq Llama 3 8B Fine-tune Performance\n1:05:42 Groq Llama 3 70B Fine-tune Performance\n1:06:50 Local Phi-3 Inference on a Mac with llama.cpp\n1:17:26 Final Tool Use Tips\n1:19:00 Resources",
+    "view_count": 3816
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PxAQFQgrZVg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

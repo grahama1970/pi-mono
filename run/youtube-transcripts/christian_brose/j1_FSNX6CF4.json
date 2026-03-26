@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "j1_FSNX6CF4",
+    "language": "en",
+    "took_ms": 8344,
+    "method": null,
+    "title": "Analysis of the Israel Hamas War",
+    "channel": "Hudson Institute",
+    "upload_date": "20231009",
+    "duration_sec": 3146,
+    "description": "Under the cover of heavy rocket fire, hundreds of terrorists belonging to Hamas and Palestinian Islamic Jihad invaded Israel from Gaza in the early hours of Saturday, October 7. They breached two security fences and stormed in by foot, jeep, motorcycle, and paraglider; yet they encountered virtually no resistance from the Israeli military. The terrorists murdered hundreds of civilians and left close to 2,000 wounded. They took an undisclosed number of soldiers and civilians captive, including women and children, who are being held in the Gaza Strip. The magnitude of the attack makes an Israeli ground incursion into Gaza a virtual certainty.\n\nJoin Hudson Senior Fellows Michael Doran, Jonathan Schachter, and Can Kasapoğlu for an analysis of these events.",
+    "view_count": 27961
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] j1_FSNX6CF4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

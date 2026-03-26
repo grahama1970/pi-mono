@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V4hti6UlCf0",
+    "language": "en",
+    "took_ms": 9843,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Jonathan Helmus -  Student Roadmap to Becoming a Pentester",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 3644,
+    "description": "This presentation will go through various steps on how students can bridge the gap between academia and becoming a penetration tester. This will include a breakdown of certifications to get, career fields to take on before getting in the industry, what to expect, and speed bumps and road blocks that students can expect to see in their journey.",
+    "view_count": 9131
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V4hti6UlCf0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

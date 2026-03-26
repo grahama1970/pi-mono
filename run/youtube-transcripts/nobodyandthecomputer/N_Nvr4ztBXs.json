@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N_Nvr4ztBXs",
+    "language": "en",
+    "took_ms": 8477,
+    "method": null,
+    "title": "Robort (A.I. Short Film)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20240416",
+    "duration_sec": 595,
+    "description": "To create this short film, I utilized AI extensively, but there's a significant amount of human effort and creativity behind it. It's not just about generating prompts and producing a film—far from it.\n\nThe idea for the film was entirely human. I don't believe AI can come up with great story ideas on its own, so I didn't use AI for the initial idea phase. I wrote the basic outline of the script without any AI assistance. Once the story was clear, I started developing the characters. Through trial and error with text-to-image generators, I created Robert, the main character, the robots with their retrofuturistic look, and the rest of the characters.\n\nAs I polished the script, I used AI as a creative collaborator for specific tasks. For example, I used AI to rewrite dialogues to match specific eras, styles, or tones—especially the lines for the robots.\n\nInstead of traditional methods involving cameras, real actors, musicians, and sound designers, etc, I used AI to generate the images, convert those images to video, create the voices, generate the music and the sound effects. Everything you see and hear was generated using generative AI.\n\nThink of this as a new genre of filmmaking. It's not meant to replace traditional films but to exist alongside them, much like animated films. AI will not replace humans; it's a tool that, in this case, made it possible for a story imagined by a human to become a short film. Without AI, this film might never have existed. The story I envisioned is now available for you to see, thanks to AI.\n_________________________________________________________________________________________________\n\nSet in a future where robots have taken over significant roles in society, the film centers on Robert, a once-aspiring singer who has settled into a life as an accountant. As robots become increasingly integrated into everyday life, Robert finds himself out of a job, without a girlfriend, and separated from his band. In a bold move to reclaim his passion for music, he disguises himself as ROBORT, a robot singer, and quickly rises to fame. However, when his true identity as a human is revealed, it sparks a resurgence of interest in human musicians, making Robert an unexpected hero. The film tells a story of resilience, identity, and the human spirit amidst the rise of technology.\n\n↪ Join the Nobodies Collective:\nhttps://www.patreon.com/NobodyandTheComputer\n\n↪ contact me: \nnobodyandthecomputer@gmail.com\nhttps://www.instagram.com/nobodyandthecomputer/\nhttps://twitter.com/NobodyComputer",
+    "view_count": 272854
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N_Nvr4ztBXs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

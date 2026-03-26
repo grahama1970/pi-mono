@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W_NS2wqsjmM",
+    "language": "en",
+    "took_ms": 2718,
+    "method": null,
+    "title": "Necessary Secrets",
+    "channel": "Hudson Institute",
+    "upload_date": "20141219",
+    "duration_sec": 5502,
+    "description": "Hudson Institute book discussion featuring a keynote address by General Michael Hayden and author Gabriel Schoenfeld. Additional comments by Steve Aftergood and Benjamin Wittes. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 216
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W_NS2wqsjmM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

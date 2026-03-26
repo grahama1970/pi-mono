@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g1Jg_zqT9lE",
+    "language": "en",
+    "took_ms": 8733,
+    "method": null,
+    "title": "Can the P5+1’s Vienna Deal Prevent an Iranian Nuclear Breakout?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150728",
+    "duration_sec": 4937,
+    "description": "Senator Tom Cotton, William Tobey, Michael Doran and Hillel Fradkin  talk Iran Deal in a discussion moderated by Lee Smith.",
+    "view_count": 1326
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g1Jg_zqT9lE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

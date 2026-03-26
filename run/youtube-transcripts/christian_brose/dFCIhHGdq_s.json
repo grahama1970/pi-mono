@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dFCIhHGdq_s",
+    "language": "en",
+    "took_ms": 9227,
+    "method": null,
+    "title": "The Phantom of the Broadcast Spectrum Policy Opera",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 4118,
+    "description": "One of the most valuable swaths of underdeveloped spectrum is currently allocated for television broadcasting. The Federal Communications Commission (FCC) now has plans to reallocate parts of that spectrum for mobile broadband purposes and to auction the spectrum to the public. Congress last week passed legislation that would give the FCC the authority it needs to implement its specific plan.  The legislation has reignited the debate over broadcast spectrum and how to structure FCC auctions. Pro",
+    "view_count": 14
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dFCIhHGdq_s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

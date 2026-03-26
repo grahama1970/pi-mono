@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G3DIOjTmX0M",
+    "language": "en",
+    "took_ms": 7895,
+    "method": null,
+    "title": "\"Fighting to the End: The Pakistan Army's Way of War\"",
+    "channel": "Hudson Institute",
+    "upload_date": "20140528",
+    "duration_sec": 5229,
+    "description": "To discuss Fighting to the End in the context of Pakistan, its army, and the U.S.-Pakistan relationship, Hudson Institute will host a book talk with Dr. C. Christine Fair, assistant professor in the Peace and Securities Studies program at Georgetown University's Edmund A. Walsh School of Foreign Service. Hudson Senior Fellow and former Ambassador of Pakistan to the United States Husain Haqqani will moderate the event. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 383708
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G3DIOjTmX0M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

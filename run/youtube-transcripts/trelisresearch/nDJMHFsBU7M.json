@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nDJMHFsBU7M",
+    "language": "en",
+    "took_ms": 8350,
+    "method": null,
+    "title": "Run Llama 2 on your Laptop with Jupyter",
+    "channel": "Trelis Research",
+    "upload_date": "20230818",
+    "duration_sec": 641,
+    "description": "Install, run and chat with Llama 2 on your Mac or Windows laptop, using llama.cpp and Jupyter Lab.\n\n*Update*\n- Running on a Mac M1 (or M2) works quite well. Token generation is fast.\n- Video for Windows and Mac with an Intel chip is here: https://youtu.be/mxzxIa5yuXc\n\n*DIY Approach*\n- Installing Jupyter Lab: https://github.com/TrelisResearch/install-guides/blob/main/jupyter-lab-setup.md\n- Installing llama.cpp: https://github.com/TrelisResearch/install-guides/blob/main/llama-cpp-setup.md\n\n*Purchase Jupyter Llama for Laptop*\nA Chat Assistant built on Llama 2.\n- Automated install (for Mac, Windows coming soon)\n- Save and re-load chats.\n- Upload pdf or text files for analysis.\n- Search Bing (beta).\n- Add custom functions (beta).\n- Get access for €9.99 ($10.99): https://buy.stripe.com/dR65l6f4p95V7AI6oA.\n\nFind Trelis at https://huggingface.co/Trelis\n\n00:00 Introduction\n00:27 Installing JupyterLab\n01:22 Creating a Virtual Environment\n02:18 Activating the Environment, Installing ipykernel\n02:57 Starting JupyterLab\n03:56 Running All Cells\n05:49 Downloading the Language Model\n07:30 Speed or Long Context Length\n08:05 Chatting with Jupyter Llama",
+    "view_count": 5114
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nDJMHFsBU7M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

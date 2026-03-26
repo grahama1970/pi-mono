@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Be8BM3wNNc0",
+    "language": "en",
+    "took_ms": 7516,
+    "method": null,
+    "title": "Multi modal Audio + Text Fine tuning and Inference with Qwen",
+    "channel": "Trelis Research",
+    "upload_date": "20241126",
+    "duration_sec": 3390,
+    "description": "➡️ Qwen Audio Colab Notebook: https://colab.research.google.com/drive/18Owz_xvmZ3oO3PbR8o94KcsGBBdEEtcj?usp=sharing\n➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-transcription/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO RESOURCES:\nSlides: https://docs.google.com/presentation/d/1djNIaMCcDRBuMj-GPX5TClMn03gZjMpsArixedR_MCo/edit?usp=sharing\n- Dataset: https://huggingface.co/datasets/Trelis/bird-songs\n- Qwen Audio paper: https://arxiv.org/abs/2407.10759\n\nTIMESTAMPS:\n00:00 - Introduction to multimodal audio plus text models\n00:40 - Overview of Qwen 2 Audio model capabilities and applications\n01:20 - Technical details of the Qwen 2 Audio model architecture\n02:52 - Benefits of integrated multimodal model vs separate models\n03:59 - Applications and use cases\n06:05 - Key advantages of the integrated model\n07:17 - Specific applications:\n- Customer support voice assistants\n- Transcription with emotion detection\n- Sound/acoustic analysis\n- Audio + text assisted transcription\n- Zero-shot transcription\n08:16 - Introduction to LoRA fine-tuning approach\n09:22 - Google Colab implementation walkthrough\n10:31 - Model loading and configuration\n12:42 - Testing audio processing capabilities\n15:24 - Audio input examples and testing\n17:21 - Dataset preparation for fine-tuning\n19:01 - Detailed data collation process\n24:44 - Processing audio and text inputs\n29:28 - Setting up the data collator\n35:31 - Training configuration and LoRA setup\n42:42 - Training process and hyperparameters\n47:50 - VLLM inference setup\n51:58 - Production deployment considerations\n54:24 - Fine-tuning results and analysis\n55:44 - Conclusion and summary",
+    "view_count": 5790
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Be8BM3wNNc0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

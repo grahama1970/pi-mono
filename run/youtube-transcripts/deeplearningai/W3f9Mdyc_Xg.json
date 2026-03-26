@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W3f9Mdyc_Xg",
+    "language": "en",
+    "took_ms": 8082,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Hatice Ozen: Build a Deep Research Agent with One API Call",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 1844,
+    "description": "Hatice Ozen, Head of Developer Relations at Groq, showcased how to build a deep research agent with one API call.\n\nAI agents today require complex orchestration: managing state, routing tools, handling retries, and coordinating multiple LLM calls, all while fighting latency at every step. \n\nIn this hands-on workshop, Hatice and the audience built a sophisticated deep research agent using Groq's compound system: web search, code execution, and multi-step reasoning in a single API call with zero orchestration code. Attendees saw how instant inference enables intelligent server-side orchestration and walk away knowing when to use direct APIs vs. frameworks.\n\n------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai",
+    "view_count": 835
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W3f9Mdyc_Xg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

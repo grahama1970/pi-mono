@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fjTvgPM0Tf0",
+    "language": "en",
+    "took_ms": 8159,
+    "method": null,
+    "title": "DEF CON 30 - Thijs Alkemade - Process injection: breaking all macOS security layers w/a single vuln",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2359,
+    "description": "macOS local security is shifting more and more to the iOS model, where every application is codesigned, sandboxed and needs to ask for permission to access sensitive data. New security layers have been added to make it harder for malware that has gained a foothold to compromise the user's most sensitive data. Changing the security model of something as large and established as macOS is a long process, as it requires many existing parts of the system to be re-examined. For example, creating a security boundary between applications running as the same user is a large change from the previous security model.\n\nCVE-2021-30873 is a process injection vulnerability we reported to Apple that affected all macOS applications. This was addressed in the macOS Monterey update, but completely fixing this vulnerability requires changes to all third-party applications as well. Apple has even changed the template for new applications in Xcode to assist developers with this.\n\nIn this talk, we'll explain what a process injection vulnerability is and why it can have critical impact on macOS. Then, we'll explain the details of this vulnerability, including how to exploit insecure deserialization in macOS. Finally, we will explain how we exploited it to escape the macOS sandbox, elevate our privileges to root and bypass SIP.",
+    "view_count": 1969
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fjTvgPM0Tf0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

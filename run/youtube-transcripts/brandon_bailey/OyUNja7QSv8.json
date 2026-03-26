@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OyUNja7QSv8",
+    "language": "en",
+    "took_ms": 8069,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - When Insiders Are the Threat - Burbank, Greenhalgh, Marks, Jefferson",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 3477,
+    "description": "Recent news accounts have reported that representatives of the Trump administration are seeking extralegal access to voting equipment. This latest effort mirrors a multi-state scheme, carried out from 2020-2022, by allies of Donald Trump that successfully accessed voting machines in Colorado, Georgia, Michigan, and Pennsylvania and obtained copies of the voting system software. This discussion will outline what is known about multistate plot, what we know (and don’t know) about the status and the purloined software, and what this could mean for elections in the future.",
+    "view_count": 477
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OyUNja7QSv8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

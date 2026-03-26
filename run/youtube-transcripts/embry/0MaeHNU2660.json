@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0MaeHNU2660",
+    "language": "en",
+    "took_ms": 9328,
+    "method": null,
+    "title": "Why have SpaceX, Boeing & Blue Origin ditched abort towers?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190425",
+    "duration_sec": 1167,
+    "description": "Want an article version of this video? Here you go! https://everydayastronaut.com/abort-towers/\n\nThere’s a new trend going around in the commercial space industry when it comes to launch abort systems. All three commercial companies who are putting abort systems on their crewed vehicles have ditched the classic launch abort tower we’ve seen dominate abort systems in the past.\n\nPrevious vehicles like the Mercury capsule, the Apollo capsule and even the Soyuz all used an escape tower that sat on top of the crew module, capable of pulling the vehicle away from a failing rocket in a hurry.\n\nAnd to make this topic even more interesting, we’re seeing another trend in abort systems... SpaceX’s Crew Dragon and Boeing’s Starliner capsules both are using liquid fueled abort motors instead of solid rocket motors.\n\nSo today we’re going to talk about the design considerations that have made SpaceX, Boeing and Blue Origin ditch abort towers on their crewed vehicles and we’re also going to evaluate why the heck Boeing and SpaceX are going with liquid motors instead of solid motors. \n\nAnd with both Boeing and SpaceX having experienced serious setbacks and complications with their liquid fueled abort systems, including the loss of a test vehicle, it raises the question… is it even a good idea?....\n\n------------------------------\n\n\"How SpaceX and Boeing will get Astronauts to the ISS\" - https://youtu.be/RqLNIBAroGY\n\n\"Why aborting from Gemini may have likely killed you \" - https://youtu.be/5IRdZjjq1Ik\n\n\"Why does SpaceX's new Dragon 2 have fins on it?\" - https://youtu.be/e2gy6of2yaQ \n\nShow your support by becoming a Patreon member - http://patreon.com/everydayastronaut\nThis video had four \"Moon Walkers\" who helped make this possible - Blake Jacobs, Mac Malkawi, Eli Burton and Ole Mathias Aarseth Heggem.\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 2534794
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0MaeHNU2660: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

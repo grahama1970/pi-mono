@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P7KIOJ_6dNw",
+    "language": "en",
+    "took_ms": 9106,
+    "method": null,
+    "title": "How to Fine tune with Custom Compute Metrics",
+    "channel": "Trelis Research",
+    "upload_date": "20250820",
+    "duration_sec": 50,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-fine-tuning\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Fine-tuning Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1yTWgo8t0IvAa67gDalJRLoQkDzPKc0TN6Z_pK4wSm-4/edit?usp=sharing\n\nTIMESTAMPS:\n00:00 Introduction to Tracking Loss in Model Training\n00:50 Understanding Custom Metrics\n01:22 Teacher Forced vs. Auto Regressive Decoding\n01:32 Training vs. Inference Libraries\n01:43 Options for Computing Custom Metrics\n02:00 Challenges with Custom Metrics\n03:44 Teacher Forced Decoding Explained\n05:55 Auto Regressive Decoding Explained\n08:19 Combining Training and Inference\n09:22 Implementing Custom Metrics in Training\n09:31 GRPO and Custom Metrics\n12:11 Memory Management in Custom Metrics\n15:44 Practical Demonstration: Setting Up the Environment\n18:05 Loading and Training the Model\n26:14 Setting Up the Training and Evaluation Dataset\n26:31 Formatting the Data for Training\n27:35 Custom Optimizer Setup\n28:03 Loading and Printing Trainable Parameters\n29:30 Fine-Tuning the Model\n30:03 Custom Prediction Step and Metrics\n31:42 Auto Aggressive Decoding and Evaluation\n46:40 Handling Memory and GPU Utilization\n49:55 Conclusion and Resources",
+    "view_count": 1762
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P7KIOJ_6dNw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

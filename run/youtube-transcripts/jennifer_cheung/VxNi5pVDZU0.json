@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VxNi5pVDZU0",
+    "language": "en",
+    "took_ms": 9235,
+    "method": null,
+    "title": "DEF CON 29 - Tomer Bar, Eran Segal - 2021 Our Journey Back To The Future Of Windows Vulnerabilities",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2536,
+    "description": "In 2020, security researchers reported a record number of Windows vulnerabilities. We were curious what superpowers will we get from researching this huge number of vulnerabilities? Can we leverage our findings to discover 0-days?\n\nWe decided to go back in time to 2016 to search for patterns and automatically classify all the public vulnerabilities since then. We believed that only by connecting the dots to a bigger picture, we will be able to come back 2021 with the success of achieving our goal.\n\nWe adopted a new approach, in terms of both the goal and how to get there. Until now, the main goal of patch-diff was focused on the root cause of the vulnerability and building a 1-day to exploit it Usually patch-diff was done manually on a single patch.\n\nWe reached higher for the holy grail. We understood that in order to find 0-days we needed to build an automated process that would gather all the insights from all the patches in a single, searchable db.\n\nIt worked! We discovered the root causes of multiple classes of vulnerabilities. We used these discoveries on a fully patched Windows 10 host in order to highlight opportunities for exploitation. As a consequence, we found and reported (1) 6 information disclosure vulnerabilities to Microsoft, (2) 2 post exploitation techniques allowing covert exfiltration of private user data, and (3) an additional surprise.\n\nIn this presentation, we'll describe our research process, demonstrate a live exploitation of the vulnerabilities we found, share the tools we developed, and explain how other researchers can use it to discover 0-days.",
+    "view_count": 9207
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VxNi5pVDZU0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

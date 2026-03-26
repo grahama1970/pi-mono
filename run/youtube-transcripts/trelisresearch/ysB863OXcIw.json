@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ysB863OXcIw",
+    "language": "en",
+    "took_ms": 8931,
+    "method": null,
+    "title": "LLM Security 101: Jailbreaks, Prompt Injection Attacks, and Building Guards",
+    "channel": "Trelis Research",
+    "upload_date": "20240815",
+    "duration_sec": 5234,
+    "description": "➡️ Get Life-time Access to the ADVANCED-inference Repo (incl. inference scripts in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1El97CDR_BZuM4f0G5oAhJPcqNP6xUU7Zi0H-lzjfZHs/edit?usp=sharing\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nTIMESTAMPS:\n0:00 LLM Security Risks\n0:55 Video Overview\n6:16 Resources and Scripts\n8:11 Installation and Server Setup\n12:37 Jailbreak attacks to avoid Safety Guardrails\n21:05 Detecting jailbreak attacks\n22:24 Llama Guard and its prompt template\n27:11 Llama Prompt Guard\n28:40 Testing Jailbreak Detection\n35:58 Testing for false positives with Llama Guard\n40:00 Off-topic Requests\n50:34 Prompt Injection Attacks (Container escape, File access / deletion, DoS)\n1.05:27 Detecting Injection Attacks with a Custom Guard\n1:10:00 Preventing Injection Attacks via User Authentication\n1:1037 Using Prepared Statements to avoid SQL Injection Attacks\n1:11:47 Response Sanitisation to avoid Injection Attacks\n1:12:58 Malicious Code Attacks\n1:14:07 Building a custom classifier for malicious code\n1:15:57 Using Codeshield to detect malicious code\n1:16:53 Malicious Code Detection Performance\n1:20:40 Effect of Guards/shields on Response Time / Latency\n1:25:12 Final Tips\n1:26:59 Resources",
+    "view_count": 1935
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ysB863OXcIw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

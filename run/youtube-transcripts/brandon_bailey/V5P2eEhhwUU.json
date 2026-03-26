@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V5P2eEhhwUU",
+    "language": "en",
+    "took_ms": 8831,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Ross and Balazs - MIPS X the Next IoT Frontier",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 2002,
+    "description": "IoT vulnerability research usually involves both static and dynamic analysis of the target device. To aid in this task, researchers typically perform some sort of emulation to enumerate the filesystem as well as run the respective binaries. Luckily, there are tools like QEMU and/or Buildroot to guide our path on the way, but this does not mean the way is smooth.\n\nOur main goal was to create a framework and documentation suitable for MIPS (LE/BE) device research, which can be used in a Dockerized environment to set up as many emulated IoT devices as desired. The goal was to create the least amount of pain and effort to set up the emulation infrastructure. This means, you will have a target MIPS architecture virtual machine running natively with all the binaries, full network stack, debugging tools, and other useful tools. Let the pwning begin!",
+    "view_count": 722
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V5P2eEhhwUU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

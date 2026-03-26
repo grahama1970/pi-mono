@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m_dNwtoxqd8",
+    "language": "en",
+    "took_ms": 8020,
+    "method": null,
+    "title": "New course: Semantic Caching for AI Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251119",
+    "duration_sec": 93,
+    "description": "Learn more: https://bit.ly/44btwJY\n\nJoin our new short course, Semantic Caching for AI Agents! Learn from Tyler Hutcherson, Applied AI Engineering Lead, and Iliya Zhechev, Senior Research Engineer at Redis.\n\nIn this course, you'll build a semantic cache that makes your AI agents faster and more cost-effective by recognizing when different questions mean the same thing. For example, when someone asks \"How do I get a refund?\" and another asks \"I want my money back,\" your cache will reuse the answer instead of making another API call, reducing the need for redundant model calls.\n\nIn detail, you'll learn to: \n\n- Build your first semantic cache from scratch - Build a working cache to see how each component works, then implement it using Redis' open source tools.\n- Measure cache effectiveness with key metrics - Track cache hit rate, precision, recall, and latency to understand your cache's real impact.\n- Enhance cache accuracy with advanced techniques - Use threshold tuning, cross-encoders, LLM validation, and fuzzy matching to make your cache more effective.\n- Build a fast AI agent with semantic caching - Integrate semantic caching into an AI agent that reuses results, skips redundant work, and gets faster over time.\n\nStart building AI agents that respond faster and cost less to run.\n\nEnroll now: https://bit.ly/44btwJY",
+    "view_count": 2613
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m_dNwtoxqd8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

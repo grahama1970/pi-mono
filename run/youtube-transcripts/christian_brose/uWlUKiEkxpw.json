@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uWlUKiEkxpw",
+    "language": "en",
+    "took_ms": 8774,
+    "method": null,
+    "title": "A Conversation with Millennium Challenge Corporation CEO Sean Cairncross",
+    "channel": "Hudson Institute",
+    "upload_date": "20200507",
+    "duration_sec": 1635,
+    "description": "Join Hudson Institute for a conversation with Millennium Challenge Corporation (MCC) CEO Sean Cairncross on how the agency is implementing unique approaches to security and stability through economic empowerment.\n\nWhat is MCC doing to ensure strong economic security and stability abroad? How are MCC’s strategic plan and goals being fulfilled across the globe, and does it offer an alternative to the Chinese model of development? Amid the COVID-19 outbreak, what new challenges have emerged to fulfilling MCC’s core objective of “reducing poverty through economic growth?”",
+    "view_count": 894
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uWlUKiEkxpw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

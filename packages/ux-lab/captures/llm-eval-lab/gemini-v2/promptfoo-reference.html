@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIS LLM Eval Lab</title>
+    <!-- Google Fonts for Inter (primary) and Roboto Mono (monospace for data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for NVIS Dark Theme */
+        :root {
+            --bg: #0b1220;
+            --surface: #111827;
+            --border: #1e293b;
+            --text: #e2e8f0;
+            --dim-text: #94a3b8;
+            --accent: #7c3aed;
+            --pass-color: #00ff88;
+            --fail-color: #ff4444;
+            --partial-color: #fbbf24;
+            --pass-bg: rgba(0, 255, 136, 0.1); /* Lighter background for badges */
+            --fail-bg: rgba(255, 68, 68, 0.1);
+            --partial-bg: rgba(251, 191, 36, 0.1);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex; /* For sidebar and main content layout */
+            min-height: 100vh;
+            font-size: 0.875rem; /* 14px base font size */
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .monospace {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        /* Layout */
+        .sidebar {
+            width: 200px;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Increased gap for better spacing */
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+            max-width: calc(1400px - 200px); /* Total width 1400px, sidebar 200px */
+            margin: 0 auto; /* Center the main content if viewport is wider than 1200px */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Sidebar Elements */
+        .sidebar label {
+            color: var(--dim-text);
+            font-size: 0.75rem; /* 12px */
+            margin-bottom: 0.5rem; /* Increased margin */
+            display: block;
+            font-weight: 500;
+        }
+
+        .sidebar select,
+        .sidebar input[type="range"],
+        .sidebar button {
+            width: 100%;
+            padding: 0.625rem 0.75rem; /* 10px vertical padding */
+            border: 1px solid var(--border);
+            border-radius: 0.375rem; /* 6px */
+            background-color: var(--bg); /* Darker background for inputs */
+            color: var(--text);
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sidebar select:focus,
+        .sidebar input[type="range"]:focus,
+        .sidebar button:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+        }
+
+        .sidebar select {
+            appearance: none; /* Remove default arrow */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2394a3b8'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1em;
+            padding-right: 2.5rem; /* Make space for the custom arrow */
+            cursor: pointer;
+        }
+
+        .sidebar input[type="range"] {
+            padding: 0; /* Override default padding */
+            height: 2rem; /* Make it visually taller */
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent; /* Hide default track */
+            cursor: pointer;
+        }
+
+        /* Custom track for range slider */
+        .sidebar input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 0.25rem;
+            background: var(--border);
+            border-radius: 0.125rem;
+        }
+
+        .sidebar input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 0.25rem;
+            background: var(--border);
+            border-radius: 0.125rem;
+        }
+
+        /* Custom thumb for range slider */
+        .sidebar input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 1rem;
+            width: 1rem;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            margin-top: -0.375rem; /* Center thumb vertically on track */
+            box-shadow: 0 0 0 2px var(--bg); /* Add a subtle border */
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sidebar input[type="range"]::-moz-range-thumb {
+            height: 1rem;
+            width: 1rem;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 0 2px var(--bg);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .sidebar input[type="range"]::-webkit-slider-thumb:hover,
+        .sidebar input[type="range"]::-moz-range-thumb:hover {
+            background-color: #6a2ecb; /* Slightly darker accent */
+        }
+
+        .sidebar button {
+            background-color: var(--accent);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 0.5rem;
+            border-color: var(--accent); /* Consistent border color */
+        }
+
+        .sidebar button:hover {
+            background-color: #6a2ecb; /* Slightly darker accent */
+            border-color: #6a2ecb;
+        }
+
+        .sidebar .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* Adjust gap for slider and text */
+        }
+        .sidebar .slider-group span {
+            color: var(--text);
+            font-weight: 500;
+            width: 2.75rem; /* Fixed width for percentage display */
+            text-align: right;
+            font-size: 0.875rem;
+        }
+
+        /* Table Styles */
+        .eval-table {
+            width: 100%;
+            border-collapse: separate; /* For rounded corners on cells */
+            border-spacing: 0;
+            background-color: var(--surface);
+            border-radius: 0.5rem;
+            overflow: hidden; /* Ensures rounded corners are visible */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .eval-table th,
+        .eval-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .eval-table th:last-child,
+        .eval-table td:last-child {
+            border-right: none;
+        }
+
+        .eval-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .eval-table thead th {
+            background-color: var(--surface);
+            font-weight: 600;
+            color: var(--dim-text);
+            position: sticky; /* Sticky headers */
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Styling for the first row of headers (Test Details / Model Names) */
+        .eval-table thead tr:first-child th {
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Styling for the second row of headers (Test Case / Expected / Model Pass Rates) */
+        .eval-table thead tr:nth-child(2) th {
+             padding-top: 0.5rem;
+             padding-bottom: 0.75rem;
+             font-weight: 500;
+             color: var(--text);
+             background-color: var(--surface); /* Ensure background */
+             border-bottom: 1px solid var(--border);
+        }
+
+        /* Specific styling for the Test Case and Expected headers in the second row */
+        .eval-table thead tr:nth-child(2) th:first-child,
+        .eval-table thead tr:nth-child(2) th:nth-child(2) {
+            color: var(--dim-text);
+            font-weight: 600;
+            font-size: 0.8125rem; /* 13px */
+        }
+
+        .eval-table .model-header {
+            text-align: center;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9375rem; /* 15px */
+            margin-bottom: 0.25rem;
+        }
+        .eval-table .model-pass-rate {
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.8125rem; /* 13px */
+            color: var(--dim-text);
+        }
+
+        .eval-table .test-case-name {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9375rem; /* 15px */
+        }
+
+        .eval-table .expected-tags {
+            color: var(--dim-text);
+            font-size: 0.8125rem; /* 13px */
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.375rem; /* 6px */
+            font-weight: 600;
+            font-size: 0.75rem; /* 12px */
+            line-height: 1;
+            white-space: nowrap;
+            border: 1px solid transparent; /* Base border for consistency */
+        }
+
+        .badge.pass {
+            background-color: var(--pass-bg);
+            color: var(--pass-color);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .badge.fail {
+            background-color: var(--fail-bg);
+            color: var(--fail-color);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+
+        .badge.partial {
+            background-color: var(--partial-bg);
+            color: var(--partial-color);
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .cell-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            align-items: flex-start; /* Align badges and text to the left */
+        }
+
+        .cell-details {
+            color: var(--dim-text);
+            font-size: 0.75rem; /* 12px */
+        }
+
+        /* Totals row */
+        .eval-table .totals-row td {
+            font-weight: 600;
+            color: var(--text);
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            font-size: 0.9375rem; /* 15px */
+        }
+        .eval-table .totals-row td:nth-child(n+3) { /* Center total counts for model columns */
+            text-align: center;
+        }
+        .eval-table .totals-row .pass-rate-total {
+            font-weight: 500;
+            color: var(--dim-text);
+            margin-left: 0.25rem;
+        }
+
+        /* Recommended Banner */
+        .recommended-banner {
+            background-color: var(--pass-bg);
+            color: var(--pass-color);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem; /* 16px */
+            text-align: center;
+            margin-top: 1.5rem;
+            border: 1px solid var(--pass-color); /* Add a border for emphasis */
+            box-shadow: 0 2px 4px rgba(0, 255, 136, 0.15);
+        }
+
+        /* Utility classes for text colors */
+        .text-dim { color: var(--dim-text); }
+        .text-accent { color: var(--accent); }
+        .text-pass { color: var(--pass-color); }
+        .text-fail { color: var(--fail-color); }
+        .text-partial { color: var(--partial-color); }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <label for="groundTruth">Ground truth</label>
+            <select id="groundTruth">
+                <option value="taxonomy_demo">taxonomy (demo)</option>
+                <option value="option1">Ground Truth Set 1</option>
+                <option value="option2">Ground Truth Set 2</option>
+            </select>
+        </div>
+        <div>
+            <label for="threshold">Threshold</label>
+            <div class="slider-group">
+                <input type="range" id="threshold" min="0" max="100" value="75">
+                <span id="thresholdValue">75%</span>
+            </div>
+        </div>
+        <button>Run</button>
+    </div>
+
+    <div class="main-content">
+        <table class="eval-table">
+            <thead>
+                <tr>
+                    <!-- Header for Test Case Name and Expected columns -->
+                    <th colspan="2" style="width: 25%;"></th>
+                    <!-- Model Headers with Pass Rates -->
+                    <th style="width: 25%;">
+                        <div class="model-header">qwen3:1.7b</div>
+                        <div class="model-pass-rate text-fail">25% passing (0/3)</div>
+                    </th>
+                    <th style="width: 25%;">
+                        <div class="model-header">qwen2.5-coder:7b</div>
+                        <div class="model-pass-rate text-partial">67% passing (2/3)</div>
+                    </th>
+                    <th style="width: 25%;">
+                        <div class="model-header">qwen3:8b</div>
+                        <div class="model-pass-rate text-pass">100% passing (3/3)</div>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 12.5%;">Test Case</th>
+                    <th style="width: 12.5%;">Expected</th>
+                    <th></th> <!-- Empty headers for model columns to align with specific data cells -->
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="test-case-name">T1547.001 Registry Run Keys</td>
+                    <td><span class="expected-tags monospace">Corruption, Persist</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge fail">FAIL</span>
+                            <span class="cell-details text-dim">no tags predicted</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge pass">PASS</span>
+                            <span class="cell-details text-pass monospace">Corruption, Persist</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge pass">PASS</span>
+                            <span class="cell-details text-pass monospace">Corruption, Persist</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="test-case-name">SI-2 Flaw Remediation</td>
+                    <td><span class="expected-tags monospace">Resilience, Fragility, Harden</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge fail">FAIL</span>
+                            <span class="cell-details text-dim monospace">predicted Resilience only</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge partial">PARTIAL</span>
+                            <span class="cell-details text-partial monospace">predicted Resilience, Harden</span>
+                            <span class="cell-details text-dim">(missing Fragility)</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge pass">PASS</span>
+                            <span class="cell-details text-pass monospace">Resilience, Fragility, Harden</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="test-case-name">d3f:NetworkIsolation</td>
+                    <td><span class="expected-tags monospace">Resilience, Isolate</span></td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge fail">FAIL</span>
+                            <span class="cell-details text-dim monospace">predicted Isolate only</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge pass">PASS</span>
+                            <span class="cell-details text-pass monospace">Resilience, Isolate</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="cell-content">
+                            <span class="badge pass">PASS</span>
+                            <span class="cell-details text-pass monospace">Resilience, Isolate</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="totals-row">
+                    <td colspan="2">Totals</td>
+                    <td>
+                        0/3 <span class="pass-rate-total text-fail">(0%)</span>
+                    </td>
+                    <td>
+                        2/3 <span class="pass-rate-total text-partial">(67%)</span>
+                    </td>
+                    <td>
+                        3/3 <span class="pass-rate-total text-pass">(100%)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="recommended-banner">
+            RECOMMENDED: qwen3:8b (8B, local) — 100% accuracy, threshold 75%
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to update the threshold value display dynamically
+        const thresholdSlider = document.getElementById('threshold');
+        const thresholdValueSpan = document.getElementById('thresholdValue');
+
+        thresholdSlider.addEventListener('input', (event) => {
+            thresholdValueSpan.textContent = `${event.target.value}%`;
+        });
+    </script>
+</body>
+</html>

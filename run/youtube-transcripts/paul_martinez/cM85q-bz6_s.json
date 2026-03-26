@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cM85q-bz6_s",
+    "language": "en",
+    "took_ms": 8916,
+    "method": null,
+    "title": "Serial Killers: Ethernet/Serial Gateways Exposed",
+    "channel": "S4 Events",
+    "upload_date": "20161025",
+    "duration_sec": 2078,
+    "description": "One of the nastiest aspects of the attack on the Ukrainian Electric Distribution System was bricking the Moxa Ethernet-to-Serial gateways. Industry insiders have known this was a problem, and Reid goes over the timeline when it was disclosed to Moxa prior to Ukraine, their public promise to fix it by August 2016, and the continued inaction.\n\nAs you can tell by the thumbnail picture, Ethernet-to-Serial gateways commonly used in SCADA and other ICS are easily compromised in a variety of ways. Reid Wightman dives into the details in models from Moxa, Digi, Lantronix and GridConnect. It's likely other models are just as bad.\n\nThe technical aspects of this session, while detailed, hardly taxed Reid's skills and are no way showing off elite ICS offensive techniques. Rather it's the typical insecure by design, insecure proprietary protocols, and poor coding and design practices. We actually would not include a session like this in Stage 2: Technical Deep Dives in Miami Beach. It's too basic.\n\nThe main reasons to watch this video are:\n\n1) The classic vendor responses to vulnerabilities. Everything from no response, unmet promises, and the classic the device was never meant to be secure ... live with it ... we won't tell people it is insecure and continue to sell it.\n\n2) To think about how this quite simple, widely deployed device is so perfectly positioned for attackers. It is required for monitoring and control communications to serial PLC's, RTU's and controllers. And it is like the printer on the corporate network. It is a great place to hide attack code and achieve persistence even after the computers in the ICS are cleaned. From the attackers perspective an insecure device that has no cyber maintenance or monitoring is very appealing.",
+    "view_count": 1298
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cM85q-bz6_s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

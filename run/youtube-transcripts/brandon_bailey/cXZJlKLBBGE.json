@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cXZJlKLBBGE",
+    "language": "en",
+    "took_ms": 9105,
+    "method": null,
+    "title": "DEF CON 33 - RATs & Socks abusing Google Services - Valerio 'MrSaighnal' Alessandroni",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 958,
+    "description": "This talk revisits Google Calendar RAT (GCR), a proof-of-concept released in 2023 by the speaker, demonstrating how Google Calendar can be abused for stealthy Command&Control (C2) communication. A similar technique was recently observed in the wild, used by the APT41 threat group during a real-world campaign, which highlights the growing interest in abusing trusted cloud services for covert operations.\n\nBuilding on that concept, the talk introduces a new Golang-based tool that enables SOCKS tunneling over Google services, establishing covert data channels.\n\nThe session explores how common cloud platforms can be repurposed to support discreet traffic forwarding and evade traditional network monitoring. While some familiarity with tunneling and cloud services may be helpful, the talk is designed to be accessible and will walk attendees through all key concepts.\n\nWhether you're a penetration tester, red teamer, or simply curious about creative abuse of cloud infrastructure, you’ll leave with fresh ideas and practical insights.",
+    "view_count": 211
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cXZJlKLBBGE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

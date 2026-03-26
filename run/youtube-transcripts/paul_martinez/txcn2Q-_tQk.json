@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "txcn2Q-_tQk",
+    "language": "en",
+    "took_ms": 8772,
+    "method": null,
+    "title": "Native EDR for PLCs",
+    "channel": "S4 Events",
+    "upload_date": "20230703",
+    "duration_sec": 1624,
+    "description": "David Formby begins with a discussion of the difficulty of extending visibility to Purdue Reference Model Level 1. Then he discusses the bleeding edge of Controller Endpoint Detection and Response (CEDR) to Collect, Centralize, Explore, and Analyze data on the PLC.\n\nDavid provides examples of potential security related events that could occur in the PLC and how these could be detected.\n\nThere is a shout out to the PLC Security Top 20 List in the Collect capability and a highlight of scan cycle time.",
+    "view_count": 1187
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] txcn2Q-_tQk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

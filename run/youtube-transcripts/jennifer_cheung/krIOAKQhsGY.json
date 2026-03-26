@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "krIOAKQhsGY",
+    "language": "en",
+    "took_ms": 9219,
+    "method": null,
+    "title": "DEF CON 32 - Encrypted newspaper ads in the 19th century - Elonka Dunin, Klaus Schmeh",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2655,
+    "description": "Between 1850 and 1855, the London-based newspaper The Times published over 50 encrypted advertisements apparently intended for the same recipient. As we know today, the ads in that series were meant for the sea captain Richard Collinson, who at the time was on a mission in the Canadian Arctic trying to solve a captivating mystery: What happened to the lost John Franklin expedition? While Collinson never reached his goal, he established a secure worldwide communication system, which was unique for its time.\n\nBefore his departure, Collinson's family was taught how to encrypt brief reports about what was going on at home and to publish these messages as mysterious ads in “The Times” once a month. The cipher used was a modified version of a system based on a signal-book of the Royal Navy. As the circulation of The Times stretched far beyond the UK, Collinson would have the chance to get his hands on a copy even at the remotest of ports.\n\nOver a century later, the Collinson ads were finally broken in the 1990s. Over the last two years, the lecturers of this talk continued this work, with a goal of decrypting all of the ads and placing them in their appropriate geographic and cultural context.",
+    "view_count": 731
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] krIOAKQhsGY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XS_aNuUk6I0",
+    "language": "en",
+    "took_ms": 8329,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Chloe Messdaghi - The Elephant in the Room: Burnout",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 3027,
+    "description": "Burnout. We all go through it at one point, especially during a pandemic. It feels like you are low on battery and it can cause emotional and physical issues. This talk shares an overview of the warning signs, symptoms, and practices to prevent burnout and how to deal with burnout to keep balanced.",
+    "view_count": 609
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XS_aNuUk6I0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

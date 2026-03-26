@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embry Design Board</title>
+    <style>
+        /* NVIS MIL-STD-3009 Design System */
+        :root {
+            /* Colors */
+            --green: #00ff88;
+            --red: #ff4444;
+            --amber: #ffaa00;
+            --blue: #4a9eff;
+            --accent: #7c3aed;
+            --white: #e2e8f0;
+            --dim: #64748b;
+            --muted: #334155;
+
+            /* Surfaces */
+            --bg: #141414;
+            --bgCard: #1a1a1a;
+            --bgPanel: #111111;
+            --bgDeep: #0b1220;
+            --border: rgba(255,255,255,0.13);
+            --borderHover: rgba(255,255,255,0.25);
+
+            /* Typography */
+            --spaceGrotesk: 'Space Grotesk', sans-serif;
+            --inter: 'Inter', sans-serif;
+            --jetbrainsMono: 'JetBrains Mono', monospace;
+        }
+
+        /* General Styles */
+        body {
+            font-family: var(--inter);
+            color: var(--white);
+            background-color: var(--bg);
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars */
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 200px;
+            background-color: var(--bgPanel);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 48px;
+            padding: 8px 0;
+        }
+
+        .sidebar.collapsed > * {
+            display: none;
+        }
+
+        .sidebar.collapsed .collapse-button {
+            display: flex;
+            position: absolute;
+            top: 50%;
+            right: -12px;
+            transform: translateY(-50%);
+            background-color: var(--bgPanel);
+            border: none;
+            color: var(--dim);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar.collapsed .collapse-button:hover {
+            color: var(--white);
+        }
+
+        .sidebar.collapsed .collapse-button svg {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-header {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-header span:first-child {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .sidebar-header span:last-child {
+            font-family: var(--spaceGrotesk);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: auto;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+
+        .project-item.selected {
+            background-color: rgba(124, 58, 237, 0.08);
+        }
+
+        .project-item.selected::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--accent);
+        }
+
+        .project-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .project-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .project-item .badge {
+            font-family: var(--jetbrainsMono);
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--white);
+            background-color: var(--muted);
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        .new-project-button {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--white);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+            font-family: var(--inter);
+            font-size: 13px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .new-project-button:hover {
+            border-color: var(--borderHover);
+        }
+
+        .collapse-button {
+            position: absolute;
+            top: 50%;
+            right: -12px;
+            transform: translateY(-50%);
+            background-color: var(--bgPanel);
+            border: none;
+            color: var(--dim);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .collapse-button:hover {
+            color: var(--white);
+        }
+
+        /* Infinite Canvas */
+        .canvas-container {
+            flex-grow: 1;
+            background-color: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, var(--bgCard) 1px, transparent 1px);
+            background-size: 20px 20px;
+            transform-origin: top left;
+            transform: scale(1) translate(0, 0);
+            cursor: grab;
+        }
+
+        .mockup {
+            position: absolute;
+            border-radius: 4px;
+            padding: 16px;
+            font-family: var(--inter);
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .mockup:hover {
+            border-color: var(--borderHover);
+        }
+
+        .mockup.selected {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+        }
+
+        .mockup-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--dim);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .sticky-note {
+            position: absolute;
+            background-color: var(--bgCard);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 4px;
+            font-family: var(--inter);
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--white);
+            white-space: nowrap;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--bgDeep);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .zoom-controls button {
+            background-color: transparent;
+            border: none;
+            color: var(--white);
+            font-family: var(--jetbrainsMono);
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .zoom-controls button:hover {
+            color: var(--borderHover);
+        }
+
+        .zoom-controls span {
+            font-family: var(--jetbrainsMono);
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--white);
+        }
+
+        .minimap {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            width: 120px;
+            height: 80px;
+            background-color: var(--bgDeep);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            width: 280px;
+            background-color: var(--bgPanel);
+            padding: 16px;
+            transition: width 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .right-panel.collapsed {
+            width: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .right-panel-header {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--dim);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .right-panel h2 {
+            font-family: var(--spaceGrotesk);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .metadata {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .metadata span {
+            display: block;
+        }
+
+        .metadata span:first-child {
+            margin-bottom: 4px;
+        }
+
+        .metadata span strong {
+            font-family: var(--jetbrainsMono);
+            font-weight: 400;
+        }
+
+        .annotation {
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border-left: 4px solid;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--white);
+            background-color: var(--bgCard);
+        }
+
+        .annotation.steve {
+            border-left-color: var(--blue);
+        }
+
+        .annotation.nico {
+            border-left-color: var(--amber);
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            font-family: var(--inter);
+            font-size: 13px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .action-button.primary {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+        }
+
+        .action-button.primary:hover {
+            background-color: rgba(124, 58, 237, 0.8);
+        }
+
+        .action-button.secondary {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--white);
+        }
+
+        .action-button.secondary:hover {
+            border-color: var(--borderHover);
+        }
+
+        .action-button.approve {
+            background-color: var(--green);
+            color: var(--bg);
+            border: none;
+        }
+
+        .action-button.approve:hover {
+            background-color: rgba(0, 255, 136, 0.8);
+        }
+
+        /* Activity Bar */
+        .activity-bar {
+            width: 48px;
+            background-color: var(--bgDeep);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .activity-icon {
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            color: var(--dim);
+            position: relative;
+        }
+
+        .activity-icon:hover {
+            color: var(--white);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-icon.active {
+            color: var(--white);
+            background-color: rgba(124, 58, 237, 0.08);
+        }
+
+        .activity-icon.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--accent);
+        }
+
+        .activity-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 1.5;
+            fill: none;
+            stroke: currentColor;
+        }
+
+        .separator {
+            width: 24px;
+            height: 1px;
+            background-color: var(--border);
+            margin: 8px 0;
+        }
+
+        /* Inspirations Panel */
+        .inspiration-card {
+            background-color: var(--bgCard);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .inspiration-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .inspiration-card p {
+            padding: 8px;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--white);
+        }
+
+        /* Tokens Panel */
+        .token-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+            border: 1px solid var(--border);
+        }
+
+        .token-typography {
+            font-family: var(--spaceGrotesk);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .token-spacing {
+            width: 20px;
+            height: 20px;
+            background-color: var(--bgCard);
+            border: 1px solid var(--border);
+            margin-right: 8px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        /* Rationale Panel */
+        .rationale-message {
+            background-color: var(--bgCard);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 16px;
+            font-size: 10px;
+            font-weight: 400;
+            color: var(--white);
+        }
+
+        /* Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Left Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>EMBRY OS</span>
+            <span>Design Board</span>
+        </div>
+
+        <div class="project-list">
+            <div class="project-item selected" data-project="binary-explorer">
+                <span class="dot" style="background-color: var(--green);"></span>
+                Binary Explorer
+                <span class="badge">R3</span>
+            </div>
+            <div class="project-item" data-project="music-lab">
+                <span class="dot" style="background-color: var(--amber);"></span>
+                Music Lab
+                <span class="badge">R1</span>
+            </div>
+            <div class="project-item" data-project="sparta-explorer">
+                <span class="dot" style="background-color: var(--blue);"></span>
+                SPARTA Explorer
+                <span class="badge">R2</span>
+            </div>
+            <div class="project-item" data-project="learn-datalake">
+                <span class="dot" style="background-color: var(--amber);"></span>
+                Learn Datalake
+                <span class="badge">R1</span>
+            </div>
+        </div>
+
+        <a href="#" class="new-project-button">New Project</a>
+
+        <button class="collapse-button" id="collapse-sidebar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Infinite Canvas -->
+    <div class="canvas-container">
+        <div class="canvas" id="canvas">
+            <div class="mockup" style="top: 60px; left: 80px; width: 400px; height: 250px; background-color: rgba(33,150,243,0.08); border: 1px solid rgba(33,150,243,0.15);" data-mockup="graph-layout">
+                <span class="mockup-label">Graph Layout v1 · R1 · gemini · 2d ago</span>
+                Graph Content
+            </div>
+            <div class="mockup selected" style="top: 200px; left: 520px; width: 500px; height: 300px; background-color: rgba(76,175,80,0.08);" data-mockup="chat-panel">
+                <span class="mockup-label">Chat Panel v2 · R2 · stitch · 1d ago</span>
+                Chat Panel Content
+            </div>
+            <div class="mockup" style="top: 450px; left: 300px; width: 600px; height: 350px; background-color: rgba(124,58,237,0.08);" data-mockup="full-composite">
+                <span class="mockup-label">Full Composite · R3 · manual · today</span>
+                Full Composite Content
+            </div>
+
+            <div class="sticky-note" style="top: 350px; left: 40px;">Steve: Try force-directed layout</div>
+            <div class="sticky-note" style="top: 180px; left: 800px;">Nico: Text too small at <span style="font-family: var(--jetbrainsMono);">11px</span></div>
+        </div>
+
+        <div class="zoom-controls">
+            <button>−</button>
+            <span><span style="font-family: var(--jetbrainsMono);">100%</span></span>
+            <button>+</button>
+        </div>
+
+        <div class="minimap"></div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel" id="right-panel">
+        <h3 class="right-panel-header">DETAILS</h3>
+        <h2>Chat Panel v2</h2>
+        <div class="metadata">
+            <span>Resolution: <strong>1920 × 1080</strong></span>
+            <span>Round: <strong>2</strong></span>
+            <span>Source: <strong>stitch</strong></span>
+            <span>Date: <strong>2026-03-20</strong></span>
+        </div>
+        <div class="annotation steve">Steve: Consider adding a dark mode toggle.</div>
+        <div class="annotation nico">Nico: The primary action button needs more contrast.</div>
+        <div class="actions">
+            <a href="#" class="action-button primary">Send to Gemini</a>
+            <a href="#" class="action-button secondary">Copy HTML</a>
+            <a href="#" class="action-button approve">Approve</a>
+        </div>
+    </div>
+
+    <!-- Activity Bar -->
+    <div class="activity-bar">
+        <div class="activity-icon active" data-panel="details">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+        </div>
+        <div class="activity-icon" data-panel="inspirations">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+            </svg>
+        </div>
+        <div class="activity-icon" data-panel="tokens">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <circle cx="13.5" cy="6.5" r="2.5"/>
+                <circle cx="17.5" cy="15.5" r="2.5"/>
+                <circle cx="8.5" cy="15.5" r="2.5"/>
+                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.38-.15-.74-.39-1.04-.23-.29-.38-.63-.38-1.01 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.17-4.49-9-10-9z"/>
+            </svg>
+        </div>
+        <div class="activity-icon" data-panel="rationale">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+        </div>
+        <div class="activity-icon" data-panel="history">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"/>
+                <polyline points="12 7 12 12 15 15"/>
+            </svg>
+        </div>
+        <div class="activity-icon" data-panel="search">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7"/>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"/>
+            </svg>
+        </div>
+        <div class="separator"></div>
+        <div class="activity-icon" data-panel="settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06c.5.5 1.2.67 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        </div>
+    </div>
+
+</div>
+
+<div id="inspirations-panel" style="display: none;">
+    <h3 class="right-panel-header">INSPIRATIONS</h3>
+    <div class="inspiration-card">
+        <img src="https://via.placeholder.com/280x150" alt="Inspiration 1">
+        <p>Reference image from Dribbble.</p>
+    </div>
+    <div class="inspiration-card">
+        <img src="https://via.placeholder.com/280x150" alt="Inspiration 2">
+        <p>Screenshot from a similar application.</p>
+    </div>
+</div>
+
+<div id="tokens-panel" style="display: none;">
+    <h3 class="right-panel-header">TOKENS</h3>
+    <h4>Colors</h4>
+    <div style="margin-bottom: 16px;">
+        <span class="token-swatch" style="background-color: var(--green);"></span>
+        <span class="token-swatch" style="background-color: var(--red);"></span>
+        <span class="token-swatch" style="background-color: var(--amber);"></span>
+        <span class="token-swatch" style="background-color: var(--blue);"></span>
+        <span class="token-swatch" style="background-color: var(--accent);"></span>
+        <span class="token-swatch" style="background-color: var(--white);"></span>
+        <span class="token-swatch" style="background-color: var(--dim);"></span>
+        <span class="token-swatch" style="background-color: var(--muted);"></span>
+    </div>
+    <h4>Typography</h4>
+    <p class="token-typography" style="font-family: var(--spaceGrotesk);">Space Grotesk Headline</p>
+    <p class="token-typography" style="font-family: var(--inter);">Inter Body Text</p>
+    <p class="token-typography" style="font-family: var(--jetbrainsMono);">JetBrains Mono Code</p>
+    <h4>Spacing</h4>
+    <div>
+        <span class="token-spacing"></span>
+        <span class="token-spacing" style="width: 40px; height: 40px;"></span>
+        <span class="token-spacing" style="width: 60px; height: 60px;"></span>
+    </div>
+</div>
+
+<div id="rationale-panel" style="display: none;">
+    <h3 class="right-panel-header">RATIONALE</h3>
+    <div class="rationale-message">
+        <strong>Steve:</strong> I think we should use a more vibrant color for the primary action button.
+    </div>
+    <div class="rationale-message">
+        <strong>Nico:</strong> I agree, the current color is too muted and doesn't stand out enough.
+    </div>
+</div>
+
+<div id="history-panel" style="display: none;">
+    <h3 class="right-panel-header">HISTORY</h3>
+    <p>No history available.</p>
+</div>
+
+<div id="search-panel" style="display: none;">
+    <h3 class="right-panel-header">SEARCH</h3>
+    <p>Search functionality not implemented.</p>
+</div>
+
+<div id="settings-panel" style="display: none;">
+    <h3 class="right-panel-header">SETTINGS</h3>
+    <p>Settings panel not implemented.</p>
+</div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const collapseSidebarButton = document.getElementById('collapse-sidebar');
+    const canvas = document.getElementById('canvas');
+    const rightPanel = document.getElementById('right-panel');
+    const activityIcons = document.querySelectorAll('.activity-icon');
+    const projectItems = document.querySelectorAll('.project-item');
+    const mockups = document.querySelectorAll('.mockup');
+
+    // Sidebar Collapse
+    collapseSidebarButton.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+    });
+
+    // Activity Bar
+    activityIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            activityIcons.forEach(i => i.classList.remove('active'));
+            icon.classList.add('active');
+
+            const panelId = icon.dataset.panel;
+            const panelElements = ['details', 'inspirations', 'tokens', 'rationale', 'history', 'search', 'settings'];
+
+            panelElements.forEach(panel => {
+                const panelElement = document.getElementById(panel + '-panel');
+                if (panelElement) {
+                    panelElement.style.display = (panel === panelId) ? 'block' : 'none';
+                }
+            });
+
+            if (panelId === 'details') {
+                rightPanel.style.display = 'block';
+                document.getElementById('inspirations-panel').style.display = 'none';
+                document.getElementById('tokens-panel').style.display = 'none';
+                document.getElementById('rationale-panel').style.display = 'none';
+                document.getElementById('history-panel').style

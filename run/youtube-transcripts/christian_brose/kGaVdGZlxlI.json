@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kGaVdGZlxlI",
+    "language": "en",
+    "took_ms": 8565,
+    "method": null,
+    "title": "Keeping America Safe: Congressman Don Bacon on the National Defense Authorization Act",
+    "channel": "Hudson Institute",
+    "upload_date": "20200713",
+    "duration_sec": 2829,
+    "description": "Join Hudson Institute for a discussion with Congressman Don Bacon of Nebraska on the National Defense Authorization Act (NDAA) for fiscal year 2021 and the policy priorities it establishes for the U.S. military. Hudson Senior Fellow Bryan Clark will moderate the event.",
+    "view_count": 1001
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kGaVdGZlxlI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

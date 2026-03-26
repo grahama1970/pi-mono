@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KXD7o5IS1C8",
+    "language": "en",
+    "took_ms": 9526,
+    "method": null,
+    "title": "New course taught by Jay Alammar and Maarten Grootendorst: How Transformer LLMs Work",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250205",
+    "duration_sec": 217,
+    "description": "Learn more: https://bit.ly/3WKa3fK\n\nIntroducing \"How Transformer LLMs Work,\" created with Jay Alammar and Maarten Grootendorst, authors of the “Hands-On Large Language Models” book. This course offers a deep dive into the main components of the transformer architecture that powers large language models (LLMs). \n\nThe transformer architecture revolutionized generative AI. In fact, the \"GPT\" in ChatGPT stands for \"Generative Pre-Trained Transformer.\" \n\nOriginally introduced in the groundbreaking 2017 paper Attention Is All You Need, by Ashish Vaswani and others, transformers were a highly scalable model for machine translation tasks. Variants of this architecture now power today’s LLMs such as those from OpenAI, Google, Meta, Cohere, and Anthropic.\n\nIn their book, Jay and Maarten beautifully illustrated the underlying architecture of LLMs through insightful and easy-to-understand explanations.\n\nIn this course, you'll learn how a transformer network architecture that powers LLMs works. You'll build the intuition of how LLMs process text and work with code examples that illustrate the key components of the transformer architecture.\n\nKey topics covered in this course include:\n\n- The evolution of how language has been represented numerically, from the Bag-of-Words model through Word2Vec embeddings to the transformer architecture that captures word meanings in full context.\n- How LLM inputs are broken down into tokens, which represent words or pieces before they are sent to the language model.\n- The details of a transformer and the three main stages, consisting of tokenization and embedding, the stack of transformer blocks, and the language model head.\n- The details of the transformer block, including attention, which calculates relevance scores followed by the feedforward layer, which incorporates stored information learned in training.\n- How cached calculations make transformers faster, how the transformer block has evolved over the years since the original paper was released, and how they continue to be widely used.\n- Explore an implementation of recent models in the Hugging Face transformer library.\n\nBy the end of this course,  you’ll have a deep understanding of how LLMs process language and you'll be able to read through papers describing models and understand the details that are used to describe these architectures. This intuition will help improve your approach to building  LLM applications.\n\nEnroll now: https://bit.ly/3WKa3fK",
+    "view_count": 7044
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KXD7o5IS1C8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

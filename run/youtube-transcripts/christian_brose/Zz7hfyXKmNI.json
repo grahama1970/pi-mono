@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Zz7hfyXKmNI",
+    "language": "en",
+    "took_ms": 9365,
+    "method": null,
+    "title": "Avoiding Armageddon: America, India, Pakistan, to the Brink",
+    "channel": "Hudson Institute",
+    "upload_date": "20130417",
+    "duration_sec": 4765,
+    "description": "Long-term stability in South Asia is critical to American national security. In the last 20 years, successive U.S. administrations have diplomatically intervened to keep tensions between the nuclear-armed nations of India and Pakistan from escalating into full-scale war. Moving forward, the health of the relationship between New Delhi and Islamabad will determine whether the region has a future of general stability and peace or chronic conflict.\r\nIn light of this, Hudson Institute is pleased to",
+    "view_count": 61271
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Zz7hfyXKmNI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

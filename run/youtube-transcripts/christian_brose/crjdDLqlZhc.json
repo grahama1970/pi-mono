@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "crjdDLqlZhc",
+    "language": "en",
+    "took_ms": 8821,
+    "method": null,
+    "title": "Terrorists, Drug Traffickers, and Gangs in Latin America: Un",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 5701,
+    "description": "Latin America faces growing challenges from armed non-state actors who are able to operate in territories where governance is contested. This includes parts of Mexico and the tri-border region adjacent to Argentina, Brazil, and Paraguay. These non-state actors--including criminal gangs, drug traffickers, and terrorist groups--pose a threat to democracy and stability in Latin America, as well as to U.S. security. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 531
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] crjdDLqlZhc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

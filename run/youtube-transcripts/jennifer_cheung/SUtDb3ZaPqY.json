@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SUtDb3ZaPqY",
+    "language": "en",
+    "took_ms": 9999,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Tim Jensen EapolSniper  - IoT Testing Crash Course",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 2807,
+    "description": "n this IoT 101 level talk I provide practical instruction to security focused individuals who want to test IoT devices for critical vulnerabilities. Included will be basic network pentesting of the device, web app or other UI testing, extracting/downloading firmware, and using binwalk. This will also include reviewing binaries for potential backdoors, looking for hardcoded credentials, and whitebox code review of the UI interface to look for backdoors or other vulnerabilities. All testing will be done against publicly downloadable binaries.",
+    "view_count": 1462
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SUtDb3ZaPqY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

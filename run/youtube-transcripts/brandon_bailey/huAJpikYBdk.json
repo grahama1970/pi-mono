@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "huAJpikYBdk",
+    "language": "en",
+    "took_ms": 8866,
+    "method": null,
+    "title": "DEF CON 30 - Slava Makkaveev -  Digging into Xiaomis TEE to to Get to Chinese Money",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1397,
+    "description": "The Far East and China account for two-thirds of global mobile payments in 2021. That is about $4 billion in mobile wallet transactions. Such a huge amount of money is sure to attract the attention of hackers. Have you ever wondered how safe it is to pay from a mobile device? Can a malicious app steal money from your digital wallet? To answer these questions, we researched the payment system built into Xiaomi smartphones based on MediaTek chips, which are very popular in China. As a result, we discovered vulnerabilities that allow forging payment packages or disabling the payment system directly from an unprivileged Android application.\n\n\nMobile payment signatures are carried out in the Trusted Execution Environment (TEE) that remains secure on compromised devices. The attacker needs to hack the TEE in order to hack the payment. There is a lot of good research about mobile TEEs in the public domain, but no one pays attention to trusted apps written by device vendors like Xiaomi and not by chip makers, while the core of mobile payments is implemented there. In our research, we reviewed Xiaomi's TEE for security issues in order to find a way to scam WeChat Pay.",
+    "view_count": 1140
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] huAJpikYBdk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

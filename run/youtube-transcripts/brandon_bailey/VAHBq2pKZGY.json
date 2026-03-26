@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VAHBq2pKZGY",
+    "language": "en",
+    "took_ms": 10271,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Cheryl Biswas -  Signed, Sealed, Delivered Comparing Chinese APTs",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 2685,
+    "description": "State-sponsored threat actors have engaged in software supply chain attacks for longer than most people realize, as governments seek out access to information and potential control. Of Russia, North Korea and Iran, China has been behind the most attacks, targeting the technology sector for economic espionage and intellectual property theft. In their current drive for innovation and cloud migration, organizations increasingly rely on software development and all its dependencies: third-party code, open - libraries andshared repositories. Recent attacks have shown how easy it is to create confusion and send malicious code undetected through automated channels to waiting recipients.\n\nThis talk will walk attendees through the stages of past attacks by Chinese APTs - notably APT10, APT17 and APT41- to show how capabilities have evolved and what lessons could be applied to recent attacks, comparing tactics, techniques and procedures.",
+    "view_count": 643
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VAHBq2pKZGY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

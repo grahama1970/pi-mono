@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "120iDYzscD4",
+    "language": "en",
+    "took_ms": 8405,
+    "method": null,
+    "title": "DEF CON 32 -  Efficient Bug Bounty Automation Techniques  - Gunnar Andrews",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1327,
+    "description": "If you're a bug bounty hunter, time can literally mean money. For this reason, automation can be a vital part of how you hunt. But automation has limits. Whether this is hardware limits, target rate limits, WAFs & bot detection, and the list goes on. Successful automation techniques should EFFICIENTLY enhance your hunting. Whether it is being first to a fresh target, or finding targets other hunters haven't. We will go over some techniques and tools to get ahead of the pack, without wasting all your time and money.",
+    "view_count": 7646
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 120iDYzscD4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

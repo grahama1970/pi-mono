@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Lab — Optimize Live Tab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* NVIS MIL-STD-3009 Dark Theme Colors */
+        :root {
+            --bg: #0b1220;
+            --surface: #111827;
+            --border: #1e293b;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8; /* A slightly lighter grey for secondary text */
+            --purple: #7c3aed;
+            --green: #00ff88;
+            --red: #ff4444;
+            --amber: #ffaa00;
+            --red-tinted-bg: rgba(255, 68, 68, 0.1); /* Red with 10% opacity */
+            --amber-tinted-bg: rgba(255, 170, 0, 0.1); /* Amber with 10% opacity */
+
+            --font-primary: 'Inter', sans-serif;
+            --font-mono: 'SF Mono', 'Menlo', 'Consolas', monospace;
+        }
+
+        /* Global Styles */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: var(--font-primary);
+            color: var(--text-primary);
+            background-color: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow: hidden; /* Prevent body scroll, lanes will scroll independently */
+        }
+
+        /* Main Layout */
+        .prompt-lab-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .lane {
+            flex-shrink: 0; /* Prevent lanes from shrinking */
+            overflow-y: auto; /* Independent scrolling */
+            padding: 20px;
+            background-color: var(--surface);
+            display: flex; /* Flex container for its content */
+            flex-direction: column; /* Content stacks vertically */
+            position: relative; /* For sticky bottom bar */
+        }
+
+        .lane-deepseek {
+            flex-basis: 60%; /* 60% width */
+        }
+
+        .lane-qwen {
+            flex-basis: 40%; /* 40% width */
+        }
+
+        .lane-divider {
+            width: 3px;
+            background-color: var(--purple);
+            flex-shrink: 0; /* Prevent divider from shrinking */
+        }
+
+        /* Lane Header */
+        .lane-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            position: sticky; /* Make header sticky */
+            top: 0;
+            background-color: var(--surface); /* Ensure background for sticky header */
+            z-index: 10; /* Above other content */
+        }
+
+        .lane-header h2 {
+            margin: 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.running { background-color: var(--amber-tinted-bg); color: var(--amber); }
+        .status-badge.converged { background-color: rgba(0, 255, 136, 0.1); color: var(--green); }
+        .status-badge.failed { background-color: var(--red-tinted-bg); color: var(--red); }
+
+        .round-counter {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        /* Ground Truth */
+        .ground-truth {
+            background-color: var(--surface); /* Use surface for consistency */
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            position: sticky; /* Make ground truth sticky below header */
+            top: 80px; /* Adjust based on header height (~60px) + margin-bottom (20px) */
+            z-index: 9; /* Below header, above round sections */
+        }
+
+        .ground-truth h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .test-case {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .test-case:last-child {
+            margin-bottom: 0;
+        }
+
+        .test-case strong {
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .test-case .tag-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px; /* Adjust gap for better wrapping */
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .tag-pill.conceptual { background-color: rgba(124, 58, 237, 0.2); color: var(--purple); } /* Purple tint */
+        .tag-pill.tactical { background-color: rgba(59, 130, 246, 0.2); color: #3b82f6; } /* Blue tint, not in NVIS, but common for "blue team" */
+
+        /* Round Sections */
+        .round-section {
+            background-color: var(--surface); /* Main content background */
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .round-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px; /* Less margin for H3 under prompt */
+        }
+
+        .round-badge {
+            background-color: var(--border);
+            color: var(--text-primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .round-section h3 { /* Style for H3s within round sections */
+            margin: 0; /* Reset default margin */
+            font-size: 1em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .system-prompt {
+            background-color: #0d1421; /* Slightly darker than surface for code */
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            line-height: 1.4;
+            white-space: pre-wrap; /* Preserve whitespace and wrap */
+            overflow-x: auto; /* Allow horizontal scroll for long lines */
+            margin: 0; /* Override pre default margin */
+            color: var(--text-primary);
+        }
+
+        .system-prompt .added {
+            background-color: rgba(0, 255, 136, 0.2); /* Green tint */
+            color: var(--green);
+            text-decoration: none; /* Remove default underline */
+        }
+
+        .system-prompt .removed {
+            background-color: rgba(255, 68, 68, 0.2); /* Red tint */
+            color: var(--red);
+            text-decoration: line-through;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        .results-table th, .results-table td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .results-table td:first-child { font-weight: 500; }
+
+        .pass-icon { color: var(--green); font-weight: 700; }
+        .fail-icon { color: var(--red); font-weight: 700; }
+
+        .failure-brief, .agent-rewrite {
+            border-radius: 4px;
+            padding: 12px 15px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .failure-brief {
+            background-color: var(--red-tinted-bg);
+            color: var(--red);
+            border: 1px solid var(--red);
+        }
+
+        .agent-rewrite {
+            background-color: var(--amber-tinted-bg);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        .score-comparison {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .score-comparison .delta-arrow {
+            color: var(--green);
+            font-size: 0.8em; /* Smaller arrow relative to score */
+            margin-left: -5px; /* Pull arrow closer */
+        }
+
+        /* Convergence Banner */
+        .convergence-banner {
+            text-align: center;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border-radius: 6px;
+            margin-top: 10px; /* Space from last round */
+            position: relative; /* For z-index to be above other elements */
+            z-index: 1; /* Ensure it's not hidden by sticky elements */
+        }
+
+        .convergence-banner.converged {
+            background-color: rgba(0, 255, 136, 0.15);
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+
+        .convergence-banner.still-optimizing {
+            background-color: rgba(255, 170, 0, 0.15);
+            color: var(--amber);
+            border: 1px solid var(--amber);
+        }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--surface); /* Match lane background */
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            z-index: 20; /* Ensure it's always on top */
+            margin-top: auto; /* Push to bottom of flex container if content is short */
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--green);
+            color: var(--bg); /* Dark text on green */
+            border: 1px solid var(--green);
+        }
+
+        .btn-primary:hover {
+            background-color: #00e67a; /* Slightly darker green */
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-secondary);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="prompt-lab-container">
+        <!-- DeepSeek-V3 Lane (60%) -->
+        <div class="lane lane-deepseek">
+            <div class="lane-header">
+                <h2>DeepSeek-V3 <span class="status-badge converged">Converged</span></h2>
+                <span class="round-counter">Round 2/2</span>
+            </div>
+
+            <div class="ground-truth">
+                <h3>Ground Truth</h3>
+                <div class="test-case">
+                    <strong>T1547.001 Registry Run Keys:</strong>
+                    <div class="tag-pills">
+                        <span class="tag-pill conceptual">Corruption</span>
+                        <span class="tag-pill tactical">Persist</span>
+                    </div>
+                </div>
+                <div class="test-case">
+                    <strong>SI-2 Flaw Remediation:</strong>
+                    <div class="tag-pills">
+                        <span class="tag-pill conceptual">Resilience</span>
+                        <span class="tag-pill conceptual">Fragility</span>
+                        <span class="tag-pill tactical">Harden</span>
+                    </div>
+                </div>
+                <div class="test-case">
+                    <strong>d3f:NetworkIsolation:</strong>
+                    <div class="tag-pills">
+                        <span class="tag-pill conceptual">Resilience</span>
+                        <span class="tag-pill tactical">Isolate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Round 1 (DeepSeek-V3) -->
+            <div class="round-section">
+                <div class="round-header">
+                    <span class="round-badge">Round 1</span>
+                    <h3>System Prompt</h3>
+                </div>
+                <pre class="system-prompt">
+You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from text.
+Output a JSON array of strings.
+Example:
+  Input: "Detect and prevent unauthorized access."
+  Output: ["Detect", "Prevent", "AccessControl"]</pre>
+
+                <h3>Results</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Case Name</th>
+                            <th>Predicted Tags</th>
+                            <th>F1 Score</th>
+                            <th>Pass/Fail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>T1547.001 Registry Run Keys</td>
+                            <td><span class="tag-pill conceptual">Corruption</span> <span class="tag-pill tactical">Evade</span></td>
+                            <td>0.500</td>
+                            <td><span class="fail-icon">❌</span></td>
+                        </tr>
+                        <tr>
+                            <td>SI-2 Flaw Remediation</td>
+                            <td><span class="tag-pill conceptual">Resilience</span> <span class="tag-pill tactical">Harden</span> <span class="tag-pill tactical">Evade</span></td>
+                            <td>0.667</td>
+                            <td><span class="fail-icon">❌</span></td>
+                        </tr>
+                        <tr>
+                            <td>d3f:NetworkIsolation</td>
+                            <td><span class="tag-pill conceptual">Resilience</span> <span class="tag-pill tactical">Isolate</span></td>
+                            <td>1.000</td>
+                            <td><span class="pass-icon">✔️</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="failure-brief">
+                    <strong>Failure brief:</strong> Hallucinated: Evade (×2). Missing: Persist.
+                </div>
+
+                <div class="agent-rewrite">
+                    <strong>Agent rewrite explanation:</strong> Added negative example for Evade disambiguation.
+                </div>
+
+                <div class="score-comparison">
+                    0.000 → 0.619 <span class="delta-arrow">↑</span>
+                </div>
+            </div>
+
+            <!-- Round 2 (DeepSeek-V3) -->
+            <div class="round-section">
+                <div class="round-header">
+                    <span class="round-badge">Round 2</span>
+                    <h3>System Prompt</h3>
+                </div>
+                <pre class="system-prompt">
+You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from text.
+Output a JSON array of strings.
+<span class="removed">Example:
+  Input: "Detect and prevent unauthorized access."
+  Output: ["Detect", "Prevent", "AccessControl"]</span><span class="added">Correct examples:
+  Input: "Detect and prevent unauthorized access to systems."
+  Output: ["Detect", "Prevent", "AccessControl"]
+Incorrect examples:
+  Input: "Evade detection measures."
+  Output: ["Evade"] // Should not include "Detect" as a conceptual tag here</span></pre>
+
+                <h3>Results</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Case Name</th>
+                            <th>Predicted Tags</th>
+                            <th>F1 Score</th>
+                            <th>Pass/Fail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>T1547.001 Registry Run Keys</td>
+                            <td><span class="tag-pill conceptual">Corruption</span> <span class="tag-pill tactical">Persist</span></td>
+                            <td>1.000</td>
+                            <td><span class="pass-icon">✔️</span></td>
+                        </tr>
+                        <tr>
+                            <td>SI-2 Flaw Remediation</td>
+                            <td><span class="tag-pill conceptual">Resilience</span> <span class="tag-pill conceptual">Fragility</span> <span class

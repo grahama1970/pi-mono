@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AfMfYOUYZvc",
+    "language": "en",
+    "took_ms": 8974,
+    "method": null,
+    "title": "DEF CON 31 - Vacuum Robot Security & Privacy Prevent yr Robot from Sucking Your Data -  Dennis Giese",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2665,
+    "description": "Exactly 5 years ago we were presenting ways to hack and root vacuum robots. Since then, many things have changed. Back then we were looking into ways to use the robots' \"dumb\" sensors to spy on the user (e.g. by using the ultrasonic sensor). But all our predictions were exceeded by the reality: today's robots bring multiple cameras and microphones with them. AI is used to detect objects and rooms. But can it be trusted? Where will pictures of your cat end up?\n\nIn this talk we will look at the security and privacy of current devices. We will show that their flaws pose a huge privacy risk and that certification of devices cannot be trusted. Not to worry, though - we will also show you how to protect yourself (and your data) from your robot friends.\n\nYou will learn on how you can get root access to current flagship models of 4 different vendors. Come with us on a journey of having fun hacking interesting devices while preventing them from breaching your privacy. We will also discuss the risks of used devices, for both old and new users.\n\nFinally, we will talk about the challenges of documenting vacuum robots and developing custom software for them. While our Primary goal is to disconnect the robots from the cloud, it is also for users to repair their devices - pwning to own in a wholesome way.",
+    "view_count": 132137
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AfMfYOUYZvc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

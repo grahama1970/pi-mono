@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "peArKEKrv-I",
+    "language": "en",
+    "took_ms": 9443,
+    "method": null,
+    "title": "The State of Iraq—and the Republic of Kurdistan?—After ISIS",
+    "channel": "Hudson Institute",
+    "upload_date": "20170223",
+    "duration_sec": 4748,
+    "description": "Bayan Sami Abdul Rahman, Michael Pregent, Eric Brown, Kenneth Pollack, and Ranj Alaaldin discuss Iraq, Kurdistan, and the new U.S. administration. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 3798
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] peArKEKrv-I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

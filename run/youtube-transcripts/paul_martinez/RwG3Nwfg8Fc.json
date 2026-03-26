@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RwG3Nwfg8Fc",
+    "language": "en",
+    "took_ms": 7589,
+    "method": null,
+    "title": "Incident Command System For ICS (ICS4ICS) Exercise at S4x22",
+    "channel": "S4 Events",
+    "upload_date": "20220829",
+    "duration_sec": 6961,
+    "description": "This was the first live exercise of the ICS4ICS program. It uses the Incident Command System that has worked well in hurricanes, floods, and other incidents on an ICS cyber incident.\n\n0:00  Briefing on ICS and ICS Security\n7:30  Quick overview of Incident Command System\n11:30  The Exercise Begins\n\nMore info available at ICS4ICS.org",
+    "view_count": 1359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RwG3Nwfg8Fc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

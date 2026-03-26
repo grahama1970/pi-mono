@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YAH_aNsCf4g",
+    "language": "en",
+    "took_ms": 9219,
+    "method": null,
+    "title": "DEF CON 33 - Live Music - Saturday Night - Dual Core",
+    "channel": "DEFCONConference",
+    "upload_date": "20251020",
+    "duration_sec": 2120,
+    "description": "Live set from Dual Core from Saturday Night at the LVCC.",
+    "view_count": 1002
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YAH_aNsCf4g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

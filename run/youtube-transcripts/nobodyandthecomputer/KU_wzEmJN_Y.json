@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KU_wzEmJN_Y",
+    "language": "en",
+    "took_ms": 8843,
+    "method": null,
+    "title": "Bill A.I.vans",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20240227",
+    "duration_sec": 800,
+    "description": "Can AI be inspired by Bill Evans?\n\n↪ Join the Nobodies Collective:\nhttps://www.patreon.com/NobodyandTheComputer\n\n↪ contact me: \nnobodyandthecomputer@gmail.com\n\nBill Evans A.I. Generator notebook ⤵⤵\nhttps://www.patreon.com/posts/bill-evans-i-99316467\n\nFine-tune your model with any music ⤵⤵\nhttps://www.patreon.com/posts/how-to-fine-tune-98957931\n\nMusic Transcription with Transformers ⤵⤵\nhttps://colab.research.google.com/github/magenta/mt3/blob/main/mt3/colab/music_transcription_with_transformers.ipynb#scrollTo=yGQ-zpgy3raf",
+    "view_count": 33020
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KU_wzEmJN_Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

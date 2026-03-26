@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "M1-80G0O8hc",
+    "language": "en",
+    "took_ms": 8278,
+    "method": null,
+    "title": "AI Dev 25 | Bill Jia: How Intelligence Impacts the Application Frontier",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 863,
+    "description": "At AI Dev 25, Bill Jia, VP of Engineering - Core ML/AI at Google, shared his perspective on one of the most important shifts in AI development today: the growing power and potential of the application layer.\n\nAs machine learning infrastructure becomes more capable and accessible, the frontier of innovation is moving toward the ways we apply AI in the real world. Bill explores how advances across the stack—from hardware to models to tooling—are enabling developers to build applications we couldn't have imagined just a few years ago.\n\nBill walks through examples of what’s now possible, and why developers are better positioned than ever to drive meaningful breakthroughs.\n\nThis talk is a valuable perspective for engineers, researchers, and builders looking to understand how infrastructure and applications intersect—and where the biggest opportunities lie.",
+    "view_count": 2882
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] M1-80G0O8hc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

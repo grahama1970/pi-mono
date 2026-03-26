@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NwMY1umhpgg",
+    "language": "en",
+    "took_ms": 8523,
+    "method": null,
+    "title": "DEF CON 30 - Samuel Erb, Justin Gardner - Crossing the KASM - a Webapp Pentest Story",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1927,
+    "description": "In this talk we will tell the story of an insane exploit we used to compromise the otherwise secure KASM Workspaces software. KASM Workspaces is enterprise software for streaming virtual workstations to end users built on top of Docker. \n\nThis talk will span python binary RE, header smuggling, configuration injection, docker networking and questionable RFC interpretation. We hope to show you a little bit of what worked and a lot a bit of what didn't work on our quest to exploit this Heisenbug.",
+    "view_count": 3446
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NwMY1umhpgg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

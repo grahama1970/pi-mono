@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Dl7l7gdr34o",
+    "language": "en",
+    "took_ms": 7975,
+    "method": null,
+    "title": "DEF CON 30 - Cesare Pizzi - Old Malware, New tools: Ghidra and Commodore 64",
+    "channel": "DEFCONConference",
+    "upload_date": "20221021",
+    "duration_sec": 2782,
+    "description": "Why looking into a 30 years old \"malicious\" software make sense in 2022? Because this little \"jewels\", written in a bunch of bytes, reached a level of complexity surprisingly high. With no other reason than pranking people or show off technical knowledge, this software show how much you can do with very limited resources: this is inspiring for us, looking at modern malicious software, looking at how things are done and how the same things could have been done instead.",
+    "view_count": 34121
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Dl7l7gdr34o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

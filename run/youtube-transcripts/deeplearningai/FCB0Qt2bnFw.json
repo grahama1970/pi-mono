@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FCB0Qt2bnFw",
+    "language": "en",
+    "took_ms": 8768,
+    "method": null,
+    "title": "#BeADeepLearner like Lei Xu with DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20220408",
+    "duration_sec": 52,
+    "description": "“The Deep Learning Specialization gave me the confidence to take a chance and build a machine learning platform to solve MLOps problems. I built the entire team from scratch, and all the AI models my company uses are managed using the platform. I developed using the skills I acquired in the Specialization.” \n\nLooking to grow your skills and build a career in AI? Join 1 million+ learners and #BeADeepLearner with the Deep Learning Specialization, a foundational online program by machine learning pioneer Andrew Ng. Read how learners like Lei and others took the next step in their AI journey: https://www.deeplearning.ai/program/deep-learning-specialization/?utm_source=youtube&utm_medium=social&utm_campaign=dls-jan21&course_id=dls-2",
+    "view_count": 1306
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FCB0Qt2bnFw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

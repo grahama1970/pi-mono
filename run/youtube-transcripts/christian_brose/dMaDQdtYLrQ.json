@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dMaDQdtYLrQ",
+    "language": "en",
+    "took_ms": 8840,
+    "method": null,
+    "title": "The Economic Impact of Rural Broadband",
+    "channel": "Hudson Institute",
+    "upload_date": "20160504",
+    "duration_sec": 5332,
+    "description": "Hanns Kuttner, Shirley Bloomfield, Nancy White, Dusty Johnson, and Leo Staurulakis discuss The Economic Impact of Rural Broadband.",
+    "view_count": 461
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dMaDQdtYLrQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

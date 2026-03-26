@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JgKUrRaKo7o",
+    "language": "en",
+    "took_ms": 7629,
+    "method": null,
+    "title": "DEF CON 33 - Navigating the Invisible - Mehmet Onder Key, Furkan Aydogan",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 822,
+    "description": "The maritime domain's vastness often masks hidden threats. This talk explores leveraging Open-Source Intelligence (OSINT) to enhance maritime security. We'll demonstrate practical, low-cost methods to gather and analyze publicly available data – including vessel tracking, port data, and social media – for identifying anomalous behaviors and predicting potential cyber-physical risks. Attendees will learn actionable techniques to build a proactive threat intelligence picture without specialized tools, providing crucial insights for defenders in this critical sector",
+    "view_count": 139
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JgKUrRaKo7o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

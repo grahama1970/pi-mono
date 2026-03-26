@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jjGR-zc469g",
+    "language": "en",
+    "took_ms": 8093,
+    "method": null,
+    "title": "TRAILER: Welcome to \"Making a Killing\"",
+    "channel": "Hudson Institute",
+    "upload_date": "20210203",
+    "duration_sec": 233,
+    "description": "Research Fellow Nate Sibley introduces you to \"Making a Killing,\" a new podcast project from Hudson Institute's Kleptocracy Initiative. \n\nMaking a Killing explores how corruption is reshaping global politics, and fueling some of the most deadly security threats facing the world today - from the battlefields of Afghanistan and Iraq, to terrorist networks, nuclear proliferation, drug trafficking and other organized crime.\n\nApple podcasts: https://podcasts.apple.com/us/podcast/making-a-killing/id1551344782\nSpotify: https://open.spotify.com/show/0LksXZHMcTGwMk1eV1BsLu",
+    "view_count": 955
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jjGR-zc469g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

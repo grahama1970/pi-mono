@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z-OvglPArE0",
+    "language": "en",
+    "took_ms": 9156,
+    "method": null,
+    "title": "5. ICS Security Assessments with Jonathan Pollet",
+    "channel": "S4 Events",
+    "upload_date": "20201215",
+    "duration_sec": 2514,
+    "description": "Jonathan Pollet has been assessing ICS security since 2001. He teaches a five day class with a full day on this topic. Here he pulls out the most important 40 minutes for you to know. \n\nAt 9:30 he goes through how he recommends you do the assessment without bringing the ICS down. He covers the preparation, onsite and offsite work, team members, time required and more. There is even methodology tips and warnings of common issues.",
+    "view_count": 753
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z-OvglPArE0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

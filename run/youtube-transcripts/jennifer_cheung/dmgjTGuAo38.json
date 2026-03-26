@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dmgjTGuAo38",
+    "language": "en",
+    "took_ms": 8268,
+    "method": null,
+    "title": "DEF CON 33 - The Ultimate Hack : Applying Lessons Learned from the loss of TITAN - John Mauger",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1215,
+    "description": "The 2023 loss of the Titan submersible was a tragic wake-up call that exposed dangerous gaps in safety oversight, design practices, and regulation in extreme maritime environments. As leader of the international search-and-rescue response, I witnessed firsthand the human consequences of operating innovative technologies in legal gray zones without sufficient safeguards. Titan's creators leveraged regulatory loopholes to push design boundaries, dismissing expert warnings and bypassing standard safety certifications. This same pattern of unchecked innovation, inadequate oversight, and hubris mirrors critical vulnerabilities now facing maritime cybersecurity. Just as Titan’s passengers unknowingly placed trust in untested designs, vessels today rely increasingly on digitally interconnected yet inadequately secured systems, creating risks that could lead to catastrophic failures. Harsh environmental conditions and remote operations compound the potential impacts of maritime cyber incidents, paralleling Titan’s tragic fate. This paper connects the painful lessons from the Titan tragedy to urgent maritime cybersecurity needs—arguing for clear international regulation, rigorous independent testing, and proactive incident response planning—to prevent similar disasters at sea.",
+    "view_count": 287
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dmgjTGuAo38: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

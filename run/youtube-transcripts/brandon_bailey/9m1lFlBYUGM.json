@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9m1lFlBYUGM",
+    "language": "en",
+    "took_ms": 8962,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Aaron Guzman - OWASP & CSA IoT Impacting Medical Security",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 2354,
+    "description": "The Open Web Application Security Project (OWASP) IoT Project is designed to help manufacturers, developers, and consumers better understand the security issues associated with the Internet of Things as well as enable users in any context to make better security decisions when building, deploying, or assessing IoT technologies. Similarly, CSA's IoT Working group is dedicated to understanding IoT deployments and defining actionable guidance to secure ecosystems. Their efforts are often used to develop medical security guidelines for developers and manufacturers alike but also to influence IoT security assessment methodologies for later use on commercial IoT certification schemes. This session will provide insights into current project initiatives, including those that directly impact medical devices and how you can save lives by getting involved.",
+    "view_count": 1138
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9m1lFlBYUGM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

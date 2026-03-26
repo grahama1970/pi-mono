@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MwsOCLtzH0A",
+    "language": "en",
+    "took_ms": 8600,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Joe Slowik - Crippling the Grid Examination of Dependencies & Cyber Vulns",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1325,
+    "description": "Typical views of cyber-focused attacks on electric utilities emphasize direct impacts to generation, transmission, or distribution assets. While some examples of this activity exist, most notably in Ukraine, such actions are relatively difficult given technical and access requirements to properly execute. Less explored, but far more dangerous, are critical dependencies in electric utility operations which are often more exposed to IT networks and require less specialized knowledge to subvert. This presentation will examine some of these dependencies and their implications to show how ICS-centric defense must include relevant IT links and functional requirements.",
+    "view_count": 1120
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MwsOCLtzH0A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

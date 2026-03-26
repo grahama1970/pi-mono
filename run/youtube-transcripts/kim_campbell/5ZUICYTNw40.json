@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5ZUICYTNw40",
+    "language": "en",
+    "took_ms": 8862,
+    "method": null,
+    "title": "Air Force's AI-piloted fighter drones take another step toward service",
+    "channel": "Sandboxx",
+    "upload_date": "20250313",
+    "duration_sec": 172,
+    "description": "The U.S. Air Force has given its pair of AI-piloted fighter drones official designations as they continue to mature toward service. \n\nStay on top of all things Defense related by subscribing to Sandboxx!",
+    "view_count": 30575
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5ZUICYTNw40: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

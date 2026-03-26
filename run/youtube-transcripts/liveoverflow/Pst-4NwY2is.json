@@ -1,0 +1,1433 @@
+{
+  "meta": {
+    "video_id": "Pst-4NwY2is",
+    "language": "en",
+    "took_ms": 1499,
+    "method": "direct",
+    "title": "Windows Game Hacking with Ghidra and Cheat Engine",
+    "channel": "LiveOverflow",
+    "upload_date": "20190804",
+    "duration_sec": 932,
+    "description": "We are going to learn basic game hacking on Windows with Cheat Engine and Ghidra.\n\nPwn Adventure 3 Playlist: https://www.youtube.com/playlist?list=PLhixgUqwRTjzzBeFSHXrw9DnQtssdAwgG\nblog: https://liveoverflow.com/getting-started-with-windows-game-hacking-pwn-adventure-3/\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.",
+    "view_count": 358902
+  },
+  "transcript": [
+    {
+      "text": "Let’s have a look at some windows game hacking\nby revisiting Pwn Adventure 3 - the game that",
+      "start": 0.24,
+      "duration": 5.179
+    },
+    {
+      "text": "was made to teach game developers about what\ncan go wrrong.",
+      "start": 5.419,
+      "duration": 3.721
+    },
+    {
+      "text": "We have solved all available challenges already\non Linux and you can find the whole walkthrough",
+      "start": 9.14,
+      "duration": 4.829
+    },
+    {
+      "text": "as a playlist in the description.",
+      "start": 13.969,
+      "duration": 1.55
+    },
+    {
+      "text": "I didn’t do the hacks on Windows because\nI only have a basic knowledge about it.",
+      "start": 15.519,
+      "duration": 5.441
+    },
+    {
+      "text": "For example I know about DLL injection, tools\nlike Cheat Engine and some of the Windows",
+      "start": 20.96,
+      "duration": 5.049
+    },
+    {
+      "text": "API, but that’s about it.",
+      "start": 26.009,
+      "duration": 2.381
+    },
+    {
+      "text": "And especially the tooling and the process,\nis very different on Windows and Linux.",
+      "start": 28.39,
+      "duration": 5.3
+    },
+    {
+      "text": "But because Linux and Windows run on the same\nPC architecture, we have of course some similarities.",
+      "start": 33.69,
+      "duration": 6.0
+    },
+    {
+      "text": "I know how C and C++ programs work.",
+      "start": 39.69,
+      "duration": 2.52
+    },
+    {
+      "text": "I know about memory and pointers.",
+      "start": 42.21,
+      "duration": 2.09
+    },
+    {
+      "text": "I can read assembly.",
+      "start": 44.3,
+      "duration": 1.6
+    },
+    {
+      "text": "I understand structs and classes in memory.",
+      "start": 45.9,
+      "duration": 3.13
+    },
+    {
+      "text": "But once you get into other process details\nlike DLLs, shared libraries, the heap, threads,",
+      "start": 49.03,
+      "duration": 6.89
+    },
+    {
+      "text": "and so forth, it gets very different.",
+      "start": 55.92,
+      "duration": 2.29
+    },
+    {
+      "text": "So given my Linux experience I will have a\ngood foundation, but I will also have to learn",
+      "start": 58.21,
+      "duration": 4.9
+    },
+    {
+      "text": "a lot.",
+      "start": 63.11,
+      "duration": 1.0
+    },
+    {
+      "text": "Also one sidenote, a lot of people scoff at\nWindows and Windows users when it comes to",
+      "start": 64.11,
+      "duration": 4.63
+    },
+    {
+      "text": "hacking.",
+      "start": 68.74,
+      "duration": 1.0
+    },
+    {
+      "text": "“Real hackers use Arch Linux”.",
+      "start": 69.74,
+      "duration": 2.13
+    },
+    {
+      "text": "But in reality, the game hacking community,\nhas created some incredible debugging and",
+      "start": 71.87,
+      "duration": 4.69
+    },
+    {
+      "text": "analysis tools for windows.",
+      "start": 76.56,
+      "duration": 2.3
+    },
+    {
+      "text": "Going really deep.",
+      "start": 78.86,
+      "duration": 1.0
+    },
+    {
+      "text": "I’m not sure but I would lean so far out\nof the window (heh, pun) to say, that the",
+      "start": 79.86,
+      "duration": 5.46
+    },
+    {
+      "text": "tooling on Windows for analysing software\nor in particular games, especially software",
+      "start": 85.32,
+      "duration": 5.63
+    },
+    {
+      "text": "without source code, is much more advanced\nthan on Linux.",
+      "start": 90.95,
+      "duration": 4.94
+    },
+    {
+      "text": "And I think a tool that immediately jumps\nto mind is Cheat Engine.",
+      "start": 95.89,
+      "duration": 3.81
+    },
+    {
+      "text": "So let’s check it out",
+      "start": 99.7,
+      "duration": 7.5
+    },
+    {
+      "text": "I remember playing around with Cheat Engine\nwhen I was a teenager and didn’t understand",
+      "start": 107.2,
+      "duration": 4.44
+    },
+    {
+      "text": "a thing about memory, assembly and other lower\nlevel stuff about programs.",
+      "start": 111.64,
+      "duration": 4.369
+    },
+    {
+      "text": "But already then it felt intuitive and logical\nto use.",
+      "start": 116.009,
+      "duration": 3.46
+    },
+    {
+      "text": "At least the basics.",
+      "start": 119.469,
+      "duration": 1.18
+    },
+    {
+      "text": "I think that just shows how great of a tool\nit is.",
+      "start": 120.649,
+      "duration": 3.421
+    },
+    {
+      "text": "So what is it?",
+      "start": 124.07,
+      "duration": 1.299
+    },
+    {
+      "text": "This is Cheat Engine.",
+      "start": 125.369,
+      "duration": 1.911
+    },
+    {
+      "text": "The basic idea of this tool is to find the\naddress of certain values in the game’s",
+      "start": 127.28,
+      "duration": 4.66
+    },
+    {
+      "text": "memory.",
+      "start": 131.94,
+      "duration": 1.0
+    },
+    {
+      "text": "And you do this by repeatedly eliminating,\nor separating, or sorting out values.",
+      "start": 132.94,
+      "duration": 5.3
+    },
+    {
+      "text": "To do this CheatEngine offers various Scan\nTypes and Value Types.",
+      "start": 138.24,
+      "duration": 3.97
+    },
+    {
+      "text": "At the top you can see that I have attached\nwith this button to the Pwn Adventure process.",
+      "start": 142.21,
+      "duration": 5.21
+    },
+    {
+      "text": "So Cheat Engine searches through the game’s\nprocess memory.",
+      "start": 147.42,
+      "duration": 3.19
+    },
+    {
+      "text": "Let’s try it out.",
+      "start": 150.61,
+      "duration": 1.77
+    },
+    {
+      "text": "Let’s take the health, which right now is\nat 100.",
+      "start": 152.38,
+      "duration": 3.07
+    },
+    {
+      "text": "We search the value 100.",
+      "start": 155.45,
+      "duration": 1.91
+    },
+    {
+      "text": "We assume health is stored as a 4 byte value.",
+      "start": 157.36,
+      "duration": 3.08
+    },
+    {
+      "text": "First Scan.",
+      "start": 160.44,
+      "duration": 1.62
+    },
+    {
+      "text": "But we find thousands of values.",
+      "start": 162.06,
+      "duration": 2.52
+    },
+    {
+      "text": "However you can already see a few values now\nupdated.",
+      "start": 164.58,
+      "duration": 3.71
+    },
+    {
+      "text": "This is the current value in memory, and this\nis what it was when the search was done.",
+      "start": 168.29,
+      "duration": 4.22
+    },
+    {
+      "text": "So with the next scan we can filter, or search,\non those results and we could just search",
+      "start": 172.51,
+      "duration": 5.9
+    },
+    {
+      "text": "again for 100, or we could say that the value\nhas not changed.",
+      "start": 178.41,
+      "duration": 3.6
+    },
+    {
+      "text": "No difference in this case, just wanted to\nshow a different scan type.",
+      "start": 182.01,
+      "duration": 3.36
+    },
+    {
+      "text": "And we sort out a few memory locations, but\nwe are still at over 9000!",
+      "start": 185.37,
+      "duration": 5.36
+    },
+    {
+      "text": "Mhmh… we can also go into the game and move\nand jump around hoping that that could affect",
+      "start": 190.73,
+      "duration": 5.34
+    },
+    {
+      "text": "any of those values.",
+      "start": 196.07,
+      "duration": 3.17
+    },
+    {
+      "text": "Nothing directly visible here, but when we\nredo the scan we are now in the 8000s.",
+      "start": 199.24,
+      "duration": 3.37
+    },
+    {
+      "text": "So it helped.",
+      "start": 202.61,
+      "duration": 1.0
+    },
+    {
+      "text": "But you see, it will be tough to find now\nthe right health value.",
+      "start": 203.61,
+      "duration": 3.31
+    },
+    {
+      "text": "So that’s why you want a value that you\ncan somehow affect.",
+      "start": 206.92,
+      "duration": 3.68
+    },
+    {
+      "text": "You could affect the health by taking damage,\nbut unfortunately we are just at the start",
+      "start": 210.6,
+      "duration": 3.72
+    },
+    {
+      "text": "of the game, so we can’t do this right now.",
+      "start": 214.32,
+      "duration": 2.75
+    },
+    {
+      "text": "Instead let’s look for something else.",
+      "start": 217.07,
+      "duration": 2.03
+    },
+    {
+      "text": "Let’s start over and do a new scan.",
+      "start": 219.1,
+      "duration": 2.6
+    },
+    {
+      "text": "I want to find the address in memory that\nstores the current selected skill or weapon.",
+      "start": 221.7,
+      "duration": 6.86
+    },
+    {
+      "text": "1,2,3,4,5,6,7,8,9 or 0.",
+      "start": 228.56,
+      "duration": 2.51
+    },
+    {
+      "text": "We have selected 1, and we could now search\nfor the value 1.",
+      "start": 231.07,
+      "duration": 3.83
+    },
+    {
+      "text": "But if you have experience with programming\nand you imagine this to be an array, we actually",
+      "start": 234.9,
+      "duration": 4.89
+    },
+    {
+      "text": "don’t not know if this is stored as a 1\nor maybe as an array index of 0.",
+      "start": 239.79,
+      "duration": 5.24
+    },
+    {
+      "text": "And if you think this further, it could also\nbe a linked list, which would mean the current",
+      "start": 245.03,
+      "duration": 4.4
+    },
+    {
+      "text": "selected skill could also be a pointer, just\npointing to that object that represents that",
+      "start": 249.43,
+      "duration": 4.75
+    },
+    {
+      "text": "skill in memory.",
+      "start": 254.18,
+      "duration": 1.51
+    },
+    {
+      "text": "So it’s perfectly valid to make an assumption\nthat it is 1, and then start searching like",
+      "start": 255.69,
+      "duration": 4.37
+    },
+    {
+      "text": "that.",
+      "start": 260.06,
+      "duration": 1.0
+    },
+    {
+      "text": "And maybe that works or you restart and try\n0.",
+      "start": 261.06,
+      "duration": 2.359
+    },
+    {
+      "text": "But you could also try to go with an unkown\ninitital value.",
+      "start": 263.419,
+      "duration": 4.59
+    },
+    {
+      "text": "First scan.",
+      "start": 268.009,
+      "duration": 1.241
+    },
+    {
+      "text": "It takes a bit.",
+      "start": 269.25,
+      "duration": 1.0
+    },
+    {
+      "text": "Because it now indexed over 168 MILLION addresses.",
+      "start": 270.25,
+      "duration": 3.9
+    },
+    {
+      "text": "This is what Cheat Engine makes such a great\ntool.",
+      "start": 274.15,
+      "duration": 2.75
+    },
+    {
+      "text": "It’s not difficult to read a processes memory.",
+      "start": 276.9,
+      "duration": 3.75
+    },
+    {
+      "text": "We have done that on linux with GDB aaaaalll\nthe time.",
+      "start": 280.65,
+      "duration": 3.549
+    },
+    {
+      "text": "Examining memory.",
+      "start": 284.199,
+      "duration": 1.261
+    },
+    {
+      "text": "And of course we could write scripts or tools\nto automate such a search.",
+      "start": 285.46,
+      "duration": 4.34
+    },
+    {
+      "text": "But the software engineering along the algorithm-,\nand memory-, optimization to make this as",
+      "start": 289.8,
+      "duration": 5.25
+    },
+    {
+      "text": "efficient and usable as Cheat Engine does\nit, is not trivial.",
+      "start": 295.05,
+      "duration": 3.859
+    },
+    {
+      "text": "That’s why this is an awesome tool.",
+      "start": 298.909,
+      "duration": 2.801
+    },
+    {
+      "text": "Anyway, let’s continue.",
+      "start": 301.71,
+      "duration": 1.799
+    },
+    {
+      "text": "So we haven’t changed the selected skill\nyet, but we move around a bit, and so we can",
+      "start": 303.509,
+      "duration": 4.321
+    },
+    {
+      "text": "now filter out ALL the dynamic memory values\nby searching for unchanged value.",
+      "start": 307.83,
+      "duration": 5.559
+    },
+    {
+      "text": "Ooof… still 167 million.",
+      "start": 313.389,
+      "duration": 2.59
+    },
+    {
+      "text": "That didn’t help much…",
+      "start": 315.979,
+      "duration": 1.641
+    },
+    {
+      "text": "But that makes sense.",
+      "start": 317.62,
+      "duration": 1.18
+    },
+    {
+      "text": "We searched for an unkown value and then filtered\nfor all the unchanged valkues.",
+      "start": 318.8,
+      "duration": 4.549
+    },
+    {
+      "text": "And all the assembly code of the binaries,\nthe pwn adventure binary, all the loaded dlls,",
+      "start": 323.349,
+      "duration": 6.18
+    },
+    {
+      "text": "all the loaded resources and 3D objects are\nall unchanged data in memory, right?",
+      "start": 329.529,
+      "duration": 6.211
+    },
+    {
+      "text": "So we want to get rid of those.",
+      "start": 335.74,
+      "duration": 1.97
+    },
+    {
+      "text": "Which means we should somehow change and affect\nthe skill selection by switching the skill",
+      "start": 337.71,
+      "duration": 4.25
+    },
+    {
+      "text": "around.",
+      "start": 341.96,
+      "duration": 1.0
+    },
+    {
+      "text": "Ok we clearly changed the value now and we\ncan search for a changed value.",
+      "start": 342.96,
+      "duration": 5.07
+    },
+    {
+      "text": "BOOM!",
+      "start": 348.03,
+      "duration": 1.409
+    },
+    {
+      "text": "From 167 million down to 291 thousand.",
+      "start": 349.439,
+      "duration": 4.781
+    },
+    {
+      "text": "And you can already see some red colored values\nthat updated and changed.",
+      "start": 354.22,
+      "duration": 3.64
+    },
+    {
+      "text": "So let’s quickly scan for unchanged values.",
+      "start": 357.86,
+      "duration": 3.029
+    },
+    {
+      "text": "Down to 229 thousand.",
+      "start": 360.889,
+      "duration": 2.27
+    },
+    {
+      "text": "Just repeat the same search a bit.",
+      "start": 363.159,
+      "duration": 1.901
+    },
+    {
+      "text": "Down to 203 thousand.",
+      "start": 365.06,
+      "duration": 1.97
+    },
+    {
+      "text": "Let’s walk around a bit and pay attention\nto the values.",
+      "start": 367.03,
+      "duration": 3.62
+    },
+    {
+      "text": "As soon as we moved, those all changed!",
+      "start": 370.65,
+      "duration": 2.93
+    },
+    {
+      "text": "But we didn’t change the skill.",
+      "start": 373.58,
+      "duration": 1.619
+    },
+    {
+      "text": "So now we can filter again for unchanged values.",
+      "start": 375.199,
+      "duration": 2.931
+    },
+    {
+      "text": "100k left.",
+      "start": 378.13,
+      "duration": 1.599
+    },
+    {
+      "text": "Now switching some skills.",
+      "start": 379.729,
+      "duration": 1.72
+    },
+    {
+      "text": "Moving around.",
+      "start": 381.449,
+      "duration": 1.0
+    },
+    {
+      "text": "But back to skill 2.",
+      "start": 382.449,
+      "duration": 1.0
+    },
+    {
+      "text": "So it’s unchanged.",
+      "start": 383.449,
+      "duration": 1.0
+    },
+    {
+      "text": "Doesn’t help much.",
+      "start": 384.449,
+      "duration": 1.4
+    },
+    {
+      "text": "Well, let’s change it again and select skill\n3 and search for a changed value.",
+      "start": 385.849,
+      "duration": 5.04
+    },
+    {
+      "text": "WOW!",
+      "start": 390.889,
+      "duration": 1.28
+    },
+    {
+      "text": "Down to 262.",
+      "start": 392.169,
+      "duration": 1.601
+    },
+    {
+      "text": "WE could now almost look through that by hand.",
+      "start": 393.77,
+      "duration": 2.149
+    },
+    {
+      "text": "We changed to the second skill and immediately\nthose values updated here.",
+      "start": 395.919,
+      "duration": 3.761
+    },
+    {
+      "text": "Going back to 3, it’s 0.",
+      "start": 399.68,
+      "duration": 1.829
+    },
+    {
+      "text": "So it seems to be directly affected by the\nselected skill.",
+      "start": 401.509,
+      "duration": 2.59
+    },
+    {
+      "text": "However going to the 5th skill, we notice\nthe value stays 0, like when we had skill",
+      "start": 404.099,
+      "duration": 5.711
+    },
+    {
+      "text": "3 selected.",
+      "start": 409.81,
+      "duration": 1.099
+    },
+    {
+      "text": "Which means we should search now for changed\nvalues.",
+      "start": 410.909,
+      "duration": 4.961
+    },
+    {
+      "text": "Down ti 94.",
+      "start": 415.87,
+      "duration": 1.0
+    },
+    {
+      "text": "Let’s keep doing that, switch to skill 6.",
+      "start": 416.87,
+      "duration": 2.6
+    },
+    {
+      "text": "Changed value scan.",
+      "start": 419.47,
+      "duration": 1.0
+    },
+    {
+      "text": "Down to 10!",
+      "start": 420.47,
+      "duration": 1.129
+    },
+    {
+      "text": "Skill 7, scan for changed value.",
+      "start": 421.599,
+      "duration": 1.961
+    },
+    {
+      "text": "Skill 8.",
+      "start": 423.56,
+      "duration": 1.0
+    },
+    {
+      "text": "Changed value.",
+      "start": 424.56,
+      "duration": 1.0
+    },
+    {
+      "text": "Skill 1, change value.",
+      "start": 425.56,
+      "duration": 1.469
+    },
+    {
+      "text": "But looks like nothing happens anymore.",
+      "start": 427.029,
+      "duration": 2.03
+    },
+    {
+      "text": "And there it is!",
+      "start": 429.059,
+      "duration": 1.591
+    },
+    {
+      "text": "So switching the skill we can see the numbers\nupdate.",
+      "start": 430.65,
+      "duration": 3.28
+    },
+    {
+      "text": "And the idea to imagine this value we look\nfor to be an array index seems true!",
+      "start": 433.93,
+      "duration": 5.259
+    },
+    {
+      "text": "Because skill 1 is a zero.",
+      "start": 439.189,
+      "duration": 1.391
+    },
+    {
+      "text": "Skill 2 is a 1.",
+      "start": 440.58,
+      "duration": 1.0
+    },
+    {
+      "text": "And so forth.",
+      "start": 441.58,
+      "duration": 1.19
+    },
+    {
+      "text": "The other value here I’m not sure.",
+      "start": 442.77,
+      "duration": 1.85
+    },
+    {
+      "text": "It doesn’t look like a pointer, because\na pointer should move by the pointer size.",
+      "start": 444.62,
+      "duration": 4.389
+    },
+    {
+      "text": "On 32bit it should move by 4 bytes, so +4.",
+      "start": 449.009,
+      "duration": 3.71
+    },
+    {
+      "text": "But it’s also always just +1.",
+      "start": 452.719,
+      "duration": 2.1
+    },
+    {
+      "text": "So no clue.",
+      "start": 454.819,
+      "duration": 1.641
+    },
+    {
+      "text": "But whatever.",
+      "start": 456.46,
+      "duration": 1.34
+    },
+    {
+      "text": "We can also now add this address to the address\nlist here.",
+      "start": 457.8,
+      "duration": 3.019
+    },
+    {
+      "text": "So at this address in memory, we have apparently\nthe value stored that indicates the selected",
+      "start": 460.819,
+      "duration": 4.85
+    },
+    {
+      "text": "skill.",
+      "start": 465.669,
+      "duration": 1.321
+    },
+    {
+      "text": "This went pretty well.",
+      "start": 466.99,
+      "duration": 1.709
+    },
+    {
+      "text": "But sometimes when you search for values,\nthe same value shows up in multiple places",
+      "start": 468.699,
+      "duration": 4.59
+    },
+    {
+      "text": "in memory and they could just be updated,\nbut are not the real source variable.",
+      "start": 473.289,
+      "duration": 5.34
+    },
+    {
+      "text": "But when we change it, we see that the game\nalso updates the selected skill.",
+      "start": 478.629,
+      "duration": 4.09
+    },
+    {
+      "text": "This means that this is the real root value.",
+      "start": 482.719,
+      "duration": 3.391
+    },
+    {
+      "text": "Beyond this cheat engine offers a lot of other\ninteresting tools to explore this further.",
+      "start": 486.11,
+      "duration": 5.38
+    },
+    {
+      "text": "For example “we can find out what writes\nto this address”.",
+      "start": 491.49,
+      "duration": 3.449
+    },
+    {
+      "text": "“This will attach the debugger of Cheat\nEngine to the current process.",
+      "start": 494.939,
+      "duration": 3.871
+    },
+    {
+      "text": "Continue?”",
+      "start": 498.81,
+      "duration": 1.0
+    },
+    {
+      "text": "Yes.",
+      "start": 499.81,
+      "duration": 1.0
+    },
+    {
+      "text": "There we go.",
+      "start": 500.81,
+      "duration": 1.0
+    },
+    {
+      "text": "Now let’s go to the game and once we change\nthe skill, we see an entry in our list appearing,",
+      "start": 501.81,
+      "duration": 4.919
+    },
+    {
+      "text": "counting how often this instruction was executed\nand wrote this address.",
+      "start": 506.729,
+      "duration": 4.11
+    },
+    {
+      "text": "So this move instruction moved a value from\nedx into the memory refrenced by ESI + hex",
+      "start": 510.839,
+      "duration": 6.69
+    },
+    {
+      "text": "0x180.",
+      "start": 517.529,
+      "duration": 1.57
+    },
+    {
+      "text": "Here we can also see a few of the surrounding\nassembler code and here the register values.",
+      "start": 519.099,
+      "duration": 6.201
+    },
+    {
+      "text": "We said EDX is the value that is written,\nso it in this case it was the number 1.",
+      "start": 525.3,
+      "duration": 5.79
+    },
+    {
+      "text": "And ESI is an address.",
+      "start": 531.09,
+      "duration": 2.21
+    },
+    {
+      "text": "And the value was written at the offset hex\n0x180.",
+      "start": 533.3,
+      "duration": 3.67
+    },
+    {
+      "text": "Now I’m not a 100% sure if this is the case\nhere, but most likely this means that ESI",
+      "start": 536.97,
+      "duration": 6.45
+    },
+    {
+      "text": "is the pointer to some object in memory.",
+      "start": 543.42,
+      "duration": 2.51
+    },
+    {
+      "text": "Maybe the player class.",
+      "start": 545.93,
+      "duration": 1.7
+    },
+    {
+      "text": "And this player object might have a variable\nto indicate the current selected skill, and",
+      "start": 547.63,
+      "duration": 4.28
+    },
+    {
+      "text": "it is at offset 0x180.",
+      "start": 551.91,
+      "duration": 3.13
+    },
+    {
+      "text": "assembly is hardcoded fixed data, right?",
+      "start": 555.04,
+      "duration": 2.66
+    },
+    {
+      "text": "So that can tell you a lot.",
+      "start": 557.7,
+      "duration": 2.009
+    },
+    {
+      "text": "For example we could imagine this to be a\nfunction in C++ like, set_selected_skill,",
+      "start": 559.709,
+      "duration": 4.641
+    },
+    {
+      "text": "and it takes a number, and assigns it to the\nplayer’s member variable.",
+      "start": 564.35,
+      "duration": 4.45
+    },
+    {
+      "text": "The compiler of course knows how the Player\nobject looks like.",
+      "start": 568.8,
+      "duration": 3.43
+    },
+    {
+      "text": "It knows that at offset 0x180 is the player’s\nselected skill.",
+      "start": 572.23,
+      "duration": 5.219
+    },
+    {
+      "text": "So it simply compiles a move based on the\nplayers object start address.",
+      "start": 577.449,
+      "duration": 3.63
+    },
+    {
+      "text": "Does that make sense?",
+      "start": 581.079,
+      "duration": 1.391
+    },
+    {
+      "text": "And you can explore this assumption by looking\nat the memory.",
+      "start": 582.47,
+      "duration": 3.58
+    },
+    {
+      "text": "We can see here Cheat Engine’s Memory View.",
+      "start": 586.05,
+      "duration": 2.74
+    },
+    {
+      "text": "We go to the address of ESI, and so here it\nis.",
+      "start": 588.79,
+      "duration": 3.08
+    },
+    {
+      "text": "And now look at what comes after that start\naddress.",
+      "start": 591.87,
+      "duration": 3.19
+    },
+    {
+      "text": "We see my player name and my team name.",
+      "start": 595.06,
+      "duration": 2.54
+    },
+    {
+      "text": "LiveOverflow and PwnSquad.",
+      "start": 597.6,
+      "duration": 1.94
+    },
+    {
+      "text": "We can apparently also see the location we\nare at.",
+      "start": 599.54,
+      "duration": 3.659
+    },
+    {
+      "text": "LostCave.",
+      "start": 603.199,
+      "duration": 1.0
+    },
+    {
+      "text": "We can also see here a value that seems to\nrapidly count up.",
+      "start": 604.199,
+      "duration": 3.33
+    },
+    {
+      "text": "So this could be a timer of some sorts.",
+      "start": 607.529,
+      "duration": 3.031
+    },
+    {
+      "text": "The other highlighted value here is the address\nwe have stored in our address list.",
+      "start": 610.56,
+      "duration": 4.25
+    },
+    {
+      "text": "So this is the selected skill.",
+      "start": 614.81,
+      "duration": 2.06
+    },
+    {
+      "text": "We can see it change when we change it ingame.",
+      "start": 616.87,
+      "duration": 2.52
+    },
+    {
+      "text": "But we don’t see anything update when we\nlook around or walk around.",
+      "start": 619.39,
+      "duration": 4.15
+    },
+    {
+      "text": "So the player’s position doesn’t seem\nto be stored right there.",
+      "start": 623.54,
+      "duration": 3.95
+    },
+    {
+      "text": "We can also look at the Memory Regions to\nfind out where the code that accessed this",
+      "start": 627.49,
+      "duration": 4.53
+    },
+    {
+      "text": "memory belongs to.",
+      "start": 632.02,
+      "duration": 1.29
+    },
+    {
+      "text": "It staretd with hex 0x618….",
+      "start": 633.31,
+      "duration": 1.81
+    },
+    {
+      "text": "Something.",
+      "start": 635.12,
+      "duration": 1.0
+    },
+    {
+      "text": "And there are a lot of memory regions for\na game.",
+      "start": 636.12,
+      "duration": 3.13
+    },
+    {
+      "text": "But here it is.",
+      "start": 639.25,
+      "duration": 1.16
+    },
+    {
+      "text": "It seems to belong to the GameLogic.dll.",
+      "start": 640.41,
+      "duration": 2.099
+    },
+    {
+      "text": "And if you have watched my PwnAdventure series\non linux, you know that the GameLogic is a",
+      "start": 642.509,
+      "duration": 5.241
+    },
+    {
+      "text": "very important part for the game.",
+      "start": 647.75,
+      "duration": 2.259
+    },
+    {
+      "text": "You can also use this information to kickstart\nstatic analysis.",
+      "start": 650.009,
+      "duration": 3.591
+    },
+    {
+      "text": "Let’s try to find this function that wrote\nthe skill number in a disassembler.",
+      "start": 653.6,
+      "duration": 4.549
+    },
+    {
+      "text": "Here I have loaded the GameLogic.dll into\nGhidra.",
+      "start": 658.149,
+      "duration": 3.141
+    },
+    {
+      "text": "The free reverse engineering tool from the\nNSA.",
+      "start": 661.29,
+      "duration": 3.27
+    },
+    {
+      "text": "And when loaded it loads the dll at a certain\naddress.",
+      "start": 664.56,
+      "duration": 3.219
+    },
+    {
+      "text": "So we can’t simply go to the address that\ncheat engine told us.because of ASLR on windows,",
+      "start": 667.779,
+      "duration": 4.551
+    },
+    {
+      "text": "the dll was loaded somewhere else in memory.",
+      "start": 672.33,
+      "duration": 2.67
+    },
+    {
+      "text": "But we saw which address in the memory view\nof Cheat Engine.",
+      "start": 675.0,
+      "duration": 4.05
+    },
+    {
+      "text": "Here is the the Memory Map as shown by Ghidra.",
+      "start": 679.05,
+      "duration": 2.269
+    },
+    {
+      "text": "And with this house symbol, representing the\nBASE, you can actually move the whole dll",
+      "start": 681.319,
+      "duration": 5.281
+    },
+    {
+      "text": "around.",
+      "start": 686.6,
+      "duration": 1.0
+    },
+    {
+      "text": "So we can now enter the real base address\nin memory, and Ghidra will relocate the binary.",
+      "start": 687.6,
+      "duration": 5.83
+    },
+    {
+      "text": "And now compare the memory map of Ghidra to\nthe real process memory map.",
+      "start": 693.43,
+      "duration": 4.029
+    },
+    {
+      "text": "You can see how all the sections of the .dll\nwhere really loaded into the memory of the",
+      "start": 697.459,
+      "duration": 4.731
+    },
+    {
+      "text": "game.",
+      "start": 702.19,
+      "duration": 1.0
+    },
+    {
+      "text": "Anyway.",
+      "start": 703.19,
+      "duration": 1.0
+    },
+    {
+      "text": "Now we can be lazy and simply go to the address\nCheat Engine told us.",
+      "start": 704.19,
+      "duration": 3.83
+    },
+    {
+      "text": "So here it is!",
+      "start": 708.02,
+      "duration": 1.38
+    },
+    {
+      "text": "I have deliberately renamed the GameLogic.dll\nto game.dll, just because the PwnAdventure",
+      "start": 709.4,
+      "duration": 5.91
+    },
+    {
+      "text": "game shipped with debug symbols in the .pdb\nfile.",
+      "start": 715.31,
+      "duration": 3.05
+    },
+    {
+      "text": "This way we can have more the experience of\nreverse engineering a closed source game without",
+      "start": 718.36,
+      "duration": 4.589
+    },
+    {
+      "text": "symbols.",
+      "start": 722.949,
+      "duration": 1.0
+    },
+    {
+      "text": "So here is the function.",
+      "start": 723.949,
+      "duration": 1.611
+    },
+    {
+      "text": "Ghidra also comes with a decompiler so you\ncan see here that this line writes the skill",
+      "start": 725.56,
+      "duration": 4.19
+    },
+    {
+      "text": "number.",
+      "start": 729.75,
+      "duration": 1.04
+    },
+    {
+      "text": "So like I said, there is a good chance that\nESI was somehow the pointer to some kind of",
+      "start": 730.79,
+      "duration": 5.09
+    },
+    {
+      "text": "Player object.",
+      "start": 735.88,
+      "duration": 1.54
+    },
+    {
+      "text": "So we could just assume that iVar1 is a player\nobject.",
+      "start": 737.42,
+      "duration": 3.479
+    },
+    {
+      "text": "iVar1 + 0x180 is the selected skill.",
+      "start": 740.899,
+      "duration": 4.321
+    },
+    {
+      "text": "And so we can also ask Ghidra to automatically\ngenerate a structure - a struct.",
+      "start": 745.22,
+      "duration": 4.549
+    },
+    {
+      "text": "Like in C. Basically automatically create\na class.",
+      "start": 749.769,
+      "duration": 3.63
+    },
+    {
+      "text": "Now of course ghidra doesn’t know how this\nclass looks like, but based on the decompilation",
+      "start": 753.399,
+      "duration": 4.511
+    },
+    {
+      "text": "it can assume that this offset 0x180 was actually\na variable inside that Player struct.",
+      "start": 757.91,
+      "duration": 6.619
+    },
+    {
+      "text": "So you see the code changed from this addition,\nto accessing a member variable of Player.",
+      "start": 764.529,
+      "duration": 5.801
+    },
+    {
+      "text": "And then we can rename that field, and for\nexample call it skillId or itemSlot.",
+      "start": 770.33,
+      "duration": 5.629
+    },
+    {
+      "text": "This is cool right?",
+      "start": 775.959,
+      "duration": 1.0
+    },
+    {
+      "text": "I have to make it clear.",
+      "start": 776.959,
+      "duration": 1.24
+    },
+    {
+      "text": "I’m not 100% sure that this is really a\nplayer object, and I don’t know how really",
+      "start": 778.199,
+      "duration": 4.2
+    },
+    {
+      "text": "that variable is called.",
+      "start": 782.399,
+      "duration": 1.911
+    },
+    {
+      "text": "These are just assumptions based on the evidence\nwe have collected.",
+      "start": 784.31,
+      "duration": 3.529
+    },
+    {
+      "text": "But in the process of reverse engineering,\nwe might also invalidate this assumption because",
+      "start": 787.839,
+      "duration": 5.19
+    },
+    {
+      "text": "we learned even more details.",
+      "start": 793.029,
+      "duration": 1.881
+    },
+    {
+      "text": "Doesn’t this almost feel like investigating\na crime scene or doing science.",
+      "start": 794.91,
+      "duration": 4.239
+    },
+    {
+      "text": "And you need quite a bit of creativity too.",
+      "start": 799.149,
+      "duration": 3.401
+    },
+    {
+      "text": "You try to come up with a gooddiea to collect\ndata and evidence and you come up with assumptions,",
+      "start": 802.55,
+      "duration": 5.029
+    },
+    {
+      "text": "that are for example based on your programming\nexperience, and create a mental model, and",
+      "start": 807.579,
+      "duration": 4.631
+    },
+    {
+      "text": "then you collect more data that either confirms\nyour assumptions or you adjust your model.",
+      "start": 812.21,
+      "duration": 5.27
+    },
+    {
+      "text": "And you keep repeating that.",
+      "start": 817.48,
+      "duration": 1.74
+    },
+    {
+      "text": "You can see that some people can find this\nto be really fun.",
+      "start": 819.22,
+      "duration": 2.58
+    },
+    {
+      "text": "Like a puzzle or a point and click adventure\ngame.",
+      "start": 821.8,
+      "duration": 2.599
+    },
+    {
+      "text": "But this is basically how reverse engineering\nof a game or some program can look like.",
+      "start": 824.399,
+      "duration": 5.011
+    },
+    {
+      "text": "If this process seems fun to you, checkout\nthe YouTube channel GuidedHacking and Stephen",
+      "start": 829.41,
+      "duration": 3.28
+    },
+    {
+      "text": "Chapman.",
+      "start": 832.69,
+      "duration": 1.0
+    },
+    {
+      "text": "They make a lot of videos about various games\nand show you how they approach it.",
+      "start": 833.69,
+      "duration": 3.649
+    },
+    {
+      "text": "Also… just a small PSA.",
+      "start": 837.339,
+      "duration": 2.051
+    },
+    {
+      "text": "Please don’t become an asshole game hacker.",
+      "start": 839.39,
+      "duration": 2.72
+    },
+    {
+      "text": "With that I mean, 1st. don’t ruin online\ngames.",
+      "start": 842.11,
+      "duration": 3.77
+    },
+    {
+      "text": "Even cheat engine officially says don’t\nask about hacking online games (and typically",
+      "start": 845.88,
+      "duration": 4.61
+    },
+    {
+      "text": "they have anti debugging and detections in\nplace that stop this easily anyway).",
+      "start": 850.49,
+      "duration": 4.24
+    },
+    {
+      "text": "There are of course always tricks to get around\nstuff, but don’t bother asking people about",
+      "start": 854.73,
+      "duration": 4.14
+    },
+    {
+      "text": "that.",
+      "start": 858.87,
+      "duration": 1.0
+    },
+    {
+      "text": "If you play around with that alone, fine.",
+      "start": 859.87,
+      "duration": 1.86
+    },
+    {
+      "text": "With enough experience you can do that yourself.",
+      "start": 861.73,
+      "duration": 2.209
+    },
+    {
+      "text": "But selling hacks is shitty.",
+      "start": 863.939,
+      "duration": 1.991
+    },
+    {
+      "text": "And don’t ask for online game hacks.",
+      "start": 865.93,
+      "duration": 2.03
+    },
+    {
+      "text": "You can have enough fun and learn enough with\nnormal non-online games.",
+      "start": 867.96,
+      "duration": 5.2
+    },
+    {
+      "text": "Or stuff like Pwn Adventure.",
+      "start": 873.16,
+      "duration": 1.82
+    },
+    {
+      "text": "And 2nd.",
+      "start": 874.98,
+      "duration": 1.0
+    },
+    {
+      "text": "Like I said I explored these tools when I\nwas a teenager and eager to learn.",
+      "start": 875.98,
+      "duration": 4.049
+    },
+    {
+      "text": "And I found these game hacking forums.",
+      "start": 880.029,
+      "duration": 2.201
+    },
+    {
+      "text": "But they were full of entitled pricks and\nelitists who didn’t want to share anything.",
+      "start": 882.23,
+      "duration": 5.56
+    },
+    {
+      "text": "If that was you, and now you watch my videos\nfor other hacking content, screw you!",
+      "start": 887.79,
+      "duration": 4.02
+    },
+    {
+      "text": "I’m branded by you!",
+      "start": 891.81,
+      "duration": 1.8
+    },
+    {
+      "text": "But that’s why I appreciate Guided Hacking\nand Stephen Chapman so much.",
+      "start": 893.61,
+      "duration": 4.13
+    },
+    {
+      "text": "Because their videos are exactly the videos\nI wish I had found when I was a teenager.",
+      "start": 897.74,
+      "duration": 4.789
+    },
+    {
+      "text": "And I can only imagine the impact they have\non the new generation.",
+      "start": 902.529,
+      "duration": 4.55
+    },
+    {
+      "text": "Because many security researchers have had\ntheir origin in game hacking.",
+      "start": 907.079,
+      "duration": 2.2
+    }
+  ],
+  "full_text": "Let’s have a look at some windows game hacking\nby revisiting Pwn Adventure 3 - the game that was made to teach game developers about what\ncan go wrrong. We have solved all available challenges already\non Linux and you can find the whole walkthrough as a playlist in the description. I didn’t do the hacks on Windows because\nI only have a basic knowledge about it. For example I know about DLL injection, tools\nlike Cheat Engine and some of the Windows API, but that’s about it. And especially the tooling and the process,\nis very different on Windows and Linux. But because Linux and Windows run on the same\nPC architecture, we have of course some similarities. I know how C and C++ programs work. I know about memory and pointers. I can read assembly. I understand structs and classes in memory. But once you get into other process details\nlike DLLs, shared libraries, the heap, threads, and so forth, it gets very different. So given my Linux experience I will have a\ngood foundation, but I will also have to learn a lot. Also one sidenote, a lot of people scoff at\nWindows and Windows users when it comes to hacking. “Real hackers use Arch Linux”. But in reality, the game hacking community,\nhas created some incredible debugging and analysis tools for windows. Going really deep. I’m not sure but I would lean so far out\nof the window (heh, pun) to say, that the tooling on Windows for analysing software\nor in particular games, especially software without source code, is much more advanced\nthan on Linux. And I think a tool that immediately jumps\nto mind is Cheat Engine. So let’s check it out I remember playing around with Cheat Engine\nwhen I was a teenager and didn’t understand a thing about memory, assembly and other lower\nlevel stuff about programs. But already then it felt intuitive and logical\nto use. At least the basics. I think that just shows how great of a tool\nit is. So what is it? This is Cheat Engine. The basic idea of this tool is to find the\naddress of certain values in the game’s memory. And you do this by repeatedly eliminating,\nor separating, or sorting out values. To do this CheatEngine offers various Scan\nTypes and Value Types. At the top you can see that I have attached\nwith this button to the Pwn Adventure process. So Cheat Engine searches through the game’s\nprocess memory. Let’s try it out. Let’s take the health, which right now is\nat 100. We search the value 100. We assume health is stored as a 4 byte value. First Scan. But we find thousands of values. However you can already see a few values now\nupdated. This is the current value in memory, and this\nis what it was when the search was done. So with the next scan we can filter, or search,\non those results and we could just search again for 100, or we could say that the value\nhas not changed. No difference in this case, just wanted to\nshow a different scan type. And we sort out a few memory locations, but\nwe are still at over 9000! Mhmh… we can also go into the game and move\nand jump around hoping that that could affect any of those values. Nothing directly visible here, but when we\nredo the scan we are now in the 8000s. So it helped. But you see, it will be tough to find now\nthe right health value. So that’s why you want a value that you\ncan somehow affect. You could affect the health by taking damage,\nbut unfortunately we are just at the start of the game, so we can’t do this right now. Instead let’s look for something else. Let’s start over and do a new scan. I want to find the address in memory that\nstores the current selected skill or weapon. 1,2,3,4,5,6,7,8,9 or 0. We have selected 1, and we could now search\nfor the value 1. But if you have experience with programming\nand you imagine this to be an array, we actually don’t not know if this is stored as a 1\nor maybe as an array index of 0. And if you think this further, it could also\nbe a linked list, which would mean the current selected skill could also be a pointer, just\npointing to that object that represents that skill in memory. So it’s perfectly valid to make an assumption\nthat it is 1, and then start searching like that. And maybe that works or you restart and try\n0. But you could also try to go with an unkown\ninitital value. First scan. It takes a bit. Because it now indexed over 168 MILLION addresses. This is what Cheat Engine makes such a great\ntool. It’s not difficult to read a processes memory. We have done that on linux with GDB aaaaalll\nthe time. Examining memory. And of course we could write scripts or tools\nto automate such a search. But the software engineering along the algorithm-,\nand memory-, optimization to make this as efficient and usable as Cheat Engine does\nit, is not trivial. That’s why this is an awesome tool. Anyway, let’s continue. So we haven’t changed the selected skill\nyet, but we move around a bit, and so we can now filter out ALL the dynamic memory values\nby searching for unchanged value. Ooof… still 167 million. That didn’t help much… But that makes sense. We searched for an unkown value and then filtered\nfor all the unchanged valkues. And all the assembly code of the binaries,\nthe pwn adventure binary, all the loaded dlls, all the loaded resources and 3D objects are\nall unchanged data in memory, right? So we want to get rid of those. Which means we should somehow change and affect\nthe skill selection by switching the skill around. Ok we clearly changed the value now and we\ncan search for a changed value. BOOM! From 167 million down to 291 thousand. And you can already see some red colored values\nthat updated and changed. So let’s quickly scan for unchanged values. Down to 229 thousand. Just repeat the same search a bit. Down to 203 thousand. Let’s walk around a bit and pay attention\nto the values. As soon as we moved, those all changed! But we didn’t change the skill. So now we can filter again for unchanged values. 100k left. Now switching some skills. Moving around. But back to skill 2. So it’s unchanged. Doesn’t help much. Well, let’s change it again and select skill\n3 and search for a changed value. WOW! Down to 262. WE could now almost look through that by hand. We changed to the second skill and immediately\nthose values updated here. Going back to 3, it’s 0. So it seems to be directly affected by the\nselected skill. However going to the 5th skill, we notice\nthe value stays 0, like when we had skill 3 selected. Which means we should search now for changed\nvalues. Down ti 94. Let’s keep doing that, switch to skill 6. Changed value scan. Down to 10! Skill 7, scan for changed value. Skill 8. Changed value. Skill 1, change value. But looks like nothing happens anymore. And there it is! So switching the skill we can see the numbers\nupdate. And the idea to imagine this value we look\nfor to be an array index seems true! Because skill 1 is a zero. Skill 2 is a 1. And so forth. The other value here I’m not sure. It doesn’t look like a pointer, because\na pointer should move by the pointer size. On 32bit it should move by 4 bytes, so +4. But it’s also always just +1. So no clue. But whatever. We can also now add this address to the address\nlist here. So at this address in memory, we have apparently\nthe value stored that indicates the selected skill. This went pretty well. But sometimes when you search for values,\nthe same value shows up in multiple places in memory and they could just be updated,\nbut are not the real source variable. But when we change it, we see that the game\nalso updates the selected skill. This means that this is the real root value. Beyond this cheat engine offers a lot of other\ninteresting tools to explore this further. For example “we can find out what writes\nto this address”. “This will attach the debugger of Cheat\nEngine to the current process. Continue?” Yes. There we go. Now let’s go to the game and once we change\nthe skill, we see an entry in our list appearing, counting how often this instruction was executed\nand wrote this address. So this move instruction moved a value from\nedx into the memory refrenced by ESI + hex 0x180. Here we can also see a few of the surrounding\nassembler code and here the register values. We said EDX is the value that is written,\nso it in this case it was the number 1. And ESI is an address. And the value was written at the offset hex\n0x180. Now I’m not a 100% sure if this is the case\nhere, but most likely this means that ESI is the pointer to some object in memory. Maybe the player class. And this player object might have a variable\nto indicate the current selected skill, and it is at offset 0x180. assembly is hardcoded fixed data, right? So that can tell you a lot. For example we could imagine this to be a\nfunction in C++ like, set_selected_skill, and it takes a number, and assigns it to the\nplayer’s member variable. The compiler of course knows how the Player\nobject looks like. It knows that at offset 0x180 is the player’s\nselected skill. So it simply compiles a move based on the\nplayers object start address. Does that make sense? And you can explore this assumption by looking\nat the memory. We can see here Cheat Engine’s Memory View. We go to the address of ESI, and so here it\nis. And now look at what comes after that start\naddress. We see my player name and my team name. LiveOverflow and PwnSquad. We can apparently also see the location we\nare at. LostCave. We can also see here a value that seems to\nrapidly count up. So this could be a timer of some sorts. The other highlighted value here is the address\nwe have stored in our address list. So this is the selected skill. We can see it change when we change it ingame. But we don’t see anything update when we\nlook around or walk around. So the player’s position doesn’t seem\nto be stored right there. We can also look at the Memory Regions to\nfind out where the code that accessed this memory belongs to. It staretd with hex 0x618…. Something. And there are a lot of memory regions for\na game. But here it is. It seems to belong to the GameLogic.dll. And if you have watched my PwnAdventure series\non linux, you know that the GameLogic is a very important part for the game. You can also use this information to kickstart\nstatic analysis. Let’s try to find this function that wrote\nthe skill number in a disassembler. Here I have loaded the GameLogic.dll into\nGhidra. The free reverse engineering tool from the\nNSA. And when loaded it loads the dll at a certain\naddress. So we can’t simply go to the address that\ncheat engine told us.because of ASLR on windows, the dll was loaded somewhere else in memory. But we saw which address in the memory view\nof Cheat Engine. Here is the the Memory Map as shown by Ghidra. And with this house symbol, representing the\nBASE, you can actually move the whole dll around. So we can now enter the real base address\nin memory, and Ghidra will relocate the binary. And now compare the memory map of Ghidra to\nthe real process memory map. You can see how all the sections of the .dll\nwhere really loaded into the memory of the game. Anyway. Now we can be lazy and simply go to the address\nCheat Engine told us. So here it is! I have deliberately renamed the GameLogic.dll\nto game.dll, just because the PwnAdventure game shipped with debug symbols in the .pdb\nfile. This way we can have more the experience of\nreverse engineering a closed source game without symbols. So here is the function. Ghidra also comes with a decompiler so you\ncan see here that this line writes the skill number. So like I said, there is a good chance that\nESI was somehow the pointer to some kind of Player object. So we could just assume that iVar1 is a player\nobject. iVar1 + 0x180 is the selected skill. And so we can also ask Ghidra to automatically\ngenerate a structure - a struct. Like in C. Basically automatically create\na class. Now of course ghidra doesn’t know how this\nclass looks like, but based on the decompilation it can assume that this offset 0x180 was actually\na variable inside that Player struct. So you see the code changed from this addition,\nto accessing a member variable of Player. And then we can rename that field, and for\nexample call it skillId or itemSlot. This is cool right? I have to make it clear. I’m not 100% sure that this is really a\nplayer object, and I don’t know how really that variable is called. These are just assumptions based on the evidence\nwe have collected. But in the process of reverse engineering,\nwe might also invalidate this assumption because we learned even more details. Doesn’t this almost feel like investigating\na crime scene or doing science. And you need quite a bit of creativity too. You try to come up with a gooddiea to collect\ndata and evidence and you come up with assumptions, that are for example based on your programming\nexperience, and create a mental model, and then you collect more data that either confirms\nyour assumptions or you adjust your model. And you keep repeating that. You can see that some people can find this\nto be really fun. Like a puzzle or a point and click adventure\ngame. But this is basically how reverse engineering\nof a game or some program can look like. If this process seems fun to you, checkout\nthe YouTube channel GuidedHacking and Stephen Chapman. They make a lot of videos about various games\nand show you how they approach it. Also… just a small PSA. Please don’t become an asshole game hacker. With that I mean, 1st. don’t ruin online\ngames. Even cheat engine officially says don’t\nask about hacking online games (and typically they have anti debugging and detections in\nplace that stop this easily anyway). There are of course always tricks to get around\nstuff, but don’t bother asking people about that. If you play around with that alone, fine. With enough experience you can do that yourself. But selling hacks is shitty. And don’t ask for online game hacks. You can have enough fun and learn enough with\nnormal non-online games. Or stuff like Pwn Adventure. And 2nd. Like I said I explored these tools when I\nwas a teenager and eager to learn. And I found these game hacking forums. But they were full of entitled pricks and\nelitists who didn’t want to share anything. If that was you, and now you watch my videos\nfor other hacking content, screw you! I’m branded by you! But that’s why I appreciate Guided Hacking\nand Stephen Chapman so much. Because their videos are exactly the videos\nI wish I had found when I was a teenager. And I can only imagine the impact they have\non the new generation. Because many security researchers have had\ntheir origin in game hacking.",
+  "errors": []
+}

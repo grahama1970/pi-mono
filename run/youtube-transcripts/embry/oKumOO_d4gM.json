@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oKumOO_d4gM",
+    "language": "en",
+    "took_ms": 7716,
+    "method": null,
+    "title": "Everyday Astronaut - \"Extra Vehicular Leisure\"",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20181121",
+    "duration_sec": 203,
+    "description": "7 song EP - \"Maximum Aerodynamic Pressure\" available now everywhere!\n\niTunes - https://itunes.apple.com/us/album/maximum-aerodynamic-pressure/1443689755\n\nSpotify - https://open.spotify.com/album/56J65dFdTwyjN39L3r3RkQ?si=xG9lUDh1R4iRmHqWcq9iOw\n\nGoogle Play Music - https://play.google.com/music/listen?u=0#/album/Bxnth4tjp3z526wdnntnprag2ym\n\nOr anywhere else you listen to music!\n\nFootage by Roscosmos and NASA",
+    "view_count": 74084
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oKumOO_d4gM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V9fjtkPWD4E",
+    "language": "en",
+    "took_ms": 8456,
+    "method": null,
+    "title": "Landing an ML Job- secrets from technical recruiters",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201015",
+    "duration_sec": 3790,
+    "description": "Welcome to Landing an ML Job- a virtual Learner Community Event hosted by DeepLearning.AI and Workera! A panel of technical recruiters will be sharing suggestions on potential career paths as well as tips and best practices for interview prep.\n\n\nAgenda: PDT (*subject to change)\n\nMC: Sandhya Simhan, Director of Marketing, DeepLearning.AI\n\n5mins: Opening speech: Kian Katanforoosh, Founder & CEO, Workera\n\n40mins: Panel discussion:\n\nModerator: Kian Katanforoosh, Founder & CEO, Workera\n\nPanelists:\n-Ebitie Amughan, Technical Recruiter, Pinterest\n-Lawrence Gomez, Technical Recruiter, Upstart\n-Dana Schafer, Technical Recruiter, Grammarly \n-Melisa Tokmak, Head of Document Products, ScaleAI\n\n15mins: Q&A. We will be taking questions from our learners in the Slack community. If you’re currently taking the AI for Medicine, NLP or GANs Specializations, check your Coursera platform classroom for the invitation link if you haven’t joined the respective Slack workspaces.\n\nTo learn more about us, \nDeepLearning.AI: https://www.deeplearning.ai/\nWorkera: https://workera.ai/\n\nCheck out all our courses: https://bit.ly/36h5obX",
+    "view_count": 22964
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V9fjtkPWD4E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

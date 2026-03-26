@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GqjvaBUk3Tc",
+    "language": "en",
+    "took_ms": 9048,
+    "method": null,
+    "title": "Build faster with Claude Code! New short course now live",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250806",
+    "duration_sec": 157,
+    "description": "Learn more: https://bit.ly/4fjWxaI\n\nClaude Code is one of the most capable AI coding assistants today, able to autonomously explore codebases, generate code, and debug with minimal input. But using it effectively requires the right setup and best practices.\n\nIn our new short course, Claude Code: A Highly Agentic Coding Assistant, built in collaboration with Anthropic, you'll learn Claude Code best practices to boost your productivity. Taught by Elie Schoppik, this course walks you through how to use Claude Code to:\n\n- Set it up with the right context, specify relevant files, define codebase rules, and connect MCP servers\n- Explore and extend a RAG chatbot, and analyze e-commerce data in a Jupyter notebook\n- Build a web app UI from a Figma mockup using MCP integration\n- Run multiple Claude sessions in parallel with Git worktrees\n- Streamline development with GitHub integration and Claude Code hooks\n\nBy the end, you’ll have a clear set of practices to make Claude Code a powerful part of your workflow.\n\nEnroll now: https://bit.ly/4fjWxaI",
+    "view_count": 13034
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GqjvaBUk3Tc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

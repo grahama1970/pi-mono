@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Dq3q_XLbdWs",
+    "language": "en",
+    "took_ms": 7970,
+    "method": null,
+    "title": "What We Learned From ICS Pwn2Own",
+    "channel": "S4 Events",
+    "upload_date": "20250326",
+    "duration_sec": 1578,
+    "description": "The OT version of Pwn2Own was held at S4x20, S4x22 and S4x23. There have been mobile Pwn2Own, automotive Pwn2Own, IIoT Pwn2Own and more. The research team at Claroty won a lot of money at the OT and other versions.\n\nIn this session Vera pulls together the lessons learned from the OT 0day vulnerabilities they found at Pwn2Own. What were the common techniques that worked across multiple systems? What targets were harder and why? How chaining together techniques can allow attackers to succeed when the direct approach fails. And more.",
+    "view_count": 389
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Dq3q_XLbdWs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Nmym4kYvRhU",
+    "language": "en",
+    "took_ms": 9685,
+    "method": null,
+    "title": "Effectively Using Attribution",
+    "channel": "S4 Events",
+    "upload_date": "20250820",
+    "duration_sec": 1611,
+    "description": "The OT security community has strong views, and disagreements, on the value of attribution. The question for asset owners is: are you using attribution effectively?\n\nIf attribution means simply \"Russia\" then it's probably not that helpful. If you can go deeper into the threat actor and their tradecraft and TTPs it could make a big difference in the decisions you make in your OT security program. For example, what it means for an attack to be attibuted to APT28 vs APT44 could make a big difference.\n\nSteve dived into what asset owners should look for in attribution and how they should and shouldn't use attribution to guide their OT security actions and cyber risk management.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 132
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Nmym4kYvRhU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

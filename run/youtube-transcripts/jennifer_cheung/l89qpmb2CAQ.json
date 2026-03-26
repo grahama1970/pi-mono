@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l89qpmb2CAQ",
+    "language": "en",
+    "took_ms": 7699,
+    "method": null,
+    "title": "DEF CON 32 - Evading Modern Defenses When Phishing with Pixels - Melvin Langvik",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1068,
+    "description": "Dive into the art of phishing with QR codes! We'll cover the fundamentals of QR code phishing, revealing how these innocuous-looking images are used to deceive users into a false sense of legitimacy. After touching upon the basics, we'll explore creative tactics for obfuscating and hiding QR codes to ensure they reach their intended targets. As a sidetrack, we'll delve into how emails are rendered within the Outlook Mail Application and showcase some neat tricks that exploit its limitations for hiding QR codes from modern defensive solutions. Overall, the talk is intended to help testers up their QR code phishing game!",
+    "view_count": 1192
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l89qpmb2CAQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

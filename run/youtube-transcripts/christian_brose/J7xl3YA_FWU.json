@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "J7xl3YA_FWU",
+    "language": "en",
+    "took_ms": 8618,
+    "method": null,
+    "title": "NATO Public Forum: Disruptive and Innovative Technologies in Defense",
+    "channel": "Hudson Institute",
+    "upload_date": "20240712",
+    "duration_sec": 3009,
+    "description": "The war in Ukraine reveals the growing challenges and opportunities for the North Atlantic Treaty Organization’s military forces. After surprising success early in the war, Ukraine is now running short of munitions, and the precision weapons Kyiv assumed would offer an advantage are now failing in the face of Russian electronic warfare and innovative tactics. To stay ahead in this conflict and future confrontations, NATO militaries and defense industries will need to both adapt and scale.\n\nA Hudson panel at the NATO Public Forum with government and industry technology leaders discussed how NATO nations can get beyond “innovation theater” and quickly field relevant capabilities in the numbers needed for protracted wars.",
+    "view_count": 1672
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] J7xl3YA_FWU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

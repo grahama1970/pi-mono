@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xThhEgmkDvk",
+    "language": "en",
+    "took_ms": 8781,
+    "method": null,
+    "title": "Connecting Our Military Community, Now & Always",
+    "channel": "Sandboxx",
+    "upload_date": "20200501",
+    "duration_sec": 46,
+    "description": "May 1st marks the start of Military Appreciation Month 🇺🇸\n\nThe last few weeks have brought about change and uncertainty, something the military community is all too familiar with. As a team, we are committed to our mission & honored to serve our military community. That's why we are working hard to ensure that our community can continue to stay connected during this time.\n\nStay safe, happy letter writing.💌",
+    "view_count": 295
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xThhEgmkDvk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

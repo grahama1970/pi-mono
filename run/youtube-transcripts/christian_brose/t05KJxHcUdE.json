@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "t05KJxHcUdE",
+    "language": "en",
+    "took_ms": 8229,
+    "method": null,
+    "title": "Reclaiming the Moral Life of Philanthropy?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6581,
+    "description": "Delivering an address entitled \"Reclaiming the Moral Life of Philanthropy\" at MIT in September 2010, Atlantic Philanthropies president Gara LaMarche noted that he felt:         a disquiet about the way we in the foundation world, along with the organisations we support and the infrastructure many of us have helped to build, have mirrored trends in the political world to talk about what we do and why we are doing it in ways that have strayed too far from first principles. We have become more abou",
+    "view_count": 39
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] t05KJxHcUdE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

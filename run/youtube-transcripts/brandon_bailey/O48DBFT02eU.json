@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O48DBFT02eU",
+    "language": "en",
+    "took_ms": 8550,
+    "method": null,
+    "title": "DEF CON 32 - Simulating attacks against hydroelectric power plants - Julia Dewitz-Würzelberger",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1360,
+    "description": "In this talk we will present the ICS firing range we built and hacked to simulate an actual attack against a hydroelectric power plant and create a DFIR training from the evidence left behind. The talk aims to emphasize the importance of attack simulation in the context of critical infrastructure and the potential benefit that firing ranges can provide to such assessments.\n\nFirst we will examine the motivation behind the construction and usage of a firing range, covering various aspects including:\n\nthe threats operators of critical infrastructure face,\nhow security assessments are conducted in an OT context and\nhow an ICS firing range can be utilized to support them.\nNext we will discuss the intended use cases of the firing range and the scenario it was made to display, the flooding of a hydroelectric power plant. As a result, the relevant components and production processes of the plant will be outlined. Then we will present and go into detail about the design & architecture of the firing range:\n\nindividual physical and virtual networks and components,\nseparate Active Directory environments,\nimplemented security measures\nspecific vulnerabilities intentionally left behind.\nPicking up this last bullet-point, we continue with how we hacked the firing range and performed a Red Team assessment against it, simulating an actual attack. Starting with the C2 infrastructure we set up for the attack, we will guide the audience through the kill chain in chronological order and highlight the most important and relevant steps of the attack.\n\nOnce the offensive part of the talk concludes, a shift of perspective takes place and the attack is evaluated from the defence's point-of-view: we'll show how we identified, secured and analyzed indicators of compromise left behind by the attack. This includes the analysis of network captures, Windows event logs, memory dumps and more.\n\nThis talk will be presented by not only people from NVISO as the IT security service provider who built the firing range and performed to attack against it, but also by people from VERBUND's IT security team who actively use the firing range for training. This way we can involve both the attacker's and the defence's point-of-view.",
+    "view_count": 658
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O48DBFT02eU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

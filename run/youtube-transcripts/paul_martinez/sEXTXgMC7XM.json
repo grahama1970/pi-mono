@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sEXTXgMC7XM",
+    "language": "en",
+    "took_ms": 9018,
+    "method": null,
+    "title": "The Other Half of the Risk Equation",
+    "channel": "S4 Events",
+    "upload_date": "20251030",
+    "duration_sec": 170,
+    "description": "Most OT security teams focus on countermeasures and recovery. Few look at the other half of the equation—risk transfer.\n\nThis Unsolicited Response from S4x25 breaks down why every security leader should read their cyber insurance policy, know their breach response panel, and build real alignment with risk managers.\n\nIf you can’t put a dollar value on risk, someone else will. Probably with fewer greens and more red.",
+    "view_count": 378
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sEXTXgMC7XM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

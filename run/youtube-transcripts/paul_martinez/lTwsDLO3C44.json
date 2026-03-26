@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lTwsDLO3C44",
+    "language": "en",
+    "took_ms": 2425,
+    "method": null,
+    "title": "Cyber Attacks on Ukraine Power and Critical Infrastructure",
+    "channel": "S4 Events",
+    "upload_date": "20170216",
+    "duration_sec": 3511,
+    "description": "Marina Krotofil and Oleksii Yasynskyi (from Ukraine) discuss the last two years cyber attacks on the Ukrainian critical infrastructure.\n\nWhile the power outages in December '15 and '16 garner most of the attention, Marian highlights 12 attacks alone in December '16 on Ukrainian critical infrastructure at 4:30.\n\nOleksii has been investigating these incidents in Ukraine and sent in a 21 minute video that begins at 20:50. He uses the cyber kill chain to illustrate the attack. It gets more technical at 27:00, and most of the techniques could be used to infiltrate any system. The attackers did not use any special ICS attacks until the very end.\n\nA few other facts from the presentation to watch for:\n\n- The 2016 attack on the electric grid was more complex and more organized than the 2015 attack. The infiltration stage showed the most progress over that year.\n- Only 1% of the code is for the attack functionality. 99% of the code was to avoid detection.\n- Oleksii contends that this attack required several talented groups working together.\n- The attack code was customized for each target.",
+    "view_count": 6720
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lTwsDLO3C44: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

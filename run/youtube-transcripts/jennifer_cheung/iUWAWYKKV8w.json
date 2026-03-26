@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iUWAWYKKV8w",
+    "language": "en",
+    "took_ms": 7840,
+    "method": null,
+    "title": "DEF CON 31 Policy - US Cyber Policy 101 - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 5687,
+    "description": "This is your CliffsNotes on what's happening in US cyber policy. Whether you're completely new to policy discussions as a whole, more used to following policy in other countries, or just feeling a little out of date, this session will help you get up to speed with the main US cyber policy focus areas and players.\n\nThe session will start with an overview of the current themes and topics being explored by US policymakers, provided by policy expert and leader, Harley Geiger. He will provide insight on the status of various initiatives and what is likely to move forward through the year.\n\nThis will be followed by a discussion with representatives from different parts of the US government currently working on setting US cyber policy. Each will explain what their agency does, how it fits in the ecosystem and partners with the other agencies, what it's working on for 2023-24 and how people can interact with them.\n\nThis will be followed by audience Q&A so you can better explore the information provided and find out the status of the issues you care about most. This session creates a baseline for the other Policy @ DEF CON content.",
+    "view_count": 1123
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iUWAWYKKV8w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

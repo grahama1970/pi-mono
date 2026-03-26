@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I5MbuYuhUh0",
+    "language": "en",
+    "took_ms": 9163,
+    "method": null,
+    "title": "French Opposition Leader Jean-Francois Cope on France's Role",
+    "channel": "Hudson Institute",
+    "upload_date": "20131203",
+    "duration_sec": 4439,
+    "description": "The Eurozone crisis, as well as America's rebalance towards Asia, have led some to see a shrinking role for Europe on the world stage. France, once viewed as the co-pilot of Europe alongside Germany, now seems to occupy a less prominent role in European affairs. But France's refusal to sign off at first on an Iranian nuclear deal is one sign that her role on the international stage is not shrinking. What is Europe's role in world affairs and France's within the new Europe? What policies should E",
+    "view_count": 177
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I5MbuYuhUh0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

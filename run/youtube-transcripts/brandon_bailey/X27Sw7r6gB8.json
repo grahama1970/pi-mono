@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X27Sw7r6gB8",
+    "language": "en",
+    "took_ms": 7900,
+    "method": null,
+    "title": "DEF CON 30 - Paul Roberts - Brazil Redux - Short Circuiting Tech-Enabled Dystopia  Right to Repair",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 4594,
+    "description": "Terry Gilliam’s 1985 cult film Brazil posits a polluted, hyper-consumerist and totalitarian dystopia in which a renegade heating engineer, Archibald Tuttle, takes great risks to conduct repairs outside of the stifling and inefficient bureaucracy of “Central Services.” When Tuttle’s rogue repairs are detected, Central Services workers demolish and seize repaired systems under the pretext of “fixing” them. It’s dark. It's also not so far off from our present reality in which device makers use always-on Internet connections, DRM and expansive copyright and IP claims to sustain “Central Services”-like monopolies on the service and repair of appliances, agricultural and medical equipment, personal electronics and more. The net effect of this is a less- not more secure ecosystem of connected things that burdens consumers, businesses and the planet. Our panel of repair and cybersecurity experts will delve into how OEMs’ anti-repair arguments trumpet cybersecurity risks, while strangling independent repair and dissembling about the abysmal state of embedded device security. We’ll also examine how the emergent “right to repair” movement aims to dismantle this emerging “Brazil” style dystopia and lay the foundation for a “circular” economy that reduces waste while also ensuring better security and privacy protections for technology users.",
+    "view_count": 1234
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X27Sw7r6gB8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

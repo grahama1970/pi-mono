@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "a_Ipd1i-a3A",
+    "language": "en",
+    "took_ms": 9810,
+    "method": null,
+    "title": "4.  ICS Assessments with Jason Holcomb",
+    "channel": "S4 Events",
+    "upload_date": "20201112",
+    "duration_sec": 1609,
+    "description": "Jason Holcomb talks about the risks and rewards of active testing an ICS, along with other assessment methodologies. He identifies the high value / low impact way to actively test an ICS and gives some practical advice on patching an ICS.\n\nQuestions to consider and comment on:\n\n1) What risk are you identifying if an ICS cyber asset (computer, PLC, switch, or other device) can not be actively tested or scanned?\n\n2) Is it worth it to actively test an ICS if you are not going to do anything about the results?\n\n3) How can you reduce the risk of security patching?\n\n4) What are the key characteristics of high value / low impact active testing / scanning?",
+    "view_count": 1383
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] a_Ipd1i-a3A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

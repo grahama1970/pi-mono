@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R5nMqju6crY",
+    "language": "en",
+    "took_ms": 8836,
+    "method": null,
+    "title": "DEF CON 32 - Optical Espionage: Using Lasers to Hear Keystrokes Through Glass Windows - samy kamkar",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2734,
+    "description": "Sashay away from this talk with the knowledge to perform state-of-the-art espionage, no technical background required.\n\nIn the realm of privilege escalation and data exfiltration, the physical world quietly screams secrets. We'll demystify the fascinating physics behind signals and how various forms of energy--infrared, visible, and ultraviolet light, radio, ultrasound, audible sound, mechanical vibration, and temperature--can be interpreted as waves that unintentionally leak information, even in air-gapped (non-networked) systems. We'll observe how air is in fact not an effective gap or barrier as radio, light, sound, and vibration excitedly travel through it. We'll explore how all electrical signals radiate electromagnetism (light or radio) that can be intercepted and how we can reverse this process, producing electromagnetism to inject desired electrical signals into our target.\n\nWe'll delve into historical and seminal side-channel/TEMPEST attacks from our friends at the NSA, KGB, and past DEF CON pioneers. You'll learn about the essential electrical and optical components combined for cutting-edge eavesdropping, including what our target is typing from a distance.\n\nWhile others believe they're obtaining noise, we will extract signal, and you'll leave this talk hearing the world in a new light.",
+    "view_count": 132790
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R5nMqju6crY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

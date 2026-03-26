@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TjdATgKxqiU",
+    "language": "en",
+    "took_ms": 9071,
+    "method": null,
+    "title": "DEF CON 32 - Got 99 problems but prompt injection ain't pineapple - Chloé Messdaghi, Kasimir Schulz",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2406,
+    "description": "The ethical and secure disclosure of vulnerabilities in AI has emerged as a pivotal challenge, compounded by the need to address biases and misinformation that often cloud the true nature of these vulnerabilities. This talk delves into the intricate dynamics of vulnerability disclosure within AI, balancing transparency with security. We'll dissect the unique challenges AI presents, such as data bias exploitation and model manipulation, which can amplify the impact of vulnerabilities. Through a lens of real-world examples and recent disclosures, we'll navigate the complexities of responsible vulnerability management in AI. Our discussion will not only aim to shed light on these critical issues but also inspire a unified approach to refining disclosure processes. This concerted effort is vital for enhancing the integrity of AI systems and bolstering public trust in their use.",
+    "view_count": 601
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TjdATgKxqiU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

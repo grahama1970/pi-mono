@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m6cGs8-iW5k",
+    "language": "en",
+    "took_ms": 9176,
+    "method": null,
+    "title": "China's Missiles and the Implications for the United States",
+    "channel": "Hudson Institute",
+    "upload_date": "20150819",
+    "duration_sec": 4899,
+    "description": "Rebeccah Heinrichs moderates a discussion of China's expanding missile arsenal featuring Trey Obering, Dean Cheng, Mark Schneider, and Bryan Clark.",
+    "view_count": 37939
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m6cGs8-iW5k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

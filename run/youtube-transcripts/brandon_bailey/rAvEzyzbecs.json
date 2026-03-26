@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rAvEzyzbecs",
+    "language": "en",
+    "took_ms": 9927,
+    "method": null,
+    "title": "DEF CON 29 HHV - Bradan Lane - The PortaProg Project",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 2392,
+    "description": "What is a PortaProg and why would I use it? You can use the PortaProg for flashing firmware to a wide range of Atmel chips using the ISP or UPDI interfaces. It can also read/write FUSES, and access EEPROM. It can flash a chip interactively during development or from its on-board SPIFFS storage at the bench or in the field. The talk will demonstrate it being used for rapid programming of ATTiny badges, performing an update to an ATMega device in the field, and dumping the firmware from an Ardiuno based device without a computer. You will also see how the PortProg has spawned a 3D printed plug-and-play test jig design …. or just attend to see if the demos crash and burn.",
+    "view_count": 1404
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rAvEzyzbecs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

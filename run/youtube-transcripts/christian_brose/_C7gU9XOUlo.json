@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_C7gU9XOUlo",
+    "language": "en",
+    "took_ms": 8937,
+    "method": null,
+    "title": "Syria: A Turning Point",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6462,
+    "description": "More than a month after protests erupted in the small southern city of Deraa, the Syrian Revolution is gathering steam. Friday after Friday, the opposition movement has taken to the streets of every major Syrian city to demonstrate against one of the more ruthless regimes in the Middle East. A long-time sponsor of terror and ally of the Islamic Republic of Iran, Damascus facilitated the flow of foreign fighters into Iraq to attack U.S. troops and Iraqi allies, while it also targeted U.S. allies",
+    "view_count": 138
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _C7gU9XOUlo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

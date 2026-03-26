@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ItPVA3x77EQ",
+    "language": "en",
+    "took_ms": 9424,
+    "method": null,
+    "title": "DEF CON 30 Car Hacking Village - Evadsnibor - Getting Naughty on CAN bus with CHV Badge",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3877,
+    "description": "Explain how the CHV badge can generate CAN waveforms (and other digital protocols) with different errors to disrupt vehicle networks. More than an ARB, the generation can be interactive - where the waveform can change based on the response of the network. The talk will focus on the Raspberry Pi rp2040 in the CHV badge and its hacker potential.",
+    "view_count": 13277
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ItPVA3x77EQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

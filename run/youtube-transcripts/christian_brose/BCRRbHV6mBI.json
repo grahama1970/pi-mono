@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BCRRbHV6mBI",
+    "language": "en",
+    "took_ms": 7675,
+    "method": null,
+    "title": "Dialogues on American Foreign Policy and World Affairs: Senator Chris Coons & Walter Russell Mead",
+    "channel": "Hudson Institute",
+    "upload_date": "20180228",
+    "duration_sec": 2812,
+    "description": "On February 28, Hudson welcomed Senator Chris Coons and Hudson Institute Distinguished Fellow Walter Russell Mead for a one-on-one discussion of U.S. national security threats and opportunities. Mead will explore Sen. Coon’s perspective on the future of the Middle East, Russia and Transatlantic relations, the challenges of a rising China, prospects for Sub-Saharan Africa, and other concerns facing American policymakers today and in the years ahead.\n\nA highly regarded and prominent voice on national security and international affairs, Sen. Coons serves on the Foreign Relations Committee and on the Subcommittees for Africa and Global Health Policy, Multilateral Institutions and International Development, and for the State Department and USAID Management. Sen. Coons is also a member of the Appropriations subcommittee that funds the State Department and foreign aid. In that capacity, he is an advocate for an active U.S. role in the Middle East, policies to counter Russian aggression and subversion in Europe, stronger U.S. partnerships in Africa, global human rights and democracy efforts, and greater investments in food security, global health, and development programs.",
+    "view_count": 621
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BCRRbHV6mBI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

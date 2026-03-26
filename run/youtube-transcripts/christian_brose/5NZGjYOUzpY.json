@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5NZGjYOUzpY",
+    "language": "en",
+    "took_ms": 8173,
+    "method": null,
+    "title": "Xi Jinping's Visit: What It Means for Taiwan",
+    "channel": "Hudson Institute",
+    "upload_date": "20150930",
+    "duration_sec": 5619,
+    "description": "Seth Cropsey, Michael Pillsbury, Mark Stokes, and Ian Easton discuss the impact and result of Xi’s visit and what it means for Taiwan.",
+    "view_count": 1353
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5NZGjYOUzpY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_CgFuIv1dPs",
+    "language": "en",
+    "took_ms": 8997,
+    "method": null,
+    "title": "Top 10 Security Questions for Your Vendor",
+    "channel": "S4 Events",
+    "upload_date": "20200720",
+    "duration_sec": 1610,
+    "description": "Each asset owner tends to have their own list of cybersecurity questions in an RFP. And the lists are getting longer. In some senses it becomes a laundry list of every possible security issue the asset owner can think of or find in some standard or guideline document. Answering these questions and reviewing the answers is time consuming and often of limited actual value. Bryan Owen of OSIsoft, as a recipient of these questions, knows this problem first hand.\n\nIn this session Bryan takes a swing at what are the most valuable questions asset owners should ask vendors. Most valuable in terms of reducing ICS security risk. He provides his top ten lists in various categories, and my bet is you will be surprised by some of these.",
+    "view_count": 542
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _CgFuIv1dPs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

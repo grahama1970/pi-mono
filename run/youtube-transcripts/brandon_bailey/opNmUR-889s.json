@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "opNmUR-889s",
+    "language": "en",
+    "took_ms": 8556,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Pearce Barry - Collecting CANs a Bridge Less Travelled",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1677,
+    "description": "We’ll step back a few years to early 2017, when @zombieCraig released the Metasploit Hardware Bridge as a mechanism to allow Metasploit Framework to reach into networks beyond Ethernet. While the now-defunct HWBridge initially focused on automotive targets, some of that tech, including CAN buses and RF transceivers, has commonality in aviation targets. In this talk, we’ll cover basic design and use of the HWBridge, how one can use it with CAN and RF transceivers, and what it takes to set it up.",
+    "view_count": 573
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] opNmUR-889s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

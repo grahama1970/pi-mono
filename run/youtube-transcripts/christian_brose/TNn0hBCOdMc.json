@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TNn0hBCOdMc",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "Addressing the North Korean Threat: A Discussion with Congressman Joe Wilson",
+    "channel": "Hudson Institute",
+    "upload_date": "20170320",
+    "duration_sec": 3407,
+    "description": "Rep. Joe Wilson joins Rebeccah Heinrichs and Arthur Herman for a discussion of North Korea's intercontinental ballistic missile capabilities",
+    "view_count": 2212
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TNn0hBCOdMc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

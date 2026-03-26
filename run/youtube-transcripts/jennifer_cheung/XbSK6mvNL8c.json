@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XbSK6mvNL8c",
+    "language": "en",
+    "took_ms": 10474,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - How Basketball Officiating Shaped a Cybersec Career - Jason Brooks",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1764,
+    "description": "From the hardwood to the SOC: discover how skills from officiating basketball translate to decision-making and teamwork in cyber.",
+    "view_count": 395
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XbSK6mvNL8c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

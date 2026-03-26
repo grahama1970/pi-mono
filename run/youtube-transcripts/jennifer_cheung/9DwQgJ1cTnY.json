@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9DwQgJ1cTnY",
+    "language": "en",
+    "took_ms": 8050,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village  - Panel - Hackers and ISACs",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2895,
+    "description": "Across the aerospace sector, good faith research has a key role in highlighting both risks and vulnerabilities but it hasn’t always been welcomed with open arms. ISACs are often seen as a key point of contact for researchers and hackers doing this work but how best do we create relationships across hackers and ISACs to learn the lessons of the past and build the trust that we need?",
+    "view_count": 186
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9DwQgJ1cTnY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

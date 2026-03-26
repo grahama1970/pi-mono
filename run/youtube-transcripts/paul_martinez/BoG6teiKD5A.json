@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BoG6teiKD5A",
+    "language": "en",
+    "took_ms": 8653,
+    "method": null,
+    "title": "Rail Security with Miki Shifman",
+    "channel": "S4 Events",
+    "upload_date": "20220817",
+    "duration_sec": 2597,
+    "description": "Freight and passenger rail is another industry sector that relies on ICS for safety and services. It has its own language, consequences and standards. \n\nIn this episode, Dale Peterson speaks with Miki Shifman of Cylus. Most of the episode digs into how rail systems work and the key areas to secure. They cover the TS-50701 standard and TSA's regulations in the US, among other things.\n\nThe episode concludes with a discussion of the Cylus OT Detection product designed for rail. The big question is a sector specific focus a big enough moat to keep out the big 3 OT detection vendors.",
+    "view_count": 593
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BoG6teiKD5A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

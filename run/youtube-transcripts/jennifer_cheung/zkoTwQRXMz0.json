@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zkoTwQRXMz0",
+    "language": "en",
+    "took_ms": 7778,
+    "method": null,
+    "title": "DEF CON 32 - UDSonCAN Attacks  Discovering Safety Critical Risks by Fuzzing - Seunghee Han",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1409,
+    "description": "Some diagnostic services in UDSonCAN that could affect driving should be disabled while driving and protected by authentication mechanisms such as SecurityAccess. However, without these security measures, attackers can cause a serious safety risk to the driver using only diagnostic messages. In this talk, we introduce UDSonCAN attacks discovered through fuzzing and describe their countermeasures. These attacks can cause a moving car to suddenly stop or a stationary car to suddenly acceleration with just simple diagnostic messages. We discovered these vulnerabilities in the latest electric vehicle model and have prepared a demo.",
+    "view_count": 796
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zkoTwQRXMz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

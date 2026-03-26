@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4lQ2GnmTFkY",
+    "language": "en",
+    "took_ms": 9354,
+    "method": null,
+    "title": "DEF CON 32 - Leveraging private APNs for mobile network traffic analysis - Aapo Oksman",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2486,
+    "description": "Knowing where and how your mobile and IoT devices communicate on the Internet is essential for ensuring privacy and security.\n\nIn the past, it has been easy to follow their communication through a WIFI connection that you control. However, your devices are becoming more locked down and utilize mobile networks such as 4G and 5G for communication. As the devices communicate directly through mobile network base stations operated by Internet Service Providers (ISPs), tampering with or even monitoring their communication is outside your reach.\n\nWhile it is possible to set up a private base station, it requires expensive components and is hard to operate. However, many ISPs have begun offering private Access Point Names (APNs) to allow you to have a private network inside the ISP infrastructure.\n\nThis talk will show how you can affordably leverage ISP-operated mobile networks and their private APN services to control your mobile devices' network traffic. This technique lets you inspect, filter, and tamper with your mobile devices' IP traffic for offensive and defensive cyber security needs, such as penetration testing IoT devices or monitoring mobile device endpoints for malicious traffic.",
+    "view_count": 1071
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4lQ2GnmTFkY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

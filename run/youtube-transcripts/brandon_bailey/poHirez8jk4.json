@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "poHirez8jk4",
+    "language": "en",
+    "took_ms": 7888,
+    "method": null,
+    "title": "DEF CON 31 - Exploring Linux Memory Manipulation for Stealth and Evasion - Polop, Gutierrez",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2663,
+    "description": "As cyber threats continue to evolve, attackers constantly develop new methods for exploiting system vulnerabilities and evading detection. In this presentation, we will delve into cutting-edge techniques for manipulating Linux memory in highly constrained environments, such as read-only, no-exec, and distroless setups. These techniques can be utilized by sophisticated malware to remain stealthy and evade traditional security mechanisms.\n\nWe will begin by providing an overview of the unique challenges faced in these limited environments and discuss the reasons behind their increasing prevalence. Next, we will explore how attackers can exploit vulnerabilities within these constraints and demonstrate several novel methods for manipulating Linux memory.\n\nThroughout the presentation, we will showcase real-world examples and provide step-by-step explanations for each technique, enabling attendees to gain a deeper understanding of how they can be employed by adversaries. Additionally, we will discuss potential countermeasures and mitigation strategies to help security professionals better defend against these emerging threats.\n\nBy attending this presentation, participants will gain valuable insights into the latest advancements in Linux memory manipulation and acquire the knowledge needed to anticipate and counter stealthy attacks in constrained environments. Whether you are a security researcher, a system administrator, or an ethical hacker, this session will equip you with the expertise necessary to stay ahead of the curve in the ever-evolving world of cybersecurity.",
+    "view_count": 5054
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] poHirez8jk4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

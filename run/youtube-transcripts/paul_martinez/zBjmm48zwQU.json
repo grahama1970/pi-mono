@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zBjmm48zwQU",
+    "language": "en",
+    "took_ms": 8653,
+    "method": null,
+    "title": "Langner's Stuxnet Deep Dive",
+    "channel": "S4 Events",
+    "upload_date": "20160618",
+    "duration_sec": 3818,
+    "description": "Ralph Langner provides the most detailed presentation of the Stuxnet S7 code. He goes through the key Function Codes and Data Blocks in detail and shows how it matches to the Natanz facility. You see Ralph's teams comments throughout the Stuxnet code, and the level of detailed analysis.\n\nThis performance from S4x12 is a great example of the technical detail we look for in a Stage 2: Technical Deep Dive Session. The beauty of Ralph's presentation is he also makes the key points understandable for a less technical viewer.\n\nThis video from S4x12 was viewed 38K times on Vimeo before we moved it to this YouTube Channel.",
+    "view_count": 95375
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zBjmm48zwQU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

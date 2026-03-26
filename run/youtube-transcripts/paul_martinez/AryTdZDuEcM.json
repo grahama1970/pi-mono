@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AryTdZDuEcM",
+    "language": "en",
+    "took_ms": 8840,
+    "method": null,
+    "title": "Quantum Key Distribution in ICS",
+    "channel": "S4 Events",
+    "upload_date": "20180214",
+    "duration_sec": 1979,
+    "description": "Quantum Key Distribution (QKD) is based on physics rather than classic information theory. You get a quick, easily understood lesson on entangled photons, happy and sad photons that are truly random, not pseudo-random. The photons can be \"random and correlated over a great distance\". It's not just theory; it's being tested at SDG&E.\n\nDuncan Earl discusses the theory of QKD, and then Adam Crain talks about how this can be used for key distribution in an ICS protocol, using SSP-21 as an example.",
+    "view_count": 532
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AryTdZDuEcM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

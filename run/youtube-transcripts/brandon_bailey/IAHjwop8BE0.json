@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IAHjwop8BE0",
+    "language": "en",
+    "took_ms": 9062,
+    "method": null,
+    "title": "DEF CON 29 Blue Team Village - Rabbit - Structured Analytical Techniques for Improving Info Sec",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1937,
+    "description": "Based on tradecraft documents openly published by the CIA, this talk takes structured analytical techniques intended for intelligence analysis and refactors them for use in improving typical Information Security investigations and analyses as well as OSINT investigations.\n\nIn 2009, the Central Intelligence Agency published a document titled \"A Tradecraft Primer: Structured Analytic Techniques for Improving Intelligence Analysis \" which lays out a number of techniques for improving the accuracy and reliability of intelligence analyses. I found the document fascinating and set out to reapply the techniques for use in my day to day Information Security work.\n\nThe techniques are a fantastic tool set for improving the quality of analysis products by bringing alternative narratives and solutions to light, highlighting contradictory evidence, and developing confidence in analysis conclusions.\n\nHere we review 11 techniques and examples of their application in typical information security situations.",
+    "view_count": 508
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IAHjwop8BE0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

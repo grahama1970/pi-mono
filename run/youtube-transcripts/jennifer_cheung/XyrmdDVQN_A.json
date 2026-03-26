@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XyrmdDVQN_A",
+    "language": "en",
+    "took_ms": 8891,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village -  Eric Escobar  - Talking to Satellites",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 3030,
+    "description": "Reaching out into space may seem like it would require a PhD and thousands of dollars of equipment, but it can actually be done for about $100. In this talk I will detail how to get started talking to satellites using basic equipment. With just a Ham Radio license and some gear, you too can talk to satellites and by extension people thousands of miles away.",
+    "view_count": 841
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XyrmdDVQN_A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

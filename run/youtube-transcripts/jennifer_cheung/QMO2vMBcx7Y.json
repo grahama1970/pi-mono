@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QMO2vMBcx7Y",
+    "language": "en",
+    "took_ms": 8908,
+    "method": null,
+    "title": "DEF CON 31 - Unlocking Hidden Powers in Xtensa based Qualcomm Wifi Chips - Daniel Wegemer",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2211,
+    "description": "Wifi chips contain general purpose processors. Even though these are powerful processors, their firmware is closed source and does not allow modifications. This talk explores how the firmware of modern Xtensa based Qualcomm Wifi chips can be modified to allow extending its indented functionality. Such modifications can even be for example leveraged by security researchers to find vulnerabilities in an otherwise closed source Wifi code. During the talk we will also dive into the architecture of Qualcomms Wifi chips as well as the structure of the firmware used withing these chips. We will release a modified version of the Nexmon framework to enable patching of Xtensa based firmware and show all the steps involved to create such patches.",
+    "view_count": 1968
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QMO2vMBcx7Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

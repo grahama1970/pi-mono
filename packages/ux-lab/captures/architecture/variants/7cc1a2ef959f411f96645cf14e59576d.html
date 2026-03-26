@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Architecture Editor - Professional Enterprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @theme {
+            --font-space: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        :root {
+            --bg-main: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-sidebar: #0f172a;
+            --border-color: #334155;
+            --accent-color: #14b8a6;--text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .sidebar-border { border-color: var(--border-color); }
+        .active-state { color: var(--accent-color); border-left: 2px solid var(--accent-color); }
+        .canvas-grid {
+            background-image: radial-gradient(#334155 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+<header class="h-14 border-b sidebar-border flex items-center justify-between px-4 bg-[var(--bg-sidebar)] z-50">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--accent-color)]">polyline</span>
+<span class="font-bold text-lg tracking-tight">STITCH <span class="text-[var(--text-secondary)] font-normal text-sm">v2.4.0</span></span>
+</div>
+<div class="h-6 w-px bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-4 text-sm font-medium">
+<button class="hover:text-[var(--accent-color)] transition-colors">File</button>
+<button class="hover:text-[var(--accent-color)] transition-colors text-[var(--accent-color)]">Edit</button>
+<button class="hover:text-[var(--accent-color)] transition-colors">View</button>
+<button class="hover:text-[var(--accent-color)] transition-colors">Deploy</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-slate-800 rounded-sm px-2 py-1 text-xs mono border sidebar-border">
+<span class="text-emerald-500 mr-2">●</span>
+<span>AGENT ONLINE</span>
+</div>
+<button class="bg-[var(--accent-color)] hover:brightness-110 text-slate-950 font-bold px-4 py-1.5 text-xs rounded-sm transition-all">
+                SHARE
+            </button>
+<div class="w-8 h-8 rounded-full border sidebar-border overflow-hidden bg-slate-700">
+<img alt="User" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuqPKVkFs0u7ln7roWaGWIJUwZsnSwNEEpEuE8Kjfk1d7Dc8n_F0Upb3dMqShNJUsu-Y3b5ZVaF8zeJzJGyZHTTzSxg2aJKbMqk_glmjqLlhkxv1iu2DII0okK7PeY8XSZf-47luI-YIl4YJsgEVXIA9G9vosLAbTionnr3l7WuhE36Fm8Nxpz87OVenfEZCfivzELAJjJZ8h8aOiMUQzXb-AUww8kdd9tsEGIW2qIhcUMR1ZJDkYF221cyjc2xi90pAzJQiU969s"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<aside class="w-64 border-r sidebar-border bg-[var(--bg-sidebar)] flex flex-col shrink-0">
+<div class="flex-1 overflow-y-auto">
+<div class="p-4">
+<h3 class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-4">Layers</h3>
+<div class="space-y-1">
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-800 rounded-sm cursor-pointer group active-state">
+<span class="material-symbols-outlined text-sm">schema</span>
+<span class="text-sm">Main Workflow</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-800 rounded-sm cursor-pointer group ml-4">
+<span class="material-symbols-outlined text-sm text-[var(--text-secondary)]">database</span>
+<span class="text-sm">PostgreSQL Cluster</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-800 rounded-sm cursor-pointer group ml-4">
+<span class="material-symbols-outlined text-sm text-[var(--text-secondary)]">hub</span>
+<span class="text-sm">API Gateway</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-800 rounded-sm cursor-pointer group ml-4">
+<span class="material-symbols-outlined text-sm text-[var(--text-secondary)]">memory</span>
+<span class="text-sm">Vector Embedding</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-800 rounded-sm cursor-pointer group">
+<span class="material-symbols-outlined text-sm">layers</span>
+<span class="text-sm">Infrastructure Overlay</span>
+</div>
+</div>
+</div>
+<div class="h-px bg-slate-800 my-2"></div>
+<div class="p-4">
+<h3 class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-4">Component Library</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="aspect-square bg-slate-800/50 border border-dashed sidebar-border flex flex-col items-center justify-center gap-2 rounded-sm hover:border-[var(--accent-color)] cursor-grab">
+<span class="material-symbols-outlined">storage</span>
+<span class="text-[10px] mono">DB_NODE</span>
+</div>
+<div class="aspect-square bg-slate-800/50 border border-dashed sidebar-border flex flex-col items-center justify-center gap-2 rounded-sm hover:border-[var(--accent-color)] cursor-grab">
+<span class="material-symbols-outlined">cloud_sync</span>
+<span class="text-[10px] mono">QUEUE</span>
+</div>
+<div class="aspect-square bg-slate-800/50 border border-dashed sidebar-border flex flex-col items-center justify-center gap-2 rounded-sm hover:border-[var(--accent-color)] cursor-grab">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="text-[10px] mono">API_EP</span>
+</div>
+<div class="aspect-square bg-slate-800/50 border border-dashed sidebar-border flex flex-col items-center justify-center gap-2 rounded-sm hover:border-[var(--accent-color)] cursor-grab">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-[10px] mono">AUTH</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t sidebar-border bg-slate-900/50">
+<h3 class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-3">Version History</h3>
+<div class="space-y-3">
+<div class="flex items-start gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-[var(--accent-color)] mt-1.5"></div>
+<div>
+<p class="text-xs font-bold">v3.4.1 — Active</p>
+<p class="text-[10px] text-[var(--text-secondary)]">Updated by Agent • 2m ago</p>
+</div>
+</div>
+<div class="flex items-start gap-2 opacity-60">
+<div class="w-1.5 h-1.5 rounded-full bg-slate-500 mt-1.5"></div>
+<div>
+<p class="text-xs font-bold">v3.4.0</p>
+<p class="text-[10px] text-[var(--text-secondary)]">Updated by Human • 1h ago</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<section class="flex-1 relative bg-[var(--bg-main)] canvas-grid overflow-auto">
+<div class="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-slate-900/90 backdrop-blur border sidebar-border p-1.5 rounded shadow-2xl">
+<button class="p-2 hover:bg-slate-800 text-[var(--accent-color)]"><span class="material-symbols-outlined">near_me</span></button>
+<button class="p-2 hover:bg-slate-800"><span class="material-symbols-outlined">rectangle</span></button>
+<button class="p-2 hover:bg-slate-800"><span class="material-symbols-outlined">circle</span></button>
+<button class="p-2 hover:bg-slate-800"><span class="material-symbols-outlined">arrow_right_alt</span></button>
+<button class="p-2 hover:bg-slate-800"><span class="material-symbols-outlined">title</span></button>
+<button class="p-2 hover:bg-slate-800"><span class="material-symbols-outlined">image</span></button>
+<div class="w-px h-6 bg-slate-700 mx-1"></div>
+<button class="p-2 hover:bg-slate-800"><span class="material-symbols-outlined">handshake</span></button>
+</div>
+<div class="p-20 flex flex-col items-center justify-center min-h-full">
+<div class="relative w-[800px] h-[500px]">
+<div class="absolute top-10 left-10 w-48 h-32 border-2 border-[var(--accent-color)] bg-[var(--accent-color)]/5 flex flex-col items-center justify-center p-4">
+<div class="absolute -top-6 left-0 bg-[var(--accent-color)] text-slate-950 px-2 py-0.5 text-[10px] font-bold">API GATEWAY</div>
+<span class="material-symbols-outlined text-3xl mb-2">hub</span>
+<div class="absolute -bottom-6 right-0 flex items-center gap-1 bg-indigo-600 text-white px-1.5 py-0.5 text-[9px]">
+<span class="material-symbols-outlined text-[10px]">smart_toy</span> AGENT EDITING
+                        </div>
+</div>
+<svg class="absolute top-24 left-56 w-32 h-4 overflow-visible">
+<path d="M 0 0 L 120 0" fill="none" stroke="var(--accent-color)" stroke-dasharray="4" stroke-width="2"></path>
+<polygon fill="var(--accent-color)" points="120,-4 128,0 120,4"></polygon>
+</svg>
+<div class="absolute top-10 left-[350px] w-56 h-32 border border-slate-600 bg-slate-800/50 flex flex-col items-center justify-center p-4 group hover:border-[var(--accent-color)] cursor-pointer">
+<div class="absolute -top-6 left-0 text-slate-400 text-[10px] font-bold uppercase tracking-widest">PostgreSQL Cluster</div>
+<span class="material-symbols-outlined text-3xl mb-2">database</span>
+<span class="mono text-[10px] text-emerald-400">STATUS: REPLICATING</span>
+</div>
+<div class="absolute top-48 left-[350px] bg-slate-900 border sidebar-border p-2 text-[10px] mono">
+<p>LATENCY: 12ms</p>
+<p>THROUGHPUT: 4.5k req/s</p>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 flex items-center gap-2 bg-slate-900 border sidebar-border p-1 rounded text-xs mono">
+<button class="p-1 hover:bg-slate-800"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="px-2">100%</span>
+<button class="p-1 hover:bg-slate-800"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</section>
+<aside class="w-80 border-l sidebar-border bg-[var(--bg-sidebar)] flex flex-col shrink-0">
+<div class="flex items-center gap-4 px-4 h-12 border-b sidebar-border">
+<button class="text-sm font-bold border-b-2 border-[var(--accent-color)] h-full px-1">Design</button>
+<button class="text-sm font-bold text-[var(--text-secondary)] hover:text-white h-full px-1">Prototype</button>
+<button class="text-sm font-bold text-[var(--text-secondary)] hover:text-white h-full px-1">Inspect</button>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="p-4 space-y-6">
+<section>
+<h3 class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-4">Properties</h3>
+<div class="space-y-4">
+<div>
+<label class="text-[10px] text-slate-500 block mb-1">Component Name</label>
+<input class="w-full bg-slate-800/50 border sidebar-border text-sm px-2 py-1.5 focus:border-[var(--accent-color)] focus:ring-0 outline-none" type="text" value="API Gateway"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="text-[10px] text-slate-500 block mb-1">X Position</label>
+<div class="flex items-center bg-slate-800/50 border sidebar-border px-2 py-1 text-sm mono">
+<span class="text-slate-600 mr-2">X</span>
+<input class="bg-transparent w-full outline-none" type="text" value="40"/>
+</div>
+</div>
+<div>
+<label class="text-[10px] text-slate-500 block mb-1">Y Position</label>
+<div class="flex items-center bg-slate-800/50 border sidebar-border px-2 py-1 text-sm mono">
+<span class="text-slate-600 mr-2">Y</span>
+<input class="bg-transparent w-full outline-none" type="text" value="40"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="h-px bg-slate-800"></div>
+<section>
+<h3 class="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest mb-4">System Context</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-xs text-slate-400">Technology</span>
+<span class="text-xs mono bg-slate-800 px-2 py-0.5 rounded">Nginx / Go</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-slate-400">Latency Budget</span>
+<span class="text-xs mono text-[var(--accent-color)]">50ms</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-slate-400">File Reference</span>
+<span class="text-xs mono underline cursor-pointer">gateway_main.go</span>
+</div>
+</div>
+</section>
+<div class="h-px bg-slate-800"></div>
+<section class="bg-indigo-950/20 p-3 border border-indigo-500/30 rounded-sm">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-sm text-indigo-400">auto_awesome</span>
+<span class="text-xs font-bold text-indigo-300 uppercase">AI Insights</span>
+</div>
+<p class="text-[11px] leading-relaxed text-indigo-100/70 mb-3">
+                            I suggest adding a Redis cache layer between the API Gateway and the DB Cluster to reduce latency by approximately 40%.
+                        </p>
+<button class="w-full py-1.5 text-[10px] bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-colors">
+                            APPLY SUGGESTION
+                        </button>
+</section>
+</div>
+</div>
+<div class="p-4 border-t sidebar-border text-[10px] text-slate-500 mono flex justify-between">
+<span>64 Objects</span>
+<span>Zoom 100%</span>
+</div>
+</aside>
+</main>
+<footer class="h-8 bg-slate-900 border-t sidebar-border flex items-center justify-between px-4 text-[10px] mono text-slate-400">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">location_on</span> us-east-1-prod</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">bolt</span> Latency: 42ms</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[var(--accent-color)]">STITCH ARCHITECTURE v2.4.0</span>
+<span class="material-symbols-outlined text-sm">help_outline</span>
+</div>
+</footer>
+
+</body></html>

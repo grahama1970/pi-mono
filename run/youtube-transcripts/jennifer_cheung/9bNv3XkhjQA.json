@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9bNv3XkhjQA",
+    "language": "en",
+    "took_ms": 8762,
+    "method": null,
+    "title": "DEF CON 32 - BOLABuster-Harnessing LLMs for Automating BOLA Detection - Ravid Mazon, Jay Chen",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1960,
+    "description": "BOLA is a prevalent vulnerability in modern APIs and web applications, topping the OWASP API risk chart, and ranking fourth in HackerOne Global Top 10. Its impact ranges from data exposure to total system control loss.\n\nWhile manually triggering known BOLAs is relatively straightforward, automatic detection is challenging due to the complexities of application logic, the wide range of inputs, and the stateful nature of modern web applications.\n\nTo tackle this, we leveraged LLMs to automate manual tasks such as understanding application logic, revealing endpoint dependency relationships, generating test cases, and interpreting results. Our AI-backed approach enables automating BOLA detection at scale, named BOLABuster.\n\nThough in its early stages, BOLABuster identified numerous vulnerabilities in open-source projects. In one case, we submitted 15 CVEs for a project, some leading to critical privilege escalation. Our latest disclosed vulnerability was CVE-2024-1313, a BOLA in Grafana",
+    "view_count": 706
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9bNv3XkhjQA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

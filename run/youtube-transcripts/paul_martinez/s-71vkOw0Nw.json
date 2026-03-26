@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s-71vkOw0Nw",
+    "language": "en",
+    "took_ms": 8898,
+    "method": null,
+    "title": "Incident Command System for ICS (ICS4ICS)",
+    "channel": "S4 Events",
+    "upload_date": "20200330",
+    "duration_sec": 1800,
+    "description": "Megan Samford of Rockwell Automation proposes that the Incident Command System approach that the federal, state and local governments use to address natural disasters, such as hurricanes, fires and floods, be adopted to provide a similar response capability for ICS cyber incidents.\n\nShe goes over the structure, framework (playbook), of the Incident Command System. How it works, and how the ICS community through a public / private partnership could use this same approach.\n\nThe idea of states and asset owners to effectively share resources, in a similar way as happens with fire departments and electric utility crews, could be a big win.\n\nAt 23:00 ... five tips to get you started.",
+    "view_count": 4591
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s-71vkOw0Nw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

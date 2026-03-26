@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u1xmyJmGsS0",
+    "language": "en",
+    "took_ms": 7853,
+    "method": null,
+    "title": "Normalization of Deviance",
+    "channel": "S4 Events",
+    "upload_date": "20240415",
+    "duration_sec": 1353,
+    "description": "Humans have a tendency to tolerate and normalize unsafe practices, leading to a dangerous phenomenon known as the normalization of deviance. Marco Ayala's S4x24 presentation explores the exponential nature of risk and normalization of deviance as it applies to OT and ICS security. How do we distinguish between progress and normalization of deviance? And importantly when and how should we push back on this normalization.",
+    "view_count": 2153
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u1xmyJmGsS0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

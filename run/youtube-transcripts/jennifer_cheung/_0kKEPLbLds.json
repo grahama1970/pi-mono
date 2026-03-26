@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_0kKEPLbLds",
+    "language": "en",
+    "took_ms": 8152,
+    "method": null,
+    "title": "DEF CON 32 Trailer",
+    "channel": "DEFCONConference",
+    "upload_date": "20240724",
+    "duration_sec": 50,
+    "description": "DEF CON 32! The most influential hacker convention in the world. August 8-11, Las Vegas Convention Center. Online registration available until August 1 at shop.defcon.org. Otherwise, tickets can be purchased for cash at the door.",
+    "view_count": 30837
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _0kKEPLbLds: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

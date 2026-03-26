@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NSDDu-cjXuw",
+    "language": "en",
+    "took_ms": 7514,
+    "method": null,
+    "title": "Michael Assante Bovine Army",
+    "channel": "S4 Events",
+    "upload_date": "20170924",
+    "duration_sec": 63,
+    "description": "Mike shows how IoT will extend just about everywhere. In this case, think of FitBit's for cows to increase live birth rates ... 200 Mb of data ... Data Driven Animal Management",
+    "view_count": 248
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NSDDu-cjXuw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

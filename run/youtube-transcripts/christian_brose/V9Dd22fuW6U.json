@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V9Dd22fuW6U",
+    "language": "en",
+    "took_ms": 8546,
+    "method": null,
+    "title": "Running Out of Space: The Future of Space Traffic Management",
+    "channel": "Hudson Institute",
+    "upload_date": "20230522",
+    "duration_sec": 4625,
+    "description": "FCC Commissioner Nathan Simington will discuss his vision for American leadership in the space economy and the role that regulation can play in promoting an innovative and dynamic marketplace for space services. Commissioner Simington will then join former FCC Commissioner Harold Furchtgott-Roth and a panel of leading experts in space technology and safety to discuss best practices in space sustainability and space traffic management.",
+    "view_count": 617
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V9Dd22fuW6U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

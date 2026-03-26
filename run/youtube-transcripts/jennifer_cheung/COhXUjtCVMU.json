@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "COhXUjtCVMU",
+    "language": "en",
+    "took_ms": 8206,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Sharon Brizinov, Uri Katz - Down Exploiting Vulnerabilities In the OT Cloud",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1801,
+    "description": "We researched the exploitability of cloud-based management platforms responsible for monitoring industrial control systems (ICS), and developed techniques to exploit vulnerabilities in automation vendor CODESYS’ Automation Server and vulnerabilities in the WAGO PLC platform. Our research mimics the top-down and bottom-up paths an attacker would take to either control a Level 1 device in order to eventually compromise the cloud-based management console, or the reverse, commandeer the cloud in order to manipulate all networked field devices.",
+    "view_count": 451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] COhXUjtCVMU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

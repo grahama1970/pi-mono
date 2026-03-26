@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6x12SfKAdac",
+    "language": "en",
+    "took_ms": 8232,
+    "method": null,
+    "title": "Alternate Factors For MFA Deep In The Manufacturing Environment",
+    "channel": "S4 Events",
+    "upload_date": "20250623",
+    "duration_sec": 1711,
+    "description": "Today multi-factor authentication (MFA) in OT is primarily for remote access. Bryan makes the case that MFA should be enabled deeper within OT, with more imagination, and everywhere applicable.\n\nBryan highlights examples where MFA in OT is happening (e.g. load shed command) and the characteristics you should look for to expand your use of MFA.\n\nEarly implementations were flawed; newer implementations are moving enforcement deeper into OT. Bryan helps you identify and avoid the mistakes, He tried to get you on the MFA for more than remote access bandwagon.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 338
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6x12SfKAdac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

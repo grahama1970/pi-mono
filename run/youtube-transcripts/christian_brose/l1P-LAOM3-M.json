@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l1P-LAOM3-M",
+    "language": "en",
+    "took_ms": 10031,
+    "method": null,
+    "title": "Tevi Troy on the United States' Bioterrorism Preparedness",
+    "channel": "Hudson Institute",
+    "upload_date": "20111220",
+    "duration_sec": 299,
+    "description": "Hudson Senior Fellow Tevi Troy, speaking at the opening of the opening of Novartis' influenza vaccine plant, discusses the United States' ability to defend against a bio-terror attack.",
+    "view_count": 503
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l1P-LAOM3-M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

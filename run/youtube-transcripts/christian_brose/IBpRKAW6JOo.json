@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IBpRKAW6JOo",
+    "language": "en",
+    "took_ms": 9147,
+    "method": null,
+    "title": "Are Think Tanks Becoming Too Political?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 7190,
+    "description": "\"Over the past half-century, think tanks have come to play a central role in policy development -- and even in the surrounding political combat. Over that period, however, the balance between these two functions -- policy development and political combat -- has been steadily shifting. Today, while most think tanks continue to serve as homes for some academic-style scholarship regarding public policy, many have also come to play more active (if informal) roles in politics. . . . Every incentive -- po",
+    "view_count": 167
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IBpRKAW6JOo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

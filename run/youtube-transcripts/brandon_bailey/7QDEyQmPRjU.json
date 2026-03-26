@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7QDEyQmPRjU",
+    "language": "en",
+    "took_ms": 9440,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village  - Laura Chappell - Deep Space Networking",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2120,
+    "description": "Across the Aviation Ecosystem, there is an increased effort to collaborate and coordinate to protect Information Technology (IT) and Operational Technology (OT) systems at airports, airlines, aviation management, and manufacturers and vendors via the supply chain. This diverse panel will share their insights and current activities between government, industry, and the security research community. Learn how you can participate in and ensure the safety and security of the Aviation Ecosystem.",
+    "view_count": 438
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7QDEyQmPRjU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

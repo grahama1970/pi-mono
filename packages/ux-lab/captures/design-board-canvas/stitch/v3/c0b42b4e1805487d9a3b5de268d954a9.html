@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VEXEL_SYSTEM | Design Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed": "#60ff99",
+                        "on-tertiary-fixed-variant": "#004884",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#393939",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed-dim": "#00e479",
+                        "secondary": "#f5fff3",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container": "#201f1f",
+                        "primary-fixed-dim": "#d2bbff",
+                        "outline-variant": "#4a4455",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "tertiary-fixed": "#d4e3ff",
+                        "on-secondary-container": "#007239",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-secondary": "#003919",
+                        "on-background": "#e5e2e1",
+                        "secondary-container": "#34ff8d",
+                        "on-tertiary-container": "#dae7ff",
+                        "on-tertiary": "#00315d",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary-container": "#0068bb",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "surface": "#131313",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-secondary-fixed-variant": "#005228",
+                        "primary-fixed": "#eaddff",
+                        "on-primary-container": "#ede0ff",
+                        "on-secondary-fixed": "#00210c",
+                        "inverse-primary": "#732ee4",
+                        "error-container": "#93000a",
+                        "primary-container": "#7c3aed",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-highest": "#353534",
+                        "background": "#131313",
+                        "inverse-on-surface": "#313030",
+                        "primary": "#d2bbff",
+                        "on-primary": "#3f008e",
+                        "surface-variant": "#353534",
+                        "on-primary-fixed": "#25005a",
+                        "tertiary": "#a4c9ff",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#d2bbff",
+                        "outline": "#958da1"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden selection:bg-primary-container/30">
+<!-- Top Navigation Bar (Shared Component Strategy) -->
+<nav class="bg-[#131313]/80 backdrop-blur-md text-[#d2bbff] font-['Space_Grotesk'] tracking-tighter uppercase border-b border-white/10 fixed top-0 left-0 right-0 z-[100] flex justify-between items-center w-full px-6 py-3">
+<div class="text-lg font-bold text-[#d2bbff] tracking-widest font-['Space_Grotesk']">VEXEL_SYSTEM</div>
+<div class="flex gap-6 items-center">
+<button class="material-symbols-outlined text-slate-500 hover:text-[#d2bbff] transition-all">settings</button>
+<button class="material-symbols-outlined text-slate-500 hover:text-[#d2bbff] transition-all">share</button>
+<button class="material-symbols-outlined text-slate-500 hover:text-[#d2bbff] transition-all">account_circle</button>
+</div>
+</nav>
+<!-- Side Navigation Bar (Shared Component Strategy) -->
+<aside class="fixed left-0 top-1/2 -translate-y-1/2 flex flex-col gap-2 p-2 w-16 z-50 bg-[#201f1f]/90 backdrop-blur-xl rounded-xl m-4 h-fit border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]">
+<div class="flex flex-col gap-4 py-2">
+<button class="group flex flex-col items-center gap-1 bg-[#7c3aed]/20 text-[#d2bbff] border-l-2 border-[#7c3aed] shadow-[inset_0_0_10px_rgba(124,58,237,0.2)] p-2">
+<span class="material-symbols-outlined">near_me</span>
+<span class="font-['JetBrains_Mono'] text-[8px] uppercase tracking-widest">Select</span>
+</button>
+<button class="group flex flex-col items-center gap-1 text-slate-400 opacity-60 hover:bg-white/5 hover:opacity-100 transition-opacity p-2">
+<span class="material-symbols-outlined">edit</span>
+<span class="font-['JetBrains_Mono'] text-[8px] uppercase tracking-widest">Draw</span>
+</button>
+<button class="group flex flex-col items-center gap-1 text-slate-400 opacity-60 hover:bg-white/5 hover:opacity-100 transition-opacity p-2">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-['JetBrains_Mono'] text-[8px] uppercase tracking-widest">Layers</span>
+</button>
+<button class="group flex flex-col items-center gap-1 text-slate-400 opacity-60 hover:bg-white/5 hover:opacity-100 transition-opacity p-2">
+<span class="material-symbols-outlined">image</span>
+<span class="font-['JetBrains_Mono'] text-[8px] uppercase tracking-widest">Assets</span>
+</button>
+</div>
+<div class="border-t border-white/5 mt-2 pt-2 flex flex-col gap-4">
+<button class="group flex flex-col items-center gap-1 text-slate-400 opacity-60 hover:bg-white/5 hover:opacity-100 transition-opacity p-2">
+<span class="material-symbols-outlined">zoom_out_map</span>
+</button>
+<button class="group flex flex-col items-center gap-1 text-slate-400 opacity-60 hover:bg-white/5 hover:opacity-100 transition-opacity p-2">
+<span class="material-symbols-outlined">grid_4x4</span>
+</button>
+</div>
+</aside>
+<!-- Canvas Workspace -->
+<main class="relative w-full h-full">
+<!-- Card 1: Login -->
+<div class="absolute top-[20%] left-[25%] group cursor-grab active:cursor-grabbing">
+<div class="relative w-[320px] h-[200px] rounded-xl border border-white/10 overflow-hidden transition-all duration-300 group-hover:border-primary/40 group-hover:shadow-[0_0_20px_rgba(124,58,237,0.1)]">
+<img alt="Tactical Login Screen UI" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Modern dark mode tactical login screen interface design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBdTNwIjZSMkZ6KxtrBoI8ZHbRRJJL7dzjzkAmh4w_janAZMa6vdEMGQVamlZszzhNobj5dI74a_9eG5-jxNAeE0Emfm_WRCTzYEZGxxO4080aL4oO4hckk8G82bwlKc-CCU5zP2o3QmF6YThXsGElKZ0M6Ly8V3mhaJOTtLtZ3Z7i0x5HkgFoIdxu-Ev_aD2QwxIxkQGCePxxkHXSAn7bzfJMKMOsLnLqd7RwvqYvsWwMJ4vxpq64kzpCBFe0cCQ8Xro39pVZqEun"/>
+</div>
+<p class="mt-3 font-label text-[10px] text-on-surface-variant/60 tracking-wider">login_v1.png</p>
+</div>
+<!-- Card 2: Dashboard (Active with Menu) -->
+<div class="absolute top-[45%] left-[55%] z-10 group cursor-grab active:cursor-grabbing">
+<div class="relative w-[400px] h-[260px] rounded-xl border border-primary/30 overflow-hidden shadow-[0_0_30px_rgba(124,58,237,0.15)] bg-surface">
+<img alt="System Analytics Dashboard" class="w-full h-full object-cover" data-alt="Complex data visualization dashboard with violet accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRIqSEsBFTzolfn_iScANdK34JmIL3uFBMH2ZiRieTQ52EOXWH20ELnnMqYivFXwegF4keKrw80ddfizi-cTIcdAn5XPegB4mDgXbfRDKDK2YlgZWYr-hhofWqqc1g2kK2HIkxmSwP2oOJ3BlVPcBzFFMVccupB4j7rHhgMBtt22WpO2YmfVB3jIqjKMUpt4b_0znHRi09TfIdlURi3X2eUtFc4pLQcmss_dDizVi-CiVbasgOlk6ZQq3h-GhgUYAxQ9IpXx0MY9ia"/>
+<!-- Floating Context Menu -->
+<div class="absolute -right-28 top-4 w-32 bg-[#1a1a1a] border border-white/10 rounded-lg shadow-2xl py-1 z-20 backdrop-blur-md">
+<button class="w-full text-left px-3 py-1.5 text-[11px] font-headline text-on-surface-variant hover:bg-primary/20 hover:text-primary transition-colors flex items-center justify-between">
+                        Delete <span class="material-symbols-outlined text-[12px]">delete</span>
+</button>
+<button class="w-full text-left px-3 py-1.5 text-[11px] font-headline text-on-surface-variant hover:bg-primary/20 hover:text-primary transition-colors flex items-center justify-between">
+                        Replace <span class="material-symbols-outlined text-[12px]">sync</span>
+</button>
+<div class="h-[1px] bg-white/5 my-1"></div>
+<button class="w-full text-left px-3 py-1.5 text-[11px] font-headline text-on-surface-variant hover:bg-primary/20 hover:text-primary transition-colors flex items-center justify-between">
+                        Bring Forward <span class="material-symbols-outlined text-[12px]">layers</span>
+</button>
+</div>
+</div>
+<p class="mt-3 font-label text-[10px] text-primary tracking-wider">dashboard_v2.png <span class="ml-2 opacity-40">● ACTIVE</span></p>
+</div>
+<!-- Card 3: Settings -->
+<div class="absolute top-[15%] left-[65%] group cursor-grab active:cursor-grabbing">
+<div class="relative w-[280px] h-[180px] rounded-xl border border-white/10 overflow-hidden transition-all duration-300 group-hover:border-primary/40">
+<img alt="Global System Settings" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Abstract digital network pattern for settings background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlTHSt8JO4M2hpUAGocBIVN8dTvh_rorVDziYfjQuXGWP-gRMds325QO1l11ztZPxOUe55W84Aj7MOQ_pM2_lOQyyrTSPjdZtO4M05FLP6yiPq9Vw0UIZC9tUe7SWly2ZExZZv130yy7zMs1Bb9wM5BOy4TmRFuB1rQYLnOp7K-mdhoYOvsw-WcQnv88pswLImxKBsmmdRGcl0xlYrCG5tAUsBAgTdvQeXSJCFea_OsZt__IIiHYqbkIutvqxg1z-_2YYqG3Bcw6Xq"/>
+</div>
+<p class="mt-3 font-label text-[10px] text-on-surface-variant/60 tracking-wider">settings_v1.png</p>
+</div>
+<!-- Zoom Controls (Bottom Left) -->
+<div class="fixed bottom-8 left-8 flex items-center bg-surface-container/80 backdrop-blur-md border border-white/10 rounded-full px-2 py-1 gap-1 z-[100]">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<div class="px-2 border-x border-white/5">
+<span class="font-label text-[10px] text-on-surface-variant tracking-tighter">100%</span>
+</div>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<!-- Status Indicator (Bottom Right) -->
+<div class="fixed bottom-8 right-8 flex items-center gap-3">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim animate-pulse shadow-[0_0_8px_#00e479]"></div>
+<span class="font-label text-[9px] text-secondary-fixed-dim uppercase tracking-[0.2em]">System Nominal</span>
+</div>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<span class="font-label text-[9px] text-on-surface-variant/40 uppercase tracking-[0.2em]">V.0.4.2-STABLE</span>
+</div>
+</main>
+</body></html>

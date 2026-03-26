@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i0pEvT3lEx8",
+    "language": "en",
+    "took_ms": 26957,
+    "method": null,
+    "title": "Why is the Navy's new stealth fighter called the F/A-XX?",
+    "channel": "Sandboxx",
+    "upload_date": "20230408",
+    "duration_sec": 54,
+    "description": "The F/A prefix on a fighter is meant to indicate that it's a Fighter/Attack aircraft... but all modern fighters are expected to have these capabilities. \n\nSo what's with the name?\n\n#fa18 #f18 #f35 #f35c #stealth #stealthfighter #6thgeneration #airpower #shorts",
+    "view_count": 157615
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i0pEvT3lEx8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

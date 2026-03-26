@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "az7Og6k_-3o",
+    "language": "en",
+    "took_ms": 8102,
+    "method": null,
+    "title": "DeepLearning.AI Learner Community Event ft. Ignacio Martinez",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201029",
+    "duration_sec": 2440,
+    "description": "deeplearning.ai presents virtual mini-event series for our Learner Community of those taking the AI for Medicine specialization!\n\n#MeetYourMentor: Mentors sharing their personal experiences of breaking into AI\n#DeepDive: A deep dive into a specific area that the guest speaker is working on\nand more!\n\nThis event will be at 10am PDT on June 4th featuring Ignacio Martinez. Ignacio is Head of Data Scientists at a public Spanish hospital, and also one of our alpha testers and mentors for AI4M Specialization. He'll be sharing his personal journey in AI, the project he's currently working on, and tips on building a career in AI.\n\n \nEnroll in the AI For Medicine Specialization here:  https://bit.ly/2UBOUEO\nCheck out all our courses: https://bit.ly/39yz95P",
+    "view_count": 2432
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] az7Og6k_-3o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

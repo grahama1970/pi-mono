@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8QcB3DMA1NU",
+    "language": "en",
+    "took_ms": 7831,
+    "method": null,
+    "title": "Why I'm Hacking My Own Heart?",
+    "channel": "S4 Events",
+    "upload_date": "20170623",
+    "duration_sec": 2330,
+    "description": "Dr. Marie Moe's keynote at the 2017 S4xEurope was one of the most personnel and emotional sessions we have ever seen at S4 Events. She has a pacemaker, so her stake in medical device security is high.\n\nTwo stories, one misconfiguration and one a bit-flip bug, of the pacemaker malfunction are eye opening. One pacemaker readout screen even shows a \"Device is currently running a backup program\", which may have saved her life.",
+    "view_count": 1086
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8QcB3DMA1NU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

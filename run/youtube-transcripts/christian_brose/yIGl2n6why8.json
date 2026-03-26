@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yIGl2n6why8",
+    "language": "en",
+    "took_ms": 8756,
+    "method": null,
+    "title": "Export Controls: What's Ahead from the Obama Administration",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 5066,
+    "description": "Export controls in the United States are at a crossroads, with largeconsequences for both national security and the global defense industry.  The Obama administration has been developing export control reform proposals for nearly two years, which it unveiled at the July 19-21, 2011 Update Conference on Export Controls and Policy at the Department of Commerce. The administration is also finalizing its statutory proposals, and there are competing Republican and Democratic bills already introduced",
+    "view_count": 114
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yIGl2n6why8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

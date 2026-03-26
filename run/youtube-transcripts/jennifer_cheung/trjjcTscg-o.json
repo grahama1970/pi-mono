@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "trjjcTscg-o",
+    "language": "en",
+    "took_ms": 8579,
+    "method": null,
+    "title": "DEF CON 32 - The Missing Link How we collect and leverage SBOMs - Cassie Crossley",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1848,
+    "description": "There is some debate as to how SBOMs can enhance vulnerability management practices, and some believe that collecting SBOMs from internal teams or suppliers is too difficult and time-consuming. Learn how Schneider Electric has collected thousands of our product SBOMs and how we are leveraging the SBOMs as part of our corporate product CERT to quickly analyze and focus our attention when time is of importance. This presentation describes how we modified our policies and processes to collect, generate, and store thousands of SBOMs. You will hear how we have leveraged SBOMs during the Log4j and OpenSSL vulnerability events. Then we will conclude with key learnings, suggestions, and opportunities for improvement.",
+    "view_count": 470
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] trjjcTscg-o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

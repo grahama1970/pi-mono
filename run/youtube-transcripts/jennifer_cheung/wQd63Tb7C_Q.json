@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wQd63Tb7C_Q",
+    "language": "en",
+    "took_ms": 9440,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Cheryl Biswas - Mind the Gap Managing Insecurity in Enterprise IoT",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 2557,
+    "description": "IoT is an ever-expanding attack surface about which we have many misconceptions and assumptions but for which we have very few policies, regulations or security. These are devices built for one purpose, not meant to be upgraded and rarely if ever patched. As more devices are enabled to connect and communicate online, in the relentless pursuit of innovation, we’ve put the cart before the horse and failed to construct a framework to effectively control and secure the capability created.\n\nConsider this: over 90% of the data in the world was created over the past two years, and current output is roughly 2.5 quintillion bytes per day. As IoT moves into a range of enterprise environments, driven by consumer demand and BYOD desire, Shadow IT becomes Shadow ET, bringing new challenges and risks that our existing compliance and security don’t address or regulate.\n\nMisconfiguration usurps any benefits of eroding segregation as online exposure of both sensitive data and critical systems increases. Adversaries at all levels have been watching, waiting and are making their moves because ignorance isn’t an excuse – it’s an invitation to exploitation.",
+    "view_count": 400
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wQd63Tb7C_Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

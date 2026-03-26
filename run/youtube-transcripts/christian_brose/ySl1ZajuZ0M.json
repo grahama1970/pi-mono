@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ySl1ZajuZ0M",
+    "language": "en",
+    "took_ms": 8027,
+    "method": null,
+    "title": "AoD Podcast | How to Protect US Digital Sovereignty & Infrastructure from TikTok (w/ Geoffrey Cain)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240411",
+    "duration_sec": 2608,
+    "description": "What if Xi Jinping owned a controlling stake in CNN? Or the New York Times? This week's guest Geoffrey Cain argues that TikTok's dominance over the flow of information and news to America's population should be seen as a direct threat to our digital sovereignty and digital infrastructure, all on behalf of the Chinese Communist Party. Cain and host Marshall Kosloff discuss what can be done about this and why Section 230 is the wrong frame for this debate.",
+    "view_count": 563
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ySl1ZajuZ0M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ieKgIDOPyNw",
+    "language": "en",
+    "took_ms": 9091,
+    "method": null,
+    "title": "DEF CON 31 - Fireside Chat with the National Cyber Director - Kemba Walden",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3018,
+    "description": "A fireside chat with Director Walden. Director Walden is the current acting National Cyber Director for the Biden-Harris Administration.",
+    "view_count": 985
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ieKgIDOPyNw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

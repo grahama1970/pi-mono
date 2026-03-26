@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1weooQPl4j0",
+    "language": "en",
+    "took_ms": 9776,
+    "method": null,
+    "title": "Chip War: The Fight for the World's Most Critical Technology",
+    "channel": "Hudson Institute",
+    "upload_date": "20221014",
+    "duration_sec": 3398,
+    "description": "Semiconductors constitute the world’s most important technology, empowering every sector of the economy. But integrated circuits also rely on what could be the most fraught supply chain of any prominent contemporary technology. With more than half of all semiconductors and nearly all high-end chips coming from Taiwan or South Korea, disruptions are likely and can have devastating economic consequences.\n\nPlease join Hudson Senior Fellow Bryan Clark for a discussion with Tufts University Associate Professor of International History Chris Miller about his book Chip Wars, the origins of the semiconductor industry, and where it may go in the future.",
+    "view_count": 24633
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1weooQPl4j0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

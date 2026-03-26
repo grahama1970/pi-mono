@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bO6NLzXjODc",
+    "language": "en",
+    "took_ms": 8153,
+    "method": null,
+    "title": "Energy Policy and Social Goals A Conversation with Paul H  Tice",
+    "channel": "Hudson Institute",
+    "upload_date": "20240412",
+    "duration_sec": 2491,
+    "description": "Join Hudson Senior Fellow Brigham McCown for a conversation with Paul H. Tice about the trend of sustainable investing. They will discuss how environmental, social, and governance (ESG) factors affect corporate decisions and government policy in the energy sector. \n\nTice spent 40 years on Wall Street working for some of the energy industry’s most recognizable firms. He is also the author of The Race to Zero: How ESG Investing Will Crater the Global Financial System.",
+    "view_count": 324
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bO6NLzXjODc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

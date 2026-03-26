@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ihvrqlxk5tA",
+    "language": "en",
+    "took_ms": 10627,
+    "method": null,
+    "title": "S4 Interview with Bill Fehrman CEO of Berkshire Hathaway Energy",
+    "channel": "S4 Events",
+    "upload_date": "20230222",
+    "duration_sec": 1777,
+    "description": "Bill Fehrman is the CEO of Berkshire Hathaway Energy, co-chair of the Electricity Subsector Coordinating Council, and chair of the E-ISAC.\n\nThe major topics Dale and Bill discuss include:\n\n- the US Government / Electric Sector information sharing program around detection information and threat intel. Have they stopped or reduced the impact of attacks? What are the metrics they are using to determine if these resources are worth it?\n\n- How is the industry and BHE positioned to recovery from a major outage due to a cyber attack? The mutual assistance agreements in the electric sector … the transformer and critical sparing programs. BHE has drills that take away technology and see if they can still deliver power.\n\n- Who will pay for all this cyber risk reduction? Will there be rate increases due to these efforts? Does customer demand for climate change actions or security actions drive investment? Be required for investment? What does he think of the FERC incentives to get utilities to invest in security?\n\n- Is the single point person representing the electric sector, now Bill, by design and a good idea?",
+    "view_count": 2830
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ihvrqlxk5tA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

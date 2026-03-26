@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "blclSdJ71vo",
+    "language": "en",
+    "took_ms": 8723,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Alex Lomas - TCAS and ILS Spoofing Demonstration",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 584,
+    "description": "The Traffic Alert & Collision Avoidance System or TCAS was first developed in the early 1980s using transponders on aircraft to interrogate other aircraft within a set range about their distance, altitude, and heading. If a collision course is detected and the aircraft is suitably equipped, a TCAS alert will be sounded. In certain autopilot modes (mostly on Airbus), the aircraft will automatically follow the TCAS Resolution Advisory and climb or descend with no input from the pilot.Others have shown that it’s possible to create fake TCAS traffic. We’ve taken this further and investigated how airplanes equipped with autopilots capable of flying a resolution advisory themselves would respond in certain scenarios.",
+    "view_count": 625
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] blclSdJ71vo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

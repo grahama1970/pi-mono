@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jS3iNUfYtLA",
+    "language": "en",
+    "took_ms": 8638,
+    "method": null,
+    "title": "DEF CON 32 - Data On Demand The challenges of building a privacy focused AI Device - Matt Domko",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2447,
+    "description": "Building an AI product for the everyday person is challenging - doing it in a privacy focused way is nearly impossible without support from the right people. I'll walk through the techniques we're using at Rabbit to secure customer data and provide people a choice as to where their data goes.\n\nWe'll cover the pipelines that\n\nCollect and Manage customer identity after they login to a site\nLog, Anonymize, and Process customer voice interactions\nProvide \"just in time\" access to customer data for personalized RAG-like models\nAs a community, I think we're well within our rights to demand control over the data we provide to companies. This talk aims to provide engineers with a list of ideas on \"what right could look like\", and general attendees a list of things that are possible, so they know its ok to ask for them.",
+    "view_count": 238
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jS3iNUfYtLA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

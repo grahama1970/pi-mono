@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NwnT15q_PS8",
+    "language": "en",
+    "took_ms": 8763,
+    "method": null,
+    "title": "DEF CON 31 - SpamChannel - Spoofing Emails From 2M+ Domains & Virtually Becoming Satan - byt3bl33d3r",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2242,
+    "description": "Ever wake up and ask yourself: “Damn, how could I make email security suck even more today”? Tired of your Red Teams phishing emails not landing in your targets inbox?\n\nDo you dislike Boston (the city) and love Satan?\n\nIf you answered yes to any of those questions you should come to this talk!\n\nI'll be showing you how to spoof emails from 2 million+ domains (while also “bypassing” SPF & DMARC!) by (ab)using a partnership between Cloudflare and the “biggest transactional email service” on the interwebs. We'll be diving into \"edge\" serverless applications and the magical world of email security where everything is (still) held up by duct tape, pasta, and marinara sauce. Finally, I’ll be dropping code and releasing a tool that demonstrates how to impersonate emails from 2million+ domains.",
+    "view_count": 148415
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NwnT15q_PS8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

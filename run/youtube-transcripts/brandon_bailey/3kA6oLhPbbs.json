@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3kA6oLhPbbs",
+    "language": "en",
+    "took_ms": 8869,
+    "method": null,
+    "title": "DEF CON 32 - Differential privacy beyond algorithm:  Challenges for deployment - Rachel Cummings",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1550,
+    "description": "Differential privacy (DP) has been hailed as the gold standard of privacy-preserving data analysis, by providing strong privacy guarantees while still enabling use of potentially sensitive data. Formally, DP gives a mathematically rigorous worst-case bound on the maximum amount of information that can be learned about an individual's data from the output of a computation. In the past two decades, the privacy community has developed DP algorithms that satisfy this privacy guarantee and allow for accurate data analysis for a wide variety of computational problems and application domains. We have also begun to see a number of high-profile deployments of DP systems in practice, both at large technology companies and government entities. Despite the promise and success of DP thus far, there are a number of critical challenges left to be addressed before DP can be easily deployed in practice, including: mapping the mathematical privacy guarantees onto protection against real-world threats, developing explanations of its guarantees and tradeoffs for non-technical users, integration with other privacy & security tools, preventing misuse, and more.",
+    "view_count": 410
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3kA6oLhPbbs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "x0pAWGldlwA",
+    "language": "en",
+    "took_ms": 8711,
+    "method": null,
+    "title": "Herbert London on possible NATO intervention in Libya for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20110307",
+    "duration_sec": 232,
+    "description": "Hudson President Herbert London joined Fox News on March 6 to discuss possible NATO intervention in Libya.",
+    "view_count": 854
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] x0pAWGldlwA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

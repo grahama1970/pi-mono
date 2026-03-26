@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XXbuoc47Biw",
+    "language": "en",
+    "took_ms": 8069,
+    "method": null,
+    "title": "A Conversation w/ Deputy Assistant Secretary Robert Soofer & Dr. Jim Miller",
+    "channel": "Hudson Institute",
+    "upload_date": "20200421",
+    "duration_sec": 3475,
+    "description": "Join Hudson Institute for a conversation with the Deputy Assistant Secretary of Defense for Nuclear and Missile Defense Policy Dr. Robert Soofer and Senior Fellow at Johns Hopkins University’s Applied Physics Lab and former Under Secretary of Defense for Policy Dr. Jim Miller. The conversation was moderated by Hudson Senior Fellow Rebeccah Heinrichs.",
+    "view_count": 789
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XXbuoc47Biw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

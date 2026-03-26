@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3YT_tOKHSDA",
+    "language": "en",
+    "took_ms": 8896,
+    "method": null,
+    "title": "DEF CON 33 Video Team - Mar Williams",
+    "channel": "DEFCONConference",
+    "upload_date": "20250811",
+    "duration_sec": 585,
+    "description": "Mar Williams created this year's badge and much of the art all around you at DEF CON 33. Here's a behind the scenes interview about what goes into crafting the visual style of a hacker convention.",
+    "view_count": 4061
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3YT_tOKHSDA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

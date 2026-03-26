@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mU9djJSqdBQ",
+    "language": "en",
+    "took_ms": 9339,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - The Truth, Whole Truth and Nothing b/t Truth of Cybersec - Louis Deweaver",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 3420,
+    "description": "An unfiltered look at the cybersecurity industry's overpromises, vendor hype, and the importance of practical action over shiny tools.",
+    "view_count": 1166
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mU9djJSqdBQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

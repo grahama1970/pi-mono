@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Tq2nmWODV5Q",
+    "language": "en",
+    "took_ms": 7940,
+    "method": null,
+    "title": "Moody's / Team8: Cyber Risk Ratings for Companies",
+    "channel": "S4 Events",
+    "upload_date": "20200420",
+    "duration_sec": 1746,
+    "description": "Derek Vadala of Cyber Assessments, a joint venture with Moody's and Team8, discusses the early efforts to create a Cyber Risk rating system for an organization. Moody's is a natural fit to do this as they provide Credit Ratings (eg AAA, Ba1) that are relied on my the world.\n\nThese ratings could be used for a variety of purposes. The obvious one for Moody's is a component of their Credit Ratings. However it also could be used as part of an insurance product, by a vendor or asset owner to consider a supply chain partner, or for board/executive understanding of where they stand as compared to peers.\n\nDerek explains three of the challenges they are facing. The one I find most interesting is the fidelity vs. effort tradeoff and decision.\n\nInterestingly Moody's thinks it is important that they do not provide remediation services so there is true independence.",
+    "view_count": 1695
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Tq2nmWODV5Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

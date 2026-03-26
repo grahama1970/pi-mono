@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YLkWwxSJ9Ag",
+    "language": "en",
+    "took_ms": 8772,
+    "method": null,
+    "title": "Navy Recruits at Boot Camp - Small Arms Weapons Training",
+    "channel": "Sandboxx",
+    "upload_date": "20170703",
+    "duration_sec": 60,
+    "description": "Navy recruits at boot camp at Great Lakes Naval Station undergo small arms weapons training during week 4 of boot camp. \n\nWant to receive weekly updates about what a loved one is doing at boot camp or the ability to send them mail over night? Check out the Sandboxx app: http://www.sandboxx.us/app/yt",
+    "view_count": 3666
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YLkWwxSJ9Ag: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

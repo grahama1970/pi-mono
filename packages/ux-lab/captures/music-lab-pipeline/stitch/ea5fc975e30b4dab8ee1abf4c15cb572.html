@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Observatory | S04: Write + Converge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#005b2c",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "secondary-container": "#006d37",
+                        "outline-variant": "#484848",
+                        "surface-bright": "#2c2c2c",
+                        "surface-container-low": "#131313",
+                        "on-error-container": "#ffb2b9",
+                        "primary-container": "#b28cff",
+                        "surface-container-highest": "#262626",
+                        "on-secondary-container": "#e3ffe4",
+                        "on-background": "#ffffff",
+                        "outline": "#767575",
+                        "on-surface-variant": "#adaaaa",
+                        "on-error": "#490013",
+                        "tertiary-container": "#499dfe",
+                        "inverse-on-surface": "#565555",
+                        "tertiary-fixed": "#7bb3ff",
+                        "secondary-dim": "#00ed7e",
+                        "on-primary-fixed": "#000000",
+                        "error-dim": "#d73357",
+                        "error-container": "#a70138",
+                        "primary-fixed-dim": "#a67aff",
+                        "primary-dim": "#8a4cfc",
+                        "surface-tint": "#bd9dff",
+                        "secondary-fixed": "#00fd87",
+                        "primary": "#bd9dff",
+                        "secondary": "#00fd87",
+                        "background": "#0e0e0e",
+                        "on-surface": "#ffffff",
+                        "on-primary-container": "#2e006c",
+                        "error": "#ff6e84",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-variant": "#262626",
+                        "primary-fixed": "#b28cff",
+                        "on-tertiary-container": "#001e3c",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "tertiary-dim": "#4fa0ff",
+                        "surface-container": "#191a1a",
+                        "on-secondary-fixed-variant": "#006632",
+                        "surface-container-high": "#202020",
+                        "surface-container-lowest": "#000000",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "surface-dim": "#0e0e0e",
+                        "inverse-primary": "#742fe5",
+                        "on-primary": "#3c0089",
+                        "on-primary-fixed-variant": "#390083",
+                        "tertiary": "#6aabff",
+                        "surface": "#0e0e0e",
+                        "on-tertiary-fixed": "#001833",
+                        "on-tertiary": "#002a52",
+                        "on-secondary-fixed": "#004621"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .lore-underline {
+            text-decoration: underline;
+            text-decoration-color: #bd9dff;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 1px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- TopNavBar Implementation -->
+<nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-neutral-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-white uppercase font-headline">Sonic Observatory</span>
+<div class="hidden md:flex gap-6">
+<a class="text-neutral-500 font-medium hover:bg-neutral-800/50 transition-colors px-3 py-1 rounded-md" href="#">Archive</a>
+<a class="text-white font-semibold hover:bg-neutral-800/50 transition-colors px-3 py-1 rounded-md" href="#">Observatory</a>
+<a class="text-neutral-500 font-medium hover:bg-neutral-800/50 transition-colors px-3 py-1 rounded-md" href="#">Telemetry</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-white transition-colors cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-white transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</nav>
+<!-- SideNavBar Implementation -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-neutral-900 border-r border-white/5 flex flex-col pt-20 pb-8 h-full">
+<div class="px-6 mb-8">
+<h2 class="text-violet-500 font-black font-label text-xs tracking-widest">PROD_LAB_01</h2>
+<p class="text-[10px] text-neutral-500 font-label tracking-widest uppercase mt-1">OPERATOR: ACTIVE</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-neutral-500 px-4 py-3 flex items-center gap-3 font-label uppercase tracking-widest text-[10px] hover:text-neutral-200 hover:bg-neutral-800/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="lightbulb">lightbulb</span>
+                S00: Conceptualize
+            </a>
+<a class="text-neutral-500 px-4 py-3 flex items-center gap-3 font-label uppercase tracking-widest text-[10px] hover:text-neutral-200 hover:bg-neutral-800/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="tune">tune</span>
+                S01: Sound Design
+            </a>
+<a class="text-neutral-500 px-4 py-3 flex items-center gap-3 font-label uppercase tracking-widest text-[10px] hover:text-neutral-200 hover:bg-neutral-800/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="layers">layers</span>
+                S02: Arrangement
+            </a>
+<a class="text-neutral-500 px-4 py-3 flex items-center gap-3 font-label uppercase tracking-widest text-[10px] hover:text-neutral-200 hover:bg-neutral-800/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="equalizer">equalizer</span>
+                S03: Mix Engineering
+            </a>
+<a class="bg-neutral-800 text-violet-400 border-l-2 border-violet-500 px-4 py-3 flex items-center gap-3 font-label uppercase tracking-widest text-[10px] transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="edit_note">edit_note</span>
+                S04: Write + Converge
+            </a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-3 bg-primary text-on-primary font-label font-bold text-[10px] tracking-widest rounded-lg hover:brightness-110 active:scale-95 transition-all">
+                EXPORT MASTER
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 min-h-screen bg-background">
+<div class="max-w-6xl mx-auto px-12 py-12">
+<!-- Header Section -->
+<header class="flex flex-col gap-2 mb-12">
+<div class="flex items-center gap-4">
+<span class="font-label text-primary font-bold tracking-widest text-sm">S04</span>
+<span class="w-px h-4 bg-neutral-800"></span>
+<span class="font-label text-neutral-500 text-xs tracking-wider uppercase">Round 3/5</span>
+</div>
+<div class="flex justify-between items-end">
+<h1 class="text-5xl font-extrabold tracking-tighter text-white font-headline">Write + Converge Lyrics</h1>
+<div class="bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+<span class="text-amber-500 font-label text-[10px] font-bold tracking-[0.2em] uppercase">CONVERGING</span>
+</div>
+</div>
+</header>
+<!-- Lyrics Bento Grid / List -->
+<div class="space-y-8">
+<!-- VERSE 1 -->
+<div class="group relative bg-surface-container-low p-8 border-l-4 border-tertiary transition-all hover:bg-surface-container duration-300">
+<span class="absolute -top-3 left-0 font-label text-[10px] font-bold tracking-widest text-tertiary uppercase">VERSE 1</span>
+<div class="space-y-2 max-w-2xl">
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            The <span class="lore-underline">static</span> hums beneath the skin tonight
+                        </p>
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            I trace the <span class="lore-underline">signals</span> where they blur and die
+                        </p>
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            We built our <span class="lore-underline">towers</span> from the bones of light
+                        </p>
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            But every <span class="lore-underline">frequency</span> must fade and fly
+                        </p>
+</div>
+<!-- Metadata Row for Verse -->
+<div class="mt-8 pt-6 border-t border-white/5 flex gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Emotion</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-32">
+<option>Fear</option>
+<option>Anger</option>
+<option>Joy</option>
+<option>Sadness</option>
+<option>Trust</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Dynamics</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-24">
+<option>pp</option>
+<option>p</option>
+<option>mp</option>
+<option>mf</option>
+<option>f</option>
+<option>ff</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Vocal Style</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-32">
+<option>Whisper</option>
+<option>Speak</option>
+<option>Belt</option>
+<option>Growl</option>
+</select>
+</div>
+</div>
+</div>
+<!-- CHORUS -->
+<div class="group relative bg-surface-container p-8 border-l-4 border-primary transition-all hover:bg-surface-container-high duration-300 shadow-xl shadow-black/20">
+<span class="absolute -top-3 left-0 font-label text-[10px] font-bold tracking-widest text-primary uppercase">CHORUS</span>
+<div class="space-y-2 max-w-2xl">
+<p class="text-3xl font-bold leading-tight tracking-tighter text-white italic">
+<span class="lore-underline">Whisperheads</span>, we carry the <span class="lore-underline">frequency</span>
+</p>
+<p class="text-3xl font-bold leading-tight tracking-tighter text-white italic">
+                            Lost in the noise between what was and what we need
+                        </p>
+<p class="text-3xl font-bold leading-tight tracking-tighter text-white italic">
+<span class="lore-underline">Whisperheads</span>, in silence we discover
+                        </p>
+</div>
+<!-- Metadata Row for Chorus -->
+<div class="mt-8 pt-6 border-t border-white/5 flex gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Emotion</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-32">
+<option>Trust</option>
+<option>Joy</option>
+<option>Anger</option>
+<option>Fear</option>
+<option>Sadness</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Dynamics</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-24">
+<option>f</option>
+<option>pp</option>
+<option>p</option>
+<option>mp</option>
+<option>mf</option>
+<option>ff</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Vocal Style</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-32">
+<option>Belt</option>
+<option>Whisper</option>
+<option>Speak</option>
+<option>Growl</option>
+</select>
+</div>
+</div>
+</div>
+<!-- BRIDGE -->
+<div class="group relative bg-surface-container-low p-8 border-l-4 border-error transition-all hover:bg-surface-container duration-300">
+<span class="absolute -top-3 left-0 font-label text-[10px] font-bold tracking-widest text-error uppercase">BRIDGE</span>
+<div class="space-y-2 max-w-2xl">
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            Fear was the first <span class="lore-underline">frequency</span> we learned
+                        </p>
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            Anger burned the <span class="lore-underline">archive</span> to the ground
+                        </p>
+<p class="text-2xl font-medium leading-relaxed tracking-tight text-on-surface">
+                            Sadness found us in the ash, still bound
+                        </p>
+</div>
+<!-- Metadata Row for Bridge -->
+<div class="mt-8 pt-6 border-t border-white/5 flex gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Emotion</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-32">
+<option>Anger</option>
+<option>Fear</option>
+<option>Joy</option>
+<option>Sadness</option>
+<option>Trust</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Dynamics</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-24">
+<option>mf</option>
+<option>pp</option>
+<option>p</option>
+<option>mp</option>
+<option>f</option>
+<option>ff</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label text-[9px] text-neutral-500 uppercase tracking-widest">Vocal Style</label>
+<select class="bg-surface-container-lowest border-none text-on-surface-variant font-label text-[11px] uppercase tracking-wider rounded px-3 py-1.5 focus:ring-1 focus:ring-primary w-32">
+<option>Speak</option>
+<option>Whisper</option>
+<option>Belt</option>
+<option>Growl</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Kinetic Depth Decoration -->
+<div class="mt-20 flex justify-between items-center opacity-30">
+<div class="h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent flex-1"></div>
+<div class="flex gap-4 px-12">
+<span class="font-label text-[8px] tracking-[0.4em] text-neutral-500">SYSTEM_STABLE</span>
+<span class="font-label text-[8px] tracking-[0.4em] text-neutral-500">LATENCY: 0.04MS</span>
+<span class="font-label text-[8px] tracking-[0.4em] text-neutral-500">ARCHIVE_SYNK: ENABLED</span>
+</div>
+<div class="h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent flex-1"></div>
+</div>
+</div>
+</main>
+<!-- Contextual Information Panel (Right-Aligned) -->
+<div class="fixed right-0 top-16 w-16 h-full border-l border-white/5 bg-surface-container-low flex flex-col items-center py-8 gap-10">
+<div class="group relative cursor-help">
+<span class="material-symbols-outlined text-neutral-600 group-hover:text-primary transition-colors" data-icon="info">info</span>
+<div class="absolute right-12 top-0 bg-surface-container-highest p-4 rounded-lg w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl">
+<p class="font-label text-[10px] text-on-surface leading-normal tracking-wide">PHRASE CONVERGENCE: Align lyric metadata with the master sonic frequency for S04 output.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-neutral-600 hover:text-white transition-colors cursor-pointer" data-icon="history">history</span>
+<span class="material-symbols-outlined text-neutral-600 hover:text-white transition-colors cursor-pointer" data-icon="share">share</span>
+<div class="mt-auto mb-20 flex flex-col items-center gap-4">
+<div class="w-1 h-32 bg-neutral-800 rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-secondary h-1/2"></div>
+</div>
+<span class="font-label text-[8px] vertical-text text-neutral-500">SIG_STR</span>
+</div>
+</div>
+</body></html>

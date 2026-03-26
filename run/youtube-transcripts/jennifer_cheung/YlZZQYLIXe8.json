@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YlZZQYLIXe8",
+    "language": "en",
+    "took_ms": 7774,
+    "method": null,
+    "title": "DEF CON 30 - Roger Dingledine - How Russia is trying to block Tor",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2847,
+    "description": "In December 2021, some ISPs in Russia started blocking Tor's website,\nalong with protocol-level (DPI) and network-level (IP address) blocking to\ntry to make it harder for people in Russia to reach the Tor network. Some\nmonths later, we're now at a steady-state where they are trying to find\nnew IP addresses to block and we're rotating IP addresses to keep up.\n\nIn this talk I'll walk through what steps the Russian censors have taken,\nand how we reverse engineered their attempts and changed our strategies\nand our software. Then we'll discuss where the arms race goes from here,\nwhat new techniques the anti-censorship world needs if we're going to\nstay ahead of future attacks, and what it means for the world that more\nand more countries are turning to network-level blocking as the solution\nto their political problems.",
+    "view_count": 78400
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YlZZQYLIXe8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

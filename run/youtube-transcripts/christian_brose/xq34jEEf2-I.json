@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xq34jEEf2-I",
+    "language": "en",
+    "took_ms": 9006,
+    "method": null,
+    "title": "Sen. Lamar Alexander Discusses his Hudson Event on the Senate Floor on C-SPAN",
+    "channel": "Hudson Institute",
+    "upload_date": "20101208",
+    "duration_sec": 185,
+    "description": "Senator Lamar Alexander (R-TN) discussed \"The New Promise of American Life: Less from Washington, More from Ourselves\" at a special event held at Hudson Institute on December 3, 2010.",
+    "view_count": 36
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xq34jEEf2-I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

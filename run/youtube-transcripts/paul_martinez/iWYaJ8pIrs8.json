@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iWYaJ8pIrs8",
+    "language": "en",
+    "took_ms": 8190,
+    "method": null,
+    "title": "ServiceNow's New OT Management Product",
+    "channel": "S4 Events",
+    "upload_date": "20210609",
+    "duration_sec": 2619,
+    "description": "You know IT / OT integration is getting serious when the popular IT apps and services add OT extensions. The latest is ServiceNow's new OT Management Product. James Destro of ServiceNow joins Dale Peterson on the Unsolicited Response show to talk about two main things.\n\n1) How does OT Management get the OT asset inventory information? (and what is the single source of truth for OT asset inventory)\n\n2) Once the OT asset inventory is in ServiceNow what types of workflows are envisioned that would be a big benefit to the asset owner.\n\nLinks:\nOperational Technology Management 1-pager: https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/doc-type/resource-center/solution-brief/uc-operational-technology-management-manufacturing.pdf\n\nDetailed documentation of the Operational Technology Classes: https://docs.servicenow.com/bundle/quebec-servicenow-platform/page/product/configuration-management/concept/cmdb-ci-class-models-operation-technology.html\n\nServiceNow Integrations (All): https://store.servicenow.com/sn_appstore_store.do#!/store/integrations?listingtype=allintegrations\n\n“Asset Inventory” Integrations: https://store.servicenow.com/sn_appstore_store.do#!/store/integrations?freeTrial=service_graph_certified&offeredby=servicenow%253Bpartners",
+    "view_count": 3024
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iWYaJ8pIrs8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

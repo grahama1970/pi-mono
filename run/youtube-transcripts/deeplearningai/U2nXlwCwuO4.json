@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U2nXlwCwuO4",
+    "language": "en",
+    "took_ms": 9175,
+    "method": null,
+    "title": "Expert Panel: Optimizing BizOps with AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210226",
+    "duration_sec": 3760,
+    "description": "Welcome to DeepLearning.AI Expert Panel - Optimizing BizOps with AI - in partnership with FourthBrain. Join us for a discussion from AI leaders to find out how AI is deployed at their companies and across industries to improve business efficiency.\n\n40-min Panel discussion + 20-min Q&A. We will be taking questions from Slido.\n\nSpeakers:\n-Patrick Bangert, VP of Artificial Intelligence, Samsung SDSA (https://www.linkedin.com/in/patrick-bangert-452ab013/)\n-Greg Coquillo, Linkedin Top Voice for Data Science and AI (https://www.linkedin.com/in/greg-coquillo/)\n-Anirban Deb, Head of Data Science and Machine Learning, Uber Freight (https://www.linkedin.com/in/anirbanbiswajitdeb/)\n-Moderator: Sandhya Simhan, Director of Marketing, DeepLearning.AI \n\nThe panel will be discussing topics including:\n-Real-life use cases of optimizing bizops with AI\n-Practical approach to implement AI with limited resources for operational efficiency\n-Challenges faced while building talent/competency required for implementing AI/ML\n-Strategies to get buy-in from skeptical bosses\n-Untapped/exciting opportunities for business to look at for a good ROI for a first AI project\n-Framework for envisioning a new AI applications use case\n-Useful strategies for deploying an AI project\n\n\nTo learn more about us, \nDeepLearning.AI: https://www.deeplearning.ai/\nFourthBrain:https://www.fourthbrain.ai/",
+    "view_count": 3939
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U2nXlwCwuO4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

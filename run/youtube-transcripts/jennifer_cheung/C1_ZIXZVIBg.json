@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C1_ZIXZVIBg",
+    "language": "en",
+    "took_ms": 9097,
+    "method": null,
+    "title": "DEF CON 30 Car Hacking Village - Soohwan Oh, Jonghyuk Song, Jeongho Yang - Smart Black Box Fuzzing",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1800,
+    "description": "How to solve the difficulties when performing black box fuzzing on the real automobiles. First, coverage-guided fuzzing is impossible, so we should generate testcases with full understanding of UDS CAN, such as message flows, frame types. Second, it is hard to decide whether errors occurred, we should check timeout, pending response, DTC (diagnostic Trouble Code) and NRC (Negative Response Code). Third, even if the target ECU is dead, we should continue the fuzzing by using ClearDiagnosticInformation and ECUReset. During this talk, audiences can learn the effective and practical CAN fuzzing guides on the technical level.",
+    "view_count": 2414
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C1_ZIXZVIBg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k2Vx7hstOKY",
+    "language": "en",
+    "took_ms": 8685,
+    "method": null,
+    "title": "DEF CON 31 - Power Corrupts Corrupt It Back! Hacking Power Management in Data Centers - Quinn, Chick",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2513,
+    "description": "Our current administration lists \"Defend Critical Infrastructure\" as the #1 item in the 2023 National Cybersecurity Strategy. At the intersection of governmental and corporate concerns is data center security, a trend that is bound to continue as more and more operations move to the cloud. This talk details our findings in the domain of power management, the first category in a broader effort to investigate the security of critical data center components. We will reveal nine vulnerabilities in two integral data center appliances: a Power Distribution Unit (PDU) and a Data Center Infrastructure Management (DCIM) system. Continuing, we will delve into the technical details of the most impactful vulnerabilities and highlight the potential impact on their respective operations. The talk will challenge the misconception that data centers are inherently more secure than on-prem by exposing how attackers could leverage these vulnerabilities. This presentation will be valuable to data center professionals, security researchers, and anyone interested in understanding the characteristic vulnerabilities associated with modern data centers.",
+    "view_count": 2143
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k2Vx7hstOKY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

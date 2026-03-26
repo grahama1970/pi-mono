@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ui-pigp4ySI",
+    "language": "en",
+    "took_ms": 8365,
+    "method": null,
+    "title": "IACS System Testing and Assessment Rating (STAR) Methodology with Don Weber",
+    "channel": "S4 Events",
+    "upload_date": "20231025",
+    "duration_sec": 2368,
+    "description": "Don Weber joins Dale Peterson to describe his IACS STAR Methodology to score the risk of a vulnerability to an ICS (or IACS in 62443-speak). It is a modification of the OWASP Risk Rating Methodology. Don has modified some of the 16-factors to create IACS STAR. The methodology and code is available on GitHub and a calculator is available on line.\n\nDon and Dale discuss:\n- What Don likes about the OWASP Risk Rating\n- Potential issues with putting numbers to SME judgment\n- Differences between IACS STAR and the OWASP Risk Rating\n- The weighting of the 16 factors\n- The future of IACS STAR\n\nLinks\n- IACS STAR GitHub Repo: https://github.com/cutaway-security/IACS_STAR_Methodology\n- IACS STAR Calculator: https://iacs-star-calculator.com/iacs_star_calculator.html\n- Cutaway Security Website: https://www.cutawaysecurity.com\n- ICS-Patch Decision Tree: https://dale-peterson.com/wp-content/uploads/2020/10/ICS-Patch-0_1.pdf",
+    "view_count": 403
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ui-pigp4ySI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

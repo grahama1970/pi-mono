@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hwEWwTU01Wk",
+    "language": "en",
+    "took_ms": 8706,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Feyt, Rowell, LeRray - Critical Aerospace Cybersecurity",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1810,
+    "description": "Aerospace is changing – Its digital transformation must now be synonymous with being cyber secure. In-cabin systems are looking more like your everyday living room and the numerous potential entry points must be tested for security. During this session we will take you through the offensive testing that we put systems through to show you what is happening to improve the life cycle of aviation systems thanks to cybersecurity-by-design principles influenced by a hack/fix process.\n\nFrom design to operation, blue teams and red teams are working together for a first line of defense to help identify vulnerabilities and ensure more robust and resilient systems – systems which we all rely on, and must be certified by Airworthiness Authorities when safety is at stake.\n\nJoin Nathalie Feyt, Lawrence Rowell and Yannick Le Ray as they lead a presentation on securing avionics, passenger systems, and air traffic management systems, and show how industry designs, attacks, learns and improves aerospace systems.",
+    "view_count": 177
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hwEWwTU01Wk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

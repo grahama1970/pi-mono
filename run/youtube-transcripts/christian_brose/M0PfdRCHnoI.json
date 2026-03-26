@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "M0PfdRCHnoI",
+    "language": "en",
+    "took_ms": 7887,
+    "method": null,
+    "title": "Doing it Their Way: How Emerging Economies Give and Invest G",
+    "channel": "Hudson Institute",
+    "upload_date": "20131205",
+    "duration_sec": 4931,
+    "description": "Hudson Institute's Center for Global Prosperity (CGP) is pleased to announce the publication of its new 2013 Index of Global Philanthropy and Remittances: With a Special Report on Emerging Economies. Supported by Canada's International Development Research Centre (IDRC), this first-ever research includes data on financial flows to developing nations from Brazil, China, India, and South Africa, in addition to developed countries. Working with talented partners in each of the four countries, the r",
+    "view_count": 110
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] M0PfdRCHnoI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

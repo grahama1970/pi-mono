@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5P7KatZBr_I",
+    "language": "en",
+    "took_ms": 8122,
+    "method": null,
+    "title": "DEF CON 32 - Grand Theft Actions Abusing Self Hosted GitHub Runners - Adnan Khan, John Stawinski",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2663,
+    "description": "GitHub Actions is quickly becoming the de facto CI/CD provider for open-source projects, startups, and enterprises. At the same time, GitHub’s security model is full of insecure defaults. This makes it easy for their customers to expose themselves to critical attacks from the public internet. The end result? A systemic vulnerability class that won’t go away.\n\nDuring our research, we identified GitHub Actions misconfigurations at scale that would allow threat actors to backdoor major open-source projects. An example of this is our attack on PyTorch, a prominent ML framework used by companies and researchers around the world.\n\nThrough this attack, we could contribute code directly to the main branch of the PyTorch repository, upload malicious releases, backdoor other PyTorch projects, and more. These attacks began by compromising self-hosted runners, which are machines that execute jobs in a GitHub Actions workflow. From there, we leveraged misconfigurations and GitHub “features” to elevate our privileges within GitHub Actions workflows.\n\nOur research campaign included dozens of reports, over $250,000 in bug bounties, and endless war stories. Tune in for a deep dive into the TTPs that allow turning a trivial runner compromise into a full supply chain attack.",
+    "view_count": 7056
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5P7KatZBr_I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

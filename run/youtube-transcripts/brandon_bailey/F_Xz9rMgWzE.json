@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F_Xz9rMgWzE",
+    "language": "en",
+    "took_ms": 9281,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - History and Significance of the TTBR and PEASWG - Debra Bowen",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 3348,
+    "description": "In the wake of several alarming studies of election system security, and the improper installation of uncertified voting software in California jurisdictions in the 2000s, then-California Secretary of State Debra Bowen conducted a ground-breaking and seminal Top-to-Bottom Review (TTBR) of the voting equipment in use in the state. The review involved top computer security researchers, attorneys and accessibility experts, and provided the nation with an unprecedented view into the state of voting machines. The TTBR led to critical changes to improve California’s elections and influenced other states to move away from the most insecure voting systems. In 2008, Bowen was awarded the JFK Profile in Courage award for her work. This keynote talk will provide an overview of the TTBR, its findings, and significance for today’s elections.",
+    "view_count": 171
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F_Xz9rMgWzE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

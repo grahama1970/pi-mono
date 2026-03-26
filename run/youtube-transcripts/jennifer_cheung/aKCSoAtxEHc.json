@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aKCSoAtxEHc",
+    "language": "en",
+    "took_ms": 8627,
+    "method": null,
+    "title": "DEF CON 33 - Rebadged, Relabeled, Rooted: Pwnage via Solar Supply Chain - Anthony Rose, Jake Krasnov",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1953,
+    "description": "Residential solar promises energy independence, but behind the panels lies a chaotic mess of insecure firmware, exposed APIs, and rebadged devices phoning home to mystery servers. This talk exposes how today's solar microgrids can be hijacked through unauthenticated cloud APIs, unsigned firmware updates, hardcoded root credentials, and even vendor-enabled kill switches. No custom exploits. No insider access. Just publicly documented APIs, leaked serial numbers, and a shocking lack of basic security controls.\n\nWe will walk through real-world attacks, account takeover via brute-forced PINs, remote access to power dashboards with zero authentication, firmware tampering for persistent implants, and replay attacks against plaintext MODBUS traffic. Our research reveals how vulnerabilities silently propagate across cloned OEMs and shared cloud infrastructure, turning a single bug into an industry-wide risk. If you thought solar made you off-grid, this talk will change your threat model.",
+    "view_count": 285
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aKCSoAtxEHc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

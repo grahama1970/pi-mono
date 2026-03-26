@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6Yv_Fs2pi7M",
+    "language": "en",
+    "took_ms": 7778,
+    "method": null,
+    "title": "Myanmar Astronaut",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20161209",
+    "duration_sec": 157,
+    "description": "I spent two weeks at a children's home in Myanmar where I met Nadi Ang, a young artist who was fascinated when I taught her about space. I ended up creating this fictional piece to help encourage kids to pursue their dreams by empowering themselves with education. \n\n\nFilm, story and music by TIm Dodd - The Everyday Astronaut\nwww.everydayastronaut.com",
+    "view_count": 30279
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6Yv_Fs2pi7M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

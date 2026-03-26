@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LLM Eval Lab — Terminal Edition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "terminal-bg": "#0b1220",
+                        "terminal-border": "#1e293b",
+                        "terminal-accent": "#3b82f6", // Electric Blue
+                        "terminal-success": "#22c55e", // Neon Green
+                        "terminal-error": "#ef4444", // Stark Red
+                        "terminal-dim": "#64748b",
+                        "terminal-surface": "#0f172a"
+                    },
+                    fontFamily: {
+                        "mono": ["JetBrains Mono", "monospace"],
+                        "body": ["JetBrains Mono", "monospace"],
+                        "headline": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "0px" },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-terminal-bg text-slate-300 font-mono;
+            }
+            table, th, td {
+                @apply border border-terminal-border;
+            }
+        }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b1220; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border: 1px solid #3b82f6; }body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 1000;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex flex-col uppercase text-[12px] tracking-tight">
+<header class="border-b-2 border-terminal-border flex justify-between items-center w-full px-4 h-12 shrink-0 bg-terminal-bg relative z-10">
+<div class="flex items-center gap-6 h-full">
+<div class="text-terminal-accent font-extrabold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span>LLM_EVAL_LAB_V2.0</span>
+</div>
+<nav class="flex gap-0 items-center h-full">
+<a class="px-4 h-full flex items-center border-x border-terminal-border bg-terminal-accent/10 text-terminal-accent font-bold" href="#">[01] DASHBOARD</a>
+<a class="px-4 h-full flex items-center border-r border-terminal-border hover:bg-terminal-border transition-colors" href="#">[02] MODELS</a>
+<a class="px-4 h-full flex items-center border-r border-terminal-border hover:bg-terminal-border transition-colors" href="#">[03] DATASETS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-terminal-success">
+<span class="w-2 h-2 bg-terminal-success animate-pulse"></span>
+<span>SYS_ONLINE</span>
+</div>
+<button class="material-symbols-outlined text-terminal-dim hover:text-terminal-accent px-2">settings</button>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden relative z-10">
+<aside class="flex flex-col h-full w-12 border-r-2 border-terminal-border items-center gap-4 py-4 shrink-0 bg-terminal-surface">
+<button class="w-8 h-8 flex items-center justify-center border border-terminal-accent text-terminal-accent">
+<span class="material-symbols-outlined text-sm">dashboard</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-terminal-border text-terminal-dim hover:border-terminal-accent hover:text-terminal-accent">
+<span class="material-symbols-outlined text-sm">precision_manufacturing</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-terminal-border text-terminal-dim hover:border-terminal-accent hover:text-terminal-accent">
+<span class="material-symbols-outlined text-sm">database</span>
+</button>
+<div class="mt-auto flex flex-col gap-4">
+<button class="material-symbols-outlined text-terminal-dim text-sm">help</button>
+</div>
+</aside>
+<section class="flex flex-1 overflow-hidden">
+<div class="w-1/4 min-w-[300px] border-r-2 border-terminal-border flex flex-col bg-terminal-bg">
+<div class="p-3 bg-terminal-border/50 border-b border-terminal-border">
+<h2 class="font-bold text-terminal-accent flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">settings_input_component</span>
+                    CONFIG_PARAMETERS
+                </h2>
+</div>
+<div class="flex-1 p-4 space-y-6 overflow-y-auto">
+<div class="space-y-2">
+<label class="text-terminal-dim text-[10px]">// GROUND_TRUTH_SOURCE</label>
+<div class="relative">
+<select class="w-full bg-terminal-surface border border-terminal-border text-terminal-accent focus:border-terminal-accent focus:ring-0 px-3 py-2 appearance-none">
+<option>benchmark_v2.json</option>
+<option>qa_ground_truth.json</option>
+</select>
+<span class="absolute right-2 top-2 text-terminal-dim material-symbols-outlined pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between">
+<label class="text-terminal-dim text-[10px]">// CONFIDENCE_THRESHOLD</label>
+<span class="text-terminal-success">80%</span>
+</div>
+<input class="w-full h-4 bg-terminal-surface border border-terminal-border appearance-none accent-terminal-accent cursor-pointer" max="100" min="50" type="range" value="80"/>
+</div>
+<div class="space-y-2">
+<label class="text-terminal-dim text-[10px]">// PROVIDER_FILTER</label>
+<div class="flex gap-px bg-terminal-border p-px">
+<button class="flex-1 bg-terminal-accent text-terminal-bg font-bold py-2">LOCAL</button>
+<button class="flex-1 bg-terminal-surface text-terminal-dim py-2 hover:bg-terminal-border">API</button>
+<button class="flex-1 bg-terminal-surface text-terminal-dim py-2 hover:bg-terminal-border">ALL</button>
+</div>
+</div>
+<div class="border border-terminal-border">
+<button class="w-full flex justify-between items-center p-2 hover:bg-terminal-border/30 group">
+<span class="text-terminal-dim text-[10px]">SYSPROMPT_OVERRIDE</span>
+<span class="text-terminal-accent">[EXPAND]</span>
+</button>
+</div>
+<div class="border-t border-terminal-border pt-4 space-y-3">
+<label class="text-terminal-dim text-[10px]">// COST_ESTIMATION_ENV</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="border border-terminal-border p-2 bg-terminal-surface">
+<span class="block text-[8px] text-terminal-dim mb-1">BATCH_SZ</span>
+<input class="w-full bg-transparent border-none p-0 text-terminal-accent focus:ring-0" type="text" value="90,000"/>
+</div>
+<div class="border border-terminal-border p-2 bg-terminal-surface">
+<span class="block text-[8px] text-terminal-dim mb-1">AVG_TKN</span>
+<input class="w-full bg-transparent border-none p-0 text-terminal-accent focus:ring-0" type="text" value="512"/>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t-2 border-terminal-border bg-terminal-surface space-y-2">
+<button class="w-full bg-terminal-accent text-terminal-bg font-bold py-3 border-2 border-transparent hover:bg-transparent hover:border-terminal-accent hover:text-terminal-accent transition-all active:translate-y-px">
+                    RUN_EVAL_PROCESS
+                </button>
+<button class="w-full border border-terminal-border text-terminal-dim font-bold py-2 hover:text-slate-200 hover:border-slate-200">
+                    COMPARE_MATRIX
+                </button>
+</div>
+</div>
+<div class="w-1/4 min-w-[300px] border-r-2 border-terminal-border flex flex-col bg-terminal-bg">
+<div class="p-3 bg-terminal-border/50 border-b border-terminal-border">
+<h2 class="font-bold text-terminal-accent flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">inventory_2</span>
+                    MODEL_REGISTRY
+                </h2>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full border-collapse">
+<thead class="sticky top-0 bg-terminal-surface text-[10px] text-terminal-dim uppercase font-bold">
+<tr>
+<th class="p-2 text-left">ALIAS</th>
+<th class="p-2 text-right">SZ</th>
+<th class="p-2 text-center">JSON</th>
+<th class="p-2 text-left">CAPS</th>
+</tr>
+</thead>
+<tbody class="text-[11px]">
+<tr class="hover:bg-terminal-border/20">
+<td class="p-2 text-slate-300">qwen3:1.7b</td>
+<td class="p-2 text-right text-terminal-dim">1.7B</td>
+<td class="p-2 text-center text-terminal-success">Y</td>
+<td class="p-2 text-terminal-dim">-</td>
+</tr>
+<tr class="hover:bg-terminal-border/20">
+<td class="p-2 text-slate-300">qwen2.5-coder:7b</td>
+<td class="p-2 text-right text-terminal-dim">7B</td>
+<td class="p-2 text-center text-terminal-success">Y</td>
+<td class="p-2 text-terminal-accent">CODE</td>
+</tr>
+<tr class="bg-terminal-success/10 border-y border-terminal-success/30">
+<td class="p-2 text-terminal-success font-bold">qwen3:8b</td>
+<td class="p-2 text-right text-terminal-success/80">8B</td>
+<td class="p-2 text-center text-terminal-success">Y</td>
+<td class="p-2 text-terminal-success/80">RSN</td>
+</tr>
+<tr class="bg-terminal-error/10 border-y border-terminal-error/30">
+<td class="p-2 text-terminal-error font-bold">deepseek</td>
+<td class="p-2 text-right text-terminal-error/80">671B</td>
+<td class="p-2 text-center text-terminal-error">Y</td>
+<td class="p-2 text-terminal-error/80">F1:0.93</td>
+</tr>
+<tr class="opacity-40 grayscale">
+<td class="p-2">llama3.2:1b</td>
+<td class="p-2 text-right">1B</td>
+<td class="p-2 text-center">N</td>
+<td class="p-2">NONE</td>
+</tr>
+<tr class="opacity-40 grayscale">
+<td class="p-2">mistral-v0.3</td>
+<td class="p-2 text-right">7B</td>
+<td class="p-2 text-center">Y</td>
+<td class="p-2">RSN</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="flex-1 flex flex-col overflow-hidden bg-terminal-bg">
+<div class="bg-terminal-surface border-b border-terminal-border p-3 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="text-terminal-accent animate-pulse font-bold">TASK_ID: EVAL_0823</span>
+<div class="flex border border-terminal-border bg-terminal-bg w-64 h-4 p-px">
+<div class="bg-terminal-accent h-full shadow-[0_0_8px_#3b82f6]" style="width: 40%"></div>
+</div>
+<span class="text-[10px]">3/7 MODELS_PROCESSED</span>
+</div>
+<div class="text-[10px] text-terminal-dim">
+                    UPTIME: 00:04:12
+                </div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-8">
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-terminal-accent">
+<span class="material-symbols-outlined text-xs">list_alt</span>
+<span class="text-[10px] font-bold">LIVE_EVALUATION_STREAM</span>
+</div>
+<table class="w-full border-collapse">
+<thead class="bg-terminal-border/20 text-[10px]">
+<tr>
+<th class="p-2 text-left">IDENTIFIER</th>
+<th class="p-2 text-right">JSON_VAL%</th>
+<th class="p-2 text-right">ACTION_ACC%</th>
+<th class="p-2 text-right">LATENCY</th>
+<th class="p-2 text-center">STATUS</th>
+</tr>
+</thead>
+<tbody class="text-[11px]">
+<tr>
+<td class="p-2 flex items-center gap-2">
+<span class="text-slate-100">qwen3:8b</span>
+<span class="px-1 border border-terminal-success text-terminal-success text-[8px] font-bold">RECOMMENDED</span>
+</td>
+<td class="p-2 text-right text-terminal-success">98.2%</td>
+<td class="p-2 text-right text-terminal-success">87.0%</td>
+<td class="p-2 text-right text-terminal-dim">12.4s</td>
+<td class="p-2 text-center text-terminal-success">PASS</td>
+</tr>
+<tr>
+<td class="p-2 text-slate-100">qwen2.5-coder:7b</td>
+<td class="p-2 text-right text-terminal-success">94.1%</td>
+<td class="p-2 text-right text-terminal-accent">72.4%</td>
+<td class="p-2 text-right text-terminal-dim">14.1s</td>
+<td class="p-2 text-center text-terminal-success">PASS</td>
+</tr>
+<tr>
+<td class="p-2 text-slate-100">qwen3:1.7b</td>
+<td class="p-2 text-right text-terminal-error">42.0%</td>
+<td class="p-2 text-right text-terminal-error">11.5%</td>
+<td class="p-2 text-right text-terminal-dim">4.2s</td>
+<td class="p-2 text-center text-terminal-error">FAIL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-terminal-accent">
+<span class="material-symbols-outlined text-xs">monetization_on</span>
+<span class="text-[10px] font-bold">INFRASTRUCTURE_COST_MATRIX</span>
+</div>
+<table class="w-full border-collapse">
+<thead class="bg-terminal-border/20 text-[10px]">
+<tr>
+<th class="p-2 text-left">PROVIDER</th>
+<th class="p-2 text-right">IN $/M</th>
+<th class="p-2 text-right">OUT $/M</th>
+<th class="p-2 text-right">EST_BATCH_COST</th>
+<th class="p-2 text-right">EST_TIME</th>
+</tr>
+</thead>
+<tbody class="text-[11px]">
+<tr class="bg-terminal-success/5">
+<td class="p-2 text-terminal-success">LOCAL (OLLAMA)</td>
+<td class="p-2 text-right">0.00</td>
+<td class="p-2 text-right">0.00</td>
+<td class="p-2 text-right">$0.00</td>
+<td class="p-2 text-right">--:--</td>
+</tr>
+<tr>
+<td class="p-2">CHUTES.AI</td>
+<td class="p-2 text-right">0.05</td>
+<td class="p-2 text-right">0.05</td>
+<td class="p-2 text-right">$4.50</td>
+<td class="p-2 text-right">~14m</td>
+</tr>
+<tr>
+<td class="p-2">TOGETHER AI</td>
+<td class="p-2 text-right">0.20</td>
+<td class="p-2 text-right">0.20</td>
+<td class="p-2 text-right">$18.00</td>
+<td class="p-2 text-right">~2m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-2 border-terminal-success p-4 flex items-center gap-6 bg-terminal-success/5 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-1 bg-terminal-success text-terminal-bg text-[8px] font-bold">OPTIMAL_SELECTION</div>
+<span class="material-symbols-outlined text-terminal-success text-5xl">verified</span>
+<div>
+<h4 class="text-terminal-success text-lg font-black leading-none mb-1">RECOMMENDED_MODEL: QWEN3:8B</h4>
+<div class="grid grid-cols-3 gap-4 text-slate-300 text-[10px] font-bold">
+<span class="flex items-center gap-1 border border-terminal-success/30 px-2 py-1">ACC: 87%</span>
+<span class="flex items-center gap-1 border border-terminal-success/30 px-2 py-1">COST: $0.00</span>
+<span class="flex items-center gap-1 border border-terminal-success/30 px-2 py-1">INFRA: OLLAMA</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-terminal-accent">
+<span class="material-symbols-outlined text-xs">gavel</span>
+<span class="text-[10px] font-bold">OUTPUT_COMPARISON_LOG</span>
+</div>
+<div class="grid grid-cols-2 border border-terminal-border">
+<div class="p-4 border-r border-terminal-border bg-terminal-surface/50">
+<div class="flex justify-between border-b border-terminal-border pb-2 mb-3">
+<span class="text-terminal-accent font-bold">SRC: qwen3:8b</span>
+<span class="text-terminal-success">VAL: MATCH(0.94)</span>
+</div>
+<pre class="text-[10px] text-slate-400 whitespace-pre-wrap"><span class="text-terminal-dim">sys_in:</span> Use JSON only.
+<span class="text-terminal-dim">usr_in:</span> Extract items.
+<span class="text-terminal-accent">out:</span>
+{
+  "status": "success",
+  "data": [
+    {"id": 1, "item": "bench_v2"},
+    {"id": 2, "item": "threshold_80"}
+  ]
+}</pre>
+</div>
+<div class="p-4 bg-terminal-surface/30">
+<div class="flex justify-between border-b border-terminal-border pb-2 mb-3">
+<span class="text-terminal-dim font-bold">SRC: deepseek</span>
+<span class="text-terminal-error">VAL: MISMATCH(0.21)</span>
+</div>
+<pre class="text-[10px] text-terminal-dim whitespace-pre-wrap opacity-60"><span class="text-terminal-dim">sys_in:</span> Use JSON only.
+<span class="text-terminal-dim">usr_in:</span> Extract items.
+<span class="text-terminal-error">out:</span>
+Thinking: I need to provide JSON...
+Here is the JSON:
+{ "items": [ "bench_v2" ] }</pre>
+<div class="mt-4 p-2 border border-terminal-error/50 bg-terminal-error/10 text-[9px] text-terminal-error font-bold flex gap-2 items-center">
+<span class="material-symbols-outlined text-xs">report</span>
+                                CONSTRAINT_VIOLATION: REASONING_LEAKED_TO_OUTPUT
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="h-6 border-t border-terminal-border bg-terminal-surface flex items-center px-4 justify-between text-[10px] text-terminal-dim relative z-10">
+<div class="flex gap-4">
+<span>LOC: LOCAL_OLLAMA_SERVICE</span>
+<span class="text-terminal-accent">MEM_UTIL: 4.2GB / 16GB</span>
+</div>
+<div class="flex gap-4 items-center">
+<span>LATENCY: 42ms</span>
+<span class="flex items-center gap-1 text-terminal-success">
+<span class="w-1.5 h-1.5 rounded-full bg-terminal-success"></span>
+            STABLE
+        </span>
+</div>
+</footer>
+
+</body></html>

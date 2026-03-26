@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1VL9IkHiNZY",
+    "language": "en",
+    "took_ms": 7758,
+    "method": null,
+    "title": "Christopher Sands on Costly Border Crossings for CTV",
+    "channel": "Hudson Institute",
+    "upload_date": "20110224",
+    "duration_sec": 566,
+    "description": "Hudson Senior Fellow Christopher Sands joined CTV on February 17, 2011 to discuss the increased costs of crossing the U.S.-Canadian border.",
+    "view_count": 95
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1VL9IkHiNZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

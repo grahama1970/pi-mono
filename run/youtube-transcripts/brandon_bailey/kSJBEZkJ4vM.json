@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kSJBEZkJ4vM",
+    "language": "en",
+    "took_ms": 7774,
+    "method": null,
+    "title": "DEF CON 33 -  Bypassing Intent Destination Checks,  LaunchAnyWhere Privilege Escalation - Qidan He",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2791,
+    "description": "The LaunchAnywhere vulnerability has long been a significant concern in Android security, allowing unprivileged applications to invoke protected activities, even with system-level privileges, and have been actively exploited in the wild in the past.\n\nIn response, Google and device vendors have implemented patches, primarily by introducing destination component checks within privileged code before launching Intents. These fixes appeared to have mitigated such risks—at least on the surface. But has the threat truly been eliminated?\n\nIn this session, we demonstrate that these defenses remain insufficient. We introduce a new exploitation technique, BadResolve, which bypasses these checks through multiple methods, enabling a zero-permission app to achieve LaunchAnywhere once again. We reveal high-severity vulnerabilities that affect all Android versions, including the latest Android 16 (at time of writing), which have been confirmed and patched by Google. Dead, made alive again— we show how the LaunchAnywhere vulnerability has been reborn. In addition to presenting new exploitation techniques, we tackle the challenge of efficiently and accurately identifying methods in the vast codebases of AOSP and vendor-specific closed-source implementations that could be exploited by BadResolve, using LLM Agents and MCP.",
+    "view_count": 288
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kSJBEZkJ4vM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TACTICAL_EVAL_v2.0 - High Density Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#0b1220",
+                        "surface-low": "#070e1c",
+                        "surface-high": "#19202e",
+                        "tactical-green": "#00ff88",
+                        "tactical-red": "#ff4444",
+                        "tactical-purple": "#7c3aed",
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"],
+                        "body": ["Inter"],
+                    },
+                    borderRadius: {"none": "0"},
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-surface text-[#dce2f6] font-mono selection:bg-tactical-purple/30;
+            }
+            ::-webkit-scrollbar { width: 4px; height: 4px; }
+            ::-webkit-scrollbar-track { background: #070e1c; }
+            ::-webkit-scrollbar-thumb { background: #2e3544; }
+            ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            font-size: 18px;
+        }
+        .pill-toggle:checked + label {
+            @apply bg-tactical-purple text-white border-tactical-purple;
+        }
+        .row-active {
+            @apply bg-tactical-purple/10 border-l-2 border-tactical-purple;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-[11px]">
+<header class="h-10 border-b border-white/5 flex items-center justify-between px-4 bg-surface shrink-0">
+<div class="flex items-center gap-6">
+<span class="text-sm font-bold tracking-tighter text-tactical-purple">TACTICAL_EVAL_v2.0</span>
+<nav class="flex gap-4">
+<a class="text-white border-b border-tactical-purple px-1" href="#">MODELS</a>
+<a class="text-[#94a3b8] hover:text-white transition-colors" href="#">EVALS</a>
+<a class="text-[#94a3b8] hover:text-white transition-colors" href="#">DATASETS</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-surface-low px-2 py-0.5 border border-white/5">
+<span class="w-1.5 h-1.5 rounded-full bg-tactical-green animate-pulse"></span>
+<span class="text-[9px] text-[#94a3b8]">SYS_OK: 1.2ms</span>
+</div>
+<span class="material-symbols-outlined text-[#94a3b8] cursor-pointer">settings</span>
+<span class="material-symbols-outlined text-[#94a3b8] cursor-pointer">account_circle</span>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="w-12 md:w-48 border-r border-white/5 bg-surface shrink-0 flex flex-col py-4">
+<div class="px-4 mb-6 hidden md:block">
+<div class="text-[9px] tracking-widest text-[#94a3b8] uppercase font-bold">Mission_Ctrl</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 bg-surface-high text-tactical-green border-l-2 border-tactical-green" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="hidden md:inline tracking-widest text-[10px]">DASHBOARD</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#94a3b8] hover:bg-surface-high/50 transition-all" href="#">
+<span class="material-symbols-outlined">memory</span>
+<span class="hidden md:inline tracking-widest text-[10px]">REGISTRY</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#94a3b8] hover:bg-surface-high/50 transition-all" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="hidden md:inline tracking-widest text-[10px]">SESSIONS</span>
+</a>
+</nav>
+</aside>
+<main class="flex-1 flex overflow-hidden">
+<section class="w-[35%] lg:w-[40%] border-r border-white/5 flex flex-col p-4 gap-4 overflow-y-auto bg-surface-low/30">
+<div>
+<label class="block text-[9px] uppercase tracking-widest text-[#94a3b8] mb-1.5 flex items-center gap-2">
+<span class="w-1 h-1 bg-tactical-purple"></span> SYSTEM_PROMPT.CFG
+                </label>
+<textarea class="w-full h-32 bg-surface-low border border-white/10 p-3 text-[12px] focus:border-tactical-purple outline-none resize-none" placeholder="Enter instructions..."></textarea>
+</div>
+<div>
+<label class="block text-[9px] uppercase tracking-widest text-[#94a3b8] mb-1.5 flex items-center gap-2">
+<span class="w-1 h-1 bg-tactical-purple"></span> USER_MESSAGE.INPUT
+                </label>
+<textarea class="w-full h-24 bg-surface-low border border-white/10 p-3 text-[12px] focus:border-tactical-purple outline-none resize-none" placeholder="Query content..."></textarea>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-[9px] uppercase tracking-widest text-[#94a3b8]">MODEL_REGISTRY</label>
+<div class="flex gap-1">
+<button class="px-2 py-0.5 bg-surface-high border border-white/10 text-[8px] hover:border-tactical-purple">ALL_LOCAL</button>
+<button class="px-2 py-0.5 bg-surface-high border border-white/10 text-[8px] hover:border-tactical-purple">ALL_API</button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-1">
+<div class="flex items-center">
+<input checked="" class="hidden pill-toggle" id="m1" type="checkbox"/>
+<label class="flex-1 flex justify-between items-center px-3 py-1.5 border border-white/10 cursor-pointer bg-surface hover:border-white/20 transition-all" for="m1">
+<span>qwen3:8b <span class="text-[9px] opacity-40 ml-2">8B · LOCAL</span></span>
+<span class="text-[8px] opacity-60">ACTIVE</span>
+</label>
+</div>
+<div class="flex items-center">
+<input checked="" class="hidden pill-toggle" id="m2" type="checkbox"/>
+<label class="flex-1 flex justify-between items-center px-3 py-1.5 border border-white/10 cursor-pointer bg-surface hover:border-white/20 transition-all" for="m2">
+<span>llama3.2:1b <span class="text-[9px] opacity-40 ml-2">1B · LOCAL</span></span>
+<span class="text-[8px] opacity-60">ACTIVE</span>
+</label>
+</div>
+<div class="flex items-center">
+<input checked="" class="hidden pill-toggle" id="m3" type="checkbox"/>
+<label class="flex-1 flex justify-between items-center px-3 py-1.5 border border-white/10 cursor-pointer bg-surface hover:border-white/20 transition-all" for="m3">
+<span>phi-4:mini <span class="text-[9px] opacity-40 ml-2">3B · LOCAL</span></span>
+<span class="text-[8px] opacity-60">ACTIVE</span>
+</label>
+</div>
+<div class="flex items-center">
+<input class="hidden pill-toggle" id="m4" type="checkbox"/>
+<label class="flex-1 flex justify-between items-center px-3 py-1.5 border border-white/10 cursor-pointer bg-surface hover:border-white/20 transition-all" for="m4">
+<span>deepseek-v3 <span class="text-[9px] opacity-40 ml-2">671B · API</span></span>
+<span class="text-[8px] opacity-60">INACTIVE</span>
+</label>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="flex justify-between text-[9px] text-[#94a3b8] mb-2">
+<span>EVAL_THRESHOLD: 0.85</span>
+</div>
+<input class="w-full h-1 bg-surface-high appearance-none cursor-pointer accent-tactical-purple" max="1" min="0" step="0.01" type="range" value="0.85"/>
+<button class="w-full bg-tactical-purple py-3 mt-4 text-white font-bold tracking-[0.2em] flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all">
+<span class="material-symbols-outlined">bolt</span>
+                    RUN_EVALUATION
+                </button>
+</div>
+</section>
+<section class="flex-1 flex flex-col overflow-hidden bg-surface">
+<div class="h-[60%] flex flex-col border-b border-white/10 overflow-hidden">
+<div class="p-3 border-b border-white/5 bg-surface-low/50 flex items-center justify-between shrink-0">
+<div class="flex flex-col gap-1">
+<span class="text-[9px] tracking-widest text-[#94a3b8] uppercase">LIVE_EXECUTION_QUEUE</span>
+<div class="w-48 h-1 bg-surface-high overflow-hidden">
+<div class="bg-tactical-green h-full w-[42%]"></div>
+</div>
+</div>
+<span class="text-[9px] text-tactical-green font-bold">MODEL 3/7 [42%]</span>
+</div>
+<div class="overflow-auto flex-1 p-2">
+<table class="w-full text-[10px] text-left border-separate border-spacing-0">
+<thead class="sticky top-0 bg-surface z-10">
+<tr class="text-[#94a3b8] uppercase tracking-tighter border-b border-white/10">
+<th class="p-2 font-medium">#</th>
+<th class="p-2 font-medium">IDENTIFIER</th>
+<th class="p-2 font-medium">SIZE</th>
+<th class="p-2 font-medium">ACC%</th>
+<th class="p-2 font-medium">LAT</th>
+<th class="p-2 font-medium text-right">STATUS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-white/5 cursor-pointer row-active">
+<td class="p-2 text-tactical-purple">#01</td>
+<td class="p-2 font-bold flex items-center gap-1">
+                                    qwen3:8b <span class="material-symbols-outlined text-[12px] text-tactical-purple">star</span>
+</td>
+<td class="p-2">8B</td>
+<td class="p-2 text-tactical-green">87.2%</td>
+<td class="p-2">2.3s</td>
+<td class="p-2 text-right">
+<span class="px-1.5 py-0.5 bg-tactical-purple/20 text-tactical-purple border border-tactical-purple/30 text-[8px]">RECOMMENDED</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 cursor-pointer">
+<td class="p-2 text-[#94a3b8]">#02</td>
+<td class="p-2 font-bold">deepseek-v3</td>
+<td class="p-2">671B</td>
+<td class="p-2 text-tactical-green">85.4%</td>
+<td class="p-2">1.8s</td>
+<td class="p-2 text-right">
+<span class="px-1.5 py-0.5 bg-tactical-green/10 text-tactical-green border border-tactical-green/30 text-[8px]">PASS</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 cursor-pointer">
+<td class="p-2 text-[#94a3b8]">#03</td>
+<td class="p-2 font-bold">mistral-large</td>
+<td class="p-2">123B</td>
+<td class="p-2 text-tactical-green">82.1%</td>
+<td class="p-2">6.4s</td>
+<td class="p-2 text-right">
+<span class="px-1.5 py-0.5 bg-white/5 text-[#94a3b8] border border-white/10 text-[8px]">PASS</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 cursor-pointer">
+<td class="p-2 text-[#94a3b8]">#04</td>
+<td class="p-2 font-bold">phi-4:mini</td>
+<td class="p-2">3B</td>
+<td class="p-2 text-tactical-red">74.5%</td>
+<td class="p-2">0.9s</td>
+<td class="p-2 text-right">
+<span class="px-1.5 py-0.5 bg-tactical-red/10 text-tactical-red border border-tactical-red/30 text-[8px]">FAIL</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="h-[40%] flex flex-col overflow-hidden bg-surface-low/20">
+<div class="px-4 py-2 border-b border-white/5 bg-surface-high flex items-center justify-between shrink-0">
+<span class="text-[9px] tracking-widest text-tactical-purple uppercase font-bold">EVAL_DETAIL_PANEL: qwen3:8b</span>
+<div class="flex items-center gap-4 text-[9px] text-[#94a3b8]">
+<span>TOTAL_CASES: 42</span>
+<span class="text-tactical-green">PASS: 38</span>
+<span class="text-tactical-red">FAIL: 4</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-3">
+<div class="border border-white/5 bg-surface p-3 space-y-2 relative">
+<div class="flex justify-between items-start">
+<span class="text-white font-bold">CASE #742-A</span>
+<span class="px-2 py-0.5 bg-tactical-green/20 text-tactical-green text-[9px] border border-tactical-green/30">PASS</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Input Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate italic">"Summarize the recent findings on quantum decoherence..."</div>
+</div>
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Model Output Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate text-tactical-green">"Decoherence is the process where quantum systems..."</div>
+</div>
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Expected Output Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate opacity-60">"The findings suggest that decoherence occurs when..."</div>
+</div>
+</div>
+</div>
+<div class="border border-white/5 bg-surface p-3 space-y-2 relative">
+<div class="flex justify-between items-start">
+<span class="text-white font-bold">CASE #742-B</span>
+<span class="px-2 py-0.5 bg-tactical-red/20 text-tactical-red text-[9px] border border-tactical-red/30">FAIL</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Input Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate italic">"Convert the following SQL to Cypher..."</div>
+</div>
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Model Output Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate text-tactical-red">"MATCH (n) WHERE n.id = 1 RETURN n..." (Malformed)</div>
+</div>
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Expected Output Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate opacity-60">"MATCH (user:User {id: 1}) RETURN user..."</div>
+</div>
+</div>
+</div>
+<div class="border border-white/5 bg-surface p-3 space-y-2 relative">
+<div class="flex justify-between items-start">
+<span class="text-white font-bold">CASE #742-C</span>
+<span class="px-2 py-0.5 bg-tactical-green/20 text-tactical-green text-[9px] border border-tactical-green/30">PASS</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Input Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate italic">"Determine prime factors of 1024..."</div>
+</div>
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Model Output Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate text-tactical-green">"2^10"</div>
+</div>
+<div>
+<span class="text-[8px] text-[#4a4455] block mb-1 uppercase tracking-widest">Expected Output Snippet</span>
+<div class="bg-surface-low p-2 border border-white/5 text-[10px] truncate opacity-60">"2 to the power of 10"</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<footer class="h-6 bg-surface-low border-t border-white/5 flex items-center justify-between px-4 text-[9px] tracking-tight shrink-0 uppercase">
+<div class="flex gap-4">
+<span class="text-tactical-green flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-tactical-green"></span> NODE_A_ONLINE</span>
+<span class="text-[#94a3b8]">GPU: 58°C</span>
+<span class="text-[#94a3b8]">MEMORY: 8.4GB / 32GB</span>
+</div>
+<div class="flex gap-4 text-[#4a4455]">
+<span>REF: V2.0.4-BETA</span>
+<span class="text-[#94a3b8]">2023-11-01 09:15:44 UTC</span>
+</div>
+</footer>
+
+</body></html>

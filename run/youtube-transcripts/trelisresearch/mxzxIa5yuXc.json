@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mxzxIa5yuXc",
+    "language": "en",
+    "took_ms": 8992,
+    "method": null,
+    "title": "Running Llama 2 on Windows or Mac with an Intel chip",
+    "channel": "Trelis Research",
+    "upload_date": "20230821",
+    "duration_sec": 669,
+    "description": "How to install and run a Llama 2 language model (LLM) on a Mac with an Intel chip, or on Windows.\n\nInstallation Guides: https://github.com/TrelisResearch/install-guides\n\nJupyter Notebook (with automated Mac install), paid: https://buy.stripe.com/dR65l6f4p95V7AI6oA\n\nFree Google Colab Notebook (if you don't have an M1/M2 Mac): https://colab.research.google.com/drive/1u8x41Jx8WWtI-nzHOgqTxkS3Q_lcjaSX?usp=sharing\n\nGoogle Colab Fine Tuning Notebook: https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing\n\n0:00 Setting Expectations\n2:10 Hardware Recommendations\n3:30 Windows Installation Guide\n5:57 Installing on Mac with an Intel Chip",
+    "view_count": 3432
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mxzxIa5yuXc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

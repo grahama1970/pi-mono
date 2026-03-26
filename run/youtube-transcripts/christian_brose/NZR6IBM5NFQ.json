@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NZR6IBM5NFQ",
+    "language": "en",
+    "took_ms": 8687,
+    "method": null,
+    "title": "Representative Turner on Nuclear Proliferation",
+    "channel": "Hudson Institute",
+    "upload_date": "20091022",
+    "duration_sec": 165,
+    "description": "Representative Turner (OH) discusses nuclear proliferation during a Hudson Institute conference held October 21, 2009.",
+    "view_count": 53
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NZR6IBM5NFQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

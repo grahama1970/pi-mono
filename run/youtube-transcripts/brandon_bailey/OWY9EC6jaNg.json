@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OWY9EC6jaNg",
+    "language": "en",
+    "took_ms": 8863,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - Sebastian Bay - Social Media Security = Election Security",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1252,
+    "description": "Digital disinformation is a significant threat to trusted elections and poses a cybersecurity challenge for social media companies. Fake accounts spread content to authentic users, mislead users, and trick users into believing content is more popular. The global market for this kind of media manipulation is extensive and growing - many providers openly market their fake engagement services. \n\nSebastian Bay and his fellow researchers from NATO StratCom CoE bought fake engagement on Facebook, Instagram, Twitter, Youtube and Tik Tok to assess the social media companies’ ability to combat media manipulation. This presentation explores their findings, highlights the differences between social media platforms, and provides recommendations for companies and policy makers.\n\nThe full study can be accessed here: https://stratcomcoe.org/publications/social-media-manipulation-report-2020/21",
+    "view_count": 283
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OWY9EC6jaNg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

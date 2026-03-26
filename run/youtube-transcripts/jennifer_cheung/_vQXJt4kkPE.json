@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_vQXJt4kkPE",
+    "language": "en",
+    "took_ms": 9059,
+    "method": null,
+    "title": "DEF CON 30 - atlas - Emulation driven Reverse Engineering for Finding Vulns",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3153,
+    "description": "Do your eyes hurt? is your brain aching? is your pain caused from too much deciphering difficult assembly (or decompiled C) code? Assembly can hurt, C code can be worse. Partial emulation to the rescue! Let the emulator walk you through the code, let it answer hard questions/problems you run into in your reversing/vuln research.\n\nThis talk will introduce you the power of emulator-driven reversing. guide your RE with the help of an emulator (one that can survive limited context), emulate code you don't want to reverse, be better, learn more, be faster, with less brain-drain.\n\nMake no mistake, RE will always have room for magicians to show their wizardry... but after this talk, you may find yourself a much more powerful wizard.",
+    "view_count": 1660
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _vQXJt4kkPE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

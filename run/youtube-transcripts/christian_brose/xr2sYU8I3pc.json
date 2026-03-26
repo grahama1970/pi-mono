@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xr2sYU8I3pc",
+    "language": "en",
+    "took_ms": 7666,
+    "method": null,
+    "title": "View from the FCC: A Discussion with Commissioner Michael O'Rielly",
+    "channel": "Hudson Institute",
+    "upload_date": "20161014",
+    "duration_sec": 3814,
+    "description": "FCC Commissioner Michael O'Rielly and Harold Furchtgott-Roth discuss the future of federal regulation of the communications industry.",
+    "view_count": 270
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xr2sYU8I3pc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

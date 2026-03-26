@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mbZQDibUPso",
+    "language": "en",
+    "took_ms": 7794,
+    "method": null,
+    "title": "How to Create Synthetic Voices with Kokoro",
+    "channel": "Trelis Research",
+    "upload_date": "20251124",
+    "duration_sec": 109,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-audio\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\n💰Runpod Affiliate Link, incl. bonus on signup: https://runpod.io?ref=jmfkcdio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🤝 NOW HIRING on Contract: Voice Model Developer: \nApply here: https://forms.gle/5H1kgv8aQH9AXufB9\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Server: https://github.com/remsky/Kokoro-FastAPI\n- Kokoro HF: https://huggingface.co/hexgrad/Kokoro-82M | https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md\n\nTIMESTAMPS:\n0:00 Generate voices with various accents with Kokoro\n0:15 Kokoro - a small, permissively licensed text to speech model\n2:34 Video Resources and Kokoro Setup\n2:58 My recommendations on Text to Speech models for inference and fine-tuning\n3:56 One-click affiliate template for a high throughput Kokoro Server: https://console.runpod.io/deploy?template=grwfixzu60&ref=jmfkcdio \n4:31 Run Kokoro locally\n8:29 Synthetic data generation via a server\n9:58 Benchmarking Server Throughput\n12:38 Conclusion",
+    "view_count": 1478
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mbZQDibUPso: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

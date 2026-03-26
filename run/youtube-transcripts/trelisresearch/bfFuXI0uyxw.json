@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bfFuXI0uyxw",
+    "language": "en",
+    "took_ms": 7548,
+    "method": null,
+    "title": "Trelis Research LIVE: vLLM v0 vs v1. Data vs Tensor Parallel Inference & Fine-tuning.",
+    "channel": "Trelis Research",
+    "upload_date": "20250829",
+    "duration_sec": 2959,
+    "description": "Chapters:\n5:12 SOUND FIXED - start here: Livestream Overview for today.\n5:30 GPT OSS Model\n8:00 FP8 vs BF16 data types\n14:12 Training with LoRA and problems\n17:33 Why MXFP4 is better than FP4\n25:42 Data Parallel vs Tensor Parallel\n40:42 Pipeline Parallel\n37:30 Distributed Data Parallel and FSDP for training.\n47:00 Trelis Repo Overview and Recommendations\n47:35 Youtube Membership Overview\n\nApologies, will improve on sound for next week. First week using OBS.",
+    "view_count": 704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bfFuXI0uyxw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

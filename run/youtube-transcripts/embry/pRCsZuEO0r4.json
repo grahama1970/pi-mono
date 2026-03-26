@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pRCsZuEO0r4",
+    "language": "en",
+    "took_ms": 8735,
+    "method": null,
+    "title": "(Previous) Live Stream! Hosting: SpaceX Iridium 2 launch",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170625",
+    "duration_sec": 5287,
+    "description": "My first live stream of a launch. Sorry for the technical difficulties. Future launches should be more ironed out :) Ask any questions! Please keep it PG as we are a family friendly place :)\n\nShow your support by visiting http://patreon.com/everydayastronaut\n\nOr by shopping for cool merch at http://everydayastronaut.com/shop",
+    "view_count": 15937
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pRCsZuEO0r4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

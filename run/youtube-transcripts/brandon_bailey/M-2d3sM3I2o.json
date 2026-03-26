@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "M-2d3sM3I2o",
+    "language": "en",
+    "took_ms": 7978,
+    "method": null,
+    "title": "DEF CON 32 - Winning the Game of Active Directory - Brandon Colley",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2584,
+    "description": "The Game Of Active Directory (GOAD) is a prebuilt vulnerable Active Directory (AD) environment primarily created for pentesters. Touting over 30 methods of attack, GOAD offers multiple paths to full AD takeover. But is that really how you win the game? Regardless of color, as security professions our goal should be to better secure environments. This talk walks through AD attack strategies, exploiting misconfigurations that ultimately pwn AD. Mitigations for these attacks are discussed and implemented, showcasing how they stop common attacks. Implementing these protections in your environment is truly how you win the Game Of Active Directory.",
+    "view_count": 27890
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] M-2d3sM3I2o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

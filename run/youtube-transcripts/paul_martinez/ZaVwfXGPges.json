@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZaVwfXGPges",
+    "language": "en",
+    "took_ms": 8830,
+    "method": null,
+    "title": "Andrew Ginter's SEC-OT",
+    "channel": "S4 Events",
+    "upload_date": "20190401",
+    "duration_sec": 2438,
+    "description": "Unidirectional Gateway devotee Andrew Ginter of Waterfall introduces the Secure Operational Technology: SEC-OT philosophy that underlies his book of the same title. The key and controversial tenet is \"forbid firewalls as connection from ICS to IT networks – permit only unidirectional gateways\". \n\nAfter Andrew's 18-minute overview, Dale Peterson joins Andrew on stage and asks questions about how this SEC-OT philosophy would work with future ICS architectures that envision more connectivity including cloud services, industrial wireless and more.\n\nAndrew's book is Secure Operational Technology is available on Amazon at https://www.amazon.com/Secure-Operations-Technology-Andrew-Ginter/dp/0995298432/ .",
+    "view_count": 352
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZaVwfXGPges: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

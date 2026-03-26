@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XPkWKGhNpWc",
+    "language": "en",
+    "took_ms": 9306,
+    "method": null,
+    "title": "Beyond Hugo Chávez: What to expect in Latin America",
+    "channel": "Hudson Institute",
+    "upload_date": "20130508",
+    "duration_sec": 6458,
+    "description": "Hugo Chávez left behind a country suffering from massive inflation, chronic food shortages, frequent blackouts, and the world's second-highest murder rate—a country that, despite having the largest proven oil reserves on earth, must import gasoline.  Chávez also left behind a quasi-imperial network of authoritarian client states scattered across Latin America and the Caribbean.        Now, in the aftermath of a disputed presidential election, Venezuelan officials are struggling to maintain their",
+    "view_count": 422
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XPkWKGhNpWc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

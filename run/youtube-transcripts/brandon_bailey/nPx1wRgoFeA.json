@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nPx1wRgoFeA",
+    "language": "en",
+    "took_ms": 8208,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Cornelius, Brown -   Cybersecurity & Aviation Regulation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2966,
+    "description": "Software development for aviation is highly regulated, and process driven. The current processes, as defined in DO-178C and related standards, originate from a history of designing and testing mechanical components. In the past you designed a part and once installed it only had to be monitored for physical condition. It was assumed that maintenance procedures would be able to identify which components are in flight condition and which are not. But now that there are USB ports and iPads in the cockpit, do these previous assumptions remain valid? How can we ensure that flight systems are not compromised after being installed? What can be done to help ensure aviation systems are secure?\n\nThere are 4 primary areas of concern on a modern aircraft:\n- Maintenance interfaces - What is necessary to ensure that software communicating with the aircraft is correct and operates in a secure manner?\n- Passenger interfaces - What is necessary to ensure that systems passengers interact with cannot interfere with the aircraft operation?\n- Crew accessible interfaces - What is necessary to ensure that the crew cannot accidentally connect a malicious device to flight systems?\n- Pre-flight software validation - Is there a procedure that could be used to ensure that the software running on aircraft systems is 100% correct and unmodified?",
+    "view_count": 306
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nPx1wRgoFeA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

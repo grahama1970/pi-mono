@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2oXEx3tm-GY",
+    "language": "en",
+    "took_ms": 8490,
+    "method": null,
+    "title": "PAS OptICS Keynote: Making Sense Of ICS Security Products",
+    "channel": "S4 Events",
+    "upload_date": "20210322",
+    "duration_sec": 1647,
+    "description": "Dale Peterson's keynote from the PAS event. It's a blunt, direct analysis of the ICS security product market in late 2020. Dale reviews:\n- endpoint protection solutions for ICS\n- remote access\n- perimeter security\n- detection solutions (and some asset inventory)",
+    "view_count": 531
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2oXEx3tm-GY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

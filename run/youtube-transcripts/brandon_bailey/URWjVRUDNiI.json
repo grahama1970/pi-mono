@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "URWjVRUDNiI",
+    "language": "en",
+    "took_ms": 9123,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - When the Paper Trail Leads Nowhere - Ian Patton",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 1594,
+    "description": "In the March 2020 'Super Tuesday' Primary Election, LA County debuted its brand new, $300 million, bespoke, Smartmatic-contracted VSAP (Voting Solutions for All People) voting system. Before the night was over, the Bernie Sanders presidential campaign had already filed suit (due to multiple technology failures resulting in hours-long lines). \n\nThat election night proved to be illustrative of the myriad problems with VSAP, including numerous security vulnerabilities. These were compounded by the failure to fulfill a much-ballyhooed commitment by the County to open source the code. Perhaps the most significant failing was only revealed weeks later after the machine count had finally been completed. A knife's edge result in LA County's second largest city, Long Beach, for a local ballot measure, led to a voter-requested recount and an eye-opening odyssey for a local government accountability grassroots organization. Ian Patton discusses that journey in pursuit of a simple and accurate local election result.",
+    "view_count": 352
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] URWjVRUDNiI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

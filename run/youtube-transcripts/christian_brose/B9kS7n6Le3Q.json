@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B9kS7n6Le3Q",
+    "language": "en",
+    "took_ms": 9912,
+    "method": null,
+    "title": "The Seniors' Choice Act: How to Build a Sustainable Medicare Program",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 3364,
+    "description": "Some experts predict that Medicare will become insolvent as early as 2016.  To meet the fiscal challenge of Medicare, which the Congressional Budget Office has determined to be one of the largest facing our country, Sen. Tom Coburn, M.D., (R-Okla.) has introduced the Seniors' Choice Act, which aims to reduce costs through competitive bidding for benefits and increasing cost-sharing by wealthier Americans. Sen. Coburn addressed these issues and pointed the way to reform at a Hudson Institute breakfast on March 15.",
+    "view_count": 78
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B9kS7n6Le3Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bsls-3hXH4M",
+    "language": "en",
+    "took_ms": 8774,
+    "method": null,
+    "title": "DEF CON 33 Video Team - Jordan Kasper on Open Source in Government",
+    "channel": "DEFCONConference",
+    "upload_date": "20250818",
+    "duration_sec": 972,
+    "description": "What does it mean when the government uses OSS? What does the government owe back to the OSS community?",
+    "view_count": 851
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bsls-3hXH4M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

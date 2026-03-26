@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6ejKX20es3o",
+    "language": "en",
+    "took_ms": 7773,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Andrew Ng: Opening Keynote",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251202",
+    "duration_sec": 666,
+    "description": "Andrew Ng opened AI Dev 25 x NYC by discussing the rapid progress of AI, stating that the answer to whether AI is slowing down is no. \n\nAI has made software engineering more powerful and faster. Writing scalable software is about 50% faster, but building quick prototypes can be 10x or more faster. This acceleration allows teams to innovate by building many prototypes to see what sticks.\n\nAndrew also addressed the broader sentiment on AI, noting that Americans are more concerned than excited about AI compared to other nations.  Despite the elevated level of concern, the good news is that people do want AI to help automate specific tasks, particularly repetitive ones or those that free up time for high-value work.\n\n---------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 2379
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6ejKX20es3o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

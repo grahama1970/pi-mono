@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nzy3ncGlTlY",
+    "language": "en",
+    "took_ms": 7896,
+    "method": null,
+    "title": "Syria: Should I Stay or Should I Go Now?",
+    "channel": "Hudson Institute",
+    "upload_date": "20180508",
+    "duration_sec": 5356,
+    "description": "In early April, President Trump announced his intention to withdraw U.S. forces from Syria as quickly as possible. But U.S. military leaders apparently prefer to remain in the region long enough to destroy ISIS. These mixed signals from the administration complicate efforts to shape overall U.S. strategy in Syria. Furthermore, the Turkish incursion into Northern Syria has prompted the Syrian Democratic Forces, a U.S. partner on the ground, withdraw from the fight against ISIS. And withdrawal of U.S. troops would likely have a negative effect on post-conflict stabilization efforts in Syria.\n\nOn May 8, Hudson convened a panel to discuss the implications of shifting U.S. military strategy in the region and Syria's long-term prospects moving forward. The panel consisted of Hudson Senior Fellows Michael Doran and Jonas Parello-Plesner; Mariam Jalabi, representative of the Syrian Opposition Coalition to the United Nations; and Mohammad Al Abdallah, Syrian human rights and democracy researcher and activist.",
+    "view_count": 855
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nzy3ncGlTlY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bX98YESq9no",
+    "language": "en",
+    "took_ms": 9137,
+    "method": null,
+    "title": "Catastronomics",
+    "channel": "S4 Events",
+    "upload_date": "20210218",
+    "duration_sec": 2353,
+    "description": "This session from S4x15 is some of Eireann Leverett's work on risk management and insurance. He looks at catastrophe modeling and the macroeconomic costs to a nation or region.\n\nWTA, WTP, Lumpy Costs, Lawton Damage Functions and a number of charts related to frequency and costs of large power outages.",
+    "view_count": 167
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bX98YESq9no: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

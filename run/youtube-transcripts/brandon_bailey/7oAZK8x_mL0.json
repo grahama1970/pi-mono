@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7oAZK8x_mL0",
+    "language": "en",
+    "took_ms": 8909,
+    "method": null,
+    "title": "DEF CON 31 - Spooky Authentication at a Distance - Tamas Jos",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2701,
+    "description": "Spooky authentication at a distance outlines a new and innovative post-exploitation technique to proxy common authentication protocols used in Windows environments remotely and with no elevated privileges required. This allows security professionals to perform complete impersonation of the target user on their own machine without executing any further code on the target machine besides the agent itself. This talk will also demonstrate the applicability of this new technique by performing no-interaction, full domain takeover using a malicious peripheral in a simulated restricted environment.",
+    "view_count": 3979
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7oAZK8x_mL0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

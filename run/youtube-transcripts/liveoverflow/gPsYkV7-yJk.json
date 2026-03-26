@@ -1,0 +1,533 @@
+{
+  "meta": {
+    "video_id": "gPsYkV7-yJk",
+    "language": "en",
+    "took_ms": 1408,
+    "method": "direct",
+    "title": "Self-Learning Reverse Engineering in 2022",
+    "channel": "LiveOverflow",
+    "upload_date": "20220731",
+    "duration_sec": 548,
+    "description": "There exist some awesome tools nowadays to accelerate your self-education for reverse engineering. godbolt and dogbolt are amazing to quickly learn basic assembly and reversing.\n\nCompiler Explorer: https://godbolt.org/\nDecompiler Explorer: https://dogbolt.org/\nC code example: https://github.com/LiveOverflow/liveoverflow_youtube/blob/master/0x05_simple_crackme_intro_assembler/license_1.c\nIntroducing Decompiler Explorer - https://binary.ninja/2022/07/13/introducing-decompiler-explorer.html\n\n00:00 - Intro\n00:23 - Motivation\n01:00 - How to c?\n02:11 - godbolt Basic Usage\n03:40 - Function Call on x64\n04:30 - Intel vs ARM assembly\n05:22 - godbolt Compiler Options\n05:50 - Enable gcc O3 Compiler Optimization\n06:35 - Decompiler Explorer dogbolt\n07:16 - Comparing Decompiled main()\n08:25 - Outro\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Instagram: https://instagram.com/LiveOverflow/\n→ Blog: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/",
+    "view_count": 457889
+  },
+  "transcript": [
+    {
+      "text": "How would I learn Reverse Engineering in 2022? To \nlearn anything you need to practice. And spending  ",
+      "start": 0.08,
+      "duration": 5.84
+    },
+    {
+      "text": "time on something, always trumps looking for the \nbest tutorial or tool. Just get started. But there  ",
+      "start": 5.92,
+      "duration": 5.96
+    },
+    {
+      "text": "is one thing I believe that really really helps. \nEspecially when you get started. Let me show you",
+      "start": 11.88,
+      "duration": 5.08
+    },
+    {
+      "text": "",
+      "start": 22.52,
+      "duration": 1.0
+    },
+    {
+      "text": "Back in 2016 I worked on my Binary Exploitation \nplaylist and of course before we can  ",
+      "start": 23.52,
+      "duration": 5.36
+    },
+    {
+      "text": "go into buffer overflows and other memory \ncorruption exploits, I had to provide a  ",
+      "start": 28.88,
+      "duration": 4.0
+    },
+    {
+      "text": "quick intro to programming and assembly. \nWe somehow need to understand how computers  ",
+      "start": 32.88,
+      "duration": 4.96
+    },
+    {
+      "text": "work in order to attack them. And especially \nepisode 0x10 “Reverse engineering C programs”,  ",
+      "start": 37.84,
+      "duration": 6.0
+    },
+    {
+      "text": "I show a technique that I find invaluable. \nAnd that is simply comparing source code,  ",
+      "start": 43.84,
+      "duration": 5.12
+    },
+    {
+      "text": "to the assembly code that is generated. This \nvideo was mostly about comparing 32bit and 64  ",
+      "start": 48.96,
+      "duration": 5.376
+    },
+    {
+      "text": "bit but more generally it is about the process \nof how you can figure stuff out for yourself.",
+      "start": 54.336,
+      "duration": 5.344
+    },
+    {
+      "text": "You know there are kinda two ways how to do \ntutorials, one kind just tells you facts.  ",
+      "start": 59.68,
+      "duration": 4.8
+    },
+    {
+      "text": "“teacher-centred teaching“. But the much more \neffective technique is one where students  ",
+      "start": 64.48,
+      "duration": 4.8
+    },
+    {
+      "text": "themselves “research” and discover a topic. \nSo here for example I wrote a basic C program,  ",
+      "start": 69.28,
+      "duration": 6.24
+    },
+    {
+      "text": "and then compiled it in 32bit and 64bit, and then \nwe look at the assembly code. And we can simply  ",
+      "start": 75.52,
+      "duration": 5.52
+    },
+    {
+      "text": "look at how C code translates to the different \nassembly code. Not only do we learn about how  ",
+      "start": 81.04,
+      "duration": 4.96
+    },
+    {
+      "text": "C code looks in assembly, but we automatically \nalso learn how to do reverse engineering.",
+      "start": 86.0,
+      "duration": 5.12
+    },
+    {
+      "text": "For example here I’m creating an integer \n`a` with the value 0x1234, and we can see  ",
+      "start": 91.12,
+      "duration": 5.2
+    },
+    {
+      "text": "that in the assembly code as well. So we \nhave here a MOVE instruction that moves  ",
+      "start": 96.32,
+      "duration": 4.96
+    },
+    {
+      "text": "the recognizable value 0x1234 into a memory \nlocation relative to the stack. In 64bit at  ",
+      "start": 101.28,
+      "duration": 6.72
+    },
+    {
+      "text": "a negative offset from the base pointer, and in \n32bit at a positive offset from the stack pointer. ",
+      "start": 108.0,
+      "duration": 5.12
+    },
+    {
+      "text": "So simply by playing around like this \nyou can learn reverse engineering.  ",
+      "start": 113.12,
+      "duration": 4.24
+    },
+    {
+      "text": "Try to remember that a line like this probably \nmeans in the C code you created a variable.",
+      "start": 117.36,
+      "duration": 5.52
+    },
+    {
+      "text": "And this process is I think very powerful. So now \nlet me show you two amazing tools that make this  ",
+      "start": 122.88,
+      "duration": 5.6
+    },
+    {
+      "text": "process even more playful and effective. Let’s \nstart with godbolt.org. The Compiler Explorer.",
+      "start": 128.48,
+      "duration": 7.36
+    },
+    {
+      "text": "So on the left you can put for example C code,  ",
+      "start": 135.84,
+      "duration": 3.04
+    },
+    {
+      "text": "and on the right you can see the assembly \ncode generated by various compilers.  ",
+      "start": 138.88,
+      "duration": 4.32
+    },
+    {
+      "text": "Let me paste in one of the example codes \nI used in my binary exploitation playlist.  ",
+      "start": 143.2,
+      "duration": 4.32
+    },
+    {
+      "text": "A very basic license key check.\nAnd see how amazing this is? So let’s  ",
+      "start": 147.52,
+      "duration": 4.16
+    },
+    {
+      "text": "make sure we have C code selected and we can see \nwe use the gcc compiler version 12 to compile it. ",
+      "start": 151.68,
+      "duration": 5.68
+    },
+    {
+      "text": "Hovering over the lines also shows you which \nC line is responsible for what assembly code. ",
+      "start": 158.0,
+      "duration": 5.92
+    },
+    {
+      "text": "Hovering over the function name and parameters, \nwe can see that all of this is just “junk code”  ",
+      "start": 163.92,
+      "duration": 5.12
+    },
+    {
+      "text": "it’s just function setup code. So if you want \nto reverse engineer the actual algorithm,  ",
+      "start": 169.04,
+      "duration": 4.72
+    },
+    {
+      "text": "you now know code like this is maybe not \nthat important. The first actual line of code  ",
+      "start": 173.76,
+      "duration": 4.4
+    },
+    {
+      "text": "is the comparison if argc==2. And here \nis how that is implemented in assembly. ",
+      "start": 178.16,
+      "duration": 5.92
+    },
+    {
+      "text": "DWORD PTR might be confusing. Ignore DWORD \nand PTR. But these brackets are important.  ",
+      "start": 184.08,
+      "duration": 4.72
+    },
+    {
+      "text": "This means its referencing a memory area. \nAnd the value inside is the address. ",
+      "start": 188.8,
+      "duration": 5.52
+    },
+    {
+      "text": "Imagine it kinda like the memory \nof a computer being a HUGE ARRAY,  ",
+      "start": 194.32,
+      "duration": 3.6
+    },
+    {
+      "text": "then to access a value in the array we have this \nindex. And the index is calculated from rbp,  ",
+      "start": 197.92,
+      "duration": 6.0
+    },
+    {
+      "text": "the base pointer register, this contains an \nabsolute address, but it takes an offset from  ",
+      "start": 203.92,
+      "duration": 4.4
+    },
+    {
+      "text": "that -36. So it compares that memory value \nwith the value 2. And then we have a JNE,  ",
+      "start": 208.32,
+      "duration": 5.76
+    },
+    {
+      "text": "so either the code continues here, or we jump \nto L2, which is all the way at the bottom.",
+      "start": 214.08,
+      "duration": 4.72
+    },
+    {
+      "text": "If we pass the check we go into the if case and \nwe have a printf. And now we can also see here  ",
+      "start": 218.8,
+      "duration": 4.8
+    },
+    {
+      "text": "how the function call to printf \nis prepared, specifically how  ",
+      "start": 223.6,
+      "duration": 3.84
+    },
+    {
+      "text": "are the parameters passed to printf.\nAt the end we can see a call to printf,  ",
+      "start": 227.44,
+      "duration": 4.8
+    },
+    {
+      "text": "so the CPU will now jump to the printf function \nimplementation, but the arguments are prepared  ",
+      "start": 232.24,
+      "duration": 4.88
+    },
+    {
+      "text": "before it. One argument is for example the \nprints tring itself “Checking License”,  ",
+      "start": 237.12,
+      "duration": 5.04
+    },
+    {
+      "text": "and it’s here moved into edi. So now we know, on \n64bit, if we call a function, the first parameter  ",
+      "start": 242.16,
+      "duration": 7.36
+    },
+    {
+      "text": "is probably going to be loaded into edi, or rdi.\nSo next time you see a “call”, look at the  ",
+      "start": 249.52,
+      "duration": 6.88
+    },
+    {
+      "text": "assembly before and if you see a move into rdi, \nit’s probably the first parameter of the function.",
+      "start": 256.4,
+      "duration": 5.44
+    },
+    {
+      "text": "Anyway. You can spend hours on here \njust looking at how different C  ",
+      "start": 262.8,
+      "duration": 3.68
+    },
+    {
+      "text": "code is looking in assembly and \nit’s really really valuable.",
+      "start": 266.48,
+      "duration": 4.0
+    },
+    {
+      "text": "But it can do even more. We can add another \ncompiler here. For example an ARM compiler.  ",
+      "start": 270.48,
+      "duration": 6.08
+    },
+    {
+      "text": "This was just intel assembly, but nowadays more \nand more devices run on ARM. For example mobile  ",
+      "start": 276.56,
+      "duration": 5.28
+    },
+    {
+      "text": "phones or the new macbooks. So maybe it’s \ntime to learn some ARM assembly. And if you  ",
+      "start": 281.84,
+      "duration": 4.72
+    },
+    {
+      "text": "are already familiar with intel assembly, \nyou can use this to learn how to read ARM. ",
+      "start": 286.56,
+      "duration": 5.04
+    },
+    {
+      "text": "Like you don’t even need any ARM specific \ntutorial, just look at the comparison.",
+      "start": 291.6,
+      "duration": 4.32
+    },
+    {
+      "text": "The space is a bit limited on a small \nscreen like here, so make sure you do  ",
+      "start": 295.92,
+      "duration": 3.76
+    },
+    {
+      "text": "this on a bigger monitor, but look at \nfor example the comparison. If argc==2. ",
+      "start": 299.68,
+      "duration": 4.96
+    },
+    {
+      "text": "So apparently ARM cannot do a direct comparison \nof the memory area. Instead we first LOAD argc  ",
+      "start": 305.36,
+      "duration": 5.52
+    },
+    {
+      "text": "from memory into the r3 register, and \nthen we compare r3 to the value 2. And  ",
+      "start": 310.88,
+      "duration": 6.08
+    },
+    {
+      "text": "then we have a BRANCH not equal. Which \nis the equivalent to a JUMP NOT EQUAL.",
+      "start": 316.96,
+      "duration": 4.08
+    },
+    {
+      "text": "Another tip is to look at not only the assembly, \nbut the actual binary being created. So here in  ",
+      "start": 321.84,
+      "duration": 5.04
+    },
+    {
+      "text": "the compiler settings you can enable “Compile \nto binary” and now you see the actual binary  ",
+      "start": 326.88,
+      "duration": 4.96
+    },
+    {
+      "text": "code that corresponds to each instruction. \nAnd now all the jumps are not based on thes  ",
+      "start": 331.84,
+      "duration": 4.48
+    },
+    {
+      "text": "assembly labels but have actual function names and \noffset and addresses. And also the printf call,  ",
+      "start": 336.32,
+      "duration": 6.32
+    },
+    {
+      "text": "we can see now the actual address of the printf \nformat string being moved into the edi register. ",
+      "start": 342.64,
+      "duration": 6.32
+    },
+    {
+      "text": "But we can do so much more. Lets look at \nthe impact of the -O3 compiler option.  ",
+      "start": 348.96,
+      "duration": 4.8
+    },
+    {
+      "text": "This enables aggressive optimization in gcc. \nAnd look at the restul. The complete function  ",
+      "start": 353.76,
+      "duration": 5.6
+    },
+    {
+      "text": "setup part is now missing. The compiler \nrealized it doesn’t really need it. Also  ",
+      "start": 359.36,
+      "duration": 4.4
+    },
+    {
+      "text": "remember how we learned earlier that the FIRST \nparameter to a function is passed in EDI or RDI? ",
+      "start": 363.76,
+      "duration": 6.24
+    },
+    {
+      "text": "Well, main is also a function. So the value \nof argc is of course in RDI. And in the  ",
+      "start": 370.0,
+      "duration": 5.76
+    },
+    {
+      "text": "non-optimized assembly we can see that at the \nstart of the function edi is moved into this  ",
+      "start": 375.76,
+      "duration": 4.88
+    },
+    {
+      "text": "local variable location on the stack and then that \nlocation is used to compare against value two. ",
+      "start": 380.64,
+      "duration": 5.76
+    },
+    {
+      "text": "BUT OF COURSE THIS CAN BE OPTIMIZED. We can \njust directly compare edi to the value 0x2.",
+      "start": 386.4,
+      "duration": 5.6
+    },
+    {
+      "text": "It’s amazing how much you can learn \njust from playing around with this. ",
+      "start": 392.0,
+      "duration": 3.76
+    },
+    {
+      "text": "But the real reason why I wanted to make this \nvideo is because of another tool that was just  ",
+      "start": 395.76,
+      "duration": 4.4
+    },
+    {
+      "text": "released by Vector35 and HexRays. They are \nthe developers of BinaryNinja and IDA Pro.",
+      "start": 400.16,
+      "duration": 5.52
+    },
+    {
+      "text": "To get to the tool you have to reverse engineer \ngodbolt…. It’s a bit tricky. But what you have to  ",
+      "start": 406.24,
+      "duration": 4.88
+    },
+    {
+      "text": "do is…. Take these three letters, “god” and then \nreverse them to “dog”... there we go! DOGBOLT!  ",
+      "start": 411.12,
+      "duration": 8.8
+    },
+    {
+      "text": "The recompiler explorer. It’s kinda similar in the \nsense that you can compare different DECOMPILERS.  ",
+      "start": 419.92,
+      "duration": 6.0
+    },
+    {
+      "text": "Here you really need a bigger monitor. But We \ncan select here a CTF challenge example from the  ",
+      "start": 425.92,
+      "duration": 4.88
+    },
+    {
+      "text": "samples and look at the different output Binary \nNinja, Ghidra and Hex-Rays produce. And a few  ",
+      "start": 430.8,
+      "duration": 5.36
+    },
+    {
+      "text": "other tools. So let’s go to main and have a look.\nAll three tools decompiled the same CTF challenge  ",
+      "start": 436.16,
+      "duration": 5.84
+    },
+    {
+      "text": "binary. Sometimes these decompile outputs are \nhard to read, but again you can learn here how  ",
+      "start": 442.0,
+      "duration": 5.2
+    },
+    {
+      "text": "to read this code. And if a line is confusing to \nyou, you can also check what the other tool did. ",
+      "start": 447.2,
+      "duration": 5.52
+    },
+    {
+      "text": "For example as a beginner this call to \n__stack_chk_fail might be confusing, what  ",
+      "start": 453.28,
+      "duration": 4.08
+    },
+    {
+      "text": "does that do? But it’s missing in IDAs output. \nThis kinda makes sense because this function is  ",
+      "start": 457.36,
+      "duration": 5.04
+    },
+    {
+      "text": "actually part of an exploit mitigation, \nstack canaries, so to reverse engineer  ",
+      "start": 462.4,
+      "duration": 4.64
+    },
+    {
+      "text": "the functionality it’s not really useful to \nsee. And IDA nicely hides it. On the other  ",
+      "start": 467.04,
+      "duration": 5.12
+    },
+    {
+      "text": "hand maybe you want to see it. It all depends \non the usecase. I’m sure there is a setting  ",
+      "start": 472.16,
+      "duration": 4.48
+    },
+    {
+      "text": "in full IDA pro to make this show up as well.\nAnyway. We can see that the code calls fgets,  ",
+      "start": 476.64,
+      "duration": 5.04
+    },
+    {
+      "text": "so the user can enter a string, it then \nis in this variable, and the we call  ",
+      "start": 481.68,
+      "duration": 5.04
+    },
+    {
+      "text": "“encrypt()”. And if the output of encrypt \nis true, so not 0., then we call print flag. ",
+      "start": 486.72,
+      "duration": 5.44
+    },
+    {
+      "text": "And here is the encrypt function.\nIDA again produces a pretty beautiful  ",
+      "start": 492.16,
+      "duration": 4.48
+    },
+    {
+      "text": "minimal decompile output, and binary ninja \nlooks kinda scary. But you can also clean  ",
+      "start": 496.64,
+      "duration": 4.88
+    },
+    {
+      "text": "that up by hand, and remove these type \ncasts. Then it will be pretty similar.",
+      "start": 501.52,
+      "duration": 4.0
+    },
+    {
+      "text": "Anyway. I'm too lazy to solve this challenge \nnow. SO I leave it as an exercise to you.",
+      "start": 505.52,
+      "duration": 4.4
+    },
+    {
+      "text": "I hope you agree, Both these \ntools are really amazing,  ",
+      "start": 509.92,
+      "duration": 3.84
+    },
+    {
+      "text": "especially when you are starting out. It’s \nalso awesome for basic CTF challenges.  ",
+      "start": 513.76,
+      "duration": 4.32
+    },
+    {
+      "text": "Big shoutout to those companies \ncreating such a free tool.",
+      "start": 518.08,
+      "duration": 3.12
+    },
+    {
+      "text": "This video not sponsored by the way. \nI just think this is extremely useful.",
+      "start": 521.2,
+      "duration": 3.76
+    },
+    {
+      "text": "I hope this helps learning \nreverse engineering in 2022",
+      "start": 524.96,
+      "duration": 8.88
+    }
+  ],
+  "full_text": "How would I learn Reverse Engineering in 2022? To \nlearn anything you need to practice. And spending   time on something, always trumps looking for the \nbest tutorial or tool. Just get started. But there   is one thing I believe that really really helps. \nEspecially when you get started. Let me show you  Back in 2016 I worked on my Binary Exploitation \nplaylist and of course before we can   go into buffer overflows and other memory \ncorruption exploits, I had to provide a   quick intro to programming and assembly. \nWe somehow need to understand how computers   work in order to attack them. And especially \nepisode 0x10 “Reverse engineering C programs”,   I show a technique that I find invaluable. \nAnd that is simply comparing source code,   to the assembly code that is generated. This \nvideo was mostly about comparing 32bit and 64   bit but more generally it is about the process \nof how you can figure stuff out for yourself. You know there are kinda two ways how to do \ntutorials, one kind just tells you facts.   “teacher-centred teaching“. But the much more \neffective technique is one where students   themselves “research” and discover a topic. \nSo here for example I wrote a basic C program,   and then compiled it in 32bit and 64bit, and then \nwe look at the assembly code. And we can simply   look at how C code translates to the different \nassembly code. Not only do we learn about how   C code looks in assembly, but we automatically \nalso learn how to do reverse engineering. For example here I’m creating an integer \n`a` with the value 0x1234, and we can see   that in the assembly code as well. So we \nhave here a MOVE instruction that moves   the recognizable value 0x1234 into a memory \nlocation relative to the stack. In 64bit at   a negative offset from the base pointer, and in \n32bit at a positive offset from the stack pointer.  So simply by playing around like this \nyou can learn reverse engineering.   Try to remember that a line like this probably \nmeans in the C code you created a variable. And this process is I think very powerful. So now \nlet me show you two amazing tools that make this   process even more playful and effective. Let’s \nstart with godbolt.org. The Compiler Explorer. So on the left you can put for example C code,   and on the right you can see the assembly \ncode generated by various compilers.   Let me paste in one of the example codes \nI used in my binary exploitation playlist.   A very basic license key check.\nAnd see how amazing this is? So let’s   make sure we have C code selected and we can see \nwe use the gcc compiler version 12 to compile it.  Hovering over the lines also shows you which \nC line is responsible for what assembly code.  Hovering over the function name and parameters, \nwe can see that all of this is just “junk code”   it’s just function setup code. So if you want \nto reverse engineer the actual algorithm,   you now know code like this is maybe not \nthat important. The first actual line of code   is the comparison if argc==2. And here \nis how that is implemented in assembly.  DWORD PTR might be confusing. Ignore DWORD \nand PTR. But these brackets are important.   This means its referencing a memory area. \nAnd the value inside is the address.  Imagine it kinda like the memory \nof a computer being a HUGE ARRAY,   then to access a value in the array we have this \nindex. And the index is calculated from rbp,   the base pointer register, this contains an \nabsolute address, but it takes an offset from   that -36. So it compares that memory value \nwith the value 2. And then we have a JNE,   so either the code continues here, or we jump \nto L2, which is all the way at the bottom. If we pass the check we go into the if case and \nwe have a printf. And now we can also see here   how the function call to printf \nis prepared, specifically how   are the parameters passed to printf.\nAt the end we can see a call to printf,   so the CPU will now jump to the printf function \nimplementation, but the arguments are prepared   before it. One argument is for example the \nprints tring itself “Checking License”,   and it’s here moved into edi. So now we know, on \n64bit, if we call a function, the first parameter   is probably going to be loaded into edi, or rdi.\nSo next time you see a “call”, look at the   assembly before and if you see a move into rdi, \nit’s probably the first parameter of the function. Anyway. You can spend hours on here \njust looking at how different C   code is looking in assembly and \nit’s really really valuable. But it can do even more. We can add another \ncompiler here. For example an ARM compiler.   This was just intel assembly, but nowadays more \nand more devices run on ARM. For example mobile   phones or the new macbooks. So maybe it’s \ntime to learn some ARM assembly. And if you   are already familiar with intel assembly, \nyou can use this to learn how to read ARM.  Like you don’t even need any ARM specific \ntutorial, just look at the comparison. The space is a bit limited on a small \nscreen like here, so make sure you do   this on a bigger monitor, but look at \nfor example the comparison. If argc==2.  So apparently ARM cannot do a direct comparison \nof the memory area. Instead we first LOAD argc   from memory into the r3 register, and \nthen we compare r3 to the value 2. And   then we have a BRANCH not equal. Which \nis the equivalent to a JUMP NOT EQUAL. Another tip is to look at not only the assembly, \nbut the actual binary being created. So here in   the compiler settings you can enable “Compile \nto binary” and now you see the actual binary   code that corresponds to each instruction. \nAnd now all the jumps are not based on thes   assembly labels but have actual function names and \noffset and addresses. And also the printf call,   we can see now the actual address of the printf \nformat string being moved into the edi register.  But we can do so much more. Lets look at \nthe impact of the -O3 compiler option.   This enables aggressive optimization in gcc. \nAnd look at the restul. The complete function   setup part is now missing. The compiler \nrealized it doesn’t really need it. Also   remember how we learned earlier that the FIRST \nparameter to a function is passed in EDI or RDI?  Well, main is also a function. So the value \nof argc is of course in RDI. And in the   non-optimized assembly we can see that at the \nstart of the function edi is moved into this   local variable location on the stack and then that \nlocation is used to compare against value two.  BUT OF COURSE THIS CAN BE OPTIMIZED. We can \njust directly compare edi to the value 0x2. It’s amazing how much you can learn \njust from playing around with this.  But the real reason why I wanted to make this \nvideo is because of another tool that was just   released by Vector35 and HexRays. They are \nthe developers of BinaryNinja and IDA Pro. To get to the tool you have to reverse engineer \ngodbolt…. It’s a bit tricky. But what you have to   do is…. Take these three letters, “god” and then \nreverse them to “dog”... there we go! DOGBOLT!   The recompiler explorer. It’s kinda similar in the \nsense that you can compare different DECOMPILERS.   Here you really need a bigger monitor. But We \ncan select here a CTF challenge example from the   samples and look at the different output Binary \nNinja, Ghidra and Hex-Rays produce. And a few   other tools. So let’s go to main and have a look.\nAll three tools decompiled the same CTF challenge   binary. Sometimes these decompile outputs are \nhard to read, but again you can learn here how   to read this code. And if a line is confusing to \nyou, you can also check what the other tool did.  For example as a beginner this call to \n__stack_chk_fail might be confusing, what   does that do? But it’s missing in IDAs output. \nThis kinda makes sense because this function is   actually part of an exploit mitigation, \nstack canaries, so to reverse engineer   the functionality it’s not really useful to \nsee. And IDA nicely hides it. On the other   hand maybe you want to see it. It all depends \non the usecase. I’m sure there is a setting   in full IDA pro to make this show up as well.\nAnyway. We can see that the code calls fgets,   so the user can enter a string, it then \nis in this variable, and the we call   “encrypt()”. And if the output of encrypt \nis true, so not 0., then we call print flag.  And here is the encrypt function.\nIDA again produces a pretty beautiful   minimal decompile output, and binary ninja \nlooks kinda scary. But you can also clean   that up by hand, and remove these type \ncasts. Then it will be pretty similar. Anyway. I'm too lazy to solve this challenge \nnow. SO I leave it as an exercise to you. I hope you agree, Both these \ntools are really amazing,   especially when you are starting out. It’s \nalso awesome for basic CTF challenges.   Big shoutout to those companies \ncreating such a free tool. This video not sponsored by the way. \nI just think this is extremely useful. I hope this helps learning \nreverse engineering in 2022",
+  "errors": []
+}

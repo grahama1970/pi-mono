@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B4pVpByWOcI",
+    "language": "en",
+    "took_ms": 7640,
+    "method": null,
+    "title": "DEF CON 33 - Turning Microsoft's Login Page into our Phishing Infrastructure - Keanu 'RedByte' Nys",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2579,
+    "description": "Microsoft Entra ID – one of the most used identity providers in the enterprise market. Or from our perspective: the most targeted platform in phishing attacks. Getting our phishing infrastructure up and running is usually the easy part. The real challenge is often keeping it online long enough to deliver the phishing link and collect credentials without detection before it gets burned.\n\nBut what if we could use Microsoft's official login domain for our phishing purposes? And no, I'm not talking about the heavily mitigated OAuth Consent or Device Code Phishing techniques, or simply hosting a phishing page on Azure Web App subdomains. I'm talking about stealing credentials directly from the legitimate login.microsoftonline.com domain.\n\nIn this talk, I will share multiple novel methods that can be used to achieve this. And the best of all? It all relies on legitimate functionality, making it mostly unpatchable.",
+    "view_count": 1819
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B4pVpByWOcI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

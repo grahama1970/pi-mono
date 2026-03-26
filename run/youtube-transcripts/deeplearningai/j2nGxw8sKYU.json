@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "j2nGxw8sKYU",
+    "language": "en",
+    "took_ms": 9421,
+    "method": null,
+    "title": "Andrew Ng at Amazon re:MARS 2019",
+    "channel": "DeepLearningAI",
+    "upload_date": "20190909",
+    "duration_sec": 1227,
+    "description": "Andrew Ng speaks about the progress of AI, how to accelerate AI adoption, and what's around the corner for AI at Amazon re:MARS 2019 in Las Vegas, Nevada.\n\nWant to leverage AI to drive business value across your company? Get started by taking AI for Everyone at coursera.org/learn/ai-for-everyone!",
+    "view_count": 88911
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] j2nGxw8sKYU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

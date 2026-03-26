@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fcMeb9p1hVE",
+    "language": "en",
+    "took_ms": 9212,
+    "method": null,
+    "title": "Charles Horner on U-S.-China Relations for the CBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20110121",
+    "duration_sec": 380,
+    "description": "Hudson Senior Fellow Charles Horner was interviewed on the CBC about Chinese President Hu's visit to the United States and the future of U.S.-Chinese relations.",
+    "view_count": 287
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fcMeb9p1hVE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

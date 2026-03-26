@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "52fT7Eq1OBE",
+    "language": "en",
+    "took_ms": 8044,
+    "method": null,
+    "title": "Air Force Jobs - Aerial Photographer",
+    "channel": "Sandboxx",
+    "upload_date": "20161004",
+    "duration_sec": 145,
+    "description": "An Aerial Photographer gets the honour of flying with the Thunderbird's and taking those amazing aerial shots that are found everywhere. \nThe Air Force will train you in photography as well as in editing, videography as well as how to deal with the intense G- Force from flying at speed. \nAerial photojournalists get to witness many different types of work within the United States Air Force.\n\nAre you or a loved one about to become the future of the Air Force?\nStay connected at every step of the Air Force journey as well as getting that training advice every week with the Sandboxx app: https://link.sandboxx.us/youtube",
+    "view_count": 2800
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 52fT7Eq1OBE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

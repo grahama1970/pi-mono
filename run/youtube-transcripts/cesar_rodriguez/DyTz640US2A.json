@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DyTz640US2A",
+    "language": "en",
+    "took_ms": 7796,
+    "method": null,
+    "title": "Send Letters to Boot Camp Using Sandboxx",
+    "channel": "Sandboxx",
+    "upload_date": "20171113",
+    "duration_sec": 54,
+    "description": "Sending Letters to recruits in training has never been easier. Sandboxx allows friends and family to write and send Letters to boot camp directly from their phone.\n\nSandboxx Letters are shipped overnight via FedEx to all boot camp locations. \n\nLearn more about how Sandboxx works:\nhttps://link.sandboxx.us/how-does-sandboxx-work\n\nDownload Sandboxx:\nhttps://link.sandboxx.us/onxiGOLlpS",
+    "view_count": 70765
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DyTz640US2A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

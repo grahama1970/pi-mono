@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "edQX-Rn_WvY",
+    "language": "en",
+    "took_ms": 8017,
+    "method": null,
+    "title": "Latin America’s Democratic Recession",
+    "channel": "Hudson Institute",
+    "upload_date": "20231207",
+    "duration_sec": 3875,
+    "description": "Several Latin American nations are experiencing an erosion of democratic governance and a rise in populism. A combination of internal and external factors has caused this democratic recession, raising important questions for the region’s future and the United States’ interests.\n\nJoin Hudson Institute and leading Latin America experts for a discussion of the causes of the current democratic recession, the role of citizens’ attitudes, and approaches to renewing the region’s democracies. The speakers will also consider implications for US policy in the region.\n\nLearn more at: https://www.hudson.org/events/latin-americas-democratic-recession",
+    "view_count": 439
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] edQX-Rn_WvY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

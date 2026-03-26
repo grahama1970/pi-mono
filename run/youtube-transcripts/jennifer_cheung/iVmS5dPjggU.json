@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iVmS5dPjggU",
+    "language": "en",
+    "took_ms": 10650,
+    "method": null,
+    "title": "DEF CON 33 - The Worst ICS/OT Love Story Every Told - 2025 Mike Holcomb",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1567,
+    "description": "The world of securing OT/ICS is changing FAST!\n\nAnd we are not prepared.\n\nPrior to the Colonial Pipeline incident in 2021, we focused on protecting against state adversaries.\n\nAfterwards, we shifted to focusing on protecting against ransomware operators and hacktivists.\n\nNow in 2025, we see more alignment between state adversaries, ransomware operators and hacktivists.\n\nA significant shift in the landscape we are not ready for.\n\nAdvanced capabilities and tools in the hands of every day attackers with intermediate to no skill?\n\nAre we prepared today for what's coming?\n\nNo.\n\nBut we can be.\n\nAnd we'll talk about how.",
+    "view_count": 786
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iVmS5dPjggU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

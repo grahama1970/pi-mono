@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mTe5zo_YNzw",
+    "language": "en",
+    "took_ms": 8975,
+    "method": null,
+    "title": "NEW AI Video Generator is INSANE for AI VFX - Runway Aleph Tutorial",
+    "channel": "Dan Kieft",
+    "upload_date": "20250820",
+    "duration_sec": 638,
+    "description": "Runway launched their new ai video generator Runway Aleph, let's test it out\nRunway - https://runwayml.com/\n\nIn this video I walk you through how to use Runway Aleph. With Runway aleph you can use their ai video to video feature which allows you to edit your videos based on your prompt, which is pretty cool. I've tested it out, some features work better than others, but overal I'm super excited of what is to come for the future with this new runway update. \n\n\nMy Favorite AI Tools\nOpenArt - https://openart.ai/home/?ref=aivideogenerator\nElevenlabs - https://try.elevenlabs.io/mdj2j\nHiggsfield AI - https://goto.higgsfield.ai/xLvQ4d\nHeyGen - https://heygen.com/?sid=rewardful&via=dankieft\n\n\n👉My Ai Toolkit - https://dankieft.carrd.co/\nMy toolkit gives you over 30+ ai tools that I've gathered over the years and use daily. You'll also get access to my free newsletter that educates you about the latest ai tools.\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 36369
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mTe5zo_YNzw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

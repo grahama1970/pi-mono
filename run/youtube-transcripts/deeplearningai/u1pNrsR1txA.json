@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u1pNrsR1txA",
+    "language": "en",
+    "took_ms": 9902,
+    "method": null,
+    "title": "Mitigating LLM Hallucinations with a Metrics-First Evaluation Framework",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231026",
+    "duration_sec": 3640,
+    "description": "Join in on this workshop where we will showcase some powerful metrics to evaluate the quality of the inputs and outputs with a focus on both RAG and fine-tuning use cases. In the context of LLMs, “hallucination” refers to a phenomenon where the model generates text that is incorrect, nonsensical, or not real. Since LLMs are not databases or search engines, they would not cite where their response is based on. These models generate text as an extrapolation from the prompt you provided.\r\n\r\nWhat attendees can expect to takeaway from the workshop:\r\n\r\n-Deep dive into research-backed metrics to evaluate the quality of the inputs (data quality, RAG context quality, etc) and outputs (hallucinations) while building LLM powered applications.\r\n-Evaluation and experimentation framework while prompt engineering with RAG, as well as while fine-tuning with your own data\r\n-Demo led practical guide to building guardrails and mitigating hallucinations while building LLM powered applications\n\nTo access the slides, please click here:\nhttps://docs.google.com/presentation/d/1u_bTwp_WHLGop7ubOIKEO-tAtkdTKkCGJq3ElpaQxzA/edit?usp=sharing\n\nTo read the academic paper, please click here:\nhttps://www.rungalileo.io/blog/chainpoll\n\nTo see these concepts in action, take a look at the Hallucination Index here: https://www.rungalileo.io/hallucinationindex\r\n\nThis event is inspired by DeepLearning.AI’s GenAI short courses, created in collaboration with AI companies across the globe. Our courses help you learn new skills, tools, and concepts efficiently within 1 hour.\n\nhttps://www.deeplearning.ai/short-courses/\n\nAbout Galileo\nAt Galileo we are building the first algorithm-powered LLMOps Platform for the enterprise. Galileo provides ML teams with an intelligent ML data bench to collaboratively improve data quality across their model workflows – from pre-training, to post-production. Galileo is currently powering ML teams across the Fortune 500 as well as startups across multiple industries.\r\n\r\nSpeakers:\r\n\r\nVikram Chatterji,  Co-founder and CEO at Galileo \nhttps://www.linkedin.com/in/vikram-chatterji/\r\n\r\nAtindriyo Sanyal, Co-founder and CTO at Galileo\r\nhttps://www.linkedin.com/in/atinsanyal/",
+    "view_count": 27412
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u1pNrsR1txA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

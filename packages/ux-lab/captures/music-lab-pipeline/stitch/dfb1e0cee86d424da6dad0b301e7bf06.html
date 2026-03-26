@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Observatory - S08: GENERATE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#565555",
+              "on-secondary-fixed": "#004621",
+              "surface": "#0e0e0e",
+              "outline-variant": "#484848",
+              "on-tertiary-fixed": "#001833",
+              "inverse-primary": "#742fe5",
+              "secondary": "#00fd87",
+              "tertiary-dim": "#4fa0ff",
+              "error-container": "#a70138",
+              "error-dim": "#d73357",
+              "surface-dim": "#0e0e0e",
+              "on-secondary-fixed-variant": "#006632",
+              "surface-container-high": "#202020",
+              "background": "#0e0e0e",
+              "on-primary-fixed": "#000000",
+              "tertiary": "#6aabff",
+              "secondary-fixed-dim": "#00ed7e",
+              "on-primary": "#3c0089",
+              "outline": "#767575",
+              "secondary-fixed": "#00fd87",
+              "secondary-dim": "#00ed7e",
+              "on-surface": "#ffffff",
+              "on-primary-container": "#2e006c",
+              "on-tertiary-container": "#001e3c",
+              "surface-variant": "#262626",
+              "on-secondary-container": "#e3ffe4",
+              "tertiary-fixed-dim": "#5da5ff",
+              "primary-fixed": "#b28cff",
+              "surface-tint": "#bd9dff",
+              "on-secondary": "#005b2c",
+              "on-surface-variant": "#adaaaa",
+              "surface-container": "#191a1a",
+              "primary-container": "#b28cff",
+              "error": "#ff6e84",
+              "tertiary-fixed": "#7bb3ff",
+              "on-background": "#ffffff",
+              "surface-container-highest": "#262626",
+              "tertiary-container": "#499dfe",
+              "on-primary-fixed-variant": "#390083",
+              "surface-container-low": "#131313",
+              "on-error": "#490013",
+              "primary-fixed-dim": "#a67aff",
+              "secondary-container": "#006d37",
+              "on-error-container": "#ffb2b9",
+              "surface-container-lowest": "#000000",
+              "on-tertiary-fixed-variant": "#003a6d",
+              "on-tertiary": "#002a52",
+              "inverse-surface": "#fcf9f8",
+              "surface-bright": "#2c2c2c",
+              "primary-dim": "#8a4cfc",
+              "primary": "#bd9dff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-mesh {
+            background-color: #0e0e0e;
+            background-image: radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(0, 253, 135, 0.03) 0px, transparent 50%);
+        }
+        .waveform-bar {
+            width: 3px;
+            border-radius: 1px;
+            transition: height 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary min-h-screen flex overflow-hidden">
+<!-- SideNavBar Component -->
+<aside class="bg-[#131313] flex flex-col h-screen py-6 docked left-0 h-full w-64 shrink-0 z-40 transition-transform duration-300 ease-in-out">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-lg" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<div>
+<p class="font-label uppercase tracking-widest text-[10px] text-white">PIPELINE</p>
+<p class="font-label uppercase tracking-widest text-[8px] text-on-surface-variant">OPERATOR_V.08</p>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1 overflow-y-auto scrollbar-hide">
+<!-- S00 to S07 Inactive -->
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="input">input</span> S00: INTAKE
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="developer_board">developer_board</span> S01: DECODE
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="layers">layers</span> S02: STRATIFY
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="waves">waves</span> S03: RESONATE
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="Grain">grain</span> S04: PLOT
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="memory">memory</span> S05: SYNTH
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="Tune">tune</span> S06: MODULATE
+                </a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="auto_fix_high">auto_fix_high</span> S07: REFINE
+                </a>
+</div>
+<!-- S08 ACTIVE -->
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] bg-[#191a1a] text-[#00fd87] border-l-4 border-[#00fd87] transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="Bolt" style="font-variation-settings: 'FILL' 1;">bolt</span> S08: GENERATE
+                <div class="ml-auto w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(189,157,255,0.8)]"></div>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded font-label uppercase tracking-widest text-[10px] text-[#adaaaa] hover:bg-[#191a1a]/50 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="ios_share">ios_share</span> S09: EXPORT
+            </a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-4 px-2 bg-surface-container-highest border border-secondary/20 rounded-lg group hover:border-secondary transition-all">
+<p class="font-label uppercase tracking-[0.2em] text-[10px] text-secondary group-hover:text-white">INITIALIZE NEURAL RENDER</p>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative bg-mesh overflow-hidden">
+<!-- TopNavBar Component -->
+<header class="bg-[#0e0e0e] flex justify-between items-center w-full px-8 h-16 border-b border-white/5 docked full-width top-0 z-50">
+<div class="flex items-center gap-8">
+<h1 class="text-xl font-black tracking-tighter text-white uppercase">SONIC OBSERVATORY</h1>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-['Inter'] tracking-tight font-bold text-sm text-[#adaaaa] hover:text-white transition-colors" href="#">DASHBOARD</a>
+<a class="font-['Inter'] tracking-tight font-bold text-sm text-[#bd9dff] border-b-2 border-[#7c3aed] pb-1" href="#">ARCHIVE</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="bg-surface-container-lowest border-none text-[10px] font-label tracking-widest pl-10 pr-4 py-2 rounded-full w-64 focus:ring-1 focus:ring-primary/40" placeholder="SEARCH PIPELINE..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-white transition-all"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-on-surface-variant hover:text-white transition-all"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<img class="w-8 h-8 rounded-full border border-white/10" data-alt="Operator Profile Portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjX98yuu_bdrvCTZ3yKhYQIR87IUgj85Z25Vw876WJ9xmh2-LLmLdH7WryLGsHtXGOV4_V1a1kqoE7xGchWVGVlf-gVftyUaDd-L32kVKHcqcxxlbuthb_yGZjERFURxoFnFRf3ONcxgpGiV8HhfsgQCgSByOvZqtBSx4Z83BSC__FNHlW-btEAn2sLg9UdmRMv_7mhvkOE_BnpR9INsky1XiIe49he9ZSRNoAtjkHwRX62qosdINrN9v8POKBtzlIHimJUf8MH7c"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-10 flex-1 overflow-y-auto">
+<!-- Page Header Section -->
+<div class="flex items-end justify-between mb-10">
+<div class="space-y-1">
+<div class="flex items-center gap-3">
+<span class="font-label text-primary-dim font-bold tracking-tighter uppercase">S08</span>
+<div class="w-1 h-4 bg-outline-variant/30"></div>
+<span class="font-label text-on-surface-variant text-xs tracking-widest">Round 3</span>
+</div>
+<h2 class="text-4xl font-black tracking-tight text-white flex items-center gap-4">
+                        Generate Audio
+                        <span class="inline-flex items-center px-3 py-1 rounded border-l-2 border-amber-500 bg-surface-variant text-[10px] font-label font-bold text-amber-400 tracking-widest uppercase">
+                            GENERATING
+                        </span>
+</h2>
+</div>
+<div class="flex gap-2">
+<button class="p-3 rounded-lg bg-surface-container border border-white/5 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="refresh">refresh</span>
+</button>
+<button class="p-3 rounded-lg bg-surface-container border border-white/5 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-8">
+<!-- 1. Large Audio Player Card -->
+<section class="bg-[#191a1a] rounded-xl overflow-hidden border border-white/5 flex flex-col md:flex-row shadow-2xl">
+<div class="flex-1 p-8 flex items-center gap-8 border-r border-white/5">
+<!-- Play Button -->
+<button class="w-20 h-20 shrink-0 bg-[#7c3aed] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-white text-4xl" data-icon="play_arrow" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<!-- Waveform Center -->
+<div class="flex-1 space-y-4">
+<div class="h-24 flex items-end gap-[2px]">
+<!-- Verse Section (Blue) -->
+<div class="flex items-end gap-[2px] opacity-60">
+<div class="waveform-bar bg-tertiary-dim" style="height: 30%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 45%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 60%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 40%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 75%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 50%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 85%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 45%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 30%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 55%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 40%"></div>
+<div class="waveform-bar bg-tertiary-dim" style="height: 70%"></div>
+</div>
+<!-- Bridge -->
+<div class="waveform-bar bg-on-surface-variant/20" style="height: 15%; width: 20px;"></div>
+<!-- Chorus Section (Purple) -->
+<div class="flex items-end gap-[2px]">
+<div class="waveform-bar bg-primary" style="height: 60%"></div>
+<div class="waveform-bar bg-primary" style="height: 80%"></div>
+<div class="waveform-bar bg-primary" style="height: 95%"></div>
+<div class="waveform-bar bg-primary" style="height: 70%"></div>
+<div class="waveform-bar bg-primary" style="height: 100%"></div>
+<div class="waveform-bar bg-primary" style="height: 85%"></div>
+<div class="waveform-bar bg-primary" style="height: 90%"></div>
+<div class="waveform-bar bg-primary" style="height: 100%"></div>
+<div class="waveform-bar bg-primary" style="height: 80%"></div>
+<div class="waveform-bar bg-primary" style="height: 60%"></div>
+<div class="waveform-bar bg-primary" style="height: 40%"></div>
+<div class="waveform-bar bg-primary" style="height: 50%"></div>
+<div class="waveform-bar bg-primary" style="height: 30%"></div>
+<div class="waveform-bar bg-primary" style="height: 20%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="font-label text-white text-xs tabular-nums">0:00 / 2:47</span>
+<span class="font-label text-on-surface-variant text-[12px] uppercase tracking-wider">whisperheads_r3.wav</span>
+</div>
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="download">download</span></button>
+<button class="text-on-surface-variant hover:text-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="share">share</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Generation Stats -->
+<div class="w-full md:w-80 bg-surface-container-high p-8 flex flex-col justify-center">
+<div class="mb-6">
+<div class="inline-flex items-center px-2 py-1 bg-surface-container-highest rounded border border-white/10 mb-4">
+<span class="font-label text-[9px] text-on-surface-variant tracking-widest uppercase">YuE · Local GPU · A5000</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Render Time</span>
+<span class="font-label text-[11px] text-white">4m 12s</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sample Rate</span>
+<span class="font-label text-[11px] text-white">48kHz 16bit</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Iteration</span>
+<span class="font-label text-[11px] text-white">Round 3</span>
+</div>
+</div>
+</div>
+<button class="w-full py-3 bg-secondary text-on-secondary rounded font-label text-[11px] font-bold tracking-[0.2em] uppercase">
+                            EXPORT AS STEMS
+                        </button>
+</div>
+</section>
+<!-- 2. Generation Log Panel (Terminal Style) -->
+<section class="bg-[#000000] rounded-xl border border-white/10 overflow-hidden">
+<div class="bg-surface-container-high px-4 py-2 flex items-center justify-between border-b border-white/5">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error-container/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-amber-500/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary/40"></div>
+</div>
+<span class="font-label text-[9px] text-on-surface-variant tracking-[0.3em] uppercase">SYSTEM_LOG_OUTPUT</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="terminal">terminal</span>
+</div>
+<div class="p-6 font-mono text-[13px] leading-relaxed text-secondary/80 h-48 overflow-y-auto scrollbar-hide">
+<div class="flex gap-4">
+<span class="text-on-surface-variant/40">[2026-05-14 14:02:11]</span>
+<span class="text-secondary">Generating stage 1 tokens...</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant/40">[2026-05-14 14:04:32]</span>
+<span class="text-secondary">Rendering audio via diffusion...</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant/40">[2026-05-14 14:06:44]</span>
+<span class="text-secondary">Writing output wav...</span>
+</div>
+<div class="flex gap-4 mt-2">
+<span class="text-on-surface-variant/40">[2026-05-14 14:08:12]</span>
+<span class="text-white animate-pulse">_</span>
+</div>
+</div>
+</section>
+<!-- Footer Quick Actions -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-low p-6 rounded-lg border border-white/5 flex items-center justify-between group hover:border-primary/40 transition-all cursor-pointer">
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-primary tracking-widest uppercase mb-1">Variation</span>
+<span class="text-sm font-bold text-white">Generate Similar</span>
+</div>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg border border-white/5 flex items-center justify-between group hover:border-secondary/40 transition-all cursor-pointer">
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-secondary tracking-widest uppercase mb-1">Expansion</span>
+<span class="text-sm font-bold text-white">Outpaint 60s</span>
+</div>
+<span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform" data-icon="unfold_more">unfold_more</span>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg border border-white/5 flex items-center justify-between group hover:border-tertiary/40 transition-all cursor-pointer">
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-tertiary tracking-widest uppercase mb-1">Processing</span>
+<span class="text-sm font-bold text-white">Apply FX Chain</span>
+</div>
+<span class="material-symbols-outlined text-tertiary group-hover:translate-x-1 transition-transform" data-icon="blur_on">blur_on</span>
+</div>
+</div>
+</div>
+</div>
+<!-- System Noise Overlay -->
+<div class="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay">
+<svg viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<filter id="noiseFilter">
+<feturbulence basefrequency="0.65" numoctaves="3" stitchtiles="stitch" type="fractalNoise"></feturbulence>
+</filter>
+<rect filter="url(#noiseFilter)" height="100%" width="100%"></rect>
+</svg>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hzA9vC9ZaY0",
+    "language": "en",
+    "took_ms": 8573,
+    "method": null,
+    "title": "S4x12 Mini-Keynote: No More Fragility",
+    "channel": "S4 Events",
+    "upload_date": "20170807",
+    "duration_sec": 895,
+    "description": "Dale Peterson introduces S4x12 and highlights two conflicting statements in ICS.\n\n1. SCADA and DCS in the critical infrastructure can never go down. They must run 24x7x365.\n\n2. SCADA and DCS are fragile and insecure. Don't scan them or they will crash.\n\nWhat we have been doing for ten years has failed. We need new approaches and big goals.",
+    "view_count": 36
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hzA9vC9ZaY0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

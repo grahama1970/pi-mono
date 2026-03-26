@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iGINoIYQwak",
+    "language": "en",
+    "took_ms": 7674,
+    "method": null,
+    "title": "DEF CON 31 - Tetra Tour de Force Jailbreaking Digital Radios & Base Stations for Fun - Midnight Blue",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 4213,
+    "description": "In this talk we will discuss the radio jailbreaking journey that enabled us to perform the first public disclosure and analysis of the proprietary cryptography used in TETRA (Terrestrial Trunked Radio): a standard used globally by government agencies, police, prisons, and military operators as well as critical infrastructure such as SCADA telecontrol of oil rigs, pipelines, transportation and electric and water utilities.\n\nFor decades, the underlying algorithms have remained secret under restrictive NDAs prohibiting public scrutiny of this critical technology. In this talk, we will make public the TETRA cipher suites (TEA and TAA1 to be precise), one of the last bastions of widely deployed secret crypto, and discuss in-depth how we managed to obtain them.\n\nWe will discuss several different flaws we uncovered allowing passive or active adversaries to intercept and manipulate TETRA traffic, including details of a backdoored stream cipher.\n\nThis journey involved reverse-engineering and exploiting multiple 0-day vulnerabilities in the popular Motorola MTM5x00 radio and its TI OMAP-L138 TEE and covers everything from side-channel attacks on DSPs to writing your own decompilers. We will also discuss how we gained code execution on and instrumented a Motorola MBTS TETRA base station for research purposes.",
+    "view_count": 8401
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iGINoIYQwak: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "J3f9axtJsCw",
+    "language": "en",
+    "took_ms": 8474,
+    "method": null,
+    "title": "DEF CON 33 - SSH-nanigans - Busting Open the Mainframes Iron Fortress through Unix - Philip Young",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2784,
+    "description": "You may have heard tales of mainframe pentesting and exploitation before - mostly from us! Those stories often focused on the MVS/ISPF side of the IBM z/OS. But did you know that all those same tricks (and more!) can be pulled off in z/OS Unix System Services (OMVS) as well? I bet you didn't even know z/OS had a UNIX side!\n\nOver the years we've discovered multiple unique attack paths when it comes to Unix on the mainframe. In this talk, we'll present live demos of real-world scenarios we've encountered during mainframe penetration tests. These examples will showcase what can happen with poor file hygiene leading to database compromises, inadequate file permissions enabling privilege escalation, lack of ESM resource understanding allowing for privileged command execution, and how dataset protection won't save you from these attacks. We'll also be demonstrating what can happen when we overflow the buffer in an APF authorized dataset.\n\nAttendees will learn how to test these controls themselves using freely available open-source tools and how to (partially) detect these attacks. While privesc in UNIX isn't game over for your mainframe, it's pretty close. By the end, it will be clear that simply granting superuser access to Unix can be just as dangerous, if not more so, than giving access to TSO on the mainframe.",
+    "view_count": 1026
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] J3f9axtJsCw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

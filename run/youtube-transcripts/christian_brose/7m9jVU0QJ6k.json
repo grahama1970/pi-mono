@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7m9jVU0QJ6k",
+    "language": "en",
+    "took_ms": 8914,
+    "method": null,
+    "title": "Prosperity at Risk: The Quantum Computer Threat to the US Financial System",
+    "channel": "Hudson Institute",
+    "upload_date": "20230520",
+    "duration_sec": 5957,
+    "description": "Cybersecurity experts and technology policy officials, including those in the White House, are realizing that quantum computers will pose a significant threat to existing public encryption systems and that they need to act now to make America’s key infrastructure quantum ready and secure.\n\nJoin Hudson Senior Fellow and Director of the Quantum Alliance Initiative (QAI) Arthur Herman and QAI Associate Director Alex Butler as they discuss their most recent report. This publication details the potential consequences of a future quantum computer attack on the Federal Reserve, specifically the Fedwire Funds Service, which facilitates large-scale interbank transactions. \n\nMises Institute Senior Fellow and former Deputy Director of the Treasury Department’s Office of Financial Research Alex Pollock, and John Prisco, CEO and founder of Quantum Safe Inc., will discuss the implications of the report for the future of our financial system.",
+    "view_count": 4570
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7m9jVU0QJ6k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

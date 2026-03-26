@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yb4InJvYxf0",
+    "language": "en",
+    "took_ms": 8671,
+    "method": null,
+    "title": "Japan’s Cyber and Energy Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20230327",
+    "duration_sec": 2505,
+    "description": "Last year, Tokyo released its newest National Security Strategy, National Defense Strategy, and Defense Buildup Program. These ambitious documents mark a significant shift in Japan’s strategic and defense postures. Hudson Institute’s Japan Chair hosts two professors from Keio University—Dr. Motohiro Tsuchiya and Prof. Koichiro Tanaka—to discuss the hurdles Tokyo needs to overcome to improve its active cyber defense and transition to different energy sources for both civilian and military use.",
+    "view_count": 721
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yb4InJvYxf0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

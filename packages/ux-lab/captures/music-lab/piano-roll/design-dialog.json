@@ -1,0 +1,23 @@
+[
+  {
+    "round": 2,
+    "persona": "Steve",
+    "action": "design",
+    "files_written": [
+      "mockup-r2.html",
+      "steve-rationale-r2.md"
+    ]
+  },
+  {
+    "round": 2,
+    "persona": "Nico",
+    "action": "review",
+    "high": 0,
+    "medium": 1,
+    "low": 3,
+    "files_written": [
+      "nico-critique-r2.json",
+      "nico-critique-r2.md"
+    ]
+  }
+]

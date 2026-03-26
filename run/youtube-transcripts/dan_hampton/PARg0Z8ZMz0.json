@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PARg0Z8ZMz0",
+    "language": "en",
+    "took_ms": 7806,
+    "method": null,
+    "title": "Tech Talk Live with Alex Hollings from AirPower!",
+    "channel": "Sandboxx",
+    "upload_date": "20250827",
+    "duration_sec": 71,
+    "description": "Join Sandboxx News editor-in-chief Alex Hollings to talk about the latest defense tech developments, aviation history, or anything else that might come up. \n\n📱 Follow Sandboxx News on social\nTwitter: https://twitter.com/sandboxxnews\nInstagram: https://instagram.com/sandboxxnews\nFacebook: https://facebook.com/sandboxxnews\nTikTok: https://www.tiktok.com/@sandboxxnews\n\n📱 Follow Alex Hollings on social\nTwitter: https://twitter.com/AlexHollings52\nInstagram: https://www.instagram.com/alexhollings52\nFacebook: https://www.facebook.com/AlexHollings52\nTikTok: https://www.tiktok.com/alexhollings52",
+    "view_count": 4018
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PARg0Z8ZMz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KSB3v3B98_c",
+    "language": "en",
+    "took_ms": 7657,
+    "method": null,
+    "title": "The Syrian War and Terror in Europe",
+    "channel": "Hudson Institute",
+    "upload_date": "20151202",
+    "duration_sec": 5620,
+    "description": "Lee Smith, Benjamin Haddad, Laure Mandeville, Simond de Galbert, and  Christopher Caldwell discuss the Paris attacks, security in the West, and  the ongoing crisis in Syria.",
+    "view_count": 1183
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KSB3v3B98_c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

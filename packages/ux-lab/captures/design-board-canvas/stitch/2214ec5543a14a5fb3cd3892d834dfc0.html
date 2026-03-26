@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Phoenix | Mobile Canvas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ffb4ab",
+                        "outline": "#958da1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed": "#d4e3ff",
+                        "error-container": "#93000a",
+                        "surface-tint": "#d2bbff",
+                        "surface-dim": "#131313",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-primary-container": "#ede0ff",
+                        "secondary-fixed": "#60ff99",
+                        "primary-fixed": "#eaddff",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#004884",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "secondary-fixed-dim": "#00e479",
+                        "outline-variant": "#4a4455",
+                        "on-secondary-container": "#007239",
+                        "on-secondary": "#003919",
+                        "on-primary-fixed": "#25005a",
+                        "primary": "#d2bbff",
+                        "secondary": "#f5fff3",
+                        "primary-container": "#7c3aed",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-tertiary": "#00315d",
+                        "on-primary": "#3f008e",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353534",
+                        "surface-container": "#201f1f",
+                        "surface": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#732ee4",
+                        "tertiary-container": "#0068bb",
+                        "primary-fixed-dim": "#d2bbff",
+                        "secondary-container": "#34ff8d",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-secondary-fixed": "#00210c",
+                        "on-background": "#e5e2e1",
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-container": "#dae7ff",
+                        "on-secondary-fixed-variant": "#005228",
+                        "inverse-on-surface": "#313030",
+                        "surface-variant": "#353534",
+                        "surface-bright": "#393939",
+                        "background": "#131313",
+                        "tertiary": "#a4c9ff",
+                        "surface-container-high": "#2a2a2a"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .dot-grid {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .ghost-border {
+            border: 1px solid rgba(255, 255, 255, 0.13);
+        }
+        .selected-glow {
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+            border-color: rgba(210, 187, 255, 0.5);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container/30 overflow-hidden h-screen w-screen">
+<!-- TopAppBar -->
+<header class="bg-[#201f1f] border-none fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16">
+<div class="flex items-center gap-3">
+<button class="text-[#d2bbff] hover:bg-[#7c3aed]/20 transition-colors duration-200 p-2 rounded-lg active:scale-95 duration-100">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-headline font-bold text-[#d2bbff] tracking-tighter text-lg leading-none">UI Review: Project Phoenix</h1>
+<span class="font-label uppercase tracking-wider text-[10px] text-slate-400 mt-1">Version 2.4.0 • Draft</span>
+</div>
+</div>
+<button class="font-label uppercase tracking-wider text-[10px] text-[#d2bbff] border border-[#d2bbff]/30 px-3 py-1.5 rounded hover:bg-[#7c3aed]/20 transition-colors duration-200 active:scale-95 duration-100">
+            Share
+        </button>
+</header>
+<!-- Canvas Area -->
+<main class="relative w-full h-full pt-16 pb-24 overflow-hidden dot-grid bg-surface">
+<!-- Canvas Items Container (Simulating an infinite workspace) -->
+<div class="absolute inset-0 p-8 flex flex-col gap-12 items-center justify-center">
+<!-- Draggable Item 1 (Selected) -->
+<div class="relative group cursor-grab active:cursor-grabbing transform rotate-1 -translate-x-4">
+<div class="w-64 aspect-[9/16] bg-[#1a1a1a] rounded-xl overflow-hidden ghost-border selected-glow transition-all">
+<img alt="Mobile UI Mockup Login Screen" class="w-full h-full object-cover opacity-80" data-alt="Abstract violet gradient representing a mobile login screen mockup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBj1hsaWEY-AmV892-h_Na2T6Zmf3QmhQpocZQ9f_BNxyN242Y_yFLcEOV4iHXHqkrFl-q7P0ThqkgY1Swjw97U-5xARn0A0JFJElcOiugVMK5sqWe7URUr0olOVJMhrAUQBxvYDBvOxQKdI3euH2NBpnyIU3YpTwTZ5o_RBzG-pbjEroRl1VjHyTnayZp9V6dP__In2Mag8_LsX8ie07sJvwPxzoNyuc2SkPH0PYD4BD54_CoG5Izds772WP8Yza3WVqyAOd2Q7g2"/>
+</div>
+<div class="mt-3 flex flex-col items-center">
+<span class="font-label text-[10px] text-primary uppercase tracking-widest bg-primary-container/20 px-2 py-0.5 rounded">Selected</span>
+<h3 class="font-headline font-medium text-sm text-on-surface mt-1">Login_Flow_V3</h3>
+</div>
+<!-- Long-press Context Menu (Visible state for demonstration) -->
+<div class="absolute -right-16 top-0 w-44 bg-surface-container/90 backdrop-blur-xl rounded-xl ghost-border overflow-hidden shadow-2xl z-20 animate-in fade-in zoom-in-95 duration-200">
+<div class="p-1 flex flex-col">
+<button class="flex items-center gap-3 px-3 py-2 hover:bg-white/5 text-sm font-body text-on-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">open_in_full</span> Open Full Size
+                        </button>
+<button class="flex items-center gap-3 px-3 py-2 hover:bg-white/5 text-sm font-body text-on-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">flip_to_front</span> Bring to Front
+                        </button>
+<button class="flex items-center gap-3 px-3 py-2 hover:bg-white/5 text-sm font-body text-on-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">edit</span> Replace
+                        </button>
+<div class="h-px bg-white/10 my-1 mx-2"></div>
+<button class="flex items-center gap-3 px-3 py-2 hover:bg-error-container/20 text-sm font-body text-error transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">delete</span> Delete
+                        </button>
+</div>
+</div>
+</div>
+<!-- Draggable Item 2 -->
+<div class="relative group cursor-grab active:cursor-grabbing transform -rotate-2 translate-x-12 translate-y-4">
+<div class="w-48 aspect-video bg-[#1a1a1a] rounded-xl overflow-hidden ghost-border transition-all">
+<img alt="Desktop Component Mockup" class="w-full h-full object-cover opacity-60" data-alt="Technical hardware interior or abstract technology grid pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDjxDB30WtWP4Srwl9pz7-KBG80dTISrmQlLof_PC7-o2If0lGxyNZ7xO1_nUxY-SOC3PUS-wWiAWxmqQVMzKNsTee-XjkBP-O3hH-HwYbV0LAxkY05dOK47j6ayXwkvomWWhNLxDkIR7D0GRGOeu9_VEsO34BT2kkH2xwme_s-U7YlqE43xFzE5Ck2evP4ALrU47kF4N_D5w4tuj73toiS--Ja0A1BKLyh0jSE5XT0KgQ11j1wcq3pC06mctZ1vQTa83M2xVO78qf"/>
+</div>
+<div class="mt-3">
+<h3 class="font-label text-[10px] text-slate-500 uppercase tracking-widest">Dashboard_Widgets</h3>
+</div>
+</div>
+<!-- Draggable Item 3 -->
+<div class="relative group cursor-grab active:cursor-grabbing transform translate-x-[-100px] translate-y-[-40px]">
+<div class="w-56 aspect-[4/3] bg-[#1a1a1a] rounded-xl overflow-hidden ghost-border transition-all">
+<img alt="Color Palette and Brand Guidelines" class="w-full h-full object-cover opacity-60" data-alt="Abstract colorful light streaks on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRRpo9G-Fr_78ilcJ3RFgetD2mUCK_UeLzadrTmW7H54OFog5-VlsFwMZ2xQILjmaXtKuruoitlT2VZ1Li9TPq3tl_IEr059gSzHJ3Q7izU562WjOWi61-on6e1vw_jusH8vYj20G3moDYMmWaXwo142ac7L78ERjgzkij6aMoGz5fTlSvdkhbnDcnU95D-MGK3q8cTZl7AvKR8I2txhYrVomv9Nxi9El0n1YjnmumZbuLsRSgeQ788jOkCWLy3mjk53ibrF4rmnxY"/>
+</div>
+<div class="mt-3">
+<h3 class="font-label text-[10px] text-slate-500 uppercase tracking-widest">Brand_Asset_01</h3>
+</div>
+</div>
+</div>
+<!-- Background Context Menu (Simulated as if open in empty area) -->
+<div class="hidden md:flex absolute bottom-24 right-8 w-56 bg-surface-container/80 backdrop-blur-xl rounded-xl ghost-border overflow-hidden shadow-2xl z-10 p-1 flex-col">
+<button class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 text-sm font-body text-on-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">add_photo_alternate</span> Add Image
+            </button>
+<button class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 text-sm font-body text-on-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">link</span> Paste URL
+            </button>
+<button class="flex items-center gap-3 px-3 py-2.5 hover:bg-white/5 text-sm font-body text-on-surface-variant transition-colors rounded-lg">
+<span class="material-symbols-outlined text-lg">screenshot_region</span> Add from Captures
+            </button>
+</div>
+</main>
+<!-- Zoom Controls (Bottom Left Overlay) -->
+<div class="fixed bottom-24 left-4 flex flex-col items-center bg-[#131313]/90 backdrop-blur-lg rounded-xl ghost-border p-1 gap-1 z-40">
+<button class="p-2 text-slate-400 hover:text-primary active:scale-90 transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<div class="px-2 py-1 font-label text-[10px] text-primary font-bold">85%</div>
+<button class="p-2 text-slate-400 hover:text-primary active:scale-90 transition-all">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#131313]/80 backdrop-blur-xl border-t border-white/10 shadow-[0_-4px_20px_rgba(124,58,237,0.1)] rounded-t-lg">
+<!-- Destination: Zoom In -->
+<a class="flex flex-col items-center justify-center text-slate-400 py-1 px-3 hover:text-[#d2bbff] transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+<span class="font-label text-[10px] uppercase font-medium mt-1">Zoom In</span>
+</a>
+<!-- Destination: Zoom Out -->
+<a class="flex flex-col items-center justify-center text-slate-400 py-1 px-3 hover:text-[#d2bbff] transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="zoom_out">zoom_out</span>
+<span class="font-label text-[10px] uppercase font-medium mt-1">Zoom Out</span>
+</a>
+<!-- Destination: Grid (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#7c3aed] text-white rounded-xl py-1 px-3 shadow-[0_0_15px_rgba(124,58,237,0.4)] active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label text-[10px] uppercase font-medium mt-1">Grid</span>
+</a>
+<!-- Destination: Layers -->
+<a class="flex flex-col items-center justify-center text-slate-400 py-1 px-3 hover:text-[#d2bbff] transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-label text-[10px] uppercase font-medium mt-1">Layers</span>
+</a>
+</nav>
+<!-- Tactical Selection Indicator -->
+<div class="fixed top-20 right-4 pointer-events-none z-40">
+<div class="bg-surface-container/60 backdrop-blur-sm ghost-border rounded-lg px-3 py-2 flex flex-col items-end">
+<span class="font-label text-[8px] text-slate-500 uppercase tracking-tighter">System Status</span>
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim animate-pulse"></div>
+<span class="font-label text-[10px] text-secondary-fixed-dim">NOMINAL</span>
+</div>
+<div class="mt-2 text-right">
+<span class="font-label text-[10px] text-on-surface-variant block">CURSOR_POS: 412, 894</span>
+<span class="font-label text-[10px] text-on-surface-variant block">ACTIVE_NODE: PK_992</span>
+</div>
+</div>
+</div>
+</body></html>

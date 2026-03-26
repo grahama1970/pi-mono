@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#202020",
+            "on-secondary-fixed-variant": "#006632",
+            "surface-container-lowest": "#000000",
+            "secondary-fixed-dim": "#00ed7e",
+            "inverse-primary": "#742fe5",
+            "surface-dim": "#0e0e0e",
+            "on-primary-fixed-variant": "#390083",
+            "on-primary": "#3c0089",
+            "tertiary": "#6aabff",
+            "surface": "#0e0e0e",
+            "on-tertiary-fixed": "#001833",
+            "on-tertiary": "#002a52",
+            "on-secondary-fixed": "#004621",
+            "background": "#0e0e0e",
+            "on-primary-container": "#2e006c",
+            "on-surface": "#ffffff",
+            "inverse-surface": "#fcf9f8",
+            "surface-variant": "#262626",
+            "error": "#ff6e84",
+            "primary-fixed": "#b28cff",
+            "on-tertiary-container": "#001e3c",
+            "tertiary-fixed-dim": "#5da5ff",
+            "tertiary-dim": "#4fa0ff",
+            "surface-container": "#191a1a",
+            "on-surface-variant": "#adaaaa",
+            "on-background": "#ffffff",
+            "outline": "#767575",
+            "tertiary-fixed": "#7bb3ff",
+            "secondary-dim": "#00ed7e",
+            "on-primary-fixed": "#000000",
+            "on-error": "#490013",
+            "tertiary-container": "#499dfe",
+            "inverse-on-surface": "#565555",
+            "error-dim": "#d73357",
+            "error-container": "#a70138",
+            "primary-dim": "#8a4cfc",
+            "surface-tint": "#bd9dff",
+            "secondary-fixed": "#00fd87",
+            "primary-fixed-dim": "#a67aff",
+            "primary": "#bd9dff",
+            "secondary": "#00fd87",
+            "on-secondary": "#005b2c",
+            "on-tertiary-fixed-variant": "#003a6d",
+            "secondary-container": "#006d37",
+            "outline-variant": "#484848",
+            "surface-bright": "#2c2c2c",
+            "surface-container-low": "#131313",
+            "on-error-container": "#ffb2b9",
+            "primary-container": "#b28cff",
+            "surface-container-highest": "#262626",
+            "on-secondary-container": "#e3ffe4"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .custom-dashed-line {
+      background-image: linear-gradient(to right, #00fd87 33%, rgba(255,255,255,0) 0%);
+      background-position: bottom;
+      background-size: 8px 1px;
+      background-repeat: repeat-x;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 z-50 w-full bg-[#0e0e0e] flex justify-between items-center px-8 py-4 bg-[#131313]">
+<div class="flex items-center gap-6">
+<div class="text-xl font-black tracking-tighter text-white uppercase font-headline">Sonic Observatory</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#adaaaa] font-bold font-headline transition-all duration-200 hover:bg-[#262626] px-3 py-1 rounded" href="#">DASHBOARD</a>
+<a class="text-[#bd9dff] font-bold font-headline transition-all duration-200 hover:bg-[#262626] px-3 py-1 rounded" href="#">PIPELINE</a>
+<a class="text-[#adaaaa] font-bold font-headline transition-all duration-200 hover:bg-[#262626] px-3 py-1 rounded" href="#">ARCHIVE</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined text-[#adaaaa] p-2 hover:bg-[#262626] rounded-full cursor-pointer transition-all">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-[#adaaaa] p-2 hover:bg-[#262626] rounded-full cursor-pointer transition-all">settings</span>
+<img alt="Operator Profile" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="User profile avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp26Fq3lVNyKd1gWkXvsCLbpcTv2Tv5UYJjlSGvZdKg9xiTtmEDGWyDE-96wm9154au6De8MJ2pEI6Q9dBXvTN4bP0zk9fWphQUFBoZZPzJJVVFIXrG5Vtz_S84C5IA9AEneV_KF7nSAe-b5jrQE2mYg2EFqJu1gm8nglYp4Cf1dWL3u2YyVupd3YPOvGGcUrFUxnpiJdUUz3h6b6EETAa10FvrBj8sS-o1x3kBq79C9C4ssT9qOyyBrqH2WpVjKG0w9AaKLqEUOE"/>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- SideNavBar (Pipeline Stepper) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#131313] border-r border-[#484848]/15 flex flex-col py-20 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-white" data-icon="cyclone">cyclone</span>
+<div class="text-white font-bold font-headline uppercase tracking-wider">Pipeline</div>
+</div>
+<div class="font-['Space_Grotesk'] uppercase tracking-widest text-[11px] text-secondary">Active Session: 08</div>
+</div>
+<nav class="flex-1 overflow-y-auto space-y-1">
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="power">power</span>
+<span>S00: Initialize</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+<span>S01: Capture</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>S02: Analyze</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span>S03: Sculpt</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="Tune">tune</span>
+<span>S04: Modulate</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span>S05: Layer</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="spatial_audio">spatial_audio</span>
+<span>S06: Spatial</span>
+</div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-6 py-4 opacity-60 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="auto_fix_high">auto_fix_high</span>
+<span>S07: Refine</span>
+</div>
+<!-- Active Tab -->
+<div class="flex items-center gap-3 bg-[#191a1a] text-[#00fd87] border-l-2 border-[#00fd87] px-6 py-4 font-label uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined" data-icon="cyclone">cyclone</span>
+<span>S08: Converge Audio</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 overflow-y-auto p-12 bg-surface">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-16">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="font-label text-primary font-bold text-lg tracking-widest">S08</span>
+<h1 class="text-4xl font-extrabold font-headline tracking-tighter">Converge Audio</h1>
+<span class="bg-secondary-container/20 text-secondary text-[10px] font-label font-bold px-2 py-1 rounded border border-secondary/30 ml-4">DONE</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant font-label text-sm uppercase tracking-widest">
+<span>5 rounds computed</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span>threshold 0.30</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container-highest border border-outline-variant/20 px-6 py-2 rounded font-label text-xs uppercase tracking-widest hover:bg-surface-variant transition-all">Export JSON</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded font-label text-xs font-bold uppercase tracking-widest hover:scale-105 transition-all">Proceed to Master</button>
+</div>
+</header>
+<!-- Convergence Chart Section -->
+<section class="bg-surface-container p-10 rounded-xl border border-outline-variant/5 relative overflow-hidden">
+<div class="relative z-10 flex flex-col gap-10">
+<!-- Threshold Marker Background -->
+<div class="absolute inset-0 pointer-events-none px-10 pt-10 pb-20">
+<!-- Dash Line positioned relative to scores. 0.30 is roughly 30% from the left if 1.0 is full width -->
+<div class="absolute top-0 bottom-0 left-[42%] w-px border-l border-dashed border-secondary/40 z-0">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-label text-secondary uppercase tracking-tighter whitespace-nowrap">Target Threshold (0.30)</div>
+</div>
+</div>
+<!-- R1 Row -->
+<div class="grid grid-cols-[60px_1fr_80px] items-center gap-6 group">
+<div class="font-label text-on-surface-variant text-sm group-hover:text-error transition-colors">R1</div>
+<div class="h-8 bg-surface-container-lowest rounded-full overflow-hidden flex items-center p-1">
+<div class="h-full bg-[#ff4444] rounded-full" style="width: 82%;"></div>
+</div>
+<div class="text-right font-label text-sm font-bold text-[#ff4444]">0.82</div>
+</div>
+<!-- R2 Row -->
+<div class="grid grid-cols-[60px_1fr_80px] items-center gap-6 group">
+<div class="font-label text-on-surface-variant text-sm group-hover:text-amber-500 transition-colors">R2</div>
+<div class="h-8 bg-surface-container-lowest rounded-full overflow-hidden flex items-center p-1">
+<div class="h-full bg-[#ffaa00] rounded-full" style="width: 42%;"></div>
+</div>
+<div class="text-right font-label text-sm font-bold text-[#ffaa00]">0.42</div>
+</div>
+<!-- R3 Row -->
+<div class="grid grid-cols-[60px_1fr_80px] items-center gap-6 group">
+<div class="font-label text-on-surface-variant text-sm group-hover:text-amber-500 transition-colors">R3</div>
+<div class="h-8 bg-surface-container-lowest rounded-full overflow-hidden flex items-center p-1">
+<div class="h-full bg-[#ffaa00] rounded-full" style="width: 31%;"></div>
+</div>
+<div class="text-right font-label text-sm font-bold text-[#ffaa00]">0.31</div>
+</div>
+<!-- R4 Row -->
+<div class="grid grid-cols-[60px_1fr_160px] items-center gap-6 group">
+<div class="font-label text-on-surface-variant text-sm group-hover:text-secondary transition-colors">R4</div>
+<div class="h-8 bg-surface-container-lowest rounded-full overflow-hidden flex items-center p-1">
+<div class="h-full bg-secondary rounded-full" style="width: 25%;"></div>
+</div>
+<div class="flex items-center justify-end gap-3">
+<span class="bg-secondary/10 text-secondary text-[9px] font-label px-1.5 py-0.5 border border-secondary/20 rounded-full tracking-tighter">CONVERGED</span>
+<div class="text-right font-label text-sm font-bold text-secondary">0.25</div>
+</div>
+</div>
+<!-- R5 Row -->
+<div class="grid grid-cols-[60px_1fr_80px] items-center gap-6 group">
+<div class="font-label text-on-surface-variant text-sm group-hover:text-secondary transition-colors">R5</div>
+<div class="h-8 bg-surface-container-lowest rounded-full overflow-hidden flex items-center p-1">
+<div class="h-full bg-secondary rounded-full" style="width: 18%;"></div>
+</div>
+<div class="text-right font-label text-sm font-bold text-secondary">0.18</div>
+</div>
+</div>
+<!-- Legend Section -->
+<div class="mt-16 pt-8 border-t border-outline-variant/10 flex flex-wrap gap-8">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Tempo</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Key</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Chords</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Dynamics</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Timing</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-white"></div>
+<span class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Aggregate</span>
+</div>
+</div>
+</section>
+<!-- Technical Meta Grid -->
+<section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface-container-low p-6 border-l-2 border-primary/40">
+<div class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest mb-2">Final Divergence</div>
+<div class="text-2xl font-bold font-headline text-white">0.182 <span class="text-secondary text-sm">(-78%)</span></div>
+</div>
+<div class="bg-surface-container-low p-6 border-l-2 border-tertiary/40">
+<div class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest mb-2">Confidence Score</div>
+<div class="text-2xl font-bold font-headline text-white">99.4%</div>
+</div>
+<div class="bg-surface-container-low p-6 border-l-2 border-secondary/40">
+<div class="text-[10px] font-label text-on-surface-variant uppercase tracking-widest mb-2">Latency Buffer</div>
+<div class="text-2xl font-bold font-headline text-white">12ms</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Ambient background glow for atmospheric depth -->
+<div class="fixed top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 blur-[120px] pointer-events-none rounded-full"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-secondary/5 blur-[100px] pointer-events-none rounded-full"></div>
+</body></html>

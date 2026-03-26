@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SfWOqqDZEWI",
+    "language": "en",
+    "took_ms": 8239,
+    "method": null,
+    "title": "DEF CON 33 - QRAMM: The Cryptographic Migration to a Post Quantum World -  Emily Fane, Abdel Sy Fane",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1350,
+    "description": "With the NIST standardization of post-quantum cryptography, organizations must prepare to transition from legacy cryptographic systems to quantum-resistant alternatives. Yet the scale and complexity of this migration require more than algorithmic swaps—they demand systemic agility and operational readiness. This talk introduces QRAMM (Quantum Readiness Assurance Maturity Model), an open-source framework co-developed by the speaker, designed to evaluate organizational preparedness across four key dimensions: cryptographic visibility, data protection, technical implementation, and governance. This talk introduces QRAMM’s design and practical applications, highlighting its focus on cryptographic agility as a foundation for adaptive, forward-compatible security planning in the quantum era.",
+    "view_count": 349
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SfWOqqDZEWI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

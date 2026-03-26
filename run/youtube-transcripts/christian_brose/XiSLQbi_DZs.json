@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XiSLQbi_DZs",
+    "language": "en",
+    "took_ms": 8691,
+    "method": null,
+    "title": "The Future of Autonomous Undersea Warfare",
+    "channel": "Hudson Institute",
+    "upload_date": "20250328",
+    "duration_sec": 3366,
+    "description": "The integration of uncrewed underwater vehicles (UUVs) with Virginia-class nuclear-powered submarines is transforming undersea warfare. This breakthrough enhances autonomous launch and recovery, extends stealth and survivability, and strengthens electronic warfare and intelligence, surveillance, and reconnaissance (ISR) operations in even the most complex undersea environments.\n\nJoin Hudson Institute’s Bryan Clark for a panel discussion on how crewed-uncrewed teaming and advanced electronic warfare integration are redefining undersea dominance. The conversation will explore the next generation of autonomous maritime defense, where stealth, surveillance, and strike capabilities promise to reach new heights.\n\nLearn more at https://www.hudson.org/events/future-autonomous-undersea-warfare-bryan-clark",
+    "view_count": 1444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XiSLQbi_DZs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

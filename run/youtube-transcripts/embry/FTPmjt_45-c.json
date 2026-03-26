@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FTPmjt_45-c",
+    "language": "en",
+    "took_ms": 7847,
+    "method": null,
+    "title": "Behind the Scenes Photoshop - \"Meteor Shower\" Live Stream with @EverydayAstronaut",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170103",
+    "duration_sec": 8353,
+    "description": "The Quadrantids meteor shower is tonight! What a perfect opportunity to shoot and edit a picture letting people know about it! Check out the final image on Instagram @EverydayAstronaut\n\nFollow my live streams on http://twitch.tv/everydayastronaut\n\nSupport me through Patreon at http://patreon.com/everydayastronaut",
+    "view_count": 6247
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FTPmjt_45-c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

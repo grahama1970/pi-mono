@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-6cThOCm9co",
+    "language": "en",
+    "took_ms": 7967,
+    "method": null,
+    "title": "A New CVSS For ICS Vulnerabilities",
+    "channel": "S4 Events",
+    "upload_date": "20190213",
+    "duration_sec": 2180,
+    "description": "The Common Vulnerability Scoring System (CVSS) is considered authoritative and yet it is highly flawed for ICS vulnerabilities. For example a medical system vulnerability that could cause death is rated lower than a vulnerability that could lead to spearphishing (in a zone that doesn't allow email).\n\nIn this session, Billy Rios, Clint Bodungen and Art Manion present their suggested modifications to the CVSS for ICS vulnerabilities. They score the same vulnerabilities and then discuss the pro's and con's of each others methods.",
+    "view_count": 2702
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -6cThOCm9co: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

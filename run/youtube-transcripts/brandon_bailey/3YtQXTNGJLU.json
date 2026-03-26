@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3YtQXTNGJLU",
+    "language": "en",
+    "took_ms": 7789,
+    "method": null,
+    "title": "DEF CON 30 - Emma Best & Xan North - Leak The Planet: Veritatem cognoscere non pereat mundus",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2851,
+    "description": "As leaks become more prevalent, they come from an increasing variety of sources: from data that simply isn't secured, to insiders, to hacktivists, and even occassional state-actors (both covert and overt). Often treated as a threat, when handled responsibly leaks are a necessary part of the ecosystem of a healthy and free society and economy. In spite of prosecutors' love of prosecution, the eternal fixation with Fear, Uncertainty and Doubt and DDoSecrets' apocalyptic motto, leaks won't destroy the world - they can only save it.\n\nIn this presentation, we'll discuss the necessity and evolution of leaks, and how various types of leaks and sources can offer different sorts of revelations. We'll then explore how we can responsibly handle different types of leaks even during volatile and politically charged situations, as well as past failures.\n\nWe'll also debunk the myth that hacktivism is just a cover for state actors by exploring examples of entities with state ties and how they were identified, as well as how both hacktivists and state actors have been misidentified or mishandled in the past.\n\nFinally, we'll discuss some of the lessons activists, newsrooms and governments can learn from the last decade, and where we should collectively go from here.",
+    "view_count": 1076
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3YtQXTNGJLU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

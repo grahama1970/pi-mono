@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "d3WiKofD-34",
+    "language": "en",
+    "took_ms": 8886,
+    "method": null,
+    "title": "Learn Multi AI Agent Systems with crewAI: Lesson 1",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240516",
+    "duration_sec": 707,
+    "description": "Enroll in the full course 👉 https://bit.ly/3K9y1u4\n\nMulti AI Agent Workflows with CrewAI is taught by João Moura, founder and CEO of crewAI, and it will teach you key principles of designing effective AI agents and how to organize a team of agents to perform complex, multi-step tasks. \n \nExplore key components of multi-agent systems: \n\n- Role-playing: Assign specialized roles to agents \n- Memory: Provide agents with short-term, long-term, and shared memory\n- Tools: Assign pre-built and custom tools to each agent (e.g. for web search)\n- Focus: Break down the tasks, goals, and tools and assign multiple AI agents for better performance\n- Guardrails: Effectively handle errors, hallucinations, and infinite loops\n- Cooperation: Perform tasks in series, in parallel, and hierarchically\n\nWork with crewAI, an open source library designed for building multi-agent systems, and get hands-on by building agent crews that execute common business processes, such as:\n\n- Tailor resumes and interview prep for job applications\n- Research, write, and edit technical articles\n- Automate customer support inquiries\n- Conduct customer outreach campaigns\n- Plan and execute events\n- Perform financial analysis\n\nIf you've taken some prompt engineering courses and want to incorporate LLMs in your professional work, then this course is designed for you.\n\nEnroll in the full course 👉 https://bit.ly/3K9y1u4",
+    "view_count": 10944
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] d3WiKofD-34: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

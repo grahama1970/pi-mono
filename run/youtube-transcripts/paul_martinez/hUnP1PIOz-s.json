@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hUnP1PIOz-s",
+    "language": "en",
+    "took_ms": 9250,
+    "method": null,
+    "title": "Rapid 7 / SCADAfence Integration for Vuln Management (and Q&A on getting into OT security)",
+    "channel": "S4 Events",
+    "upload_date": "20210414",
+    "duration_sec": 3679,
+    "description": "Rapid 7 recently made a \"Strategic Investment\" in SCADAfence's $12M B round and announced integration with the SCADAfence product. In the interview portion of the show, Dale Peterson interviews Justin Prince of Rapid 7 on their OT vision, what the integration will and won't do, where the Rapid 7 solution will sit, and future product directions. You can use your judgment on the status and completeness of the Rapid7 OT offerings.\n\nThen at 38:41 Mark Hyman, an OT Security recruiter with Verge Management Group, joins Dale to answer some OT Security job hunting questions that came in after Dale's recent article on solving the OT Cybersecurity Staffing challenge.",
+    "view_count": 708
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hUnP1PIOz-s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

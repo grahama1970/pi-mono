@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2hIOK0DwziE",
+    "language": "en",
+    "took_ms": 7886,
+    "method": null,
+    "title": "PLC and Level 1 Device Integrity in ICS",
+    "channel": "S4 Events",
+    "upload_date": "20160825",
+    "duration_sec": 1301,
+    "description": "Is the PLC / RTU / Controller in your industrial control system (ICS) running authentic firmware? Authentic ladder logic or programming? Authentic hardware? \n\nWatch Daniel Clarke of Schneider Electric's session at S4xEurope.",
+    "view_count": 462
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2hIOK0DwziE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

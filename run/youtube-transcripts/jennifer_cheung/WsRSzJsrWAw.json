@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WsRSzJsrWAw",
+    "language": "en",
+    "took_ms": 7679,
+    "method": null,
+    "title": "DEF CON 32 - Defeating Secure Code Review GPT Hallucinations - Wang Zhilong, Xinzhi Luo",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1077,
+    "description": "In this talk, we will discuss the strengths and limitations of LLMs for code analysis tasks like code search and code clone detection. We will show when the LLMs make mistakes and what kinds of mistakes they make. For example, we observe that the performance of popular LLMs heavily relies on the well-defined variable and function names, therefore, they will make mistakes when some misleading variable name is given. Anyone interested in exploring the intersection of AI and code security analysis can attend this talk.",
+    "view_count": 1379
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WsRSzJsrWAw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

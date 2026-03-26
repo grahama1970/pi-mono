@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sjd5LrzHus0",
+    "language": "en",
+    "took_ms": 7841,
+    "method": null,
+    "title": "DEF CON 32 - A dive into world of Aircraft PKI - Matt Gaffney",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1506,
+    "description": "From protecting Aircraft Software Parts to authenticating aircraft to ground networks, aircraft use PKI in their day-to-day operations. In this talk we will cover the typical use cases, technologies, and regulations in play and touch upon the emerging threat of the Post-Quantum world and what it could mean for the protection of embedded software we find on aircraft.",
+    "view_count": 805
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sjd5LrzHus0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

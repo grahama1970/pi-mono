@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZODLZuy6H4U",
+    "language": "en",
+    "took_ms": 8950,
+    "method": null,
+    "title": "DEF CON 33 - Hacking Hotel Locks: The Saflok Vulnerabilities Expanded -Noah Holland, Josh Stiebel",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2284,
+    "description": "Saflok locks are present in many hotels and apartments across North America. These locks rely on poorly-secured offline authentication mechanisms, leaving them vulnerable to attackers with basic knowledge about how the system operates. Following up on the initial \"Unsaflok\" presentation at DEF CON 32 by Lennert Wouters and Ian Carroll, this talk will touch on areas of the system not discussed in the original presentation, such as the handheld programmer, lock programming interface, clarity about the bit fields and unencrypted data in credentials, for yet another example of why you don't rely on security-through-obscurity for security products.",
+    "view_count": 3573
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZODLZuy6H4U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

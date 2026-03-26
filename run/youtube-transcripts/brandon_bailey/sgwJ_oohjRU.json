@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sgwJ_oohjRU",
+    "language": "en",
+    "took_ms": 9480,
+    "method": null,
+    "title": "DEF CON 29 HHV - Federico Lucifredi - Hardware Hacking 101 Rogue Keyboards and Spy Cables",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 3015,
+    "description": "This is a live tutorial of hacking with keystroke injection attacks. We take advantage of the inherent trust that computers place on what is believed to be a regular keyboard to unleash pre-programmed keystroke payloads at well over 1000 words a minute. We access the host system and bypass traditional security countermeasures for payloads that can include reverse shells, binary injection, brute force password attacks, and just about any attack that can be fully automated.\n\nWe misuse the trust the operating system places on USB human-interaction devices to demonstrate once again the old adage that if you can physically access a computing device, there is no real security to be had. I will review hardware, its capabilities, how to breach OS security, and how attackers can enable it to perform a variety of tasks with its own tools. I will then show how to build and install additional software and customize the device with binary or scripted payloads.\n\nWe take the discussion to the next level by removing the need for a device and exploring attacks that can be delivered directly by a plain USB cable. We dissect easily-sourced, low-cost hardware implants embedded in standard, innocent-looking USB cables providing an attacker with further capabilities, including among them the ability to track its own geolocation.",
+    "view_count": 3364
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sgwJ_oohjRU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

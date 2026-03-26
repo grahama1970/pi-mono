@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Q-rGVE9xCKw",
+    "language": "en",
+    "took_ms": 8737,
+    "method": null,
+    "title": "DEF CON 32 - Responding to Breaches, Ransomware, and State Sponsored Threat Actors - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2952,
+    "description": "For the past few years, we have had multiple instances of sophisticated cyber attacks ranging from ransomware attacks to attacks propagated by state sponsored threat actors; targeting elections, organizations, critical infrastructure etc. Organizations have had to step up and compensate with additional security controls and resources. We are living in a phase where even the most secure organizations are not immune to targeted cyber threats, the landscape of cyber security is in the state of constant evolution, with everybody playing to catch up.\n\nThis panel has been structured to delve into the complex and evolving nature of cyber adversaries. Beginning with an overview of recent cyber-attacks, breaches, and targeted ransomware incidents. We will also examine the rising wave of state sponsored threat actors, while focusing on their sophisticated adversary tactics, techniques and procedures.\n\nThis panel will focus on why organizations with even the most advanced cyber defense tooling and more than capable resources are still affected by breaches and threat actors. Our panel of experts will discuss the reasons behind these incidents and provide Insights into effective response and contentment strategies. Conversation will explore the critical components of how efficiently respond to threats, contain, and remediate them.\n\nAdditionally, the panel will also touch upon how threat intel assisted adversarial attack simulation, offensive cyber security operations could be used as proactive measures in enhancing an organization’s defense posture, offering valuable insights into the mindset and methodologies of potential attackers.",
+    "view_count": 437
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Q-rGVE9xCKw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

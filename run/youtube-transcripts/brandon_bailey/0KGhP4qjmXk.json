@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0KGhP4qjmXk",
+    "language": "en",
+    "took_ms": 8011,
+    "method": null,
+    "title": "DEF CON 33 - Scamming Scammers - Weaponizing OSS Against Pig Butchering, Organized Crime - Erin West",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3238,
+    "description": "Pig butchering scams are bleeding victims dry—more than $75 billion stolen globally—while thousands of trafficked slaves are forced to run these cons from scam compounds across Asia. These aren’t your typical romance scams; they’re military-grade psychological ops backed by transnational crime syndicates that have turned heartbreak into their most profitable business model. I’ll expose the full scope of this nightmare, tear apart the tech infrastructure behind it, and show how Operation Shamrock is fighting back. But here’s the thing—we need you in this fight. With open-source tools and good old-fashioned hacker ingenuity, we can educate potential marks, mobilize communities, and actively disrupt these criminal networks. No more sitting on the sidelines while these criminals destroy lives and exploit trafficking victims. It’s time to weaponize our skills and show these criminals what happens when they mess with the wrong community. Ready to scam the scammers?",
+    "view_count": 2064
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0KGhP4qjmXk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

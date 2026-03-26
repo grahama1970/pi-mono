@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space_Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#001e3c",
+                        "surface-container-highest": "#262626",
+                        "error-container": "#a70138",
+                        "secondary-dim": "#00ed7e",
+                        "error": "#ff6e84",
+                        "tertiary": "#6aabff",
+                        "tertiary-container": "#499dfe",
+                        "primary-dim": "#8a4cfc",
+                        "primary": "#bd9dff",
+                        "secondary": "#00fd87",
+                        "surface-tint": "#bd9dff",
+                        "tertiary-dim": "#4fa0ff",
+                        "outline-variant": "#484848",
+                        "inverse-on-surface": "#565555",
+                        "on-tertiary-fixed": "#001833",
+                        "primary-fixed-dim": "#a67aff",
+                        "on-surface-variant": "#adaaaa",
+                        "on-secondary-fixed": "#004621",
+                        "tertiary-fixed": "#7bb3ff",
+                        "primary-container": "#b28cff",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed": "#b28cff",
+                        "surface-container-low": "#131313",
+                        "surface": "#141414",
+                        "on-error": "#490013",
+                        "surface-container": "#191a1a",
+                        "on-secondary-container": "#e3ffe4",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "on-primary": "#3c0089",
+                        "inverse-surface": "#fcf9f8",
+                        "on-background": "#ffffff",
+                        "on-tertiary": "#002a52",
+                        "on-error-container": "#ffb2b9",
+                        "surface-container-high": "#202020",
+                        "on-primary-container": "#2e006c",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "on-primary-fixed": "#000000",
+                        "background": "#141414",
+                        "secondary-container": "#006d37",
+                        "outline": "#767575",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "inverse-primary": "#742fe5",
+                        "secondary-fixed": "#00fd87",
+                        "on-primary-fixed-variant": "#390083",
+                        "error-dim": "#d73357",
+                        "on-secondary-fixed-variant": "#006632",
+                        "surface-bright": "#2c2c2c",
+                        "on-secondary": "#005b2c",
+                        "surface-dim": "#141414",
+                        "surface-variant": "#262626",
+                        "on-surface": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        .selection-glow-blue { filter: drop-shadow(0 0 8px rgba(0, 150, 255, 0.4)); }
+        .selection-glow-green { filter: drop-shadow(0 0 8px rgba(0, 253, 135, 0.4)); }
+        .selection-glow-orange { filter: drop-shadow(0 0 8px rgba(255, 145, 0, 0.4)); }
+    </style>
+</head>
+<body class="bg-[#141414] text-on-surface font-body overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="w-full h-16 flex items-center bg-[#141414] border-b border-outline-variant/10 px-8 justify-between z-50">
+<div class="flex items-center gap-8">
+<span class="font-headline text-xl font-bold tracking-tighter text-primary">Sonic Observatory</span>
+<div class="hidden md:flex items-center gap-6 font-body text-sm font-medium">
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">Projects</a>
+<a class="text-primary border-b-2 border-primary-dim py-5" href="#">Observatory</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">Engines</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-highest px-4 py-1.5 rounded-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface placeholder:text-outline w-48" placeholder="Search references..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">JD</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)]">
+<!-- Sidebar Removed as requested -->
+<!-- Main Workspace Canvas -->
+<main class="flex-1 flex flex-col bg-[#141414] overflow-y-auto custom-scrollbar">
+<!-- Header Section -->
+<section class="p-12 pb-6 flex items-start justify-between">
+<div class="flex gap-8 items-center">
+<div class="relative group">
+<img alt="Album Art" class="w-20 h-20 rounded-lg object-cover shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJiBRcIXvw0svsKM5VBSFhFr0bPG95rjmCGuWVrn24077SjvA747LtULv1YGnHzAfdMkKIWzN90ioSaicN_My-OWlg3u5BmQtUWTfyaw2wQlOvI-P4EHhWptbcim4QKxr7QpFbwN0ob5WYgUeSl1bgMkO5haP--3O34K6ynYssz4JneXIqM_VyKP_6tSDs85jrot752sqSJioC6l0OwxZuXYorK8SbMQanYyutre2AS2mMt-Pe07CioKEuGJIbCalTKlfqFk3wU5k"/>
+<div class="absolute inset-0 border border-white/10 rounded-lg"></div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h1 class="text-3xl font-headline font-extrabold tracking-tighter">Roads</h1>
+<span class="font-label text-[10px] bg-surface-container px-2 py-0.5 rounded border border-outline-variant/20 text-on-surface-variant tracking-widest uppercase">Reference</span>
+</div>
+<p class="font-body text-on-surface font-medium opacity-90">Portishead · Dummy 1994 · 85 BPM · D minor</p>
+<p class="font-body text-sm text-on-surface-variant mt-1">Select reference clips for <span class="text-primary-fixed italic">Whisperheads</span> session</p>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="bg-surface-container-low p-1 rounded-lg flex">
+<button class="px-6 py-2 rounded-md text-on-surface-variant font-label uppercase tracking-widest text-[10px] hover:text-on-surface transition-all">Song</button>
+<button class="px-6 py-2 rounded-md bg-surface-container-highest text-primary font-label uppercase tracking-widest text-[10px] shadow-sm">Stems</button>
+</div>
+</div>
+</section>
+<!-- Multi-Track Waveform Workspace -->
+<section class="px-12 py-6 relative">
+<div class="w-full bg-[#1c1c1c]/50 rounded-xl relative border border-outline-variant/5 overflow-hidden flex flex-col">
+<!-- Timeline markers & Section Labels -->
+<div class="h-10 w-full border-b border-outline-variant/10 flex items-center px-16 relative font-label text-[9px] text-outline tracking-widest bg-surface-container-low/30">
+<div class="absolute inset-0 px-16 flex items-center justify-between pointer-events-none opacity-40">
+<span>0:00</span><span>0:30</span><span>1:00</span><span>1:30</span><span>2:00</span><span>2:30</span><span>3:00</span><span>3:30</span><span>4:00</span><span>4:30</span><span>5:00</span>
+</div>
+<!-- Section Boundary Labels -->
+<div class="absolute top-0 bottom-0 left-[16%] flex items-center px-2 z-50">
+<span class="bg-[#141414] text-primary px-2 py-0.5 rounded-sm border border-primary/20 text-[8px] font-bold">INTRO 0:00-0:15</span>
+</div>
+<div class="absolute top-0 bottom-0 left-[35%] flex items-center px-2 z-50">
+<span class="bg-[#141414] text-secondary px-2 py-0.5 rounded-sm border border-secondary/20 text-[8px] font-bold">VERSE 0:15-1:23</span>
+</div>
+<div class="absolute top-0 bottom-0 left-[60%] flex items-center px-2 z-50">
+<span class="bg-[#141414] text-primary px-2 py-0.5 rounded-sm border border-primary/20 text-[8px] font-bold">CHORUS 1:23-2:10</span>
+</div>
+<div class="absolute top-0 bottom-0 left-[85%] flex items-center px-2 z-50">
+<span class="bg-[#141414] text-error px-2 py-0.5 rounded-sm border border-error/20 text-[8px] font-bold">VERSE 2 2:10-3:05</span>
+</div>
+</div>
+<div class="relative flex flex-col gap-2 p-4 pt-4 pb-12 bg-transparent">
+<!-- Auto-detected dashed lines (Background) -->
+<div class="absolute inset-0 pointer-events-none px-4 flex justify-between">
+<div class="w-px h-full border-l border-dashed border-outline-variant/30 ml-[5%]"></div>
+<div class="w-px h-full border-l border-dashed border-outline-variant/30 ml-[20%]"></div>
+<div class="w-px h-full border-l border-dashed border-outline-variant/30 ml-[45%]"></div>
+<div class="w-px h-full border-l border-dashed border-outline-variant/30 ml-[70%]"></div>
+</div>
+<!-- Track 1: Vocal -->
+<div class="relative h-[80px] bg-secondary rounded-lg flex items-center group overflow-hidden shadow-lg shadow-secondary/5">
+<div class="flex items-center gap-3 px-4 z-20 shrink-0">
+<button class="w-7 h-7 rounded bg-black/40 text-[10px] font-bold text-white flex items-center justify-center hover:bg-black/60 transition-colors">S</button>
+<span class="material-symbols-outlined text-white text-[20px]">mic</span>
+<div class="font-label text-[10px] font-bold text-black/60 tracking-widest uppercase">ROADS (VOCAL)</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none px-40">
+<svg class="w-full h-[80%] opacity-40" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path d="M0 50 L10 20 L20 80 L30 40 L40 60 L50 10 L60 90 L70 30 L80 70 L90 20 L100 80 L110 50 L120 10 L130 90 L140 40 L150 60 L160 20 L170 80 L180 50 L190 30 L200 70 L210 20 L220 80 L230 40 L240 60 L250 10 L260 90 L270 30 L280 70 L290 20 L300 80 L310 50 L320 10 L330 90 L340 40 L350 60 L360 20 L370 80 L380 50 L390 30 L400 70 L410 20 L420 80 L430 40 L440 60 L450 10 L460 90 L470 30 L480 70 L490 20 L500 80 L510 50 L520 10 L530 90 L540 40 L550 60 L560 20 L570 80 L580 50 L590 30 L600 70 L610 20 L620 80 L630 40 L640 60 L650 10 L660 90 L670 30 L680 70 L690 20 L700 80 L710 50 L720 10 L730 90 L740 40 L750 60 L760 20 L770 80 L780 50 L790 30 L800 70 L810 20 L820 80 L830 40 L840 60 L850 10 L860 90 L870 30 L880 70 L890 20 L900 80 L910 50 L920 10 L930 90 L940 40 L950 60 L960 20 L970 80 L980 50 L990 30 L1000 70" fill="none" stroke="black" stroke-width="1.5"></path>
+</svg>
+</div>
+<!-- Vocal Selection 1:20-1:50 (around 26-36% mark) -->
+<div class="absolute left-[26%] w-[10%] top-0 bottom-0 border-[3px] border-white/80 bg-white/10 selection-glow-green z-30">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-white/80"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-white/80"></div>
+<div class="absolute -bottom-7 left-1/2 -translate-x-1/2 bg-white text-secondary font-label text-[8px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap shadow-lg">vocal ref</div>
+</div>
+</div>
+<!-- Track 2: Bass -->
+<div class="relative h-[80px] bg-error rounded-lg flex items-center group overflow-hidden shadow-lg shadow-error/5">
+<div class="flex items-center gap-3 px-4 z-20 shrink-0">
+<button class="w-7 h-7 rounded bg-black/40 text-[10px] font-bold text-white flex items-center justify-center hover:bg-black/60 transition-colors">S</button>
+<span class="material-symbols-outlined text-white text-[20px]">music_note</span>
+<div class="font-label text-[10px] font-bold text-black/60 tracking-widest uppercase">ROADS (BASS)</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none px-40">
+<svg class="w-full h-[60%] opacity-40" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path d="M0 50 L50 30 L100 70 L150 40 L200 60 L250 20 L300 80 L350 30 L400 70 L450 40 L500 60 L550 20 L600 80 L650 30 L700 70 L750 40 L800 60 L850 20 L900 80 L950 30 L1000 70" fill="none" stroke="black" stroke-width="2.5"></path>
+</svg>
+</div>
+<!-- Bass Selection 0:30-1:00 (around 10-20% mark) -->
+<div class="absolute left-[10%] w-[10%] top-0 bottom-0 border-[3px] border-white/80 bg-white/10 selection-glow-blue z-30">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-white/80"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-white/80"></div>
+<div class="absolute -bottom-7 left-1/2 -translate-x-1/2 bg-white text-error font-label text-[8px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap shadow-lg">bass ref</div>
+</div>
+</div>
+<!-- Track 3: Drums -->
+<div class="relative h-[80px] bg-[#ff9100] rounded-lg flex items-center group overflow-hidden shadow-lg shadow-orange-500/10">
+<div class="flex items-center gap-3 px-4 z-20 shrink-0">
+<button class="w-7 h-7 rounded bg-black/40 text-[10px] font-bold text-white flex items-center justify-center hover:bg-black/60 transition-colors">S</button>
+<span class="material-symbols-outlined text-white text-[20px]">reorder</span>
+<div class="font-label text-[10px] font-bold text-black/60 tracking-widest uppercase">ROADS (DRUMS)</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none px-40">
+<svg class="w-full h-[80%] opacity-40" preserveaspectratio="none" viewbox="0 0 1000 100">
+<rect fill="black" height="60" width="4" x="20" y="20"></rect><rect fill="black" height="40" width="4" x="60" y="30"></rect><rect fill="black" height="80" width="4" x="100" y="10"></rect><rect fill="black" height="40" width="4" x="140" y="30"></rect><rect fill="black" height="60" width="4" x="180" y="20"></rect><rect fill="black" height="40" width="4" x="220" y="30"></rect><rect fill="black" height="80" width="4" x="260" y="10"></rect><rect fill="black" height="40" width="4" x="300" y="30"></rect>
+<rect fill="black" height="60" width="4" x="340" y="20"></rect><rect fill="black" height="40" width="4" x="380" y="30"></rect><rect fill="black" height="80" width="4" x="420" y="10"></rect><rect fill="black" height="40" width="4" x="460" y="30"></rect><rect fill="black" height="60" width="4" x="500" y="20"></rect><rect fill="black" height="40" width="4" x="540" y="30"></rect><rect fill="black" height="80" width="4" x="580" y="10"></rect><rect fill="black" height="40" width="4" x="620" y="30"></rect>
+<rect fill="black" height="60" width="4" x="660" y="20"></rect><rect fill="black" height="40" width="4" x="700" y="30"></rect><rect fill="black" height="80" width="4" x="740" y="10"></rect><rect fill="black" height="40" width="4" x="780" y="30"></rect><rect fill="black" height="60" width="4" x="820" y="20"></rect><rect fill="black" height="40" width="4" x="860" y="30"></rect><rect fill="black" height="80" width="4" x="900" y="10"></rect><rect fill="black" height="40" width="4" x="940" y="30"></rect>
+</svg>
+</div>
+<!-- Drums Selection 0:45-1:15 (around 15-25% mark) -->
+<div class="absolute left-[15%] w-[10%] top-0 bottom-0 border-[3px] border-white/80 bg-white/10 selection-glow-orange z-30">
+<div class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-white/80"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-white/80"></div>
+<div class="absolute -bottom-7 left-1/2 -translate-x-1/2 bg-white text-[#ff9100] font-label text-[8px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap shadow-lg">groove ref</div>
+</div>
+</div>
+<!-- Track 4: Keys -->
+<div class="relative h-[80px] bg-[#ffec3d] rounded-lg flex items-center group overflow-hidden shadow-lg shadow-yellow-500/10">
+<div class="flex items-center gap-3 px-4 z-20 shrink-0">
+<button class="w-7 h-7 rounded bg-black/40 text-[10px] font-bold text-white flex items-center justify-center hover:bg-black/60 transition-colors">S</button>
+<span class="material-symbols-outlined text-white text-[20px]">piano</span>
+<div class="font-label text-[10px] font-bold text-black/60 tracking-widest uppercase">ROADS (KEYS)</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none px-40">
+<svg class="w-full h-[80%] opacity-40" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path d="M0 50 C 50 10, 100 90, 150 50 S 250 10, 300 50 S 400 90, 450 50 S 550 10, 600 50 S 700 90, 750 50 S 850 10, 900 50 S 1000 90, 1050 50" fill="none" stroke="black" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Track 5: Guitar -->
+<div class="relative h-[80px] bg-tertiary-container rounded-lg flex items-center group overflow-hidden shadow-lg shadow-tertiary/10">
+<div class="flex items-center gap-3 px-4 z-20 shrink-0">
+<button class="w-7 h-7 rounded bg-black/40 text-[10px] font-bold text-white flex items-center justify-center hover:bg-black/60 transition-colors">S</button>
+<span class="material-symbols-outlined text-white text-[20px]">mode_fan</span>
+<div class="font-label text-[10px] font-bold text-black/60 tracking-widest uppercase">ROADS (GUITAR)</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none px-40">
+<svg class="w-full h-[70%] opacity-40" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path d="M0 50 Q 50 10, 100 50 T 200 50 T 300 50 T 400 50 T 500 50 T 600 50 T 700 50 T 800 50 T 900 50 T 1000 50" fill="none" stroke="black" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<!-- Playhead -->
+<div class="absolute top-0 bottom-0 left-[28%] w-px bg-white/80 z-50 shadow-[0_0_10px_rgba(255,255,255,0.8)] pointer-events-none">
+<div class="absolute -top-1 -left-1.5 w-3 h-3 bg-white rotate-45"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Reference Clips Panel -->
+<section class="p-12 pt-0">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label text-[10px] uppercase tracking-[2px] text-on-surface-variant">Selected Reference Clips</h3>
+<button class="flex items-center gap-2 text-primary font-label text-[10px] uppercase tracking-widest group">
+<span class="material-symbols-outlined text-[16px] group-hover:scale-110 transition-transform">add_box</span> Export Reference Pack
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/5 hover:border-secondary/20 transition-all cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<h4 class="font-headline font-bold text-sm"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#ff6e84]"></span> Bass · Verse Ref</div></h4>
+<p class="font-label text-[10px] text-secondary tracking-widest">0:20 — 0:50</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">more_vert</span>
+</div>
+<div class="bg-surface-container-lowest h-1.5 w-full rounded-full overflow-hidden mb-2">
+<div class="bg-secondary h-full w-[30%] shadow-[0_0_8px_rgba(0,253,135,0.3)]"></div>
+</div>
+<p class="font-body text-[11px] text-on-surface-variant line-clamp-1 italic">"sparse brooding bass feel"</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<h4 class="font-headline font-bold text-sm"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#00fd87]"></span> Vocal · Chorus Ref</div></h4>
+<p class="font-label text-[10px] text-primary tracking-widest">1:25 — 1:55</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">more_vert</span>
+</div>
+<div class="bg-surface-container-lowest h-1.5 w-full rounded-full overflow-hidden mb-2">
+<div class="bg-primary h-full w-[15%] shadow-[0_0_8px_rgba(189,157,255,0.3)]"></div>
+</div>
+<p class="font-body text-[11px] text-on-surface-variant line-clamp-1 italic">Layering vocal harmonies for depth...</p>
+</div>
+<!-- Add New Reference Slot -->
+<div class="border border-dashed border-outline-variant/20 rounded-xl flex flex-col items-center justify-center p-5 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-outline text-3xl mb-2">add_circle</span>
+<p class="font-label text-[10px] uppercase tracking-widest text-outline">Add Reference Clip</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

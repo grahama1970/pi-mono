@@ -1,0 +1,3773 @@
+{
+  "meta": {
+    "video_id": "nSTednV1uTA",
+    "language": "en",
+    "took_ms": 1514,
+    "method": "direct",
+    "title": "Stop coding AI: Use Runtime Topological Self-Assembly (UC, DeepMind)",
+    "channel": "Discover AI",
+    "upload_date": "20260225",
+    "duration_sec": 1962,
+    "description": "Stop coding AI: Use Runtime Topological Self-Assembly\nTopological AI: How AI Builds its own Multi-Agents\n\nDiscrete Topological Symbolic graphs for Multi-AI-Agents.\nMathematical optimization. \n\nAll rights w/ authors: \n\"OpenSage: Self-programming Agent Generation Engine\"\nHongwei Li * 1 Zhun Wang * 2 Qinrun Dai 3 Yuzhou Nie 1 Jinjun Peng 4 Ruitong Liu 3 Jingyang Zhang 5\nKaijie Zhu 1 Jingxuan He 2 Lun Wang 6 Yangruibo Ding 7 Yueqi Chen 3 Wenbo Guo 1 Dawn Song 2\nfrom\n1  UC Santa Barbara\n2  UC Berkeley \n3  University of Colorado Boulder \n4  Columbia University\n5  Duke University \n6  Google DeepMind \n7  UCLA\narXiv:2602.16891\n\n\"Discovering Multiagent Learning Algorithms with Large Language Models\"\nZun Li 1, John Schultz 1, Daniel Hennes 1 and Marc Lanctot 1\nfrom\n1  Google DeepMind\narXiv:2602.16928\n\n@googledeepmind @ucsantabarbara @UCBerkeley \n\n#airesearch \n#aiexplained \n#nextgenai \n#ucsantabarbara \n#ucberkeley \n#googledeepmind",
+    "view_count": 5720
+  },
+  "transcript": [
+    {
+      "text": "Hello [clears throat]",
+      "start": 0.56,
+      "duration": 2.879
+    },
+    {
+      "text": "community. So great that you are back.",
+      "start": 1.28,
+      "duration": 4.64
+    },
+    {
+      "text": "Now today we have some brand new papers",
+      "start": 3.439,
+      "duration": 5.2
+    },
+    {
+      "text": "that tell us humans please stop coding",
+      "start": 5.92,
+      "duration": 5.839
+    },
+    {
+      "text": "your agents and you might say what? So",
+      "start": 8.639,
+      "duration": 5.281
+    },
+    {
+      "text": "let's start. You know in my last videos",
+      "start": 11.759,
+      "duration": 3.84
+    },
+    {
+      "text": "I showed you that Google builds",
+      "start": 13.92,
+      "duration": 4.32
+    },
+    {
+      "text": "self-arning AI systems and you remember",
+      "start": 15.599,
+      "duration": 4.321
+    },
+    {
+      "text": "we were talking about your context",
+      "start": 18.24,
+      "duration": 4.879
+    },
+    {
+      "text": "learning and my very last video was",
+      "start": 19.92,
+      "duration": 5.68
+    },
+    {
+      "text": "about multi- aents and that AI agent",
+      "start": 23.119,
+      "duration": 5.681
+    },
+    {
+      "text": "invent new algorithms to survive here in",
+      "start": 25.6,
+      "duration": 5.919
+    },
+    {
+      "text": "a battle. Now today we're going to look",
+      "start": 28.8,
+      "duration": 5.84
+    },
+    {
+      "text": "at this and say okay so the emergion of",
+      "start": 31.519,
+      "duration": 4.88
+    },
+    {
+      "text": "the cooperation in the multi- aent",
+      "start": 34.64,
+      "duration": 4.96
+    },
+    {
+      "text": "environment was via what mechanism it",
+      "start": 36.399,
+      "duration": 4.961
+    },
+    {
+      "text": "was via an reinforcement learning",
+      "start": 39.6,
+      "duration": 5.52
+    },
+    {
+      "text": "optimized in context learning where our",
+      "start": 41.36,
+      "duration": 6.56
+    },
+    {
+      "text": "activations were optimized in a",
+      "start": 45.12,
+      "duration": 4.64
+    },
+    {
+      "text": "particular way via reinforcement",
+      "start": 47.92,
+      "duration": 4.72
+    },
+    {
+      "text": "learning. And today today we go the next",
+      "start": 49.76,
+      "duration": 5.279
+    },
+    {
+      "text": "step we go to the next technology and",
+      "start": 52.64,
+      "duration": 4.88
+    },
+    {
+      "text": "today we say you know what let's utilize",
+      "start": 55.039,
+      "duration": 4.401
+    },
+    {
+      "text": "here the complete left side let's",
+      "start": 57.52,
+      "duration": 4.879
+    },
+    {
+      "text": "utilize here the LLM as an optimizer",
+      "start": 59.44,
+      "duration": 7.84
+    },
+    {
+      "text": "itself to mutate and assemble discrete",
+      "start": 62.399,
+      "duration": 8.241
+    },
+    {
+      "text": "non-ifferiable symbolic graphs that",
+      "start": 67.28,
+      "duration": 6.64
+    },
+    {
+      "text": "dictate here the system logic for our",
+      "start": 70.64,
+      "duration": 7.68
+    },
+    {
+      "text": "multi- aent system. So you say this LLM",
+      "start": 73.92,
+      "duration": 8.16
+    },
+    {
+      "text": "is just an optimizer for my multi- aent",
+      "start": 78.32,
+      "duration": 5.92
+    },
+    {
+      "text": "learning.",
+      "start": 82.08,
+      "duration": 4.399
+    },
+    {
+      "text": "This is something that is absolutely",
+      "start": 84.24,
+      "duration": 4.32
+    },
+    {
+      "text": "fascinating from a mathematical side.",
+      "start": 86.479,
+      "duration": 4.721
+    },
+    {
+      "text": "But I will explain just the basic idea",
+      "start": 88.56,
+      "duration": 5.12
+    },
+    {
+      "text": "today.",
+      "start": 91.2,
+      "duration": 5.84
+    },
+    {
+      "text": "Now up until now we said hm okay AI AI",
+      "start": 93.68,
+      "duration": 6.0
+    },
+    {
+      "text": "and optimization occurs in a continuous",
+      "start": 97.04,
+      "duration": 5.68
+    },
+    {
+      "text": "differentiable space. No of course we",
+      "start": 99.68,
+      "duration": 4.479
+    },
+    {
+      "text": "defined a loss function. We",
+      "start": 102.72,
+      "duration": 3.52
+    },
+    {
+      "text": "parameterized it with the weight and",
+      "start": 104.159,
+      "duration": 4.64
+    },
+    {
+      "text": "because this space is continuous we can",
+      "start": 106.24,
+      "duration": 4.159
+    },
+    {
+      "text": "calculate our gradients. We can",
+      "start": 108.799,
+      "duration": 3.441
+    },
+    {
+      "text": "calculate our loss function our",
+      "start": 110.399,
+      "duration": 4.561
+    },
+    {
+      "text": "gradients our back propagation.",
+      "start": 112.24,
+      "duration": 4.64
+    },
+    {
+      "text": "Beautiful. [clears throat] Now it turns",
+      "start": 114.96,
+      "duration": 4.96
+    },
+    {
+      "text": "out if we are in the real world",
+      "start": 116.88,
+      "duration": 5.36
+    },
+    {
+      "text": "mathematical logic for algorithms and",
+      "start": 119.92,
+      "duration": 4.479
+    },
+    {
+      "text": "for system architecture",
+      "start": 122.24,
+      "duration": 4.879
+    },
+    {
+      "text": "they do not exist in continuous",
+      "start": 124.399,
+      "duration": 6.08
+    },
+    {
+      "text": "manifolds. I'm so sorry this is just a",
+      "start": 127.119,
+      "duration": 5.921
+    },
+    {
+      "text": "mathematical approximation.",
+      "start": 130.479,
+      "duration": 5.361
+    },
+    {
+      "text": "So now it is time that we move AI over",
+      "start": 133.04,
+      "duration": 5.199
+    },
+    {
+      "text": "into reality.",
+      "start": 135.84,
+      "duration": 4.479
+    },
+    {
+      "text": "Our logic, our algorithms, our system",
+      "start": 138.239,
+      "duration": 4.64
+    },
+    {
+      "text": "architecture do not exist on continuous",
+      "start": 140.319,
+      "duration": 4.401
+    },
+    {
+      "text": "manifold. Yes, you can calculate a",
+      "start": 142.879,
+      "duration": 3.521
+    },
+    {
+      "text": "gradient. Then you're somewhere in space",
+      "start": 144.72,
+      "duration": 3.76
+    },
+    {
+      "text": "and this space is empty. And then what",
+      "start": 146.4,
+      "duration": 4.0
+    },
+    {
+      "text": "you're doing? You're sitting in an empty",
+      "start": 148.48,
+      "duration": 3.92
+    },
+    {
+      "text": "space and just looking around and hoping",
+      "start": 150.4,
+      "duration": 4.72
+    },
+    {
+      "text": "the very next star you see somewhere is",
+      "start": 152.4,
+      "duration": 6.64
+    },
+    {
+      "text": "maybe here your cosine similarity.",
+      "start": 155.12,
+      "duration": 6.8
+    },
+    {
+      "text": "So they are logic and all of this. They",
+      "start": 159.04,
+      "duration": 5.12
+    },
+    {
+      "text": "are discrete. They are non-",
+      "start": 161.92,
+      "duration": 4.399
+    },
+    {
+      "text": "differentiable and they are highly",
+      "start": 164.16,
+      "duration": 5.04
+    },
+    {
+      "text": "compositional.",
+      "start": 166.319,
+      "duration": 4.64
+    },
+    {
+      "text": "Simple example. You cannot calculate the",
+      "start": 169.2,
+      "duration": 4.8
+    },
+    {
+      "text": "gradient of a for loop. No on a code. So",
+      "start": 170.959,
+      "duration": 6.721
+    },
+    {
+      "text": "today today I found two new new papers",
+      "start": 174.0,
+      "duration": 6.239
+    },
+    {
+      "text": "that have two new systems. But if you",
+      "start": 177.68,
+      "duration": 4.639
+    },
+    {
+      "text": "combine them your your brain just",
+      "start": 180.239,
+      "duration": 6.321
+    },
+    {
+      "text": "explodes. So yes, welcome.",
+      "start": 182.319,
+      "duration": 6.161
+    },
+    {
+      "text": "If you want an AI to optimize a complex",
+      "start": 186.56,
+      "duration": 4.08
+    },
+    {
+      "text": "system like discovering a new game",
+      "start": 188.48,
+      "duration": 4.24
+    },
+    {
+      "text": "theoretical mathematical formula for",
+      "start": 190.64,
+      "duration": 4.48
+    },
+    {
+      "text": "mathematical optimization like I will",
+      "start": 192.72,
+      "duration": 4.879
+    },
+    {
+      "text": "show you from deep mind or and this is",
+      "start": 195.12,
+      "duration": 4.56
+    },
+    {
+      "text": "the second paper here you want to",
+      "start": 197.599,
+      "duration": 4.64
+    },
+    {
+      "text": "architect here a multi- aent cyber",
+      "start": 199.68,
+      "duration": 4.8
+    },
+    {
+      "text": "security team but you want to have the",
+      "start": 202.239,
+      "duration": 4.961
+    },
+    {
+      "text": "mathematical optimum of this team and we",
+      "start": 204.48,
+      "duration": 6.24
+    },
+    {
+      "text": "call this open sage it must search here",
+      "start": 207.2,
+      "duration": 6.48
+    },
+    {
+      "text": "a combinatorial space of discrete",
+      "start": 210.72,
+      "duration": 5.599
+    },
+    {
+      "text": "structures so therefore we have to",
+      "start": 213.68,
+      "duration": 4.639
+    },
+    {
+      "text": "represent these discrete structures in a",
+      "start": 216.319,
+      "duration": 3.92
+    },
+    {
+      "text": "particular mathematical way and this is",
+      "start": 218.319,
+      "duration": 4.48
+    },
+    {
+      "text": "not anymore here continuous vector space",
+      "start": 220.239,
+      "duration": 5.601
+    },
+    {
+      "text": "but now we operate with symbolic graph",
+      "start": 222.799,
+      "duration": 5.281
+    },
+    {
+      "text": "structures",
+      "start": 225.84,
+      "duration": 5.6
+    },
+    {
+      "text": "okay so we need symbolic graphs okay no",
+      "start": 228.08,
+      "duration": 6.239
+    },
+    {
+      "text": "problem no because they provide a clear",
+      "start": 231.44,
+      "duration": 5.359
+    },
+    {
+      "text": "defined mathematical framework for",
+      "start": 234.319,
+      "duration": 4.721
+    },
+    {
+      "text": "compositionality and exact logical",
+      "start": 236.799,
+      "duration": 4.72
+    },
+    {
+      "text": "routing and they allow the malls here",
+      "start": 239.04,
+      "duration": 4.32
+    },
+    {
+      "text": "our LLMs to reason about the",
+      "start": 241.519,
+      "duration": 4.401
+    },
+    {
+      "text": "relationship and operations explicitly",
+      "start": 243.36,
+      "duration": 4.64
+    },
+    {
+      "text": "rather than rely on some fuzzy and",
+      "start": 245.92,
+      "duration": 4.879
+    },
+    {
+      "text": "tangled vector spaces of some disgusting",
+      "start": 248.0,
+      "duration": 5.36
+    },
+    {
+      "text": "neural attention head. My goodness, this",
+      "start": 250.799,
+      "duration": 4.72
+    },
+    {
+      "text": "is so 2025.",
+      "start": 253.36,
+      "duration": 4.24
+    },
+    {
+      "text": "So what we are talking about is semantic",
+      "start": 255.519,
+      "duration": 6.0
+    },
+    {
+      "text": "mutation over code graphs. And if it",
+      "start": 257.6,
+      "duration": 7.76
+    },
+    {
+      "text": "sounds a little bit strange, well it is.",
+      "start": 261.519,
+      "duration": 5.841
+    },
+    {
+      "text": "Now the idea is now that deep mind's",
+      "start": 265.36,
+      "duration": 4.64
+    },
+    {
+      "text": "alpha evolve optimization",
+      "start": 267.36,
+      "duration": 5.36
+    },
+    {
+      "text": "optimizes now the logic the algorithmic",
+      "start": 270.0,
+      "duration": 6.4
+    },
+    {
+      "text": "logic of EI. solvers",
+      "start": 272.72,
+      "duration": 6.4
+    },
+    {
+      "text": "because to an LLM a Python program I",
+      "start": 276.4,
+      "duration": 5.2
+    },
+    {
+      "text": "mean what is it just a string of text no",
+      "start": 279.12,
+      "duration": 4.72
+    },
+    {
+      "text": "but to a compiler a Python code is a",
+      "start": 281.6,
+      "duration": 5.039
+    },
+    {
+      "text": "tree data structure known as an abstract",
+      "start": 283.84,
+      "duration": 5.76
+    },
+    {
+      "text": "syntax tree a",
+      "start": 286.639,
+      "duration": 5.441
+    },
+    {
+      "text": "now guess what we are lucky because an",
+      "start": 289.6,
+      "duration": 5.2
+    },
+    {
+      "text": "est is a discrete symbolic graph where",
+      "start": 292.08,
+      "duration": 5.28
+    },
+    {
+      "text": "the interior nodes represent operation",
+      "start": 294.8,
+      "duration": 4.88
+    },
+    {
+      "text": "binop for binary operation or if for",
+      "start": 297.36,
+      "duration": 4.32
+    },
+    {
+      "text": "conditionals and the leaf node represent",
+      "start": 299.68,
+      "duration": 4.72
+    },
+    {
+      "text": "the variable order of the constants. So",
+      "start": 301.68,
+      "duration": 5.04
+    },
+    {
+      "text": "Alpha Evolve at Google DeepMind uses now",
+      "start": 304.4,
+      "duration": 4.079
+    },
+    {
+      "text": "the LLM",
+      "start": 306.72,
+      "duration": 4.319
+    },
+    {
+      "text": "in a very particular function not as an",
+      "start": 308.479,
+      "duration": 4.961
+    },
+    {
+      "text": "end to end solution but as a smart",
+      "start": 311.039,
+      "duration": 6.321
+    },
+    {
+      "text": "genetic operator to mutate the symbolic",
+      "start": 313.44,
+      "duration": 6.479
+    },
+    {
+      "text": "graph directly",
+      "start": 317.36,
+      "duration": 5.119
+    },
+    {
+      "text": "and you say no but wait the LLM is the",
+      "start": 319.919,
+      "duration": 5.601
+    },
+    {
+      "text": "eye intelligence no the LLM is becoming",
+      "start": 322.479,
+      "duration": 5.361
+    },
+    {
+      "text": "now the mathematical optimization",
+      "start": 325.52,
+      "duration": 6.0
+    },
+    {
+      "text": "intelligence for a discrete symbolic",
+      "start": 327.84,
+      "duration": 6.96
+    },
+    {
+      "text": "graph that can represent sent the system",
+      "start": 331.52,
+      "duration": 5.119
+    },
+    {
+      "text": "intelligence",
+      "start": 334.8,
+      "duration": 4.08
+    },
+    {
+      "text": "and if you say this sounds great let's",
+      "start": 336.639,
+      "duration": 4.0
+    },
+    {
+      "text": "continue I want to give you a simple",
+      "start": 338.88,
+      "duration": 4.319
+    },
+    {
+      "text": "example yeah imagine you have a standard",
+      "start": 340.639,
+      "duration": 4.881
+    },
+    {
+      "text": "counterfactual regret update equation a",
+      "start": 343.199,
+      "duration": 5.121
+    },
+    {
+      "text": "CFR equation now this is it in a",
+      "start": 345.52,
+      "duration": 5.119
+    },
+    {
+      "text": "continuous optimization space now this",
+      "start": 348.32,
+      "duration": 4.96
+    },
+    {
+      "text": "is it the best any could do is tune a",
+      "start": 350.639,
+      "duration": 4.321
+    },
+    {
+      "text": "continuous upper parameter here a",
+      "start": 353.28,
+      "duration": 4.16
+    },
+    {
+      "text": "particular learning radiator and here",
+      "start": 354.96,
+      "duration": 5.2
+    },
+    {
+      "text": "you have your particular optimization",
+      "start": 357.44,
+      "duration": 5.039
+    },
+    {
+      "text": "since we are in a continuous space now",
+      "start": 360.16,
+      "duration": 4.319
+    },
+    {
+      "text": "guess what if If you go out in the real",
+      "start": 362.479,
+      "duration": 4.881
+    },
+    {
+      "text": "world, if you have AI now here, what it",
+      "start": 364.479,
+      "duration": 5.84
+    },
+    {
+      "text": "really is in an ASD, this is a simple",
+      "start": 367.36,
+      "duration": 7.36
+    },
+    {
+      "text": "graph. No, this is it. However, if Alpha",
+      "start": 370.319,
+      "duration": 6.72
+    },
+    {
+      "text": "Wool searches now this discrete ASD",
+      "start": 374.72,
+      "duration": 4.56
+    },
+    {
+      "text": "space, it realizes it can add a",
+      "start": 377.039,
+      "duration": 5.44
+    },
+    {
+      "text": "nonlinear if note to the graph based on",
+      "start": 379.28,
+      "duration": 4.88
+    },
+    {
+      "text": "the sign of the regret, effectively",
+      "start": 382.479,
+      "duration": 3.84
+    },
+    {
+      "text": "mutating yet the graph structure to",
+      "start": 384.16,
+      "duration": 5.039
+    },
+    {
+      "text": "invent an entirely new function. Now",
+      "start": 386.319,
+      "duration": 5.521
+    },
+    {
+      "text": "yeah if you're familiar vr4 asymmetric",
+      "start": 389.199,
+      "duration": 5.201
+    },
+    {
+      "text": "boosting never mind. So a simple if",
+      "start": 391.84,
+      "duration": 5.359
+    },
+    {
+      "text": "function can mutate here the complete or",
+      "start": 394.4,
+      "duration": 4.72
+    },
+    {
+      "text": "build here a complete new function that",
+      "start": 397.199,
+      "duration": 4.56
+    },
+    {
+      "text": "we cannot build in a continuous",
+      "start": 399.12,
+      "duration": 6.079
+    },
+    {
+      "text": "optimization space.",
+      "start": 401.759,
+      "duration": 5.601
+    },
+    {
+      "text": "So this means searching here this",
+      "start": 405.199,
+      "duration": 5.681
+    },
+    {
+      "text": "particular space allows here for that we",
+      "start": 407.36,
+      "duration": 5.52
+    },
+    {
+      "text": "are able to discover phase transition",
+      "start": 410.88,
+      "duration": 4.24
+    },
+    {
+      "text": "and now we go for algorithmic phase",
+      "start": 412.88,
+      "duration": 4.319
+    },
+    {
+      "text": "transition. And please understand we are",
+      "start": 415.12,
+      "duration": 3.76
+    },
+    {
+      "text": "now purely in a mathematical",
+      "start": 417.199,
+      "duration": 5.761
+    },
+    {
+      "text": "optimization space. So a single added",
+      "start": 418.88,
+      "duration": 6.64
+    },
+    {
+      "text": "note like an if an if statement can",
+      "start": 422.96,
+      "duration": 4.959
+    },
+    {
+      "text": "radically alter the state dynamic of the",
+      "start": 425.52,
+      "duration": 4.799
+    },
+    {
+      "text": "algorithm in a way that tuning a",
+      "start": 427.919,
+      "duration": 6.161
+    },
+    {
+      "text": "continuous wide data cannot. So we have",
+      "start": 430.319,
+      "duration": 7.561
+    },
+    {
+      "text": "complete new options.",
+      "start": 434.08,
+      "duration": 3.8
+    },
+    {
+      "text": "Now let's go back to our counterfactual",
+      "start": 437.919,
+      "duration": 4.481
+    },
+    {
+      "text": "regret update equation. If you play",
+      "start": 439.84,
+      "duration": 4.255
+    },
+    {
+      "text": "rock, paper, scissors. Now,",
+      "start": 442.4,
+      "duration": 3.12
+    },
+    {
+      "text": "[clears throat] now let's say your",
+      "start": 444.095,
+      "duration": 4.145
+    },
+    {
+      "text": "strategy is you play rock 70%, paper 20%",
+      "start": 445.52,
+      "duration": 5.36
+    },
+    {
+      "text": "and scissors 10%. Now, the opponent best",
+      "start": 448.24,
+      "duration": 5.44
+    },
+    {
+      "text": "response is paper 100%. You will lose",
+      "start": 450.88,
+      "duration": 5.68
+    },
+    {
+      "text": "badly. So, in competitive games, if you",
+      "start": 453.68,
+      "duration": 4.72
+    },
+    {
+      "text": "play a fixed strategy, your opponent",
+      "start": 456.56,
+      "duration": 4.24
+    },
+    {
+      "text": "can't learn this and exploit it and you",
+      "start": 458.4,
+      "duration": 5.76
+    },
+    {
+      "text": "will continuously lose. But we want now",
+      "start": 460.8,
+      "duration": 5.839
+    },
+    {
+      "text": "a strategy that cannot be exploited, is",
+      "start": 464.16,
+      "duration": 4.56
+    },
+    {
+      "text": "stable, and if you have seen my last",
+      "start": 466.639,
+      "duration": 4.801
+    },
+    {
+      "text": "video, is a Nash equilibrium. you do not",
+      "start": 468.72,
+      "duration": 5.759
+    },
+    {
+      "text": "lose. So in this rock paper scissor",
+      "start": 471.44,
+      "duration": 5.039
+    },
+    {
+      "text": "scenario the national equilibrium is",
+      "start": 474.479,
+      "duration": 5.12
+    },
+    {
+      "text": "simple 1/3 1/3.",
+      "start": 476.479,
+      "duration": 5.601
+    },
+    {
+      "text": "Therefore the exploitability is now",
+      "start": 479.599,
+      "duration": 5.44
+    },
+    {
+      "text": "going or approaching zero. But this",
+      "start": 482.08,
+      "duration": 4.799
+    },
+    {
+      "text": "means if you reduce the exploitability",
+      "start": 485.039,
+      "duration": 4.241
+    },
+    {
+      "text": "see my last video we reach a nash",
+      "start": 486.879,
+      "duration": 3.921
+    },
+    {
+      "text": "equilibrium.",
+      "start": 489.28,
+      "duration": 5.68
+    },
+    {
+      "text": "We reach a suboptimal nash equilibrium.",
+      "start": 490.8,
+      "duration": 6.48
+    },
+    {
+      "text": "Now our method says if an action would",
+      "start": 494.96,
+      "duration": 5.2
+    },
+    {
+      "text": "have done better in the past",
+      "start": 497.28,
+      "duration": 5.28
+    },
+    {
+      "text": "increase its particular probability. So",
+      "start": 500.16,
+      "duration": 4.879
+    },
+    {
+      "text": "it uses now regret to shift to this",
+      "start": 502.56,
+      "duration": 5.52
+    },
+    {
+      "text": "particular probability mouse.",
+      "start": 505.039,
+      "duration": 5.28
+    },
+    {
+      "text": "Why is this working? Because if the",
+      "start": 508.08,
+      "duration": 4.079
+    },
+    {
+      "text": "total regret approaches zero then the",
+      "start": 510.319,
+      "duration": 4.001
+    },
+    {
+      "text": "total exploitability approaches zero.",
+      "start": 512.159,
+      "duration": 3.921
+    },
+    {
+      "text": "And this is mathematically proven for",
+      "start": 514.32,
+      "duration": 4.639
+    },
+    {
+      "text": "zero sum games.",
+      "start": 516.08,
+      "duration": 5.759
+    },
+    {
+      "text": "Now Google de mind shows us here another",
+      "start": 518.959,
+      "duration": 5.921
+    },
+    {
+      "text": "more complex example. They operate now",
+      "start": 521.839,
+      "duration": 7.12
+    },
+    {
+      "text": "on policy space response oracles. If",
+      "start": 524.88,
+      "duration": 6.24
+    },
+    {
+      "text": "you're into it, have a look at it. If",
+      "start": 528.959,
+      "duration": 4.241
+    },
+    {
+      "text": "not, never mind. Just think they did",
+      "start": 531.12,
+      "duration": 3.44
+    },
+    {
+      "text": "some real complex mathematical",
+      "start": 533.2,
+      "duration": 3.28
+    },
+    {
+      "text": "optimization theorem and they could",
+      "start": 534.56,
+      "duration": 4.959
+    },
+    {
+      "text": "further optimize it. So let's explain",
+      "start": 536.48,
+      "duration": 5.359
+    },
+    {
+      "text": "pureo using here the same rock paper",
+      "start": 539.519,
+      "duration": 5.841
+    },
+    {
+      "text": "scissor game. This purea and its basic",
+      "start": 541.839,
+      "duration": 6.721
+    },
+    {
+      "text": "idea thinks very differently. Instead of",
+      "start": 545.36,
+      "duration": 5.84
+    },
+    {
+      "text": "just adjusting probabilities directly,",
+      "start": 548.56,
+      "duration": 5.839
+    },
+    {
+      "text": "our PSO says let's build a population of",
+      "start": 551.2,
+      "duration": 6.079
+    },
+    {
+      "text": "strategy. So we work at first in policy",
+      "start": 554.399,
+      "duration": 5.761
+    },
+    {
+      "text": "space, not in the action space anymore.",
+      "start": 557.279,
+      "duration": 5.761
+    },
+    {
+      "text": "And second, we go with a population",
+      "start": 560.16,
+      "duration": 5.84
+    },
+    {
+      "text": "dynamics. So if our first element here",
+      "start": 563.04,
+      "duration": 5.84
+    },
+    {
+      "text": "adjusted a probability inside one",
+      "start": 566.0,
+      "duration": 6.32
+    },
+    {
+      "text": "evolving strategy like poker, this new",
+      "start": 568.88,
+      "duration": 5.44
+    },
+    {
+      "text": "PCO builds a mixture of multiple",
+      "start": 572.32,
+      "duration": 4.741
+    },
+    {
+      "text": "distinct strategies. So this PRCO",
+      "start": 574.32,
+      "duration": 3.28
+    },
+    {
+      "text": "[clears throat]",
+      "start": 577.061,
+      "duration": 3.179
+    },
+    {
+      "text": "says let's use here our deep",
+      "start": 577.6,
+      "duration": 5.04
+    },
+    {
+      "text": "reinforcement learning algorithm to",
+      "start": 580.24,
+      "duration": 5.12
+    },
+    {
+      "text": "compute the approximate best response.",
+      "start": 582.64,
+      "duration": 4.72
+    },
+    {
+      "text": "And you already see where we're going.",
+      "start": 585.36,
+      "duration": 4.72
+    },
+    {
+      "text": "We using now here the LLM and",
+      "start": 587.36,
+      "duration": 5.76
+    },
+    {
+      "text": "reinforcement learning of this LLM to",
+      "start": 590.08,
+      "duration": 8.12
+    },
+    {
+      "text": "get a system optimization procedure.",
+      "start": 593.12,
+      "duration": 5.08
+    },
+    {
+      "text": "I want to show you both systems here.",
+      "start": 598.64,
+      "duration": 3.84
+    },
+    {
+      "text": "You know in multi- aent systems here",
+      "start": 600.48,
+      "duration": 3.76
+    },
+    {
+      "text": "optimizing against current opponent lead",
+      "start": 602.48,
+      "duration": 4.16
+    },
+    {
+      "text": "to cycles and exploitation they solve",
+      "start": 604.24,
+      "duration": 5.12
+    },
+    {
+      "text": "this here by CFR by minimizing the",
+      "start": 606.64,
+      "duration": 4.96
+    },
+    {
+      "text": "regret and I showed you this is then",
+      "start": 609.36,
+      "duration": 4.88
+    },
+    {
+      "text": "simple 1/3 if you go with rock paper",
+      "start": 611.6,
+      "duration": 4.88
+    },
+    {
+      "text": "scissor or if you go here with a policy",
+      "start": 614.24,
+      "duration": 5.839
+    },
+    {
+      "text": "optimization PSO iteratively eliminating",
+      "start": 616.48,
+      "duration": 5.919
+    },
+    {
+      "text": "the exploitability you have a meter",
+      "start": 620.079,
+      "duration": 4.401
+    },
+    {
+      "text": "equilibrium but you have the same you",
+      "start": 622.399,
+      "duration": 5.201
+    },
+    {
+      "text": "have one/3 for rock paper scissor in the",
+      "start": 624.48,
+      "duration": 7.76
+    },
+    {
+      "text": "in the final congrent state. So both aim",
+      "start": 627.6,
+      "duration": 6.799
+    },
+    {
+      "text": "for a Nash equilibrium. This means zero",
+      "start": 632.24,
+      "duration": 5.12
+    },
+    {
+      "text": "exploitability. But that we have many",
+      "start": 634.399,
+      "duration": 4.641
+    },
+    {
+      "text": "problems with the Nash equilibrium I",
+      "start": 637.36,
+      "duration": 4.719
+    },
+    {
+      "text": "showed you in my video yesterday.",
+      "start": 639.04,
+      "duration": 6.0
+    },
+    {
+      "text": "But let's stay simple. So this means our",
+      "start": 642.079,
+      "duration": 5.681
+    },
+    {
+      "text": "new technology is simple. Alpha Evolve",
+      "start": 645.04,
+      "duration": 6.0
+    },
+    {
+      "text": "and Open Sage operate on discrete",
+      "start": 647.76,
+      "duration": 6.96
+    },
+    {
+      "text": "symbolic graphs. This is it. And as I've",
+      "start": 651.04,
+      "duration": 6.16
+    },
+    {
+      "text": "shown you, A is here an example here in",
+      "start": 654.72,
+      "duration": 5.52
+    },
+    {
+      "text": "DeepMind's case. And now let's get here",
+      "start": 657.2,
+      "duration": 6.8
+    },
+    {
+      "text": "to open s because they go now here with",
+      "start": 660.24,
+      "duration": 7.76
+    },
+    {
+      "text": "a topological execution graph and they",
+      "start": 664.0,
+      "duration": 7.36
+    },
+    {
+      "text": "go now into multi- aent dynamics and",
+      "start": 668.0,
+      "duration": 7.279
+    },
+    {
+      "text": "agent tool use and tool calling and to",
+      "start": 671.36,
+      "duration": 8.479
+    },
+    {
+      "text": "um yeah in general into ADKs.",
+      "start": 675.279,
+      "duration": 7.68
+    },
+    {
+      "text": "Now again a topological execution graph",
+      "start": 679.839,
+      "duration": 5.361
+    },
+    {
+      "text": "is a directed a cyclic graph and",
+      "start": 682.959,
+      "duration": 4.88
+    },
+    {
+      "text": "sometimes a cyclic graph where the nodes",
+      "start": 685.2,
+      "duration": 5.28
+    },
+    {
+      "text": "represent isolated execution state the",
+      "start": 687.839,
+      "duration": 5.201
+    },
+    {
+      "text": "parent agent the sub agent the tool",
+      "start": 690.48,
+      "duration": 4.96
+    },
+    {
+      "text": "sandbox or the vector the graph memory",
+      "start": 693.04,
+      "duration": 5.52
+    },
+    {
+      "text": "state and the edges simple represent",
+      "start": 695.44,
+      "duration": 5.68
+    },
+    {
+      "text": "control and information flow. The agent",
+      "start": 698.56,
+      "duration": 6.32
+    },
+    {
+      "text": "A spawns an agent B. A and B execute a",
+      "start": 701.12,
+      "duration": 8.0
+    },
+    {
+      "text": "particular tool T1 and tool T returns",
+      "start": 704.88,
+      "duration": 6.72
+    },
+    {
+      "text": "standard out to a memory node M",
+      "start": 709.12,
+      "duration": 4.08
+    },
+    {
+      "text": "everything that we know. But now",
+      "start": 711.6,
+      "duration": 3.44
+    },
+    {
+      "text": "everything is defined as a topological",
+      "start": 713.2,
+      "duration": 4.0
+    },
+    {
+      "text": "execution graph.",
+      "start": 715.04,
+      "duration": 3.919
+    },
+    {
+      "text": "And if you think about the mathematical",
+      "start": 717.2,
+      "duration": 4.16
+    },
+    {
+      "text": "branch of graph theory, you immediately",
+      "start": 718.959,
+      "duration": 4.401
+    },
+    {
+      "text": "understand we can use now all the tools",
+      "start": 721.36,
+      "duration": 4.88
+    },
+    {
+      "text": "that we have for Matt graph theory to",
+      "start": 723.36,
+      "duration": 4.88
+    },
+    {
+      "text": "optimize the topological execution graph",
+      "start": 726.24,
+      "duration": 4.48
+    },
+    {
+      "text": "for a particular job.",
+      "start": 728.24,
+      "duration": 4.8
+    },
+    {
+      "text": "So this means in the previous ADKs like",
+      "start": 730.72,
+      "duration": 6.799
+    },
+    {
+      "text": "lang chain the graph was static. So we",
+      "start": 733.04,
+      "duration": 5.919
+    },
+    {
+      "text": "had a let's call it the human",
+      "start": 737.519,
+      "duration": 3.601
+    },
+    {
+      "text": "engineering whatever hard codes here a",
+      "start": 738.959,
+      "duration": 5.201
+    },
+    {
+      "text": "rigid pipeline. Yeah. And now they tell",
+      "start": 741.12,
+      "duration": 7.36
+    },
+    {
+      "text": "us the time of the humans is over.",
+      "start": 744.16,
+      "duration": 7.6
+    },
+    {
+      "text": "Now in open sage we enable a runtime",
+      "start": 748.48,
+      "duration": 6.72
+    },
+    {
+      "text": "topological generation of this. So this",
+      "start": 751.76,
+      "duration": 5.36
+    },
+    {
+      "text": "means the LLM the intelligence if you",
+      "start": 755.2,
+      "duration": 5.52
+    },
+    {
+      "text": "want of the LLM decides now in real time",
+      "start": 757.12,
+      "duration": 6.48
+    },
+    {
+      "text": "how to construct and branch this graph",
+      "start": 760.72,
+      "duration": 4.799
+    },
+    {
+      "text": "based on the environment on the task",
+      "start": 763.6,
+      "duration": 4.16
+    },
+    {
+      "text": "complexity itself on the vertical and on",
+      "start": 765.519,
+      "duration": 4.081
+    },
+    {
+      "text": "the horizontal topological complexity",
+      "start": 767.76,
+      "duration": 3.92
+    },
+    {
+      "text": "that we will encounter. Let me give you",
+      "start": 769.6,
+      "duration": 4.239
+    },
+    {
+      "text": "an example. Let's say the task is to fix",
+      "start": 771.68,
+      "duration": 6.24
+    },
+    {
+      "text": "a complex C++ memory corruption bug",
+      "start": 773.839,
+      "duration": 7.281
+    },
+    {
+      "text": "in a flat context. No beautiful we have",
+      "start": 777.92,
+      "duration": 6.159
+    },
+    {
+      "text": "hallucinating whatever connections great",
+      "start": 781.12,
+      "duration": 5.519
+    },
+    {
+      "text": "but in the new approach the topological",
+      "start": 784.079,
+      "duration": 4.56
+    },
+    {
+      "text": "execution graph with open sage what we",
+      "start": 786.639,
+      "duration": 5.121
+    },
+    {
+      "text": "have the parent agent creates now let's",
+      "start": 788.639,
+      "duration": 5.041
+    },
+    {
+      "text": "say a vertical topology graph at the",
+      "start": 791.76,
+      "duration": 4.879
+    },
+    {
+      "text": "runtime so it spawns a sub agent one for",
+      "start": 793.68,
+      "duration": 6.08
+    },
+    {
+      "text": "the static analysis giving it only the",
+      "start": 796.639,
+      "duration": 5.041
+    },
+    {
+      "text": "code [clears throat] tool",
+      "start": 799.76,
+      "duration": 5.04
+    },
+    {
+      "text": "second concurrently it spawns a sub aent",
+      "start": 801.68,
+      "duration": 5.52
+    },
+    {
+      "text": "two the dynamic analysis giving it an",
+      "start": 804.8,
+      "duration": 5.039
+    },
+    {
+      "text": "isolated debugger tool and a separate",
+      "start": 807.2,
+      "duration": 5.759
+    },
+    {
+      "text": "docker sandbox. Third, the graph",
+      "start": 809.839,
+      "duration": 6.0
+    },
+    {
+      "text": "branches into two isolated context. Sub",
+      "start": 812.959,
+      "duration": 4.88
+    },
+    {
+      "text": "agent one and two maintain distinct",
+      "start": 815.839,
+      "duration": 4.56
+    },
+    {
+      "text": "clean memory trees. And four, they",
+      "start": 817.839,
+      "duration": 4.881
+    },
+    {
+      "text": "return the concise high signal summaries",
+      "start": 820.399,
+      "duration": 4.481
+    },
+    {
+      "text": "back to the parent node to execute",
+      "start": 822.72,
+      "duration": 6.16
+    },
+    {
+      "text": "another patch. You see the difference?",
+      "start": 824.88,
+      "duration": 6.079
+    },
+    {
+      "text": "This means that a topological execution",
+      "start": 828.88,
+      "duration": 4.639
+    },
+    {
+      "text": "graph can act as an attention firewall",
+      "start": 830.959,
+      "duration": 5.12
+    },
+    {
+      "text": "because by encapsulating the logic into",
+      "start": 833.519,
+      "duration": 5.521
+    },
+    {
+      "text": "distinct nodes, we kind of artificially",
+      "start": 836.079,
+      "duration": 5.281
+    },
+    {
+      "text": "forced the LLM to restrict its reasoning",
+      "start": 839.04,
+      "duration": 5.2
+    },
+    {
+      "text": "to isolated highly relevant sub problem",
+      "start": 841.36,
+      "duration": 6.479
+    },
+    {
+      "text": "sub region separated sub complexity",
+      "start": 844.24,
+      "duration": 5.52
+    },
+    {
+      "text": "preventing here catastrophic context",
+      "start": 847.839,
+      "duration": 4.8
+    },
+    {
+      "text": "collapse. So this helps us a lot if you",
+      "start": 849.76,
+      "duration": 5.36
+    },
+    {
+      "text": "get it right on the graph.",
+      "start": 852.639,
+      "duration": 4.961
+    },
+    {
+      "text": "So this means here",
+      "start": 855.12,
+      "duration": 4.719
+    },
+    {
+      "text": "we stop now with the introduction. Let's",
+      "start": 857.6,
+      "duration": 4.239
+    },
+    {
+      "text": "start here with the real lesson. The",
+      "start": 859.839,
+      "duration": 3.521
+    },
+    {
+      "text": "first reflection from the introduction",
+      "start": 861.839,
+      "duration": 4.24
+    },
+    {
+      "text": "is instead of treating you an LLM as the",
+      "start": 863.36,
+      "duration": 5.2
+    },
+    {
+      "text": "final end to it solver.",
+      "start": 866.079,
+      "duration": 4.081
+    },
+    {
+      "text": "These new approaches I'm going to show",
+      "start": 868.56,
+      "duration": 5.04
+    },
+    {
+      "text": "you now utilize the LLM as just an",
+      "start": 870.16,
+      "duration": 6.88
+    },
+    {
+      "text": "optimizer. An optimizer to mutate and",
+      "start": 873.6,
+      "duration": 6.56
+    },
+    {
+      "text": "assemble now discrete non-ifferiable",
+      "start": 877.04,
+      "duration": 6.0
+    },
+    {
+      "text": "symbolic graphs. But the beauty is that",
+      "start": 880.16,
+      "duration": 5.28
+    },
+    {
+      "text": "those graphs dictate the system logic of",
+      "start": 883.04,
+      "duration": 4.799
+    },
+    {
+      "text": "multi- aent system. And this is exactly",
+      "start": 885.44,
+      "duration": 5.04
+    },
+    {
+      "text": "where we want to go.",
+      "start": 887.839,
+      "duration": 7.921
+    },
+    {
+      "text": "So let's build let the LLM build agents.",
+      "start": 890.48,
+      "duration": 7.28
+    },
+    {
+      "text": "This is the paper here again. Google",
+      "start": 895.76,
+      "duration": 4.4
+    },
+    {
+      "text": "deep mind. You see here 2026 February",
+      "start": 897.76,
+      "duration": 5.36
+    },
+    {
+      "text": "the 20th discovering multi-agent",
+      "start": 900.16,
+      "duration": 6.4
+    },
+    {
+      "text": "learning algorithms with LLMs.",
+      "start": 903.12,
+      "duration": 6.32
+    },
+    {
+      "text": "Read this again. Discovering new",
+      "start": 906.56,
+      "duration": 5.279
+    },
+    {
+      "text": "multi-agent learning algorithms. We're",
+      "start": 909.44,
+      "duration": 4.24
+    },
+    {
+      "text": "not any more game theoretical approach",
+      "start": 911.839,
+      "duration": 5.201
+    },
+    {
+      "text": "like in my last video. We let now the",
+      "start": 913.68,
+      "duration": 5.519
+    },
+    {
+      "text": "intelligence of the LLM in a",
+      "start": 917.04,
+      "duration": 4.32
+    },
+    {
+      "text": "mathematical optimization procedure that",
+      "start": 919.199,
+      "duration": 4.88
+    },
+    {
+      "text": "we define at first at least at first in",
+      "start": 921.36,
+      "duration": 4.64
+    },
+    {
+      "text": "the beginning",
+      "start": 924.079,
+      "duration": 4.241
+    },
+    {
+      "text": "let them discover new learning",
+      "start": 926.0,
+      "duration": 5.12
+    },
+    {
+      "text": "algorithms.",
+      "start": 928.32,
+      "duration": 5.519
+    },
+    {
+      "text": "And then the second paper that just",
+      "start": 931.12,
+      "duration": 4.24
+    },
+    {
+      "text": "happens to be published here or less on",
+      "start": 933.839,
+      "duration": 3.68
+    },
+    {
+      "text": "the same day is open sage",
+      "start": 935.36,
+      "duration": 3.76
+    },
+    {
+      "text": "self-programming",
+      "start": 937.519,
+      "duration": 5.521
+    },
+    {
+      "text": "agent generation engine",
+      "start": 939.12,
+      "duration": 6.0
+    },
+    {
+      "text": "which is crazy if you think about it but",
+      "start": 943.04,
+      "duration": 5.12
+    },
+    {
+      "text": "just look here at the end institution UC",
+      "start": 945.12,
+      "duration": 5.44
+    },
+    {
+      "text": "Santa Barbara UC Berkeley University of",
+      "start": 948.16,
+      "duration": 4.4
+    },
+    {
+      "text": "Colorado Boulder Columbia University",
+      "start": 950.56,
+      "duration": 5.36
+    },
+    {
+      "text": "Duke University guess what Google Deep",
+      "start": 952.56,
+      "duration": 5.68
+    },
+    {
+      "text": "Mind and UCLA.",
+      "start": 955.92,
+      "duration": 5.44
+    },
+    {
+      "text": "So Google currently has here if you want",
+      "start": 958.24,
+      "duration": 5.76
+    },
+    {
+      "text": "to go to the next generation AI or next",
+      "start": 961.36,
+      "duration": 5.76
+    },
+    {
+      "text": "next generation AI system Google is",
+      "start": 964.0,
+      "duration": 5.199
+    },
+    {
+      "text": "absolutely fascinating with the research",
+      "start": 967.12,
+      "duration": 4.32
+    },
+    {
+      "text": "it is producing and what it is",
+      "start": 969.199,
+      "duration": 5.2
+    },
+    {
+      "text": "experimenting with let's start here with",
+      "start": 971.44,
+      "duration": 6.0
+    },
+    {
+      "text": "the simpler one",
+      "start": 974.399,
+      "duration": 4.721
+    },
+    {
+      "text": "current agent development kits lang",
+      "start": 977.44,
+      "duration": 5.12
+    },
+    {
+      "text": "chain autogeni SDK restricted what we",
+      "start": 979.12,
+      "duration": 6.32
+    },
+    {
+      "text": "term the human center paradigm humans",
+      "start": 982.56,
+      "duration": 4.88
+    },
+    {
+      "text": "rigidly define here the deck the agent",
+      "start": 985.44,
+      "duration": 4.24
+    },
+    {
+      "text": "topology ology the static tool array and",
+      "start": 987.44,
+      "duration": 4.959
+    },
+    {
+      "text": "the flat vector database memory all",
+      "start": 989.68,
+      "duration": 4.159
+    },
+    {
+      "text": "problems break loose massive",
+      "start": 992.399,
+      "duration": 3.041
+    },
+    {
+      "text": "hallucination catastrophic context",
+      "start": 993.839,
+      "duration": 4.961
+    },
+    {
+      "text": "collapse everything that you know now",
+      "start": 995.44,
+      "duration": 7.44
+    },
+    {
+      "text": "open sage is here a first agent",
+      "start": 998.8,
+      "duration": 6.719
+    },
+    {
+      "text": "development kit that supports AI",
+      "start": 1002.88,
+      "duration": 5.199
+    },
+    {
+      "text": "centered agent construction and this",
+      "start": 1005.519,
+      "duration": 4.88
+    },
+    {
+      "text": "includes automatically generating the",
+      "start": 1008.079,
+      "duration": 4.88
+    },
+    {
+      "text": "right the correct agent topology for the",
+      "start": 1010.399,
+      "duration": 5.44
+    },
+    {
+      "text": "task designing the tools that are needed",
+      "start": 1012.959,
+      "duration": 4.88
+    },
+    {
+      "text": "for my particular task",
+      "start": 1015.839,
+      "duration": 4.961
+    },
+    {
+      "text": "And and this is really amazing, DI now",
+      "start": 1017.839,
+      "duration": 6.24
+    },
+    {
+      "text": "manages here a memory. It has a memory",
+      "start": 1020.8,
+      "duration": 7.119
+    },
+    {
+      "text": "optimization run internally to find here",
+      "start": 1024.079,
+      "duration": 6.641
+    },
+    {
+      "text": "the best memory configuration.",
+      "start": 1027.919,
+      "duration": 4.481
+    },
+    {
+      "text": "Humans don't have to do anything. Maybe",
+      "start": 1030.72,
+      "duration": 4.4
+    },
+    {
+      "text": "a cold start, but this is it. The rest",
+      "start": 1032.4,
+      "duration": 4.639
+    },
+    {
+      "text": "is a mathematical optimization program",
+      "start": 1035.12,
+      "duration": 4.959
+    },
+    {
+      "text": "that can be run by an LLM.",
+      "start": 1037.039,
+      "duration": 5.28
+    },
+    {
+      "text": "So the core idea is to provide a minimal",
+      "start": 1040.079,
+      "duration": 4.801
+    },
+    {
+      "text": "and yet essential scaffold that enables",
+      "start": 1042.319,
+      "duration": 5.281
+    },
+    {
+      "text": "an AI to automatically explore and",
+      "start": 1044.88,
+      "duration": 4.24
+    },
+    {
+      "text": "construct",
+      "start": 1047.6,
+      "duration": 2.8
+    },
+    {
+      "text": "agents that are perfect for the",
+      "start": 1049.12,
+      "duration": 3.52
+    },
+    {
+      "text": "complexity level and the difficulty of",
+      "start": 1050.4,
+      "duration": 5.84
+    },
+    {
+      "text": "my particular scientific job.",
+      "start": 1052.64,
+      "duration": 5.919
+    },
+    {
+      "text": "So if you want the absolute new idea is",
+      "start": 1056.24,
+      "duration": 5.28
+    },
+    {
+      "text": "here a runtime topological self",
+      "start": 1058.559,
+      "duration": 5.441
+    },
+    {
+      "text": "assembly.",
+      "start": 1061.52,
+      "duration": 4.159
+    },
+    {
+      "text": "You have never seen the eye with this",
+      "start": 1064.0,
+      "duration": 3.44
+    },
+    {
+      "text": "eyes.",
+      "start": 1065.679,
+      "duration": 3.921
+    },
+    {
+      "text": "So they tell you hey we are so great",
+      "start": 1067.44,
+      "duration": 4.479
+    },
+    {
+      "text": "open sage look we are implementing here",
+      "start": 1069.6,
+      "duration": 4.24
+    },
+    {
+      "text": "all the beautiful things that the other",
+      "start": 1071.919,
+      "duration": 5.201
+    },
+    {
+      "text": "never implemented beautiful and they",
+      "start": 1073.84,
+      "duration": 5.199
+    },
+    {
+      "text": "support dynamic creation execution",
+      "start": 1077.12,
+      "duration": 4.32
+    },
+    {
+      "text": "termination of sub agent during the task",
+      "start": 1079.039,
+      "duration": 4.64
+    },
+    {
+      "text": "execution we have a vertical agent",
+      "start": 1081.44,
+      "duration": 5.2
+    },
+    {
+      "text": "topology which this is nice which",
+      "start": 1083.679,
+      "duration": 5.681
+    },
+    {
+      "text": "decomposes the complex tasks into",
+      "start": 1086.64,
+      "duration": 5.36
+    },
+    {
+      "text": "sequential subtask to be completed by",
+      "start": 1089.36,
+      "duration": 5.36
+    },
+    {
+      "text": "specialized sub agents but also it takes",
+      "start": 1092.0,
+      "duration": 5.2
+    },
+    {
+      "text": "care about the horizontal agent topology",
+      "start": 1094.72,
+      "duration": 4.8
+    },
+    {
+      "text": "where multiple sub aents simultaneously",
+      "start": 1097.2,
+      "duration": 4.96
+    },
+    {
+      "text": "in parallel execute the same task like",
+      "start": 1099.52,
+      "duration": 4.64
+    },
+    {
+      "text": "search the internet for a particular",
+      "start": 1102.16,
+      "duration": 4.32
+    },
+    {
+      "text": "competitive analysis.",
+      "start": 1104.16,
+      "duration": 4.32
+    },
+    {
+      "text": "But beyond the topological flexibility,",
+      "start": 1106.48,
+      "duration": 4.72
+    },
+    {
+      "text": "open sage empowers the AI to construct",
+      "start": 1108.48,
+      "duration": 6.64
+    },
+    {
+      "text": "its own tools for the targeting task and",
+      "start": 1111.2,
+      "duration": 6.88
+    },
+    {
+      "text": "provide tool management function tool",
+      "start": 1115.12,
+      "duration": 5.76
+    },
+    {
+      "text": "orchestration state management execution",
+      "start": 1118.08,
+      "duration": 5.68
+    },
+    {
+      "text": "isolation and everything. This is simply",
+      "start": 1120.88,
+      "duration": 6.4
+    },
+    {
+      "text": "amazing. Plus, we don't stop here.",
+      "start": 1123.76,
+      "duration": 5.36
+    },
+    {
+      "text": "The SH agent just don't invoke the",
+      "start": 1127.28,
+      "duration": 4.24
+    },
+    {
+      "text": "tools, they compile them. So, it permits",
+      "start": 1129.12,
+      "duration": 5.04
+    },
+    {
+      "text": "the model to write Python or C++ script.",
+      "start": 1131.52,
+      "duration": 5.039
+    },
+    {
+      "text": "And plus, we have a hierarchical memory",
+      "start": 1134.16,
+      "duration": 6.08
+    },
+    {
+      "text": "system that is of course graph-based",
+      "start": 1136.559,
+      "duration": 6.24
+    },
+    {
+      "text": "that combines now the short-term history",
+      "start": 1140.24,
+      "duration": 5.04
+    },
+    {
+      "text": "with the long-term system knowledge",
+      "start": 1142.799,
+      "duration": 5.681
+    },
+    {
+      "text": "managed by a dedicated memory agent and",
+      "start": 1145.28,
+      "duration": 4.88
+    },
+    {
+      "text": "therefore it completely abolishes your",
+      "start": 1148.48,
+      "duration": 4.48
+    },
+    {
+      "text": "dense vector rack system.",
+      "start": 1150.16,
+      "duration": 6.32
+    },
+    {
+      "text": "What an interesting powerful system.",
+      "start": 1152.96,
+      "duration": 5.44
+    },
+    {
+      "text": "If you want to see here everything here",
+      "start": 1156.48,
+      "duration": 4.88
+    },
+    {
+      "text": "on one visualization, here you go. Open",
+      "start": 1158.4,
+      "duration": 6.32
+    },
+    {
+      "text": "Sage the topology structure, the tool",
+      "start": 1161.36,
+      "duration": 7.04
+    },
+    {
+      "text": "complexity and the memory optimization.",
+      "start": 1164.72,
+      "duration": 5.76
+    },
+    {
+      "text": "Such a nice idea. And yeah, and there go",
+      "start": 1168.4,
+      "duration": 5.36
+    },
+    {
+      "text": "we Neo4G graph structure.",
+      "start": 1170.48,
+      "duration": 5.28
+    },
+    {
+      "text": "Okay, now let's have a look at the",
+      "start": 1173.76,
+      "duration": 4.799
+    },
+    {
+      "text": "result. What are the benchmarks? We have",
+      "start": 1175.76,
+      "duration": 5.919
+    },
+    {
+      "text": "three cyber jam terminal bench and",
+      "start": 1178.559,
+      "duration": 5.841
+    },
+    {
+      "text": "another one. So our sage agent here now",
+      "start": 1181.679,
+      "duration": 5.201
+    },
+    {
+      "text": "we go with GD5. Let's go with medium. We",
+      "start": 1184.4,
+      "duration": 5.279
+    },
+    {
+      "text": "have here the ADK of open sage. Look",
+      "start": 1186.88,
+      "duration": 5.84
+    },
+    {
+      "text": "outperforms everything else. Terminal",
+      "start": 1189.679,
+      "duration": 6.0
+    },
+    {
+      "text": "bench we go now with a Gemini 3 Pro.",
+      "start": 1192.72,
+      "duration": 6.24
+    },
+    {
+      "text": "Open Sage outperforms everything else",
+      "start": 1195.679,
+      "duration": 6.721
+    },
+    {
+      "text": "here. Yes, you get the idea.",
+      "start": 1198.96,
+      "duration": 5.599
+    },
+    {
+      "text": "What's found interesting is stablation",
+      "start": 1202.4,
+      "duration": 3.76
+    },
+    {
+      "text": "analysis.",
+      "start": 1204.559,
+      "duration": 4.881
+    },
+    {
+      "text": "This is here for 300 instance subset of",
+      "start": 1206.16,
+      "duration": 5.68
+    },
+    {
+      "text": "cyber gym. We have here the resolved",
+      "start": 1209.44,
+      "duration": 5.76
+    },
+    {
+      "text": "rate. Okay. So full sage agent is here",
+      "start": 1211.84,
+      "duration": 7.839
+    },
+    {
+      "text": "64%. If there's no hor horizontal um",
+      "start": 1215.2,
+      "duration": 7.359
+    },
+    {
+      "text": "topology optimization or less no",
+      "start": 1219.679,
+      "duration": 4.721
+    },
+    {
+      "text": "vertical even less. Yeah. And if you",
+      "start": 1222.559,
+      "duration": 4.24
+    },
+    {
+      "text": "have no features of course.",
+      "start": 1224.4,
+      "duration": 5.04
+    },
+    {
+      "text": "And then also here for the tooling. If",
+      "start": 1226.799,
+      "duration": 4.721
+    },
+    {
+      "text": "you take away the tools look the",
+      "start": 1229.44,
+      "duration": 4.0
+    },
+    {
+      "text": "performance drops significantly. And if",
+      "start": 1231.52,
+      "duration": 3.519
+    },
+    {
+      "text": "you take away the features Yeah. Of",
+      "start": 1233.44,
+      "duration": 4.8
+    },
+    {
+      "text": "course. Yeah. Very nice is also here.",
+      "start": 1235.039,
+      "duration": 5.041
+    },
+    {
+      "text": "Let's compare these three benchmarks. A",
+      "start": 1238.24,
+      "duration": 5.04
+    },
+    {
+      "text": "gym terminal bench and s sw bench bro.",
+      "start": 1240.08,
+      "duration": 5.92
+    },
+    {
+      "text": "You see here if you go here with the",
+      "start": 1243.28,
+      "duration": 5.84
+    },
+    {
+      "text": "sage agent on ch5 for example or you go",
+      "start": 1246.0,
+      "duration": 5.679
+    },
+    {
+      "text": "with entropic ous 4.5 open hands with",
+      "start": 1249.12,
+      "duration": 7.439
+    },
+    {
+      "text": "gd5 or g3 of course means gemini 3 pro.",
+      "start": 1251.679,
+      "duration": 7.921
+    },
+    {
+      "text": "So you get the ideas here. It's really",
+      "start": 1256.559,
+      "duration": 7.12
+    },
+    {
+      "text": "outperforming the other stuff.",
+      "start": 1259.6,
+      "duration": 5.92
+    },
+    {
+      "text": "What I found interesting if you go here",
+      "start": 1263.679,
+      "duration": 4.721
+    },
+    {
+      "text": "and have a look here at the costs. No.",
+      "start": 1265.52,
+      "duration": 5.84
+    },
+    {
+      "text": "So we have here a Gemini 3 Pro. This is",
+      "start": 1268.4,
+      "duration": 4.72
+    },
+    {
+      "text": "here the thinking model, the planning",
+      "start": 1271.36,
+      "duration": 4.559
+    },
+    {
+      "text": "model, but we also have a GD5 mini here",
+      "start": 1273.12,
+      "duration": 5.76
+    },
+    {
+      "text": "in the mix in the set of possible LLMs",
+      "start": 1275.919,
+      "duration": 4.88
+    },
+    {
+      "text": "here for the agent. Yeah. And if we have",
+      "start": 1278.88,
+      "duration": 4.0
+    },
+    {
+      "text": "here, if you want a huge small",
+      "start": 1280.799,
+      "duration": 5.201
+    },
+    {
+      "text": "collaboration, this is here either we go",
+      "start": 1282.88,
+      "duration": 5.12
+    },
+    {
+      "text": "with Geminis 3 Pro, then we have this",
+      "start": 1286.0,
+      "duration": 5.44
+    },
+    {
+      "text": "performance 65.2 or we go with G5 mini.",
+      "start": 1288.0,
+      "duration": 7.12
+    },
+    {
+      "text": "And this is here on a terminal bench 2.0",
+      "start": 1291.44,
+      "duration": 6.16
+    },
+    {
+      "text": "31.7 or if you have this collaboration",
+      "start": 1295.12,
+      "duration": 5.28
+    },
+    {
+      "text": "between the two LLMs we have here 47.8",
+      "start": 1297.6,
+      "duration": 5.68
+    },
+    {
+      "text": "date. You see, this is almost identical",
+      "start": 1300.4,
+      "duration": 5.84
+    },
+    {
+      "text": "to a GPT5, the main one, not the mini",
+      "start": 1303.28,
+      "duration": 5.84
+    },
+    {
+      "text": "one, the main one.",
+      "start": 1306.24,
+      "duration": 5.919
+    },
+    {
+      "text": "But look at the difference of the costs",
+      "start": 1309.12,
+      "duration": 5.439
+    },
+    {
+      "text": "here. GBD5",
+      "start": 1312.159,
+      "duration": 5.76
+    },
+    {
+      "text": "would cost us whatever 40 cents, but",
+      "start": 1314.559,
+      "duration": 6.0
+    },
+    {
+      "text": "this collaboration would just cost 30",
+      "start": 1317.919,
+      "duration": 4.401
+    },
+    {
+      "text": "cents and we have almost the same",
+      "start": 1320.559,
+      "duration": 5.921
+    },
+    {
+      "text": "performance. So finding here the optimal",
+      "start": 1322.32,
+      "duration": 7.2
+    },
+    {
+      "text": "Gemini 3 Pro and Gemini 5 mini",
+      "start": 1326.48,
+      "duration": 6.24
+    },
+    {
+      "text": "configuration all the mathematical best",
+      "start": 1329.52,
+      "duration": 5.92
+    },
+    {
+      "text": "configuration is simply a mathematical",
+      "start": 1332.72,
+      "duration": 4.88
+    },
+    {
+      "text": "task. Hey and therefore we do have",
+      "start": 1335.44,
+      "duration": 3.44
+    },
+    {
+      "text": "computers therefore we do have",
+      "start": 1337.6,
+      "duration": 3.92
+    },
+    {
+      "text": "artificial or machine intelligence to",
+      "start": 1338.88,
+      "duration": 5.84
+    },
+    {
+      "text": "run this optimization tasks. So you see",
+      "start": 1341.52,
+      "duration": 6.159
+    },
+    {
+      "text": "this can help us a lot to find here for",
+      "start": 1344.72,
+      "duration": 4.72
+    },
+    {
+      "text": "the lowest price here the best",
+      "start": 1347.679,
+      "duration": 5.321
+    },
+    {
+      "text": "performance ratio.",
+      "start": 1349.44,
+      "duration": 3.56
+    },
+    {
+      "text": "Now they are really detailed and they",
+      "start": 1353.2,
+      "duration": 4.64
+    },
+    {
+      "text": "give you here in the annex everything",
+      "start": 1355.44,
+      "duration": 4.08
+    },
+    {
+      "text": "you need to know the tool called for",
+      "start": 1357.84,
+      "duration": 3.839
+    },
+    {
+      "text": "creating a sub agent for the debugging",
+      "start": 1359.52,
+      "duration": 3.92
+    },
+    {
+      "text": "or the tool called here for invoking the",
+      "start": 1361.679,
+      "duration": 4.641
+    },
+    {
+      "text": "debugging sub agent everything is",
+      "start": 1363.44,
+      "duration": 5.92
+    },
+    {
+      "text": "explicitly listed here in this archive",
+      "start": 1366.32,
+      "duration": 4.96
+    },
+    {
+      "text": "preprint. So if you want to have a deep",
+      "start": 1369.36,
+      "duration": 4.08
+    },
+    {
+      "text": "dive, you find everything you need right",
+      "start": 1371.28,
+      "duration": 4.639
+    },
+    {
+      "text": "over there. Okay, this was the first",
+      "start": 1373.44,
+      "duration": 5.359
+    },
+    {
+      "text": "paper. But now now comes the second",
+      "start": 1375.919,
+      "duration": 5.521
+    },
+    {
+      "text": "paper. Now really we go again to Google",
+      "start": 1378.799,
+      "duration": 5.041
+    },
+    {
+      "text": "deep mind discovering here the multi-",
+      "start": 1381.44,
+      "duration": 5.119
+    },
+    {
+      "text": "aent learning algorithms. This is a",
+      "start": 1383.84,
+      "duration": 5.52
+    },
+    {
+      "text": "heavy mathematical paper. Therefore I",
+      "start": 1386.559,
+      "duration": 4.48
+    },
+    {
+      "text": "just want to give you a feeling for",
+      "start": 1389.36,
+      "duration": 3.28
+    },
+    {
+      "text": "this. I just want to give you the main",
+      "start": 1391.039,
+      "duration": 5.201
+    },
+    {
+      "text": "idea how this is possible. Now by using",
+      "start": 1392.64,
+      "duration": 5.6
+    },
+    {
+      "text": "now the negative exploitability this is",
+      "start": 1396.24,
+      "duration": 3.439
+    },
+    {
+      "text": "simply the distance from our Nash",
+      "start": 1398.24,
+      "duration": 4.08
+    },
+    {
+      "text": "equilibrium as the fitness function the",
+      "start": 1399.679,
+      "duration": 4.721
+    },
+    {
+      "text": "LLM performs a symbolic gradient descent",
+      "start": 1402.32,
+      "duration": 4.479
+    },
+    {
+      "text": "on the code itself. Now discovering now",
+      "start": 1404.4,
+      "duration": 4.48
+    },
+    {
+      "text": "highly non-intuitive",
+      "start": 1406.799,
+      "duration": 4.801
+    },
+    {
+      "text": "maybe asymmetric and dynamically",
+      "start": 1408.88,
+      "duration": 5.76
+    },
+    {
+      "text": "adaptive mathematical updates.",
+      "start": 1411.6,
+      "duration": 6.4
+    },
+    {
+      "text": "So this means maybe the AI will discover",
+      "start": 1414.64,
+      "duration": 6.32
+    },
+    {
+      "text": "mathematical optimization routines pure",
+      "start": 1418.0,
+      "duration": 5.679
+    },
+    {
+      "text": "mathematical formulas that the humans",
+      "start": 1420.96,
+      "duration": 5.12
+    },
+    {
+      "text": "have not yet sorted off for a particular",
+      "start": 1423.679,
+      "duration": 6.321
+    },
+    {
+      "text": "kind of a job. Yes in in mathematics",
+      "start": 1426.08,
+      "duration": 6.24
+    },
+    {
+      "text": "people have spent hundreds of year",
+      "start": 1430.0,
+      "duration": 5.039
+    },
+    {
+      "text": "thinking about all possible problems but",
+      "start": 1432.32,
+      "duration": 4.719
+    },
+    {
+      "text": "maybe there is one particular problem",
+      "start": 1435.039,
+      "duration": 4.081
+    },
+    {
+      "text": "that we have not yet the best",
+      "start": 1437.039,
+      "duration": 5.12
+    },
+    {
+      "text": "mathematical solution. So why not use an",
+      "start": 1439.12,
+      "duration": 6.48
+    },
+    {
+      "text": "LLM to search for this solution? Yes, it",
+      "start": 1442.159,
+      "duration": 5.601
+    },
+    {
+      "text": "will cost a lot of money. Yes, will cost",
+      "start": 1445.6,
+      "duration": 3.68
+    },
+    {
+      "text": "a lot of time. Will cost a lot of",
+      "start": 1447.76,
+      "duration": 3.36
+    },
+    {
+      "text": "computer infrastructure. But hey, at",
+      "start": 1449.28,
+      "duration": 3.6
+    },
+    {
+      "text": "least we have something positive that",
+      "start": 1451.12,
+      "duration": 6.28
+    },
+    {
+      "text": "comes out of our machine intelligence.",
+      "start": 1452.88,
+      "duration": 4.52
+    },
+    {
+      "text": "Yours now apply alpha wolf an LLMdriven",
+      "start": 1457.679,
+      "duration": 5.201
+    },
+    {
+      "text": "evolutionary algorithm directly to the",
+      "start": 1460.24,
+      "duration": 4.4
+    },
+    {
+      "text": "Python source code. As I've shown you",
+      "start": 1462.88,
+      "duration": 3.6
+    },
+    {
+      "text": "here in the explanation, this is what we",
+      "start": 1464.64,
+      "duration": 4.24
+    },
+    {
+      "text": "call the abstract syntax tree, the ASD",
+      "start": 1466.48,
+      "duration": 4.559
+    },
+    {
+      "text": "of the solver itself.",
+      "start": 1468.88,
+      "duration": 4.72
+    },
+    {
+      "text": "And they go now here not for the PSRO",
+      "start": 1471.039,
+      "duration": 4.0
+    },
+    {
+      "text": "that I explained to you in the",
+      "start": 1473.6,
+      "duration": 3.679
+    },
+    {
+      "text": "introduction of this video, but they",
+      "start": 1475.039,
+      "duration": 5.201
+    },
+    {
+      "text": "have now a smoothed hybrid optimistic",
+      "start": 1477.279,
+      "duration": 5.841
+    },
+    {
+      "text": "regret PO and you already see on the",
+      "start": 1480.24,
+      "duration": 5.28
+    },
+    {
+      "text": "title, my goodness. So what they",
+      "start": 1483.12,
+      "duration": 5.2
+    },
+    {
+      "text": "discovered is a dynamic and kneeling",
+      "start": 1485.52,
+      "duration": 4.399
+    },
+    {
+      "text": "MASA.",
+      "start": 1488.32,
+      "duration": 3.44
+    },
+    {
+      "text": "So either you are now absolutely",
+      "start": 1489.919,
+      "duration": 5.681
+    },
+    {
+      "text": "fascinated or you say what anyway it's a",
+      "start": 1491.76,
+      "duration": 6.0
+    },
+    {
+      "text": "hybrid blending formulation where you",
+      "start": 1495.6,
+      "duration": 4.319
+    },
+    {
+      "text": "have a ma strategy that blends here the",
+      "start": 1497.76,
+      "duration": 3.84
+    },
+    {
+      "text": "rigorous stability of the optimistic",
+      "start": 1499.919,
+      "duration": 3.76
+    },
+    {
+      "text": "regret matching with a greedy",
+      "start": 1501.6,
+      "duration": 4.88
+    },
+    {
+      "text": "temperature mooded softmax over expected",
+      "start": 1503.679,
+      "duration": 4.801
+    },
+    {
+      "text": "pure strategy values and this is the",
+      "start": 1506.48,
+      "duration": 6.64
+    },
+    {
+      "text": "formula that it discovered developed.",
+      "start": 1508.48,
+      "duration": 7.679
+    },
+    {
+      "text": "So you do have now a dynamic transition",
+      "start": 1513.12,
+      "duration": 4.72
+    },
+    {
+      "text": "during the transition the training roll",
+      "start": 1516.159,
+      "duration": 3.201
+    },
+    {
+      "text": "out the blinding factor lambda is",
+      "start": 1517.84,
+      "duration": 3.839
+    },
+    {
+      "text": "dynamically annealed from a particular",
+      "start": 1519.36,
+      "duration": 5.04
+    },
+    {
+      "text": "range and the early iteration parameters",
+      "start": 1521.679,
+      "duration": 4.561
+    },
+    {
+      "text": "therefore the massive topological",
+      "start": 1524.4,
+      "duration": 4.879
+    },
+    {
+      "text": "expansion of the game graph. This means",
+      "start": 1526.24,
+      "duration": 6.08
+    },
+    {
+      "text": "we have the exploration via the softmax",
+      "start": 1529.279,
+      "duration": 5.201
+    },
+    {
+      "text": "while the later interaction we have here",
+      "start": 1532.32,
+      "duration": 4.64
+    },
+    {
+      "text": "decaying lambda to the transition into",
+      "start": 1534.48,
+      "duration": 4.64
+    },
+    {
+      "text": "exact regret based equilibrium",
+      "start": 1536.96,
+      "duration": 4.56
+    },
+    {
+      "text": "refinement steps. So again we have here",
+      "start": 1539.12,
+      "duration": 4.159
+    },
+    {
+      "text": "the equilibrium",
+      "start": 1541.52,
+      "duration": 3.6
+    },
+    {
+      "text": "the sensitive equilibrium between",
+      "start": 1543.279,
+      "duration": 4.321
+    },
+    {
+      "text": "exploration and exploitation.",
+      "start": 1545.12,
+      "duration": 4.72
+    },
+    {
+      "text": "Now you might say is this something here",
+      "start": 1547.6,
+      "duration": 5.199
+    },
+    {
+      "text": "with open claw? No this is not. Open",
+      "start": 1549.84,
+      "duration": 4.88
+    },
+    {
+      "text": "claw is just a simple communication",
+      "start": 1552.799,
+      "duration": 4.401
+    },
+    {
+      "text": "protocol. What we are talking about is",
+      "start": 1554.72,
+      "duration": 6.559
+    },
+    {
+      "text": "here two technologies later pure",
+      "start": 1557.2,
+      "duration": 6.4
+    },
+    {
+      "text": "mathematical optimization algorithms",
+      "start": 1561.279,
+      "duration": 5.28
+    },
+    {
+      "text": "that are really done by by sound",
+      "start": 1563.6,
+      "duration": 6.48
+    },
+    {
+      "text": "mathematical proven algorithms.",
+      "start": 1566.559,
+      "duration": 5.921
+    },
+    {
+      "text": "So this is like hey let's go crazy let's",
+      "start": 1570.08,
+      "duration": 5.44
+    },
+    {
+      "text": "go wild maybe we find something and the",
+      "start": 1572.48,
+      "duration": 5.84
+    },
+    {
+      "text": "video today is something about a clearly",
+      "start": 1575.52,
+      "duration": 5.84
+    },
+    {
+      "text": "deductive mathematical logical sequence",
+      "start": 1578.32,
+      "duration": 6.88
+    },
+    {
+      "text": "here to discover new optimization",
+      "start": 1581.36,
+      "duration": 6.16
+    },
+    {
+      "text": "theorems.",
+      "start": 1585.2,
+      "duration": 4.56
+    },
+    {
+      "text": "Now, let's talk about a synthesis",
+      "start": 1587.52,
+      "duration": 4.96
+    },
+    {
+      "text": "because I showed you both papers and I",
+      "start": 1589.76,
+      "duration": 5.519
+    },
+    {
+      "text": "was fascinated and I decided to take out",
+      "start": 1592.48,
+      "duration": 4.64
+    },
+    {
+      "text": "this both these two papers here out of",
+      "start": 1595.279,
+      "duration": 4.321
+    },
+    {
+      "text": "my stack and put these both papers right",
+      "start": 1597.12,
+      "duration": 4.72
+    },
+    {
+      "text": "next to each other and read both papers",
+      "start": 1599.6,
+      "duration": 5.04
+    },
+    {
+      "text": "with you together in this video in",
+      "start": 1601.84,
+      "duration": 4.959
+    },
+    {
+      "text": "parallel and I think if you read it in",
+      "start": 1604.64,
+      "duration": 4.48
+    },
+    {
+      "text": "parallel we have a scientific synthesis",
+      "start": 1606.799,
+      "duration": 4.48
+    },
+    {
+      "text": "I want to show you. So this is now my",
+      "start": 1609.12,
+      "duration": 3.679
+    },
+    {
+      "text": "opinion",
+      "start": 1611.279,
+      "duration": 3.681
+    },
+    {
+      "text": "I think but both papers sulfere the",
+      "start": 1612.799,
+      "duration": 5.681
+    },
+    {
+      "text": "limits of the human continuous reasoning",
+      "start": 1614.96,
+      "duration": 6.0
+    },
+    {
+      "text": "by inventing simply tools to navigate",
+      "start": 1618.48,
+      "duration": 5.36
+    },
+    {
+      "text": "your discrete graphs",
+      "start": 1620.96,
+      "duration": 4.4
+    },
+    {
+      "text": "and you have here the first deep mind",
+      "start": 1623.84,
+      "duration": 2.88
+    },
+    {
+      "text": "paper that tackles it a micro",
+      "start": 1625.36,
+      "duration": 3.679
+    },
+    {
+      "text": "architecture this means the pure",
+      "start": 1626.72,
+      "duration": 5.92
+    },
+    {
+      "text": "mathematical optimization logic by let's",
+      "start": 1629.039,
+      "duration": 6.401
+    },
+    {
+      "text": "say mutating the abstract syntax trees",
+      "start": 1632.64,
+      "duration": 4.8
+    },
+    {
+      "text": "it kind of proves that we can automate",
+      "start": 1635.44,
+      "duration": 5.04
+    },
+    {
+      "text": "the discovery of foundational optimiz",
+      "start": 1637.44,
+      "duration": 6.4
+    },
+    {
+      "text": "mathematical optimization rules and",
+      "start": 1640.48,
+      "duration": 5.76
+    },
+    {
+      "text": "mathematical compounds let's call it",
+      "start": 1643.84,
+      "duration": 4.88
+    },
+    {
+      "text": "something like physics no that govern",
+      "start": 1646.24,
+      "duration": 5.36
+    },
+    {
+      "text": "the learning process of multi agents now",
+      "start": 1648.72,
+      "duration": 4.8
+    },
+    {
+      "text": "open sage tackles here the macro",
+      "start": 1651.6,
+      "duration": 4.079
+    },
+    {
+      "text": "architecture the cognitive routing and",
+      "start": 1653.52,
+      "duration": 4.96
+    },
+    {
+      "text": "the context management by dynamically",
+      "start": 1655.679,
+      "duration": 5.441
+    },
+    {
+      "text": "building topological execution graphs it",
+      "start": 1658.48,
+      "duration": 4.96
+    },
+    {
+      "text": "kind of quotation mark proves that we",
+      "start": 1661.12,
+      "duration": 4.88
+    },
+    {
+      "text": "can automate to a high level the highle",
+      "start": 1663.44,
+      "duration": 5.04
+    },
+    {
+      "text": "cognitive routing distributing the",
+      "start": 1666.0,
+      "duration": 4.72
+    },
+    {
+      "text": "cognition across specialized subm",
+      "start": 1668.48,
+      "duration": 5.6
+    },
+    {
+      "text": "modules and building and controlling and",
+      "start": 1670.72,
+      "duration": 7.52
+    },
+    {
+      "text": "supervising memory hierarchies.",
+      "start": 1674.08,
+      "duration": 6.64
+    },
+    {
+      "text": "I see this as you see here as",
+      "start": 1678.24,
+      "duration": 5.28
+    },
+    {
+      "text": "microarchchitectural optimization and",
+      "start": 1680.72,
+      "duration": 5.92
+    },
+    {
+      "text": "macro architectural optimization. Here",
+      "start": 1683.52,
+      "duration": 4.56
+    },
+    {
+      "text": "we have the pure mathematical",
+      "start": 1686.64,
+      "duration": 3.519
+    },
+    {
+      "text": "optimization logic, the pure",
+      "start": 1688.08,
+      "duration": 5.68
+    },
+    {
+      "text": "mathematical formula and here we have if",
+      "start": 1690.159,
+      "duration": 5.681
+    },
+    {
+      "text": "you want the system configuration and",
+      "start": 1693.76,
+      "duration": 4.639
+    },
+    {
+      "text": "the best theoretical architecture, the",
+      "start": 1695.84,
+      "duration": 4.719
+    },
+    {
+      "text": "topological execution graph for",
+      "start": 1698.399,
+      "duration": 4.801
+    },
+    {
+      "text": "everything for what LLMs in what",
+      "start": 1700.559,
+      "duration": 5.521
+    },
+    {
+      "text": "combination with what tools build new",
+      "start": 1703.2,
+      "duration": 5.359
+    },
+    {
+      "text": "tools, connect new tools in new ways,",
+      "start": 1706.08,
+      "duration": 4.64
+    },
+    {
+      "text": "have a new highle cognitive routing",
+      "start": 1708.559,
+      "duration": 4.0
+    },
+    {
+      "text": "between LLMs and tools and everything",
+      "start": 1710.72,
+      "duration": 4.64
+    },
+    {
+      "text": "else. build subm modules, optimize the",
+      "start": 1712.559,
+      "duration": 5.6
+    },
+    {
+      "text": "subm modules and have new memory",
+      "start": 1715.36,
+      "duration": 5.439
+    },
+    {
+      "text": "hierarchies that are optimized here for",
+      "start": 1718.159,
+      "duration": 5.921
+    },
+    {
+      "text": "your control flow. This is the way I see",
+      "start": 1720.799,
+      "duration": 6.0
+    },
+    {
+      "text": "it. Maybe I made a mistake. Please leave",
+      "start": 1724.08,
+      "duration": 6.959
+    },
+    {
+      "text": "a comment in for this video.",
+      "start": 1726.799,
+      "duration": 7.201
+    },
+    {
+      "text": "But still, there's so much yet hidden in",
+      "start": 1731.039,
+      "duration": 5.36
+    },
+    {
+      "text": "these two papers. Please have a look",
+      "start": 1734.0,
+      "duration": 4.399
+    },
+    {
+      "text": "because I still scratch here my head and",
+      "start": 1736.399,
+      "duration": 4.88
+    },
+    {
+      "text": "say, hm, I have so many new ideas just",
+      "start": 1738.399,
+      "duration": 4.88
+    },
+    {
+      "text": "reading the paper. So I really would",
+      "start": 1741.279,
+      "duration": 3.361
+    },
+    {
+      "text": "recommend you have a look at both",
+      "start": 1743.279,
+      "duration": 4.241
+    },
+    {
+      "text": "papers. Anyway, the other message is",
+      "start": 1744.64,
+      "duration": 5.759
+    },
+    {
+      "text": "also that the human intuition to code",
+      "start": 1747.52,
+      "duration": 5.36
+    },
+    {
+      "text": "software engineering it has now become",
+      "start": 1750.399,
+      "duration": 5.841
+    },
+    {
+      "text": "the bottleneck of an AI design because",
+      "start": 1752.88,
+      "duration": 6.159
+    },
+    {
+      "text": "we humans we cannot visualize a",
+      "start": 1756.24,
+      "duration": 4.72
+    },
+    {
+      "text": "96dimensional",
+      "start": 1759.039,
+      "duration": 4.161
+    },
+    {
+      "text": "uh vector space and we have to optimize",
+      "start": 1760.96,
+      "duration": 5.199
+    },
+    {
+      "text": "now asymmetric logic that is required",
+      "start": 1763.2,
+      "duration": 6.4
+    },
+    {
+      "text": "for a new solo algebra. I can't see this",
+      "start": 1766.159,
+      "duration": 5.361
+    },
+    {
+      "text": "you know I can't imagine this. If you",
+      "start": 1769.6,
+      "duration": 4.72
+    },
+    {
+      "text": "can congratulation but in normal humans",
+      "start": 1771.52,
+      "duration": 5.12
+    },
+    {
+      "text": "can't do this. So therefore we invented",
+      "start": 1774.32,
+      "duration": 5.28
+    },
+    {
+      "text": "machine intelligence nor can we human",
+      "start": 1776.64,
+      "duration": 5.12
+    },
+    {
+      "text": "statically predict here the optimal",
+      "start": 1779.6,
+      "duration": 4.64
+    },
+    {
+      "text": "multi- aent structure required for to",
+      "start": 1781.76,
+      "duration": 5.44
+    },
+    {
+      "text": "patch your zero day C++ vulnerability.",
+      "start": 1784.24,
+      "duration": 4.96
+    },
+    {
+      "text": "We have some recipes we have some",
+      "start": 1787.2,
+      "duration": 4.88
+    },
+    {
+      "text": "templates. We have some empirical data.",
+      "start": 1789.2,
+      "duration": 6.24
+    },
+    {
+      "text": "But is it really mathematically proven",
+      "start": 1792.08,
+      "duration": 6.24
+    },
+    {
+      "text": "the best the optimal configuration to do",
+      "start": 1795.44,
+      "duration": 5.599
+    },
+    {
+      "text": "this job?",
+      "start": 1798.32,
+      "duration": 5.28
+    },
+    {
+      "text": "So therefore I think the future of AI",
+      "start": 1801.039,
+      "duration": 6.0
+    },
+    {
+      "text": "research really requires here to be",
+      "start": 1803.6,
+      "duration": 5.84
+    },
+    {
+      "text": "careful what we humans think we have to",
+      "start": 1807.039,
+      "duration": 5.921
+    },
+    {
+      "text": "hardcode into AI. Maybe we have to stop",
+      "start": 1809.44,
+      "duration": 6.64
+    },
+    {
+      "text": "hard coding here or trying to code the",
+      "start": 1812.96,
+      "duration": 5.52
+    },
+    {
+      "text": "complete machine intelligence. You know",
+      "start": 1816.08,
+      "duration": 4.88
+    },
+    {
+      "text": "if we have so many safety rules and",
+      "start": 1818.48,
+      "duration": 5.199
+    },
+    {
+      "text": "safeguards and optimizations",
+      "start": 1820.96,
+      "duration": 5.439
+    },
+    {
+      "text": "they are in fear with each other. They",
+      "start": 1823.679,
+      "duration": 4.88
+    },
+    {
+      "text": "conflict with each other. We see this",
+      "start": 1826.399,
+      "duration": 4.081
+    },
+    {
+      "text": "daily.",
+      "start": 1828.559,
+      "duration": 3.921
+    },
+    {
+      "text": "So maybe instead of focus purely on",
+      "start": 1830.48,
+      "duration": 5.439
+    },
+    {
+      "text": "building here the the sandboxes let's",
+      "start": 1832.48,
+      "duration": 6.319
+    },
+    {
+      "text": "call them and the compiler that would",
+      "start": 1835.919,
+      "duration": 5.441
+    },
+    {
+      "text": "allow here the machine intelligence to",
+      "start": 1838.799,
+      "duration": 4.88
+    },
+    {
+      "text": "architect itself. Yes we should",
+      "start": 1841.36,
+      "duration": 4.559
+    },
+    {
+      "text": "supervise this as humans. Yes, we should",
+      "start": 1843.679,
+      "duration": 5.441
+    },
+    {
+      "text": "absolutely control here everything but",
+      "start": 1845.919,
+      "duration": 5.601
+    },
+    {
+      "text": "you know give our machine intelligence a",
+      "start": 1849.12,
+      "duration": 5.12
+    },
+    {
+      "text": "little bit of space to explore some",
+      "start": 1851.52,
+      "duration": 5.279
+    },
+    {
+      "text": "unknown territory",
+      "start": 1854.24,
+      "duration": 5.439
+    },
+    {
+      "text": "because if we limit to the human",
+      "start": 1856.799,
+      "duration": 5.281
+    },
+    {
+      "text": "intelligence I'm I'm not sure that this",
+      "start": 1859.679,
+      "duration": 4.0
+    },
+    {
+      "text": "is the way forward for the machine",
+      "start": 1862.08,
+      "duration": 4.319
+    },
+    {
+      "text": "intelligence itself and yes of course",
+      "start": 1863.679,
+      "duration": 5.36
+    },
+    {
+      "text": "you know me I selected those papers",
+      "start": 1866.399,
+      "duration": 5.76
+    },
+    {
+      "text": "because I feel that maybe we can combine",
+      "start": 1869.039,
+      "duration": 6.0
+    },
+    {
+      "text": "the ideas of those separate papers",
+      "start": 1872.159,
+      "duration": 6.081
+    },
+    {
+      "text": "Because in my mind I already see how",
+      "start": 1875.039,
+      "duration": 5.52
+    },
+    {
+      "text": "maybe we can apply Alpha Evolve's",
+      "start": 1878.24,
+      "duration": 4.319
+    },
+    {
+      "text": "programmatic evolutionary search",
+      "start": 1880.559,
+      "duration": 4.24
+    },
+    {
+      "text": "routine, the mathematical optimization",
+      "start": 1882.559,
+      "duration": 5.281
+    },
+    {
+      "text": "routine to open Sage topological",
+      "start": 1884.799,
+      "duration": 5.201
+    },
+    {
+      "text": "parameters.",
+      "start": 1887.84,
+      "duration": 4.88
+    },
+    {
+      "text": "If we can do this, if you can do this,",
+      "start": 1890.0,
+      "duration": 6.32
+    },
+    {
+      "text": "hey, great. So instead of relying here",
+      "start": 1892.72,
+      "duration": 6.4
+    },
+    {
+      "text": "of a human to write here every single",
+      "start": 1896.32,
+      "duration": 5.12
+    },
+    {
+      "text": "prompt that tells your open sage model",
+      "start": 1899.12,
+      "duration": 4.72
+    },
+    {
+      "text": "how to construct sub agent how to do",
+      "start": 1901.44,
+      "duration": 5.119
+    },
+    {
+      "text": "this how to call here particular tools.",
+      "start": 1903.84,
+      "duration": 5.76
+    },
+    {
+      "text": "We should use reinforcement learning our",
+      "start": 1906.559,
+      "duration": 5.521
+    },
+    {
+      "text": "one and only learning methodology that",
+      "start": 1909.6,
+      "duration": 5.52
+    },
+    {
+      "text": "we have for AI to let the programmatic",
+      "start": 1912.08,
+      "duration": 7.76
+    },
+    {
+      "text": "logic of the AI evolve themsel. Let's",
+      "start": 1915.12,
+      "duration": 6.48
+    },
+    {
+      "text": "utilize the reinforcement learning",
+      "start": 1919.84,
+      "duration": 4.64
+    },
+    {
+      "text": "method that we have that is our only",
+      "start": 1921.6,
+      "duration": 5.36
+    },
+    {
+      "text": "learning mechanism in AI",
+      "start": 1924.48,
+      "duration": 4.64
+    },
+    {
+      "text": "to evolve here the programmatic logic of",
+      "start": 1926.96,
+      "duration": 4.88
+    },
+    {
+      "text": "the agent orchestrator itself.",
+      "start": 1929.12,
+      "duration": 5.12
+    },
+    {
+      "text": "This would be an interesting element not",
+      "start": 1931.84,
+      "duration": 5.12
+    },
+    {
+      "text": "here an open claw or multipart or",
+      "start": 1934.24,
+      "duration": 5.2
+    },
+    {
+      "text": "whatever. This would be an optimization",
+      "start": 1936.96,
+      "duration": 4.719
+    },
+    {
+      "text": "here for the performance of the system.",
+      "start": 1939.44,
+      "duration": 4.959
+    },
+    {
+      "text": "That would be really fascinating. And as",
+      "start": 1941.679,
+      "duration": 5.681
+    },
+    {
+      "text": "I've shown you from Google deep mind to",
+      "start": 1944.399,
+      "duration": 6.321
+    },
+    {
+      "text": "UC Berkeley, every if you want academic",
+      "start": 1947.36,
+      "duration": 5.76
+    },
+    {
+      "text": "institution seems to be currently",
+      "start": 1950.72,
+      "duration": 5.76
+    },
+    {
+      "text": "working on exactly this problem. I hope",
+      "start": 1953.12,
+      "duration": 4.799
+    },
+    {
+      "text": "you had a little bit of fun with this",
+      "start": 1956.48,
+      "duration": 2.72
+    },
+    {
+      "text": "video. I hope there were some new",
+      "start": 1957.919,
+      "duration": 5.441
+    },
+    {
+      "text": "insights. I hoped to see you in my next",
+      "start": 1959.2,
+      "duration": 4.16
+    }
+  ],
+  "full_text": "Hello [clears throat] community. So great that you are back. Now today we have some brand new papers that tell us humans please stop coding your agents and you might say what? So let's start. You know in my last videos I showed you that Google builds self-arning AI systems and you remember we were talking about your context learning and my very last video was about multi- aents and that AI agent invent new algorithms to survive here in a battle. Now today we're going to look at this and say okay so the emergion of the cooperation in the multi- aent environment was via what mechanism it was via an reinforcement learning optimized in context learning where our activations were optimized in a particular way via reinforcement learning. And today today we go the next step we go to the next technology and today we say you know what let's utilize here the complete left side let's utilize here the LLM as an optimizer itself to mutate and assemble discrete non-ifferiable symbolic graphs that dictate here the system logic for our multi- aent system. So you say this LLM is just an optimizer for my multi- aent learning. This is something that is absolutely fascinating from a mathematical side. But I will explain just the basic idea today. Now up until now we said hm okay AI AI and optimization occurs in a continuous differentiable space. No of course we defined a loss function. We parameterized it with the weight and because this space is continuous we can calculate our gradients. We can calculate our loss function our gradients our back propagation. Beautiful. [clears throat] Now it turns out if we are in the real world mathematical logic for algorithms and for system architecture they do not exist in continuous manifolds. I'm so sorry this is just a mathematical approximation. So now it is time that we move AI over into reality. Our logic, our algorithms, our system architecture do not exist on continuous manifold. Yes, you can calculate a gradient. Then you're somewhere in space and this space is empty. And then what you're doing? You're sitting in an empty space and just looking around and hoping the very next star you see somewhere is maybe here your cosine similarity. So they are logic and all of this. They are discrete. They are non- differentiable and they are highly compositional. Simple example. You cannot calculate the gradient of a for loop. No on a code. So today today I found two new new papers that have two new systems. But if you combine them your your brain just explodes. So yes, welcome. If you want an AI to optimize a complex system like discovering a new game theoretical mathematical formula for mathematical optimization like I will show you from deep mind or and this is the second paper here you want to architect here a multi- aent cyber security team but you want to have the mathematical optimum of this team and we call this open sage it must search here a combinatorial space of discrete structures so therefore we have to represent these discrete structures in a particular mathematical way and this is not anymore here continuous vector space but now we operate with symbolic graph structures okay so we need symbolic graphs okay no problem no because they provide a clear defined mathematical framework for compositionality and exact logical routing and they allow the malls here our LLMs to reason about the relationship and operations explicitly rather than rely on some fuzzy and tangled vector spaces of some disgusting neural attention head. My goodness, this is so 2025. So what we are talking about is semantic mutation over code graphs. And if it sounds a little bit strange, well it is. Now the idea is now that deep mind's alpha evolve optimization optimizes now the logic the algorithmic logic of EI. solvers because to an LLM a Python program I mean what is it just a string of text no but to a compiler a Python code is a tree data structure known as an abstract syntax tree a now guess what we are lucky because an est is a discrete symbolic graph where the interior nodes represent operation binop for binary operation or if for conditionals and the leaf node represent the variable order of the constants. So Alpha Evolve at Google DeepMind uses now the LLM in a very particular function not as an end to end solution but as a smart genetic operator to mutate the symbolic graph directly and you say no but wait the LLM is the eye intelligence no the LLM is becoming now the mathematical optimization intelligence for a discrete symbolic graph that can represent sent the system intelligence and if you say this sounds great let's continue I want to give you a simple example yeah imagine you have a standard counterfactual regret update equation a CFR equation now this is it in a continuous optimization space now this is it the best any could do is tune a continuous upper parameter here a particular learning radiator and here you have your particular optimization since we are in a continuous space now guess what if If you go out in the real world, if you have AI now here, what it really is in an ASD, this is a simple graph. No, this is it. However, if Alpha Wool searches now this discrete ASD space, it realizes it can add a nonlinear if note to the graph based on the sign of the regret, effectively mutating yet the graph structure to invent an entirely new function. Now yeah if you're familiar vr4 asymmetric boosting never mind. So a simple if function can mutate here the complete or build here a complete new function that we cannot build in a continuous optimization space. So this means searching here this particular space allows here for that we are able to discover phase transition and now we go for algorithmic phase transition. And please understand we are now purely in a mathematical optimization space. So a single added note like an if an if statement can radically alter the state dynamic of the algorithm in a way that tuning a continuous wide data cannot. So we have complete new options. Now let's go back to our counterfactual regret update equation. If you play rock, paper, scissors. Now, [clears throat] now let's say your strategy is you play rock 70%, paper 20% and scissors 10%. Now, the opponent best response is paper 100%. You will lose badly. So, in competitive games, if you play a fixed strategy, your opponent can't learn this and exploit it and you will continuously lose. But we want now a strategy that cannot be exploited, is stable, and if you have seen my last video, is a Nash equilibrium. you do not lose. So in this rock paper scissor scenario the national equilibrium is simple 1/3 1/3. Therefore the exploitability is now going or approaching zero. But this means if you reduce the exploitability see my last video we reach a nash equilibrium. We reach a suboptimal nash equilibrium. Now our method says if an action would have done better in the past increase its particular probability. So it uses now regret to shift to this particular probability mouse. Why is this working? Because if the total regret approaches zero then the total exploitability approaches zero. And this is mathematically proven for zero sum games. Now Google de mind shows us here another more complex example. They operate now on policy space response oracles. If you're into it, have a look at it. If not, never mind. Just think they did some real complex mathematical optimization theorem and they could further optimize it. So let's explain pureo using here the same rock paper scissor game. This purea and its basic idea thinks very differently. Instead of just adjusting probabilities directly, our PSO says let's build a population of strategy. So we work at first in policy space, not in the action space anymore. And second, we go with a population dynamics. So if our first element here adjusted a probability inside one evolving strategy like poker, this new PCO builds a mixture of multiple distinct strategies. So this PRCO [clears throat] says let's use here our deep reinforcement learning algorithm to compute the approximate best response. And you already see where we're going. We using now here the LLM and reinforcement learning of this LLM to get a system optimization procedure. I want to show you both systems here. You know in multi- aent systems here optimizing against current opponent lead to cycles and exploitation they solve this here by CFR by minimizing the regret and I showed you this is then simple 1/3 if you go with rock paper scissor or if you go here with a policy optimization PSO iteratively eliminating the exploitability you have a meter equilibrium but you have the same you have one/3 for rock paper scissor in the in the final congrent state. So both aim for a Nash equilibrium. This means zero exploitability. But that we have many problems with the Nash equilibrium I showed you in my video yesterday. But let's stay simple. So this means our new technology is simple. Alpha Evolve and Open Sage operate on discrete symbolic graphs. This is it. And as I've shown you, A is here an example here in DeepMind's case. And now let's get here to open s because they go now here with a topological execution graph and they go now into multi- aent dynamics and agent tool use and tool calling and to um yeah in general into ADKs. Now again a topological execution graph is a directed a cyclic graph and sometimes a cyclic graph where the nodes represent isolated execution state the parent agent the sub agent the tool sandbox or the vector the graph memory state and the edges simple represent control and information flow. The agent A spawns an agent B. A and B execute a particular tool T1 and tool T returns standard out to a memory node M everything that we know. But now everything is defined as a topological execution graph. And if you think about the mathematical branch of graph theory, you immediately understand we can use now all the tools that we have for Matt graph theory to optimize the topological execution graph for a particular job. So this means in the previous ADKs like lang chain the graph was static. So we had a let's call it the human engineering whatever hard codes here a rigid pipeline. Yeah. And now they tell us the time of the humans is over. Now in open sage we enable a runtime topological generation of this. So this means the LLM the intelligence if you want of the LLM decides now in real time how to construct and branch this graph based on the environment on the task complexity itself on the vertical and on the horizontal topological complexity that we will encounter. Let me give you an example. Let's say the task is to fix a complex C++ memory corruption bug in a flat context. No beautiful we have hallucinating whatever connections great but in the new approach the topological execution graph with open sage what we have the parent agent creates now let's say a vertical topology graph at the runtime so it spawns a sub agent one for the static analysis giving it only the code [clears throat] tool second concurrently it spawns a sub aent two the dynamic analysis giving it an isolated debugger tool and a separate docker sandbox. Third, the graph branches into two isolated context. Sub agent one and two maintain distinct clean memory trees. And four, they return the concise high signal summaries back to the parent node to execute another patch. You see the difference? This means that a topological execution graph can act as an attention firewall because by encapsulating the logic into distinct nodes, we kind of artificially forced the LLM to restrict its reasoning to isolated highly relevant sub problem sub region separated sub complexity preventing here catastrophic context collapse. So this helps us a lot if you get it right on the graph. So this means here we stop now with the introduction. Let's start here with the real lesson. The first reflection from the introduction is instead of treating you an LLM as the final end to it solver. These new approaches I'm going to show you now utilize the LLM as just an optimizer. An optimizer to mutate and assemble now discrete non-ifferiable symbolic graphs. But the beauty is that those graphs dictate the system logic of multi- aent system. And this is exactly where we want to go. So let's build let the LLM build agents. This is the paper here again. Google deep mind. You see here 2026 February the 20th discovering multi-agent learning algorithms with LLMs. Read this again. Discovering new multi-agent learning algorithms. We're not any more game theoretical approach like in my last video. We let now the intelligence of the LLM in a mathematical optimization procedure that we define at first at least at first in the beginning let them discover new learning algorithms. And then the second paper that just happens to be published here or less on the same day is open sage self-programming agent generation engine which is crazy if you think about it but just look here at the end institution UC Santa Barbara UC Berkeley University of Colorado Boulder Columbia University Duke University guess what Google Deep Mind and UCLA. So Google currently has here if you want to go to the next generation AI or next next generation AI system Google is absolutely fascinating with the research it is producing and what it is experimenting with let's start here with the simpler one current agent development kits lang chain autogeni SDK restricted what we term the human center paradigm humans rigidly define here the deck the agent topology ology the static tool array and the flat vector database memory all problems break loose massive hallucination catastrophic context collapse everything that you know now open sage is here a first agent development kit that supports AI centered agent construction and this includes automatically generating the right the correct agent topology for the task designing the tools that are needed for my particular task And and this is really amazing, DI now manages here a memory. It has a memory optimization run internally to find here the best memory configuration. Humans don't have to do anything. Maybe a cold start, but this is it. The rest is a mathematical optimization program that can be run by an LLM. So the core idea is to provide a minimal and yet essential scaffold that enables an AI to automatically explore and construct agents that are perfect for the complexity level and the difficulty of my particular scientific job. So if you want the absolute new idea is here a runtime topological self assembly. You have never seen the eye with this eyes. So they tell you hey we are so great open sage look we are implementing here all the beautiful things that the other never implemented beautiful and they support dynamic creation execution termination of sub agent during the task execution we have a vertical agent topology which this is nice which decomposes the complex tasks into sequential subtask to be completed by specialized sub agents but also it takes care about the horizontal agent topology where multiple sub aents simultaneously in parallel execute the same task like search the internet for a particular competitive analysis. But beyond the topological flexibility, open sage empowers the AI to construct its own tools for the targeting task and provide tool management function tool orchestration state management execution isolation and everything. This is simply amazing. Plus, we don't stop here. The SH agent just don't invoke the tools, they compile them. So, it permits the model to write Python or C++ script. And plus, we have a hierarchical memory system that is of course graph-based that combines now the short-term history with the long-term system knowledge managed by a dedicated memory agent and therefore it completely abolishes your dense vector rack system. What an interesting powerful system. If you want to see here everything here on one visualization, here you go. Open Sage the topology structure, the tool complexity and the memory optimization. Such a nice idea. And yeah, and there go we Neo4G graph structure. Okay, now let's have a look at the result. What are the benchmarks? We have three cyber jam terminal bench and another one. So our sage agent here now we go with GD5. Let's go with medium. We have here the ADK of open sage. Look outperforms everything else. Terminal bench we go now with a Gemini 3 Pro. Open Sage outperforms everything else here. Yes, you get the idea. What's found interesting is stablation analysis. This is here for 300 instance subset of cyber gym. We have here the resolved rate. Okay. So full sage agent is here 64%. If there's no hor horizontal um topology optimization or less no vertical even less. Yeah. And if you have no features of course. And then also here for the tooling. If you take away the tools look the performance drops significantly. And if you take away the features Yeah. Of course. Yeah. Very nice is also here. Let's compare these three benchmarks. A gym terminal bench and s sw bench bro. You see here if you go here with the sage agent on ch5 for example or you go with entropic ous 4.5 open hands with gd5 or g3 of course means gemini 3 pro. So you get the ideas here. It's really outperforming the other stuff. What I found interesting if you go here and have a look here at the costs. No. So we have here a Gemini 3 Pro. This is here the thinking model, the planning model, but we also have a GD5 mini here in the mix in the set of possible LLMs here for the agent. Yeah. And if we have here, if you want a huge small collaboration, this is here either we go with Geminis 3 Pro, then we have this performance 65.2 or we go with G5 mini. And this is here on a terminal bench 2.0 31.7 or if you have this collaboration between the two LLMs we have here 47.8 date. You see, this is almost identical to a GPT5, the main one, not the mini one, the main one. But look at the difference of the costs here. GBD5 would cost us whatever 40 cents, but this collaboration would just cost 30 cents and we have almost the same performance. So finding here the optimal Gemini 3 Pro and Gemini 5 mini configuration all the mathematical best configuration is simply a mathematical task. Hey and therefore we do have computers therefore we do have artificial or machine intelligence to run this optimization tasks. So you see this can help us a lot to find here for the lowest price here the best performance ratio. Now they are really detailed and they give you here in the annex everything you need to know the tool called for creating a sub agent for the debugging or the tool called here for invoking the debugging sub agent everything is explicitly listed here in this archive preprint. So if you want to have a deep dive, you find everything you need right over there. Okay, this was the first paper. But now now comes the second paper. Now really we go again to Google deep mind discovering here the multi- aent learning algorithms. This is a heavy mathematical paper. Therefore I just want to give you a feeling for this. I just want to give you the main idea how this is possible. Now by using now the negative exploitability this is simply the distance from our Nash equilibrium as the fitness function the LLM performs a symbolic gradient descent on the code itself. Now discovering now highly non-intuitive maybe asymmetric and dynamically adaptive mathematical updates. So this means maybe the AI will discover mathematical optimization routines pure mathematical formulas that the humans have not yet sorted off for a particular kind of a job. Yes in in mathematics people have spent hundreds of year thinking about all possible problems but maybe there is one particular problem that we have not yet the best mathematical solution. So why not use an LLM to search for this solution? Yes, it will cost a lot of money. Yes, will cost a lot of time. Will cost a lot of computer infrastructure. But hey, at least we have something positive that comes out of our machine intelligence. Yours now apply alpha wolf an LLMdriven evolutionary algorithm directly to the Python source code. As I've shown you here in the explanation, this is what we call the abstract syntax tree, the ASD of the solver itself. And they go now here not for the PSRO that I explained to you in the introduction of this video, but they have now a smoothed hybrid optimistic regret PO and you already see on the title, my goodness. So what they discovered is a dynamic and kneeling MASA. So either you are now absolutely fascinated or you say what anyway it's a hybrid blending formulation where you have a ma strategy that blends here the rigorous stability of the optimistic regret matching with a greedy temperature mooded softmax over expected pure strategy values and this is the formula that it discovered developed. So you do have now a dynamic transition during the transition the training roll out the blinding factor lambda is dynamically annealed from a particular range and the early iteration parameters therefore the massive topological expansion of the game graph. This means we have the exploration via the softmax while the later interaction we have here decaying lambda to the transition into exact regret based equilibrium refinement steps. So again we have here the equilibrium the sensitive equilibrium between exploration and exploitation. Now you might say is this something here with open claw? No this is not. Open claw is just a simple communication protocol. What we are talking about is here two technologies later pure mathematical optimization algorithms that are really done by by sound mathematical proven algorithms. So this is like hey let's go crazy let's go wild maybe we find something and the video today is something about a clearly deductive mathematical logical sequence here to discover new optimization theorems. Now, let's talk about a synthesis because I showed you both papers and I was fascinated and I decided to take out this both these two papers here out of my stack and put these both papers right next to each other and read both papers with you together in this video in parallel and I think if you read it in parallel we have a scientific synthesis I want to show you. So this is now my opinion I think but both papers sulfere the limits of the human continuous reasoning by inventing simply tools to navigate your discrete graphs and you have here the first deep mind paper that tackles it a micro architecture this means the pure mathematical optimization logic by let's say mutating the abstract syntax trees it kind of proves that we can automate the discovery of foundational optimiz mathematical optimization rules and mathematical compounds let's call it something like physics no that govern the learning process of multi agents now open sage tackles here the macro architecture the cognitive routing and the context management by dynamically building topological execution graphs it kind of quotation mark proves that we can automate to a high level the highle cognitive routing distributing the cognition across specialized subm modules and building and controlling and supervising memory hierarchies. I see this as you see here as microarchchitectural optimization and macro architectural optimization. Here we have the pure mathematical optimization logic, the pure mathematical formula and here we have if you want the system configuration and the best theoretical architecture, the topological execution graph for everything for what LLMs in what combination with what tools build new tools, connect new tools in new ways, have a new highle cognitive routing between LLMs and tools and everything else. build subm modules, optimize the subm modules and have new memory hierarchies that are optimized here for your control flow. This is the way I see it. Maybe I made a mistake. Please leave a comment in for this video. But still, there's so much yet hidden in these two papers. Please have a look because I still scratch here my head and say, hm, I have so many new ideas just reading the paper. So I really would recommend you have a look at both papers. Anyway, the other message is also that the human intuition to code software engineering it has now become the bottleneck of an AI design because we humans we cannot visualize a 96dimensional uh vector space and we have to optimize now asymmetric logic that is required for a new solo algebra. I can't see this you know I can't imagine this. If you can congratulation but in normal humans can't do this. So therefore we invented machine intelligence nor can we human statically predict here the optimal multi- aent structure required for to patch your zero day C++ vulnerability. We have some recipes we have some templates. We have some empirical data. But is it really mathematically proven the best the optimal configuration to do this job? So therefore I think the future of AI research really requires here to be careful what we humans think we have to hardcode into AI. Maybe we have to stop hard coding here or trying to code the complete machine intelligence. You know if we have so many safety rules and safeguards and optimizations they are in fear with each other. They conflict with each other. We see this daily. So maybe instead of focus purely on building here the the sandboxes let's call them and the compiler that would allow here the machine intelligence to architect itself. Yes we should supervise this as humans. Yes, we should absolutely control here everything but you know give our machine intelligence a little bit of space to explore some unknown territory because if we limit to the human intelligence I'm I'm not sure that this is the way forward for the machine intelligence itself and yes of course you know me I selected those papers because I feel that maybe we can combine the ideas of those separate papers Because in my mind I already see how maybe we can apply Alpha Evolve's programmatic evolutionary search routine, the mathematical optimization routine to open Sage topological parameters. If we can do this, if you can do this, hey, great. So instead of relying here of a human to write here every single prompt that tells your open sage model how to construct sub agent how to do this how to call here particular tools. We should use reinforcement learning our one and only learning methodology that we have for AI to let the programmatic logic of the AI evolve themsel. Let's utilize the reinforcement learning method that we have that is our only learning mechanism in AI to evolve here the programmatic logic of the agent orchestrator itself. This would be an interesting element not here an open claw or multipart or whatever. This would be an optimization here for the performance of the system. That would be really fascinating. And as I've shown you from Google deep mind to UC Berkeley, every if you want academic institution seems to be currently working on exactly this problem. I hope you had a little bit of fun with this video. I hope there were some new insights. I hoped to see you in my next",
+  "errors": []
+}

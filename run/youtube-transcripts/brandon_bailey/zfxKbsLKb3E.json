@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zfxKbsLKb3E",
+    "language": "en",
+    "took_ms": 9009,
+    "method": null,
+    "title": "DEF CON 33 - Bare Metal Reverse Engineering - SolaSec",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1325,
+    "description": "This talk presents a practical methodology for reverse engineering real-time embedded firmware built on ARM Cortex platforms. Using Ghidra as the primary analysis environment to facilitate collaboration. We will demonstrate how to reconstruct the core layers of an embedded system to gain deep insight into its operation. The Board Support Package (BSP) is mapped using the SVD loader plugin to associate memory-mapped registers with hardware peripherals. The Hardware Abstraction Layer (HAL) is analyzed through custom type recovery and function pattern matching to identify initialization routines and peripheral control logic. At the RTOS level, we apply Ghidra’s BSim plugin to detect task creation, scheduler logic, and inter-process communication constructs used in FreeRTOS and similar kernels. The session equips attendees with a structured approach to reversing embedded C/C++ applications, even when symbols are stripped and source code is unavailable. The goal is to enable firmware analysts, security researchers, and engineers to confidently dissect the layered architecture of constrained, real-time embedded systems.",
+    "view_count": 387
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zfxKbsLKb3E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R62sm30G2Jw",
+    "language": "en",
+    "took_ms": 8817,
+    "method": null,
+    "title": "DEF CON 31 - Apples Predicament - NSPredicate Exploitation on macOS and iOS - Austin Emmitt",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2075,
+    "description": "In 2021 the FORCEDENTRY sandbox escape introduced the usage of NSPredicate in an iOS exploit. This new technique allowed attackers to sidestep codesigning, ASLR, and all other mitigations to execute arbitrary code on Apple devices. As a result, Apple put in place new restrictions to make NSPredicate less powerful and less useful for exploits. This presentation will cover new research showing that these added restrictions could be completely circumvented in iOS 16, and how NSPredicates could be exploited to gain code execution in many privileged iOS processes. This technical deep dive will be a rare instance of iOS security that anyone can comprehend without years of experience.\n\nAfter an overview of the classes involved, we will explore the full syntax of NSPredicate and cover how it can be used to script the Objective-C runtime and even call any C function. It will be shown that PAC can still be bypassed 100% reliably with NSPredicates in order to execute any function with arbitrary arguments. A new tool will be unveiled to help craft complex NSPredicates to execute arbitrary code and inject those predicates in any application. Additionally, a demonstration will be given which executes arbitrary code in the highly privileged Preferences app.\n\nFinally, the talk will cover a bypass of NSPredicateVisitor implementations which allows a malicious process to evaluate any NSPredicate within several system processes including coreduetd, appstored, OSLogService, and SpringBoard. Next there will be a live demo of exploiting SpringBoard to steal a user’s notifications and location data. The presentation will end with some discussion about what can still be done with NSPredicates now that these issues have been fixed, including bypassing App Store Review, and what app developers should know to keep their own apps safe.",
+    "view_count": 6472
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R62sm30G2Jw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

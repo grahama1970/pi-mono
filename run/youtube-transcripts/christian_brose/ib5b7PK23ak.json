@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ib5b7PK23ak",
+    "language": "en",
+    "took_ms": 8291,
+    "method": null,
+    "title": "U.S.-China Energy Cooperation Lunch Session with Remarks by Gal Luft",
+    "channel": "Hudson Institute",
+    "upload_date": "20151118",
+    "duration_sec": 3937,
+    "description": "Hudson Institute conference on China's growing energy needs and U.S.-China energy cooperation featuring policy experts from both China and the U.S.",
+    "view_count": 901
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ib5b7PK23ak: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

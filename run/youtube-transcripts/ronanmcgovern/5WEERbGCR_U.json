@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5WEERbGCR_U",
+    "language": "en",
+    "took_ms": 8799,
+    "method": null,
+    "title": "Berkshire Hathaway Annual Meeting - Pre-stream Commentary with Ronan",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20200502",
+    "duration_sec": 1403,
+    "description": "Commentary on the Berkshire Hathaway Annual Meeting 2020. Supported by Point 5 Brewing - A Crisp, Refreshing Non-alcoholic Beer. Get it delivered - www.Point5Brewing.com .",
+    "view_count": 162
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5WEERbGCR_U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Tq5-7szmxLA",
+    "language": "en",
+    "took_ms": 9100,
+    "method": null,
+    "title": "Hardware Hacking Live at S4x16",
+    "channel": "S4 Events",
+    "upload_date": "20160629",
+    "duration_sec": 1142,
+    "description": "Andrew Zonenberg of IOActive shows how to pull firmware from a chip using a microscope, nail polish, a hot plate and a few chemicals.\n\nWe set this up to be like a cooking segment on a morning show. Andrew had chips in various states so he could show it all quickly. The bit that used hazardous chemicals was filmed in advance.\n\nThe only downside of this video is we didn't record the feed from the microscope and computer that was available to attendees in the Main Stage auditorium.\n\nVideo highlights:",
+    "view_count": 41440
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Tq5-7szmxLA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

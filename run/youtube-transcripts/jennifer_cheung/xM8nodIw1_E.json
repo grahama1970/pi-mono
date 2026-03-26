@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xM8nodIw1_E",
+    "language": "en",
+    "took_ms": 8220,
+    "method": null,
+    "title": "DEF CON 33 - Letthemin: Facilitating High Value Purple Teams Using Assumed Compromise - Sarah Hume",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1657,
+    "description": "Purple Teaming has become a critical component of modern cybersecurity programs, but its definition and application vary widely across organizations. This presentation introduces a refined, regimented, and repeatable methodology for running Purple Team engagements, developed and battle-tested for over a decade. As the term 'Purple Team' means different things to different people— a methodology, a team of people, a program, an assessment, or even a state of mind—and as Purple Team engagements themselves come in all shapes and sizes, the speaker will begin by aligning recommended definitions and applications of common Purple Team terminology. The presentation will explain how to apply an Assumed Compromise approach to Purple Teams. Any organization can be vulnerable at any point in time. This style of Purple Team testing follows the adversary through the entire life cycle of an attack, from Initial Access to Impact, assuming vulnerabilities exist to instead focus on the visibility of security tools. This is a powerful method of identifying ways to improve detection and prevention capabilities at each layer of an organization’s defense in depth. The speaker will include real world examples and specific instructions. The presentation will conclude with broader applications of this style of Purple Team. This will include how to collect and analyze the engagement results and apply these results to drive improvement to an organization’s resilience to common threats. This talk is ideal for security professionals, both Red and Blue Team, who are looking to elevate the way they perform Purple Team engagements.",
+    "view_count": 756
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xM8nodIw1_E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

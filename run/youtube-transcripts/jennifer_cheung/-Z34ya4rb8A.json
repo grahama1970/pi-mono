@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-Z34ya4rb8A",
+    "language": "en",
+    "took_ms": 8154,
+    "method": null,
+    "title": "DEF CON 32 - Manipulating Shim and Office for Code Injection - Ron Ben-Yizhak, David Shandalov",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2472,
+    "description": "This talk brings back from the dead an attack surface that security vendors believed they had addressed a long time ago.\n\nWe will introduce a novel and stealthy technique to apply malicious shims on a process that does not require registry modification or SDB files and leaves no traces on the disk.\n\nThe reverse engineering of the shim infrastructure will be shown while focusing on undocumented API and the kernel driver of the infrastructure.\n\nThe various operations offered by the infrastructure will be analyzed from an offensive point of view, and the course we took to achieve this unique technique will be presented.\n\nIn addition, we will unveil an attack surface research that resulted in a noteworthy attack that manipulates 2 different OS components into performing DLL injection and privilege escalation.\n\nResearching the undocumented RPC interfaces of the service OfficeClickToRun.exe uncovered a method that can inject a DLL into another process running as “NT AUTHORITY\\SYSTEM”, which achieves privilege escalation. For this to work, specific conditions had to be met.\n\nThe conditions we tailored will be displayed as we abuse the Opportunistic Lock and App Compatibility (shim) mechanisms.",
+    "view_count": 807
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -Z34ya4rb8A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

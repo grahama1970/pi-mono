@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cmRQa3q5Ovw",
+    "language": "en",
+    "took_ms": 8565,
+    "method": null,
+    "title": "The Coptic Winter: What Does the Massacre at Maspero Mean fo",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 5996,
+    "description": "The world was shocked by violence directed against a Coptic Christian protest march in the streets of Cairo on October 9. Egyptian authorities and others brutally dispersed a demonstration of mostly Coptic Christians, who had been protesting the failure of the caretaker Egyptian government to protect them against increasing attacks by extremist Muslims. While the Copts mourn their dead, and the Egyptian military evades responsibility for its role, there has not been a clear understanding of this",
+    "view_count": 537
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cmRQa3q5Ovw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

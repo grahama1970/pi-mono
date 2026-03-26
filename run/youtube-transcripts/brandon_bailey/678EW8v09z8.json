@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "678EW8v09z8",
+    "language": "en",
+    "took_ms": 9876,
+    "method": null,
+    "title": "DEF CON Safe Mode Crypto and Privacy Village - Cathy Gellis, Riana Pfefferkorn - Fireside Chat",
+    "channel": "DEFCONConference",
+    "upload_date": "20200822",
+    "duration_sec": 4113,
+    "description": "It seems like everyone's talking about Section 230 these days, and keen to change it, even without really knowing what it says and does. Or how badly most of the proposals to change it, such as the EARN IT Act bill, threaten all sorts of things we value, including encryption, privacy, security, and free speech online. Come to this crash course in Section 230 basics, followed by a fireside chat about EARN IT between two seasoned lawyers, to learn the truth about this crucial law, why these proposals are so terrible, and how you can take action to protect the Internet.",
+    "view_count": 1324
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 678EW8v09z8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

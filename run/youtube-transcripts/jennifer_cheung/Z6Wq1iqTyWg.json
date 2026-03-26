@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z6Wq1iqTyWg",
+    "language": "en",
+    "took_ms": 7516,
+    "method": null,
+    "title": "DEF CON 32  - Custom, cheap, easy, and safe badges without starting from scratch  - securelyfitz",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2605,
+    "description": "Electronic conference badges are cool and everything, but they're A LOT of time, money, and effort including but not limited to hardware, software and art design, testing, manufacturing, testing, provisioning, and repairing.\n\nI'll share OpenTaxus, a relatively simple, cheap, mass-producible, and open-source badge design. We'll start out by looking at and understanding the design and implementation, highlighting the areas worth customizing (and which to leave as-s). I'll do a walkthrough of a few changes to customize the design - in KiCAD for hardware changes, and in CircuitPython for software changes.\n\nWe'll wrap up with some discussion of how to handle cost reduction to fit in a certain budget, manage badge logistics for events of different sizes, and warn about some of the many pitfalls that electronic badges suffer. You should walk away with the ability to customize a badge to be mass produced for your own event.",
+    "view_count": 396
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z6Wq1iqTyWg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

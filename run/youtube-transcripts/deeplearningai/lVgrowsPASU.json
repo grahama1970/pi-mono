@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lVgrowsPASU",
+    "language": "en",
+    "took_ms": 7686,
+    "method": null,
+    "title": "AI Dev 25 x NYC Nicholas Clegg: How AWS Moved Beyond Orchestration with Strands SDK",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1768,
+    "description": "Nicholas Clegg, Senior Software Engineer at AWS, discussed model-driven agents at AI Dev 25 x NYC.\n\nUntil recently, building AI agents meant wrestling with complex orchestration—state machines, rigid workflows, and endless error handling that still broke on edge cases. Strands SDK emerged from this exact struggle while developing Amazon Q and Kiro, replacing elaborate frameworks with a simple model-driven approach that lets LLMs orchestrate themselves. \n\nThrough live demos showcasing how this works in practice, attendees learned to bootstrap agents from scratch and build multi-agent architectures—walking away ready to implement production-ready model-driven agents with the Strands SDK, regardless of their cloud platform.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lVgrowsPASU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

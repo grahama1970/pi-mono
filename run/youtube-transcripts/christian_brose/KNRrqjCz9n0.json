@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KNRrqjCz9n0",
+    "language": "en",
+    "took_ms": 8971,
+    "method": null,
+    "title": "Geostrategic Ramifications of the Crisis in Turkey",
+    "channel": "Hudson Institute",
+    "upload_date": "20160727",
+    "duration_sec": 4646,
+    "description": "Craig Kennedy, Eric Brown, Peter Rough, and Hillel Fradkin discuss the geostrategic ramifications of the failed coup and political crisis in Turkey.",
+    "view_count": 10762
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KNRrqjCz9n0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SLrH28ubOws",
+    "language": "en",
+    "took_ms": 8245,
+    "method": null,
+    "title": "reTLDR - get a TL;DR for any web page",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20250622",
+    "duration_sec": 8,
+    "description": "reTLDR.com allows you to paste a link, and get back a TL;DR . It uses firecrawler to read web pages, and falls back to a headless browser so it returns a meaningful TL;DR in almost every case.\n\nYou can also just pre-pend retldr.com/ to any web URL!",
+    "view_count": 3
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SLrH28ubOws: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

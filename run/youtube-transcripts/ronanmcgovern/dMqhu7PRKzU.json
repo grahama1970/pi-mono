@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dMqhu7PRKzU",
+    "language": "en",
+    "took_ms": 9199,
+    "method": null,
+    "title": "ShopRespond Liquid Hand Sanitizer",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20200515",
+    "duration_sec": 43,
+    "description": "A quick demo of the FDA formulation for hand sanitizer on ShopRespond.com as of May 14th 2020. www.ShopRespond.com",
+    "view_count": 41
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dMqhu7PRKzU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

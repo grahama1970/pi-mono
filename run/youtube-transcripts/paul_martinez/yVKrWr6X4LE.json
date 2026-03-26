@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yVKrWr6X4LE",
+    "language": "en",
+    "took_ms": 7687,
+    "method": null,
+    "title": "Midsummer S4x26 Update",
+    "channel": "S4 Events",
+    "upload_date": "20250728",
+    "duration_sec": 237,
+    "description": "Mid-summer S4x26 update:\n\n✔️ 1/3 of Main Stage spots are filled — early submissions get the easy “yes.”\n✔️ POC Pavilion is nearly full — real systems, real demos, real risk.\n✔️ Sponsors: only a few cabana and lunch slots left.\n\nIf you’ve got something that will Create The Future, now’s the time to move.",
+    "view_count": 57
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yVKrWr6X4LE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

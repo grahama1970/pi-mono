@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NW8G446MG4I",
+    "language": "en",
+    "took_ms": 8942,
+    "method": null,
+    "title": "Why SpaceX won't propulsively land their Dragon capsule. Not on Earth. Not on Mars.",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170920",
+    "duration_sec": 688,
+    "description": "Why did one of the coolest features of the Dragon Capsule get cancelled? Why are they no longer sending a Dragon Capsule to Mars? We answer this and more!\n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/",
+    "view_count": 996420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NW8G446MG4I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

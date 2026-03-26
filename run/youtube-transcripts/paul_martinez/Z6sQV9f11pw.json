@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z6sQV9f11pw",
+    "language": "en",
+    "took_ms": 9593,
+    "method": null,
+    "title": "Autonomous AI in OT",
+    "channel": "S4 Events",
+    "upload_date": "20240401",
+    "duration_sec": 1404,
+    "description": "AI is coming. In some ICS it is already here. To create the future you will need to know what autonomous AI is and how it will change the environment the ICS security community is trying to protect and manage cyber risk.\n\nKence Anderson has been helping over 150 asset owners deploy the right mix of human decision-making, traditional control systems and autonomous AI to improve performance. Improve systems such as rock crushers, aluminum smelters, HVAC, robots, ... He described the present and predicted the future of AI in ICS in his book Designing Autonomous AI. \n\nIn this Keynote, Kence will explain what autonomous AI is and isn't, how it is improving ICS operations and businesses today, the changes it introduces to the systems you need to defend, and give some thoughts on how autonomous AI will require your cybersecurity and risk management programs.",
+    "view_count": 973
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z6sQV9f11pw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

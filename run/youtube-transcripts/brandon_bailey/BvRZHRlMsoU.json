@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BvRZHRlMsoU",
+    "language": "en",
+    "took_ms": 9452,
+    "method": null,
+    "title": "DEF CON 33 - Reversing approaches to extract embedded scripts in  macOS malware  - Patrick Wardle",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1281,
+    "description": "When confronted with malicious macOS binaries, analysts typically reach for a disassembler and immerse themselves in the complexities of low-level assembly. But what if this tedious process could be skipped entirely?\n\nWhile many malware samples are distributed as native macOS binaries (easily run with a simple double-click), they frequently encapsulate scripts hidden within executable wrappers. Leveraging frameworks such as PyInstaller, Appify, Tauri, and Platypus, malware authors embed their scripts with binaries, complicating traditional analysis. Although these frameworks share the goal of producing natively executable binaries, each employs a distinct method to embed scripts, thus necessitating tailored extraction tools and approaches.\n\nUsing real-world macOS malware (such as Shlayer, CreativeUpdate, GravityRAT, and many others), we'll first demonstrate how to identify these faux binaries and then how to efficiently extract or reconstruct their embedded scripts, bypassing the disassembler entirely!",
+    "view_count": 319
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BvRZHRlMsoU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7jZdg_bpDHk",
+    "language": "en",
+    "took_ms": 7658,
+    "method": null,
+    "title": "Cyber Risk Quantification (CRQ) with Nicole Sundin",
+    "channel": "S4 Events",
+    "upload_date": "20231011",
+    "duration_sec": 2430,
+    "description": "Dale and Nicole discuss CRQ, how to deal with the precision challenge, Axio's prioritization of impact, ransomware on IT affecting operations as an example, and more.\n\nThey also discuss UX and the single pane of glass.",
+    "view_count": 495
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7jZdg_bpDHk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

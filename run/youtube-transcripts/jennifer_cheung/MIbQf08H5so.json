@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MIbQf08H5so",
+    "language": "en",
+    "took_ms": 8776,
+    "method": null,
+    "title": "DEF CON 32 - Top 10 Cybersecurity Trends in Critical Infrastructure for 2024 - Mars Cheng",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1473,
+    "description": "In recent years, we have witnessed a surge in attacks aimed at critical infrastructure, varying widely in scope and impact depending on the region. While the definition of critical infrastructure differs by country, it typically encompasses essential sectors such as oil, natural gas, water, power, and manufacturing. The ramifications of these attacks are complex and often unpredictable.\n\nTo gain a clearer understanding of the state of critical infrastructure globally, starting in 2023, we will annually survey 300 CISOs or security directors across different countries in this sector. We will share the data-driven insights to offer a detailed examination of the current conditions and challenges faced by these crucial systems. By comparing trends across different years, countries, and industries, our goal is to enhance the security and resilience of critical infrastructures worldwide.",
+    "view_count": 729
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MIbQf08H5so: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DvEFSKnyIAQ",
+    "language": "en",
+    "took_ms": 8534,
+    "method": null,
+    "title": "Critical Infrastructure as Code (CIAC) in ICS",
+    "channel": "S4 Events",
+    "upload_date": "20200316",
+    "duration_sec": 1799,
+    "description": "Matthew Backes of MIT Lincoln Laboratory highlights the need to reassert control over our control systems through positive control / configuration control. Current approaches tend to be ad hoc and vendor specific.\n\nAnd then he presents a solution that he calls Critical Infrastructure as Code (CIaC), which is closely related to the IT Infrastructure as Code (IaC). The biggest difference is the standardized API's needed to take the configuration files and load them into protective relays, controllers, RTU's, serial-to-ethernet gateways, and other devices that are not found in IT. Their poc included SEL, Woodward, and Grid Connect. Matthew and the team did not require any assistance from the vendors to do this, just their manuals and access to the equipment.",
+    "view_count": 444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DvEFSKnyIAQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

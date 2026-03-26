@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eEwXaDMohiE",
+    "language": "en",
+    "took_ms": 9020,
+    "method": null,
+    "title": "Securing ICS in an IIoT World ... The Simple Solution",
+    "channel": "S4 Events",
+    "upload_date": "20170424",
+    "duration_sec": 1167,
+    "description": "The ICS community blindly connected ICS to the corporate network with little or no though of security. We shouldn't make the same mistake connecting ICS to cloud services and IIoT.\n\nAnd it doesn't need to be difficult.\n\nIn this S4x17 video, Dale Peterson of Digital Bond goes over the problem and solution in 20 minutes and provides the four simple steps.\n\n1. Strictly define what is allowed inbound to the ICS\n\n2. Deploy security perimeter device that only allows the approved inbound communication\n\n3. Verify the security perimeter device blocks all non-approved inbound communication\n\n4. Test ALL data allowed through the security perimeter device to identify if it can find a bug / cause a problem",
+    "view_count": 1393
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eEwXaDMohiE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

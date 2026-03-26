@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6mMDUOzDyqE",
+    "language": "en",
+    "took_ms": 8324,
+    "method": null,
+    "title": "Cyber Av3ngers #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250925",
+    "duration_sec": 154,
+    "description": "",
+    "view_count": 922
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6mMDUOzDyqE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

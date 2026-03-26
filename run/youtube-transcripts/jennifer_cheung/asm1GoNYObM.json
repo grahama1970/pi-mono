@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "asm1GoNYObM",
+    "language": "en",
+    "took_ms": 7805,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village  - Evan Anderson - Gray Hat SSH SSHenanigans",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3054,
+    "description": "The Secure Shell (SSH) was designed to replace telnet/rsh with a secure channel over unsecured networks. SSH is a swiss army knife for red team engagements letting malicious actors accomplish a multitude of interesting tasks.\n\nAside from providing access to run commands on remote systems SSH can be used to complete a myriad of other activities including hop network boundaries, maintain persistent access, download files, steal credentials, hide access and even configure what commands users run on login. This talk goes through details of how to configure and abuse ssh for a number of red team oriented goals from beginner to advanced.",
+    "view_count": 931
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] asm1GoNYObM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

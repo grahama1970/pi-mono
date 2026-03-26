@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sJki4pTfJMo",
+    "language": "en",
+    "took_ms": 8593,
+    "method": null,
+    "title": "Why SpaceX reusing a rocket is a really big deal! Behind the scenes of the first reflown rocket!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170405",
+    "duration_sec": 344,
+    "description": "SpaceX reused the first stage of their Falcon 9 rocket for the first time ever! Why is this a big deal? Well I drove 21 hours down to Kennedy Space Center to find out!\n\nHelp support this and other Everyday Astronaut content by visiting http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nLearn HOW SpaceX lands rockets and why they don't use parachutes with this video - https://youtu.be/TfNrHXwQ3SM",
+    "view_count": 51368
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sJki4pTfJMo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

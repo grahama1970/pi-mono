@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ot_UYBRpHoQ",
+    "language": "en",
+    "took_ms": 9135,
+    "method": null,
+    "title": "IMT-2030: The Coming 6G Revolution",
+    "channel": "Hudson Institute",
+    "upload_date": "20240606",
+    "duration_sec": 3365,
+    "description": "The International Telecommunication Union (ITU), the United Nations specialized agency for information and communication technologies, is developing 6G specifications through the International Mobile Telecommunications 2030 (IMT-2030) program, aiming to release them by 2030. This program, introduced in the 6G framework document, outlines the vision, timelines, and candidate technologies for next generation telecommunications.\n\nIMT-2030 aims to connect humans, machines, and software to enable various applications and services. The framework promises immersive experiences for humans through advanced human-machine interfaces like extended reality (XR) displays, haptic sensors, and multisensory interfaces. Machines are expected to become intelligent, autonomous, and precise as they benefit from advancements in machine perception and interaction and artificial intelligence management.\n\nIn this vision, advanced sensors and AI facilitate seamless interaction between humans and machines in the physical and digital worlds. IMT-2030 integrates sensing and AI capabilities into communication, serving as a fundamental infrastructure for emerging user and application trends. The program also supports diverse use cases, including direct voice communication.\n\nMoreover, IMT-2030 technology is anticipated to promote economic growth, societal change, digital equality, and ubiquitous connectivity while also enhancing security and resilience.\n\nIn a Hudson event, Professor Kiran Kuchi of the Indian Institute of Technology Hyderabad will discuss technology trends, network evolution, AI-driven devices for 6G, and the integration and interoperability of terrestrial and non-terrestrial systems.",
+    "view_count": 1287
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ot_UYBRpHoQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mhmnaR9dMyE",
+    "language": "en",
+    "took_ms": 8807,
+    "method": null,
+    "title": "Ilya's Recommended Papers; Minimum Description Length; HRM and ARC",
+    "channel": "Trelis Research",
+    "upload_date": "20250823",
+    "duration_sec": 1756,
+    "description": "Link to Ilya's apparently recommended papers: https://github.com/dzyim/ilya-sutskever-recommended-reading?utm_source=chatgpt.com",
+    "view_count": 719
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mhmnaR9dMyE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

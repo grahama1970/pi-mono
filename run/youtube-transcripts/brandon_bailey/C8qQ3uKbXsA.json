@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C8qQ3uKbXsA",
+    "language": "en",
+    "took_ms": 2666,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - Juan Francisco Bolivar & Jose Miguel Marichal - 0365 Squatting",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1119,
+    "description": "0365 Squatting is a python tool created to identify that domains before the attack start. The tool can create a list of typo squatted domains based on the domain provided by the user and check all the domains against O365 infrastructure, (these domains will not appear on a DNS request).\n\nAt the same time, this tool can also be used by red teams and bug hunters, one of the classic attacks is the domain takeover based on the tool findings.",
+    "view_count": 352
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C8qQ3uKbXsA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nPR2eyf8qzs",
+    "language": "en",
+    "took_ms": 9020,
+    "method": null,
+    "title": "Threat Hunting With What You Have",
+    "channel": "S4 Events",
+    "upload_date": "20200624",
+    "duration_sec": 1628,
+    "description": "Ben Goerz of Kimberly-Clark begins by explaining what threat hunting is and why it is important. Then he shows how you don't need to buy some new product to do threat hunting. There is a lot of information already available on your ICS and enterprise. He shows multiple examples of how looking at DNS, proxy logs, and firewall logs can be used in threat hunting to identify threats. New threat hunting tools show promise, but don't ignore the tools you already have from your deployed systems.",
+    "view_count": 510
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nPR2eyf8qzs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

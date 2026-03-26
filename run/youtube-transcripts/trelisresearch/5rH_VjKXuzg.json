@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5rH_VjKXuzg",
+    "language": "en",
+    "took_ms": 7961,
+    "method": null,
+    "title": "Tiny Text + Vision Models - Fine tuning and API Setup",
+    "channel": "Trelis Research",
+    "upload_date": "20240422",
+    "duration_sec": 2657,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-vision/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Trelis Livestreams: Thursdays 5 pm Irish time on YouTube and X.\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\nSlides: https://docs.google.com/presentation/d/1LTF8PLe2kwLaddeqwgCRWnTabt7b5EEviFq29x3zlyw/edit?usp=sharing\n- Moondream model: https://huggingface.co/vikhyatk/moondream2\n- Moondream Github: https://github.com/vikhyat/moondream\n- Chess Dataset: https://huggingface.co/datasets/Trelis/chess_pieces\n\nTIMESTAMPS:\n0:00 Fine-tuning tiny multi-modal models\n0:11 Moondream server demo\n1:41 Video Overview\n4:22 Multi-modal model architecture\n6:33 Moondream architecture\n6:50 Moondream vision encoder (SigLIP)\n13:05 Moondream MLP (visionprojection)\n15:50 Moondream Language Model (Phi) \n17:15 Applying LoRA adapters to a multi-modal model\n18:59 Fine-tuning notebook demo\n37:58 Deploying a custom API for multi-modal models\n42:00 vLLM\n42:49 Training a multi-modal model from scratch\n43:44 Multi-modal datasets\n44:00 Video resources",
+    "view_count": 6133
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5rH_VjKXuzg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

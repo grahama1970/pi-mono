@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3_A9X4vAXa8",
+    "language": "en",
+    "took_ms": 9325,
+    "method": null,
+    "title": "Herbert London on Afghanistan for CNN's Lou Dobbs Tonight",
+    "channel": "Hudson Institute",
+    "upload_date": "20091027",
+    "duration_sec": 464,
+    "description": "Hudson Institute President Herbert London was a guest on Lou Dobb's Tonight on October 26, 2009 to discuss the United States' options in Afghanistan.",
+    "view_count": 3444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3_A9X4vAXa8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

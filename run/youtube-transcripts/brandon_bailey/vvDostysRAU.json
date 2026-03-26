@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vvDostysRAU",
+    "language": "en",
+    "took_ms": 9280,
+    "method": null,
+    "title": "DEF CON 33 - Here and Now: Exploiting the Human Layer at the Right Moment - Daniel Isler",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1247,
+    "description": "Gaining access isn’t always about having the perfect pretext. Sometimes, it’s about recognizing subtle shifts in the environment, reading behavioral cues, and adapting on the fly. The best social engineers, like master photographers, don’t just plan—they wait for the decisive moment and take action when the time is right.\n\nThis session unpacks a real-world infiltration where success wasn’t about meticulous scripting, but about understanding when and how to pivot in real time. By integrating principles from photography, literature, theater, and deception, we explore how presence, timing, and perception shape the art of infiltration.",
+    "view_count": 222
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vvDostysRAU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

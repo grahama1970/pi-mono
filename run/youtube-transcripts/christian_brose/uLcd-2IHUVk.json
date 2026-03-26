@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uLcd-2IHUVk",
+    "language": "en",
+    "took_ms": 9061,
+    "method": null,
+    "title": "The Future of Public Transportation: Embracing the Private Sector?",
+    "channel": "Hudson Institute",
+    "upload_date": "20171212",
+    "duration_sec": 5251,
+    "description": "Many of the nation's public transportation systems, now aging rapidly, face unprecedented pressure from rising service costs and declining market share. In an era of fiscal austerity, ride-sharing, and the emergence of autonomous vehicles, can our legacy transit systems meet today's challenges by embracing a greater role for the private sector?\n\nOn December 12, Hudson Institute hosted an event on the future of U.S. public transit systems keynoted by D.J. Gribbin, Special Assistant to the President for Infrastructure Policy. Following Gribbin's remarks, David Horner moderated a panel discussion featuring Maryland Secretary of Transportation Pete K. Rahn, Washington Metropolitan Area Transit Authority General Manager and CEO Paul  J. Wiedefeld, and Los Angeles County Metropolitan Transit Authority CEO Phillip A. Washington.",
+    "view_count": 539
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uLcd-2IHUVk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

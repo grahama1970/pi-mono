@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3bY4TTtW8Wc",
+    "language": "en",
+    "took_ms": 8451,
+    "method": null,
+    "title": "Interview with Pascal Ackerman - Author of Industrial Cybersecurity",
+    "channel": "S4 Events",
+    "upload_date": "20220112",
+    "duration_sec": 2505,
+    "description": "Industrial Cybersecurity, listed as 2nd Edition but actually a completely new Volume 2, is 1027 pages on Security Monitoring, Threat Hunting and Security Assessments and Intel. In this episode, Dale Peterson talks with its author Pascal Ackerman.\n\nLinks\n\nIndustrial Cybersecurity Volume 1: https://www.amazon.com/Industrial-Cybersecurity-Efficiently-critical-infrastructure/dp/1788395158/\n\nIndustrial Cybersecurity Volume 2: https://www.amazon.com/Industrial-Cybersecurity-Efficiently-cybersecurity-environment/dp/1800202091/",
+    "view_count": 763
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3bY4TTtW8Wc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GhpLSEaXa9M",
+    "language": "en",
+    "took_ms": 9816,
+    "method": null,
+    "title": "Watch SpaceX Launch a GPS Satellite!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20181223",
+    "duration_sec": 6892,
+    "description": "SpaceX is being paid by the US Air Force to launch the first Third Generation Global Positioning System (GPS) satellite to orbit.\n\nThe Falcon 9 will launch from Space Launch Complex 40 (SLC-40) on the Cape Canaveral Air Force Station (CCAFS). This is a new block 5 booster, 1054.1, but it will not be recovered. There are no landing legs or grid fins attached to the booster.\n\nNeed more info? I've got it all right here! - https://everydayastronaut.com/prelaunch-preview-spacex-gps-3-01/\n\nCheck out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nBrand new shop now open! - http://shop.everydayastronaut.com\n\nCheck out my new podcast!!!! - https://ourludicrousfuture.com\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nThinking about ordering a Tesla? Get free unlimited supercharging!! http://ts.la/tim19804\n\nAlready order a Model 3 and waiting for delivery? You can use my referral code too (talk to your advisor) tim19804 :)",
+    "view_count": 85021
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GhpLSEaXa9M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

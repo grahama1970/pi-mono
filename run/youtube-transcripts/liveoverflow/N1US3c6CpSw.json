@@ -1,0 +1,743 @@
+{
+  "meta": {
+    "video_id": "N1US3c6CpSw",
+    "language": "en",
+    "took_ms": 1309,
+    "method": "direct",
+    "title": "Finding main() in Stripped Binary - bin 0x2C",
+    "channel": "LiveOverflow",
+    "upload_date": "20191203",
+    "duration_sec": 392,
+    "description": "Stripped binaries miss the symbol information of functions and variables. Debugging such a binary is a little bit more tricky, but there is a simple method to find the main() function of the program.\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.",
+    "view_count": 65134
+  },
+  "transcript": [
+    {
+      "text": "sometimes your binary will not have",
+      "start": 0.06,
+      "duration": 4.62
+    },
+    {
+      "text": "symbols it's a so-called strip binary",
+      "start": 2.55,
+      "duration": 4.06
+    },
+    {
+      "text": "let me show what you can do that",
+      "start": 4.68,
+      "duration": 6.46
+    },
+    {
+      "text": "[Music]",
+      "start": 6.61,
+      "duration": 4.53
+    },
+    {
+      "text": "sometimes you find yourself with a",
+      "start": 12.46,
+      "duration": 4.59
+    },
+    {
+      "text": "binary that says it's stripped your",
+      "start": 14.38,
+      "duration": 4.41
+    },
+    {
+      "text": "problem is when you try to debug this",
+      "start": 17.05,
+      "duration": 4.88
+    },
+    {
+      "text": "and you want to set a breakpoint romain",
+      "start": 18.79,
+      "duration": 6.6
+    },
+    {
+      "text": "no symbol table is loaded so I have",
+      "start": 21.93,
+      "duration": 5.11
+    },
+    {
+      "text": "downloaded the disassembler called",
+      "start": 25.39,
+      "duration": 3.18
+    },
+    {
+      "text": "Piedra and I've linked it in the",
+      "start": 27.04,
+      "duration": 7.98
+    },
+    {
+      "text": "description of this video this will not",
+      "start": 28.57,
+      "duration": 6.87
+    },
+    {
+      "text": "work",
+      "start": 35.02,
+      "duration": 9.03
+    },
+    {
+      "text": "we still need Java 11 while this is",
+      "start": 35.44,
+      "duration": 10.739
+    },
+    {
+      "text": "still installing let's go back to gdb",
+      "start": 44.05,
+      "duration": 4.43
+    },
+    {
+      "text": "and I'll show you another method first",
+      "start": 46.179,
+      "duration": 5.101
+    },
+    {
+      "text": "with info files you can get a couple of",
+      "start": 48.48,
+      "duration": 5.169
+    },
+    {
+      "text": "informations about this file and so",
+      "start": 51.28,
+      "duration": 4.5
+    },
+    {
+      "text": "first of all you see here a lot of the",
+      "start": 53.649,
+      "duration": 5.221
+    },
+    {
+      "text": "sections that this file has so for",
+      "start": 55.78,
+      "duration": 5.16
+    },
+    {
+      "text": "example you can find the text section",
+      "start": 58.87,
+      "duration": 5.369
+    },
+    {
+      "text": "which is the code or you can find the",
+      "start": 60.94,
+      "duration": 6.36
+    },
+    {
+      "text": "data section where there's an aesthetic",
+      "start": 64.239,
+      "duration": 5.341
+    },
+    {
+      "text": "data this may be other stuff that you",
+      "start": 67.3,
+      "duration": 4.17
+    },
+    {
+      "text": "recognize like the procedure linkage",
+      "start": 69.58,
+      "duration": 4.35
+    },
+    {
+      "text": "table and the global offset table and so",
+      "start": 71.47,
+      "duration": 4.35
+    },
+    {
+      "text": "forth but it also shows you here an",
+      "start": 73.93,
+      "duration": 4.58
+    },
+    {
+      "text": "entry point which coincidentally is",
+      "start": 75.82,
+      "duration": 5.31
+    },
+    {
+      "text": "right at the start of the text section 2",
+      "start": 78.51,
+      "duration": 5.35
+    },
+    {
+      "text": "so let's disassemble the code there ok",
+      "start": 81.13,
+      "duration": 4.11
+    },
+    {
+      "text": "this so there's no function at this",
+      "start": 83.86,
+      "duration": 3.06
+    },
+    {
+      "text": "address so let's look at this with the",
+      "start": 85.24,
+      "duration": 10.77
+    },
+    {
+      "text": "examine command so I'm examining 20",
+      "start": 86.92,
+      "duration": 12.12
+    },
+    {
+      "text": "instructions at this address and then we",
+      "start": 96.01,
+      "duration": 4.53
+    },
+    {
+      "text": "can see here just cohhd cohhd cohhd",
+      "start": 99.04,
+      "duration": 4.77
+    },
+    {
+      "text": "cohhd cohhd and then we see here a call",
+      "start": 100.54,
+      "duration": 8.1
+    },
+    {
+      "text": "coming up as well as certain parameters",
+      "start": 103.81,
+      "duration": 7.74
+    },
+    {
+      "text": "being prepared for it and I get rights",
+      "start": 108.64,
+      "duration": 4.14
+    },
+    {
+      "text": "basically the same thing",
+      "start": 111.55,
+      "duration": 3.27
+    },
+    {
+      "text": "ok I tried to zoom in a little bit so",
+      "start": 112.78,
+      "duration": 4.68
+    },
+    {
+      "text": "obviously it's not very very crowded so",
+      "start": 114.82,
+      "duration": 4.83
+    },
+    {
+      "text": "in the symbol tree you can find a symbol",
+      "start": 117.46,
+      "duration": 4.2
+    },
+    {
+      "text": "that get recalled entry the entry",
+      "start": 119.65,
+      "duration": 5.43
+    },
+    {
+      "text": "function here also starts at 4 F 0 @ is",
+      "start": 121.66,
+      "duration": 5.64
+    },
+    {
+      "text": "the offset kitra puts it actually at 1 0",
+      "start": 125.08,
+      "duration": 5.189
+    },
+    {
+      "text": "0 for f 0 but that's just good invention",
+      "start": 127.3,
+      "duration": 4.92
+    },
+    {
+      "text": "that's just where Dedra kind of like",
+      "start": 130.269,
+      "duration": 3.991
+    },
+    {
+      "text": "assumes where in memory it could be but",
+      "start": 132.22,
+      "duration": 4.53
+    },
+    {
+      "text": "you see the offset is the same and so",
+      "start": 134.26,
+      "duration": 4.77
+    },
+    {
+      "text": "let's look at this code here you can",
+      "start": 136.75,
+      "duration": 4.89
+    },
+    {
+      "text": "also see here eventually this called",
+      "start": 139.03,
+      "duration": 5.879
+    },
+    {
+      "text": "ng draw already recognized this as Lipsy",
+      "start": 141.64,
+      "duration": 4.02
+    },
+    {
+      "text": "start",
+      "start": 144.909,
+      "duration": 3.391
+    },
+    {
+      "text": "main guitar recognize this because even",
+      "start": 145.66,
+      "duration": 5.94
+    },
+    {
+      "text": "though the binary itself M is strip",
+      "start": 148.3,
+      "duration": 5.31
+    },
+    {
+      "text": "doesn't have cymbals it still uses",
+      "start": 151.6,
+      "duration": 4.68
+    },
+    {
+      "text": "dynamic libraries like Lib C and to",
+      "start": 153.61,
+      "duration": 4.74
+    },
+    {
+      "text": "resolve the addresses of the Lib C",
+      "start": 156.28,
+      "duration": 4.71
+    },
+    {
+      "text": "functions it has to include the cymbals",
+      "start": 158.35,
+      "duration": 5.28
+    },
+    {
+      "text": "for this dynamic library so it will",
+      "start": 160.99,
+      "duration": 4.86
+    },
+    {
+      "text": "recognize if it tries to call something",
+      "start": 163.63,
+      "duration": 4.68
+    },
+    {
+      "text": "like main gdb is not really a",
+      "start": 165.85,
+      "duration": 4.62
+    },
+    {
+      "text": "disassembly gdb is a debugger so it",
+      "start": 168.31,
+      "duration": 5.07
+    },
+    {
+      "text": "doesn't have fancy display features like",
+      "start": 170.47,
+      "duration": 4.29
+    },
+    {
+      "text": "this there are some extensions that",
+      "start": 173.38,
+      "duration": 3.15
+    },
+    {
+      "text": "might help you with that but generally",
+      "start": 174.76,
+      "duration": 5.01
+    },
+    {
+      "text": "you would want a disassembler to kind of",
+      "start": 176.53,
+      "duration": 5.1
+    },
+    {
+      "text": "like analyze most ethically a binary",
+      "start": 179.77,
+      "duration": 4.26
+    },
+    {
+      "text": "like this so here we can see ellipses",
+      "start": 181.63,
+      "duration": 4.53
+    },
+    {
+      "text": "start main and get R also has a d",
+      "start": 184.03,
+      "duration": 3.75
+    },
+    {
+      "text": "compiler and you can see that this",
+      "start": 186.16,
+      "duration": 3.15
+    },
+    {
+      "text": "function takes a couple of parameters",
+      "start": 187.78,
+      "duration": 5.13
+    },
+    {
+      "text": "and actually the first parameter of this",
+      "start": 189.31,
+      "duration": 6.84
+    },
+    {
+      "text": "Lipsy start main function is the address",
+      "start": 192.91,
+      "duration": 7.41
+    },
+    {
+      "text": "where the actual main is where your - so",
+      "start": 196.15,
+      "duration": 5.88
+    },
+    {
+      "text": "what get er identified as this function",
+      "start": 200.32,
+      "duration": 5.28
+    },
+    {
+      "text": "here is main so we can go there and we",
+      "start": 202.03,
+      "duration": 5.46
+    },
+    {
+      "text": "can see that's like my shellcode test",
+      "start": 205.6,
+      "duration": 4.08
+    },
+    {
+      "text": "code this this is the main function that",
+      "start": 207.49,
+      "duration": 5.25
+    },
+    {
+      "text": "I have written don't don't worry about",
+      "start": 209.68,
+      "duration": 4.529
+    },
+    {
+      "text": "what this Court has asked but I can",
+      "start": 212.74,
+      "duration": 2.76
+    },
+    {
+      "text": "assure you that this is the main",
+      "start": 214.209,
+      "duration": 3.331
+    },
+    {
+      "text": "function this means that the address",
+      "start": 215.5,
+      "duration": 4.89
+    },
+    {
+      "text": "loaded into RDI is in fact the address",
+      "start": 217.54,
+      "duration": 5.28
+    },
+    {
+      "text": "of main so we know this is the entry",
+      "start": 220.39,
+      "duration": 4.05
+    },
+    {
+      "text": "point so at the corner of the entry",
+      "start": 222.82,
+      "duration": 3.09
+    },
+    {
+      "text": "point you can also see that here's this",
+      "start": 224.44,
+      "duration": 3.6
+    },
+    {
+      "text": "call and because you can assume this is",
+      "start": 225.91,
+      "duration": 4.02
+    },
+    {
+      "text": "a typical binary you might assume that",
+      "start": 228.04,
+      "duration": 4.53
+    },
+    {
+      "text": "in the entry code you have that the",
+      "start": 229.93,
+      "duration": 4.98
+    },
+    {
+      "text": "first call there goes to Lipsy main is",
+      "start": 232.57,
+      "duration": 3.66
+    },
+    {
+      "text": "it's just an assumption that you can",
+      "start": 234.91,
+      "duration": 3.15
+    },
+    {
+      "text": "make this assembler like g-drive will",
+      "start": 236.23,
+      "duration": 3.27
+    },
+    {
+      "text": "actually tell you if that's the case but",
+      "start": 238.06,
+      "duration": 3.21
+    },
+    {
+      "text": "that's a fair assumption you can make if",
+      "start": 239.5,
+      "duration": 4.11
+    },
+    {
+      "text": "you assume as just a normal binary which",
+      "start": 241.27,
+      "duration": 4.98
+    },
+    {
+      "text": "means the first parameter here for this",
+      "start": 243.61,
+      "duration": 5.76
+    },
+    {
+      "text": "call is actually the real main and here",
+      "start": 246.25,
+      "duration": 5.19
+    },
+    {
+      "text": "gdb actually helped you because it's",
+      "start": 249.37,
+      "duration": 5.25
+    },
+    {
+      "text": "from our IP so our IP would be at this",
+      "start": 251.44,
+      "duration": 6.69
+    },
+    {
+      "text": "case 5 0 T plus this offset here here's",
+      "start": 254.62,
+      "duration": 6.06
+    },
+    {
+      "text": "the result so if this address should be",
+      "start": 258.13,
+      "duration": 8.25
+    },
+    {
+      "text": "the real main your main and yet so this",
+      "start": 260.68,
+      "duration": 7.44
+    },
+    {
+      "text": "definitely looks like a function start",
+      "start": 266.38,
+      "duration": 3.57
+    },
+    {
+      "text": "so yeah this this is your main function",
+      "start": 268.12,
+      "duration": 4.53
+    },
+    {
+      "text": "so this is how you can find me",
+      "start": 269.95,
+      "duration": 4.74
+    },
+    {
+      "text": "okay so now that we have learned about",
+      "start": 272.65,
+      "duration": 4.11
+    },
+    {
+      "text": "the lips II start main we can actually",
+      "start": 274.69,
+      "duration": 4.35
+    },
+    {
+      "text": "use this also to our advantage with gdb",
+      "start": 276.76,
+      "duration": 4.469
+    },
+    {
+      "text": "as long as it's a dynamic binary so",
+      "start": 279.04,
+      "duration": 4.83
+    },
+    {
+      "text": "another static binary you can break on",
+      "start": 281.229,
+      "duration": 4.44
+    },
+    {
+      "text": "the lip see function because for that",
+      "start": 283.87,
+      "duration": 10.41
+    },
+    {
+      "text": "you have symbols and it says you hear",
+      "start": 285.669,
+      "duration": 10.261
+    },
+    {
+      "text": "that the lips e start main is not",
+      "start": 294.28,
+      "duration": 3.6
+    },
+    {
+      "text": "defined but you can make a pending",
+      "start": 295.93,
+      "duration": 5.25
+    },
+    {
+      "text": "breakpoint in case a shared library is",
+      "start": 297.88,
+      "duration": 5.4
+    },
+    {
+      "text": "loaded at some point that has the symbol",
+      "start": 301.18,
+      "duration": 5.34
+    },
+    {
+      "text": "and now let's execute the binary we hit",
+      "start": 303.28,
+      "duration": 5.85
+    },
+    {
+      "text": "a breakpoint in lips e start main this",
+      "start": 306.52,
+      "duration": 4.709
+    },
+    {
+      "text": "happened because when the binary was",
+      "start": 309.13,
+      "duration": 4.68
+    },
+    {
+      "text": "executed the loader started to set up",
+      "start": 311.229,
+      "duration": 4.47
+    },
+    {
+      "text": "the whole binary and it saw that it",
+      "start": 313.81,
+      "duration": 3.9
+    },
+    {
+      "text": "needs dynamic library so it was loading",
+      "start": 315.699,
+      "duration": 3.78
+    },
+    {
+      "text": "ellipse e and there was a breakpoint so",
+      "start": 317.71,
+      "duration": 4.01
+    },
+    {
+      "text": "it set a break but you get the point and",
+      "start": 319.479,
+      "duration": 5.16
+    },
+    {
+      "text": "here you can actually see a few more of",
+      "start": 321.72,
+      "duration": 5.08
+    },
+    {
+      "text": "the symbols you can see here the names",
+      "start": 324.639,
+      "duration": 4.741
+    },
+    {
+      "text": "of the parameters of this function and",
+      "start": 326.8,
+      "duration": 5.31
+    },
+    {
+      "text": "the first parameter is called main and",
+      "start": 329.38,
+      "duration": 5.88
+    },
+    {
+      "text": "it shows you actually what the parameter",
+      "start": 332.11,
+      "duration": 6.33
+    },
+    {
+      "text": "value is so at this address generally",
+      "start": 335.26,
+      "duration": 5.85
+    },
+    {
+      "text": "this offset here at the end is where you",
+      "start": 338.44,
+      "duration": 4.62
+    },
+    {
+      "text": "can find main let's see if this is",
+      "start": 341.11,
+      "duration": 7.23
+    },
+    {
+      "text": "correct v fa so yeah we assume that at 5",
+      "start": 343.06,
+      "duration": 8.64
+    },
+    {
+      "text": "F a we can find main so now we can also",
+      "start": 348.34,
+      "duration": 6.69
+    },
+    {
+      "text": "set a breakpoint there and we continue",
+      "start": 351.7,
+      "duration": 5.16
+    },
+    {
+      "text": "and we hit a breakpoint and now we are",
+      "start": 355.03,
+      "duration": 4.29
+    },
+    {
+      "text": "in main so this is how we can find the",
+      "start": 356.86,
+      "duration": 5.16
+    },
+    {
+      "text": "main function in a strip binary and how",
+      "start": 359.32,
+      "duration": 5.219
+    },
+    {
+      "text": "we can also then debug this now you know",
+      "start": 362.02,
+      "duration": 4.619
+    },
+    {
+      "text": "how you can find the main function when",
+      "start": 364.539,
+      "duration": 4.201
+    },
+    {
+      "text": "you have a strip binary make sure to",
+      "start": 366.639,
+      "duration": 3.631
+    },
+    {
+      "text": "check out the full playlist of hex",
+      "start": 368.74,
+      "duration": 3.71
+    },
+    {
+      "text": "member and see you tomorrow",
+      "start": 370.27,
+      "duration": 13.749
+    },
+    {
+      "text": "[Music]",
+      "start": 372.45,
+      "duration": 11.569
+    }
+  ],
+  "full_text": "sometimes your binary will not have symbols it's a so-called strip binary let me show what you can do that [Music] sometimes you find yourself with a binary that says it's stripped your problem is when you try to debug this and you want to set a breakpoint romain no symbol table is loaded so I have downloaded the disassembler called Piedra and I've linked it in the description of this video this will not work we still need Java 11 while this is still installing let's go back to gdb and I'll show you another method first with info files you can get a couple of informations about this file and so first of all you see here a lot of the sections that this file has so for example you can find the text section which is the code or you can find the data section where there's an aesthetic data this may be other stuff that you recognize like the procedure linkage table and the global offset table and so forth but it also shows you here an entry point which coincidentally is right at the start of the text section 2 so let's disassemble the code there ok this so there's no function at this address so let's look at this with the examine command so I'm examining 20 instructions at this address and then we can see here just cohhd cohhd cohhd cohhd cohhd and then we see here a call coming up as well as certain parameters being prepared for it and I get rights basically the same thing ok I tried to zoom in a little bit so obviously it's not very very crowded so in the symbol tree you can find a symbol that get recalled entry the entry function here also starts at 4 F 0 @ is the offset kitra puts it actually at 1 0 0 for f 0 but that's just good invention that's just where Dedra kind of like assumes where in memory it could be but you see the offset is the same and so let's look at this code here you can also see here eventually this called ng draw already recognized this as Lipsy start main guitar recognize this because even though the binary itself M is strip doesn't have cymbals it still uses dynamic libraries like Lib C and to resolve the addresses of the Lib C functions it has to include the cymbals for this dynamic library so it will recognize if it tries to call something like main gdb is not really a disassembly gdb is a debugger so it doesn't have fancy display features like this there are some extensions that might help you with that but generally you would want a disassembler to kind of like analyze most ethically a binary like this so here we can see ellipses start main and get R also has a d compiler and you can see that this function takes a couple of parameters and actually the first parameter of this Lipsy start main function is the address where the actual main is where your - so what get er identified as this function here is main so we can go there and we can see that's like my shellcode test code this this is the main function that I have written don't don't worry about what this Court has asked but I can assure you that this is the main function this means that the address loaded into RDI is in fact the address of main so we know this is the entry point so at the corner of the entry point you can also see that here's this call and because you can assume this is a typical binary you might assume that in the entry code you have that the first call there goes to Lipsy main is it's just an assumption that you can make this assembler like g-drive will actually tell you if that's the case but that's a fair assumption you can make if you assume as just a normal binary which means the first parameter here for this call is actually the real main and here gdb actually helped you because it's from our IP so our IP would be at this case 5 0 T plus this offset here here's the result so if this address should be the real main your main and yet so this definitely looks like a function start so yeah this this is your main function so this is how you can find me okay so now that we have learned about the lips II start main we can actually use this also to our advantage with gdb as long as it's a dynamic binary so another static binary you can break on the lip see function because for that you have symbols and it says you hear that the lips e start main is not defined but you can make a pending breakpoint in case a shared library is loaded at some point that has the symbol and now let's execute the binary we hit a breakpoint in lips e start main this happened because when the binary was executed the loader started to set up the whole binary and it saw that it needs dynamic library so it was loading ellipse e and there was a breakpoint so it set a break but you get the point and here you can actually see a few more of the symbols you can see here the names of the parameters of this function and the first parameter is called main and it shows you actually what the parameter value is so at this address generally this offset here at the end is where you can find main let's see if this is correct v fa so yeah we assume that at 5 F a we can find main so now we can also set a breakpoint there and we continue and we hit a breakpoint and now we are in main so this is how we can find the main function in a strip binary and how we can also then debug this now you know how you can find the main function when you have a strip binary make sure to check out the full playlist of hex member and see you tomorrow [Music]",
+  "errors": []
+}

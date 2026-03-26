@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "h86p7pcZmL8",
+    "language": "en",
+    "took_ms": 9599,
+    "method": null,
+    "title": "DEF CON 32 - Reflections on a Decade in Bug Bounties  - Nikhil Shrivastava & Charlie Waterhouse",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3552,
+    "description": "In this talk, I will share my journey from a novice to a seasoned hunter. I will explore how I used to report low-impact, informative bugs when I first started, and how I progressively improved by learning from the community, embracing failures/duplicates, and incorporating feedback from triage teams and clients. This journey of continuous learning and adaptation led me from reporting low vulnerabilities to effectively chaining and converting them into critical impacts.\n\nThis session is designed for both aspiring and experienced bug bounty hunters. By reflecting on a decade of lessons learned, I will aim to provide valuable takeaways that can help others navigate their own paths in bug bounty hunting and enhance their skills.\n\nAdditionally, one Synack triage team member will join me on this talk to help differentiate triage thinking from bug bounty hunters' thinking, providing valuable insights into the collaborative process of vulnerability reporting to acceptance.",
+    "view_count": 6466
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] h86p7pcZmL8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

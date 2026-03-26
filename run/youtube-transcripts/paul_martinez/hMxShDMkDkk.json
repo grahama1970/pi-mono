@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hMxShDMkDkk",
+    "language": "en",
+    "took_ms": 7698,
+    "method": null,
+    "title": "ICS Security - The European Perspective",
+    "channel": "S4 Events",
+    "upload_date": "20200722",
+    "duration_sec": 1758,
+    "description": "Klaus Mochalski came over from Germany and informed the mostly US audience at S4 on what is happening on the continent related to ICS security. One way they differ is more regulation from the EU and the member states (using Germany in this session). \"Many companies in critical infrastructure had to do something\" because of these regulations. He also believes that \"Regulation trumps awareness\".\n\nKlaus explains the most important regulation, the IT-SiG, in more detail including showing some of the physical forms that must be completed.\n\nIn the second half Klaus goes into practical observations on where European companies are doing well and not so well, and a lot of this sounded familiar to what is happening in the US.",
+    "view_count": 401
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hMxShDMkDkk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

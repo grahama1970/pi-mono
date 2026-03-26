@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g68qlo9Izf0",
+    "language": "en",
+    "took_ms": 9567,
+    "method": null,
+    "title": "Efficient Fine-Tuning for Llama-v2-7b on a Single GPU",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230829",
+    "duration_sec": 3592,
+    "description": "The first problem you’re likely to encounter when fine-tuning an LLM is the “host out of memory” error. It’s more difficult for fine-tuning the 7B parameter Llama-2 model which requires more memory. In this talk, we are having Piero Molino and Travis Addair from the open-source Ludwig project to show you how to tackle this problem.\r\n\r\nThe good news is that, with an optimized LLM training framework like Ludwig.ai, you can get the host memory overhead back down to a more reasonable host memory even when training on multiple GPUs.\r\nIn this hands-on workshop, we‘ll discuss the unique challenges in finetuning LLMs and show you how you can tackle these challenges with open-source tools through a demo.\r\n\r\nBy the end of this session, attendees will understand:\r\n- How to fine-tune LLMs like Llama-2-7b on a single GPU\r\n- Techniques like parameter efficient tuning and quantization, and how they can help\r\n- How to train a 7b param model on a single T4 GPU (QLoRA)\r\n- How to deploy tuned models like Llama-2 to production\r\n- Continued training with RLHF\r\n- How to use RAG to do question answering with trained LLMs\r\nThis session will equip ML engineers to unlock the capabilities of LLMs like Llama-2 on for their own projects.\n\nThis event is inspired by DeepLearning.AI’s GenAI short courses, created in collaboration with AI companies across the globe. Our courses help you learn new skills, tools, and concepts efficiently within 1 hour.\n\nhttps://www.deeplearning.ai/short-courses/\n\nHere is the link to the notebook used in the workshop:\nhttps://pbase.ai/FineTuneLlama\r\n\r\nSpeakers:\r\n\r\nPiero Molino, Co-founder and CEO of Predibase\n\nhttps://www.linkedin.com/in/pieromolino/\r\n\r\nTravis Addair, Co-founder and CTO of Predibase\n\nhttps://www.linkedin.com/in/travisaddair/",
+    "view_count": 90527
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g68qlo9Izf0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

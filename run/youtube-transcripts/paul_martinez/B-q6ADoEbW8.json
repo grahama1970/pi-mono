@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B-q6ADoEbW8",
+    "language": "en",
+    "took_ms": 8390,
+    "method": null,
+    "title": "Hyper-Connectivity Will Improve Cybersecurity",
+    "channel": "S4 Events",
+    "upload_date": "20190319",
+    "duration_sec": 1102,
+    "description": "Dave Weinstein makes the counterintuitive point that  hyper-connectivity will improve cybersecurity / reduce risk. Up until now hyper-connectivity has tracked with improved offense while defense lags. Dave's point is hyper-connectivity paired with the possible visibility this hyper-connectivity provides will help defense much more than the attacker.",
+    "view_count": 236
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B-q6ADoEbW8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

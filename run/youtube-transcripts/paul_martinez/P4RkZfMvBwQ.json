@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P4RkZfMvBwQ",
+    "language": "en",
+    "took_ms": 9086,
+    "method": null,
+    "title": "2. ICS Security Architecture with Dale Peterson",
+    "channel": "S4 Events",
+    "upload_date": "20201110",
+    "duration_sec": 2745,
+    "description": "Learning Goal: To understand the key network architecture decisions that affect cyber risk.\n\nDale Peterson provides the second lecture with 45 minutes on ICS Security Architecture. Along with Marty's: Know Your ICS lecture, this provides the basics so we are all on the same page moving forward. It is aimed at the engineer or operations professional new to cybersecurity. That said, I think there are a few gems in the specific stories even if you know all about security perimeters, remotes access and other basics.\n\nQuestions to consider and comment on:\n\n1) What are some examples of common ICS communication you would not want to allow through your Enterprise / ICS security perimeter? And what would you do if your ICS application requires a large number of ports allowed through the security perimeter?\n\n2) How many DMZ's should you have for your Enterprise / ICS security perimeter, and what is the purpose for each DMZ?\n\n3) What remote access to you allow to your ICS? How many people from what organizations? How often? \n\n4) If you say the security perimeter between the enterprise/corporate network and the ICS is your first or primary security perimeter, where would you put your second security perimeter?\n\n**Strategic Pull Quote: \"We are not in this game to see who can deploy and maintain the most security controls, our goal is to manage risk to a level appropriate to the company.\"**\n\n**KEY QUESTION:** Are there security controls you have in place today or see widely recommended that have lead to little or no reduction in cyber risk?",
+    "view_count": 6346
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P4RkZfMvBwQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

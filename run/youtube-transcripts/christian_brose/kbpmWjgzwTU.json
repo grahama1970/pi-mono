@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kbpmWjgzwTU",
+    "language": "en",
+    "took_ms": 8725,
+    "method": null,
+    "title": "Rising to the Challenge: Regaining US Military Superiority During a Time of Uncertainty",
+    "channel": "Hudson Institute",
+    "upload_date": "20201030",
+    "duration_sec": 2746,
+    "description": "Join Hudson Institute for a conversation with Rep. Jim Banks and Rep. Seth Moulton on the recently released results from the Congressional Future of Defense Task Force’s year-long study of the U.S. military and state of US national security. The discussion will be moderated by Senior Fellow, Bryan Clark, with additional perspectives from Adjunct Fellow, Dan Patt.",
+    "view_count": 1189
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kbpmWjgzwTU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

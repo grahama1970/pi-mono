@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uOh4r1ZtrCM",
+    "language": "en",
+    "took_ms": 7962,
+    "method": null,
+    "title": "Learn to post-train LLMs in this free course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250709",
+    "duration_sec": 172,
+    "description": "Learn more: https://bit.ly/4lqtWmr\n\nBefore a large language model can follow instructions, it undergoes two key stages: pre-training and post-training. In pre-training, it learns to predict the next word or token from large amounts of unlabeled text. In post-training, it learns useful behaviors such as following instructions, tool use, and reasoning.\n\nIn our latest short course, Post-training of LLMs, you’ll learn how to use three of the most common post-training techniques: Supervised Fine-Tuning (SFT), Direct Preference Optimization (DPO), and Online Reinforcement Learning (RL), to reshape model behavior for specific tasks or capabilities.\n\nTaught by Banghua Zhu, Assistant Professor at the University of Washington, Principal Research Scientist at Nvidia, and co-founder of NexusFlow, this course covers:\n\n- When to apply post-training and how it compares to pre-training\n- How to curate and structure training data for each method\n- How to use SFT to turn a base model into an instruct model\n- How contrastive learning in DPO improves output quality\n- How to design reward functions for RL tasks like math or code\n- How to evaluate whether post-training improved or degraded model behavior\n\nYou’ll also get hands-on experience implementing each technique with Hugging Face’s TRL library to:\n\n- Fine-tune a base model into an instruction-following assistant\n- Modify a model’s responses using preferred and rejected examples\n- Improve a model’s reasoning with online RL and verifiable rewards\n\nWhether you’re building safer assistants or targeting domain-specific improvements, this course will help you adapt LLMs with precision.\n\nEnroll now: https://bit.ly/4lqtWmr",
+    "view_count": 6061
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uOh4r1ZtrCM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

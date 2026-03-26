@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U1bIc6pFdw4",
+    "language": "en",
+    "took_ms": 8044,
+    "method": null,
+    "title": "Ones To Watch: Christine Payne",
+    "channel": "DeepLearningAI",
+    "upload_date": "20190522",
+    "duration_sec": 288,
+    "description": "Christine finished the Deep Learning Specialization a year ago. Now she's a full-time OpenAI research scientist building neural networks that create original music. Christine and Andrew chat about the tech behind her latest project, MuseNet, and her advice for those wanting to start their own careers in ML.",
+    "view_count": 10332
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U1bIc6pFdw4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

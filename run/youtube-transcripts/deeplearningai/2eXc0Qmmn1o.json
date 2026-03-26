@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2eXc0Qmmn1o",
+    "language": "en",
+    "took_ms": 8158,
+    "method": null,
+    "title": "AI Dev 25 | Matt Palmer: Idea to app—shipping fast with Replit",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1535,
+    "description": "Got an idea but not sure how to bring it to life? In this hands-on session, Matt Palmer, Head of Developer Relations at Replit, walked AI Dev 25 attendees through how to take an app from concept to live deployment—all in one workshop.\n\nWhether you’re just getting started or looking to speed up your workflow, you’ll learn practical tips for turning ideas into working web apps using Replit’s powerful cloud-based dev environment.\n\nThis session is all about momentum: building fast, iterating quickly, and shipping with confidence.",
+    "view_count": 1594
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2eXc0Qmmn1o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

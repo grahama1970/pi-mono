@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xgTM50W8pU4",
+    "language": "en",
+    "took_ms": 9995,
+    "method": null,
+    "title": "Chinese Repression and Uyghur Militancy at Eurasia's Crossroads",
+    "channel": "Hudson Institute",
+    "upload_date": "20170425",
+    "duration_sec": 5615,
+    "description": "Yang Jianli, Kilic Kanat, Sean Roberts and Eric Brown on the security and human rights situation in Xinjiang, the Uyghurs, and the PRC's New Silk Road",
+    "view_count": 10759
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xgTM50W8pU4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

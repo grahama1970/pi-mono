@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m-79K4bR_Z0",
+    "language": "en",
+    "took_ms": 9467,
+    "method": null,
+    "title": "The Future of U.S. Seapower: A View from Congress",
+    "channel": "Hudson Institute",
+    "upload_date": "20210219",
+    "duration_sec": 3701,
+    "description": "China will likely launch its third aircraft carrier later this year, and its sister ship is not far behind. The Chinese Navy now has more ships than the U.S. Navy and is continuing to widen the numerical gap. Russia is testing hypersonic missiles and other adversaries are investing in strengthening their naval power. What is the U.S. doing in response? What should the U.S. do in response? Join Hudson Institute Senior Fellow Seth Cropsey and U.S. Representatives Joe Courtney and Rob Wittman for a discussion of this timely topic.",
+    "view_count": 998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m-79K4bR_Z0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

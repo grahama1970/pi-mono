@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xT1Wo-z83do",
+    "language": "en",
+    "took_ms": 8700,
+    "method": null,
+    "title": "DEF CON 31 - Malware design Abusing Legacy Microsoft Transports and Session Architecture 0 RJ McDown",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2713,
+    "description": "The future isn’t certain, nor is the continued access to our compromised endpoints. At some point, every red team operator faces the gut-wrenching event of losing command and control (C2) access. This often occurs when post exploitation activity is detected and associated to the C2 process and channel. Further link analysis may lead to the discovery of other compromised endpoints, secondary C2, and compromised credentials. Needless to say, a single mistake can cause a huge disruption in access and even lead to the detriment of the entire engagement.\n\nThis talk will present and demonstrate the methodologies and techniques built into Obligato, a covert implant tasking and communications framework, designed with the primary objectives of breaking process chaining events, disassociating network communication from the implant, providing a means for maintaining or regaining access, and evading dynamic analysis.\n\nTechnical information will be explained and demonstrated at both high and low levels, so prior knowledge is not required. However, to get the most out of the talk, attendees are encouraged to have a basic understanding of general Windows architecture, networking, and programming concepts.",
+    "view_count": 1358
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xT1Wo-z83do: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

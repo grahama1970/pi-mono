@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "weZwvjm9KL4",
+    "language": "en",
+    "took_ms": 8066,
+    "method": null,
+    "title": "Requirements for a Successful Military Cloud: Best Practices, Innovation and Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20180730",
+    "duration_sec": 4693,
+    "description": "The cloud computing industry is thriving, with storage levels set to double in 2018 from 2017 levels. At the same time, current efforts by the U.S. Department of Defense to “move to the cloud” demonstrate data’s exponentially growing role in military affairs.\n\nDespite the need to provide U.S. warfighters with the best in cyber-support, many questions still surround the procurement process for the Pentagon’s cloud, the Joint Enterprise Defense Infrastructure (JEDI). Without rigorous analysis of a range of structural issues, JEDI may be implemented in a way that isolates the Pentagon from the innovation of a young industry, introduces security flaws into military operations, and reduces competition among cloud providers.\n\nOn July 30, with sponsorship from Oracle and Microsoft, Hudson Institute’s Task Force on Federal IT Procurement hosted a panel to discuss the structure, requirements, and best practices for JEDI’s implementation. The discussion was moderated by Hudson Senior Fellow Tod Lindberg and included Hudson Senior Fellows William Schneider Jr. and Seth Cropsey.",
+    "view_count": 814
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] weZwvjm9KL4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N3SXVOVUD1s",
+    "language": "en",
+    "took_ms": 8563,
+    "method": null,
+    "title": "DEF CON 33 - Cash, Drugs, and Guns - Why Your Safes Aren't Safe - Mark Omo, James Rowley",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2514,
+    "description": "When Liberty Safe was found to have provided safe unlock codes to authorities, it made us wonder; how was it even possible for Liberty to do this? Our talk will cover the vulnerabilities we found and journey into the various families of locks made by SecuRam, the OEM of safe locks used by Liberty Safe and other Safe vendors. Our exploration began with an “analog” lock from Liberty Safe but quickly expanded to SecuRam’s “digital” lock lines, where we found a debug port that allowed access to all firmware and data. Through this, we discovered that codes are stored on the externally accessible keypad, rather than securely inside the safe (as well as other issues). These locks, deployed widely in consumer, and commercial safes at major retail chains exhibit vulnerabilities that enable opening them in seconds with a Raspberry Pi. We invite you to our session to see us crack UL-certified High-Security Electronic Locks live!",
+    "view_count": 73915
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N3SXVOVUD1s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2zgon7XfN4I",
+    "language": "en",
+    "took_ms": 7985,
+    "method": null,
+    "title": "What does this have to do with the brain? (C1W4L08)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 197,
+    "description": "Take the Deep Learning Specialization: http://bit.ly/3aq55ui\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 42843
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2zgon7XfN4I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

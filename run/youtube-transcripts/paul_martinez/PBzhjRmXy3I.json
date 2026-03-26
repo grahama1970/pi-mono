@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PBzhjRmXy3I",
+    "language": "en",
+    "took_ms": 8477,
+    "method": null,
+    "title": "IoT Botnets in 3 Minutes",
+    "channel": "S4 Events",
+    "upload_date": "20170804",
+    "duration_sec": 164,
+    "description": "This compilation clip from a 45-minute S4xEurope video tells you what you need to know about Mirai - The Weapon, Hajime - The Protector?, and BrickerBot - The Vigilante. Great work by Pascal Geenens of Radware.",
+    "view_count": 1818
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PBzhjRmXy3I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R2vIYVdMzPc",
+    "language": "en",
+    "took_ms": 8729,
+    "method": null,
+    "title": "Four advanced deployment scenarios (TensorFlow: Data and Deployment)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200212",
+    "duration_sec": 128,
+    "description": "The final course of TensorFlow: Data and Deployment is out! Laurence and Andrew walk through what you'll learn. \n\nEnroll in TensorFlow: Data and Deployment: http://bit.ly/2OKQHEk\nCheck out all our courses: deeplearning.ai \nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch \n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_ \nFacebook: https://www.facebook.com/deeplearningHQ/ \nLinkedin: https://www.linkedin.com/company/deeplearningai/",
+    "view_count": 3815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R2vIYVdMzPc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

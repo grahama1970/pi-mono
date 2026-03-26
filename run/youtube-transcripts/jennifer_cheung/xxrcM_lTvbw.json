@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xxrcM_lTvbw",
+    "language": "en",
+    "took_ms": 8106,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village - Huajiang Chen, Wu Ming - Remotely Rooting Charging Stations",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1561,
+    "description": "In recent years the emergence of a new security threat to the electric vehicle charging ecosystem. How safely and easily charge electric vehicles, is deeply impacting the way people travel. Therefore we conducted an in-depth security analysis for the EV charging stations from Schneider Electric.\n\nIn this talk, we'll present 3 vulnerabilities (CVE-2021-22706; CVE-2021-22707, and CVE-2021-22708) which we found in Schneider Electric's EVLink Charging System. We'll start by explaining the architecture; components, and protocols involved in such a system. Then we'll walk through step by step how do we found an RCE Vulnerability from it.\n\nWe will be diving into the journey of reverse engineering EVLink Charging station. Start from firmware acquisition, and the various challenges of exploiting EVLink. We'll explain the details of how do we overcome these limits, and show how our payloads manipulate the system in order to get a reverse shell with Root privilege. Finally, we'll present a video demo of exploiting the vulnerability.",
+    "view_count": 1410
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xxrcM_lTvbw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

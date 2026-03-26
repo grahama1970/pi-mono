@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yeAFnhSnjIE",
+    "language": "en",
+    "took_ms": 8547,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Steve Luczynski, Larry Grossman - Federal Perspective on Aerospace",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1800,
+    "description": "As the Federal Aviation Administration’s Chief Information Security Officer, Larry Grossman has a unique perspective on the challenges associated with building and sustaining adequate security for IT systems within a government agency and across the aerospace sector. Join us to learn more about his experiences and gain insight into the FAA’s current efforts to sustain the public’s trust in safe air travel.",
+    "view_count": 263
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yeAFnhSnjIE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mHCGNUsrTf0",
+    "language": "en",
+    "took_ms": 9316,
+    "method": null,
+    "title": "DEF CON 29 - Chad Seaman - UPnProxyPot: Fake the Funk, Become a Blackhat Proxy, MITM their TLS...",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2702,
+    "description": "UPnP sucks, everybody knows it, especially blackhat proxy operators. UPnProxyPot was developed to MITM these operators to see what they're doing with their IoT proxy networks and campaigns. We'll cover SSDP, UPnP, UPnProxy research/campaigns as well as cover a new Golang based honeypot, so we can all snoop on them together!\n\nREFERENCES:\nhttp://www.upnp-hacks.org (OG disclosure)\nhttps://www.youtube.com/watch?v=FU6qX0-GHRU (DEF CON 19 talk I attended)\nhttps://www.akamai.com/us/en/multimedia/documents/white-paper/upnproxy-blackhat-proxies-via-nat-injections-white-paper.pdf (my initial UPnProxy research)\nhttps://blogs.akamai.com/sitr/2018/11/upnproxy-eternalsilence.html (additional UPnProxy campaign researcher, also mine)",
+    "view_count": 3697
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mHCGNUsrTf0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

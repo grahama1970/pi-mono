@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XZK5TvnJjXg",
+    "language": "en",
+    "took_ms": 8031,
+    "method": null,
+    "title": "DEF CON 31 Car Hacking Village - How an Auto Security Researcher Had His Car Stolen - Tabor, Tindell",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2737,
+    "description": "The story of the investigation into the device that I believe was used to steal my 2021 Toyota RAV4 in July 2022 using 'CAN Injection'\n\nThere will be low level details on how the CAN bus works, how the 'theft device' spoofs CAN frames and using a modified transceiver to stop other ECUs communicating. We will also explain the disclosure process and possible fixes. Get the full story in the blog.",
+    "view_count": 13001
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XZK5TvnJjXg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

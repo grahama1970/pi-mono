@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9q2rHkiPwLk",
+    "language": "en",
+    "took_ms": 7926,
+    "method": null,
+    "title": "DEF CON 30 Car Hacking Village - David Rogers -   Integrating Mileage Clocking Into a Simulator Rig",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2700,
+    "description": "This talk will explain how we were able to get real-world car hacking equipment for mileage clocking up and running in our own vehicle hacking simulator in order to help us reverse engineer and also demo it (without getting arrested). David Rogers will also explain how rigs can be built to include in other types of equipment, from head units to dashcams. He will show how the rig has also been adapted to allow others to ‘remotely control’ elements of the vehicle – including removing the brakes and accelerator, which provides a truly terrifying, immersive experience (with motion) of what it would be like to be in car where things are in the control of a malicious third party, not the driver. The talk will conclude with what needs to be done in the future autonomous and connected vehicle space to ensure safety and security.",
+    "view_count": 2498
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9q2rHkiPwLk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RZ0h5qrvG4Y",
+    "language": "en",
+    "took_ms": 8574,
+    "method": null,
+    "title": "The hot new gameshow: My Favorite Metric!",
+    "channel": "S4 Events",
+    "upload_date": "20240923",
+    "duration_sec": 1694,
+    "description": "Ron Fabela and three 'celebrity' judges hear contestants' favorite ICS Cybersecurity or Cyber Risk metric. The winner got a free ticket to #S4x25. (note: the winner at S4x25 will get $2,500 in cold, hard cash.)",
+    "view_count": 164
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RZ0h5qrvG4Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

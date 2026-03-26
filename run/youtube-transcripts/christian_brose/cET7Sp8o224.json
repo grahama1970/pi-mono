@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cET7Sp8o224",
+    "language": "en",
+    "took_ms": 8958,
+    "method": null,
+    "title": "India-U.S. Ties Under Narendra Modi",
+    "channel": "Hudson Institute",
+    "upload_date": "20140603",
+    "duration_sec": 6196,
+    "description": "India's ties with the United States have deepened in the last few years especially in the economic and defense-security arenas. With changes taking place in South Asia -- elections in India and Afghanistan, U.S. military drawdown in Afghanistan -- the way that India-U.S. ties develop will also have an impact on the region and beyond. To discuss these and other crucial issues confronting Washington and New Delhi, Hudson Institute will host a talk by Commodore Uday Bhaskar, Distinguished Fellow, Soc",
+    "view_count": 26356
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cET7Sp8o224: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

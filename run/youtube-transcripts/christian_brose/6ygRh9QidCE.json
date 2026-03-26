@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6ygRh9QidCE",
+    "language": "en",
+    "took_ms": 7789,
+    "method": null,
+    "title": "Sen. Todd Young on Securing America’s Economic & Security Future Through Technological Innovation",
+    "channel": "Hudson Institute",
+    "upload_date": "20200416",
+    "duration_sec": 2683,
+    "description": "Join Hudson Institute for a conversation with U.S. Senator Todd Young on the technological innovation needed to ensure a more secure and prosperous future for the United States.\n\nModerated by Hudson Senior Fellow Arthur Herman, this discussion will explore how the U.S. can invest in crucial technologies to meet the economic challenges of the pandemic and other future threats. They will also discuss the importance of a bipartisan National Innovation Strategy to promote long-term technological advancement and strategies for countering China’s efforts to surpass American innovation and global leadership.",
+    "view_count": 501
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6ygRh9QidCE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

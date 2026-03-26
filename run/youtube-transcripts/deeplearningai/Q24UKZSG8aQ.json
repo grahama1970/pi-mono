@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Q24UKZSG8aQ",
+    "language": "en",
+    "took_ms": 9065,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Kay Zhu: How Genspark Built a Super Agent That Scales",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 2032,
+    "description": "Kay Zhu, CTO of Mainfunc (Genspark), shared at AI Dev 25 x NYC how Genspark advocates for giving AI agents autonomy to plan rather than rigid workflows, while equipping them with 80+ specialized tools. \n\nHis belief: workflows fail on edge cases and accumulate errors, while agents can observe, backtrack, and recover from unexpected situations.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 813
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Q24UKZSG8aQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

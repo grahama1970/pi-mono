@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jVRCTyrSUH4",
+    "language": "en",
+    "took_ms": 8930,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Dadgar, Zaimiri, Dorosti - Attacking Flight Management Systems",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1644,
+    "description": "Modern aircrafts are heavily relied on flight management systems to automate a wide variety of in-flight tasks, including producing flight plans, reducing the workload on the pilot, or allow the airplane to hook up the autopilot. Vulnerabilities in such systems could allow an attacker to manipulate critical data that are important during a flight.\n\nIn this talk, we will present the result of our research on the security of a famous flight management system and how we managed to detect a weakness in its security mechanism using reverse engineering. Then we will discuss possible risk scenarios regarding manipulation of mentioned critical data.\n\nDuring this research, we have found a method to modify the navigation data on a flight management computer and also identified some risk scenarios that we think could cause some problems. We hope this may lead to future research and make the aviation industry more secure.",
+    "view_count": 261
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jVRCTyrSUH4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

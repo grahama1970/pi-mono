@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iprBprAFXCk",
+    "language": "en",
+    "took_ms": 8339,
+    "method": null,
+    "title": "DEF CON 31 - Warshopping- Phreaking Smart Shopping Cart Wheels Through RF Sniffing - Joseph Gabay",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2304,
+    "description": "Smart shopping cart wheels are electronic wheels with a mechanical braking mechanism meant to prevent cart removal or shoplifting, as well as electronics to provide other tracking functions. In a past talk, I’ve discussed the ultra-low-frequency communication these systems use and how to sniff and replay them (and even use your phone’s speaker to “phreak” your shopping cart!\n\nThis talk explores a new type of smart wheel (the Rocateq system), and focuses on a deeper exploration of the hardware and firmware. On top of capturing new sets of ultra-low-frequency control signals, we’ll look at the 2.4 GHz “checkout” signal that it receives from the register and reverse engineer the PCB - soldering on “fly-wires” to look at the chip-to-chip communication with a logic analyzer. We’ll also use a PICKIT programmer to dump the firmware from the main microcontroller for basic analysis using Ghidra.\n\nIn addition to the talk, the website where you can play the control signals as audio files on your phone will be updated to include the control codes for the Rocateq brand wheels.",
+    "view_count": 102067
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iprBprAFXCk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

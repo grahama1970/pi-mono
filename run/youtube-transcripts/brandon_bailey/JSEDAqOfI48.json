@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JSEDAqOfI48",
+    "language": "en",
+    "took_ms": 9465,
+    "method": null,
+    "title": "DEF CON Safe Mode Biohacking Village - Curry, Dougherty - INCLUDES NO DIRT: Threat Modeling",
+    "channel": "DEFCONConference",
+    "upload_date": "20200818",
+    "duration_sec": 3375,
+    "description": "Deeply understanding the risks that confront organizations is critical for their continuation and success. While many regulatory requirements mandating risk assessments exist, there’s a dearth of consistent and scalable real-world methodologies that can rigorously shape an assessment, let alone one common between disciplines like privacy and security. This presentation will introduce the Threat Modeling process Omada Health developed for its internal use (called INCLUDES NO DIRT), based on models common to various sectors and designed to integrate the perspectives of privacy, cybersecurity, and regulatory compliance for increased effectiveness and efficiency. We’ll explain briefly how (and why!) we developed the process, how it works in practice, and take a relevant example (a combination of a device type and a health coaching process) to show the Threat Model in action.",
+    "view_count": 260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JSEDAqOfI48: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

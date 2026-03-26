@@ -1,0 +1,330 @@
+version: 1
+kind: orchestrate-plan
+metadata:
+  title: "Unified Lab R7 \u2192 React Implementation"
+  goal: Implement 4 Unified Lab supervision tabs from R7-approved HTML mockups as
+    production React components in /ux-lab
+  source_markdown: /home/graham/workspace/experiments/pi-mono/packages/ux-lab/02_UNIFIED_LAB_R7_TASKS.md
+execution:
+  max_concurrency: 3
+capability_overlap:
+- '`/memory recall`: No prior unified-lab implementation plans found'
+- '**Existing skills used**: `/ux-lab` (Vite workbench), `/review-design` (Nico+Steve
+  via subagent), `/best-practices-react`, `/test-interactions`'
+- '**Existing components reused**: EmbryStyle.ts tokens, useWebSocket hook, useLabStore,
+  ModeBadge, ReasoningToast'
+- "**No new skills needed** \u2014 all tasks are EXTEND or CREATE within existing\
+  \ /ux-lab package"
+questions_blockers:
+- None
+tasks:
+- id: '0.1'
+  title: Add recharts dependency if missing + verify Vite dev server starts
+  lane: '0'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on: []
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: '`recharts` in package.json dependencies'
+  command: ''
+  prompt: ''
+- id: '0.2'
+  title: Generate blind tests for all implementation tasks
+  lane: '0'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Blind test fixtures generated for all implementation tasks
+  command: ''
+  prompt: ''
+- id: '0.3'
+  title: Create `StatusPill.tsx` shared component with 7 variants
+  lane: '0'
+  agent: general-purpose
+  runner: subagent-service
+  backend: opus
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Component renders all 7 variants with correct colors from EmbryStyle.ts
+  command: ''
+  prompt: ''
+- id: '0.4'
+  title: Add `StatusPill` to ComponentGallery with all 7 variants
+  lane: '0'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.3'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: StatusPill visible at localhost:3002 in gallery with all variants rendered
+  command: ''
+  prompt: ''
+- id: '1.1'
+  title: "`/ux-lab` draft \u2014 Implement ClassificationTab from `tab_classification_r7.html`"
+  lane: '1'
+  agent: general-purpose
+  runner: subagent-service
+  backend: opus
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.3'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Tab renders training curves, class distribution bars, promotion table
+      with StatusPill badges
+  command: ''
+  prompt: ''
+- id: '1.2'
+  title: "`/review-design` \u2014 Screenshot ClassificationTab via `/surf`, review\
+    \ with Nico + Steve via `/subagent-service` gemini"
+  lane: '2'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '1.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Both Nico and Steve grade PASS on component standardization
+  command: ''
+  prompt: ''
+- id: '1.3'
+  title: "`/test-interactions` \u2014 Verify hover states, clickable rows, Stop Training\
+    \ button"
+  lane: '3'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '1.2'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: "All interactive elements respond to click/hover \u2014 screenshot\
+      \ evidence saved to captures/"
+  command: ''
+  prompt: ''
+- id: '2.1'
+  title: "`/ux-lab` draft \u2014 Implement RegressionTab from `tab_regression_r7.html`"
+  lane: '1'
+  agent: general-purpose
+  runner: subagent-service
+  backend: opus
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.3'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Tab renders model table with pill badges, scatter plot, hover affordances
+  command: ''
+  prompt: ''
+- id: '2.2'
+  title: "`/review-design` \u2014 Screenshot RegressionTab, review with Nico + Steve"
+  lane: '2'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '2.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Both reviewers grade PASS
+  command: ''
+  prompt: ''
+- id: '2.3'
+  title: "`/test-interactions` \u2014 Verify Re-evaluate hover link, clickable rows"
+  lane: '3'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '2.2'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: "Hover reveals Re-evaluate link, rows have pointer cursor \u2014 screenshot\
+      \ evidence saved"
+  command: ''
+  prompt: ''
+- id: '3.1'
+  title: Replace ComparisonTab stub with Cascade "Coming Soon" placeholder from `tab_cascade_r7.html`
+  lane: '1'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.3'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Tab shows Coming Soon message with prerequisite explanation
+  command: ''
+  prompt: ''
+- id: '4.1'
+  title: "`/ux-lab` draft \u2014 Create new ModelHealthTab from `tab_model_health_r7.html`"
+  lane: '1'
+  agent: general-purpose
+  runner: subagent-service
+  backend: opus
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '0.3'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Tab renders summary cards + sortable table with all pill variants,
+      hover shows "View in Lab"
+  command: ''
+  prompt: ''
+- id: '4.2'
+  title: "`/review-design` \u2014 Screenshot ModelHealthTab, review with Nico + Steve"
+  lane: '2'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '4.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Both reviewers grade PASS
+  command: ''
+  prompt: ''
+- id: '4.3'
+  title: "`/test-interactions` \u2014 Verify sort, filter, \"View in Lab\" hover,\
+    \ row click"
+  lane: '3'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '4.2'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: "Table sorts on Status column click, filter dropdown works, hover reveals\
+      \ \"View in Lab\" \u2014 screenshot evidence saved"
+  command: ''
+  prompt: ''
+- id: '5.1'
+  title: Register all new tabs in the tab bar / router
+  lane: '4'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '1.3'
+  - '2.3'
+  - '3.1'
+  - '4.3'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: 8 tabs visible, each renders its component
+  command: ''
+  prompt: ''
+- id: '5.2'
+  title: Update `component-manifest.json` with all new components
+  lane: '4'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '5.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: Manifest has all 5 new components with complete fields
+  command: ''
+  prompt: ''
+- id: '5.3'
+  title: Final `npx tsc --noEmit` + update DESIGN_BOARD.md with R7 round
+  lane: '4'
+  agent: general-purpose
+  runner: subagent-service
+  backend: sonnet
+  mode: ''
+  context_boundary: ''
+  depends_on:
+  - '5.1'
+  implementation: []
+  tests: []
+  definition_of_done:
+    command: ''
+    assertion: DESIGN_BOARD.md has Round 7 section documenting implementation status
+  command: ''
+  prompt: ''
+lanes:
+- id: '0'
+  label: Wave 0
+- id: '1'
+  label: Wave 1
+- id: '2'
+  label: Wave 2
+- id: '3'
+  label: Wave 3
+- id: '4'
+  label: Wave 4

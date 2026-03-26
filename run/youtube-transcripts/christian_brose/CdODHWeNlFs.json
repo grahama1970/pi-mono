@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CdODHWeNlFs",
+    "language": "en",
+    "took_ms": 8315,
+    "method": null,
+    "title": "Diana Furchtgott-Roth Featured on C-SPAN Following Economic Roundtable",
+    "channel": "Hudson Institute",
+    "upload_date": "20091207",
+    "duration_sec": 100,
+    "description": "Hudson Institute Senior Fellow Diana Furchtgott-Roth participated in an economic roundtable on Capitol Hill on December 3, 2009 at the request of House Republican Leader John Boehner (R-OH). Job threatening policies moving through Congress were the main topic at the roundtable.",
+    "view_count": 207
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CdODHWeNlFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

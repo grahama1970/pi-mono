@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1gLSxXL2AHs",
+    "language": "en",
+    "took_ms": 8002,
+    "method": null,
+    "title": "7. Table Top Incident Response Exercises with Kai Thomsen",
+    "channel": "S4 Events",
+    "upload_date": "20201222",
+    "duration_sec": 2675,
+    "description": "Kai Thomsen, who was with Audi at the time of the session and now is with Dragos, goes over the why and how of ICS Incident Response Tabletop exercises.\n\nYou should have an Incident Response Plan before you run a tabletop exercise. The tabletop exercise is to train the team on the plan and make sure the plan has an actual chance of working. This will also help the team think critically through a thought exercise.\n\nSome tips that caught my attention:\n\n- He also suggests small scale “fire drills”, for the SOC, without the prior warning so they get used to the stress.\n\n- Use VM’s from previous incidents for table top exercises\n\n- Large-scale tabletops should involve leadership, but don’t make them look bad.\n\nMy favorite quote, “don’t create scenarios where everybody loses”.",
+    "view_count": 8947
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1gLSxXL2AHs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

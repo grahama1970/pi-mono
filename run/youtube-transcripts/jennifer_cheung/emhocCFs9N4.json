@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "emhocCFs9N4",
+    "language": "en",
+    "took_ms": 9305,
+    "method": null,
+    "title": "DEF CON 33 -  How malicious packages on npm bypass existing security tools - Paul McCarty",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1958,
+    "description": "npm is owned by Microsoft and is the world’s largest software registry. It hosts nearly 5 million packages and 4.5 trillion requests for packages were made to npm in 2024. The open and accessible nature of npm is one of its main features, but it's also one of the reasons that threat actors are attracted to it. A recent study by Sonatype found that 98.5% of malicious software packages are hosted and delivered via npm\n\nThis technical deep-dive will explain why npm is so good at delivering malware; expose how threat actors are using npm; and why existing security tools like SCA, SAST, EDR and anti-virus solutions will not protect you from npm based malware..",
+    "view_count": 966
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] emhocCFs9N4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

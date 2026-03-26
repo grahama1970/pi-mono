@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gR9EFvdSYqQ",
+    "language": "en",
+    "took_ms": 8697,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Otis Alexander - Highlighting the Importance of Detection Context",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1325,
+    "description": "Highlighting the Importance of Detection Context using the ATT&CK Evaluations for ICS Results",
+    "view_count": 401
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gR9EFvdSYqQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

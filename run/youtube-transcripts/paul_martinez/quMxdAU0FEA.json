@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "quMxdAU0FEA",
+    "language": "en",
+    "took_ms": 7703,
+    "method": null,
+    "title": "ICS Incident Management (Japanese)",
+    "channel": "S4 Events",
+    "upload_date": "20160720",
+    "duration_sec": 2241,
+    "description": "Tomomi Aoyama of Nagoya Institute of Technology discusses the methodology to achieve high resiliency of the organization by better management. The presenter conducted observations in the large-scale cyber security hands-on training at ENCS (European Network for Cyber Security, The Hague, NL). He will share the findings from the observations, such as management challenges which could happen in the real-world cyber incident.\n\n名古屋工業大学 Tomomi Aoyama\n\nこの発表では､人間工学的見地から､よりよい管理により､柔軟性の高い組織とする方法論について述べる。発表者は､ENCS (European Network for Cyber Security, The Hague, オランダ) において､大規模なサイバーセキュリティの実践的な演習で調査を実施した。実際のサイバーインシデントで起こりえる管理上の課題等の調査結果を紹介する。",
+    "view_count": 316
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] quMxdAU0FEA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

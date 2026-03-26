@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7cqH47AqKs8",
+    "language": "en",
+    "took_ms": 8039,
+    "method": null,
+    "title": "Reforming the Committee on Foreign Investment in the United States",
+    "channel": "Hudson Institute",
+    "upload_date": "20180731",
+    "duration_sec": 4765,
+    "description": "For decades, the U.S. has strongly encouraged foreign direct investment, with both Democratic and Republican administrations offering consistent support. Recently, however, increased investment by China, including in emerging technologies such as artificial intelligence, autonomous driving, and quantum computing has caused concern among U.S. national security regulators. \n\nTo address this, the U.S. has implemented an increasingly rigorous national security investment clearance regime, which has been administered by the Committee on Foreign Investment in the United States (CFIUS). Congress—with strong bipartisan and White House support—is now gearing up for a substantial reform of CFIUS and expects to vote on these reforms in August to help modernize and strengthen the regime. Supporters of the reform efforts have made it clear that strategic competition with China is at the very core of the reform.\n\nOn July 31, Hudson Institute hosted a panel to discuss the drivers, prospects, and implications of CFIUS reform. The panel was moderated by Hudson Institute Visiting Senior Fellow Mario Mancuso, and included the American Enterprise Institute’s Derek Scissors; Organization for International Investment President and CEO Nancy McLernon; and Managing Director at Beacon Global Strategies Michael Allen.",
+    "view_count": 862
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7cqH47AqKs8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

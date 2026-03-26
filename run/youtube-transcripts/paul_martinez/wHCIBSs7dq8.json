@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wHCIBSs7dq8",
+    "language": "en",
+    "took_ms": 7746,
+    "method": null,
+    "title": "The Future of ICS Security Products (from ICSJWG event)",
+    "channel": "S4 Events",
+    "upload_date": "20200609",
+    "duration_sec": 1961,
+    "description": "This is the video from the ICSJWG meeting on 9 June 2020. I analyze the detection and asset management market, predict what they will look like in 2 - 5 years, and rate the current participants.",
+    "view_count": 1873
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wHCIBSs7dq8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

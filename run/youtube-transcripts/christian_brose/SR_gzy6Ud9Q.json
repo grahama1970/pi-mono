@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SR_gzy6Ud9Q",
+    "language": "en",
+    "took_ms": 7758,
+    "method": null,
+    "title": "The Ambassadors Series: A Conversation with Swedish Ambassador Karin Olofsdotter",
+    "channel": "Hudson Institute",
+    "upload_date": "20220615",
+    "duration_sec": 2060,
+    "description": "Russia’s invasion of Ukraine has deeply shaken the European security system, prompting, among many other changes, Sweden to pursue membership in NATO. How exactly has Moscow’s aggression changed Stockholm’s military priorities, and what does the future of Northern European security hold? Join Hudson Institute for a conversation on these questions and more between Ambassador of Sweden to the United States Karin Olofsdotter and Senior Fellow Michael Doran.\n\nWatch on Hudson.org: https://www.hudson.org/events/2121-virtual-event-the-ambassadors-series-a-conversation-with-swedish-ambassador-karin-olofsdotter62022",
+    "view_count": 602
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SR_gzy6Ud9Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

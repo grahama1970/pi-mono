@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cp90F2Mfs5w",
+    "language": "en",
+    "took_ms": 8175,
+    "method": null,
+    "title": "The Ambassador’s Series: A Discussion with Ambassador Yousef Al Otaiba",
+    "channel": "Hudson Institute",
+    "upload_date": "20201208",
+    "duration_sec": 1282,
+    "description": "Hudson Institute will host His Excellency Yousef Al Otaiba, Ambassador of the United Arab Emirates to the United States of America, for a discussion on US-UAE relations and UAE foreign policy. Hudson Institute’s Ravenel B. Curry III Distinguished Fellow Walter Russell Mead will moderate the conversation.",
+    "view_count": 4546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cp90F2Mfs5w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

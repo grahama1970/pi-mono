@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zD51Q8ZU6S0",
+    "language": "en",
+    "took_ms": 8831,
+    "method": null,
+    "title": "DEF CON Safe Mode AI Village - Hyrum Anderson, Zoltan Balaz - Machine Learning Competition 2020",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1292,
+    "description": "ML Security Evasion Competition 2020",
+    "view_count": 499
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zD51Q8ZU6S0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mBMHqRrJ8aU",
+    "language": "en",
+    "took_ms": 8914,
+    "method": null,
+    "title": "National Biodefense Strategy: Implementation and Implications (Part 2)",
+    "channel": "Hudson Institute",
+    "upload_date": "20171102",
+    "duration_sec": 6670,
+    "description": "Part 2 of the Blue Ribbon Study Panel on Biodefense's November 2nd conference.\n\nKeynote remarks by the Honorable Tevi D. Troy followed by Implementation of the National Biodefense Strategy panel featuring the Honorable Rajeev Venkayya, the Honorable Curt J. Mann, and the Honorable Jeffrey W. Runge.",
+    "view_count": 13771
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mBMHqRrJ8aU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k4ZV9v9nRBQ",
+    "language": "en",
+    "took_ms": 9731,
+    "method": null,
+    "title": "DEF CON 31 - Hack the Box Interview - Video Team",
+    "channel": "DEFCONConference",
+    "upload_date": "20230816",
+    "duration_sec": 191,
+    "description": "Silk learns all about the Hack the Box challenge\n\ncreated by: https://www.youtube.com/channel/UCbHYwhbarpO6vXgbIYmcXnQ",
+    "view_count": 5623
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k4ZV9v9nRBQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

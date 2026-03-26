@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6f2H6cBTSPs",
+    "language": "en",
+    "took_ms": 9414,
+    "method": null,
+    "title": "The Federal Trade Commission and Judicial Control",
+    "channel": "Hudson Institute",
+    "upload_date": "20220214",
+    "duration_sec": 3386,
+    "description": "For decades, the Federal Trade Commission (FTC) could, under its interpretation of Section 13b of the Federal Trade Act, obtain a court order placing a company’s assets under FTC control. The company in question would have no opportunity to defend itself and would effectively be at the mercy of the FTC to impose settlement conditions. In May 2021, the Supreme Court unanimously held that Section 13(b) of the Federal Trade Commission Act does not give the FTC authority to bypass administrative proceedings and seek equitable monetary relief directly from the federal courts. While that should have been the end of the practice, the FTC has continued to reach settlement agreements with companies under the circumstances suspiciously similar to those outlawed by the Supreme Court. Join the director of Hudson’s Center for the Economics of the Internet, Harold Furchtgott-Roth, for a conversation with Caleb Kruckenberg of the Pacific Legal Foundation on FTC enforcement practices and judicial control.",
+    "view_count": 1757
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6f2H6cBTSPs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

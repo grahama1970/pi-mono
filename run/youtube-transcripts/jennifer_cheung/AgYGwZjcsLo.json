@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AgYGwZjcsLo",
+    "language": "en",
+    "took_ms": 8553,
+    "method": null,
+    "title": "DEF CON 33 - Mastering Apple Endpoint Security for Advanced macOS Malware Detection - Patrick Wardle",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3106,
+    "description": "Five years after Apple radically empowered third-party security developers on macOS with the introduction of Endpoint Security, most developers grasp its fundamentals, but subtle nuances remain, and advanced features are still underutilized. And as the framework continues to evolve, even experienced developers can struggle to keep pace with its rapidly expanding capabilities.\n\nThis talk explores critical areas that frequently trip up developers, such as caching behaviors and authorization deadlines, before diving into Endpoint Security’s more advanced features like mute inversions. We'll also cover recently introduced capabilities—including the long-awaited TCC event monitoring which offer unprecedented visibility into permission-related activity often targeted by malware.\n\nEach topic will include practical code examples, demonstrated and validated against sophisticated macOS malware.\n\nJoin us to move beyond the basics and unlock the full power of Apple's Endpoint Security framework.",
+    "view_count": 1039
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AgYGwZjcsLo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

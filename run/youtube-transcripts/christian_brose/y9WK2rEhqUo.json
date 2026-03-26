@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y9WK2rEhqUo",
+    "language": "en",
+    "took_ms": 9284,
+    "method": null,
+    "title": "Michael Doran Delivers Remarks to UN Security Council, June 20, 2017",
+    "channel": "Hudson Institute",
+    "upload_date": "20170620",
+    "duration_sec": 626,
+    "description": "On June 20, 2017, Hudson Senior Fellow Michael Doran delivered remarks to a United Nations Security Council briefing titled \"The situation in the Middle East, including the Palestinian question.\"",
+    "view_count": 2104
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y9WK2rEhqUo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AMsmgJlVhmg",
+    "language": "en",
+    "took_ms": 7794,
+    "method": null,
+    "title": "AI Dev 25 | João Moura & Graham Steele: Real AI Agents in Action Automate, Adapt, and Scale",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 5213,
+    "description": "AI isn’t just about automation—it’s about building intelligent systems that can reason, adapt, and deliver real-world value.\n\nIn this hands-on, code-first workshop, João Moura, CEO of CrewAI, and Graham Steele, Senior Product Marketing Manager at Groq, guide attendees through building production-ready AI agents that go far beyond basic prompts and scripts.\n\nOver the course of the session, participants:\n– Built collaborative AI agents that can automate and adapt in real time\n– Learned best practices for scaling agents into production\n– Walked away with working code and insights you can apply immediately\n\nWhether you're just starting with agents or looking to bring them into real applications, this session equips you with practical tools and a deeper understanding of what’s possible with agentic AI.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 1184
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AMsmgJlVhmg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

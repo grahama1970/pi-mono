@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G7GwXu684JY",
+    "language": "en",
+    "took_ms": 8207,
+    "method": null,
+    "title": "DEF CON 32 - Sshamble  Unexpected Exposures in the Secure Shell - HD Moore, Rob King",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2724,
+    "description": "The Secure Shell (SSH) has evolved from a remote shell service to a standardized secure transport that is second only to Transport Layer Security (TLS) in terms of exposure and popularity. SSH is no longer just for POSIX operating systems; SSH services can be found in everything from network devices, to source code forges, to Windows-based file transfer tools. While OpenSSH is still the most prominent implementation, it's now just one of dozens, and these include a handful of libraries that drive a wide range of applications. This presentation digs deep into SSH, the lesser-known implementations, many of the surprising security issues found along the way, and how to exploit them. As part of this talk, we will release an open source tool, dubbed \"sshamble\", that assists with research and security testing of SSH services.",
+    "view_count": 2082
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G7GwXu684JY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

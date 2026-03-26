@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AE8i69Kcodc",
+    "language": "en",
+    "took_ms": 9995,
+    "method": null,
+    "title": "New course with Qdrant! Retrieval Optimization: From Tokenization to Vector Quantization is live",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241002",
+    "duration_sec": 251,
+    "description": "Enroll for free: https://bit.ly/3ZMFGYE\n\nWe're excited to introduce Retrieval Optimization: From Tokenization to Vector Quantization, a short course made in collaboration with Qdrant, and taught by Kacper Łukawski, its Developer Relations Lead.\n\nIn this course, you'll learn about tokenization and vector search optimization for large-scale customer-facing RAG applications. You'll learn about the technical details of how vector search works and how to optimize it for better performance.\n\nBy the end of this course, you'll have a solid understanding of how tokenization is done and how to optimize vector search in your RAG systems.\n\nHere's what you'll learn, in detail:\n\n- Understand the internal workings of the embedding model and how your text is turned into vectors.\n- Explore different tokenization techniques like Byte-Pair Encoding, WordPiece, and Unigram, and how they affect search relevancy.\n- Learn how to measure the quality of your search across several quality metrics.\n- Understand how the main parameters in HNSW algorithms affect the relevance and speed of vector search and how to optimally adjust these parameters.\n- Experiment with the three major quantization methods, product, scalar, and binary, and learn how they impact memory requirements, search quality, and speed.\n\nJoin in and take your RAG applications to the next level!\n\nLearn more: https://bit.ly/3ZMFGYE",
+    "view_count": 2499
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AE8i69Kcodc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V_w5u9lONN0",
+    "language": "en",
+    "took_ms": 8891,
+    "method": null,
+    "title": "DEF CON 33 - Gold Bug - Puzzle Panel with Friends - The Gold Bug Team 2025",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3227,
+    "description": "Psychoholics is a group of nerds that love solving puzzles, drinking drinks, and doing escape rooms. We love competing in contests and CTFs, and we also run TFH, Crash&Compile and Dungeons@Defcon. Oh, and we have a Krux. 110001011100001111101 100011100110001101101",
+    "view_count": 1072
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V_w5u9lONN0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

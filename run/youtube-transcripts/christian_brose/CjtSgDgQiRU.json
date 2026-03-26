@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CjtSgDgQiRU",
+    "language": "en",
+    "took_ms": 8683,
+    "method": null,
+    "title": "Asymmetrical Defense: An Option for Taiwan",
+    "channel": "Hudson Institute",
+    "upload_date": "20161003",
+    "duration_sec": 5629,
+    "description": "Seth Cropsey, Rear Admiral Thomas Brown (USN, ret.), Bryan Clark, and Martin Murphy discuss asymmetrical warfare and its advantages for Taiwan.",
+    "view_count": 2538
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CjtSgDgQiRU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

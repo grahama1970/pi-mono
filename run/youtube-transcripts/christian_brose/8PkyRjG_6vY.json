@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8PkyRjG_6vY",
+    "language": "en",
+    "took_ms": 8154,
+    "method": null,
+    "title": "A Conversation with Ambassador Ron Dermer",
+    "channel": "Hudson Institute",
+    "upload_date": "20210521",
+    "duration_sec": 5526,
+    "description": "Join Hudson Institute Senior Fellow Michael Doran and former Ambassador of Israel to the United States, Ron Dermer, to discuss the current conflict between Israel and Hamas. The outbreak of hostilities in Gaza has surprised Israeli defense analysts, and is an early test of the U.S.-Israeli relations in the Biden era. Domestically, the conflict has reshuffled the political cards in Israel’s complex negotiations to form a new government. What motivated Hamas to attack Israel now? How is the Biden administration handling this foreign policy test? Please join Hudson Institute for this timely discussion.",
+    "view_count": 1796
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8PkyRjG_6vY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

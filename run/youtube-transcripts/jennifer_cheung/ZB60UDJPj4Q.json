@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZB60UDJPj4Q",
+    "language": "en",
+    "took_ms": 7628,
+    "method": null,
+    "title": "DEF CON 31 - Route to bugs  - Analyzing the Security of BGP Message Parsing - dos Santos,  Guiot",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2724,
+    "description": "This talk discusses an overlooked aspect of Border Gateway Protocol (BGP) security: vulnerabilities in how its implementations parse BGP messages. Software implementing BGP is relied upon for Internet routing and for functions such as internal routing in large data centers. A lot of (deserved) attention is given to aspects of BGP protocol security discussed in RFC4272, which can be mitigated with the use of RPKI and BGPsec. However, recent BGP incidents show that it might take only a malformed packet to cause a large disruption. We will present a quantitative analysis of previous vulnerabilities in both open and closed-source popular BGP implementations and focus the talk on a new analysis of seven modern implementations.",
+    "view_count": 1368
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZB60UDJPj4Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

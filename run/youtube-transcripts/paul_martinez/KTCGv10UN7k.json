@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KTCGv10UN7k",
+    "language": "en",
+    "took_ms": 8022,
+    "method": null,
+    "title": "Deceive By Design: How To Protect Critical Infrastructure With Deception Technology",
+    "channel": "S4 Events",
+    "upload_date": "20230417",
+    "duration_sec": 1715,
+    "description": "Moshe Ben Simon makes the case and provides examples of how deception technologies can be used in OT systems. This can delay the attacker and give the defender more time to detect and respond to the attack before the attacker succeeds. Deception also provides a high fidelity signal since no one should access the deception device or system.\n\nHoneypots have been around for a while, but the deception discussed in this session goes well beyond a high interaction honeypot.",
+    "view_count": 1347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KTCGv10UN7k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

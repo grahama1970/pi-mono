@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rqFJ0BxwlLI",
+    "language": "en",
+    "took_ms": 8449,
+    "method": null,
+    "title": "DEF CON 31 - Calling it a 0 Day  -  Hacking at PBX UC Systems - good pseudonym",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2242,
+    "description": "PBX (Private Branch Exchange) and UC (Unified Communications) servers are the big communication brokers in enterprise environments where they love on-prem. They do everything to enable internal and external communications including voice, video, conferencing and messaging. But a broader scope also means a broader attack surface.\n\nIn this talk, we'll give an overview PBX/UC systems, what kind of attack surface they have, as well as several bugs that we recently found in two popular PBX/UC products. The journey includes deep-diving Java's Runtime.exec(), decrypting encrypted PHP, bypassing license restrictions, pretending to be a phone, and (of course) getting some shells.",
+    "view_count": 4833
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rqFJ0BxwlLI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

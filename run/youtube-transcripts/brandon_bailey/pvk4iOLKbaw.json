@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pvk4iOLKbaw",
+    "language": "en",
+    "took_ms": 8845,
+    "method": null,
+    "title": "DEF CON 29 Recon Village - Ben S -  Future of Asset Management",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 2467,
+    "description": "Future of Asset Management",
+    "view_count": 4102
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pvk4iOLKbaw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

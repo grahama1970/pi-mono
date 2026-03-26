@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z33TSv9EXBQ",
+    "language": "en",
+    "took_ms": 8737,
+    "method": null,
+    "title": "DEF CON 32 - Nano Enigma Uncovering the Secrets in eFuse Memories -  Michal Grygarek, Martin Petr",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2286,
+    "description": "For years, eFuse-based memories were used to store sensitive information such as encryption keys, passwords, and other potentially confidential pieces of information. This practice was encouraged by several vendors who leverage such memory types for protecting the debugging interfaces using a password or for official way to store encryption keys for external flash memories.\n\nHowever, with the advances in technology and threat actors’ creativity, eFuse-based memories may take a hard hit on their confidentiality assurance as their physical properties could allow for a relatively easy extraction of the stored information.\n\nIn this talk we will walk you through the journey of revealing one such data storage from decapsulating the chip itself, delayering it using common household items all the way to using advanced tools such as Scanning Electron Microscope (SEM) to read value of an encryption key and thus break the confidentiality of the encrypted flash memory.",
+    "view_count": 946
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z33TSv9EXBQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

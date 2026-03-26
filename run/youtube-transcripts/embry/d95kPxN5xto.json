@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "d95kPxN5xto",
+    "language": "en",
+    "took_ms": 8621,
+    "method": null,
+    "title": "Watch Rocket Lab launch a satellite for DARPA",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190329",
+    "duration_sec": 4654,
+    "description": "Rocket Lab will be launching their Electron rocket with the Radio Frequency Risk Reduction Deployment Demonstration (R3D2) mission for the Defense Advanced Research Projects Agency (DARPA). It will test a prototype reflective array antenna which is intended to improve radio communications in small spacecraft. The mission will launch from LC-1 on the Mahia Peninsula in New Zealand.\n\nNeed more info? Check out our Prelaunch Previews! - https://everydayastronaut.com/prelaunch-preview-electron-darpa-r3d2/\n\n------------------------------------\n\nShow your support by becoming a Patreon - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 76029
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] d95kPxN5xto: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4gYm0Rp7VHc",
+    "language": "en",
+    "took_ms": 9761,
+    "method": null,
+    "title": "Use A2A to connect agents across different frameworks and teams",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260211",
+    "duration_sec": 186,
+    "description": "Learn more: https://bit.ly/4anVtk6\n\nAnnouncing a new short course, A2A: The Agent2Agent Protocol, built in collaboration with Google Cloud and IBM Research.\n\nAs agentic systems grow more complex, connecting agents built with different frameworks often means writing custom integrations. A2A is an open protocol that standardizes how agents discover each other and communicate, making cross-framework collaboration far easier. Originally introduced by Google Cloud and now stewarded by the Linux Foundation, A2A is quickly becoming a shared standard for agent collaboration.\n\nIn this hands-on course, you’ll build a healthcare multi-agent system using agents created with different frameworks. You’ll expose agents as A2A servers, create A2A clients, and orchestrate agents into sequential and hierarchical workflows. You’ll also see how A2A complements MCP: while MCP connects agents to external data systems, A2A enables agents to work with each other.\n\nYou’ll learn how to:\n\n- Implement A2A’s client-server architecture, including agent cards and lifecycle concepts\n- Expose agents built with ADK, LangGraph, or BeeAI as A2A-compliant servers\n- Create A2A clients to connect and coordinate agents across frameworks\n- Orchestrate multi-agent workflows dynamically and deploy them using open-source infrastructure\n\nThe course is taught by Holt Skinner, DevRel at Google, Ivan Nardini, AI/ML DevRel at Google, and Sandi Besen, Ecosystem Lead at IBM Research.\n\nEnroll now: https://bit.ly/4anVtk6",
+    "view_count": 4206
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4gYm0Rp7VHc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

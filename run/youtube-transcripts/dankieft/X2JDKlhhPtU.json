@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X2JDKlhhPtU",
+    "language": "en",
+    "took_ms": 8156,
+    "method": null,
+    "title": "How to Create Full AI Animated Stories with Lip Sync - AI Animation Tutorial",
+    "channel": "Dan Kieft",
+    "upload_date": "20250817",
+    "duration_sec": 383,
+    "description": "Learn how to make ai animated stories in this ai animation tutorial\nTool I used 👉 http://openart.ai/home/?ref=animation\n\nIn this video I break down how to create your very own animated stories using AI. For this tutorial we will be using ChatGPT for the script, OpenArt for the visuals, videos & Lip Sync. Please let me know in the comments if you want an in depth tutorial about this. \n\n\n👉My Ai Toolkit - https://dankieft.carrd.co/\nMy toolkit gives you over 30+ ai tools that I've gathered over the years and use daily. You'll also get access to my free newsletter that educates you about the latest ai tools.\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 70599
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X2JDKlhhPtU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

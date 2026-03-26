@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gt7yUO2lTDs",
+    "language": "en",
+    "took_ms": 7890,
+    "method": null,
+    "title": "The Quantum Revolution and Intellectual Property: Advancing and Protecting America's Innovative Edge",
+    "channel": "Hudson Institute",
+    "upload_date": "20180912",
+    "duration_sec": 5948,
+    "description": "Within the next two decades, the quantum computing revolution will transform the world’s economies. Using the power of quantum physics, quantum processors will provide exponentially faster computers than current digital technology allows. That dramatically increased computing power will be able to solve some of the most complex mathematical and scientific problems known to man.\n\nThese tectonic technological shifts will also bring about new threats to today’s modern cryptography systems. Will America lead the way in the coming quantum revolution, or lag behind rivals like China? What role will intellectual property rights play in securing American leadership in this brave new quantum world, and how can quantum technology safeguard present and future patents and intellectual property?\n\nOn September 12, Hudson Institute and the Federalist Society, hosted a panel to discuss developments in quantum computing and intellectual property. The discussion featured leading experts on quantum technology and intellectual property and was moderated by Hudson Senior Fellow Arthur Herman.",
+    "view_count": 784
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gt7yUO2lTDs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

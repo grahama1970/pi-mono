@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dNNXFuXpJaE",
+    "language": "en",
+    "took_ms": 9457,
+    "method": null,
+    "title": "Global Technological Standards and Geopolitics",
+    "channel": "Hudson Institute",
+    "upload_date": "20230612",
+    "duration_sec": 3725,
+    "description": "For decades, global technological standards have enabled the development of a thriving, innovative, and competitive ecosystem that has benefited markets and consumers worldwide. As the geopolitical race for leadership in critical technologies expands, nearly every major country is evaluating policy measures to expand its role in the development of global standards. \n\nWhat are the key challenges the United States and other countries face? Should the international community maintain a global standardization system? What is needed to encourage robust continued participation in global standardization efforts?",
+    "view_count": 998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dNNXFuXpJaE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

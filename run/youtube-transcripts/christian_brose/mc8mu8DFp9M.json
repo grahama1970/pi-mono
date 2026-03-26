@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mc8mu8DFp9M",
+    "language": "en",
+    "took_ms": 8946,
+    "method": null,
+    "title": "2013 Bradley Symposium Luncheon Address: Promoting the Idea of Freedom",
+    "channel": "Hudson Institute",
+    "upload_date": "20140221",
+    "duration_sec": 4521,
+    "description": "The preservation of freedom requires not only certain economic and cultural conditions, but also thoughtful scholars, journalists, and other shapers of public opinion who understand the demands of liberty and are able to come to its defense. The Bradley Prizes were designed to celebrate and recognize those who were best at this. Are opinion leaders and intellectual elites in the West becoming more or less friendly to freedom? What sorts of Bradley Prize winners should we seek in the future to move American political thought in a positive direction?",
+    "view_count": 171
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mc8mu8DFp9M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

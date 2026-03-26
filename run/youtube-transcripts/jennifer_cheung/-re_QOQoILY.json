@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-re_QOQoILY",
+    "language": "en",
+    "took_ms": 8842,
+    "method": null,
+    "title": "DEF CON 32   No Symbols When Reversing No Problem Bring Your Own   Max ‘Libra’ Kersten",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1312,
+    "description": "We all know it all too well: that ominous feeling when opening an unknown file in your favorite analysis tool, only to be greeted with hundreds or thousands of unknown functions, none of which are matched by your existing function signatures, nor any of your helper scripts. This makes the analysis a painfully slow and tedious process. Additionally, it sometimes means that the required analysis time exceeds the available time, and another file is chosen to be reversed instead. Especially when dealing with malware, this is an undesired scenario, as it would create a blind spot from a blue team’s perspective.\n\nThe goal of this talk is to share a tried and tested method on how to deal with thousands of unknown functions in a given file, significantly decreasing the time spent on the analysis. The example throughout the talk is the Golang based qBit family, but is applicable to any kind of binary. While this talk focuses on using Ghidra, given its free and open-source nature, it is equally possible with other industry standard tools. The focus will be on scripts, as well as the creation and usage of FunctionID and BSim databases. By combining these, you will be able to create your own symbols, and bring them anywhere you go, for any language of choice.\n\nWhile the symbols are portable, an aggregation of them scales very well over any number of analysts. As such, this methodology works well for individual researchers, but when scaling it for a team of researchers, the outcome will be greater than the sum of its parts.\n\nThis talk will use (malicious) Golang binaries as examples and provide a large dataset of symbols for this language. The scripts, as well as FunctionID and BSim databases, mentioned in this talk will all be made publicly available at the time of this talk.",
+    "view_count": 887
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -re_QOQoILY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0klQiFT1BBE",
+    "language": "en",
+    "took_ms": 8775,
+    "method": null,
+    "title": "DEF CON 31 Trailer!",
+    "channel": "DEFCONConference",
+    "upload_date": "20230728",
+    "duration_sec": 157,
+    "description": "Many thanks to the mighty, mighty Zebbler for this DEF CON 31 Trailer video! Enjoy the artistry, dance like no one's watching and get your mind right for DEF CON 31. \n\nYou can download it for yourself on the  media server at https://media.defcon.org/DEF%20CON%2031/.\n\n\nTwo little weeks, people. It's almost here. Let's GO!\n\nFull video credits:\n\nProduced by Zebbler Studios\nInspiration and story development by Zebbler, DayDreemer Visions, Matthew McCorkindale\n3d worlds / animation by Arcane Realities\nEnding 3d animation and modeling by Glass Crane\nAdditional 3d character development by DayDreemer and Nicholas Love\nVideo editing by Zebbler\nSound design by Encanti\nVocal samples and a/v creative direction by Zebbler",
+    "view_count": 39074
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0klQiFT1BBE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cO1JSzAdPM8",
+    "language": "en",
+    "took_ms": 7560,
+    "method": null,
+    "title": "DEF CON 31 - Snoop On To Them, As They Snoop On To Us -  Alan Meekins",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1402,
+    "description": "BLE devices are now all the rage. What makes a purpose built tracking device like the AirTag all that different from the majority of BLE devices that have a fixed address? With the rise of IoT we're alsoing seeing a rise in government and corporate BLE survallaince systems. We'll look at tools that normal people can use to find out if their favorite IoT gear is easily trackable. If headphones and GoPro's use fixed addresses, what about stun guns and bodycams? We'll take a look at IoT gear used by authorities and how it may be detectedable over long durations, just like an AirTag.",
+    "view_count": 36915
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cO1JSzAdPM8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

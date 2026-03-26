@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PM-iyQPXXXs",
+    "language": "en",
+    "took_ms": 7415,
+    "method": null,
+    "title": "Unpwning A Building",
+    "channel": "S4 Events",
+    "upload_date": "20221013",
+    "duration_sec": 1901,
+    "description": "Peter Panholzer on S4x22’s Stage 2: Technical Deep Dives tells the story of a KNX-based building automation system that was attacked and taken out of operation. The twist in the story is Peter’s team had to hack the hacked BAS to get the BCU key so they could recover control of BAS … a vulnerability saved the day.",
+    "view_count": 518
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PM-iyQPXXXs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

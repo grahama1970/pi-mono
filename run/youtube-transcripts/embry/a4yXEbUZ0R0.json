@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "a4yXEbUZ0R0",
+    "language": "en",
+    "took_ms": 8506,
+    "method": null,
+    "title": "Behind The Scenes Photoshop \"Star Painting\" with @EverydayAstronaut",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170211",
+    "duration_sec": 9904,
+    "description": "A long one but a good one! We also figured out how to save large TIFF files and photoshop files with layers over 4 gb's at the end. Join us LIVE every Thursday at 1:00 p.m. Central (19 UTC) at http://twitch.tv to add your ideas or ask questions! \n\nMake sure and see the final image on Instagram @EverydayAstronaut",
+    "view_count": 1208
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] a4yXEbUZ0R0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

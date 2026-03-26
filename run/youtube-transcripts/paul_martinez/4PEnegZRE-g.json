@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4PEnegZRE-g",
+    "language": "en",
+    "took_ms": 8684,
+    "method": null,
+    "title": "Attack Surface in ICS: Do you have a Badness-ometer?",
+    "channel": "S4 Events",
+    "upload_date": "20190517",
+    "duration_sec": 1475,
+    "description": "Harry Paul of OSIsoft and Adam Hahn of Washington State University each demonstrate a tool to measure assess the security of an ICS cyber asset. As you might expect, the OSIsoft tool audits the security posture of deployed PI components. The WSU tool can be run on any cyber asset. Both tools are available free of charge.\n\nAs always, OSIsoft brings a very practical session to the S4 Sponsor Stage.",
+    "view_count": 488
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4PEnegZRE-g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

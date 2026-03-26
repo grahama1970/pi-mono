@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "o2A8pjlwSMQ",
+    "language": "en",
+    "took_ms": 8638,
+    "method": null,
+    "title": "Oldsmar Deconstructed",
+    "channel": "S4 Events",
+    "upload_date": "20230918",
+    "duration_sec": 286,
+    "description": "Unsolicited Response clip with Gus Serino talking about the physical part of a water treatment system and what Oldsmar attacker could and couldn't do. We pulled out the key line from the end and put it at the start.",
+    "view_count": 65
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] o2A8pjlwSMQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

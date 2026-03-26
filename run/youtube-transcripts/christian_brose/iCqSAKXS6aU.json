@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iCqSAKXS6aU",
+    "language": "en",
+    "took_ms": 7685,
+    "method": null,
+    "title": "What Makes the Middle Class Ticked: A Conversation with Mickey Kaus",
+    "channel": "Hudson Institute",
+    "upload_date": "20200925",
+    "duration_sec": 3171,
+    "description": "Join Hudson Institute for a discussion with Mickey Kaus, journalist and author of “The End of Equality,” which chronicles the crises facing the middle class and the dynamics that drive much of the alienation and frustration displayed across the country. Hudson Institute Distinguished Fellow Walter Russell Mead will moderate the conversation.",
+    "view_count": 1416
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iCqSAKXS6aU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

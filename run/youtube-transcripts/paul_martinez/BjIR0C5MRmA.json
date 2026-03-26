@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BjIR0C5MRmA",
+    "language": "en",
+    "took_ms": 8603,
+    "method": null,
+    "title": "Throw Out The CVSS and Replace with Never, Next, Now",
+    "channel": "S4 Events",
+    "upload_date": "20191018",
+    "duration_sec": 156,
+    "description": "Great 2:40 clip on how Art Manion suggests we replace the CVSS with a decision tree that leads to a Never, Next, Now decision on patching a vulnerability.",
+    "view_count": 290
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BjIR0C5MRmA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

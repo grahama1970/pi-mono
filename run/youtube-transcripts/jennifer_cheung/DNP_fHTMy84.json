@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DNP_fHTMy84",
+    "language": "en",
+    "took_ms": 8305,
+    "method": null,
+    "title": "DEF CON 33 - How NOT to Perform Covert Entry Assessments - Brent White, Tim Roberts",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3352,
+    "description": "\"How NOT to Perform a Covert Entry Assessment\" is a no B.S. discussion that covers what not to do during covert entry engagements--highlighting real-world mistakes, busted Hollywood myths, and missteps that compromise success. We’ll walk through effective techniques for physical site surveys, face-to-face social engineering, and real-time troubleshooting when things go sideways. Attendees will be encouraged to share experiences and lessons learned in an open, interactive format. We’ll also demo our covert entry tools, and discuss how to deliver reliable results to both commercial and high-security government clients.",
+    "view_count": 33948
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DNP_fHTMy84: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

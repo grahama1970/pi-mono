@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Axlesb8yTro",
+    "language": "en",
+    "took_ms": 9259,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Param Singh: Building with Mistral: Open, Powerful, and Ready to Scale",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1785,
+    "description": "Param Singh, Partner Solution Architect at Mistral AI offered an insightful session on developing and deploying Enterprise AI applications using Mistral AI. \n\nAttendees discovered the spectrum of Mistral's models, from Large to Small, and everything in between, and learned about Mistral AI Studio and how to start developing and tailoring your AI applications. \n\nSingh discussed flexible deployment options, including serverless, Cloud, on-premise, Cloud-VPC, and dedicated instances. He also provided practical tips, insights, and best practices for moving your AI projects into production",
+    "view_count": 283
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Axlesb8yTro: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

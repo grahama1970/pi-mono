@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bhZIL2Q8SAY",
+    "language": "en",
+    "took_ms": 9261,
+    "method": null,
+    "title": "How to make A.I. Album Covers",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230524",
+    "duration_sec": 686,
+    "description": "Hey there! In this super entertaining video, I'm going to show you how to have a fantastic time with artificial intelligence while creating some awesome album covers.\n\nGet ready to let loose your creativity and have a marvelous experience with these exciting tools I'll be using:\n\nMidjourney: \nhttps://www.midjourney.com/\n\nDall-e 2:\nhttps://openai.com/product/dall-e-2\n\nClip Interrogators:\nhttps://replicate.com/pharmapsychotic/clip-interrogator\nhttps://huggingface.co/spaces/fffiloni/CLIP-Interrogator-2\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n---------------------------------------------------------------------------------\n00:00 Intro\n00:25 Record Cover history\n00:48 Alex Steinweiss\n01:25 Jim FLora\n01:58 A.I. text to images\n03:40 Image to text\n05:30 A.I. Fujita\n06:37 A.I. Photos album Covers\n09:00 More A.I. Covers \n10:50 Outro",
+    "view_count": 45968
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bhZIL2Q8SAY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7AcSUMRoj20",
+    "language": "en",
+    "took_ms": 8031,
+    "method": null,
+    "title": "How Deep Is Your Deep Packet Inspection (DPI)",
+    "channel": "S4 Events",
+    "upload_date": "20171106",
+    "duration_sec": 1592,
+    "description": "This is one of two presentations at S4x17 on how an asset owner should evaluate the effectiveness or depth of an ICS protocol DPI solution. This one is from Erik Schweigert of Belden. \n\n- He's not a fan of signature based DPI\n- His top priority (biggest contribution to score) is protocol \"sanity checking\". Is the packet compliant with the protocol? Must understand the entire protocol.\n- ability to allow/block based on function codes, CIP services or other action filters is #2 priority for deep DPI\n- state checking of ICS protocol\n- protocol pipeline support (interesting and often ignored)\n\nTowards the end Erik proposes a grading scheme to compare products. It's a serious effort to come up with a methodology for how deep is your DPI.",
+    "view_count": 3211
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7AcSUMRoj20: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QF1rpPW4LUc",
+    "language": "en",
+    "took_ms": 7852,
+    "method": null,
+    "title": "Marines Corps Boot Camp Grass Week",
+    "channel": "Sandboxx",
+    "upload_date": "20211123",
+    "duration_sec": 55,
+    "description": "Recruits conduct grass week on Marine Corps Recruit Depot Parris Island. Grass week instills the fundamentals of firearm safety and handling in recruits before firing week. \n\n(U.S. Marine Corps video by Lance Cpl. Godfrey Ampong)",
+    "view_count": 22983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QF1rpPW4LUc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

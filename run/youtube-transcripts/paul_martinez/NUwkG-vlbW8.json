@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NUwkG-vlbW8",
+    "language": "en",
+    "took_ms": 8479,
+    "method": null,
+    "title": "Cyber Nationalism: Pick A Side",
+    "channel": "S4 Events",
+    "upload_date": "20200518",
+    "duration_sec": 1895,
+    "description": "Dan Geer and Olav Lysne join Dale Peterson to discuss Cyber Nationalism and how this will affect ICS asset owners and ICS vendors should and will deal with increased pressure by nation states to insert back doors and other weaknesses in ICS.\n\nWe begin with a demo by Ali Abbasi of a non-documented Siemens 'special access feature' in a boot loader chip, and then cover a lot of ground in 30 minutes.\n\n- Why would a vendor even consider cooperating with a government asking for a special favor?\n\n- What are some of the different levels of cooperation?\n\n- The benefits of deniability, and what is the likely business impact if the vendor is caught.\n\n- How is a global vendor to deal with multiple knocks on the door from competing 'teams'. Does the vendor need to pick a side?\n\n- How should asset owners view a solution from a vendor coming from a different 'team'? Should they assume there is a way the team could compromise their system?",
+    "view_count": 476
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NUwkG-vlbW8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

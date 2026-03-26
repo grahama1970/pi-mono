@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xpvtdJV5DnU",
+    "language": "en",
+    "took_ms": 8448,
+    "method": null,
+    "title": "DEF CON 29 - Policy Panel - Ransomware’s Big Year From Nuisance to Scourge - LIVE",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 3067,
+    "description": "According to a former senior White House official, 2020 was the year that ransomware went from being a nuisance to a full-scale national security threat and a “scourge”. After an awkward adolescence spent shaking down individual users for a couple hundred dollars and a big debut in 2017 with WannaCry and NotPetya , ransomware really hit the big time in 2020. Ransom payments may have topped $400 million plus that year. But those sums are nothing compared to the damage that ransomware campaigns can cause, especially when they hit critical infrastructure like Colonial Pipeline. And even months after Colonial Pipeline, ransomware continues to regularly subvert and cripple enterprises in the US and Europe. Are we not learning the right lessons on defense? Or is it not just an infosec problem, but also an international security issue, with cybercrime being actively wielded – yet again – as a political weapon?",
+    "view_count": 1595
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xpvtdJV5DnU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

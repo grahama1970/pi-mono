@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Lab — Song Library</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #141414;
+    --card: #1a1a1a;
+    --card2: #202020;
+    --green: #00ff88;
+    --red: #ff4444;
+    --amber: #ffaa00;
+    --blue: #4a9eff;
+    --accent: #7c3aed;
+    --white: #e2e8f0;
+    --dim: #64748b;
+    --border: #2a2a2a;
+    --font: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* TOP NAV */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 56px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .brand-icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--blue));
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+  }
+
+  .brand-label { color: var(--white); }
+  .brand-sub { color: var(--dim); font-weight: 400; margin-left: 6px; font-size: 13px; }
+
+  .topbar-nav {
+    display: flex;
+    gap: 4px;
+  }
+
+  .nav-tab {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+  }
+
+  .nav-tab.active {
+    background: rgba(0,255,136,0.12);
+    color: var(--green);
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .horus-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 20px;
+    font-size: 12px;
+  }
+
+  .horus-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .horus-label { color: var(--accent); font-weight: 600; }
+  .horus-status { color: var(--dim); }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: flex;
+    height: calc(100vh - 56px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    flex-shrink: 0;
+  }
+
+  .sidebar-section {
+    margin-bottom: 24px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 0 20px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--dim);
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.1s;
+  }
+
+  .sidebar-item:hover { background: rgba(255,255,255,0.03); color: var(--white); }
+  .sidebar-item.active { background: rgba(0,255,136,0.06); color: var(--green); border-right: 2px solid var(--green); }
+
+  .sidebar-item-left { display: flex; align-items: center; gap: 8px; }
+
+  .sidebar-chip {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .chip-green { background: rgba(0,255,136,0.12); color: var(--green); }
+  .chip-amber { background: rgba(255,170,0,0.12); color: var(--amber); }
+  .chip-dim { background: rgba(100,116,139,0.15); color: var(--dim); }
+
+  /* CONTENT */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+
+  .page-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-primary:hover { background: #6d28d9; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--dim);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { color: var(--white); border-color: #3a3a3a; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    flex: 1;
+    max-width: 300px;
+  }
+
+  .search-icon { color: var(--dim); font-size: 13px; }
+
+  .search-input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .search-input::placeholder { color: var(--dim); }
+
+  .filter-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+  }
+
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-chip {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .filter-chip.active-status {
+    background: rgba(255,170,0,0.12);
+    color: var(--amber);
+    border-color: rgba(255,170,0,0.3);
+  }
+
+  .filter-chip:not(.active-status) {
+    background: rgba(255,255,255,0.04);
+    color: var(--dim);
+    border-color: var(--border);
+  }
+
+  .filter-chip:not(.active-status):hover { color: var(--white); }
+
+  .filter-sort {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .filter-sort select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 12px;
+    outline: none;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+
+  /* SONG GRID */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .section-count {
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .song-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .song-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .song-card:hover {
+    border-color: rgba(74,158,255,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  .song-card.active-card {
+    border-color: rgba(0,255,136,0.4);
+    box-shadow: 0 0 0 1px rgba(0,255,136,0.15);
+  }
+
+  .song-cover {
+    width: 100%;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Gradient covers for each song */
+  .cover-whisperheads {
+    background: linear-gradient(135deg, #1a0533 0%, #2d1b69 40%, #0f3460 70%, #16213e 100%);
+  }
+
+  .cover-cathedral {
+    background: linear-gradient(135deg, #0d1b0d 0%, #1a3a1a 35%, #0a2a3a 65%, #001122 100%);
+  }
+
+  .cover-sovereign {
+    background: linear-gradient(135deg, #1a0a00 0%, #3d1a00 40%, #2a0a1a 70%, #100010 100%);
+  }
+
+  .cover-ghost {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 40%, #16213e 70%, #0f3460 100%);
+  }
+
+  .cover-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cover-glyph {
+    font-size: 42px;
+    opacity: 0.35;
+    filter: blur(1px);
+  }
+
+  .cover-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+
+  /* Convergence arc on cover */
+  .cover-arc {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+  }
+
+  .arc-svg { transform: rotate(-90deg); }
+
+  .arc-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 3; }
+  .arc-fg-converging { fill: none; stroke: var(--amber); stroke-width: 3; stroke-linecap: round; }
+  .arc-fg-ready { fill: none; stroke: var(--green); stroke-width: 3; stroke-linecap: round; }
+  .arc-fg-composing { fill: none; stroke: var(--blue); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 4 3; }
+  .arc-fg-archived { fill: none; stroke: var(--dim); stroke-width: 3; stroke-linecap: round; }
+
+  .arc-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  /* Song card body */
+  .song-body {
+    padding: 12px;
+  }
+
+  .song-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .song-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .song-heart {
+    color: var(--dim);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .song-heart.liked { color: var(--red); }
+
+  .song-artist {
+    font-size: 11px;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .badge-composing {
+    background: rgba(74,158,255,0.12);
+    color: var(--blue);
+    border: 1px solid rgba(74,158,255,0.25);
+  }
+
+  .badge-converging {
+    background: rgba(255,170,0,0.12);
+    color: var(--amber);
+    border: 1px solid rgba(255,170,0,0.25);
+  }
+
+  .badge-ready {
+    background: rgba(0,255,136,0.12);
+    color: var(--green);
+    border: 1px solid rgba(0,255,136,0.25);
+  }
+
+  .badge-archived {
+    background: rgba(100,116,139,0.12);
+    color: var(--dim);
+    border: 1px solid rgba(100,116,139,0.2);
+  }
+
+  .badge-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .badge-converging .badge-dot {
+    animation: pulse 1.5s infinite;
+  }
+
+  .badge-composing .badge-dot {
+    animation: pulse 1s infinite;
+  }
+
+  .tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .tag-chip {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    color: var(--dim);
+    border: 1px solid var(--border);
+  }
+
+  .tag-chip.heart-tag {
+    background: rgba(255,68,68,0.08);
+    color: #ff7070;
+    border-color: rgba(255,68,68,0.2);
+  }
+
+  .song-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .song-date {
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .song-rounds {
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .rounds-highlight {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* Score bar */
+  .score-bar-wrap {
+    margin-top: 8px;
+  }
+
+  .score-bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  .score-bar-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .score-threshold {
+    position: absolute;
+    top: -2px;
+    width: 1px;
+    height: 7px;
+    background: var(--green);
+    opacity: 0.6;
+  }
+
+  /* ACTIVE CARD special glow */
+  .song-card.active-card .song-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(0,255,136,0.3);
+    border-radius: 0;
+    pointer-events: none;
+  }
+
+  /* Bottom label */
+  .bottom-bar {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .bottom-left { display: flex; gap: 20px; }
+  .bottom-stat { display: flex; align-items: center; gap: 6px; }
+  .bottom-stat-val { color: var(--white); font-weight: 600; }
+
+  .horus-activity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .activity-spinner {
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(0,255,136,0.2);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-icon">♪</div>
+    <span class="brand-label">Music Lab</span>
+    <span class="brand-sub">by Horus</span>
+  </div>
+
+  <div class="topbar-nav">
+    <button class="nav-tab active">Library</button>
+    <button class="nav-tab">Pipeline</button>
+    <button class="nav-tab">Analytics</button>
+    <button class="nav-tab">Settings</button>
+  </div>
+
+  <div class="topbar-right">
+    <div class="horus-badge">
+      <div class="horus-dot"></div>
+      <span class="horus-label">Horus</span>
+      <span class="horus-status">composing · round 7</span>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+      <div class="sidebar-item active">
+        <div class="sidebar-item-left">
+          <span>◼</span> All Songs
+        </div>
+        <span class="sidebar-chip chip-green">4</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>⏳</span> Active
+        </div>
+        <span class="sidebar-chip chip-amber">2</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>✓</span> Ready
+        </div>
+        <span class="sidebar-chip chip-green">1</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>⊘</span> Archived
+        </div>
+        <span class="sidebar-chip chip-dim">1</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Heart Tags</div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>♥</span> melancholy
+        </div>
+        <span class="sidebar-chip chip-dim">3</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>♥</span> atmospheric
+        </div>
+        <span class="sidebar-chip chip-dim">2</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>♥</span> electronic
+        </div>
+        <span class="sidebar-chip chip-dim">3</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>♥</span> ambient
+        </div>
+        <span class="sidebar-chip chip-dim">2</span>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-item-left">
+          <span>♥</span> cinematic
+        </div>
+        <span class="sidebar-chip chip-dim">1</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Horus Activity</div>
+      <div class="sidebar-item" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+        <div style="font-size: 12px; color: var(--white);">Sovereign Frequencies</div>
+        <div style="font-size: 11px; color: var(--amber);">⚙ Writing lyrics · stage 3/5</div>
+        <div style="font-size: 10px; color: var(--dim);">started 4 min ago</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <div class="page-title">Song Library</div>
+        <div class="page-subtitle">Horus has created 4 songs · 1 ready for Graham to review</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-ghost">↑ Export</button>
+        <button class="btn btn-primary">+ New Song</button>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Songs</div>
+        <div class="stat-value" style="color: var(--white);">4</div>
+        <div class="stat-sub">in library</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Convergence</div>
+        <div class="stat-value" style="color: var(--amber);">0.35</div>
+        <div class="stat-sub">score (↓ is better)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ready to Review</div>
+        <div class="stat-value" style="color: var(--green);">1</div>
+        <div class="stat-sub">Cathedral of Static</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Rounds</div>
+        <div class="stat-value" style="color: var(--blue);">26</div>
+        <div class="stat-sub">across all sessions</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="text" placeholder="Search songs, tags, moods…" value="">
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-chips">
+        <span class="filter-chip" style="background:rgba(255,255,255,0.06);color:var(--white);border-color:rgba(255,255,255,0.15);">All</span>
+        <span class="filter-chip badge-composing" style="padding:5px 12px;">Composing</span>
+        <span class="filter-chip active-status">Converging</span>
+        <span class="filter-chip" style="background:rgba(0,255,136,0.08);color:var(--green);border-color:rgba(0,255,136,0.2);">Ready</span>
+        <span class="filter-chip">Archived</span>
+      </div>
+
+      <div class="filter-sort">
+        Sort:
+        <select>
+          <option>Recent</option>
+          <option>Score ↓</option>
+          <option>Rounds</option>
+          <option>Title A–Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- SECTION -->
+    <div class="section-header">
+      <span class="section-title">All Songs</span>
+      <span class="section-count">4 tracks</span>
+    </div>
+
+    <!-- SONG GRID -->
+    <div class="song-grid">
+
+      <!-- CARD 1: Whisperheads -->
+      <div class="song-card">
+        <div class="song-cover cover-whisperheads">
+          <div class="cover-noise"></div>
+          <div class="cover-overlay">
+            <div class="cover-glyph">🌊</div>
+          </div>
+          <!-- convergence arc -->
+          <div class="cover-arc">
+            <div style="position:relative;width:44px;height:44px;">
+              <svg width="44" height="44" class="arc-svg">
+                <circle class="arc-bg" cx="22" cy="22" r="16" />
+                <!-- 0.42 start → 0.18 current. Converging = 57% of the way to threshold -->
+                <!-- stroke-dasharray: circumference = 100.5. Fill = (1 - 0.18/0.42) * 100.5 = 55% = 55 -->
+                <circle class="arc-fg-converging" cx="22" cy="22" r="16"
+                  stroke-dasharray="56 100" stroke-dashoffset="0"/>
+              </svg>
+              <div class="arc-label" style="transform:translate(-50%,-50%) rotate(90deg);font-size:7px;color:var(--amber);">0.18</div>
+            </div>
+          </div>
+        </div>
+        <div class="song-body">
+          <div class="song-header-row">
+            <div class="song-title">Whisperheads</div>
+            <span class="song-heart liked">♥</span>
+          </div>
+          <div class="song-artist">by Horus · D minor · 85 BPM</div>
+          <div>
+            <span class="status-badge badge-converging">
+              <span class="badge-dot"></span>Converging
+            </span>
+          </div>
+          <div class="tag-chips">
+            <span class="tag-chip heart-tag">♥ melancholy</span>
+            <span class="tag-chip">atmospheric</span>
+            <span class="tag-chip">electronic</span>
+            <span class="tag-chip">minor key</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-label">
+              <span>Convergence score</span>
+              <span style="color:var(--amber); font-weight:600;">0.18</span>
+            </div>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:18%; background: var(--amber);"></div>
+              <div class="score-threshold" style="left:20%;"></div>
+            </div>
+          </div>
+          <div class="song-meta" style="margin-top:8px;">
+            <span class="song-date">2 hours ago</span>
+            <span class="song-rounds"><span class="rounds-highlight">7</span> rounds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: Cathedral of Static -->
+      <div class="song-card active-card">
+        <div class="song-cover cover-cathedral">
+          <div class="cover-noise"></div>
+          <div class="cover-overlay">
+            <div class="cover-glyph">🏛</div>
+          </div>
+          <div class="cover-arc">
+            <div style="position:relative;width:44px;height:44px;">
+              <svg width="44" height="44" class="arc-svg">
+                <circle class="arc-bg" cx="22" cy="22" r="16" />
+                <!-- score 0.09, threshold 0.20 — below threshold = READY = full arc -->
+                <circle class="arc-fg-ready" cx="22" cy="22" r="16"
+                  stroke-dasharray="100 0"/>
+              </svg>
+              <div class="arc-label" style="transform:translate(-50%,-50%) rotate(90deg);font-size:7px;color:var(--green);">0.09</div>
+            </div>
+          </div>
+        </div>
+        <div class="song-body">
+          <div class="song-header-row">
+            <div class="song-title">Cathedral of Static</div>
+            <span class="song-heart liked">♥</span>
+          </div>
+          <div class="song-artist">by Horus · D minor · 85 BPM</div>
+          <div>
+            <span class="status-badge badge-ready">
+              <span class="badge-dot"></span>Ready
+            </span>
+          </div>
+          <div class="tag-chips">
+            <span class="tag-chip heart-tag">♥ cinematic</span>
+            <span class="tag-chip">ambient</span>
+            <span class="tag-chip">drone</span>
+            <span class="tag-chip">reverb</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-label">
+              <span>Convergence score</span>
+              <span style="color:var(--green); font-weight:600;">0.09 ✓</span>
+            </div>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:9%; background: var(--green);"></div>
+              <div class="score-threshold" style="left:20%;"></div>
+            </div>
+          </div>
+          <div class="song-meta" style="margin-top:8px;">
+            <span class="song-date">Yesterday</span>
+            <span class="song-rounds"><span class="rounds-highlight">12</span> rounds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: Sovereign Frequencies -->
+      <div class="song-card">
+        <div class="song-cover cover-sovereign">
+          <div class="cover-noise"></div>
+          <div class="cover-overlay">
+            <div class="cover-glyph">⚡</div>
+          </div>
+          <div class="cover-arc">
+            <div style="position:relative;width:44px;height:44px;">
+              <svg width="44" height="44" class="arc-svg">
+                <circle class="arc-bg" cx="22" cy="22" r="16" />
+                <!-- composing - just 30% arc with dashes -->
+                <circle class="arc-fg-composing" cx="22" cy="22" r="16"
+                  stroke-dasharray="30 70" stroke-dashoffset="0"/>
+              </svg>
+              <div class="arc-label" style="transform:translate(-50%,-50%) rotate(90deg);font-size:7px;color:var(--blue);">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="song-body">
+          <div class="song-header-row">
+            <div class="song-title">Sovereign Frequencies</div>
+            <span class="song-heart">♥</span>
+          </div>
+          <div class="song-artist">by Horus · D minor · 85 BPM</div>
+          <div>
+            <span class="status-badge badge-composing">
+              <span class="badge-dot"></span>Composing
+            </span>
+          </div>
+          <div class="tag-chips">
+            <span class="tag-chip">electronic</span>
+            <span class="tag-chip">power</span>
+            <span class="tag-chip">synth</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-label">
+              <span>Stage</span>
+              <span style="color:var(--blue); font-weight:600;">Lyrics · 3/5</span>
+            </div>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:60%; background: var(--blue);"></div>
+            </div>
+          </div>
+          <div class="song-meta" style="margin-top:8px;">
+            <span class="song-date">4 min ago</span>
+            <span class="song-rounds">In progress</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: Ghost Protocol -->
+      <div class="song-card" style="opacity:0.65;">
+        <div class="song-cover cover-ghost">
+          <div class="cover-noise"></div>
+          <div class="cover-overlay">
+            <div class="cover-glyph">👻</div>
+          </div>
+          <div class="cover-arc">
+            <div style="position:relative;width:44px;height:44px;">
+              <svg width="44" height="44" class="arc-svg">
+                <circle class="arc-bg" cx="22" cy="22" r="16" />
+                <!-- archived, score 0.71 = bad, barely progressed -->
+                <circle class="arc-fg-archived" cx="22" cy="22" r="16"
+                  stroke-dasharray="14 86"/>
+              </svg>
+              <div class="arc-label" style="transform:translate(-50%,-50%) rotate(90deg);font-size:7px;color:var(--dim);">0.71</div>
+            </div>
+          </div>
+        </div>
+        <div class="song-body">
+          <div class="song-header-row">
+            <div class="song-title">Ghost Protocol</div>
+            <span class="song-heart">♥</span>
+          </div>
+          <div class="song-artist">by Horus · D minor · —</div>
+          <div>
+            <span class="status-badge badge-archived">
+              <span class="badge-dot"></span>Archived
+            </span>
+          </div>
+          <div class="tag-chips">
+            <span class="tag-chip">experimental</span>
+            <span class="tag-chip">incomplete</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-label">
+              <span>Final score</span>
+              <span style="color:var(--dim); font-weight:600;">0.71 (abandoned)</span>
+            </div>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:71%; background: var(--dim);"></div>
+              <div class="score-threshold" style="left:20%;"></div>
+            </div>
+          </div>
+          <div class="song-meta" style="margin-top:8px;">
+            <span class="song-date">5 days ago</span>
+            <span class="song-rounds" style="color:var(--dim);">never converged</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end song-grid -->
+
+    <!-- SECOND ROW HINT (ghost) -->
+    <div style="text-align:center; padding: 20px; color: var(--dim); font-size: 12px; border: 1px dashed var(--border); border-radius: 10px;">
+      + Ask Horus to compose a new song ·  type a concept or mood to begin
+    </div>
+
+  </main>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div class="bottom-left">
+    <div class="bottom-stat">
+      <span>Library:</span>
+      <span class="bottom-stat-val">4 songs</span>
+    </div>
+    <div class="bottom-stat">
+      <span>Storage:</span>
+      <span class="bottom-stat-val">2.1 GB</span>
+    </div>
+    <div class="bottom-stat">
+      <span>Last sync:</span>
+      <span class="bottom-stat-val">just now</span>
+    </div>
+  </div>
+  <div class="horus-activity">
+    <div class="activity-spinner"></div>
+    <span>Horus is writing lyrics for <strong style="color:var(--amber)">Sovereign Frequencies</strong> · round 1</span>
+  </div>
+</div>
+
+</body>
+</html>

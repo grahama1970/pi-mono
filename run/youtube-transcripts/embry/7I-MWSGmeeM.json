@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7I-MWSGmeeM",
+    "language": "en",
+    "took_ms": 8531,
+    "method": null,
+    "title": "Watch SpaceX Launch 60 more Starlink Satellites!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20200903",
+    "duration_sec": 6223,
+    "description": "SpaceX’s Starlink 11 mission will launch 60 Starlink satellites atop its Falcon 9 rocket. The Falcon 9 will lift off from Launch Complex 39a (LC-39a), from Kennedy Space Center, in Florida. Starlink 11 will mark the 12th Starlink mission, boosting the total number of Starlink satellites launched to around 715.\n\nWant to learn more about today’s launch? Check out our Prelaunch Preview! - https://everydayastronaut.com/starlink-11-falcon-9-block-5/\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 129205
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7I-MWSGmeeM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

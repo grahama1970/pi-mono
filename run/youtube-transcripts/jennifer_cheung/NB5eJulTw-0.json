@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NB5eJulTw-0",
+    "language": "en",
+    "took_ms": 8790,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Jarrod Overson - Hackium a Browser for Web Hackers",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2345,
+    "description": "The web has changed. Sites went from being a few kilobytes of static, hand-written HTML to monstrosities of tangled JavaScript that eat hundreds of megs of RAM. Web sites are applications now, complete with security controls, complex state, and custom protocols. Our tools need to become smarter.\n\nHackium is part of a new tool suite designed to both give greater control over browsers and the content they execute, as well as make work more sharable and portable. Hackium itself acts like a CLI-driven browser that runs automation scripts. Add libraries like shift-refactor, a JavaScript transformation library, and shift-interpreter, a JavaScript meta-interpreter, and you can intercept and manipulate JavaScript with just a few lines of code, no proxies necessary.\nThis session will introduce Hackium and how you can use features like the REPL to automate in-page tasks, work with 3rd party APIs for tasks like CAPTCHA solving, and intercept traffic to automatically deobfuscate JavaScript.",
+    "view_count": 706
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NB5eJulTw-0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

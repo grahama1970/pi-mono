@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QXa29AJqdRc",
+    "language": "en",
+    "took_ms": 8979,
+    "method": null,
+    "title": "DEF CON 32 - Reverse Engineering MicroPython Frozen Modules  - Wesley McGrew",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2602,
+    "description": "MicroPython is a firmware environment for quickly developing and deploying software onto microcontroller systems. It is used in a variety of industrial and scientific applications, as well as (most importantly) in some DEF CON #badgelife projects. It's easy to learn and use for rapid prototyping.\n\nFor hackers interested in reverse engineering compiled or obfuscated MicroPython code, there are some obstacles. MicroPython is an implementation of CPython, not a port, so it has its own compiled bytecode language that existing reverse engineering tools aren't designed to parse. Also, modules can be \"frozen\", compiled directly into the microcontroller firmware, and may be difficult to locate and parse when microcontroller firmware is extracted and analyzed.\n\nIn this talk, Wesley will walk the audience through the process of identifying \"frozen\"/compiled modules in a firmware image without debug symbols using the Ghidra disassembler. The relevant module, string, object, and raw code data structures will be detailed, so that everything required to rebuild a non-frozen module can recovered. Once a compiled module is reconstructed, Wesley will present a detailed example of reading and understanding MicroPython compiled bytecode, for the purpose of reverse engineering the purpose and implementation of the module.",
+    "view_count": 1533
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QXa29AJqdRc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

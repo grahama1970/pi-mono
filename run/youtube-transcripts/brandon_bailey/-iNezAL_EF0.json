@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-iNezAL_EF0",
+    "language": "en",
+    "took_ms": 8324,
+    "method": null,
+    "title": "DEF CON 32 - Sudos and Sudon’ts: Peering inside Sudo for Windows - Michael Torres",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1640,
+    "description": "In February 2024, Microsoft announced the release of Sudo for Windows for Windows 11 Insider Preview[1]. Like the Unix sudo utility, it provides a method for users to run commands with elevated permissions. This talk will share the results of an analysis of Sudo for Windows, starting with a summary of the information provided by Microsoft. From there, we will explore the architecture used to coordinate the elevation of the specified process, the ALPC service used to communicate between elevated and non-elevated processes, how Rust interoperates with Windows APIs, and the path resolution process for files and relative paths. As part of that journey, we will discuss a few discovered security issues.\n\nThis presentation will be valuable to anyone with an interest in Windows reverse engineering or Rust memory safety. A conceptual understanding of Windows Inter-Process Communication (IPC) and heap allocation may make parts of the talk more approachable, but the main ideas will be accessible to anyone with a high-level understanding of process memory layout (stack vs heap).",
+    "view_count": 870
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -iNezAL_EF0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

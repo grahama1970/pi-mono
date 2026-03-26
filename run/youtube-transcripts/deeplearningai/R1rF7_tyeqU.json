@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R1rF7_tyeqU",
+    "language": "en",
+    "took_ms": 7483,
+    "method": null,
+    "title": "New course with Hugging Face: Quantization Fundamentals",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240415",
+    "duration_sec": 170,
+    "description": "Enroll now: https://bit.ly/3VUbDMo\n\nIntroducing a new short course: Quantization Fundamentals with Hugging Face. \n\nGenerative AI models often exceed the capabilities of consumer-grade hardware and are expensive to run. Compressing models through methods such as quantization makes them more efficient, faster, and accessible, while minimizing performance degradation.\n\nJoin this course and:\n\n- Learn to quantize any open source model with linear quantization using the Quanto library.\n- Get an overview of how linear quantization is implemented. This form of quantization can be applied to compress any model, including LLMs, vision models, etc.\n- Apply “downcasting,” another form of quantization, with the Transformers library, which enables you to load models in about half their normal size in the BFloat16 data type.\n\nBy the end of this course, you’ll have a foundation in quantization techniques and be able to apply them to compress and optimize your own open source models, allowing them to run on a wide variety of devices, including smartphones, personal computers, and edge devices.\n\nLearn more: https://bit.ly/3VUbDMo",
+    "view_count": 3825
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R1rF7_tyeqU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

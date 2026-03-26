@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IzwZ0oZq8YQ",
+    "language": "en",
+    "took_ms": 9158,
+    "method": null,
+    "title": "How to avoid going OOM?",
+    "channel": "Trelis Research",
+    "upload_date": "20250927",
+    "duration_sec": 2762,
+    "description": "📜 Get LIFETIME repo access at https://Trelis.com/ADVANCED-fine-tuning\nAlso, thanks to our compute sponsor for ARC, Runpod: https://get.runpod.io/m8as7gd2868r\n\nTimestamps:\n0:00 GPU setup\n2:30 How to avoid going OOM\n24:20 Fine-tuning GPT-OSS for long context with Unsloth\n\nReferenced videos:\n- Training with DDP: https://youtu.be/CxowhaaLWZs\n- Training with FSDP: https://youtu.be/gXDsVcY8TXQ\n- Training with GRPO: https://youtu.be/CsqYlV8X8og",
+    "view_count": 382
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IzwZ0oZq8YQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

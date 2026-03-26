@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uA4npAt5ZUQ",
+    "language": "en",
+    "took_ms": 7860,
+    "method": null,
+    "title": "RADICS: Recovering From A Blackout On Plum Island",
+    "channel": "S4 Events",
+    "upload_date": "20200610",
+    "duration_sec": 592,
+    "description": "Michael Toecker provides ten minutes on the DARPA RADICS program that was providing testing of recovery from blackout, and they were able to actually do this on a realistic grid on Plum Island off the coast of New York. It consisted of three utilities, three generators, 17 real substations with protection, a SCADA control center, and a simulated natural gas pipeline.\n\nThey brought Plum Island to S4x20 and were showing off some of the solutions that helped prevent, detect and recover from blackouts. Mike previews them in the second half of this talk.",
+    "view_count": 725
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uA4npAt5ZUQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

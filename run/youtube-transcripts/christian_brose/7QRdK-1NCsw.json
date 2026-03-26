@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7QRdK-1NCsw",
+    "language": "en",
+    "took_ms": 8515,
+    "method": null,
+    "title": "Winning the Innovation Race in the Intelligence Community",
+    "channel": "Hudson Institute",
+    "upload_date": "20210114",
+    "duration_sec": 2180,
+    "description": "Join Hudson Institute for a conversation with U.S. Rep. Jim Himes (D-CT) on the recently released report “Rightly Scaled, Carefully Open, Infinitely Agile: Reconfiguring to Win the Innovation Race in the Intelligence Community,” from the House Permanent Select Committee on Intelligence Strategic Technologies and Advanced Research (STAR) Subcommittee. The discussion will be moderated by Senior Fellow Bryan Clark, with additional perspectives from Adjunct Fellow Dr. Dan Patt.",
+    "view_count": 583
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7QRdK-1NCsw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

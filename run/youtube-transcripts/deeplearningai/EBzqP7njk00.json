@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EBzqP7njk00",
+    "language": "en",
+    "took_ms": 9367,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Stefano Pasquali: Building Trustworthy AI for Finance",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1467,
+    "description": "This session by Stefano Pasquali, SVP, Head of Financial Services at Domyn introduced Domyn's Sovereign AI architecture, a unified framework combining Knowledge Graphs, LLMs, and agentic reasoning to bring transparency, auditability, and trust to financial AI.\n\n-----------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 792
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EBzqP7njk00: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "idBe7iP7dso",
+    "language": "en",
+    "took_ms": 8497,
+    "method": null,
+    "title": "Watch Rocket Lab attempt to recover an Electron rocket FROM SPACE!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20210515",
+    "duration_sec": 7244,
+    "description": "Rocket Lab is preparing for its Running Out of Toes’ mission, which will be quite different from the previous two this year. All because this launch will be Rocket Lab’s second attempt to safely return Electron’s first stage to Earth from space. Running Out of Toes will be launching from Launch Complex-1A, Māhia Peninsula, New Zealand. On this mission, Electron will carry two Earth-observation microsatellites for BlackSky’s constellation into a 430 km low Earth orbit (LEO) at 50° inclination.\n\nWant to learn more about today’s launch? Check out our Prelaunch Preview! - https://everydayastronaut.com/running-out-of-toes-electron/\n\n00:00 - Intro\n03:20 - Prelaunch Preview\n12:07 - Rocket Lab Stream Starts\n27:36 - First Attempt Hold\n28:20 - Q&A\n1:04:39 - Explaining about stage separation\n1:20:20 - Go / No Go & Explaining Sea Level vs Vacuum Engines\n1:31:41 - T - One Minute\n1:32:41 - Lift Off!\n1:35:12 - Stage Separation / Anomaly \n1:41:15 - Initial Analysis \n1:48:05 - Q&A\n1:57:15 - Outro\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 303130
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] idBe7iP7dso: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

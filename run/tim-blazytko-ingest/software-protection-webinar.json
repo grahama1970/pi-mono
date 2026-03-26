@@ -1,0 +1,5499 @@
+Tier 1: Trying direct youtube-transcript-api...
+{
+  "meta": {
+    "video_id": "Ie1eZSiMEJ8",
+    "language": "en",
+    "took_ms": 1164,
+    "method": "direct",
+    "title": "Webinar: Software Protection -- Safeguarding Code Against Reverse Engineering",
+    "channel": "emproof",
+    "upload_date": "20250126",
+    "duration_sec": 3472,
+    "description": "Speakers: Tim Blazytko (Emproof) \n\nCode and samples: https://github.com/emproof-com/webinars/tree/main/2025-01-software_protection \n\nSlides: https://github.com/emproof-com/webinars/blob/main/2025-01-software_protection/slides.pdf \n\n\nAbstract:\nIn our webinar \"Software Protection: Safeguarding Code Against Reverse Engineering\", we will explore the essential techniques used to defend software against reverse engineering, piracy, and tampering. Software protection is a vital aspect of securing code in today's evolving threat landscape, combining passive and active measures to increase resilience against attacks. Participants will learn how software protection mechanisms work, their practical applications, and the value they bring to software security.\n\nThe webinar will cover the following topics:\n\n* Threats of Reverse Engineering (Recap): A quick overview of how reverse engineering is leveraged by attackers to uncover software secrets.\n\n* Introduction to Software Protection: Understanding the concept, purpose, and overarching goals of software protection.\n\n* Passive Protections: Techniques such as code obfuscation, with practical examples like control-flow flattening and arithmetic obfuscation.\n\n* Active Protections: Strategies including packing, anti-debugging, anti-emulation, and anti-tampering mechanisms.\n\n* How Protections Work: Insights into the underlying mechanics and effectiveness of these techniques.\n\nDesigned for a technical audience with some programming experience but limited or no background in security, this session will provide a foundational understanding of software protection. By the end of the webinar, attendees will have gained practical insights into how these protections operate, the challenges they address, and the benefits they offer for safeguarding software systems.\n\nThis webinar is ideal for those seeking to enhance their awareness of software protection and learn actionable strategies to defend against reverse engineering attacks.",
+    "view_count": 689
+  },
+  "transcript": [
+    {
+      "text": "hello and welcome to our new webinar",
+      "start": 6.48,
+      "duration": 6.44
+    },
+    {
+      "text": "this time on software protection",
+      "start": 10.599,
+      "duration": 5.161
+    },
+    {
+      "text": "safeguarding code against reverse",
+      "start": 12.92,
+      "duration": 6.76
+    },
+    {
+      "text": "engineering a few words about",
+      "start": 15.76,
+      "duration": 7.72
+    },
+    {
+      "text": "me so I'm Tim I'm the chief scientist",
+      "start": 19.68,
+      "duration": 6.359
+    },
+    {
+      "text": "and head of engineering and one of the",
+      "start": 23.48,
+      "duration": 6.6
+    },
+    {
+      "text": "co-founders of mof we are a startup Loc",
+      "start": 26.039,
+      "duration": 7.001
+    },
+    {
+      "text": "at in the Netherlands where we focus on",
+      "start": 30.08,
+      "duration": 5.479
+    },
+    {
+      "text": "embedded reverse",
+      "start": 33.04,
+      "duration": 4.72
+    },
+    {
+      "text": "engineering where we focus on embedded",
+      "start": 35.559,
+      "duration": 4.561
+    },
+    {
+      "text": "reverse engineering um anti-reverse",
+      "start": 37.76,
+      "duration": 4.92
+    },
+    {
+      "text": "engineering techniques such as software",
+      "start": 40.12,
+      "duration": 5.0
+    },
+    {
+      "text": "protection such that firmware cannot be",
+      "start": 42.68,
+      "duration": 4.24
+    },
+    {
+      "text": "analyzed by sub",
+      "start": 45.12,
+      "duration": 4.439
+    },
+    {
+      "text": "parties um so we are basically focused",
+      "start": 46.92,
+      "duration": 4.84
+    },
+    {
+      "text": "on Advanced embedded Security",
+      "start": 49.559,
+      "duration": 5.881
+    },
+    {
+      "text": "Solutions I own a PhD in binary program",
+      "start": 51.76,
+      "duration": 6.4
+    },
+    {
+      "text": "analysis and reverse engineering and",
+      "start": 55.44,
+      "duration": 4.84
+    },
+    {
+      "text": "besides I give trainings and lecture at",
+      "start": 58.16,
+      "duration": 4.28
+    },
+    {
+      "text": "industry conferences and",
+      "start": 60.28,
+      "duration": 5.96
+    },
+    {
+      "text": "universities the goal of today is to",
+      "start": 62.44,
+      "duration": 9.319
+    },
+    {
+      "text": "discuss to and to to do a small recap of",
+      "start": 66.24,
+      "duration": 5.519
+    },
+    {
+      "text": "common is to discuss and to do a small",
+      "start": 72.04,
+      "duration": 5.6
+    },
+    {
+      "text": "recap of common reverse engineering",
+      "start": 74.759,
+      "duration": 6.481
+    },
+    {
+      "text": "threats then we will switch into",
+      "start": 77.64,
+      "duration": 7.72
+    },
+    {
+      "text": "software protection what it means to",
+      "start": 81.24,
+      "duration": 6.839
+    },
+    {
+      "text": "protect software against reverse",
+      "start": 85.36,
+      "duration": 5.84
+    },
+    {
+      "text": "engineering and houses can be done we",
+      "start": 88.079,
+      "duration": 7.601
+    },
+    {
+      "text": "will combine this with a small",
+      "start": 91.2,
+      "duration": 4.48
+    },
+    {
+      "text": "demonstration we will um combine this a",
+      "start": 96.96,
+      "duration": 6.199
+    },
+    {
+      "text": "small small demonstration and in the end",
+      "start": 99.92,
+      "duration": 4.72
+    },
+    {
+      "text": "um you will get everything that you can",
+      "start": 103.159,
+      "duration": 4.441
+    },
+    {
+      "text": "play around with when you're",
+      "start": 104.64,
+      "duration": 2.96
+    },
+    {
+      "text": "own so if you are new to the serious um",
+      "start": 108.399,
+      "duration": 7.441
+    },
+    {
+      "text": "we's already two webinars we did in the",
+      "start": 112.719,
+      "duration": 5.961
+    },
+    {
+      "text": "past one is reverse engineering how",
+      "start": 115.84,
+      "duration": 5.199
+    },
+    {
+      "text": "techers uncover secrets binaries where",
+      "start": 118.68,
+      "duration": 5.0
+    },
+    {
+      "text": "we did a small introduction into reverse",
+      "start": 121.039,
+      "duration": 6.601
+    },
+    {
+      "text": "engineering and how it went and then in",
+      "start": 123.68,
+      "duration": 6.6
+    },
+    {
+      "text": "the second webinar Secrets unveiled what",
+      "start": 127.64,
+      "duration": 5.2
+    },
+    {
+      "text": "attackers find in embedded systems we",
+      "start": 130.28,
+      "duration": 5.599
+    },
+    {
+      "text": "talked about uh taking a closer look and",
+      "start": 132.84,
+      "duration": 5.6
+    },
+    {
+      "text": "embeded firmware and digging into that",
+      "start": 135.879,
+      "duration": 5.44
+    },
+    {
+      "text": "how we can find credentials there if you",
+      "start": 138.44,
+      "duration": 5.6
+    },
+    {
+      "text": "are interested in these recordings or",
+      "start": 141.319,
+      "duration": 5.92
+    },
+    {
+      "text": "also get the slide and binaries we can",
+      "start": 144.04,
+      "duration": 8.16
+    },
+    {
+      "text": "check it out so you can go for",
+      "start": 147.239,
+      "duration": 8.121
+    },
+    {
+      "text": "instance to this website and there you",
+      "start": 152.2,
+      "duration": 7.16
+    },
+    {
+      "text": "will find our path to webinars with the",
+      "start": 155.36,
+      "duration": 7.879
+    },
+    {
+      "text": "slides and so on um attached here and",
+      "start": 159.36,
+      "duration": 6.519
+    },
+    {
+      "text": "also this webinar will be listed later",
+      "start": 163.239,
+      "duration": 4.28
+    },
+    {
+      "text": "on here in this",
+      "start": 165.879,
+      "duration": 4.321
+    },
+    {
+      "text": "overview",
+      "start": 167.519,
+      "duration": 6.281
+    },
+    {
+      "text": "okay that said let's do a small recap",
+      "start": 170.2,
+      "duration": 5.679
+    },
+    {
+      "text": "about reverse engineering",
+      "start": 173.8,
+      "duration": 4.84
+    },
+    {
+      "text": "threats and then we jump into software",
+      "start": 175.879,
+      "duration": 6.041
+    },
+    {
+      "text": "protection our main Focus for",
+      "start": 178.64,
+      "duration": 5.239
+    },
+    {
+      "text": "today reverse",
+      "start": 181.92,
+      "duration": 5.28
+    },
+    {
+      "text": "engineering the goal basically from an",
+      "start": 183.879,
+      "duration": 7.681
+    },
+    {
+      "text": "attacker is to get a binary like an",
+      "start": 187.2,
+      "duration": 6.84
+    },
+    {
+      "text": "embedded firmware for instance and",
+      "start": 191.56,
+      "duration": 4.759
+    },
+    {
+      "text": "reverse engineer it so analyze the",
+      "start": 194.04,
+      "duration": 5.479
+    },
+    {
+      "text": "binary code with a goal to extract",
+      "start": 196.319,
+      "duration": 5.801
+    },
+    {
+      "text": "secrets from it and this can be used for",
+      "start": 199.519,
+      "duration": 6.041
+    },
+    {
+      "text": "instance to find bucks and sabotage it",
+      "start": 202.12,
+      "duration": 5.199
+    },
+    {
+      "text": "can be used",
+      "start": 205.56,
+      "duration": 4.64
+    },
+    {
+      "text": "to understand what's going on and to",
+      "start": 207.319,
+      "duration": 6.761
+    },
+    {
+      "text": "unlock secrets in the firmware like",
+      "start": 210.2,
+      "duration": 5.48
+    },
+    {
+      "text": "understanding the code what the for for",
+      "start": 214.08,
+      "duration": 4.28
+    },
+    {
+      "text": "instance what a competitor does and copy",
+      "start": 215.68,
+      "duration": 4.68
+    },
+    {
+      "text": "this IP into your own",
+      "start": 218.36,
+      "duration": 6.32
+    },
+    {
+      "text": "product and also in terms of user there",
+      "start": 220.36,
+      "duration": 9.519
+    },
+    {
+      "text": "is something like piracy the the the um",
+      "start": 224.68,
+      "duration": 8.96
+    },
+    {
+      "text": "the interest in copy and removing copy",
+      "start": 229.879,
+      "duration": 7.121
+    },
+    {
+      "text": "protections and um um um bypassing",
+      "start": 233.64,
+      "duration": 5.48
+    },
+    {
+      "text": "authentication checks and just unlock",
+      "start": 237.0,
+      "duration": 4.599
+    },
+    {
+      "text": "features for instance that the user",
+      "start": 239.12,
+      "duration": 4.959
+    },
+    {
+      "text": "otherwise has to pay for so in other",
+      "start": 241.599,
+      "duration": 5.681
+    },
+    {
+      "text": "words a financial gain in many different",
+      "start": 244.079,
+      "duration": 5.281
+    },
+    {
+      "text": "ways can be the te",
+      "start": 247.28,
+      "duration": 5.12
+    },
+    {
+      "text": "scenario so what can we typically find",
+      "start": 249.36,
+      "duration": 6.04
+    },
+    {
+      "text": "in such binaries we can typically find",
+      "start": 252.4,
+      "duration": 6.519
+    },
+    {
+      "text": "something like first hardcoded Secrets",
+      "start": 255.4,
+      "duration": 6.679
+    },
+    {
+      "text": "like cryptographic Keys serial numbers",
+      "start": 258.919,
+      "duration": 6.72
+    },
+    {
+      "text": "passwords and so on network addresses",
+      "start": 262.079,
+      "duration": 6.441
+    },
+    {
+      "text": "but also we can find more sensitive data",
+      "start": 265.639,
+      "duration": 6.56
+    },
+    {
+      "text": "like Secret algor GMS that have been um",
+      "start": 268.52,
+      "duration": 7.6
+    },
+    {
+      "text": "developed after years of research or",
+      "start": 272.199,
+      "duration": 6.201
+    },
+    {
+      "text": "machine learning models and so on so",
+      "start": 276.12,
+      "duration": 3.799
+    },
+    {
+      "text": "basically everything which can be",
+      "start": 278.4,
+      "duration": 5.0
+    },
+    {
+      "text": "considered as private and that companies",
+      "start": 279.919,
+      "duration": 6.12
+    },
+    {
+      "text": "don't want to have shared easily with",
+      "start": 283.4,
+      "duration": 4.239
+    },
+    {
+      "text": "other",
+      "start": 286.039,
+      "duration": 6.041
+    },
+    {
+      "text": "participants so we typically in assembly",
+      "start": 287.639,
+      "duration": 6.641
+    },
+    {
+      "text": "on reverse engineering start with",
+      "start": 292.08,
+      "duration": 4.6
+    },
+    {
+      "text": "something which is called machine code",
+      "start": 294.28,
+      "duration": 4.4
+    },
+    {
+      "text": "this machine code is basically a",
+      "start": 296.68,
+      "duration": 3.84
+    },
+    {
+      "text": "sequence of",
+      "start": 298.68,
+      "duration": 5.44
+    },
+    {
+      "text": "which is interpreted by the CPU as",
+      "start": 300.52,
+      "duration": 8.119
+    },
+    {
+      "text": "code so the CPU like the the device um",
+      "start": 304.12,
+      "duration": 7.6
+    },
+    {
+      "text": "of your of your computer or of your",
+      "start": 308.639,
+      "duration": 5.521
+    },
+    {
+      "text": "smartphone works with instruction",
+      "start": 311.72,
+      "duration": 4.759
+    },
+    {
+      "text": "sequences with bite sequences like that",
+      "start": 314.16,
+      "duration": 4.56
+    },
+    {
+      "text": "and performs computations based on that",
+      "start": 316.479,
+      "duration": 6.201
+    },
+    {
+      "text": "for instance it might know that there is",
+      "start": 318.72,
+      "duration": 7.68
+    },
+    {
+      "text": "some encoding or decoding form and then",
+      "start": 322.68,
+      "duration": 7.079
+    },
+    {
+      "text": "for this for this bite sequence and then",
+      "start": 326.4,
+      "duration": 6.4
+    },
+    {
+      "text": "it might translate it to something like",
+      "start": 329.759,
+      "duration": 8.081
+    },
+    {
+      "text": "at R1 and a constant so this would",
+      "start": 332.8,
+      "duration": 7.08
+    },
+    {
+      "text": "basically mean here we perform an",
+      "start": 337.84,
+      "duration": 5.76
+    },
+    {
+      "text": "addition with a register R1 and a",
+      "start": 339.88,
+      "duration": 5.92
+    },
+    {
+      "text": "constant and here we perform a",
+      "start": 343.6,
+      "duration": 4.84
+    },
+    {
+      "text": "multiplication with a two and another",
+      "start": 345.8,
+      "duration": 6.92
+    },
+    {
+      "text": "constant so this machine code would be",
+      "start": 348.44,
+      "duration": 7.56
+    },
+    {
+      "text": "decoded by the CPU into assembly code",
+      "start": 352.72,
+      "duration": 5.919
+    },
+    {
+      "text": "and then execute",
+      "start": 356.0,
+      "duration": 6.88
+    },
+    {
+      "text": "it so and this code basically represents",
+      "start": 358.639,
+      "duration": 7.4
+    },
+    {
+      "text": "high level code so we have a tool in",
+      "start": 362.88,
+      "duration": 5.56
+    },
+    {
+      "text": "reverse engineering which is called a",
+      "start": 366.039,
+      "duration": 5.121
+    },
+    {
+      "text": "disassembler which can decode",
+      "start": 368.44,
+      "duration": 5.039
+    },
+    {
+      "text": "instruction sequences into human",
+      "start": 371.16,
+      "duration": 5.599
+    },
+    {
+      "text": "readable assembly code and based on that",
+      "start": 373.479,
+      "duration": 6.241
+    },
+    {
+      "text": "a reverse engineer can analyze the code",
+      "start": 376.759,
+      "duration": 5.681
+    },
+    {
+      "text": "and reconstruct the high level code or",
+      "start": 379.72,
+      "duration": 4.199
+    },
+    {
+      "text": "even",
+      "start": 382.44,
+      "duration": 5.039
+    },
+    {
+      "text": "better the reverse engineer can take a",
+      "start": 383.919,
+      "duration": 7.041
+    },
+    {
+      "text": "decompiler which then takes assembly",
+      "start": 387.479,
+      "duration": 6.961
+    },
+    {
+      "text": "code AS input and reconstructs the high",
+      "start": 390.96,
+      "duration": 7.079
+    },
+    {
+      "text": "level code like the C code and then we",
+      "start": 394.44,
+      "duration": 6.52
+    },
+    {
+      "text": "can for instance decode instruction",
+      "start": 398.039,
+      "duration": 6.241
+    },
+    {
+      "text": "sequence like this one into high level C",
+      "start": 400.96,
+      "duration": 5.92
+    },
+    {
+      "text": "code like this one where we just then",
+      "start": 404.28,
+      "duration": 5.759
+    },
+    {
+      "text": "have um a calculate a function name",
+      "start": 406.88,
+      "duration": 5.36
+    },
+    {
+      "text": "which takes two parameters param one and",
+      "start": 410.039,
+      "duration": 7.0
+    },
+    {
+      "text": "param 2 and then for instance returns",
+      "start": 412.24,
+      "duration": 8.56
+    },
+    {
+      "text": "param 2 plus param 1 multiplied by",
+      "start": 417.039,
+      "duration": 5.761
+    },
+    {
+      "text": "four there",
+      "start": 420.8,
+      "duration": 4.72
+    },
+    {
+      "text": "are open source reverse engineering",
+      "start": 422.8,
+      "duration": 4.6
+    },
+    {
+      "text": "Frameworks in the",
+      "start": 425.52,
+      "duration": 5.359
+    },
+    {
+      "text": "wild that can be easily downloaded that",
+      "start": 427.4,
+      "duration": 6.44
+    },
+    {
+      "text": "for instance allow you to load a binary",
+      "start": 430.879,
+      "duration": 5.241
+    },
+    {
+      "text": "then inspect in the middle the assembly",
+      "start": 433.84,
+      "duration": 5.759
+    },
+    {
+      "text": "code here and on the right hand side and",
+      "start": 436.12,
+      "duration": 5.32
+    },
+    {
+      "text": "then on the right hand side you can see",
+      "start": 439.599,
+      "duration": 4.761
+    },
+    {
+      "text": "the decompiler output and then you can",
+      "start": 441.44,
+      "duration": 4.759
+    },
+    {
+      "text": "get a better understanding of what the",
+      "start": 444.36,
+      "duration": 4.519
+    },
+    {
+      "text": "code is doing and this can be done by",
+      "start": 446.199,
+      "duration": 5.801
+    },
+    {
+      "text": "everybody who just has some interest in",
+      "start": 448.879,
+      "duration": 6.121
+    },
+    {
+      "text": "reverse engineering the person can then",
+      "start": 452.0,
+      "duration": 6.16
+    },
+    {
+      "text": "go for instance to the website of gidra",
+      "start": 455.0,
+      "duration": 6.639
+    },
+    {
+      "text": "download it install it and then analyze",
+      "start": 458.16,
+      "duration": 6.439
+    },
+    {
+      "text": "an avatary binary if you want to learn",
+      "start": 461.639,
+      "duration": 5.921
+    },
+    {
+      "text": "more about that if you want to learn",
+      "start": 464.599,
+      "duration": 6.841
+    },
+    {
+      "text": "more about that I would recommend you",
+      "start": 467.56,
+      "duration": 6.319
+    },
+    {
+      "text": "looking up one of our previous sem",
+      "start": 471.44,
+      "duration": 4.96
+    },
+    {
+      "text": "webinars where we talked about that",
+      "start": 473.879,
+      "duration": 4.801
+    },
+    {
+      "text": "otherwise there are also lot of contents",
+      "start": 476.4,
+      "duration": 4.0
+    },
+    {
+      "text": "for free on the",
+      "start": 478.68,
+      "duration": 5.68
+    },
+    {
+      "text": "internet so now we want to focus on",
+      "start": 480.4,
+      "duration": 7.32
+    },
+    {
+      "text": "given that as a basic knowledge how can",
+      "start": 484.36,
+      "duration": 7.72
+    },
+    {
+      "text": "we protect against that or is there any",
+      "start": 487.72,
+      "duration": 8.599
+    },
+    {
+      "text": "method like that enables us to prevent",
+      "start": 492.08,
+      "duration": 6.04
+    },
+    {
+      "text": "reverse engineering or to make it at",
+      "start": 496.319,
+      "duration": 4.44
+    },
+    {
+      "text": "least more complicated and the answer",
+      "start": 498.12,
+      "duration": 5.16
+    },
+    {
+      "text": "there yes there exists something like",
+      "start": 500.759,
+      "duration": 6.28
+    },
+    {
+      "text": "that and this term is called software",
+      "start": 503.28,
+      "duration": 6.52
+    },
+    {
+      "text": "protection software protection has has",
+      "start": 507.039,
+      "duration": 5.12
+    },
+    {
+      "text": "the goal to complicate reverse",
+      "start": 509.8,
+      "duration": 3.599
+    },
+    {
+      "text": "engineering",
+      "start": 512.159,
+      "duration": 4.961
+    },
+    {
+      "text": "attempts complicating means that we want",
+      "start": 513.399,
+      "duration": 8.481
+    },
+    {
+      "text": "to raise the bar for attackers to",
+      "start": 517.12,
+      "duration": 8.12
+    },
+    {
+      "text": "spend more significantly more time on",
+      "start": 521.88,
+      "duration": 6.28
+    },
+    {
+      "text": "the same code with a goal that it's",
+      "start": 525.24,
+      "duration": 6.279
+    },
+    {
+      "text": "harder to reverse engineer so it's not",
+      "start": 528.16,
+      "duration": 5.92
+    },
+    {
+      "text": "impossible um because there is know in",
+      "start": 531.519,
+      "duration": 4.281
+    },
+    {
+      "text": "in reverse engineering there is nothing",
+      "start": 534.08,
+      "duration": 3.4
+    },
+    {
+      "text": "like it this cannot be reverse",
+      "start": 535.8,
+      "duration": 3.64
+    },
+    {
+      "text": "engineered or this can cannot be",
+      "start": 537.48,
+      "duration": 3.479
+    },
+    {
+      "text": "protected in a way that it cannot can't",
+      "start": 539.44,
+      "duration": 4.36
+    },
+    {
+      "text": "be reverse engineered but you can",
+      "start": 540.959,
+      "duration": 5.761
+    },
+    {
+      "text": "significantly raise the par the bar in",
+      "start": 543.8,
+      "duration": 6.36
+    },
+    {
+      "text": "terms of that the attacker has first to",
+      "start": 546.72,
+      "duration": 6.72
+    },
+    {
+      "text": "have significantly more knowledge about",
+      "start": 550.16,
+      "duration": 5.679
+    },
+    {
+      "text": "what what he or she is doing and how to",
+      "start": 553.44,
+      "duration": 4.48
+    },
+    {
+      "text": "proceed and at the same time you can",
+      "start": 555.839,
+      "duration": 4.481
+    },
+    {
+      "text": "raise the bar that even if you have an",
+      "start": 557.92,
+      "duration": 3.84
+    },
+    {
+      "text": "expert level",
+      "start": 560.32,
+      "duration": 4.16
+    },
+    {
+      "text": "attacker the analysis effort is",
+      "start": 561.76,
+      "duration": 5.0
+    },
+    {
+      "text": "significantly higher and therefore the",
+      "start": 564.48,
+      "duration": 6.799
+    },
+    {
+      "text": "time significantly higher so in words in",
+      "start": 566.76,
+      "duration": 6.96
+    },
+    {
+      "text": "um in short you basically increase the",
+      "start": 571.279,
+      "duration": 5.321
+    },
+    {
+      "text": "difficulty to do that and you increase",
+      "start": 573.72,
+      "duration": 6.72
+    },
+    {
+      "text": "the time window to do that and with that",
+      "start": 576.6,
+      "duration": 7.96
+    },
+    {
+      "text": "you increase the financial gain a lot so",
+      "start": 580.44,
+      "duration": 6.68
+    },
+    {
+      "text": "you make it significantly more expensive",
+      "start": 584.56,
+      "duration": 5.48
+    },
+    {
+      "text": "to reverse engineer piece of software",
+      "start": 587.12,
+      "duration": 7.04
+    },
+    {
+      "text": "okay now the the question is how can we",
+      "start": 590.04,
+      "duration": 8.32
+    },
+    {
+      "text": "do that and well if we talk about",
+      "start": 594.16,
+      "duration": 6.44
+    },
+    {
+      "text": "software protection we have to take a",
+      "start": 598.36,
+      "duration": 4.84
+    },
+    {
+      "text": "look on how attackers really analyze",
+      "start": 600.6,
+      "duration": 5.56
+    },
+    {
+      "text": "code and we already did it before we",
+      "start": 603.2,
+      "duration": 5.44
+    },
+    {
+      "text": "have our tools like disassemblers and",
+      "start": 606.16,
+      "duration": 5.64
+    },
+    {
+      "text": "decompilers where we open in a binary",
+      "start": 608.64,
+      "duration": 5.52
+    },
+    {
+      "text": "and then we can take a closer look at",
+      "start": 611.8,
+      "duration": 5.96
+    },
+    {
+      "text": "that so let's just start with that as a",
+      "start": 614.16,
+      "duration": 4.48
+    },
+    {
+      "text": "small",
+      "start": 617.76,
+      "duration": 4.88
+    },
+    {
+      "text": "demonstration let's assume we have a",
+      "start": 618.64,
+      "duration": 8.12
+    },
+    {
+      "text": "small sample like Fibonacci",
+      "start": 622.64,
+      "duration": 4.12
+    },
+    {
+      "text": "this Fibonacci code just to show to",
+      "start": 629.92,
+      "duration": 8.159
+    },
+    {
+      "text": "you this Fibonacci code is just a small",
+      "start": 633.56,
+      "duration": 7.279
+    },
+    {
+      "text": "function which takes",
+      "start": 638.079,
+      "duration": 7.521
+    },
+    {
+      "text": "in an an variable n and then it perform",
+      "start": 640.839,
+      "duration": 8.881
+    },
+    {
+      "text": "some computations like a equal 0 b equal",
+      "start": 645.6,
+      "duration": 8.28
+    },
+    {
+      "text": "1 then we have S equal B and then we",
+      "start": 649.72,
+      "duration": 7.44
+    },
+    {
+      "text": "check if n is equal to zero if so we",
+      "start": 653.88,
+      "duration": 5.92
+    },
+    {
+      "text": "return zero otherwise we go into the",
+      "start": 657.16,
+      "duration": 4.96
+    },
+    {
+      "text": "loop and compute the end Fibonacci",
+      "start": 659.8,
+      "duration": 7.4
+    },
+    {
+      "text": "number and if we just do it proceeded",
+      "start": 662.12,
+      "duration": 8.6
+    },
+    {
+      "text": "like that we can for instance open a",
+      "start": 667.2,
+      "duration": 7.48
+    },
+    {
+      "text": "terminal then we compile it like GCC",
+      "start": 670.72,
+      "duration": 5.84
+    },
+    {
+      "text": "minus",
+      "start": 674.68,
+      "duration": 6.76
+    },
+    {
+      "text": "o Fibonacci C and put it into binary",
+      "start": 676.56,
+      "duration": 6.36
+    },
+    {
+      "text": "called",
+      "start": 681.44,
+      "duration": 6.16
+    },
+    {
+      "text": "Fibonacci and then we can call the",
+      "start": 682.92,
+      "duration": 8.32
+    },
+    {
+      "text": "Fibonacci and just",
+      "start": 687.6,
+      "duration": 3.64
+    },
+    {
+      "text": "see and just see that it computes this",
+      "start": 697.68,
+      "duration": 8.159
+    },
+    {
+      "text": "humi like for the first value we get one",
+      "start": 701.88,
+      "duration": 6.8
+    },
+    {
+      "text": "if we take the fifth value we get a five",
+      "start": 705.839,
+      "duration": 6.361
+    },
+    {
+      "text": "if we take a sixth value we get an eight",
+      "start": 708.68,
+      "duration": 6.599
+    },
+    {
+      "text": "and then a nine and so on and so on so",
+      "start": 712.2,
+      "duration": 6.04
+    },
+    {
+      "text": "this binary computes a Fibonacci",
+      "start": 715.279,
+      "duration": 6.12
+    },
+    {
+      "text": "sequence we can also take a look at it",
+      "start": 718.24,
+      "duration": 5.68
+    },
+    {
+      "text": "in a reverse engineering tool",
+      "start": 721.399,
+      "duration": 6.721
+    },
+    {
+      "text": "like um this time binding Ninja for that",
+      "start": 723.92,
+      "duration": 8.159
+    },
+    {
+      "text": "we open Bing ninja down",
+      "start": 728.12,
+      "duration": 3.959
+    },
+    {
+      "text": "here and after it has been loaded we for",
+      "start": 732.839,
+      "duration": 6.521
+    },
+    {
+      "text": "instance just open the bining there so",
+      "start": 735.88,
+      "duration": 7.639
+    },
+    {
+      "text": "here we have we have our fi",
+      "start": 739.36,
+      "duration": 9.159
+    },
+    {
+      "text": "sequence let me recompile it again",
+      "start": 743.519,
+      "duration": 5.0
+    },
+    {
+      "text": "so we have our fat sequence and I canot",
+      "start": 751.0,
+      "duration": 8.24
+    },
+    {
+      "text": "put it in here and then I can see down",
+      "start": 754.24,
+      "duration": 7.88
+    },
+    {
+      "text": "in the middle",
+      "start": 759.24,
+      "duration": 2.88
+    },
+    {
+      "text": "here that we have the main function",
+      "start": 763.12,
+      "duration": 6.12
+    },
+    {
+      "text": "which takes some arguments and then it",
+      "start": 766.6,
+      "duration": 6.0
+    },
+    {
+      "text": "prints a string FIB result and then it",
+      "start": 769.24,
+      "duration": 6.24
+    },
+    {
+      "text": "calls a function FIP and if we take a",
+      "start": 772.6,
+      "duration": 6.239
+    },
+    {
+      "text": "look into this function we see that it",
+      "start": 775.48,
+      "duration": 7.4
+    },
+    {
+      "text": "basic Bally gets an argument AR one let",
+      "start": 778.839,
+      "duration": 7.601
+    },
+    {
+      "text": "me I can I can make this more beautiful",
+      "start": 782.88,
+      "duration": 6.639
+    },
+    {
+      "text": "this output by um just limiting it to",
+      "start": 786.44,
+      "duration": 5.0
+    },
+    {
+      "text": "the C",
+      "start": 789.519,
+      "duration": 5.641
+    },
+    {
+      "text": "function so like",
+      "start": 791.44,
+      "duration": 3.72
+    },
+    {
+      "text": "that and now we for instance see we",
+      "start": 796.88,
+      "duration": 6.12
+    },
+    {
+      "text": "have this function FIP here then we in",
+      "start": 804.199,
+      "duration": 7.921
+    },
+    {
+      "text": "initialize some variables and we check",
+      "start": 809.12,
+      "duration": 5.76
+    },
+    {
+      "text": "if it's equal to zero then we return",
+      "start": 812.12,
+      "duration": 7.36
+    },
+    {
+      "text": "zero otherwise we have a dual Loop and",
+      "start": 814.88,
+      "duration": 7.44
+    },
+    {
+      "text": "we compute something so we can call we",
+      "start": 819.48,
+      "duration": 5.24
+    },
+    {
+      "text": "can rename this for instance to to the",
+      "start": 822.32,
+      "duration": 6.92
+    },
+    {
+      "text": "variable n and we can this for instance",
+      "start": 824.72,
+      "duration": 8.039
+    },
+    {
+      "text": "rename to the variable result and then",
+      "start": 829.24,
+      "duration": 5.92
+    },
+    {
+      "text": "it looks like that so this is how",
+      "start": 832.759,
+      "duration": 6.561
+    },
+    {
+      "text": "reverse engineering would work and now",
+      "start": 835.16,
+      "duration": 6.44
+    },
+    {
+      "text": "we work basically with something with",
+      "start": 839.32,
+      "duration": 5.0
+    },
+    {
+      "text": "like a control flow graph that allows us",
+      "start": 841.6,
+      "duration": 7.239
+    },
+    {
+      "text": "to Showcase to see how the state of the",
+      "start": 844.32,
+      "duration": 7.72
+    },
+    {
+      "text": "code look like and how to go from one",
+      "start": 848.839,
+      "duration": 7.321
+    },
+    {
+      "text": "state to the other state and we also um",
+      "start": 852.04,
+      "duration": 6.28
+    },
+    {
+      "text": "can look at the decompiler which",
+      "start": 856.16,
+      "duration": 4.52
+    },
+    {
+      "text": "basically gives us a high level view of",
+      "start": 858.32,
+      "duration": 8.079
+    },
+    {
+      "text": "the binary and now the goal of op of and",
+      "start": 860.68,
+      "duration": 9.159
+    },
+    {
+      "text": "software protection is basically to make",
+      "start": 866.399,
+      "duration": 7.12
+    },
+    {
+      "text": "this code harder to analyze and for this",
+      "start": 869.839,
+      "duration": 7.081
+    },
+    {
+      "text": "we have active and passive methods and",
+      "start": 873.519,
+      "duration": 6.32
+    },
+    {
+      "text": "let us first talk about the passive",
+      "start": 876.92,
+      "duration": 6.599
+    },
+    {
+      "text": "methods the passive protections are",
+      "start": 879.839,
+      "duration": 7.321
+    },
+    {
+      "text": "called code of thec and data uncoding",
+      "start": 883.519,
+      "duration": 6.281
+    },
+    {
+      "text": "the idea behind code ofation and data",
+      "start": 887.16,
+      "duration": 6.84
+    },
+    {
+      "text": "encoding is that you basically leave the",
+      "start": 889.8,
+      "duration": 8.12
+    },
+    {
+      "text": "code as it is function wise but you make",
+      "start": 894.0,
+      "duration": 7.36
+    },
+    {
+      "text": "it significantly harder to analyze",
+      "start": 897.92,
+      "duration": 6.96
+    },
+    {
+      "text": "because you add complexity to that so",
+      "start": 901.36,
+      "duration": 4.24
+    },
+    {
+      "text": "for",
+      "start": 904.88,
+      "duration": 4.56
+    },
+    {
+      "text": "instance instead of having a small graph",
+      "start": 905.6,
+      "duration": 5.12
+    },
+    {
+      "text": "and a",
+      "start": 909.44,
+      "duration": 5.68
+    },
+    {
+      "text": "small um function with easy to observe",
+      "start": 910.72,
+      "duration": 7.2
+    },
+    {
+      "text": "control flow you could build graphs like",
+      "start": 915.12,
+      "duration": 5.959
+    },
+    {
+      "text": "that which add a lot of complexity and",
+      "start": 917.92,
+      "duration": 6.0
+    },
+    {
+      "text": "make it very hard to understand and see",
+      "start": 921.079,
+      "duration": 4.841
+    },
+    {
+      "text": "what's really going on in the",
+      "start": 923.92,
+      "duration": 4.8
+    },
+    {
+      "text": "function so you basically can increase a",
+      "start": 925.92,
+      "duration": 5.399
+    },
+    {
+      "text": "compl it to impede reverse",
+      "start": 928.72,
+      "duration": 5.08
+    },
+    {
+      "text": "engineering and you can also",
+      "start": 931.319,
+      "duration": 6.481
+    },
+    {
+      "text": "arithmetically hide keys and",
+      "start": 933.8,
+      "duration": 6.159
+    },
+    {
+      "text": "credentials like in an encrypted or",
+      "start": 937.8,
+      "duration": 5.8
+    },
+    {
+      "text": "encoded format and then decoded at",
+      "start": 939.959,
+      "duration": 6.68
+    },
+    {
+      "text": "runtime tou that if you have a decoding",
+      "start": 943.6,
+      "duration": 5.52
+    },
+    {
+      "text": "algorithm that looks like",
+      "start": 946.639,
+      "duration": 5.961
+    },
+    {
+      "text": "that understanding the meas the measures",
+      "start": 949.12,
+      "duration": 5.399
+    },
+    {
+      "text": "what's really going on there and seeing",
+      "start": 952.6,
+      "duration": 6.12
+    },
+    {
+      "text": "the the data that you want to unprotect",
+      "start": 954.519,
+      "duration": 5.961
+    },
+    {
+      "text": "is significantly",
+      "start": 958.72,
+      "duration": 6.359
+    },
+    {
+      "text": "harder so and to do this",
+      "start": 960.48,
+      "duration": 8.039
+    },
+    {
+      "text": "passive counter measure this Pro passive",
+      "start": 965.079,
+      "duration": 6.281
+    },
+    {
+      "text": "protection the goal is basically to make",
+      "start": 968.519,
+      "duration": 4.68
+    },
+    {
+      "text": "it more complicated on the control flow",
+      "start": 971.36,
+      "duration": 5.279
+    },
+    {
+      "text": "level but also on the compiler level and",
+      "start": 973.199,
+      "duration": 6.281
+    },
+    {
+      "text": "while obfuscation can be significantly",
+      "start": 976.639,
+      "duration": 6.361
+    },
+    {
+      "text": "complex I would like to showcas it you",
+      "start": 979.48,
+      "duration": 7.12
+    },
+    {
+      "text": "it to you to on a very small example so",
+      "start": 983.0,
+      "duration": 6.92
+    },
+    {
+      "text": "let's go back to our Fibonacci",
+      "start": 986.6,
+      "duration": 6.679
+    },
+    {
+      "text": "code and this was a Fibonacci code we",
+      "start": 989.92,
+      "duration": 6.68
+    },
+    {
+      "text": "just saw before where we have where we",
+      "start": 993.279,
+      "duration": 6.24
+    },
+    {
+      "text": "can see that this looks like that and",
+      "start": 996.6,
+      "duration": 5.28
+    },
+    {
+      "text": "then we see that we do have a loop and",
+      "start": 999.519,
+      "duration": 4.521
+    },
+    {
+      "text": "then we perform some conts inside the",
+      "start": 1001.88,
+      "duration": 5.519
+    },
+    {
+      "text": "loop so if we take a look at code like",
+      "start": 1004.04,
+      "duration": 6.2
+    },
+    {
+      "text": "that in the decompiler we just saw it",
+      "start": 1007.399,
+      "duration": 5.161
+    },
+    {
+      "text": "before some minutes before it looks very",
+      "start": 1010.24,
+      "duration": 4.36
+    },
+    {
+      "text": "similar so",
+      "start": 1012.56,
+      "duration": 5.12
+    },
+    {
+      "text": "like here it looks very",
+      "start": 1014.6,
+      "duration": 5.159
+    },
+    {
+      "text": "similar however",
+      "start": 1017.68,
+      "duration": 6.04
+    },
+    {
+      "text": "now we want to go one step further and",
+      "start": 1019.759,
+      "duration": 6.641
+    },
+    {
+      "text": "obvious create the control flow such",
+      "start": 1023.72,
+      "duration": 7.28
+    },
+    {
+      "text": "that we are not able to see anymore if",
+      "start": 1026.4,
+      "duration": 7.32
+    },
+    {
+      "text": "this is a state with which is executed",
+      "start": 1031.0,
+      "duration": 6.0
+    },
+    {
+      "text": "first or if this state is executed first",
+      "start": 1033.72,
+      "duration": 7.92
+    },
+    {
+      "text": "or this one here what we do for that is",
+      "start": 1037.0,
+      "duration": 5.799
+    },
+    {
+      "text": "that we",
+      "start": 1041.64,
+      "duration": 4.399
+    },
+    {
+      "text": "can encode control",
+      "start": 1042.799,
+      "duration": 6.361
+    },
+    {
+      "text": "flow that we can control that we can",
+      "start": 1046.039,
+      "duration": 7.281
+    },
+    {
+      "text": "encode the control flow in some form of",
+      "start": 1049.16,
+      "duration": 8.0
+    },
+    {
+      "text": "State machine where we say the state is",
+      "start": 1053.32,
+      "duration": 6.479
+    },
+    {
+      "text": "initialized with zero and then we have",
+      "start": 1057.16,
+      "duration": 6.12
+    },
+    {
+      "text": "an endless loop and this endless loop",
+      "start": 1059.799,
+      "duration": 7.081
+    },
+    {
+      "text": "dispatches in a switch case this state",
+      "start": 1063.28,
+      "duration": 7.16
+    },
+    {
+      "text": "so we now basically have a control flow",
+      "start": 1066.88,
+      "duration": 6.56
+    },
+    {
+      "text": "have a a state machine which dispatches",
+      "start": 1070.44,
+      "duration": 7.16
+    },
+    {
+      "text": "control flow and we can see if State",
+      "start": 1073.44,
+      "duration": 6.28
+    },
+    {
+      "text": "equals zero",
+      "start": 1077.6,
+      "duration": 3.48
+    },
+    {
+      "text": "we for instance perform the",
+      "start": 1079.72,
+      "duration": 4.319
+    },
+    {
+      "text": "initialization computations we otherwise",
+      "start": 1081.08,
+      "duration": 4.959
+    },
+    {
+      "text": "performed here in the",
+      "start": 1084.039,
+      "duration": 6.481
+    },
+    {
+      "text": "beginning and then we check if n equals",
+      "start": 1086.039,
+      "duration": 7.52
+    },
+    {
+      "text": "z we update the state variable to be",
+      "start": 1090.52,
+      "duration": 6.08
+    },
+    {
+      "text": "three other wise to be",
+      "start": 1093.559,
+      "duration": 8.761
+    },
+    {
+      "text": "one so in this way we basically encode",
+      "start": 1096.6,
+      "duration": 8.959
+    },
+    {
+      "text": "these things here in something that",
+      "start": 1102.32,
+      "duration": 7.56
+    },
+    {
+      "text": "looks like that and if if we look at",
+      "start": 1105.559,
+      "duration": 7.6
+    },
+    {
+      "text": "that from a control flow perspective we",
+      "start": 1109.88,
+      "duration": 6.48
+    },
+    {
+      "text": "can't easily see anymore if this state",
+      "start": 1113.159,
+      "duration": 6.081
+    },
+    {
+      "text": "is taken the first time if this state is",
+      "start": 1116.36,
+      "duration": 6.52
+    },
+    {
+      "text": "taken the first time or this or that so",
+      "start": 1119.24,
+      "duration": 6.36
+    },
+    {
+      "text": "assuming we don't know the source code",
+      "start": 1122.88,
+      "duration": 7.039
+    },
+    {
+      "text": "we can compile it on the binary level so",
+      "start": 1125.6,
+      "duration": 6.48
+    },
+    {
+      "text": "with that I would just enable this",
+      "start": 1129.919,
+      "duration": 5.041
+    },
+    {
+      "text": "function again of the cated one",
+      "start": 1132.08,
+      "duration": 5.0
+    },
+    {
+      "text": "recompile",
+      "start": 1134.96,
+      "duration": 7.28
+    },
+    {
+      "text": "it like this and first execute it and",
+      "start": 1137.08,
+      "duration": 9.079
+    },
+    {
+      "text": "the first thing you can see is that no",
+      "start": 1142.24,
+      "duration": 7.64
+    },
+    {
+      "text": "matter what input we",
+      "start": 1146.159,
+      "duration": 7.4
+    },
+    {
+      "text": "provide they behave the same so the OB",
+      "start": 1149.88,
+      "duration": 6.679
+    },
+    {
+      "text": "loation itself changes how the code",
+      "start": 1153.559,
+      "duration": 5.6
+    },
+    {
+      "text": "looks like but it doesn't change what it",
+      "start": 1156.559,
+      "duration": 3.48
+    },
+    {
+      "text": "really",
+      "start": 1159.159,
+      "duration": 5.441
+    },
+    {
+      "text": "computes and now if we take this code",
+      "start": 1160.039,
+      "duration": 8.601
+    },
+    {
+      "text": "open it again in the binary",
+      "start": 1164.6,
+      "duration": 4.04
+    },
+    {
+      "text": "like this and we go to this function FIB",
+      "start": 1169.159,
+      "duration": 8.801
+    },
+    {
+      "text": "obis cated one we now see",
+      "start": 1172.919,
+      "duration": 8.401
+    },
+    {
+      "text": "that if we take a look at the graph we",
+      "start": 1177.96,
+      "duration": 7.079
+    },
+    {
+      "text": "don't easily see which what's computed",
+      "start": 1181.32,
+      "duration": 8.0
+    },
+    {
+      "text": "in which order instead what we see",
+      "start": 1185.039,
+      "duration": 7.721
+    },
+    {
+      "text": "is that we",
+      "start": 1189.32,
+      "duration": 3.44
+    },
+    {
+      "text": "have",
+      "start": 1193.84,
+      "duration": 3.0
+    },
+    {
+      "text": "oops what we see is that we have one",
+      "start": 1197.64,
+      "duration": 5.68
+    },
+    {
+      "text": "large ENT block",
+      "start": 1200.919,
+      "duration": 5.041
+    },
+    {
+      "text": "here and then we have",
+      "start": 1203.32,
+      "duration": 6.68
+    },
+    {
+      "text": "several basic blocks that are",
+      "start": 1205.96,
+      "duration": 5.46
+    },
+    {
+      "text": "connected in a",
+      "start": 1210.0,
+      "duration": 2.559
+    },
+    {
+      "text": "[Music]",
+      "start": 1211.42,
+      "duration": 4.34
+    },
+    {
+      "text": "loop me undo some things that are",
+      "start": 1212.559,
+      "duration": 6.921
+    },
+    {
+      "text": "connected in a loop and go back to this",
+      "start": 1215.76,
+      "duration": 7.36
+    },
+    {
+      "text": "block so like these states here then",
+      "start": 1219.48,
+      "duration": 6.52
+    },
+    {
+      "text": "after computation is done go back here",
+      "start": 1223.12,
+      "duration": 6.08
+    },
+    {
+      "text": "these states here then go back here",
+      "start": 1226.0,
+      "duration": 6.6
+    },
+    {
+      "text": "so if you compare this with the unisc",
+      "start": 1229.2,
+      "duration": 7.04
+    },
+    {
+      "text": "version we here we can see that we first",
+      "start": 1232.6,
+      "duration": 6.199
+    },
+    {
+      "text": "execute these parts then we have a loop",
+      "start": 1236.24,
+      "duration": 4.96
+    },
+    {
+      "text": "here and at some time we go out here we",
+      "start": 1238.799,
+      "duration": 4.721
+    },
+    {
+      "text": "can see that without looking at the code",
+      "start": 1241.2,
+      "duration": 5.56
+    },
+    {
+      "text": "much however in this example we see that",
+      "start": 1243.52,
+      "duration": 5.84
+    },
+    {
+      "text": "we have one large loop and we don't",
+      "start": 1246.76,
+      "duration": 5.12
+    },
+    {
+      "text": "really see which state is executed in",
+      "start": 1249.36,
+      "duration": 6.199
+    },
+    {
+      "text": "which order this is control flow ofation",
+      "start": 1251.88,
+      "duration": 5.159
+    },
+    {
+      "text": "if we take a look at the decompiler",
+      "start": 1255.559,
+      "duration": 4.24
+    },
+    {
+      "text": "output there again we",
+      "start": 1257.039,
+      "duration": 6.721
+    },
+    {
+      "text": "see in initially top of here we",
+      "start": 1259.799,
+      "duration": 6.401
+    },
+    {
+      "text": "initialize the state variable we can",
+      "start": 1263.76,
+      "duration": 5.72
+    },
+    {
+      "text": "just call State and then we start",
+      "start": 1266.2,
+      "duration": 7.2
+    },
+    {
+      "text": "dispatching the state and check if it's",
+      "start": 1269.48,
+      "duration": 7.559
+    },
+    {
+      "text": "three then return a variable otherwise",
+      "start": 1273.4,
+      "duration": 6.44
+    },
+    {
+      "text": "we break and then we check if States",
+      "start": 1277.039,
+      "duration": 5.921
+    },
+    {
+      "text": "equal to zero then we perform something",
+      "start": 1279.84,
+      "duration": 6.6
+    },
+    {
+      "text": "and reset the state and so on and so on",
+      "start": 1282.96,
+      "duration": 6.88
+    },
+    {
+      "text": "so the control flow while the original",
+      "start": 1286.44,
+      "duration": 5.96
+    },
+    {
+      "text": "basic block semantics preserve the same",
+      "start": 1289.84,
+      "duration": 5.56
+    },
+    {
+      "text": "like each block each state still does",
+      "start": 1292.4,
+      "duration": 5.72
+    },
+    {
+      "text": "what it should do however the control",
+      "start": 1295.4,
+      "duration": 5.84
+    },
+    {
+      "text": "flow between these blocks is now not",
+      "start": 1298.12,
+      "duration": 6.32
+    },
+    {
+      "text": "that easy to see and understand anymore",
+      "start": 1301.24,
+      "duration": 5.48
+    },
+    {
+      "text": "and this is a technique which is quite",
+      "start": 1304.44,
+      "duration": 5.359
+    },
+    {
+      "text": "common in basic reverse",
+      "start": 1306.72,
+      "duration": 7.36
+    },
+    {
+      "text": "engineering however we can still if we",
+      "start": 1309.799,
+      "duration": 6.401
+    },
+    {
+      "text": "take a look at the decompiler output we",
+      "start": 1314.08,
+      "duration": 5.24
+    },
+    {
+      "text": "can still see oh there are some basic",
+      "start": 1316.2,
+      "duration": 5.64
+    },
+    {
+      "text": "computations like this is an addition",
+      "start": 1319.32,
+      "duration": 4.8
+    },
+    {
+      "text": "there are lot of assignments and so on",
+      "start": 1321.84,
+      "duration": 4.719
+    },
+    {
+      "text": "so it's a bit more challenging to",
+      "start": 1324.12,
+      "duration": 6.84
+    },
+    {
+      "text": "analyze but still still doable question",
+      "start": 1326.559,
+      "duration": 8.521
+    },
+    {
+      "text": "is can we do it even better like can we",
+      "start": 1330.96,
+      "duration": 8.04
+    },
+    {
+      "text": "improve up on that and the answer is yes",
+      "start": 1335.08,
+      "duration": 5.56
+    },
+    {
+      "text": "until",
+      "start": 1339.0,
+      "duration": 5.0
+    },
+    {
+      "text": "now we basically had something which was",
+      "start": 1340.64,
+      "duration": 7.039
+    },
+    {
+      "text": "W control flation",
+      "start": 1344.0,
+      "duration": 3.679
+    },
+    {
+      "text": "there's another Technique we can do this",
+      "start": 1349.36,
+      "duration": 4.4
+    },
+    {
+      "text": "is called arithmetic",
+      "start": 1351.799,
+      "duration": 4.921
+    },
+    {
+      "text": "officiation and the goal behind",
+      "start": 1353.76,
+      "duration": 7.6
+    },
+    {
+      "text": "arithmetic ofation basically is to make",
+      "start": 1356.72,
+      "duration": 7.52
+    },
+    {
+      "text": "simple arithmetic",
+      "start": 1361.36,
+      "duration": 5.72
+    },
+    {
+      "text": "computations um hard to",
+      "start": 1364.24,
+      "duration": 5.4
+    },
+    {
+      "text": "analyze let me give you an example if",
+      "start": 1367.08,
+      "duration": 5.24
+    },
+    {
+      "text": "you see a function in C like that where",
+      "start": 1369.64,
+      "duration": 8.12
+    },
+    {
+      "text": "you see int Fu with two parameters int X",
+      "start": 1372.32,
+      "duration": 6.959
+    },
+    {
+      "text": "int y",
+      "start": 1377.76,
+      "duration": 6.44
+    },
+    {
+      "text": "and you return x + y and you think about",
+      "start": 1379.279,
+      "duration": 7.64
+    },
+    {
+      "text": "what does this function do you easily",
+      "start": 1384.2,
+      "duration": 6.4
+    },
+    {
+      "text": "know well this function takes two inputs",
+      "start": 1386.919,
+      "duration": 7.721
+    },
+    {
+      "text": "X and Y and add them together so this",
+      "start": 1390.6,
+      "duration": 6.679
+    },
+    {
+      "text": "function could be named sum or add or",
+      "start": 1394.64,
+      "duration": 5.48
+    },
+    {
+      "text": "something like that because here it's",
+      "start": 1397.279,
+      "duration": 5.321
+    },
+    {
+      "text": "easy to see that this is a",
+      "start": 1400.12,
+      "duration": 6.0
+    },
+    {
+      "text": "computation however what about if I have",
+      "start": 1402.6,
+      "duration": 7.439
+    },
+    {
+      "text": "a function fu with int",
+      "start": 1406.12,
+      "duration": 8.2
+    },
+    {
+      "text": "X and int Y where you have something",
+      "start": 1410.039,
+      "duration": 10.76
+    },
+    {
+      "text": "like XX or Y plus 2 * X and",
+      "start": 1414.32,
+      "duration": 9.28
+    },
+    {
+      "text": "Y what does this compute",
+      "start": 1420.799,
+      "duration": 7.081
+    },
+    {
+      "text": "now well as it turns out",
+      "start": 1423.6,
+      "duration": 8.4
+    },
+    {
+      "text": "this computes exactly the same like this",
+      "start": 1427.88,
+      "duration": 8.12
+    },
+    {
+      "text": "one so these two formulas are equivalent",
+      "start": 1432.0,
+      "duration": 7.679
+    },
+    {
+      "text": "they just look different however for us",
+      "start": 1436.0,
+      "duration": 7.559
+    },
+    {
+      "text": "reverse Engineers it's not easy to see",
+      "start": 1439.679,
+      "duration": 6.041
+    },
+    {
+      "text": "that this is just the same as a",
+      "start": 1443.559,
+      "duration": 5.521
+    },
+    {
+      "text": "computation as x + y",
+      "start": 1445.72,
+      "duration": 7.64
+    },
+    {
+      "text": "however it in the end it is no matter",
+      "start": 1449.08,
+      "duration": 6.839
+    },
+    {
+      "text": "which input values we use for x and for",
+      "start": 1453.36,
+      "duration": 7.04
+    },
+    {
+      "text": "y it will always behave the same like x",
+      "start": 1455.919,
+      "duration": 5.281
+    },
+    {
+      "text": "+",
+      "start": 1460.4,
+      "duration": 3.72
+    },
+    {
+      "text": "y and this is called arithmetic obos",
+      "start": 1461.2,
+      "duration": 6.68
+    },
+    {
+      "text": "cation where we basically height obious",
+      "start": 1464.12,
+      "duration": 5.919
+    },
+    {
+      "text": "height simple assignment simple",
+      "start": 1467.88,
+      "duration": 5.399
+    },
+    {
+      "text": "arithmetic computations in large complex",
+      "start": 1470.039,
+      "duration": 4.88
+    },
+    {
+      "text": "formulas",
+      "start": 1473.279,
+      "duration": 5.76
+    },
+    {
+      "text": "and going back to our Fibonacci case we",
+      "start": 1474.919,
+      "duration": 7.841
+    },
+    {
+      "text": "can the first thing we did is that we",
+      "start": 1479.039,
+      "duration": 6.681
+    },
+    {
+      "text": "encoded the control flow with something",
+      "start": 1482.76,
+      "duration": 6.36
+    },
+    {
+      "text": "like that where we had the state machine",
+      "start": 1485.72,
+      "duration": 6.319
+    },
+    {
+      "text": "and now in the second state we want to",
+      "start": 1489.12,
+      "duration": 5.96
+    },
+    {
+      "text": "improve up on that such that we do not",
+      "start": 1492.039,
+      "duration": 6.52
+    },
+    {
+      "text": "only encode the control flow but also to",
+      "start": 1495.08,
+      "duration": 5.839
+    },
+    {
+      "text": "make these assignments significantly",
+      "start": 1498.559,
+      "duration": 5.881
+    },
+    {
+      "text": "harder to read so what we could do for",
+      "start": 1500.919,
+      "duration": 6.601
+    },
+    {
+      "text": "instance would be we could do it like",
+      "start": 1504.44,
+      "duration": 8.4
+    },
+    {
+      "text": "that that we take the exact same Loop",
+      "start": 1507.52,
+      "duration": 7.44
+    },
+    {
+      "text": "but for each assignment that was just a",
+      "start": 1512.84,
+      "duration": 3.92
+    },
+    {
+      "text": "simple assignment or a simple",
+      "start": 1514.96,
+      "duration": 4.319
+    },
+    {
+      "text": "computation we make it significantly",
+      "start": 1516.76,
+      "duration": 6.039
+    },
+    {
+      "text": "Harder by encoding the computations in",
+      "start": 1519.279,
+      "duration": 7.201
+    },
+    {
+      "text": "arithmetic formulas in this case it's",
+      "start": 1522.799,
+      "duration": 6.441
+    },
+    {
+      "text": "all assignments are based on on this",
+      "start": 1526.48,
+      "duration": 5.76
+    },
+    {
+      "text": "formula we just showcased here so",
+      "start": 1529.24,
+      "duration": 5.0
+    },
+    {
+      "text": "everything like that is just the same as",
+      "start": 1532.24,
+      "duration": 7.6
+    },
+    {
+      "text": "x + y so for instance here here we see",
+      "start": 1534.24,
+      "duration": 7.799
+    },
+    {
+      "text": "that we add",
+      "start": 1539.84,
+      "duration": 6.04
+    },
+    {
+      "text": "n and five so this would be the same as",
+      "start": 1542.039,
+      "duration": 7.721
+    },
+    {
+      "text": "n + 5 and then we substract n and then",
+      "start": 1545.88,
+      "duration": 7.799
+    },
+    {
+      "text": "we substract five five Computing zero so",
+      "start": 1549.76,
+      "duration": 4.68
+    },
+    {
+      "text": "this",
+      "start": 1553.679,
+      "duration": 7.441
+    },
+    {
+      "text": "formula computes basically state equal",
+      "start": 1554.44,
+      "duration": 10.52
+    },
+    {
+      "text": "zero and if we take a look down here we",
+      "start": 1561.12,
+      "duration": 6.679
+    },
+    {
+      "text": "see basically we try to encode this",
+      "start": 1564.96,
+      "duration": 6.439
+    },
+    {
+      "text": "one or let's go back to this one where",
+      "start": 1567.799,
+      "duration": 7.961
+    },
+    {
+      "text": "we have S equal a + b we will now encode",
+      "start": 1571.399,
+      "duration": 8.041
+    },
+    {
+      "text": "it in a form like this one where we have",
+      "start": 1575.76,
+      "duration": 9.84
+    },
+    {
+      "text": "S = A X or B + 2 * A and B and the",
+      "start": 1579.44,
+      "duration": 9.239
+    },
+    {
+      "text": "assignment where a should be equal to B",
+      "start": 1585.6,
+      "duration": 8.559
+    },
+    {
+      "text": "we can now encode as a = a X or B + 2 *",
+      "start": 1588.679,
+      "duration": 11.36
+    },
+    {
+      "text": "A and B this one is a plus b and then",
+      "start": 1594.159,
+      "duration": 8.801
+    },
+    {
+      "text": "finally we substract a such that we",
+      "start": 1600.039,
+      "duration": 6.081
+    },
+    {
+      "text": "basically compute a equals B so this can",
+      "start": 1602.96,
+      "duration": 7.48
+    },
+    {
+      "text": "be understood as a a equals a equals B",
+      "start": 1606.12,
+      "duration": 7.32
+    },
+    {
+      "text": "and so on so it's the same technique",
+      "start": 1610.44,
+      "duration": 6.08
+    },
+    {
+      "text": "applied to all others but taking a look",
+      "start": 1613.44,
+      "duration": 6.52
+    },
+    {
+      "text": "at that this this simple formula just",
+      "start": 1616.52,
+      "duration": 7.36
+    },
+    {
+      "text": "applied all over the place and the code",
+      "start": 1619.96,
+      "duration": 7.0
+    },
+    {
+      "text": "is significantly harder to understand on",
+      "start": 1623.88,
+      "duration": 7.519
+    },
+    {
+      "text": "the binary level if we compile it",
+      "start": 1626.96,
+      "duration": 7.959
+    },
+    {
+      "text": "then so let me compile it",
+      "start": 1631.399,
+      "duration": 6.601
+    },
+    {
+      "text": "again with calling Fibonacci",
+      "start": 1634.919,
+      "duration": 6.681
+    },
+    {
+      "text": "2 then we compile",
+      "start": 1638.0,
+      "duration": 6.559
+    },
+    {
+      "text": "it and then we put in some values there",
+      "start": 1641.6,
+      "duration": 5.0
+    },
+    {
+      "text": "like one like",
+      "start": 1644.559,
+      "duration": 5.12
+    },
+    {
+      "text": "10 like 200",
+      "start": 1646.6,
+      "duration": 5.799
+    },
+    {
+      "text": "and you see all of the",
+      "start": 1649.679,
+      "duration": 5.961
+    },
+    {
+      "text": "three functions compute the same no",
+      "start": 1652.399,
+      "duration": 4.16
+    },
+    {
+      "text": "matter the",
+      "start": 1655.64,
+      "duration": 5.88
+    },
+    {
+      "text": "input however if we analyze it in the",
+      "start": 1656.559,
+      "duration": 4.961
+    },
+    {
+      "text": "binary like this one it's still encodes",
+      "start": 1666.08,
+      "duration": 9.04
+    },
+    {
+      "text": "the control flow of the function so we",
+      "start": 1671.88,
+      "duration": 6.799
+    },
+    {
+      "text": "have control flow ofation but also",
+      "start": 1675.12,
+      "duration": 5.799
+    },
+    {
+      "text": "we see that the individual basic blocks",
+      "start": 1678.679,
+      "duration": 4.801
+    },
+    {
+      "text": "are significantly larger if you compare",
+      "start": 1680.919,
+      "duration": 6.0
+    },
+    {
+      "text": "to the one before where we have just",
+      "start": 1683.48,
+      "duration": 7.16
+    },
+    {
+      "text": "smaller States now we have larger",
+      "start": 1686.919,
+      "duration": 7.521
+    },
+    {
+      "text": "States and if we now take a look at",
+      "start": 1690.64,
+      "duration": 5.68
+    },
+    {
+      "text": "decompiler we",
+      "start": 1694.44,
+      "duration": 7.56
+    },
+    {
+      "text": "see a lot of computations here and now",
+      "start": 1696.32,
+      "duration": 8.599
+    },
+    {
+      "text": "it's not that easy for us anymore to",
+      "start": 1702.0,
+      "duration": 5.6
+    },
+    {
+      "text": "really understand what's going on here",
+      "start": 1704.919,
+      "duration": 5.681
+    },
+    {
+      "text": "and how these these things work now we",
+      "start": 1707.6,
+      "duration": 6.28
+    },
+    {
+      "text": "not only have control flow ofation but",
+      "start": 1710.6,
+      "duration": 5.84
+    },
+    {
+      "text": "also we have arithmetic",
+      "start": 1713.88,
+      "duration": 5.6
+    },
+    {
+      "text": "ofation which makes in combination",
+      "start": 1716.44,
+      "duration": 5.16
+    },
+    {
+      "text": "things significantly harder to",
+      "start": 1719.48,
+      "duration": 4.76
+    },
+    {
+      "text": "understand and at the same time the",
+      "start": 1721.6,
+      "duration": 5.12
+    },
+    {
+      "text": "rules we just applied were very very",
+      "start": 1724.24,
+      "duration": 5.679
+    },
+    {
+      "text": "basic now think about what we could do",
+      "start": 1726.72,
+      "duration": 4.959
+    },
+    {
+      "text": "if we take strong",
+      "start": 1729.919,
+      "duration": 3.801
+    },
+    {
+      "text": "appication thousands of different",
+      "start": 1731.679,
+      "duration": 4.801
+    },
+    {
+      "text": "formulas like that and combine it even",
+      "start": 1733.72,
+      "duration": 5.12
+    },
+    {
+      "text": "with further significant L more",
+      "start": 1736.48,
+      "duration": 5.76
+    },
+    {
+      "text": "complicated um or sophisticated ofation",
+      "start": 1738.84,
+      "duration": 5.6
+    },
+    {
+      "text": "Transformations what you can get and",
+      "start": 1742.24,
+      "duration": 4.84
+    },
+    {
+      "text": "generate for code that is really hard to",
+      "start": 1744.44,
+      "duration": 5.64
+    },
+    {
+      "text": "analyze this here is just one of the",
+      "start": 1747.08,
+      "duration": 6.439
+    },
+    {
+      "text": "easiest example I can think of and even",
+      "start": 1750.08,
+      "duration": 7.16
+    },
+    {
+      "text": "that can be a pain to reverse",
+      "start": 1753.519,
+      "duration": 7.361
+    },
+    {
+      "text": "engineer so coming back to our",
+      "start": 1757.24,
+      "duration": 6.52
+    },
+    {
+      "text": "slides we basically tackled that there",
+      "start": 1760.88,
+      "duration": 5.84
+    },
+    {
+      "text": "is something like code ofation in data",
+      "start": 1763.76,
+      "duration": 7.399
+    },
+    {
+      "text": "and coding which are passive protections",
+      "start": 1766.72,
+      "duration": 8.28
+    },
+    {
+      "text": "to um impede reverse engineering passive",
+      "start": 1771.159,
+      "duration": 6.081
+    },
+    {
+      "text": "protections that basically means they",
+      "start": 1775.0,
+      "duration": 4.96
+    },
+    {
+      "text": "are just there and if you take a look at",
+      "start": 1777.24,
+      "duration": 7.439
+    },
+    {
+      "text": "it you don't see um um you see like a",
+      "start": 1779.96,
+      "duration": 7.48
+    },
+    {
+      "text": "maze of complicated things that you have",
+      "start": 1784.679,
+      "duration": 6.72
+    },
+    {
+      "text": "to um analyze on your own however there",
+      "start": 1787.44,
+      "duration": 5.599
+    },
+    {
+      "text": "are also something which is called",
+      "start": 1791.399,
+      "duration": 5.0
+    },
+    {
+      "text": "active protections active protections",
+      "start": 1793.039,
+      "duration": 7.681
+    },
+    {
+      "text": "have the goal to",
+      "start": 1796.399,
+      "duration": 4.321
+    },
+    {
+      "text": "be",
+      "start": 1801.36,
+      "duration": 4.84
+    },
+    {
+      "text": "um i s I saw I see the questions I will",
+      "start": 1803.399,
+      "duration": 4.081
+    },
+    {
+      "text": "answer them later",
+      "start": 1806.2,
+      "duration": 3.92
+    },
+    {
+      "text": "on so active",
+      "start": 1807.48,
+      "duration": 6.12
+    },
+    {
+      "text": "protections um at the same time",
+      "start": 1810.12,
+      "duration": 7.52
+    },
+    {
+      "text": "um are basically guards in code that are",
+      "start": 1813.6,
+      "duration": 6.079
+    },
+    {
+      "text": "inserted in the code and active at run",
+      "start": 1817.64,
+      "duration": 6.279
+    },
+    {
+      "text": "time and these guards take care of",
+      "start": 1819.679,
+      "duration": 7.281
+    },
+    {
+      "text": "pinpointing the environment if",
+      "start": 1823.919,
+      "duration": 6.161
+    },
+    {
+      "text": "something speically changed and then go",
+      "start": 1826.96,
+      "duration": 6.16
+    },
+    {
+      "text": "into an error State and this can be used",
+      "start": 1830.08,
+      "duration": 5.599
+    },
+    {
+      "text": "for instance to detect debuggers or to",
+      "start": 1833.12,
+      "duration": 5.559
+    },
+    {
+      "text": "detect code modications and so",
+      "start": 1835.679,
+      "duration": 6.961
+    },
+    {
+      "text": "on so for instance in the case of anti-",
+      "start": 1838.679,
+      "duration": 6.36
+    },
+    {
+      "text": "debug if you have",
+      "start": 1842.64,
+      "duration": 5.32
+    },
+    {
+      "text": "a and the first thing you will do is you",
+      "start": 1845.039,
+      "duration": 6.12
+    },
+    {
+      "text": "create a check like that where you say",
+      "start": 1847.96,
+      "duration": 7.839
+    },
+    {
+      "text": "if Thea detected I then do some action",
+      "start": 1851.159,
+      "duration": 7.24
+    },
+    {
+      "text": "and this action for instance might be",
+      "start": 1855.799,
+      "duration": 8.12
+    },
+    {
+      "text": "terminating the program so like I um if",
+      "start": 1858.399,
+      "duration": 7.721
+    },
+    {
+      "text": "a debugger is present like if somebody",
+      "start": 1863.919,
+      "duration": 4.841
+    },
+    {
+      "text": "attach GDB or wind debug or some other",
+      "start": 1866.12,
+      "duration": 6.159
+    },
+    {
+      "text": "debugger to my application and this",
+      "start": 1868.76,
+      "duration": 6.72
+    },
+    {
+      "text": "function detects that then we might",
+      "start": 1872.279,
+      "duration": 5.161
+    },
+    {
+      "text": "terminate because we know we are",
+      "start": 1875.48,
+      "duration": 3.72
+    },
+    {
+      "text": "actively getting",
+      "start": 1877.44,
+      "duration": 4.88
+    },
+    {
+      "text": "analyzed so question is how we could",
+      "start": 1879.2,
+      "duration": 6.16
+    },
+    {
+      "text": "detect a debugger and well the answer",
+      "start": 1882.32,
+      "duration": 6.68
+    },
+    {
+      "text": "there is there are lot of documented and",
+      "start": 1885.36,
+      "duration": 6.24
+    },
+    {
+      "text": "undocumented methods for instance if we",
+      "start": 1889.0,
+      "duration": 7.0
+    },
+    {
+      "text": "check something like anti debug",
+      "start": 1891.6,
+      "duration": 4.4
+    },
+    {
+      "text": "Linux we will find several blog posts",
+      "start": 1896.12,
+      "duration": 4.32
+    },
+    {
+      "text": "about",
+      "start": 1899.12,
+      "duration": 6.039
+    },
+    {
+      "text": "various um various anti debug techniques",
+      "start": 1900.44,
+      "duration": 5.52
+    },
+    {
+      "text": "on",
+      "start": 1905.159,
+      "duration": 4.12
+    },
+    {
+      "text": "Linux and the same goes for Windows for",
+      "start": 1905.96,
+      "duration": 6.719
+    },
+    {
+      "text": "Windows we find will find even more like",
+      "start": 1909.279,
+      "duration": 7.52
+    },
+    {
+      "text": "this great reference of various anti-",
+      "start": 1912.679,
+      "duration": 7.6
+    },
+    {
+      "text": "deback techniques or we can see that we",
+      "start": 1916.799,
+      "duration": 5.641
+    },
+    {
+      "text": "have an entire website here of various",
+      "start": 1920.279,
+      "duration": 6.76
+    },
+    {
+      "text": "anti- deback tricks so they there are a",
+      "start": 1922.44,
+      "duration": 7.04
+    },
+    {
+      "text": "numerous way then an there a lot of",
+      "start": 1927.039,
+      "duration": 4.64
+    },
+    {
+      "text": "different ways to detect the debugger",
+      "start": 1929.48,
+      "duration": 5.039
+    },
+    {
+      "text": "but they have all one thing in common",
+      "start": 1931.679,
+      "duration": 3.521
+    },
+    {
+      "text": "the",
+      "start": 1934.519,
+      "duration": 4.481
+    },
+    {
+      "text": "idea of anti- debug is basically a",
+      "start": 1935.2,
+      "duration": 6.319
+    },
+    {
+      "text": "debugger changes the",
+      "start": 1939.0,
+      "duration": 4.679
+    },
+    {
+      "text": "environment the execution environment",
+      "start": 1941.519,
+      "duration": 3.361
+    },
+    {
+      "text": "the",
+      "start": 1943.679,
+      "duration": 6.0
+    },
+    {
+      "text": "execution n in specific ways",
+      "start": 1944.88,
+      "duration": 7.48
+    },
+    {
+      "text": "like for instance if I attach a",
+      "start": 1949.679,
+      "duration": 5.6
+    },
+    {
+      "text": "debugger um my application behaves",
+      "start": 1952.36,
+      "duration": 4.919
+    },
+    {
+      "text": "differently if it crashes or if it",
+      "start": 1955.279,
+      "duration": 3.961
+    },
+    {
+      "text": "throws an interrupt or something like",
+      "start": 1957.279,
+      "duration": 5.201
+    },
+    {
+      "text": "that or some special purpose registers",
+      "start": 1959.24,
+      "duration": 6.279
+    },
+    {
+      "text": "on the CPU have different values so",
+      "start": 1962.48,
+      "duration": 5.799
+    },
+    {
+      "text": "there are a lot of different ways that",
+      "start": 1965.519,
+      "duration": 5.921
+    },
+    {
+      "text": "the environment",
+      "start": 1968.279,
+      "duration": 7.52
+    },
+    {
+      "text": "changes um if a debugger is is attached",
+      "start": 1971.44,
+      "duration": 7.16
+    },
+    {
+      "text": "and therefore by looking specifically",
+      "start": 1975.799,
+      "duration": 5.801
+    },
+    {
+      "text": "for these changes we know well",
+      "start": 1978.6,
+      "duration": 4.48
+    },
+    {
+      "text": "applications can know if they're getting",
+      "start": 1981.6,
+      "duration": 4.4
+    },
+    {
+      "text": "debugged or not and then they can",
+      "start": 1983.08,
+      "duration": 5.0
+    },
+    {
+      "text": "perform some action for instance",
+      "start": 1986.0,
+      "duration": 3.919
+    },
+    {
+      "text": "terminate",
+      "start": 1988.08,
+      "duration": 4.64
+    },
+    {
+      "text": "themselves so and the same goes for",
+      "start": 1989.919,
+      "duration": 3.921
+    },
+    {
+      "text": "check",
+      "start": 1992.72,
+      "duration": 4.24
+    },
+    {
+      "text": "summing check summing or also",
+      "start": 1993.84,
+      "duration": 6.52
+    },
+    {
+      "text": "anti-er the idea there is that you can",
+      "start": 1996.96,
+      "duration": 5.679
+    },
+    {
+      "text": "compute check sums over",
+      "start": 2000.36,
+      "duration": 6.039
+    },
+    {
+      "text": "code so for this I have to go a few",
+      "start": 2002.639,
+      "duration": 8.201
+    },
+    {
+      "text": "steps back so if we see if we take a",
+      "start": 2006.399,
+      "duration": 8.041
+    },
+    {
+      "text": "look at some code like this one we see",
+      "start": 2010.84,
+      "duration": 7.12
+    },
+    {
+      "text": "that these are assembly instructions and",
+      "start": 2014.44,
+      "duration": 6.04
+    },
+    {
+      "text": "as we have discussed in the beginning",
+      "start": 2017.96,
+      "duration": 6.36
+    },
+    {
+      "text": "these assembly instructions are just",
+      "start": 2020.48,
+      "duration": 6.799
+    },
+    {
+      "text": "nothing else than a sequence of bytes",
+      "start": 2024.32,
+      "duration": 5.4
+    },
+    {
+      "text": "here we can see that we have a sequence",
+      "start": 2027.279,
+      "duration": 7.681
+    },
+    {
+      "text": "of bytes that encode this assembly",
+      "start": 2029.72,
+      "duration": 9.079
+    },
+    {
+      "text": "instruction and over this",
+      "start": 2034.96,
+      "duration": 4.839
+    },
+    {
+      "text": "sembly",
+      "start": 2038.799,
+      "duration": 3.0
+    },
+    {
+      "text": "instructions I can compute a",
+      "start": 2039.799,
+      "duration": 4.681
+    },
+    {
+      "text": "cryptographic checkm I can for instance",
+      "start": 2041.799,
+      "duration": 7.921
+    },
+    {
+      "text": "walk over all these bit in this function",
+      "start": 2044.48,
+      "duration": 9.04
+    },
+    {
+      "text": "and put it into some cryptographic",
+      "start": 2049.72,
+      "duration": 6.959
+    },
+    {
+      "text": "function which for instance exor all",
+      "start": 2053.52,
+      "duration": 6.399
+    },
+    {
+      "text": "these values or performs an MD md5",
+      "start": 2056.679,
+      "duration": 6.24
+    },
+    {
+      "text": "computation or whatsoever and then gets",
+      "start": 2059.919,
+      "duration": 6.641
+    },
+    {
+      "text": "a large constant as output so we",
+      "start": 2062.919,
+      "duration": 6.521
+    },
+    {
+      "text": "basically on anti temper which basically",
+      "start": 2066.56,
+      "duration": 7.359
+    },
+    {
+      "text": "gets an input we have a crypto check",
+      "start": 2069.44,
+      "duration": 9.52
+    },
+    {
+      "text": "sum which takes as input bite",
+      "start": 2073.919,
+      "duration": 7.68
+    },
+    {
+      "text": "sequence of",
+      "start": 2078.96,
+      "duration": 6.439
+    },
+    {
+      "text": "code and then produces as",
+      "start": 2081.599,
+      "duration": 8.76
+    },
+    {
+      "text": "output just a large large constant and",
+      "start": 2085.399,
+      "duration": 8.841
+    },
+    {
+      "text": "this large constant basically encodes or",
+      "start": 2090.359,
+      "duration": 8.521
+    },
+    {
+      "text": "is some indicator some short represent",
+      "start": 2094.24,
+      "duration": 10.2
+    },
+    {
+      "text": "of this code and now an attacker could",
+      "start": 2098.88,
+      "duration": 8.64
+    },
+    {
+      "text": "go and for instance change some of the",
+      "start": 2104.44,
+      "duration": 6.919
+    },
+    {
+      "text": "codes for instance here instead",
+      "start": 2107.52,
+      "duration": 5.48
+    },
+    {
+      "text": "of",
+      "start": 2111.359,
+      "duration": 4.641
+    },
+    {
+      "text": "doing control flow like that then techer",
+      "start": 2113.0,
+      "duration": 5.32
+    },
+    {
+      "text": "could just modify this specific",
+      "start": 2116.0,
+      "duration": 4.96
+    },
+    {
+      "text": "instruction to just return a value for",
+      "start": 2118.32,
+      "duration": 5.68
+    },
+    {
+      "text": "instance we could just do a return here",
+      "start": 2120.96,
+      "duration": 7.6
+    },
+    {
+      "text": "and if I do that the bite the quence of",
+      "start": 2124.0,
+      "duration": 5.92
+    },
+    {
+      "text": "the code",
+      "start": 2128.56,
+      "duration": 4.559
+    },
+    {
+      "text": "changes and if the bite sequence of the",
+      "start": 2129.92,
+      "duration": 5.08
+    },
+    {
+      "text": "code changes because",
+      "start": 2133.119,
+      "duration": 4.761
+    },
+    {
+      "text": "somebody modified a jump or modified a",
+      "start": 2135.0,
+      "duration": 4.88
+    },
+    {
+      "text": "function to turn something different or",
+      "start": 2137.88,
+      "duration": 5.08
+    },
+    {
+      "text": "just want to crack something then this",
+      "start": 2139.88,
+      "duration": 6.12
+    },
+    {
+      "text": "checksum is not valid anymore because it",
+      "start": 2142.96,
+      "duration": 5.48
+    },
+    {
+      "text": "produces another constant so this",
+      "start": 2146.0,
+      "duration": 4.44
+    },
+    {
+      "text": "constant will not be the pre-computer",
+      "start": 2148.44,
+      "duration": 5.159
+    },
+    {
+      "text": "constant and if I then have a check like",
+      "start": 2150.44,
+      "duration": 7.6
+    },
+    {
+      "text": "if crypto check Z",
+      "start": 2153.599,
+      "duration": 4.441
+    },
+    {
+      "text": "if something like that is not equal to",
+      "start": 2159.079,
+      "duration": 6.081
+    },
+    {
+      "text": "the large pre-constituted",
+      "start": 2162.96,
+      "duration": 5.08
+    },
+    {
+      "text": "constant if I have something like that",
+      "start": 2165.16,
+      "duration": 6.159
+    },
+    {
+      "text": "then I know somebody changed something",
+      "start": 2168.04,
+      "duration": 7.0
+    },
+    {
+      "text": "in the code and then I could can just",
+      "start": 2171.319,
+      "duration": 6.161
+    },
+    {
+      "text": "terminate for",
+      "start": 2175.04,
+      "duration": 5.64
+    },
+    {
+      "text": "instance so and the same goes for anti",
+      "start": 2177.48,
+      "duration": 6.0
+    },
+    {
+      "text": "anti debug where can go do something",
+      "start": 2180.68,
+      "duration": 4.6
+    },
+    {
+      "text": "like if",
+      "start": 2183.48,
+      "duration": 5.28
+    },
+    {
+      "text": "detect de debugger and if this is the",
+      "start": 2185.28,
+      "duration": 6.559
+    },
+    {
+      "text": "case I could just do terminate and",
+      "start": 2188.76,
+      "duration": 7.88
+    },
+    {
+      "text": "otherwise I do I go on with my normal",
+      "start": 2191.839,
+      "duration": 7.76
+    },
+    {
+      "text": "behavior so these are examples for",
+      "start": 2196.64,
+      "duration": 4.0
+    },
+    {
+      "text": "active",
+      "start": 2199.599,
+      "duration": 4.52
+    },
+    {
+      "text": "protections compared",
+      "start": 2200.64,
+      "duration": 3.479
+    },
+    {
+      "text": "to compared to code officiation which is",
+      "start": 2204.24,
+      "duration": 5.44
+    },
+    {
+      "text": "a purely passive Technique we have",
+      "start": 2207.359,
+      "duration": 4.881
+    },
+    {
+      "text": "something like active protections which",
+      "start": 2209.68,
+      "duration": 5.679
+    },
+    {
+      "text": "pinpoints environment and check if",
+      "start": 2212.24,
+      "duration": 5.64
+    },
+    {
+      "text": "something is suspicious like if a",
+      "start": 2215.359,
+      "duration": 5.641
+    },
+    {
+      "text": "debugger is present or if some code",
+      "start": 2217.88,
+      "duration": 7.36
+    },
+    {
+      "text": "changed in memory and if so we can do",
+      "start": 2221.0,
+      "duration": 8.119
+    },
+    {
+      "text": "counter act like terminating the program",
+      "start": 2225.24,
+      "duration": 5.92
+    },
+    {
+      "text": "terminating the program is just one",
+      "start": 2229.119,
+      "duration": 4.24
+    },
+    {
+      "text": "example for instance another technique",
+      "start": 2231.16,
+      "duration": 5.84
+    },
+    {
+      "text": "would be we could um delete the file",
+      "start": 2233.359,
+      "duration": 7.121
+    },
+    {
+      "text": "system we could just proceed as normal",
+      "start": 2237.0,
+      "duration": 5.68
+    },
+    {
+      "text": "but introduce small errors to",
+      "start": 2240.48,
+      "duration": 4.879
+    },
+    {
+      "text": "computations um or we could just send a",
+      "start": 2242.68,
+      "duration": 5.399
+    },
+    {
+      "text": "message somewhere or whatever ever we",
+      "start": 2245.359,
+      "duration": 6.321
+    },
+    {
+      "text": "could go to some kind of fail state so",
+      "start": 2248.079,
+      "duration": 5.841
+    },
+    {
+      "text": "this is a safe check that basically",
+      "start": 2251.68,
+      "duration": 5.48
+    },
+    {
+      "text": "allows us to detect if somebody tries to",
+      "start": 2253.92,
+      "duration": 6.36
+    },
+    {
+      "text": "analyze the program at runtime and if so",
+      "start": 2257.16,
+      "duration": 5.88
+    },
+    {
+      "text": "we can do the failure State this is the",
+      "start": 2260.28,
+      "duration": 5.44
+    },
+    {
+      "text": "idea of anti- debug and",
+      "start": 2263.04,
+      "duration": 4.88
+    },
+    {
+      "text": "anti-er",
+      "start": 2265.72,
+      "duration": 4.599
+    },
+    {
+      "text": "typically you have anti- debug and you",
+      "start": 2267.92,
+      "duration": 3.36
+    },
+    {
+      "text": "have",
+      "start": 2270.319,
+      "duration": 3.401
+    },
+    {
+      "text": "anti-er and you have code",
+      "start": 2271.28,
+      "duration": 5.6
+    },
+    {
+      "text": "ofation and the question is how do these",
+      "start": 2273.72,
+      "duration": 4.359
+    },
+    {
+      "text": "things play",
+      "start": 2276.88,
+      "duration": 4.52
+    },
+    {
+      "text": "together well let's think about it if I",
+      "start": 2278.079,
+      "duration": 6.76
+    },
+    {
+      "text": "only have anti- debug and anti- temper I",
+      "start": 2281.4,
+      "duration": 7.919
+    },
+    {
+      "text": "can't modify as binary or I can't um or",
+      "start": 2284.839,
+      "duration": 8.361
+    },
+    {
+      "text": "I can't um attach a debugger however I",
+      "start": 2289.319,
+      "duration": 8.04
+    },
+    {
+      "text": "can still analyze the code and then",
+      "start": 2293.2,
+      "duration": 6.96
+    },
+    {
+      "text": "detect something like that for instance",
+      "start": 2297.359,
+      "duration": 6.72
+    },
+    {
+      "text": "maybe this this Co this call here just",
+      "start": 2300.16,
+      "duration": 7.36
+    },
+    {
+      "text": "checks if this conditional jump here",
+      "start": 2304.079,
+      "duration": 6.561
+    },
+    {
+      "text": "checks if a debugger is present or not",
+      "start": 2307.52,
+      "duration": 6.319
+    },
+    {
+      "text": "in case a debugger is present it goes to",
+      "start": 2310.64,
+      "duration": 5.6
+    },
+    {
+      "text": "a failure State otherwise it goes to",
+      "start": 2313.839,
+      "duration": 5.681
+    },
+    {
+      "text": "this state let's assume that and if it",
+      "start": 2316.24,
+      "duration": 5.68
+    },
+    {
+      "text": "is like that what I could do is I could",
+      "start": 2319.52,
+      "duration": 5.64
+    },
+    {
+      "text": "just go to patch and then do something",
+      "start": 2321.92,
+      "duration": 4.96
+    },
+    {
+      "text": "like always",
+      "start": 2325.16,
+      "duration": 5.04
+    },
+    {
+      "text": "Branch or never Branch such that i'",
+      "start": 2326.88,
+      "duration": 5.68
+    },
+    {
+      "text": "basically patch out the anti- debugger",
+      "start": 2330.2,
+      "duration": 5.96
+    },
+    {
+      "text": "check or I could patch out the anti-er",
+      "start": 2332.56,
+      "duration": 5.44
+    },
+    {
+      "text": "check the same way",
+      "start": 2336.16,
+      "duration": 5.159
+    },
+    {
+      "text": "so therefore it's not a good idea to put",
+      "start": 2338.0,
+      "duration": 4.04
+    },
+    {
+      "text": "these",
+      "start": 2341.319,
+      "duration": 4.561
+    },
+    {
+      "text": "things just as they are into the binary",
+      "start": 2342.04,
+      "duration": 7.2
+    },
+    {
+      "text": "instead you want to try to to combine it",
+      "start": 2345.88,
+      "duration": 6.719
+    },
+    {
+      "text": "with code obious cation so if you have",
+      "start": 2349.24,
+      "duration": 5.839
+    },
+    {
+      "text": "obvious cated user",
+      "start": 2352.599,
+      "duration": 6.0
+    },
+    {
+      "text": "code and if if you combine it with",
+      "start": 2355.079,
+      "duration": 6.601
+    },
+    {
+      "text": "obious cated obus cated anti- debug",
+      "start": 2358.599,
+      "duration": 5.561
+    },
+    {
+      "text": "code and obus",
+      "start": 2361.68,
+      "duration": 6.48
+    },
+    {
+      "text": "cated anti- temper code",
+      "start": 2364.16,
+      "duration": 9.12
+    },
+    {
+      "text": "in the end you have just a lot of code",
+      "start": 2368.16,
+      "duration": 8.36
+    },
+    {
+      "text": "which is obis cated and you can't really",
+      "start": 2373.28,
+      "duration": 6.52
+    },
+    {
+      "text": "analyze and as an analyst you have an",
+      "start": 2376.52,
+      "duration": 6.16
+    },
+    {
+      "text": "hard time to decide if it is this user",
+      "start": 2379.8,
+      "duration": 5.12
+    },
+    {
+      "text": "code if is an anti- deback check if it's",
+      "start": 2382.68,
+      "duration": 4.36
+    },
+    {
+      "text": "anti- temper check because everything is",
+      "start": 2384.92,
+      "duration": 4.72
+    },
+    {
+      "text": "mixed together and",
+      "start": 2387.04,
+      "duration": 6.44
+    },
+    {
+      "text": "therefore the takeaway is that good",
+      "start": 2389.64,
+      "duration": 7.32
+    },
+    {
+      "text": "software protection",
+      "start": 2393.48,
+      "duration": 3.48
+    },
+    {
+      "text": "combines obis",
+      "start": 2398.28,
+      "duration": 8.079
+    },
+    {
+      "text": "cation and anti- debug anti- temper um",
+      "start": 2400.8,
+      "duration": 8.68
+    },
+    {
+      "text": "and mixes them so basically we don't",
+      "start": 2406.359,
+      "duration": 5.681
+    },
+    {
+      "text": "have the one we don't have the other in",
+      "start": 2409.48,
+      "duration": 5.839
+    },
+    {
+      "text": "the best case we have both because then",
+      "start": 2412.04,
+      "duration": 5.84
+    },
+    {
+      "text": "we can't only analyze it statically but",
+      "start": 2415.319,
+      "duration": 5.04
+    },
+    {
+      "text": "we can also analyze dynamically and we",
+      "start": 2417.88,
+      "duration": 5.719
+    },
+    {
+      "text": "have to analyze in bypass the",
+      "start": 2420.359,
+      "duration": 6.201
+    },
+    {
+      "text": "ofation such that we can or at least",
+      "start": 2423.599,
+      "duration": 5.72
+    },
+    {
+      "text": "some layers of OB ation such that we can",
+      "start": 2426.56,
+      "duration": 4.519
+    },
+    {
+      "text": "attach a debugger and so",
+      "start": 2429.319,
+      "duration": 6.201
+    },
+    {
+      "text": "on so this is how the idea of Self",
+      "start": 2431.079,
+      "duration": 5.401
+    },
+    {
+      "text": "Protection",
+      "start": 2435.52,
+      "duration": 3.92
+    },
+    {
+      "text": "works we have passive protections we",
+      "start": 2436.48,
+      "duration": 5.8
+    },
+    {
+      "text": "have runtime protections and in",
+      "start": 2439.44,
+      "duration": 7.12
+    },
+    {
+      "text": "combination both of them are pretty",
+      "start": 2442.28,
+      "duration": 4.28
+    },
+    {
+      "text": "strong if you want to play around with",
+      "start": 2447.48,
+      "duration": 6.24
+    },
+    {
+      "text": "that on your own you not only have this",
+      "start": 2449.88,
+      "duration": 7.199
+    },
+    {
+      "text": "samples and this recording and so on but",
+      "start": 2453.72,
+      "duration": 7.28
+    },
+    {
+      "text": "there also an online demo of M of our of",
+      "start": 2457.079,
+      "duration": 7.121
+    },
+    {
+      "text": "our in-house office cator um which you",
+      "start": 2461.0,
+      "duration": 5.44
+    },
+    {
+      "text": "might be interested in taking look at",
+      "start": 2464.2,
+      "duration": 5.24
+    },
+    {
+      "text": "let me showcase that so if you go to",
+      "start": 2466.44,
+      "duration": 6.56
+    },
+    {
+      "text": "demo. proof.com you will find here the",
+      "start": 2469.44,
+      "duration": 6.84
+    },
+    {
+      "text": "IP protection demo and if you click on",
+      "start": 2473.0,
+      "duration": 6.64
+    },
+    {
+      "text": "that um you get three",
+      "start": 2476.28,
+      "duration": 6.96
+    },
+    {
+      "text": "Windows one window displays source code",
+      "start": 2479.64,
+      "duration": 5.679
+    },
+    {
+      "text": "then here we have the unprotected",
+      "start": 2483.24,
+      "duration": 4.879
+    },
+    {
+      "text": "disassembled binary and then protected",
+      "start": 2485.319,
+      "duration": 6.161
+    },
+    {
+      "text": "assembl binary so let's say we want to",
+      "start": 2488.119,
+      "duration": 5.72
+    },
+    {
+      "text": "take some algorithm like we take a base",
+      "start": 2491.48,
+      "duration": 3.639
+    },
+    {
+      "text": "64",
+      "start": 2493.839,
+      "duration": 4.161
+    },
+    {
+      "text": "encoding here we can then take a look at",
+      "start": 2495.119,
+      "duration": 5.681
+    },
+    {
+      "text": "the source code of the Bas 64",
+      "start": 2498.0,
+      "duration": 6.599
+    },
+    {
+      "text": "encoding and now we can compile it in",
+      "start": 2500.8,
+      "duration": 7.68
+    },
+    {
+      "text": "this case for the r64 Linux architecture",
+      "start": 2504.599,
+      "duration": 6.641
+    },
+    {
+      "text": "so we can compile it it takes some",
+      "start": 2508.48,
+      "duration": 5.68
+    },
+    {
+      "text": "seconds and",
+      "start": 2511.24,
+      "duration": 6.2
+    },
+    {
+      "text": "then here in the middle we have have",
+      "start": 2514.16,
+      "duration": 6.6
+    },
+    {
+      "text": "various tools the first thing is we can",
+      "start": 2517.44,
+      "duration": 6.04
+    },
+    {
+      "text": "take a look at the disassembled code",
+      "start": 2520.76,
+      "duration": 5.079
+    },
+    {
+      "text": "this is now the arm assembly",
+      "start": 2523.48,
+      "duration": 6.16
+    },
+    {
+      "text": "code however we also can take a look at",
+      "start": 2525.839,
+      "duration": 6.561
+    },
+    {
+      "text": "the decompiler output then it looks like",
+      "start": 2529.64,
+      "duration": 6.64
+    },
+    {
+      "text": "that then we see significantly more like",
+      "start": 2532.4,
+      "duration": 6.919
+    },
+    {
+      "text": "it's not nice to read but we can relate",
+      "start": 2536.28,
+      "duration": 7.36
+    },
+    {
+      "text": "like these things here one to one relate",
+      "start": 2539.319,
+      "duration": 7.28
+    },
+    {
+      "text": "to these things here so we see it's",
+      "start": 2543.64,
+      "duration": 5.04
+    },
+    {
+      "text": "nearly the",
+      "start": 2546.599,
+      "duration": 6.041
+    },
+    {
+      "text": "same or",
+      "start": 2548.68,
+      "duration": 7.12
+    },
+    {
+      "text": "sorry another thing we could do is we",
+      "start": 2552.64,
+      "duration": 6.76
+    },
+    {
+      "text": "could show the CFG and now we take a",
+      "start": 2555.8,
+      "duration": 5.72
+    },
+    {
+      "text": "look at the control flow graph here like",
+      "start": 2559.4,
+      "duration": 5.08
+    },
+    {
+      "text": "that so this is something we want now to",
+      "start": 2561.52,
+      "duration": 5.36
+    },
+    {
+      "text": "protect against reverse engineering what",
+      "start": 2564.48,
+      "duration": 5.72
+    },
+    {
+      "text": "you could do is we go down here we for",
+      "start": 2566.88,
+      "duration": 5.84
+    },
+    {
+      "text": "instance take a control flow of the",
+      "start": 2570.2,
+      "duration": 4.639
+    },
+    {
+      "text": "cation scheme and then they protected",
+      "start": 2572.72,
+      "duration": 3.16
+    },
+    {
+      "text": "with",
+      "start": 2574.839,
+      "duration": 4.24
+    },
+    {
+      "text": "n okay since I reloaded I have to redo",
+      "start": 2575.88,
+      "duration": 7.28
+    },
+    {
+      "text": "the first step but this will take only a",
+      "start": 2579.079,
+      "duration": 4.081
+    },
+    {
+      "text": "while so I compile it",
+      "start": 2583.88,
+      "duration": 3.88
+    },
+    {
+      "text": "again so and now we can choose an obis",
+      "start": 2592.92,
+      "duration": 6.28
+    },
+    {
+      "text": "cation and OB thecate",
+      "start": 2596.119,
+      "duration": 7.0
+    },
+    {
+      "text": "it and after it's been",
+      "start": 2599.2,
+      "duration": 6.919
+    },
+    {
+      "text": "processed we can take a look how it",
+      "start": 2603.119,
+      "duration": 6.841
+    },
+    {
+      "text": "behaves so now if we compare the",
+      "start": 2606.119,
+      "duration": 6.921
+    },
+    {
+      "text": "original CFG control flow graph with the",
+      "start": 2609.96,
+      "duration": 5.52
+    },
+    {
+      "text": "protected control flow graph we already",
+      "start": 2613.04,
+      "duration": 5.279
+    },
+    {
+      "text": "see here this one is significantly",
+      "start": 2615.48,
+      "duration": 5.8
+    },
+    {
+      "text": "shorter because the decompiler and the",
+      "start": 2618.319,
+      "duration": 4.881
+    },
+    {
+      "text": "disassembler like the analysis tool in",
+      "start": 2621.28,
+      "duration": 4.4
+    },
+    {
+      "text": "the background didn't know doesn't know",
+      "start": 2623.2,
+      "duration": 5.68
+    },
+    {
+      "text": "how to proceed it just is able to only",
+      "start": 2625.68,
+      "duration": 5.679
+    },
+    {
+      "text": "analyze fragments of the code it doesn't",
+      "start": 2628.88,
+      "duration": 4.28
+    },
+    {
+      "text": "see the other code at",
+      "start": 2631.359,
+      "duration": 4.881
+    },
+    {
+      "text": "all this is an indicator that there are",
+      "start": 2633.16,
+      "duration": 6.28
+    },
+    {
+      "text": "some and that the protection already",
+      "start": 2636.24,
+      "duration": 5.28
+    },
+    {
+      "text": "works we can take a look at the",
+      "start": 2639.44,
+      "duration": 5.04
+    },
+    {
+      "text": "disassembler and we see that the code",
+      "start": 2641.52,
+      "duration": 4.76
+    },
+    {
+      "text": "looks does look",
+      "start": 2644.48,
+      "duration": 3.32
+    },
+    {
+      "text": "different",
+      "start": 2646.28,
+      "duration": 4.0
+    },
+    {
+      "text": "however the most difference we will see",
+      "start": 2647.8,
+      "duration": 4.72
+    },
+    {
+      "text": "in the decompiler if you take a look at",
+      "start": 2650.28,
+      "duration": 4.6
+    },
+    {
+      "text": "the decompiler and we go to this",
+      "start": 2652.52,
+      "duration": 5.92
+    },
+    {
+      "text": "function base 46 and code we see a lot",
+      "start": 2654.88,
+      "duration": 6.959
+    },
+    {
+      "text": "of code here and see how it relates to",
+      "start": 2658.44,
+      "duration": 8.679
+    },
+    {
+      "text": "this one on the left however if we um",
+      "start": 2661.839,
+      "duration": 8.681
+    },
+    {
+      "text": "now get take a look here we see that we",
+      "start": 2667.119,
+      "duration": 6.321
+    },
+    {
+      "text": "call another function and this another",
+      "start": 2670.52,
+      "duration": 6.4
+    },
+    {
+      "text": "function is not really cannot be really",
+      "start": 2673.44,
+      "duration": 6.8
+    },
+    {
+      "text": "analyzed here the decompiler just didn't",
+      "start": 2676.92,
+      "duration": 6.159
+    },
+    {
+      "text": "know what to do and shows us",
+      "start": 2680.24,
+      "duration": 5.56
+    },
+    {
+      "text": "everything um the decompiler knows which",
+      "start": 2683.079,
+      "duration": 5.361
+    },
+    {
+      "text": "isn't that much so in this case the",
+      "start": 2685.8,
+      "duration": 4.72
+    },
+    {
+      "text": "alisation has been",
+      "start": 2688.44,
+      "duration": 4.6
+    },
+    {
+      "text": "successful and if you want to play",
+      "start": 2690.52,
+      "duration": 4.12
+    },
+    {
+      "text": "around with this online demo and get",
+      "start": 2693.04,
+      "duration": 4.279
+    },
+    {
+      "text": "some explanations there are also some",
+      "start": 2694.64,
+      "duration": 4.52
+    },
+    {
+      "text": "great guidances",
+      "start": 2697.319,
+      "duration": 4.0
+    },
+    {
+      "text": "like the",
+      "start": 2699.16,
+      "duration": 5.28
+    },
+    {
+      "text": "explainer which allows you to play",
+      "start": 2701.319,
+      "duration": 7.081
+    },
+    {
+      "text": "around with first the the things that um",
+      "start": 2704.44,
+      "duration": 8.2
+    },
+    {
+      "text": "go here how this works but you also have",
+      "start": 2708.4,
+      "duration": 7.959
+    },
+    {
+      "text": "resources like um IP protection where",
+      "start": 2712.64,
+      "duration": 8.36
+    },
+    {
+      "text": "you have a nice explainer on how it",
+      "start": 2716.359,
+      "duration": 6.681
+    },
+    {
+      "text": "works then then how different",
+      "start": 2721.0,
+      "duration": 5.4
+    },
+    {
+      "text": "officiation schemes work and so on so",
+      "start": 2723.04,
+      "duration": 6.72
+    },
+    {
+      "text": "this is a great example and a great",
+      "start": 2726.4,
+      "duration": 6.6
+    },
+    {
+      "text": "slide deck here um to play around with",
+      "start": 2729.76,
+      "duration": 5.319
+    },
+    {
+      "text": "that this here for instance is control",
+      "start": 2733.0,
+      "duration": 4.119
+    },
+    {
+      "text": "flow flattening this is the control flow",
+      "start": 2735.079,
+      "duration": 4.601
+    },
+    {
+      "text": "ofation we just took a look at at the",
+      "start": 2737.119,
+      "duration": 7.641
+    },
+    {
+      "text": "Fibonacci code and also at um in the",
+      "start": 2739.68,
+      "duration": 7.96
+    },
+    {
+      "text": "demo here so you get great explanations",
+      "start": 2744.76,
+      "duration": 4.839
+    },
+    {
+      "text": "here so if you want to play around with",
+      "start": 2747.64,
+      "duration": 5.0
+    },
+    {
+      "text": "that it's a great",
+      "start": 2749.599,
+      "duration": 3.041
+    },
+    {
+      "text": "start so coming back to the slides",
+      "start": 2753.079,
+      "duration": 4.961
+    },
+    {
+      "text": "here's again the link for the online",
+      "start": 2759.079,
+      "duration": 7.801
+    },
+    {
+      "text": "demo and to conclude this webinar um",
+      "start": 2761.28,
+      "duration": 7.4
+    },
+    {
+      "text": "that we talked about common reverse",
+      "start": 2766.88,
+      "duration": 3.88
+    },
+    {
+      "text": "engineering threats that can be used for",
+      "start": 2768.68,
+      "duration": 5.84
+    },
+    {
+      "text": "piracy for competitor analysis and so on",
+      "start": 2770.76,
+      "duration": 6.48
+    },
+    {
+      "text": "and then we have something like passive",
+      "start": 2774.52,
+      "duration": 5.24
+    },
+    {
+      "text": "and active methods to reverse",
+      "start": 2777.24,
+      "duration": 5.0
+    },
+    {
+      "text": "engineering then you will have the",
+      "start": 2779.76,
+      "duration": 5.599
+    },
+    {
+      "text": "online demo to play around with and of",
+      "start": 2782.24,
+      "duration": 5.16
+    },
+    {
+      "text": "this webinar today the record ing the",
+      "start": 2785.359,
+      "duration": 4.48
+    },
+    {
+      "text": "binaries the samples the slides you will",
+      "start": 2787.4,
+      "duration": 7.32
+    },
+    {
+      "text": "find later on here in this link now um",
+      "start": 2789.839,
+      "duration": 7.161
+    },
+    {
+      "text": "you have time to ask some questions like",
+      "start": 2794.72,
+      "duration": 4.24
+    },
+    {
+      "text": "we have 15 minutes to answer some",
+      "start": 2797.0,
+      "duration": 5.64
+    },
+    {
+      "text": "questions if you are um so feel free to",
+      "start": 2798.96,
+      "duration": 6.639
+    },
+    {
+      "text": "ask them and check them and in between I",
+      "start": 2802.64,
+      "duration": 4.88
+    },
+    {
+      "text": "will start at the top with the questions",
+      "start": 2805.599,
+      "duration": 5.801
+    },
+    {
+      "text": "and answer them so the first question is",
+      "start": 2807.52,
+      "duration": 6.16
+    },
+    {
+      "text": "is there any concern over using",
+      "start": 2811.4,
+      "duration": 4.12
+    },
+    {
+      "text": "optimizations because I'm using",
+      "start": 2813.68,
+      "duration": 3.679
+    },
+    {
+      "text": "optimization level or zero",
+      "start": 2815.52,
+      "duration": 5.76
+    },
+    {
+      "text": "yes so in general no in this example yes",
+      "start": 2817.359,
+      "duration": 9.681
+    },
+    {
+      "text": "so what I did here is I have this code",
+      "start": 2821.28,
+      "duration": 8.88
+    },
+    {
+      "text": "and I put it with o0 the question is",
+      "start": 2827.04,
+      "duration": 7.079
+    },
+    {
+      "text": "what happens if we add a higher compiler",
+      "start": 2830.16,
+      "duration": 6.76
+    },
+    {
+      "text": "level like optimization level like O3 if",
+      "start": 2834.119,
+      "duration": 6.0
+    },
+    {
+      "text": "I do that let me just showcas that in",
+      "start": 2836.92,
+      "duration": 5.72
+    },
+    {
+      "text": "this case it will kill most of the",
+      "start": 2840.119,
+      "duration": 5.24
+    },
+    {
+      "text": "officiation because this one is",
+      "start": 2842.64,
+      "duration": 4.919
+    },
+    {
+      "text": "significantly too simple",
+      "start": 2845.359,
+      "duration": 5.281
+    },
+    {
+      "text": "so let's let me do that with",
+      "start": 2847.559,
+      "duration": 6.441
+    },
+    {
+      "text": "O3 and compile that let me first show it",
+      "start": 2850.64,
+      "duration": 6.679
+    },
+    {
+      "text": "behaves the same still works the same",
+      "start": 2854.0,
+      "duration": 7.48
+    },
+    {
+      "text": "however now if I close that and I opens",
+      "start": 2857.319,
+      "duration": 9.161
+    },
+    {
+      "text": "that again and I go to the hardly to the",
+      "start": 2861.48,
+      "duration": 7.879
+    },
+    {
+      "text": "uh to the protector",
+      "start": 2866.48,
+      "duration": 2.879
+    },
+    {
+      "text": "sample you see we",
+      "start": 2869.44,
+      "duration": 9.399
+    },
+    {
+      "text": "still have control flow flattening",
+      "start": 2873.68,
+      "duration": 5.159
+    },
+    {
+      "text": "and the code is",
+      "start": 2879.96,
+      "duration": 5.159
+    },
+    {
+      "text": "still obvious",
+      "start": 2882.72,
+      "duration": 5.56
+    },
+    {
+      "text": "cated but it's not that much obis cated",
+      "start": 2885.119,
+      "duration": 5.521
+    },
+    {
+      "text": "anymore so it looks a bit different so",
+      "start": 2888.28,
+      "duration": 3.52
+    },
+    {
+      "text": "in this",
+      "start": 2890.64,
+      "duration": 4.8
+    },
+    {
+      "text": "case it didn't make too much of a",
+      "start": 2891.8,
+      "duration": 5.88
+    },
+    {
+      "text": "difference at the same",
+      "start": 2895.44,
+      "duration": 7.6
+    },
+    {
+      "text": "time if I do only some basic things the",
+      "start": 2897.68,
+      "duration": 7.639
+    },
+    {
+      "text": "likelihood that the compiler can",
+      "start": 2903.04,
+      "duration": 4.64
+    },
+    {
+      "text": "optimize it way is quite high so",
+      "start": 2905.319,
+      "duration": 4.28
+    },
+    {
+      "text": "therefore a good obis cation is",
+      "start": 2907.68,
+      "duration": 4.439
+    },
+    {
+      "text": "resilient against compiler optimizations",
+      "start": 2909.599,
+      "duration": 5.801
+    },
+    {
+      "text": "or let's say compiler optimizations even",
+      "start": 2912.119,
+      "duration": 5.801
+    },
+    {
+      "text": "make obis cated code even harder to",
+      "start": 2915.4,
+      "duration": 6.0
+    },
+    {
+      "text": "analyze um but if I would just put",
+      "start": 2917.92,
+      "duration": 5.8
+    },
+    {
+      "text": "something easier in here so if I just",
+      "start": 2921.4,
+      "duration": 5.439
+    },
+    {
+      "text": "would for instance do something like a +",
+      "start": 2923.72,
+      "duration": 6.8
+    },
+    {
+      "text": "b + 1 minus one or something like that",
+      "start": 2926.839,
+      "duration": 5.801
+    },
+    {
+      "text": "this one the compiler would kill",
+      "start": 2930.52,
+      "duration": 4.319
+    },
+    {
+      "text": "immediately so yes compiler",
+      "start": 2932.64,
+      "duration": 6.08
+    },
+    {
+      "text": "optimizations do make a difference",
+      "start": 2934.839,
+      "duration": 3.881
+    },
+    {
+      "text": "um yeah they do make a difference",
+      "start": 2939.04,
+      "duration": 6.16
+    },
+    {
+      "text": "especially if the if the examples are",
+      "start": 2941.68,
+      "duration": 6.72
+    },
+    {
+      "text": "simple so let's go to the another",
+      "start": 2945.2,
+      "duration": 5.879
+    },
+    {
+      "text": "question would you expect to see such",
+      "start": 2948.4,
+      "duration": 4.76
+    },
+    {
+      "text": "level of officiation and embedded real",
+      "start": 2951.079,
+      "duration": 4.76
+    },
+    {
+      "text": "time systems where performance matters",
+      "start": 2953.16,
+      "duration": 4.919
+    },
+    {
+      "text": "wouldn't be a trade of of the",
+      "start": 2955.839,
+      "duration": 7.121
+    },
+    {
+      "text": "developer well yes and no um obfuscation",
+      "start": 2958.079,
+      "duration": 8.681
+    },
+    {
+      "text": "itself adds complexity and as I have",
+      "start": 2962.96,
+      "duration": 7.72
+    },
+    {
+      "text": "have shown it on the slides like",
+      "start": 2966.76,
+      "duration": 7.52
+    },
+    {
+      "text": "here um complexity can get very complex",
+      "start": 2970.68,
+      "duration": 5.639
+    },
+    {
+      "text": "and therefore the code can significantly",
+      "start": 2974.28,
+      "duration": 4.64
+    },
+    {
+      "text": "get larger and slower and this is",
+      "start": 2976.319,
+      "duration": 5.161
+    },
+    {
+      "text": "something something like that you see",
+      "start": 2978.92,
+      "duration": 5.48
+    },
+    {
+      "text": "very often on desktop systems where size",
+      "start": 2981.48,
+      "duration": 4.879
+    },
+    {
+      "text": "does not that much matter where it",
+      "start": 2984.4,
+      "duration": 3.959
+    },
+    {
+      "text": "doesn't really matter if your binary is",
+      "start": 2986.359,
+      "duration": 6.881
+    },
+    {
+      "text": "1 MB or 10 MB so this usually is a lot",
+      "start": 2988.359,
+      "duration": 8.801
+    },
+    {
+      "text": "of um um is pretty common ever un",
+      "start": 2993.24,
+      "duration": 6.2
+    },
+    {
+      "text": "embedded especially on realtime systems",
+      "start": 2997.16,
+      "duration": 5.0
+    },
+    {
+      "text": "or small devices you can't do something",
+      "start": 2999.44,
+      "duration": 5.679
+    },
+    {
+      "text": "like that what you what you usually do",
+      "start": 3002.16,
+      "duration": 6.6
+    },
+    {
+      "text": "there is that you build sophisticated",
+      "start": 3005.119,
+      "duration": 6.401
+    },
+    {
+      "text": "obfuscation methods that don't add too",
+      "start": 3008.76,
+      "duration": 5.599
+    },
+    {
+      "text": "much complexity but still are very hard",
+      "start": 3011.52,
+      "duration": 6.52
+    },
+    {
+      "text": "to analyze and they are especially this",
+      "start": 3014.359,
+      "duration": 5.96
+    },
+    {
+      "text": "combination of active and passive",
+      "start": 3018.04,
+      "duration": 5.2
+    },
+    {
+      "text": "methods especially the combination Done",
+      "start": 3020.319,
+      "duration": 5.921
+    },
+    {
+      "text": "Right is a thing that adds the security",
+      "start": 3023.24,
+      "duration": 6.079
+    },
+    {
+      "text": "there because you can't do you can't",
+      "start": 3026.24,
+      "duration": 5.879
+    },
+    {
+      "text": "escalate in size too much at the same",
+      "start": 3029.319,
+      "duration": 5.76
+    },
+    {
+      "text": "time you can combine passive and active",
+      "start": 3032.119,
+      "duration": 6.0
+    },
+    {
+      "text": "Protections in a Smart Way such that the",
+      "start": 3035.079,
+      "duration": 6.72
+    },
+    {
+      "text": "the security level is comparable um but",
+      "start": 3038.119,
+      "duration": 7.041
+    },
+    {
+      "text": "especially designed for small and",
+      "start": 3041.799,
+      "duration": 6.76
+    },
+    {
+      "text": "devices and then also what you don't",
+      "start": 3045.16,
+      "duration": 5.76
+    },
+    {
+      "text": "want to do is you touch realtime systems",
+      "start": 3048.559,
+      "duration": 7.24
+    },
+    {
+      "text": "like real time code um um especially if",
+      "start": 3050.92,
+      "duration": 7.679
+    },
+    {
+      "text": "it's must be cycle exact something like",
+      "start": 3055.799,
+      "duration": 5.04
+    },
+    {
+      "text": "that what you usually do is there that",
+      "start": 3058.599,
+      "duration": 5.841
+    },
+    {
+      "text": "you add maybe some code decryption Stu",
+      "start": 3060.839,
+      "duration": 6.121
+    },
+    {
+      "text": "where the code itself is not",
+      "start": 3064.44,
+      "duration": 7.08
+    },
+    {
+      "text": "really is not really protected um it's",
+      "start": 3066.96,
+      "duration": 8.28
+    },
+    {
+      "text": "not really touched at run time but",
+      "start": 3071.52,
+      "duration": 6.16
+    },
+    {
+      "text": "initially you add during the boot up",
+      "start": 3075.24,
+      "duration": 4.559
+    },
+    {
+      "text": "phase you add some heavily off",
+      "start": 3077.68,
+      "duration": 4.52
+    },
+    {
+      "text": "fisticated decoding phase for instance",
+      "start": 3079.799,
+      "duration": 4.32
+    },
+    {
+      "text": "such that the original code is only",
+      "start": 3082.2,
+      "duration": 4.08
+    },
+    {
+      "text": "available at runtime something like that",
+      "start": 3084.119,
+      "duration": 6.121
+    },
+    {
+      "text": "would be also common to do on very small",
+      "start": 3086.28,
+      "duration": 6.92
+    },
+    {
+      "text": "devices and by the way our company M",
+      "start": 3090.24,
+      "duration": 5.28
+    },
+    {
+      "text": "proof is basically specialized for doing",
+      "start": 3093.2,
+      "duration": 5.2
+    },
+    {
+      "text": "embedded IP protection we see us itself",
+      "start": 3095.52,
+      "duration": 5.88
+    },
+    {
+      "text": "as a as um our main focus in the",
+      "start": 3098.4,
+      "duration": 4.64
+    },
+    {
+      "text": "embedded",
+      "start": 3101.4,
+      "duration": 5.0
+    },
+    {
+      "text": "World another question does it Target",
+      "start": 3103.04,
+      "duration": 6.4
+    },
+    {
+      "text": "specific function or the entire binary",
+      "start": 3106.4,
+      "duration": 6.199
+    },
+    {
+      "text": "so also this is a pretty good question",
+      "start": 3109.44,
+      "duration": 6.359
+    },
+    {
+      "text": "it the answer is always it depends",
+      "start": 3112.599,
+      "duration": 7.041
+    },
+    {
+      "text": "there's a possib abity to add obis",
+      "start": 3115.799,
+      "duration": 6.881
+    },
+    {
+      "text": "cation to only specific functions or to",
+      "start": 3119.64,
+      "duration": 5.959
+    },
+    {
+      "text": "only specific code Parts there's also",
+      "start": 3122.68,
+      "duration": 6.76
+    },
+    {
+      "text": "the possibility to Blacklist specific",
+      "start": 3125.599,
+      "duration": 6.401
+    },
+    {
+      "text": "code Parts like to touch everything",
+      "start": 3129.44,
+      "duration": 5.44
+    },
+    {
+      "text": "besides a specific set of functions and",
+      "start": 3132.0,
+      "duration": 5.079
+    },
+    {
+      "text": "there's also the possibility to protect",
+      "start": 3134.88,
+      "duration": 5.84
+    },
+    {
+      "text": "everything so like a good obis cator",
+      "start": 3137.079,
+      "duration": 6.24
+    },
+    {
+      "text": "gives you a lot of freedom in terms of",
+      "start": 3140.72,
+      "duration": 4.52
+    },
+    {
+      "text": "configuration if you want to prodct",
+      "start": 3143.319,
+      "duration": 4.48
+    },
+    {
+      "text": "everything on if Sy specific things how",
+      "start": 3145.24,
+      "duration": 4.64
+    },
+    {
+      "text": "you want to protect it if you want to",
+      "start": 3147.799,
+      "duration": 3.881
+    },
+    {
+      "text": "Blacklist things Whit list things and so",
+      "start": 3149.88,
+      "duration": 6.12
+    },
+    {
+      "text": "on so this has to be done in an uper",
+      "start": 3151.68,
+      "duration": 7.56
+    },
+    {
+      "text": "skor uh there's another question in the",
+      "start": 3156.0,
+      "duration": 6.04
+    },
+    {
+      "text": "IP protection demo do you use indirect",
+      "start": 3159.24,
+      "duration": 4.72
+    },
+    {
+      "text": "branching in addition to playing control",
+      "start": 3162.04,
+      "duration": 2.84
+    },
+    {
+      "text": "flow",
+      "start": 3163.96,
+      "duration": 5.48
+    },
+    {
+      "text": "lightening um yes so basically um",
+      "start": 3164.88,
+      "duration": 8.0
+    },
+    {
+      "text": "indirect branching means that you",
+      "start": 3169.44,
+      "duration": 8.56
+    },
+    {
+      "text": "compute the result of a jump at runtime",
+      "start": 3172.88,
+      "duration": 7.76
+    },
+    {
+      "text": "that you don't basically have something",
+      "start": 3178.0,
+      "duration": 4.48
+    },
+    {
+      "text": "like",
+      "start": 3180.64,
+      "duration": 4.08
+    },
+    {
+      "text": "jump um where is it for instance that",
+      "start": 3182.48,
+      "duration": 5.52
+    },
+    {
+      "text": "you don't have a jump to a concrete",
+      "start": 3184.72,
+      "duration": 6.68
+    },
+    {
+      "text": "address like this",
+      "start": 3188.0,
+      "duration": 3.4
+    },
+    {
+      "text": "one but instead you for instance patch",
+      "start": 3193.76,
+      "duration": 7.319
+    },
+    {
+      "text": "it to jump to RDI to some register and",
+      "start": 3196.72,
+      "duration": 8.56
+    },
+    {
+      "text": "this register then contains a computed",
+      "start": 3201.079,
+      "duration": 6.0
+    },
+    {
+      "text": "value and this value is computer at",
+      "start": 3205.28,
+      "duration": 5.799
+    },
+    {
+      "text": "runtime and this way um you can't really",
+      "start": 3207.079,
+      "duration": 6.801
+    },
+    {
+      "text": "easily see where it goes and yes in the",
+      "start": 3211.079,
+      "duration": 6.801
+    },
+    {
+      "text": "IP protection demo um",
+      "start": 3213.88,
+      "duration": 10.479
+    },
+    {
+      "text": "we use a computer jump we can see it",
+      "start": 3217.88,
+      "duration": 6.479
+    },
+    {
+      "text": "here we can see it here that",
+      "start": 3226.839,
+      "duration": 5.681
+    },
+    {
+      "text": "here we Branch to register and it's not",
+      "start": 3237.76,
+      "duration": 5.12
+    },
+    {
+      "text": "really clear where this register goes to",
+      "start": 3240.599,
+      "duration": 3.841
+    },
+    {
+      "text": "so",
+      "start": 3242.88,
+      "duration": 5.16
+    },
+    {
+      "text": "yes there's another",
+      "start": 3244.44,
+      "duration": 6.639
+    },
+    {
+      "text": "question no there's no other question so",
+      "start": 3248.04,
+      "duration": 6.24
+    },
+    {
+      "text": "yeah these were right now all",
+      "start": 3251.079,
+      "duration": 5.48
+    },
+    {
+      "text": "questions um are there any additional",
+      "start": 3254.28,
+      "duration": 5.279
+    },
+    {
+      "text": "questions",
+      "start": 3256.559,
+      "duration": 3.0
+    },
+    {
+      "text": "there are two more questions one is",
+      "start": 3272.92,
+      "duration": 5.08
+    },
+    {
+      "text": "while talking about fpg uh while talking",
+      "start": 3275.24,
+      "duration": 5.76
+    },
+    {
+      "text": "about embedded devices fpgas and other",
+      "start": 3278.0,
+      "duration": 5.04
+    },
+    {
+      "text": "resource constraints devices have you",
+      "start": 3281.0,
+      "duration": 4.04
+    },
+    {
+      "text": "explored the problem for trying to add",
+      "start": 3283.04,
+      "duration": 4.079
+    },
+    {
+      "text": "obis cation for the CFG and arithmetic",
+      "start": 3285.04,
+      "duration": 5.799
+    },
+    {
+      "text": "statements while optimizing the size of",
+      "start": 3287.119,
+      "duration": 5.321
+    },
+    {
+      "text": "the final go of specific device",
+      "start": 3290.839,
+      "duration": 3.041
+    },
+    {
+      "text": "constraints something like",
+      "start": 3292.44,
+      "duration": 3.32
+    },
+    {
+      "text": "multiobjective function optimization",
+      "start": 3293.88,
+      "duration": 3.64
+    },
+    {
+      "text": "problem do you know some resources",
+      "start": 3295.76,
+      "duration": 6.2
+    },
+    {
+      "text": "topics for that um we played around with",
+      "start": 3297.52,
+      "duration": 10.72
+    },
+    {
+      "text": "that yes and um we came to some",
+      "start": 3301.96,
+      "duration": 9.76
+    },
+    {
+      "text": "conclusions that it works in some cases",
+      "start": 3308.24,
+      "duration": 6.52
+    },
+    {
+      "text": "but we have to be very careful with",
+      "start": 3311.72,
+      "duration": 6.839
+    },
+    {
+      "text": "that and in general there are not many",
+      "start": 3314.76,
+      "duration": 7.44
+    },
+    {
+      "text": "resources out there some resources uh",
+      "start": 3318.559,
+      "duration": 7.321
+    },
+    {
+      "text": "this is often private IP of software",
+      "start": 3322.2,
+      "duration": 6.639
+    },
+    {
+      "text": "protection companies and therefore you",
+      "start": 3325.88,
+      "duration": 6.6
+    },
+    {
+      "text": "don't find that much out there so sorry",
+      "start": 3328.839,
+      "duration": 6.681
+    },
+    {
+      "text": "about that but optimizing CFG and aric",
+      "start": 3332.48,
+      "duration": 5.76
+    },
+    {
+      "text": "statements for code size and so on this",
+      "start": 3335.52,
+      "duration": 5.4
+    },
+    {
+      "text": "works for sure to some",
+      "start": 3338.24,
+      "duration": 5.48
+    },
+    {
+      "text": "extent there's another question by",
+      "start": 3340.92,
+      "duration": 5.6
+    },
+    {
+      "text": "obfuscating only part of the functions",
+      "start": 3343.72,
+      "duration": 4.8
+    },
+    {
+      "text": "will it make the obus cated parts tose",
+      "start": 3346.52,
+      "duration": 3.519
+    },
+    {
+      "text": "engineer the other parts that are not",
+      "start": 3348.52,
+      "duration": 4.96
+    },
+    {
+      "text": "obus cated that's always a good question",
+      "start": 3350.039,
+      "duration": 6.921
+    },
+    {
+      "text": "so yes if you know that you",
+      "start": 3353.48,
+      "duration": 6.24
+    },
+    {
+      "text": "if you know that this is for instance a",
+      "start": 3356.96,
+      "duration": 4.879
+    },
+    {
+      "text": "um a well-known implementation of",
+      "start": 3359.72,
+      "duration": 5.359
+    },
+    {
+      "text": "something and you recognize specific",
+      "start": 3361.839,
+      "duration": 7.321
+    },
+    {
+      "text": "parts let's say let's say this is this",
+      "start": 3365.079,
+      "duration": 7.72
+    },
+    {
+      "text": "you you recognize that there is a loop",
+      "start": 3369.16,
+      "duration": 6.199
+    },
+    {
+      "text": "that adds to values and does some",
+      "start": 3372.799,
+      "duration": 6.76
+    },
+    {
+      "text": "assignments like um like this one you",
+      "start": 3375.359,
+      "duration": 6.24
+    },
+    {
+      "text": "recognize let's say you recognize this",
+      "start": 3379.559,
+      "duration": 4.76
+    },
+    {
+      "text": "part and you recognize that this part",
+      "start": 3381.599,
+      "duration": 5.841
+    },
+    {
+      "text": "looks like a partial Fibonacci",
+      "start": 3384.319,
+      "duration": 5.76
+    },
+    {
+      "text": "computation then of course you can do an",
+      "start": 3387.44,
+      "duration": 6.159
+    },
+    {
+      "text": "educated guess that also all other part",
+      "start": 3390.079,
+      "duration": 5.921
+    },
+    {
+      "text": "of the function might be heavily",
+      "start": 3393.599,
+      "duration": 5.841
+    },
+    {
+      "text": "obfuscated you might just say hey maybe",
+      "start": 3396.0,
+      "duration": 5.68
+    },
+    {
+      "text": "this is a Fibonacci Sequence because",
+      "start": 3399.44,
+      "duration": 4.76
+    },
+    {
+      "text": "this part looks famili familiar and then",
+      "start": 3401.68,
+      "duration": 5.48
+    },
+    {
+      "text": "you can just do an educated guess and",
+      "start": 3404.2,
+      "duration": 5.919
+    },
+    {
+      "text": "observe if it really behaves like a fi",
+      "start": 3407.16,
+      "duration": 6.32
+    },
+    {
+      "text": "so yeah if there are some parts not obis",
+      "start": 3410.119,
+      "duration": 7.68
+    },
+    {
+      "text": "cated and you for for whatever reasons",
+      "start": 3413.48,
+      "duration": 7.2
+    },
+    {
+      "text": "recognize parts of that then you can",
+      "start": 3417.799,
+      "duration": 5.361
+    },
+    {
+      "text": "take this knowledge and do some educated",
+      "start": 3420.68,
+      "duration": 5.24
+    },
+    {
+      "text": "guesses yes good",
+      "start": 3423.16,
+      "duration": 7.32
+    },
+    {
+      "text": "question other other questions",
+      "start": 3425.92,
+      "duration": 4.56
+    },
+    {
+      "text": "okay",
+      "start": 3448.64,
+      "duration": 6.28
+    },
+    {
+      "text": "then I think um we call it a day thank",
+      "start": 3450.2,
+      "duration": 6.52
+    },
+    {
+      "text": "you very much for your interest and for",
+      "start": 3454.92,
+      "duration": 5.399
+    },
+    {
+      "text": "your questions um this webinar will then",
+      "start": 3456.72,
+      "duration": 7.639
+    },
+    {
+      "text": "be uh published soon and there's a link",
+      "start": 3460.319,
+      "duration": 5.841
+    },
+    {
+      "text": "where we will find all the information",
+      "start": 3464.359,
+      "duration": 3.24
+    },
+    {
+      "text": "so thanks a lot for your questions and",
+      "start": 3466.16,
+      "duration": 7.08
+    },
+    {
+      "text": "your intentions and see you soon goodbye",
+      "start": 3467.599,
+      "duration": 5.641
+    }
+  ],
+  "full_text": "hello and welcome to our new webinar this time on software protection safeguarding code against reverse engineering a few words about me so I'm Tim I'm the chief scientist and head of engineering and one of the co-founders of mof we are a startup Loc at in the Netherlands where we focus on embedded reverse engineering where we focus on embedded reverse engineering um anti-reverse engineering techniques such as software protection such that firmware cannot be analyzed by sub parties um so we are basically focused on Advanced embedded Security Solutions I own a PhD in binary program analysis and reverse engineering and besides I give trainings and lecture at industry conferences and universities the goal of today is to discuss to and to to do a small recap of common is to discuss and to do a small recap of common reverse engineering threats then we will switch into software protection what it means to protect software against reverse engineering and houses can be done we will combine this with a small demonstration we will um combine this a small small demonstration and in the end um you will get everything that you can play around with when you're own so if you are new to the serious um we's already two webinars we did in the past one is reverse engineering how techers uncover secrets binaries where we did a small introduction into reverse engineering and how it went and then in the second webinar Secrets unveiled what attackers find in embedded systems we talked about uh taking a closer look and embeded firmware and digging into that how we can find credentials there if you are interested in these recordings or also get the slide and binaries we can check it out so you can go for instance to this website and there you will find our path to webinars with the slides and so on um attached here and also this webinar will be listed later on here in this overview okay that said let's do a small recap about reverse engineering threats and then we jump into software protection our main Focus for today reverse engineering the goal basically from an attacker is to get a binary like an embedded firmware for instance and reverse engineer it so analyze the binary code with a goal to extract secrets from it and this can be used for instance to find bucks and sabotage it can be used to understand what's going on and to unlock secrets in the firmware like understanding the code what the for for instance what a competitor does and copy this IP into your own product and also in terms of user there is something like piracy the the the um the interest in copy and removing copy protections and um um um bypassing authentication checks and just unlock features for instance that the user otherwise has to pay for so in other words a financial gain in many different ways can be the te scenario so what can we typically find in such binaries we can typically find something like first hardcoded Secrets like cryptographic Keys serial numbers passwords and so on network addresses but also we can find more sensitive data like Secret algor GMS that have been um developed after years of research or machine learning models and so on so basically everything which can be considered as private and that companies don't want to have shared easily with other participants so we typically in assembly on reverse engineering start with something which is called machine code this machine code is basically a sequence of which is interpreted by the CPU as code so the CPU like the the device um of your of your computer or of your smartphone works with instruction sequences with bite sequences like that and performs computations based on that for instance it might know that there is some encoding or decoding form and then for this for this bite sequence and then it might translate it to something like at R1 and a constant so this would basically mean here we perform an addition with a register R1 and a constant and here we perform a multiplication with a two and another constant so this machine code would be decoded by the CPU into assembly code and then execute it so and this code basically represents high level code so we have a tool in reverse engineering which is called a disassembler which can decode instruction sequences into human readable assembly code and based on that a reverse engineer can analyze the code and reconstruct the high level code or even better the reverse engineer can take a decompiler which then takes assembly code AS input and reconstructs the high level code like the C code and then we can for instance decode instruction sequence like this one into high level C code like this one where we just then have um a calculate a function name which takes two parameters param one and param 2 and then for instance returns param 2 plus param 1 multiplied by four there are open source reverse engineering Frameworks in the wild that can be easily downloaded that for instance allow you to load a binary then inspect in the middle the assembly code here and on the right hand side and then on the right hand side you can see the decompiler output and then you can get a better understanding of what the code is doing and this can be done by everybody who just has some interest in reverse engineering the person can then go for instance to the website of gidra download it install it and then analyze an avatary binary if you want to learn more about that if you want to learn more about that I would recommend you looking up one of our previous sem webinars where we talked about that otherwise there are also lot of contents for free on the internet so now we want to focus on given that as a basic knowledge how can we protect against that or is there any method like that enables us to prevent reverse engineering or to make it at least more complicated and the answer there yes there exists something like that and this term is called software protection software protection has has the goal to complicate reverse engineering attempts complicating means that we want to raise the bar for attackers to spend more significantly more time on the same code with a goal that it's harder to reverse engineer so it's not impossible um because there is know in in reverse engineering there is nothing like it this cannot be reverse engineered or this can cannot be protected in a way that it cannot can't be reverse engineered but you can significantly raise the par the bar in terms of that the attacker has first to have significantly more knowledge about what what he or she is doing and how to proceed and at the same time you can raise the bar that even if you have an expert level attacker the analysis effort is significantly higher and therefore the time significantly higher so in words in um in short you basically increase the difficulty to do that and you increase the time window to do that and with that you increase the financial gain a lot so you make it significantly more expensive to reverse engineer piece of software okay now the the question is how can we do that and well if we talk about software protection we have to take a look on how attackers really analyze code and we already did it before we have our tools like disassemblers and decompilers where we open in a binary and then we can take a closer look at that so let's just start with that as a small demonstration let's assume we have a small sample like Fibonacci this Fibonacci code just to show to you this Fibonacci code is just a small function which takes in an an variable n and then it perform some computations like a equal 0 b equal 1 then we have S equal B and then we check if n is equal to zero if so we return zero otherwise we go into the loop and compute the end Fibonacci number and if we just do it proceeded like that we can for instance open a terminal then we compile it like GCC minus o Fibonacci C and put it into binary called Fibonacci and then we can call the Fibonacci and just see and just see that it computes this humi like for the first value we get one if we take the fifth value we get a five if we take a sixth value we get an eight and then a nine and so on and so on so this binary computes a Fibonacci sequence we can also take a look at it in a reverse engineering tool like um this time binding Ninja for that we open Bing ninja down here and after it has been loaded we for instance just open the bining there so here we have we have our fi sequence let me recompile it again so we have our fat sequence and I canot put it in here and then I can see down in the middle here that we have the main function which takes some arguments and then it prints a string FIB result and then it calls a function FIP and if we take a look into this function we see that it basic Bally gets an argument AR one let me I can I can make this more beautiful this output by um just limiting it to the C function so like that and now we for instance see we have this function FIP here then we in initialize some variables and we check if it's equal to zero then we return zero otherwise we have a dual Loop and we compute something so we can call we can rename this for instance to to the variable n and we can this for instance rename to the variable result and then it looks like that so this is how reverse engineering would work and now we work basically with something with like a control flow graph that allows us to Showcase to see how the state of the code look like and how to go from one state to the other state and we also um can look at the decompiler which basically gives us a high level view of the binary and now the goal of op of and software protection is basically to make this code harder to analyze and for this we have active and passive methods and let us first talk about the passive methods the passive protections are called code of thec and data uncoding the idea behind code ofation and data encoding is that you basically leave the code as it is function wise but you make it significantly harder to analyze because you add complexity to that so for instance instead of having a small graph and a small um function with easy to observe control flow you could build graphs like that which add a lot of complexity and make it very hard to understand and see what's really going on in the function so you basically can increase a compl it to impede reverse engineering and you can also arithmetically hide keys and credentials like in an encrypted or encoded format and then decoded at runtime tou that if you have a decoding algorithm that looks like that understanding the meas the measures what's really going on there and seeing the the data that you want to unprotect is significantly harder so and to do this passive counter measure this Pro passive protection the goal is basically to make it more complicated on the control flow level but also on the compiler level and while obfuscation can be significantly complex I would like to showcas it you it to you to on a very small example so let's go back to our Fibonacci code and this was a Fibonacci code we just saw before where we have where we can see that this looks like that and then we see that we do have a loop and then we perform some conts inside the loop so if we take a look at code like that in the decompiler we just saw it before some minutes before it looks very similar so like here it looks very similar however now we want to go one step further and obvious create the control flow such that we are not able to see anymore if this is a state with which is executed first or if this state is executed first or this one here what we do for that is that we can encode control flow that we can control that we can encode the control flow in some form of State machine where we say the state is initialized with zero and then we have an endless loop and this endless loop dispatches in a switch case this state so we now basically have a control flow have a a state machine which dispatches control flow and we can see if State equals zero we for instance perform the initialization computations we otherwise performed here in the beginning and then we check if n equals z we update the state variable to be three other wise to be one so in this way we basically encode these things here in something that looks like that and if if we look at that from a control flow perspective we can't easily see anymore if this state is taken the first time if this state is taken the first time or this or that so assuming we don't know the source code we can compile it on the binary level so with that I would just enable this function again of the cated one recompile it like this and first execute it and the first thing you can see is that no matter what input we provide they behave the same so the OB loation itself changes how the code looks like but it doesn't change what it really computes and now if we take this code open it again in the binary like this and we go to this function FIB obis cated one we now see that if we take a look at the graph we don't easily see which what's computed in which order instead what we see is that we have oops what we see is that we have one large ENT block here and then we have several basic blocks that are connected in a [Music] loop me undo some things that are connected in a loop and go back to this block so like these states here then after computation is done go back here these states here then go back here so if you compare this with the unisc version we here we can see that we first execute these parts then we have a loop here and at some time we go out here we can see that without looking at the code much however in this example we see that we have one large loop and we don't really see which state is executed in which order this is control flow ofation if we take a look at the decompiler output there again we see in initially top of here we initialize the state variable we can just call State and then we start dispatching the state and check if it's three then return a variable otherwise we break and then we check if States equal to zero then we perform something and reset the state and so on and so on so the control flow while the original basic block semantics preserve the same like each block each state still does what it should do however the control flow between these blocks is now not that easy to see and understand anymore and this is a technique which is quite common in basic reverse engineering however we can still if we take a look at the decompiler output we can still see oh there are some basic computations like this is an addition there are lot of assignments and so on so it's a bit more challenging to analyze but still still doable question is can we do it even better like can we improve up on that and the answer is yes until now we basically had something which was W control flation there's another Technique we can do this is called arithmetic officiation and the goal behind arithmetic ofation basically is to make simple arithmetic computations um hard to analyze let me give you an example if you see a function in C like that where you see int Fu with two parameters int X int y and you return x + y and you think about what does this function do you easily know well this function takes two inputs X and Y and add them together so this function could be named sum or add or something like that because here it's easy to see that this is a computation however what about if I have a function fu with int X and int Y where you have something like XX or Y plus 2 * X and Y what does this compute now well as it turns out this computes exactly the same like this one so these two formulas are equivalent they just look different however for us reverse Engineers it's not easy to see that this is just the same as a computation as x + y however it in the end it is no matter which input values we use for x and for y it will always behave the same like x + y and this is called arithmetic obos cation where we basically height obious height simple assignment simple arithmetic computations in large complex formulas and going back to our Fibonacci case we can the first thing we did is that we encoded the control flow with something like that where we had the state machine and now in the second state we want to improve up on that such that we do not only encode the control flow but also to make these assignments significantly harder to read so what we could do for instance would be we could do it like that that we take the exact same Loop but for each assignment that was just a simple assignment or a simple computation we make it significantly Harder by encoding the computations in arithmetic formulas in this case it's all assignments are based on on this formula we just showcased here so everything like that is just the same as x + y so for instance here here we see that we add n and five so this would be the same as n + 5 and then we substract n and then we substract five five Computing zero so this formula computes basically state equal zero and if we take a look down here we see basically we try to encode this one or let's go back to this one where we have S equal a + b we will now encode it in a form like this one where we have S = A X or B + 2 * A and B and the assignment where a should be equal to B we can now encode as a = a X or B + 2 * A and B this one is a plus b and then finally we substract a such that we basically compute a equals B so this can be understood as a a equals a equals B and so on so it's the same technique applied to all others but taking a look at that this this simple formula just applied all over the place and the code is significantly harder to understand on the binary level if we compile it then so let me compile it again with calling Fibonacci 2 then we compile it and then we put in some values there like one like 10 like 200 and you see all of the three functions compute the same no matter the input however if we analyze it in the binary like this one it's still encodes the control flow of the function so we have control flow ofation but also we see that the individual basic blocks are significantly larger if you compare to the one before where we have just smaller States now we have larger States and if we now take a look at decompiler we see a lot of computations here and now it's not that easy for us anymore to really understand what's going on here and how these these things work now we not only have control flow ofation but also we have arithmetic ofation which makes in combination things significantly harder to understand and at the same time the rules we just applied were very very basic now think about what we could do if we take strong appication thousands of different formulas like that and combine it even with further significant L more complicated um or sophisticated ofation Transformations what you can get and generate for code that is really hard to analyze this here is just one of the easiest example I can think of and even that can be a pain to reverse engineer so coming back to our slides we basically tackled that there is something like code ofation in data and coding which are passive protections to um impede reverse engineering passive protections that basically means they are just there and if you take a look at it you don't see um um you see like a maze of complicated things that you have to um analyze on your own however there are also something which is called active protections active protections have the goal to be um i s I saw I see the questions I will answer them later on so active protections um at the same time um are basically guards in code that are inserted in the code and active at run time and these guards take care of pinpointing the environment if something speically changed and then go into an error State and this can be used for instance to detect debuggers or to detect code modications and so on so for instance in the case of anti- debug if you have a and the first thing you will do is you create a check like that where you say if Thea detected I then do some action and this action for instance might be terminating the program so like I um if a debugger is present like if somebody attach GDB or wind debug or some other debugger to my application and this function detects that then we might terminate because we know we are actively getting analyzed so question is how we could detect a debugger and well the answer there is there are lot of documented and undocumented methods for instance if we check something like anti debug Linux we will find several blog posts about various um various anti debug techniques on Linux and the same goes for Windows for Windows we find will find even more like this great reference of various anti- deback techniques or we can see that we have an entire website here of various anti- deback tricks so they there are a numerous way then an there a lot of different ways to detect the debugger but they have all one thing in common the idea of anti- debug is basically a debugger changes the environment the execution environment the execution n in specific ways like for instance if I attach a debugger um my application behaves differently if it crashes or if it throws an interrupt or something like that or some special purpose registers on the CPU have different values so there are a lot of different ways that the environment changes um if a debugger is is attached and therefore by looking specifically for these changes we know well applications can know if they're getting debugged or not and then they can perform some action for instance terminate themselves so and the same goes for check summing check summing or also anti-er the idea there is that you can compute check sums over code so for this I have to go a few steps back so if we see if we take a look at some code like this one we see that these are assembly instructions and as we have discussed in the beginning these assembly instructions are just nothing else than a sequence of bytes here we can see that we have a sequence of bytes that encode this assembly instruction and over this sembly instructions I can compute a cryptographic checkm I can for instance walk over all these bit in this function and put it into some cryptographic function which for instance exor all these values or performs an MD md5 computation or whatsoever and then gets a large constant as output so we basically on anti temper which basically gets an input we have a crypto check sum which takes as input bite sequence of code and then produces as output just a large large constant and this large constant basically encodes or is some indicator some short represent of this code and now an attacker could go and for instance change some of the codes for instance here instead of doing control flow like that then techer could just modify this specific instruction to just return a value for instance we could just do a return here and if I do that the bite the quence of the code changes and if the bite sequence of the code changes because somebody modified a jump or modified a function to turn something different or just want to crack something then this checksum is not valid anymore because it produces another constant so this constant will not be the pre-computer constant and if I then have a check like if crypto check Z if something like that is not equal to the large pre-constituted constant if I have something like that then I know somebody changed something in the code and then I could can just terminate for instance so and the same goes for anti anti debug where can go do something like if detect de debugger and if this is the case I could just do terminate and otherwise I do I go on with my normal behavior so these are examples for active protections compared to compared to code officiation which is a purely passive Technique we have something like active protections which pinpoints environment and check if something is suspicious like if a debugger is present or if some code changed in memory and if so we can do counter act like terminating the program terminating the program is just one example for instance another technique would be we could um delete the file system we could just proceed as normal but introduce small errors to computations um or we could just send a message somewhere or whatever ever we could go to some kind of fail state so this is a safe check that basically allows us to detect if somebody tries to analyze the program at runtime and if so we can do the failure State this is the idea of anti- debug and anti-er typically you have anti- debug and you have anti-er and you have code ofation and the question is how do these things play together well let's think about it if I only have anti- debug and anti- temper I can't modify as binary or I can't um or I can't um attach a debugger however I can still analyze the code and then detect something like that for instance maybe this this Co this call here just checks if this conditional jump here checks if a debugger is present or not in case a debugger is present it goes to a failure State otherwise it goes to this state let's assume that and if it is like that what I could do is I could just go to patch and then do something like always Branch or never Branch such that i' basically patch out the anti- debugger check or I could patch out the anti-er check the same way so therefore it's not a good idea to put these things just as they are into the binary instead you want to try to to combine it with code obious cation so if you have obvious cated user code and if if you combine it with obious cated obus cated anti- debug code and obus cated anti- temper code in the end you have just a lot of code which is obis cated and you can't really analyze and as an analyst you have an hard time to decide if it is this user code if is an anti- deback check if it's anti- temper check because everything is mixed together and therefore the takeaway is that good software protection combines obis cation and anti- debug anti- temper um and mixes them so basically we don't have the one we don't have the other in the best case we have both because then we can't only analyze it statically but we can also analyze dynamically and we have to analyze in bypass the ofation such that we can or at least some layers of OB ation such that we can attach a debugger and so on so this is how the idea of Self Protection works we have passive protections we have runtime protections and in combination both of them are pretty strong if you want to play around with that on your own you not only have this samples and this recording and so on but there also an online demo of M of our of our in-house office cator um which you might be interested in taking look at let me showcase that so if you go to demo. proof.com you will find here the IP protection demo and if you click on that um you get three Windows one window displays source code then here we have the unprotected disassembled binary and then protected assembl binary so let's say we want to take some algorithm like we take a base 64 encoding here we can then take a look at the source code of the Bas 64 encoding and now we can compile it in this case for the r64 Linux architecture so we can compile it it takes some seconds and then here in the middle we have have various tools the first thing is we can take a look at the disassembled code this is now the arm assembly code however we also can take a look at the decompiler output then it looks like that then we see significantly more like it's not nice to read but we can relate like these things here one to one relate to these things here so we see it's nearly the same or sorry another thing we could do is we could show the CFG and now we take a look at the control flow graph here like that so this is something we want now to protect against reverse engineering what you could do is we go down here we for instance take a control flow of the cation scheme and then they protected with n okay since I reloaded I have to redo the first step but this will take only a while so I compile it again so and now we can choose an obis cation and OB thecate it and after it's been processed we can take a look how it behaves so now if we compare the original CFG control flow graph with the protected control flow graph we already see here this one is significantly shorter because the decompiler and the disassembler like the analysis tool in the background didn't know doesn't know how to proceed it just is able to only analyze fragments of the code it doesn't see the other code at all this is an indicator that there are some and that the protection already works we can take a look at the disassembler and we see that the code looks does look different however the most difference we will see in the decompiler if you take a look at the decompiler and we go to this function base 46 and code we see a lot of code here and see how it relates to this one on the left however if we um now get take a look here we see that we call another function and this another function is not really cannot be really analyzed here the decompiler just didn't know what to do and shows us everything um the decompiler knows which isn't that much so in this case the alisation has been successful and if you want to play around with this online demo and get some explanations there are also some great guidances like the explainer which allows you to play around with first the the things that um go here how this works but you also have resources like um IP protection where you have a nice explainer on how it works then then how different officiation schemes work and so on so this is a great example and a great slide deck here um to play around with that this here for instance is control flow flattening this is the control flow ofation we just took a look at at the Fibonacci code and also at um in the demo here so you get great explanations here so if you want to play around with that it's a great start so coming back to the slides here's again the link for the online demo and to conclude this webinar um that we talked about common reverse engineering threats that can be used for piracy for competitor analysis and so on and then we have something like passive and active methods to reverse engineering then you will have the online demo to play around with and of this webinar today the record ing the binaries the samples the slides you will find later on here in this link now um you have time to ask some questions like we have 15 minutes to answer some questions if you are um so feel free to ask them and check them and in between I will start at the top with the questions and answer them so the first question is is there any concern over using optimizations because I'm using optimization level or zero yes so in general no in this example yes so what I did here is I have this code and I put it with o0 the question is what happens if we add a higher compiler level like optimization level like O3 if I do that let me just showcas that in this case it will kill most of the officiation because this one is significantly too simple so let's let me do that with O3 and compile that let me first show it behaves the same still works the same however now if I close that and I opens that again and I go to the hardly to the uh to the protector sample you see we still have control flow flattening and the code is still obvious cated but it's not that much obis cated anymore so it looks a bit different so in this case it didn't make too much of a difference at the same time if I do only some basic things the likelihood that the compiler can optimize it way is quite high so therefore a good obis cation is resilient against compiler optimizations or let's say compiler optimizations even make obis cated code even harder to analyze um but if I would just put something easier in here so if I just would for instance do something like a + b + 1 minus one or something like that this one the compiler would kill immediately so yes compiler optimizations do make a difference um yeah they do make a difference especially if the if the examples are simple so let's go to the another question would you expect to see such level of officiation and embedded real time systems where performance matters wouldn't be a trade of of the developer well yes and no um obfuscation itself adds complexity and as I have have shown it on the slides like here um complexity can get very complex and therefore the code can significantly get larger and slower and this is something something like that you see very often on desktop systems where size does not that much matter where it doesn't really matter if your binary is 1 MB or 10 MB so this usually is a lot of um um is pretty common ever un embedded especially on realtime systems or small devices you can't do something like that what you what you usually do there is that you build sophisticated obfuscation methods that don't add too much complexity but still are very hard to analyze and they are especially this combination of active and passive methods especially the combination Done Right is a thing that adds the security there because you can't do you can't escalate in size too much at the same time you can combine passive and active Protections in a Smart Way such that the the security level is comparable um but especially designed for small and devices and then also what you don't want to do is you touch realtime systems like real time code um um especially if it's must be cycle exact something like that what you usually do is there that you add maybe some code decryption Stu where the code itself is not really is not really protected um it's not really touched at run time but initially you add during the boot up phase you add some heavily off fisticated decoding phase for instance such that the original code is only available at runtime something like that would be also common to do on very small devices and by the way our company M proof is basically specialized for doing embedded IP protection we see us itself as a as um our main focus in the embedded World another question does it Target specific function or the entire binary so also this is a pretty good question it the answer is always it depends there's a possib abity to add obis cation to only specific functions or to only specific code Parts there's also the possibility to Blacklist specific code Parts like to touch everything besides a specific set of functions and there's also the possibility to protect everything so like a good obis cator gives you a lot of freedom in terms of configuration if you want to prodct everything on if Sy specific things how you want to protect it if you want to Blacklist things Whit list things and so on so this has to be done in an uper skor uh there's another question in the IP protection demo do you use indirect branching in addition to playing control flow lightening um yes so basically um indirect branching means that you compute the result of a jump at runtime that you don't basically have something like jump um where is it for instance that you don't have a jump to a concrete address like this one but instead you for instance patch it to jump to RDI to some register and this register then contains a computed value and this value is computer at runtime and this way um you can't really easily see where it goes and yes in the IP protection demo um we use a computer jump we can see it here we can see it here that here we Branch to register and it's not really clear where this register goes to so yes there's another question no there's no other question so yeah these were right now all questions um are there any additional questions there are two more questions one is while talking about fpg uh while talking about embedded devices fpgas and other resource constraints devices have you explored the problem for trying to add obis cation for the CFG and arithmetic statements while optimizing the size of the final go of specific device constraints something like multiobjective function optimization problem do you know some resources topics for that um we played around with that yes and um we came to some conclusions that it works in some cases but we have to be very careful with that and in general there are not many resources out there some resources uh this is often private IP of software protection companies and therefore you don't find that much out there so sorry about that but optimizing CFG and aric statements for code size and so on this works for sure to some extent there's another question by obfuscating only part of the functions will it make the obus cated parts tose engineer the other parts that are not obus cated that's always a good question so yes if you know that you if you know that this is for instance a um a well-known implementation of something and you recognize specific parts let's say let's say this is this you you recognize that there is a loop that adds to values and does some assignments like um like this one you recognize let's say you recognize this part and you recognize that this part looks like a partial Fibonacci computation then of course you can do an educated guess that also all other part of the function might be heavily obfuscated you might just say hey maybe this is a Fibonacci Sequence because this part looks famili familiar and then you can just do an educated guess and observe if it really behaves like a fi so yeah if there are some parts not obis cated and you for for whatever reasons recognize parts of that then you can take this knowledge and do some educated guesses yes good question other other questions okay then I think um we call it a day thank you very much for your interest and for your questions um this webinar will then be uh published soon and there's a link where we will find all the information so thanks a lot for your questions and your intentions and see you soon goodbye",
+  "errors": []
+}

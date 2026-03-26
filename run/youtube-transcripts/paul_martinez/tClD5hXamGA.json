@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tClD5hXamGA",
+    "language": "en",
+    "took_ms": 7647,
+    "method": null,
+    "title": "Training High School Students on ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20180910",
+    "duration_sec": 1856,
+    "description": "At S4x17 Matt Luallen of Cybati trained 15 Palm Beach County high school students with hands on ICS security modules. We upped the ante at S4x18 and had a train the teacher session at the event.\n\nThe goal: have a set of trained teachers and curriculum beginning in the fall 2018 semester so students in the Palm Beach County technical programs can learn ICS security in hands on multi-week classes. \n\nThe good news is the Cyber Academy and Engineering Academy schools have 6 of the training kits and are planning to use it this academic year.",
+    "view_count": 121
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tClD5hXamGA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

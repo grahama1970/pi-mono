@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rhwD4c86CfI",
+    "language": "en",
+    "took_ms": 9140,
+    "method": null,
+    "title": "DEF CON Safe Mode Monero Village  - Sarang - Open Office Q&A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3176,
+    "description": "Ever wanted to have one of your Monero or cryptography related questions answered by the Monero Research Lab? Ask away!",
+    "view_count": 347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rhwD4c86CfI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r2R9o6hzB3M",
+    "language": "en",
+    "took_ms": 9490,
+    "method": null,
+    "title": "Watch SpaceX Launch NASA's CRS-16 and have a failed landing attempt!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20181205",
+    "duration_sec": 5183,
+    "description": "NASA is paying SpaceX to launch a Dragon on a resupply mission to the International Space Station. In February of 2016, NASA extended the CRS-1 contract with SpaceX to include 5 additional resupply missions. CRS 16 is the first of those five.\n\nWant more info? Here's a complete and simple rundown for you! - https://everydayastronaut.com/prelaunch-preview-spacex-crs-16/\n\nBrand new shop now open! - http://shop.everydayastronaut.com\n\nCheck out my new podcast!!!! - https://ourludicrousfuture.com\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nThinking about ordering a Tesla? Get free unlimited supercharging!! http://ts.la/tim19804\n\nAlready order a Model 3 and waiting for delivery? You can use my referral code too (talk to your advisor) tim19804 :)",
+    "view_count": 115470
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r2R9o6hzB3M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

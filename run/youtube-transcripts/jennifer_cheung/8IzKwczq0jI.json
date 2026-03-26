@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8IzKwczq0jI",
+    "language": "en",
+    "took_ms": 9585,
+    "method": null,
+    "title": "DEF CON 32 - Leveraging AI for Smarter Bug Bounties - Diego Jurado & Joel Niemand Sec Noguera",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2453,
+    "description": "As security researchers, we constantly attempt to stay ahead of the curve, seeking innovative solutions to enhance our offensive security strategies. In recent years, the advent of artificial intelligence (AI) has introduced a new dimension to our efforts, particularly in the realm of bug bounties and pentesting. While significant attention has been given to understanding and mitigating attacks against AI systems, the potential of AI to assist in the offensive security field remains largely unclear.\n\nThis talk pretends to dig into the research and development process undertaken to create an AI agent designed to augment the bug bounty and pentesting workflow. Our AI agent is not merely a theoretical concept but a practical tool aimed at enhancing the efficiency and effectiveness of security researchers.\n\nWe have conducted extensive research to understand how AI can mimic and enhance human intuition and creativity in identifying vulnerabilities. While this may sound trivial, there is little evidence of this being tested before on generative AI agents. Our work breaks new ground by pushing the boundaries of what AI can achieve in offensive security.\n\nWill AI become an indispensable tool in our arsenal, capable of autonomously identifying and exploiting vulnerabilities? Join us as we explore the possibilities and implications of AI as an offensive assistant in this new era of offensive security.",
+    "view_count": 3887
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8IzKwczq0jI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

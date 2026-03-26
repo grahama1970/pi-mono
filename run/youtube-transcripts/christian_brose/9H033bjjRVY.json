@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9H033bjjRVY",
+    "language": "en",
+    "took_ms": 9686,
+    "method": null,
+    "title": "Tevi Troy on Changes in the Middle East for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20110822",
+    "duration_sec": 199,
+    "description": "Hudson Senior Fellow Tevi Troy joined Fox News on August 22 to discuss the changing situations in Libya and Syria and the ousting of Qaddafi.",
+    "view_count": 208
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9H033bjjRVY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

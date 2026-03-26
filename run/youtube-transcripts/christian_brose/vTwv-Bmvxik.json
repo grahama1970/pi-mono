@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vTwv-Bmvxik",
+    "language": "en",
+    "took_ms": 9001,
+    "method": null,
+    "title": "Securing Defense Technology in a Globalized Marketplace",
+    "channel": "Hudson Institute",
+    "upload_date": "20141217",
+    "duration_sec": 2749,
+    "description": "Hudson Institute hosted a presentation by Beth McCormick on  securing today’s and tomorrow’s defense technologies. She   shared her unparalleled knowledge of the needs and means to  protect this vital aspect of the nation’s security and  strategic posture. Hudson Senior Fellow Arthur Herman  moderated the event. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 692
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vTwv-Bmvxik: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

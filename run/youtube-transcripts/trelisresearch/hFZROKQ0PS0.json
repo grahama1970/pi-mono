@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hFZROKQ0PS0",
+    "language": "en",
+    "took_ms": 9480,
+    "method": null,
+    "title": "A Simple Postgres Logger for OpenAI Endpoints - Open Source",
+    "channel": "Trelis Research",
+    "upload_date": "20250516",
+    "duration_sec": 1118,
+    "description": "📜 \"pip install trelis-openai-logger\"\nRepo: www.github.com/TrelisResearch/trelis-openai-logger\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Fine-tuning / Evals Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Why logging is useful for evals and fine-tuning\n0:52 Finding the Github Repo and PyPI package: https://github.com/TrelisResearch/trelis-openai-logger\n1:22 Quick demo of trelis-openai-logger - logging traces to Postgres\n4:26 Running Postgres locally\n8:36 Running Postgres on a remote server (Digital Ocean Droplet)\n15:31 Running Postgres as a Digital Ocean Managed Database\n17:36 Future Video: Using Postgres logs to run evals and create fine-tuning datasets",
+    "view_count": 1083
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hFZROKQ0PS0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

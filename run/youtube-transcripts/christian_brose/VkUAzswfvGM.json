@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VkUAzswfvGM",
+    "language": "en",
+    "took_ms": 8899,
+    "method": null,
+    "title": "Author Matt Ridley on \"How Innovation Works: And Why It Flourishes in Freedom\"",
+    "channel": "Hudson Institute",
+    "upload_date": "20200810",
+    "duration_sec": 3344,
+    "description": "Join Hudson Institute for a discussion with Matt Ridley, an award-winning author and member of the House of Lords, on his new book, “How Innovation Works: And Why It Flourishes in Freedom.” In the book, Ridley couples case studies with economic and historical analysis to argue why innovation flourishes in free societies.",
+    "view_count": 1251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VkUAzswfvGM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DaMzI40bmsw",
+    "language": "en",
+    "took_ms": 9125,
+    "method": null,
+    "title": "Are other nations just copying America's stealth fighters?",
+    "channel": "Sandboxx",
+    "upload_date": "20230417",
+    "duration_sec": 59,
+    "description": "With at least 12 new stealth aircraft in active development today, a large number of them really do look like slight variations on Lockheed Martin's F-22 or F-35 designs. \n\nWhat's the deal with that? \n#f22 #f35 #j20 #fc31 #stealth #stealthfighter #airpower #aircraft #military #defense #tech #technology",
+    "view_count": 30806
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DaMzI40bmsw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

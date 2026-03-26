@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z9tZFz89dd8",
+    "language": "en",
+    "took_ms": 8936,
+    "method": null,
+    "title": "The UK is grinding up old jets to build their Tempest fighter #fighterjets",
+    "channel": "Sandboxx",
+    "upload_date": "20250213",
+    "duration_sec": 141,
+    "description": "The Tornado 2 Tempest program combined recycling with 3D printing to make for a future that's less reliant on foreign-sourced materials. \n\nStay on top of Defense news by subscribing to Sandboxx!",
+    "view_count": 43172
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z9tZFz89dd8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

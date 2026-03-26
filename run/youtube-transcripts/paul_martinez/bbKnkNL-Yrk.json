@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bbKnkNL-Yrk",
+    "language": "en",
+    "took_ms": 9652,
+    "method": null,
+    "title": "Cyber Norms and Glass Houses",
+    "channel": "S4 Events",
+    "upload_date": "20220207",
+    "duration_sec": 132,
+    "description": "A clip from Dale's interview with Sandworm author Andy Greenberg. A bit of hypocrisy with USG wanting others to observe red lines for cyber attacks and yet not wanting to take anything off the table for their own use.",
+    "view_count": 124
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bbKnkNL-Yrk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

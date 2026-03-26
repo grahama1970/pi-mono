@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PwcIyS9bc_o",
+    "language": "en",
+    "took_ms": 7706,
+    "method": null,
+    "title": "DEF CON 32 - Gridlock The Dual Edged Sword of EV and Solar APIs in Grid Security - Vangelis Stykas",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1748,
+    "description": "In this talk, we delve deep into the increasingly interconnected world of electronic vehicles (EVs), photovoltaic (PV) solar systems, and the broader power grid infrastructure—a nexus that is becoming a fertile ground for potential large-scale cyber disruptions. As we navigate through this complex interplay of technology and infrastructure, we will uncover the critical vulnerabilities lurking within the API connections that bind these systems together. Our exploration will not only highlight these weaknesses but will also demonstrate, through real-world scenarios and potential attack vectors, how they can be exploited to launch sophisticated cyber-attacks, emphasizing the urgent need for robust security frameworks and proactive cybersecurity measures to safeguard our collective future. The advent of PV inverters and EV charging systems has been marred by the industry's \"rush to market\" mentality, leading to overlooked security considerations.",
+    "view_count": 539
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PwcIyS9bc_o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

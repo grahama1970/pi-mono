@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "x_iUABsCH1w",
+    "language": "en",
+    "took_ms": 9200,
+    "method": null,
+    "title": "DEF CON 31 - Advanced ROP Framework  Pushing ROP to Its Limits - Brizendine, Kusuma",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2756,
+    "description": "This research provides innovative contributions to return-oriented programming (ROP), not seen before. We introduce ROP ROCKET, a cutting-edge ROP framework, to be released at DEF CON. With ROCKET, when attacking 32-bit applications, we can switch between x86 and x64 at will, by invoking a special ROP Heaven's Gate technique, thereby expanding the attack surface. We will discuss the ramifications of this novel approach.\n\nBypassing DEP via ROP is typically straightforward, using WinAPIs such as VirualProtect and VirtualAlloc. We demonstrate an alternative: using Windows syscalls. In fact, ROCKET provides automatic ROP chain construction to bypass ROP using Windows syscalls. While extremely trendy, Windows syscalls are only very rarely used in ROP.\n\nOne problem with automatic chain construction is bad chars or bad bytes. We demonstrate how ROCKET allows us to use virtulally any gadget whose address contains bad bytes. With this approach, automatic ROP chain construction is far less likely to fail. Thus, we overcome one of the major obstacles when creating a ROP chain: bad bytes, which reduces the attack surface needlessly. In fact, if one wanted, they could use ROCKET to \"obfuscate\" any gadget, obscuring what is being done.\n\nThis presentation will do the seemingly impossible - and surprise even veteran users of ROP.",
+    "view_count": 3182
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] x_iUABsCH1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LJFuydx-HtE",
+    "language": "en",
+    "took_ms": 7759,
+    "method": null,
+    "title": "DEF CON Safe Mode Demo Labs  - Chris Nevin - Carnivore",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3158,
+    "description": "Carnivore is a username enumeration and password spraying tool for Microsoft services (Skype for Business, ADFS, RDWeb, Exchange and Office 365). It originally began as an on-premises Skype for Business enumeration/spray tool as I was finding that these days, organizations often seem to have locked down their implementations of Exchange, however, Skype for Business has been left externally accessible, and has not received as much attention from previous penetration tests due to the lack of tools as impactful as Mailsniper. Overtime this was improved and built upon to bring the same service discovery, username enumeration and password spraying capability to Skype, ADFS, RDWeb, Exchange, and O365 all in the same tool. Carnivore includes new post compromise functionality for Skype for Business (pulling the internal address list and user presence through the API), and smart detection of the username format for all services. As a practical means of entry into an organisation – numerous external penetration tests have uncovered an on-premises Skype for Business or ADFS server even for organisations that have moved Mail/SSO/etc to the cloud.",
+    "view_count": 2263
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LJFuydx-HtE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

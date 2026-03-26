@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "t5F93NIDePQ",
+    "language": "en",
+    "took_ms": 8073,
+    "method": null,
+    "title": "Defense Will Win (In ICS / SCADA Security)",
+    "channel": "S4 Events",
+    "upload_date": "20160801",
+    "duration_sec": 1830,
+    "description": "It is taken as gospel that offense has the advantage in cyber conflict and that this is a permanent condition. Dale Peterson of Digital Bond makes the case that Defense Will Win in ICS cyber conflict at S4xEurope.\n\nThe session looks at conflict from a historical perspective, the definition of an offensive cyber success in ICS, the danger of offensive predominance, and the advantages of even an adversary improving their ICS cyber defense.",
+    "view_count": 1437
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] t5F93NIDePQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

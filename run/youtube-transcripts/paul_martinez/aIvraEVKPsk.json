@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aIvraEVKPsk",
+    "language": "en",
+    "took_ms": 9088,
+    "method": null,
+    "title": "An Examination of Hardware Convergence in ICS",
+    "channel": "S4 Events",
+    "upload_date": "20180710",
+    "duration_sec": 1342,
+    "description": "Todd Keller of INL\n\nBegins with a comparison of biological convergence and cyber convergence, and why convergence is important in a security context.\n\nIt gets going at 5:35 when he talks about INL looked at convergence in smart meters. Not surprisingly, they found common chips in a variety of smart meters and how\n\nNext they purchased a malware scanning kiosk in order to see if the vendor new the hardware and software component vulnerabilities that existed in their product. For example there was a Genesys Logic GL3220, which some say is vulnerable to BadUSB.\n\nThis is a good example of why a software bill of materials (SBOM) and hardware bill of materials are helpful. Ideally the vendors would monitor all software and hardware used for vulns, but this is not happening.\n\nIt's a short session, and the 8 minute Q&A at the end is a highlight.",
+    "view_count": 180
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aIvraEVKPsk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

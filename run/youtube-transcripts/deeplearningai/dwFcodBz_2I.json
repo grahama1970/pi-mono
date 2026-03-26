@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dwFcodBz_2I",
+    "language": "en",
+    "took_ms": 8760,
+    "method": null,
+    "title": "deeplearning.ai's Heroes of Deep Learning: Yuanqing Lin",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 817,
+    "description": "",
+    "view_count": 6908
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dwFcodBz_2I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

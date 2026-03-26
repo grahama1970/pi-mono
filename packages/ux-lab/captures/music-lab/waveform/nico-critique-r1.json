@@ -1,0 +1,32 @@
+[
+  {
+    "severity": "HIGH",
+    "category": "Accessibility (A11y)",
+    "description": "The stem toggle controls are implemented as `div` elements. They are not focusable via keyboard and do not expose their role (button) or state (pressed/not pressed) to assistive technologies like screen readers. This violates WCAG 2.1 Success Criterion 4.1.2 (Name, Role, State).",
+    "suggestion": "Convert the `div` elements for stem toggles into `<button>` elements. Use `aria-pressed` to indicate the active/inactive state, which should be toggled with JavaScript. This ensures they are keyboard-navigable and their function is properly communicated."
+  },
+  {
+    "severity": "HIGH",
+    "category": "Accessibility (A11y)",
+    "description": "The severity of a timing drift (medium vs. high) is communicated solely through color (amber vs. red). This is not perceivable by users with color vision deficiencies and violates WCAG 2.1 Success Criterion 1.4.1 (Use of Color).",
+    "suggestion": "Supplement the color-based highlighting with a secondary visual indicator. For example, use a dashed pattern for medium drift and a solid fill for high drift within the highlighted `rect`. Alternatively, an icon could be placed near the beat marker."
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "Data Representation",
+    "description": "The waveform is visualized as a smooth, stylized Bézier curve (`<path>`). The component specification states the data source is `peaks.json`, an array of floats per pixel column. A smooth curve invents data between points and misrepresents the discrete nature of the input, potentially obscuring sharp transients or clipped audio.",
+    "suggestion": "Change the waveform visualization to more accurately reflect the `peaks.json` data. A path constructed from vertical lines (one per data point) or a filled area chart would be a more faithful representation of the per-column amplitude data."
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "Visual Clarity / Scalability",
+    "description": "The diagonal and vertical lines connecting expected beats to actual beats for drift visualization could cause significant visual clutter, especially with many small drifts. The solid red line in the 'High Drift' example cuts directly through the primary waveform, obscuring the data it's meant to annotate.",
+    "suggestion": "Simplify the drift visualization. The colored background `rect` is effective and less intrusive. Remove the connecting lines. The user can infer the drift by comparing the top (actual) and bottom (expected) beat markers within the highlighted region."
+  },
+  {
+    "severity": "LOW",
+    "category": "Readability",
+    "description": "Lyric text is placed directly over the lower portion of the waveform area. This could lead to readability issues if the text overlaps with complex waveform shapes or other markers, especially with denser lyrical content.",
+    "suggestion": "Consider allocating a dedicated, reserved space for the lyric track below the main waveform area, ensuring it always has a clean, un-obstructed background."
+  }
+]

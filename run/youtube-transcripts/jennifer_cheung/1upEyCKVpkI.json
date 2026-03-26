@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1upEyCKVpkI",
+    "language": "en",
+    "took_ms": 7811,
+    "method": null,
+    "title": "DEF CON 32 - The Immortal Retrofuturism of Mainframes and How to Keep Them Safe- Michelle Eggers",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1547,
+    "description": "When you used your debit card today, do you know where that transaction was sent? Though it may conjure archival images of a 1950’s IT room stocked with enormous, low-tech machines, Mainframe technology is both modernized and heavily relied upon today.\n\nMainframe architecture is some of the most reliable tech available, able to manage incredibly large input/output volumes with low risk of downtime and there are few signs of it being sunset in the decades to come. As protectors of the cyber landscape, understanding how mainframes are incorporated into a businesses topology and ways to secure mainframe architecture will remain important for any entity that utilizes this technology.\n\nIn this talk we'll explore the pervasiveness of mainframe technology, why it will remain relevant to the future landscape of mission critical-applications, and several trusted solutions for helping to secure these incredible computers.",
+    "view_count": 591
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1upEyCKVpkI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

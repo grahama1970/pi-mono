@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OQdp-OeG1as",
+    "language": "en",
+    "took_ms": 7845,
+    "method": null,
+    "title": "Fine-tuning Language Models for Structured Responses with QLoRa",
+    "channel": "Trelis Research",
+    "upload_date": "20230809",
+    "duration_sec": 3927,
+    "description": "I cover fine-tuning of language models to return *structured responses*, e.g. to return function calls, json objects or arrays. Lecture notes here: https://colab.research.google.com/drive/1KBBQoaJIWmqoDFW6C-lICGVW-lz2ahtD?usp=sharing\n\nFine-tuning for tone or style? https://www.youtube.com/watch?v=Nbyz3PRsQgo\n\n*Basic Training Google Colab Notebook (FREE)*\nAccess the Google Colab script here: https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing\n\n*ADVANCED Training Notebook for Structured Responses (PAID)*\n- Includes a prompt loss-mask and stop token for improved performance.\nLearn more: https://trelis.com/function-calling/\n\n*Advanced Fine-tuning Repo Access - incl. 5+ advanced notebooks*\nLearn more here: https://trelis.com/advanced-fine-tuning-scripts/\n1. Fine-tuning for structured responses\n2. Supervised fine-tuning (best for training \"chat\" models)\n3. Unsupervised fine-tuning (best for training \"base\" models)\n4. Embeddings generation and usage (alternative to fine-tuning)\n\n*Function Calling Dataset*\n- Function calling dataset: https://huggingface.co/datasets/Trelis/function_calling_v3\n\n*Out-of-the-box Llama 2 with Function Calling*\n- Llama 70b, 34b (code llama), 13b, 7b: https://huggingface.co/Trelis/Llama-2-70b-chat-hf-function-calling-v2\n\n0:00:00 Understanding Model Size\n0:03:56 Quantization\n0:09:09 Loading and Setting Up a Training Notebook\n0:15:26 Data Setup and Selection\n0:15:52 Training Process\n0:19:31 Inference and Prediction\n0:23:17 Saving and Push the Model to the Hub\n0:25:59 ADVANCED Fine-tuning and Attention tutorial",
+    "view_count": 19412
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OQdp-OeG1as: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

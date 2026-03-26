@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2s0WO000uks",
+    "language": "en",
+    "took_ms": 7893,
+    "method": null,
+    "title": "The big problem with hypersonic missiles",
+    "channel": "Sandboxx",
+    "upload_date": "20230312",
+    "duration_sec": 55,
+    "description": "According to the Pentagon, the hypersonic missiles in active development will cost as much as $106 million per unit... and that makes this pretty impractical for most targets. \n#shorts #airpower #hypersonic #hypersonics #hypersonicmissile #hypersonicmissiles #airdefense",
+    "view_count": 133793
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2s0WO000uks: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

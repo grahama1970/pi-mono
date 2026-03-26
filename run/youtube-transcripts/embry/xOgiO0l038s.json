@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xOgiO0l038s",
+    "language": "en",
+    "took_ms": 8645,
+    "method": null,
+    "title": "Watch SpaceX launch the Telstar 18 Vantage Satellite!!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180910",
+    "duration_sec": 4362,
+    "description": "SpaceX got paid by Telesat to send the Telstar 18 Vantage satellite towards its parking orbit. SpaceX will be launching the satellite on top of one of their Falcon 9 rockets. The rocket is currently at Cape Canaveral Air Force Station at the launch pad, SLC-40, waiting for its chance to fly -\n\nEverything you need to know about this launch here - https://everydayastronaut.com/prelaunch-preview-telstar-18-vantage/\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nThinking about ordering a Tesla? Get free unlimited supercharging!! http://ts.la/tim19804\n\nAlready order a Model 3 and waiting for delivery? You can use my referral code too (talk to your advisor) tim19804 :)",
+    "view_count": 50148
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xOgiO0l038s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

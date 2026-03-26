@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kBWg4I9795w",
+    "language": "en",
+    "took_ms": 7758,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village - Eric Gershman - Safety 3rd Defeating Chevy StabiliTrak",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1389,
+    "description": "Electronic Stability Control (ESC) system saves thousands of lives every year by preventing accidents before a driver starts to lose control but it can be a real drag when trying to race a modern electric vehicle. Both the Chevy Spark EV and Bolt electric car communities have been unable to defeat the ESC to get full control of their cars on the track. Join me on my journey as I attempt to defeat Chevy’s Stabilitrak to turn an EV econobox into an autocross speed racer.",
+    "view_count": 701
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kBWg4I9795w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

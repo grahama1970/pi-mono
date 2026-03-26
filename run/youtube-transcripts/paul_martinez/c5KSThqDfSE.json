@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "c5KSThqDfSE",
+    "language": "en",
+    "took_ms": 8748,
+    "method": null,
+    "title": "Unsolicited Response S4x19",
+    "channel": "S4 Events",
+    "upload_date": "20191104",
+    "duration_sec": 629,
+    "description": "We close down Stage 2 at S4 with Unsolicited Response. Speakers are allowed 5-minutes to talk (rant) about whatever they want. Some are funny. Some are project ideas. Some are blowback on a session they thought was dead wrong. And there is craft beer and root beer served.",
+    "view_count": 238
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] c5KSThqDfSE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

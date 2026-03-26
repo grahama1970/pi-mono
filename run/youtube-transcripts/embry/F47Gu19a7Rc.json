@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F47Gu19a7Rc",
+    "language": "en",
+    "took_ms": 2806,
+    "method": null,
+    "title": "Watch SpaceX launch a lunar lander!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190222",
+    "duration_sec": 7660,
+    "description": "Need to know more? Check out our Prelaunch Preview! - https://everydayastronaut.com/prelaunch-preview-spacex-nusantara-satu-psn-vi/\n\n-------------------------------------\n\nCheck out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nBrand new shop now open! - http://shop.everydayastronaut.com\n\nCheck out my new podcast!!!! - https://ourludicrousfuture.com\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut",
+    "view_count": 159914
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F47Gu19a7Rc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

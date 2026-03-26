@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4Z1Xq6RA4yY",
+    "language": "en",
+    "took_ms": 7810,
+    "method": null,
+    "title": "Space and the Right to Self Defense",
+    "channel": "Hudson Institute",
+    "upload_date": "20160713",
+    "duration_sec": 3726,
+    "description": "Sen. Tom Cotton, Sen. Jon Kyl, Gen. Charles Jacoby and Rebeccah Heinrichs discuss missile defense strategy, Space and the Right to Self Defense report - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4Z1Xq6RA4yY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

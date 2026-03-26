@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KWMUHSYkZIc",
+    "language": "en",
+    "took_ms": 9710,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Matt McMahon, Shannon Lantzy - The Economics of Cybersecurity",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 1256,
+    "description": "We will use a fictional -but highly realistic- biomanufacturing scenario and company to share with the audience how cybersecurity has become a critical component of biosecurity and public health. We will review the importance of biomanufacturing to the world's public health posture, in particular in light of the COVID19 pandemic and share how vulnerable digital technologies have become exploited vectors for global geopolitical moves.",
+    "view_count": 726
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KWMUHSYkZIc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

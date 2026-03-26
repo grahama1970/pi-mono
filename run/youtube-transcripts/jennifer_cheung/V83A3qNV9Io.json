@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V83A3qNV9Io",
+    "language": "en",
+    "took_ms": 9802,
+    "method": null,
+    "title": "DEF CON 30 - Car Hacking Village vol. 1",
+    "channel": "DEFCONConference",
+    "upload_date": "20220813",
+    "duration_sec": 202,
+    "description": "Silk gets the lowdown on the Truck portion of Car Hacking Village.\n\nCheck out Silk's work at YouTube.com/alexchaveriat and YouTube.com/hackerhangouts",
+    "view_count": 6445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V83A3qNV9Io: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

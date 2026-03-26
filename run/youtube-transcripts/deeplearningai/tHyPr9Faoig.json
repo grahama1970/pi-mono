@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tHyPr9Faoig",
+    "language": "en",
+    "took_ms": 9594,
+    "method": null,
+    "title": "New course with Unstructured: Preprocessing Unstructured Data for LLM Applications",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240410",
+    "duration_sec": 187,
+    "description": "Enroll now: https://bit.ly/3TOq2Hz\n\nIntroducing Preprocessing Unstructured Data for LLM Applications, a short course made in collaboration with Unstructured, aimed at helping you improve your RAG system to retrieve diverse data formats.\n\nIn this course, you'll learn techniques for representing all sorts of unstructured data, like text, images, and tables, from many different sources and implement them to extend your LLM RAG pipeline to include Excel, Word, PowerPoint, PDF, and EPUB files.\n\nThrough hands-on lessons, explore:\n\n- How to preprocess data for your LLM application development, focusing on how to work with different document types.\n- How to extract and normalize various documents into a common JSON format and enrich it with metadata to improve search results. \n- Techniques for document image analysis, including layout detection and vision transformers, to extract and understand the content of PDFs, images, and tables. \n- How to build a RAG bot capable of ingesting different documents such as PDFs, PowerPoints, and Markdown files.\n\nStart processing and using diverse data types and formats to build high-performing LLM RAG systems.\n\nLearn more: https://bit.ly/3TOq2Hz",
+    "view_count": 7045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tHyPr9Faoig: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

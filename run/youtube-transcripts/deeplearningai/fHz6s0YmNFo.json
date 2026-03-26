@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fHz6s0YmNFo",
+    "language": "en",
+    "took_ms": 9504,
+    "method": null,
+    "title": "AI Dev 25 | Justin Uberti: Introduction to the OpenAI Realtime API",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 5278,
+    "description": "In this hands-on workshop, Justin Uberti, Technical Lead for Realtime AI at OpenAI, introduces the OpenAI Realtime API, which enables dynamic, voice-to-voice interactions with AI models.\n\nDesigned for developers, this session walks through practical use cases for the Realtime API and explains how to integrate it into browser-based applications. Justin also dives into more advanced features—including tools for adding response guardrails and controlling audio output—giving attendees a strong foundation to start experimenting on their own.\n\nIf you’re curious about building more interactive, multimodal AI experiences, this workshop is a great starting point.\n\nRecommended background: Familiarity with JavaScript and browser-based development. No prior LLM or OpenAI experience required.\n\nKeep building, \nDeepLearning.AI",
+    "view_count": 3404
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fHz6s0YmNFo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

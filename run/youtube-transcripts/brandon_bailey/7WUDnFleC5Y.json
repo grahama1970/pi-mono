@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7WUDnFleC5Y",
+    "language": "en",
+    "took_ms": 8650,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Ch33r10 -  Indicators of Emulation Spicy Adversary Emulation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2705,
+    "description": "Cyber threat intelligence, in the past, has primarily focused on extracting, preparing, and analyzing indicators of compromise for digital forensics and incident response, the security operations center, and other teams. This talk proposes that there is a benefit to including cyber threat intelligence analysts in adversarial threat emulation. By including indicators of emulation (IOE) based upon internal organizational attack data, CTI analysts can enrich and customize red team TTPs to specific threats the organization is currently facing.  Don’t have a CTI team? Well, we have solutions for you! From pulling TTPs and IOEs out of thin air to a custom Golang C2 tool you can use to execute payloads that are relevant to your organization. Sit back, relax, and enjoy the show!",
+    "view_count": 400
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7WUDnFleC5Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

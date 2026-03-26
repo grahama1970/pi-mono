@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OoIaTQhUi8E",
+    "language": "en",
+    "took_ms": 9101,
+    "method": null,
+    "title": "DEF CON Safe Mode Blockchain Village - Rastogi Gokul  - Verifiable Delay Functions Preventing DDoS",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 3453,
+    "description": "Verifiable Delay Functions for preventing DDoS Attacks on Ethereum 2.0",
+    "view_count": 255
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OoIaTQhUi8E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

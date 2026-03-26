@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rE-HZL97bv4",
+    "language": "en",
+    "took_ms": 9960,
+    "method": null,
+    "title": "Palantir CEO Alex Karp Receives Hudson Institute’s 2025 Herman Kahn Award",
+    "channel": "Hudson Institute",
+    "upload_date": "20251112",
+    "duration_sec": 1450,
+    "description": "Palantir Cofounder and CEO Dr. Alex Karp and Hudson Trustee Shyam Sankar, Palantir’s chief technology officer, deliver remarks at Hudson Institute’s 2025 gala, at which Dr. Karp received the Herman Kahn Award.",
+    "view_count": 4063
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rE-HZL97bv4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

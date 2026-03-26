@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "okrzUNDLgbo",
+    "language": "en",
+    "took_ms": 9572,
+    "method": null,
+    "title": "DEF CON 31 Car Hacking Village - Abusing CAN Bus Spec for DoS in Embedded Systems  - Martin Petran",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2223,
+    "description": "The CAN bus is a traditional communication standard used (not only) in automotive to allow different components to talk to each other over reliable connection. While one of the primary motivators for CAN bus introduction was to reduce the amount of wiring inside vehicles, it became popular for its robustness, flexibility, and ease of implementation for which it is now used in almost every vehicle.As with any other protocol, it is a well-defined standard that enforces all aspects of the communication from the physical media to the message format and its processing. The formal protocol specifications like this are often seen as the source of the absolute truth when working with various transfer protocols. Such specifications are very strict on the format of the messages that belong to the given protocol and thus it is natural that developers that are familiar with it are often relying upon this information when developing their applications.In this talk, we will look at what happens when the attacker decides not to adhere to the protocol specification and uses the available metadata fields within the well-defined message in their own way. Would libraries provided by the device manufacturers handle this situation or is it left to the developer? And could a wrong assumption about the message format lead to a vulnerability?",
+    "view_count": 17708
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] okrzUNDLgbo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

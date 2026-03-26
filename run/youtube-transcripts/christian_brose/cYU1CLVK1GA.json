@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cYU1CLVK1GA",
+    "language": "en",
+    "took_ms": 7721,
+    "method": null,
+    "title": "The Solution to the Cyprus Problem: Famagusta, Energy, and Public Relations",
+    "channel": "Hudson Institute",
+    "upload_date": "20140623",
+    "duration_sec": 4076,
+    "description": "2014 marks the 40th anniversary of the Turkish invasion of Cyprus. Following numerous failed attempts to reach a settlement, a Joint Declaration agreed to in February has galvanized new reunification efforts. As events in the Ukraine have underscored Europe's energy vulnerability, Vice President Biden's recent trip to the island highlighted the eastern Mediterranean's potential for exploration, production, and transportation of oil and gas.\n\nMayor Galanos brought fresh insight to the complex reunification debate by analyzing both the potential role of energy resources and the impact of the Cypriot government's confidence-building measures. Mayor Galanos also explained how the return of the town of Famagusta to Cyprus can be the key to reaching a unification solution. Hudson Senior Fellow and Director of the Center for American Seapower, Seth Cropsey, moderated the discussion.",
+    "view_count": 925
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cYU1CLVK1GA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

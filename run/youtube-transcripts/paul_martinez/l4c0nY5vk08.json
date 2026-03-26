@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l4c0nY5vk08",
+    "language": "en",
+    "took_ms": 8697,
+    "method": null,
+    "title": "S4x24 Main Stage Interview With Rob Lee",
+    "channel": "S4 Events",
+    "upload_date": "20240610",
+    "duration_sec": 2011,
+    "description": "Dale Peterson interviews Rob Lee on the S4 Main Stage. They cover a lot of ground and Rob is never shy about sharing his opinions and analysis. They discuss:\n\n- Rob’s first S4\n- PIPEDREAM deployed v. employed distinction … and why 2 years later is it still the most dangerous ICS malware?\n- Are we really more homogenous?\n- What makes a group something that Rob/Dragos tracks as an ICS focused attacker?\n- If the answer to intel is do the basics, do I need intel?\n- What ICS specific data was VOLTZITE exfiltrating?\n- What countries are targeting critical infrastructure? Is it realistic to expect any country to not target its adversaries CI?\n- Threat actors focused on manufacturing\n- How should an asset owner measure the effectiveness of their detection solution?",
+    "view_count": 2881
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l4c0nY5vk08: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMBRY OS Design Board - Sovereign Observer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Design System */
+        :root {
+            /* Colors */
+            --green: #00ff88;
+            --red: #ff4444;
+            --amber: #ffaa00;
+            --blue: #4a9eff;
+            --accent: #7c3aed;
+            --white: #e2e8f0;
+            --dim: #64748b;
+            --muted: #334155;
+
+            /* Surfaces */
+            --bg: #141414;
+            --bgCard: #1a1a1a;
+            --bgPanel: #111111;
+            --bgDeep: #0b1220;
+            --border: rgba(255,255,255,0.13);
+            --borderHover: rgba(255,255,255,0.25);
+
+            /* Typography */
+            --font-space-grotesk: 'Space Grotesk', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+            --font-jetbrains-mono: 'JetBrains Mono', monospace;
+
+            /* Scale */
+            --heading-size: 14px;
+            --heading-weight: 900; /* Space Grotesk */
+            --body-size: 13px;
+            --body-weight: 400; /* Inter */
+            --label-size: 10px;
+            --label-weight: 700; /* Inter */
+            --code-size: 11px;
+            --code-weight: 400; /* JetBrains Mono */
+            --tiny-size: 9px;
+            --tiny-weight: 700; /* Inter */
+        }
+
+        /* Base Styles */
+        body {
+            margin: 0;
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            font-weight: var(--body-weight);
+            color: var(--white);
+            background-color: var(--bg);
+            display: flex;
+            height: 100vh;
+            overflow: hidden; /* Prevent scroll on main body */
+        }
+
+        /* Utility Classes */
+        .flex-col { display: flex; flex-direction: column; }
+        .flex-row { display: flex; flex-direction: row; }
+        .flex-grow { flex-grow: 1; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 8px; }
+        .gap-4 { gap: 16px; }
+        .p-2 { padding: 8px; }
+        .p-4 { padding: 16px; }
+        .px-4 { padding-left: 16px; padding-right: 16px; }
+        .py-2 { padding-top: 8px; padding-bottom: 8px; }
+        .text-white { color: var(--white); }
+        .text-dim { color: var(--dim); }
+        .text-muted { color: var(--muted); }
+        .text-accent { color: var(--accent); }
+        .text-green { color: var(--green); }
+        .text-blue { color: var(--blue); }
+        .text-amber { color: var(--amber); }
+        .text-red { color: var(--red); }
+        .text-label { font-size: var(--label-size); font-weight: var(--label-weight); text-transform: uppercase; }
+        .text-heading { font-family: var(--font-space-grotesk); font-size: var(--heading-size); font-weight: var(--heading-weight); }
+        .text-body { font-size: var(--body-size); font-weight: var(--body-weight); }
+        .text-code { font-family: var(--font-jetbrains-mono); font-size: var(--code-size); font-weight: var(--code-weight); }
+        .text-tiny { font-size: var(--tiny-size); font-weight: var(--tiny-weight); }
+        .font-space-grotesk { font-family: var(--font-space-grotesk); }
+        .font-jetbrains-mono { font-family: var(--font-jetbrains-mono); }
+        .font-bold { font-weight: 700; }
+        .uppercase { text-transform: uppercase; }
+        .rounded { border-radius: 4px; }
+        .rounded-full { border-radius: 9999px; }
+        .border { border: 1px solid var(--border); }
+        .border-t { border-top: 1px solid var(--border); }
+        .border-b { border-bottom: 1px solid var(--border); }
+        .border-l-accent { border-left: 2px solid var(--accent); }
+        .bg-bg { background-color: var(--bg); }
+        .bg-bgCard { background-color: var(--bgCard); }
+        .bg-bgPanel { background-color: var(--bgPanel); }
+        .bg-bgDeep { background-color: var(--bgDeep); }
+        .bg-accent { background-color: var(--accent); }
+        .bg-accent-alpha { background-color: rgba(124,58,237,0.08); }
+        .bg-green-alpha { background-color: rgba(0,255,136,0.1); }
+        .bg-blue-alpha { background-color: rgba(74,158,255,0.1); }
+        .bg-amber-alpha { background-color: rgba(255,170,0,0.1); }
+        .bg-red-alpha { background-color: rgba(255,68,68,0.1); }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .bottom-0 { bottom: 0; }
+        .right-0 { right: 0; }
+        .left-0 { left: 0; }
+        .top-0 { top: 0; }
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .cursor-pointer { cursor: pointer; }
+
+        /* Custom Components */
+        .sidebar {
+            width: 200px;
+            background-color: var(--bgPanel);
+            border-right: 1px solid var(--border);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-project-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            gap: 8px;
+            cursor: pointer;
+            transition: background-color 0.15s ease, border-left-color 0.15s ease;
+        }
+        .sidebar-project-item:hover {
+            background-color: rgba(255,255,255,0.05);
+        }
+        .sidebar-project-item.selected {
+            background-color: var(--bg-accent-alpha);
+            border-left: 2px solid var(--accent);
+        }
+        .project-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .project-badge {
+            background-color: var(--bgDeep);
+            color: var(--white);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: var(--font-jetbrains-mono);
+            font-size: var(--tiny-size);
+            font-weight: var(--tiny-weight);
+            margin-left: auto;
+        }
+        .new-project-button {
+            display: block;
+            width: calc(100% - 32px);
+            margin: 16px;
+            padding: 8px 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+            color: var(--white);
+            background-color: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            font-weight: var(--body-weight);
+        }
+        .new-project-button:hover {
+            border-color: var(--borderHover);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .main-canvas-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg);
+            position: relative;
+            overflow: hidden;
+        }
+        .tab-bar {
+            display: flex;
+            background-color: var(--bgCard);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .tab-item {
+            padding: 10px 16px;
+            color: var(--dim);
+            cursor: pointer;
+            transition: color 0.15s ease, border-bottom-color 0.15s ease;
+            border-bottom: 2px solid transparent;
+            font-size: var(--body-size);
+            font-weight: var(--body-weight);
+        }
+        .tab-item:hover {
+            color: var(--white);
+        }
+        .tab-item.active {
+            color: var(--white);
+            border-bottom-color: var(--accent);
+        }
+        .infinite-canvas {
+            flex-grow: 1;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 1px);
+            background-size: 16px 16px;
+            position: relative;
+            overflow: hidden; /* For pan/zoom, but static here */
+        }
+        .mockup-card {
+            position: absolute;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            cursor: grab;
+            min-width: 180px;
+            box-sizing: border-box;
+        }
+        .mockup-card:hover {
+            border-color: var(--borderHover);
+        }
+        .mockup-card.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent); /* Tonal layering, not drop shadow */
+        }
+        .mockup-card .mockup-title {
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .mockup-card .mockup-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: var(--font-jetbrains-mono);
+            font-size: var(--tiny-size);
+            font-weight: var(--tiny-weight);
+            color: var(--white);
+            margin-top: 4px;
+        }
+        .sticky-note {
+            position: absolute;
+            background-color: rgba(255,170,0,0.15); /* Lighter amber tint */
+            border: 1px solid var(--amber);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            color: var(--white);
+            max-width: 200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Slight shadow for "stickiness" */
+            cursor: grab;
+        }
+        .zoom-controls {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background-color: var(--bgCard);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 1px; /* For button separation */
+            overflow: hidden;
+            z-index: 10;
+        }
+        .zoom-button {
+            background-color: transparent;
+            border: none;
+            color: var(--dim);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-family: var(--font-jetbrains-mono);
+            font-size: var(--code-size);
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+        .zoom-button:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+        .zoom-separator {
+            width: 1px;
+            height: 20px;
+            background-color: var(--border);
+        }
+        .zoom-level {
+            color: var(--white);
+            font-family: var(--font-jetbrains-mono);
+            font-size: var(--code-size);
+            padding: 6px 10px;
+        }
+        .minimap {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            width: 120px;
+            height: 80px;
+            background-color: var(--bgDeep);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dim);
+            font-size: var(--tiny-size);
+        }
+
+        .right-panel {
+            width: 280px;
+            background-color: var(--bgPanel);
+            border-left: 1px solid var(--border);
+            flex-shrink: 0;
+            overflow-y: auto; /* Allow scrolling for content */
+        }
+        .panel-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-section-title {
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+        }
+        .metadata-label {
+            color: var(--dim);
+            font-size: var(--label-size);
+            font-weight: var(--label-weight);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .metadata-value {
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            color: var(--white);
+        }
+        .metadata-value.code {
+            font-family: var(--font-jetbrains-mono);
+            font-size: var(--code-size);
+        }
+        .annotation-item {
+            padding: 8px 12px;
+            border-left: 3px solid;
+            margin-bottom: 8px;
+            background-color: rgba(255,255,255,0.03); /* Subtle background for annotations */
+            border-radius: 2px;
+        }
+        .annotation-item.green { border-left-color: var(--green); }
+        .annotation-item.amber { border-left-color: var(--amber); }
+        .annotation-item.blue { border-left-color: var(--blue); }
+        .annotation-text {
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+        .annotation-meta {
+            font-family: var(--font-inter);
+            font-size: var(--tiny-size);
+            color: var(--dim);
+        }
+        .action-button {
+            display: block;
+            width: 100%;
+            padding: 10px 16px;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-inter);
+            font-size: var(--body-size);
+            font-weight: 600;
+            transition: background-color 0.15s ease;
+        }
+        .action-button.primary {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+        .action-button.primary:hover {
+            background-color: color-mix(in srgb, var(--accent) 90%, var(--white)); /* Slightly lighter accent */
+        }
+        .action-button.secondary {
+            background-color: var(--bgDeep);
+            color: var(--white);
+            border: 1px solid var(--border);
+        }
+        .action-button.secondary:hover {
+            background-color: rgba(255,255,255,0.05);
+            border-color: var(--borderHover);
+        }
+
+        .activity-bar {
+            width: 48px;
+            background-color: var(--bgDeep);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border-left: 1px solid var(--border);
+        }
+        .activity-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.15s ease, color 0.15s ease, border-left-color 0.15s ease;
+            color: var(--dim);
+            font-size: 20px; /* Icon size */
+        }
+        .activity-icon-wrapper:hover {
+            color: var(--white);
+        }
+        .activity-icon-wrapper.active {
+            background-color: var(--bg-accent-alpha);
+            border-left: 2px solid var(--accent);
+            color: var(--white);
+        }
+        .activity-separator {
+            width: 24px;
+            height: 1px;
+            background-color: var(--border);
+            margin: 8px 0;
+        }
+        .activity-icon-wrapper.bottom {
+            margin-top: auto; /* Pushes to bottom */
+        }
+
+        /* Loading State */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(17,17,17,0.8); /* bgPanel with transparency */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--dim);
+            font-size: var(--body-size);
+            z-index: 20;
+        }
+        .loading-spinner {
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- E1: LEFT SIDEBAR -->
+    <div class="sidebar flex-col">
+        <div class="sidebar-header">
+            <div class="text-label text-accent">EMBRY OS</div>
+            <div class="font-space-grotesk font-bold" style="font-size: 16px; line-height: 1.2;">Design Board</div>
+        </div>
+        <div class="flex-grow flex-col py-2">
+            <div class="sidebar-project-item selected">
+                <div class="project-dot" style="background-color: var(--green);"></div>
+                <span class="text-body">Binary Explorer</span>
+                <span class="project-badge" style="background-color: var(--green);">T0</span>
+            </div>
+            <div class="sidebar-project-item">
+                <div class="project-dot" style="background-color: var(--amber);"></div>
+                <span class="text-body">Music Lab</span>
+                <span class="project-badge" style="background-color: var(--amber);">T2</span>
+            </div>
+            <div class="sidebar-project-item">
+                <div class="project-dot" style="background-color: var(--blue);"></div>
+                <span class="text-body">SPARTA Explorer</span>
+                <span class="project-badge" style="background-color: var(--blue);">T1</span>
+            </div>
+            <div class="sidebar-project-item">
+                <div class="project-dot" style="background-color: var(--amber);"></div>
+                <span class="text-body">Learn Datalake</span>
+                <span class="project-badge" style="background-color: var(--amber);">T2</span>
+            </div>
+        </div>
+        <button class="new-project-button">New Project</button>
+    </div>
+
+    <!-- E2: MAIN CANVAS -->
+    <div class="main-canvas-wrapper">
+        <div class="tab-bar">
+            <div class="tab-item active">Mockups</div>
+            <div class="tab-item">Inspirations</div>
+            <div class="tab-item">Tokens</div>
+            <div class="tab-item">Rationale</div>
+        </div>
+        <div class="infinite-canvas">
+            <!-- Mockups -->
+            <div class="mockup-card bg-blue-alpha" style="top: 80px; left: 120px;">
+                <div class="mockup-title text-blue">Graph Layout v1</div>
+                <span class="mockup-badge" style="background-color: var(--blue);">T1 AST</span>
+            </div>
+            <div class="mockup-card bg-green-alpha selected" style="top: 200px; left: 400px;">
+                <div class="mockup-title text-green">Chat Panel v2</div>
+                <span class="mockup-badge" style="background-color: var(--green);">T0 DETERMINISTIC</span>
+            </div>
+            <div class="mockup-card bg-accent-alpha" style="top: 150px; left: 750px;">
+                <div class="mockup-title text-accent">Full Composite</div>
+                <span class="mockup-badge" style="background-color: var(--green);">T0 DETERMINISTIC</span>
+            </div>
+
+            <!-- Sticky Notes -->
+            <div class="sticky-note" style="top: 350px; left: 150px;">
+                Steve: Try force-directed layout for node graphs.
+            </div>
+            <div class="sticky-note" style="top: 450px; left: 600px;">
+                Nico: Text too small at 11px for body copy.
+            </div>
+
+            <!-- Zoom Controls -->
+            <div class="zoom-controls">
+                <button class="zoom-button">-</button>
+                <div class="zoom-separator"></div>
+                <span class="zoom-level">100%</span>
+                <div class="zoom-separator"></div>
+                <button class="zoom-button">+</button>
+            </div>
+
+            <!-- Minimap -->
+            <div class="minimap">
+                Minimap Placeholder
+            </div>
+        </div>
+    </div>
+
+    <!-- E3: RIGHT PANEL -->
+    <div class="right-panel flex-col">
+        <div class="panel-header">
+            <div class="text-heading">Details</div>
+        </div>
+        <div class="p-4 flex-grow relative">
+            <!-- Loading State Example -->
+            <div class="loading-overlay" style="display: none;">
+                <div class="loading-spinner"></div>
+                <span class="text-dim">Loading data...</span>
+            </div>
+
+            <div class="panel-section-title">Mockup Metadata</div>
+            <div class="metadata-item">
+                <span class="metadata-label">Status</span>
+                <span class="metadata-value">Approved <span class="mockup-badge" style="background-color: var(--green);">T0</span></span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Version</span>
+                <span class="metadata-value code">1.2.3</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Author</span>
+                <span class="metadata-value">Alice Smith</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Created</span>
+                <span class="metadata-value code">2023-10-27 14:30:00</span>
+            </div>
+            <div class="metadata-item">
+                <span class="metadata-label">Last Modified</span>
+                <span class="metadata-value code">2023-11-01 09:15:22</span>
+            </div>
+
+            <div class="panel-section-title" style="margin-top: 24px;">Annotations</div>
+            <div class="annotation-item amber">
+                <div class="annotation-text">Needs review for accessibility compliance.</div>
+                <div class="annotation-meta">Nico, 2023-10-28</div>
+            </div>
+            <div class="annotation-item green">
+                <div class="annotation-text">Approved by security team after audit.</div>
+                <div class="annotation-meta">Dr. Evelyn Reed, 2023-10-30</div>
+            </div>
+            <div class="annotation-item blue">
+                <div class="annotation-text">Consider integrating with real-time threat feed.</div>
+                <div class="annotation-meta">Steve, 2023-11-01</div>
+            </div>
+
+            <div class="flex-col gap-2" style="margin-top: 24px;">
+                <button class="action-button primary">Send to Gemini</button>
+                <button class="action-button secondary">Copy HTML</button>
+                <button class="action-button secondary">Approve</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- E4: ACTIVITY BAR -->
+    <div class="activity-bar">
+        <div class="activity-icon-wrapper active" title="Details">
+            &#x2139; <!-- Info icon -->
+        </div>
+        <div class="activity-icon-wrapper" title="Annotations">
+            &#x1F5E8; <!-- Speech bubble icon -->
+        </div>
+        <div class="activity-icon-wrapper" title="History">
+            &#x23F1; <!-- Clock icon -->
+        </div>
+        <div class="activity-icon-wrapper" title="Search">
+            &#x1F50D; <!-- Magnifying glass icon -->
+        </div>
+        <div class="activity-separator"></div>
+        <div class="activity-icon-wrapper bottom" title="Settings">
+            &#x2699; <!-- Gear icon -->
+        </div>
+    </div>
+
+    <script>
+        // Basic interactivity for static preview (optional, as per requirements)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Project selection
+            document.querySelectorAll('.sidebar-project-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.sidebar-project-item').forEach(i => i.classList.remove('selected'));
+                    item.classList.add('selected');
+                });
+            });
+
+            // Tab selection
+            document.querySelectorAll('.tab-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    // In a real app, this would switch content
+                });
+            });
+
+            // Mockup selection
+            document.querySelectorAll('.mockup-card').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.mockup-card').forEach(i => i.classList.remove('selected'));
+                    item.classList.add('selected');
+                    // In a real app, this would update the right panel
+                });
+            });
+
+            // Activity bar selection
+            document.querySelectorAll('.activity-icon-wrapper').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.activity-icon-wrapper').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    // In a real app, this would switch right panel content
+                });
+            });
+
+            // Simulate loading state for the right panel
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            if (loadingOverlay) {
+                // Example: show loading for 2 seconds on initial load
+                loadingOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

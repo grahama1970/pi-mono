@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dRycWa_lafg",
+    "language": "en",
+    "took_ms": 7962,
+    "method": null,
+    "title": "Modern Defense Evasion in IoT Botnets",
+    "channel": "S4 Events",
+    "upload_date": "20230608",
+    "duration_sec": 1696,
+    "description": "Alexey Kleymenov describes how IoT botnets are finding ways to evade / get past security controls. He begins using Mirai and its clones evolution as an example. Then he moves to changes in IoT Botnet code, packers and other elements his research team saw in 2022.",
+    "view_count": 598
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dRycWa_lafg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

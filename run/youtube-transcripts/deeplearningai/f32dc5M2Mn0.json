@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f32dc5M2Mn0",
+    "language": "en",
+    "took_ms": 7668,
+    "method": null,
+    "title": "Prompt-Engineering for Open-Source LLMs",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240123",
+    "duration_sec": 3618,
+    "description": "Turns out prompt-engineering is different for open-source LLMs! Actually, your prompts need to be engineered when switching across any LLM — even when OpenAI changes versions behind the scenes, which is why people get confused why their prompts don’t work anymore. Transparency of the entire prompt is critical to effectively squeezing out performance from the model. Most frameworks struggle with this, as they try to abstract everything away or obscure the prompt to seem like they’re managing something behind the scenes. But prompt-engineering is not software engineering, so the workflow is entirely different to succeed. Finally, RAG, a form of prompt-engineering, is an easy way to boost performance using search technology. In fact, you only need 80 lines of code to implement the whole thing and get 80%+ of what you need from it (link to open-source repo). You’ll learn how to run RAG at scale, across millions of documents.\r\n\r\nWhat you’ll learn from this workshop:\r\n\r\n- Prompt engineering vs. software engineering\r\n- Open vs. closed LLMs: completely different prompts\r\n- Push accuracy by taking advantage of prompt transparency\r\n- Best practices for prompt-engineering open LLMs\r\n- Prompt-engineering with search (RAG)\r\n- How to implement RAG on millions of documents (demo)\r\n\r\n\r\nTake a moment to sign up for our short course: \r\nhttps://bit.ly/3HhK3jS\r\n\r\nTake a moment to sign up to our forum: \r\nhttps://bit.ly/3tTyyvV\n\nWorkshop Slides:\n\n- http://tinyurl.com/Lamini-DLAI-Prompt-engineering\n\nWorkshop Notebook:\n\n- https://github.com/lamini-ai/prompt-engineering-open-llms/\n\n- https://github.com/lamini-ai/simple-rag\n\n\r\nAbout DeepLearning.AI\r\n\r\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community. Take your generative AI skills to the next level with short courses help you learn new skills, tools, and concepts efficiently.\r\n\r\nAbout Lamini:\r\n\r\nLamini is the all-in-one open LLM stack, fully owned by you. At Lamini, we’re inventing ways for you to customize intelligence that you can own.\r\n\r\nSpeaker\r\n\r\nSharon Zhou Co-Founder & CEO Lamini\r\n\r\nLinkedIn Profile: https://linkedin.com/in/zhousharon",
+    "view_count": 40505
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f32dc5M2Mn0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

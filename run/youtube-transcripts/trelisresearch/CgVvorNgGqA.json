@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CgVvorNgGqA",
+    "language": "en",
+    "took_ms": 7895,
+    "method": null,
+    "title": "CodeLlama 70B",
+    "channel": "Trelis Research",
+    "upload_date": "20240130",
+    "duration_sec": 1172,
+    "description": "➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Trelis Function-calling Models and Scripts: https://trelis.com/function-calling/\n➡️ ADVANCED Vision Fine-tuning Repo: https://trelis.com/advanced-vision/\n➡️ ADVANCED Transcription Repo: https://trelis.com/advanced-transcription/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nVideo Resources: \n- Newsletter: https://trelis.substack.com\n- Notebook: https://github.com/TrelisResearch/install-guides \n- One click run pod templates: https://github.com/TrelisResearch/one-click-llms/\n- CodeLlama Repo: https://huggingface.co/codellama/CodeLlama-70b-Instruct-hf\n\nChapters:\n0:00 CodeLlama 70B Review\n0:22 Video overview\n0:55 Prompt format\n2:35 Performance Evaluation\n6:25 Sequence reversal\n10:22 Code generation\n12:26 Passkey retrieval\n14:36 One click template\n16:55 Function calling CodeLlama\n18:47 Final tips",
+    "view_count": 3147
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CgVvorNgGqA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

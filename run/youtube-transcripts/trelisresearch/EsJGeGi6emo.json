@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EsJGeGi6emo",
+    "language": "en",
+    "took_ms": 8832,
+    "method": null,
+    "title": "Predicting Events with Large Language Models",
+    "channel": "Trelis Research",
+    "upload_date": "20241021",
+    "duration_sec": 1509,
+    "description": "➡️ Colab Notebook: https://colab.research.google.com/drive/1FDxLic7DxO9boh-UXi84Cej9P9lQyTLC?usp=sharing\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER RESOURCES:\n- Slides: https://docs.google.com/presentation/d/12z3XWj6I46ZaBjWV_kTQdB_-AG3U5WI74D4DPhkGlbY/edit?usp=sharing\n- Metaculus Q4 Tournament: https://www.metaculus.com/tournament/aibq4/\n- Berkeley / Halawi Paper: https://arxiv.org/pdf/2402.18563\n\nTIMESTAMPS:\n0:00 Using LLMs for Forecasting\n0:29 Video Overview\n1:07 Metaculus Bot Competition.\n3:35 Demo: How to forecast with an LLM.\n7:50 Lessons from the Berkeley Forecasting Paper.\n12:46 Advanced techniques.\n15:22 Caveats for Practical Decision-making: Probs vs Payoffs.\n16:36 Notebook Demo: Metaculus Bot Competition.\n24:27 Outro / Resources",
+    "view_count": 4358
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EsJGeGi6emo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

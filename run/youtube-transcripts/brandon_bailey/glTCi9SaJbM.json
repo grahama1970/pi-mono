@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "glTCi9SaJbM",
+    "language": "en",
+    "took_ms": 9027,
+    "method": null,
+    "title": "DEF CON 32 - Exploiting Voice Cloning in Adversarial Simulation - Mark Foudy",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1535,
+    "description": "We live in an era where voice verification is increasingly adopted in security protocols. The potential for abuse through voice cloning technology presents a significant and growing threat to cybersecurity. This talk dives into the alarming capabilities of deep learning to create highly convincing voice clones. Using my own voice as a case study, I will demonstrate a recorded simulation where the cloned voice successfully bypasses several major institutions’ voice verification systems. This presentation will outline the tools and techniques leveraged for voice cloning, discuss the pressing risks involved, and explore strategic countermeasures for red teams. The aim is to equip offensive security researchers with a nuanced understanding of voice cloning technology, emphasizing its implications for threat emulation and defensive strategy formulation. Attendees will gain insight into adversary tactics using publicly available voice samples for simulating voice-based attacks, providing a clear perspective on preparing defenses against such AI-driven threats.",
+    "view_count": 503
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] glTCi9SaJbM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

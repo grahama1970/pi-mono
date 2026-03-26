@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qzg0XMZTpZ8",
+    "language": "en",
+    "took_ms": 10045,
+    "method": null,
+    "title": "The Old Fashioned",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20200420",
+    "duration_sec": 89,
+    "description": "How not to make an old-fashioned.",
+    "view_count": 57
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qzg0XMZTpZ8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

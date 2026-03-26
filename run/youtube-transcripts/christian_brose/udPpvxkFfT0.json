@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "udPpvxkFfT0",
+    "language": "en",
+    "took_ms": 9860,
+    "method": null,
+    "title": "Douglas MacArthur: American Warrior",
+    "channel": "Hudson Institute",
+    "upload_date": "20160621",
+    "duration_sec": 4243,
+    "description": "Arthur Herman and Christopher DeMuth discuss Douglas MacArthur: American Warrior.",
+    "view_count": 8713
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] udPpvxkFfT0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

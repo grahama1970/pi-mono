@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YdQZzxjIhzE",
+    "language": "en",
+    "took_ms": 8664,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Nyah Macklin: How to Structure Context to Make Your Agents Smarter",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251208",
+    "duration_sec": 1311,
+    "description": "When agents fail at complex tasks, the problem is rarely the model itself— it's the lack of a proper context that is required for complex reasoning. Retrieving similar documents isn't enough when agents need to understand how entities relate, how knowledge connects across domains, or how information chains together to answer multi-step questions. \n\nIn this session, Nyah Macklin, Sr. Developer Advocate at Neo4j, dove into a deliberate approach to context engineering. Attendees learned how to model information with explicit relationships, how to design retrieval patterns for agents that follow knowledge pathways, and how to build memory systems that preserve the connections sophisticated agentic reasoning demands.\n\n----------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 1897
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YdQZzxjIhzE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

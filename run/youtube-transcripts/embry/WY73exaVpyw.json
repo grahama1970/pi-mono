@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WY73exaVpyw",
+    "language": "en",
+    "took_ms": 8135,
+    "method": null,
+    "title": "YouTuber’s Question Helps Elon Musk Improve Starship",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230502",
+    "duration_sec": 26,
+    "description": "Source video: https://youtu.be/t705r8ICkRw\n\nWe kept seeing a handful of videos with tens of millions of views like this that stole our content without asking and without any form of credit or source at all. We decided that we should just post it ourselves in an attempt to help reach a new audience. Sorry if the third person title is cringey, but we’re assuming a video  like this could reach beyond our current audience.\n\nSong - \"CRYO\" by Everyday Astronaut [Find it anywhere you stream music]",
+    "view_count": 7307956
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WY73exaVpyw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

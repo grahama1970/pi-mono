@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9NqSU8O82Fg",
+    "language": "en",
+    "took_ms": 8958,
+    "method": null,
+    "title": "How the Copyright System Works for Musicians Today",
+    "channel": "Hudson Institute",
+    "upload_date": "20221020",
+    "duration_sec": 3547,
+    "description": "The copyright system is premised on the notion that the best way to promote the public interest is by empowering creators to pursue their own private interests. Copyright achieves this goal by granting exclusive rights—property rights—to creators so that they can profit from the exploitation of their works in the marketplace. However, from the persistence of copyright infringement and shifting consumer attitudes toward music consumption to the efficacy of the Digital Millennium Copyright Act and proposed legislative changes, the digital age presents numerous challenges for musicians who struggle to realize a fair market value for their creative efforts.\n\nPlease join Hudson Institute for a panel discussion on how well the copyright system serves musicians today.",
+    "view_count": 548
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9NqSU8O82Fg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

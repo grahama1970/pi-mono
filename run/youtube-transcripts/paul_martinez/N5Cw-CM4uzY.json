@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N5Cw-CM4uzY",
+    "language": "en",
+    "took_ms": 7774,
+    "method": null,
+    "title": "Wireless IIoT: The Direct Path To Your Level 0",
+    "channel": "S4 Events",
+    "upload_date": "20230504",
+    "duration_sec": 1459,
+    "description": "Roni Gavrilov looks at how industrial wireless IP devices and gateways can be used by attackers to access your ICS at various levels in the Purdue Model.  Roni focuses on:\n\n- Onsite Wi-Fi / Cellular Channels\n- Internet Exposed Services\n- Cloud Management Platforms",
+    "view_count": 1038
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N5Cw-CM4uzY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R7INOTeQfOk",
+    "language": "en",
+    "took_ms": 9578,
+    "method": null,
+    "title": "Massive G-LOC in Centrifuge",
+    "channel": "Hasard Lee",
+    "upload_date": "20230530",
+    "duration_sec": 38,
+    "description": "",
+    "view_count": 90757
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R7INOTeQfOk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

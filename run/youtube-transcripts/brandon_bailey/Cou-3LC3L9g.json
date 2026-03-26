@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cou-3LC3L9g",
+    "language": "en",
+    "took_ms": 8955,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Kevin Chen - PK WHY",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 705,
+    "description": "Certificates and public key infrastructure (PKI) are hard. No shit, right? I know a lot of smart people who’ve avoided this particular rabbit hole. Personally, I avoided it for a long time and felt some shame for not knowing more. The obvious result was a vicious cycle: I was too embarrassed to ask questions so I never learned. Well, now everything needs a certificate so let's be embarrassed together and learn why.",
+    "view_count": 269
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cou-3LC3L9g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

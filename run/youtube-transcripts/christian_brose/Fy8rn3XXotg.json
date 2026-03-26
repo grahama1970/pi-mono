@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Fy8rn3XXotg",
+    "language": "en",
+    "took_ms": 8249,
+    "method": null,
+    "title": "John Weicher on the Federal Interest Rate for Fox Business",
+    "channel": "Hudson Institute",
+    "upload_date": "20110812",
+    "duration_sec": 148,
+    "description": "Hudson Senior Fellow and Director of the Center for Housing Markets John Weicher was interviewed by Fox Business about the federal interest rates on August 10.",
+    "view_count": 50
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Fy8rn3XXotg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "97xrQ5KxGrg",
+    "language": "en",
+    "took_ms": 8160,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Batuhan Sancak - Azure Active Directory Hacking Wars",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2347,
+    "description": "Azure is one of the most popular cloud services today. It has 15.4 million customers worldwide. 95% of Fortune 500 companies use Azure. If you look at it from the hacker point of view, that's perfect. Is Azure completely secure? No! No system is completely secure. It would be good to talk about Azure and talk about attack techniques. Check out the attack vectors. The results obtained by comparing attack vectors and defense vectors will be beneficial for everyone. In this presentation, I would like to talk about Azure Active Directory technology and attack vectors",
+    "view_count": 1133
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 97xrQ5KxGrg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

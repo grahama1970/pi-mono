@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9SwQ9QDE9lI",
+    "language": "en",
+    "took_ms": 9520,
+    "method": null,
+    "title": "Why building MCP Servers is Tricky!",
+    "channel": "Trelis Research",
+    "upload_date": "20250409",
+    "duration_sec": 43,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- MCP Servers: https://github.com/modelcontextprotocol/servers\n- PyPi MCP: https://pypi.org/project/mcp/#running-the-standalone-mcp-development-tools\n- NPM MCP: https://www.npmjs.com/package/@modelcontextprotocol/sdk",
+    "view_count": 1158
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9SwQ9QDE9lI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

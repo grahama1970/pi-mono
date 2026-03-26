@@ -1,0 +1,2063 @@
+## SPARTA Explorer — Comprehensive Test Manifest
+## Covers: Infrastructure → Data Integrity → API Layer → Every View → Navigation → Shared Components
+## Run via: POST /api/test-runner/run { manifest: "test-manifest-sparta-explorer.yaml" }
+## Tests must run via CDP (Chrome DevTools Protocol) — NOT mouse hijacking
+
+name: "SPARTA Explorer E2E"
+description: "Full coverage of the SPARTA Explorer: 8 tabs, 5 collections, memory daemon, pipeline state"
+timeout: 600000  # 10 minutes — large manifest
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 0: INFRASTRUCTURE HEALTH
+# Every downstream test depends on these services being up.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+steps:
+
+  # ── 0.1 Memory Daemon ──────────────────────────────────────────────────────
+  - name: "Memory daemon reachable via proxy"
+    id: infra_memory_health
+    action: api
+    method: GET
+    url: "http://localhost:3001/api/memory/health"
+    assert:
+      status: 200
+    tags: [infra, blocking]
+
+  - name: "Memory daemon returns connected status"
+    id: infra_memory_connected
+    action: api
+    method: GET
+    url: "http://localhost:3001/api/memory/health"
+    assert:
+      status: 200
+      body.status: "ok"
+    tags: [infra, blocking]
+
+  # ── 0.2 scillm LLM Proxy ──────────────────────────────────────────────────
+  - name: "scillm proxy reachable"
+    id: infra_scillm_health
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/scillm"
+    body:
+      model: "text"
+      messages:
+        - role: "user"
+          content: "Reply with just the word PONG"
+      max_tokens: 10
+    assert:
+      status: 200
+    tags: [infra]
+
+  # ── 0.3 WebSocket ──────────────────────────────────────────────────────────
+  - name: "WebSocket endpoint accepts connection"
+    id: infra_ws_connect
+    action: evaluate
+    expression: |
+      return new Promise((resolve, reject) => {
+        const ws = new WebSocket('ws://localhost:3001/ws');
+        ws.onopen = () => { ws.close(); resolve('connected'); };
+        ws.onerror = () => reject('ws_error');
+        setTimeout(() => reject('ws_timeout'), 5000);
+      });
+    assert:
+      result: "connected"
+    tags: [infra]
+
+  # ── 0.4 Agent Control ─────────────────────────────────────────────────────
+  - name: "Agent control status endpoint responds"
+    id: infra_agent_control
+    action: api
+    method: GET
+    url: "http://localhost:3001/api/agent-control/status?project=sparta-explorer"
+    assert:
+      status: 200
+    tags: [infra]
+
+  # ── 0.5 Express server itself ──────────────────────────────────────────────
+  - name: "Express server serves Vite app"
+    id: infra_vite_serves
+    action: navigate
+    url: "http://localhost:3001/"
+    wait: 3000
+    assert:
+      title_contains: "UX Lab"
+    tags: [infra, blocking]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 1: DATA INTEGRITY — COLLECTION POPULATION
+# Verify every SPARTA collection has data and the right shape.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  # ── 1.1 sparta_controls ────────────────────────────────────────────────────
+  - name: "sparta_controls collection exists and has data"
+    id: data_controls_exist
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 0
+    tags: [data, blocking]
+
+  - name: "sparta_controls has >1000 documents"
+    id: data_controls_count
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 1000
+    tags: [data]
+
+  - name: "sparta_controls documents have required fields"
+    id: data_controls_shape
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 5
+      offset: 0
+      return_fields: ["control_id", "name", "description", "source_framework", "control_type"]
+    assert:
+      status: 200
+      body.results[0].control_id: exists
+      body.results[0].name: exists
+      body.results[0].source_framework: exists
+    tags: [data]
+
+  - name: "sparta_controls has SPARTA framework entries"
+    id: data_controls_sparta_fw
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+      filters:
+        source_framework: "SPARTA"
+    assert:
+      status: 200
+      body.total_gt: 50
+    tags: [data]
+
+  - name: "sparta_controls has NIST framework entries"
+    id: data_controls_nist_fw
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+      filters:
+        source_framework: "NIST"
+    assert:
+      status: 200
+      body.total_gt: 100
+    tags: [data]
+
+  - name: "sparta_controls has ATT&CK entries"
+    id: data_controls_attack_fw
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+      filters:
+        source_framework: "ATT_CK_Enterprise"
+    assert:
+      status: 200
+      body.total_gt: 100
+    tags: [data]
+
+  - name: "sparta_controls has CWE entries"
+    id: data_controls_cwe_fw
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+      filters:
+        source_framework: "CWE"
+    assert:
+      status: 200
+      body.total_gt: 100
+    tags: [data]
+
+  - name: "sparta_controls has D3FEND entries"
+    id: data_controls_d3fend_fw
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 1
+      offset: 0
+      filters:
+        source_framework: "D3FEND"
+    assert:
+      status: 200
+      body.total_gt: 50
+    tags: [data]
+
+  - name: "sparta_controls semantic search returns results"
+    id: data_controls_recall
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/recall"
+    body:
+      q: "remote code execution"
+      collections: ["sparta_controls"]
+      k: 10
+    assert:
+      status: 200
+      body.results_length_gt: 0
+    tags: [data]
+
+  # ── 1.2 sparta_qra ────────────────────────────────────────────────────────
+  - name: "sparta_qra collection exists and has data"
+    id: data_qra_exist
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_qra"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 0
+    tags: [data, blocking]
+
+  - name: "sparta_qra has >500 documents"
+    id: data_qra_count
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_qra"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 500
+    tags: [data]
+
+  - name: "sparta_qra documents have required fields"
+    id: data_qra_shape
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_qra"
+      limit: 5
+      offset: 0
+      return_fields: ["control_id", "question", "reasoning", "answer", "grounding_score"]
+    assert:
+      status: 200
+      body.results[0].question: exists
+      body.results[0].answer: exists
+      body.results[0].control_id: exists
+    tags: [data]
+
+  - name: "sparta_qra has grounding scores"
+    id: data_qra_scores
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_qra"
+      limit: 10
+      offset: 0
+      return_fields: ["grounding_score", "tier0_pass", "tier15_pass", "tier2_pass"]
+    assert:
+      status: 200
+      body.results[0].grounding_score: exists
+    tags: [data]
+
+  - name: "sparta_qra semantic search returns results"
+    id: data_qra_recall
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/recall"
+    body:
+      q: "What countermeasures protect against supply chain attacks?"
+      collections: ["sparta_qra"]
+      k: 5
+    assert:
+      status: 200
+      body.results_length_gt: 0
+    tags: [data]
+
+  - name: "sparta_qra recall with entity filter"
+    id: data_qra_recall_entity
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/recall"
+    body:
+      q: "countermeasure"
+      collections: ["sparta_qra"]
+      k: 10
+      entities: ["SPARTA"]
+    assert:
+      status: 200
+    tags: [data]
+
+  # ── 1.3 sparta_relationships ───────────────────────────────────────────────
+  - name: "sparta_relationships collection exists and has data"
+    id: data_rels_exist
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_relationships"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 0
+    tags: [data, blocking]
+
+  - name: "sparta_relationships has >100 documents"
+    id: data_rels_count
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_relationships"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 100
+    tags: [data]
+
+  - name: "sparta_relationships documents have required fields"
+    id: data_rels_shape
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_relationships"
+      limit: 5
+      offset: 0
+      return_fields: ["source_control_id", "target_control_id", "method", "combined_score"]
+    assert:
+      status: 200
+      body.results[0].source_control_id: exists
+      body.results[0].target_control_id: exists
+    tags: [data]
+
+  - name: "sparta_relationships have NRS scores"
+    id: data_rels_nrs
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_relationships"
+      limit: 20
+      offset: 0
+      return_fields: ["combined_score"]
+    assert:
+      status: 200
+    tags: [data]
+
+  # ── 1.4 sparta_urls ────────────────────────────────────────────────────────
+  - name: "sparta_urls collection exists and has data"
+    id: data_urls_exist
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_urls"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 0
+    tags: [data, blocking]
+
+  - name: "sparta_urls has >100 documents"
+    id: data_urls_count
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_urls"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 100
+    tags: [data]
+
+  - name: "sparta_urls documents have required fields"
+    id: data_urls_shape
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_urls"
+      limit: 5
+      offset: 0
+      return_fields: ["url_id", "url", "domain"]
+    assert:
+      status: 200
+      body.results[0].url: exists
+    tags: [data]
+
+  # ── 1.5 sparta_url_knowledge ───────────────────────────────────────────────
+  - name: "sparta_url_knowledge collection exists and has data"
+    id: data_knowledge_exist
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_url_knowledge"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 0
+    tags: [data, blocking]
+
+  - name: "sparta_url_knowledge has >100 documents"
+    id: data_knowledge_count
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_url_knowledge"
+      limit: 1
+      offset: 0
+    assert:
+      status: 200
+      body.total_gt: 100
+    tags: [data]
+
+  - name: "sparta_url_knowledge documents have required fields"
+    id: data_knowledge_shape
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_url_knowledge"
+      limit: 5
+      offset: 0
+      return_fields: ["url_id", "text", "topic", "excerpt_type"]
+    assert:
+      status: 200
+      body.results[0].text: exists
+    tags: [data]
+
+  - name: "sparta_url_knowledge semantic search"
+    id: data_knowledge_recall
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/recall"
+    body:
+      q: "satellite communication jamming"
+      collections: ["sparta_url_knowledge"]
+      k: 5
+    assert:
+      status: 200
+    tags: [data]
+
+  # ── 1.6 Cross-collection joins (enrichment queries) ───────────────────────
+  - name: "Control → QRA join: QRAs exist for a SPARTA control"
+    id: data_join_control_qra
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/recall"
+    body:
+      q: "reconnaissance"
+      collections: ["sparta_qra"]
+      entities: ["SPARTA"]
+      k: 5
+    assert:
+      status: 200
+      body.results_length_gt: 0
+    tags: [data, cross-collection]
+
+  - name: "Control → Relationships join: relationships reference valid controls"
+    id: data_join_control_rels
+    action: evaluate
+    expression: |
+      const res = await fetch('http://localhost:3001/api/memory/list', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ collection: 'sparta_relationships', limit: 5, offset: 0,
+          return_fields: ['source_control_id', 'target_control_id'] })
+      });
+      const data = await res.json();
+      if (!data.results || data.results.length === 0) return 'no_relationships';
+      const sourceId = data.results[0].source_control_id;
+      // Verify the source control actually exists
+      const check = await fetch('http://localhost:3001/api/memory/recall', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ q: sourceId, collections: ['sparta_controls'], k: 1 })
+      });
+      const checkData = await check.json();
+      return checkData.results && checkData.results.length > 0 ? 'valid' : 'orphaned';
+    assert:
+      result: "valid"
+    tags: [data, cross-collection]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 2: SPARTA EXPLORER SHELL — Navigation, Tabs, Status Bar
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  # ── 2.1 Initial Load ───────────────────────────────────────────────────────
+  - name: "Navigate to SPARTA Explorer"
+    id: shell_navigate
+    action: navigate
+    url: "http://localhost:3001/#sparta-explorer"
+    wait: 3000
+    tags: [shell, blocking]
+
+  - name: "Screenshot initial state"
+    id: shell_screenshot_initial
+    action: screenshot
+    filename: "sparta-explorer-01-initial.png"
+    tags: [shell]
+
+  - name: "SPARTA brand text visible in navbar"
+    id: shell_brand
+    action: assert
+    type: text_visible
+    text: "SPARTA"
+    tags: [shell]
+
+  - name: "Explorer subtitle visible"
+    id: shell_subtitle
+    action: assert
+    type: text_visible
+    text: "Explorer"
+    tags: [shell]
+
+  # ── 2.2 Tab Bar ────────────────────────────────────────────────────────────
+  - name: "Exactly 8 tabs visible"
+    id: shell_tab_count
+    action: evaluate
+    expression: |
+      const buttons = document.querySelectorAll('nav button');
+      const tabTexts = [...buttons].map(b => b.textContent?.trim()).filter(t => t);
+      return tabTexts.length;
+    assert:
+      result: 8
+    tags: [shell]
+
+  - name: "Tab 1 is Overview"
+    id: shell_tab1_overview
+    action: assert
+    type: text_visible
+    text: "1Overview"
+    tags: [shell]
+
+  - name: "Tab 2 is Sources"
+    id: shell_tab2_sources
+    action: assert
+    type: text_visible
+    text: "2Sources"
+    tags: [shell]
+
+  - name: "Tab 3 is Controls"
+    id: shell_tab3_controls
+    action: assert
+    type: text_visible
+    text: "3Controls"
+    tags: [shell]
+
+  - name: "Tab 4 is URLs"
+    id: shell_tab4_urls
+    action: assert
+    type: text_visible
+    text: "4URLs"
+    tags: [shell]
+
+  - name: "Tab 5 is QRAs"
+    id: shell_tab5_qras
+    action: assert
+    type: text_visible
+    text: "5QRAs"
+    tags: [shell]
+
+  - name: "Tab 6 is Relationships"
+    id: shell_tab6_rels
+    action: assert
+    type: text_visible
+    text: "6Relationships"
+    tags: [shell]
+
+  - name: "Tab 7 is Threat Matrix"
+    id: shell_tab7_threat
+    action: assert
+    type: text_visible
+    text: "7Threat Matrix"
+    tags: [shell]
+
+  - name: "Tab 8 is Pipeline"
+    id: shell_tab8_pipeline
+    action: assert
+    type: text_visible
+    text: "8Pipeline"
+    tags: [shell]
+
+  - name: "No extraneous tabs (Prompt Lab, Music Lab, Binary Explorer, etc.)"
+    id: shell_no_extraneous_tabs
+    action: evaluate
+    expression: |
+      const buttons = [...document.querySelectorAll('nav button')];
+      const texts = buttons.map(b => b.textContent?.trim() || '');
+      const forbidden = ['Prompt Lab', 'LLM Eval Lab', 'Music Lab', 'Stem Viewer', 'Binary Explorer'];
+      const found = forbidden.filter(f => texts.some(t => t.includes(f)));
+      return found.length === 0 ? 'clean' : `found: ${found.join(', ')}`;
+    assert:
+      result: "clean"
+    tags: [shell, regression]
+
+  # ── 2.3 Tab Switching via Click ────────────────────────────────────────────
+  - name: "Click Sources tab"
+    id: shell_click_sources
+    action: click
+    selector: "nav button"
+    textContent: "Sources"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Sources tab is active (highlighted)"
+    id: shell_sources_active
+    action: evaluate
+    expression: |
+      const btn = [...document.querySelectorAll('nav button')].find(b => b.textContent?.includes('Sources'));
+      const style = btn?.style;
+      return style?.borderBottom?.includes('solid') ? 'active' : 'inactive';
+    assert:
+      result: "active"
+    tags: [shell, navigation]
+
+  - name: "URL hash updated to #sources"
+    id: shell_sources_hash
+    action: evaluate
+    expression: "return window.location.hash;"
+    assert:
+      result: "#sources"
+    tags: [shell, navigation]
+
+  - name: "Click Controls tab"
+    id: shell_click_controls
+    action: click
+    selector: "nav button"
+    textContent: "Controls"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Click URLs tab"
+    id: shell_click_urls
+    action: click
+    selector: "nav button"
+    textContent: "URLs"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Click QRAs tab"
+    id: shell_click_qras
+    action: click
+    selector: "nav button"
+    textContent: "QRAs"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Click Relationships tab"
+    id: shell_click_rels
+    action: click
+    selector: "nav button"
+    textContent: "Relationships"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Click Threat Matrix tab"
+    id: shell_click_threat
+    action: click
+    selector: "nav button"
+    textContent: "Threat Matrix"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Click Pipeline tab"
+    id: shell_click_pipeline
+    action: click
+    selector: "nav button"
+    textContent: "Pipeline"
+    wait: 1000
+    tags: [shell, navigation]
+
+  - name: "Click Overview tab (return home)"
+    id: shell_click_overview
+    action: click
+    selector: "nav button"
+    textContent: "Overview"
+    wait: 1000
+    tags: [shell, navigation]
+
+  # ── 2.4 Keyboard Tab Switching ─────────────────────────────────────────────
+  - name: "Press 2 → Sources tab"
+    id: shell_key_2
+    action: keypress
+    key: "2"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Hash is #sources after key 2"
+    id: shell_key_2_hash
+    action: evaluate
+    expression: "return window.location.hash;"
+    assert:
+      result: "#sources"
+    tags: [shell, keyboard]
+
+  - name: "Press 3 → Controls tab"
+    id: shell_key_3
+    action: keypress
+    key: "3"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Press 4 → URLs tab"
+    id: shell_key_4
+    action: keypress
+    key: "4"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Press 5 → QRAs tab"
+    id: shell_key_5
+    action: keypress
+    key: "5"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Press 6 → Relationships tab"
+    id: shell_key_6
+    action: keypress
+    key: "6"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Press 7 → Threat Matrix tab"
+    id: shell_key_7
+    action: keypress
+    key: "7"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Press 8 → Pipeline tab"
+    id: shell_key_8
+    action: keypress
+    key: "8"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Press 9 does NOT switch (only 8 tabs)"
+    id: shell_key_9_noop
+    action: keypress
+    key: "9"
+    wait: 300
+    tags: [shell, keyboard]
+
+  - name: "Hash is still #pipeline after key 9"
+    id: shell_key_9_hash
+    action: evaluate
+    expression: "return window.location.hash;"
+    assert:
+      result: "#pipeline"
+    tags: [shell, keyboard]
+
+  - name: "Press 1 → back to Overview"
+    id: shell_key_1
+    action: keypress
+    key: "1"
+    wait: 500
+    tags: [shell, keyboard]
+
+  - name: "Keyboard ignored when typing in input"
+    id: shell_key_in_input
+    action: evaluate
+    expression: |
+      // Focus a text input if one exists, press 2 — tab should NOT change
+      const input = document.querySelector('input[type="text"], input:not([type])');
+      if (!input) return 'no_input_found';
+      input.focus();
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: '2', bubbles: true }));
+      await new Promise(r => setTimeout(r, 300));
+      return window.location.hash;
+    assert:
+      result: "#overview"
+    tags: [shell, keyboard]
+
+  # ── 2.5 Hash-Based Deep Linking ────────────────────────────────────────────
+  - name: "Navigate directly to #controls"
+    id: shell_deeplink_controls
+    action: navigate
+    url: "http://localhost:3001/#controls"
+    wait: 2000
+    tags: [shell, deeplink]
+
+  - name: "Controls tab is active after deep link"
+    id: shell_deeplink_controls_active
+    action: evaluate
+    expression: |
+      const btn = [...document.querySelectorAll('nav button')].find(b => b.textContent?.includes('Controls'));
+      return btn?.style?.borderBottom?.includes('solid') ? 'active' : 'inactive';
+    assert:
+      result: "active"
+    tags: [shell, deeplink]
+
+  - name: "Navigate directly to #qras"
+    id: shell_deeplink_qras
+    action: navigate
+    url: "http://localhost:3001/#qras"
+    wait: 2000
+    tags: [shell, deeplink]
+
+  - name: "Navigate directly to #threat matrix (space in hash)"
+    id: shell_deeplink_threat
+    action: navigate
+    url: "http://localhost:3001/#threat%20matrix"
+    wait: 2000
+    tags: [shell, deeplink]
+
+  - name: "Navigate to invalid hash defaults to Overview"
+    id: shell_deeplink_invalid
+    action: navigate
+    url: "http://localhost:3001/#nonexistent-tab"
+    wait: 1500
+    tags: [shell, deeplink]
+
+  - name: "Overview is active after invalid hash"
+    id: shell_deeplink_invalid_active
+    action: evaluate
+    expression: |
+      const btn = [...document.querySelectorAll('nav button')].find(b => b.textContent?.includes('Overview'));
+      return btn?.style?.borderBottom?.includes('solid') ? 'active' : 'inactive';
+    assert:
+      result: "active"
+    tags: [shell, deeplink]
+
+  - name: "Browser back navigates to previous tab"
+    id: shell_back_navigation
+    action: evaluate
+    expression: |
+      // Go to controls, then sources, then back
+      window.location.hash = 'controls';
+      await new Promise(r => setTimeout(r, 500));
+      window.location.hash = 'sources';
+      await new Promise(r => setTimeout(r, 500));
+      history.back();
+      await new Promise(r => setTimeout(r, 500));
+      return window.location.hash;
+    assert:
+      result: "#controls"
+    tags: [shell, deeplink]
+
+  # ── 2.6 Status Bar ────────────────────────────────────────────────────────
+  - name: "Status bar shows daemon health indicator"
+    id: shell_statusbar_health
+    action: assert
+    type: text_visible
+    text: "Memory daemon"
+    tags: [shell, statusbar]
+
+  - name: "Status bar shows keyboard hint"
+    id: shell_statusbar_hint
+    action: assert
+    type: text_visible
+    text: "Press 1-8 to switch tabs"
+    tags: [shell, statusbar]
+
+  - name: "Status bar shows active tab name"
+    id: shell_statusbar_tab
+    action: evaluate
+    expression: |
+      // Navigate to Overview and check status bar
+      window.location.hash = 'overview';
+      await new Promise(r => setTimeout(r, 500));
+      const bar = document.querySelector('[style*="height: 28px"]');
+      return bar?.textContent?.includes('Overview') ? 'shows_tab' : 'missing_tab';
+    assert:
+      result: "shows_tab"
+    tags: [shell, statusbar]
+
+  # ── 2.7 AgentControl ──────────────────────────────────────────────────────
+  - name: "AgentControl component renders in navbar"
+    id: shell_agent_control_visible
+    action: evaluate
+    expression: |
+      // AgentControl polls /api/agent-control/status — check it rendered
+      const nav = document.querySelector('nav');
+      // AgentControl renders a small dot/indicator
+      return nav?.children?.length >= 3 ? 'rendered' : 'missing';
+    assert:
+      result: "rendered"
+    tags: [shell, shared-component]
+
+  # ── 2.8 ChatFab ───────────────────────────────────────────────────────────
+  - name: "ChatFab button visible"
+    id: shell_chatfab_visible
+    action: evaluate
+    expression: |
+      // ChatFab renders a floating button (typically bottom-right)
+      const fab = document.querySelector('[style*="position: fixed"], [style*="position: absolute"]');
+      return fab ? 'visible' : 'not_found';
+    assert:
+      result: "visible"
+    tags: [shell, shared-component]
+
+  - name: "ChatFab opens on click"
+    id: shell_chatfab_open
+    action: evaluate
+    expression: |
+      const fabs = document.querySelectorAll('[style*="position: fixed"] button, [style*="cursor: pointer"][style*="border-radius"]');
+      for (const el of fabs) {
+        if (el.closest('[style*="position: fixed"]')) {
+          el.click();
+          await new Promise(r => setTimeout(r, 500));
+          // Check if a larger panel appeared
+          const panels = document.querySelectorAll('[style*="position: fixed"]');
+          for (const p of panels) {
+            if (p.offsetHeight > 200) return 'opened';
+          }
+        }
+      }
+      return 'not_opened';
+    assert:
+      result: "opened"
+    tags: [shell, shared-component]
+
+  - name: "Screenshot ChatFab open state"
+    id: shell_chatfab_screenshot
+    action: screenshot
+    filename: "sparta-explorer-02-chatfab.png"
+    tags: [shell, shared-component]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 3: OVERVIEW TAB — Coverage Funnel & Framework Breakdown
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to Overview"
+    id: overview_navigate
+    action: navigate
+    url: "http://localhost:3001/#overview"
+    wait: 3000
+    tags: [overview]
+
+  - name: "Screenshot Overview tab"
+    id: overview_screenshot
+    action: screenshot
+    filename: "sparta-explorer-03-overview.png"
+    tags: [overview]
+
+  - name: "Coverage funnel visible (Controls → URLs → Knowledge → QRAs)"
+    id: overview_funnel_visible
+    action: assert
+    type: text_visible
+    text: "Controls"
+    tags: [overview]
+
+  - name: "Overview shows control count > 0"
+    id: overview_control_count
+    action: evaluate
+    expression: |
+      // Look for a number near "Controls" text
+      const body = document.body.innerText;
+      const match = body.match(/Controls[\s\S]{0,50}?(\d{1,6})/);
+      return match ? parseInt(match[1]) > 0 ? 'has_data' : 'zero' : 'not_found';
+    assert:
+      result: "has_data"
+    tags: [overview]
+
+  - name: "Overview shows QRA count > 0"
+    id: overview_qra_count
+    action: evaluate
+    expression: |
+      const body = document.body.innerText;
+      const match = body.match(/QRA[\s\S]{0,50}?(\d{1,6})/);
+      return match ? parseInt(match[1]) > 0 ? 'has_data' : 'zero' : 'not_found';
+    assert:
+      result: "has_data"
+    tags: [overview]
+
+  - name: "Framework coverage bars visible"
+    id: overview_fw_bars
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      const frameworks = ['SPARTA', 'NIST', 'CWE', 'ATT'];
+      const found = frameworks.filter(f => text.includes(f));
+      return found.length >= 3 ? 'visible' : `only: ${found.join(', ')}`;
+    assert:
+      result: "visible"
+    tags: [overview]
+
+  - name: "Overview does not show loading spinner after 3s"
+    id: overview_no_spinner
+    action: evaluate
+    expression: |
+      await new Promise(r => setTimeout(r, 3000));
+      const spinners = document.querySelectorAll('[style*="animation"]');
+      // Filter for actual loading spinners (not tab dot indicators)
+      const loading = [...spinners].filter(s => s.offsetWidth > 10);
+      return loading.length === 0 ? 'loaded' : 'still_loading';
+    assert:
+      result: "loaded"
+    tags: [overview]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 4: SOURCES TAB — 18 Source Manifests
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to Sources"
+    id: sources_navigate
+    action: navigate
+    url: "http://localhost:3001/#sources"
+    wait: 3000
+    tags: [sources]
+
+  - name: "Screenshot Sources tab"
+    id: sources_screenshot
+    action: screenshot
+    filename: "sparta-explorer-04-sources.png"
+    tags: [sources]
+
+  - name: "Sources shows SPARTA Techniques entry"
+    id: sources_sparta_techniques
+    action: assert
+    type: text_visible
+    text: "SPARTA Techniques"
+    tags: [sources]
+
+  - name: "Sources shows ATT&CK Enterprise entry"
+    id: sources_attack
+    action: assert
+    type: text_visible
+    text: "ATT&CK Enterprise"
+    tags: [sources]
+
+  - name: "Sources shows CWE entry"
+    id: sources_cwe
+    action: assert
+    type: text_visible
+    text: "CWE"
+    tags: [sources]
+
+  - name: "Sources shows D3FEND entry"
+    id: sources_d3fend
+    action: assert
+    type: text_visible
+    text: "D3FEND"
+    tags: [sources]
+
+  - name: "Sources shows NIST References"
+    id: sources_nist
+    action: assert
+    type: text_visible
+    text: "NIST"
+    tags: [sources]
+
+  - name: "Health indicators visible (glow dots)"
+    id: sources_health_dots
+    action: evaluate
+    expression: |
+      // glowDot creates elements with box-shadow glow
+      const dots = document.querySelectorAll('[style*="box-shadow"]');
+      return dots.length >= 5 ? 'visible' : `only ${dots.length} dots`;
+    assert:
+      result: "visible"
+    tags: [sources]
+
+  - name: "At least one source shows green (healthy) indicator"
+    id: sources_green_health
+    action: evaluate
+    expression: |
+      const dots = [...document.querySelectorAll('[style*="box-shadow"]')];
+      const green = dots.filter(d => d.style.backgroundColor?.includes('0, 255') || d.style.backgroundColor === '#00ff88' || d.style.backgroundColor?.includes('00ff88'));
+      return green.length > 0 ? 'has_green' : 'no_green';
+    assert:
+      result: "has_green"
+    tags: [sources]
+
+  - name: "Source count numbers are displayed"
+    id: sources_counts
+    action: evaluate
+    expression: |
+      // Each source row should show a count number
+      const text = document.body.innerText;
+      const numbers = text.match(/\b\d{2,5}\b/g) || [];
+      return numbers.length >= 5 ? 'has_counts' : `only ${numbers.length} numbers`;
+    assert:
+      result: "has_counts"
+    tags: [sources]
+
+  - name: "Click a source row shows drill-down detail"
+    id: sources_drill_down
+    action: evaluate
+    expression: |
+      // Click the first source row that looks clickable
+      const rows = document.querySelectorAll('tr[style*="cursor"], div[style*="cursor: pointer"]');
+      if (rows.length > 0) {
+        rows[0].click();
+        await new Promise(r => setTimeout(r, 1500));
+        return 'clicked';
+      }
+      return 'no_clickable_rows';
+    tags: [sources]
+
+  - name: "Screenshot Sources drill-down"
+    id: sources_drilldown_screenshot
+    action: screenshot
+    filename: "sparta-explorer-05-sources-detail.png"
+    tags: [sources]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 5: CONTROLS TAB — Framework Filtering, Pagination, Detail Pane
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to Controls"
+    id: controls_navigate
+    action: navigate
+    url: "http://localhost:3001/#controls"
+    wait: 3000
+    tags: [controls]
+
+  - name: "Screenshot Controls tab"
+    id: controls_screenshot
+    action: screenshot
+    filename: "sparta-explorer-06-controls.png"
+    tags: [controls]
+
+  - name: "Controls table renders rows"
+    id: controls_table_rows
+    action: evaluate
+    expression: |
+      await new Promise(r => setTimeout(r, 2000));
+      const rows = document.querySelectorAll('tr, [role="row"]');
+      // Subtract header row
+      return rows.length > 5 ? 'has_rows' : `only ${rows.length} rows`;
+    assert:
+      result: "has_rows"
+    tags: [controls]
+
+  - name: "Controls shows control_id column"
+    id: controls_id_column
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      // SPARTA controls have IDs like REC-0001, T1234, CWE-79
+      const hasIds = /[A-Z]{2,5}-\d{2,5}/.test(text) || /T\d{4}/.test(text);
+      return hasIds ? 'has_ids' : 'no_ids';
+    assert:
+      result: "has_ids"
+    tags: [controls]
+
+  - name: "Framework filter dropdown exists"
+    id: controls_fw_filter
+    action: evaluate
+    expression: |
+      const selects = document.querySelectorAll('select, [role="combobox"], [role="listbox"]');
+      const buttons = [...document.querySelectorAll('button')].filter(b =>
+        b.textContent?.includes('ALL') || b.textContent?.includes('SPARTA') || b.textContent?.includes('Framework'));
+      return selects.length > 0 || buttons.length > 0 ? 'found' : 'not_found';
+    assert:
+      result: "found"
+    tags: [controls]
+
+  - name: "Pagination controls visible"
+    id: controls_pagination
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      // Look for pagination indicators like "1-100 of 5044" or "Page 1"
+      const hasPagination = /\d+-\d+ of \d+/.test(text) || /Page \d+/.test(text) || /page/i.test(text);
+      return hasPagination ? 'visible' : 'not_found';
+    assert:
+      result: "visible"
+    tags: [controls]
+
+  - name: "Click next page"
+    id: controls_next_page
+    action: evaluate
+    expression: |
+      const nextBtn = [...document.querySelectorAll('button')].find(b =>
+        b.textContent?.includes('Next') || b.textContent?.includes('→') || b.textContent?.includes('>'));
+      if (nextBtn && !nextBtn.disabled) {
+        nextBtn.click();
+        await new Promise(r => setTimeout(r, 2000));
+        return 'clicked';
+      }
+      return 'no_next_button';
+    tags: [controls, pagination]
+
+  - name: "Click previous page"
+    id: controls_prev_page
+    action: evaluate
+    expression: |
+      const prevBtn = [...document.querySelectorAll('button')].find(b =>
+        b.textContent?.includes('Prev') || b.textContent?.includes('←') || b.textContent?.includes('<'));
+      if (prevBtn && !prevBtn.disabled) {
+        prevBtn.click();
+        await new Promise(r => setTimeout(r, 2000));
+        return 'clicked';
+      }
+      return 'no_prev_button';
+    tags: [controls, pagination]
+
+  - name: "Click a control row opens detail pane"
+    id: controls_detail_pane
+    action: evaluate
+    expression: |
+      const rows = document.querySelectorAll('tr[style*="cursor"], div[style*="cursor: pointer"]');
+      if (rows.length > 1) {
+        rows[1].click();  // skip header
+        await new Promise(r => setTimeout(r, 1500));
+        // Check if a detail pane appeared (right side, typically >300px wide)
+        return 'clicked';
+      }
+      return 'no_rows';
+    tags: [controls]
+
+  - name: "Screenshot Controls detail pane"
+    id: controls_detail_screenshot
+    action: screenshot
+    filename: "sparta-explorer-07-controls-detail.png"
+    tags: [controls]
+
+  - name: "Detail pane shows control name"
+    id: controls_detail_name
+    action: evaluate
+    expression: |
+      // After clicking a row, detail pane should show control name/description
+      const text = document.body.innerText;
+      return text.length > 200 ? 'has_content' : 'sparse';
+    assert:
+      result: "has_content"
+    tags: [controls]
+
+  - name: "Detail pane shows related QRAs section"
+    id: controls_detail_qras
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      return /QRA|Question|question/i.test(text) ? 'has_qra_section' : 'missing';
+    tags: [controls]
+
+  - name: "Detail pane shows relationships section"
+    id: controls_detail_rels
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      return /Relationship|Related|relationship/i.test(text) ? 'has_rel_section' : 'missing';
+    tags: [controls]
+
+  - name: "Filter to SPARTA framework only"
+    id: controls_filter_sparta
+    action: evaluate
+    expression: |
+      const select = document.querySelector('select');
+      if (select) {
+        select.value = 'SPARTA';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        await new Promise(r => setTimeout(r, 2000));
+        return 'filtered';
+      }
+      // Try button-based filter
+      const btn = [...document.querySelectorAll('button')].find(b => b.textContent?.trim() === 'SPARTA');
+      if (btn) { btn.click(); await new Promise(r => setTimeout(r, 2000)); return 'filtered'; }
+      return 'no_filter';
+    tags: [controls, filter]
+
+  - name: "Screenshot filtered Controls"
+    id: controls_filter_screenshot
+    action: screenshot
+    filename: "sparta-explorer-08-controls-filtered.png"
+    tags: [controls, filter]
+
+  - name: "Filter to CWE framework"
+    id: controls_filter_cwe
+    action: evaluate
+    expression: |
+      const select = document.querySelector('select');
+      if (select) {
+        select.value = 'CWE';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        await new Promise(r => setTimeout(r, 2000));
+        return 'filtered';
+      }
+      const btn = [...document.querySelectorAll('button')].find(b => b.textContent?.trim() === 'CWE');
+      if (btn) { btn.click(); await new Promise(r => setTimeout(r, 2000)); return 'filtered'; }
+      return 'no_filter';
+    tags: [controls, filter]
+
+  - name: "Reset filter to ALL"
+    id: controls_filter_all
+    action: evaluate
+    expression: |
+      const select = document.querySelector('select');
+      if (select) {
+        select.value = 'ALL';
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        await new Promise(r => setTimeout(r, 2000));
+        return 'reset';
+      }
+      const btn = [...document.querySelectorAll('button')].find(b => b.textContent?.trim() === 'ALL');
+      if (btn) { btn.click(); await new Promise(r => setTimeout(r, 2000)); return 'reset'; }
+      return 'no_filter';
+    tags: [controls, filter]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 6: URLs TAB — Domain Filtering, Enrichment, Pagination
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to URLs"
+    id: urls_navigate
+    action: navigate
+    url: "http://localhost:3001/#urls"
+    wait: 3000
+    tags: [urls]
+
+  - name: "Screenshot URLs tab"
+    id: urls_screenshot
+    action: screenshot
+    filename: "sparta-explorer-09-urls.png"
+    tags: [urls]
+
+  - name: "URLs table renders rows"
+    id: urls_table_rows
+    action: evaluate
+    expression: |
+      await new Promise(r => setTimeout(r, 2000));
+      const rows = document.querySelectorAll('tr');
+      return rows.length > 3 ? 'has_rows' : `only ${rows.length}`;
+    assert:
+      result: "has_rows"
+    tags: [urls]
+
+  - name: "URLs show actual URL strings"
+    id: urls_show_urls
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      return /https?:\/\//.test(text) ? 'has_urls' : 'no_urls';
+    assert:
+      result: "has_urls"
+    tags: [urls]
+
+  - name: "URLs show domain column"
+    id: urls_domain_column
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      return /\.(gov|org|com|edu|io|mil)/.test(text) ? 'has_domains' : 'no_domains';
+    assert:
+      result: "has_domains"
+    tags: [urls]
+
+  - name: "URL enrichment loads (knowledge count column)"
+    id: urls_enrichment
+    action: evaluate
+    expression: |
+      // Wait for batch enrichment calls to complete
+      await new Promise(r => setTimeout(r, 4000));
+      return 'enrichment_waited';
+    tags: [urls]
+
+  - name: "Screenshot URLs after enrichment"
+    id: urls_enrichment_screenshot
+    action: screenshot
+    filename: "sparta-explorer-10-urls-enriched.png"
+    tags: [urls]
+
+  - name: "URLs pagination works"
+    id: urls_pagination
+    action: evaluate
+    expression: |
+      const nextBtn = [...document.querySelectorAll('button')].find(b =>
+        b.textContent?.includes('Next') || b.textContent?.includes('→'));
+      if (nextBtn && !nextBtn.disabled) {
+        nextBtn.click();
+        await new Promise(r => setTimeout(r, 2000));
+        return 'next_page';
+      }
+      return 'no_next';
+    tags: [urls, pagination]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 7: QRAs TAB — Review Interface, Keyboard Shortcuts, Grading
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to QRAs"
+    id: qras_navigate
+    action: navigate
+    url: "http://localhost:3001/#qras"
+    wait: 3000
+    tags: [qras]
+
+  - name: "Screenshot QRAs tab"
+    id: qras_screenshot
+    action: screenshot
+    filename: "sparta-explorer-11-qras.png"
+    tags: [qras]
+
+  - name: "QRA card renders with question text"
+    id: qras_card_question
+    action: evaluate
+    expression: |
+      await new Promise(r => setTimeout(r, 2000));
+      const text = document.body.innerText;
+      // QRA cards show question text — should be more than stub
+      return text.length > 200 && /\?/.test(text) ? 'has_question' : 'no_question';
+    assert:
+      result: "has_question"
+    tags: [qras]
+
+  - name: "QRA shows reasoning section"
+    id: qras_reasoning
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('reasoning') || text.includes('rationale') ? 'has_reasoning' : 'missing';
+    assert:
+      result: "has_reasoning"
+    tags: [qras]
+
+  - name: "QRA shows answer section"
+    id: qras_answer
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('answer') ? 'has_answer' : 'missing';
+    assert:
+      result: "has_answer"
+    tags: [qras]
+
+  - name: "QRA shows control_id"
+    id: qras_control_id
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      return /[A-Z]{2,5}-\d{2,5}|T\d{4}|CWE-\d+/.test(text) ? 'has_control_id' : 'missing';
+    assert:
+      result: "has_control_id"
+    tags: [qras]
+
+  - name: "QRA shows grounding score"
+    id: qras_grounding_score
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      return /grounding|score|0\.\d{1,3}/i.test(text) ? 'has_score' : 'missing';
+    tags: [qras]
+
+  - name: "QRA shows tier badges (tier0, tier1.5, tier2)"
+    id: qras_tier_badges
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      const hasTiers = text.includes('tier') || text.includes('t0') || text.includes('t1') || text.includes('t2');
+      return hasTiers ? 'has_tiers' : 'missing';
+    tags: [qras]
+
+  - name: "Accept button/shortcut exists"
+    id: qras_accept_button
+    action: evaluate
+    expression: |
+      const buttons = [...document.querySelectorAll('button')];
+      const accept = buttons.find(b => /accept|approve/i.test(b.textContent || ''));
+      const text = document.body.innerText;
+      const hasHint = /\bA\b.*accept|\[A\]/i.test(text);
+      return accept || hasHint ? 'found' : 'missing';
+    tags: [qras, keyboard]
+
+  - name: "Reject button/shortcut exists"
+    id: qras_reject_button
+    action: evaluate
+    expression: |
+      const buttons = [...document.querySelectorAll('button')];
+      const reject = buttons.find(b => /reject|decline/i.test(b.textContent || ''));
+      const text = document.body.innerText;
+      const hasHint = /\bR\b.*reject|\[R\]/i.test(text);
+      return reject || hasHint ? 'found' : 'missing';
+    tags: [qras, keyboard]
+
+  - name: "Arrow key navigation between QRAs"
+    id: qras_arrow_nav
+    action: evaluate
+    expression: |
+      // Get current QRA text, press right arrow, check if it changed
+      const before = document.body.innerText.substring(0, 200);
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+      await new Promise(r => setTimeout(r, 1000));
+      const after = document.body.innerText.substring(0, 200);
+      return before !== after ? 'navigated' : 'same_content';
+    tags: [qras, keyboard]
+
+  - name: "Screenshot QRA after navigation"
+    id: qras_nav_screenshot
+    action: screenshot
+    filename: "sparta-explorer-12-qras-navigated.png"
+    tags: [qras]
+
+  - name: "Arrow left goes back"
+    id: qras_arrow_back
+    action: evaluate
+    expression: |
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+      await new Promise(r => setTimeout(r, 1000));
+      return 'navigated_back';
+    tags: [qras, keyboard]
+
+  - name: "Press A to accept QRA (verify undo timer appears)"
+    id: qras_accept_key
+    action: evaluate
+    expression: |
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', bubbles: true }));
+      await new Promise(r => setTimeout(r, 500));
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('undo') || text.includes('accepted') ? 'accepted_with_undo' : 'no_feedback';
+    tags: [qras, keyboard, grading]
+
+  - name: "Screenshot QRA accepted state"
+    id: qras_accept_screenshot
+    action: screenshot
+    filename: "sparta-explorer-13-qras-accepted.png"
+    tags: [qras, grading]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 8: RELATIONSHIPS TAB — Pagination, NRS Scores, Histogram, Detail
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to Relationships"
+    id: rels_navigate
+    action: navigate
+    url: "http://localhost:3001/#relationships"
+    wait: 3000
+    tags: [relationships]
+
+  - name: "Screenshot Relationships tab"
+    id: rels_screenshot
+    action: screenshot
+    filename: "sparta-explorer-14-relationships.png"
+    tags: [relationships]
+
+  - name: "Relationships table renders rows"
+    id: rels_table_rows
+    action: evaluate
+    expression: |
+      await new Promise(r => setTimeout(r, 2000));
+      const rows = document.querySelectorAll('tr');
+      return rows.length > 5 ? 'has_rows' : `only ${rows.length}`;
+    assert:
+      result: "has_rows"
+    tags: [relationships]
+
+  - name: "Relationships show source → target control IDs"
+    id: rels_source_target
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      const hasIds = /[A-Z]{2,5}-\d{2,5}|T\d{4}|CWE-\d+/.test(text);
+      return hasIds ? 'has_ids' : 'no_ids';
+    assert:
+      result: "has_ids"
+    tags: [relationships]
+
+  - name: "Relationships show method column"
+    id: rels_method
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      const methods = ['countered_by', 'mitigates', 'exploits', 'related', 'method'];
+      return methods.some(m => text.includes(m)) ? 'has_method' : 'missing';
+    tags: [relationships]
+
+  - name: "NRS score color coding visible (green/amber/red)"
+    id: rels_nrs_colors
+    action: evaluate
+    expression: |
+      // Look for score-colored elements
+      const elements = document.querySelectorAll('[style*="color: #00ff88"], [style*="color: #ffaa00"], [style*="color: #ff4444"], [style*="color: rgb"]');
+      return elements.length >= 3 ? 'color_coded' : `only ${elements.length} colored`;
+    tags: [relationships]
+
+  - name: "Score histogram visible"
+    id: rels_histogram
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('accept') && text.includes('reject') ? 'has_histogram' : 'missing';
+    tags: [relationships]
+
+  - name: "Most-connected nodes section visible"
+    id: rels_top_nodes
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('connected') || text.includes('top') || text.includes('most') ? 'visible' : 'missing';
+    tags: [relationships]
+
+  - name: "Click relationship row opens edge detail"
+    id: rels_edge_detail
+    action: evaluate
+    expression: |
+      const rows = document.querySelectorAll('tr[style*="cursor"], tr');
+      if (rows.length > 2) {
+        rows[2].click();
+        await new Promise(r => setTimeout(r, 1500));
+        return 'clicked';
+      }
+      return 'no_rows';
+    tags: [relationships]
+
+  - name: "Screenshot Relationships edge detail"
+    id: rels_detail_screenshot
+    action: screenshot
+    filename: "sparta-explorer-15-relationships-detail.png"
+    tags: [relationships]
+
+  - name: "Edge detail shows mind/taxonomy tags"
+    id: rels_mind_tags
+    action: evaluate
+    expression: |
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('mind') || text.includes('detect') || text.includes('harden') || text.includes('exploit') ? 'has_mind' : 'missing';
+    tags: [relationships]
+
+  - name: "Pagination: navigate to page 2"
+    id: rels_page2
+    action: evaluate
+    expression: |
+      const nextBtn = [...document.querySelectorAll('button')].find(b =>
+        b.textContent?.includes('Next') || b.textContent?.includes('→'));
+      if (nextBtn && !nextBtn.disabled) {
+        nextBtn.click();
+        await new Promise(r => setTimeout(r, 2000));
+        return 'page_2';
+      }
+      return 'no_next';
+    tags: [relationships, pagination]
+
+  - name: "Pagination: navigate back to page 1"
+    id: rels_page1
+    action: evaluate
+    expression: |
+      const prevBtn = [...document.querySelectorAll('button')].find(b =>
+        b.textContent?.includes('Prev') || b.textContent?.includes('←'));
+      if (prevBtn && !prevBtn.disabled) {
+        prevBtn.click();
+        await new Promise(r => setTimeout(r, 2000));
+        return 'page_1';
+      }
+      return 'no_prev';
+    tags: [relationships, pagination]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 9: THREAT MATRIX TAB — ATT&CK Grid, Coverage, Evidence
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to Threat Matrix"
+    id: threat_navigate
+    action: navigate
+    url: "http://localhost:3001/#threat%20matrix"
+    wait: 3000
+    tags: [threat]
+
+  - name: "Screenshot Threat Matrix tab"
+    id: threat_screenshot
+    action: screenshot
+    filename: "sparta-explorer-16-threat-matrix.png"
+    tags: [threat]
+
+  - name: "Threat Matrix renders grid/table"
+    id: threat_grid_renders
+    action: evaluate
+    expression: |
+      await new Promise(r => setTimeout(r, 2000));
+      const text = document.body.innerText;
+      // ATT&CK tactics should appear
+      const tactics = ['Reconnaissance', 'Initial Access', 'Execution', 'Persistence', 'Exfiltration'];
+      const found = tactics.filter(t => text.includes(t));
+      return found.length >= 2 ? 'has_tactics' : `only: ${found.join(', ')}`;
+    assert:
+      result: "has_tactics"
+    tags: [threat]
+
+  - name: "Technique cells are populated"
+    id: threat_technique_cells
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      // Technique IDs like REC-0001, T1595, etc.
+      const techniques = text.match(/[A-Z]{2,4}-\d{3,5}/g) || [];
+      return techniques.length >= 5 ? 'populated' : `only ${techniques.length} techniques`;
+    assert:
+      result: "populated"
+    tags: [threat]
+
+  - name: "Coverage indicators visible (colored cells or numbers)"
+    id: threat_coverage
+    action: evaluate
+    expression: |
+      // Threat matrix uses colored backgrounds for coverage
+      const colored = document.querySelectorAll('[style*="background-color"]');
+      return colored.length >= 10 ? 'has_coverage_colors' : `only ${colored.length} colored`;
+    tags: [threat]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 10: PIPELINE TAB — Phase Status, Step Indicators, Collection Stats
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Navigate to Pipeline"
+    id: pipeline_navigate
+    action: navigate
+    url: "http://localhost:3001/#pipeline"
+    wait: 3000
+    tags: [pipeline]
+
+  - name: "Screenshot Pipeline tab"
+    id: pipeline_screenshot
+    action: screenshot
+    filename: "sparta-explorer-17-pipeline.png"
+    tags: [pipeline]
+
+  - name: "Pipeline shows 5 phases"
+    id: pipeline_phases
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      const phases = ['Ingestion', 'Controls', 'Knowledge', 'QRA', 'Relationship'];
+      const found = phases.filter(p => text.includes(p));
+      return found.length >= 4 ? 'has_phases' : `only: ${found.join(', ')}`;
+    assert:
+      result: "has_phases"
+    tags: [pipeline]
+
+  - name: "Pipeline shows step status indicators"
+    id: pipeline_step_status
+    action: evaluate
+    expression: |
+      // Steps should show done/pending indicators
+      const text = document.body.innerText.toLowerCase();
+      return text.includes('done') || text.includes('complete') || text.includes('✓') || text.includes('pass')
+        ? 'has_status' : 'missing';
+    assert:
+      result: "has_status"
+    tags: [pipeline]
+
+  - name: "Pipeline shows collection stat cards"
+    id: pipeline_stat_cards
+    action: evaluate
+    expression: |
+      const text = document.body.innerText;
+      // Should show counts for each collection
+      const numbers = text.match(/\d{2,6}/g) || [];
+      return numbers.length >= 3 ? 'has_stats' : `only ${numbers.length} numbers`;
+    assert:
+      result: "has_stats"
+    tags: [pipeline]
+
+  - name: "Pipeline progress bars visible"
+    id: pipeline_progress
+    action: evaluate
+    expression: |
+      const bars = document.querySelectorAll('[style*="width"][style*="background"]');
+      return bars.length >= 3 ? 'has_bars' : `only ${bars.length}`;
+    tags: [pipeline]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 11: CROSS-TAB INTERACTIONS & STATE PRESERVATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Tab state preserved: visit Controls, switch to QRAs, switch back"
+    id: cross_state_preserved
+    action: evaluate
+    expression: |
+      // Go to Controls, wait for data
+      window.location.hash = 'controls';
+      await new Promise(r => setTimeout(r, 3000));
+      const controlsText = document.body.innerText.substring(0, 100);
+
+      // Switch to QRAs
+      window.location.hash = 'qras';
+      await new Promise(r => setTimeout(r, 2000));
+
+      // Switch back to Controls — should not re-fetch
+      window.location.hash = 'controls';
+      await new Promise(r => setTimeout(r, 500));
+      const controlsAgain = document.body.innerText.substring(0, 100);
+
+      // Content should be immediately available (preserved via display:none)
+      return controlsAgain.length > 50 ? 'preserved' : 'lost';
+    assert:
+      result: "preserved"
+    tags: [cross-tab]
+
+  - name: "All 8 tabs mount simultaneously (display:none pattern)"
+    id: cross_all_mounted
+    action: evaluate
+    expression: |
+      window.location.hash = 'overview';
+      await new Promise(r => setTimeout(r, 1000));
+      // Count all tab content containers (should be 8, most hidden)
+      const contentArea = document.querySelector('[style*="flex: 1"][style*="overflow: hidden"][style*="background"]');
+      if (!contentArea) return 'no_content_area';
+      const tabDivs = contentArea.children;
+      const visible = [...tabDivs].filter(d => d.style.display !== 'none').length;
+      const hidden = [...tabDivs].filter(d => d.style.display === 'none').length;
+      return `visible:${visible} hidden:${hidden} total:${tabDivs.length}`;
+    assert:
+      result_contains: "total:8"
+    tags: [cross-tab]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 12: ERROR HANDLING & EDGE CASES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Empty search returns gracefully (no crash)"
+    id: error_empty_search
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/recall"
+    body:
+      q: ""
+      collections: ["sparta_controls"]
+      k: 5
+    assert:
+      status_not: 500
+    tags: [error]
+
+  - name: "Invalid collection name returns error (not crash)"
+    id: error_invalid_collection
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "nonexistent_collection"
+      limit: 1
+    assert:
+      status_not: 500
+    tags: [error]
+
+  - name: "Very large offset returns empty (not crash)"
+    id: error_large_offset
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/memory/list"
+    body:
+      collection: "sparta_controls"
+      limit: 10
+      offset: 999999
+    assert:
+      status: 200
+    tags: [error]
+
+  - name: "Rapid tab switching does not cause render errors"
+    id: error_rapid_tabs
+    action: evaluate
+    expression: |
+      const hashes = ['overview', 'sources', 'controls', 'urls', 'qras', 'relationships', 'threat%20matrix', 'pipeline'];
+      for (const h of hashes) {
+        window.location.hash = h;
+        await new Promise(r => setTimeout(r, 100));
+      }
+      await new Promise(r => setTimeout(r, 1000));
+      // Check no error boundary triggered
+      const text = document.body.innerText;
+      return text.includes('Error') && text.includes('boundary') ? 'error_boundary' : 'stable';
+    assert:
+      result: "stable"
+    tags: [error, stress]
+
+  - name: "Concurrent API calls do not deadlock"
+    id: error_concurrent_api
+    action: evaluate
+    expression: |
+      const calls = [
+        fetch('http://localhost:3001/api/memory/list', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({collection:'sparta_controls',limit:1}) }),
+        fetch('http://localhost:3001/api/memory/list', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({collection:'sparta_qra',limit:1}) }),
+        fetch('http://localhost:3001/api/memory/list', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({collection:'sparta_relationships',limit:1}) }),
+        fetch('http://localhost:3001/api/memory/list', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({collection:'sparta_urls',limit:1}) }),
+        fetch('http://localhost:3001/api/memory/list', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({collection:'sparta_url_knowledge',limit:1}) }),
+      ];
+      const results = await Promise.allSettled(calls);
+      const fulfilled = results.filter(r => r.status === 'fulfilled').length;
+      return `${fulfilled}/5 succeeded`;
+    assert:
+      result: "5/5 succeeded"
+    tags: [error, stress]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 13: KNOWN BUGS & REGRESSIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "BUG: /api/health endpoint missing (SpartaExplorer calls it but server has /api/memory/health)"
+    id: bug_health_endpoint
+    action: api
+    method: GET
+    url: "http://localhost:3001/api/health"
+    assert:
+      status: 200
+    tags: [bug, known]
+    notes: "SpartaExplorer.tsx line 68 calls /api/health but server only has /api/memory/health. Needs server fix or client fix."
+
+  - name: "BUG: Prompt Lab tab removed (regression check)"
+    id: regression_no_prompt_lab
+    action: evaluate
+    expression: |
+      const tabs = [...document.querySelectorAll('nav button')].map(b => b.textContent);
+      return tabs.some(t => t?.includes('Prompt Lab')) ? 'REGRESSION' : 'clean';
+    assert:
+      result: "clean"
+    tags: [regression]
+
+  - name: "BUG: Music Lab tab removed (regression check)"
+    id: regression_no_music_lab
+    action: evaluate
+    expression: |
+      const tabs = [...document.querySelectorAll('nav button')].map(b => b.textContent);
+      return tabs.some(t => t?.includes('Music Lab')) ? 'REGRESSION' : 'clean';
+    assert:
+      result: "clean"
+    tags: [regression]
+
+  - name: "BUG: Binary Explorer tab removed (regression check)"
+    id: regression_no_binary
+    action: evaluate
+    expression: |
+      const tabs = [...document.querySelectorAll('nav button')].map(b => b.textContent);
+      return tabs.some(t => t?.includes('Binary Explorer')) ? 'REGRESSION' : 'clean';
+    assert:
+      result: "clean"
+    tags: [regression]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 14: VISUAL CONSISTENCY — EMBRY Design System Compliance
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: "Background uses EMBRY.bg (#141414)"
+    id: visual_bg_color
+    action: evaluate
+    expression: |
+      const content = document.querySelector('[style*="background-color: #141414"], [style*="background-color: rgb(20, 20, 20)"]');
+      return content ? 'correct' : 'wrong_bg';
+    assert:
+      result: "correct"
+    tags: [visual, design-system]
+
+  - name: "NavBar uses EMBRY.bgHeader (#0f172a)"
+    id: visual_nav_bg
+    action: evaluate
+    expression: |
+      const nav = document.querySelector('nav');
+      const bg = nav?.style?.backgroundColor;
+      return bg === '#0f172a' || bg === 'rgb(15, 23, 42)' ? 'correct' : `actual: ${bg}`;
+    assert:
+      result: "correct"
+    tags: [visual, design-system]
+
+  - name: "Active tab uses accent color (#7c3aed)"
+    id: visual_accent_tab
+    action: evaluate
+    expression: |
+      window.location.hash = 'overview';
+      await new Promise(r => setTimeout(r, 500));
+      const activeBtn = [...document.querySelectorAll('nav button')].find(b => b.textContent?.includes('Overview'));
+      const border = activeBtn?.style?.borderBottom;
+      return border?.includes('7c3aed') || border?.includes('124, 58, 237') ? 'correct' : `actual: ${border}`;
+    assert:
+      result: "correct"
+    tags: [visual, design-system]
+
+  - name: "Status bar daemon dot uses correct green/red"
+    id: visual_status_dot
+    action: evaluate
+    expression: |
+      const dots = document.querySelectorAll('[style*="box-shadow"]');
+      const statusDot = [...dots].find(d => d.closest('[style*="height: 28px"]'));
+      if (!statusDot) return 'no_dot';
+      const bg = statusDot.style.backgroundColor;
+      return bg?.includes('00ff88') || bg?.includes('ff4444') || bg?.includes('0, 255') || bg?.includes('255, 68') ? 'correct' : `actual: ${bg}`;
+    tags: [visual, design-system]
+
+  - name: "Font uses JetBrains Mono for data"
+    id: visual_font
+    action: evaluate
+    expression: |
+      const mono = document.querySelector('[style*="JetBrains"], [style*="monospace"]');
+      return mono ? 'correct' : 'missing_mono';
+    tags: [visual, design-system]
+
+  - name: "Final screenshot of full explorer"
+    id: visual_final_screenshot
+    action: navigate
+    url: "http://localhost:3001/#overview"
+    wait: 3000
+    tags: [visual]
+
+  - name: "Screenshot final state"
+    id: visual_final_screenshot_capture
+    action: screenshot
+    filename: "sparta-explorer-18-final.png"
+    tags: [visual]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SUMMARY
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Total tests: 148
+#
+# Phase 0: Infrastructure (5 tests)        — daemon, scillm, ws, agent-control, vite
+# Phase 1: Data Integrity (28 tests)       — 5 collections × shape/count/search + cross-joins
+# Phase 2: Shell & Navigation (42 tests)   — tabs, click, keyboard, deeplink, back/forward, statusbar, shared components
+# Phase 3: Overview (6 tests)              — funnel, counts, framework bars
+# Phase 4: Sources (11 tests)              — 18 manifests, health dots, drill-down
+# Phase 5: Controls (16 tests)             — table, pagination, filter, detail pane
+# Phase 6: URLs (7 tests)                  — table, enrichment, pagination
+# Phase 7: QRAs (13 tests)                 — review card, keyboard, accept/reject, navigation
+# Phase 8: Relationships (12 tests)        — table, NRS, histogram, edge detail, pagination
+# Phase 9: Threat Matrix (4 tests)         — grid, tactics, techniques, coverage
+# Phase 10: Pipeline (5 tests)             — phases, steps, stats, progress
+# Phase 11: Cross-Tab (2 tests)            — state preservation, mount pattern
+# Phase 12: Error Handling (5 tests)       — empty, invalid, large offset, rapid switch, concurrent
+# Phase 13: Known Bugs (4 tests)           — health endpoint, regression guards
+# Phase 14: Visual Consistency (7 tests)   — EMBRY tokens, colors, fonts

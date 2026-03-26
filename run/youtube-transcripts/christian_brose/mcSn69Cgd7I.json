@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mcSn69Cgd7I",
+    "language": "en",
+    "took_ms": 7765,
+    "method": null,
+    "title": "Egypt, Its Revolution and Future: How Should the U.S. Respon",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 5187,
+    "description": "With Mubarak's reign in Egypt all but over, policy makers in the U.S. and around the globe are seeking to understand why Egypt's government proved so fragile and what the prospects are for transition to a more democratic regime. Hudson Institute will hold a seminar to comprehend the character of Egypt's burgeoning opposition groups and to examine potential policy options for the U.S. and key allies, including Israel. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 23
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mcSn69Cgd7I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

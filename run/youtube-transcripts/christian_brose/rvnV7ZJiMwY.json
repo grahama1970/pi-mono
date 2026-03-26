@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rvnV7ZJiMwY",
+    "language": "en",
+    "took_ms": 8735,
+    "method": null,
+    "title": "Doing Health Care Reform the Right Way-Putting the States Ba",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 3325,
+    "description": "Please join Hudson Institute as Senator Orrin Hatch (R-UT), the Ranking Republican on the Senate Committee on Finance, lays out his ideas for meaningful reform of the American health care system. Sen. Hatch will argue that, by empowering States to act as fifty laboratories of democracy, a decentralized reform effort will better address the particular needs of states and local communities. This approach worked in the highly successful welfare reform of the 1990s, and it, Sen. Hatch believes, will",
+    "view_count": 37
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rvnV7ZJiMwY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r0zsYlRm0ho",
+    "language": "en",
+    "took_ms": 9248,
+    "method": null,
+    "title": "Diana Furchtgott-Roth on Diversity on Wall Street for CNBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20100730",
+    "duration_sec": 331,
+    "description": "Hudson Senior Fellow Diana Furchtgott-Roth joined CNBC on July 28 to discuss diversity on Wall Street.",
+    "view_count": 159
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r0zsYlRm0ho: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

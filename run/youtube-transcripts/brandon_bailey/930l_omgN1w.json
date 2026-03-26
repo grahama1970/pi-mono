@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "930l_omgN1w",
+    "language": "en",
+    "took_ms": 8404,
+    "method": null,
+    "title": "DEF CON 33 - Fear vs  Physics: Diagnosing Grid Chaos - Emma Stewart",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1204,
+    "description": "Every time the lights go out, the speculation begins—was it cyber? Squirrels? Was it an attack? But often, the real story behind grid disturbances isn’t malicious code—it’s uncontrolled chaos, born from the physical behavior of a rapidly evolving power system. This session takes a deep dive into that chaos, exploring how subtle interactions in electric grids—like oscillations—can spiral into large-scale instability. These low-frequency oscillations are increasingly common in the bulk electric system, yet are explainable. They emerge from control design, network conditions, and energy physics—not adversarial action, and the lights going off is usually a sign the system has actually acted as it should in protecting itself from damage. Equipment failures are also spectacular, but common. It's tempting to tie big fires to bad cyber, but in reality – the failures are almost always in the planning for the event, or recovery.\n\nWe’ll dissect real-world events like the Iberian Peninsula blackout, where what looked like a grid failure may have actually revealed a quiet success: a functional blackstart scenario, where system operators re-energized the grid under extreme stress. But that nuance was lost in the noise, as media and analysts scrambled for cyber scapegoats. We’ll also explore the London transformer fire, a failure in planning for an outage, and technical scrutiny of Chinese-manufactured inverter components with alleged kill switches inserted, illustrating how physical system dynamics—often create the most dramatic disruptions. This talk fuses power system engineering, ICS cybersecurity, and operational storytelling to reframe how we interpret complex events. It’s a call to replace fear with facts—and to find meaning in the chaos, not just blame.",
+    "view_count": 156
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 930l_omgN1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

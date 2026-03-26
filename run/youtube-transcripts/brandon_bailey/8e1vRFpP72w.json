@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8e1vRFpP72w",
+    "language": "en",
+    "took_ms": 8132,
+    "method": null,
+    "title": "DEF CON 32 - Inside Dash Cam Custom Protocols and Discovered 0days  -  Hyo Jin Lee & Hanryeol Park",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1163,
+    "description": "In recent years, the use of dash cams has surged, making them an essential component of modern vehicles. To enhance user convenience, many dash cams are now equipped with network connectivity. This growth in the dash cam market has heightened the importance of vehicle and personal data security. However, network-connected dash cams pose potential security risks to their availability and key functionalities. In this presentation, we will comprehensively analyze dash cams from various countries, including South Korea, the USA, Germany, and China, as well as built-in dash cams. During our analysis, we discovered numerous zero-day vulnerabilities (such as OS Command Injection, Logical Bugs, and insufficient authentication) that pose significant security threats. Vulnerabilities were primarily found during the dash cam boot process, configuration changes, and communications via custom protocols.\n\nWe will detail the dash cam analysis process in the following sequence:\n\n[Analysis Process]\nAcquiring firmware through official websites or apps\nExtracting the file system to analyze the initial boot logic\nAnalyzing the boot logic to identify vulnerabilities or debugging ports to gain shell access\nUtilizing the obtained shell for remote debugging of the main system\nInterestingly, our analysis of 10 different dash cams revealed that 4 devices used the same OEM board from a common manufacturer. These 4 devices shared similar vulnerabilities, and exploiting a vulnerability found in one device allowed us to successfully exploit all of them. Our research uncovered common security vulnerabilities across multiple dash cams, and we will discuss measures to prevent these vulnerabilities. We will particularly focus on analyzing the custom protocols used by dash cams and the security risks associated with them. This presentation aims to raise awareness of potential security threats in dash cams and encourage manufacturers to produce more secure products. We hope to drive industry standards and best practices to ensure the safety and security of these increasingly critical devices. By sharing our findings, we aim to highlight the importance of dash cam security and provide insights that can lead to more secure designs and implementations.",
+    "view_count": 536
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8e1vRFpP72w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GAEOBhsqJI4",
+    "language": "en",
+    "took_ms": 8724,
+    "method": null,
+    "title": "DEF COPN 32 - 0 0 0 0 Day  Exploiting Localhost APIs From The Browser - Avi Lumel skyGal Elbaz",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1634,
+    "description": "Browser-based attacks are not new in the malicious landscape of attack patterns. Browsers remain a popular infiltration method for attackers. \n\nWhile seemingly local, services running on localhost are accessible to the browser using a flaw we found, exposing the ports on the localhost network interface, and leaving the floodgates ajar to remote network attacks.\n\nIn this live demo and attack simulation we’ll unveil a zero-day vulnerability (still under responsible disclosure) in Chrome and other browsers, and how we use the 0-day to attack developers behind firewalls. We will demonstrate remote code execution on a wildly popular open-source platform serving millions in the data engineering ecosystem, that seems to run on localhost.\n\nIn our talk, we will present novel attack techniques, targeting developers and employees within an organization, that are behind firewalls. This will be a first-ever deep dive into this newly discovered zero-day vulnerability.",
+    "view_count": 934
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GAEOBhsqJI4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n-sv6SMD-M8",
+    "language": "en",
+    "took_ms": 8823,
+    "method": null,
+    "title": "ICS Security Press Panel on S4x18 Main Stage",
+    "channel": "S4 Events",
+    "upload_date": "20181105",
+    "duration_sec": 2759,
+    "description": "Dale Peterson interviewed two reporters and editors who have covered the ICS security space for years: Kelly Jackson Higgins of Dark Reading and Jim Finkle of Reuters.\n\nWe cover a lot including:\n- who is their target reader?\n- why vuln and attack stories are the vast % of what is written (the clicks drive what they cover)? \n- Are they traffickers in FUD?\n- when will vuln and attack stories stop getting clicks?\n- the marketing strategy ... find a vuln and pitch it to the press.\n- how do you decide whether to run a story on the vuln?\n- how long do they have to write a story?\n- what's makes a good pitch to a reporter? a bad pitch?\n- what are the off the record rules? background rules?",
+    "view_count": 105
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n-sv6SMD-M8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

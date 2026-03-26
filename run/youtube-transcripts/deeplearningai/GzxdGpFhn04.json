@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GzxdGpFhn04",
+    "language": "en",
+    "took_ms": 8570,
+    "method": null,
+    "title": "AI Dev 25 | Aman Khan: Beyond Vibe Checks—Rethinking How We Evaluate AI Agent Performance",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1750,
+    "description": "A great demo is just the starting point—getting AI agents to perform reliably in production is the real challenge.\n\nIn his AI Dev 25 talk, Aman Kahn, Director of Product at Arize, shared how his team moved beyond simple accuracy checks to build more robust evaluation frameworks for generative AI systems. Drawing from real-world experience, he outlined how to:\n\n– Use LLMs as judges for nuanced evaluation\n– Build automated pipelines to catch issues early\n– Establish feedback loops and workflows that support rapid iteration without compromising quality\n\nWhether you're just getting started with agents or scaling them in production, this session offers practical techniques for evaluating and improving agent performance.",
+    "view_count": 1355
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GzxdGpFhn04: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

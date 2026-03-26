@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iQ-eTaW6-cM",
+    "language": "en",
+    "took_ms": 8649,
+    "method": null,
+    "title": "It’s Not As Simple As “Use A Memory Safe Language\"",
+    "channel": "S4 Events",
+    "upload_date": "20250312",
+    "duration_sec": 1866,
+    "description": "The US and other governments, OWASP, and almost every authoritative source prioritizes using memory-safe programming languages, discouraging the use of C and C++ and proactively recommending Rust. This is great if you are starting over or can rewrite your codebase.\n\nThis session focuses on what is also needed, guidance on how to incrementally move C and C++ forward. The ease of writing memory-safe C++ is getting closer to Rust, WebAssembly can further sandbox code without sacrificing performance, and for projects using languages that are not memory safe, they should publish their security programs and demonstrate their comprehensiveness if they are to be considered for critical infrastructure. \n\nColin offers a practitioner's perspective on memory-safe languages, formal verification, making quality visible, sandboxing with WebAssembly, and embeddeding open-source code written in memory-unsafe languages.\n\nFuture software should be memory safe, but secure code is about a lot more than memory safety.",
+    "view_count": 31134
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iQ-eTaW6-cM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z38pTFM0FyU",
+    "language": "en",
+    "took_ms": 7806,
+    "method": null,
+    "title": "DEF CON 32 - Incubated ML Exploits: Backdooring ML Pipelines w Input Handling Bugs - Suha Hussain",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1781,
+    "description": "Machine learning (ML) pipelines are vulnerable to model backdoors that compromise the integrity of the underlying system. Although many backdoor attacks limit the attack surface to the model, ML models are not standalone objects. Instead, they are artifacts built using a wide range of tools and embedded into pipelines with many interacting components.\n\nIn this talk, we introduce incubated ML exploits in which attackers inject model backdoors into ML pipelines using input-handling bugs in ML tools. Using a language-theoretic security (LangSec) framework, we systematically exploited ML model serialization bugs in popular tools to construct backdoors. In the process, we developed malicious artifacts such as polyglot and ambiguous files using ML model files. We also contributed to Fickling, a pickle security tool tailored for ML use cases. Finally, we formulated a set of guidelines for security researchers and ML practitioners. By chaining system security issues and model vulnerabilities, incubated ML exploits emerge as a new class of exploits that highlight the importance of a holistic approach to ML security.",
+    "view_count": 582
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z38pTFM0FyU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

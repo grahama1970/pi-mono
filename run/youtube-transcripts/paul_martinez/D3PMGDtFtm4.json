@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D3PMGDtFtm4",
+    "language": "en",
+    "took_ms": 8068,
+    "method": null,
+    "title": "ControlLogix PLC Endpoint Hardening",
+    "channel": "S4 Events",
+    "upload_date": "20250902",
+    "duration_sec": 1865,
+    "description": "Ahmik estimates that 60-70% of asset owner ICS have not incorporated any form of hardening in their PLCs. This session covers the no-product cost defense in depth hardening capabilities that every manufacturer should be implementing. Least privileges concepts specific to liming specific tag access in the PLC’s to external resources, PLC endpoint hardening with disabling both physical and logical ports, ingress/egress backplane access, and more. \n\nHe finished up with some zero trust principles through the enablement of ODVA’s CIP Security between HMI’s/EWS’s and the PLC’s and from PLC’s to IO to create zones and conduits of communication, providing granular device identity/authentication, integrity, and confidentiality.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D3PMGDtFtm4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eo1b1CohnD4",
+    "language": "en",
+    "took_ms": 8683,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Shinchul Park, Seungjoo Kim - Blockchain as a Threat Modeling Tool",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 2288,
+    "description": "Threat modelling is a risk-based approach to designing secure systems. It is based on identifying threats in order to develop mitigations to them. Threat modeling is a “team sport,” because it requires the knowledge and skill set of a diverse team where all inputs can be viewed as equal in value. As the enabler of mass collaboration, blockchain is the framework that pieces everything together at a larger scale. \n\nIn this talk, we propose the first platform that combines blockchain with threat modeling. To this end, we first present a system model that combines a blockchain-based collective intelligence system with threat modeling, and then explain the role of the model, the scheme of the tool, and the operation procedure.",
+    "view_count": 543
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eo1b1CohnD4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_VthVzlkDkQ",
+    "language": "en",
+    "took_ms": 7856,
+    "method": null,
+    "title": "Why Betting Against Open Source is a \"Bad Bet\"",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260214",
+    "duration_sec": 45,
+    "description": "A moment of candor from an Amazon (AWS) executive: proprietary attempts to kill open source historically fail. Why betting against open collaboration is almost always a \"bad bet\" in the long run.\n\nAt AI Dev, we bring together builders from open source and enterprise to shape the future of software.\n\nWe’ll continue these conversations at AI Dev 26 × San Francisco, April 28–29.\n\nTickets available: https://ai-dev.deeplearning.ai/",
+    "view_count": 543285
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _VthVzlkDkQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

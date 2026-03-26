@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EsQeSAam2GQ",
+    "language": "en",
+    "took_ms": 8188,
+    "method": null,
+    "title": "Are We On The Right Track?",
+    "channel": "S4 Events",
+    "upload_date": "20230828",
+    "duration_sec": 1659,
+    "description": "Madison Horn looks at how the world is likely to change in the next 3 years and how this will affect OT cybersecurity and cyber risk. Including:\n\n- Technology Advancements: AI, quantum computing, robotics, AR, ...\n- Global Hot Spots\n- Sophisticated Cyber Attacks\n- How To Navigate All This",
+    "view_count": 328
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EsQeSAam2GQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

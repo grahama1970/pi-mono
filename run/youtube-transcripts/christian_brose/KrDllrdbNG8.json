@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KrDllrdbNG8",
+    "language": "en",
+    "took_ms": 9505,
+    "method": null,
+    "title": "Artificial Intelligence and Intellectual Property",
+    "channel": "Hudson Institute",
+    "upload_date": "20220222",
+    "duration_sec": 3910,
+    "description": "Join Hudson Institute Legal Fellow Devlin Hartline and expert panelists Ryan Abbott, Hodan Omaar, and Paul Reinitz for a discussion on recent developments at the intersection of artificial intelligence (AI) and intellectual property.\n\nAI is a beneficial tool for the development of new technologies such as autonomous cars or genetics research. It is likewise valuable in the creative industries, where it improves the workflow and opens up new possibilities in the artistic process. However, AI also raises novel issues regarding intellectual property (IP), such as claims of AI-based inventorship and authorship or the use of copyrighted works to train an AI. Courts, commentators, and policymakers are exploring whether AI fits comfortably into our existing IP system or if new rules are needed to safeguard incentives for innovators and creators that use AI. The panelists will discuss how IP law has evolved in response to these technological advances and will consider the policy implications of various proposals to accommodate AI-based creative innovation.\n\nWatch on Hudson.org: https://www.hudson.org/events/2077-virtual-event-artificial-intelligence-and-intellectual-property22022",
+    "view_count": 5080
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KrDllrdbNG8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "52uikGLvKqA",
+    "language": "en",
+    "took_ms": 7864,
+    "method": null,
+    "title": "Rockets and Payloads - A Beginner's Guide to Rocket Vocabulary",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170415",
+    "duration_sec": 380,
+    "description": "Want to learn about rockets and spaceflight but don't even know where to start? WELL YOU FOUND IT!\n\nHelp support this and other Everyday Astronaut content by becoming a Patreon member! - http://patreon.com/everydayastronaut\n\nShirts and merch available - http://everydayastronaut.com/shop\n\nMusic by Everyday Astronaut (Tim Dodd) - http://soundcloud.com/everydayastronaut\n\nFind me where it all began, Instagram! @EverydayAstronaut",
+    "view_count": 52924
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 52uikGLvKqA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

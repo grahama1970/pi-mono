@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XenfD667Flg",
+    "language": "en",
+    "took_ms": 7911,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Panel -  Protecting Critical Infrastructure from Ransomware",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 3289,
+    "description": "Moderator: Jamil Jaffer; Panelists: Ernie Bio; David Etue; Jennifer DeTrani\n\nThe recent attacks against Colonial Pipeline, JBS, and others have made it clear just how vulnerable U.S. Critical Infrastructure is to ransomware. While these attacks have been grabbing headlines, the path forward has not. A variety of tools and approaches will need to be tested by both the government and private sector to push back against the threat of ransomware and protect critical infrastructure from future attacks.\n\nThis panel brings together a variety of perspectives from the government, technology, and venture capital sectors to chart the path forward and detail what steps government and the private sector can take individually and together to protect critical infrastructure across the country.",
+    "view_count": 1596
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XenfD667Flg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

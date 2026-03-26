@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O3tyHyT0M00",
+    "language": "en",
+    "took_ms": 7814,
+    "method": null,
+    "title": "Whither Taiwanization?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140610",
+    "duration_sec": 5093,
+    "description": "On June 10th, Hudson Institute is pleased to host a presentation by Bruce Jacobs on the topic of the future of Taiwan. Jacobs is Emeritus Professor of Asian Languages and Studies at Monash University in Melbourne, Australia. His research includes the books Local Politics in Rural Taiwan under Dictatorship and Democracy (EastBridge 2008) and Democratizing Taiwan (Brill 2012). As a distinguished Australian scholar and longtime student of Taiwan, he will provide a valuable perspective on how Taiwan",
+    "view_count": 1944
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O3tyHyT0M00: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

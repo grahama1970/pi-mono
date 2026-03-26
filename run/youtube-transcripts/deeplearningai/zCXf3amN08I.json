@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zCXf3amN08I",
+    "language": "en",
+    "took_ms": 9082,
+    "method": null,
+    "title": "New course with Google Cloud: Understanding and Applying Text Embeddings with Vertex AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230906",
+    "duration_sec": 215,
+    "description": "Enroll today: https://bit.ly/45CA2rT\n\nIntroducing a new short course made in collaboration with Google Cloud: Understanding and Applying Text Embeddings with Vertex AI.\n\nText embeddings, which are numerical representations of text, play a significant role in various tasks involving the identification of similar items, like Google searches, online shopping recommendations, and personalized music suggestions.\n\nWith this course, you’ll harness the capabilities of Google Cloud’s Vertex AI API to generate text embeddings for tasks like classification, outlier detection, text clustering, and semantic search.\n\nUpon finishing the course, you’ll acquire the skills to:\n\n- Use text embeddings to capture the meaning of sentences and paragraphs\n- Use the ScaNN (Scalable Nearest Neighbors) library for efficient semantic search\n- Combine text generation from an LLM with semantic search to build a question-answering system \n\nStart integrating text embeddings into LLM applications today!\n\nLearn more: https://bit.ly/45CA2rT",
+    "view_count": 7939
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zCXf3amN08I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

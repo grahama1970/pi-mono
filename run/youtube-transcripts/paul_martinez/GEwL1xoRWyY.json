@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GEwL1xoRWyY",
+    "language": "en",
+    "took_ms": 7967,
+    "method": null,
+    "title": "ICS Security - April Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20220505",
+    "duration_sec": 3592,
+    "description": "Daniel Kapellman Zafra joins Dale Peterson to discuss three stories, give wins, fails and predictions, and take your questions. You can record a question at dale-peterson.com or enter it in via chat during the live broadcast.\r\n\r\nThe April topics:\r\n1. INCONTROLLER ... how is this new in terms of offense ... what does it mean that it was found before doing damage ... what is it's future ... other issues\r\n\r\n2. INDUSTROYER2 ... this may be shorter, but I think a talk on the targeted nature might be worthwhile\r\n\r\n3. JCDC ICS ... what should we expect from this? Should any company be welcome to join?",
+    "view_count": 230
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GEwL1xoRWyY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

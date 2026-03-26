@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UsBMPasl7eQ",
+    "language": "en",
+    "took_ms": 8354,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Guillermo Buendia - Swift SPID SPEI Basic Hacking Techniques",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1468,
+    "description": "Back in 2018, Financial entities in Mexico were hit by one of the biggest cybersecurity breaches in the history of Mexico, and in 2019 \"The Bandidos Hacker Team\", who allegedly committed the crime, were captured. But do you really need to be a 1337 H4x0r to compromise those systems? In this talk, I will be sharing (from a Red Team Perspective) How I was compromising the SWIFT, SPID, and SPEI systems in a Financial Institution until I gained root access to all the systems using basic hacking techniques like the pretty good old 1337 days. For the blue teamers, I will be sharing ways to detect these techniques that, although may appear simple, they pose a very challenging scenario to create a detection.",
+    "view_count": 1051
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UsBMPasl7eQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

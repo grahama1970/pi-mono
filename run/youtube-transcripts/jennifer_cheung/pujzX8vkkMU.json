@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pujzX8vkkMU",
+    "language": "en",
+    "took_ms": 7811,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Dieter Sarrazyn -  Fortifying ICS   Hardening and Testing",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1510,
+    "description": "Every ICS environment will sooner or later have to deal with updates, upgrades or additions to the control system environment. Nowadays it is important to include cybersecurity within such projects, although that is still sometimes forgotten (sad but true). One of the ways to include security is to set security requirements but also perform hardening and cybersecurity testing within FAT and SAT cycles.\n\nThis talk will explain important elements of hardening as well as things to keep in mind when performing cybersecurity testing during FAT/SAT phases after performing said hardening.",
+    "view_count": 334
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pujzX8vkkMU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

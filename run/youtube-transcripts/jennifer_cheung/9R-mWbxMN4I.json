@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9R-mWbxMN4I",
+    "language": "en",
+    "took_ms": 9654,
+    "method": null,
+    "title": "DEF CON 31 War Stories - CON trolling the Weather - Paz Hameiri",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 2270,
+    "description": "Nearly 1,800 weather balloons are launched across the world on any given day. As the balloon goes up it expands and pops at an altitude up to 33 Km (110K feet) above the earth.The flight payload is called a radiosonde. It measures pressure, temperature, relative humidity, position, and velocity during its flight, and transmits the data to a sounding receiver. One or two missing weather balloons won't impact the daily forecast. However, many missing balloons could lead to errors in weather models and forecasts. Weather balloons are also important for gathering weather data for satellite launches and human spaceflights, as launches are often delayed or scrubbed due to upper-level wind shear.\n\nIn this talk, I present a simulation framework for the most popular radiosonde model. It enables an attacker to generate radiosonde messages or alter logged messages for retransmission. I also present simulations of a jamming attack and a spoofing attack on a sounding receiver:\n\nDuring a jamming attack, the receiver is unable to receive transmissions from active radiosondes.\n\nDuring a spoofing attack, the transmitter sends fake radiosonde messages to a target receiver, identifying as an active radiosonde.\n\nI'll talk about the shortcomings of the military variant of the radiosonde model and suggest a simple way to cope with spoofing attacks.",
+    "view_count": 3025
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9R-mWbxMN4I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

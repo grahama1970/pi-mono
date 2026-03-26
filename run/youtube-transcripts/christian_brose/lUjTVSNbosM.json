@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lUjTVSNbosM",
+    "language": "en",
+    "took_ms": 8908,
+    "method": null,
+    "title": "AoD Podcast | An Innovative Arsenal of Democracy Benefits More than Just Defense (feat. Adam Hammer)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240828",
+    "duration_sec": 2585,
+    "description": "Co-founder and CEO of Roadrunner Venture Studios, Adam Hammer, joins host Marshall Kosloff to explain what \"deep tech\" is, why the Arsenal of Democracy is often fought and won by people in white lab coats, and how the spoils of defense innovation are shared commercially.",
+    "view_count": 483
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lUjTVSNbosM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SL2nZpv7dtY",
+    "language": "en",
+    "took_ms": 10480,
+    "method": null,
+    "title": "Full fine tuning vs (Q)LoRA",
+    "channel": "Trelis Research",
+    "upload_date": "20240416",
+    "duration_sec": 3189,
+    "description": "➡️ Get Life-time Access to the complete scripts (and future improvements): https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Runpod one-click fine-tuning template (affiliate link, supports Trelis' channel): https://runpod.io/console/deploy?template=ifyqsvjlzj&ref=jmfkcdio (see https://youtu.be/gXDsVcY8TXQ for full setup)\n➡️ Trelis Livestreams: Thursdays 5 pm Irish time on YouTube and X.\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/18npsbcrkCi3kY41ejxquEqR6TjLPFk9l6nwSavaXN1w/edit?usp=sharing\n- Unsloth GitHub: https://github.com/unslothai/unsloth\n- Dataset: https://huggingface.co/datasets/argilla/dpo-mix-7k\n\nTIMESTAMPS:\n0:00 Comparing full fine-tuning and LoRA fine tuning\n1:57 Video Overview\n3:53 Comparing VRAM, Training Time + Quality\n8:42 How full fine-tuning works\n9:03 How LoRA works\n10:35 How QLoRA works\n12:45 How to choose learning rate, rank and alpha\n20:13 Choosing hyper parameters for Mistral 7B fine-tuning\n21:39 Specific tips for QLoRA, regularization and adapter merging.\n26:16 Tips for using Unsloth\n27:46 LoftQ - LoRA aware quantisation\n30:39 Step by step TinyLlama QLoRA\n47:05 Mistral 7B Fine-tuning Results Comparison\n52:29 Wrap up",
+    "view_count": 3966
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SL2nZpv7dtY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

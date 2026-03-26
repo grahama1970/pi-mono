@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8NL--ilPm5A",
+    "language": "en",
+    "took_ms": 10518,
+    "method": null,
+    "title": "DEF CON 30 - Physical Security Village Interview",
+    "channel": "DEFCONConference",
+    "upload_date": "20220813",
+    "duration_sec": 375,
+    "description": "Physical Security Village (formerly Lock Bypass Village) gets the explainer treatment.",
+    "view_count": 3776
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8NL--ilPm5A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

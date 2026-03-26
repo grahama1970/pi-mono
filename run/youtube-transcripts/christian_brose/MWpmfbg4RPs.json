@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MWpmfbg4RPs",
+    "language": "en",
+    "took_ms": 8860,
+    "method": null,
+    "title": "The United States, Iran, and the Post-Geneva Middle East: Wh",
+    "channel": "Hudson Institute",
+    "upload_date": "20140131",
+    "duration_sec": 5232,
+    "description": "On January 21, the P5+1 and Iran implemented the interim agreement that was outlined in Geneva last November, known as the Joint Plan of Action, regarding Iran's nuclear weapons program. Whether or not the JPA is a real step toward halting Tehran's decades-long project is a key question.\nEqually important is the fact that the JPA seems to embody the White House's larger Middle East strategy. What President Obama is aiming for, according to a recent New Yorker article, is \"geopolitical equi",
+    "view_count": 384
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MWpmfbg4RPs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

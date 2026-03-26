@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tHhi83yUl_k",
+    "language": "en",
+    "took_ms": 9665,
+    "method": null,
+    "title": "DEF CON Safe Mode AI Village - Imeyerov - Project Domino Citizen Data Science Against COVID misinfo",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1665,
+    "description": "Project Domino",
+    "view_count": 926
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tHhi83yUl_k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ptyKZFy_LY4",
+    "language": "en",
+    "took_ms": 8814,
+    "method": null,
+    "title": "A New Approach to Measuring the Standard of Living in Least",
+    "channel": "Hudson Institute",
+    "upload_date": "20131119",
+    "duration_sec": 4470,
+    "description": "In \"least developed countries\" (LDCs), the growth of telecommunications is rooted primarily in mobile, rather than wired, technology. Mobile networks provide people living in isolated, rural areas, as well as in urban centers, new options for handling everyday communications and financial transactions. \r\nThe potential increases in LDC consumer welfare are substantial. Yet, the realization of these economic benefits depends on how LDC consumers react to new wireless services at differen",
+    "view_count": 93
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ptyKZFy_LY4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

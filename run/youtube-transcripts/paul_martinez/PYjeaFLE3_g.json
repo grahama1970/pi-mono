@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PYjeaFLE3_g",
+    "language": "en",
+    "took_ms": 8659,
+    "method": null,
+    "title": "ICS Security Architecture",
+    "channel": "S4 Events",
+    "upload_date": "20190619",
+    "duration_sec": 181,
+    "description": "3 minutes of highlights from Dale Peterson's ICS Security Architecture session from the OnRamp. You can see all 10 videos, bonus videos, Q&A with fellow students and instructors, all on the OnRamp Online. It's the fastest way to get up to speed on ICS Security",
+    "view_count": 1528
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PYjeaFLE3_g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

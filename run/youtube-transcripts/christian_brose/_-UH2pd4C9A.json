@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_-UH2pd4C9A",
+    "language": "en",
+    "took_ms": 7913,
+    "method": null,
+    "title": "Richard Weitz on the U.S. Afghan Withdrawal for the BBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20110623",
+    "duration_sec": 286,
+    "description": "Hudson Senior Fellow and Director of the Center for Political-Military Analysis Richard Weitz discusses President Obama's plan to withdraw troops from Afghanistan on the BBC",
+    "view_count": 289
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _-UH2pd4C9A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

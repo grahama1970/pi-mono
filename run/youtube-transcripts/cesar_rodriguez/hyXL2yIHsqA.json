@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hyXL2yIHsqA",
+    "language": "en",
+    "took_ms": 8626,
+    "method": null,
+    "title": "Air Force Jobs - Becoming an Astronaut",
+    "channel": "Sandboxx",
+    "upload_date": "20161007",
+    "duration_sec": 159,
+    "description": "For those who dream of becoming an astronaut, serving time in the Air Force flying will make them a very strong candidate for selection. Airmen have been favoured when positions become available because of their education, fitness and flight hours.\nNASA only invites applications as it needs them and training to become an astronaut even after serving in the Air Force can take upwards of 2 years. The Air Force have been present on almost every U.S. space mission and this long legacy looks set to continue.\n\nAre you or a loved one about to become the future of the Air Force?\n\nStay connected at every step of the Air Force journey as well as getting training advice every week with the Sandboxx app: https://link.sandboxx.us/youtube",
+    "view_count": 982
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hyXL2yIHsqA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kvPdQj-ikvA",
+    "language": "en",
+    "took_ms": 9342,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - BiaSciLab -  Secrets of Social Media PsyOps",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1612,
+    "description": "Psychological Warfare through social media is one of the most powerful weapons in today's political battlefield. PsyOps groups have figured out how to sharpen the blade through algorithms and targeted advertising. Nation states are using PsyOps to influence the citizens of their enemies, fighting battles from behind the keyboard.\n\nIn this talk, BiaSciLab with cover a brief history of PsyOps and how it has been used both on the battlefield and the political stage. Followed by a dive deep into how it works on the mind and how PsyOps groups are using social media to influence the political climate and elections worldwide.",
+    "view_count": 3029
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kvPdQj-ikvA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

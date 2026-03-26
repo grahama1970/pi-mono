@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qxWfkSonK7M",
+    "language": "en",
+    "took_ms": 9448,
+    "method": null,
+    "title": "DEF CON 29 - Mickey Shkatov, Jesse Michael - High Stakes Updates:  BIOS RCE OMG WTF BBQ",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2331,
+    "description": "With attacks moving below the operating system and computer firmware vulnerability discovery on the rise, the need to keep current platforms updated becomes important and new technology is developed to help defend against such threats. Major computer manufacturers are adding capabilities to make it easier to update BIOS.\n\nOur research has identified multiple vulnerabilities in Dell's BiosConnect feature used for remote update and recovery of the operating system. These vulnerabilities are easy to exploit by an adversary in the right position, and are not prevented by protective technologies such as Secured Core PCs, BitLocker, BootGuard, and BIOS Guard.\n\nJoin us and together we will explore the new attack surfaces introduced by these UEFI firmware update mechanisms -- including a full walk-through of multiple vulnerability findings and the methods we used to create fully working exploits that gain remote code execution within the laptop BIOS and their effects on the operating system.",
+    "view_count": 2515
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qxWfkSonK7M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

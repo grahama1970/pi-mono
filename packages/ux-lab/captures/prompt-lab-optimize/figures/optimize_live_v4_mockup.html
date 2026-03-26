@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0b1220; color: #e2e8f0; font-family: 'SF Mono', 'Menlo', 'Monaco', monospace; font-size: 12px; line-height: 1.6; padding: 20px 24px; max-width: 1200px; }
+
+h1 { font-size: 14px; font-weight: 700; color: #7c3aed; margin-bottom: 4px; font-family: -apple-system, sans-serif; }
+.meta { font-size: 11px; color: #334155; margin-bottom: 16px; }
+.meta span { color: #64748b; }
+
+/* Section headers */
+.section { margin: 20px 0 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 12px; font-weight: 700; color: #e2e8f0; font-family: -apple-system, sans-serif; }
+.section .round-badge { display: inline-block; padding: 1px 8px; border-radius: 3px; font-size: 10px; margin-left: 8px; }
+.section .pass { background: rgba(0,255,136,0.1); color: #00ff88; }
+.section .fail { background: rgba(255,68,68,0.1); color: #ff4444; }
+.section .mid { background: rgba(255,170,0,0.1); color: #ffaa00; }
+
+/* Prompt block */
+.prompt-block { margin: 8px 0; padding: 10px 12px; background: rgba(124,58,237,0.04); border-left: 3px solid #7c3aed; border-radius: 0 4px 4px 0; white-space: pre-wrap; font-size: 11px; color: #64748b; max-height: 200px; overflow: auto; }
+.prompt-label { font-size: 10px; font-weight: 700; color: #7c3aed; margin-bottom: 2px; font-family: -apple-system, sans-serif; }
+.da { color: #00ff88; background: rgba(0,255,136,0.06); }
+.dr { color: #ff4444; background: rgba(255,68,68,0.06); text-decoration: line-through; }
+
+/* PromptFoo-style eval table */
+.eval-table { width: 100%; border-collapse: collapse; margin: 8px 0; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.eval-table th { font-size: 10px; font-weight: 700; padding: 8px 10px; text-align: left; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08); color: #64748b; font-family: -apple-system, sans-serif; }
+.eval-table th.model-col { color: #7c3aed; }
+.eval-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; }
+.eval-table tr:last-child td { border-bottom: none; }
+.eval-table .input-cell { color: #4a9eff; font-size: 11px; width: 35%; }
+.eval-table .result-cell { font-size: 11px; }
+.eval-table .summary-row { background: rgba(255,255,255,0.02); border-top: 2px solid rgba(255,255,255,0.08); }
+.eval-table .summary-row td { font-weight: 700; font-size: 12px; font-family: -apple-system, sans-serif; }
+
+/* Pass/Fail badges */
+.badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 9px; font-weight: 700; font-family: -apple-system, sans-serif; }
+.badge.pass { background: rgba(0,255,136,0.12); color: #00ff88; }
+.badge.fail { background: rgba(255,68,68,0.12); color: #ff4444; }
+.badge.warn { background: rgba(255,170,0,0.12); color: #ffaa00; }
+
+/* JSON output in cells */
+.json-out { font-size: 10px; color: #64748b; margin-top: 4px; }
+
+/* Failure box */
+.failure-box { margin: 8px 0; padding: 8px 12px; background: rgba(255,68,68,0.04); border-left: 3px solid #ff4444; border-radius: 0 4px 4px 0; font-size: 11px; color: #64748b; }
+.failure-box strong { color: #ff4444; }
+
+/* Rewrite box */
+.rewrite-box { margin: 8px 0; padding: 8px 12px; background: rgba(255,170,0,0.04); border-left: 3px solid #ffaa00; border-radius: 0 4px 4px 0; font-size: 11px; color: #64748b; }
+.rewrite-box strong { color: #ffaa00; }
+
+/* Final verdict */
+.verdict { margin: 20px 0; padding: 16px; border: 2px solid #00ff88; border-radius: 6px; background: rgba(0,255,136,0.03); }
+.verdict h2 { font-size: 14px; font-weight: 700; color: #00ff88; margin-bottom: 8px; font-family: -apple-system, sans-serif; }
+.verdict .prompts { display: flex; gap: 12px; margin: 12px 0; }
+.verdict .prompt-card { flex: 1; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.verdict .prompt-card-header { padding: 6px 10px; background: rgba(0,255,136,0.06); font-size: 10px; font-weight: 700; color: #00ff88; font-family: -apple-system, sans-serif; }
+.verdict .prompt-card-body { padding: 8px 10px; font-size: 10px; color: #64748b; white-space: pre-wrap; max-height: 160px; overflow: auto; }
+.verdict .actions { margin-top: 12px; display: flex; gap: 8px; }
+.btn-approve { padding: 6px 20px; border-radius: 4px; border: 1px solid #00ff88; background: rgba(0,255,136,0.1); color: #00ff88; font-weight: 700; font-size: 11px; cursor: pointer; font-family: -apple-system, sans-serif; }
+.btn-reject { padding: 6px 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.13); background: transparent; color: #64748b; font-size: 11px; cursor: pointer; font-family: -apple-system, sans-serif; }
+
+/* Model separator */
+.model-divider { margin: 24px 0 16px; padding: 8px 0; border-top: 2px solid rgba(124,58,237,0.3); font-size: 13px; font-weight: 700; color: #e2e8f0; font-family: -apple-system, sans-serif; }
+.model-divider .model-name { color: #7c3aed; }
+</style>
+</head>
+<body>
+
+<h1>prompt-lab optimize — taxonomy_v1</h1>
+<div class="meta">
+  Models: <span>DeepSeek-V3, qwen2.5:7b</span> &nbsp;|&nbsp;
+  Test cases: <span>3</span> &nbsp;|&nbsp;
+  Max rounds: <span>5</span> &nbsp;|&nbsp;
+  Threshold: <span>F1 ≥ 0.800</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="model-divider"><span class="model-name">DeepSeek-V3</span> (deepseek-ai/DeepSeek-V3)</div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+<div class="section">Round 1 — Base prompt <span class="round-badge fail">F1 0.619</span></div>
+
+<div class="prompt-label">System Prompt</div>
+<div class="prompt-block">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+
+Return ONLY valid JSON: {"conceptual": [...], "tactical": [...], "confidence": 0.8}
+
+Valid conceptual (Tier 0): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical (Tier 1): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+Choose tags that best describe the PRIMARY purpose. Be precise, not exhaustive.</div>
+
+<table class="eval-table">
+  <thead><tr>
+    <th>User Message Sent</th>
+    <th class="model-col">DeepSeek-V3 Response</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td class="input-cell">Control: Registry Run Keys / Startup Folder
+Description: Adversaries may achieve persistence by adding a program to a startup folder or referencing it with a Registry run key.</td>
+      <td class="result-cell">
+        <span class="badge fail">FAIL</span> F1 0.333
+        <div class="json-out">{"conceptual":["Corruption","Persistence"],"tactical":["Persist"],"confidence":0.95}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="input-cell">Control: Flaw Remediation
+Description: The organization identifies, reports, and corrects information system flaws.</td>
+      <td class="result-cell">
+        <span class="badge pass">PASS</span> F1 0.857
+        <div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="input-cell">Control: Network Isolation
+Description: Configuring a network to deny connections based on source or destination IP address ranges.</td>
+      <td class="result-cell">
+        <span class="badge warn">WARN</span> F1 0.667
+        <div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.88}</div>
+      </td>
+    </tr>
+    <tr class="summary-row">
+      <td>3 cases</td>
+      <td><span style="color:#ff4444;">Avg F1 0.619 — FAIL</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="failure-box">
+  <strong>Failure:</strong> "Persistence" hallucinated 1/3 times. The model confuses "Persistence" (a descriptor for Corruption) with "Persist" (valid tactical tag).
+</div>
+
+<div class="rewrite-box">
+  <strong>Rewriting prompt →</strong> Adding disambiguation: "Persistence is NOT a valid tag — use Persist instead."
+</div>
+
+<!-- Round 2 -->
+<div class="section">Round 2 — Rewritten prompt <span class="round-badge pass">F1 0.929</span></div>
+
+<div class="prompt-label">System Prompt (diff from Round 1)</div>
+<div class="prompt-block">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+
+Return ONLY valid JSON: {"conceptual": [...], "tactical": [...], "confidence": 0.8}
+
+<span class="da">IMPORTANT: Use ONLY exact tag names below. Descriptors in parentheses are
+explanations, NOT tag names. "Persistence" is NOT a tag — use "Persist".</span>
+
+Valid conceptual (Tier 0): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical (Tier 1): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+Choose tags that best describe the PRIMARY purpose. Be precise, not exhaustive.</div>
+
+<table class="eval-table">
+  <thead><tr>
+    <th>User Message Sent</th>
+    <th class="model-col">DeepSeek-V3 Response</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td class="input-cell">Control: Registry Run Keys / Startup Folder
+Description: Adversaries may achieve persistence by adding a program to a startup folder or referencing it with a Registry run key.</td>
+      <td class="result-cell">
+        <span class="badge pass">PASS</span> F1 1.000
+        <div class="json-out">{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.95}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="input-cell">Control: Flaw Remediation
+Description: The organization identifies, reports, and corrects information system flaws.</td>
+      <td class="result-cell">
+        <span class="badge pass">PASS</span> F1 0.857
+        <div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="input-cell">Control: Network Isolation
+Description: Configuring a network to deny connections based on source or destination IP address ranges.</td>
+      <td class="result-cell">
+        <span class="badge pass">PASS</span> F1 0.929
+        <div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.92}</div>
+      </td>
+    </tr>
+    <tr class="summary-row">
+      <td>3 cases</td>
+      <td><span style="color:#00ff88;">Avg F1 0.929 — PASS ✓</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="font-size:11px; color:#00ff88; margin:8px 0;">DeepSeek-V3 converged in 2 rounds.</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div class="model-divider"><span class="model-name">qwen2.5:7b</span> (local Ollama)</div>
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+<div class="section">Round 1 — Base prompt <span class="round-badge fail">F1 0.595</span></div>
+
+<div class="prompt-label">System Prompt (same base as DeepSeek)</div>
+<div class="prompt-block" style="max-height:40px; color:#334155; font-style:italic;">Same base prompt — see DeepSeek Round 1 above</div>
+
+<table class="eval-table">
+  <thead><tr>
+    <th>User Message Sent</th>
+    <th class="model-col">qwen2.5:7b Response</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td class="input-cell">Control: Registry Run Keys / Startup Folder
+Description: Adversaries may achieve persistence...</td>
+      <td class="result-cell">
+        <span class="badge fail">FAIL</span> F1 0.333
+        <div class="json-out">{"conceptual":["Corruption","Persistence"],"tactical":[],"confidence":0.8}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="input-cell">Control: Flaw Remediation
+Description: The organization identifies, reports, and corrects...</td>
+      <td class="result-cell">
+        <span class="badge pass">PASS</span> F1 0.857
+        <div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.85}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="input-cell">Control: Network Isolation
+Description: Configuring a network to deny connections...</td>
+      <td class="result-cell">
+        <span class="badge warn">WARN</span> F1 0.595
+        <div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.7}</div>
+      </td>
+    </tr>
+    <tr class="summary-row">
+      <td>3 cases</td>
+      <td><span style="color:#ff4444;">Avg F1 0.595 — FAIL</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="failure-box">
+  <strong>Failures:</strong> "Persistence" hallucinated 1/3. Also missing tactical tag on case 1 — returned empty array.
+</div>
+<div class="rewrite-box">
+  <strong>Rewriting prompt →</strong> Strict rules: enumerate ALL valid tags explicitly. Add INVALID tag list. Require both conceptual + tactical in every response.
+</div>
+
+<!-- Round 2 -->
+<div class="section">Round 2 — Rewritten prompt <span class="round-badge mid">F1 0.762</span></div>
+
+<div class="prompt-label">System Prompt (qwen variant)</div>
+<div class="prompt-block"><span class="da">RULES (STRICT):
+1. Use ONLY exact tag names from the lists below
+2. NEVER use descriptor words as tags
+3. ALWAYS include at least 1 conceptual AND 1 tactical tag
+4. INVALID TAGS: Persistence, Defense, Attack, Security
+
+VALID CONCEPTUAL (ONLY THESE 6): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+VALID TACTICAL (ONLY THESE 8): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist</span>
+
+Return ONLY valid JSON: {"conceptual": [...], "tactical": [...], "confidence": 0.8}</div>
+
+<table class="eval-table">
+  <thead><tr><th>User Message Sent</th><th class="model-col">qwen2.5:7b Response</th></tr></thead>
+  <tbody>
+    <tr><td class="input-cell">Control: Registry Run Keys / Startup Folder...</td><td class="result-cell"><span class="badge pass">PASS</span> F1 1.000<div class="json-out">{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.9}</div></td></tr>
+    <tr><td class="input-cell">Control: Flaw Remediation...</td><td class="result-cell"><span class="badge warn">WARN</span> F1 0.667<div class="json-out">{"conceptual":["Resilience"],"tactical":["Harden"],"confidence":0.85}</div></td></tr>
+    <tr><td class="input-cell">Control: Network Isolation...</td><td class="result-cell"><span class="badge warn">WARN</span> F1 0.667<div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.8}</div></td></tr>
+    <tr class="summary-row"><td>3 cases</td><td><span style="color:#ffaa00;">Avg F1 0.762 — FAIL (improved +0.167)</span></td></tr>
+  </tbody>
+</table>
+
+<div class="failure-box"><strong>Failure:</strong> Missing "Fragility" on Flaw Remediation. The 7B model drops secondary conceptual tags.</div>
+<div class="rewrite-box"><strong>Rewriting prompt →</strong> Adding domain hints: "Controls about fixing vulnerabilities → Resilience + Fragility"</div>
+
+<!-- Round 3 -->
+<div class="section">Round 3 — Rewritten prompt <span class="round-badge mid">F1 0.810</span></div>
+
+<div class="prompt-label">System Prompt (additions to qwen variant)</div>
+<div class="prompt-block"><span class="da">HINTS:
+- Fixing/patching vulnerabilities → Resilience + Fragility + Harden
+- Network segmentation/isolation → Resilience + Isolate
+- Backdoor/implant techniques → Corruption + Persist
+- Reconnaissance/scanning → Precision + Model</span></div>
+
+<table class="eval-table">
+  <thead><tr><th>User Message Sent</th><th class="model-col">qwen2.5:7b Response</th></tr></thead>
+  <tbody>
+    <tr><td class="input-cell">Control: Registry Run Keys...</td><td class="result-cell"><span class="badge pass">PASS</span> F1 1.000<div class="json-out">{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.9}</div></td></tr>
+    <tr><td class="input-cell">Control: Flaw Remediation...</td><td class="result-cell"><span class="badge pass">PASS</span> F1 0.857<div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.85}</div></td></tr>
+    <tr><td class="input-cell">Control: Network Isolation...</td><td class="result-cell"><span class="badge warn">WARN</span> F1 0.571<div class="json-out">{"conceptual":["Resilience"],"confidence":0.8}</div></td></tr>
+    <tr class="summary-row"><td>3 cases</td><td><span style="color:#ffaa00;">Avg F1 0.810 — FAIL (improved +0.048)</span></td></tr>
+  </tbody>
+</table>
+
+<div class="failure-box"><strong>Failure:</strong> Missing tactical tag "Isolate" on Network Isolation. The model omitted the tactical array entirely.</div>
+<div class="rewrite-box"><strong>Rewriting prompt →</strong> Strengthening: "Network segmentation/isolation ALWAYS → Resilience + Isolate"</div>
+
+<!-- Round 4 -->
+<div class="section">Round 4 — Rewritten prompt <span class="round-badge pass">F1 0.881</span></div>
+
+<div class="prompt-label">System Prompt (additions)</div>
+<div class="prompt-block"><span class="da">- Network segmentation, isolation, quarantine → ALWAYS include tactical: Isolate
+- EVERY response MUST have at least 1 item in "tactical" array</span></div>
+
+<table class="eval-table">
+  <thead><tr><th>User Message Sent</th><th class="model-col">qwen2.5:7b Response</th></tr></thead>
+  <tbody>
+    <tr><td class="input-cell">Control: Registry Run Keys...</td><td class="result-cell"><span class="badge pass">PASS</span> F1 1.000<div class="json-out">{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.9}</div></td></tr>
+    <tr><td class="input-cell">Control: Flaw Remediation...</td><td class="result-cell"><span class="badge pass">PASS</span> F1 0.857<div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.85}</div></td></tr>
+    <tr><td class="input-cell">Control: Network Isolation...</td><td class="result-cell"><span class="badge pass">PASS</span> F1 0.786<div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.85}</div></td></tr>
+    <tr class="summary-row"><td>3 cases</td><td><span style="color:#00ff88;">Avg F1 0.881 — PASS ✓</span></td></tr>
+  </tbody>
+</table>
+
+<div style="font-size:11px; color:#00ff88; margin:8px 0;">qwen2.5:7b converged in 4 rounds.</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- FINAL VERDICT -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+<div class="verdict">
+  <h2>OPTIMIZATION COMPLETE</h2>
+  <div style="font-size:11px; color:#64748b;">
+    DeepSeek-V3: <span style="color:#00ff88; font-weight:700;">F1 0.929 PASS (2 rounds)</span> &nbsp;|&nbsp;
+    qwen2.5:7b: <span style="color:#00ff88; font-weight:700;">F1 0.881 PASS (4 rounds)</span>
+  </div>
+
+  <!-- Final results matrix -->
+  <table class="eval-table" style="margin:12px 0;">
+    <thead><tr>
+      <th>User Message</th>
+      <th class="model-col">DeepSeek-V3 (v2)</th>
+      <th class="model-col">qwen2.5:7b (v4)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="input-cell">Control: Registry Run Keys / Startup Folder
+Description: Adversaries may achieve persistence...</td>
+        <td class="result-cell"><span class="badge pass">1.000</span><div class="json-out">{"conceptual":["Corruption"],"tactical":["Persist"]}</div></td>
+        <td class="result-cell"><span class="badge pass">1.000</span><div class="json-out">{"conceptual":["Corruption"],"tactical":["Persist"]}</div></td>
+      </tr>
+      <tr>
+        <td class="input-cell">Control: Flaw Remediation
+Description: The organization identifies, reports...</td>
+        <td class="result-cell"><span class="badge pass">0.857</span><div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"]}</div></td>
+        <td class="result-cell"><span class="badge pass">0.857</span><div class="json-out">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"]}</div></td>
+      </tr>
+      <tr>
+        <td class="input-cell">Control: Network Isolation
+Description: Configuring a network to deny connections...</td>
+        <td class="result-cell"><span class="badge pass">0.929</span><div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"]}</div></td>
+        <td class="result-cell"><span class="badge pass">0.786</span><div class="json-out">{"conceptual":["Resilience"],"tactical":["Isolate"]}</div></td>
+      </tr>
+      <tr class="summary-row">
+        <td>AVERAGE</td>
+        <td><span style="color:#00ff88; font-size:14px;">F1 0.929</span></td>
+        <td><span style="color:#00ff88; font-size:14px;">F1 0.881</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Final converged system prompts -->
+  <div class="prompts">
+    <div class="prompt-card">
+      <div class="prompt-card-header">Final System Prompt — DeepSeek-V3 &nbsp; <span style="font-weight:400; color:#64748b;">taxonomy_v1.deepseek-v3.txt</span></div>
+      <div class="prompt-card-body">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+
+Return ONLY valid JSON: {"conceptual": [...], "tactical": [...], "confidence": 0.8}
+
+IMPORTANT: Use ONLY exact tag names below. Descriptors in parentheses are
+explanations, NOT tag names. "Persistence" is NOT a tag — use "Persist".
+
+Valid conceptual (Tier 0): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical (Tier 1): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+Choose tags that best describe the PRIMARY purpose. Be precise, not exhaustive.</div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-header">Final System Prompt — qwen2.5:7b &nbsp; <span style="font-weight:400; color:#64748b;">taxonomy_v1.qwen2.5-7b.txt</span></div>
+      <div class="prompt-card-body">RULES (STRICT):
+1. Use ONLY exact tag names from the lists below
+2. NEVER use descriptor words as tags
+3. ALWAYS include at least 1 conceptual AND 1 tactical tag
+4. INVALID TAGS: Persistence, Defense, Attack, Security
+
+VALID CONCEPTUAL (ONLY THESE 6): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+VALID TACTICAL (ONLY THESE 8): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+HINTS:
+- Fixing/patching vulnerabilities → Resilience + Fragility + Harden
+- Network segmentation/isolation → ALWAYS Resilience + Isolate
+- Backdoor/implant techniques → Corruption + Persist
+- Reconnaissance/scanning → Precision + Model
+- EVERY response MUST have at least 1 item in "tactical" array
+
+Return ONLY valid JSON: {"conceptual": [...], "tactical": [...], "confidence": 0.8}</div>
+    </div>
+  </div>
+
+  <div style="font-size:10px; color:#334155; margin:8px 0; line-height:1.6;">
+    DeepSeek-V3 needed a 2-line disambiguation note. qwen2.5:7b needed 4 rounds of strict rules, negative examples, and domain-specific hints. Both produce correct output in a single LLM call.
+  </div>
+
+  <div class="actions">
+    <button class="btn-approve">Approve & Save Both</button>
+    <button class="btn-reject">Reject</button>
+  </div>
+</div>
+
+</body>
+</html>

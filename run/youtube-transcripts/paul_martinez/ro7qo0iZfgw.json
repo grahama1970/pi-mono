@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ro7qo0iZfgw",
+    "language": "en",
+    "took_ms": 10204,
+    "method": null,
+    "title": "INCONTROLLER",
+    "channel": "S4 Events",
+    "upload_date": "20220906",
+    "duration_sec": 1624,
+    "description": "Nathan Brubaker & Keith Lunden from Mandiant provided their analysis of the INCONTROLLER (aka PIPEDREAM) malware that was revealed right before S4x22 in April, from the S4x23 Main Stage.",
+    "view_count": 604
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ro7qo0iZfgw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

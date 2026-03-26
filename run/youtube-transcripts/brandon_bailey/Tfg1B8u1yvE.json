@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Tfg1B8u1yvE",
+    "language": "en",
+    "took_ms": 7755,
+    "method": null,
+    "title": "DEF CON 32 - SQL Injection Isn't Dead  Smuggling Queries at the Protocol Level - Paul Gerste",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2293,
+    "description": "SQL injections seem to be a solved problem; databases even have built-in support for prepared statements, leaving no room for injections. In this session, we will go a level deeper: instead of attacking the query syntax, we will explore smuggling attacks against database wire protocols, through which remote, unauthenticated attackers can inject entire (No)SQL statements into an application's database connection.\n\nUsing vulnerable database driver libraries as case studies, we will bring the concept of HTTP request smuggling to binary protocols. By corrupting the boundaries between protocol messages, we desynchronize an application and its database, allowing the insertion of malicious messages that lead to authentication bypasses, data leakage, and remote code execution.\n\nTo put our findings into context, we will explore the real-world applicability of this new concept by comparing how robust various languages and frameworks are against these attacks. We will also discuss how smuggling attacks are not specific to database wire protocols but affect all kinds of binary protocols, from databases over message queues to caching. We will end the session with inspirations for future research to explore the topic further.",
+    "view_count": 18735
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Tfg1B8u1yvE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

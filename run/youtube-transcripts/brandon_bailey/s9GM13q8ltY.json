@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s9GM13q8ltY",
+    "language": "en",
+    "took_ms": 8991,
+    "method": null,
+    "title": "DEF CON 33 Video Team -  DEF CON RUN  with Shepard and Panda",
+    "channel": "DEFCONConference",
+    "upload_date": "20250818",
+    "duration_sec": 176,
+    "description": "Silk learns the lore of the DEF CON Run from Shepard and Panda",
+    "view_count": 618
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s9GM13q8ltY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

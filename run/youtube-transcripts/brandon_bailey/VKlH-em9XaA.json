@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VKlH-em9XaA",
+    "language": "en",
+    "took_ms": 9813,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Alex Hoekstra - Open Source Vaccine Developer Kits VDKs",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 1696,
+    "description": "Vaccine development has traditionally been an expensive and thus primarily proprietary endeavor. Tools to decrease costs, increase adaptability, speed of production, speed of testing, and expand access to could help increase participation, collaboration, innovation, infectious disease biosecurity, and equity in vaccine development and ultimately vaccine deployment globally. Open-Source VDKs could fill a vital and underserved niche in the ecosystem or vaccine development.\n\nRaDVaC is building tools to increase participation in vaccine development. Key features of a useful vaccine developer kit (VDK) include technical specs for vaccine candidate design, production, testing, adaptation, and collaboration. The ecosystem of vaccine development is weaker for a lack of open-source toolkits (open-source infrastructure is an investment in anti-fragility).",
+    "view_count": 869
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VKlH-em9XaA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

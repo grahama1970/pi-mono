@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jMKRUo4wVKA",
+    "language": "en",
+    "took_ms": 8396,
+    "method": null,
+    "title": "New course with Neo4J: Knowledge Graphs for RAG",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240313",
+    "duration_sec": 226,
+    "description": "Enroll now: https://bit.ly/3PaCeAK\n\nKnowledge graphs enhance AI application development by connecting structured and unstructured data sources for a comprehensive view of complex, real-world scenarios. They go beyond traditional databases as they connect data from both structured and unstructured sources, providing an intuitive way to model complex, real-world scenarios. \n\nToday, we’re introducing Knowledge Graphs for RAG, a new short course built in collaboration with Neo4j, where you’ll learn how to leverage knowledge graphs within retrieval augmented generation (RAG) applications.\n\nUpon completing this course, you will:\n\n- Understand the basics of how knowledge graphs store data by using nodes to represent entities and edges to represent relationships between nodes.\n- Use Neo4j's query language, Cypher, to retrieve information from a fun graph of movie and actor data.\n- Add a vector index to a knowledge graph to represent unstructured text data and find relevant texts using vector similarity search.\n- Build a knowledge graph of text documents from scratch, using publicly available financial and investment documents as the demo use case\n- Explore techniques for connecting multiple knowledge graphs and using complex queries for comprehensive data retrieval.\n- Write advanced Cypher queries to retrieve relevant information from the graph and format it for inclusion in your prompt to a large language model (LLM)\n\nStart enhancing the performance of LLMs with knowledge graphs.\n\nLearn more: https://bit.ly/3PaCeAK",
+    "view_count": 11434
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jMKRUo4wVKA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

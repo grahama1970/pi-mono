@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "raSTgFqYaoc",
+    "language": "en",
+    "took_ms": 9909,
+    "method": null,
+    "title": "DEF CON 29 - Patrick Wardle - Bundles of Joy:  Breaking MacOS via Subverted Applications Bundles",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2682,
+    "description": "A recent vulnerability, CVE-2021-30657, neatly bypassed a myriad of foundational macOS security features such as File Quarantine, Gatekeeper, and Notarization. Armed with this capability attackers could (and were!) hacking macOS systems with a simple user (double)-click. Yikes!\n\nIn this presentation we’ll dig deep into the bowels of macOS to uncover the root cause of the bug: a subtle logic flaw in the complex and undocumented policy subsystem. Moreover, we’ll highlight the discovery of malware exploiting this bug as an 0day, reversing Apple’s patch, and discuss novel methods of both detection and prevention.\n\nREFERENCES:\n“All Your Macs Are Belong To Us”\nhttps://objective-see.com/blog/blog_0x64.html\n“macOS Gatekeeper Bypass (2021 Edition)”\nhttps://cedowens.medium.com/macos-gatekeeper-bypass-2021-edition-5256a2955508\n“Shlayer Malware Abusing Gatekeeper Bypass On Macos”\nhttps://www.jamf.com/blog/shlayer-malware-abusing-gatekeeper-bypass-on-macos/",
+    "view_count": 2226
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] raSTgFqYaoc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

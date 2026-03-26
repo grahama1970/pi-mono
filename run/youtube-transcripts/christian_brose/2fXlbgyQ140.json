@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2fXlbgyQ140",
+    "language": "en",
+    "took_ms": 8543,
+    "method": null,
+    "title": "Evolving Issues in Regulation of Digital Platforms: A View from the UK and EU",
+    "channel": "Hudson Institute",
+    "upload_date": "20250407",
+    "duration_sec": 4211,
+    "description": "Join Hudson for a discussion on European Union and United Kingdom competition and regulatory authorities’ increasing focus on digital platforms. Topics will include:\n\n- The features of digital platforms that have attracted competition law and regulatory scrutiny\n- Reform initiatives including the UK Digital Markets Unit, and European Commission’s Digital Markets Act, and antitrust probes into big tech\n- Emerging challenges for defining and regulating digital platforms\n- Policy interventions relating to digital platforms outside of mainstream competition law\n\nLearn more at: https://www.hudson.org/events/evolving-issues-regulation-digital-platforms-view-uk-eu-harold-furchtgott-roth",
+    "view_count": 430
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2fXlbgyQ140: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

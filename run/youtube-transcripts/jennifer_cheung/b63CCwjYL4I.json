@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "b63CCwjYL4I",
+    "language": "en",
+    "took_ms": 7978,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village - Nick Ashworth -  Vehicle ID and Tracking via Passive Keyless Entry",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 3043,
+    "description": "Attacks on the passive keyless entry system have been around for a while, with most focused on gaining physical access to the vehicle. We have developed a new attack, Marco, that instead focuses on identifying and tracking vehicles by exploiting weaknesses in passive keyless entry systems. This attack works similar to a cooperative radar system, where the attacker transmits an interrogation message, and any nearby key fob will automatically respond. The attacker can then use these responses to identify and track key fobs either generically, such as all fobs of the same make and model of vehicle, or specifically, such as a key fob with a specific identifier.",
+    "view_count": 2799
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] b63CCwjYL4I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

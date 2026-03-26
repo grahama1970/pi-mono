@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fdRC26RF27I",
+    "language": "en",
+    "took_ms": 9208,
+    "method": null,
+    "title": "DEF CON Safe Mode Voting Village - BiaSciLab  - Don't Go Postal",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 1050,
+    "description": "As the previous DEF CON Voting Villages have proved, our voting equipment and infrastructure are very vulnerable to multiple types of attacks. But now, with everything that’s going on in the world ,voting by mail is the new vulnerable thing! Instead of focusing on problems and broken things, this talk will focus on simple fixes that vendors and governments can put into action right now. Starting with the registering to vote, then moving through parts of the entire system, BiaSciLab will offer suggestions on how simple practices and changes in thinking can improve the security of the entire system.\n\nLast year, in the Voting Village BiaSciLab did a talk on the election systems problems and howto fix them. This year with voting by mail, new problems are appearing! Like States not allowing people to vote by mail! Breaking down these flaws and offering real solutions for each one, BiaSciLab will bring hope in the face of this daunting and complex security problem in these hard times.",
+    "view_count": 1519
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fdRC26RF27I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

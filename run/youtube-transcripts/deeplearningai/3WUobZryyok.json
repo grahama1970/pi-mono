@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3WUobZryyok",
+    "language": "en",
+    "took_ms": 8876,
+    "method": null,
+    "title": "Building Multi-Modal Search with Vector Databases",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231114",
+    "duration_sec": 3671,
+    "description": "This workshop is all about leveraging the power of lightning fast vector search implemented using vector databases like Weaviate in conjunction with multimodal embedding models to power at-scale, production ready applications capable of understanding and searching text, images, audio and video data.\r\n\r\nWhat the attendees will take away from the workshop:\r\n\r\nHow machine learning models can embed multimodal data\r\nHow vector databases like Weaviate enable real time semantic search\r\nHow vector database can be used to scale the use of these models to billion scale\r\nCode implementations of performing any-to-any modality search (for example audio-to-image or image-to-text searches)\r\nApplications enabled by at scale multimodal search and retrieval\r\nThis event is inspired by DeepLearning.AI’s GenAI short courses, created in collaboration with AI companies across the globe. Our courses help you learn new skills, tools, and concepts efficiently within 1 hour.\r\n\r\nAbout Weaviate\r\n\r\nWeaviate is an open-source vector database. It allows you to store data objects and vector embeddings from your favorite ML-models, and scale seamlessly into billions of data objects.\r\n\r\nSpeakers:\r\n\r\nSebastian Witalec, Head of DevRel at Weaviate\r\n\r\nhttps://www.linkedin.com/in/sebawita/\r\n\r\nZain Hasan, Developer Advocate at Weaviate\r\n\r\nhttps://www.linkedin.com/in/zainhas/\r\n\nHere are the slides covered in the presentation:\n\nhttps://docs.google.com/presentation/d/1sS-bxJ-k9EuESH2VhpwnybY3QyV_9FdxHLmZLCSpuSM/edit?usp=sharing",
+    "view_count": 18650
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3WUobZryyok: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

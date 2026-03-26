@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pTwY6m7ap3w",
+    "language": "en",
+    "took_ms": 8524,
+    "method": null,
+    "title": "The US & Indo-Pacific: A Conversation with Rep. Young Kim",
+    "channel": "Hudson Institute",
+    "upload_date": "20210726",
+    "duration_sec": 1074,
+    "description": "Join Hudson Institute Senior Fellows Eric Brown and Nury Turkel for a discussion with Representative Young Kim (R-CA) about America’s role in the Indo-Pacific. As China assumes an increasingly aggressive and destabilizing role in this pivotal region, strong support for democracy and human rights from the United States is more important than ever. Rep. Kim is a freshman member of Congress from California’s 39th district and a prominent advocate for a free and open Indo-Pacific, with a particular focus on Hong Kong, Taiwan and the Korean peninsula. Please join Hudson Institute for this timely discussion.",
+    "view_count": 1069
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pTwY6m7ap3w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jGG2gxI_CNw",
+    "language": "en",
+    "took_ms": 8369,
+    "method": null,
+    "title": "21st Century Seapower and America's Global Interests",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 2895,
+    "description": "At the end of the Cold War, the U.S. Navy's fleet numbered nearly 600 ships. Today, the fleet is less than half that size and notably short of the level that naval leadership says is needed. Greatly increasing national deficits, rising ship costs, and a dwindling industrial base suggest that the Navy will only continue to shrink.  Admiral Gary Roughead, Chief of Naval Operations and a member of the Joint Chiefs of Staff, will give a major address at Hudson Institute focusing on the current state",
+    "view_count": 264
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jGG2gxI_CNw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

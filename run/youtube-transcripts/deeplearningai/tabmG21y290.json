@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tabmG21y290",
+    "language": "en",
+    "took_ms": 9606,
+    "method": null,
+    "title": "New course with Google Cloud: LLMOps",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240117",
+    "duration_sec": 132,
+    "description": "Enroll now: https://bit.ly/3U43OTL\n\nAnnouncing LLMOps, a new short course built in collaboration with Google Cloud, and taught by Erwin Huizenga, Machine Learning Technical Lead at Google.\n\nIn this course, you’ll learn Large Language Model Operations (LLMOps) best practices as you design and automate the steps to tune a large language model (LLM) for a specific task and deploy it as a callable API. \n\nYou'll go through the LLMOps pipeline of pre-processing training data for supervised instruction tuning and adapt a supervised tuning pipeline to train and deploy a custom LLM. You’ll get hands-on and tune an LLM to act as a question-answering coding expert. You can apply these techniques to customize your LLM for diverse use cases.\n\nThe key steps of creating the LLMOps pipeline that you’ll explore include:\n\n- Retrieving and transforming training data for supervised fine-tuning of an LLM.\n- Versioning your data and tuned models to track your tuning experiments. \n- Configuring an open-source supervised tuning pipeline and then executing that pipeline to train and then deploy a tuned LLM.\n- Outputting and studying safety scores to responsibly monitor and filter your LLM application's behavior.\n- Trying out the tuned and deployed LLM yourself!\n\nThe tools you’ll practice with include BigQuery data warehouse, the open-source Kubeflow Pipelines, and Google Cloud. \n\nPrepare to tune an LLM while you work with and build an LLMOps pipeline.\n\nLearn more: https://bit.ly/3U43OTL",
+    "view_count": 5414
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tabmG21y290: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

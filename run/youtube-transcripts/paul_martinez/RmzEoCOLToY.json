@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RmzEoCOLToY",
+    "language": "en",
+    "took_ms": 7709,
+    "method": null,
+    "title": "Checklist Blues and Control Loop Bars",
+    "channel": "S4 Events",
+    "upload_date": "20251120",
+    "duration_sec": 140,
+    "description": "Kerry Tomlinson’s Unsolicited Response at S4x25 wasn’t a talk. It was a rap.\n\nTed Lasso, Picasso, red teams, and spaghettis are all aimed at the checklist culture, dead deliverables, and why attackers are still winning.\n\nSmart, sharp, and exactly what S4 is built for.",
+    "view_count": 148
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RmzEoCOLToY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

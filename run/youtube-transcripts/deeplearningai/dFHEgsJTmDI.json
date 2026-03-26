@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dFHEgsJTmDI",
+    "language": "en",
+    "took_ms": 8072,
+    "method": null,
+    "title": "A new course on Retrieval Augmented Generation (RAG) is live!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250716",
+    "duration_sec": 100,
+    "description": "Learn more: https://bit.ly/3GKWqrY\n\nWe’re thrilled to announce the launch of a new course: Retrieval Augmented Generation (RAG), taught by AI engineer Zain Hasan, and available on Coursera.\n\nThis hands-on course shows you how to build production-ready RAG systems, connecting language models to external data sources to improve accuracy, reduce hallucinations, and support real-world use cases.\n\nYou'll move beyond prototype-level LLM apps to build full RAG pipelines that are scalable, adaptable, and grounded in real context. In detail, you’ll:\n\n- Combine retrievers and LLMs using tools like Weaviate, Together.AI, and Phoenix\n- Apply effective retrieval such as keyword search, semantic search, and metadata filtering, and know when to use each\n- Evaluate system performance, balance cost-speed-quality tradeoffs, and prep your pipeline for deployment\n\nYou’ll work with real-world datasets from domains like healthcare, media, and e-commerce, gaining a practical foundation and engineering judgment you can apply in production settings.\n\nThis course is designed for software engineers, ML practitioners, and technical professionals building with LLMs. If your applications require accuracy, traceability, and relevance, this course will show you how to get there with RAG.\n\nEnroll now: https://bit.ly/3GKWqrY",
+    "view_count": 6267
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dFHEgsJTmDI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

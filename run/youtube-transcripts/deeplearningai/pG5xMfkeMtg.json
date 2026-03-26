@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pG5xMfkeMtg",
+    "language": "en",
+    "took_ms": 8074,
+    "method": null,
+    "title": "New course with Neo4j! Enroll in Agentic Knowledge Graph Construction",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250827",
+    "duration_sec": 146,
+    "description": "Learn more: https://bit.ly/4lKS3M2\n\nLearn to automate the construction of knowledge graphs using agents in Agentic Knowledge Graph Construction, taught by Andreas Kollegger, Developer Evangelist for Generative AI at Neo4j.\n\nIn traditional RAG systems, documents are split into chunks stored in a vector database. In a knowledge graph, chunks are additionally placed in a graph that better represents relationships within your data. For example, a chunk representing a product review can be connected in a graph to another node representing the product that was mentioned in the review. Manually constructing knowledge graphs can be a lot of work. In this course, you’ll learn how to use collaborative agents to generate the construction plan for your knowledge graph.\n\nYou’ll implement an agentic system using Google’s Agent Development Kit (ADK), to build a knowledge graph that helps you find the root cause of product issues. You’ll work with structured data consisting of product and supplier information, and unstructured data consisting of product reviews. \n\nYou’ll design agents that suggest how to transform your structured and unstructured data into graphs. For example, from each CSV file, you can either extract a node representing a product, a part of a product or a supplier, or you can extract a relationship: a product contains this part, a part is provided by this supplier. From each review chunk, you can extract what product and issues were mentioned. Finally, you will construct the graphs based on the plans provided by the agents and connect them in a complete knowledge graph.\n\nIn detail, you’ll: \n\n- Understand what a knowledge graph is and how it captures relationships from data.\n- Explore the architecture of the multi-agent system made up of a conversational agent that identifies the user’s goal, and three sub-agentic workflows, to process structured and unstructured data and build the knowledge graph.\n- Use Google’s Agent Development Kit (ADK) to build and coordinate multiple agents that have access to a shared context.\n- Build a user intent agent that collaborates with the user to define the goal of the knowledge graph, and saves the approved goal in the shared state.\n- Build a file-suggestion agent that identifies relevant data files based on the user’s goal, samples their contents, and saves the approved list in the shared state.\n- Set up a loop of sub-agents to propose and refine a graph schema (type of nodes and edges) based on your structured data.\n- Design a sequential workflow of two sub-agents to propose a graph schema based on your unstructured text data, i.e., extract the type of nodes/entities and relevant relationships from the text files.\n- Construct the graphs based on the suggested schemas from the structured and unstructured data, and connect the two graphs into one knowledge graph.\n\nBy the end of this course, you’ll know how to use agents to model and construct knowledge graphs that can enhance the accuracy of your retrieval systems.\n\nEnroll now: https://bit.ly/4lKS3M2",
+    "view_count": 5274
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pG5xMfkeMtg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

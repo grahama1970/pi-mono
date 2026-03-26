@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r-dmxU1gEl0",
+    "language": "en",
+    "took_ms": 8005,
+    "method": null,
+    "title": "The Race To Native Code Execution In PLCs",
+    "channel": "S4 Events",
+    "upload_date": "20220519",
+    "duration_sec": 1944,
+    "description": "Sharon Brizinov of Claroty gets into the technical details of how they escaped the Siemens S7 PLC sandbox and execute native byte code on the PLC. This was a session on S4x22's Stage 2: Technical Deep Dives.",
+    "view_count": 3446
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r-dmxU1gEl0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-M8VSLZ6Z00",
+    "language": "en",
+    "took_ms": 7522,
+    "method": null,
+    "title": "President to Powerbroker: The Future of Nursultan Nazarbayev’s Kazakhstan",
+    "channel": "Hudson Institute",
+    "upload_date": "20190403",
+    "duration_sec": 5403,
+    "description": "Hudson Institute hosted a discussion on the recent resignation of President Nursultan Nazarbayev and the future of Kazakhstan. Nursultan Nazarbayev’s sudden resignation as president of Kazakhstan on March 19—a post he had occupied since the country’s independence in 1990—marked the end of a tenure characterized by corruption, electoral fraud, and human rights abuses. Or did it? - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 2267
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -M8VSLZ6Z00: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MrNmdtkH3YY",
+    "language": "en",
+    "took_ms": 8977,
+    "method": null,
+    "title": "DEF CON 32 - From Easy Wins to Epic Challenges: Bounty Hunter Edition - Daniel Blaklis Le Gall",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3095,
+    "description": "Step into the mind of a bug bounty hunter as I take you on a journey through my own adventures in vulnerability hunting. In this presentation, I’ll share some of the most intriguing bugs I've discovered, from the shockingly/stupidly simple to the mind-bendingly complex.\n\nWe'll start with the surprising simplicity of some bugs, but as the hunt isn’t always so simple, I’ll also reveal some complex bug chains that required advanced knowledge, lot of work and probably some hacker's intuition to know it was worth pushing further.\n\nIf you want to know how a coffee break gave me the opportunity to get infinite money, or how a vulnerable CAPTCHA helped me to break the encryption of a sensitive application - you're in the right place!",
+    "view_count": 4775
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MrNmdtkH3YY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

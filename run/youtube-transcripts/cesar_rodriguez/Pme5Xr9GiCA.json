@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Pme5Xr9GiCA",
+    "language": "en",
+    "took_ms": 7687,
+    "method": null,
+    "title": "The US is boosting TOMAHAWK MISSILE production",
+    "channel": "Sandboxx",
+    "upload_date": "20260225",
+    "duration_sec": 134,
+    "description": "America wants WAY more Tomahawk missiles... and Raytheon plans to deliver #defense #tech #military #miltok #usmilitary",
+    "view_count": 130478
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Pme5Xr9GiCA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

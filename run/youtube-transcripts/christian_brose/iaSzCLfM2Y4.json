@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iaSzCLfM2Y4",
+    "language": "en",
+    "took_ms": 8792,
+    "method": null,
+    "title": "Hannah Thoburn on the escalating Turkey-Russia tension",
+    "channel": "Hudson Institute",
+    "upload_date": "20151124",
+    "duration_sec": 158,
+    "description": "Hudson Institute Research Fellow Hannah Thoburn on the escalating situation between Turkey and Russia.",
+    "view_count": 321
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iaSzCLfM2Y4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

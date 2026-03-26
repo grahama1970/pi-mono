@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Na8K_fVEzQo",
+    "language": "en",
+    "took_ms": 8706,
+    "method": null,
+    "title": "DEF CON 30 - Ben Gardiner - Trailer Shouting - Talking PLC4TRUCKS Remotely with an SDR",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2629,
+    "description": "Ben Gardiner, Chris Poore and other security researchers have been analyzing signals and performing research against trailers and Power Line Communication for multiple years. This year the team was able to disclose two vulnerabilities focused on the ability to remotely inject RF messages onto the powerline and in turn send un-authenticated messages to the brake controller over the link. The team will discuss the details of PLC4TRUCKS, identify what led to this research and the discovery of the vulnerabilities, and then highlight the details of the SDR and software used to perform the attack. The talk will conclude with the demonstration of a remotely induced brake controller solenoid test using an FL2K and the release of the GNU radio block used to perform the test to the community to promote further research in the area.",
+    "view_count": 907
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Na8K_fVEzQo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

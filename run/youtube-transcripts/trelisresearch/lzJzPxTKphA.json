@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lzJzPxTKphA",
+    "language": "en",
+    "took_ms": 8408,
+    "method": null,
+    "title": "All about LoRA",
+    "channel": "Trelis Research",
+    "upload_date": "20251004",
+    "duration_sec": 2963,
+    "description": "More resources and tutorials on this channel and Trelis.com\n\nThinking Machines Blog on LoRA: https://thinkingmachines.ai/blog/lora/\nTrelis Blog on LoRA: https://trelis.substack.com/p/how-to-choose-lora-hyper-parameters\nUnsloth fine-tuning notebook OSS:  https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/gpt-oss-(20B)-Fine-tuning.ipynb",
+    "view_count": 796
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lzJzPxTKphA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

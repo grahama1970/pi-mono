@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6SNy0u6pYOc",
+    "language": "en",
+    "took_ms": 8852,
+    "method": null,
+    "title": "DEF CON 32 - The Darkest Side of Bug Bounty - Jason Haddix",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1949,
+    "description": "Bug bounty is an intricate game between the bug hunter, the clients, and the intermediary.\n\nLike any game, it can be hacked. Like some games, it can be unfair.\n\nJoin Jason as he walks you through the darker secrets of bug bounty , tips and tricks to address them, and in some cases, commiserate that there are just bad realities to the game.\n\nJason will address the problems hardly talked about in the system, from a hacker, program owner, and platform runner.",
+    "view_count": 83768
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6SNy0u6pYOc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

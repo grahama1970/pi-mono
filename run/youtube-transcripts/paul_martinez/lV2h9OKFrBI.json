@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lV2h9OKFrBI",
+    "language": "en",
+    "took_ms": 9211,
+    "method": null,
+    "title": "The European Way To Resilience: CRA(ck), SBOM(b) & AdviSor®y",
+    "channel": "S4 Events",
+    "upload_date": "20240527",
+    "duration_sec": 1100,
+    "description": "Dina Truxius gives you the need to knows for the ongoing and upcoming legislation in Europe to enhance and shape cyber resilience (e.g. CRA=Cyber Resilience Act).\n\nThe topic is relevant for international vendors when placing products on the European market and aims to discuss the resulting duties and consequences (mandatory SBOM, advisories, security.txt, etc.). Dina contributed to the CRA, and this session will shed light not only on the “Federal|Legal” perspective but will provide insights into solutions to fulfill (current and upcoming) legal requirements as well.",
+    "view_count": 618
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lV2h9OKFrBI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

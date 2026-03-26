@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-JPevbBHIOY",
+    "language": "en",
+    "took_ms": 8912,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Corey Ham, Matt Eidelberg - Breaking the Attack Chain",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 3501,
+    "description": "Despite the rising tide of security maturity, targeted attack chains are often successful due to systemic weaknesses in how modern IT administrators and blue teams operate. This talk gives the attacker's perspective on how common attack chains can be stopped before they spiral out of control.\nThis talk is fueled by two red team operators field experience in attacking modern enterprise environments. It will cover various tactics and techniques that are used with high success during red team engagements, as well as specific countermeasures that would hamper the success of the described attack chains. The speakers will cover a hypothetical red team style engagement, starting from a limited-knowledge basis on the Internet, moving to an internal foothold, leading to data compromise. This talk will focus on technical details at an executive level, and will be performed in a \"debrief\" style with no technical specifics or demos.",
+    "view_count": 461
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -JPevbBHIOY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

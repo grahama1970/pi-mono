@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cHSoqoGR52E",
+    "language": "en",
+    "took_ms": 8061,
+    "method": null,
+    "title": "Pt 3 Eve Spaceplane \"Pants Destroyer\" development",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170109",
+    "duration_sec": 11711,
+    "description": "Phase 3 development of our multistage Eve spaceplane the \"Pants Destroyer\". We decided the easiest way to get to Eve and back would be by using an ISRU (In Situ Resource Utilization) to refuel on Eve. This primarily helped the entry portion of Eve since there was less mass to slow down, the spaceplane would easily survive reentry. Once all systems were proven, we check that the heath shield could survive the Kerbin re-entry. This broadcast has been cut into two parts, so sorry for the un-natural sign off.\n\nShow your support by visiting http://patreon.com/everydayastronaut\n\nStreamed live on http://Twitch.tv/everydayastronaut on 1/3/2017\n\nInstagram @EverydayAstronaut - http://instagram.com/everydayastronaut",
+    "view_count": 4291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cHSoqoGR52E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

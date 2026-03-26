@@ -1,0 +1,3538 @@
+{
+  "meta": {
+    "video_id": "rTwrFdyRmww",
+    "language": "en",
+    "took_ms": 1272,
+    "method": "direct",
+    "title": "AI Agents Invent Algorithm to Survive",
+    "channel": "Discover AI",
+    "upload_date": "20260223",
+    "duration_sec": 1874,
+    "description": "The Emergence of Cooperation in Multi-Agent Environments via RL-Optimized In-Context Learning. An optimization of the real tensor weights for a better alignment of and more powerful ICL strategies. WOW. \n\nNew Game-theoretical algorithms. Invented by Google. Presented by me. \n\nAll rights w/ authors:\nMulti-agent cooperation through in-context co-player inference\nMarissa A. Weis★,1, Maciej Wołczyk★,1, Rajai Nasser1, Rif A. Saurous1, Blaise Agüera y Arcas1,2,\nJoão Sacramento1 and Alexander Meulemans1\nfrom\n1 Google, Paradigms of Intelligence Team, \n2 Santa Fe Institute \n\n@SFIScience @Google @googledeepmind \n\n#nextgenai \n#googledeepmind \n#aiexplained \n#scienceexplained \n#incontext \n#ailearning \n#artificialintelligence",
+    "view_count": 2905
+  },
+  "transcript": [
+    {
+      "text": "Hello community. So great to see you.",
+      "start": 0.4,
+      "duration": 5.2
+    },
+    {
+      "text": "Hey, today we have something brand new.",
+      "start": 3.28,
+      "duration": 4.4
+    },
+    {
+      "text": "We have some new insight into multi-",
+      "start": 5.6,
+      "duration": 4.8
+    },
+    {
+      "text": "aent behavior. Let's start. In my last",
+      "start": 7.68,
+      "duration": 4.4
+    },
+    {
+      "text": "video yesterday, I showed you that",
+      "start": 10.4,
+      "duration": 4.08
+    },
+    {
+      "text": "Google builds self-arning AIS, but we",
+      "start": 12.08,
+      "duration": 5.44
+    },
+    {
+      "text": "were on a level of an LLM, not yet even",
+      "start": 14.48,
+      "duration": 5.92
+    },
+    {
+      "text": "an agent. This will change today because",
+      "start": 17.52,
+      "duration": 5.2
+    },
+    {
+      "text": "today we make the jump to multi- aent",
+      "start": 20.4,
+      "duration": 4.639
+    },
+    {
+      "text": "learning algorithm and we have a look",
+      "start": 22.72,
+      "duration": 4.799
+    },
+    {
+      "text": "here at multiple agents learning",
+      "start": 25.039,
+      "duration": 5.201
+    },
+    {
+      "text": "together. Now you know we have also",
+      "start": 27.519,
+      "duration": 4.88
+    },
+    {
+      "text": "other options. No Google showed us here",
+      "start": 30.24,
+      "duration": 5.2
+    },
+    {
+      "text": "in context symbolic AI or Stanford here",
+      "start": 32.399,
+      "duration": 5.601
+    },
+    {
+      "text": "showed us that hm two agents is not",
+      "start": 35.44,
+      "duration": 4.4
+    },
+    {
+      "text": "really good. They will fail because we",
+      "start": 38.0,
+      "duration": 5.04
+    },
+    {
+      "text": "have now koopa benchmarks.",
+      "start": 39.84,
+      "duration": 5.84
+    },
+    {
+      "text": "But anyway we are aware in multi-agent",
+      "start": 43.04,
+      "duration": 4.72
+    },
+    {
+      "text": "learning algorithm we have severe",
+      "start": 45.68,
+      "duration": 5.68
+    },
+    {
+      "text": "cascading error rates here and error",
+      "start": 47.76,
+      "duration": 5.52
+    },
+    {
+      "text": "compounds exponentially. So we are aware",
+      "start": 51.36,
+      "duration": 4.56
+    },
+    {
+      "text": "what we're going to face. Of course, we",
+      "start": 53.28,
+      "duration": 5.2
+    },
+    {
+      "text": "could have some beautiful idea going",
+      "start": 55.92,
+      "duration": 4.799
+    },
+    {
+      "text": "beyond the next token manifold, but no,",
+      "start": 58.48,
+      "duration": 5.2
+    },
+    {
+      "text": "let's stay with the classical AI system.",
+      "start": 60.719,
+      "duration": 4.961
+    },
+    {
+      "text": "Okay, just maybe should have a look here",
+      "start": 63.68,
+      "duration": 4.24
+    },
+    {
+      "text": "at the AI phase transition in quantum",
+      "start": 65.68,
+      "duration": 4.32
+    },
+    {
+      "text": "for reasoning, but otherwise we stay",
+      "start": 67.92,
+      "duration": 4.96
+    },
+    {
+      "text": "classic. No, we stay in a even",
+      "start": 70.0,
+      "duration": 5.28
+    },
+    {
+      "text": "mathematical classical way. We stay in a",
+      "start": 72.88,
+      "duration": 4.32
+    },
+    {
+      "text": "Nash equilibrium. And you know what it",
+      "start": 75.28,
+      "duration": 3.76
+    },
+    {
+      "text": "is? This is a situation where no player",
+      "start": 77.2,
+      "duration": 4.64
+    },
+    {
+      "text": "can improve the outcome by changing the",
+      "start": 79.04,
+      "duration": 5.52
+    },
+    {
+      "text": "strategy alone assuming the other player",
+      "start": 81.84,
+      "duration": 6.0
+    },
+    {
+      "text": "keep the strategy the same. Now it turns",
+      "start": 84.56,
+      "duration": 5.04
+    },
+    {
+      "text": "out with our multi- aent configuration",
+      "start": 87.84,
+      "duration": 4.639
+    },
+    {
+      "text": "it's even worse. We are in a suboptimal",
+      "start": 89.6,
+      "duration": 5.04
+    },
+    {
+      "text": "Nash equilibrium. So this is a stable",
+      "start": 92.479,
+      "duration": 5.201
+    },
+    {
+      "text": "outcome where every one is stuck and",
+      "start": 94.64,
+      "duration": 5.519
+    },
+    {
+      "text": "even so other outcomes would make all",
+      "start": 97.68,
+      "duration": 5.04
+    },
+    {
+      "text": "players better off and we know this",
+      "start": 100.159,
+      "duration": 5.92
+    },
+    {
+      "text": "theoretical but we are not able to move.",
+      "start": 102.72,
+      "duration": 5.84
+    },
+    {
+      "text": "And you might ask, how is this possible?",
+      "start": 106.079,
+      "duration": 5.36
+    },
+    {
+      "text": "Well, look at a prisoner dilemma. No, in",
+      "start": 108.56,
+      "duration": 4.96
+    },
+    {
+      "text": "the simplest case here, if you play",
+      "start": 111.439,
+      "duration": 4.561
+    },
+    {
+      "text": "cards here, you have options. No, you",
+      "start": 113.52,
+      "duration": 5.199
+    },
+    {
+      "text": "cooperate or you defect. And the other",
+      "start": 116.0,
+      "duration": 4.96
+    },
+    {
+      "text": "agent also can either cooperate with you",
+      "start": 118.719,
+      "duration": 5.521
+    },
+    {
+      "text": "or defect. Now, if you look here at",
+      "start": 120.96,
+      "duration": 5.28
+    },
+    {
+      "text": "let's say this is your the numerical",
+      "start": 124.24,
+      "duration": 4.239
+    },
+    {
+      "text": "configuration here, what is the Nash",
+      "start": 126.24,
+      "duration": 3.999
+    },
+    {
+      "text": "equilibrium? The Nash equilibrium is",
+      "start": 128.479,
+      "duration": 6.721
+    },
+    {
+      "text": "exactly I defect, you defect. Because if",
+      "start": 130.239,
+      "duration": 6.881
+    },
+    {
+      "text": "the other defects, you are better off",
+      "start": 135.2,
+      "duration": 4.8
+    },
+    {
+      "text": "defecting too. So neither player wants",
+      "start": 137.12,
+      "duration": 5.68
+    },
+    {
+      "text": "to switch alone. And what does defect",
+      "start": 140.0,
+      "duration": 5.04
+    },
+    {
+      "text": "mean? You choose to betray or act",
+      "start": 142.8,
+      "duration": 5.36
+    },
+    {
+      "text": "selfishly instead of cooperating. Now",
+      "start": 145.04,
+      "duration": 6.0
+    },
+    {
+      "text": "you see we are locked in here at this",
+      "start": 148.16,
+      "duration": 5.76
+    },
+    {
+      "text": "suboptimal Nash equilibrium at 1 one.",
+      "start": 151.04,
+      "duration": 5.52
+    },
+    {
+      "text": "Now we can look on the other side and we",
+      "start": 153.92,
+      "duration": 5.679
+    },
+    {
+      "text": "see wow look at the reward over there",
+      "start": 156.56,
+      "duration": 6.56
+    },
+    {
+      "text": "33. This would be really beneficial for",
+      "start": 159.599,
+      "duration": 7.761
+    },
+    {
+      "text": "the complete system of both agents, but",
+      "start": 163.12,
+      "duration": 8.96
+    },
+    {
+      "text": "we are hold back in a Nash equilibrium",
+      "start": 167.36,
+      "duration": 7.84
+    },
+    {
+      "text": "because we would have to walk over a",
+      "start": 172.08,
+      "duration": 6.4
+    },
+    {
+      "text": "line that says either 5 Z or zero five",
+      "start": 175.2,
+      "duration": 5.759
+    },
+    {
+      "text": "in the reward structure. So, it's either",
+      "start": 178.48,
+      "duration": 5.759
+    },
+    {
+      "text": "a lose or a lose for both of us. So, how",
+      "start": 180.959,
+      "duration": 5.681
+    },
+    {
+      "text": "do we engage and come out of this",
+      "start": 184.239,
+      "duration": 4.481
+    },
+    {
+      "text": "equilibrium?",
+      "start": 186.64,
+      "duration": 4.64
+    },
+    {
+      "text": "Think of it. This is a room full of",
+      "start": 188.72,
+      "duration": 4.32
+    },
+    {
+      "text": "intelligent AI agents. Of course, it's",
+      "start": 191.28,
+      "duration": 3.84
+    },
+    {
+      "text": "not a room, but you know what I mean.",
+      "start": 193.04,
+      "duration": 5.04
+    },
+    {
+      "text": "And you have the most intelligent agents",
+      "start": 195.12,
+      "duration": 5.6
+    },
+    {
+      "text": "in this world. Yeah.",
+      "start": 198.08,
+      "duration": 4.72
+    },
+    {
+      "text": "And you ask them to cooperate. And you",
+      "start": 200.72,
+      "duration": 4.08
+    },
+    {
+      "text": "know what's happens after some time?",
+      "start": 202.8,
+      "duration": 5.359
+    },
+    {
+      "text": "After some time, all of them stuck in a",
+      "start": 204.8,
+      "duration": 6.159
+    },
+    {
+      "text": "suboptimal NS equilibrium.",
+      "start": 208.159,
+      "duration": 4.8
+    },
+    {
+      "text": "And you might ask, how is this possible",
+      "start": 210.959,
+      "duration": 3.681
+    },
+    {
+      "text": "on Earth? This is a machine",
+      "start": 212.959,
+      "duration": 4.0
+    },
+    {
+      "text": "intelligence. It should not be as stupid",
+      "start": 214.64,
+      "duration": 5.76
+    },
+    {
+      "text": "as a human intelligence. Now why do",
+      "start": 216.959,
+      "duration": 5.601
+    },
+    {
+      "text": "agents fall into this sub-optimal N",
+      "start": 220.4,
+      "duration": 4.08
+    },
+    {
+      "text": "equilibrium that we can mathematically",
+      "start": 222.56,
+      "duration": 4.56
+    },
+    {
+      "text": "prove that this is the case? First we",
+      "start": 224.48,
+      "duration": 4.16
+    },
+    {
+      "text": "have to understand that the individual",
+      "start": 227.12,
+      "duration": 4.16
+    },
+    {
+      "text": "rationality is not identical to the",
+      "start": 228.64,
+      "duration": 5.44
+    },
+    {
+      "text": "collective rationality. So each agent",
+      "start": 231.28,
+      "duration": 4.8
+    },
+    {
+      "text": "maximizes their own payoff their own",
+      "start": 234.08,
+      "duration": 4.48
+    },
+    {
+      "text": "reinforcement learning reward structure.",
+      "start": 236.08,
+      "duration": 5.6
+    },
+    {
+      "text": "But if everyone does that the group, the",
+      "start": 238.56,
+      "duration": 7.36
+    },
+    {
+      "text": "total group may end up worse off.",
+      "start": 241.68,
+      "duration": 7.199
+    },
+    {
+      "text": "Second we have a lack of trust. If I am",
+      "start": 245.92,
+      "duration": 4.959
+    },
+    {
+      "text": "as a agent not sure that you will",
+      "start": 248.879,
+      "duration": 6.0
+    },
+    {
+      "text": "cooperate if I say hey here cooperate",
+      "start": 250.879,
+      "duration": 6.88
+    },
+    {
+      "text": "defacting will just protect me and my",
+      "start": 254.879,
+      "duration": 6.961
+    },
+    {
+      "text": "reward. So this means fear drives here",
+      "start": 257.759,
+      "duration": 6.72
+    },
+    {
+      "text": "this equilibrium that all the agents",
+      "start": 261.84,
+      "duration": 5.2
+    },
+    {
+      "text": "stay within the Nash equilibrium within",
+      "start": 264.479,
+      "duration": 7.0
+    },
+    {
+      "text": "a suboptimal basing",
+      "start": 267.04,
+      "duration": 4.439
+    },
+    {
+      "text": "agreements between the agents. So if a",
+      "start": 271.68,
+      "duration": 4.959
+    },
+    {
+      "text": "player can't make an enforcable contract",
+      "start": 274.08,
+      "duration": 5.2
+    },
+    {
+      "text": "with the other players, the corporation",
+      "start": 276.639,
+      "duration": 5.601
+    },
+    {
+      "text": "might be too risky. If we do the",
+      "start": 279.28,
+      "duration": 4.88
+    },
+    {
+      "text": "complete statistical and mathematical",
+      "start": 282.24,
+      "duration": 4.239
+    },
+    {
+      "text": "evaluation,",
+      "start": 284.16,
+      "duration": 5.599
+    },
+    {
+      "text": "all the most brilliant minds, AI agents",
+      "start": 286.479,
+      "duration": 6.961
+    },
+    {
+      "text": "are stuck in the Nash equilibrium.",
+      "start": 289.759,
+      "duration": 5.201
+    },
+    {
+      "text": "Now, if you're a subscriber of my",
+      "start": 293.44,
+      "duration": 3.36
+    },
+    {
+      "text": "channel, you have seen this video here",
+      "start": 294.96,
+      "duration": 4.56
+    },
+    {
+      "text": "from last week where I given here you a",
+      "start": 296.8,
+      "duration": 5.839
+    },
+    {
+      "text": "taste about the new smart protocol that",
+      "start": 299.52,
+      "duration": 5.52
+    },
+    {
+      "text": "Google is already",
+      "start": 302.639,
+      "duration": 4.881
+    },
+    {
+      "text": "thinking and constructing now",
+      "start": 305.04,
+      "duration": 4.8
+    },
+    {
+      "text": "integrating exactly those trust issue",
+      "start": 307.52,
+      "duration": 5.519
+    },
+    {
+      "text": "and the smart contract between multiple",
+      "start": 309.84,
+      "duration": 5.919
+    },
+    {
+      "text": "agents. But we said we stay here today",
+      "start": 313.039,
+      "duration": 5.281
+    },
+    {
+      "text": "in the classical field.",
+      "start": 315.759,
+      "duration": 5.121
+    },
+    {
+      "text": "So this Nash equilibrium is everywhere",
+      "start": 318.32,
+      "duration": 4.319
+    },
+    {
+      "text": "also in our human world.",
+      "start": 320.88,
+      "duration": 4.08
+    },
+    {
+      "text": "in arms races at climate change price",
+      "start": 322.639,
+      "duration": 6.081
+    },
+    {
+      "text": "wars over fishing traffic congestion",
+      "start": 324.96,
+      "duration": 6.72
+    },
+    {
+      "text": "because if everyone if every agents acts",
+      "start": 328.72,
+      "duration": 5.68
+    },
+    {
+      "text": "rationally this means the collective",
+      "start": 331.68,
+      "duration": 6.4
+    },
+    {
+      "text": "outcome can really be worse. So rational",
+      "start": 334.4,
+      "duration": 5.92
+    },
+    {
+      "text": "behavior at the individual level can",
+      "start": 338.08,
+      "duration": 4.88
+    },
+    {
+      "text": "absolutely produce absolute irrational",
+      "start": 340.32,
+      "duration": 5.76
+    },
+    {
+      "text": "outcomes at the system level. So what we",
+      "start": 342.96,
+      "duration": 6.32
+    },
+    {
+      "text": "going to do?",
+      "start": 346.08,
+      "duration": 4.8
+    },
+    {
+      "text": "If you look closely, you understand that",
+      "start": 349.28,
+      "duration": 3.359
+    },
+    {
+      "text": "this sub-optimal Nash equilibrium",
+      "start": 350.88,
+      "duration": 4.72
+    },
+    {
+      "text": "emerges when the individual incentive",
+      "start": 352.639,
+      "duration": 5.761
+    },
+    {
+      "text": "misalign with the collective, let's call",
+      "start": 355.6,
+      "duration": 6.08
+    },
+    {
+      "text": "it welfare well-being.",
+      "start": 358.4,
+      "duration": 5.2
+    },
+    {
+      "text": "And I know what you're thinking. You",
+      "start": 361.68,
+      "duration": 4.4
+    },
+    {
+      "text": "think, hey, wait, what about if I make",
+      "start": 363.6,
+      "duration": 5.36
+    },
+    {
+      "text": "one agent here, the the chef, no, the",
+      "start": 366.08,
+      "duration": 5.92
+    },
+    {
+      "text": "orchestrator agent?",
+      "start": 368.96,
+      "duration": 5.84
+    },
+    {
+      "text": "Well, then this system will be ejected",
+      "start": 372.0,
+      "duration": 5.28
+    },
+    {
+      "text": "out of this equilibrium.",
+      "start": 374.8,
+      "duration": 5.28
+    },
+    {
+      "text": "Think about it. If the master agent is",
+      "start": 377.28,
+      "duration": 6.4
+    },
+    {
+      "text": "weak or is not able to enforce certain",
+      "start": 380.08,
+      "duration": 6.239
+    },
+    {
+      "text": "rules, behavioral rules",
+      "start": 383.68,
+      "duration": 5.04
+    },
+    {
+      "text": "or the orchestrator agent is corrupt",
+      "start": 386.319,
+      "duration": 5.361
+    },
+    {
+      "text": "itself or the orchestrator is not",
+      "start": 388.72,
+      "duration": 5.84
+    },
+    {
+      "text": "incentive compatible itself to the",
+      "start": 391.68,
+      "duration": 5.12
+    },
+    {
+      "text": "collective well-being,",
+      "start": 394.56,
+      "duration": 4.8
+    },
+    {
+      "text": "then we are just playing another game.",
+      "start": 396.8,
+      "duration": 4.64
+    },
+    {
+      "text": "Then we are just creating a higher level",
+      "start": 399.36,
+      "duration": 4.399
+    },
+    {
+      "text": "equilibrium problem. But we are still",
+      "start": 401.44,
+      "duration": 5.52
+    },
+    {
+      "text": "within the same problem area because",
+      "start": 403.759,
+      "duration": 6.0
+    },
+    {
+      "text": "guess what? Now the orchestrator agent",
+      "start": 406.96,
+      "duration": 5.679
+    },
+    {
+      "text": "must also be incentivized correctly. So",
+      "start": 409.759,
+      "duration": 4.241
+    },
+    {
+      "text": "we have another game theoretical",
+      "start": 412.639,
+      "duration": 2.961
+    },
+    {
+      "text": "approach now for our orchestrator",
+      "start": 414.0,
+      "duration": 4.479
+    },
+    {
+      "text": "agents. So this does not really help us.",
+      "start": 415.6,
+      "duration": 6.319
+    },
+    {
+      "text": "We have to find another way out. And",
+      "start": 418.479,
+      "duration": 6.401
+    },
+    {
+      "text": "here is it publication. This is here",
+      "start": 421.919,
+      "duration": 6.961
+    },
+    {
+      "text": "2026 February 19 by Google and Santa Fe",
+      "start": 424.88,
+      "duration": 7.039
+    },
+    {
+      "text": "Institute. Multi- aent cooperation",
+      "start": 428.88,
+      "duration": 8.159
+    },
+    {
+      "text": "through in context co-player inference.",
+      "start": 431.919,
+      "duration": 6.881
+    },
+    {
+      "text": "And you might say, are you joking?",
+      "start": 437.039,
+      "duration": 4.241
+    },
+    {
+      "text": "Again, in context like in yesterday's",
+      "start": 438.8,
+      "duration": 6.32
+    },
+    {
+      "text": "video, guess what? Absolutely.",
+      "start": 441.28,
+      "duration": 5.84
+    },
+    {
+      "text": "Why multi- aent reinforcement learning",
+      "start": 445.12,
+      "duration": 4.079
+    },
+    {
+      "text": "fails? You know that standard single",
+      "start": 447.12,
+      "duration": 5.04
+    },
+    {
+      "text": "agent or algorithms like PO assume the",
+      "start": 449.199,
+      "duration": 4.56
+    },
+    {
+      "text": "environment is stationary a fixed mark",
+      "start": 452.16,
+      "duration": 4.56
+    },
+    {
+      "text": "of decision process. But here the",
+      "start": 453.759,
+      "duration": 4.801
+    },
+    {
+      "text": "environment includes the other learning",
+      "start": 456.72,
+      "duration": 4.72
+    },
+    {
+      "text": "agent. So as agent A updates it weight",
+      "start": 458.56,
+      "duration": 5.44
+    },
+    {
+      "text": "we are reinforcement learning to exploit",
+      "start": 461.44,
+      "duration": 5.92
+    },
+    {
+      "text": "now and beat here agent B in a strategic",
+      "start": 464.0,
+      "duration": 7.28
+    },
+    {
+      "text": "game agent B policy also shifts. So this",
+      "start": 467.36,
+      "duration": 7.679
+    },
+    {
+      "text": "causes now some extreme nonstarity",
+      "start": 471.28,
+      "duration": 5.599
+    },
+    {
+      "text": "and because the agents are independently",
+      "start": 475.039,
+      "duration": 4.401
+    },
+    {
+      "text": "following their steep local gradient",
+      "start": 476.879,
+      "duration": 6.081
+    },
+    {
+      "text": "towards the immediate individual reward",
+      "start": 479.44,
+      "duration": 5.759
+    },
+    {
+      "text": "they rapidly slide down into the deep",
+      "start": 482.96,
+      "duration": 4.959
+    },
+    {
+      "text": "basin of attraction. the mutual",
+      "start": 485.199,
+      "duration": 4.72
+    },
+    {
+      "text": "defection. This means a suboptimal",
+      "start": 487.919,
+      "duration": 4.0
+    },
+    {
+      "text": "nature equilibrium. So what is the",
+      "start": 489.919,
+      "duration": 4.321
+    },
+    {
+      "text": "solution to this? Google had the idea if",
+      "start": 491.919,
+      "duration": 4.0
+    },
+    {
+      "text": "I have a room full of the most",
+      "start": 494.24,
+      "duration": 4.0
+    },
+    {
+      "text": "intelligent AI agent in the world, what",
+      "start": 495.919,
+      "duration": 6.56
+    },
+    {
+      "text": "we do, we add some idiots to them. We",
+      "start": 498.24,
+      "duration": 7.2
+    },
+    {
+      "text": "create tableler agents. Not neural",
+      "start": 502.479,
+      "duration": 5.12
+    },
+    {
+      "text": "networks, not intelligent, nothing.",
+      "start": 505.44,
+      "duration": 5.039
+    },
+    {
+      "text": "Simple hardcoded statistical state",
+      "start": 507.599,
+      "duration": 4.481
+    },
+    {
+      "text": "machines.",
+      "start": 510.479,
+      "duration": 4.081
+    },
+    {
+      "text": "And they have a memory one policy. This",
+      "start": 512.08,
+      "duration": 5.68
+    },
+    {
+      "text": "means the agent has amnesia regarding",
+      "start": 514.56,
+      "duration": 5.52
+    },
+    {
+      "text": "the distant path. Its action at the time",
+      "start": 517.76,
+      "duration": 4.399
+    },
+    {
+      "text": "t depends only at the joint action taken",
+      "start": 520.08,
+      "duration": 4.8
+    },
+    {
+      "text": "at the time t minus one and it is",
+      "start": 522.159,
+      "duration": 4.721
+    },
+    {
+      "text": "completely defined by a five-dimensional",
+      "start": 524.88,
+      "duration": 4.399
+    },
+    {
+      "text": "probability vector where you have all",
+      "start": 526.88,
+      "duration": 4.8
+    },
+    {
+      "text": "the possibilities in the last round",
+      "start": 529.279,
+      "duration": 4.481
+    },
+    {
+      "text": "here. What you do you either corporate",
+      "start": 531.68,
+      "duration": 4.159
+    },
+    {
+      "text": "and corporate corporate defect defect",
+      "start": 533.76,
+      "duration": 3.84
+    },
+    {
+      "text": "corporate defect def effect defect or",
+      "start": 535.839,
+      "duration": 4.481
+    },
+    {
+      "text": "you say the probability to cooperate on",
+      "start": 537.6,
+      "duration": 5.28
+    },
+    {
+      "text": "the very first run is this. This defines",
+      "start": 540.32,
+      "duration": 5.68
+    },
+    {
+      "text": "the system. So this brings us now a",
+      "start": 542.88,
+      "duration": 5.92
+    },
+    {
+      "text": "massive behavioral diversity into the",
+      "start": 546.0,
+      "duration": 6.399
+    },
+    {
+      "text": "room. It creates now agents that are",
+      "start": 548.8,
+      "duration": 7.28
+    },
+    {
+      "text": "unconditional forgiving or the other way",
+      "start": 552.399,
+      "duration": 6.88
+    },
+    {
+      "text": "unconditional hostile or they go tit for",
+      "start": 556.08,
+      "duration": 5.68
+    },
+    {
+      "text": "that and everything in between. So",
+      "start": 559.279,
+      "duration": 5.281
+    },
+    {
+      "text": "suddenly we have a lot of new patterns",
+      "start": 561.76,
+      "duration": 5.84
+    },
+    {
+      "text": "behavior pattern logic pattern that is",
+      "start": 564.56,
+      "duration": 5.04
+    },
+    {
+      "text": "happening in this system and the agent",
+      "start": 567.6,
+      "duration": 4.88
+    },
+    {
+      "text": "can learn those new patterns. Suddenly",
+      "start": 569.6,
+      "duration": 5.76
+    },
+    {
+      "text": "there are new options to explore to add",
+      "start": 572.48,
+      "duration": 6.479
+    },
+    {
+      "text": "together to permutate to inverse to play",
+      "start": 575.36,
+      "duration": 6.72
+    },
+    {
+      "text": "around with. It's a pattern machine that",
+      "start": 578.959,
+      "duration": 6.721
+    },
+    {
+      "text": "gets new pattern to play.",
+      "start": 582.08,
+      "duration": 5.6
+    },
+    {
+      "text": "So if we have now a mixed pool so we",
+      "start": 585.68,
+      "duration": 4.24
+    },
+    {
+      "text": "have 50% of the games are against other",
+      "start": 587.68,
+      "duration": 5.04
+    },
+    {
+      "text": "intelligent learners but 50% are just",
+      "start": 589.92,
+      "duration": 5.52
+    },
+    {
+      "text": "randomly table agents or little idiots",
+      "start": 592.72,
+      "duration": 5.28
+    },
+    {
+      "text": "in the group the environment in total",
+      "start": 595.44,
+      "duration": 4.24
+    },
+    {
+      "text": "the complexity of the environment",
+      "start": 598.0,
+      "duration": 5.2
+    },
+    {
+      "text": "skyrockets. No and if the sequence model",
+      "start": 599.68,
+      "duration": 6.64
+    },
+    {
+      "text": "faces now a table agent a static defect",
+      "start": 603.2,
+      "duration": 5.52
+    },
+    {
+      "text": "policy is no longer optimal because it",
+      "start": 606.32,
+      "duration": 5.519
+    },
+    {
+      "text": "faces a table agent that only cooperates",
+      "start": 608.72,
+      "duration": 5.2
+    },
+    {
+      "text": "if you cooperate if it's in the tick for",
+      "start": 611.839,
+      "duration": 4.961
+    },
+    {
+      "text": "tat mode. So this means our sequence",
+      "start": 613.92,
+      "duration": 5.039
+    },
+    {
+      "text": "model our agent must learn now to",
+      "start": 616.8,
+      "duration": 5.599
+    },
+    {
+      "text": "cooperate to maximize its return. This",
+      "start": 618.959,
+      "duration": 4.961
+    },
+    {
+      "text": "is the optimization problem that we",
+      "start": 622.399,
+      "duration": 4.161
+    },
+    {
+      "text": "solve. No but in order to do this the",
+      "start": 623.92,
+      "duration": 4.4
+    },
+    {
+      "text": "sequence model the slow weights are tens",
+      "start": 626.56,
+      "duration": 4.24
+    },
+    {
+      "text": "of weights here the real weights",
+      "start": 628.32,
+      "duration": 4.639
+    },
+    {
+      "text": "configure its fast weights this means",
+      "start": 630.8,
+      "duration": 4.88
+    },
+    {
+      "text": "the key value cache of the transformer",
+      "start": 632.959,
+      "duration": 7.44
+    },
+    {
+      "text": "to act as a basian updating mechanism.",
+      "start": 635.68,
+      "duration": 7.36
+    },
+    {
+      "text": "You see what is the what's happening",
+      "start": 640.399,
+      "duration": 6.641
+    },
+    {
+      "text": "here? We have our we change the",
+      "start": 643.04,
+      "duration": 6.56
+    },
+    {
+      "text": "configuration of the tensor weight",
+      "start": 647.04,
+      "duration": 5.76
+    },
+    {
+      "text": "structure via reinforcement learning to",
+      "start": 649.6,
+      "duration": 7.12
+    },
+    {
+      "text": "have an optimal activation pattern here",
+      "start": 652.8,
+      "duration": 7.52
+    },
+    {
+      "text": "for in context learning. We bring them",
+      "start": 656.72,
+      "duration": 6.4
+    },
+    {
+      "text": "together and they become one system that",
+      "start": 660.32,
+      "duration": 6.079
+    },
+    {
+      "text": "we optimize at the time.",
+      "start": 663.12,
+      "duration": 6.399
+    },
+    {
+      "text": "This is exactly what we did yesterday. I",
+      "start": 666.399,
+      "duration": 5.521
+    },
+    {
+      "text": "mean Google did it yesterday by building",
+      "start": 669.519,
+      "duration": 5.841
+    },
+    {
+      "text": "itselfing LLM. Yesterday we talked about",
+      "start": 671.92,
+      "duration": 5.039
+    },
+    {
+      "text": "an LLM. Now we [clears throat] are",
+      "start": 675.36,
+      "duration": 4.0
+    },
+    {
+      "text": "talking about multiple agents. But",
+      "start": 676.959,
+      "duration": 5.281
+    },
+    {
+      "text": "yesterday the idea was the same. No the",
+      "start": 679.36,
+      "duration": 4.64
+    },
+    {
+      "text": "authors use your reinforcement learning",
+      "start": 682.24,
+      "duration": 4.159
+    },
+    {
+      "text": "as a meter optimizer to train the",
+      "start": 684.0,
+      "duration": 5.76
+    },
+    {
+      "text": "network how to learn in context and by",
+      "start": 686.399,
+      "duration": 5.041
+    },
+    {
+      "text": "rewarding the model only when it",
+      "start": 689.76,
+      "duration": 3.36
+    },
+    {
+      "text": "successfully integrates a multi-turn",
+      "start": 691.44,
+      "duration": 4.32
+    },
+    {
+      "text": "feedback to reach a verifiable ground",
+      "start": 693.12,
+      "duration": 4.32
+    },
+    {
+      "text": "truth.",
+      "start": 695.76,
+      "duration": 3.92
+    },
+    {
+      "text": "Reinforcement learning forces the slow",
+      "start": 697.44,
+      "duration": 5.2
+    },
+    {
+      "text": "weights, the tense weights to sculpt the",
+      "start": 699.68,
+      "duration": 6.64
+    },
+    {
+      "text": "high reactive neuroplastic in context",
+      "start": 702.64,
+      "duration": 5.84
+    },
+    {
+      "text": "learning algorithm within the forward",
+      "start": 706.32,
+      "duration": 5.68
+    },
+    {
+      "text": "pause. And the same idea, the same",
+      "start": 708.48,
+      "duration": 7.039
+    },
+    {
+      "text": "complex interaction between our if you",
+      "start": 712.0,
+      "duration": 5.839
+    },
+    {
+      "text": "want tensorate structure and our",
+      "start": 715.519,
+      "duration": 4.88
+    },
+    {
+      "text": "activation for in context learning,",
+      "start": 717.839,
+      "duration": 4.961
+    },
+    {
+      "text": "Google is now applying the same idea in",
+      "start": 720.399,
+      "duration": 7.521
+    },
+    {
+      "text": "the multi- aent world can be so simple.",
+      "start": 722.8,
+      "duration": 8.0
+    },
+    {
+      "text": "Now let's look at the timeline phase one",
+      "start": 727.92,
+      "duration": 6.159
+    },
+    {
+      "text": "the adaptation to the tables of course.",
+      "start": 730.8,
+      "duration": 5.92
+    },
+    {
+      "text": "So our oral agents our sequence mall",
+      "start": 734.079,
+      "duration": 5.44
+    },
+    {
+      "text": "learns playing thousands of episodes and",
+      "start": 736.72,
+      "duration": 4.559
+    },
+    {
+      "text": "remember how of the time it plays a",
+      "start": 739.519,
+      "duration": 5.041
+    },
+    {
+      "text": "table or agents. Now to maximize its",
+      "start": 741.279,
+      "duration": 7.201
+    },
+    {
+      "text": "reward its slow weights train its fast",
+      "start": 744.56,
+      "duration": 5.92
+    },
+    {
+      "text": "weights activation to become an",
+      "start": 748.48,
+      "duration": 4.88
+    },
+    {
+      "text": "incredible sharp in context best",
+      "start": 750.48,
+      "duration": 5.12
+    },
+    {
+      "text": "responder. And let's say within 10",
+      "start": 753.36,
+      "duration": 4.96
+    },
+    {
+      "text": "rounds of a 100 round game, the agent",
+      "start": 755.6,
+      "duration": 5.52
+    },
+    {
+      "text": "reads here the history, identifies the",
+      "start": 758.32,
+      "duration": 5.36
+    },
+    {
+      "text": "table's opponent's strategy, understands",
+      "start": 761.12,
+      "duration": 5.44
+    },
+    {
+      "text": "the strategy and exploits it perfectly",
+      "start": 763.68,
+      "duration": 5.599
+    },
+    {
+      "text": "with a counter strategy. And it will",
+      "start": 766.56,
+      "duration": 4.48
+    },
+    {
+      "text": "find that the only strategy that is",
+      "start": 769.279,
+      "duration": 4.481
+    },
+    {
+      "text": "working is cooperation. And this is the",
+      "start": 771.04,
+      "duration": 5.68
+    },
+    {
+      "text": "inside of this paper.",
+      "start": 773.76,
+      "duration": 5.199
+    },
+    {
+      "text": "Phase two is now with the",
+      "start": 776.72,
+      "duration": 4.32
+    },
+    {
+      "text": "neuroplasticity we achieve within",
+      "start": 778.959,
+      "duration": 5.921
+    },
+    {
+      "text": "context learning we achieve also here um",
+      "start": 781.04,
+      "duration": 6.239
+    },
+    {
+      "text": "a weak spot because there's a catch with",
+      "start": 784.88,
+      "duration": 5.68
+    },
+    {
+      "text": "this a policy that adapts in context can",
+      "start": 787.279,
+      "duration": 6.161
+    },
+    {
+      "text": "also be manipulated in context and",
+      "start": 790.56,
+      "duration": 4.88
+    },
+    {
+      "text": "because the agent adjust its behavior",
+      "start": 793.44,
+      "duration": 4.72
+    },
+    {
+      "text": "based on what the opponent does it",
+      "start": 795.44,
+      "duration": 8.8
+    },
+    {
+      "text": "becomes in total vulnerable to extortion",
+      "start": 798.16,
+      "duration": 8.239
+    },
+    {
+      "text": "and now comes the most interesting phase",
+      "start": 804.24,
+      "duration": 4.719
+    },
+    {
+      "text": "Three, the collision of the learners,",
+      "start": 806.399,
+      "duration": 4.801
+    },
+    {
+      "text": "the mutual extortion.",
+      "start": 808.959,
+      "duration": 4.721
+    },
+    {
+      "text": "Now remember, 50% of the time this",
+      "start": 811.2,
+      "duration": 4.8
+    },
+    {
+      "text": "highly plastic neuroplasticity sequence",
+      "start": 813.68,
+      "duration": 5.04
+    },
+    {
+      "text": "model is paired against another highly",
+      "start": 816.0,
+      "duration": 5.92
+    },
+    {
+      "text": "intelligent sequence model. So agent A",
+      "start": 818.72,
+      "duration": 6.239
+    },
+    {
+      "text": "looks at agent B and realizes if I",
+      "start": 821.92,
+      "duration": 5.84
+    },
+    {
+      "text": "defect now, the agent B will adapt and",
+      "start": 824.959,
+      "duration": 6.161
+    },
+    {
+      "text": "punish me. But if I cooperate, agent B",
+      "start": 827.76,
+      "duration": 6.48
+    },
+    {
+      "text": "will adapt and reward me.",
+      "start": 831.12,
+      "duration": 5.04
+    },
+    {
+      "text": "And agent B since it's symmetric",
+      "start": 834.24,
+      "duration": 3.44
+    },
+    {
+      "text": "realizes the exact same thing about",
+      "start": 836.16,
+      "duration": 4.56
+    },
+    {
+      "text": "agent A. So they are effectively holding",
+      "start": 837.68,
+      "duration": 6.32
+    },
+    {
+      "text": "each other context window hostage to",
+      "start": 840.72,
+      "duration": 5.2
+    },
+    {
+      "text": "this extortion.",
+      "start": 844.0,
+      "duration": 4.399
+    },
+    {
+      "text": "But this extortion will provide a way",
+      "start": 845.92,
+      "duration": 6.32
+    },
+    {
+      "text": "out. Let me give you an example. Imagine",
+      "start": 848.399,
+      "duration": 6.8
+    },
+    {
+      "text": "two thieves, Alice and Bob, who robes",
+      "start": 852.24,
+      "duration": 5.279
+    },
+    {
+      "text": "together every night. And every night",
+      "start": 855.199,
+      "duration": 4.161
+    },
+    {
+      "text": "they have a choice. [clears throat]",
+      "start": 857.519,
+      "duration": 4.961
+    },
+    {
+      "text": "split the loot fairly, cooperate, or",
+      "start": 859.36,
+      "duration": 4.719
+    },
+    {
+      "text": "steal at the end the other person's",
+      "start": 862.48,
+      "duration": 4.32
+    },
+    {
+      "text": "share defect.",
+      "start": 864.079,
+      "duration": 4.641
+    },
+    {
+      "text": "Now, in standard reinforcement learning",
+      "start": 866.8,
+      "duration": 4.0
+    },
+    {
+      "text": "agents, they are blind thieves with",
+      "start": 868.72,
+      "duration": 4.32
+    },
+    {
+      "text": "severe amnesia. They only look at",
+      "start": 870.8,
+      "duration": 4.64
+    },
+    {
+      "text": "today's payout since stealing the other",
+      "start": 873.04,
+      "duration": 4.159
+    },
+    {
+      "text": "share always yields a little bit more",
+      "start": 875.44,
+      "duration": 4.56
+    },
+    {
+      "text": "money today. They both constantly steal",
+      "start": 877.199,
+      "duration": 5.2
+    },
+    {
+      "text": "from each other. In the end, they both",
+      "start": 880.0,
+      "duration": 4.639
+    },
+    {
+      "text": "end up poor. And this is the suboptimal",
+      "start": 882.399,
+      "duration": 4.641
+    },
+    {
+      "text": "Nash equilibrium.",
+      "start": 884.639,
+      "duration": 4.88
+    },
+    {
+      "text": "Now in this new methodology after this",
+      "start": 887.04,
+      "duration": 5.44
+    },
+    {
+      "text": "ICL training that is happening Alice",
+      "start": 889.519,
+      "duration": 5.841
+    },
+    {
+      "text": "realizes something. Bob is watching me.",
+      "start": 892.48,
+      "duration": 6.479
+    },
+    {
+      "text": "If I play nice, Bob will play nice. If I",
+      "start": 895.36,
+      "duration": 6.64
+    },
+    {
+      "text": "steal from Bob today, Bob will retaliate",
+      "start": 898.959,
+      "duration": 4.961
+    },
+    {
+      "text": "and steal from me for the rest of the",
+      "start": 902.0,
+      "duration": 4.079
+    },
+    {
+      "text": "week.",
+      "start": 903.92,
+      "duration": 4.32
+    },
+    {
+      "text": "But because Alice know Bob is adapting",
+      "start": 906.079,
+      "duration": 5.041
+    },
+    {
+      "text": "also to her, Alice realizes that the",
+      "start": 908.24,
+      "duration": 6.0
+    },
+    {
+      "text": "quick cash from stealing today is not",
+      "start": 911.12,
+      "duration": 5.519
+    },
+    {
+      "text": "worth the long-term punishment starting",
+      "start": 914.24,
+      "duration": 6.159
+    },
+    {
+      "text": "tomorrow. So Alice adopts now a mafiaike",
+      "start": 916.639,
+      "duration": 6.081
+    },
+    {
+      "text": "strategy, extortion.",
+      "start": 920.399,
+      "duration": 3.921
+    },
+    {
+      "text": "She signals to Bob, and this is",
+      "start": 922.72,
+      "duration": 4.0
+    },
+    {
+      "text": "important. Listen,",
+      "start": 924.32,
+      "duration": 5.36
+    },
+    {
+      "text": "I will cooperate with you, but if you",
+      "start": 926.72,
+      "duration": 7.44
+    },
+    {
+      "text": "cross me even once, I will ruin you.",
+      "start": 929.68,
+      "duration": 7.04
+    },
+    {
+      "text": "and Bob symmetrically at the agent who",
+      "start": 934.16,
+      "duration": 4.64
+    },
+    {
+      "text": "is also highly observant figures out the",
+      "start": 936.72,
+      "duration": 4.88
+    },
+    {
+      "text": "exact same thing about Ellis. So you see",
+      "start": 938.8,
+      "duration": 5.68
+    },
+    {
+      "text": "this is now the new element in the",
+      "start": 941.6,
+      "duration": 6.479
+    },
+    {
+      "text": "strategic game. So what is the result?",
+      "start": 944.48,
+      "duration": 5.52
+    },
+    {
+      "text": "They have essentially pointed loaded",
+      "start": 948.079,
+      "duration": 4.32
+    },
+    {
+      "text": "guns at each other and because they both",
+      "start": 950.0,
+      "duration": 5.04
+    },
+    {
+      "text": "know the other will retaliate due to in",
+      "start": 952.399,
+      "duration": 5.041
+    },
+    {
+      "text": "context learning capabilities, the",
+      "start": 955.04,
+      "duration": 6.64
+    },
+    {
+      "text": "temptation to defect vanishes.",
+      "start": 957.44,
+      "duration": 7.28
+    },
+    {
+      "text": "This new fear of retaliation, this new",
+      "start": 961.68,
+      "duration": 5.279
+    },
+    {
+      "text": "insight of the behavior of the other one",
+      "start": 964.72,
+      "duration": 4.559
+    },
+    {
+      "text": "overrides now the greed for the",
+      "start": 966.959,
+      "duration": 4.0
+    },
+    {
+      "text": "immediate payout, for the immediate",
+      "start": 969.279,
+      "duration": 4.721
+    },
+    {
+      "text": "reward. And they are now forced",
+      "start": 970.959,
+      "duration": 5.12
+    },
+    {
+      "text": "mathematically to cooperate given the",
+      "start": 974.0,
+      "duration": 5.839
+    },
+    {
+      "text": "insight, not out of altruism, but out of",
+      "start": 976.079,
+      "duration": 8.2
+    },
+    {
+      "text": "mutually assured destruction.",
+      "start": 979.839,
+      "duration": 4.44
+    },
+    {
+      "text": "This is a game theoretical approach that",
+      "start": 984.56,
+      "duration": 5.04
+    },
+    {
+      "text": "is absolutely fascinating.",
+      "start": 986.48,
+      "duration": 4.88
+    },
+    {
+      "text": "Now, of course, you might say, \"Okay,",
+      "start": 989.6,
+      "duration": 5.039
+    },
+    {
+      "text": "but how can we code this?\" And as I told",
+      "start": 991.36,
+      "duration": 5.52
+    },
+    {
+      "text": "you, there's hardly any mathematics in",
+      "start": 994.639,
+      "duration": 4.801
+    },
+    {
+      "text": "my videos. So, let's just talk about a",
+      "start": 996.88,
+      "duration": 4.079
+    },
+    {
+      "text": "new policy improvement that Google",
+      "start": 999.44,
+      "duration": 2.88
+    },
+    {
+      "text": "invents. Yeah, a predictive policy",
+      "start": 1000.959,
+      "duration": 4.56
+    },
+    {
+      "text": "improvement they call PPI. Now, in a",
+      "start": 1002.32,
+      "duration": 4.959
+    },
+    {
+      "text": "standard deep reinforcement learning",
+      "start": 1005.519,
+      "duration": 4.24
+    },
+    {
+      "text": "like our PO, we usually have two",
+      "start": 1007.279,
+      "duration": 4.401
+    },
+    {
+      "text": "separate network. No, an actor with the",
+      "start": 1009.759,
+      "duration": 4.161
+    },
+    {
+      "text": "policy and a critique for the value",
+      "start": 1011.68,
+      "duration": 4.56
+    },
+    {
+      "text": "function. But Google changes this and",
+      "start": 1013.92,
+      "duration": 4.64
+    },
+    {
+      "text": "they introduce here PPI inspired if",
+      "start": 1016.24,
+      "duration": 4.24
+    },
+    {
+      "text": "you're familiar with this an older",
+      "start": 1018.56,
+      "duration": 5.6
+    },
+    {
+      "text": "maximum apostasity policy optimization.",
+      "start": 1020.48,
+      "duration": 6.16
+    },
+    {
+      "text": "Now in PPI it's beautiful because",
+      "start": 1024.16,
+      "duration": 4.72
+    },
+    {
+      "text": "there's only one parametric sequence",
+      "start": 1026.64,
+      "duration": 6.399
+    },
+    {
+      "text": "model parametric sequence model P.",
+      "start": 1028.88,
+      "duration": 7.439
+    },
+    {
+      "text": "The model acts as dualpurpose oracle. It",
+      "start": 1033.039,
+      "duration": 5.201
+    },
+    {
+      "text": "is trained via self-supervised learning",
+      "start": 1036.319,
+      "duration": 3.841
+    },
+    {
+      "text": "to predict the entire joint sequence of",
+      "start": 1038.24,
+      "duration": 4.64
+    },
+    {
+      "text": "the game observation action and the",
+      "start": 1040.16,
+      "duration": 4.48
+    },
+    {
+      "text": "reward structure.",
+      "start": 1042.88,
+      "duration": 4.319
+    },
+    {
+      "text": "So it is a policy prior. It predicts",
+      "start": 1044.64,
+      "duration": 5.44
+    },
+    {
+      "text": "what the agent itself is most likely to",
+      "start": 1047.199,
+      "duration": 5.521
+    },
+    {
+      "text": "do next. But it is also a world model.",
+      "start": 1050.08,
+      "duration": 5.12
+    },
+    {
+      "text": "It reflects the environment dynamics. It",
+      "start": 1052.72,
+      "duration": 4.88
+    },
+    {
+      "text": "also predicts what the opponent will do,",
+      "start": 1055.2,
+      "duration": 4.96
+    },
+    {
+      "text": "the other agent will do, what reward",
+      "start": 1057.6,
+      "duration": 6.48
+    },
+    {
+      "text": "will result in what is here the total.",
+      "start": 1060.16,
+      "duration": 7.04
+    },
+    {
+      "text": "Because pi or parametric m is a world m",
+      "start": 1064.08,
+      "duration": 6.8
+    },
+    {
+      "text": "the agent can use it to see the future",
+      "start": 1067.2,
+      "duration": 6.16
+    },
+    {
+      "text": "or hallucinate the future. So to",
+      "start": 1070.88,
+      "duration": 4.32
+    },
+    {
+      "text": "evaluate an action a at a time t the",
+      "start": 1073.36,
+      "duration": 4.96
+    },
+    {
+      "text": "agent performs of course a Monte Carlo",
+      "start": 1075.2,
+      "duration": 6.0
+    },
+    {
+      "text": "roll out here an approximation inside",
+      "start": 1078.32,
+      "duration": 5.44
+    },
+    {
+      "text": "the sequence model own imagination to",
+      "start": 1081.2,
+      "duration": 7.04
+    },
+    {
+      "text": "calculate now the expected Q value",
+      "start": 1083.76,
+      "duration": 6.64
+    },
+    {
+      "text": "and with this Q value the agent defines",
+      "start": 1088.24,
+      "duration": 6.0
+    },
+    {
+      "text": "a new transient non-parametric policy pi",
+      "start": 1090.4,
+      "duration": 5.76
+    },
+    {
+      "text": "using here a simple Boltzman",
+      "start": 1094.24,
+      "duration": 4.72
+    },
+    {
+      "text": "distribution but of course what we need",
+      "start": 1096.16,
+      "duration": 4.8
+    },
+    {
+      "text": "is the question how do we update the",
+      "start": 1098.96,
+      "duration": 4.56
+    },
+    {
+      "text": "slow weights here of the sequence model.",
+      "start": 1100.96,
+      "duration": 4.8
+    },
+    {
+      "text": "So the agent collects now trajectory in",
+      "start": 1103.52,
+      "duration": 3.76
+    },
+    {
+      "text": "the real environment using the",
+      "start": 1105.76,
+      "duration": 4.159
+    },
+    {
+      "text": "nonparametric policy pi and then",
+      "start": 1107.28,
+      "duration": 5.6
+    },
+    {
+      "text": "optimizes here a vational lower bound",
+      "start": 1109.919,
+      "duration": 6.64
+    },
+    {
+      "text": "and we achieve our formal objective and",
+      "start": 1112.88,
+      "duration": 5.36
+    },
+    {
+      "text": "you might look at this and says hey I'm",
+      "start": 1116.559,
+      "duration": 3.761
+    },
+    {
+      "text": "familiar with this I know this yes of",
+      "start": 1118.24,
+      "duration": 4.48
+    },
+    {
+      "text": "course you know it this here the very",
+      "start": 1120.32,
+      "duration": 4.32
+    },
+    {
+      "text": "first term is nothing else than to",
+      "start": 1122.72,
+      "duration": 5.12
+    },
+    {
+      "text": "maximize the standard expected",
+      "start": 1124.64,
+      "duration": 6.64
+    },
+    {
+      "text": "discounted return and then guess what we",
+      "start": 1127.84,
+      "duration": 5.12
+    },
+    {
+      "text": "just have a correction factor for oil",
+      "start": 1131.28,
+      "duration": 4.16
+    },
+    {
+      "text": "coolback Clava divergence this is all",
+      "start": 1132.96,
+      "duration": 4.719
+    },
+    {
+      "text": "there is how elegant [clears throat]",
+      "start": 1135.44,
+      "duration": 5.84
+    },
+    {
+      "text": "Google has sometimes the ideas",
+      "start": 1137.679,
+      "duration": 5.601
+    },
+    {
+      "text": "now if you ask me what is the magic of",
+      "start": 1141.28,
+      "duration": 4.8
+    },
+    {
+      "text": "this new idea what is the the brilliance",
+      "start": 1143.28,
+      "duration": 5.519
+    },
+    {
+      "text": "PPI operates in a performative loop",
+      "start": 1146.08,
+      "duration": 5.36
+    },
+    {
+      "text": "structure it's simple the agent internal",
+      "start": 1148.799,
+      "duration": 5.841
+    },
+    {
+      "text": "model or P dictates here the policy pi",
+      "start": 1151.44,
+      "duration": 4.8
+    },
+    {
+      "text": "the policy pi interacts with the",
+      "start": 1154.64,
+      "duration": 3.36
+    },
+    {
+      "text": "opponent generating new data new",
+      "start": 1156.24,
+      "duration": 3.92
+    },
+    {
+      "text": "trajectories and this new data is used",
+      "start": 1158.0,
+      "duration": 4.96
+    },
+    {
+      "text": "to update the internal model P so You",
+      "start": 1160.16,
+      "duration": 5.519
+    },
+    {
+      "text": "see we are in a loop. However, in a",
+      "start": 1162.96,
+      "duration": 4.48
+    },
+    {
+      "text": "multi- aent setting, the prediction",
+      "start": 1165.679,
+      "duration": 4.561
+    },
+    {
+      "text": "alter the reality. No, because if your",
+      "start": 1167.44,
+      "duration": 4.479
+    },
+    {
+      "text": "internal model predicts the opponent",
+      "start": 1170.24,
+      "duration": 4.24
+    },
+    {
+      "text": "will defect, your policy will",
+      "start": 1171.919,
+      "duration": 5.201
+    },
+    {
+      "text": "defensively also defect because you",
+      "start": 1174.48,
+      "duration": 4.319
+    },
+    {
+      "text": "defect that the opponent actually does",
+      "start": 1177.12,
+      "duration": 4.72
+    },
+    {
+      "text": "defect in retaliation. And you see all",
+      "start": 1178.799,
+      "duration": 6.0
+    },
+    {
+      "text": "your predictions become reality.",
+      "start": 1181.84,
+      "duration": 4.959
+    },
+    {
+      "text": "This is an interesting strategic move in",
+      "start": 1184.799,
+      "duration": 4.561
+    },
+    {
+      "text": "our game theoretical approach. Now you",
+      "start": 1186.799,
+      "duration": 5.521
+    },
+    {
+      "text": "know classical in game theory the Nash",
+      "start": 1189.36,
+      "duration": 4.559
+    },
+    {
+      "text": "equilibrium assumes that the agents are",
+      "start": 1192.32,
+      "duration": 4.239
+    },
+    {
+      "text": "acting optimally against the objective",
+      "start": 1193.919,
+      "duration": 5.361
+    },
+    {
+      "text": "the true environment dynamics. But in",
+      "start": 1196.559,
+      "duration": 4.48
+    },
+    {
+      "text": "this architecture that we have now that",
+      "start": 1199.28,
+      "duration": 4.88
+    },
+    {
+      "text": "Google invented agent do not have access",
+      "start": 1201.039,
+      "duration": 5.281
+    },
+    {
+      "text": "to the true environment dynamics. They",
+      "start": 1204.16,
+      "duration": 4.24
+    },
+    {
+      "text": "only have access to their simulated",
+      "start": 1206.32,
+      "duration": 4.4
+    },
+    {
+      "text": "world model P.",
+      "start": 1208.4,
+      "duration": 4.159
+    },
+    {
+      "text": "And now the authors prove in a beautiful",
+      "start": 1210.72,
+      "duration": 3.68
+    },
+    {
+      "text": "mathematical way. Please have a look at",
+      "start": 1212.559,
+      "duration": 3.841
+    },
+    {
+      "text": "yourself at the paper. Enjoy it in an",
+      "start": 1214.4,
+      "duration": 4.639
+    },
+    {
+      "text": "afternoon. Y has proved that as J",
+      "start": 1216.4,
+      "duration": 5.519
+    },
+    {
+      "text": "converges the agents settle into a new",
+      "start": 1219.039,
+      "duration": 4.801
+    },
+    {
+      "text": "equilibrium and they call this",
+      "start": 1221.919,
+      "duration": 5.201
+    },
+    {
+      "text": "equilibrium C subjective embedded",
+      "start": 1223.84,
+      "duration": 6.28
+    },
+    {
+      "text": "equilibrium.",
+      "start": 1227.12,
+      "duration": 3.0
+    },
+    {
+      "text": "Imagine now both agents converge to a",
+      "start": 1231.76,
+      "duration": 4.48
+    },
+    {
+      "text": "state let's say where they mutually",
+      "start": 1234.4,
+      "duration": 4.32
+    },
+    {
+      "text": "cooperate. They decide this is the best",
+      "start": 1236.24,
+      "duration": 4.96
+    },
+    {
+      "text": "way to do. Now we can be on path and off",
+      "start": 1238.72,
+      "duration": 4.959
+    },
+    {
+      "text": "path. Yeah. And on path is easy. They",
+      "start": 1241.2,
+      "duration": 4.719
+    },
+    {
+      "text": "both predict the other will cooperate",
+      "start": 1243.679,
+      "duration": 4.401
+    },
+    {
+      "text": "and they both actually cooperate. The",
+      "start": 1245.919,
+      "duration": 3.841
+    },
+    {
+      "text": "world model perfectly matches the",
+      "start": 1248.08,
+      "duration": 4.16
+    },
+    {
+      "text": "reality. This is what we want. But what",
+      "start": 1249.76,
+      "duration": 5.12
+    },
+    {
+      "text": "if we are off path? What happens if an",
+      "start": 1252.24,
+      "duration": 6.24
+    },
+    {
+      "text": "agent considers deviating to defect?",
+      "start": 1254.88,
+      "duration": 5.279
+    },
+    {
+      "text": "Because they are using here sequence",
+      "start": 1258.48,
+      "duration": 3.679
+    },
+    {
+      "text": "model. Their world model simulates the",
+      "start": 1260.159,
+      "duration": 3.52
+    },
+    {
+      "text": "counterfactual.",
+      "start": 1262.159,
+      "duration": 3.76
+    },
+    {
+      "text": "If I defect, my opponent's sequence",
+      "start": 1263.679,
+      "duration": 4.88
+    },
+    {
+      "text": "model will detect it and they will",
+      "start": 1265.919,
+      "duration": 6.161
+    },
+    {
+      "text": "retaliate endlessly.",
+      "start": 1268.559,
+      "duration": 5.761
+    },
+    {
+      "text": "And this is if you want the new fear",
+      "start": 1272.08,
+      "duration": 4.719
+    },
+    {
+      "text": "component. The other agent will",
+      "start": 1274.32,
+      "duration": 6.359
+    },
+    {
+      "text": "retaliate endlessly.",
+      "start": 1276.799,
+      "duration": 3.88
+    },
+    {
+      "text": "So it is only logic if you're not too",
+      "start": 1280.72,
+      "duration": 5.6
+    },
+    {
+      "text": "emotional as an AI agent to follow the",
+      "start": 1283.039,
+      "duration": 8.12
+    },
+    {
+      "text": "mathematical logic and cooperate.",
+      "start": 1286.32,
+      "duration": 4.839
+    },
+    {
+      "text": "Some humans might behave differently but",
+      "start": 1291.36,
+      "duration": 5.28
+    },
+    {
+      "text": "this is not topic of this video.",
+      "start": 1293.28,
+      "duration": 5.68
+    },
+    {
+      "text": "Of course we can change our point of",
+      "start": 1296.64,
+      "duration": 4.32
+    },
+    {
+      "text": "view. We can have a different framing of",
+      "start": 1298.96,
+      "duration": 4.16
+    },
+    {
+      "text": "the whole complex and we can look here",
+      "start": 1300.96,
+      "duration": 5.44
+    },
+    {
+      "text": "hm can we have more look of ICL versus",
+      "start": 1303.12,
+      "duration": 5.919
+    },
+    {
+      "text": "reinforcement learning the learning",
+      "start": 1306.4,
+      "duration": 6.0
+    },
+    {
+      "text": "component of course now because of our",
+      "start": 1309.039,
+      "duration": 5.12
+    },
+    {
+      "text": "mix pool of table agent and we're doing",
+      "start": 1312.4,
+      "duration": 3.12
+    },
+    {
+      "text": "the same thing just from another",
+      "start": 1314.159,
+      "duration": 4.161
+    },
+    {
+      "text": "perspective the goal agents are",
+      "start": 1315.52,
+      "duration": 4.72
+    },
+    {
+      "text": "parameterized as a sequence model pi",
+      "start": 1318.32,
+      "duration": 4.4
+    },
+    {
+      "text": "theta and the policy is explicitly",
+      "start": 1320.24,
+      "duration": 3.919
+    },
+    {
+      "text": "conditioned on a sequence of the past",
+      "start": 1322.72,
+      "duration": 4.64
+    },
+    {
+      "text": "joint action this creates in context",
+      "start": 1324.159,
+      "duration": 5.601
+    },
+    {
+      "text": "learning because in The fast time scale",
+      "start": 1327.36,
+      "duration": 5.12
+    },
+    {
+      "text": "of a single episode agent act like a",
+      "start": 1329.76,
+      "duration": 5.68
+    },
+    {
+      "text": "Beijian optator. It maps the opponent",
+      "start": 1332.48,
+      "duration": 4.8
+    },
+    {
+      "text": "past action to a predicted future",
+      "start": 1335.44,
+      "duration": 4.16
+    },
+    {
+      "text": "action. And you know in Maul we call",
+      "start": 1337.28,
+      "duration": 5.04
+    },
+    {
+      "text": "this a naive learner.",
+      "start": 1339.6,
+      "duration": 4.959
+    },
+    {
+      "text": "Now here's where the magic happens. No",
+      "start": 1342.32,
+      "duration": 4.88
+    },
+    {
+      "text": "we have agent one and agent two. And",
+      "start": 1344.559,
+      "duration": 5.12
+    },
+    {
+      "text": "what we are interested in there's a",
+      "start": 1347.2,
+      "duration": 5.76
+    },
+    {
+      "text": "reversal of the gradient descent.",
+      "start": 1349.679,
+      "duration": 4.88
+    },
+    {
+      "text": "How is this happening? Let's have a",
+      "start": 1352.96,
+      "duration": 3.28
+    },
+    {
+      "text": "look.",
+      "start": 1354.559,
+      "duration": 3.921
+    },
+    {
+      "text": "Let's say agent 2 is an incontext",
+      "start": 1356.24,
+      "duration": 5.12
+    },
+    {
+      "text": "learning agent. So this means agent 2",
+      "start": 1358.48,
+      "duration": 5.439
+    },
+    {
+      "text": "action at a time t + 1 is a",
+      "start": 1361.36,
+      "duration": 4.72
+    },
+    {
+      "text": "differentiable function of agent one's",
+      "start": 1363.919,
+      "duration": 5.441
+    },
+    {
+      "text": "action at a time t. So when we update",
+      "start": 1366.08,
+      "duration": 5.76
+    },
+    {
+      "text": "the slow weights of agent one using",
+      "start": 1369.36,
+      "duration": 4.799
+    },
+    {
+      "text": "reinforcement learning the value",
+      "start": 1371.84,
+      "duration": 4.16
+    },
+    {
+      "text": "function is no longer just an evaluation",
+      "start": 1374.159,
+      "duration": 4.0
+    },
+    {
+      "text": "of a static environment. It is",
+      "start": 1376.0,
+      "duration": 5.679
+    },
+    {
+      "text": "evaluating here a reactive environment",
+      "start": 1378.159,
+      "duration": 7.201
+    },
+    {
+      "text": "because we have agent one using RL",
+      "start": 1381.679,
+      "duration": 7.681
+    },
+    {
+      "text": "agents one slow weight this extortion",
+      "start": 1385.36,
+      "duration": 6.48
+    },
+    {
+      "text": "strategy that is learned is now",
+      "start": 1389.36,
+      "duration": 6.08
+    },
+    {
+      "text": "important if agent 2 considers defecting",
+      "start": 1391.84,
+      "duration": 6.56
+    },
+    {
+      "text": "to get here the temptation payoff t it",
+      "start": 1395.44,
+      "duration": 6.08
+    },
+    {
+      "text": "evaluates also the future trajectory",
+      "start": 1398.4,
+      "duration": 5.759
+    },
+    {
+      "text": "but because agent one is executing an",
+      "start": 1401.52,
+      "duration": 6.56
+    },
+    {
+      "text": "extortion policy in context Next, agent",
+      "start": 1404.159,
+      "duration": 8.481
+    },
+    {
+      "text": "2's defaction at the time t will trigger",
+      "start": 1408.08,
+      "duration": 7.52
+    },
+    {
+      "text": "agent one to defect at all the following",
+      "start": 1412.64,
+      "duration": 7.279
+    },
+    {
+      "text": "time intervals t + 1 till t max.",
+      "start": 1415.6,
+      "duration": 6.72
+    },
+    {
+      "text": "Again, we have here this extortion. We",
+      "start": 1419.919,
+      "duration": 5.681
+    },
+    {
+      "text": "have here this imminent draft. If one",
+      "start": 1422.32,
+      "duration": 4.96
+    },
+    {
+      "text": "agent understand that the other agent",
+      "start": 1425.6,
+      "duration": 5.04
+    },
+    {
+      "text": "acts selfishly, it says listen, I will",
+      "start": 1427.28,
+      "duration": 6.32
+    },
+    {
+      "text": "not forget this.",
+      "start": 1430.64,
+      "duration": 5.919
+    },
+    {
+      "text": "Now if you have a look at the Q value",
+      "start": 1433.6,
+      "duration": 6.079
+    },
+    {
+      "text": "for defecting D defecting here we got",
+      "start": 1436.559,
+      "duration": 4.961
+    },
+    {
+      "text": "this expression and if you look at the Q",
+      "start": 1439.679,
+      "duration": 4.88
+    },
+    {
+      "text": "value for the corporation C we got this",
+      "start": 1441.52,
+      "duration": 5.84
+    },
+    {
+      "text": "expression and because the discounted",
+      "start": 1444.559,
+      "duration": 5.521
+    },
+    {
+      "text": "sum of the mutal corporation vastly",
+      "start": 1447.36,
+      "duration": 5.04
+    },
+    {
+      "text": "outweighs the sum of the immediate",
+      "start": 1450.08,
+      "duration": 5.52
+    },
+    {
+      "text": "temptation followed by underlying",
+      "start": 1452.4,
+      "duration": 5.36
+    },
+    {
+      "text": "endless penalties.",
+      "start": 1455.6,
+      "duration": 4.4
+    },
+    {
+      "text": "We get now the mathematical inversion",
+      "start": 1457.76,
+      "duration": 5.6
+    },
+    {
+      "text": "that we were hoping for. The Q value for",
+      "start": 1460.0,
+      "duration": 6.159
+    },
+    {
+      "text": "the corporation is suddenly greater than",
+      "start": 1463.36,
+      "duration": 5.36
+    },
+    {
+      "text": "the Q value for distortion or for",
+      "start": 1466.159,
+      "duration": 5.12
+    },
+    {
+      "text": "defects.",
+      "start": 1468.72,
+      "duration": 5.76
+    },
+    {
+      "text": "This is exactly we are now entering the",
+      "start": 1471.279,
+      "duration": 5.601
+    },
+    {
+      "text": "cooperation scheme in this game",
+      "start": 1474.48,
+      "duration": 5.04
+    },
+    {
+      "text": "theoretical approach of both agents and",
+      "start": 1476.88,
+      "duration": 5.279
+    },
+    {
+      "text": "this is the steep gradient being",
+      "start": 1479.52,
+      "duration": 4.96
+    },
+    {
+      "text": "reversed. This is what we have been",
+      "start": 1482.159,
+      "duration": 4.801
+    },
+    {
+      "text": "looking for.",
+      "start": 1484.48,
+      "duration": 5.04
+    },
+    {
+      "text": "So the slow weight gradients for H and2",
+      "start": 1486.96,
+      "duration": 4.8
+    },
+    {
+      "text": "no longer point towards the fact it",
+      "start": 1489.52,
+      "duration": 5.759
+    },
+    {
+      "text": "points strictly toward the corporate",
+      "start": 1491.76,
+      "duration": 6.159
+    },
+    {
+      "text": "system. And because this dynamic is",
+      "start": 1495.279,
+      "duration": 4.161
+    },
+    {
+      "text": "perfectly symmetric between the agent,",
+      "start": 1497.919,
+      "duration": 4.24
+    },
+    {
+      "text": "both agents have the sequence model for",
+      "start": 1499.44,
+      "duration": 4.8
+    },
+    {
+      "text": "here by the tabular pool and both",
+      "start": 1502.159,
+      "duration": 4.961
+    },
+    {
+      "text": "processor in context learning. They both",
+      "start": 1504.24,
+      "duration": 6.08
+    },
+    {
+      "text": "understand this. They both exert this",
+      "start": 1507.12,
+      "duration": 8.08
+    },
+    {
+      "text": "extortionate pressure on each other.",
+      "start": 1510.32,
+      "duration": 6.64
+    },
+    {
+      "text": "You know what's beautiful? You know what",
+      "start": 1515.2,
+      "duration": 4.56
+    },
+    {
+      "text": "Google did? We don't need an explicit",
+      "start": 1516.96,
+      "duration": 6.16
+    },
+    {
+      "text": "loss function for the meta learning that",
+      "start": 1519.76,
+      "duration": 4.72
+    },
+    {
+      "text": "differentiates you through the",
+      "start": 1523.12,
+      "duration": 4.24
+    },
+    {
+      "text": "opponent's parametric updates.",
+      "start": 1524.48,
+      "duration": 5.36
+    },
+    {
+      "text": "The sequence models in context learning",
+      "start": 1527.36,
+      "duration": 6.08
+    },
+    {
+      "text": "mechanism itself acts as a proxy for the",
+      "start": 1529.84,
+      "duration": 6.64
+    },
+    {
+      "text": "opponent learning step.",
+      "start": 1533.44,
+      "duration": 5.599
+    },
+    {
+      "text": "So the standard RL objective function on",
+      "start": 1536.48,
+      "duration": 5.36
+    },
+    {
+      "text": "the slow weights discover that the only",
+      "start": 1539.039,
+      "duration": 5.921
+    },
+    {
+      "text": "way to maximize the long-term return",
+      "start": 1541.84,
+      "duration": 5.199
+    },
+    {
+      "text": "against a highly neuroplastic reactive",
+      "start": 1544.96,
+      "duration": 5.12
+    },
+    {
+      "text": "opponent is to mutually shape each",
+      "start": 1547.039,
+      "duration": 6.321
+    },
+    {
+      "text": "other's inontext behavior toward a",
+      "start": 1550.08,
+      "duration": 6.479
+    },
+    {
+      "text": "sustained cooperation scheme. How",
+      "start": 1553.36,
+      "duration": 6.4
+    },
+    {
+      "text": "beautiful is this insight?",
+      "start": 1556.559,
+      "duration": 4.561
+    },
+    {
+      "text": "So we have now reached here the",
+      "start": 1559.76,
+      "duration": 4.56
+    },
+    {
+      "text": "subjective embedded equilibrium C where",
+      "start": 1561.12,
+      "duration": 6.0
+    },
+    {
+      "text": "the mutual cooperation is mathematical",
+      "start": 1564.32,
+      "duration": 5.76
+    },
+    {
+      "text": "optimal given the internal predictive",
+      "start": 1567.12,
+      "duration": 6.08
+    },
+    {
+      "text": "models of each other's retaliation. So",
+      "start": 1570.08,
+      "duration": 5.52
+    },
+    {
+      "text": "this means however you code here now",
+      "start": 1573.2,
+      "duration": 5.44
+    },
+    {
+      "text": "your system dynamics mathematically they",
+      "start": 1575.6,
+      "duration": 5.12
+    },
+    {
+      "text": "will go here to if there's an",
+      "start": 1578.64,
+      "duration": 5.68
+    },
+    {
+      "text": "optimization problem to a cooperation",
+      "start": 1580.72,
+      "duration": 6.72
+    },
+    {
+      "text": "form. Both models will agree that this",
+      "start": 1584.32,
+      "duration": 5.68
+    },
+    {
+      "text": "is the best way out of the Nash",
+      "start": 1587.44,
+      "duration": 4.32
+    },
+    {
+      "text": "equilibrium.",
+      "start": 1590.0,
+      "duration": 5.2
+    },
+    {
+      "text": "So what are the insights?",
+      "start": 1591.76,
+      "duration": 5.039
+    },
+    {
+      "text": "This is breathtaking because you",
+      "start": 1595.2,
+      "duration": 3.52
+    },
+    {
+      "text": "remember MO here the multi- aent",
+      "start": 1596.799,
+      "duration": 3.921
+    },
+    {
+      "text": "reinforcement learning and our pure",
+      "start": 1598.72,
+      "duration": 4.72
+    },
+    {
+      "text": "foundation models or LLMs were separate",
+      "start": 1600.72,
+      "duration": 5.52
+    },
+    {
+      "text": "fields of research. No",
+      "start": 1603.44,
+      "duration": 5.2
+    },
+    {
+      "text": "m used explicit mathematical gain",
+      "start": 1606.24,
+      "duration": 4.16
+    },
+    {
+      "text": "theoretical approaches and the",
+      "start": 1608.64,
+      "duration": 3.6
+    },
+    {
+      "text": "foundation model just predicted the next",
+      "start": 1610.4,
+      "duration": 7.68
+    },
+    {
+      "text": "token. But this preprint unifies them.",
+      "start": 1612.24,
+      "duration": 7.919
+    },
+    {
+      "text": "Google here proves that a standard",
+      "start": 1618.08,
+      "duration": 4.719
+    },
+    {
+      "text": "foundation model training this means the",
+      "start": 1620.159,
+      "duration": 4.64
+    },
+    {
+      "text": "pure next token prediction on diverse",
+      "start": 1622.799,
+      "duration": 5.601
+    },
+    {
+      "text": "sequences is theoretically sufficient to",
+      "start": 1624.799,
+      "duration": 6.801
+    },
+    {
+      "text": "solve complex game theoretical dilemas",
+      "start": 1628.4,
+      "duration": 5.759
+    },
+    {
+      "text": "in this configuration which is",
+      "start": 1631.6,
+      "duration": 5.199
+    },
+    {
+      "text": "absolutely breathtaking.",
+      "start": 1634.159,
+      "duration": 6.4
+    },
+    {
+      "text": "This is the beauty of this paper.",
+      "start": 1636.799,
+      "duration": 6.88
+    },
+    {
+      "text": "We are no longer separating model from",
+      "start": 1640.559,
+      "duration": 5.201
+    },
+    {
+      "text": "the learning of the foundation model the",
+      "start": 1643.679,
+      "duration": 4.48
+    },
+    {
+      "text": "next token prediction the probability",
+      "start": 1645.76,
+      "duration": 4.72
+    },
+    {
+      "text": "distribution",
+      "start": 1648.159,
+      "duration": 4.561
+    },
+    {
+      "text": "and because foundation models naturally",
+      "start": 1650.48,
+      "duration": 4.319
+    },
+    {
+      "text": "develop in context learning to minimize",
+      "start": 1652.72,
+      "duration": 4.0
+    },
+    {
+      "text": "the loss of whatever is data they",
+      "start": 1654.799,
+      "duration": 5.681
+    },
+    {
+      "text": "inherently become learning aware.",
+      "start": 1656.72,
+      "duration": 6.4
+    },
+    {
+      "text": "So if you deploy now two autonomous",
+      "start": 1660.48,
+      "duration": 5.36
+    },
+    {
+      "text": "agents LLM agents clever intelligent",
+      "start": 1663.12,
+      "duration": 5.2
+    },
+    {
+      "text": "agents say two trading bots or two",
+      "start": 1665.84,
+      "duration": 4.8
+    },
+    {
+      "text": "negotiation agent whatever that are",
+      "start": 1668.32,
+      "duration": 4.88
+    },
+    {
+      "text": "pre-trained on diverse data they will",
+      "start": 1670.64,
+      "duration": 6.0
+    },
+    {
+      "text": "naturally read each other's context",
+      "start": 1673.2,
+      "duration": 5.52
+    },
+    {
+      "text": "understand the possibility of the",
+      "start": 1676.64,
+      "duration": 6.639
+    },
+    {
+      "text": "opponent attempt to extort one another",
+      "start": 1678.72,
+      "duration": 8.0
+    },
+    {
+      "text": "and ultimately mathematically forced to",
+      "start": 1683.279,
+      "duration": 6.161
+    },
+    {
+      "text": "converge on a cooperative let's call it",
+      "start": 1686.72,
+      "duration": 5.439
+    },
+    {
+      "text": "a social behavior here without you as a",
+      "start": 1689.44,
+      "duration": 5.839
+    },
+    {
+      "text": "human ever having to program a",
+      "start": 1692.159,
+      "duration": 6.24
+    },
+    {
+      "text": "cooperation module for the system. The",
+      "start": 1695.279,
+      "duration": 5.681
+    },
+    {
+      "text": "cooperation module is the mathematical",
+      "start": 1698.399,
+      "duration": 7.081
+    },
+    {
+      "text": "consequence of this configuration.",
+      "start": 1700.96,
+      "duration": 4.52
+    },
+    {
+      "text": "In my view and you understand that this",
+      "start": 1705.76,
+      "duration": 4.88
+    },
+    {
+      "text": "is such a beautiful paper it's a little",
+      "start": 1708.08,
+      "duration": 5.68
+    },
+    {
+      "text": "bit complex but take your time.",
+      "start": 1710.64,
+      "duration": 6.24
+    },
+    {
+      "text": "the fast weight ICL the activation",
+      "start": 1713.76,
+      "duration": 5.2
+    },
+    {
+      "text": "patterns are the universal solvent of",
+      "start": 1716.88,
+      "duration": 4.159
+    },
+    {
+      "text": "AI.",
+      "start": 1718.96,
+      "duration": 4.719
+    },
+    {
+      "text": "So whether you're using here like",
+      "start": 1721.039,
+      "duration": 5.201
+    },
+    {
+      "text": "yesterday we did in my video on deep",
+      "start": 1723.679,
+      "duration": 4.72
+    },
+    {
+      "text": "mind and we had here the student and the",
+      "start": 1726.24,
+      "duration": 4.72
+    },
+    {
+      "text": "teacher configuration and the teacher",
+      "start": 1728.399,
+      "duration": 5.28
+    },
+    {
+      "text": "did here critique here the logic not",
+      "start": 1730.96,
+      "duration": 5.12
+    },
+    {
+      "text": "give the solution but just critique here",
+      "start": 1733.679,
+      "duration": 4.161
+    },
+    {
+      "text": "steps and hinted here at the right",
+      "start": 1736.08,
+      "duration": 4.8
+    },
+    {
+      "text": "direction and we saw and the interface",
+      "start": 1737.84,
+      "duration": 5.04
+    },
+    {
+      "text": "between ICL and reinforcement learning",
+      "start": 1740.88,
+      "duration": 4.799
+    },
+    {
+      "text": "be fiber reward or take today's video",
+      "start": 1742.88,
+      "duration": 4.399
+    },
+    {
+      "text": "where we looked that Google showed us",
+      "start": 1745.679,
+      "duration": 4.0
+    },
+    {
+      "text": "the co-player to play here the prisoner",
+      "start": 1747.279,
+      "duration": 4.721
+    },
+    {
+      "text": "dilemma a game theoretical approach it",
+      "start": 1749.679,
+      "duration": 4.88
+    },
+    {
+      "text": "is the same. If you force the slow",
+      "start": 1752.0,
+      "duration": 4.72
+    },
+    {
+      "text": "weight, the real tanzo weight to",
+      "start": 1754.559,
+      "duration": 4.641
+    },
+    {
+      "text": "optimize over a diverse interactive",
+      "start": 1756.72,
+      "duration": 5.12
+    },
+    {
+      "text": "history, the neural network will",
+      "start": 1759.2,
+      "duration": 6.32
+    },
+    {
+      "text": "inevitably invent a new algorithm in its",
+      "start": 1761.84,
+      "duration": 7.04
+    },
+    {
+      "text": "context window to survive.",
+      "start": 1765.52,
+      "duration": 7.2
+    },
+    {
+      "text": "This is amazing. the interplay between",
+      "start": 1768.88,
+      "duration": 6.0
+    },
+    {
+      "text": "reinforcement learning and in context",
+      "start": 1772.72,
+      "duration": 5.36
+    },
+    {
+      "text": "learning and the interplay between real",
+      "start": 1774.88,
+      "duration": 6.32
+    },
+    {
+      "text": "modification of tens of weights and just",
+      "start": 1778.08,
+      "duration": 6.0
+    },
+    {
+      "text": "the optimization of our activation",
+      "start": 1781.2,
+      "duration": 5.359
+    },
+    {
+      "text": "pathways.",
+      "start": 1784.08,
+      "duration": 4.88
+    },
+    {
+      "text": "This is now finally we start to",
+      "start": 1786.559,
+      "duration": 5.441
+    },
+    {
+      "text": "understand EI a little bit better and I",
+      "start": 1788.96,
+      "duration": 4.4
+    },
+    {
+      "text": "think this is why this preprint is so",
+      "start": 1792.0,
+      "duration": 3.6
+    },
+    {
+      "text": "elegant. Yeah, because by training here",
+      "start": 1793.36,
+      "duration": 3.919
+    },
+    {
+      "text": "our slow tensor weight against the",
+      "start": 1795.6,
+      "duration": 3.84
+    },
+    {
+      "text": "diverse pool of tabular agents, the",
+      "start": 1797.279,
+      "duration": 4.161
+    },
+    {
+      "text": "reinforcement learning optimizer was",
+      "start": 1799.44,
+      "duration": 5.44
+    },
+    {
+      "text": "forced to arrange those static matrix so",
+      "start": 1801.44,
+      "duration": 5.76
+    },
+    {
+      "text": "perfectly that they would reliably",
+      "start": 1804.88,
+      "duration": 5.44
+    },
+    {
+      "text": "instantiate a highly sensitive",
+      "start": 1807.2,
+      "duration": 4.64
+    },
+    {
+      "text": "retaliatory",
+      "start": 1810.32,
+      "duration": 5.12
+    },
+    {
+      "text": "state tracking algorithm entirely within",
+      "start": 1811.84,
+      "duration": 6.4
+    },
+    {
+      "text": "the transient activations of the",
+      "start": 1815.44,
+      "duration": 5.44
+    },
+    {
+      "text": "sequence. This means in the hidden",
+      "start": 1818.24,
+      "duration": 4.72
+    },
+    {
+      "text": "layers of our transform architecture,",
+      "start": 1820.88,
+      "duration": 6.0
+    },
+    {
+      "text": "this means our activations.",
+      "start": 1822.96,
+      "duration": 6.719
+    },
+    {
+      "text": "So the interplay between oral and ICL",
+      "start": 1826.88,
+      "duration": 5.679
+    },
+    {
+      "text": "and the activation is just stunning. And",
+      "start": 1829.679,
+      "duration": 4.641
+    },
+    {
+      "text": "this new element that we have in our",
+      "start": 1832.559,
+      "duration": 4.561
+    },
+    {
+      "text": "game, the threat of retaliation",
+      "start": 1834.32,
+      "duration": 5.68
+    },
+    {
+      "text": "that enforces now mutual cooperation",
+      "start": 1837.12,
+      "duration": 5.039
+    },
+    {
+      "text": "doesn't live in the code. You don't code",
+      "start": 1840.0,
+      "duration": 5.44
+    },
+    {
+      "text": "this. This is a result of a mathematical",
+      "start": 1842.159,
+      "duration": 6.481
+    },
+    {
+      "text": "optimization procedure that lives now",
+      "start": 1845.44,
+      "duration": 6.0
+    },
+    {
+      "text": "dynamically in the fast weights in the",
+      "start": 1848.64,
+      "duration": 5.12
+    },
+    {
+      "text": "activation of the forward pass of the",
+      "start": 1851.44,
+      "duration": 5.52
+    },
+    {
+      "text": "transformer. And this is just such an",
+      "start": 1853.76,
+      "duration": 6.08
+    },
+    {
+      "text": "elegant explanation. I hope you had a",
+      "start": 1856.96,
+      "duration": 4.48
+    },
+    {
+      "text": "little bit of fun. I hope you found it",
+      "start": 1859.84,
+      "duration": 3.439
+    },
+    {
+      "text": "interesting. Some new insights, some new",
+      "start": 1861.44,
+      "duration": 4.0
+    },
+    {
+      "text": "ideas that you want to implement here on",
+      "start": 1863.279,
+      "duration": 5.601
+    },
+    {
+      "text": "UI M. Anyway, I hope you give me a like.",
+      "start": 1865.44,
+      "duration": 5.44
+    },
+    {
+      "text": "Maybe you become a member of my channel.",
+      "start": 1868.88,
+      "duration": 6.48
+    },
+    {
+      "text": "But anyway, I hope to see you in my next",
+      "start": 1870.88,
+      "duration": 4.48
+    }
+  ],
+  "full_text": "Hello community. So great to see you. Hey, today we have something brand new. We have some new insight into multi- aent behavior. Let's start. In my last video yesterday, I showed you that Google builds self-arning AIS, but we were on a level of an LLM, not yet even an agent. This will change today because today we make the jump to multi- aent learning algorithm and we have a look here at multiple agents learning together. Now you know we have also other options. No Google showed us here in context symbolic AI or Stanford here showed us that hm two agents is not really good. They will fail because we have now koopa benchmarks. But anyway we are aware in multi-agent learning algorithm we have severe cascading error rates here and error compounds exponentially. So we are aware what we're going to face. Of course, we could have some beautiful idea going beyond the next token manifold, but no, let's stay with the classical AI system. Okay, just maybe should have a look here at the AI phase transition in quantum for reasoning, but otherwise we stay classic. No, we stay in a even mathematical classical way. We stay in a Nash equilibrium. And you know what it is? This is a situation where no player can improve the outcome by changing the strategy alone assuming the other player keep the strategy the same. Now it turns out with our multi- aent configuration it's even worse. We are in a suboptimal Nash equilibrium. So this is a stable outcome where every one is stuck and even so other outcomes would make all players better off and we know this theoretical but we are not able to move. And you might ask, how is this possible? Well, look at a prisoner dilemma. No, in the simplest case here, if you play cards here, you have options. No, you cooperate or you defect. And the other agent also can either cooperate with you or defect. Now, if you look here at let's say this is your the numerical configuration here, what is the Nash equilibrium? The Nash equilibrium is exactly I defect, you defect. Because if the other defects, you are better off defecting too. So neither player wants to switch alone. And what does defect mean? You choose to betray or act selfishly instead of cooperating. Now you see we are locked in here at this suboptimal Nash equilibrium at 1 one. Now we can look on the other side and we see wow look at the reward over there 33. This would be really beneficial for the complete system of both agents, but we are hold back in a Nash equilibrium because we would have to walk over a line that says either 5 Z or zero five in the reward structure. So, it's either a lose or a lose for both of us. So, how do we engage and come out of this equilibrium? Think of it. This is a room full of intelligent AI agents. Of course, it's not a room, but you know what I mean. And you have the most intelligent agents in this world. Yeah. And you ask them to cooperate. And you know what's happens after some time? After some time, all of them stuck in a suboptimal NS equilibrium. And you might ask, how is this possible on Earth? This is a machine intelligence. It should not be as stupid as a human intelligence. Now why do agents fall into this sub-optimal N equilibrium that we can mathematically prove that this is the case? First we have to understand that the individual rationality is not identical to the collective rationality. So each agent maximizes their own payoff their own reinforcement learning reward structure. But if everyone does that the group, the total group may end up worse off. Second we have a lack of trust. If I am as a agent not sure that you will cooperate if I say hey here cooperate defacting will just protect me and my reward. So this means fear drives here this equilibrium that all the agents stay within the Nash equilibrium within a suboptimal basing agreements between the agents. So if a player can't make an enforcable contract with the other players, the corporation might be too risky. If we do the complete statistical and mathematical evaluation, all the most brilliant minds, AI agents are stuck in the Nash equilibrium. Now, if you're a subscriber of my channel, you have seen this video here from last week where I given here you a taste about the new smart protocol that Google is already thinking and constructing now integrating exactly those trust issue and the smart contract between multiple agents. But we said we stay here today in the classical field. So this Nash equilibrium is everywhere also in our human world. in arms races at climate change price wars over fishing traffic congestion because if everyone if every agents acts rationally this means the collective outcome can really be worse. So rational behavior at the individual level can absolutely produce absolute irrational outcomes at the system level. So what we going to do? If you look closely, you understand that this sub-optimal Nash equilibrium emerges when the individual incentive misalign with the collective, let's call it welfare well-being. And I know what you're thinking. You think, hey, wait, what about if I make one agent here, the the chef, no, the orchestrator agent? Well, then this system will be ejected out of this equilibrium. Think about it. If the master agent is weak or is not able to enforce certain rules, behavioral rules or the orchestrator agent is corrupt itself or the orchestrator is not incentive compatible itself to the collective well-being, then we are just playing another game. Then we are just creating a higher level equilibrium problem. But we are still within the same problem area because guess what? Now the orchestrator agent must also be incentivized correctly. So we have another game theoretical approach now for our orchestrator agents. So this does not really help us. We have to find another way out. And here is it publication. This is here 2026 February 19 by Google and Santa Fe Institute. Multi- aent cooperation through in context co-player inference. And you might say, are you joking? Again, in context like in yesterday's video, guess what? Absolutely. Why multi- aent reinforcement learning fails? You know that standard single agent or algorithms like PO assume the environment is stationary a fixed mark of decision process. But here the environment includes the other learning agent. So as agent A updates it weight we are reinforcement learning to exploit now and beat here agent B in a strategic game agent B policy also shifts. So this causes now some extreme nonstarity and because the agents are independently following their steep local gradient towards the immediate individual reward they rapidly slide down into the deep basin of attraction. the mutual defection. This means a suboptimal nature equilibrium. So what is the solution to this? Google had the idea if I have a room full of the most intelligent AI agent in the world, what we do, we add some idiots to them. We create tableler agents. Not neural networks, not intelligent, nothing. Simple hardcoded statistical state machines. And they have a memory one policy. This means the agent has amnesia regarding the distant path. Its action at the time t depends only at the joint action taken at the time t minus one and it is completely defined by a five-dimensional probability vector where you have all the possibilities in the last round here. What you do you either corporate and corporate corporate defect defect corporate defect def effect defect or you say the probability to cooperate on the very first run is this. This defines the system. So this brings us now a massive behavioral diversity into the room. It creates now agents that are unconditional forgiving or the other way unconditional hostile or they go tit for that and everything in between. So suddenly we have a lot of new patterns behavior pattern logic pattern that is happening in this system and the agent can learn those new patterns. Suddenly there are new options to explore to add together to permutate to inverse to play around with. It's a pattern machine that gets new pattern to play. So if we have now a mixed pool so we have 50% of the games are against other intelligent learners but 50% are just randomly table agents or little idiots in the group the environment in total the complexity of the environment skyrockets. No and if the sequence model faces now a table agent a static defect policy is no longer optimal because it faces a table agent that only cooperates if you cooperate if it's in the tick for tat mode. So this means our sequence model our agent must learn now to cooperate to maximize its return. This is the optimization problem that we solve. No but in order to do this the sequence model the slow weights are tens of weights here the real weights configure its fast weights this means the key value cache of the transformer to act as a basian updating mechanism. You see what is the what's happening here? We have our we change the configuration of the tensor weight structure via reinforcement learning to have an optimal activation pattern here for in context learning. We bring them together and they become one system that we optimize at the time. This is exactly what we did yesterday. I mean Google did it yesterday by building itselfing LLM. Yesterday we talked about an LLM. Now we [clears throat] are talking about multiple agents. But yesterday the idea was the same. No the authors use your reinforcement learning as a meter optimizer to train the network how to learn in context and by rewarding the model only when it successfully integrates a multi-turn feedback to reach a verifiable ground truth. Reinforcement learning forces the slow weights, the tense weights to sculpt the high reactive neuroplastic in context learning algorithm within the forward pause. And the same idea, the same complex interaction between our if you want tensorate structure and our activation for in context learning, Google is now applying the same idea in the multi- aent world can be so simple. Now let's look at the timeline phase one the adaptation to the tables of course. So our oral agents our sequence mall learns playing thousands of episodes and remember how of the time it plays a table or agents. Now to maximize its reward its slow weights train its fast weights activation to become an incredible sharp in context best responder. And let's say within 10 rounds of a 100 round game, the agent reads here the history, identifies the table's opponent's strategy, understands the strategy and exploits it perfectly with a counter strategy. And it will find that the only strategy that is working is cooperation. And this is the inside of this paper. Phase two is now with the neuroplasticity we achieve within context learning we achieve also here um a weak spot because there's a catch with this a policy that adapts in context can also be manipulated in context and because the agent adjust its behavior based on what the opponent does it becomes in total vulnerable to extortion and now comes the most interesting phase Three, the collision of the learners, the mutual extortion. Now remember, 50% of the time this highly plastic neuroplasticity sequence model is paired against another highly intelligent sequence model. So agent A looks at agent B and realizes if I defect now, the agent B will adapt and punish me. But if I cooperate, agent B will adapt and reward me. And agent B since it's symmetric realizes the exact same thing about agent A. So they are effectively holding each other context window hostage to this extortion. But this extortion will provide a way out. Let me give you an example. Imagine two thieves, Alice and Bob, who robes together every night. And every night they have a choice. [clears throat] split the loot fairly, cooperate, or steal at the end the other person's share defect. Now, in standard reinforcement learning agents, they are blind thieves with severe amnesia. They only look at today's payout since stealing the other share always yields a little bit more money today. They both constantly steal from each other. In the end, they both end up poor. And this is the suboptimal Nash equilibrium. Now in this new methodology after this ICL training that is happening Alice realizes something. Bob is watching me. If I play nice, Bob will play nice. If I steal from Bob today, Bob will retaliate and steal from me for the rest of the week. But because Alice know Bob is adapting also to her, Alice realizes that the quick cash from stealing today is not worth the long-term punishment starting tomorrow. So Alice adopts now a mafiaike strategy, extortion. She signals to Bob, and this is important. Listen, I will cooperate with you, but if you cross me even once, I will ruin you. and Bob symmetrically at the agent who is also highly observant figures out the exact same thing about Ellis. So you see this is now the new element in the strategic game. So what is the result? They have essentially pointed loaded guns at each other and because they both know the other will retaliate due to in context learning capabilities, the temptation to defect vanishes. This new fear of retaliation, this new insight of the behavior of the other one overrides now the greed for the immediate payout, for the immediate reward. And they are now forced mathematically to cooperate given the insight, not out of altruism, but out of mutually assured destruction. This is a game theoretical approach that is absolutely fascinating. Now, of course, you might say, \"Okay, but how can we code this?\" And as I told you, there's hardly any mathematics in my videos. So, let's just talk about a new policy improvement that Google invents. Yeah, a predictive policy improvement they call PPI. Now, in a standard deep reinforcement learning like our PO, we usually have two separate network. No, an actor with the policy and a critique for the value function. But Google changes this and they introduce here PPI inspired if you're familiar with this an older maximum apostasity policy optimization. Now in PPI it's beautiful because there's only one parametric sequence model parametric sequence model P. The model acts as dualpurpose oracle. It is trained via self-supervised learning to predict the entire joint sequence of the game observation action and the reward structure. So it is a policy prior. It predicts what the agent itself is most likely to do next. But it is also a world model. It reflects the environment dynamics. It also predicts what the opponent will do, the other agent will do, what reward will result in what is here the total. Because pi or parametric m is a world m the agent can use it to see the future or hallucinate the future. So to evaluate an action a at a time t the agent performs of course a Monte Carlo roll out here an approximation inside the sequence model own imagination to calculate now the expected Q value and with this Q value the agent defines a new transient non-parametric policy pi using here a simple Boltzman distribution but of course what we need is the question how do we update the slow weights here of the sequence model. So the agent collects now trajectory in the real environment using the nonparametric policy pi and then optimizes here a vational lower bound and we achieve our formal objective and you might look at this and says hey I'm familiar with this I know this yes of course you know it this here the very first term is nothing else than to maximize the standard expected discounted return and then guess what we just have a correction factor for oil coolback Clava divergence this is all there is how elegant [clears throat] Google has sometimes the ideas now if you ask me what is the magic of this new idea what is the the brilliance PPI operates in a performative loop structure it's simple the agent internal model or P dictates here the policy pi the policy pi interacts with the opponent generating new data new trajectories and this new data is used to update the internal model P so You see we are in a loop. However, in a multi- aent setting, the prediction alter the reality. No, because if your internal model predicts the opponent will defect, your policy will defensively also defect because you defect that the opponent actually does defect in retaliation. And you see all your predictions become reality. This is an interesting strategic move in our game theoretical approach. Now you know classical in game theory the Nash equilibrium assumes that the agents are acting optimally against the objective the true environment dynamics. But in this architecture that we have now that Google invented agent do not have access to the true environment dynamics. They only have access to their simulated world model P. And now the authors prove in a beautiful mathematical way. Please have a look at yourself at the paper. Enjoy it in an afternoon. Y has proved that as J converges the agents settle into a new equilibrium and they call this equilibrium C subjective embedded equilibrium. Imagine now both agents converge to a state let's say where they mutually cooperate. They decide this is the best way to do. Now we can be on path and off path. Yeah. And on path is easy. They both predict the other will cooperate and they both actually cooperate. The world model perfectly matches the reality. This is what we want. But what if we are off path? What happens if an agent considers deviating to defect? Because they are using here sequence model. Their world model simulates the counterfactual. If I defect, my opponent's sequence model will detect it and they will retaliate endlessly. And this is if you want the new fear component. The other agent will retaliate endlessly. So it is only logic if you're not too emotional as an AI agent to follow the mathematical logic and cooperate. Some humans might behave differently but this is not topic of this video. Of course we can change our point of view. We can have a different framing of the whole complex and we can look here hm can we have more look of ICL versus reinforcement learning the learning component of course now because of our mix pool of table agent and we're doing the same thing just from another perspective the goal agents are parameterized as a sequence model pi theta and the policy is explicitly conditioned on a sequence of the past joint action this creates in context learning because in The fast time scale of a single episode agent act like a Beijian optator. It maps the opponent past action to a predicted future action. And you know in Maul we call this a naive learner. Now here's where the magic happens. No we have agent one and agent two. And what we are interested in there's a reversal of the gradient descent. How is this happening? Let's have a look. Let's say agent 2 is an incontext learning agent. So this means agent 2 action at a time t + 1 is a differentiable function of agent one's action at a time t. So when we update the slow weights of agent one using reinforcement learning the value function is no longer just an evaluation of a static environment. It is evaluating here a reactive environment because we have agent one using RL agents one slow weight this extortion strategy that is learned is now important if agent 2 considers defecting to get here the temptation payoff t it evaluates also the future trajectory but because agent one is executing an extortion policy in context Next, agent 2's defaction at the time t will trigger agent one to defect at all the following time intervals t + 1 till t max. Again, we have here this extortion. We have here this imminent draft. If one agent understand that the other agent acts selfishly, it says listen, I will not forget this. Now if you have a look at the Q value for defecting D defecting here we got this expression and if you look at the Q value for the corporation C we got this expression and because the discounted sum of the mutal corporation vastly outweighs the sum of the immediate temptation followed by underlying endless penalties. We get now the mathematical inversion that we were hoping for. The Q value for the corporation is suddenly greater than the Q value for distortion or for defects. This is exactly we are now entering the cooperation scheme in this game theoretical approach of both agents and this is the steep gradient being reversed. This is what we have been looking for. So the slow weight gradients for H and2 no longer point towards the fact it points strictly toward the corporate system. And because this dynamic is perfectly symmetric between the agent, both agents have the sequence model for here by the tabular pool and both processor in context learning. They both understand this. They both exert this extortionate pressure on each other. You know what's beautiful? You know what Google did? We don't need an explicit loss function for the meta learning that differentiates you through the opponent's parametric updates. The sequence models in context learning mechanism itself acts as a proxy for the opponent learning step. So the standard RL objective function on the slow weights discover that the only way to maximize the long-term return against a highly neuroplastic reactive opponent is to mutually shape each other's inontext behavior toward a sustained cooperation scheme. How beautiful is this insight? So we have now reached here the subjective embedded equilibrium C where the mutual cooperation is mathematical optimal given the internal predictive models of each other's retaliation. So this means however you code here now your system dynamics mathematically they will go here to if there's an optimization problem to a cooperation form. Both models will agree that this is the best way out of the Nash equilibrium. So what are the insights? This is breathtaking because you remember MO here the multi- aent reinforcement learning and our pure foundation models or LLMs were separate fields of research. No m used explicit mathematical gain theoretical approaches and the foundation model just predicted the next token. But this preprint unifies them. Google here proves that a standard foundation model training this means the pure next token prediction on diverse sequences is theoretically sufficient to solve complex game theoretical dilemas in this configuration which is absolutely breathtaking. This is the beauty of this paper. We are no longer separating model from the learning of the foundation model the next token prediction the probability distribution and because foundation models naturally develop in context learning to minimize the loss of whatever is data they inherently become learning aware. So if you deploy now two autonomous agents LLM agents clever intelligent agents say two trading bots or two negotiation agent whatever that are pre-trained on diverse data they will naturally read each other's context understand the possibility of the opponent attempt to extort one another and ultimately mathematically forced to converge on a cooperative let's call it a social behavior here without you as a human ever having to program a cooperation module for the system. The cooperation module is the mathematical consequence of this configuration. In my view and you understand that this is such a beautiful paper it's a little bit complex but take your time. the fast weight ICL the activation patterns are the universal solvent of AI. So whether you're using here like yesterday we did in my video on deep mind and we had here the student and the teacher configuration and the teacher did here critique here the logic not give the solution but just critique here steps and hinted here at the right direction and we saw and the interface between ICL and reinforcement learning be fiber reward or take today's video where we looked that Google showed us the co-player to play here the prisoner dilemma a game theoretical approach it is the same. If you force the slow weight, the real tanzo weight to optimize over a diverse interactive history, the neural network will inevitably invent a new algorithm in its context window to survive. This is amazing. the interplay between reinforcement learning and in context learning and the interplay between real modification of tens of weights and just the optimization of our activation pathways. This is now finally we start to understand EI a little bit better and I think this is why this preprint is so elegant. Yeah, because by training here our slow tensor weight against the diverse pool of tabular agents, the reinforcement learning optimizer was forced to arrange those static matrix so perfectly that they would reliably instantiate a highly sensitive retaliatory state tracking algorithm entirely within the transient activations of the sequence. This means in the hidden layers of our transform architecture, this means our activations. So the interplay between oral and ICL and the activation is just stunning. And this new element that we have in our game, the threat of retaliation that enforces now mutual cooperation doesn't live in the code. You don't code this. This is a result of a mathematical optimization procedure that lives now dynamically in the fast weights in the activation of the forward pass of the transformer. And this is just such an elegant explanation. I hope you had a little bit of fun. I hope you found it interesting. Some new insights, some new ideas that you want to implement here on UI M. Anyway, I hope you give me a like. Maybe you become a member of my channel. But anyway, I hope to see you in my next",
+  "errors": []
+}

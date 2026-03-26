@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2o_8vHX5Evg",
+    "language": "en",
+    "took_ms": 8110,
+    "method": null,
+    "title": "A Conversation with Ahmad Massoud, Leader of the National Resistance Front (NRF) of Afghanistan",
+    "channel": "Hudson Institute",
+    "upload_date": "20250224",
+    "duration_sec": 1714,
+    "description": "Following the latest Vienna Process for a Democratic Afghanistan meeting, Ahmad Massoud, leader of the National Resistance Front (NRF) of Afghanistan, sat down with Luke Coffey for an in-depth interview in Vienna. The discussion covered Afghanistan’s current state, the armed resistance against the Taliban, and what role the United States—particularly President Donald Trump—could play in shaping the country’s future. Massoud provided insights into the ongoing struggle, regional dynamics, and the NRF’s vision for a free and democratic Afghanistan. This conversation offers a rare glimpse into Afghanistan’s resistance movement at a crucial moment for the country and the international community.",
+    "view_count": 13985
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2o_8vHX5Evg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y0S417FXWTg",
+    "language": "en",
+    "took_ms": 9101,
+    "method": null,
+    "title": "DEF CON 29  - The Dark Tangent - Closing Ceremonies   Live",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 6804,
+    "description": "Live recording of the DEF CON 29 in-person Closing Ceremonies.",
+    "view_count": 2492
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y0S417FXWTg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iskuX3Ak9Uk",
+    "language": "en",
+    "took_ms": 8098,
+    "method": null,
+    "title": "Understanding Mamba and State Space Models",
+    "channel": "Trelis Research",
+    "upload_date": "20240202",
+    "duration_sec": 1660,
+    "description": "➡️ ADVANCED-fine-tuning Repo (incl. Mamba script): https://trelis.com/advanced-fine-tuning-scripts/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ Trelis Function-calling Models and Scripts: https://trelis.com/function-calling/\n➡️ ADVANCED Vision Fine-tuning Repo: https://trelis.com/advanced-vision/\n➡️ ADVANCED Transcription Repo: https://trelis.com/advanced-transcription/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nResources:\n- Mamba Notebook: https://github.com/TrelisResearch/install-guides\n- Slides: https://docs.google.com/presentation/d/1KJ082g_zwrBEq2yTFhtLTLVbBEiPX5PNQ5Q7iM9oAhg/edit?usp=sharing\n- ChatGPT Chat: https://chat.openai.com/share/11a1d714-612b-4a01-83c0-a11f46658e79\n- Trelis Updates Newsletter: https://Trelis.Substack.com\n\nChapters:\n0:00 Understanding State Space Models\n0:37 Video Overview\n1:36 Comparing Mamba with Transformers\n8:11 Basic Mamba equations\n13:42 Mamba Inference in Google Colab\n21:32 Training Mamba\n23:32 Future directions for Mamba Technology\n26:24 Mamba is all about compression",
+    "view_count": 5677
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iskuX3Ak9Uk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

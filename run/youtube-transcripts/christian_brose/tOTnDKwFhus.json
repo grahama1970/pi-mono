@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tOTnDKwFhus",
+    "language": "en",
+    "took_ms": 8784,
+    "method": null,
+    "title": "A Conversation with Acting Army Secretary John E. Whitley",
+    "channel": "Hudson Institute",
+    "upload_date": "20210528",
+    "duration_sec": 3077,
+    "description": "Join Hudson Institute Center for Defense Concepts and Technology Director Bryan Clark and Adjunct Fellow Dan Patt for a conversation with Acting Army Secretary John E. Whitley on the challenges and opportunities facing America’s ground forces as the Biden administration releases its first defense budget.\n\nThe United States Army is undertaking its most significant modernization since the Cold War, including new long-range strike weapons, unmanned vehicles, communication networks, air defenses, rotary-wing aircraft, and electromagnetic spectrum systems. At the same time, the Army is maturing new operational concepts for all-domain operations through an aggressive series of demonstrations known as Project Convergence. The pace and prioritization of these efforts will depend on decisions in the upcoming Fiscal Year 2022 defense budget, which may seek to reduce Army end strength to support improvements in the Navy or Air Force. Please join Hudson Institute for this important discussion.",
+    "view_count": 3113
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tOTnDKwFhus: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

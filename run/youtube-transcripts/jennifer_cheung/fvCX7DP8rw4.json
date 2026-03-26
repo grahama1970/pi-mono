@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fvCX7DP8rw4",
+    "language": "en",
+    "took_ms": 8986,
+    "method": null,
+    "title": "DEF CON 29 Blue Team Village - Renzon Cruz - Forensicating Endpoint Artifacts in Cloud Storage Svcs",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1944,
+    "description": "In this presentation, I will discuss the key forensic artifacts that can be used whenever DFIR professionals encounter cloud storage services into the host such as OneDrive, GoogleDrive, Box and Dropbox. These are all essentials especially when the attacker or insider threat leverage these services to exfiltrate data. I will also show how to perform data acquisition to get these artifacts in forensically sound manner.\n\nToday we are embracing the benefits and advantages of having cloud storage in most environments especially now when everyone is working work from home and data transmits from one place to another by the use of cloud storage services such as one drive, box, dropbox & google drive. There are a couple of artifacts on the endpoint side that gives us the ability to see the bigger picture when these cloud services are being used to perform data exfiltration and any malicious actions. In short, cloud storage data can be more accessible on the local device and can contain files and metadata distinctly different than the current cloud repository. I'm going to show how to perform data acquisition on these cloud storage applications installed in endpoint and what are those metadata and evidence that we can extract from the forensics standpoint.",
+    "view_count": 559
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fvCX7DP8rw4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

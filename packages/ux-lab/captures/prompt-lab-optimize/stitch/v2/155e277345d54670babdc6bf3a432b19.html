@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#0b1220",
+              "terminal-black": "#070e1c",
+              "terminal-green": "#00ff88",
+              "terminal-red": "#ff4444",
+              "terminal-blue": "#7c3aed",
+              "terminal-dim": "#958da1",
+              "on-surface": "#e2e8f0"
+            },
+            fontFamily: {
+              "mono": ["JetBrains Mono", "monospace"]
+            }
+          },
+        },
+      }
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'JetBrains Mono', monospace; background-color: #0b1220; color: #e2e8f0; }
+        .cli-prompt::before { content: ">>> "; color: #7c3aed; font-weight: bold; }
+        .cli-cmd::before { content: "$ "; color: #00ff88; font-weight: bold; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0b1220; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+        .diff-add { color: #00ff88; }
+        .diff-remove { color: #ff4444; }
+        textarea:focus { outline: none; }
+        input:focus { outline: none; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen p-4 md:p-8">
+<main class="max-w-4xl mx-auto w-full flex flex-col gap-6">
+<header class="border-b border-terminal-dim/20 pb-4 mb-2">
+<div class="text-terminal-blue font-bold tracking-widest">PROMPT_LAB V1.0.4_STABLE</div>
+<div class="text-[10px] text-terminal-dim">LAST_LOGIN: <span id="current-date">WED FEB 21 14:02:11 UTC 2024</span></div>
+</header>
+<section class="flex flex-col gap-2">
+<div class="text-[11px] text-terminal-dim uppercase tracking-wider"># set_system_prompt</div>
+<div class="flex items-start gap-2 bg-terminal-black/50 p-4 border border-terminal-dim/10">
+<span class="text-terminal-blue font-bold whitespace-nowrap">&gt;&gt;&gt;</span>
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface resize-none p-0 leading-relaxed min-h-[160px]" placeholder="Enter multi-line system instructions here..." spellcheck="false">You are a specialized financial analyst agent. 
+Summarize complex fiscal reports into structured JSON.
+Focus exclusively on the SaaS vertical metrics.
+If data is missing for a key, return null.
+Ensure all numbers are formatted as floats.</textarea>
+</div>
+</section>
+<section class="flex flex-col gap-4">
+<div class="text-[11px] text-terminal-dim uppercase tracking-wider"># registered_test_cases</div>
+<div class="space-y-1">
+<div class="cli-cmd text-sm">add --input "Summarize Q3 SaaS revenue" --expected_json</div>
+<div class="bg-terminal-black p-3 text-xs text-terminal-green/80 border-l border-terminal-green/30 ml-4">
+                    { "summary": "Q3 growth observed", "metrics": { "saas_rev": 12.4 } }
+                </div>
+</div>
+<div class="space-y-1">
+<div class="cli-cmd text-sm">add --input "Extract Project Phoenix dates" --expected_json</div>
+<div class="bg-terminal-black p-3 text-xs text-terminal-green/80 border-l border-terminal-green/30 ml-4">
+                    { "dates": ["2024-01-12"], "mentions": ["Phoenix"] }
+                </div>
+</div>
+<div class="flex gap-2 text-[10px] text-terminal-dim mt-2">
+<button class="hover:text-on-surface">[+] ADD_NEW_ENTRY</button>
+<button class="hover:text-on-surface">[-] CLEAR_ALL</button>
+</div>
+</section>
+<section class="flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<span class="text-terminal-green font-bold">$</span>
+<div class="flex-1 flex items-center bg-terminal-black/30 border-b border-terminal-dim/40 px-2 py-1">
+<span class="text-sm font-bold">run --model</span>
+<select class="bg-transparent border-none text-terminal-blue text-sm focus:ring-0 cursor-pointer py-0 font-bold">
+<option>deepseek-v3</option>
+<option>gpt-4o</option>
+<option>claude-3.5</option>
+</select>
+</div>
+<button class="bg-terminal-blue text-white px-4 py-1 text-xs font-bold hover:invert">EXECUTE</button>
+</div>
+<div class="bg-terminal-black p-4 font-mono text-[11px] leading-relaxed border border-terminal-dim/10">
+<div class="text-terminal-dim">Initializing optimizer engine...</div>
+<div class="flex gap-2"><span>[RUN_01]</span> <span class="text-terminal-green font-bold">PASS</span> <span class="text-terminal-dim">case_01 (1.2s)</span></div>
+<div class="flex gap-2"><span>[RUN_01]</span> <span class="text-terminal-red font-bold">FAIL</span> <span class="text-terminal-dim">case_02 (0.8s) - JSON_SCHEMA_MISMATCH</span></div>
+<div class="text-terminal-dim italic mt-2">Iterating prompt candidates...</div>
+<div class="flex gap-2"><span>[RUN_02]</span> <span class="text-terminal-green font-bold">PASS</span> <span class="text-terminal-dim">case_01 (1.1s)</span></div>
+<div class="flex gap-2"><span>[RUN_02]</span> <span class="text-terminal-green font-bold">PASS</span> <span class="text-terminal-dim">case_02 (0.9s)</span></div>
+<div class="text-terminal-blue mt-2 font-bold">SUCCESS: Optimization converged at epoch 2. Score: 100/100.</div>
+</div>
+</section>
+<section class="flex flex-col gap-2">
+<div class="text-[11px] text-terminal-dim uppercase tracking-wider"># git diff --unified=0 system_prompt.md</div>
+<div class="bg-terminal-black border border-terminal-dim/10 overflow-hidden">
+<div class="bg-white/5 px-4 py-1 text-[10px] text-terminal-dim">diff --git a/system_prompt.md b/system_prompt.md</div>
+<div class="p-4 text-xs font-mono leading-relaxed">
+<div class="opacity-40">@@ -4,3 +4,4 @@</div>
+<div class="whitespace-pre-wrap"> You are a specialized financial analyst agent.</div>
+<div class="diff-remove">- Focus on the key metrics and avoid jargon.</div>
+<div class="diff-add">+ Focus exclusively on SaaS vertical metrics. Format output as valid JSON.</div>
+<div class="whitespace-pre-wrap"> Ensure all numbers are formatted as floats.</div>
+<div class="diff-add">+ If no data is found, return null for that specific key.</div>
+</div>
+</div>
+<div class="flex gap-4 mt-2">
+<button class="border border-terminal-green text-terminal-green px-6 py-2 text-xs font-bold hover:bg-terminal-green hover:text-black transition-colors">
+                    APPROVE_CHANGES
+                </button>
+<button class="border border-terminal-dim text-terminal-dim px-6 py-2 text-xs font-bold hover:bg-terminal-dim hover:text-black transition-colors">
+                    STASH_VARIANT
+                </button>
+</div>
+</section>
+<footer class="mt-8 pt-4 border-t border-terminal-dim/10 text-[10px] text-terminal-dim flex justify-between">
+<div>SYSTEM_STATUS: <span class="text-terminal-green">READY</span></div>
+<div>PROMPT_LAB_CLI v1.0.4</div>
+</footer>
+</main>
+<script>
+        // Set the current date in terminal format
+        const options = { weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+        document.getElementById('current-date').textContent = new Date().toLocaleString('en-US', options).toUpperCase();
+    </script>
+
+</body></html>

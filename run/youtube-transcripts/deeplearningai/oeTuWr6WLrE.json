@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oeTuWr6WLrE",
+    "language": "en",
+    "took_ms": 8747,
+    "method": null,
+    "title": "Are Data Centers the Problem or the Scapegoat?",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260208",
+    "duration_sec": 51,
+    "description": "They power the compute we already rely on and they do it more efficiently than the alternatives.",
+    "view_count": 5422
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oeTuWr6WLrE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

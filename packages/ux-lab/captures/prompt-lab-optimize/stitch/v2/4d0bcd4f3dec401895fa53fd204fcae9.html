@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#070e1c",
+              "on-surface": "#dce2f6",
+              "error-container": "#93000a",
+              "surface-container-highest": "#2e3544",
+              "surface-tint": "#d2bbff",
+              "on-tertiary-fixed": "#301400",
+              "on-secondary-fixed": "#25005a",
+              "surface-bright": "#323949",
+              "error": "#ffb4ab",
+              "inverse-primary": "#732ee4",
+              "on-primary": "#3f008e",
+              "secondary-fixed-dim": "#d2bbff",
+              "secondary": "#d2bbff",
+              "on-error": "#690005",
+              "on-primary-container": "#ede0ff",
+              "on-surface-variant": "#ccc3d8",
+              "surface-container-low": "#151b2a",
+              "outline-variant": "#4a4455",
+              "on-tertiary-container": "#ffe0cd",
+              "on-secondary": "#3b1e6f",
+              "on-primary-fixed": "#25005a",
+              "surface-container": "#19202e",
+              "primary": "#d2bbff",
+              "secondary-fixed": "#eaddff",
+              "on-tertiary-fixed-variant": "#713700",
+              "background": "#0c1321",
+              "outline": "#958da1",
+              "surface-variant": "#2e3544",
+              "surface-container-high": "#232a39",
+              "primary-fixed": "#eaddff",
+              "tertiary-container": "#a15100",
+              "primary-fixed-dim": "#d2bbff",
+              "surface": "#0c1321",
+              "on-secondary-fixed-variant": "#523787",
+              "on-secondary-container": "#c3a6ff",
+              "inverse-surface": "#dce2f6",
+              "on-error-container": "#ffdad6",
+              "secondary-container": "#523787",
+              "on-tertiary": "#4f2500",
+              "tertiary-fixed": "#ffdcc6",
+              "tertiary-fixed-dim": "#ffb784",
+              "primary-container": "#7c3aed",
+              "surface-dim": "#0c1321",
+              "inverse-on-surface": "#2a3040",
+              "tertiary": "#ffb784",
+              "on-background": "#dce2f6",
+              "on-primary-fixed-variant": "#5a00c6",
+              "terminal-pass": "#00ff88",
+              "terminal-fail": "#ff4444"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'JetBrains Mono', monospace; background-color: #0c1321; color: #dce2f6; }
+        .material-symbols-outlined { font-size: 18px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+        .diff-add { background-color: rgba(0, 255, 136, 0.1); color: #00ff88; }
+        .diff-remove { background-color: rgba(255, 68, 68, 0.1); color: #ff4444; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopNavBar Implementation -->
+<header class="bg-[#0c1321] text-[#7c3aed] font-mono uppercase tracking-tighter text-sm flex justify-between items-center w-full px-6 py-3 fixed top-0 z-50">
+<div class="font-mono font-bold text-lg tracking-widest text-[#d2bbff]">PROMPT_LAB</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#958da1] cursor-pointer hover:text-white">terminal</span>
+<span class="material-symbols-outlined text-[#958da1] cursor-pointer hover:text-white">settings</span>
+</div>
+</header>
+<main class="mt-12 flex-1 flex flex-col max-w-5xl mx-auto w-full">
+<!-- SYSTEM PROMPT SECTION -->
+<section class="w-full bg-[#141414]">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-2 text-[#958da1] text-[10px] uppercase tracking-[0.2em]">
+<span class="text-[#7c3aed]">01</span> SYSTEM_PROMPT_CONFIG
+                </div>
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface resize-none p-0 leading-relaxed" placeholder="Enter system prompt instructions here..." rows="8"></textarea>
+</div>
+</section>
+<!-- TEST CASES SECTION -->
+<section class="w-full bg-[#0c1321] pt-4">
+<div class="px-6 py-2 flex justify-between items-center bg-[#151b2a]">
+<div class="text-[10px] uppercase tracking-[0.2em] text-[#958da1]">
+<span class="text-[#7c3aed]">02</span> TEST_CASES
+                </div>
+<button class="text-[#d2bbff] flex items-center gap-1 text-[10px] hover:bg-[#7c3aed] hover:text-white px-2 py-1 transition-none">
+<span class="material-symbols-outlined text-[14px]">add</span> ADD_CASE
+                </button>
+</div>
+<div class="divide-y divide-[#19202e]">
+<!-- Row 1 -->
+<div class="grid grid-cols-12 gap-0 p-4 items-start group hover:bg-[#151b2a]">
+<div class="col-span-1 text-[10px] text-[#958da1] pt-1">01.</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50">USER_PROMPT</div>
+<div class="text-xs text-on-surface">Summarize the Q3 fiscal report focusing on the SaaS vertical.</div>
+</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50">EXPECTED_JSON</div>
+<div class="text-xs text-[#00ff88]">{ "summary": "...", "metrics": { "saas_rev": 12.4 } }</div>
+</div>
+<div class="col-span-1 flex justify-end gap-2">
+<button class="text-[#958da1] hover:text-white transition-none"><span class="material-symbols-outlined">remove</span></button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-12 gap-0 p-4 items-start group hover:bg-[#151b2a]">
+<div class="col-span-1 text-[10px] text-[#958da1] pt-1">02.</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50">USER_PROMPT</div>
+<div class="text-xs text-on-surface">Extract all dates and mention of 'Project Phoenix'.</div>
+</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50">EXPECTED_JSON</div>
+<div class="text-xs text-[#00ff88]">{ "dates": [], "mentions": ["Phoenix"] }</div>
+</div>
+<div class="col-span-1 flex justify-end gap-2">
+<button class="text-[#958da1] hover:text-white transition-none"><span class="material-symbols-outlined">remove</span></button>
+</div>
+</div>
+</div>
+</section>
+<!-- CONTROLS -->
+<section class="w-full bg-[#151b2a] p-6 flex items-center gap-4">
+<button class="bg-[#7c3aed] text-white font-mono font-bold text-sm px-8 py-3 hover:bg-[#d2bbff] hover:text-[#0c1321] transition-none flex items-center gap-2">
+                EXECUTE_OPTIMIZATION <span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+<div class="relative flex-1 max-w-xs">
+<select class="w-full bg-[#0c1321] border-none text-[#d2bbff] font-mono text-sm py-3 px-4 appearance-none focus:ring-0 cursor-pointer">
+<option>DEEPSEEK-V3-STABLE</option>
+<option>GPT-4O-MINI</option>
+<option>CLAUDE-3.5-SONNET</option>
+</select>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#d2bbff]">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</section>
+<!-- REPORT -->
+<section class="w-full bg-[#0c1321] border-t border-[#19202e] p-6">
+<div class="text-[10px] uppercase tracking-[0.2em] text-[#958da1] mb-4">
+<span class="text-[#7c3aed]">03</span> OPTIMIZATION_LOG
+            </div>
+<div class="bg-[#070e1c] p-4 font-mono text-[11px] space-y-1 border-l-2 border-[#7c3aed]">
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:11]</span> <span>INITIALIZING_AGENT_RUN...</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:13]</span> <span class="text-terminal-pass">ROUND_01: CASE_01 ... PASS</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:14]</span> <span class="text-terminal-fail">ROUND_01: CASE_02 ... FAIL (JSON_MISMATCH)</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:16]</span> <span>CALCULATING_PROMPT_VARIANTS...</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:18]</span> <span class="text-terminal-pass">ROUND_02: CASE_01 ... PASS</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:19]</span> <span class="text-terminal-pass">ROUND_02: CASE_02 ... PASS</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:20]</span> <span class="text-[#d2bbff]">OPTIMIZATION_COMPLETE: SCORE_100%</span></div>
+</div>
+</section>
+<!-- RESULT (DIFF VIEW) -->
+<section class="w-full bg-[#151b2a] pb-12">
+<div class="px-6 py-4 flex justify-between items-center">
+<div class="text-[10px] uppercase tracking-[0.2em] text-[#958da1]">
+<span class="text-[#7c3aed]">04</span> UNIFIED_DIFF_OUTPUT
+                </div>
+</div>
+<div class="mx-6 bg-[#0c1321] text-xs leading-relaxed font-mono">
+<div class="p-2 opacity-50">@@ -4,8 +4,8 @@</div>
+<div class="px-4 py-1 flex gap-4"><span class="w-4 text-right opacity-30 select-none">4</span><span>You are a helpful assistant that summarizes reports.</span></div>
+<div class="px-4 py-1 flex gap-4 diff-remove"><span class="w-4 text-right opacity-30 select-none">5</span><span>- Focus on the key metrics and avoid jargon.</span></div>
+<div class="px-4 py-1 flex gap-4 diff-add"><span class="w-4 text-right opacity-30 select-none">5</span><span>+ Focus exclusively on SaaS vertical metrics. Format output as valid JSON.</span></div>
+<div class="px-4 py-1 flex gap-4"><span class="w-4 text-right opacity-30 select-none">6</span><span>Always include the fiscal quarter in the header.</span></div>
+<div class="px-4 py-1 flex gap-4 diff-add"><span class="w-4 text-right opacity-30 select-none">7</span><span>+ If no data is found, return null for that specific key.</span></div>
+</div>
+<div class="px-6 mt-6 flex gap-4">
+<button class="bg-terminal-pass/20 text-terminal-pass border border-terminal-pass/30 font-mono font-bold text-xs px-6 py-2 hover:bg-terminal-pass hover:text-black transition-none">
+                    APPROVE_CHANGES
+                </button>
+<button class="bg-surface-container-highest text-[#958da1] font-mono font-bold text-xs px-6 py-2 hover:bg-error hover:text-black transition-none">
+                    REJECT_VARIANT
+                </button>
+</div>
+</section>
+</main>
+<!-- SideNavBar - Suppressed as per Task Intent (Simple Single Column) -->
+<!-- Explicitly requested: NO TABS, Single column. Navigation handled by TopBar if needed -->
+</body></html>

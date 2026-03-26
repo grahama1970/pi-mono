@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NnUf9NABk6I",
+    "language": "en",
+    "took_ms": 8650,
+    "method": null,
+    "title": "Understanding the Hermit Kingdom: Assessing North Korea's Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20200429",
+    "duration_sec": 3981,
+    "description": "The past two weeks have reminded the world of the enigmatic nature of North Korea's regime. Besides longstanding questions about the predisposition of its nuclear weapons, questions now arise about Kim Jong Un's whereabouts and health status.\n\nWhile Kim may intend to wait on negotiations with Washington until after the November election, will he attempt a provocation or diplomatic gambit before that crucial political contest? Join Hudson Institute for a conversation on the future of North Korea and the latest on U.S. negotiations.",
+    "view_count": 1363
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NnUf9NABk6I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

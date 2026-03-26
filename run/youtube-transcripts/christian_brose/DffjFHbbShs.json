@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DffjFHbbShs",
+    "language": "en",
+    "took_ms": 9687,
+    "method": null,
+    "title": "The Plight of Pakistan’s Hindu Minority",
+    "channel": "Hudson Institute",
+    "upload_date": "20210504",
+    "duration_sec": 3849,
+    "description": "Join Hudson Institute’s Aparna Pande and Nina Shea and expert panelists Daud Khattak, Deepali Kulkarni, and Farahnaz Ispahani for a discussion on the difficulties faced by Pakistan’s Hindu minority.\n\nHindus comprise approximately 2 percent of Pakistan’s 210 million population and live primarily in the southern province of Sindh, which for centuries has been a religious melting pot. In recent years, reports by civil society organizations, international human rights groups, and even the Human Rights Commission of Pakistan have documented a rise in the forced conversion of Hindus in Pakistan—especially by targeting young Hindu girls through forced marriages and kidnappings. What can be done to stop this religious persecution? Join Hudson Institute for this important discussion.",
+    "view_count": 3987
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DffjFHbbShs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

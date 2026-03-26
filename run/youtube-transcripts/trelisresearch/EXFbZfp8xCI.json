@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EXFbZfp8xCI",
+    "language": "en",
+    "took_ms": 9493,
+    "method": null,
+    "title": "Mixtral Fine tuning and Inference",
+    "channel": "Trelis Research",
+    "upload_date": "20231218",
+    "duration_sec": 2013,
+    "description": "➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ ADVANCED Vision Fine-tuning Repo: https://trelis.com/advanced-vision/\n➡️ ADVANCED Transcription Repo: https://trelis.com/advanced-transcription/\n➡️ One-click Fine-tuning & Inference Templates (incl. Mixtral): https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nVideo Resources:\n- Function-calling Mixtral Model: https://huggingface.co/Trelis/Mixtral-8x7B-Instruct-v0.1-function-calling-v3\n- Mixtral Base Repo: https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1\n- Slides: https://docs.google.com/presentation/d/1yaPZCxZmnKF1v2EgwHAv7S5LhG-Rln2XQC-3JD95Xz8/edit?usp=sharing\n\nChapters\n0:00 Mistral Mixture of Experts\n0:18 Video Overview\n1:13 Why Mixture of Experts?\n2:14 Basic Transformer vs Mixture of Experts\n10:19 Mixtral Model Card Review\n12:56 Mixtral Inference and API Setup\n19:08 Running Mixtral with 4 bit quantisation\n20:02 Function calling Mixtral\n21:30 Fine-tuning Mixtral\n31:41 Notes on Fine-Tuning and Inference",
+    "view_count": 9773
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EXFbZfp8xCI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

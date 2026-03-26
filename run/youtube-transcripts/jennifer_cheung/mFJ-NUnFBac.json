@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mFJ-NUnFBac",
+    "language": "en",
+    "took_ms": 8354,
+    "method": null,
+    "title": "DEF CON 32 - Abusing Windows Hello Without a Severed Hand  - Ceri Coburn, Dirk jan Mollema",
+    "channel": "DEFCONConference",
+    "upload_date": "20241102",
+    "duration_sec": 2518,
+    "description": "Windows Hello is touted by Microsoft as the modern de facto authentication scheme on Windows platforms, supporting authentication and encryption backed by biometrics. In a world that is quickly accelerating towards a passwordless existence, what new threats do we face in this complex landscape? We will take a deep dive into the inner working of Windows Hello. Via the release of a new tool, it will be demonstrated how an attacker on a fully compromised Windows host can leverage secrets backed by Windows Hello biometrics without needing the biometric data that protects them. We will also show how the hardware protections of Windows Hello and its accompanying Primary Refresh Tokens can be defeated, making it possible to use Windows Hello for identity persistency and PRT stealing, in some cases even without Administrator access on the host.",
+    "view_count": 23007
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mFJ-NUnFBac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

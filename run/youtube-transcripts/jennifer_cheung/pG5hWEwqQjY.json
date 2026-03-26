@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pG5hWEwqQjY",
+    "language": "en",
+    "took_ms": 7710,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Panel - True Story - Hackers in the Aerospace Sector",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1657,
+    "description": "What’s it like to be a hacker working in government, for an airline, or pursuing a degree?\n\nWhen you read that question did you think, ew, why would I ever do that?! Or did you think, wow, that sounds great tell me more!\n\nThis isn’t your typical workforce talk!\n\nJoin a diverse panel of folks working in the aerospace sector who are just like you! Learn how they got into their roles, why they chose to work there, what motivates them, and how they gained their skills and experience.",
+    "view_count": 1047
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pG5hWEwqQjY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

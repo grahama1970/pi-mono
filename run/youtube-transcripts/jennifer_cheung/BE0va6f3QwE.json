@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BE0va6f3QwE",
+    "language": "en",
+    "took_ms": 8619,
+    "method": null,
+    "title": "DEF CON 32   Cybersecurity Schoolhouse Rock   Avi McGrady",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1415,
+    "description": "Almost since the internet was made widely available to the general public, average technology users have fallen prey to threats from malicious spam, malware, phishing, smishing, scams, fraud, and ransomware. In most of the US, primary and secondary education (in the US, comprising kindergarten through 12th grade) now incorporate computing technology as an integral part of the classroom, and some families introduce computing platforms to children in their toddler and preschool years. Despite our society's growing dependence on computing technology in the world of education, there remain no national standards or curricula for the teaching of data privacy or information security principles. This disconnect sets future generations up for failure, and a continuation of a cycle of ignorance that perpetuates cybercrime victimization. This presentation makes the case that schools must adopt and incorporate concepts of data privacy, information security, defense against fraud and phishing, and internet safety, in age-appropriate ways, into lesson plans at all grade levels. Further, school districts and independent schools must take steps to protect themselves from the threat of ransomware, data breaches, and other forms of criminal activity.",
+    "view_count": 429
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BE0va6f3QwE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tYVm6FqYTtQ",
+    "language": "en",
+    "took_ms": 8549,
+    "method": null,
+    "title": "Digital Ghost: Real Time, Active Defense for ICS",
+    "channel": "S4 Events",
+    "upload_date": "20190513",
+    "duration_sec": 2411,
+    "description": "This is a presentation we chased hard for S4x19. Colin Parris and Justin John of GE explain how they have expanded their Digital Twin efforts to add security. Two big takeaways for me:\n\n1. Process variable anomaly detection is an important part of the future detection solution. It is what the asset owner actually cares most about and will detect all cause cyber incidents.\n\n2. You can use the Digital Twin to substitute high likelihood correct values in near real time into the ICS for values that are incorrect. This incorrect could be through a cyber attack, sensor failure or a number of other reasons.",
+    "view_count": 1940
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tYVm6FqYTtQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

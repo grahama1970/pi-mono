@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uQ0fYOaugPM",
+    "language": "en",
+    "took_ms": 9123,
+    "method": null,
+    "title": "Latin America: Poverty, Radicalism, or Market Economy?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6256,
+    "description": "Despite the financial crisis of 2008 and the ongoing global economic downturn, many Latin American countries have been able to reduce poverty levels and improve income equality among their populations. At the heart of this growth are two economic models. The first encourages private business—combined with social assistance programs—and has worked in countries such as Brazil, Mexico, Chile, and Colombia. The second model, fueled by high global commodity prices, takes a more statist approach, and",
+    "view_count": 179
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uQ0fYOaugPM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

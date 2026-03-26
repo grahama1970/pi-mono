@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B8AKlitPKSI",
+    "language": "en",
+    "took_ms": 8752,
+    "method": null,
+    "title": "DEF CON Safe Mode DC Groups Village - DC574 South Bend - OSINT",
+    "channel": "DEFCONConference",
+    "upload_date": "20200915",
+    "duration_sec": 1102,
+    "description": "",
+    "view_count": 1409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B8AKlitPKSI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

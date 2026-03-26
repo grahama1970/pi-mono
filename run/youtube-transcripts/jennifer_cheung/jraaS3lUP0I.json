@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jraaS3lUP0I",
+    "language": "en",
+    "took_ms": 8184,
+    "method": null,
+    "title": "DEF CON 33 - Preventing One of The Largest Supply-Chain Attacks in History - Maksim Shudrak",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2278,
+    "description": "Imagine one sunny morning you read the news: A crypto worm targets 100+ organizations around the world. The authorities estimate that during the first days of attack ~28,000 hosts in 158 countries were affected, including 24 nation state and European union assets, major banks and tech companies. Since then, the worm has spread and is now everywhere. The industry doesn't know the main source of attack. There are many backdoored artifacts reportedly used by the victims with no obvious connections.\n\nEventually, a security researcher connects all dots and finds the source: compromised, abandoned AWS S3 buckets. The risk that researchers warned in the past materialized on a truly gigantic scale, 5155 buckets were affected.\n\nLuckily, this incident has never happened. The buckets used in that hypothetical scenario were claimed by a security researcher and taken down by the Cloud provider.\n\nIn this talk, we will dissect the anatomy of such an attack. We will show that adversaries equipped with instruments of big data analysis and custom LLM-agents can take these scenarios to the next level by automating and scaling them. We will share statistical insights and 9 concrete stories illustrating potential victim profiles and attack vectors. Finally, we will discuss remediation actions that would eliminate the risk once and for all.",
+    "view_count": 1094
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jraaS3lUP0I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

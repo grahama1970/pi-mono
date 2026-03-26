@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Pc7h9S_UTac",
+    "language": "en",
+    "took_ms": 7810,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Ryan Ekins - Notebooks Datasets & Clouds for Automation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3144,
+    "description": "The technological landscape is rapidly transforming into a data driven, automated, and measured ecosystem. Cloud is an enabler for businesses to become more agile, scalable, and global to maintain a competitive advantage.\nThere are numerous opportunities for red teamers to adopt these same modern strategies to level up their skills, platforms, and yes, even reporting. Attendees will learn how to begin integrating cloud capabilities, scientific notebooks, and aggregated datasets into a highly efficient operating model. We will walkthrough cloud technologies including AWS SageMaker, Athena, Lambda, and API Gateway to build an end-to-end ecosystem of automation. This session will provide demos, accelerators, and code releases to make both routine processes and innovative techniques faster, repeatable, and scalable.",
+    "view_count": 322
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Pc7h9S_UTac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

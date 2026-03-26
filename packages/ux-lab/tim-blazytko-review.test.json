@@ -1,0 +1,3102 @@
+{
+  "version": 2,
+  "baseUrl": "http://localhost:5173",
+  "category": "persona-reviews",
+  "persona": "tim-blazytko",
+  "tests": [
+    {
+      "id": "tb_first_01",
+      "group": "first-impressions",
+      "label": "Tim Blazytko: Initial overview and binary selection",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "initial-overview",
+          "review_criteria": "As an RE professional who builds agentic analysis pipelines: Does this tool's initial state communicate what binaries are available and how to start analysis? Is the information hierarchy clear? Does it feel like a professional tool or a toy? Could this integrate into an automated analysis workflow?"
+        }
+      ]
+    },
+    {
+      "id": "tb_first_02",
+      "group": "first-impressions",
+      "label": "Tim Blazytko: Binary selection and loading",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "binary-selection",
+          "review_criteria": "As someone who analyzes malware samples in batches: Is the binary selection workflow efficient? Can you switch between binaries quickly? Is there metadata shown before loading (file size, architecture, format)? Could you script binary loading for batch analysis? Is there a recent/favorites list?"
+        }
+      ]
+    },
+    {
+      "id": "tb_first_03",
+      "group": "first-impressions",
+      "label": "Tim Blazytko: Information density assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "info-density",
+          "review_criteria": "As someone who works with information-dense RE tools: Is the screen real estate used efficiently? Are there too many empty areas or is it too cramped? Compared to IDA, Ghidra, or Binary Ninja, how does the information density compare? Would you want more data visible simultaneously or is it already overwhelming?"
+        }
+      ]
+    },
+    {
+      "id": "tb_first_04",
+      "group": "first-impressions",
+      "label": "Tim Blazytko: Load time and responsiveness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "load-time",
+          "review_criteria": "As someone who values fast iteration in analysis: How long did the initial data load take? Was there a loading indicator? Is the progressive loading strategy (seed then expand) acceptable or would you prefer full preload? For a malware triage workflow where you need results in seconds, is this fast enough?"
+        }
+      ]
+    },
+    {
+      "id": "tb_first_05",
+      "group": "first-impressions",
+      "label": "Tim Blazytko: Error state handling",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "error-states",
+          "review_criteria": "As someone who builds robust pipelines: What happens if the backend is down? Is there a clear error message? Does the UI degrade gracefully or crash? Are API errors surfaced to the user? Would you be able to diagnose connection issues from the UI alone? Is there a retry mechanism?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_01",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Graph layout quality for binary analysis",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "graph-layout",
+          "review_criteria": "As someone who builds graph-based analysis tools: Is the force-directed layout appropriate for binary call/data flow graphs? Are edge crossings minimized? Is the layout stable (nodes don't jump around)? Would a hierarchical layout be better for showing call hierarchies? Can you switch between layout algorithms?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_02",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Edge rendering and label clarity",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "edge-rendering",
+          "review_criteria": "As someone who analyzes data flow graphs: Are edges clearly rendered with visible arrowheads? Are edge labels readable at the current zoom level? Can you hover over an edge to see its properties? Are different edge types (call, reference, data flow) visually distinct? Is edge bundling used for nodes with many connections?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_03",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Node selection and detail loading",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "node-selection",
+          "review_criteria": "As someone who clicks through hundreds of nodes during analysis: Is node selection responsive? Does the detail panel update immediately? Is there visual feedback for the selected node (highlight, border)? Can you see which node is selected in both graph and detail views? Is the selection state preserved when you switch views (graph/tree/table)?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_04",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Multi-select for batch operations",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 1) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true, ctrlKey: true })); nodes[1].dispatchEvent(new MouseEvent('click', { bubbles: true, ctrlKey: true })); return 'multi-selected'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "multi-select",
+          "review_criteria": "As someone who needs batch operations on groups of functions: Can you select multiple nodes (Ctrl+click, lasso)? Are batch operations available (tag, annotate, export)? Is the multi-selection visually clear? Can you select by type/namespace/pattern? Would multi-select enable the batch analysis workflows you need for malware campaigns?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_05",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Expand neighbors interaction",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); return 'double-clicked to expand'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "expand-neighbors",
+          "review_criteria": "As someone who explores binary structure iteratively: Can you expand a node to show its neighbors? Is the expansion animated smoothly? Can you control expansion depth? Does expanding respect the progressive disclosure model? Can you expand only specific edge types (show callers but not callees)? Is there an undo for accidental expansion?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_06",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Collapse and simplify graph",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "collapse-graph",
+          "review_criteria": "As someone who needs to manage graph complexity: Can you collapse expanded nodes back? Can you collapse an entire namespace into a single node? Is there a way to remove nodes from the view without deleting them from the analysis? Can you undo/redo graph manipulation steps? Is the collapse animation smooth?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_07",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Zoom to fit and centering",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "zoom-to-fit",
+          "review_criteria": "As someone who frequently loses context in large graphs: Is there a zoom-to-fit button that shows all visible nodes? Does it maintain reasonable padding? Can you zoom to selection (show only selected nodes)? Does the auto-layout after expansion look sensible? Can you lock the current view to prevent automatic re-centering?"
+        }
+      ]
+    },
+    {
+      "id": "tb_graph_08",
+      "group": "graph-navigation",
+      "label": "Tim Blazytko: Breadcrumb and path navigation",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked deeper'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "breadcrumb-nav",
+          "review_criteria": "As someone who traces deep call chains: Is there a breadcrumb trail showing your navigation path? Can you click breadcrumbs to jump back? Is the navigation history preserved? Can you see the full path from root to current node? Would you want a 'navigation sidebar' showing your analysis path like a browser history?"
+        }
+      ]
+    },
+    {
+      "id": "tb_detail_01",
+      "group": "node-detail",
+      "label": "Tim Blazytko: RPC endpoint detail view",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "rpc-detail",
+          "review_criteria": "As someone who analyzes IPC and RPC interfaces: When viewing an RPC endpoint or API node, are parameters shown with types? Are request/response schemas visible? Is the calling convention documented? Can you see which functions implement the endpoint? Are authentication/authorization requirements noted? Would this help you build a fuzzer for the interface?"
+        }
+      ]
+    },
+    {
+      "id": "tb_detail_02",
+      "group": "node-detail",
+      "label": "Tim Blazytko: CLI command detail view",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 1) { nodes[1].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "cli-detail",
+          "review_criteria": "As someone who scripts binary analysis: When viewing a CLI command or function, are arguments clearly listed? Are flag descriptions shown? Can you see the command's execution flow? Are environment variable dependencies noted? Is there enough information to write an automation script for this command?"
+        }
+      ]
+    },
+    {
+      "id": "tb_detail_03",
+      "group": "node-detail",
+      "label": "Tim Blazytko: Event and signal detail view",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 2) { nodes[2].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "event-detail",
+          "review_criteria": "As someone who traces event-driven architectures in malware: When viewing an event or signal node, are the emitters and listeners shown? Is the event payload schema visible? Can you trace the event propagation path? Are timing constraints or ordering dependencies noted? Would this help you understand a malware C2 protocol?"
+        }
+      ]
+    },
+    {
+      "id": "tb_detail_04",
+      "group": "node-detail",
+      "label": "Tim Blazytko: Parameter and argument detail",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "parameter-detail",
+          "review_criteria": "As someone who analyzes function signatures for exploitation: Are function parameters displayed with types, names, and calling convention? Are register assignments shown for ABI compliance? Can you see default values or constraints? Are variadic parameters indicated? Would this information be sufficient for writing a correct function call in an exploit?"
+        }
+      ]
+    },
+    {
+      "id": "tb_detail_05",
+      "group": "node-detail",
+      "label": "Tim Blazytko: Namespace and module detail",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "namespace-detail",
+          "review_criteria": "As someone who maps binary modules for analysis triage: When viewing a namespace node, can you see member count, exported symbols, and internal dependencies? Is the namespace's purpose summarized? Can you see which other namespaces it depends on? Would this help you identify the most interesting module in a large binary?"
+        }
+      ]
+    },
+    {
+      "id": "tb_detail_06",
+      "group": "node-detail",
+      "label": "Tim Blazytko: Schema and type definition detail",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 2) { nodes[2].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "schema-detail",
+          "review_criteria": "As someone who reconstructs data structures from binaries: When viewing a schema or type node, are fields listed with types and offsets? Is the total size shown? Are nested types expandable? Is the struct layout consistent with the binary's architecture (32/64-bit, alignment)? Would you be able to write a ctypes definition from this view?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tree_01",
+      "group": "symbol-tree",
+      "label": "Tim Blazytko: Tree hierarchy view",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Tree view') { b.click(); return 'switched to tree'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "tree-hierarchy",
+          "review_criteria": "As someone who navigates symbol tables: Is the tree hierarchy logical (binary \u2192 sections \u2192 namespaces \u2192 functions)? Are node types indicated by icons? Is the tree sortable (alphabetical, by address, by size)? Can you see the total count at each level? Does the tree mirror the actual binary structure or is it an abstraction?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tree_02",
+      "group": "symbol-tree",
+      "label": "Tim Blazytko: Search within tree",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Tree view') { b.click(); return 'switched to tree'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const inputs = document.querySelectorAll('input[type=text], input[type=search], input:not([type])'); for (const i of inputs) { i.focus(); i.value = 'init'; i.dispatchEvent(new Event('input', { bubbles: true })); return 'searched tree'; } return 'no input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "tree-search",
+          "review_criteria": "As someone who searches for specific symbols: Does the tree filter/search work with partial matches? Are matching nodes highlighted while non-matches are dimmed or hidden? Does it search across all levels of the hierarchy? Can you search by address or pattern? Is the search incremental (updates as you type)?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tree_03",
+      "group": "symbol-tree",
+      "label": "Tim Blazytko: Expand and collapse tree nodes",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Tree view') { b.click(); return 'switched to tree'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "tree-expand-collapse",
+          "review_criteria": "As someone who navigates deep hierarchies: Can you expand/collapse individual tree branches? Is there expand-all/collapse-all? Does expanding a large branch cause a visible delay? Is the expand state preserved when you navigate away and return? Can you right-click to expand a specific branch level?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tree_04",
+      "group": "symbol-tree",
+      "label": "Tim Blazytko: Tree context menu actions",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Tree view') { b.click(); return 'switched to tree'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "tree-context-menu",
+          "review_criteria": "As someone who needs quick actions from the tree: Does right-clicking a tree node offer context actions (show in graph, copy name, go to address, add to watchlist)? Are the actions relevant to the node type? Can you trigger analysis on a specific node from the tree? Is there a way to compare two tree nodes?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tree_05",
+      "group": "symbol-tree",
+      "label": "Tim Blazytko: Show in graph from tree",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Tree view') { b.click(); return 'switched to tree'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "show-in-graph",
+          "review_criteria": "As someone who switches between tree and graph views: Can you click a tree node to highlight it in the graph? Does the graph auto-center on the selected node? Is the transition smooth? Can you go back to the tree view with the same node selected? Is there bidirectional linking (clicking graph node highlights tree node)?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tree_06",
+      "group": "symbol-tree",
+      "label": "Tim Blazytko: Copy symbol name from tree",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Tree view') { b.click(); return 'switched to tree'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "copy-symbol",
+          "review_criteria": "As someone who copies symbol names into scripts constantly: Can you easily copy a symbol's full qualified name? Is there a one-click copy button? Does it copy the mangled or demangled name? Can you copy the address alongside the name? Is the copied format suitable for pasting into a Python/IDAPython script?"
+        }
+      ]
+    },
+    {
+      "id": "tb_table_01",
+      "group": "table-view",
+      "label": "Tim Blazytko: Table columns and data completeness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "table-columns",
+          "review_criteria": "As someone who analyzes function tables in binaries: Are the table columns appropriate (name, type, address, size, namespace, tags)? Can you customize which columns are visible? Are the column widths appropriate for the data? Is there a way to add custom columns for annotation? Would you want to export this table to CSV for batch processing?"
+        }
+      ]
+    },
+    {
+      "id": "tb_table_02",
+      "group": "table-view",
+      "label": "Tim Blazytko: Table sorting functionality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const headers = document.querySelectorAll('th, [role=columnheader]'); if (headers.length > 0) { headers[0].click(); return 'sorted by ' + headers[0].textContent; } return 'no headers'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "table-sorting",
+          "review_criteria": "As someone who sorts by complexity or size to find interesting targets: Can you sort by clicking column headers? Is the sort direction indicated (arrow)? Can you multi-column sort? Is sorting stable? Can you sort by numeric values correctly (not lexicographic)? Would you want custom sort expressions?"
+        }
+      ]
+    },
+    {
+      "id": "tb_table_03",
+      "group": "table-view",
+      "label": "Tim Blazytko: CWE column integration",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "cwe-column",
+          "review_criteria": "As someone who maps binary patterns to CWE weaknesses: Is there a CWE column in the table? Are CWE IDs displayed as clickable links? Can you filter to show only entries with specific CWEs? Are the CWE mappings sourced from static analysis or LLM inference? Is the confidence level shown? Would this help you triage vulnerability candidates?"
+        }
+      ]
+    },
+    {
+      "id": "tb_table_04",
+      "group": "table-view",
+      "label": "Tim Blazytko: ATT&CK column integration",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "attack-column",
+          "review_criteria": "As someone who maps malware behavior to MITRE ATT&CK: Is there an ATT&CK technique column? Are technique IDs shown with names? Can you filter by tactic or technique? Are sub-techniques supported? Is the ATT&CK mapping useful for malware classification? Would this accelerate your threat intelligence reporting?"
+        }
+      ]
+    },
+    {
+      "id": "tb_table_05",
+      "group": "table-view",
+      "label": "Tim Blazytko: D3FEND countermeasure column",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "d3fend-column",
+          "review_criteria": "As someone who recommends countermeasures: Is D3FEND integrated alongside ATT&CK? Are defensive techniques suggested for identified attack patterns? Is the ATT&CK-to-D3FEND mapping automated? Can you generate a defense recommendation report from the table? Would this be useful for a red team/blue team workflow?"
+        }
+      ]
+    },
+    {
+      "id": "tb_table_06",
+      "group": "table-view",
+      "label": "Tim Blazytko: Table filtering capabilities",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "table-filtering",
+          "review_criteria": "As someone who filters large symbol tables: Can you filter by type, namespace, or tag? Are compound filters supported (type=function AND has CWE)? Is there a quick-filter row below column headers? Can you save filter presets for common analysis patterns? Does filtering update the count indicator?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tax_01",
+      "group": "taxonomy-integration",
+      "label": "Tim Blazytko: Mind tags display and relevance",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "mind-tags",
+          "review_criteria": "As someone who uses semantic tagging for binary classification: Are SPARTA mind tags visible on nodes? Are the tags relevant to the node's actual function? Can you add/remove tags manually? Is there an auto-tagging capability? Do tags influence the graph layout or coloring? Would you use tags to build a malware family classifier?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tax_02",
+      "group": "taxonomy-integration",
+      "label": "Tim Blazytko: CWE mapping accuracy",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "cwe-accuracy",
+          "review_criteria": "As someone who validates automated vulnerability classification: Are CWE mappings accurate for the binary features shown? Are they based on code patterns, data flow analysis, or LLM inference? Is the confidence level shown? Can you dispute or confirm a CWE mapping? Are CWE-to-CVE links provided where applicable? Would you trust these mappings for a vulnerability report?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tax_03",
+      "group": "taxonomy-integration",
+      "label": "Tim Blazytko: ATT&CK technique relevance",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "attack-relevance",
+          "review_criteria": "As someone who maps malware to ATT&CK for threat intel: Are ATT&CK technique assignments relevant to the actual binary behavior? Are they too broad (T1059 for everything) or appropriately specific (T1059.001)? Can you navigate from a technique to all functions that implement it? Would this accelerate malware campaign attribution?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tax_04",
+      "group": "taxonomy-integration",
+      "label": "Tim Blazytko: D3FEND defensive suggestions",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "d3fend-suggestions",
+          "review_criteria": "As someone who recommends mitigations: Are D3FEND countermeasures suggested based on identified ATT&CK techniques? Is the mapping accurate? Are the suggestions actionable (not just 'use antivirus')? Can you generate a mitigation plan from the D3FEND mappings? Is the ATT&CK-to-D3FEND bridge automated or manual?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tax_05",
+      "group": "taxonomy-integration",
+      "label": "Tim Blazytko: NIST framework mapping",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "nist-mapping",
+          "review_criteria": "As someone who works with compliance frameworks: Is there NIST CSF or 800-53 mapping alongside ATT&CK? Are NIST control families shown for relevant binary features? Would this help a security team justify remediation priorities? Is the NIST mapping at the right abstraction level for binary analysis?"
+        }
+      ]
+    },
+    {
+      "id": "tb_tax_06",
+      "group": "taxonomy-integration",
+      "label": "Tim Blazytko: Taxonomy loading and performance",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Vulnerability / CWE mapping') { b.click(); return 'switched to vulns'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "taxonomy-loading",
+          "review_criteria": "As someone who needs taxonomy data loaded instantly: How long do taxonomy lookups take? Are CWE/ATT&CK/D3FEND databases cached locally or fetched per query? Is there a loading indicator for taxonomy data? Can the tool work offline with cached taxonomies? Would slow taxonomy lookups break your analysis flow?"
+        }
+      ]
+    },
+    {
+      "id": "tb_code_01",
+      "group": "code-view",
+      "label": "Tim Blazytko: ASM tab quality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "asm-tab",
+          "review_criteria": "As someone who writes deobfuscation passes: Is the ASM view useful for understanding obfuscated code? Can you identify obfuscation patterns (opaque predicates, control flow flattening, dead code)? Are basic blocks visually separated? Is there CFG-level visualization? Would this ASM view integrate with your deobfuscation pipeline?"
+        }
+      ]
+    },
+    {
+      "id": "tb_code_02",
+      "group": "code-view",
+      "label": "Tim Blazytko: C decompiled tab for analysis",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "c-tab",
+          "review_criteria": "As someone who reads decompiled output daily: Is the C decompilation quality comparable to Hex-Rays? Are variable types recovered correctly? Are control flow constructs idiomatic? Are library function calls recognized? Can you edit the decompiled code to fix type errors? Is the decompiled code LLM-generated and if so, how accurate is it?"
+        }
+      ]
+    },
+    {
+      "id": "tb_code_03",
+      "group": "code-view",
+      "label": "Tim Blazytko: Python pseudocode tab",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "python-tab",
+          "review_criteria": "As someone who scripts analysis in Python: Is the Python pseudocode useful for understanding the binary's logic? Could you copy it into a script and extend it? Are struct definitions using ctypes/construct? Is the code Pythonic or just C with Python syntax? Would this accelerate writing analysis scripts or protocol parsers?"
+        }
+      ]
+    },
+    {
+      "id": "tb_code_04",
+      "group": "code-view",
+      "label": "Tim Blazytko: Syntax accuracy across languages",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "syntax-accuracy",
+          "review_criteria": "As someone who reads code in multiple languages daily: Is the syntax highlighting correct for ASM, C, and Python? Are language-specific constructs properly tokenized? Are there any highlighting bugs (wrong colors, missing keywords)? Is the highlighting consistent across all three tabs? Does it use a professional color scheme (not garish)?"
+        }
+      ]
+    },
+    {
+      "id": "tb_code_05",
+      "group": "code-view",
+      "label": "Tim Blazytko: LLM generation quality indicators",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "llm-quality",
+          "review_criteria": "As someone who evaluates LLM-generated analysis: Is it clear which code is LLM-generated vs extracted from the binary? Is there a confidence indicator? Can you see which model generated the code? Are there known hallucination patterns visible? Can you request regeneration with different parameters? Would you trust LLM-generated decompilation for security-critical analysis?"
+        }
+      ]
+    },
+    {
+      "id": "tb_code_06",
+      "group": "code-view",
+      "label": "Tim Blazytko: Code copy and export",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "code-export",
+          "review_criteria": "As someone who copies code into analysis scripts: Can you copy code cleanly from each tab? Is there a copy button? Does it preserve formatting? Can you export all functions as a batch? Would the exported code be useful for building a YARA rule, Sigma rule, or analysis script? Is the export format configurable?"
+        }
+      ]
+    },
+    {
+      "id": "tb_chat_01",
+      "group": "chat-analysis",
+      "label": "Tim Blazytko: Natural language RE queries",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "nl-queries",
+          "review_criteria": "As someone who builds NL interfaces for binary analysis: Is the chat positioned as a first-class analysis tool? Are suggested queries relevant to RE workflows? Could you ask 'find all functions that process network input' or 'show obfuscated functions'? Does the chat understand binary analysis domain terminology? Would this replace or complement your existing scripting workflow?"
+        }
+      ]
+    },
+    {
+      "id": "tb_chat_02",
+      "group": "chat-analysis",
+      "label": "Tim Blazytko: Entity recognition in binary context",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "entity-recognition",
+          "review_criteria": "As someone who builds entity extraction for binary features: Does the chat recognize function names, addresses, CWE IDs, and ATT&CK techniques in queries? Can it resolve ambiguous references? Does it understand context from the current selection? Would the entity extraction be good enough for automated report generation?"
+        }
+      ]
+    },
+    {
+      "id": "tb_chat_03",
+      "group": "chat-analysis",
+      "label": "Tim Blazytko: QuerySpec routing and graph manipulation",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "queryspec-routing",
+          "review_criteria": "As someone who builds query DSLs for binary analysis: Can you see how natural language queries are translated to structured queries (QuerySpec)? Is the IR visible for debugging? Can the chat manipulate the graph view (filter, highlight, expand)? Would you be able to script the QuerySpec directly for automation? Is the query language documented?"
+        }
+      ]
+    },
+    {
+      "id": "tb_chat_04",
+      "group": "chat-analysis",
+      "label": "Tim Blazytko: Scene manipulation via chat",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "scene-manipulation",
+          "review_criteria": "As someone who wants to control analysis via commands: Can you tell the chat to 'show all crypto functions' and have the graph update? Can you say 'expand the auth namespace' and see it happen? Is the chat-to-graph binding bidirectional (clicking graph updates chat context)? Would this enable voice-driven analysis for accessibility?"
+        }
+      ]
+    },
+    {
+      "id": "tb_chat_05",
+      "group": "chat-analysis",
+      "label": "Tim Blazytko: Feedback loop and correction steering",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "feedback-loop",
+          "review_criteria": "As someone who trains ML models on analyst feedback: Is there a thumbs up/down or correction mechanism? Can you correct misclassifications? Does the system learn from corrections (within session or across sessions)? Is the feedback data exportable for model training? Would this create a useful feedback flywheel for improving automated analysis?"
+        }
+      ]
+    },
+    {
+      "id": "tb_chat_06",
+      "group": "chat-analysis",
+      "label": "Tim Blazytko: Correction steering quality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "correction-steering",
+          "review_criteria": "As someone who iterates on analysis hypotheses: Can you steer the analysis by correcting the LLM's assumptions? Does the correction propagate (fixing one entity fixes related ones)? Is there a hypothesis-test workflow where you propose an interpretation and the tool validates it? Would correction steering make this competitive with manual RE workflows?"
+        }
+      ]
+    },
+    {
+      "id": "tb_auto_01",
+      "group": "automation",
+      "label": "Tim Blazytko: API accessibility for scripting",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "api-access",
+          "review_criteria": "As someone who scripts everything: Is there an API behind this UI that I could call directly? Are the network requests visible in DevTools with a clear REST/GraphQL pattern? Could I build a headless client? Is there API documentation? Would this support building automated analysis pipelines that feed results into other tools?"
+        }
+      ]
+    },
+    {
+      "id": "tb_auto_02",
+      "group": "automation",
+      "label": "Tim Blazytko: Batch query potential",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "batch-query",
+          "review_criteria": "As someone who processes malware campaigns in batch: Could this tool handle batch analysis of multiple binaries? Is there a way to apply the same query across a corpus? Can you compare results across binaries? Would you be able to build a malware classification pipeline on top of this? Is there a concept of analysis templates?"
+        }
+      ]
+    },
+    {
+      "id": "tb_auto_03",
+      "group": "automation",
+      "label": "Tim Blazytko: Export capabilities",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "export-caps",
+          "review_criteria": "As someone who feeds analysis results into other tools: Can you export the graph as JSON, DOT, or SVG? Can you export the table as CSV? Can you export code views? Are STIX/TAXII exports available for threat intelligence sharing? Can you export CWE/ATT&CK mappings in a standard format? Would the export formats integrate with your existing toolchain?"
+        }
+      ]
+    },
+    {
+      "id": "tb_auto_04",
+      "group": "automation",
+      "label": "Tim Blazytko: Scripting hooks and extensibility",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "scripting-hooks",
+          "review_criteria": "As someone who extends every tool with custom scripts: Is there a plugin or extension API? Can you add custom analysis passes? Can you add custom node types or edge types? Is there a scripting console? Could you write an IDA bridge or Ghidra bridge plugin? How does the extensibility compare to Binary Ninja's plugin system?"
+        }
+      ]
+    },
+    {
+      "id": "tb_persp_01",
+      "group": "perspective-views",
+      "label": "Tim Blazytko: Security perspective view",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "security-perspective",
+          "review_criteria": "As someone who focuses on security analysis: Is there a security-focused view that highlights attack surfaces, vulnerable functions, and security-relevant code paths? Does the security perspective filter out irrelevant nodes? Are risk scores or severity indicators shown? Would this accelerate a security audit compared to generic code browsing?"
+        }
+      ]
+    },
+    {
+      "id": "tb_persp_02",
+      "group": "perspective-views",
+      "label": "Tim Blazytko: Data flow perspective",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "data-flow-perspective",
+          "review_criteria": "As someone who traces data flow for taint analysis: Is there a data flow perspective showing how data moves through the binary? Can you trace from input source to processing sink? Are data transformations visible on edges? Would this replace or complement a dedicated taint analysis tool? Can you define custom sources and sinks?"
+        }
+      ]
+    },
+    {
+      "id": "tb_persp_03",
+      "group": "perspective-views",
+      "label": "Tim Blazytko: All-entities perspective overview",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "all-perspective",
+          "review_criteria": "As someone who needs the full picture: Does the 'all entities' view show everything without filtering? Is it still navigable or does it become overwhelming? Are there statistics (node count, edge count, type distribution)? Would you use this for initial triage before switching to a focused perspective? Is the overview useful for identifying the binary's main components?"
+        }
+      ]
+    },
+    {
+      "id": "tb_persp_04",
+      "group": "perspective-views",
+      "label": "Tim Blazytko: Perspective filtering and switching",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "perspective-filtering",
+          "review_criteria": "As someone who switches between analysis modes frequently: Can you switch perspectives without losing context? Is the switching instant or does it reload data? Can you create custom perspectives (e.g., 'crypto functions + their callers')? Are perspectives named and saveable? Would you define new perspectives based on your analysis needs?"
+        }
+      ]
+    },
+    {
+      "id": "tb_scene_01",
+      "group": "scene-management",
+      "label": "Tim Blazytko: Save and restore analysis scenes",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "save-scene",
+          "review_criteria": "As someone who works on analysis across multiple sessions: Can you save the current scene (graph state, selections, annotations)? Is there a save/load UI? Is the scene format portable (could you share it with a colleague)? Does the scene include chat history? Would scene management enable reproducible analysis workflows?"
+        }
+      ]
+    },
+    {
+      "id": "tb_scene_02",
+      "group": "scene-management",
+      "label": "Tim Blazytko: Load and switch scenes",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Show Namespaces')) { b.click(); return 'seeded'; } } return 'already seeded or no button'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "load-scene",
+          "review_criteria": "As someone who juggles multiple analysis projects: Can you load a previously saved scene? Is the loading fast? Does it restore all state (graph position, zoom, selected node, active filters)? Can you maintain multiple named scenes and switch between them? Is there an auto-save feature?"
+        }
+      ]
+    },
+    {
+      "id": "tb_scene_03",
+      "group": "scene-management",
+      "label": "Tim Blazytko: Clear scene and start fresh",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "clear-scene",
+          "review_criteria": "As someone who needs clean starts for each analysis: Is there a clear/reset function? Does it confirm before clearing (to prevent accidental loss)? Does clearing preserve saved scenes? Can you clear just the graph while keeping settings? Is the empty state after clearing the same as the initial state?"
+        }
+      ]
+    },
+    {
+      "id": "tb_scene_04",
+      "group": "scene-management",
+      "label": "Tim Blazytko: Scene comparison for diff analysis",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "scene-comparison",
+          "review_criteria": "As someone who compares binary versions: Can you compare two scenes (e.g., two versions of the same binary)? Is there a diff view showing added/removed/changed nodes? Can you overlay two graphs? Would scene comparison support patch analysis or malware variant comparison? Is the comparison automated or manual?"
+        }
+      ]
+    },
+    {
+      "id": "tb_journal_01",
+      "group": "investigation-journal",
+      "label": "Tim Blazytko: Journal recording of analysis steps",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "journal-recording",
+          "review_criteria": "As someone who documents analysis for reproducibility: Is there an investigation journal that records your actions? Are navigation steps, queries, and findings logged automatically? Can you add manual notes? Is the journal timestamped? Would this journal be useful for writing a technical report or training an agentic analysis pipeline?"
+        }
+      ]
+    },
+    {
+      "id": "tb_journal_02",
+      "group": "investigation-journal",
+      "label": "Tim Blazytko: Step tracking and replay",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "step-tracking",
+          "review_criteria": "As someone who builds reproducible analysis workflows: Can you replay recorded analysis steps? Is the step sequence exportable as a script? Could you use recorded steps to train an agentic RE system? Is there a way to branch the analysis history (explore alternative hypotheses)? Would step tracking enable 'analysis recipes' that others could follow?"
+        }
+      ]
+    },
+    {
+      "id": "tb_journal_03",
+      "group": "investigation-journal",
+      "label": "Tim Blazytko: Export investigation report",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "export-report",
+          "review_criteria": "As someone who delivers analysis reports: Can you export the investigation journal as a formatted report (Markdown, PDF, HTML)? Does the report include graph screenshots, code snippets, and findings? Are CWE/ATT&CK references included? Is the report template customizable? Would this replace your manual report-writing workflow?"
+        }
+      ]
+    },
+    {
+      "id": "tb_journal_04",
+      "group": "investigation-journal",
+      "label": "Tim Blazytko: Session continuity across reloads",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "tim-blazytko",
+          "persona_scope": "tim-blazytko",
+          "name": "session-continuity",
+          "review_criteria": "As someone who works on analysis over days: Does the tool preserve state across browser reloads? Is the session stored locally or server-side? Can you resume from where you left off? Is there auto-save? What happens if the browser crashes \u2014 is there recovery? Would session continuity make this viable for multi-day malware analysis campaigns?"
+        }
+      ]
+    }
+  ]
+}

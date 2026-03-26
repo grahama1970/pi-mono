@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qUt0-B8s1vE",
+    "language": "en",
+    "took_ms": 12442,
+    "method": null,
+    "title": "A new short course created with DotTxt is available now",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250402",
+    "duration_sec": 125,
+    "description": "Learn more: https://bit.ly/3FLpRcN\n\nWe’ve teamed up with DotTxt to bring you a new short course: Getting Structured LLM Output, taught by Will Kurt (Founding Engineer) and Cameron Pfiffer (Developer Relations Engineer).\n\nWhen you're building with LLMs, one challenge becomes clear quickly: the outputs are unpredictable. The same prompt might return different formats, structures, or levels of detail—none of which are easy for downstream systems to work with.\n\nIf you're building production-ready software, this unpredictability becomes a bottleneck.\n\nIn this course, you’ll learn how to make LLMs output data in consistent, structured formats like JSON—turning natural language into programmable data your software can reliably use.\n\nYou’ll explore several practical techniques:\n\n- Using structured output APIs, such as OpenAI’s, to generate well-formed responses from the start\n- Re-prompting with libraries like Instructor, which validate outputs and retry until they fit your schema\n- Constraining token generation using Outlines, an open-source library that enforces structure at the token level with regular expressions\n\nYou’ll also apply what you learn in a hands-on project: a social media analysis agent that processes user posts, identifies sentiment, and outputs structured data that can drive automated workflows.\n\nWhether you’re using open-source models or vendor APIs, this course gives you practical tools and a clearer understanding of how to bring more reliability to your LLM applications.\n\nEnroll now: https://bit.ly/3FLpRcN",
+    "view_count": 3944
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qUt0-B8s1vE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

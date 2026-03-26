@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3FjrvAqyyUw",
+    "language": "en",
+    "took_ms": 8463,
+    "method": null,
+    "title": "this drum solo does not exist (made with HarmonAI)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20221109",
+    "duration_sec": 373,
+    "description": "Tired of the same drum solos? Here is something new.\nThe computer generated novel drum solos using HarmonAI's Dance Diffusion model.\nThe model was finetuned using drum solos taken from vinyl records.\n\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n\nAll using this notebooks:\nhttps://github.com/Harmonai-org/sample-generator\n\nYou can download the checkpoint file to generate your own drum solos from here:\nhttps://archive.org/download/wax-solo-drums-epoch3100-step204000\n\nThe tools the computer use to create the movie:\nStable Diffusion (for the record cover generations)\nhttps://stability.ai/blog/stable-diffusion-public-release\n\nwatch the prompt video\nhttps://www.youtube.com/watch?v=RUatYr6PZdo&t=2s\n\nwatch an horror movie made with ai:\nhttps://www.youtube.com/watch?v=85Eg2N_YZ24&t=99s\n\nnobodyandthecomputer@gmail.com",
+    "view_count": 4693
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3FjrvAqyyUw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

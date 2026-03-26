@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EbCwt64s8QU",
+    "language": "en",
+    "took_ms": 7853,
+    "method": null,
+    "title": "S1 E7: This Week In Spaceflight History - Mariner 6 launched!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170223",
+    "duration_sec": 2935,
+    "description": "Mariner 6 launched on February 25th, 1969 and was one of two space crafts to do a Mars fly by together. Each Mariner was launched into orbit on an Atlas/Centaur. They ended up flying by Mars only 5 days apart and only a few days after Apollo 11! What a time to be alive!\n\nTune in LIVE ever Wednesday at 9:00 Central (3:00 UTC) to join the action at http://twitch.tv/everydayastronaut\n\nMake sure and check out the Orbital Mechanics Podcast each week to get the run down on the mission!",
+    "view_count": 2303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EbCwt64s8QU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

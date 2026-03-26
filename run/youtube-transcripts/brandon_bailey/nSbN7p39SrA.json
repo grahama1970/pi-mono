@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nSbN7p39SrA",
+    "language": "en",
+    "took_ms": 7805,
+    "method": null,
+    "title": "DEF CON 30 - Zachary Minneker - How To Get MUMPS Thirty Years Later - Hacking the Govt w FOIAd Code",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2574,
+    "description": "In the 60s, engineers working in a lab at Massachusettes General Hospital in Boston invented a programming environment for use in medical contexts. This is before C, before the Unix epoch, before the concept of an electronic medical records system even existed. But if you have medical records in the US, or if you've banked in the US, its likely that this language has touched your data. Since the 1960s, this language has been used in everything from EMRs to core banking to general database needs, and even is contained in apt to this day.\n\nThis is the Massachusettes General Hospital Utility Multi-Programming System. This is MUMPS.\n\nThis talk covers new research into common open-source MUMPS implementations, starting with an application that relies on MUMPS: the Department of Veterans Affairs' VistA EMR. We’ll cover a short history of VistA before diving into its guts and examining MUMPS, the language that VistA was written in. Then we'll talk about 30 memory bugs discovered while fuzzing open source MUMPS implementations before returning to VistA to cover critical vulnerabilities found in credential handling and login mechanisms. We'll close by taking a step back and asking questions about how we even got here in the first place, the right moves we made, and what we can do better.",
+    "view_count": 2681
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nSbN7p39SrA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

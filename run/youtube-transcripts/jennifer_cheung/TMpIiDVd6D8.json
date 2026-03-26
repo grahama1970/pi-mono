@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TMpIiDVd6D8",
+    "language": "en",
+    "took_ms": 9487,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - Allen Baranov - How To Stop A Virus With A Spreadsheet",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 1282,
+    "description": "On 27 June 2017, a piece of malware raced across the globe and took out many organisations including some that were similar to the one I was employed at. But we were safe and, in fact, not worried at all.\n\nAll thanks to clever use of spreadsheets.\n\nIn this talk, given entirely within Excel (yes, really) I go through the methods used to protect the organisation from this malware. If a talk given entirely in Excel sounds boring - you haven't seen this talk.",
+    "view_count": 480
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TMpIiDVd6D8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

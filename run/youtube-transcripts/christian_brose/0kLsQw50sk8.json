@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0kLsQw50sk8",
+    "language": "en",
+    "took_ms": 8967,
+    "method": null,
+    "title": "Licensing and the Internet of Things",
+    "channel": "Hudson Institute",
+    "upload_date": "20221205",
+    "duration_sec": 3256,
+    "description": "As the world begins to embrace the Internet of Things (IoT), connected devices will likely change many aspects of our lives. They will enable intelligent transportation, create better business solutions, transform healthcare, lead to agricultural innovations, turn home appliances into smart devices, and much more. Nonetheless, some commentators have argued that the licensing of patented technologies that have enabled this revolution will hinder the expansion of the IoT industry. Yet recent developments suggest otherwise. Please join our panel to learn more about the role of licensing in the IoT industry.",
+    "view_count": 409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0kLsQw50sk8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

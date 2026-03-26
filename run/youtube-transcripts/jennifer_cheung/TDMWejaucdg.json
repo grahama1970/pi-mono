@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TDMWejaucdg",
+    "language": "en",
+    "took_ms": 7866,
+    "method": null,
+    "title": "DEF CON 31 - Revolutionizing ELF binary patching w Shiva   - ElfMaster",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2748,
+    "description": "The esoteric art of patching ELF binaries has a long and fascinating history who's roots are deep within the hacking subculture; from ELF viruses to kernel rootkits. Silvio's 1997 \"UNIX Viruses\" paper taught us how to insert parasitic code into a page aligned text padding region. Many backdooring and hooking techniques have been revealed to us over the last 20 years-- perfect for hacking and injecting small patches and backdoors but on their own these techniques are limited, clunky and do not support the complexities of real-world patching problems in todays industry. Developers often need to fix complex bugs that exist within legacy ELF Binaries, no source code is available or the program cannot be recompiled.\n\nLet me introduce you to Shiva. Shiva is a JIT binary patching system for ELF; A custom ELF interpreter that loads and links ELF relocatable patches at runtime. Shiva allows developers to write patches in rich C code to naturally express the rewriting of binary code at runtime, in a high level language. ELF binary patching solutions over the past two decades have been scarce; some notable research: Katana and ERESI come to mind as pioneers in the early examples of custom ELF linkers and binary patchers.\n\nShiva is a next-level solution that allows developers to quickly write patches in C with little to no reversing knowledge. Born out of 16 years of ELF research into virus design, binary patching, and extensive experience with writing custom linkers and loaders.\n\nIn this talk we will discuss foundations of ELF binary patching and it's close relationship with ELF linkers, loaders and even ELF virus technology. This passionate body of research is combined and imbued into Shiva to create a highly innovative and powerful product that helps bridge the gap between Developers and Reverse engineers in modern binary patching solutions for ELF. A new workflow for maintaning insecure legacy software with modular patching capabilities is on the rise!\n\nPrepare for an indepth discussion of incredible new ELF hacking techniques and extensions. Old concepts such as userland-exec() brought back to life, and entirely new concepts such as \"Linker chaining\" to bring multiple dynamic linkers into a single process image. We will demonstrate complex patching scenarios, function splicing, program transformation, and even the weaponization of Shiva for writing sophisticated in-memory backdoors. Shiva; the ultimate ELF Binary hacker... aiming to solve the worlds most challenging binary patching problems today.",
+    "view_count": 2558
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TDMWejaucdg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hFCKpsNy484",
+    "language": "en",
+    "took_ms": 9232,
+    "method": null,
+    "title": "Crunch Time For Nonprofits?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6709,
+    "description": "In the \"new normal\" of severely constrained state and local budgets, the mounting problems of nonprofit organizations often seem to be overlooked. As Tim Delaney of the National Council of Nonprofits put it recently on The Nonprofit Quarterly website, nonprofits are suffering from the withholding of payments by government for services already rendered; from a wave of proposed new taxes and fees; and from the expectation that the nonprofit sector will somehow fill the void as public funding is sl",
+    "view_count": 18
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hFCKpsNy484: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

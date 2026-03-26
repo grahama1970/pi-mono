@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A0ADFiiZU0k",
+    "language": "en",
+    "took_ms": 8479,
+    "method": null,
+    "title": "XAI: Learning Fairness with Interpretable Machine",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210709",
+    "duration_sec": 3626,
+    "description": "Event Agenda:\n10-min: Trends in Artificial Intelligence and Data Fairness: Tim Denley, Director of Board, Chief Solutions Officer, KPMG Ignition Tokyo\nA talk on KPMG’s view on data reliability and results along with our effort at KPMG Ignition Tokyo.\n\n30-min: Learning Fairness with Interpretable Machine Learning: Serg Masis, Author of \"Interpretable Machine Learning with Python\"; Climate & Agronomic Data Scientist, Syngenta \nAn overview of many methods employed to detect and mitigate bias and place guardrails to ensure fairness with Python examples\n\n20-min: Q&A (please submit your questions on https://app.sli.do/event/duj7nyzp) \n\nThis event will be moderated by Haiyang Peng, a Senior Scientist at KPMG Ignition Tokyo.\n\nSpecial thanks to KPMG Ignition Tokyo (https://home.kpmg/jp/en/home/about/kit.html) and  Machine Learning Tokyo (https://machinelearningtokyo.com/) for co-hosting the event with us!\n\nFor anyone who's interested, our sister company Workera.ai launched a Fairness in AI assessment, now available in Beta! This assessment addresses the foundations of AI fairness, data fairness (pre-processing), algorithmic fairness (in-processing), prediction fairness (post-processing), and fairness in the lifecycle of an AI project. After mastering the concepts assessed via expertly-curated learning resources, you'll be able to a) define the core components of AI fairness, b) identify sources of unfairness, and c) understand methods to mitigate unfairness. \n\nYou may sign-up on Workera.ai (https://workera.ai/) to take the free assessment and begin learning!",
+    "view_count": 5551
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A0ADFiiZU0k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

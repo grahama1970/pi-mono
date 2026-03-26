@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XM8pllpBVA0",
+    "language": "en",
+    "took_ms": 7816,
+    "method": null,
+    "title": "How to Quantize an LLM with GGUF or AWQ",
+    "channel": "Trelis Research",
+    "upload_date": "20231003",
+    "duration_sec": 1580,
+    "description": "*GGUF and AWQ Quantization Scripts*\n- Includes pushing model files to repo\nPurchase here: https://buy.stripe.com/5kA6paaO9dmbcV2fZq\n\n*ADVANCED Fine-tuning Repository Access*\n1. Quantization Scripts\n2. Unsupervised + Supervised Fine-tuning Notebooks\n3. Q&A Dataset Preparation + Cleaning Scripts\n4. Scripts to create and use Embeddings\nLearn More: https://trelis.com/advanced-fine-tuning-scripts/\n\n*Resources:*\n- Presentation Slides: https://tinyurl.com/2s58xnam\n- Llama.cpp: https://github.com/ggerganov/llama.cpp\n- AutoAWQ: https://github.com/casper-hansen/AutoAWQ/\n- Runpod Affiliate Link: (supports Trelis) https://tinyurl.com/yjxbdc9w\n- AWQ paper: https://arxiv.org/pdf/2306.00978.pdf\n- GPTQ paper: https://arxiv.org/pdf/2210.17323.pdf\n- Ready-Quantized Models: https://huggingface.co/TheBloke/\n\nReferenced Videos:\n- Supervised Fine-tuning (with bitsandbytes): https://youtu.be/DMcxxg5iEZQ\n- Tiny Llama (run a GGUF model on your laptop): https://www.youtube.com/watch?v=T5l228844NI\n- AWQ API setup and explanation: https://www.youtube.com/watch?v=GKd92rhTBGo\n\n0:00 How to quantize a large language model\n0:38: Why quantize a language model\n1:30 What is quantization\n2:23 Which quantization to use?\n3:29 GGUF vs BNB vs AWQ vs GPTQ\n10:01 How to quantize with AWQ\n18:48 How to quantize with GGUF (GGML)\n25:29 Recap",
+    "view_count": 13738
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XM8pllpBVA0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_7eO0FoOk9M",
+    "language": "en",
+    "took_ms": 8583,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Andrea Downing -No Aggregation Without Representation",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 2346,
+    "description": "As we emerge from a pandemic and a year where we all became at risk of developing COVID, many of us have become patients and caregivers navigating a healthcare system under siege. With the rise in ransomware attacks on hospitals, disinformation campaigns from state actors on social media, and new biosecurity threats there has never been a greater need to develop capacity for a new kind of immune response to emerging threats in digital health. Representation matters. During this talk, BRCA mutant turned Security Researcher share how patient communities - namely \"the ePatient movement\" - holds potential to bring a new type of representation to the field of cybersecurity. ePatients with disabilities have superpowers to co-design and co-production of new technologies with fresh eyes - and to help us protect the emerging technologies that have the power to cure or kill.",
+    "view_count": 1602
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _7eO0FoOk9M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

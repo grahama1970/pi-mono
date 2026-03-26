@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rPkwaGBB-f4",
+    "language": "en",
+    "took_ms": 8712,
+    "method": null,
+    "title": "Securing Vehicle To Everything (V2X) and Accelerating Its Adoption",
+    "channel": "S4 Events",
+    "upload_date": "20250730",
+    "duration_sec": 1451,
+    "description": "Join Kam in exploring the security challenges in Vehicle-to-Everything (V2X) communication and Cisco's proposed architecture to address these vulnerabilities. Securing many-to-many communications in V2X environments is complex. While the SAE J2735 Dedicated Short-Range Communications (DSRC) and National Transportation Communications for ITS Protocol (NTCIP) standards guide data exchange between Onboard Units (OBUs), Roadside Units (RSUs), and traffic controllers, limited encryption, authentication, and segmentation leave these systems exposed, particularly at critical intersections and pedestrian zones.\n\nIntelligent Transportation Systems (ITS) infrastructure, such as traffic cabinets housing network equipment, is highly vulnerable to tampering due to limited physical security. Easily accessible cabinets allow rogue devices to infiltrate and intercept data, posing significant risks without effective monitoring.\n\nEdge computing and network redundancy are essential to meet V2X’s low-latency and resilience requirements. This session covers Cisco’s layered security strategies, including encryption, threat containment, and monitoring, along with virtual RSU and OBU solutions to accelerate secure Cellular Vehicle-to-Everything (C-V2X) adoption and protect V2X infrastructure from cyber threats.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 338
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rPkwaGBB-f4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

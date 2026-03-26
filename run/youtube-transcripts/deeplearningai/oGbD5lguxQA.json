@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oGbD5lguxQA",
+    "language": "en",
+    "took_ms": 8540,
+    "method": null,
+    "title": "New course with Hugging Face: Quantization in Depth 🤗",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240506",
+    "duration_sec": 197,
+    "description": "Enroll now: https://bit.ly/44nXDNa\n\nWe’re excited to introduce Quantization in Depth, a new short course built in collaboration with Hugging Face, taught by Younes Belkada and Mark Sun, and designed to provide a deep technical understanding of quantization. \n\nThis course lets you build and customize your own linear quantizer from scratch, going beyond standard open source libraries such as PyTorch and Quanto, which were the focus of our previous course, Quantization Fundamentals.\n\nJoin in to:\n\n- Implement and customize linear quantization from scratch, trading off between space and performance, and choosing between two \"modes:\" asymmetric and symmetric; and three granularities: per-tensor, per-channel, and per-group quantization.\n- Measure the quantization error of each of these options as you balance the performance and space tradeoffs for each option.\n- Build your own quantizer in PyTorch, to quantize any open source model's dense layers from 32 bits to 8 bits.\n- Go beyond 8 bits, and pack four 2-bit weights into one 8-bit integer, and also, learn to unpack them.\n\nQuantization in Depth gives you the foundation to study more advanced quantization methods, some of which are recommended at the end of the course.\n\nLearn more: https://bit.ly/44nXDNa",
+    "view_count": 3336
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oGbD5lguxQA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

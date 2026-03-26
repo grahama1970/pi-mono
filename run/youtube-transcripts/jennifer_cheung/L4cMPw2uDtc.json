@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L4cMPw2uDtc",
+    "language": "en",
+    "took_ms": 8074,
+    "method": null,
+    "title": "DEF CON 33 - Unveiling IoT Vulns: From Backdoors to Bureaucracy - Kai-Ching Wang, Chiao-Lin Yu",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1185,
+    "description": "IoT devices are ubiquitous, yet their security remains a critical concern. This talk explores over 50 real-world vulnerability cases in the IoT ecosystem, exposing systemic issues such as vendor-embedded backdoors, predictable credentials, and exploitable configuration consoles. We’ll dissect vulnerabilities like CVE-2024-48271 (CVSS 9.8) and CVE-2025-1143, favored by APT groups and scammers, that enable remote code execution and global device control. Drawing from our extensive research, we’ll reveal how even beginners can compromise critical infrastructure like ATMs and water treatment facilities by targeting poorly secured devices. Additionally, we’ll share the frustrating reality of reporting vulnerabilities to manufacturers, CNAs, and CERTs—stories of ignored reports, year-long delays, and denials despite severe risks. Attendees will gain actionable insights into vulnerability discovery, secure development practices, and responsible disclosure, empowering hackers, developers, and manufacturers to strengthen IoT security.",
+    "view_count": 445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L4cMPw2uDtc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B9UJJ5TlgPo",
+    "language": "en",
+    "took_ms": 7793,
+    "method": null,
+    "title": "Function calling Llama 2",
+    "channel": "Trelis Research",
+    "upload_date": "20230728",
+    "duration_sec": 346,
+    "description": "fLlama extends Llama 2 to support function calling. Now you can call APIs like Bing or Google using the Llama 2 language model.\n\n**Out-of-the-box Llama with Function-calling**\nLlama 7b (free), 13b, 70B and Code-Llama-34b - fine-tuned for function calling: https://huggingface.co/Trelis/Llama-2-13b-chat-hf-function-calling-v2\n\n*Basic Fine-tuning Notebook for Llama 2 (FREE)*\nAccess the Google Colab script here: https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing\n\n*ADVANCED Training Notebook for Structured Responses (PAID)*\n- Includes a prompt loss-mask and stop token for improved performance.\nRequest access here: https://buy.stripe.com/5kAfZK6xT2Hxg7e8wW\n\n*Advanced Fine-tuning Repo Access*\nLearn More: https://trelis.com/advanced-fine-tuning-scripts/\n1. Fine-tuning notebook for tone/style\n2. Fine-tuning notebook for structured responses\n3. Fine-tuning discussion forum.\n\n*Function Calling Dataset*\n- Function calling dataset: https://huggingface.co/datasets/Trelis/function_calling_extended\n\n*Basic Google Colab Chatbot with function calling (FREE)*\n- Search Bing.\n- Upload pdf or text files for analysis.\n- Get access [here](https://colab.research.google.com/drive/1u8x41Jx8WWtI-nzHOgqTxkS3Q_lcjaSX?usp=sharing).\n\n0:00 Llama 2 with function calling\n1:00 Running Llama in a free colab notebook\n1:15 Run Llama on a GPU in Colab\n1:55 Connect Google Drive to Colab\n2:15 Running Llama with bitsandbytes in quantised form\n3:05 Streaming Llama 2 in Google Colab\n3:30 How do I call functions with Llama 2?\n5:05 Extending Llama context with RoPE scaling",
+    "view_count": 5691
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B9UJJ5TlgPo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

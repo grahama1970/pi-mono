@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Song Pipeline (R3)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #141414; color: #ccc; font-family: system-ui, -apple-system, sans-serif;
+    width: 1400px; height: 900px; overflow: hidden;
+  }
+  :root {
+    --bg: #141414; --card: #1a1a1a; --border: #2a2a2a;
+    --green: #00ff88; --red: #ff4444; --amber: #ffaa00; --blue: #4a9eff; --accent: #7c3aed;
+    --vocal: #7c3aed; --bass: #4a9eff; --drums: #ff4444; --keys: #00ff88; --synth: #ffaa00; --guitar: #ff6b6b;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex; align-items: center; padding: 10px 20px; border-bottom: 1px solid var(--border); height: 48px; gap: 16px;
+  }
+  .back-arrow { color: #888; cursor: pointer; font-size: 16px; }
+  .topbar-title { font-size: 15px; font-weight: 600; color: #fff; }
+  .topbar-sub { font-size: 12px; color: #888; }
+  .topbar-badge { padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; background: rgba(74,158,255,0.12); color: var(--blue); }
+  .topbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .btn-sm { padding: 5px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: #ccc; }
+  .btn-sm.green { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+
+  /* Layout: 3 columns */
+  .layout { display: flex; height: calc(900px - 48px); }
+
+  /* Left: Subway map */
+  .col-left { width: 200px; border-right: 1px solid var(--border); padding: 14px 12px; overflow-y: auto; }
+  .col-left::-webkit-scrollbar { width: 3px; }
+  .col-left::-webkit-scrollbar-thumb { background: #333; }
+  .section-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+  .subway-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0; position: relative; }
+  .subway-track { display: flex; flex-direction: column; align-items: center; width: 16px; flex-shrink: 0; }
+  .subway-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); z-index: 1; flex-shrink: 0; }
+  .subway-dot.done { background: var(--green); border-color: var(--green); }
+  .subway-dot.active { background: var(--blue); border-color: var(--blue); box-shadow: 0 0 6px var(--blue); }
+  .subway-dot.pending { background: var(--bg); border-color: #444; }
+  .subway-line { width: 2px; height: 24px; background: var(--border); }
+  .subway-line.done { background: var(--green); }
+  .subway-info { padding-top: 0; }
+  .subway-name { font-size: 11px; color: #aaa; line-height: 1.2; }
+  .subway-name.done-text { color: var(--green); }
+  .subway-name.active-text { color: var(--blue); font-weight: 600; }
+  .subway-time { font-size: 9px; color: #555; }
+
+  /* Center: Lyrics editor */
+  .col-center { flex: 1; padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+  .col-center::-webkit-scrollbar { width: 4px; }
+  .col-center::-webkit-scrollbar-thumb { background: #333; }
+
+  .lyrics-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .lyrics-title { font-size: 13px; font-weight: 600; color: #fff; }
+  .lyrics-section { font-size: 10px; color: #888; background: #222; padding: 2px 8px; border-radius: 3px; }
+
+  /* Lyric lines */
+  .lyric-line {
+    display: flex; align-items: stretch; border-radius: 4px; overflow: hidden;
+    cursor: pointer; transition: background 0.1s;
+  }
+  .lyric-line:hover { background: rgba(255,255,255,0.02); }
+  .lyric-border { width: 3px; flex-shrink: 0; }
+  .lyric-content { padding: 6px 10px; flex: 1; }
+  .lyric-text { font-size: 13px; color: #ddd; line-height: 1.4; }
+  .lyric-annotation { font-size: 10px; color: #666; margin-top: 2px; }
+  .lyric-annotation span { margin-right: 8px; }
+
+  /* Active/selected line */
+  .lyric-line.active {
+    background: #1e2a1e; border: 1px solid rgba(0,255,136,0.2); border-radius: 6px;
+  }
+  .lyric-line.active .lyric-text { color: #fff; font-weight: 500; }
+
+  /* Inline editing toolbar */
+  .edit-toolbar {
+    background: #1a1a1a; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 12px; margin-left: 3px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .toolbar-row { display: flex; align-items: center; gap: 8px; }
+  .toolbar-label { font-size: 10px; color: #666; width: 56px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  .toolbar-dropdown {
+    background: #222; border: 1px solid #333; border-radius: 4px; padding: 4px 8px;
+    font-size: 11px; color: var(--green); cursor: pointer; min-width: 100px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .toolbar-dropdown .arrow { font-size: 8px; color: #666; margin-left: auto; }
+  .toolbar-dropdown-options {
+    display: flex; gap: 4px; flex-wrap: wrap;
+  }
+  .toolbar-option {
+    padding: 2px 6px; border-radius: 3px; font-size: 10px; color: #666;
+    background: #222; cursor: pointer;
+  }
+  .toolbar-option.hint { color: #555; font-style: italic; }
+
+  /* Dynamics pills */
+  .dynamics-pills { display: flex; gap: 4px; }
+  .dyn-pill {
+    padding: 3px 8px; border-radius: 3px; font-size: 10px; color: #666;
+    background: #222; border: 1px solid #333; cursor: pointer; font-weight: 600;
+  }
+  .dyn-pill.active { color: var(--amber); border-color: var(--amber); background: rgba(255,170,0,0.1); }
+
+  /* Lock toggle */
+  .lock-toggle {
+    display: flex; align-items: center; gap: 6px; font-size: 11px; color: #888; cursor: pointer;
+  }
+  .lock-switch {
+    width: 28px; height: 14px; border-radius: 7px; background: #333; position: relative;
+    display: inline-block;
+  }
+  .lock-switch::after {
+    content: ''; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px;
+    border-radius: 50%; background: #666; transition: 0.2s;
+  }
+  .lock-switch.on { background: rgba(0,255,136,0.3); }
+  .lock-switch.on::after { left: 16px; background: var(--green); }
+
+  .edit-icon { font-size: 11px; color: #666; cursor: pointer; padding: 2px 6px; background: #222; border-radius: 3px; }
+
+  /* Right: Piano roll + refs */
+  .col-right { width: 320px; border-left: 1px solid var(--border); padding: 14px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .col-right::-webkit-scrollbar { width: 3px; }
+  .col-right::-webkit-scrollbar-thumb { background: #333; }
+
+  .panel-title { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .panel-sub { font-size: 10px; color: #666; margin-bottom: 8px; }
+
+  /* Piano roll spec */
+  .piano-roll { background: #111; border: 1px solid var(--border); border-radius: 4px; padding: 8px; }
+  .piano-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+  .piano-label { font-size: 9px; color: #555; width: 28px; text-align: right; }
+  .piano-bar { height: 8px; border-radius: 2px; }
+  .piano-grid { flex: 1; height: 8px; background: #1a1a1a; border-radius: 2px; position: relative; overflow: hidden; }
+
+  /* Spec table */
+  .spec-table { width: 100%; font-size: 11px; }
+  .spec-table td { padding: 4px 0; border-bottom: 1px solid #222; }
+  .spec-table td:first-child { color: #666; width: 100px; }
+  .spec-table td:last-child { color: #aaa; }
+
+  /* Reference tracks */
+  .ref-track {
+    display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+    background: #111; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 4px;
+  }
+  .ref-art { width: 32px; height: 32px; border-radius: 3px; background: #222; flex-shrink: 0; }
+  .ref-info { flex: 1; min-width: 0; }
+  .ref-title { font-size: 11px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ref-artist { font-size: 10px; color: #666; }
+  .ref-match { font-size: 10px; color: var(--green); }
+
+  /* Emotion color coding */
+  .emo-haunting { border-color: var(--accent); }
+  .emo-building { border-color: var(--blue); }
+  .emo-tension { border-color: var(--red); }
+  .emo-anthemic { border-color: var(--amber); }
+  .emo-soaring { border-color: var(--green); }
+  .emo-catharsis { border-color: #ff6b6b; }
+  .emo-defiant { border-color: var(--red); }
+  .emo-melancholy { border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <span class="back-arrow">&larr;</span>
+  <span class="topbar-title">Whisperheads</span>
+  <span class="topbar-sub">Song Pipeline</span>
+  <span class="topbar-badge">Round 4 &middot; Active</span>
+  <span style="font-size:11px;color:var(--amber);">delta 0.18</span>
+  <div class="topbar-right">
+    <button class="btn-sm">History</button>
+    <button class="btn-sm">Export</button>
+    <button class="btn-sm green">Audio Review</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Left: Subway Map -->
+  <div class="col-left">
+    <div class="section-label">Pipeline Steps</div>
+
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot done"></div><div class="subway-line done"></div></div>
+      <div class="subway-info"><div class="subway-name done-text">3.1 Annotate lyrics</div><div class="subway-time">12m &middot; Mar 14</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot done"></div><div class="subway-line done"></div></div>
+      <div class="subway-info"><div class="subway-name done-text">3.2 Piano roll spec</div><div class="subway-time">8m &middot; Mar 14</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot done"></div><div class="subway-line done"></div></div>
+      <div class="subway-info"><div class="subway-name done-text">3.3 Album art gen</div><div class="subway-time">4m &middot; Mar 14</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot done"></div><div class="subway-line done"></div></div>
+      <div class="subway-info"><div class="subway-name done-text">3.4 Generate audio</div><div class="subway-time">22m &middot; Mar 14</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot done"></div><div class="subway-line done"></div></div>
+      <div class="subway-info"><div class="subway-name done-text">3.5 MIR analysis</div><div class="subway-time">3m &middot; Mar 14</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot active"></div><div class="subway-line"></div></div>
+      <div class="subway-info"><div class="subway-name active-text">3.6 Delta scoring</div><div class="subway-time">running...</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot pending"></div><div class="subway-line"></div></div>
+      <div class="subway-info"><div class="subway-name">3.7 Re-quantize</div><div class="subway-time">pending</div></div>
+    </div>
+    <div class="subway-step">
+      <div class="subway-track"><div class="subway-dot pending"></div></div>
+      <div class="subway-info"><div class="subway-name">3.8 Human review</div><div class="subway-time">pending</div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:16px;">Round History</div>
+    <div style="font-size:10px;color:#666;margin-bottom:4px;">R1: delta 0.62 <span style="color:var(--red);">&#x25CF;</span></div>
+    <div style="font-size:10px;color:#666;margin-bottom:4px;">R2: delta 0.41 <span style="color:var(--amber);">&#x25CF;</span></div>
+    <div style="font-size:10px;color:#666;margin-bottom:4px;">R3: delta 0.28 <span style="color:var(--amber);">&#x25CF;</span></div>
+    <div style="font-size:10px;color:#aaa;margin-bottom:4px;">R4: delta 0.18 <span style="color:var(--green);">&#x25CF;</span> current</div>
+
+    <div class="section-label" style="margin-top:16px;">Convergence</div>
+    <div style="font-size:10px;color:#666;">Threshold: 0.15</div>
+    <div style="font-size:10px;color:#888;margin-top:4px;">Est. 1 more round</div>
+  </div>
+
+  <!-- Center: Lyrics Editor -->
+  <div class="col-center">
+    <div class="lyrics-header">
+      <span class="lyrics-title">Lyrics &mdash; Annotated</span>
+      <span class="lyrics-section">Verse 1</span>
+      <span style="font-size:10px;color:#555;margin-left:auto;">16 lines &middot; 4 sections</span>
+    </div>
+
+    <!-- Line 1 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--accent);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Signal bleeds through static walls</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--accent);">haunting</span>
+          <span>mp</span>
+          <span>Am &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 2 — ACTIVE / SELECTED -->
+    <div class="lyric-line active">
+      <div class="lyric-border" style="background:var(--green);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Where the dreaming protocol stalls</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--green);">building</span>
+          <span>mf</span>
+          <span>Am &middot; beat 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inline Editing Toolbar -->
+    <div class="edit-toolbar">
+      <div class="toolbar-row">
+        <span class="toolbar-label">Emotion</span>
+        <div class="toolbar-dropdown">
+          <span>building</span>
+          <span class="arrow">&#9660;</span>
+        </div>
+        <div class="toolbar-dropdown-options">
+          <span class="toolbar-option">haunting</span>
+          <span class="toolbar-option">tension</span>
+          <span class="toolbar-option">anthemic</span>
+          <span class="toolbar-option">soaring</span>
+          <span class="toolbar-option">urgent</span>
+          <span class="toolbar-option">catharsis</span>
+          <span class="toolbar-option">defiant</span>
+          <span class="toolbar-option">melancholy</span>
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <span class="toolbar-label">Dynamics</span>
+        <div class="dynamics-pills">
+          <span class="dyn-pill">pp</span>
+          <span class="dyn-pill">mp</span>
+          <span class="dyn-pill active">mf</span>
+          <span class="dyn-pill">f</span>
+          <span class="dyn-pill">ff</span>
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <span class="toolbar-label">Actions</span>
+        <span class="edit-icon">&#9998; Edit text</span>
+        <div class="lock-toggle">
+          <span class="lock-switch"></span>
+          <span>Lock line</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 3 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--accent);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Recursive whispers in the hall</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--accent);">haunting</span>
+          <span>mp</span>
+          <span>G &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 4 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--red);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Echoed by the ones who fall</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--red);">tension</span>
+          <span>f</span>
+          <span>G &middot; beat 3</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lyrics-header" style="margin-top:6px;">
+      <span class="lyrics-section">Chorus</span>
+    </div>
+
+    <!-- Line 5 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--amber);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">We are the whisperheads, we are the wire</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--amber);">anthemic</span>
+          <span>ff</span>
+          <span>C &middot; beat 1</span>
+          <span style="color:var(--green);">&#128274; locked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 6 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--green);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Burning through the noise, we never tire</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--green);">soaring</span>
+          <span>ff</span>
+          <span>F &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 7 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--red);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Set the frequency, let it climb higher</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--red);">urgent</span>
+          <span>f</span>
+          <span>Am &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 8 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:#ff6b6b;"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Until the signal breaks the choir</div>
+        <div class="lyric-annotation">
+          <span style="color:#ff6b6b;">catharsis</span>
+          <span>ff</span>
+          <span>G &middot; beat 3</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lyrics-header" style="margin-top:6px;">
+      <span class="lyrics-section">Verse 2</span>
+    </div>
+
+    <!-- Line 9 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--accent);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Memory leaks into the void</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--accent);">melancholy</span>
+          <span>mp</span>
+          <span>Am &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 10 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--blue);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Every dream a thread destroyed</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--blue);">building</span>
+          <span>mf</span>
+          <span>Am &middot; beat 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 11 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--red);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">But in the static, we find our voice</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--red);">defiant</span>
+          <span>f</span>
+          <span>G &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line 12 -->
+    <div class="lyric-line">
+      <div class="lyric-border" style="background:var(--green);"></div>
+      <div class="lyric-content">
+        <div class="lyric-text">Refusing silence, making noise</div>
+        <div class="lyric-annotation">
+          <span style="color:var(--green);">soaring</span>
+          <span>ff</span>
+          <span>C &middot; beat 1</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right: Piano Roll Spec + References -->
+  <div class="col-right">
+    <div>
+      <div class="panel-title">Piano Roll Spec</div>
+      <div class="panel-sub">Target arrangement &mdash; Round 4</div>
+      <div class="piano-roll">
+        <div class="piano-row">
+          <span class="piano-label">Vox</span>
+          <div class="piano-grid">
+            <div class="piano-bar" style="background:var(--vocal);width:0%;margin-left:25%;width:75%;opacity:0.7;position:absolute;"></div>
+            <div style="position:absolute;left:25%;width:75%;height:100%;background:var(--vocal);opacity:0.6;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="piano-row">
+          <span class="piano-label">Bass</span>
+          <div class="piano-grid">
+            <div style="position:absolute;left:0;width:100%;height:100%;background:var(--bass);opacity:0.5;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="piano-row">
+          <span class="piano-label">Drums</span>
+          <div class="piano-grid">
+            <div style="position:absolute;left:0;width:100%;height:100%;background:var(--drums);opacity:0.4;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="piano-row">
+          <span class="piano-label">Keys</span>
+          <div class="piano-grid">
+            <div style="position:absolute;left:0;width:60%;height:100%;background:var(--keys);opacity:0.4;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="piano-row">
+          <span class="piano-label">Synth</span>
+          <div class="piano-grid">
+            <div style="position:absolute;left:40%;width:60%;height:100%;background:var(--synth);opacity:0.5;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div class="piano-row">
+          <span class="piano-label">Gtr</span>
+          <div class="piano-grid">
+            <div style="position:absolute;left:50%;width:50%;height:100%;background:var(--guitar);opacity:0.3;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:8px;color:#444;margin-top:4px;padding:0 28px 0 34px;">
+          <span>0:00</span><span>0:55</span><span>1:50</span><span>2:45</span><span>3:42</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">Target Spec</div>
+      <table class="spec-table">
+        <tr><td>Tempo</td><td>92 BPM (steady)</td></tr>
+        <tr><td>Key</td><td>Am (natural minor)</td></tr>
+        <tr><td>Time Sig</td><td>4/4</td></tr>
+        <tr><td>Chords</td><td>Am - G - C - F (verse)<br>C - F - Am - G (chorus)</td></tr>
+        <tr><td>Structure</td><td>V1 - C - V2 - C - Bridge - C</td></tr>
+        <tr><td>Duration</td><td>3:42 target</td></tr>
+        <tr><td>Dynamics</td><td>mp (verse) &rarr; ff (chorus)</td></tr>
+        <tr><td>Vocal</td><td>Horus Warm &middot; baritone</td></tr>
+        <tr><td>MIR Target</td><td>LUFS -14, Energy 0.72</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <div class="panel-title">Reference Tracks</div>
+      <div class="ref-track">
+        <div class="ref-art" style="background:radial-gradient(circle at 30% 40%,#7c3aed44,#111);"></div>
+        <div class="ref-info">
+          <div class="ref-title">Everything In Its Right Place</div>
+          <div class="ref-artist">Radiohead</div>
+        </div>
+        <div class="ref-match">87%</div>
+      </div>
+      <div class="ref-track">
+        <div class="ref-art" style="background:radial-gradient(circle at 70% 60%,#4a9eff44,#111);"></div>
+        <div class="ref-info">
+          <div class="ref-title">Teardrop</div>
+          <div class="ref-artist">Massive Attack</div>
+        </div>
+        <div class="ref-match">82%</div>
+      </div>
+      <div class="ref-track">
+        <div class="ref-art" style="background:radial-gradient(circle at 50% 50%,#ffaa0033,#111);"></div>
+        <div class="ref-info">
+          <div class="ref-title">Glory Box</div>
+          <div class="ref-artist">Portishead</div>
+        </div>
+        <div class="ref-match">79%</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-title">Delta Breakdown</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:#666;width:50px;">Tempo</span>
+          <div style="flex:1;height:4px;background:#222;border-radius:2px;overflow:hidden;">
+            <div style="width:92%;height:100%;background:var(--green);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:10px;color:var(--green);">0.08</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:#666;width:50px;">Key</span>
+          <div style="flex:1;height:4px;background:#222;border-radius:2px;overflow:hidden;">
+            <div style="width:95%;height:100%;background:var(--green);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:10px;color:var(--green);">0.05</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:#666;width:50px;">Chords</span>
+          <div style="flex:1;height:4px;background:#222;border-radius:2px;overflow:hidden;">
+            <div style="width:72%;height:100%;background:var(--amber);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:10px;color:var(--amber);">0.28</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:#666;width:50px;">Dynamics</span>
+          <div style="flex:1;height:4px;background:#222;border-radius:2px;overflow:hidden;">
+            <div style="width:78%;height:100%;background:var(--amber);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:10px;color:var(--amber);">0.22</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:#666;width:50px;">Timing</span>
+          <div style="flex:1;height:4px;background:#222;border-radius:2px;overflow:hidden;">
+            <div style="width:88%;height:100%;background:var(--green);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:10px;color:var(--green);">0.12</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

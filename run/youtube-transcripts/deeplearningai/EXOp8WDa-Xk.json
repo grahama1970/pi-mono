@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EXOp8WDa-Xk",
+    "language": "en",
+    "took_ms": 8643,
+    "method": null,
+    "title": "New course: Pydantic for LLM Workflows",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250730",
+    "duration_sec": 202,
+    "description": "Learn more: https://bit.ly/4fepmFI\n\nIn Pydantic for LLM Workflows, taught by Ryan Keenan, Director of the Learning Experience Lab at DeepLearning.AI, you’ll learn to bring structure, reliability, and validation to the data in your LLM-powered applications using Pydantic, a Python library for data validation. \n\nLLMs naturally provide free-form text responses, which works for unstructured generation, such as article summaries or brainstorming exercises. However, when you're building an LLM into a larger software system, in which you want to pass data from an LLM response to the next component of the system in a predictable way, that's when structured output can be a big help.\n\nIn this course, you’ll learn to move beyond free-form LLM responses and generate structured outputs that are easier to process and connect to other tools.\n\nYou’ll begin by understanding what structured output is and why it matters when building applications that use LLMs. Through the example of a customer support assistant, you’ll learn different methods of using Pydantic to ensure an LLM gives you the expected data and format you need in your application. These methods ensure that the LLM’s responses are complete, correctly formatted, and ready to use, whether that means creating support tickets, triggering tools, or routing requests.\n\nThroughout the course, you’ll gain core data validation skills that can be helpful in any software system you build, where you want to pass data from one component to the next. You’ll also learn how modern frameworks and LLM providers support structured outputs and function calls using Pydantic under the hood.\n\nIn detail, you’ll:\n\n- Learn the basics of Pydantic, and practice different approaches for getting structured data from Pydantic models.\n- Validate user input, catching issues like badly formatted emails or missing fields before they cause problems.\n- Use Pydantic data models directly in your API calls to different LLM providers and agent frameworks as a reliable way to get a structured response.\n- Combine structured outputs and tool-calling with Pydantic models in your application.\n\nPydantic is one of the most popular data validation frameworks out there. It sees over 300 million downloads a month, making it also one of the most popular Python packages, and that's because data validation is at the core of any application.\n\nBy the end of the course, you’ll be able to build LLM-powered applications where every step is structured, validated, and ready to plug into your workflow.\n\nEnroll for free: https://bit.ly/4fepmFI",
+    "view_count": 5124
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EXOp8WDa-Xk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

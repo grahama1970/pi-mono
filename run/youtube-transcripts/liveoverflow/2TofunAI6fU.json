@@ -1,0 +1,1318 @@
+{
+  "meta": {
+    "video_id": "2TofunAI6fU",
+    "language": "en",
+    "took_ms": 1952,
+    "method": "direct",
+    "title": "The Secret step-by-step Guide to learn Hacking",
+    "channel": "LiveOverflow",
+    "upload_date": "20180406",
+    "duration_sec": 881,
+    "description": "totally clickbait. but also not clickbait. I don't know where to start hacking, there is no guide to learn this stuff. But I hope you still have a plan now!\n\nGet the LiveOverflow Font: https://shop.liveoverflow.com (advertisement)\n\nCheckout: https://liveoverflow.com/start-hacking\nHow to learn hacking - https://www.youtube.com/watch?v=iKXd9zW1OuI\n\n\nStuff that looks cool:\n\ncrypto challenges - https://cryptopals.com/\nwargames - https://overthewire.org\nother exploit challenges - http://pwnable.kr/\nbasics of exploitation (+ my playlists) - https://exploit.education/protostar/\nmath puzzles with programming - https://projecteuler.net\nbreak ethereum smart contracts - https://ethernaut.zeppelin.solutions/\n\n\nTry something new:\n\ncreate an android app - https://developer.android.com/training/basics/firstapp/index.html\ncreate a website with python - http://flask.pocoo.org/\ndo some nice animations - https://processing.org/tutorials/\nmake some LEDs blink - https://www.arduino.cc/en/Guide/HomePage\n\n\nOther Channels:\n\nGynvaelEN - https://www.youtube.com/channel/UCCkVMojdBWS-JtH7TliWkVg\nMurmusCTF - https://www.youtube.com/channel/UCUB9vOGEUpw7IKJRoR4PK-A\nMalwareAnalysisForHedgehogs - https://www.youtube.com/channel/UCVFXrUwuWxNlm6UNZtBLJ-A\nhasherezade - https://www.youtube.com/channel/UCNWVswPNgn5kutPNa5sprkg\nIppSec - https://www.youtube.com/channel/UCa6eh7gCkpPo5XXUDfygQQA\nJohn Hammond - https://www.youtube.com/user/RootOfTheNull\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/",
+    "view_count": 3399187
+  },
+  "transcript": [
+    {
+      "text": "“Where should I start?",
+      "start": 0.21,
+      "duration": 1.28
+    },
+    {
+      "text": "Can you guide me?",
+      "start": 1.49,
+      "duration": 1.02
+    },
+    {
+      "text": "What resources can you recommend me?”",
+      "start": 2.51,
+      "duration": 2.05
+    },
+    {
+      "text": "I get this asked a lot.",
+      "start": 4.56,
+      "duration": 2.12
+    },
+    {
+      "text": "TLDR: I don’t know.",
+      "start": 6.68,
+      "duration": 2.55
+    },
+    {
+      "text": "I genuinely don’t know.",
+      "start": 9.23,
+      "duration": 2.56
+    },
+    {
+      "text": "Before I tell you my thoughts I have to mention\nthat I’m young.",
+      "start": 11.79,
+      "duration": 3.42
+    },
+    {
+      "text": "I have very limited exposure to the industry,\nI have not had different jobs in this field.",
+      "start": 15.21,
+      "duration": 5.459
+    },
+    {
+      "text": "And so I really don’t know how to transition\nfrom another job into it.",
+      "start": 20.669,
+      "duration": 3.86
+    },
+    {
+      "text": "What certifications to get, how to balance\na full time job and a family.",
+      "start": 24.529,
+      "duration": 4.26
+    },
+    {
+      "text": "Anything country specific.",
+      "start": 28.789,
+      "duration": 1.12
+    },
+    {
+      "text": "I really can’t help you with that because\nI have 0 experience.",
+      "start": 29.909,
+      "duration": 4.181
+    },
+    {
+      "text": "All I can look at is my life and tell you\nmy thoughts about it.",
+      "start": 34.09,
+      "duration": 3.66
+    },
+    {
+      "text": "If you disagree with what I will say, or it\ndoesn’t help you, then you need to ask somebody",
+      "start": 37.75,
+      "duration": 4.85
+    },
+    {
+      "text": "else.",
+      "start": 42.6,
+      "duration": 1.0
+    },
+    {
+      "text": "I don’t have the answer.",
+      "start": 43.6,
+      "duration": 1.0
+    },
+    {
+      "text": "But I think there are a lot of misconceptions\nabout how to get into the security field.",
+      "start": 44.6,
+      "duration": 4.68
+    },
+    {
+      "text": "And I try to explain now why.",
+      "start": 49.28,
+      "duration": 2.85
+    },
+    {
+      "text": "Maybe you think there is some kind of shortcut.",
+      "start": 52.13,
+      "duration": 2.35
+    },
+    {
+      "text": "Or at least a very efficient path.",
+      "start": 54.48,
+      "duration": 2.099
+    },
+    {
+      "text": "You hope a professional or experienced person\ncan easily tell you about a clear path to",
+      "start": 56.579,
+      "duration": 5.41
+    },
+    {
+      "text": "success.",
+      "start": 61.989,
+      "duration": 1.431
+    },
+    {
+      "text": "I certainly had exactly those thoughts several\nyears ago.",
+      "start": 63.42,
+      "duration": 3.7
+    },
+    {
+      "text": "I got frustrated why nobody would write down\na clear guide.",
+      "start": 67.12,
+      "duration": 3.929
+    },
+    {
+      "text": "I felt somewhat entitled that I have good\nexperience already, I just need some guidance",
+      "start": 71.049,
+      "duration": 4.311
+    },
+    {
+      "text": "or mentoring.",
+      "start": 75.36,
+      "duration": 1.189
+    },
+    {
+      "text": "But the truth is: there is no efficient path\nTruth is: it just takes years of experience",
+      "start": 76.549,
+      "duration": 7.081
+    },
+    {
+      "text": "So if you think that somehow it would be easier\nwith a study plan, it’s not.",
+      "start": 83.63,
+      "duration": 4.43
+    },
+    {
+      "text": "So forget it.",
+      "start": 88.06,
+      "duration": 1.08
+    },
+    {
+      "text": "I’m sure you know this interview question:\n“what advice would you give your younger",
+      "start": 89.14,
+      "duration": 4.589
+    },
+    {
+      "text": "self?”",
+      "start": 93.729,
+      "duration": 1.161
+    },
+    {
+      "text": "And for me, I don’t know.",
+      "start": 94.89,
+      "duration": 1.99
+    },
+    {
+      "text": "While certainly thinking differently at the\ntime, in retrospect, I don’t think there",
+      "start": 96.88,
+      "duration": 4.059
+    },
+    {
+      "text": "was anything bad or inefficient about the\npath I took.",
+      "start": 100.939,
+      "duration": 4.091
+    },
+    {
+      "text": "Of course I could help my younger self understand\ncertain concepts better and faster, and that’s",
+      "start": 105.03,
+      "duration": 4.68
+    },
+    {
+      "text": "what I try to do with the videos, the videos\ncover exactly what I would tell my past self,",
+      "start": 109.71,
+      "duration": 4.71
+    },
+    {
+      "text": "but I couldn’t lay out a path of do X, Y,\nZ.",
+      "start": 114.42,
+      "duration": 4.47
+    },
+    {
+      "text": "There is no secret step by step guide!",
+      "start": 118.89,
+      "duration": 2.049
+    },
+    {
+      "text": "It’s not a straight path, but a web of interconnected\ntopics, layers and dependencies and you are",
+      "start": 120.939,
+      "duration": 6.511
+    },
+    {
+      "text": "free to walk and jump between stuff however\nyou want.",
+      "start": 127.45,
+      "duration": 3.3
+    },
+    {
+      "text": "Truth is: anything you do.",
+      "start": 130.75,
+      "duration": 2.08
+    },
+    {
+      "text": "Any tutorial you follow.",
+      "start": 132.83,
+      "duration": 1.58
+    },
+    {
+      "text": "Any project you start and never finish.",
+      "start": 134.41,
+      "duration": 2.77
+    },
+    {
+      "text": "Any dead-end you head down.",
+      "start": 137.18,
+      "duration": 1.9
+    },
+    {
+      "text": "It’s not wasted.",
+      "start": 139.08,
+      "duration": 1.33
+    },
+    {
+      "text": "It’s all experience that is accumulating\nover time.",
+      "start": 140.41,
+      "duration": 4.1
+    },
+    {
+      "text": "If I learned anything about Hacking.",
+      "start": 144.51,
+      "duration": 1.94
+    },
+    {
+      "text": "What it means, what it is, then at least to\nme, it’s not really something I can get",
+      "start": 146.45,
+      "duration": 4.5
+    },
+    {
+      "text": "a hold on.",
+      "start": 150.95,
+      "duration": 1.0
+    },
+    {
+      "text": "It’s an abstract artistic and broad term\nfor many different things.",
+      "start": 151.95,
+      "duration": 4.56
+    },
+    {
+      "text": "Truth is: Hacking is just learning IT stuff,\nbut kinda in an artistic weird creative way.",
+      "start": 156.51,
+      "duration": 6.65
+    },
+    {
+      "text": "Maybe now you say, well tell us about your\npath then?",
+      "start": 163.16,
+      "duration": 3.16
+    },
+    {
+      "text": "Clearly it got me somewhere right, maybe that’s\nthe ultimate guide.",
+      "start": 166.32,
+      "duration": 3.89
+    },
+    {
+      "text": "While there are a few things I can mention,\nmy path is also full of just luck.",
+      "start": 170.21,
+      "duration": 4.8
+    },
+    {
+      "text": "Opportunities I have never planned for.",
+      "start": 175.01,
+      "duration": 2.66
+    },
+    {
+      "text": "So it’s also somewhat not applicable to\nanybody else.",
+      "start": 177.67,
+      "duration": 3.71
+    },
+    {
+      "text": "Nevertheless, here a few checkpoints that\nmaybe give you some idea.",
+      "start": 181.38,
+      "duration": 4.49
+    },
+    {
+      "text": "As a kid I started with some HTML\nThen I got a book about Visual Basic Script.",
+      "start": 185.87,
+      "duration": 4.56
+    },
+    {
+      "text": "And I wanted to write an operating system\nin it.",
+      "start": 190.43,
+      "duration": 2.81
+    },
+    {
+      "text": "If you have ever written Visual Basic Script,\nit’s a bit like Javascript, so you know",
+      "start": 193.24,
+      "duration": 3.6
+    },
+    {
+      "text": "how ridiculous that idea was.",
+      "start": 196.84,
+      "duration": 2.36
+    },
+    {
+      "text": "But that didn’t hold me back, I asked this\nquestion in a forum and was called a dumb",
+      "start": 199.2,
+      "duration": 3.64
+    },
+    {
+      "text": "TROLL.",
+      "start": 202.84,
+      "duration": 1.44
+    },
+    {
+      "text": "I was really sad that day, because I was just\na kid trying to learn something and I had",
+      "start": 204.28,
+      "duration": 3.87
+    },
+    {
+      "text": "no idea what it means to have an OS.",
+      "start": 208.15,
+      "duration": 2.5
+    },
+    {
+      "text": "Anyway, at some point I got into web programming\nwith php.",
+      "start": 210.65,
+      "duration": 3.89
+    },
+    {
+      "text": "So I had to learn actual HTML, CSS, javascript,\nphp and mysql.",
+      "start": 214.54,
+      "duration": 4.72
+    },
+    {
+      "text": "I started and abandoned several browsergames\nprojects.",
+      "start": 219.26,
+      "duration": 4.5
+    },
+    {
+      "text": "Then I heard about sql injection and did a\nschool project on it.",
+      "start": 223.76,
+      "duration": 3.61
+    },
+    {
+      "text": "Here, I wrote a test application and explained\nhow injections work.",
+      "start": 227.37,
+      "duration": 4.5
+    },
+    {
+      "text": "I started to learn java and got into android\napp programming",
+      "start": 231.87,
+      "duration": 3.37
+    },
+    {
+      "text": "Did some C++ and a bit of game programming.",
+      "start": 235.24,
+      "duration": 3.05
+    },
+    {
+      "text": "Made a shitty monopoly clone.",
+      "start": 238.29,
+      "duration": 1.58
+    },
+    {
+      "text": "Then I did some Google Wave gadgets, does\nanybody remember that.",
+      "start": 239.87,
+      "duration": 4.18
+    },
+    {
+      "text": "I was just a dumb kid and my code was ugly\nbut my poll gadget got some attention from",
+      "start": 244.05,
+      "duration": 4.19
+    },
+    {
+      "text": "professionals.",
+      "start": 248.24,
+      "duration": 1.0
+    },
+    {
+      "text": "That was cool.",
+      "start": 249.24,
+      "duration": 1.0
+    },
+    {
+      "text": "I learned more computer science fundamentals\nin university.",
+      "start": 250.24,
+      "duration": 3.59
+    },
+    {
+      "text": "Data structures and algorithms.",
+      "start": 253.83,
+      "duration": 2.0
+    },
+    {
+      "text": "Learned about linux because I started to use\nit at work",
+      "start": 255.83,
+      "duration": 2.899
+    },
+    {
+      "text": "Joined a hackerspace and learned about arduinos\nand soldering",
+      "start": 258.729,
+      "duration": 3.9
+    },
+    {
+      "text": "And then I guess the major turning point,\nI discovered my first CTF, the stripe ctf,",
+      "start": 262.629,
+      "duration": 5.361
+    },
+    {
+      "text": "got hooked on wargames and other challenge\nsites.",
+      "start": 267.99,
+      "duration": 3.149
+    },
+    {
+      "text": "And essentially here I am now.",
+      "start": 271.139,
+      "duration": 1.801
+    },
+    {
+      "text": "And now I’m a freelancer doing security\ncode audits, pentesting, application security",
+      "start": 272.94,
+      "duration": 4.65
+    },
+    {
+      "text": "and that kind of stuff.",
+      "start": 277.59,
+      "duration": 1.32
+    },
+    {
+      "text": "And please don’t ask me how to get into\nfreelancing.I have no clue how to do it.",
+      "start": 278.91,
+      "duration": 3.629
+    },
+    {
+      "text": "I met a guy, who knew a guy, who recommended\nme and here I am.",
+      "start": 282.539,
+      "duration": 3.201
+    },
+    {
+      "text": "So that was not planned at all.",
+      "start": 285.74,
+      "duration": 2.34
+    },
+    {
+      "text": "And looking at my history, imagine that these\nare just large checkpoints.",
+      "start": 288.08,
+      "duration": 3.989
+    },
+    {
+      "text": "It’s not on a straight path.",
+      "start": 292.069,
+      "duration": 1.82
+    },
+    {
+      "text": "It’s traversing through a jungle of different\ntopics.",
+      "start": 293.889,
+      "duration": 2.96
+    },
+    {
+      "text": "it’s kind of like a fractal or the coastline\nparadox, if you zoom in you uncover even more",
+      "start": 296.849,
+      "duration": 5.451
+    },
+    {
+      "text": "complex lines.",
+      "start": 302.3,
+      "duration": 1.04
+    },
+    {
+      "text": "There is a lot of stuff I did not mentioned\nin this highlevel view.",
+      "start": 303.34,
+      "duration": 3.88
+    },
+    {
+      "text": "Like making RPG Maker games, where I was first\nexposed to if-else logic blocks.",
+      "start": 307.22,
+      "duration": 4.199
+    },
+    {
+      "text": "Or modding my calculator with a window and\nLEDs.",
+      "start": 311.419,
+      "duration": 3.27
+    },
+    {
+      "text": "one of my first exposures to electronics.",
+      "start": 314.689,
+      "duration": 3.04
+    },
+    {
+      "text": "If you ask me where to start, where should\nI point you to?",
+      "start": 317.729,
+      "duration": 3.731
+    },
+    {
+      "text": "Is the start the first HTML line wote as a\nyoung kid?",
+      "start": 321.46,
+      "duration": 3.07
+    },
+    {
+      "text": "Or is the start when I had already years of\nprogramming experience and discovered CTFs.",
+      "start": 324.53,
+      "duration": 4.71
+    },
+    {
+      "text": "I have no answer for you, you have to figure\nthat out yourself.",
+      "start": 329.24,
+      "duration": 3.679
+    },
+    {
+      "text": "But one truth is, I didn’t discover any\nsecrets.",
+      "start": 332.919,
+      "duration": 3.791
+    },
+    {
+      "text": "There is no anonymous secret hacker organization\nwith forbidden knowledge.",
+      "start": 336.71,
+      "duration": 5.56
+    },
+    {
+      "text": "I simply apply the knowledge that I gained\nabout computers over the years.",
+      "start": 342.27,
+      "duration": 4.079
+    },
+    {
+      "text": "You know, Programmers use the same knowledge\nbut just think differently.",
+      "start": 346.349,
+      "duration": 3.651
+    },
+    {
+      "text": "they think: “how can I make it work”\nAnd a hacker thinks: “how should you implement",
+      "start": 350.0,
+      "duration": 4.55
+    },
+    {
+      "text": "it, so that it’s secure, and what could\na lazy programmer do wrong?”",
+      "start": 354.55,
+      "duration": 4.26
+    },
+    {
+      "text": "Truth is: the more you understand how something\nis built, you can also think about how it",
+      "start": 358.81,
+      "duration": 3.97
+    },
+    {
+      "text": "could break\nSo I’d say 95% of what I’m doing is just",
+      "start": 362.78,
+      "duration": 4.479
+    },
+    {
+      "text": "learning about how computers work.",
+      "start": 367.259,
+      "duration": 2.071
+    },
+    {
+      "text": "And by that I mean learning a ton of different\nprogramming languages, frameworks, concepts,",
+      "start": 369.33,
+      "duration": 4.13
+    },
+    {
+      "text": "and so forth.",
+      "start": 373.46,
+      "duration": 1.79
+    },
+    {
+      "text": "Over the years I gained a very good broad\nbasic understanding from low level logic gates,",
+      "start": 375.25,
+      "duration": 4.84
+    },
+    {
+      "text": "over simple circuits, to PCBs and chips, microcontrollers,\nlow-level programming, assembler, c, firmware,",
+      "start": 380.09,
+      "duration": 7.03
+    },
+    {
+      "text": "operating systems, higher level languages,\nlanguage and programming concepts, data structures,",
+      "start": 387.12,
+      "duration": 4.359
+    },
+    {
+      "text": "file structures, 3D programming, networking,\ncryptography, servers, server administration,",
+      "start": 391.479,
+      "duration": 4.37
+    },
+    {
+      "text": "websites, frameworks, databases, web apps,\nmobile apps, math, machine learning, the list",
+      "start": 395.849,
+      "duration": 5.12
+    },
+    {
+      "text": "is endless.",
+      "start": 400.969,
+      "duration": 1.0
+    },
+    {
+      "text": "And you see, nothing on this list screams\n“hacking” or “security”.",
+      "start": 401.969,
+      "duration": 5.32
+    },
+    {
+      "text": "Because this knowledge is just the base requirement,\nthe tool that I use to do my job as a “professional",
+      "start": 407.289,
+      "duration": 5.931
+    },
+    {
+      "text": "hacker”.",
+      "start": 413.22,
+      "duration": 1.02
+    },
+    {
+      "text": "Like I said, it’s not secret knowledge.",
+      "start": 414.24,
+      "duration": 1.799
+    },
+    {
+      "text": "It’s everything a programmer, sysadmin or\nwhoever would learn, just applied a bit differently.",
+      "start": 416.039,
+      "duration": 6.261
+    },
+    {
+      "text": "So I’m thinking: “what could go wrong.",
+      "start": 422.3,
+      "duration": 1.89
+    },
+    {
+      "text": "How can files be exposed.",
+      "start": 424.19,
+      "duration": 1.409
+    },
+    {
+      "text": "How could I gain access without a password.",
+      "start": 425.599,
+      "duration": 1.87
+    },
+    {
+      "text": "How could I modify sth that shouldn’t be\nmodifiable, how can I manipulate the output”",
+      "start": 427.469,
+      "duration": 4.29
+    },
+    {
+      "text": "and so forth.",
+      "start": 431.759,
+      "duration": 1.171
+    },
+    {
+      "text": "And maybe it’s surprising to you, but that’s\nnot different from what a programmer or IT",
+      "start": 432.93,
+      "duration": 4.16
+    },
+    {
+      "text": "architect would do.",
+      "start": 437.09,
+      "duration": 1.15
+    },
+    {
+      "text": "They use the exact same technology just have\ndifferent thinking patterns.",
+      "start": 438.24,
+      "duration": 4.209
+    },
+    {
+      "text": "Different problems they try to solve: So they\nthink “how could I use these things to build",
+      "start": 442.449,
+      "duration": 4.59
+    },
+    {
+      "text": "a social network, how could I build a time-laps\ncamera, how could I make a fun game”.",
+      "start": 447.039,
+      "duration": 6.12
+    },
+    {
+      "text": "Different problems, different goals, but based\non the same knowledge.",
+      "start": 453.159,
+      "duration": 3.771
+    },
+    {
+      "text": "And the security focused stuff, like conference\ntalks, CTF writeups, trainings, academic papers,",
+      "start": 456.93,
+      "duration": 6.169
+    },
+    {
+      "text": "blog posts, are essentially just sharing cool\nideas how to apply this knowledge in a security",
+      "start": 463.099,
+      "duration": 5.4
+    },
+    {
+      "text": "focused way.",
+      "start": 468.499,
+      "duration": 1.401
+    },
+    {
+      "text": "And that is not different to a programmer\nsharing techniques on how to handle huge dataset",
+      "start": 469.9,
+      "duration": 4.57
+    },
+    {
+      "text": "efficiently, or how to implement a game AI.",
+      "start": 474.47,
+      "duration": 2.77
+    },
+    {
+      "text": "Don’t think of hacking as anything crazy\nor special.",
+      "start": 477.24,
+      "duration": 2.5
+    },
+    {
+      "text": "It is based on exactly the same thing just\nwith a bit different angle.",
+      "start": 479.74,
+      "duration": 4.519
+    },
+    {
+      "text": "Breaking not building.",
+      "start": 484.259,
+      "duration": 2.53
+    },
+    {
+      "text": "So to summarise: hacking requires a lot of\nknowledge about computers.",
+      "start": 486.789,
+      "duration": 4.451
+    },
+    {
+      "text": "And I say generic computers, because it could\nliterally mean anything IT related.",
+      "start": 491.24,
+      "duration": 4.899
+    },
+    {
+      "text": "And learning a wide variety of technologies\nand gaining experience and knowledge to draw",
+      "start": 496.139,
+      "duration": 4.74
+    },
+    {
+      "text": "from, just takes time.",
+      "start": 500.879,
+      "duration": 1.75
+    },
+    {
+      "text": "It takes years.",
+      "start": 502.629,
+      "duration": 1.6
+    },
+    {
+      "text": "So any game you develop, any minecraft redstone\ncircuits you build, any boring sorting algorithm,",
+      "start": 504.229,
+      "duration": 5.86
+    },
+    {
+      "text": "any math class any mobile app you start and\nabandon, anything you do is knowledge you",
+      "start": 510.089,
+      "duration": 4.83
+    },
+    {
+      "text": "accumulate and eventually can use.",
+      "start": 514.919,
+      "duration": 3.141
+    },
+    {
+      "text": "So one general advice I give is, it takes\na lot of time, so make sure you have fun!",
+      "start": 518.06,
+      "duration": 6.58
+    },
+    {
+      "text": "Enjoy learning about computers.",
+      "start": 524.64,
+      "duration": 1.75
+    },
+    {
+      "text": "Enjoy programming.",
+      "start": 526.39,
+      "duration": 1.4
+    },
+    {
+      "text": "Enjoy following tutorials.",
+      "start": 527.79,
+      "duration": 1.3
+    },
+    {
+      "text": "Enjoy learning a new language.",
+      "start": 529.09,
+      "duration": 2.31
+    },
+    {
+      "text": "Whatever it is that you have fun with, it\nwill keep you motivated over the years.",
+      "start": 531.4,
+      "duration": 4.2
+    },
+    {
+      "text": "Don’t get me wrong.",
+      "start": 535.6,
+      "duration": 1.49
+    },
+    {
+      "text": "You don’t have to first program for years\nand then get into security.",
+      "start": 537.09,
+      "duration": 3.57
+    },
+    {
+      "text": "You can do it in parallel.",
+      "start": 540.66,
+      "duration": 2.201
+    },
+    {
+      "text": "When you write a android app, look into the\nofficial android security tips.",
+      "start": 542.861,
+      "duration": 4.739
+    },
+    {
+      "text": "Think about what could go wrong.",
+      "start": 547.6,
+      "duration": 1.84
+    },
+    {
+      "text": "What happens if you don’t follow it.",
+      "start": 549.44,
+      "duration": 2.46
+    },
+    {
+      "text": "Play around with that.",
+      "start": 551.9,
+      "duration": 1.59
+    },
+    {
+      "text": "Maybe at some point you want to build a web\napi to be used by the app, and suddenly you",
+      "start": 553.49,
+      "duration": 4.15
+    },
+    {
+      "text": "learn web development and server administration.",
+      "start": 557.64,
+      "duration": 2.72
+    },
+    {
+      "text": "Then you have to debug your connection, you\nlook into web proxys and how that can be used",
+      "start": 560.36,
+      "duration": 3.5
+    },
+    {
+      "text": "to analyse and test stuff.",
+      "start": 563.86,
+      "duration": 1.99
+    },
+    {
+      "text": "This is essentially the process you will be\ndoing for the next few years.",
+      "start": 565.85,
+      "duration": 3.77
+    },
+    {
+      "text": "And that’s what I do all the time.",
+      "start": 569.62,
+      "duration": 2.38
+    },
+    {
+      "text": "You know the thought of being able to hack\nan iphone, a gaming console or banking terminal",
+      "start": 572.0,
+      "duration": 4.62
+    },
+    {
+      "text": "is motivating, but good chance is that you\nare just very very far away from that.",
+      "start": 576.62,
+      "duration": 5.06
+    },
+    {
+      "text": "I’m at least not there yet.",
+      "start": 581.68,
+      "duration": 1.75
+    },
+    {
+      "text": "I failed with my nintendo switch hack attempt.",
+      "start": 583.43,
+      "duration": 2.63
+    },
+    {
+      "text": "I barely understood the surface.",
+      "start": 586.06,
+      "duration": 1.57
+    },
+    {
+      "text": "But that’s fine, I keep learning.",
+      "start": 587.63,
+      "duration": 2.6
+    },
+    {
+      "text": "And I have a ton of fun with learning basics\nand learning a new programming language and",
+      "start": 590.23,
+      "duration": 3.83
+    },
+    {
+      "text": "learning new technologies.",
+      "start": 594.06,
+      "duration": 1.69
+    },
+    {
+      "text": "And in a few years, in two more console generations,\nmaybe I know enough to join one of those teams.",
+      "start": 595.75,
+      "duration": 6.55
+    },
+    {
+      "text": "I know you might still feel frustrated, where\nto start.",
+      "start": 602.3,
+      "duration": 3.46
+    },
+    {
+      "text": "But if you feel frustrated, then that’s\nprobably because you picked a target way too",
+      "start": 605.76,
+      "duration": 4.22
+    },
+    {
+      "text": "large for you.",
+      "start": 609.98,
+      "duration": 1.34
+    },
+    {
+      "text": "If you don’t know the steps you need to\ntake, it’s too far away to see how to get",
+      "start": 611.32,
+      "duration": 4.15
+    },
+    {
+      "text": "there.",
+      "start": 615.47,
+      "duration": 1.0
+    },
+    {
+      "text": "So try to break that goal up.",
+      "start": 616.47,
+      "duration": 2.45
+    },
+    {
+      "text": "For example if you want to get into bug bounties\nand you have no clue how to do that.",
+      "start": 618.92,
+      "duration": 5.84
+    },
+    {
+      "text": "Analyse it.",
+      "start": 624.76,
+      "duration": 1.0
+    },
+    {
+      "text": "Sit down and try to uncover the underlying\ntopics.",
+      "start": 625.76,
+      "duration": 3.79
+    },
+    {
+      "text": "For example bug bounties are usually web security.",
+      "start": 629.55,
+      "duration": 3.78
+    },
+    {
+      "text": "Web security means hacking websites.",
+      "start": 633.33,
+      "duration": 2.62
+    },
+    {
+      "text": "Websites can be written in a ton of different\nlanguages.",
+      "start": 635.95,
+      "duration": 2.44
+    },
+    {
+      "text": "So start with one, learn php, learn what can\ngo wrong with php.",
+      "start": 638.39,
+      "duration": 4.43
+    },
+    {
+      "text": "Learn about different php frameworks.",
+      "start": 642.82,
+      "duration": 2.43
+    },
+    {
+      "text": "Learn about different databases.",
+      "start": 645.25,
+      "duration": 1.83
+    },
+    {
+      "text": "And with “learn about” I mean, write your\nown test websites, use the frameworks, just",
+      "start": 647.08,
+      "duration": 4.17
+    },
+    {
+      "text": "play around with it and gain experience.",
+      "start": 651.25,
+      "duration": 2.48
+    },
+    {
+      "text": "When you get bored with php, look into python.",
+      "start": 653.73,
+      "duration": 2.73
+    },
+    {
+      "text": "Learn about python flask and django.",
+      "start": 656.46,
+      "duration": 2.46
+    },
+    {
+      "text": "What can go wrong with python websites?",
+      "start": 658.92,
+      "duration": 2.03
+    },
+    {
+      "text": "What can go wrong with ruby websites.",
+      "start": 660.95,
+      "duration": 1.76
+    },
+    {
+      "text": "Do you see how the typical ruby, python and\nphp web security issues are super different,",
+      "start": 662.71,
+      "duration": 5.08
+    },
+    {
+      "text": "because they are different languages?",
+      "start": 667.79,
+      "duration": 1.83
+    },
+    {
+      "text": "Learn about javascript, learn about html and\nthen try to understand what XSS means.",
+      "start": 669.62,
+      "duration": 4.17
+    },
+    {
+      "text": "You see how that single topic just immediately\nexploded in so many sub categories, and here",
+      "start": 673.79,
+      "duration": 6.07
+    },
+    {
+      "text": "you have a list of stuff you can spend years\non.",
+      "start": 679.86,
+      "duration": 2.45
+    },
+    {
+      "text": "Ad it’s not a step by step path.",
+      "start": 682.31,
+      "duration": 2.12
+    },
+    {
+      "text": "It’s a collection of topics and you basically\njump around between them, and slowly understand",
+      "start": 684.43,
+      "duration": 5.04
+    },
+    {
+      "text": "them deeper and better.",
+      "start": 689.47,
+      "duration": 2.09
+    },
+    {
+      "text": "Over the years I have revisited the security\nof php websites and I always learn a bit more.",
+      "start": 691.56,
+      "duration": 4.96
+    },
+    {
+      "text": "And you can even go so deep to look into the\nactual php C source code.",
+      "start": 696.52,
+      "duration": 4.82
+    },
+    {
+      "text": "So this is what you have to do.",
+      "start": 701.34,
+      "duration": 1.62
+    },
+    {
+      "text": "Break it up, try to understand the layers\nthat build up whatever you want to do, and",
+      "start": 702.96,
+      "duration": 3.59
+    },
+    {
+      "text": "learn these layers.",
+      "start": 706.55,
+      "duration": 1.0
+    },
+    {
+      "text": "It’s a bit of research, but that’s part\nof it.",
+      "start": 707.55,
+      "duration": 2.86
+    },
+    {
+      "text": "And another thing I want to make clear, you\nwon’t find these things when searching for",
+      "start": 710.41,
+      "duration": 3.98
+    },
+    {
+      "text": "“hacking tutorials”.",
+      "start": 714.39,
+      "duration": 1.22
+    },
+    {
+      "text": "That’s something I had to learn.",
+      "start": 715.61,
+      "duration": 2.42
+    },
+    {
+      "text": "Truth is: most resources hackers use are regular\ndocumentation and programming resources.",
+      "start": 718.03,
+      "duration": 6.14
+    },
+    {
+      "text": "Hacking tutorials, like what I show you in\nvideos, is just showing you how to apply that",
+      "start": 724.17,
+      "duration": 4.13
+    },
+    {
+      "text": "stuff to security.",
+      "start": 728.3,
+      "duration": 1.6
+    },
+    {
+      "text": "You don’t need to rely on me or any other\nperson to write it up for you, you can do",
+      "start": 729.9,
+      "duration": 4.86
+    },
+    {
+      "text": "it yourself.",
+      "start": 734.76,
+      "duration": 1.09
+    },
+    {
+      "text": "In many many videos I’m not referencing\nany secret hacking book, I just simply open",
+      "start": 735.85,
+      "duration": 4.64
+    },
+    {
+      "text": "the official avr assembler reference, or look\ninto the php function documentation or look",
+      "start": 740.49,
+      "duration": 5.68
+    },
+    {
+      "text": "at the official linux manual pages.",
+      "start": 746.17,
+      "duration": 3.17
+    },
+    {
+      "text": "So let me summarize:\nNo!",
+      "start": 749.34,
+      "duration": 2.92
+    },
+    {
+      "text": "There is no clear easy path to learn this\nstuff and I can’t help you.",
+      "start": 752.26,
+      "duration": 4.73
+    },
+    {
+      "text": "There is no secret book or website to learn\nit.",
+      "start": 756.99,
+      "duration": 3.33
+    },
+    {
+      "text": "The more you understand computers, the more\nideas and understanding you have what can",
+      "start": 760.32,
+      "duration": 3.98
+    },
+    {
+      "text": "go wrong.",
+      "start": 764.3,
+      "duration": 1.28
+    },
+    {
+      "text": "Programming, abstract theory and so forth\nis important to understand computers",
+      "start": 765.58,
+      "duration": 5.5
+    },
+    {
+      "text": "And just have fun.",
+      "start": 771.08,
+      "duration": 1.68
+    },
+    {
+      "text": "If making games sounds fun, make games.",
+      "start": 772.76,
+      "duration": 2.73
+    },
+    {
+      "text": "It takes years to accumulate this knowledge,\nso make sure you enjoy the ride",
+      "start": 775.49,
+      "duration": 4.55
+    },
+    {
+      "text": "And one last thing I want to say.",
+      "start": 780.04,
+      "duration": 1.79
+    },
+    {
+      "text": "I make the videos in a way, I would have loved\nto watch them some years ago.",
+      "start": 781.83,
+      "duration": 3.64
+    },
+    {
+      "text": "Which means I already had experience with\nprogramming.",
+      "start": 785.47,
+      "duration": 3.34
+    },
+    {
+      "text": "So I guess my channel is not intended for\ncomplete programming beginners, but I still",
+      "start": 788.81,
+      "duration": 4.92
+    },
+    {
+      "text": "hope that what I just described helps you\nto get somehow started.",
+      "start": 793.73,
+      "duration": 3.69
+    },
+    {
+      "text": "And if you have some experience, just keep\nwatching my videos and take them as inspiration",
+      "start": 797.42,
+      "duration": 4.47
+    },
+    {
+      "text": "to look deeper or into different topics.",
+      "start": 801.89,
+      "duration": 2.64
+    },
+    {
+      "text": "You absolutely don’t have to understand\neverything, but catching one thought, or seeing",
+      "start": 804.53,
+      "duration": 3.29
+    },
+    {
+      "text": "one tool I use can be all the difference.",
+      "start": 807.82,
+      "duration": 2.94
+    },
+    {
+      "text": "And I hope the videos at least give you a\nrough idea how stuff works and you can research",
+      "start": 810.76,
+      "duration": 3.98
+    },
+    {
+      "text": "it once you actually need it.",
+      "start": 814.74,
+      "duration": 1.9
+    },
+    {
+      "text": "If you want some more guidance you can also\ncheckout my playlists.",
+      "start": 816.64,
+      "duration": 3.26
+    },
+    {
+      "text": "I have fairly long binary exploitation playlist,\nmostly based on exploit-exercises.com.",
+      "start": 819.9,
+      "duration": 6.05
+    },
+    {
+      "text": "But I also have some websecurity videos.",
+      "start": 825.95,
+      "duration": 1.81
+    },
+    {
+      "text": "Or just my CTF writeups.",
+      "start": 827.76,
+      "duration": 2.48
+    },
+    {
+      "text": "Like I said it’s not a clear path so just\nkeep jumping between topics and just have",
+      "start": 830.24,
+      "duration": 3.69
+    },
+    {
+      "text": "fun.",
+      "start": 833.93,
+      "duration": 1.0
+    },
+    {
+      "text": "Look into stuff, get frustrated, and then\nlook into other stuff.",
+      "start": 834.93,
+      "duration": 5.77
+    },
+    {
+      "text": "And otherwise, maybe look at overthewire,\npicoctf, ctftime.org, try out some bug bounties",
+      "start": 840.7,
+      "duration": 3.23
+    },
+    {
+      "text": "or just look at other programming youtube\nchannels and learn about something new.",
+      "start": 843.93,
+      "duration": 4.34
+    },
+    {
+      "text": "Make sure to check the description for links\nto stuff I can recommend.",
+      "start": 848.27,
+      "duration": 3.2
+    },
+    {
+      "text": "Anyway.",
+      "start": 851.47,
+      "duration": 1.0
+    },
+    {
+      "text": "always try to learn something new.",
+      "start": 852.47,
+      "duration": 1.26
+    },
+    {
+      "text": "And trust me, if you just stay curious and\nkeep looking into many different new things,",
+      "start": 853.73,
+      "duration": 4.53
+    },
+    {
+      "text": "in a few years, you will totally get there.",
+      "start": 858.26,
+      "duration": 2.29
+    },
+    {
+      "text": "Be patient.",
+      "start": 860.55,
+      "duration": 0.58
+    }
+  ],
+  "full_text": "“Where should I start? Can you guide me? What resources can you recommend me?” I get this asked a lot. TLDR: I don’t know. I genuinely don’t know. Before I tell you my thoughts I have to mention\nthat I’m young. I have very limited exposure to the industry,\nI have not had different jobs in this field. And so I really don’t know how to transition\nfrom another job into it. What certifications to get, how to balance\na full time job and a family. Anything country specific. I really can’t help you with that because\nI have 0 experience. All I can look at is my life and tell you\nmy thoughts about it. If you disagree with what I will say, or it\ndoesn’t help you, then you need to ask somebody else. I don’t have the answer. But I think there are a lot of misconceptions\nabout how to get into the security field. And I try to explain now why. Maybe you think there is some kind of shortcut. Or at least a very efficient path. You hope a professional or experienced person\ncan easily tell you about a clear path to success. I certainly had exactly those thoughts several\nyears ago. I got frustrated why nobody would write down\na clear guide. I felt somewhat entitled that I have good\nexperience already, I just need some guidance or mentoring. But the truth is: there is no efficient path\nTruth is: it just takes years of experience So if you think that somehow it would be easier\nwith a study plan, it’s not. So forget it. I’m sure you know this interview question:\n“what advice would you give your younger self?” And for me, I don’t know. While certainly thinking differently at the\ntime, in retrospect, I don’t think there was anything bad or inefficient about the\npath I took. Of course I could help my younger self understand\ncertain concepts better and faster, and that’s what I try to do with the videos, the videos\ncover exactly what I would tell my past self, but I couldn’t lay out a path of do X, Y,\nZ. There is no secret step by step guide! It’s not a straight path, but a web of interconnected\ntopics, layers and dependencies and you are free to walk and jump between stuff however\nyou want. Truth is: anything you do. Any tutorial you follow. Any project you start and never finish. Any dead-end you head down. It’s not wasted. It’s all experience that is accumulating\nover time. If I learned anything about Hacking. What it means, what it is, then at least to\nme, it’s not really something I can get a hold on. It’s an abstract artistic and broad term\nfor many different things. Truth is: Hacking is just learning IT stuff,\nbut kinda in an artistic weird creative way. Maybe now you say, well tell us about your\npath then? Clearly it got me somewhere right, maybe that’s\nthe ultimate guide. While there are a few things I can mention,\nmy path is also full of just luck. Opportunities I have never planned for. So it’s also somewhat not applicable to\nanybody else. Nevertheless, here a few checkpoints that\nmaybe give you some idea. As a kid I started with some HTML\nThen I got a book about Visual Basic Script. And I wanted to write an operating system\nin it. If you have ever written Visual Basic Script,\nit’s a bit like Javascript, so you know how ridiculous that idea was. But that didn’t hold me back, I asked this\nquestion in a forum and was called a dumb TROLL. I was really sad that day, because I was just\na kid trying to learn something and I had no idea what it means to have an OS. Anyway, at some point I got into web programming\nwith php. So I had to learn actual HTML, CSS, javascript,\nphp and mysql. I started and abandoned several browsergames\nprojects. Then I heard about sql injection and did a\nschool project on it. Here, I wrote a test application and explained\nhow injections work. I started to learn java and got into android\napp programming Did some C++ and a bit of game programming. Made a shitty monopoly clone. Then I did some Google Wave gadgets, does\nanybody remember that. I was just a dumb kid and my code was ugly\nbut my poll gadget got some attention from professionals. That was cool. I learned more computer science fundamentals\nin university. Data structures and algorithms. Learned about linux because I started to use\nit at work Joined a hackerspace and learned about arduinos\nand soldering And then I guess the major turning point,\nI discovered my first CTF, the stripe ctf, got hooked on wargames and other challenge\nsites. And essentially here I am now. And now I’m a freelancer doing security\ncode audits, pentesting, application security and that kind of stuff. And please don’t ask me how to get into\nfreelancing.I have no clue how to do it. I met a guy, who knew a guy, who recommended\nme and here I am. So that was not planned at all. And looking at my history, imagine that these\nare just large checkpoints. It’s not on a straight path. It’s traversing through a jungle of different\ntopics. it’s kind of like a fractal or the coastline\nparadox, if you zoom in you uncover even more complex lines. There is a lot of stuff I did not mentioned\nin this highlevel view. Like making RPG Maker games, where I was first\nexposed to if-else logic blocks. Or modding my calculator with a window and\nLEDs. one of my first exposures to electronics. If you ask me where to start, where should\nI point you to? Is the start the first HTML line wote as a\nyoung kid? Or is the start when I had already years of\nprogramming experience and discovered CTFs. I have no answer for you, you have to figure\nthat out yourself. But one truth is, I didn’t discover any\nsecrets. There is no anonymous secret hacker organization\nwith forbidden knowledge. I simply apply the knowledge that I gained\nabout computers over the years. You know, Programmers use the same knowledge\nbut just think differently. they think: “how can I make it work”\nAnd a hacker thinks: “how should you implement it, so that it’s secure, and what could\na lazy programmer do wrong?” Truth is: the more you understand how something\nis built, you can also think about how it could break\nSo I’d say 95% of what I’m doing is just learning about how computers work. And by that I mean learning a ton of different\nprogramming languages, frameworks, concepts, and so forth. Over the years I gained a very good broad\nbasic understanding from low level logic gates, over simple circuits, to PCBs and chips, microcontrollers,\nlow-level programming, assembler, c, firmware, operating systems, higher level languages,\nlanguage and programming concepts, data structures, file structures, 3D programming, networking,\ncryptography, servers, server administration, websites, frameworks, databases, web apps,\nmobile apps, math, machine learning, the list is endless. And you see, nothing on this list screams\n“hacking” or “security”. Because this knowledge is just the base requirement,\nthe tool that I use to do my job as a “professional hacker”. Like I said, it’s not secret knowledge. It’s everything a programmer, sysadmin or\nwhoever would learn, just applied a bit differently. So I’m thinking: “what could go wrong. How can files be exposed. How could I gain access without a password. How could I modify sth that shouldn’t be\nmodifiable, how can I manipulate the output” and so forth. And maybe it’s surprising to you, but that’s\nnot different from what a programmer or IT architect would do. They use the exact same technology just have\ndifferent thinking patterns. Different problems they try to solve: So they\nthink “how could I use these things to build a social network, how could I build a time-laps\ncamera, how could I make a fun game”. Different problems, different goals, but based\non the same knowledge. And the security focused stuff, like conference\ntalks, CTF writeups, trainings, academic papers, blog posts, are essentially just sharing cool\nideas how to apply this knowledge in a security focused way. And that is not different to a programmer\nsharing techniques on how to handle huge dataset efficiently, or how to implement a game AI. Don’t think of hacking as anything crazy\nor special. It is based on exactly the same thing just\nwith a bit different angle. Breaking not building. So to summarise: hacking requires a lot of\nknowledge about computers. And I say generic computers, because it could\nliterally mean anything IT related. And learning a wide variety of technologies\nand gaining experience and knowledge to draw from, just takes time. It takes years. So any game you develop, any minecraft redstone\ncircuits you build, any boring sorting algorithm, any math class any mobile app you start and\nabandon, anything you do is knowledge you accumulate and eventually can use. So one general advice I give is, it takes\na lot of time, so make sure you have fun! Enjoy learning about computers. Enjoy programming. Enjoy following tutorials. Enjoy learning a new language. Whatever it is that you have fun with, it\nwill keep you motivated over the years. Don’t get me wrong. You don’t have to first program for years\nand then get into security. You can do it in parallel. When you write a android app, look into the\nofficial android security tips. Think about what could go wrong. What happens if you don’t follow it. Play around with that. Maybe at some point you want to build a web\napi to be used by the app, and suddenly you learn web development and server administration. Then you have to debug your connection, you\nlook into web proxys and how that can be used to analyse and test stuff. This is essentially the process you will be\ndoing for the next few years. And that’s what I do all the time. You know the thought of being able to hack\nan iphone, a gaming console or banking terminal is motivating, but good chance is that you\nare just very very far away from that. I’m at least not there yet. I failed with my nintendo switch hack attempt. I barely understood the surface. But that’s fine, I keep learning. And I have a ton of fun with learning basics\nand learning a new programming language and learning new technologies. And in a few years, in two more console generations,\nmaybe I know enough to join one of those teams. I know you might still feel frustrated, where\nto start. But if you feel frustrated, then that’s\nprobably because you picked a target way too large for you. If you don’t know the steps you need to\ntake, it’s too far away to see how to get there. So try to break that goal up. For example if you want to get into bug bounties\nand you have no clue how to do that. Analyse it. Sit down and try to uncover the underlying\ntopics. For example bug bounties are usually web security. Web security means hacking websites. Websites can be written in a ton of different\nlanguages. So start with one, learn php, learn what can\ngo wrong with php. Learn about different php frameworks. Learn about different databases. And with “learn about” I mean, write your\nown test websites, use the frameworks, just play around with it and gain experience. When you get bored with php, look into python. Learn about python flask and django. What can go wrong with python websites? What can go wrong with ruby websites. Do you see how the typical ruby, python and\nphp web security issues are super different, because they are different languages? Learn about javascript, learn about html and\nthen try to understand what XSS means. You see how that single topic just immediately\nexploded in so many sub categories, and here you have a list of stuff you can spend years\non. Ad it’s not a step by step path. It’s a collection of topics and you basically\njump around between them, and slowly understand them deeper and better. Over the years I have revisited the security\nof php websites and I always learn a bit more. And you can even go so deep to look into the\nactual php C source code. So this is what you have to do. Break it up, try to understand the layers\nthat build up whatever you want to do, and learn these layers. It’s a bit of research, but that’s part\nof it. And another thing I want to make clear, you\nwon’t find these things when searching for “hacking tutorials”. That’s something I had to learn. Truth is: most resources hackers use are regular\ndocumentation and programming resources. Hacking tutorials, like what I show you in\nvideos, is just showing you how to apply that stuff to security. You don’t need to rely on me or any other\nperson to write it up for you, you can do it yourself. In many many videos I’m not referencing\nany secret hacking book, I just simply open the official avr assembler reference, or look\ninto the php function documentation or look at the official linux manual pages. So let me summarize:\nNo! There is no clear easy path to learn this\nstuff and I can’t help you. There is no secret book or website to learn\nit. The more you understand computers, the more\nideas and understanding you have what can go wrong. Programming, abstract theory and so forth\nis important to understand computers And just have fun. If making games sounds fun, make games. It takes years to accumulate this knowledge,\nso make sure you enjoy the ride And one last thing I want to say. I make the videos in a way, I would have loved\nto watch them some years ago. Which means I already had experience with\nprogramming. So I guess my channel is not intended for\ncomplete programming beginners, but I still hope that what I just described helps you\nto get somehow started. And if you have some experience, just keep\nwatching my videos and take them as inspiration to look deeper or into different topics. You absolutely don’t have to understand\neverything, but catching one thought, or seeing one tool I use can be all the difference. And I hope the videos at least give you a\nrough idea how stuff works and you can research it once you actually need it. If you want some more guidance you can also\ncheckout my playlists. I have fairly long binary exploitation playlist,\nmostly based on exploit-exercises.com. But I also have some websecurity videos. Or just my CTF writeups. Like I said it’s not a clear path so just\nkeep jumping between topics and just have fun. Look into stuff, get frustrated, and then\nlook into other stuff. And otherwise, maybe look at overthewire,\npicoctf, ctftime.org, try out some bug bounties or just look at other programming youtube\nchannels and learn about something new. Make sure to check the description for links\nto stuff I can recommend. Anyway. always try to learn something new. And trust me, if you just stay curious and\nkeep looking into many different new things, in a few years, you will totally get there. Be patient.",
+  "errors": []
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YpT8Euc0mm4",
+    "language": "en",
+    "took_ms": 9650,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Mario Areias - Threat Modelling the Death Star",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2705,
+    "description": "It is a known fact the Empire needs to up their security game. The Rebellion hack their ships, steal their plans, and even create backdoors! In this talk, we will help the Empire by threat modeling the Death Star. Traditionally, Threat Models have been a slow and boring process that ends up with a giant document detailed any possible security problem. This approach, although useful in the past, is not necessarily good in an ever-changing environment (or when you have Jedis as enemies!).\n\nI will introduce Attack Trees and how they can fit in nicely in a DevOps world. Come and join the Dark Side! We might save the Empire after all!",
+    "view_count": 600
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YpT8Euc0mm4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

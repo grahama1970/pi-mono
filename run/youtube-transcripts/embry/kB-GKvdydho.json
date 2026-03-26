@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kB-GKvdydho",
+    "language": "en",
+    "took_ms": 9374,
+    "method": null,
+    "title": "Why do cylindrical rockets roll?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190618",
+    "duration_sec": 1358,
+    "description": "Here’s a fun question that not only have I myself asked, but I get asked fairly often, why do we hear a call out like “roger roll” or “roll program complete” at which point we can see the rocket rotate or roll on its X axis…\n\nThe best example of this was the Space Shuttle which had a very obvious and dramatic roll program. As soon as it cleared the tower, you can see it making a very impressive and sometimes scary looking roll. \n\nNow a maneuver like this makes sense when a vehicle is asymmetrical like the Space Shuttle, but why do cylindrical rockets like the Saturn V, Titan, Atlas, Delta IV etc etc even bother doing a roll? \n\nCan’t rockets just tip over in whatever direction they need to go? Do a little pitch here, a little yaw there just as long as the pointy end is going the direction it’s intended to go, who cares which side of the rocket is facing the Earth and which side is facing space… right? \n\nSo today we’ll first define the pitch, yaw, roll and their corresponding axis on a rocket, then we’re going to dive into why a rocket rolls in the first place, take a look at launch azimuths and their relationships to trajectories and we’ll look at some unique solutions to orientations including some rockets that don’t roll on ascent to align with their trajectory.\n\nWant an article version of this video? Here you go! - https://everydayastronaut.com/why-do-cylindrical-rockets-roll/\n\n---------------------------------------------\n\nHUGE thanks to my Moon Walker Patreon supporters! Blake Jacobs, Eli Burton, Jethro, Mac Malkawi, Neurostream, Ole Mathias Heggem, ArcTechInc and James Locke.\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 1528379
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kB-GKvdydho: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

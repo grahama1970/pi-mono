@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dfeoJ55EcXs",
+    "language": "en",
+    "took_ms": 9436,
+    "method": null,
+    "title": "Generative AI for Everyone, a course from Andrew Ng, is live!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231101",
+    "duration_sec": 92,
+    "description": "Enroll now: https://bit.ly/3QnncHN\n\nIntroducing Generative AI for Everyone! \n\nLearn directly from Andrew Ng about the technology of generative AI, how it works, and what it can do. Get hands-on using AI tools, learning from real-world use-cases and best practices, and understand the impacts of generative AI on business and society to better anticipate and navigate the future.\n\nLearn more: https://bit.ly/3QnncHN",
+    "view_count": 34731
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dfeoJ55EcXs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

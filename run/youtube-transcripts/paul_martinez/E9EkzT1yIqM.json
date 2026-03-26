@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E9EkzT1yIqM",
+    "language": "en",
+    "took_ms": 9286,
+    "method": null,
+    "title": "S4x22 Autobahn Training - DFIR For PLCs",
+    "channel": "S4 Events",
+    "upload_date": "20221031",
+    "duration_sec": 4380,
+    "description": "Glen Chason taught the Detection, Forensics and Incident Response (DFIR) for PLCs module in the Autobahn training day at S4x22. Here is 75 minutes of technical content you won't see anywhere else.",
+    "view_count": 872
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E9EkzT1yIqM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

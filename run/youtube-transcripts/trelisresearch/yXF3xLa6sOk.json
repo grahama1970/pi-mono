@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yXF3xLa6sOk",
+    "language": "en",
+    "took_ms": 9088,
+    "method": null,
+    "title": "The Multi modality Problem in Robotics",
+    "channel": "Trelis Research",
+    "upload_date": "20250709",
+    "duration_sec": 69,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-robotics\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1VgRxbcxfF2bkQ_MRE9-4rwCnq72iChNREh4Z9fSbJco/edit?usp=sharing\n- ACT Paper: https://arxiv.org/abs/2304.13705\n- GR00T N1: https://arxiv.org/abs/2503.14734\n- pi0: https://arxiv.org/html/2410.24164v1\n- Creality printer: https://store.creality.com/eu/products/ender-3-v3-se-3d-printer\n- Bambu A1 printer: https://eu.store.bambulab.com/products/a1?from=navigation\n\nTIMESTAMPS:\n0:00 Introduction to Robotics AI Models\n0:30 Video Overview: Modelling Challenges, ACT, GR00T-N1, pi0\n0:59 Robotics AI Models - quick review\n4:23 Challenges in modelling robots: Realtime, Delays, Styles\n7:53 The style / multi-modality problem in robotics\n10:42 Action Chunking Transformer (ACT Model)\n13:03 Variations of ACT, Bi-ACT (uses torques), Multi-ACT (multi-task)\n14:50 Advanced notes on ACT\n17:11 GR00T N1\n19:54 How GR00T trains on unlabelled data\n22:30 pi0\n24:33 GR00T paper\n26:04 pi0 paper\n27:41 What robotics model to use?\n28:10 Beyond ACT and GR00T\n29:25 Scripts and future videos: Trelis.com/ADVANCED-robotics",
+    "view_count": 1804
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yXF3xLa6sOk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JtDQkaTXC0A",
+    "language": "en",
+    "took_ms": 7627,
+    "method": null,
+    "title": "Protecting Front line American Healthcare Workers Fighting COVID19: Lessons from South Korea",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200326",
+    "duration_sec": 4064,
+    "description": "This event is a Q&A session with Dr. Doo Ryeon Chung, MD PhD, Director of Infection Prevention and Control at Samsung Medical Center in Seoul, South Korea.  He will be sharing key lessons and strategies for preventing COVID19 transmission within hospitals, including PPE standards, workflows, infrastructure, and workforce management. \n\nThe webinar is hosted by:\nRon C. Li, MD\nClinical Assistant Professor, Division of Hospital Medicine\nStanford University School of Medicine, Stanford, California\nTwitter: @ronlivs\n\nSpeaker: Doo Ryeon Chung, MD, PhD\nDirector of Center for Infection Prevention and Control, Samsung Medical Center, Seoul, South Korea\nChief, Division of Infectious Diseases and Professor of Medicine, Sungkyunkwan University School of Medicine\nSecretary General, ANSORP, APFID (Asia Pacific Foundation for Infectious Diseases)\nChair, Scientific Committee, Korean Society ​for Healthcare-Associated Infection Control and Prevention\n\nThis is an informal gathering of medical professionals in an effort to share information about COVID-19 and is not sponsored nor affiliated with any medical institutions.\n\ndeeplearning.ai is an education company based out of Palo Alto, California. As an education company, we pride ourselves on our ability to support learners at every stage. We are thankful to the medical professionals involved in this event for allowing us to contribute in this small way as we all come together to solve the world’s biggest problems. Emails submitted for this event or future COVID-19 webinars will not be used for marketing or informational purposes by the company. If you have any questions or suggestions, please reach out to events@deeplearning.ai",
+    "view_count": 9640
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JtDQkaTXC0A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

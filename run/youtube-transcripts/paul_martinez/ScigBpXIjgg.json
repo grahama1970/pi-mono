@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ScigBpXIjgg",
+    "language": "en",
+    "took_ms": 7839,
+    "method": null,
+    "title": "Water Sector Cyber Risk with Gus Serino",
+    "channel": "S4 Events",
+    "upload_date": "20230809",
+    "duration_sec": 3033,
+    "description": "Gus Serino worked at a large water utility before joining Dragos in 2019. We're talking water sector so it's obligatory to start with Oldsmar (2:20), but we don't talk cyber. Instead we go through the physical portion of the water system assuming the attacker is able to issue the command to the pump to dump a lot of sodium hydroxide into the water system and what would likely happen. Importantly Gus identifies the simple, unhackable solution to this threat. A hard wired PH sensor that will shut off the pump regardless of the commands from the ICS. \n\nAfter Oldsmar Dale and Gus discuss:\n- how small and medium water systems should approach cyber risk\n- the greater challenge to large water systems\n- the EPA's early steps on cybersecurity and future regulation\n- surprises in moving from a water utility to Dragos\n- what Gus's new I&C Secure company is doing",
+    "view_count": 429
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ScigBpXIjgg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

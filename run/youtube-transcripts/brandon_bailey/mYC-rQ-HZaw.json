@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mYC-rQ-HZaw",
+    "language": "en",
+    "took_ms": 7675,
+    "method": null,
+    "title": "DEF CON 33 - Regex For Hackers - Adam 'BuildHackSecure' Langley, Ben 'nahamsec' Sadeghipour",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3008,
+    "description": "Let's cut through the BS - if you're not using regex properly, you're leaving money on the table as a hacker. This workshop shows you how regex can crack open targets that automated tools miss.\n\nWe'll skip the boring theory and jump straight into the good stuff: how to use regex to find juicy endpoints, bypass filters, and automate your recon. You'll learn how actual hackers use regex to:\n\nBreak postMessage filters and CORS rules that \"look\" secure\nTurn harmless open redirects into account takeovers\nSpot SSRF opportunities that scanners don't catch\nRip through JavaScript files to find hidden APIs and endpoints\nFind interesting hosts, secrets and keys in GitHub repos before others do\n\n1 Hour. Hands on. Come hack!",
+    "view_count": 7241
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mYC-rQ-HZaw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

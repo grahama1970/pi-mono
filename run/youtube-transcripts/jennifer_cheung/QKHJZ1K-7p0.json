@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QKHJZ1K-7p0",
+    "language": "en",
+    "took_ms": 8755,
+    "method": null,
+    "title": "DEF CON 33 - Hacking a head unit with malicious PNG - Danilo Erazo",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1430,
+    "description": "In this talk, I reveal the discovery of a novel RTOS running on automotive head units, uncovered through hardware hacking and reverse engineering. This RTOS, found in thousands of vehicles, exhibits numerous bugs and intriguing functionalities. I demonstrate how a crafted PNG file was used as a backdoor to compromise the system, highlighting both the innovative features and critical vulnerabilities present in current automotive technologies.",
+    "view_count": 1142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QKHJZ1K-7p0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

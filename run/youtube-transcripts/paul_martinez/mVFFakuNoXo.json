@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mVFFakuNoXo",
+    "language": "en",
+    "took_ms": 8041,
+    "method": null,
+    "title": "Mapping Incidents to ICS ATT&CK",
+    "channel": "S4 Events",
+    "upload_date": "20200513",
+    "duration_sec": 1590,
+    "description": "ATT&CK for ICS is attempting to be an encyclopedia of ICS threat behaviors. Austin Scott of Dragos shows how they, and you can, use ATT&CK for ICS to test and understand coverage for detection.\n\nHe mapped the 11 adversary groups that Dragos follows across the 11 ATT&CK for ICS tactics, and provides a detailed example of the threat group behind the Triton/Trisis incident. This example maps both the tactics and techniques, and shows how you could expand this example to be prepared to look for future attacks on different vendor safety systems.",
+    "view_count": 1395
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mVFFakuNoXo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

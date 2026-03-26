@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AB8uFmYpQwc",
+    "language": "en",
+    "took_ms": 9274,
+    "method": null,
+    "title": "Trying to not pass out in Jared Isaacman’s MIG-29 #fighterjet",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20260104",
+    "duration_sec": 55,
+    "description": "",
+    "view_count": 198340
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AB8uFmYpQwc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

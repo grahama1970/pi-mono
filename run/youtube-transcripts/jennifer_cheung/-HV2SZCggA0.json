@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-HV2SZCggA0",
+    "language": "en",
+    "took_ms": 8660,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Vandana Verma Sehgal - Running an appsec program w/ open source",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 3427,
+    "description": "We are all heading towards the modernization of applications. However, we still see the companies being impacted with the most common website vulnerabilities like SQL Injection, Sensitive data exposure, security misconfiguration, etc.\n\nOWASP has many projects which can be tied seamlessly into the application development pipeline structure. However, firstly we don’t know if the projects exist, second, if we know about the projects, we do not know the exact working of the projects. In the talk, I will be talking about how to run an AppSec program with open source projects (OWASP Projects).",
+    "view_count": 463
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -HV2SZCggA0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

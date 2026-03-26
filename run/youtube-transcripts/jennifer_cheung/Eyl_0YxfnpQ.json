@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Eyl_0YxfnpQ",
+    "language": "en",
+    "took_ms": 8309,
+    "method": null,
+    "title": "DEF CON 32 - Using ALPC security features to compromise RPC services - WanJunJie Zhang, Yisheng He",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2637,
+    "description": "Advanced Local Procedure Call (ALPC) is an Inter Process Communication method in the Windows kernel. In the past few years, Windows ALPC and RPC vulnerabilities have emerged in an endless stream. These vulnerabilities are mainly based on TOCTOU file operations, memory corruption vulnerabilities in RPC services and ALPC syscalls in ntoskrnl.\n\nWindows kernel provides a variety of security measures to ensure that the data and context accepted by the ALPC and RPC servers are safe. We noticed the attack surface in the security mechanism of the ALPC kernel, and we found a security flaw in this mechanism (magic) and successfully obtained the system privilege from unauthorized users (defeating magic by magic).\n\nIn this talk, we will first overview the communication mechanism of ALPC and RPC services. We will discuss the details of ALPC and RPC in the marshal/unmarshal process that has not been disclosed before. We'll also talk about the kernel security mechanism in ALPC syscalls. Then we will analyze some historical bugs in ALPC and RPC, and disclose the details of the vulnerability we found, discussing how we bypassed the security mechanism through a small security flaw in security mechanisms. Later we'll discuss the exploitation, you will learn about the multiple ways. Finally, We'll make conclusions and share our opinions on this attack surface, including some tips and opinions on how to find these kinds of bugs.\n\nA view into ALPC-RPC by Clement Rouault and Thomas Imbert Hack.lu 2017\nExploiting Errors in Windows Error Reporting - Gal De Leon\nWindows Internals, Part 2, 7th Edition",
+    "view_count": 442
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Eyl_0YxfnpQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dlblra5FLvE",
+    "language": "en",
+    "took_ms": 11915,
+    "method": null,
+    "title": "Busting drone warfare myths",
+    "channel": "Sandboxx",
+    "upload_date": "20260209",
+    "duration_sec": 95,
+    "description": "Drones are a big deal on the battlefield, but they aren't the warfare panacea people make them out to be. #drone #drones #miltok #military #tech",
+    "view_count": 22599
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dlblra5FLvE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

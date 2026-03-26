@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ocXSZRKmI0I",
+    "language": "en",
+    "took_ms": 9553,
+    "method": null,
+    "title": "DEF CON 32 - Fitness of Physical Red Teamers -  Lucas Rooyakkers & Billy Graydon",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1493,
+    "description": "Cybersecurity red teams have myriad ways of practicing their skills - from CTFs to certifications - but how do you train for physical red teaming? This talk will focus on leveling up your body - add new abilities to climb, sneak, jump, and become an unstoppable ninja while performing physical penetration tests. We’ll talk about which abilities you need, and how we train ourselves (and our staff) for performing at our peak for physical engagements. This will be complemented by plenty of war stories and lessons learned in the field for what abilities are most worth leveling up in, and comparisons between red teaming before and after our weight loss. We’ll then discuss different exercises and habits that the audience can start doing as soon as in your hotel room to improve your lives and your ability to break into buildings!",
+    "view_count": 831
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ocXSZRKmI0I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

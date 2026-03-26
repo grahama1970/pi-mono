@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NM5bV4qPE-M",
+    "language": "en",
+    "took_ms": 8674,
+    "method": null,
+    "title": "Assessing Lula's Leadership in Brazil",
+    "channel": "Hudson Institute",
+    "upload_date": "20230801",
+    "duration_sec": 3950,
+    "description": "Since returning to power in January, Brazilian President Luiz Inacio Lula da Silva has sought to elevate Brazil's role in global affairs, strengthen the foundations of Brazil's economy, and undo the legacy of former president Jair Bolsonaro.\n\nJoin Hudson Institute for an assessment of President Lula's first seven months in office and what his leadership means for the future of Brazil and US-Brazil relations. Adjunct Fellow Daniel Batlle will be joined by Marcio Coimbra, head of the Fundação da Liberdade Econômica (Foundation for Economic Liberty), and Matthew Taylor, professor at American University's School of International Service",
+    "view_count": 912
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NM5bV4qPE-M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

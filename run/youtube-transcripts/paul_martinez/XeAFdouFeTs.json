@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XeAFdouFeTs",
+    "language": "en",
+    "took_ms": 8020,
+    "method": null,
+    "title": "Chaos Engineering In ICS with Ginger Wright",
+    "channel": "S4 Events",
+    "upload_date": "20201210",
+    "duration_sec": 3130,
+    "description": "I'll interview Ginger Wright and take your questions. Ginger Wright of INL introduced the chaos monkey to the ICSsec community. Actually causing what the organization is most worried about to improve response and resiliency. They did some of this on Plum Island. We also had Kelly Shortridge give a talk on DevOps that has many of the drivers and results in common.\n\nJoin us and provide your questions and comments.",
+    "view_count": 231
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XeAFdouFeTs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

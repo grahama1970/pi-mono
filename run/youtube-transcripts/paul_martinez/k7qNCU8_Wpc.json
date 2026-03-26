@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k7qNCU8_Wpc",
+    "language": "en",
+    "took_ms": 8466,
+    "method": null,
+    "title": "1. Marty Edwards: Know Your ICS",
+    "channel": "S4 Events",
+    "upload_date": "20201109",
+    "duration_sec": 2775,
+    "description": "Marty Edwards kicks off the OnRamp Workshop with 45 minutes on what an industrial control system (ICS) is and what it does. You will learn the key components and different types of ICS; you will learn the key terminology used in ICS; and you will learn what type of documentation you should create and maintain to know your ICS.\n\nMarty Edwards has played many roles in ICS. He has worked as a Process Control Engineer at an asset owner, led key programs at Idaho National Labs, was the longest serving Director of ICS-CERT for DHS, Director of Strategic Initiatives at ISA and Managing Director of the Automation Federation (AF), and he just joined Tenable.\n\nNote: The first two videos are designed to get all of the OnRamp attendees up to speed. This video will likely be known information for those with an Operations background, and essential new knowledge for those coming from IT. The next video will cover how IT security architecture basics are applied to ICS.\n\nQuestions for you to consider:\n\n1. What process are you monitoring and controlling and what type(s) of ICS to you use? (SCADA, DCS, PLC, other?) Does this match the terminology you use in your organization?\n2. What are some examples of control loops in your process?\n3. What is the oldest ICS have you seen? Have you seen a pneumatic system? Have you seen any analog controls?\n4. Are your HMI at Level 1, Level 2, Level 3?",
+    "view_count": 5736
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k7qNCU8_Wpc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "severity": "HIGH",
+    "category": "Data Integrity",
+    "description": "The 'timing_drift_ms' dimension is normalized to a 0.0-1.0 scale without any explicit mention or documentation. The current value is derived by dividing by an assumed maximum of 100. This obscures the true units (milliseconds) and makes the chart misleading as it presents all data as unitless deltas.",
+    "suggestion": "The Y-axis should remain a unitless 'Delta Score'. However, the normalization logic for values like 'timing_drift_ms' must be part of the component's API and documentation. The raw value (e.g., '15ms') MUST be displayed in the hover tooltip to provide full context."
+  },
+  {
+    "severity": "HIGH",
+    "category": "Discoverability",
+    "description": "The chart lacks a legend. There is no way for a user to map the colored lines to their corresponding dimensions (tempo, key, chord, etc.). This makes the detailed breakdown of the chart unreadable.",
+    "suggestion": "Add a clear legend that maps each color swatch to its dimension name. Given the small component size, this could be placed in the empty space at the top right or along the bottom."
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "Accessibility / Visual Clarity",
+    "description": "The 'key_match' data line is rendered at a constant 0.0 value, causing it to overlap perfectly with the bottom axis/grid line. This makes it difficult to see and confirm its presence and value.",
+    "suggestion": "Slightly offset the Y-axis baseline or ensure data lines have enough of a distinct visual treatment (e.g., slightly thicker than grid lines) so they don't disappear when their value is zero."
+  },
+  {
+    "severity": "MEDIUM",
+    "category": "Interaction",
+    "description": "The core feature of a hover tooltip to show exact values is not designed or mocked up. It's unclear how a user would inspect the data points for a specific round.",
+    "suggestion": "Mock up the appearance of the tooltip. It should appear when hovering over a data point or a vertical slice of the chart (a 'round'). It should list all dimensions and their precise values for that round."
+  },
+  {
+    "severity": "LOW",
+    "category": "Component API Shape",
+    "description": "The convergence threshold is visually hardcoded at 0.3. In a real component, this value should be a configurable property ('prop') to accommodate different targets for different musical pieces or convergence tasks.",
+    "suggestion": "The design should visually acknowledge that this value is dynamic. For example, add the label 'Threshold: 0.3' near the line."
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mfAV_bigdRA",
+    "language": "en",
+    "took_ms": 9569,
+    "method": null,
+    "title": "Improving LLM accuracy with Monte Carlo Tree Search",
+    "channel": "Trelis Research",
+    "upload_date": "20240620",
+    "duration_sec": 1996,
+    "description": "➡️ Get Life-time Access to the ADVANCED-inference Repo (incl. notebooks in this vid.): https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1K7sGEv-AIOWR0OcXTd6SAXKgxgczOABb35z3XNc3b8I/edit?usp=sharing\n- Paper: https://arxiv.org/abs/2406.07394 (Accessing GPT-4 level Mathematical Olympiad Solutions via Monte Carlo Tree Self-refine with LLaMa-3 8B)\n- Code from Paper: https://github.com/trotsky1997/MathBlackBox\n\nTIMESTAMPS:\n0:00 Large Language Models Make Things Up!\n0:42 Boosting Llama 3 8B performance to GPT-4 (only on certain benchmarks!)\n3:13 How prompting affects accuracy\n4:58 How Monte Carlo tree search works\n7:49 Balancing exploitation with exploration\n10:18 Jupyter Notebook Code\n26:59 Testing Monte Carlo Tree Search on a simple example\n29:16 Boosting Performance on Maths problems\n31:48 Limitations on Monte Carlo Performance Boosts\n32:58 Resources",
+    "view_count": 20511
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mfAV_bigdRA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

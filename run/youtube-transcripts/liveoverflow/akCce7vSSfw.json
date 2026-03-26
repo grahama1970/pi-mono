@@ -1,0 +1,958 @@
+{
+  "meta": {
+    "video_id": "akCce7vSSfw",
+    "language": "en",
+    "took_ms": 1663,
+    "method": "direct",
+    "title": "Developing an intuition for binary exploitation - bin 0x20",
+    "channel": "LiveOverflow",
+    "upload_date": "20170225",
+    "duration_sec": 702,
+    "description": "Just some thoughts on binary exploitation. Not sure if it makes sense :D\n\njoin the discussion: https://www.reddit.com/r/LiveOverflow/comments/5w400v/developing_an_intuition_for_binary_exploitation/\n\n\n-=[ 🔴 Stuff I use ]=-\n\n→ Microphone:* https://geni.us/ntg3b\n→ Graphics tablet:* https://geni.us/wacom-intuos\n→ Camera#1 for streaming:* https://geni.us/sony-camera\n→ Lens for streaming:* https://geni.us/sony-lense\n→ Connect Camera#1 to PC:* https://geni.us/cam-link\n→ Keyboard:* https://geni.us/mech-keyboard\n→ Old Microphone:* https://geni.us/mic-at2020usb\n\nUS Store Front:* https://www.amazon.com/shop/liveoverflow\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.",
+    "view_count": 54300
+  },
+  "transcript": [
+    {
+      "text": "We have already come a long way in trying\nto understand how we can exploit programs",
+      "start": 0.329,
+      "duration": 4.811
+    },
+    {
+      "text": "through memory corruption.",
+      "start": 5.14,
+      "duration": 2.029
+    },
+    {
+      "text": "We have covered a wide variety of examples,\nincluding basic buffer overflows, format string",
+      "start": 7.169,
+      "duration": 4.831
+    },
+    {
+      "text": "exploits and even heap exploits.",
+      "start": 12.0,
+      "duration": 2.25
+    },
+    {
+      "text": "And a lot of you might already find it quite\ncomplex.",
+      "start": 14.25,
+      "duration": 3.26
+    },
+    {
+      "text": "But if you put it into the context of history\nwe are still like 16 years behind.",
+      "start": 17.51,
+      "duration": 5.62
+    },
+    {
+      "text": "The last examples we have explored from exploit-exercises.com\nintroduced techniques that were state-of-the-art",
+      "start": 23.13,
+      "duration": 5.81
+    },
+    {
+      "text": "in like 2001.",
+      "start": 28.94,
+      "duration": 1.0
+    },
+    {
+      "text": "While it still directly applicable to shitty\ncheap embedded devices, like some IoT stuff,",
+      "start": 29.94,
+      "duration": 5.56
+    },
+    {
+      "text": "it’s very important to lay a foundation.",
+      "start": 35.5,
+      "duration": 2.6
+    },
+    {
+      "text": "But before we start talking about all these\nmodern exploit mitigations and how we can",
+      "start": 38.1,
+      "duration": 4.08
+    },
+    {
+      "text": "bypass them, I think it would be a good idea\nto try putting what we have learned in more",
+      "start": 42.18,
+      "duration": 5.28
+    },
+    {
+      "text": "abstract terms.",
+      "start": 47.46,
+      "duration": 1.45
+    },
+    {
+      "text": "And try to get a feeling or an intuition about\nexploiting binaries.",
+      "start": 48.91,
+      "duration": 7.0
+    },
+    {
+      "text": "Let’s try to create a mental model of exploitation.",
+      "start": 55.91,
+      "duration": 7.14
+    },
+    {
+      "text": "But let’s first introduce some constraints,\notherwise it will be too abstract.",
+      "start": 63.05,
+      "duration": 4.4
+    },
+    {
+      "text": "Let’s focus on programs like we have interacted\nbefore.",
+      "start": 67.45,
+      "duration": 3.48
+    },
+    {
+      "text": "this means intel architecture and on linux.",
+      "start": 70.93,
+      "duration": 2.87
+    },
+    {
+      "text": "Ok.",
+      "start": 73.8,
+      "duration": 1.0
+    },
+    {
+      "text": "Let’s start at the beginning.",
+      "start": 74.8,
+      "duration": 1.74
+    },
+    {
+      "text": "We want programs to execute on our CPU.",
+      "start": 76.54,
+      "duration": 2.72
+    },
+    {
+      "text": "That’s why a program contains assembler\ncode - machine code.",
+      "start": 79.26,
+      "duration": 4.02
+    },
+    {
+      "text": "And machine code is just like any other data\nin our computers.",
+      "start": 83.28,
+      "duration": 3.22
+    },
+    {
+      "text": "It’s basically just bits.",
+      "start": 86.5,
+      "duration": 1.78
+    },
+    {
+      "text": "0 and 1s.",
+      "start": 88.28,
+      "duration": 1.65
+    },
+    {
+      "text": "A lot of times we combine them into bytes.",
+      "start": 89.93,
+      "duration": 2.32
+    },
+    {
+      "text": "And a CPU can interpret a byte as an instruction.",
+      "start": 92.25,
+      "duration": 3.6
+    },
+    {
+      "text": "Or multiple bytes can be interpreted as an\ninstruction.",
+      "start": 95.85,
+      "duration": 3.2
+    },
+    {
+      "text": "And some crazy digital hardware magic in the\nCPU knows that this particular value stands",
+      "start": 99.05,
+      "duration": 5.679
+    },
+    {
+      "text": "for “add the values stored in two registers\nand put the result in the first register.",
+      "start": 104.729,
+      "duration": 5.151
+    },
+    {
+      "text": "And registers are just like small memory cells\nin the CPU, which fullfil different purposes.",
+      "start": 109.88,
+      "duration": 6.17
+    },
+    {
+      "text": "And different architectures might have different\nregisters for different purposes.",
+      "start": 116.05,
+      "duration": 4.429
+    },
+    {
+      "text": "But on intel we have for example the general\npurpose registers like eax, and ebx, that",
+      "start": 120.479,
+      "duration": 5.152
+    },
+    {
+      "text": "a programmer is free to use however he wants\nto.",
+      "start": 125.631,
+      "duration": 3.199
+    },
+    {
+      "text": "But there are also special registers, like\nEIP, the instruction pointer.",
+      "start": 128.83,
+      "duration": 3.97
+    },
+    {
+      "text": "That one simply contains the address, which\npoints to memory, where the next instruction",
+      "start": 132.8,
+      "duration": 4.44
+    },
+    {
+      "text": "will be.",
+      "start": 137.24,
+      "duration": 1.0
+    },
+    {
+      "text": "And there is also this stack pointer ESP,\nwhich points to the top of the stack, and",
+      "start": 138.24,
+      "duration": 5.06
+    },
+    {
+      "text": "the base pointer EBP, which together with\nthe stack pointer define a stack frame.",
+      "start": 143.3,
+      "duration": 4.78
+    },
+    {
+      "text": "And for beginners this might already feel\ncomplicated.",
+      "start": 148.08,
+      "duration": 2.769
+    },
+    {
+      "text": "There is code, there is data, there is a stack,\nthere is a heap.",
+      "start": 150.849,
+      "duration": 4.181
+    },
+    {
+      "text": "There are functions you can call.",
+      "start": 155.03,
+      "duration": 1.42
+    },
+    {
+      "text": "Functions can return.",
+      "start": 156.45,
+      "duration": 1.22
+    },
+    {
+      "text": "Somehow there is like a return pointer on\nthe stack you can overwrite with a buffer",
+      "start": 157.67,
+      "duration": 3.42
+    },
+    {
+      "text": "overflow.",
+      "start": 161.09,
+      "duration": 1.0
+    },
+    {
+      "text": "There are a lot of different terms that we\nuse.",
+      "start": 162.09,
+      "duration": 1.81
+    },
+    {
+      "text": "But it’s a lot less complex as it may sound.",
+      "start": 163.9,
+      "duration": 3.88
+    },
+    {
+      "text": "Because essentially there are just two parts\nthat are important",
+      "start": 167.78,
+      "duration": 3.3
+    },
+    {
+      "text": "we have memory, which is just a huuuuuuge\nspace of bits that can be 1 or 0.",
+      "start": 171.08,
+      "duration": 5.76
+    },
+    {
+      "text": "Usually we group them in bytes or words.",
+      "start": 176.84,
+      "duration": 1.869
+    },
+    {
+      "text": "And there is a CPU, which has a well defined\ndeterministic behaviour that operates on this",
+      "start": 178.709,
+      "duration": 6.371
+    },
+    {
+      "text": "memory.",
+      "start": 185.08,
+      "duration": 1.02
+    },
+    {
+      "text": "It’s really that simple.",
+      "start": 186.1,
+      "duration": 2.19
+    },
+    {
+      "text": "Well.",
+      "start": 188.29,
+      "duration": 1.0
+    },
+    {
+      "text": "The devil is in the practical details, but\nessentially, when the CPU is turned on, it",
+      "start": 189.29,
+      "duration": 4.35
+    },
+    {
+      "text": "will start at some defined address.",
+      "start": 193.64,
+      "duration": 1.709
+    },
+    {
+      "text": "This could be 0, but could also be defined\nto be something else.",
+      "start": 195.349,
+      "duration": 4.161
+    },
+    {
+      "text": "It request that memory content from some RAM,\nlooks at the value stored at that address,",
+      "start": 199.51,
+      "duration": 4.66
+    },
+    {
+      "text": "and performs the action according to whatever\nthat value represents.",
+      "start": 204.17,
+      "duration": 4.929
+    },
+    {
+      "text": "Now when we want to execute a program, you\ncan’t just write your code directly into",
+      "start": 209.099,
+      "duration": 4.411
+    },
+    {
+      "text": "RAM, and restart the CPU at address 0.",
+      "start": 213.51,
+      "duration": 2.62
+    },
+    {
+      "text": "Because if your program would cause an endless\nloop, the whole system would stop working.",
+      "start": 216.13,
+      "duration": 3.69
+    },
+    {
+      "text": "But when you program an arduino, a little\nmicrocontroller, that’s basically what you",
+      "start": 219.82,
+      "duration": 4.58
+    },
+    {
+      "text": "do.",
+      "start": 224.4,
+      "duration": 1.0
+    },
+    {
+      "text": "But that’s why some people developed something\nlike the Linux kernel.",
+      "start": 225.4,
+      "duration": 3.92
+    },
+    {
+      "text": "Which abstracts away the direct hardware for\nyou and makes sure, that if your program sucks,",
+      "start": 229.32,
+      "duration": 4.59
+    },
+    {
+      "text": "you don’t kill the whole system.",
+      "start": 233.91,
+      "duration": 1.26
+    },
+    {
+      "text": "That’s why a program is not just plain assembler\ncode, but it’s a fairly complex file format.",
+      "start": 235.17,
+      "duration": 5.899
+    },
+    {
+      "text": "An ELF file.",
+      "start": 241.069,
+      "duration": 1.031
+    },
+    {
+      "text": "Which does contain your raw code, but also\na lot of other information.",
+      "start": 242.1,
+      "duration": 3.609
+    },
+    {
+      "text": "And when you execute this program, the linux\nsystem will actually open the ELF file, read",
+      "start": 245.709,
+      "duration": 6.17
+    },
+    {
+      "text": "and interpret all the necessary metadata and\nsetup the execution environment for you, and",
+      "start": 251.879,
+      "duration": 5.44
+    },
+    {
+      "text": "then jumps to the start of your actual code.",
+      "start": 257.319,
+      "duration": 2.87
+    },
+    {
+      "text": "So how does the execution environment look\nlike?",
+      "start": 260.189,
+      "duration": 3.22
+    },
+    {
+      "text": "That’s important to picture, because in\nthat environment, you try to exploit a program,",
+      "start": 263.409,
+      "duration": 5.521
+    },
+    {
+      "text": "you need to understand it.",
+      "start": 268.93,
+      "duration": 2.1
+    },
+    {
+      "text": "And in some way it’s actyually very simple.",
+      "start": 271.03,
+      "duration": 2.37
+    },
+    {
+      "text": "Again, the devil is in the practical details,\nbut it will make sense.",
+      "start": 273.4,
+      "duration": 3.62
+    },
+    {
+      "text": "Let’s say the CPU is just about to execute\nyour first instruction.",
+      "start": 277.02,
+      "duration": 4.549
+    },
+    {
+      "text": "This means the kernel and the hardware magic\nhas already set up everything.",
+      "start": 281.569,
+      "duration": 3.961
+    },
+    {
+      "text": "And this is how it looks like.",
+      "start": 285.53,
+      "duration": 1.359
+    },
+    {
+      "text": "You have a big blob of memory.",
+      "start": 286.889,
+      "duration": 2.62
+    },
+    {
+      "text": "It ranges from 0, to ffffff.",
+      "start": 289.509,
+      "duration": 3.83
+    },
+    {
+      "text": "In reality you don’t really have that much\nmemory, that’s why we call it virtual memory.",
+      "start": 293.339,
+      "duration": 5.271
+    },
+    {
+      "text": "It looks like you own all this memory, but\nhardware magic only makes you think you have",
+      "start": 298.61,
+      "duration": 4.44
+    },
+    {
+      "text": "it.",
+      "start": 303.05,
+      "duration": 1.0
+    },
+    {
+      "text": "But in anyway, the CPU now executes your program\nwhich is somewhere in that huge memory.",
+      "start": 304.05,
+      "duration": 5.649
+    },
+    {
+      "text": "Let’s have a look at how this memory is\ndivided up in a real program.",
+      "start": 309.699,
+      "duration": 4.22
+    },
+    {
+      "text": "So for example here, we see that from this\nstarting address, to this end address, your",
+      "start": 313.919,
+      "duration": 5.37
+    },
+    {
+      "text": "program is mapped.",
+      "start": 319.289,
+      "duration": 1.731
+    },
+    {
+      "text": "We say mapped, because it’s not really physically\nat this address, but it’s there if you would",
+      "start": 321.02,
+      "duration": 5.44
+    },
+    {
+      "text": "read the value from that address, in your\nassembler code.",
+      "start": 326.46,
+      "duration": 3.69
+    },
+    {
+      "text": "So ignore the underlaying physical reality,\nand just acccept that there is this huge range",
+      "start": 330.15,
+      "duration": 5.219
+    },
+    {
+      "text": "of memory you can work with.",
+      "start": 335.369,
+      "duration": 1.931
+    },
+    {
+      "text": "And infact the stack is also just here.",
+      "start": 337.3,
+      "duration": 2.03
+    },
+    {
+      "text": "It’s also just defined as starting from\nthis address and ends at this address.",
+      "start": 339.33,
+      "duration": 3.6
+    },
+    {
+      "text": "So the stack is not really growing or shrinking,\nthat’s just the computer theoretical model",
+      "start": 342.93,
+      "duration": 4.849
+    },
+    {
+      "text": "of a stack.",
+      "start": 347.779,
+      "duration": 1.0
+    },
+    {
+      "text": "But how is the stack actually defined?",
+      "start": 348.779,
+      "duration": 2.551
+    },
+    {
+      "text": "Well the CPU has the stack register, ESP,\nand it would contain an address pointing into",
+      "start": 351.33,
+      "duration": 5.569
+    },
+    {
+      "text": "this area here.",
+      "start": 356.899,
+      "duration": 1.631
+    },
+    {
+      "text": "So could you just point the stack pointer\nsomewhere else.",
+      "start": 358.53,
+      "duration": 3.3
+    },
+    {
+      "text": "Like into your code?",
+      "start": 361.83,
+      "duration": 1.1
+    },
+    {
+      "text": "Yeah!",
+      "start": 362.93,
+      "duration": 1.0
+    },
+    {
+      "text": "You absolutely could.",
+      "start": 363.93,
+      "duration": 1.0
+    },
+    {
+      "text": "The stack pointer is nothing really special,\nit’s just a register that contains an address,",
+      "start": 364.93,
+      "duration": 4.019
+    },
+    {
+      "text": "and it could contain any address.",
+      "start": 368.949,
+      "duration": 2.55
+    },
+    {
+      "text": "What makes ESP actually special is just that\nit does some fancy stuff based on instructions.",
+      "start": 371.499,
+      "duration": 6.73
+    },
+    {
+      "text": "So for example a pop eax instruction, would\nlook up what value is stored at the location",
+      "start": 378.229,
+      "duration": 6.64
+    },
+    {
+      "text": "where ESP points to, usually that’s the\nstack, but doesn’t have to.",
+      "start": 384.869,
+      "duration": 4.11
+    },
+    {
+      "text": "And then writes the value from that location\ninto the eax register.",
+      "start": 388.979,
+      "duration": 4.11
+    },
+    {
+      "text": "And you can absolutely abuse that in an exploit.",
+      "start": 393.089,
+      "duration": 4.16
+    },
+    {
+      "text": "For example if you find a bug that allows\nyou to set the stack pointer to a different",
+      "start": 397.249,
+      "duration": 3.92
+    },
+    {
+      "text": "value, you could create a fake stack on the\nheap, and just point ESP there.",
+      "start": 401.169,
+      "duration": 5.97
+    },
+    {
+      "text": "Often times referred to as a stack pivot.",
+      "start": 407.139,
+      "duration": 2.71
+    },
+    {
+      "text": "So lose the mental image of a stack that grows\nand shrinks that you learned in computer science,",
+      "start": 409.849,
+      "duration": 5.15
+    },
+    {
+      "text": "and just think of it what it really is.",
+      "start": 414.999,
+      "duration": 2.04
+    },
+    {
+      "text": "It’s just some memory where the ESP register\npoints to.",
+      "start": 417.039,
+      "duration": 4.321
+    },
+    {
+      "text": "And instructions cause interesting effects\nbased on that register.",
+      "start": 421.36,
+      "duration": 3.169
+    },
+    {
+      "text": "And in the same sense the instruction pointer\nis not special.",
+      "start": 424.529,
+      "duration": 4.28
+    },
+    {
+      "text": "Usually it points into your code, but it doesn’t\nhave to.",
+      "start": 428.809,
+      "duration": 3.28
+    },
+    {
+      "text": "If you manage to control EIP somehow, you\ncan just point it to other memory.",
+      "start": 432.089,
+      "duration": 4.66
+    },
+    {
+      "text": "For example the stack, which we have used\nin previous exploits.",
+      "start": 436.749,
+      "duration": 3.63
+    },
+    {
+      "text": "Because we placed data that is actually valid\nassembler code onto the stack.",
+      "start": 440.379,
+      "duration": 3.99
+    },
+    {
+      "text": "You know it as shellcode.",
+      "start": 444.369,
+      "duration": 1.3
+    },
+    {
+      "text": "The CPU doesn’t care.",
+      "start": 445.669,
+      "duration": 2.06
+    },
+    {
+      "text": "The EIP register points into some memory,\nand the CPU just happily does what those values",
+      "start": 447.729,
+      "duration": 5.34
+    },
+    {
+      "text": "say.",
+      "start": 453.069,
+      "duration": 1.0
+    },
+    {
+      "text": "And well, that is just half true.",
+      "start": 454.069,
+      "duration": 2.591
+    },
+    {
+      "text": "Because as you may know, on modern systems\nthe stack is not executeable anymore, so the",
+      "start": 456.66,
+      "duration": 5.009
+    },
+    {
+      "text": "CPU does kinda care, but also not really.",
+      "start": 461.669,
+      "duration": 1.441
+    },
+    {
+      "text": "It just means that certain areas in this memory\ncan have different permissions.",
+      "start": 463.11,
+      "duration": 4.94
+    },
+    {
+      "text": "Certain areas have the executable flag which\nmeans the CPU allows EIP to point there and",
+      "start": 468.05,
+      "duration": 5.25
+    },
+    {
+      "text": "is happy to interpret the values as instructions,\nbut other areas like the stack don’t have",
+      "start": 473.3,
+      "duration": 4.5
+    },
+    {
+      "text": "it.",
+      "start": 477.8,
+      "duration": 1.0
+    },
+    {
+      "text": "And then the CPU refuses to interpret it as\ninstructions.",
+      "start": 478.8,
+      "duration": 3.06
+    },
+    {
+      "text": "Now when we look a bit closer to what kind\nof data is included in all those different",
+      "start": 481.86,
+      "duration": 5.17
+    },
+    {
+      "text": "memory areas, we can try to come up with creative\nways of how to abuse the.",
+      "start": 487.03,
+      "duration": 5.49
+    },
+    {
+      "text": "One example is the typical stack structure.",
+      "start": 492.52,
+      "duration": 3.06
+    },
+    {
+      "text": "When the CPU executes a call instruction it\nplaces the current instruction pointer value",
+      "start": 495.58,
+      "duration": 5.889
+    },
+    {
+      "text": "at the address where the stack pointer points\nto.",
+      "start": 501.469,
+      "duration": 2.45
+    },
+    {
+      "text": "It places it ontop of the stack.",
+      "start": 503.919,
+      "duration": 2.641
+    },
+    {
+      "text": "And when the function returns it takes the\nvalue where the stack pointer points to and",
+      "start": 506.56,
+      "duration": 4.279
+    },
+    {
+      "text": "sets the instruction pointer to it.",
+      "start": 510.839,
+      "duration": 2.571
+    },
+    {
+      "text": "So if you somehow manage to modify this value\non the stack, you can control to what EIP",
+      "start": 513.41,
+      "duration": 4.81
+    },
+    {
+      "text": "will be set to when the function returns,\nand thus you can decide what will be execute",
+      "start": 518.22,
+      "duration": 4.27
+    },
+    {
+      "text": "next.",
+      "start": 522.49,
+      "duration": 1.0
+    },
+    {
+      "text": "That’s a classical buffer overflow.",
+      "start": 523.49,
+      "duration": 1.39
+    },
+    {
+      "text": "Another interesting data structure is the\nglobal offset table, which is basically just",
+      "start": 524.88,
+      "duration": 4.99
+    },
+    {
+      "text": "an area in memory containing pointers to functions,\nif you overwrite an entry there, you can also",
+      "start": 529.87,
+      "duration": 6.75
+    },
+    {
+      "text": "control what will be executed if a function\nis called that references an address from",
+      "start": 536.62,
+      "duration": 4.99
+    },
+    {
+      "text": "this table.",
+      "start": 541.61,
+      "duration": 1.0
+    },
+    {
+      "text": "I mean oftentimes you cannot directly overwrite\nthese values, but that just means you have",
+      "start": 542.61,
+      "duration": 4.14
+    },
+    {
+      "text": "to become creative.",
+      "start": 546.75,
+      "duration": 1.93
+    },
+    {
+      "text": "For example think of two objects on the heap.",
+      "start": 548.68,
+      "duration": 2.72
+    },
+    {
+      "text": "A user object and a name object, and the user\nobject has a pointer to the name object.",
+      "start": 551.4,
+      "duration": 4.47
+    },
+    {
+      "text": "And when you want to change the name of this\nuser, the code would follow the pointer and",
+      "start": 555.87,
+      "duration": 4.2
+    },
+    {
+      "text": "write the new name to that location, which\nmeans if you can somehow overwrite that pointer,",
+      "start": 560.07,
+      "duration": 5.96
+    },
+    {
+      "text": "you can control where it would write the name\nto.",
+      "start": 566.03,
+      "duration": 3.09
+    },
+    {
+      "text": "So we could overwrite the name pointer with\nan address on the stack, and when we write",
+      "start": 569.12,
+      "duration": 3.901
+    },
+    {
+      "text": "the new name for the user, we will actually\noverwrite the stored instruction pointer on",
+      "start": 573.021,
+      "duration": 4.389
+    },
+    {
+      "text": "the stack.",
+      "start": 577.41,
+      "duration": 1.02
+    },
+    {
+      "text": "See what I try to get at?",
+      "start": 578.43,
+      "duration": 1.25
+    },
+    {
+      "text": "There is memory that contains data.",
+      "start": 579.68,
+      "duration": 2.58
+    },
+    {
+      "text": "Some restrictions apply, like certain memory\nareas are not writeable, others are not executable.",
+      "start": 582.26,
+      "duration": 5.57
+    },
+    {
+      "text": "And there is a CPU that is very dumb and just\nexecutes whatever EIP points to.",
+      "start": 587.83,
+      "duration": 5.42
+    },
+    {
+      "text": "And there is a program in the memory, which\nthe CPU executes.",
+      "start": 593.25,
+      "duration": 3.77
+    },
+    {
+      "text": "And this code uses the memory to do whatever\nit is supposed to do.",
+      "start": 597.02,
+      "duration": 3.15
+    },
+    {
+      "text": "And it trusts in a certain integrity of the\ndata in memory.",
+      "start": 600.17,
+      "duration": 4.33
+    },
+    {
+      "text": "But if there is a bug, that allows you to\nchange a value in memory, which the program",
+      "start": 604.5,
+      "duration": 4.09
+    },
+    {
+      "text": "did not intend to be modifiable, amazing things\ncould happen.",
+      "start": 608.59,
+      "duration": 4.11
+    },
+    {
+      "text": "And what can happen, that’s just limited\nby your creativity and imagination.",
+      "start": 612.7,
+      "duration": 5.42
+    },
+    {
+      "text": "One changed byte here in memory, might cause\na certain piece of code to write to an unintended",
+      "start": 618.12,
+      "duration": 5.79
+    },
+    {
+      "text": "location, which overwrites a function pointer\nof an object, which another part of the code",
+      "start": 623.91,
+      "duration": 4.5
+    },
+    {
+      "text": "wanted to use, and suddenly executes something\nvery different.",
+      "start": 628.41,
+      "duration": 5.16
+    },
+    {
+      "text": "And all these techniques we assigned names\nto, like stack buffer overflow, heap fengshui,",
+      "start": 633.57,
+      "duration": 5.06
+    },
+    {
+      "text": "ROP, use-after-free, are all just creative\nways to screw with data in memory and how",
+      "start": 638.63,
+      "duration": 6.31
+    },
+    {
+      "text": "the program executed by the CPU reacts to\nit.",
+      "start": 644.94,
+      "duration": 3.82
+    },
+    {
+      "text": "I understand that this episode might not have\ncontained actual useful information to you.",
+      "start": 648.76,
+      "duration": 5.26
+    },
+    {
+      "text": "But I kinda wanted to get it out there, because\nmaybe somebody didn’t quite picture programs",
+      "start": 654.02,
+      "duration": 4.42
+    },
+    {
+      "text": "and exploits in this way.",
+      "start": 658.44,
+      "duration": 1.87
+    },
+    {
+      "text": "But I hope you can see the value in this way\nof thinking about it.",
+      "start": 660.31,
+      "duration": 2.77
+    },
+    {
+      "text": "I think it takes some away some of the fear\nthat it all looks so complicated.",
+      "start": 663.08,
+      "duration": 4.27
+    },
+    {
+      "text": "I’m really interested to hear your critical\nopinion about this.",
+      "start": 667.35,
+      "duration": 3.85
+    },
+    {
+      "text": "So comment here on youtube or on the reddit\nthread linked below.",
+      "start": 671.2,
+      "duration": 2.73
+    },
+    {
+      "text": "But nevermind if you liked this or not, we\nwill continue soon our path to learn about",
+      "start": 673.93,
+      "duration": 3.92
+    },
+    {
+      "text": "more advanced memory corruption techniques.",
+      "start": 677.85,
+      "duration": 2.0
+    },
+    {
+      "text": "So, stay curious, and see you next time.",
+      "start": 679.85,
+      "duration": 2.04
+    }
+  ],
+  "full_text": "We have already come a long way in trying\nto understand how we can exploit programs through memory corruption. We have covered a wide variety of examples,\nincluding basic buffer overflows, format string exploits and even heap exploits. And a lot of you might already find it quite\ncomplex. But if you put it into the context of history\nwe are still like 16 years behind. The last examples we have explored from exploit-exercises.com\nintroduced techniques that were state-of-the-art in like 2001. While it still directly applicable to shitty\ncheap embedded devices, like some IoT stuff, it’s very important to lay a foundation. But before we start talking about all these\nmodern exploit mitigations and how we can bypass them, I think it would be a good idea\nto try putting what we have learned in more abstract terms. And try to get a feeling or an intuition about\nexploiting binaries. Let’s try to create a mental model of exploitation. But let’s first introduce some constraints,\notherwise it will be too abstract. Let’s focus on programs like we have interacted\nbefore. this means intel architecture and on linux. Ok. Let’s start at the beginning. We want programs to execute on our CPU. That’s why a program contains assembler\ncode - machine code. And machine code is just like any other data\nin our computers. It’s basically just bits. 0 and 1s. A lot of times we combine them into bytes. And a CPU can interpret a byte as an instruction. Or multiple bytes can be interpreted as an\ninstruction. And some crazy digital hardware magic in the\nCPU knows that this particular value stands for “add the values stored in two registers\nand put the result in the first register. And registers are just like small memory cells\nin the CPU, which fullfil different purposes. And different architectures might have different\nregisters for different purposes. But on intel we have for example the general\npurpose registers like eax, and ebx, that a programmer is free to use however he wants\nto. But there are also special registers, like\nEIP, the instruction pointer. That one simply contains the address, which\npoints to memory, where the next instruction will be. And there is also this stack pointer ESP,\nwhich points to the top of the stack, and the base pointer EBP, which together with\nthe stack pointer define a stack frame. And for beginners this might already feel\ncomplicated. There is code, there is data, there is a stack,\nthere is a heap. There are functions you can call. Functions can return. Somehow there is like a return pointer on\nthe stack you can overwrite with a buffer overflow. There are a lot of different terms that we\nuse. But it’s a lot less complex as it may sound. Because essentially there are just two parts\nthat are important we have memory, which is just a huuuuuuge\nspace of bits that can be 1 or 0. Usually we group them in bytes or words. And there is a CPU, which has a well defined\ndeterministic behaviour that operates on this memory. It’s really that simple. Well. The devil is in the practical details, but\nessentially, when the CPU is turned on, it will start at some defined address. This could be 0, but could also be defined\nto be something else. It request that memory content from some RAM,\nlooks at the value stored at that address, and performs the action according to whatever\nthat value represents. Now when we want to execute a program, you\ncan’t just write your code directly into RAM, and restart the CPU at address 0. Because if your program would cause an endless\nloop, the whole system would stop working. But when you program an arduino, a little\nmicrocontroller, that’s basically what you do. But that’s why some people developed something\nlike the Linux kernel. Which abstracts away the direct hardware for\nyou and makes sure, that if your program sucks, you don’t kill the whole system. That’s why a program is not just plain assembler\ncode, but it’s a fairly complex file format. An ELF file. Which does contain your raw code, but also\na lot of other information. And when you execute this program, the linux\nsystem will actually open the ELF file, read and interpret all the necessary metadata and\nsetup the execution environment for you, and then jumps to the start of your actual code. So how does the execution environment look\nlike? That’s important to picture, because in\nthat environment, you try to exploit a program, you need to understand it. And in some way it’s actyually very simple. Again, the devil is in the practical details,\nbut it will make sense. Let’s say the CPU is just about to execute\nyour first instruction. This means the kernel and the hardware magic\nhas already set up everything. And this is how it looks like. You have a big blob of memory. It ranges from 0, to ffffff. In reality you don’t really have that much\nmemory, that’s why we call it virtual memory. It looks like you own all this memory, but\nhardware magic only makes you think you have it. But in anyway, the CPU now executes your program\nwhich is somewhere in that huge memory. Let’s have a look at how this memory is\ndivided up in a real program. So for example here, we see that from this\nstarting address, to this end address, your program is mapped. We say mapped, because it’s not really physically\nat this address, but it’s there if you would read the value from that address, in your\nassembler code. So ignore the underlaying physical reality,\nand just acccept that there is this huge range of memory you can work with. And infact the stack is also just here. It’s also just defined as starting from\nthis address and ends at this address. So the stack is not really growing or shrinking,\nthat’s just the computer theoretical model of a stack. But how is the stack actually defined? Well the CPU has the stack register, ESP,\nand it would contain an address pointing into this area here. So could you just point the stack pointer\nsomewhere else. Like into your code? Yeah! You absolutely could. The stack pointer is nothing really special,\nit’s just a register that contains an address, and it could contain any address. What makes ESP actually special is just that\nit does some fancy stuff based on instructions. So for example a pop eax instruction, would\nlook up what value is stored at the location where ESP points to, usually that’s the\nstack, but doesn’t have to. And then writes the value from that location\ninto the eax register. And you can absolutely abuse that in an exploit. For example if you find a bug that allows\nyou to set the stack pointer to a different value, you could create a fake stack on the\nheap, and just point ESP there. Often times referred to as a stack pivot. So lose the mental image of a stack that grows\nand shrinks that you learned in computer science, and just think of it what it really is. It’s just some memory where the ESP register\npoints to. And instructions cause interesting effects\nbased on that register. And in the same sense the instruction pointer\nis not special. Usually it points into your code, but it doesn’t\nhave to. If you manage to control EIP somehow, you\ncan just point it to other memory. For example the stack, which we have used\nin previous exploits. Because we placed data that is actually valid\nassembler code onto the stack. You know it as shellcode. The CPU doesn’t care. The EIP register points into some memory,\nand the CPU just happily does what those values say. And well, that is just half true. Because as you may know, on modern systems\nthe stack is not executeable anymore, so the CPU does kinda care, but also not really. It just means that certain areas in this memory\ncan have different permissions. Certain areas have the executable flag which\nmeans the CPU allows EIP to point there and is happy to interpret the values as instructions,\nbut other areas like the stack don’t have it. And then the CPU refuses to interpret it as\ninstructions. Now when we look a bit closer to what kind\nof data is included in all those different memory areas, we can try to come up with creative\nways of how to abuse the. One example is the typical stack structure. When the CPU executes a call instruction it\nplaces the current instruction pointer value at the address where the stack pointer points\nto. It places it ontop of the stack. And when the function returns it takes the\nvalue where the stack pointer points to and sets the instruction pointer to it. So if you somehow manage to modify this value\non the stack, you can control to what EIP will be set to when the function returns,\nand thus you can decide what will be execute next. That’s a classical buffer overflow. Another interesting data structure is the\nglobal offset table, which is basically just an area in memory containing pointers to functions,\nif you overwrite an entry there, you can also control what will be executed if a function\nis called that references an address from this table. I mean oftentimes you cannot directly overwrite\nthese values, but that just means you have to become creative. For example think of two objects on the heap. A user object and a name object, and the user\nobject has a pointer to the name object. And when you want to change the name of this\nuser, the code would follow the pointer and write the new name to that location, which\nmeans if you can somehow overwrite that pointer, you can control where it would write the name\nto. So we could overwrite the name pointer with\nan address on the stack, and when we write the new name for the user, we will actually\noverwrite the stored instruction pointer on the stack. See what I try to get at? There is memory that contains data. Some restrictions apply, like certain memory\nareas are not writeable, others are not executable. And there is a CPU that is very dumb and just\nexecutes whatever EIP points to. And there is a program in the memory, which\nthe CPU executes. And this code uses the memory to do whatever\nit is supposed to do. And it trusts in a certain integrity of the\ndata in memory. But if there is a bug, that allows you to\nchange a value in memory, which the program did not intend to be modifiable, amazing things\ncould happen. And what can happen, that’s just limited\nby your creativity and imagination. One changed byte here in memory, might cause\na certain piece of code to write to an unintended location, which overwrites a function pointer\nof an object, which another part of the code wanted to use, and suddenly executes something\nvery different. And all these techniques we assigned names\nto, like stack buffer overflow, heap fengshui, ROP, use-after-free, are all just creative\nways to screw with data in memory and how the program executed by the CPU reacts to\nit. I understand that this episode might not have\ncontained actual useful information to you. But I kinda wanted to get it out there, because\nmaybe somebody didn’t quite picture programs and exploits in this way. But I hope you can see the value in this way\nof thinking about it. I think it takes some away some of the fear\nthat it all looks so complicated. I’m really interested to hear your critical\nopinion about this. So comment here on youtube or on the reddit\nthread linked below. But nevermind if you liked this or not, we\nwill continue soon our path to learn about more advanced memory corruption techniques. So, stay curious, and see you next time.",
+  "errors": []
+}

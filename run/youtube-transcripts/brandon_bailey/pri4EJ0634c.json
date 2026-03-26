@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pri4EJ0634c",
+    "language": "en",
+    "took_ms": 8956,
+    "method": null,
+    "title": "DEF CON 32 - What History’s Greatest Heist Can Teach Us About Defense In Depth - Pete Stegemeyer",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1787,
+    "description": "What’s the real life equivalent of hacking a Gibson? Probably stealing hundreds of millions of dollars in diamonds, gold, and cash from one of the world's most formidable vaults. In 2003, a team of thieves did just that. Armed with hairspray, double sided tape, and nerves of steel, these thieves defeated layer after layer of security to pull off the haul of a lifetime.\n\nHowever, as much as this is a story of skilled criminals, it is every bit as much a story of security failures and the parallels between protecting diamonds and data. In this presentation we’ll dive deep into what went right, what went wrong, and how to properly apply defense in depth to make your security program look like a hundred million bucks.\n\nDavis, J. (2009, March 12). The untold story of the World’s biggest Diamond Heist. Wired. link\nSelby, S. A., & Campbell, G. (2012). Flawless: Inside the largest diamond heist in history. Sterling.\nStegemeyer, P. (2021). Heist: An inside look at the world’s 100 Greatest Heists, cons, and capers: From burglaries to bank jobs and everything in between. Whalen Book Works.",
+    "view_count": 1700
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pri4EJ0634c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

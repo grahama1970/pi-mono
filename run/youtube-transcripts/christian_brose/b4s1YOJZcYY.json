@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "b4s1YOJZcYY",
+    "language": "en",
+    "took_ms": 8717,
+    "method": null,
+    "title": "The Future of Free Enterprise: A Discussion with Senator Bob",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 3512,
+    "description": "Based on his perspective as a businessman, U.S. Senator Bob Corker (R-Tenn.) will highlight how excessive debt, spending, and overregulation in Washington is impeding economic growth and how pro-growth tax reform—combined with a long-term plan to restore solvency to Social Security and Medicare—would cause our economy to take off. Senator Corker will also emphasize the importance of embracing free enterprise so future generations will have ample opportunities for success. Formerly Tennessee's Co",
+    "view_count": 38
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] b4s1YOJZcYY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

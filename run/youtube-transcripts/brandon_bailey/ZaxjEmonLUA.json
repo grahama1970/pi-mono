@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZaxjEmonLUA",
+    "language": "en",
+    "took_ms": 7610,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Tim Yardley -  Beetlejuice The Lessons We Should Have Learned",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1544,
+    "description": "In this talk I will present the top 15 quotes from *redacted* and how we can transform them to operational advice to improve ICS cyber security. Hold tight, this is going to be a wild ride.",
+    "view_count": 324
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZaxjEmonLUA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

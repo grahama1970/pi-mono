@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bflxhkrWt0o",
+    "language": "en",
+    "took_ms": 8661,
+    "method": null,
+    "title": "How Much is the Internet Worth to the U.S. Economy?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140908",
+    "duration_sec": 3326,
+    "description": "In a new report, Hudson Senior Fellow Harold Furchtgott-Roth and Research Associate Jeffrey Li calculate that the sector accounted for approximately 20 percent of U.S. economic growth between 1997 and 2002 and nearly 10 percent of growth between 2002 and 2007. Using recently released statistics from the Department of Commerce’s Bureau of Economic Analysis, the authors also determine that the sector-spurred growth during these periods added about $582 billion and $340 billion in 2013 dollars, res",
+    "view_count": 495
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bflxhkrWt0o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UAbn3y4SX8M",
+    "language": "en",
+    "took_ms": 8029,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Panel - ICS CTI Information Sharing Between Brazil and the United States",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1900,
+    "description": "Moderator: Paul de Souza; Panelists: Helio Sant'ana; Max Campos; Tom VanNorman; John Felker\n\nThe panelists will touch on topics such as the annual critical infrastructure themed exercise Cyber Guardian run by the Brazilian Cyber Command and the opportunities for industrial control systems (ICS) professionals in the US to become more involved. Topics such as national Malware Information Sharing Platform (MISP) implementation in Brazil focusing on information sharing, particularly in the ICS world, will be discussed. The ICS Village and the Cyber Security Forum Initiative will engage in conversation with the Brazilian government during this session.",
+    "view_count": 207
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UAbn3y4SX8M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

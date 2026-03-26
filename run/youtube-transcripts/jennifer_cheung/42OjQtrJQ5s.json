@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "42OjQtrJQ5s",
+    "language": "en",
+    "took_ms": 8928,
+    "method": null,
+    "title": "DEF CON 32 - Small Satellite Modeling and Defender Software - Kyle Murbach",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1480,
+    "description": "The proliferation of ride-share rocket launches and decrease in the overall cost of sending payloads to space due to recent successes in the private space industry has made small satellite systems a cost effective and time-efficient method to put research vehicles in space.\n\nThe University of Alabama in Huntsville’s Center for Cybersecurity Research and Education (CCRE) has been funded by the U.S. Army Space and Missile Defense Command (SMDC) over the last several years to investigate the overall cybersecurity posture of small satellite systems. Numerous iterations of student teams led by CCRE and SMDC staff members have managed to accomplish notable research milestones.\n\nThis talk is meant to inform the next generation in aerospace cybersecurity by discussing our major research milestones, relevant findings, lessons learned, and areas of concern relating to the overall cybersecurity posture of small satellite systems.\n\nRelevant items to be covered in this talk include what it took to build a working small satellite system model as close to real-world as possible (Raspberry Pis vs PyCubed boards vs other contenders), implementation of small satellite functions (payload camera, radio communications, positioning/sensor array, orbital simulation, battery/solar charging, etc.), performing vulnerability analysis against the implemented model, creating different attack scenarios (MitM, DoS, spoofing, hardware attacks), implementing defensive mitigations (hardening scripts, command validation, health checks), and the development of a lightweight software solution named “Small Satellite Defender” (SSD) designed to protect satellites from potential threat vectors.",
+    "view_count": 696
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 42OjQtrJQ5s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

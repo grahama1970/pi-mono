@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CkX3i0seYnM",
+    "language": "en",
+    "took_ms": 9687,
+    "method": null,
+    "title": "Balancing Privacy and Security in the Age of the Internet",
+    "channel": "Hudson Institute",
+    "upload_date": "20160506",
+    "duration_sec": 5034,
+    "description": "Nadine Strossen and David Rivkin debate the proper limits and obligations on governments and businesses in conducting surveillance.",
+    "view_count": 329
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CkX3i0seYnM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

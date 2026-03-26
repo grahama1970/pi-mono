@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qN9qduX-fFM",
+    "language": "en",
+    "took_ms": 9499,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - Cyber Game Changers Women Who Lead, Secure and Inspire - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2593,
+    "description": "A powerful panel spotlighting women reshaping cybersecurity. Hear real stories, career advice, and how they’re advancing diversity in the field.",
+    "view_count": 1216
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qN9qduX-fFM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

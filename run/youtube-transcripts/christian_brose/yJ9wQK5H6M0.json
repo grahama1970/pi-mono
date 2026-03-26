@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yJ9wQK5H6M0",
+    "language": "en",
+    "took_ms": 8933,
+    "method": null,
+    "title": "Social Unrest and Political Instability in Venezuela",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6693,
+    "description": "During the past week, the turmoil in Egypt, Tunisia, Yemen, and Algeria may bring about significant changes in the political landscape of the Arab world. The protests and violence may result in fundamental changes as well as in repercussions for the U.S. and allies in the region and beyond.  Significantly, the possible downfall of some of the region's longest-standing rulers could have ramifications as far as the Western hemisphere, where public unrest continues to grow in Hugo Chavez's Venezuel",
+    "view_count": 75
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yJ9wQK5H6M0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

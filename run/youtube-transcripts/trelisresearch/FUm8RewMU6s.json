@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FUm8RewMU6s",
+    "language": "en",
+    "took_ms": 8347,
+    "method": null,
+    "title": "Why Build Enterprise RAG with Postgres?",
+    "channel": "Trelis Research",
+    "upload_date": "20241211",
+    "duration_sec": 4675,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Other Products from Trelis: https://Trelis.com/\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1OPYtx5aUwtwz5I-t-gAuLsUAcThly5jZyhj9qmzO1lg/edit?usp=sharing\n- BASIC-inference repo: https://github.com/trelisresearch/basic-inference\n- Nomic Embeddings: https://huggingface.co/nomic-ai/nomic-embed-text-v1.5\n\nTIMESTAMPS:\n00:00 - Introduction to RAG and Postgres implementation\n00:32 - Background on using Postgres vs third-party services\n01:22 - Overview of PG vector and PG best match\n02:05 - Video structure outline\n02:33 - Demo of RAG application\n03:24 - Document upload and chunking process\n03:53 - Data collation and vector/text search explanation\n04:40 - Speed optimization using Cerebras/Groq\n05:36 - Advantages of using Postgres\n06:27 - Vector vs text search comparison\n07:42 - Combining search methods\n08:38 - Performance comparison data\n09:56 - Vector search explanation\n11:21 - Text search and BM25 explanation \n14:38 - Postgres tools overview\n17:42 - Database setup and configuration\n20:29 - Basic RAG implementation\n23:33 - Document embedding process\n27:42 - Search implementation\n31:40 - Advanced features:\n- 31:40 BM25 optimization\n- 33:20 Text processing improvements\n- 35:40 Asynchronous database calls\n- 37:15 Performance evaluation\n- 39:30 Command line interface setup\n42:20 - Document chunking strategies\n47:55 - Batch processing implementation\n52:30 - Search functionality demo\n56:40 - Final implementation review\n01:17:48 - Conclusion and resources",
+    "view_count": 3582
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FUm8RewMU6s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

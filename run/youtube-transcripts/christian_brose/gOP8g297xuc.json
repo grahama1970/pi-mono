@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gOP8g297xuc",
+    "language": "en",
+    "took_ms": 8042,
+    "method": null,
+    "title": "Ajit Pai on the Federal Communications Commission",
+    "channel": "Hudson Institute",
+    "upload_date": "20220121",
+    "duration_sec": 3578,
+    "description": "Ajit Pai served as chairman of the Federal Communications Commission (FCC) from 2017-2021. During his tenure, the FCC repealed network neutrality rules and opened vast swaths of spectrum for new and advanced wireless communications services. Please join Harold Furchtgott-Roth, director of Hudson’s Center for the Economics of the Internet, for a conversation with Ajit Pai on his time at the FCC and the most significant issues facing the communications sector today.\n\nWatch on Hudson.org: https://www.hudson.org/events/2054-virtual-event-ajit-pai-on-the-federal-communications-commission12022",
+    "view_count": 647
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gOP8g297xuc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

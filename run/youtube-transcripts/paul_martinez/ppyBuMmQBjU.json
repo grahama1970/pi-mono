@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ppyBuMmQBjU",
+    "language": "en",
+    "took_ms": 7664,
+    "method": null,
+    "title": "Using Microsoft Detours For Deep System Inspection",
+    "channel": "S4 Events",
+    "upload_date": "20250903",
+    "duration_sec": 1255,
+    "description": "Microsoft Detours open-source library was utilized to develop a DLL capable of deep system inspection. This approach targets the process environments of various computing systems, resulting in the discovery of multiple exploitable vulnerabilities. \n\nAs demonstrated by recent news in the security realm, a minor logic flaw in a kernel driver can render a system inoperable. An attacker exploiting a vulnerable privileged file operation in an ICS system could similarly interrupt operations, causing issues like a Blue Screen of Death (BSOD) or an endless boot cycle.\n\nAsher showcases these exploitations, providing insights into the vulnerabilities uncovered in widely used SCADA software and their implications for system security in an ICS environment. It also emphasized the importance of an effective vulnerability discovery strategy in critical environments, illustrating real-world exploitation scenarios discovered through this methodology.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ppyBuMmQBjU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

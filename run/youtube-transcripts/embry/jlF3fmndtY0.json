@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jlF3fmndtY0",
+    "language": "en",
+    "took_ms": 10216,
+    "method": null,
+    "title": "SpaceX SES 10 Press Confrence Full 4k Horizontal",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170402",
+    "duration_sec": 2967,
+    "description": "Sorry for the poor quality, this was meant to be a reference and not a stand alone video. It's just an iPhone mounted on my mirrorless camera (my actual job), so audio and video is not fantastic but it's better than nothing. \n\nSpaceX CEO Elon Musk, SpaceX Communications Director John Taylor, and SES CTO Martin Halliwell talk in great detail about the highly successful SES-10 mission, the future of SpaceX and the future of rocket reusability. \n\nMake sure and subscribe here and follow on Instagram @EverydayAstronaut",
+    "view_count": 39365
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jlF3fmndtY0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

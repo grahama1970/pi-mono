@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Qh33vB_pj2k",
+    "language": "en",
+    "took_ms": 2880,
+    "method": null,
+    "title": "Sandboxx Letter Example",
+    "channel": "Sandboxx",
+    "upload_date": "20200513",
+    "duration_sec": 57,
+    "description": "Each Sandboxx Letter includes your custom message, up to 3,000 characters, a full-color photo for a more personal touch, stationery for your recruit to write back to you, and a pre-addressed return envelope for a quick reply.",
+    "view_count": 24711
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Qh33vB_pj2k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

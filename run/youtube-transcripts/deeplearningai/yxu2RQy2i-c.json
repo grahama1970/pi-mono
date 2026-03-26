@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yxu2RQy2i-c",
+    "language": "en",
+    "took_ms": 9019,
+    "method": null,
+    "title": "Build live voice agents that listen, reason, and respond, using Google’s ADK",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251015",
+    "duration_sec": 133,
+    "description": "Learn more: https://bit.ly/43jxboy\n\nIn \"Building Live Voice Agents with Google’s ADK\" you'll learn from Lavi Nigam and Sita Lakshmi Sangameswaran, Machine Learning Engineers at Google. \n\nYou’ll learn how to build and deploy AI agents with Google’s open source Agent Development Kit (ADK). ADK provides modular components such as models, tools, memory, and orchestration, that make it easier to create both simple and complex systems.\n\nYou’ll start by building a voice agent that takes speech input, reasons with an LLM, and responds with voice output. Then you’ll work with sessions, state, and memory, and extend your agents with tools and APIs to perform real-world tasks.\n\nNext, you’ll add callbacks and guardrails for reliability and orchestrate specialized agents like planners and researchers. You’ll build a podcast agent that researches a topic, drafts a conversational script, and produces multi-speaker audio with Gemini text-to-speech models. Then, you’ll build in guardrails to secure and optimize your agents before reviewing methods for deploying them into production. \n\nIn detail, you’ll: \n\n- Build your first agent with ADK, connect it to Google Search, and test live voice interactions in the ADK Web UI.\n- Use sessions, state, and memory to manage conversations, share context between tools, and give agents short-term tracking and long-term recall across interactions.\n- Add custom tools and API, integrate them with ADK, and refine agent instructions so they follow defined workflows effectively.\n- Generate structured research reports by defining schemas, rewriting agent instructions to act as a coordinator, and saving results as markdown files for downstream use.\n- Add guardrails with callbacks to filter unsafe sources, enforce rules, and log tool activity, making your agents safer, more predictable, and production-ready.\n- Build a podcast agent by combining schemas, callbacks, and a dedicated audio agent, and generate multi-speaker episodes with Gemini text-to-speech in a scalable workflow.\n- Learn how to productionize your agents by giving them persistent memory, testing their reliability, deploying on Vertex AI, and adding security and monitoring for safe scaling.\n\nEnroll now: https://bit.ly/43jxboy",
+    "view_count": 4724
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yxu2RQy2i-c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

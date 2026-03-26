@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PiSI6OoqD1w",
+    "language": "en",
+    "took_ms": 8486,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village  - David Robinson - General Aviation GA Electronic Flight Bags",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2627,
+    "description": "Over the last while I have been looking at General Aviation (GA) Electronic Flight Bags (EFB). This talk will look at some of the potential security related issues I have noticed along the way. This talk will be a high level overview of the classes of problems which have been observed, opposed to focusing on particular products and individual bugs in these products. The goal here is to help an industry who is adding more connected services to their products and understanding the risks which the benefits bring.\n\nThe talk will highlight some categories of issues which have been identified. Along with information about why it is an issue, there will be information on methods to mitigating these security risks. I would like to see as an outcome form this talk people who develop EFBs taking away some of the ideas and mitigating the risk in their own products.",
+    "view_count": 198
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PiSI6OoqD1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

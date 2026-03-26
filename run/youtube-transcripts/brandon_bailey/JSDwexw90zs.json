@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JSDwexw90zs",
+    "language": "en",
+    "took_ms": 9017,
+    "method": null,
+    "title": "DEF CON 33 - Carding is Dead, Long Live Carding - Federico Valentini, Allesandro Strino",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2252,
+    "description": "The payment fraud landscape is experiencing a resurgence of 'carding' through sophisticated Near Field Communication (NFC) relay attacks, which combine social engineering and custom mobile malware to bypass contactless payment security measures, enabling unauthorized transactions. A critical emerging trend is the proliferation of Malware-as-a-Service (MaaS) platforms, primarily operated by Chinese-speaking threat actors, who develop and distribute advanced NFC relay capabilities as turn-key solutions to global affiliates, facilitating complex card-present fraud schemes on an unprecedented scale and leading to arrests in the U.S. and EU. This MaaS operational model, featuring affiliate networks and advanced tools, signifies a critical evolution in financial threats, alarming global financial institutions and necessitating urgent adaptation of fraud prevention strategies. The discussion will explore MaaS operations, presenting key findings from the Supercard X analysis, including its technical capabilities, and examining the implications for the payment industry, with mitigation strategies and actionable intelligence such as actor communications and distinct Tactics, Techniques, and Procedures (TTPs) being shared. Furthermore, the talk will reveal how developers of well-known Android banking trojans are integrating NFC relay functionalities to enhance their cash-out techniques, providing attendees with a deep dive into NFC Relay MaaS, exclusive threat intelligence, and an understanding of the evolving fraud landscape, including the operational models, tools, and TTPs employed by modern NFC Relay MaaS platforms, as well as the systemic risks posed to global financial institutions and the urgent need for adaptive security postures.",
+    "view_count": 10995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JSDwexw90zs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

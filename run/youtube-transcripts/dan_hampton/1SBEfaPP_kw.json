@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1SBEfaPP_kw",
+    "language": "en",
+    "took_ms": 9215,
+    "method": null,
+    "title": "Why the Navy never put F 22s on carriers",
+    "channel": "Sandboxx",
+    "upload_date": "20210405",
+    "duration_sec": 430,
+    "description": "The U.S. Air Force's venerable F-22 Raptor is widely seen as the world's most capable air superiority fighter, but for a short time, it was nearly joined by a sister platform modified specifically for the Navy in the NATF-22. \n\nRead the full story here:\nhttps://sbxx.us/3umOOzX",
+    "view_count": 479889
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1SBEfaPP_kw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

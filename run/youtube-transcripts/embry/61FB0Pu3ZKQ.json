@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "61FB0Pu3ZKQ",
+    "language": "en",
+    "took_ms": 8002,
+    "method": null,
+    "title": "Reddit KSP Challenge - One Engine To Rule Them All (January 2017)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170127",
+    "duration_sec": 2965,
+    "description": "After hours of live streaming I decided to do this week's reddit challenge - \"One Engine To Rule Them All.\" The challenge was to use only one engine to get to the Mun and back. So, I present to you a quick little run to the Mun and back using only one engine! \n\nFollow on Twitch to join the action! http://twitch.tv/everydayastronaut\n\nCheck out the Kerbal Subreddit for weekly challenges - http://reddit.com/r/kerbalspaceprogram\n\nFollow me on Instagram @EverydayAstronaut",
+    "view_count": 5888
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 61FB0Pu3ZKQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ho3ttbdN_ok",
+    "language": "en",
+    "took_ms": 9466,
+    "method": null,
+    "title": "Samuel Tadros on Egypt for CBN",
+    "channel": "Hudson Institute",
+    "upload_date": "20111129",
+    "duration_sec": 229,
+    "description": "Hudson Research Fellow Samuel Tadros joined the 700 Club on CBN to discuss Coptic Christians in Egypt.",
+    "view_count": 286
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ho3ttbdN_ok: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

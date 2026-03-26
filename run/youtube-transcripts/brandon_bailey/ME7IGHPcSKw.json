@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ME7IGHPcSKw",
+    "language": "en",
+    "took_ms": 8984,
+    "method": null,
+    "title": "DEF CON 30 - Tarek Abdelmotaleb, Dr. Bramwell Brizendine - Weaponizing Windows Syscalls",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1543,
+    "description": "Windows syscalls, while increasingly trendy in red team efforts, have only been very rarely used as pure shellcode, outside of being used for Egghunters. Typically, they are used as part of red team malware, utilizing projects like SysWhispers2. An Internet search, in fact, reveals only one non-Egghunter use of syscalls, from a Windows XP-era shellcode. This is hardly surprising though, as many Windows syscalls can be extremely difficult to use and set up in as position-independent shellcode, which is a far cry from red team malware. Often syscalls require significant additional set up not required for performing equivalent actions done by calling WinAPI functions via PEB-walking.\n\nWhile much knowledge exists on using syscalls for red team efforts, information on writing original shellcode with syscalls so in modern x86 is sparse and lacking. Our reverse engineering efforts, however, have revealed the necessary steps to take to successfully perform syscalls in shellcode, both for Windows 7 and 10, as there are some significant differences.\n\nIn this talk, we will embark upon a journey that will show the process of reverse engineering how Windows syscalls work in both Windows 7 and 10, while focusing predominately on the latter. With this necessary foundation, we will explore the process of effectively utilizing syscalls inside shellcode. We will explore the special steps that must be taken to set up syscalls – steps that may not be required to do equivalent actions with WinAPI functions.\n\nThis talk will feature various demonstrations of syscalls in x86 shellcode.",
+    "view_count": 2980
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ME7IGHPcSKw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

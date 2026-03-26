@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZpbCrtk6WUc",
+    "language": "en",
+    "took_ms": 8412,
+    "method": null,
+    "title": "2011 Bradley Symposium",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 7449,
+    "description": "In an age of increasing cultural diversity at home and of increasing globalization abroad, questions are being agitated about what it means today to be an American. How, in fact, do we identify ourselves, both as individuals and as a people? What do we look up to and revere? To what larger community and ideals are we attached and devoted? For what are we willing to fight and to sacrifice?A new anthology, What So Proudly We Hail: The American Soul in Story, Speech, and Song, edited by Amy A. Kass",
+    "view_count": 30
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZpbCrtk6WUc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

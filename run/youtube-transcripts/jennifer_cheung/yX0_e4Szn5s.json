@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yX0_e4Szn5s",
+    "language": "en",
+    "took_ms": 8887,
+    "method": null,
+    "title": "DEF CON 31 - VDA Shenanigans  Attacking & Defending the Truck Part that Gets Left Behind - Ford, Reu",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1717,
+    "description": "",
+    "view_count": 571
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yX0_e4Szn5s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

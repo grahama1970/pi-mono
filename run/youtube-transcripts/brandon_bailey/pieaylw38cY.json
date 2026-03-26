@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pieaylw38cY",
+    "language": "en",
+    "took_ms": 8413,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - PamMelroy - Cybersecurity Lessons Learned in Human Spaceflight",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2637,
+    "description": "Space is incredibly important in our daily lives – providing the GPS navigation on our phone and in our financial system, national security communications throughout the world, and remote sensing of weather conditions and other indicators of the health of the Earth. We’ve had a very complacent attitude about our satellites because physical access has been impossible. Now we know our key infrastructure is at threat on the ground, and it is in space as well from both physical and cyber threats. There are many important lessons to be learned about the software approach to human space flight and its high standards for software error rate and redundancy, tiered levels of access, distributed architecture, command protocols, and there are mistakes to learn from as well. The space industry is changing very rapidly. With commercial space stations, lunar exploration, and nation states competing for achievements – and resources – in space, we must understand the implications and prepare for the challenges ahead.",
+    "view_count": 433
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pieaylw38cY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

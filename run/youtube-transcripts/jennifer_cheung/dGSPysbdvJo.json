@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dGSPysbdvJo",
+    "language": "en",
+    "took_ms": 9513,
+    "method": null,
+    "title": "DEF CON 32 - Preparing for the Future: A Discussion of our Rapidly Evolving Threat Landscape - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 812,
+    "description": "Seems like the world has completely changed in the last 12-24 months:\n\nMultiple Global Conflicts\nLaunch of ChatGPT\nCISO’s being held personally accountable for security breaches\nGovernment Regulations on security\nEconomic Uncertainties (interest rates, layoffs)\nAll of these changes have played a major role in reshaping the security landscape. From adversaries with political motivations to another just trying to provide for his/her family. Security is no longer just your job, but you could actually be held personally liable. Oh and don’t forget that an adversary now has the ability to rewrite vulnerabilities with the click of a button, or can create deep fakes so real that a zoom call with multiple “people” was undetectable by a real person.",
+    "view_count": 580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dGSPysbdvJo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

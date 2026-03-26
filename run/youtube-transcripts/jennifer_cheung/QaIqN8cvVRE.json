@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QaIqN8cvVRE",
+    "language": "en",
+    "took_ms": 9111,
+    "method": null,
+    "title": "DEF CON 29 BIC Village - Ochaun Marshall - The OPSEC of Protesting",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1618,
+    "description": "Technology both facilitates and complicates the human condition in many ways, especially in the tradition of protesting. Activists and those supporting social movements need to be aware of the risks of social demonstrations. In this talk, we dive into communication strategies for activists, as well as the basics of OPSEC. We’ll do threat modeling against both nation-state & opposition movements and discuss the utility of basic security hygiene in this context. We will also examine these principles against case studies of the Civil rights movement, BLM, Hong Kong Separation movement, Election protests, and recent “hacktivist” attacks against Parler and Gab.",
+    "view_count": 2138
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QaIqN8cvVRE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

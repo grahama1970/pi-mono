@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "J2JgLUuGytk",
+    "language": "en",
+    "took_ms": 9234,
+    "method": null,
+    "title": "John Walters on Drug Related Violence for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20100427",
+    "duration_sec": 307,
+    "description": "Hudson Institute Executive Vice President John Walters joined Fox News on April 26th to discuss drug related violence. Do stricter drug laws cause more drug related incidents?",
+    "view_count": 302
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] J2JgLUuGytk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

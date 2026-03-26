@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rp6ZGm4r4aI",
+    "language": "en",
+    "took_ms": 8826,
+    "method": null,
+    "title": "The US Navy is getting its first hypersonic missiles",
+    "channel": "Sandboxx",
+    "upload_date": "20230221",
+    "duration_sec": 57,
+    "description": "On Friday, the Pentagon announced Lockheed Martin has been awarded a contract worth more than $2 billion in total to deliver new hypersonic missiles for use aboard the Navy’s Zumwalt-class guided missile destroyers. These new high-speed missiles are expected to enter service very rapidly, with Lockheed Martin projecting they’ll be fitted on the stealthy warships as soon as the “mid-2020s.”\n\nThe new missiles, known as the Conventional Prompt Strike system, are hypersonic boost-glide weapons similar to those already in service for China and Russia, though the American government has committed to fielding only conventionally armed, or non-nuclear, hypersonic weapons.\n\nRead more here: https://www.sandboxx.us/blog/lockheed-martin-to-supply-us-navy-with-conventional-prompt-strike-hypersonic-missiles/",
+    "view_count": 77855
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rp6ZGm4r4aI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

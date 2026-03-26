@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z4TeOp1b29k",
+    "language": "en",
+    "took_ms": 2875,
+    "method": null,
+    "title": "2013 Bradley Symposium Panel Discussion: Is Our Political Culture Undermining Freedom?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140221",
+    "duration_sec": 5639,
+    "description": "The Bradley brothers understood that freedom requires a political culture that is not only friendly to individual enterprise, but that also nurtures critical commitments like personal responsibility, moral obligation and civic engagement. Is our culture reinforcing or undermining those commitments today, and what might we do about it?",
+    "view_count": 1371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z4TeOp1b29k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

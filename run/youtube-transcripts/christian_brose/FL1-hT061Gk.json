@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FL1-hT061Gk",
+    "language": "en",
+    "took_ms": 8359,
+    "method": null,
+    "title": "How Will the COVID-19 Pandemic Change Manufacturing and Technology Supply Chains?",
+    "channel": "Hudson Institute",
+    "upload_date": "20200422",
+    "duration_sec": 3503,
+    "description": "Join Hudson Institute and the Manufacturing Policy Initiative at Indiana University for an inside look at how U.S. firms and supportive institutions are thinking about long-term changes in global supply chains amid a global pandemic and into the future.",
+    "view_count": 2324
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FL1-hT061Gk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

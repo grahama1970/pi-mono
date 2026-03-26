@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pR_0ZA-nsdA",
+    "language": "en",
+    "took_ms": 9251,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village - Tyler Gardner  - Single Board Computers In Amateur Radio",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 2707,
+    "description": "Have you ever tried Raspberry Pi and Ham together? It's a surprisingly good combination. In this talk, learn about how Raspberry Pis (and other single-board computers) play with ham radio.",
+    "view_count": 1278
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pR_0ZA-nsdA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

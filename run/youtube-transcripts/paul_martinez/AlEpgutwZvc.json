@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AlEpgutwZvc",
+    "language": "en",
+    "took_ms": 8550,
+    "method": null,
+    "title": "Attacking The Plant Through WirelessHART",
+    "channel": "S4 Events",
+    "upload_date": "20160817",
+    "duration_sec": 2122,
+    "description": "This is a great example of a S4 technical session. Jalal Bouhdada and Erwin Paternotte dig into the protocol and implementation of WirelessHART to identify security strengths and weaknesses as well as areas that deserve future research.\n\nThe main findings are:\n\n1. the most important crypto key, the Join Key, is often left as the vendor default. This default is often in the documentation, and even if not will be available with a reasonable Internet search. Many if not most deployments are not changing the default Join Key. \n\nAsset owners are getting a false sense of security and not properly managing risk. They hear that WirelessHART is secure, but the deployment team, and often the sales team, neglects to mention that some level of key management is required to achieve this security.\n\n2) The firmware could be extracted via JTAG on all 5 vendor systems the researchers looked at. They were able to identify where the Join Key was in the firmware. While it was encrypted or encoded, unknown at the time, they could copy this into their own WirelessHART device and join the network.\n\nReally great work by these researchers that we hope to see more from in the future.",
+    "view_count": 2396
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AlEpgutwZvc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

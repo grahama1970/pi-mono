@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y7aaU2VqTvg",
+    "language": "en",
+    "took_ms": 8500,
+    "method": null,
+    "title": "The Best LLM? Google vs OpenAI, Anthropic and DeepSeek",
+    "channel": "Trelis Research",
+    "upload_date": "20250206",
+    "duration_sec": 687,
+    "description": "🛠 Explore Fine-tuning, Vision, Audio, and Inference Tools: https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Join the Trelis Team: https://trelis.com/developer-collaborations/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n📸 Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO LINKS:\n- s1: Simpletest-timescaling: https://arxiv.org/pdf/2501.19393\n\nTIMESTAMPS:\n00:00 Introduction to AI Model Predictions\n00:12 Current Market Leaders: OpenAI and Google\n01:06 Google's New AI Model Releases\n02:20 Google's Competitive Edge with TPUs\n02:57 AI Model Pricing Breakdown\n04:17 High-Quality AI Models\n06:07 Budget AI Models\n07:47 Challenges and Future of AI Models",
+    "view_count": 2598
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y7aaU2VqTvg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

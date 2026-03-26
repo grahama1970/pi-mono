@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LvP6LqaiDzg",
+    "language": "en",
+    "took_ms": 7920,
+    "method": null,
+    "title": "Fireside Chat: Where OPC UA Makes Sense, Standards Adoption, & More",
+    "channel": "S4 Events",
+    "upload_date": "20250512",
+    "duration_sec": 1921,
+    "description": "Tom Burke was synonymous with OPC as the founder and leader of the OPC Foundation for three decades. Now that Tom has been away from the OPC Foundation for five years, Dale discussed where OPC UA should be used, where it doesn't make sense, what is the likely future for OPC UA, and more. Some of the answers will likely surprise you, and it's important information for your OT architecture decisions.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 163
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LvP6LqaiDzg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

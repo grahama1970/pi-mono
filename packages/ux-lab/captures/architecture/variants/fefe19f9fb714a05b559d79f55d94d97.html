@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stitch Architecture Editor - Cyberpunk Canvas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg-deep: #050505;
+            --bg-surface: #0f0f0f;
+            --neon-blue: #00f3ff;
+            --neon-magenta: #ff00ff;
+            --neon-green: #39ff14;
+            --text-main: #e2e8f0;
+            --border-glow: rgba(0, 243, 255, 0.3);
+        }
+        body {
+            font-family: 'Space+Grotesk', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .canvas-grid {
+            background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .neon-border {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--border-glow);
+        }
+        .neon-text-blue {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        .neon-text-magenta {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 5px var(--neon-magenta);
+        }
+        .floating-panel {
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-tool {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        .selection-box {
+            border: 1px dashed var(--neon-magenta);
+            background: rgba(255, 0, 255, 0.05);
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen relative canvas-grid">
+<header class="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-6 py-2 floating-panel border-0 border-b border-white/5">
+<div class="flex items-center gap-3 pr-4 border-r border-white/10">
+<div class="w-3 h-3 bg-[var(--neon-green)] rounded-full animate-pulse"></div>
+<span class="mono text-xs uppercase tracking-widest">Live Sync: Active</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase text-gray-500 font-bold">Project</span>
+<span class="text-sm font-bold tracking-tight">SYSTEM_PIPELINE_V3.STITCH</span>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-none border border-[var(--neon-blue)] bg-[var(--bg-surface)] flex items-center justify-center text-[10px] mono">H</div>
+<div class="w-8 h-8 rounded-none border border-[var(--neon-magenta)] bg-[var(--bg-surface)] flex items-center justify-center text-[10px] mono">AI</div>
+</div>
+</div>
+</header>
+<nav class="fixed left-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 p-2 floating-panel neon-border">
+<button class="w-12 h-12 flex items-center justify-center hover:text-[var(--neon-blue)]">
+<span class="material-symbols-outlined">near_me</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center hover:text-[var(--neon-blue)]">
+<span class="material-symbols-outlined">rectangle</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center active-tool">
+<span class="material-symbols-outlined">pentagon</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center hover:text-[var(--neon-blue)]">
+<span class="material-symbols-outlined">arrow_outward</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center hover:text-[var(--neon-blue)]">
+<span class="material-symbols-outlined">title</span>
+</button>
+<div class="h-[1px] bg-white/10 my-1 mx-2"></div>
+<button class="w-12 h-12 flex items-center justify-center hover:text-[var(--neon-magenta)]">
+<span class="material-symbols-outlined">smart_toy</span>
+</button>
+</nav>
+<aside class="fixed right-8 top-1/2 -translate-y-1/2 z-50 w-16 flex flex-col items-center gap-4 py-6 floating-panel border-white/10">
+<div class="flex flex-col items-center gap-6">
+<div class="group relative">
+<div class="w-2 h-2 bg-gray-600 hover:bg-[var(--neon-blue)] cursor-pointer"></div>
+<span class="absolute right-12 top-0 bg-black px-2 py-1 text-[10px] mono whitespace-nowrap opacity-0 group-hover:opacity-100 border border-white/10">V1.0 INITIAL</span>
+</div>
+<div class="w-[1px] h-8 bg-white/10"></div>
+<div class="group relative">
+<div class="w-2 h-2 bg-gray-600 hover:bg-[var(--neon-blue)] cursor-pointer"></div>
+<span class="absolute right-12 top-0 bg-black px-2 py-1 text-[10px] mono whitespace-nowrap opacity-0 group-hover:opacity-100 border border-white/10">V1.2 REFACTOR</span>
+</div>
+<div class="w-[1px] h-8 bg-white/10"></div>
+<div class="group relative">
+<div class="w-4 h-4 border border-[var(--neon-magenta)] bg-[var(--bg-surface)] cursor-pointer flex items-center justify-center">
+<div class="w-1 h-1 bg-[var(--neon-magenta)]"></div>
+</div>
+<span class="absolute right-12 top-0 bg-black px-2 py-1 text-[10px] mono whitespace-nowrap opacity-100 border border-[var(--neon-magenta)] text-[var(--neon-magenta)]">V2.0 AI-EDIT</span>
+</div>
+</div>
+</aside>
+<div class="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-8 px-8 py-4 floating-panel neon-border">
+<div class="flex flex-col gap-1">
+<span class="text-[9px] uppercase tracking-tighter text-gray-500 font-bold">Component ID</span>
+<span class="mono text-xs neon-text-blue">NODE_0x7F2</span>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div class="flex gap-4">
+<div class="flex flex-col gap-1">
+<span class="text-[9px] uppercase tracking-tighter text-gray-500 font-bold">Latency</span>
+<span class="mono text-xs">24ms</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[9px] uppercase tracking-tighter text-gray-500 font-bold">Throughput</span>
+<span class="mono text-xs">1.2GB/s</span>
+</div>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-white/5 hover:bg-white/10 text-[10px] mono uppercase border border-white/10">Edit Schema</button>
+<button class="px-3 py-1 bg-[var(--neon-magenta)]/10 text-[var(--neon-magenta)] hover:bg-[var(--neon-magenta)]/20 text-[10px] mono uppercase border border-[var(--neon-magenta)]/50">Ask AI Agent</button>
+</div>
+</div>
+<main class="w-full h-full relative overflow-hidden flex items-center justify-center">
+<div class="relative w-[1200px] h-[800px]">
+<div class="absolute top-[200px] left-[100px] w-48 p-4 border border-white/20 bg-[var(--bg-surface)]">
+<div class="flex justify-between items-center mb-4">
+<span class="text-[10px] mono text-gray-500">INGEST_SVC</span>
+<span class="material-symbols-outlined text-xs text-gray-500">settings</span>
+</div>
+<div class="h-12 border-t border-white/5 pt-2">
+<div class="w-full h-2 bg-white/5 mb-1"></div>
+<div class="w-2/3 h-2 bg-white/5"></div>
+</div>
+</div>
+<svg class="absolute top-0 left-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 0 2px var(--neon-blue));">
+<path d="M 292 232 L 450 232" fill="none" stroke="var(--neon-blue)" stroke-width="1.5"></path>
+<path d="M 450 232 L 442 228 M 450 232 L 442 236" stroke="var(--neon-blue)" stroke-width="1.5"></path>
+</svg>
+<div class="absolute top-[160px] left-[450px] w-64 p-6 border-2 border-[var(--neon-blue)] bg-[var(--bg-surface)] shadow-[0_0_20px_rgba(0,243,255,0.15)]">
+<div class="absolute -top-3 left-4 px-2 bg-[var(--bg-deep)] text-[10px] mono neon-text-blue">SELECTED</div>
+<div class="flex justify-between items-center mb-6">
+<span class="text-sm font-bold tracking-tight uppercase">Processing Engine</span>
+<div class="w-2 h-2 bg-[var(--neon-green)]"></div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] mono">
+<span class="text-gray-500">RUNTIME:</span>
+<span>NODE_V20</span>
+</div>
+<div class="flex justify-between text-[10px] mono">
+<span class="text-gray-500">MEMORY:</span>
+<span>512MB</span>
+</div>
+</div>
+<div class="absolute -top-1 -left-1 w-2 h-2 bg-[var(--neon-blue)]"></div>
+<div class="absolute -top-1 -right-1 w-2 h-2 bg-[var(--neon-blue)]"></div>
+<div class="absolute -bottom-1 -left-1 w-2 h-2 bg-[var(--neon-blue)]"></div>
+<div class="absolute -bottom-1 -right-1 w-2 h-2 bg-[var(--neon-blue)]"></div>
+</div>
+<svg class="absolute top-0 left-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 0 2px var(--neon-magenta));">
+<path d="M 714 232 C 800 232, 800 450, 900 450" fill="none" stroke="var(--neon-magenta)" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<circle cx="900" cy="450" fill="var(--neon-magenta)" r="3"></circle>
+</svg>
+<div class="absolute top-[410px] left-[900px] w-56 p-4 border border-[var(--neon-magenta)] bg-[var(--bg-surface)]">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm neon-text-magenta">smart_toy</span>
+<span class="text-[10px] mono text-[var(--neon-magenta)] uppercase">Proposed: Async Cache</span>
+</div>
+<div class="space-y-2 opacity-50">
+<div class="w-full h-1 bg-white/10"></div>
+<div class="w-full h-1 bg-white/10"></div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 py-1 text-[9px] mono border border-[var(--neon-magenta)] text-[var(--neon-magenta)] uppercase hover:bg-[var(--neon-magenta)] hover:text-black">Accept</button>
+<button class="px-2 py-1 text-[9px] mono border border-white/10 text-gray-500 uppercase">Ignore</button>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-8 left-8 flex gap-2">
+<div class="flex items-center gap-2 p-1 floating-panel border-white/10">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-white/5">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="px-2 text-[10px] mono border-x border-white/5">84%</span>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-white/5">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center floating-panel border-white/10 hover:bg-white/5">
+<span class="material-symbols-outlined text-sm">layers</span>
+</button>
+</div>
+<div class="fixed bottom-8 right-8 flex flex-col items-end gap-1 opacity-40">
+<div class="flex gap-2">
+<span class="text-[9px] mono uppercase">Cmd+K Search Agent</span>
+<span class="text-[9px] mono uppercase">|</span>
+<span class="text-[9px] mono uppercase">V Selection</span>
+</div>
+<div class="flex gap-2">
+<span class="text-[9px] mono uppercase">Space Pan</span>
+<span class="text-[9px] mono uppercase">|</span>
+<span class="text-[9px] mono uppercase">Del Remove</span>
+</div>
+</div>
+
+</body></html>

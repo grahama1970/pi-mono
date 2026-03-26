@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R_rpuLpfMZM",
+    "language": "en",
+    "took_ms": 8801,
+    "method": null,
+    "title": "DEF CON 33 -BiC Village -Let's Lose the Shock: Mystery of Linux - A Pain Free Intro - DJ Davis",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 3349,
+    "description": "Linux is powerful—but intimidating. This talk removes the mystery with comparisons to Windows, clear explanations of key concepts, and practical tips for getting started.",
+    "view_count": 1070
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R_rpuLpfMZM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

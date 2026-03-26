@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RUatYr6PZdo",
+    "language": "en",
+    "took_ms": 8717,
+    "method": null,
+    "title": "Prompt Engineering, The Promptism and The Promtists (stable diffusion, GPT-3, Github Copilot)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20221018",
+    "duration_sec": 391,
+    "description": "In this video, the computer attempt to explain the basics of prompt engineering, a process by which one can create images with stable diffusion, text with GPT-3 and code with Github Copilot.\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\nThe tools used in this video:\nStable Diffusion:\nhttps://stability.ai/blog/stable-diffusion-public-release\nOpen A.I. GPT-3 playground:\nhttps://beta.openai.com/playground\nGithub Copilot:\nhttps://github.com/features/copilot\n\nwatch how to create a movie with A.I.\nhttps://www.youtube.com/watch?v=85Eg2N_YZ24\n\n\nC O N T A C T:\nnobodyandthecomputer@gmail.com\n\n00:00 Intro\n00:26 What is Prompt Engineering\n00:57 Text to Code with Github Copilot\n02:10 Text to Image with Stable Diffusion\n04:05 The Promptism and The Promptists\n04:37 The Monkeys in the latent space Band\n05:09 Text generation with Open A.I. GPT-3",
+    "view_count": 3112
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RUatYr6PZdo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

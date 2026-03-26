@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DVVrGb5WyNA",
+    "language": "en",
+    "took_ms": 8109,
+    "method": null,
+    "title": "The Chinese Telecom Challenge",
+    "channel": "Hudson Institute",
+    "upload_date": "20231012",
+    "duration_sec": 3139,
+    "description": "The United States began working to prevent the Chinese Communist Party’s illicit surveillance of Americans through Chinese-made telecom equipment long before the infamous spy balloon traversed the continental US. Yet in the past two decades, thousands of state and local governments in the US have purchased potentially compromised devices. This threat extends beyond America’s borders as countries across the globe—including those that host US military bases—have turned to Chinese companies like Huawei for telecom equipment, services, and infrastructure.\n\nMiles Yu, senior fellow and director of the China Center, will host Federal Communications Commissioner Nathan Simington and a panel of distinguished experts for a virtual discussion of how CCP-controlled telecommunications companies pose a uniquely pervasive threat to American national security.",
+    "view_count": 2025
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DVVrGb5WyNA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

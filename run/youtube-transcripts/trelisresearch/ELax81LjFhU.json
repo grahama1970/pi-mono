@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ELax81LjFhU",
+    "language": "en",
+    "took_ms": 7678,
+    "method": null,
+    "title": "Run Llama 2 with 32k Context Length!",
+    "channel": "Trelis Research",
+    "upload_date": "20230908",
+    "duration_sec": 1331,
+    "description": "Achieve long context length by using Code Llama to scale to 32k tokens.\n- Get up to 16k tokens on a Colab 40 GB GPU\n- Get up to 32k tokens on an 80 GB A100 on RunPod (or AWS or Azure)\n\nTips:\n- Use Flash attention and BetterTransformer\n- Use GPTQ quantization\n- Use the 13B model for better quality.\n\nFree jupyter notebook: https://github.com/TrelisResearch/code-llama-32k\n\nPurchase the PRO notebook: https://buy.stripe.com/fZe14Q5tP0zpaMUfZi\n- Allows for saving and re-loading of conversations\n- Allows for uploading and analysis of documents\n- Works on Google Colab or on a Server, e.g. AWS, Azure, RunPod (affiliate link: https://tinyurl.com/yjxbdc9w)\n\nTrelis ADVANCED Inference Repo:\n- Server Setup\n- API setup with Runpod\n- Function calling api scripts\nLearn more: https://trelis.com/enterprise-server-api-and-inference-guide/\n\n0:00 How to run Llama 2 with longer context length\n0:50 Run Llama 2 with 16k context in Google Colab\n2:20 How to run a GPTQ model in Colab\n3:43 Run Llama 2 7B with 32k context length using RunPod\n6:20 Run Llama 2 13B for better performance! 16k context length\n8:15 Streaming Llama 2 13B on 16k context length\n9:50 Adjusting max token output and temperature\n10:20 Streaming Llama 2 13B on 16k context length and 0 temperature\n11:25 STREAMING LLAMA 2 13B ON 32k CONTEXT LENGTH!\n12:50 PRO NOTEBOOK - Save Chats and Files. Easily adjust context length.\n16:40 THEORY BONUS: How to get longer context length?\n17:45 How does GPTQ work?\n18:00 How does Flash attention work?\n19:45 What is the best model for long context length?\n20:20 What is better Llama 2 or Code-llama or YaRN?\n21:30 Tips for long context lengths",
+    "view_count": 5878
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ELax81LjFhU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

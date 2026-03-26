@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gXluw4FxfKg",
+    "language": "en",
+    "took_ms": 8873,
+    "method": null,
+    "title": "Learner Spotlight: My Journey into AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210413",
+    "duration_sec": 3855,
+    "description": "Hear from a panel of MLEs sharing their first-hand experience and practical tips on building their AI career from different backgrounds. This event is co-hosted by DeepLearning.AI and Omdena.\n\nLet us know what you think of the event by filling out a quick survey at https://bit.ly/3sliWLJ\n\nSpeakers:\n-Farhad Sadeghlo (https://www.linkedin.com/in/farhad-sadeghlo/), Lead Machine Learning Engineer, Omdena\n-Jianna Park (https://www.linkedin.com/in/jiannapark/), Software Engineer; Poet\n-Sara EL-ATEIF (https://www.linkedin.com/in/sara-el-ateif-b36694117/), PhD student at ENSIAS, Morocco / Machine learning Engineer\n-Madhu Charan (https://www.linkedin.com/in/madhucharan/), Undergraduate at SASTRA University, India, Junior Coach at Unschool\n\n\nTo learn more about us and signup for future events:\nDeepLearning.AI: https://www.deeplearning.ai/\n\nTo learn more about Omdena:\nhttps://omdena.com/",
+    "view_count": 5830
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gXluw4FxfKg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

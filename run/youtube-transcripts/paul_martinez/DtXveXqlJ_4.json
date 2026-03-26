@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DtXveXqlJ_4",
+    "language": "en",
+    "took_ms": 8345,
+    "method": null,
+    "title": "The Value of Little Data",
+    "channel": "S4 Events",
+    "upload_date": "20230420",
+    "duration_sec": 1426,
+    "description": "Everyone talks about big data. In this S4x23 Stage 2 session Mollie Breen shows why we should not ignore little data. Mollie explains what little data is, specifically in OT. Location, contact phone number, onboarding physical equipment, whether something can be scanned, etc. This data is typically not structured, not in a single domain, and sometimes not even available digitally.\n\nMollie the describes how to track and use little data with a focus on starting with a single process that is important in your organization. And then tips how to scale the collection and use of little data.",
+    "view_count": 590
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DtXveXqlJ_4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

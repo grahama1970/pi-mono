@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z5HurHL2fWc",
+    "language": "en",
+    "took_ms": 8695,
+    "method": null,
+    "title": "New course with Google Cloud: Reinforcement Learning from Human Feedback (RLHF)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231213",
+    "duration_sec": 206,
+    "description": "Enroll now: https://bit.ly/48aqPrK\n\nLarge language models (LLMs) are trained on human-generated text, but additional methods are needed to align an LLM with human values and preferences. Reinforcement Learning from Human Feedback (RLHF) is currently the main method for aligning LLMs to make them more helpful, honest, and safe. \n\nIn this course, you will gain a conceptual understanding of the RLHF training process, and then practice applying RLHF to tune an LLM. You will: \n\n- Explore the two datasets (“preference” and “prompt”) that are used in RLHF training.\n- Use the open source Google Cloud Pipeline Components Library to fine-tune the Llama 2 model with RLHF.\n- Assess the tuned LLM against the original base model by comparing loss curves and using the “Side-by-Side (SxS)” method.\n\nJoin instructor Nikita Namjoshi, Developer Advocate for Generative AI at Google Cloud, for this learning adventure. Prepare to include Reinforcement Learning from Human Feedback in your skillset.\n\nLearn more: https://bit.ly/48aqPrK",
+    "view_count": 9858
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z5HurHL2fWc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

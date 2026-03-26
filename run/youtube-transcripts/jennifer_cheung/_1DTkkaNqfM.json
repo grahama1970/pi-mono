@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_1DTkkaNqfM",
+    "language": "en",
+    "took_ms": 9161,
+    "method": null,
+    "title": "DEF CON 32 - Clash, Burn, and Exploit  Manipulate Filters to Pwn kernelCTF - HexRabbit Chen",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2260,
+    "description": "As the successor to the iptables, nftables stands as a crucial network component within the Linux kernel, managing packet filtering and other network-related functionalities. With continuous development and changes, features designed to increase its efficiency, such as batch commit, anonymous chains/sets, and asynchronous garbage collection, have been implemented, which in turn has significantly increased its complexity and made it an attractive target for attackers in recent years.\n\nSince the announcement of the kernelCTF bug bounty, multiple nftables 0-day vulnerabilities have been reported and patched to enhance its security. However, if not careful enough, the security patch may not only mitigate the bug but also introduce new security issues unintentionally. By researching the structural changes in the nftables codebase, we successfully uncover new vulnerabilities despite the intense competition in kernelCTF. Also, we managed to speedrun the exploitation just before Google removed nftables from LTS instance, becoming the last LTS nftables exploitation.\n\nIn this presentation, we will share three nftables vulnerabilities we discovered in a storytelling fashion. We start with a brief introduction on how nftables works under the hood to familiarize attendees with the basics. After that, we dive into nftables internals and dissect three vulnerabilities discovered during our journey, two of which involved utilizing hard-to-exploit race conditions to pwn the flag. Alongside details of the exploitation, we will also share the roller-coaster story of kernelCTF experiences, filled with dramatic highs and lows, making it a tense and exhilarating journey.",
+    "view_count": 526
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _1DTkkaNqfM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

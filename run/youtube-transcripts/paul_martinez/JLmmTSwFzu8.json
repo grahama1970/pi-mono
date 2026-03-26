@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JLmmTSwFzu8",
+    "language": "en",
+    "took_ms": 7702,
+    "method": null,
+    "title": "Building ICS/OT Security Communities",
+    "channel": "S4 Events",
+    "upload_date": "20240905",
+    "duration_sec": 1681,
+    "description": "Peter has been helping to build an OT & ICS security community half way around the world in New Zealand. His efforts have had success and some of the actions migrated to Australia and other areas in Asia.\n\nPeter tells success stories and failures in this journey. Learn how you can build up a community in your area of the world through events and other measures. Also learn how we can stitch these disparate communities together in a global effort.",
+    "view_count": 233
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JLmmTSwFzu8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

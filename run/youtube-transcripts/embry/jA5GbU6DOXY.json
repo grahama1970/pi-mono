@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jA5GbU6DOXY",
+    "language": "en",
+    "took_ms": 8067,
+    "method": null,
+    "title": "Kerbal Space Program Reddit Challenge \"Satellite Snatch\"",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170319",
+    "duration_sec": 3019,
+    "description": "This week's Reddit Kerbal Challenge was \"Using a Space Shuttle, retrieve a pre-launched satellite from equatorial orbit around Kerbin, within a single orbit.\"\n\nI apparently missed where it said to use a standard Space Shuttle and I also missed where it said the satellite couldn't be guided. CRAP. But check out the epic landing!\n\nAll music by Everyday Astronaut (Tim Dodd) - https://soundcloud.com/everyday-astronaut-690255155",
+    "view_count": 15955
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jA5GbU6DOXY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

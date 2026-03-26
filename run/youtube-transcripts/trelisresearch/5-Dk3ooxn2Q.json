@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5-Dk3ooxn2Q",
+    "language": "en",
+    "took_ms": 9350,
+    "method": null,
+    "title": "Text to Speech Fine-tuning Tutorial",
+    "channel": "Trelis Research",
+    "upload_date": "20240718",
+    "duration_sec": 4543,
+    "description": "➡️ Get Life-time Access to the Trelis Scripts (and future improvements): https://Trelis.com/ADVANCED-transcription\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\n➡️ Trelis Runpod Affiliate Link (supports the channel): https://runpod.io?ref=jmfkcdio\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources/Support/Discord: https://Trelis.com/About\n\nCREDIT: Rohan Sharma for his contribution to this video.\n\n🤝Are you a talented developer? Work for Trelis: https://trelis.com/jobs/\n\nVIDEO RESOURCES:\n- Original StyleTTS2 Fine-tuning Scripts: https://github.com/yl4579/StyleTTS2/\n- Slides: https://docs.google.com/presentation/d/16y-fygVOC45Bb9LBvEENQyTC4AAu_sNXMzOPUiddytM/edit?usp=sharing\n- Speech-to-Text Fine-tuning Video: https://www.youtube.com/watch?v=anplUNnkM68\n\nTIMESTAMPS:\n0:00 Voice-cloning and fine-tuning text-to-speech models\n0:40 Video Overview\n1:36 Understanding text to speech models\n6:29 Text to speech Transformers\n8:14 Diffusion networks for text to speech\n11:59 Generative Adversarial Networks for Text to Speech \n15:05 Controlling style in text to speech models\n18:34 StyleTTS2 Text to Speech\n23:25 Voice cloning versus fine-tuning\n25:44 Dataset preparation tips for voice cloning\n28:11 Materials, Code, Scripts\n30:06 Dataset preparation for StyleTTS fine-tuning in Colab\n46:17 Fine-tuning StyleTTS2 in a Jupyter Notebook\n1:00:06 Text to speech inference and performance\n1:10:45 Understanding losses.\n1:11:18 Voice Cloning performance without fine-tuning\n1:13:31 Dataset and Fine-tuning tips\n1:15:00 Trelis Internships",
+    "view_count": 21995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5-Dk3ooxn2Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bRj4ipIEmg0",
+    "language": "en",
+    "took_ms": 7557,
+    "method": null,
+    "title": "DEF CON 32 - Prime Cuts from Hacker History :40 Years of 31337 - Cult of the Dead Cow and Friends",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 6899,
+    "description": "The year is 1984… Ronald Reagan is President, it is a “New Mourning in America.” In Texas, a small cabal of malcontents meet in an abandoned slaughterhouse, decorated with heavy metal band posters, satanic iconography, and, most ominously, the skull of a DEAD COW… As pirated copies of speedmetal and punk music play in the background, these erstwhile revolutionaries speak of their disillusion with The Way Things Are, and their obsession with their new computers. All over America, teens were waking to not just the typical dissatisfaction of adolescence, but the awareness that via these new modes of communication and interaction, they could meet like-minded others, have some illicit fun, and maybe, just maybe, change the goddamn world.\n\n1984 wasn’t the beginning of hacking, but brought perhaps the first real blossoming of the culture. The spread of the personal computer, and the modem, brought the birth of not just cDc, but the Legion of Doom, and 2600 Magazine. 1985 would bring Phrack Magazine, and a true explosion in the written culture, with t-files becoming the currency of the Truly Elite. In this session, members of cDc, 2600, LoD, MoD, and r00t will talk about what made them hackers and phreaks, swap stories, and answer questions posed by Prof. Walter Scheirer of the University of Notre Dame and audience Q&A.",
+    "view_count": 1173
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bRj4ipIEmg0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

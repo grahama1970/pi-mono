@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "znKenbBJdXI",
+    "language": "en",
+    "took_ms": 9812,
+    "method": null,
+    "title": "The Future Of The SBOM Market",
+    "channel": "S4 Events",
+    "upload_date": "20230329",
+    "duration_sec": 3124,
+    "description": "Dale Peterson talks with Matt Wyckhouse, Founder and CEO, of Finite State about where the SBOM products and market is today and where it will go in the future. This discussion was informed by the SBOM Challenge at S4x23.\n\n- Who is the primary buyer of SBOM products and services today? (Hint: Matt thinks that 80% of the code in a product is third party)\n\n- How accurate are the products, and the Finite State product in particular, in creating a SBOM?\n\n- How much is the value of a SBOM degraded if it is not perfect? If it is missing software or has inaccuracies?\n\n- Are the offerings now a product? A semi-custom service that uses a developed product? (with an apt comparison to the detection market)\n\n- What will the US Government do with all these SBOMs if they actually get them? If they get an exponential increase in software inventory and the patching and cyber maintenance burden.\n\n- Will there be a separate/distinct OT SBOM market? Will there be a SBOM market in the long run or will it get subsumed in some sort of asset management market?\n\n- Early thoughts on the SBOM marketplace (a place to collect and distribute and respond to queries on SBOMs)\n\n- Where is the industry / products now on VEX?\n\n- Do configuration files belong in a SBOM? \n\n- Surprise data points from the SBOM Challenge.",
+    "view_count": 554
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] znKenbBJdXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

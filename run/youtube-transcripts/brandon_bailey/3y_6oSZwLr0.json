@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3y_6oSZwLr0",
+    "language": "en",
+    "took_ms": 7755,
+    "method": null,
+    "title": "DEF CON 32 - Relative Path File Injection  The Next Evolution in RPO - Ian Hickey",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1750,
+    "description": "Most web security professionals are familiar with Relative Path Overwrite (RPO) attacks that allow injecting malicious CSS via a quirk in how browsers handle paths. But what if you could use a similar technique to get victims to download malicious files by clicking an innocuous looking download link on a trusted site? In this presentation, we'll unveil a new attack vector dubbed Relative Path File Injection (RPFI) that abuses path handling to turn benign websites into malware delivery platforms. Attendees will learn the anatomy of an RPFI attack, see demos of it in action, and learn how to detect this overlooked vulnerability class in the wild. We'll also release an open source GitHub repo with proof of concepts for users to try for themselves. RPFI represents a new breed of polyglot-based attack that exploits gaps between web specifications and real-world implementations.",
+    "view_count": 801
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3y_6oSZwLr0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

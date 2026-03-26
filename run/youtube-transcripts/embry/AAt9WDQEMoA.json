@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AAt9WDQEMoA",
+    "language": "en",
+    "took_ms": 9760,
+    "method": null,
+    "title": "Why Not Air Launch Rockets?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240209",
+    "duration_sec": 1372,
+    "description": "Air launching is perhaps one of the most tantalizing concepts for launch vehicles. Use an aircraft while in the atmosphere so we use the atmosphere to our advantage to lift and accelerate a rocket and then just start the rocket in the upper atmosphere while already at a high velocity! \n\nIt honestly feels like a no-brainer. So why don’t we see more companies pursuing this? Or for that matter, why are pretty much all the programs that utilized air launch for orbital rockets no longer in existence? \n\n00:00 - Intro\n01:39 - Prerequisite\n02:15 - Pros Of Air Launching\n06:05 - Cons Of Air Launching\n20:05 - Summary\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 527104
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AAt9WDQEMoA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

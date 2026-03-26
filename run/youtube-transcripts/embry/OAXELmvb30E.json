@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OAXELmvb30E",
+    "language": "en",
+    "took_ms": 9215,
+    "method": null,
+    "title": "Complete SpaceX Guide Part I - What rockets SpaceX launches, where they launch & where they land",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170714",
+    "duration_sec": 915,
+    "description": "Do you find yourself having a lot of questions when you watch SpaceX's rocket launches? There are so many cool things going on, it can be quite overwhelming to get a grasp on everything. \n\nIn part one we talk about the hosts, the format, the different rockets you'll see launching, the launch pads, the landing pads and even if it's ok that the rocket has smoke pouring off it before launch.\n\nShow your support on Patreon - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nThumbnail CG credit - https://www.facebook.com/pockn",
+    "view_count": 210091
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OAXELmvb30E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

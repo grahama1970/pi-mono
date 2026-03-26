@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMBRY OS Design Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #141414;
+      color: #e2e8f0;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #111111;
+      padding: 16px;
+      border-right: 1px solid rgba(255, 255, 255, 0.13);
+    }
+
+    .sidebar h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      margin: 0 0 24px 0;
+    }
+
+    .sidebar h1 span {
+      color: #7c3aed;
+      font-size: 9px;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .project-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .project-list li {
+      padding: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .project-list li.selected {
+      border-left-color: #7c3aed;
+      color: #e2e8f0;
+    }
+
+    .project-list li .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .project-list li .dot.green { background-color: #00ff88; }
+    .project-list li .dot.amber { background-color: #ffaa00; }
+    .project-list li .dot.blue { background-color: #4a9eff; }
+
+    .main-area {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .tabs button {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 11px;
+      cursor: pointer;
+      padding: 0 0 4px 0;
+    }
+
+    .tabs button.active {
+      color: #e2e8f0;
+      border-bottom: 2px solid #7c3aed;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 4px;
+      padding: 16px;
+      cursor: pointer;
+    }
+
+    .card.selected {
+      border-color: #7c3aed;
+      box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+    }
+
+    .card .placeholder {
+      background-color: rgba(33, 150, 243, 0.1);
+      height: 150px;
+      margin-bottom: 8px;
+    }
+
+    .card .badge {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .right-panel {
+      width: 280px;
+      background-color: #111111;
+      padding: 16px;
+      border-left: 1px solid rgba(255, 255, 255, 0.13);
+    }
+
+    .right-panel h2 {
+      font-size: 14px;
+      margin: 0 0 16px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .right-panel h2 button {
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .right-panel .details {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .right-panel .details strong {
+      color: #e2e8f0;
+    }
+
+    .right-panel .annotations {
+      margin: 16px 0;
+    }
+
+    .right-panel .annotations p {
+      font-size: 12px;
+      color: #64748b;
+      margin: 0 0 8px 0;
+    }
+
+    .right-panel .buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .right-panel .buttons button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .right-panel .buttons button.accent {
+      background-color: #7c3aed;
+      color: #e2e8f0;
+    }
+
+    .right-panel .buttons button.green {
+      background-color: #00ff88;
+      color: #141414;
+    }
+
+    .right-panel .buttons button.outline {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <h1><span>EMBRY OS</span>Design Board</h1>
+    <ul class="project-list">
+      <li class="selected">
+        <span class="dot green"></span>Binary Explorer
+      </li>
+      <li>
+        <span class="dot amber"></span>Music Lab
+      </li>
+      <li>
+        <span class="dot blue"></span>SPARTA Explorer
+      </li>
+      <li>
+        <span class="dot amber"></span>Learn Datalake
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Area -->
+  <div class="main-area">
+    <div class="tabs">
+      <button class="active">Mockups</button>
+      <button>Inspirations</button>
+      <button>Tokens</button>
+      <button>Rationale</button>
+    </div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="placeholder" style="background-color: rgba(33, 150, 243, 0.1);"></div>
+        <div class="badge">R1 · gemini · 2d ago</div>
+        <div>Graph Layout v1</div>
+      </div>
+      <div class="card selected">
+        <div class="placeholder" style="background-color: rgba(76, 175, 80, 0.1);"></div>
+        <div class="badge">R2 · stitch · 1d ago</div>
+        <div>Chat Panel v2</div>
+      </div>
+      <div class="card">
+        <div class="placeholder" style="background-color: rgba(124, 58, 237, 0.1);"></div>
+        <div class="badge">R3 · manual · today</div>
+        <div>Full Composite</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <h2>DETAILS <button>Collapse</button></h2>
+    <div class="details">
+      <div><strong>Chat Panel v2</strong></div>
+      <div>1920×1080</div>
+      <div>Round 2</div>
+      <div>Source: stitch</div>
+      <div>2026-03-20</div>
+    </div>
+    <div class="annotations">
+      <p>Steve: Reduce panel to 35% width</p>
+      <p>Nico: Filter pills wrap fine at 1280px</p>
+    </div>
+    <div class="buttons">
+      <button class="accent">Send to Gemini</button>
+      <button class="outline">Copy HTML</button>
+      <button class="green">Approve</button>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tabs button');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // Project selection
+    const projects = document.querySelectorAll('.project-list li');
+    projects.forEach(project => {
+      project.addEventListener('click', () => {
+        projects.forEach(p => p.classList.remove('selected'));
+        project.classList.add('selected');
+      });
+    });
+
+    // Card selection
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EpiCVmGnnwU",
+    "language": "en",
+    "took_ms": 7971,
+    "method": null,
+    "title": "Ralph Langner, Zach Tudor & Dale Peterson On ICS Security in 2020 ... from the S4x20 Closing Panel",
+    "channel": "S4 Events",
+    "upload_date": "20200615",
+    "duration_sec": 2632,
+    "description": "Ralph Langner of Langner, Inc. and Zach Tudor of INL join me on the S4x20 Closing Panel. This is always one of the most fun and highly rated session at S4. We cover a lot of ground in this free-wheeling discussion:\n- What are what not talking about that we should be?\n- OT security will turn into a data science. When?\n- No sophisticated OT attacks in two years. Why?\n- How should we view the high demand for ICS security talent?\n- How much should the average worker in operations have to do to achieve OT security? Is OT security everyone’s responsibility?\n- How does the community need to adjust our message to c-level executives and boards?\n- What was the big progress made in the ICS security community in 2019?\n- What should be the metrics of success for 2020?\n- Should we expect help from regulation in Europe and elsewhere?",
+    "view_count": 427
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EpiCVmGnnwU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

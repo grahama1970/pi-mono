@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9OVQBL6Sab8",
+    "language": "en",
+    "took_ms": 9162,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village -Jay Angus - Checklist for Aviation Vulnerability Disclosure",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1214,
+    "description": "Cybersecurity vulnerabilities are ever present in IT and OT systems and the aerospace sector is not exempt from these findings. What should a researcher or vendor do when they find a vulnerability? This is a common question but can have many and variety complex answers. Showing how a few simple steps by each participant in the process of coordinated disclosure can decrease the stress of the efforts and result in trust among researchers and a more resilient aviation sector.\n\nMajor points will focus on:\n- What researchers should be doing in preparation of disclosure.\n- When a researcher should be looking for help with coordination.\n- Questions vendor should be asking in preparation of a public disclosure.\n- Each disclosure is a unique event and should be leveraged to build upon.",
+    "view_count": 157
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9OVQBL6Sab8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

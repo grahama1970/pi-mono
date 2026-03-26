@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K6Wui3mn-uI",
+    "language": "en",
+    "took_ms": 8043,
+    "method": null,
+    "title": "How To Read AI Research Papers Effectively",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240321",
+    "duration_sec": 4099,
+    "description": "According to a recent survey, over two-thirds (66.9%) of developers and machine learning teams are planning production deployments of LLM apps in the next 12 months or “as fast as possible” – and 14.1% are already in production! Given the rapid rate of progress and constant drumbeat of new foundation models, orchestration frameworks and open source libraries – as well as the workaday challenges of getting an app into production – it can be difficult to find the time to digest and read the dizzying array of cutting-edge AI research papers hitting arXiv. \r\n\r\nThat task has never been more critical, however, as the time between academic discovery and industry application moves from years to weeks. How can teams discover and read AI research papers quickly without losing nuance, with an eye toward pragmatic application, while balancing real-world challenges?\r\n\r\nIn this session, Aparna Dhinakaran – who blends a background in academia with experience overseeing AI in production and troubleshooting real-world AI systems as co-founder and Chief Product Officer of Arize AI – will be joined by data scientist and machine learning engineer Amber Roberts to talk through strategies for understanding and applying the latest research, reducing mean time to application. The session will include an exercise of digesting 1-2 to be announced papers (will be a recent release!) in real-time.\n\r\n\nSurvey papers:\n\n- A Survey of Large Language Models:\nhttps://arxiv.org/pdf/2303.18223v12.pdf\n\n- Retrieval-Augmented Generation for Large Language Models: \nA Survey, https://arxiv.org/pdf/2312.10997.pdf\n\n- Benchmarking paper: \nHellaSwag: Can a Machine Really Finish Your Sentence, \nhttps://arxiv.org/pdf/1905.07830.pdf\n\n-Breakthrough paper (deep dive):\nMistral AI Mixture of Experts, https://arxiv.org/pdf/2401.04088.pdf\n\n- Slides:\nhttps://docs.google.com/presentation/d/18u-Xk-oVI9kmlQUAKlXszXz2nmxu8Zzp0zBVGFcbRmg/edit?usp=sharing\n\n\r\nAbout DeepLearning.AI:\r\n\r\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community. Take your generative AI skills to the next level with short courses help you learn new skills, tools, and concepts efficiently.\r\n\r\nAbout Arize:\r\n\r\nArize AI is an AI observability and LLM evaluation platform. The company’s LLM observability tools – including its popular task-based LLM evaluation libraries and tools for troubleshooting LLM traces and spans, RAG, and prompt iteration – are counted on every day by top enterprises. Learn more about the company’s platform and open source libraries at Arize.com and phoenix.arize.com.\r\n\r\nSpeakers: \r\n\r\nAparna Dhinakaran Co-Founder and Chief Product Officer\r\nhttps://www.linkedin.com/in/aparnadhinakaran/\r\n\r\nAmber Roberts Machine Learning Engineer\r\nhttps://www.linkedin.com/in/amber-roberts42/",
+    "view_count": 50299
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K6Wui3mn-uI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

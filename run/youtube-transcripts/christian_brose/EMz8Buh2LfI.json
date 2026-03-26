@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EMz8Buh2LfI",
+    "language": "en",
+    "took_ms": 7694,
+    "method": null,
+    "title": "Guatemala’s Election Surprise",
+    "channel": "Hudson Institute",
+    "upload_date": "20230830",
+    "duration_sec": 4870,
+    "description": "Bernardo Arévalo’s decisive victory in Guatemala’s recent runoff elections signifies an important shift in Guatemala, which has experienced a significant deterioration of its democratic institutions in recent years. Arévalo will face numerous challenges in meeting Guatemalan voters’ desire for measures that address persistent corruption and the rise of organized crime.\n\nHudson Adjunct Fellow Daniel Batlle will discuss the path forward for Guatemala with Bernardo Rico, program director at the International Republican Institute; Marielos Chang, professor of political science at the Universidad del Valle; Edgar Ortiz, director of legal analysis at the Fundación Libertad y Desarrollo; and Enrique Naveda, a John S. Knight Fellow at Stanford University.",
+    "view_count": 675
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EMz8Buh2LfI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3DvtI4Dxtr8",
+    "language": "en",
+    "took_ms": 7764,
+    "method": null,
+    "title": "All Star Leadership connects the Air National Guard with America",
+    "channel": "Sandboxx",
+    "upload_date": "20250124",
+    "duration_sec": 270,
+    "description": "This is an excerpt from a longer video we previously published about Air Force recruiting that you can view here: https://www.youtube.com/watch?v=0kbfkGBPb0I",
+    "view_count": 15620
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3DvtI4Dxtr8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

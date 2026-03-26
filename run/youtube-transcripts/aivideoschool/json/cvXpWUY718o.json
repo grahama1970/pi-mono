@@ -1,0 +1,858 @@
+{
+  "meta": {
+    "video_id": "cvXpWUY718o",
+    "language": "en",
+    "took_ms": 1229,
+    "method": "direct",
+    "title": "Generate AI Video Worlds Live in Real-Time (PixVerse R1)",
+    "channel": "AI Video School",
+    "upload_date": "20260116",
+    "duration_sec": 549,
+    "description": "Now you can direct generative AI video in real-time, guiding scenes as they generate in real time. Pixverse R1 creates a new experience that combines watching a movie, playing a game, writing a screenplay -- all in one surreal stream-of-consciousness fever dream. Just like the early days of motion pictures, these are the early days for a \"new camera\" that let's you build interactive, immersive worlds on-the-fly. The quality is closer to AI video two or three years ago, which is great news if you love unpredictable, weird, surrealism (I do!). \n\n🛠️ Tools\nPixVerse https://app.pixverse.ai/\nPixVerse R1 https://realtime.pixverse.ai/\n\n🤖 Sign-up for my newsletter and get my free AI Video Prompt Sidekick for ChatGPT and get notified about my AI filmmaking courses\nhttps://aivideoschool.xyz\n\n🍿 AI Movies and How I Made Them\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RzcTWyiaBqQ-zSGE-U0FsAg \n\n🎓 AI Video Tutorials, Comparisons, Workflows\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RwGHkhWM7SB6-FFycNdagTF \n\n📚 Chapters\n00:00 What excites me about PixVerse R1\n00:50 Real-time generative AI video is now part of the history of the motion picture\n01:56 Live generating: \"Can you wake him up?\"\n04:39 Live generating: \"Toyko Streets\"\n05:25 Live generating from a Custom World in PixVerse R1\n07:32 Downloading real-time videos from your history in Pixverse R1\n07:47 What makes interactive world models different from AI video\n\n#PixVerse #PixVerseRealtime #WorldModels #AIVideo #GenerativeAI #AIFilmmaking #RealtimeAI  #AICinema #AIVideoSchool #VideoCreation #Filmmaking #CreatorTools #FutureOfVideo #AIContentCreation",
+    "view_count": 4884
+  },
+  "transcript": [
+    {
+      "text": "Late last night, I started playing",
+      "start": 0.24,
+      "duration": 4.32
+    },
+    {
+      "text": "around with Pixver Real Time, and I can",
+      "start": 2.08,
+      "duration": 4.48
+    },
+    {
+      "text": "honestly say it's the most exciting",
+      "start": 4.56,
+      "duration": 3.52
+    },
+    {
+      "text": "thing I've seen in the world of",
+      "start": 6.56,
+      "duration": 4.4
+    },
+    {
+      "text": "generative AI in the past 2 years. I",
+      "start": 8.08,
+      "duration": 4.8
+    },
+    {
+      "text": "want to be clear, my excitement comes",
+      "start": 10.96,
+      "duration": 4.32
+    },
+    {
+      "text": "not from the current results, but from",
+      "start": 12.88,
+      "duration": 5.04
+    },
+    {
+      "text": "the promise of a new kind of",
+      "start": 15.28,
+      "duration": 5.04
+    },
+    {
+      "text": "entertainment that's part movie, part",
+      "start": 17.92,
+      "duration": 4.88
+    },
+    {
+      "text": "video game, but something that's also",
+      "start": 20.32,
+      "duration": 4.0
+    },
+    {
+      "text": "neither of those things. Something",
+      "start": 22.8,
+      "duration": 4.08
+    },
+    {
+      "text": "that's entirely its own thing. And",
+      "start": 24.32,
+      "duration": 3.6
+    },
+    {
+      "text": "there's good news. If you've been",
+      "start": 26.88,
+      "duration": 3.28
+    },
+    {
+      "text": "missing the unpredictable, surreal",
+      "start": 27.92,
+      "duration": 5.76
+    },
+    {
+      "text": "weirdness of the early days of AI, it's",
+      "start": 30.16,
+      "duration": 6.52
+    },
+    {
+      "text": "back.",
+      "start": 33.68,
+      "duration": 3.0
+    },
+    {
+      "text": "I'll show you how I've been creating",
+      "start": 42.559,
+      "duration": 5.761
+    },
+    {
+      "text": "real-time generative AI in real time.",
+      "start": 44.48,
+      "duration": 6.32
+    },
+    {
+      "text": "But first, a little context. One of the",
+      "start": 48.32,
+      "duration": 4.399
+    },
+    {
+      "text": "things that excites me the most about AI",
+      "start": 50.8,
+      "duration": 3.599
+    },
+    {
+      "text": "video is that it's essentially the",
+      "start": 52.719,
+      "duration": 4.081
+    },
+    {
+      "text": "invention of a new kind of camera. When",
+      "start": 54.399,
+      "duration": 4.081
+    },
+    {
+      "text": "motion picture cameras were first",
+      "start": 56.8,
+      "duration": 4.72
+    },
+    {
+      "text": "invented, people had the opportunity to",
+      "start": 58.48,
+      "duration": 6.079
+    },
+    {
+      "text": "figure out a new art form. Even back in",
+      "start": 61.52,
+      "duration": 7.279
+    },
+    {
+      "text": "the 1890s, they had their own version of",
+      "start": 64.559,
+      "duration": 7.761
+    },
+    {
+      "text": "cat memes and AI slop,",
+      "start": 68.799,
+      "duration": 8.0
+    },
+    {
+      "text": "thirst straps, celebrity influencers,",
+      "start": 72.32,
+      "duration": 7.52
+    },
+    {
+      "text": "dance videos,",
+      "start": 76.799,
+      "duration": 5.36
+    },
+    {
+      "text": "and adult content.",
+      "start": 79.84,
+      "duration": 4.72
+    },
+    {
+      "text": "In the same way that most AI narratives",
+      "start": 82.159,
+      "duration": 4.801
+    },
+    {
+      "text": "take their cues from traditional movies,",
+      "start": 84.56,
+      "duration": 4.239
+    },
+    {
+      "text": "early films took their cues from",
+      "start": 86.96,
+      "duration": 4.4
+    },
+    {
+      "text": "theater. We don't yet have an answer for",
+      "start": 88.799,
+      "duration": 5.36
+    },
+    {
+      "text": "what human-driven AI cinema will look",
+      "start": 91.36,
+      "duration": 5.36
+    },
+    {
+      "text": "like, but last night I felt like I had",
+      "start": 94.159,
+      "duration": 6.241
+    },
+    {
+      "text": "my first glimpse into that future. This",
+      "start": 96.72,
+      "duration": 7.28
+    },
+    {
+      "text": "is the Pixver R1 site for realtime video",
+      "start": 100.4,
+      "duration": 5.52
+    },
+    {
+      "text": "generation. There's a promotional",
+      "start": 104.0,
+      "duration": 4.159
+    },
+    {
+      "text": "trailer here. We can create our own",
+      "start": 105.92,
+      "duration": 3.519
+    },
+    {
+      "text": "world, which we're going to do in a",
+      "start": 108.159,
+      "duration": 2.24
+    },
+    {
+      "text": "moment. And then there are these",
+      "start": 109.439,
+      "duration": 3.601
+    },
+    {
+      "text": "preloaded worlds like the Dragon Cave,",
+      "start": 110.399,
+      "duration": 5.441
+    },
+    {
+      "text": "the Snow Peak Vlog, and this Club Pulse.",
+      "start": 113.04,
+      "duration": 4.0
+    },
+    {
+      "text": "There's a few more, too. All right,",
+      "start": 115.84,
+      "duration": 2.879
+    },
+    {
+      "text": "let's start with can you wake him up?",
+      "start": 117.04,
+      "duration": 4.079
+    },
+    {
+      "text": "because it feels the most like a game. I",
+      "start": 118.719,
+      "duration": 5.04
+    },
+    {
+      "text": "think it's the easiest to see how we're",
+      "start": 121.119,
+      "duration": 5.761
+    },
+    {
+      "text": "doing this in real time. Um, so we're",
+      "start": 123.759,
+      "duration": 5.521
+    },
+    {
+      "text": "going to select the world here.",
+      "start": 126.88,
+      "duration": 3.84
+    },
+    {
+      "text": "And the first thing you'll notice is",
+      "start": 129.28,
+      "duration": 3.36
+    },
+    {
+      "text": "we've got this timer here that says",
+      "start": 130.72,
+      "duration": 4.08
+    },
+    {
+      "text": "there's 5 minutes left in your session.",
+      "start": 132.64,
+      "duration": 5.52
+    },
+    {
+      "text": "So this world only exists for 5 minutes.",
+      "start": 134.8,
+      "duration": 5.84
+    },
+    {
+      "text": "Uh, we better get in there. It's not",
+      "start": 138.16,
+      "duration": 5.439
+    },
+    {
+      "text": "waiting for us. Um, here's where the",
+      "start": 140.64,
+      "duration": 4.72
+    },
+    {
+      "text": "video is going to be and then here is",
+      "start": 143.599,
+      "duration": 4.161
+    },
+    {
+      "text": "where our prompt will be.",
+      "start": 145.36,
+      "duration": 5.84
+    },
+    {
+      "text": "Uh, so this little robot kind of takes",
+      "start": 147.76,
+      "duration": 5.52
+    },
+    {
+      "text": "the blanket on and off him at the same",
+      "start": 151.2,
+      "duration": 4.16
+    },
+    {
+      "text": "time. Um, like I said, there's that",
+      "start": 153.28,
+      "duration": 7.599
+    },
+    {
+      "text": "surrealism. Let's have um a cat",
+      "start": 155.36,
+      "duration": 8.879
+    },
+    {
+      "text": "jumps on the couch. Let's try and wake",
+      "start": 160.879,
+      "duration": 6.921
+    },
+    {
+      "text": "him up with a pet.",
+      "start": 164.239,
+      "duration": 3.561
+    },
+    {
+      "text": "There's the cat.",
+      "start": 170.8,
+      "duration": 5.04
+    },
+    {
+      "text": "Okay. Um, cat's not working. Like let's",
+      "start": 173.519,
+      "duration": 6.401
+    },
+    {
+      "text": "have the room fills with flamingos",
+      "start": 175.84,
+      "duration": 6.399
+    },
+    {
+      "text": "maybe.",
+      "start": 179.92,
+      "duration": 4.319
+    },
+    {
+      "text": "And we can see here's the history of our",
+      "start": 182.239,
+      "duration": 4.64
+    },
+    {
+      "text": "actions. So this will come in later cuz",
+      "start": 184.239,
+      "duration": 4.161
+    },
+    {
+      "text": "when we watch the final, we'll actually",
+      "start": 186.879,
+      "duration": 4.481
+    },
+    {
+      "text": "see these prompts show up on screen. So",
+      "start": 188.4,
+      "duration": 5.839
+    },
+    {
+      "text": "there's the flamingos. That's not waking",
+      "start": 191.36,
+      "duration": 7.519
+    },
+    {
+      "text": "them up. We can just say he",
+      "start": 194.239,
+      "duration": 7.761
+    },
+    {
+      "text": "opens his eyes",
+      "start": 198.879,
+      "duration": 7.761
+    },
+    {
+      "text": "and looks at the camera.",
+      "start": 202.0,
+      "duration": 4.64
+    },
+    {
+      "text": "There it goes. Come on, do it.",
+      "start": 212.0,
+      "duration": 7.92
+    },
+    {
+      "text": "We woke him up. Um, what's that look?",
+      "start": 215.84,
+      "duration": 7.44
+    },
+    {
+      "text": "Um, but you can just do things like, um,",
+      "start": 219.92,
+      "duration": 5.679
+    },
+    {
+      "text": "you know, uh,",
+      "start": 223.28,
+      "duration": 4.48
+    },
+    {
+      "text": "ballerina",
+      "start": 225.599,
+      "duration": 5.601
+    },
+    {
+      "text": "chainsaws the coffee table.",
+      "start": 227.76,
+      "duration": 4.8
+    },
+    {
+      "text": "you know, it's like very",
+      "start": 231.2,
+      "duration": 3.599
+    },
+    {
+      "text": "improvisational. Like whatever weird",
+      "start": 232.56,
+      "duration": 5.2
+    },
+    {
+      "text": "ideas you have in your mind, you can",
+      "start": 234.799,
+      "duration": 5.281
+    },
+    {
+      "text": "watch them come to life. Uh, one of the",
+      "start": 237.76,
+      "duration": 3.679
+    },
+    {
+      "text": "things that I've always loved about",
+      "start": 240.08,
+      "duration": 3.6
+    },
+    {
+      "text": "generative AI is essentially this",
+      "start": 241.439,
+      "duration": 6.241
+    },
+    {
+      "text": "feeling but over individual clips. This",
+      "start": 243.68,
+      "duration": 6.479
+    },
+    {
+      "text": "is like one kind of stream of conscious",
+      "start": 247.68,
+      "duration": 4.559
+    },
+    {
+      "text": "continuous narrative, which is kind of",
+      "start": 250.159,
+      "duration": 4.0
+    },
+    {
+      "text": "fun. And there is this time thing like",
+      "start": 252.239,
+      "duration": 5.52
+    },
+    {
+      "text": "we're, you know, at 250 left.",
+      "start": 254.159,
+      "duration": 10.081
+    },
+    {
+      "text": "um is close turn into night's armor.",
+      "start": 257.759,
+      "duration": 8.321
+    },
+    {
+      "text": "So you get the idea. So we'll just watch",
+      "start": 264.24,
+      "duration": 3.44
+    },
+    {
+      "text": "this turn into night's armor and then",
+      "start": 266.08,
+      "duration": 5.48
+    },
+    {
+      "text": "we'll call it quits here.",
+      "start": 267.68,
+      "duration": 3.88
+    },
+    {
+      "text": "Just back in. There we go. Sits up.",
+      "start": 274.16,
+      "duration": 6.56
+    },
+    {
+      "text": "They've got this one called Tokyo",
+      "start": 279.12,
+      "duration": 4.4
+    },
+    {
+      "text": "Street. It says an iconic woman. Um I",
+      "start": 280.72,
+      "duration": 4.72
+    },
+    {
+      "text": "think we know who this iconic woman is.",
+      "start": 283.52,
+      "duration": 6.399
+    },
+    {
+      "text": "Um, so let's",
+      "start": 285.44,
+      "duration": 6.96
+    },
+    {
+      "text": "let's do the iconic woman. If you don't",
+      "start": 289.919,
+      "duration": 4.481
+    },
+    {
+      "text": "know, she's the one from the Sora video",
+      "start": 292.4,
+      "duration": 3.84
+    },
+    {
+      "text": "that blew everyone's mind a few years",
+      "start": 294.4,
+      "duration": 11.56
+    },
+    {
+      "text": "ago. Um, she goes into a coffee shop.",
+      "start": 296.24,
+      "duration": 9.72
+    },
+    {
+      "text": "All right, let's try a custom world with",
+      "start": 326.08,
+      "duration": 3.28
+    },
+    {
+      "text": "a little bit more of a narrative bent.",
+      "start": 327.68,
+      "duration": 3.84
+    },
+    {
+      "text": "So, we're going to create a world. Um,",
+      "start": 329.36,
+      "duration": 4.64
+    },
+    {
+      "text": "we're going to have a mystery with a",
+      "start": 331.52,
+      "duration": 5.28
+    },
+    {
+      "text": "missing necklace. We'll choose 16 by9",
+      "start": 334.0,
+      "duration": 5.84
+    },
+    {
+      "text": "and we'll choose dramatic. Uh let's",
+      "start": 336.8,
+      "duration": 7.32
+    },
+    {
+      "text": "start the experience now.",
+      "start": 339.84,
+      "duration": 4.28
+    },
+    {
+      "text": ">> He interviews the dog.",
+      "start": 355.919,
+      "duration": 4.041
+    },
+    {
+      "text": ">> There's some dialogue there.",
+      "start": 361.199,
+      "duration": 3.961
+    },
+    {
+      "text": "What's going on there? Oh, that's the",
+      "start": 366.4,
+      "duration": 4.6
+    },
+    {
+      "text": "dog.",
+      "start": 368.0,
+      "duration": 3.0
+    },
+    {
+      "text": "So, we have him go to the kitchen.",
+      "start": 376.479,
+      "duration": 4.041
+    },
+    {
+      "text": ">> He's got the necklace in his hand. But",
+      "start": 382.56,
+      "duration": 7.0
+    },
+    {
+      "text": "yeah, let's interview the dog.",
+      "start": 385.199,
+      "duration": 4.361
+    },
+    {
+      "text": "Oh, the dog's wearing the necklace.",
+      "start": 393.919,
+      "duration": 4.041
+    },
+    {
+      "text": "There's another dog.",
+      "start": 399.68,
+      "duration": 3.639
+    },
+    {
+      "text": "He's like 9 ft tall. Suddenly, he's",
+      "start": 406.8,
+      "duration": 5.44
+    },
+    {
+      "text": "going to turn into a dog. Yes.",
+      "start": 408.72,
+      "duration": 6.56
+    },
+    {
+      "text": "I love it.",
+      "start": 412.24,
+      "duration": 5.76
+    },
+    {
+      "text": "So, part of the fun of this is when you",
+      "start": 415.28,
+      "duration": 5.12
+    },
+    {
+      "text": "are the one doing it and you are the one",
+      "start": 418.0,
+      "duration": 5.199
+    },
+    {
+      "text": "driving the action. It's not necessarily",
+      "start": 420.4,
+      "duration": 5.12
+    },
+    {
+      "text": "about watching this, although I do think",
+      "start": 423.199,
+      "duration": 4.0
+    },
+    {
+      "text": "that there's going to be a new type of",
+      "start": 425.52,
+      "duration": 5.2
+    },
+    {
+      "text": "streamer who is really good at doing uh",
+      "start": 427.199,
+      "duration": 5.761
+    },
+    {
+      "text": "improvisational prompts. It's clearly",
+      "start": 430.72,
+      "duration": 5.479
+    },
+    {
+      "text": "not me.",
+      "start": 432.96,
+      "duration": 3.239
+    },
+    {
+      "text": "Hold.",
+      "start": 437.36,
+      "duration": 3.0
+    },
+    {
+      "text": "Running out of time. I don't think we're",
+      "start": 442.0,
+      "duration": 2.319
+    },
+    {
+      "text": "going to see the necklace at the end,",
+      "start": 443.12,
+      "duration": 3.28
+    },
+    {
+      "text": "but here's what happens when we run out.",
+      "start": 444.319,
+      "duration": 4.801
+    },
+    {
+      "text": "There we go. So, we're we're done. So,",
+      "start": 446.4,
+      "duration": 6.079
+    },
+    {
+      "text": "we've get this little uh screen here.",
+      "start": 449.12,
+      "duration": 4.88
+    },
+    {
+      "text": "And then what we can do is go to",
+      "start": 452.479,
+      "duration": 5.12
+    },
+    {
+      "text": "history. All of the movies that we've",
+      "start": 454.0,
+      "duration": 6.88
+    },
+    {
+      "text": "made that I've made show up here. You",
+      "start": 457.599,
+      "duration": 5.6
+    },
+    {
+      "text": "can see, and unfortunately, you can see",
+      "start": 460.88,
+      "duration": 5.2
+    },
+    {
+      "text": "I started this at 1 a.m. and was still",
+      "start": 463.199,
+      "duration": 5.361
+    },
+    {
+      "text": "doing it at 2:30 a.m. Maybe you can",
+      "start": 466.08,
+      "duration": 4.8
+    },
+    {
+      "text": "relate to this. With AI video, it's a",
+      "start": 468.56,
+      "duration": 5.44
+    },
+    {
+      "text": "process of generating and iterating. And",
+      "start": 470.88,
+      "duration": 5.68
+    },
+    {
+      "text": "this takes that process and collapses",
+      "start": 474.0,
+      "duration": 5.68
+    },
+    {
+      "text": "that into near real time, a few seconds.",
+      "start": 476.56,
+      "duration": 5.199
+    },
+    {
+      "text": "You know, you type flamingos and then",
+      "start": 479.68,
+      "duration": 5.359
+    },
+    {
+      "text": "the flamingos show up seconds later.",
+      "start": 481.759,
+      "duration": 6.401
+    },
+    {
+      "text": "This is a truly improvisational style of",
+      "start": 485.039,
+      "duration": 6.801
+    },
+    {
+      "text": "video that has not existed before. In",
+      "start": 488.16,
+      "duration": 6.0
+    },
+    {
+      "text": "the same way that a camera on a",
+      "start": 491.84,
+      "duration": 4.96
+    },
+    {
+      "text": "smartphone led to the current age of",
+      "start": 494.16,
+      "duration": 5.439
+    },
+    {
+      "text": "social media, real-time video generation",
+      "start": 496.8,
+      "duration": 4.88
+    },
+    {
+      "text": "is going to lead to something we can't",
+      "start": 499.599,
+      "duration": 5.04
+    },
+    {
+      "text": "quite imagine yet until we see it. And",
+      "start": 501.68,
+      "duration": 4.72
+    },
+    {
+      "text": "then once we see it, it's going to feel",
+      "start": 504.639,
+      "duration": 4.0
+    },
+    {
+      "text": "obvious, like it was there all along.",
+      "start": 506.4,
+      "duration": 5.199
+    },
+    {
+      "text": "This is the birth of a new art form and",
+      "start": 508.639,
+      "duration": 5.52
+    },
+    {
+      "text": "we're all here witnessing it and being",
+      "start": 511.599,
+      "duration": 5.041
+    },
+    {
+      "text": "part of it. And I think that is so",
+      "start": 514.159,
+      "duration": 4.8
+    },
+    {
+      "text": "exciting. Thank you for watching and as",
+      "start": 516.64,
+      "duration": 3.92
+    },
+    {
+      "text": "this develops, I'll definitely be",
+      "start": 518.959,
+      "duration": 4.32
+    },
+    {
+      "text": "posting more things about live AI video",
+      "start": 520.56,
+      "duration": 4.959
+    },
+    {
+      "text": "generation. Let's end on some more",
+      "start": 523.279,
+      "duration": 5.801
+    },
+    {
+      "text": "surreal adventures.",
+      "start": 525.519,
+      "duration": 3.561
+    }
+  ],
+  "full_text": "Late last night, I started playing around with Pixver Real Time, and I can honestly say it's the most exciting thing I've seen in the world of generative AI in the past 2 years. I want to be clear, my excitement comes not from the current results, but from the promise of a new kind of entertainment that's part movie, part video game, but something that's also neither of those things. Something that's entirely its own thing. And there's good news. If you've been missing the unpredictable, surreal weirdness of the early days of AI, it's back. I'll show you how I've been creating real-time generative AI in real time. But first, a little context. One of the things that excites me the most about AI video is that it's essentially the invention of a new kind of camera. When motion picture cameras were first invented, people had the opportunity to figure out a new art form. Even back in the 1890s, they had their own version of cat memes and AI slop, thirst straps, celebrity influencers, dance videos, and adult content. In the same way that most AI narratives take their cues from traditional movies, early films took their cues from theater. We don't yet have an answer for what human-driven AI cinema will look like, but last night I felt like I had my first glimpse into that future. This is the Pixver R1 site for realtime video generation. There's a promotional trailer here. We can create our own world, which we're going to do in a moment. And then there are these preloaded worlds like the Dragon Cave, the Snow Peak Vlog, and this Club Pulse. There's a few more, too. All right, let's start with can you wake him up? because it feels the most like a game. I think it's the easiest to see how we're doing this in real time. Um, so we're going to select the world here. And the first thing you'll notice is we've got this timer here that says there's 5 minutes left in your session. So this world only exists for 5 minutes. Uh, we better get in there. It's not waiting for us. Um, here's where the video is going to be and then here is where our prompt will be. Uh, so this little robot kind of takes the blanket on and off him at the same time. Um, like I said, there's that surrealism. Let's have um a cat jumps on the couch. Let's try and wake him up with a pet. There's the cat. Okay. Um, cat's not working. Like let's have the room fills with flamingos maybe. And we can see here's the history of our actions. So this will come in later cuz when we watch the final, we'll actually see these prompts show up on screen. So there's the flamingos. That's not waking them up. We can just say he opens his eyes and looks at the camera. There it goes. Come on, do it. We woke him up. Um, what's that look? Um, but you can just do things like, um, you know, uh, ballerina chainsaws the coffee table. you know, it's like very improvisational. Like whatever weird ideas you have in your mind, you can watch them come to life. Uh, one of the things that I've always loved about generative AI is essentially this feeling but over individual clips. This is like one kind of stream of conscious continuous narrative, which is kind of fun. And there is this time thing like we're, you know, at 250 left. um is close turn into night's armor. So you get the idea. So we'll just watch this turn into night's armor and then we'll call it quits here. Just back in. There we go. Sits up. They've got this one called Tokyo Street. It says an iconic woman. Um I think we know who this iconic woman is. Um, so let's let's do the iconic woman. If you don't know, she's the one from the Sora video that blew everyone's mind a few years ago. Um, she goes into a coffee shop. All right, let's try a custom world with a little bit more of a narrative bent. So, we're going to create a world. Um, we're going to have a mystery with a missing necklace. We'll choose 16 by9 and we'll choose dramatic. Uh let's start the experience now. >> He interviews the dog. >> There's some dialogue there. What's going on there? Oh, that's the dog. So, we have him go to the kitchen. >> He's got the necklace in his hand. But yeah, let's interview the dog. Oh, the dog's wearing the necklace. There's another dog. He's like 9 ft tall. Suddenly, he's going to turn into a dog. Yes. I love it. So, part of the fun of this is when you are the one doing it and you are the one driving the action. It's not necessarily about watching this, although I do think that there's going to be a new type of streamer who is really good at doing uh improvisational prompts. It's clearly not me. Hold. Running out of time. I don't think we're going to see the necklace at the end, but here's what happens when we run out. There we go. So, we're we're done. So, we've get this little uh screen here. And then what we can do is go to history. All of the movies that we've made that I've made show up here. You can see, and unfortunately, you can see I started this at 1 a.m. and was still doing it at 2:30 a.m. Maybe you can relate to this. With AI video, it's a process of generating and iterating. And this takes that process and collapses that into near real time, a few seconds. You know, you type flamingos and then the flamingos show up seconds later. This is a truly improvisational style of video that has not existed before. In the same way that a camera on a smartphone led to the current age of social media, real-time video generation is going to lead to something we can't quite imagine yet until we see it. And then once we see it, it's going to feel obvious, like it was there all along. This is the birth of a new art form and we're all here witnessing it and being part of it. And I think that is so exciting. Thank you for watching and as this develops, I'll definitely be posting more things about live AI video generation. Let's end on some more surreal adventures.",
+  "errors": []
+}

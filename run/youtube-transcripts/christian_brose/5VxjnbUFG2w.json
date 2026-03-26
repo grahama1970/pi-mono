@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5VxjnbUFG2w",
+    "language": "en",
+    "took_ms": 7814,
+    "method": null,
+    "title": "The Geopolitics of America's Shale Revolution - Europe Panel: Hannah Thoburn and Edward Chow",
+    "channel": "Hudson Institute",
+    "upload_date": "20160328",
+    "duration_sec": 2480,
+    "description": "This conference examines how U.S. oil and natural gas exports reshaped the balance of global energy power, with the Europe panel discussion between Hannah Thoburn and Edward Chow.",
+    "view_count": 1891
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5VxjnbUFG2w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

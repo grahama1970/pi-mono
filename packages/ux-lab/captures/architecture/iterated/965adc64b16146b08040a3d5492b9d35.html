@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: 'Space+Grotesk', sans-serif;
+                background-color: var(--bg-deep);
+                color: var(--text-main);
+            }
+            code, .mono {
+                font-family: 'JetBrains Mono', monospace;
+            }
+        }
+        :root {
+            --bg-deep: #0f110c;
+            --bg-surface: #1a1d16;
+            --bg-panel: #24281f;
+            --text-main: #d1d5c9;
+            --text-muted: #7a826e;
+            --accent-human: #a3b18a;
+            --accent-agent: #d4a373;
+            --border-color: #343a2d;
+            --grid-color: rgba(52, 58, 45, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+<header class="h-48 border-b border-[var(--border-color)] bg-[var(--bg-surface)] flex flex-col">
+<div class="px-6 py-3 flex justify-between items-center border-b border-[var(--border-color)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[var(--accent-human)]">history_edu</span>
+<h1 class="text-sm font-bold uppercase tracking-widest text-[var(--text-muted)]">Archival Logbook — System Pipeline</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[var(--accent-human)]"></span>
+<span class="text-[10px] uppercase tracking-tighter mono">Human Operator</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[var(--accent-agent)]"></span>
+<span class="text-[10px] uppercase tracking-tighter mono">AI Agent</span>
+</div>
+<button class="px-3 py-1 bg-[var(--border-color)] text-[var(--text-main)] text-xs mono border border-[var(--text-muted)]">EXPORT_LOG</button>
+</div>
+</div>
+<div class="flex-1 relative overflow-x-auto overflow-y-hidden custom-scrollbar flex items-center px-12">
+<div class="absolute top-1/2 left-0 w-[200%] h-[1px] bg-[var(--border-color)] -translate-y-1/2"></div>
+<div class="relative flex items-center gap-32">
+<div class="relative group cursor-pointer">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] mono text-[var(--text-muted)]">2023.10.24 09:12</div>
+<div class="w-4 h-4 rounded-full bg-[var(--accent-human)] ring-4 ring-[var(--bg-surface)] z-10 relative"></div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="text-xs font-bold block">V1: Initial Scaffold</span>
+<span class="text-[10px] mono text-[var(--accent-human)]">@operator_alpha</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] mono text-[var(--text-muted)]">2023.10.24 10:45</div>
+<div class="w-4 h-4 rounded-full bg-[var(--accent-agent)] ring-4 ring-[var(--bg-surface)] z-10 relative"></div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-60">
+<span class="text-xs font-bold block">V2: Latency Optimization</span>
+<span class="text-[10px] mono text-[var(--accent-agent)]">@agent_v4_patch</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 text-[10px] mono text-[var(--text-main)]">2023.10.25 14:20</div>
+<div class="w-6 h-6 rounded-full bg-[var(--accent-agent)] ring-8 ring-[var(--bg-surface)] z-10 relative flex items-center justify-center">
+<div class="w-2 h-2 bg-[var(--bg-deep)] rounded-full animate-pulse"></div>
+</div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="text-xs font-bold block text-white underline underline-offset-4">V3: Load Balancer Node</span>
+<span class="text-[10px] mono text-[var(--accent-agent)]">@agent_v4_patch</span>
+</div>
+</div>
+<div class="relative group cursor-pointer opacity-30">
+<div class="w-4 h-4 rounded-full border-2 border-[var(--text-muted)] bg-transparent ring-4 ring-[var(--bg-surface)] z-10 relative"></div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="text-xs font-bold block">V4: Drafting...</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<div class="flex-1 relative bg-[var(--bg-deep)] overflow-hidden" style="background-image: radial-gradient(var(--grid-color) 1px, transparent 1px); background-size: 32px 32px;">
+<div class="absolute top-6 left-6 flex flex-col gap-1 bg-[var(--bg-panel)] border border-[var(--border-color)] p-1 z-20">
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">near_me</span></button>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">square_foot</span></button>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">polyline</span></button>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">text_fields</span></button>
+<div class="h-[1px] bg-[var(--border-color)] my-1"></div>
+<button class="p-2 hover:bg-[var(--border-color)] text-[var(--text-main)]"><span class="material-symbols-outlined text-sm">image</span></button>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="relative w-[1000px] h-[600px]">
+<!-- SFT Model Box -->
+<div class="absolute top-10 left-10 w-48 h-24 border-2 border-[var(--accent-human)] bg-[var(--bg-surface)] p-3 cursor-move shadow-lg">
+<div class="text-[10px] mono text-[var(--accent-human)] mb-1">PRODUCER_01</div>
+<div class="text-sm font-bold">SFT Model</div>
+<div class="mt-2 flex gap-1">
+<span class="px-1 text-[8px] border border-[var(--border-color)] mono">Llama-3</span>
+<span class="px-1 text-[8px] border border-[var(--border-color)] mono">FP16</span>
+</div>
+</div>
+<!-- Connections -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path d="M 232 90 L 350 90 L 350 150" fill="none" stroke="var(--border-color)" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<polygon fill="var(--border-color)" points="350,155 347,148 353,148"></polygon>
+<path d="M 520 400 L 600 400" fill="none" stroke="var(--border-color)" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<polygon fill="var(--border-color)" points="605,400 598,397 598,403"></polygon>
+</svg>
+<!-- WALKTHROUGH.md -->
+<div class="absolute top-10 left-80 w-64 h-80 bg-[var(--bg-panel)] border border-[var(--border-color)] shadow-2xl flex flex-col overflow-hidden rounded-sm ring-1 ring-white/5">
+<div class="p-2 bg-[var(--bg-surface)] border-b border-[var(--border-color)] flex justify-between items-center shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-[var(--accent-human)]">description</span>
+<span class="text-[10px] mono text-[var(--text-main)] uppercase tracking-tight">WALKTHROUGH.md</span>
+</div>
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-[var(--border-color)]"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-[var(--border-color)]"></div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 custom-scrollbar text-[11px] leading-relaxed">
+<div class="text-[9px] mono text-[var(--accent-human)] mb-3"># TRAINING_CONFIG</div>
+<ul class="space-y-1 mb-4 text-[var(--text-main)]">
+<li>• Epochs: 3</li>
+<li>• Batch Size: 32</li>
+<li>• LR: 2e-5</li>
+<li>• Warmup: 10%</li>
+</ul>
+<div class="p-2 bg-[var(--bg-deep)] border border-[var(--border-color)] rounded-sm">
+<code class="block text-[10px] text-[var(--accent-agent)]">
+                                {<br/>
+                                  "loss": "ce",<br/>
+                                  "opt": "adamw",<br/>
+                                  "seed": 42<br/>
+                                }
+                            </code>
+</div>
+<div class="mt-4 text-[var(--text-muted)]">
+                            Ensure the weights are quantized before production deployment to reduce VRAM pressure.
+                        </div>
+</div>
+</div>
+<!-- Extract Entities (formerly Load Balancer) -->
+<div class="absolute top-48 left-64 w-56 h-32 border-2 border-[var(--accent-agent)] bg-[var(--bg-surface)] p-3 cursor-move shadow-lg">
+<div class="flex justify-between items-start">
+<div class="text-[10px] mono text-[var(--accent-agent)] mb-1">CONSUMER_02_AUTO</div>
+<span class="material-symbols-outlined text-[var(--accent-agent)] text-xs">auto_awesome</span>
+</div>
+<div class="text-sm font-bold">Extract Entities</div>
+<div class="mt-2 text-[10px] text-[var(--text-muted)] leading-tight">
+                            NLP pipeline for semantic labeling and triple extraction.
+                        </div>
+<div class="mt-2 flex gap-1">
+<span class="px-1 text-[8px] border border-[var(--accent-agent)] text-[var(--accent-agent)] mono">SPACY_v3</span>
+</div>
+</div>
+<!-- SKILL.md -->
+<div class="absolute top-80 right-20 w-72 h-64 bg-[var(--bg-panel)] border border-[var(--border-color)] shadow-2xl flex flex-col overflow-hidden rounded-sm ring-1 ring-white/5">
+<div class="p-2 bg-[var(--bg-surface)] border-b border-[var(--border-color)] flex justify-between items-center shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-[var(--accent-agent)]">menu_book</span>
+<span class="text-[10px] mono text-[var(--text-main)] uppercase tracking-tight">SKILL.md</span>
+</div>
+<div class="w-8 flex justify-between px-1">
+<div class="w-1 h-1 bg-[var(--text-muted)] rounded-full"></div>
+<div class="w-1 h-1 bg-[var(--text-muted)] rounded-full"></div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+<div class="text-[10px] font-bold uppercase text-[var(--text-muted)] mb-3 tracking-widest">10-Step Pipeline</div>
+<ol class="space-y-2 text-[11px] text-[var(--text-main)] list-decimal list-inside">
+<li class="pl-1">Raw Audio Ingestion</li>
+<li class="pl-1">Noise Reduction V2</li>
+<li class="pl-1">STT Transcription</li>
+<li class="pl-1">Entity Masking</li>
+<li class="pl-1">Sentiment Analysis</li>
+<li class="pl-1">Intent Classification</li>
+<li class="pl-1">Database Lookup</li>
+<li class="pl-1">Response Synthesis</li>
+<li class="pl-1">Audio Post-Process</li>
+<li class="pl-1">Final Dispatch</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-6 left-6 flex items-center gap-4 bg-[var(--bg-panel)] border border-[var(--border-color)] px-3 py-2 text-[var(--text-muted)] mono text-xs z-20">
+<span>X: 1240.2</span>
+<span>Y: -842.1</span>
+<span class="text-[var(--text-main)]">100%</span>
+</div>
+</div>
+<aside class="w-80 border-l border-[var(--border-color)] bg-[var(--bg-surface)] flex flex-col">
+<div class="p-4 border-b border-[var(--border-color)] flex justify-between items-center">
+<span class="text-xs font-bold uppercase tracking-widest text-[var(--text-muted)]">Component Specs</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-white">close</span>
+</div>
+<div class="flex-1 overflow-y-auto p-5 space-y-8 custom-scrollbar">
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Identification</label>
+<div class="space-y-4">
+<div>
+<div class="text-[11px] text-[var(--text-muted)] mb-1">Entity Name</div>
+<div class="text-sm mono text-[var(--text-main)] bg-[var(--bg-deep)] p-2 border border-[var(--border-color)]">lb-v3-cluster-main</div>
+</div>
+<div>
+<div class="text-[11px] text-[var(--text-muted)] mb-1">Contribution</div>
+<div class="flex items-center gap-2 px-2 py-1 bg-[var(--accent-agent)]/10 border border-[var(--accent-agent)]/20 rounded-sm">
+<span class="material-symbols-outlined text-xs text-[var(--accent-agent)]">auto_awesome</span>
+<span class="text-[10px] mono text-[var(--accent-agent)]">Agent Generated (v3)</span>
+</div>
+</div>
+</div>
+</section>
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Log Metrics</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-[var(--bg-panel)] p-3 border border-[var(--border-color)]">
+<div class="text-[9px] text-[var(--text-muted)] uppercase">Latency</div>
+<div class="text-lg mono text-[var(--accent-agent)]">12ms</div>
+</div>
+<div class="bg-[var(--bg-panel)] p-3 border border-[var(--border-color)]">
+<div class="text-[9px] text-[var(--text-muted)] uppercase">Throughput</div>
+<div class="text-lg mono text-[var(--text-main)]">4.2k/s</div>
+</div>
+</div>
+</section>
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Documentation Ref</label>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] cursor-pointer group">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="flex-1 border-b border-dotted border-[var(--border-color)] group-hover:border-[var(--text-muted)]">infra/lb_config.yaml</span>
+</li>
+<li class="flex items-center gap-2 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] cursor-pointer group">
+<span class="material-symbols-outlined text-sm">link</span>
+<span class="flex-1 border-b border-dotted border-[var(--border-color)] group-hover:border-[var(--text-muted)]">service-mesh-spec.md</span>
+</li>
+</ul>
+</section>
+<section>
+<label class="text-[10px] mono uppercase text-[var(--text-muted)] mb-3 block tracking-widest">Incoming Edges</label>
+<div class="p-3 bg-[var(--bg-deep)] border border-[var(--border-color)]">
+<div class="flex items-center justify-between text-[10px] mono mb-2">
+<span class="text-[var(--accent-human)]">FROM: API_GTW</span>
+<span class="text-[var(--text-muted)]">p99: 45ms</span>
+</div>
+<div class="h-1 bg-[var(--border-color)] w-full relative">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-[var(--accent-agent)]"></div>
+</div>
+</div>
+</section>
+</div>
+<div class="p-4 border-t border-[var(--border-color)] bg-[var(--bg-panel)]">
+<div class="flex justify-between items-center text-[10px] mono text-[var(--text-muted)]">
+<span>STATUS: DRAFT_REV_3</span>
+<span class="text-[var(--accent-agent)]">● AGENT_SYNCED</span>
+</div>
+</div>
+</aside>
+</main>
+<footer class="h-8 bg-[var(--bg-deep)] border-t border-[var(--border-color)] px-4 flex items-center justify-between text-[10px] mono text-[var(--text-muted)]">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-900"></span> ENGINE_ACTIVE</span>
+<span>MEM: 2.4GB / 8GB</span>
+</div>
+<div class="flex gap-4">
+<span class="hover:text-[var(--text-main)] cursor-pointer">SHORTCUTS_CMD+K</span>
+<span class="text-[var(--text-main)]">LOG_REV: 0xFD29A</span>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NlZX7msBozQ",
+    "language": "en",
+    "took_ms": 8875,
+    "method": null,
+    "title": "Channel Update  - Playlists, Repos, Collabs, Grants, Memberships",
+    "channel": "Trelis Research",
+    "upload_date": "20250122",
+    "duration_sec": 1026,
+    "description": "➡️ Trelis Tools: https://trelis.com/\n➡️ Slides: https://docs.google.com/presentation/d/1HpgBxOkNC54IT0OWKRqCuswq0GZ2KMBQcGNd4ghMWeI/edit?usp=sharing\n➡️ AI Consulting: https://forms.gle/2VXzrBzpvm1BmG6e7\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://trelis.substack.com\n➡️ Trelis on X: https://X.com/@TrelisResearch\n➡️ Other Resources and Products from Trelis: https://Trelis.com/\n\nTIMESTAMPS:\n00:00:00 - Introduction to 18-month channel update\n00:00:29 - Overview of five main categories: fine tuning, inference, vision, audio, and evals\n00:01:14 - Publishing schedule: Mondays 2pm and Fridays 9am Irish time\n00:04:15 - Introduction of developer collab program\n00:04:51 - Overview of Trelis Grants program\n00:05:29 - Introduction of YouTube memberships with three tiers\n00:06:45 - Fine tuning content and repo\n00:09:54 - Inference content and repo\n00:12:44 - Vision models and support\n00:14:21 - Audio/transcription features\n00:15:35 - NEW evals content and repo\n00:16:35 - Request for feedback on content direction\n00:17:03 - Closing remarks",
+    "view_count": 1755
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NlZX7msBozQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

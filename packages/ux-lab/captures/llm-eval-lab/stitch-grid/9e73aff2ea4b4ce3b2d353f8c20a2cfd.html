@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#cf3be5",
+              "tertiary-dim": "#9000a5",
+              "surface-container-high": "#e1e9ee",
+              "secondary": "#526074",
+              "on-primary-fixed-variant": "#535b71",
+              "on-secondary-container": "#455367",
+              "on-primary": "#f7f7ff",
+              "secondary-fixed": "#d5e3fc",
+              "primary": "#565e74",
+              "surface-tint": "#565e74",
+              "primary-dim": "#4a5268",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#ccd4ee",
+              "inverse-primary": "#dae2fd",
+              "surface-container-highest": "#d9e4ea",
+              "primary-container": "#dae2fd",
+              "on-surface": "#2a3439",
+              "on-tertiary-fixed-variant": "#310039",
+              "surface-bright": "#f7f9fb",
+              "on-error-container": "#752121",
+              "on-primary-container": "#4a5167",
+              "primary-fixed": "#dae2fd",
+              "on-tertiary-fixed": "#000000",
+              "on-background": "#2a3439",
+              "on-secondary-fixed-variant": "#4e5c71",
+              "outline": "#717c82",
+              "on-primary-fixed": "#373f54",
+              "surface-variant": "#d9e4ea",
+              "on-secondary": "#f8f8ff",
+              "surface-dim": "#cfdce3",
+              "inverse-surface": "#0b0f10",
+              "secondary-dim": "#465468",
+              "tertiary-container": "#de4bf4",
+              "inverse-on-surface": "#9a9d9f",
+              "on-tertiary": "#fff7fa",
+              "surface-container": "#e8eff3",
+              "secondary-fixed-dim": "#c7d5ed",
+              "tertiary": "#a300bb",
+              "on-secondary-fixed": "#324053",
+              "on-tertiary-container": "#19001e",
+              "error": "#9f403d",
+              "on-error": "#fff7f6",
+              "secondary-container": "#d5e3fc",
+              "outline-variant": "#a9b4b9",
+              "surface-container-low": "#f0f4f7",
+              "error-container": "#fe8983",
+              "background": "#f7f9fb",
+              "tertiary-fixed": "#de4bf4",
+              "on-surface-variant": "#566166",
+              "error-dim": "#4e0309",
+              "surface": "#f7f9fb"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"none": "0px", "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar Component -->
+<aside class="flex flex-col h-screen sticky top-0 left-0 pt-4 pb-8 bg-slate-100 dark:bg-slate-950 docked left-0 h-full w-64 border-r-0 bg-slate-200 dark:bg-slate-900 flat no shadows">
+<div class="px-6 mb-8">
+<h2 class="text-lg font-black text-slate-900 dark:text-white font-headline">OPERATOR_01</h2>
+<p class="font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase text-slate-600 dark:text-slate-400">SYSTEM_ACTIVE</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase text-slate-500 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-900 transition-all active:scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+                PROJECTS
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase bg-slate-300 dark:bg-slate-800 text-slate-900 dark:text-white active:scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+                EXPERIMENTS
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase text-slate-500 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-900 transition-all active:scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+                DATASETS
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase text-slate-500 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-900 transition-all active:scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="Memory">memory</span>
+                MODELS
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10 pt-4">
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase text-slate-500 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-900 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+                SYSTEM LOGS
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] text-[11px] font-bold tracking-tighter uppercase text-slate-500 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-900 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                TERMINAL
+            </a>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center w-full px-6 h-16 bg-slate-50 dark:bg-slate-900 docked full-width top-0 border-b-0 bg-slate-200 dark:bg-slate-800 flat no shadows">
+<div class="flex items-center gap-8">
+<h1 class="text-xl font-black text-slate-900 dark:text-white antialiased font-headline">LLM EVAL LAB</h1>
+<nav class="hidden md:flex gap-6 h-full items-center">
+<a class="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors" href="#">CONFIGURATION</a>
+<a class="font-['Space_Grotesk'] font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b-2 border-slate-900 dark:border-white pb-1" href="#">RESULTS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-sm">search</span>
+<input class="bg-surface-container-low border-none text-[10px] font-mono tracking-widest pl-9 pr-4 py-2 w-64 focus:ring-1 focus:ring-primary" placeholder="FILTER SCENARIOS..." type="text"/>
+</div>
+<button class="p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-8 space-y-12">
+<!-- Summary Recommendations -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-px bg-outline-variant/20 border border-outline-variant/20">
+<div class="bg-surface-container-lowest p-6 flex items-start gap-4">
+<div class="w-10 h-10 bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<p class="text-[10px] font-bold font-headline tracking-[0.2em] text-outline mb-1">MINIMUM VIABLE</p>
+<h3 class="text-xl font-black font-headline mb-2 uppercase">Llama-3-8B-Instruct</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Optimal performance-to-latency ratio for real-time extraction tasks. Passes 89% of critical word-count constraints.</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 flex items-start gap-4 border-l border-outline-variant/20">
+<div class="w-10 h-10 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div>
+<p class="text-[10px] font-bold font-headline tracking-[0.2em] text-outline mb-1">MOST RELIABLE</p>
+<h3 class="text-xl font-black font-headline mb-2 uppercase">GPT-4o-2024-05-13</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Highest consistency across multi-step reasoning. Zero failures in deterministic logic scenarios.</p>
+</div>
+</div>
+</section>
+<!-- Results Grid -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="text-4xl font-black font-headline tracking-tighter">EXP_ID: R_042</h2>
+<p class="font-mono text-[10px] text-outline uppercase tracking-widest mt-1">TIMESTAMP: 2024-05-21T14:22:01Z // SAMPLES: 140</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container-highest px-4 py-2 text-[10px] font-bold font-headline uppercase tracking-widest border-none">EXPORT DATA</button>
+<button class="bg-primary text-on-primary px-4 py-2 text-[10px] font-bold font-headline uppercase tracking-widest">RERUN SUITE</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="text-left bg-surface-container-low">
+<th class="p-4 font-headline text-[10px] font-bold tracking-widest text-outline border-none uppercase">Scenario_ID</th>
+<th class="p-4 font-headline text-[10px] font-bold tracking-widest text-outline border-none uppercase">GPT-4o</th>
+<th class="p-4 font-headline text-[10px] font-bold tracking-widest text-outline border-none uppercase">Llama-3-70B</th>
+<th class="p-4 font-headline text-[10px] font-bold tracking-widest text-outline border-none uppercase">Claude-3.5-Sonnet</th>
+<th class="p-4 font-headline text-[10px] font-bold tracking-widest text-outline border-none uppercase">Gemini-1.5-Pro</th>
+</tr>
+</thead>
+<tbody class="divide-y-0">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-pointer">
+<td class="p-4 font-mono text-xs font-medium">01_Json_Formatting</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-secondary-container text-on-secondary-container font-mono text-[10px] font-bold">PASS/2</span>
+</td>
+</tr>
+<!-- Row 2: Expanded State -->
+<tr class="bg-surface-container-highest border-l-4 border-primary">
+<td class="p-4 font-mono text-xs font-bold">02_Multi-step_word</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-error-container text-on-error-container font-mono text-[10px] font-bold">FAIL</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-tertiary-container text-on-tertiary-container font-mono text-[10px] font-bold">ERR</span>
+</td>
+</tr>
+<tr class="bg-surface-container-highest border-l-4 border-primary">
+<td class="p-0" colspan="5">
+<div class="px-4 pb-6 grid grid-cols-4 gap-4">
+<div class="col-span-4 bg-surface-container-lowest p-4 mb-4">
+<p class="text-[10px] font-bold font-headline tracking-[0.2em] text-outline mb-2">INPUT PROMPT</p>
+<p class="text-sm font-mono leading-relaxed italic">"Explain the concept of 'entropy' using only words that do not contain the letter 'e'. Limit response to 30 words."</p>
+</div>
+<!-- Side-by-Side Comparison -->
+<div class="space-y-2">
+<p class="text-[9px] font-bold font-mono text-on-primary-container uppercase bg-primary-container px-2 py-0.5 inline-block">GPT-4o Output</p>
+<div class="text-[11px] font-mono leading-tight bg-white p-3 border border-outline-variant/30 min-h-[100px]">
+                                                Chaos grows. All things rot. Solid forms stop. Logic fails at last. Big bang sparks. Cold dark stays.
+                                            </div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="text-[9px] font-bold">CONSTRAINTS MET</span>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-[9px] font-bold font-mono text-on-error-container uppercase bg-error-container px-2 py-0.5 inline-block">Llama-3 Output</p>
+<div class="text-[11px] font-mono leading-tight bg-white p-3 border border-outline-variant/30 min-h-[100px]">
+                                                Entropy is a measure of disorder in a system. Things tend to fall apart over time naturally.
+                                            </div>
+<div class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-sm">cancel</span>
+<span class="text-[9px] font-bold">FAILED 'E' CONSTRAINT</span>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-[9px] font-bold font-mono text-on-primary-container uppercase bg-primary-container px-2 py-0.5 inline-block">Claude-3.5 Output</p>
+<div class="text-[11px] font-mono leading-tight bg-white p-3 border border-outline-variant/30 min-h-[100px]">
+                                                Things falling apart. No order. Cold growth of chaos. Atoms stop moving. 
+                                            </div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span class="text-[9px] font-bold">CONSTRAINTS MET</span>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-[9px] font-bold font-mono text-on-tertiary-container uppercase bg-tertiary-container px-2 py-0.5 inline-block">Gemini-1.5 Output</p>
+<div class="text-[11px] font-mono leading-tight bg-white/50 p-3 border border-outline-variant/30 min-h-[100px] flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary opacity-30 text-3xl">error_outline</span>
+</div>
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="text-[9px] font-bold">MAX_TOKENS_REACHED</span>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-pointer border-t border-outline-variant/10">
+<td class="p-4 font-mono text-xs font-medium">03_Code_Refactoring</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-secondary-container text-on-secondary-container font-mono text-[10px] font-bold">PASS/2</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-surface-container-low transition-colors cursor-pointer">
+<td class="p-4 font-mono text-xs font-medium">04_Semantic_Search</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-error-container text-on-error-container font-mono text-[10px] font-bold">FAIL</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-secondary-container text-on-secondary-container font-mono text-[10px] font-bold">PASS/2</span>
+</td>
+<td class="p-4">
+<span class="inline-block px-2 py-1 bg-primary-container text-on-primary-container font-mono text-[10px] font-bold">PASS</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Technical Metadata Grid (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-surface-container p-6 border-l-2 border-primary">
+<p class="text-[9px] font-black font-headline tracking-[0.2em] text-outline uppercase mb-1">AGGREGATE_PRECISION</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline tracking-tighter">92.4</span>
+<span class="text-[10px] font-mono text-primary font-bold">%</span>
+</div>
+</div>
+<div class="bg-surface-container p-6 border-l-2 border-primary">
+<p class="text-[9px] font-black font-headline tracking-[0.2em] text-outline uppercase mb-1">TOKEN_EFFICIENCY</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline tracking-tighter">1.82</span>
+<span class="text-[10px] font-mono text-primary font-bold">K/$</span>
+</div>
+</div>
+<div class="bg-surface-container p-6 border-l-2 border-tertiary">
+<p class="text-[9px] font-black font-headline tracking-[0.2em] text-outline uppercase mb-1">LATENCY_P95</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline tracking-tighter">840</span>
+<span class="text-[10px] font-mono text-tertiary font-bold">MS</span>
+</div>
+</div>
+<div class="bg-surface-container p-6 border-l-2 border-primary">
+<p class="text-[9px] font-black font-headline tracking-[0.2em] text-outline uppercase mb-1">TOTAL_RUN_COST</p>
+<div class="flex items-baseline gap-2">
+<span class="text-[10px] font-mono text-primary font-bold">$</span>
+<span class="text-3xl font-black font-headline tracking-tighter">4.12</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Mobile BottomNavBar (Hidden on desktop as per rules) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-outline-variant/20 flex items-center justify-around px-4">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="text-[8px] font-bold font-headline">EXPERIMENTS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-outline" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="text-[8px] font-bold font-headline">DATASETS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-outline" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="text-[8px] font-bold font-headline">PROJECTS</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-outline" href="#">
+<span class="material-symbols-outlined" data-icon="Memory">memory</span>
+<span class="text-[8px] font-bold font-headline">MODELS</span>
+</a>
+</nav>
+</body></html>

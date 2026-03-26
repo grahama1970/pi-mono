@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wM8kOq4VVt8",
+    "language": "en",
+    "took_ms": 8729,
+    "method": null,
+    "title": "DEF CON 33 - Turning Camera Surveillance on its Axis - Noam Moshe",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1289,
+    "description": "What are the consequences if an adversary compromises the surveillance cameras of thousands of leading Western organizations and companies? As trust in Chinese-made IoT devices declines, organizations face limited alternatives—especially in video surveillance. Many governments have already banned Dahua and Hikvision products in sensitive facilities, further narrowing their choices. This concern drove our research, revealing that surveillance platforms can be double-edged swords.\n\nWe focused on Axis Communications, a major player in video surveillance widely used by U.S. government agencies, schools, medical facilities, and Fortune 500 companies.\n\nIn our talk, we will present an in-depth analysis of the Axis.Remoting communication protocol, uncovering critical vulnerabilities that allow attackers to achieve pre-auth RCE on Axis platforms. This access could serve as a gateway into an organization’s internal network via its surveillance infrastructure. Additionally, we identified a novel technique for passive data exfiltration, enabling attackers to map organizations using this equipment—potentially aiding in targeted attacks.",
+    "view_count": 426
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wM8kOq4VVt8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

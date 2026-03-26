@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>S10 Voice Identity - SONIC OBSERVATORY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#006632",
+                        "surface-container-high": "#202020",
+                        "surface-container-lowest": "#000000",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "surface-dim": "#0e0e0e",
+                        "inverse-primary": "#742fe5",
+                        "on-primary": "#3c0089",
+                        "on-primary-fixed-variant": "#390083",
+                        "tertiary": "#6aabff",
+                        "surface": "#0e0e0e",
+                        "on-tertiary-fixed": "#001833",
+                        "on-tertiary": "#002a52",
+                        "on-secondary-fixed": "#004621",
+                        "background": "#0e0e0e",
+                        "on-surface": "#ffffff",
+                        "on-primary-container": "#2e006c",
+                        "error": "#ff6e84",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-variant": "#262626",
+                        "primary-fixed": "#b28cff",
+                        "on-tertiary-container": "#001e3c",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "tertiary-dim": "#4fa0ff",
+                        "surface-container": "#191a1a",
+                        "on-background": "#ffffff",
+                        "outline": "#767575",
+                        "on-surface-variant": "#adaaaa",
+                        "on-error": "#490013",
+                        "tertiary-container": "#499dfe",
+                        "inverse-on-surface": "#565555",
+                        "tertiary-fixed": "#7bb3ff",
+                        "secondary-dim": "#00ed7e",
+                        "on-primary-fixed": "#000000",
+                        "error-dim": "#d73357",
+                        "error-container": "#a70138",
+                        "primary-fixed-dim": "#a67aff",
+                        "primary-dim": "#8a4cfc",
+                        "surface-tint": "#bd9dff",
+                        "secondary-fixed": "#00fd87",
+                        "primary": "#bd9dff",
+                        "secondary": "#00fd87",
+                        "on-secondary": "#005b2c",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "secondary-container": "#006d37",
+                        "outline-variant": "#484848",
+                        "surface-bright": "#2c2c2c",
+                        "surface-container-low": "#131313",
+                        "on-error-container": "#ffb2b9",
+                        "primary-container": "#b28cff",
+                        "surface-container-highest": "#262626",
+                        "on-secondary-container": "#e3ffe4"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .waveform-bar {
+            width: 3px;
+            background: currentColor;
+            border-radius: 1px;
+            margin: 0 1px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-[#0e0e0e] flex justify-between items-center px-8 py-4 border-b border-surface-variant/10">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#bd9dff] uppercase font-headline">SONIC OBSERVATORY</span>
+<div class="hidden md:flex gap-6 font-headline tracking-tight text-sm">
+<a class="text-[#adaaaa] hover:text-[#00fd87] transition-colors duration-200" href="#">WORKFLOW</a>
+<a class="text-[#adaaaa] hover:text-[#00fd87] transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-[#adaaaa] hover:text-[#00fd87] transition-colors duration-200" href="#">ARCHIVE</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-[#00fd87] cursor-pointer">settings</span>
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-[#00fd87] cursor-pointer">notifications</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Operator Profile Portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAXOh1b_sgDkQQvsqsKnd5XIpmgSbf7-4sskN1kxX-Eqj8IvOlXH60RUpOat--8QgxZ1QqxND_MWg8NMrborTlJ_ubtLFvLQDi0osANHGumzlQ49oc62-9IDD7Dmqnezzkk-zmY6sghSLM5T7-pvS6uvSoC0BQvCvCSjWIfyiQG3MLhQr2xxn0gqsbdVO1lUnE7lpQzrw9IjlZJbDDzeXhxo3o73iVJQ2WwKyCC5bWRkRa5kTF6Mu3TIM7TYMKgLZiUSaf418FEC8"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#131313] flex flex-col pt-20 z-40">
+<div class="px-6 py-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div>
+<h3 class="font-label text-xs font-bold text-[#bd9dff] tracking-widest uppercase">PIPELINE</h3>
+<p class="font-label text-[10px] text-[#adaaaa]">OPERATOR MODE</p>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto font-label text-xs tracking-widest">
+<!-- Nav Items -->
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">radio</span> S00: SOURCE
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">sensors</span> S01: INTAKE
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">filter_list</span> S02: FILTRATION
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">waves</span> S03: SYNTHESIS
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">tune</span> S04: MODULATION
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">surround_sound</span> S05: SPATIAL
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">compress</span> S06: DYNAMICS
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">piano</span> S07: HARMONICS
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">layers</span> S08: LAYERING
+            </a>
+<a class="text-[#adaaaa] py-3 px-4 flex items-center gap-3 hover:bg-[#262626] hover:text-[#bd9dff] transition-all" href="#">
+<span class="material-symbols-outlined text-lg">graphic_eq</span> S09: MASTER
+            </a>
+<!-- ACTIVE TAB -->
+<a class="bg-[#191a1a] text-[#00fd87] border-l-4 border-[#00fd87] py-3 px-4 flex items-center gap-3 scale-102" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span> S10: FINAL STAGE
+            </a>
+</div>
+<div class="p-6 border-t border-surface-variant/20">
+<button class="w-full bg-secondary text-on-secondary font-label text-[10px] font-bold py-3 rounded-lg tracking-widest hover:brightness-110 transition-all uppercase">
+                EXPORT ENCRYPTED
+            </button>
+<div class="flex gap-4 mt-6 text-[#adaaaa] font-label text-[10px]">
+<div class="flex items-center gap-2 cursor-pointer hover:text-on-surface"><span class="material-symbols-outlined text-sm">terminal</span> SYSTEM</div>
+<div class="flex items-center gap-2 cursor-pointer hover:text-on-surface"><span class="material-symbols-outlined text-sm">history</span> LOGS</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-12 pb-20 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-12">
+<div>
+<h1 class="text-5xl font-extrabold tracking-tighter font-headline mb-2 text-on-surface">S10 Voice Identity</h1>
+<p class="font-label text-on-surface-variant uppercase tracking-widest text-sm">Neural Reconstruction Phase Complete</p>
+</div>
+<div class="flex items-center gap-3 bg-secondary-container/20 border-l-2 border-secondary px-4 py-2">
+<span class="font-label text-secondary font-bold text-xs tracking-[0.2em]">COMPLETE</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</header>
+<!-- Two Comparison Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+<!-- Left Card: Original Vocal -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 group hover:border-primary/20 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="text-2xl font-bold font-headline text-on-surface">Original Vocal</h2>
+<p class="font-label text-on-surface-variant text-xs uppercase tracking-wider mt-1">YuE generated</p>
+</div>
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Mini Visualizer -->
+<div class="h-16 flex items-end gap-1 text-primary/40">
+<div class="waveform-bar h-[40%]"></div><div class="waveform-bar h-[60%]"></div><div class="waveform-bar h-[30%]"></div><div class="waveform-bar h-[80%]"></div><div class="waveform-bar h-[50%]"></div><div class="waveform-bar h-[70%]"></div><div class="waveform-bar h-[90%]"></div><div class="waveform-bar h-[40%]"></div><div class="waveform-bar h-[60%]"></div><div class="waveform-bar h-[30%]"></div><div class="waveform-bar h-[80%]"></div><div class="waveform-bar h-[50%]"></div><div class="waveform-bar h-[70%]"></div><div class="waveform-bar h-[90%]"></div><div class="waveform-bar h-[40%]"></div><div class="waveform-bar h-[60%]"></div><div class="waveform-bar h-[30%]"></div><div class="waveform-bar h-[80%]"></div><div class="waveform-bar h-[50%]"></div><div class="waveform-bar h-[70%]"></div>
+</div>
+</div>
+<!-- Right Card: Horus Voice -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant/10 group hover:border-secondary/20 transition-all">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="text-2xl font-bold font-headline text-on-surface">Horus Voice</h2>
+<p class="font-label text-on-surface-variant text-xs uppercase tracking-wider mt-1">RVC v2 · Graham vocals</p>
+</div>
+<button class="w-14 h-14 bg-secondary text-on-secondary rounded-full flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-secondary/10">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Mini Visualizer -->
+<div class="h-16 flex items-end gap-1 text-secondary/40">
+<div class="waveform-bar h-[35%]"></div><div class="waveform-bar h-[55%]"></div><div class="waveform-bar h-[45%]"></div><div class="waveform-bar h-[75%]"></div><div class="waveform-bar h-[65%]"></div><div class="waveform-bar h-[85%]"></div><div class="waveform-bar h-[95%]"></div><div class="waveform-bar h-[35%]"></div><div class="waveform-bar h-[55%]"></div><div class="waveform-bar h-[45%]"></div><div class="waveform-bar h-[75%]"></div><div class="waveform-bar h-[65%]"></div><div class="waveform-bar h-[85%]"></div><div class="waveform-bar h-[95%]"></div><div class="waveform-bar h-[35%]"></div><div class="waveform-bar h-[55%]"></div><div class="waveform-bar h-[45%]"></div><div class="waveform-bar h-[75%]"></div><div class="waveform-bar h-[65%]"></div><div class="waveform-bar h-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Metadata Row -->
+<div class="flex justify-center mb-12">
+<div class="bg-surface-container-low px-6 py-3 rounded-full border border-outline-variant/10 inline-flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">settings_input_component</span>
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">horus-graham-v3.pth</span>
+</div>
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">timer</span>
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">47 min training</span>
+</div>
+<div class="w-1 h-1 bg-outline-variant rounded-full"></div>
+<div class="flex items-center gap-2">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Similarity:</span>
+<span class="font-label text-sm font-bold text-secondary">0.89</span>
+</div>
+</div>
+</div>
+<!-- Final Mix Player -->
+<section class="bg-surface-container p-10 rounded-xl relative overflow-hidden">
+<!-- Background Decorative Element -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-secondary/5 blur-[100px] rounded-full"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-8">
+<div class="p-2 bg-secondary/10 rounded-md border border-secondary/20">
+<span class="material-symbols-outlined text-secondary">album</span>
+</div>
+<h3 class="text-xl font-bold font-headline uppercase tracking-tight">Final Mix Preview</h3>
+<div class="h-px flex-1 bg-gradient-to-r from-surface-variant/40 to-transparent ml-4"></div>
+</div>
+<div class="flex flex-col md:flex-row items-center gap-8">
+<button class="flex-shrink-0 w-20 h-20 bg-secondary text-on-secondary rounded-xl flex items-center justify-center hover:scale-105 transition-transform shadow-2xl shadow-secondary/20">
+<span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</button>
+<div class="flex-1 w-full">
+<!-- Long Waveform -->
+<div class="h-24 flex items-center gap-0.5 mb-4 group cursor-pointer">
+<!-- High energy start -->
+<div class="waveform-bar h-[20%] text-secondary/60"></div><div class="waveform-bar h-[35%] text-secondary/60"></div><div class="waveform-bar h-[60%] text-secondary/60"></div><div class="waveform-bar h-[45%] text-secondary/60"></div><div class="waveform-bar h-[80%] text-secondary/60"></div><div class="waveform-bar h-[90%] text-secondary"></div><div class="waveform-bar h-[70%] text-secondary"></div><div class="waveform-bar h-[85%] text-secondary"></div><div class="waveform-bar h-[65%] text-secondary"></div><div class="waveform-bar h-[55%] text-secondary/60"></div><div class="waveform-bar h-[30%] text-secondary/60"></div><div class="waveform-bar h-[25%] text-secondary/60"></div>
+<!-- Middle section -->
+<div class="waveform-bar h-[40%] text-on-surface-variant/30"></div><div class="waveform-bar h-[55%] text-on-surface-variant/30"></div><div class="waveform-bar h-[75%] text-on-surface-variant/30"></div><div class="waveform-bar h-[65%] text-on-surface-variant/30"></div><div class="waveform-bar h-[90%] text-on-surface-variant/30"></div><div class="waveform-bar h-[70%] text-on-surface-variant/30"></div><div class="waveform-bar h-[85%] text-on-surface-variant/30"></div><div class="waveform-bar h-[45%] text-on-surface-variant/30"></div><div class="waveform-bar h-[30%] text-on-surface-variant/30"></div><div class="waveform-bar h-[55%] text-on-surface-variant/30"></div><div class="waveform-bar h-[80%] text-on-surface-variant/30"></div><div class="waveform-bar h-[60%] text-on-surface-variant/30"></div><div class="waveform-bar h-[40%] text-on-surface-variant/30"></div><div class="waveform-bar h-[55%] text-on-surface-variant/30"></div><div class="waveform-bar h-[75%] text-on-surface-variant/30"></div><div class="waveform-bar h-[65%] text-on-surface-variant/30"></div><div class="waveform-bar h-[90%] text-on-surface-variant/30"></div><div class="waveform-bar h-[70%] text-on-surface-variant/30"></div><div class="waveform-bar h-[85%] text-on-surface-variant/30"></div><div class="waveform-bar h-[45%] text-on-surface-variant/30"></div><div class="waveform-bar h-[30%] text-on-surface-variant/30"></div><div class="waveform-bar h-[55%] text-on-surface-variant/30"></div><div class="waveform-bar h-[80%] text-on-surface-variant/30"></div><div class="waveform-bar h-[60%] text-on-surface-variant/30"></div><div class="waveform-bar h-[40%] text-on-surface-variant/30"></div><div class="waveform-bar h-[55%] text-on-surface-variant/30"></div><div class="waveform-bar h-[75%] text-on-surface-variant/30"></div><div class="waveform-bar h-[65%] text-on-surface-variant/30"></div><div class="waveform-bar h-[90%] text-on-surface-variant/30"></div><div class="waveform-bar h-[70%] text-on-surface-variant/30"></div><div class="waveform-bar h-[85%] text-on-surface-variant/30"></div><div class="waveform-bar h-[45%] text-on-surface-variant/30"></div>
+</div>
+<div class="flex justify-between font-label text-[10px] text-on-surface-variant uppercase tracking-widest">
+<span>01:14</span>
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> BUFFERED</span>
+<span>04:32</span>
+</div>
+</div>
+</div>
+<!-- Action Toolbar -->
+<div class="mt-10 flex gap-4">
+<button class="bg-surface-container-highest px-6 py-3 rounded-lg border border-outline-variant/20 font-label text-[11px] uppercase tracking-widest hover:border-secondary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span> GET ALL STEMS
+                    </button>
+<button class="bg-surface-container-highest px-6 py-3 rounded-lg border border-outline-variant/20 font-label text-[11px] uppercase tracking-widest hover:border-secondary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">share</span> SYNC TO PROJECT
+                    </button>
+</div>
+</div>
+</section>
+<!-- Asymmetric Detail Section -->
+<section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="col-span-2">
+<div class="p-8 bg-surface-container-low border border-outline-variant/10 rounded-xl">
+<h4 class="font-headline font-bold text-lg mb-4 text-[#bd9dff]">Neural Map Details</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center pb-3 border-b border-surface-variant/10">
+<span class="font-label text-xs text-on-surface-variant uppercase">Conversion Method</span>
+<span class="font-label text-xs text-on-surface">RVC v2 (RMVPE)</span>
+</div>
+<div class="flex justify-between items-center pb-3 border-b border-surface-variant/10">
+<span class="font-label text-xs text-on-surface-variant uppercase">Batch Size</span>
+<span class="font-label text-xs text-on-surface">12 (Optimized)</span>
+</div>
+<div class="flex justify-between items-center pb-3 border-b border-surface-variant/10">
+<span class="font-label text-xs text-on-surface-variant uppercase">Epoch Count</span>
+<span class="font-label text-xs text-on-surface">320 / 500</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-xs text-on-surface-variant uppercase">Safety Score</span>
+<span class="font-label text-xs text-secondary font-bold">100% SECURE</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-highest/40 p-8 rounded-xl flex flex-col justify-center items-center border border-outline-variant/10 group overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:scale-110 transition-transform duration-1000" data-alt="Technical Circuitry Abstract Pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk0TnOcuinKkORnP72S-wOWeCsrrrITM5yxvx4G6grxwI5e7UnRhBN7wdr9lJPidtT-5Q_RLTuyWMPIxqBtyV-l8EymiK4jP_oLVKGRx_F_ugahJbdJTRoh-D3s84f4zJgvLyYkfzyQhum7DKrQAfmmheuYIAHwtaHchdJOf4cEMlTPDBJ8U_ME1awYEhUZjNdAz9sBkT1Uy9KQC_eKwWxeqwnu56ac-7bfkc0gvlXnfTkaeVdiVVl6yrHKhDpVKo4VC0anJM7p_c"/>
+<span class="material-symbols-outlined text-5xl text-primary mb-4 opacity-50 relative z-10">fingerprint</span>
+<p class="font-label text-[10px] text-center text-on-surface-variant tracking-[0.3em] uppercase relative z-10">Voiceprint ID Authenticated</p>
+<div class="mt-6 w-full h-1 bg-surface-variant relative z-10 overflow-hidden rounded-full">
+<div class="absolute left-0 top-0 h-full w-[89%] bg-secondary"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Action Button - Only for contextually relevant screens -->
+<!-- Suppressed for this detailed review screen per "Contextual FAB Suppression" -->
+</body></html>

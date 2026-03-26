@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tgULdgw5tJM",
+    "language": "en",
+    "took_ms": 7898,
+    "method": null,
+    "title": "Russia: Haunted by Its Communist Past",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6777,
+    "description": "As we approach the 20th anniversary of the fall of the Soviet Union, a pivotal question is whether Russia has drawn lessons from the communist past. Hudson Senior Fellow, David Satter, in his new book, It Was a Long Time Ago and It Never Happened Anyway: Russia and the Communist Past (Yale), attempts to answer this question. He presents a striking new interpretation of Russia's historical tragedy, locating its source in Russia's disregard for the value of the individual compared to the goals of",
+    "view_count": 387
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tgULdgw5tJM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

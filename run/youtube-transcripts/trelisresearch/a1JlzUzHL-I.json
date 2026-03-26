@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "a1JlzUzHL-I",
+    "language": "en",
+    "took_ms": 8899,
+    "method": null,
+    "title": "Run Code Llama on a Mac with an M1 Chip",
+    "channel": "Trelis Research",
+    "upload_date": "20230826",
+    "duration_sec": 553,
+    "description": "**Jupyter Code Llama**\nA Chat Assistant built on Llama 2.\n\nGithub repo for free notebook: https://github.com/TrelisResearch/jupyter-code-llama\n\n**Jupyter Code Llama PRO**\n- Save and re-load chats.\n- Upload pdf or text files for analysis.\n- Get access here: https://buy.stripe.com/dR65l6f4p95V7AI6oA.\n\nCopyright © 2023 Trelis LTD. Commercial License.\n\nFind Trelis on [HuggingFace](https://huggingface.co/Trelis) and [YouTube](https://www.youtube.com/@TrelisResearch).\n\n00:00 Introduction to Code Llama on a Mac\n00:27 Llama Setup with a Jupyter Notebook\n01:28 Installing JupyterLab for Llama\n02:45 How do I install Llama.cpp\n03:44 Which ggml or gguf to select for Llama\n06:45 How to increase Llama context?\n07:00 Jupyter Code Llama PRO!\n07:55 How to analyse a file with Llama?\n08:40 How to save a chat with Llama?",
+    "view_count": 14466
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] a1JlzUzHL-I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

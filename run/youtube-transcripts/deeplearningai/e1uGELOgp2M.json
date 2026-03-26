@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e1uGELOgp2M",
+    "language": "en",
+    "took_ms": 7698,
+    "method": null,
+    "title": "Unlock data from your files with Agentic Document Extraction",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260126",
+    "duration_sec": 117,
+    "description": "In our course with LandingAI, \"Document AI: From OCR to Agentic Doc Extraction\", you'll learn to unlock information from files containing handwritten formulas, nested captions, or overlapping watermarks.\n\nAfter exploring optical character recognition, layout detection, reading order, and multimodal models, you’ll build agents to combine these capabilities as tools. Together they will parse and extract information into usable formats for downstream applications.\n\nEnroll for free: https://bit.ly/3Lmuqxf",
+    "view_count": 8109
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e1uGELOgp2M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

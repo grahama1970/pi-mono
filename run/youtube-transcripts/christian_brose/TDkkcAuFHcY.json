@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TDkkcAuFHcY",
+    "language": "en",
+    "took_ms": 8910,
+    "method": null,
+    "title": "Roads to a Free Syria: Nasser Rabbat",
+    "channel": "Hudson Institute",
+    "upload_date": "20120917",
+    "duration_sec": 138,
+    "description": "Nasser Rabbat, Aga Khan Professor at MIT, looks at the situation in Syria from the Syrian perspective. He explains that most people in the country want a moderate and modern form of religiosity, and talks about cultural exchange between Syria and the West.",
+    "view_count": 989
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TDkkcAuFHcY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

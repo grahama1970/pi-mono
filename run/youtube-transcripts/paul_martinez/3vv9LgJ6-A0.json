@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3vv9LgJ6-A0",
+    "language": "en",
+    "took_ms": 9109,
+    "method": null,
+    "title": "Top 20 PLC Secure Coding Practices Training Session",
+    "channel": "S4 Events",
+    "upload_date": "20220822",
+    "duration_sec": 4132,
+    "description": "Vivek Ponneda and Josh Ruff provide an hour of training on the Top 20 PLC Secure Coding Practices. These 20 practices focus on what can be done in the programming and configuring the PLC itself. The Top 20 list and supporting details are available at https://plc-security.com.\n\nAfter an introduction and categorization of the Top 20. Then they dive into some of the practices.\n\n7:30 - Practice 3: Leave Operational Logic In The PLC\n\n13:25 - Practice 6: Validate Timers & Counters\n\n19:20 - Practice 7: Validate Paired Inputs/Outputs\n\n26:00 - Practice 8: Validate HMI Input Variables In PLC\n\n31:15 - Practice 11: Instrument For Plausibility Checks\n\n38:00 - Practice 12: Validate Inputs For Physical Plausibility\n\n42:45 - Practice 13: Disable Unused Ports & Protocols\n\n46:50 - Practice 15: Define Safe Process States For PLC Restart\n\n56:50 - Q&A",
+    "view_count": 942
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3vv9LgJ6-A0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

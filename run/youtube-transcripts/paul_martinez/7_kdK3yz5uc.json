@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7_kdK3yz5uc",
+    "language": "en",
+    "took_ms": 7957,
+    "method": null,
+    "title": "April ICS Security Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20210505",
+    "duration_sec": 3055,
+    "description": "Patrick Miller joins Dale Peterson to discuss the months top three stories and then give their prediction, win and fail for the month. The stories\n\n1) What to make of the US Government's efforts in ICS security in the first 100 days of the Biden administration.\n\n2) The Pulse Secure VPN vulnerabilities and active exploitation, the impact on ICS asset owners, and what should be done.\n\n3) ICS Security Training ... with Joel Langill back in the game Patrick and Dale look at the offerings.",
+    "view_count": 229
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7_kdK3yz5uc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZTl1ufaEvTM",
+    "language": "en",
+    "took_ms": 9087,
+    "method": null,
+    "title": "President Tsai Ing-wen Discusses the Diplomatic, Security, and Economic Challenges Facing Taiwan",
+    "channel": "Hudson Institute",
+    "upload_date": "20200812",
+    "duration_sec": 3555,
+    "description": "Join Hudson Institute and Center for American Progress for an address by Taiwanese President Tsai Ing-wen followed by a discussion with Taipei Economic and Cultural Representative Office Representative Bi-khim Hsiao, Hudson Senior Fellow Seth Cropsey, and Center for American Progress Vice President Kelly Magsamen.\n\nIn January of this year, President Tsai won reelection to a second term. Since then, Taiwan has controlled the spread of its coronavirus outbreak, assisted other countries in combatting the pandemic, and faced increasing aggression from the Chinese Communist Party.\n\nPresident Tsai will discuss these developments and the security, diplomatic, and economic challenges that face Taiwan in her second term. The conversation following President Tsai’s remarks will incorporate themes from her speech and address current U.S. policy and assistance toward Taiwan.",
+    "view_count": 20782
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZTl1ufaEvTM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

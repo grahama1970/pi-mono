@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V23bcIGHe7k",
+    "language": "en",
+    "took_ms": 8492,
+    "method": null,
+    "title": "DEF CON 33 - 10 Years of IoT Village: nsights in the World of IoT - Stephen Bono, Rachael Tubbs",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1249,
+    "description": "Join IoT Village co-founders Steve Bono and Ted Harrington as they discuss how the world of IoT security has evolved in the past 10 years of IoT Village. Led by panel host Rachael Tubbs, Steve and Ted will discuss with industry experts what we've learned in 10 years about the state of IoT security.",
+    "view_count": 94
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V23bcIGHe7k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

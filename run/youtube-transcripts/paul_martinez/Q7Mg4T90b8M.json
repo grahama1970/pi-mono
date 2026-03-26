@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Q7Mg4T90b8M",
+    "language": "en",
+    "took_ms": 8307,
+    "method": null,
+    "title": "Motivation For S4x19 OnRamp",
+    "channel": "S4 Events",
+    "upload_date": "20180625",
+    "duration_sec": 111,
+    "description": "Ralph Langner's challenge in the S4x18 Closing Panel that led to the creation of the one-day OnRamp for S4x18.",
+    "view_count": 173
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Q7Mg4T90b8M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

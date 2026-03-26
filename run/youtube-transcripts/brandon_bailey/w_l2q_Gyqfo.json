@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "w_l2q_Gyqfo",
+    "language": "en",
+    "took_ms": 8707,
+    "method": null,
+    "title": "DEF CON 31 - certmitm  Automatic Exploitation of TLS Certificate Validation Vulns - Aapo Oksman",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3009,
+    "description": "TLS is the de facto way of securing network connections. It provides an easy way of ensuring confidentiality, integrity and authentication for any type of communication. However, like most things in life, this is also too good to be true.\n\nTLS allows communicating parties to uniquely authenticate each other by validating each other's certificate. However, many TLS libraries and frameworks have insecure default settings or allow for the developers to skip important aspects of certificate validation in their client implementations.\n\nThis talk explores issues in TLS client certificate validation and the underlying reasons why developers still fail to implement TLS correctly. Most importantly, we hack all the things with a new TLS mitm tool: certmitm.\n\ncertmitm automatically discovers and exploits insecure certificate validation vulnerabilities in TLS clients. Let's use the tool to hack iOS, Windows 11 and more while we deep dive into the world of insecure TLS certificate validation.",
+    "view_count": 14676
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] w_l2q_Gyqfo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

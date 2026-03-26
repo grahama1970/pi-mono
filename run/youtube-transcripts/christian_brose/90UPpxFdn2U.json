@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "90UPpxFdn2U",
+    "language": "en",
+    "took_ms": 8654,
+    "method": null,
+    "title": "The Legacy of the Hong Kong Democracy Protests",
+    "channel": "Hudson Institute",
+    "upload_date": "20150410",
+    "duration_sec": 6392,
+    "description": "Hudson Institute’s Center for Chinese Strategy hosted a conversation with David Feith, Hong Kong-based editorial page writer for The Wall Street Journal, and Libby Liu, president of Radio Free Asia, to examine the legacy of the Hong Kong protests, the future of uncensored media, and the democracy movement. Michael Pillsbury, director of the Center for Chinese Strategy, moderated the discussion.",
+    "view_count": 420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 90UPpxFdn2U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

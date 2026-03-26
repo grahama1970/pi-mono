@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HjzSTda5Q58",
+    "language": "en",
+    "took_ms": 8624,
+    "method": null,
+    "title": "Impressions from the Lublin Triangle on the Ukraine War",
+    "channel": "Hudson Institute",
+    "upload_date": "20230207",
+    "duration_sec": 2850,
+    "description": "Please join Peter Rough, Hudson Institue senior fellow and director of the Center on Europe and Eurasia, for a discussion with Žygimantas Pavilionis, Radoslaw Fogiel, and Oleksandr Merezhko, chairs of the Parliamentary Foreign Affairs Committees of Lithuania, Poland, and Ukraine, respectively. The three chairmen will provide an update on how their countries are coping with the war in Ukraine, the scope and level of coordination within the Lublin Triangle, and what they anticipate for the year to come.",
+    "view_count": 954
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HjzSTda5Q58: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

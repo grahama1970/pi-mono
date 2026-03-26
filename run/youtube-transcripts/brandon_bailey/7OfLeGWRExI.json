@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7OfLeGWRExI",
+    "language": "en",
+    "took_ms": 9614,
+    "method": null,
+    "title": "DEF CON Safe Mode - Dylan Ayrey and Allison Donovan - Lateral Movement and Privilege Escalation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1592,
+    "description": "Question and Answer Session for Dylan Ayrey and Allison Donovan - Lateral Movement and Privilege Escalation",
+    "view_count": 476
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7OfLeGWRExI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

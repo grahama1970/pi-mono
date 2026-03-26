@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VU_VB4l_Elg",
+    "language": "en",
+    "took_ms": 9438,
+    "method": null,
+    "title": "Sentryo: Lessons Learned Through Our OT Security Journey",
+    "channel": "S4 Events",
+    "upload_date": "20190412",
+    "duration_sec": 1506,
+    "description": "Bob Foley presents on the S4x19 Sponsor Stage. He introduces the company and product, and then spends most of the 25 minute session describing situations they have run into deploying ICS detection technology and lessons learned.",
+    "view_count": 571
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VU_VB4l_Elg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

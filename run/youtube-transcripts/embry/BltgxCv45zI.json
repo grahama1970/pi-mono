@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BltgxCv45zI",
+    "language": "en",
+    "took_ms": 7811,
+    "method": null,
+    "title": "S1 E8: This Week In Spaceflight History - Zond 4",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170302",
+    "duration_sec": 2465,
+    "description": "Today’s mission: Zond-4 - which launched on March 2nd, 1968 from Baikonur Cosmodrome. This mission is actually really cool and I didn’t know anything about it until today, so let’s see what Zond-4 is on today’s episode of “This week in spaceflight history”\n\n(sorry for the quiet audio, we'll get it dialed in next time)\n\nMake sure and tune in LIVE each Wednesday night at 9:00 Central (3 UTC) at twitch.tv/everydayastronaut\n\nFollow me on Instagram for fun, funny and factual photos - http://instagram.com/everydayastronaut\n\nAll music is original music by Tim Dodd (Everyday Astronaut)",
+    "view_count": 2494
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BltgxCv45zI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

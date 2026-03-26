@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VgdqvIl2o78",
+    "language": "en",
+    "took_ms": 7728,
+    "method": null,
+    "title": "What Horticulture IoT (and spite) Can Teach Us About Data Science",
+    "channel": "S4 Events",
+    "upload_date": "20240927",
+    "duration_sec": 1598,
+    "description": "Corey has a \"friend\" who works at a large horticultural institution. This friend disagreed with some laborious and (suspected) superfluous activity that was done because \"that's how it's always been done\" and to \"stop asking questions\". Well... spite can be a powerful motivator.\n\nThis project involved testing 9 different tulip beds of various experimental configurations with the end goal of measuring how the different parameters would affect yield when the tulips bloom in the spring. Nothing gets a hacker going like hearing \"stop asking questions\", so Corey immediately went looking for some IoT stuff to help collect data for the experiment. This search failed. He ended up having to build his own (using MKR WiFi 1010). This session tells the story of that process, both the original experiment and lessons learned building \"custom\" IoT devices, as well as provide some very practical advice about custom logging in OT and enterprise environments delivered in this fun and easily understandable narrative.",
+    "view_count": 163
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VgdqvIl2o78: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

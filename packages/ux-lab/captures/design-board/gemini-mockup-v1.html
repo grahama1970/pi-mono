@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embry Design Board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    :root {
+      --bg: #141414;
+      --cards: #1a1a1a;
+      --panels: #111111;
+      --inset: #0b1220;
+      --accent: #7c3aed;
+      --green: #00ff88;
+      --red: #ff4444;
+      --amber: #ffaa00;
+      --text: #e2e8f0;
+      --dim: #64748b;
+      --muted: #334155;
+      --border: rgba(255,255,255,0.13);
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .dot-grid {
+      background-image: radial-gradient(circle at 1px 1px, var(--inset) 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+    .card {
+      background-color: var(--cards);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      min-width: 200px;
+    }
+    .card.selected {
+      border: 2px solid var(--accent);
+    }
+    .context-menu {
+      background-color: var(--panels);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      position: absolute;
+      top: 200px;
+      left: 400px;
+      z-index: 1000;
+    }
+    .context-menu-item {
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .context-menu-item:hover {
+      background-color: rgba(255,255,255,0.05);
+    }
+    .zoom-controls {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+    }
+    .zoom-btn {
+      background-color: var(--panels);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .zoom-btn:hover {
+      background-color: rgba(255,255,255,0.05);
+    }
+    .tab {
+      padding: 8px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .tab.active {
+      border-bottom: 2px solid var(--accent);
+    }
+    .sidebar-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .sidebar-item:hover {
+      background-color: rgba(255,255,255,0.05);
+    }
+    .project-thumbnail {
+      width: 40px;
+      height: 40px;
+      background-color: var(--inset);
+      border-radius: 4px;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      font-size: 10px;
+    }
+    .chip {
+      background-color: var(--panels);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .chip:hover {
+      background-color: rgba(255,255,255,0.05);
+    }
+  </style>
+</head>
+<body class="h-screen w-screen flex flex-col">
+  <!-- Top Tab Bar -->
+  <div class="h-12 bg-[#111111] flex items-center px-4 border-b border-[rgba(255,255,255,0.13)]">
+    <div class="flex space-x-1">
+      <div class="tab active">/music-lab</div>
+      <div class="tab">/prompt-lab</div>
+      <div class="tab">/analyze-elf</div>
+      <div class="tab">/extractor</div>
+      <div class="tab">/ux-lab</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Left Sidebar -->
+    <div class="w-60 bg-[#111111] border-r border-[rgba(255,255,255,0.13)] flex flex-col">
+      <div class="p-4 border-b border-[rgba(255,255,255,0.13)]">
+        <input type="text" placeholder="Search projects..." class="w-full bg-[#1a1a1a] border border-[rgba(255,255,255,0.13)] rounded px-3 py-2 text-sm" />
+      </div>
+      <div class="flex-1 overflow-y-auto p-4">
+        <div class="mb-4">
+          <h3 class="text-xs uppercase text-[#64748b] mb-2">Recent</h3>
+          <div class="space-y-1">
+            <div class="sidebar-item flex items-center">
+              <div class="project-thumbnail">A</div>
+              <div class="flex-1">
+                <div class="font-medium">Project Alpha</div>
+                <div class="text-xs text-[#64748b]">2 days ago</div>
+              </div>
+            </div>
+            <div class="sidebar-item flex items-center">
+              <div class="project-thumbnail">B</div>
+              <div class="flex-1">
+                <div class="font-medium">Project Beta</div>
+                <div class="text-xs text-[#64748b]">5 days ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xs uppercase text-[#64748b] mb-2">All</h3>
+          <div class="space-y-1">
+            <div class="sidebar-item flex items-center">
+              <div class="project-thumbnail">C</div>
+              <div class="flex-1">
+                <div class="font-medium">Project Gamma</div>
+                <div class="text-xs text-[#64748b]">2 weeks ago</div>
+              </div>
+            </div>
+            <div class="sidebar-item flex items-center">
+              <div class="project-thumbnail">D</div>
+              <div class="flex-1">
+                <div class="font-medium">Project Delta</div>
+                <div class="text-xs text-[#64748b]">3 weeks ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Canvas -->
+    <div class="flex-1 relative overflow-hidden">
+      <div class="w-full h-full dot-grid relative">
+        <!-- Mockup Cards -->
+        <div class="absolute top-1/4 left-1/4 card selected" style="transform: translate(-50%, -50%);">
+          <div class="font-medium mb-1">Variant A</div>
+          <div class="text-xs text-[#64748b] mb-2">Created 2 days ago</div>
+          <div class="text-xs">Primary design variant with enhanced contrast</div>
+        </div>
+        <div class="absolute top-1/2 left-1/2 card" style="transform: translate(-50%, -50%);">
+          <div class="font-medium mb-1">Variant B</div>
+          <div class="text-xs text-[#64748b] mb-2">Created 3 days ago</div>
+          <div class="text-xs">Alternative layout with simplified navigation</div>
+        </div>
+        <div class="absolute top-3/4 left-3/4 card" style="transform: translate(-50%, -50%);">
+          <div class="font-medium mb-1">Variant C</div>
+          <div class="text-xs text-[#64748b] mb-2">Created 5 days ago</div>
+          <div class="text-xs">Experimental dark mode implementation</div>
+        </div>
+
+        <!-- Zoom Controls -->
+        <div class="zoom-controls">
+          <div class="zoom-btn">-</div>
+          <div class="zoom-btn">100%</div>
+          <div class="zoom-btn">+</div>
+        </div>
+
+        <!-- Context Menu -->
+        <div class="context-menu">
+          <div class="context-menu-item">Annotate</div>
+          <div class="context-menu-item">Generate Variant</div>
+          <div class="context-menu-item">Approve</div>
+          <div class="context-menu-item">Reject</div>
+          <div class="context-menu-item">Delete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Right Panel -->
+<div style="position: fixed; right: 0; top: 0; width: 320px; height: calc(100vh - 48px); background-color: #111111; border-left: 1px solid rgba(255,255,255,0.13); font-family: 'Inter', sans-serif; font-size: 13px; color: #e2e8f0; padding: 16px; box-sizing: border-box;">
+  <!-- Annotations Section -->
+  <div style="margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h3 style="margin: 0; font-size: 14px; font-weight: 600;">ANNOTATIONS</h3>
+      <button style="background: none; border: none; color: #7c3aed; cursor: pointer;">Collapse</button>
+    </div>
+    <div style="background-color: #1a1a1a; border-radius: 4px; padding: 12px;">
+      <!-- Annotation 1 -->
+      <div style="margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="color: #ffaa00;">@human</span>
+          <span style="font-size: 12px; color: rgba(255,255,255,0.5);">14:02:11</span>
+          <span style="background-color: #ffaa00; color: #141414; padding: 2px 4px; border-radius: 2px; font-size: 10px;">Feedback</span>
+        </div>
+        <p style="margin: 0; color: #e2e8f0;">Needs higher contrast on the CTA buttons</p>
+      </div>
+      <!-- Annotation 2 -->
+      <div style="margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="color: #7c3aed;">@agent</span>
+          <span style="font-size: 12px; color: rgba(255,255,255,0.5);">14:02:34</span>
+          <span style="background-color: #7c3aed; color: #141414; padding: 2px 4px; border-radius: 2px; font-size: 10px;">Request</span>
+        </div>
+        <p style="margin: 0; color: #e2e8f0;">Generate variant with amber accent instead of purple</p>
+      </div>
+      <!-- Annotation 3 -->
+      <div style="margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="color: #00ff88;">@human</span>
+          <span style="font-size: 12px; color: rgba(255,255,255,0.5);">14:03:01</span>
+          <span style="background-color: #00ff88; color: #141414; padding: 2px 4px; border-radius: 2px; font-size: 10px;">Approval</span>
+        </div>
+        <p style="margin: 0; color: #e2e8f0;">Layout approved. Proceed with implementation.</p>
+      </div>
+    </div>
+    <!-- Add Annotation -->
+    <textarea style="width: 100%; height: 60px; background-color: #1a1a1a; border: 1px solid rgba(255,255,255,0.13); border-radius: 4px; padding: 8px; margin-top: 12px; color: #e2e8f0; font-family: 'Inter', sans-serif; font-size: 13px; resize: none;"></textarea>
+    <button style="background-color: #7c3aed; color: #141414; border: none; padding: 8px 16px; border-radius: 4px; margin-top: 8px; cursor: pointer;">Add Annotation</button>
+  </div>
+
+  <!-- Properties Section -->
+  <div style="margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h3 style="margin: 0; font-size: 14px; font-weight: 600;">PROPERTIES</h3>
+      <button style="background: none; border: none; color: #7c3aed; cursor: pointer;">Expand</button>
+    </div>
+    <div style="background-color: #1a1a1a; border-radius: 4px; padding: 12px; display: none;">
+      <p style="margin: 0 0 8px; color: #e2e8f0;">Dimensions: 2566x2048</p>
+      <p style="margin: 0 0 8px; color: #e2e8f0;">Variant Name: Variant A</p>
+      <p style="margin: 0 0 8px; color: #e2e8f0;">Created: 2023-10-01</p>
+      <p style="margin: 0; color: #e2e8f0;">Agent ID: AGT-12345</p>
+    </div>
+  </div>
+
+  <!-- Code Section -->
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h3 style="margin: 0; font-size: 14px; font-weight: 600;">CODE</h3>
+      <button style="background: none; border: none; color: #7c3aed; cursor: pointer;">Expand</button>
+    </div>
+    <div style="background-color: #1a1a1a; border-radius: 4px; padding: 12px; display: none;">
+      <pre style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #e2e8f0;">
+        <code>
+          const MyComponent: React.FC = () => {
+            return (
+              &lt;div&gt;
+                &lt;h1&gt;Hello, World!&lt;/h1&gt;
+              &lt;/div&gt;
+            );
+          };
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Log Panel -->
+<div style="position: fixed; bottom: 0; left: 0; width: 100%; height: 120px; background-color: #111111; border-top: 1px solid rgba(255,255,255,0.13); font-family: 'Inter', sans-serif; font-size: 13px; color: #e2e8f0; padding: 16px; box-sizing: border-box;">
+  <h3 style="margin: 0 0 12px; font-size: 14px; font-weight: 600;">LOG</h3>
+  <div style="overflow-y: auto; height: calc(100% - 28px);">
+    <p style="margin: 0 0 8px;">[14:02:11] Agent: Generating variant B from prompt...</p>
+    <p style="margin: 0 0 8px;">[14:02:34] Gemini: Mockup generated (2566x2048)</p>
+    <p style="margin: 0 0 8px;">[14:03:01] Human: Added annotation on Variant A</p>
+    <p style="margin: 0;">[14:03:15] System: Auto-saved project state</p>
+  </div>
+</div>
+</body>
+</html>

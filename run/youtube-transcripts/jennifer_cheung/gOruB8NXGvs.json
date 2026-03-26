@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gOruB8NXGvs",
+    "language": "en",
+    "took_ms": 7777,
+    "method": null,
+    "title": "DEF CON 2020 NYE - Hacker Jeopardy Tiebreaker - Church of Wifi vs Show&TELNET",
+    "channel": "DEFCONConference",
+    "upload_date": "20210105",
+    "duration_sec": 4572,
+    "description": "Did you miss the Hacker Jeopardy Tiebreaker event from the DEF CON New Year's Eve Party? Are you anxious to find out if Church of WiFi or Show&TELNET emerged victorious? Worry not, friend. We remembered to press 'Record'. Enjoy the festivities and pass it on.",
+    "view_count": 7466
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gOruB8NXGvs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

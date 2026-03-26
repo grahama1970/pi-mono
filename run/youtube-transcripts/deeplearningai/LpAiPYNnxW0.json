@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LpAiPYNnxW0",
+    "language": "en",
+    "took_ms": 8518,
+    "method": null,
+    "title": "deeplearning.ai's Heroes of Deep Learning: Pieter Abbeel",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 963,
+    "description": "",
+    "view_count": 3706
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LpAiPYNnxW0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "snXEXyQT0n8",
+    "language": "en",
+    "took_ms": 8713,
+    "method": null,
+    "title": "A Conversation w/ U.S. Rep. Jim Langevin on the Pandemic’s Impact on the National Security Landscape",
+    "channel": "Hudson Institute",
+    "upload_date": "20200508",
+    "duration_sec": 2387,
+    "description": "Join Hudson Institute for a conversation with U.S. Representative Jim Langevin on the impact of COVID-19 on the U.S. military and the future of the armed forces.\n\nModerated by Hudson Senior Fellow Bryan Clark, the discussion will focus on the Pentagon’s efforts to maintain our military deterrent during the coronavirus outbreak, ongoing cybersecurity challenges, and the emerging threat environment that U.S. forces will face in the coming years.",
+    "view_count": 355
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] snXEXyQT0n8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

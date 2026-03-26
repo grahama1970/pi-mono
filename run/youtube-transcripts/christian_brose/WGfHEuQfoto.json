@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WGfHEuQfoto",
+    "language": "en",
+    "took_ms": 9515,
+    "method": null,
+    "title": "Challenges to Democracy in Latin America",
+    "channel": "Hudson Institute",
+    "upload_date": "20140509",
+    "duration_sec": 6756,
+    "description": "On May 8th, Hudson Institute's Center for Latin American Studies and the Institute for Foreign Policy Analysis hosted a discussion of the challenges to democracy in Latin America featuring Kevin Casas-Zamora, Secretary for Political Affairs at the Organization of American States and former Vice President of Costa Rica, René León, former Ambassador of El Salvador to the United States, and Hector Schamis, adjunct professor at Georgetown University and columnist for El País. Ambassador Jaime Daremblum, Senior Fellow and Director of Hudson's Center for Latin American Studies, moderated the discussion.",
+    "view_count": 344
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WGfHEuQfoto: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kk6rh45r0fo",
+    "language": "en",
+    "took_ms": 8989,
+    "method": null,
+    "title": "AI Access: Integrating Design and Technical Innovation in AI-First Products",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210219",
+    "duration_sec": 3895,
+    "description": "Welcome to DeepLearning.AI brand new event series AI Access. Get the most critical AI trends, learn about best practices, and deep dive into a real-world use case with current AI practitioners. \n\nOur very first speaker for this series is Patrick Hebron (https://www.linkedin.com/in/patrickhebron/), founder and director of Adobe’s Machine Intelligence Design group. In this talk, Patrick will share insights from his experience developing AI-First products and offer a sneak-peek into some of the ways AI will transform creative tools and workflows. To learn more about Patrick and his work, check out his homepage at https://www.patrickhebron.com/\n\nFor the ones who have registered the Slido ticket, while you are listening to Patrick’s presentation, if you have any questions for him, log in to our Slido page to submit your questions or upvote others’. You will find the Slido access link in the reminder emails we sent you.\n\n\nTo learn more about us, \nDeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 5090
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kk6rh45r0fo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UEHTizzPg-g",
+    "language": "en",
+    "took_ms": 9694,
+    "method": null,
+    "title": "Notes from Underground: Book Discussion with Roger Scruton",
+    "channel": "Hudson Institute",
+    "upload_date": "20140418",
+    "duration_sec": 6674,
+    "description": "Notes from Underground is a searing drama of love, family, and self-discovery. Set in the last years of communist Czechoslovakia, the novel evokes a world in which every word and gesture bears a double meaning. Fallible men and women pursue truth and vocation—first in the narrow recesses of state subjugation and cruelty, and then in the sudden dawn of freedom which brings astounding revelations. On April 17, Scruton will deliver a talk on Notes from Underground followed by audience discussion. S",
+    "view_count": 18696
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UEHTizzPg-g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

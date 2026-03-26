@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-GHOrwpQI-8",
+    "language": "en",
+    "took_ms": 8658,
+    "method": null,
+    "title": "The Great Debate: Anti Virus and Monthly Security Patching Should Be Abandoned In ICS",
+    "channel": "S4 Events",
+    "upload_date": "20171109",
+    "duration_sec": 3875,
+    "description": "As much as I like how S4 has grown to 3-days, 3 stages, 300+ people, this S4x12 Great Debate with 45 people arguing in a case study room / theater in the round was fantastic. Billy Rios, Ralph Langner, Andrew Ginter, Brad Hegrat, Eric Byres, Eireann Leverett, Zach Tudor, ... amazing room of talent arguing with each other.\n\nI (Dale) feel quite good 5 years later about my anti-virus being abandoned stance, although my timeframe was optimistic.\n\n\nSorry for the last 10 minutes when it was audio only.",
+    "view_count": 201
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -GHOrwpQI-8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

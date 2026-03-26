@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jDERozN0sSM",
+    "language": "en",
+    "took_ms": 8835,
+    "method": null,
+    "title": "The US Military and Electromagnetic Spectrum Superiority",
+    "channel": "Hudson Institute",
+    "upload_date": "20210511",
+    "duration_sec": 3499,
+    "description": "Read the report: https://www.hudson.org/research/16738-the-invisible-battlefield-a-technology-strategy-for-us-electromagnetic-spectrum-superiority\n\nJoin Hudson Institute Senior Fellow Bryan Clark, Adjunct Fellow Dan Patt, and Fellow Timothy A. Walton for a discussion on the challenges and opportunities facing U.S. military forces in the electromagnetic spectrum (EMS). U.S. EMS superiority is being constrained by expanding commercial uses like 5G communications; congested by proliferating U.S. and allied military radars, jammers, and radios; and contested by adversaries like China and Russia who can exploit their home team advantage to understand the regional EMS environment and posture sensors and countermeasures prior to a confrontation.\n\nThe Department of Defense’s (DoD) new EMS Superiority Strategy and operational concepts advance innovative approaches to regain an EMS advantage by improving the adaptability of U.S. EMS capabilities both during and between operations. However, making the shift to more dynamic, agile, and flexible EMS operations will require accepting risk in traditional methods of controlling the spectrum. The U.S. military lacks the time and resources to gain EMS superiority against Chinese and Russian forces by attempting to match them measure for countermeasure. By the time the DoD catches up, adversaries could exploit their EMS advantage to support aggression against their neighbors. To reverse this trend, funding and attention will need to shift to these new priorities and away from the legacy programs that helped win the Cold War.",
+    "view_count": 7704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jDERozN0sSM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

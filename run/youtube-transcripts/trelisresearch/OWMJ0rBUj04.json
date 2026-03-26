@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OWMJ0rBUj04",
+    "language": "en",
+    "took_ms": 10082,
+    "method": null,
+    "title": "Combined Preference and Supervised Fine Tuning with ORPO",
+    "channel": "Trelis Research",
+    "upload_date": "20240328",
+    "duration_sec": 1854,
+    "description": "➡️ ADVANCED-fine-tuning Repo (incl. ORPO Scripts): https://trelis.com/advanced-fine-tuning-scripts/\n➡️ One-click Fine-tuning, Evaluation & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Support/Discord (Monthly Subscription): https://ko-fi.com/trelisresearch \n\nAffiliate Link (supports the channel):\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1HJAwhiRSH0jXZou1Ergq16lyCJZfH7F6uRVxDWIimls/edit?usp=sharing\n- Dataset: https://huggingface.co/datasets/argilla/dpo-mix-7k\n- TinyLlama ORPO model: https://huggingface.co/Trelis/TinyLlama-chat-ORPO-beta0.2\n- Mistral ORPO model: https://huggingface.co/Trelis/Mistral-7B-v0.1-chat-ORPO\n- Evaluation: https://github.com/EleutherAI/lm-evaluation-harness\n- TRL Documents: https://github.com/huggingface/trl\n- ORPO Repo: https://github.com/xfactlab/orpo\n\nTIMESTAMPS:\n0:00 Preference and Supervised Fine-tuning at the Same Time!\n0:25 A short history of fine-tuning methods\n3:12 Video Overview/Agenda\n3:43 Difference between Unsupervised, Supervised and Preferences\n6:04 Understanding cross-entropy and odds ratio loss functions\n10:26 Why preference fine-tuning improves performance\n11:41 Notebook demo of SFT and ORPO\n24:22 Evaluation with lm-evaluation-harness\n26:38 Results: Comparing SFT and ORPO with gsm8k, arithmetic and mmlu\n27:44 Evaluation with Carlini's practical benchmark\n29:50 Is it worth doing ORPO? Yes!",
+    "view_count": 4720
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OWMJ0rBUj04: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

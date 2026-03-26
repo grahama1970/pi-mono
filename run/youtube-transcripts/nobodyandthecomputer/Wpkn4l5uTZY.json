@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Wpkn4l5uTZY",
+    "language": "en",
+    "took_ms": 9676,
+    "method": null,
+    "title": "AI-Powered MIDI Generation: Advanced Mode",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230605",
+    "duration_sec": 870,
+    "description": "In this opportunity, we're going to use ChatGPT to generate MIDI files, but we're taking it to a much more advanced level, with far better prompts. Ready for the grand MIDI adventure?\n\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n__________________________________________________\n\nchatGPT:\nhttps://openai.com/blog/chatgpt\n\nColab Notebook:\nhttps://www.patreon.com/posts/colab-notebook-84107536?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link\n\nchatGPT prompt - Text to Melody:\nhttps://www.patreon.com/posts/chatgpt-prompt-84107618?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link\n\nchatGPT prompt - Text to Chords (only for patreons):\nhttps://www.patreon.com/posts/chatgpt-prompt-84107694?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link\n\nchatGPT prompt - Text to Drums (only for patreons):\nhttps://www.patreon.com/posts/chatgpt-prompt-84107718?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=postshare_creator&utm_content=join_link\n\n__________________________________________________\n00:00 intro\n02:00 How to prompt chatGPT for music\n03:17 Google bard to MIDI\n04:28 Melodies with chatGPT\n07:08 A.I. chords\n10:38 A.I. Drums\n12:02 Full MIDI songs\n13:49 Outro",
+    "view_count": 149126
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Wpkn4l5uTZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

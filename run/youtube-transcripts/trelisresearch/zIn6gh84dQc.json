@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zIn6gh84dQc",
+    "language": "en",
+    "took_ms": 9581,
+    "method": null,
+    "title": "ARC AGI Chat | Unsloth OSS Update | Kyutai STT Update",
+    "channel": "Trelis Research",
+    "upload_date": "20250920",
+    "duration_sec": 3181,
+    "description": "With thanks to our compute sponsor, Runpod: https://get.runpod.io/m8as7gd2868r\n\nTimestamps:\n0:00 intro and OSS fine-tuning and Kyutai chat\n11:35 ARC Prize chat starts",
+    "view_count": 448
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zIn6gh84dQc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Qua92jLf2fE",
+    "language": "en",
+    "took_ms": 8084,
+    "method": null,
+    "title": "DEF CON 32 - National Labs Use of XR - Martin Pratt",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1435,
+    "description": "The DOE National Lab mission space includes exploring the use of disruptive technology to enable increasing efficiency and abilities of operations critical to national security, infrastructure, communication, and many other fields. The XR field has become a new area of active research and implementation at many national labs across the US, integrating with cutting edge hardware and software to enable users with increased capabilities. At the Pacific Northwest National Lab (PNNL), we have been using immersive XR platforms to enable a variety of government and external sponsors with novel approaches to their field. These include creating new 3D virtual twins to enable remote engagements as if remote users had access to one-of-a-kind lab equipment, creating simulation environments of hazardous environments or dangerous situations that can’t be recreated in the real world, and outreach and communication projects to engage both sponsors and the public with critical information about current security threats. During this presentation I will touch on a few case studies of projects taken on at PNNL to make the best use of XR platforms, and where we see future development with this capability.",
+    "view_count": 169
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Qua92jLf2fE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

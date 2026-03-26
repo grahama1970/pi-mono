@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pr1Ed_61m7o",
+    "language": "en",
+    "took_ms": 8128,
+    "method": null,
+    "title": "Eric Cosman Interview - Dow, Open Automation, 62443 and More",
+    "channel": "S4 Events",
+    "upload_date": "20230712",
+    "duration_sec": 3326,
+    "description": "Eric Cosman had a 38 year career at Dow Chemical, was on the ISA 99 committee its inception, and then he retired. After retirement Eric joined ARC Advisory Group as a Contributing Consultant and got even more active with ISA. He is a long time co-chair of ISA99 and was President of ISA in 2020. Eric and Dale discuss\n\n- Dow's in house developed DCS and SIS: MOD\n- Eric's top trend from 2022: The value of open automation and the Open Process Automation Forum\n- ISA/IEC 62433\n - Eric's view they are \"primarily engineering standards\"\n - What Eric thinks about the safety / security analogies\n - His experience in being ISA President in the first year of COVID\n - ISA as \"the home of automation\"\n - Has ISA lost mindshare on ICS security standards to the US Government and training to SANS",
+    "view_count": 252
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pr1Ed_61m7o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

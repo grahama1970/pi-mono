@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cGzcNyyiCHs",
+    "language": "en",
+    "took_ms": 8160,
+    "method": null,
+    "title": "DEF CON China Party 2021 - DEF CON Culture - Dead Addict",
+    "channel": "DEFCONConference",
+    "upload_date": "20210408",
+    "duration_sec": 1798,
+    "description": "In this highly structured rant, Dead Addict will discuss the history of DEF CON culture, and the hacker culture from which it emerged. While some people associate DEF CON with ‘infosec’, when DEF CON began there wasn’t an infosec industry. There were hackers, phreakers, misfits, civil libertarians, crypto-anarchists, and pirates gathered together to make friends and enemies, create and solve problems, and party until dawn. This is our story, or at least one version of it.",
+    "view_count": 1846
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cGzcNyyiCHs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

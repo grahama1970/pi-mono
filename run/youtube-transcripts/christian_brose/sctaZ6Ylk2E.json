@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sctaZ6Ylk2E",
+    "language": "en",
+    "took_ms": 8165,
+    "method": null,
+    "title": "AI and Big Data in Military Operations: A Discussion w/ Gen. Richard D. Clarke & Dr. Richard Shultz",
+    "channel": "Hudson Institute",
+    "upload_date": "20201207",
+    "duration_sec": 3312,
+    "description": "Join Hudson scholars Dr. Nadia Schadlow and Bryan Clark as they engage General Richard Clarke and Dr. Richard Shultz in a conversation examining U.S. Special Operations Command (USSOCOM)’s role in advancing the employment of artificial intelligence (AI) and machine learning (ML) in the fight against current and future enemies of the United States. They will discuss Project Maven, initially executed to automate the processing and exploitation of full-motion video collected by intelligence, and the extent to which the Department of Defense has evolved from a hardware-centric organization to one which fully harnesses the power of AI and ML software.",
+    "view_count": 4631
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sctaZ6Ylk2E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

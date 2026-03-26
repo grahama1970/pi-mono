@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7GiMGuIDWx8",
+    "language": "en",
+    "took_ms": 8603,
+    "method": null,
+    "title": "Ransomware in ICS ... It Begins",
+    "channel": "S4 Events",
+    "upload_date": "20170313",
+    "duration_sec": 1328,
+    "description": "Marcelo Branquinho of TiSafe presented two actual cases of ransomware in ICS in Brazil at the S4x17 event.\n\nCase 1 is at 7:15 and hit a furniture manufacturer. There is a great Brazilian tv video story on this incident (with English subtitles). Case 2 is at 10:45 and is an electric company in Brazil.\n\nThe chart at 1:37 in the video is very interesting. It shows a huge spike in ICS malware incidents in Brazil in 2015. (2016 numbers were not yet available.)",
+    "view_count": 511
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7GiMGuIDWx8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

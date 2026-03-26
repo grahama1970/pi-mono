@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kdSFjjPZFpo",
+    "language": "en",
+    "took_ms": 10087,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Abhijith B R -  Village Kick Off",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 533,
+    "description": "Adversary Village at DEF CON 29 kick-off session!",
+    "view_count": 294
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kdSFjjPZFpo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

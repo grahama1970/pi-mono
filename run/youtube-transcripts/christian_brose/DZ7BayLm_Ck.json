@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DZ7BayLm_Ck",
+    "language": "en",
+    "took_ms": 8967,
+    "method": null,
+    "title": "A Conversation with Dr. Mark Lewis on the Pentagon's Defense Modernization Priorities",
+    "channel": "Hudson Institute",
+    "upload_date": "20200630",
+    "duration_sec": 2656,
+    "description": "Join Hudson Institute for a discussion with the Pentagon’s Director of Defense Research and Engineering for Modernization Dr. Mark Lewis. Hudson Senior Fellow Rebeccah L. Heinrichs will moderate the event.\n\nFrom 5G and AI to cyberspace and biotechnology, the United States faces the enormous challenge of maintaining and improving its technical advantage across a broad range of defense priorities. Dr. Lewis will address these strategic categories and, in particular, hypersonic weapons and hypersonic defense. The conversation will also cover the 11 modernization priorities in Dr. Lewis’ portfolio and the implementation of the 2018 National Defense Strategy and what the United States is doing to meet this challenge.",
+    "view_count": 1677
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DZ7BayLm_Ck: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

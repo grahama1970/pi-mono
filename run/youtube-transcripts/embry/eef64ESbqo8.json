@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eef64ESbqo8",
+    "language": "en",
+    "took_ms": 8637,
+    "method": null,
+    "title": "(Previously) LIVE from SpaceX CRS 12!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170814",
+    "duration_sec": 1085,
+    "description": "Tim Dodd the Everyday Astronaut live from the Causeway for SoaceX/NASA mission CRS-12, resupplying the International Space Station. \n\nSorry for the vertical video, the app made me do it :/ \n\nShow your support via Patreon! http://Patreon.com/everydayastronaut",
+    "view_count": 7065
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eef64ESbqo8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

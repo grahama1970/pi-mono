@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NkAkL3odXks",
+    "language": "en",
+    "took_ms": 8567,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Brandon Bailey - Unboxing the Spacecraft Software BlackBox   Hunting",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 2374,
+    "description": "As the commercialization of space increases or access to source code is not feasible, it is getting more common that spacecraft/embedded binaries are a black box. There needs to be a way automate code inspection in a cost effective, fast, repeatable manner which can be constantly enhanced to have the latest capability to build secure spacecraft SW. Synthetic vulnerabilities were created and analyzed with varying results.",
+    "view_count": 792
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NkAkL3odXks: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

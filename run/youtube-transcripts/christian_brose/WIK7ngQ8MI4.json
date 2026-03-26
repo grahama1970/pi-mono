@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WIK7ngQ8MI4",
+    "language": "en",
+    "took_ms": 8706,
+    "method": null,
+    "title": "Challenges and Opportunities for US-EU Cooperation in Europe's South and East",
+    "channel": "Hudson Institute",
+    "upload_date": "20170425",
+    "duration_sec": 4251,
+    "description": "Christian Danielsson, Craig Kennedy, Charles Davidson and Benjamin Haddad discuss US-EU cooperation, migration, security, and economic development.",
+    "view_count": 976
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WIK7ngQ8MI4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

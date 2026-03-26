@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EcLuBfSHzHM",
+    "language": "en",
+    "took_ms": 8972,
+    "method": null,
+    "title": "Building An OT Capable SOC",
+    "channel": "S4 Events",
+    "upload_date": "20200619",
+    "duration_sec": 1749,
+    "description": "Matt Cowell of Dragos describes the people, processes and technologies that lead to an effective OT SOC. He also talks about the many different forms an OT capability in a SOC can take and what may be right for you.\n\nBeing on the S4x20 Sponsor Stage there is also some content on how Dragos can help make your OT SOC a success.",
+    "view_count": 2213
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EcLuBfSHzHM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

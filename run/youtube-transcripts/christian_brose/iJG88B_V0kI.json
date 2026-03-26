@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iJG88B_V0kI",
+    "language": "en",
+    "took_ms": 7735,
+    "method": null,
+    "title": "(6) New Legislative Proposals: House",
+    "channel": "Hudson Institute",
+    "upload_date": "20171024",
+    "duration_sec": 1487,
+    "description": "",
+    "view_count": 112
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iJG88B_V0kI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

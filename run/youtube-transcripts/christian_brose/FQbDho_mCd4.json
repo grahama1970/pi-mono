@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FQbDho_mCd4",
+    "language": "en",
+    "took_ms": 7882,
+    "method": null,
+    "title": "Venezuela on Fire: The Trump Administration Faces Crisis in Latin America",
+    "channel": "Hudson Institute",
+    "upload_date": "20190308",
+    "duration_sec": 5587,
+    "description": "Hudson Institute hosted a discussion on the crisis in Venezuela and the future of the Latin America. The panel was moderated by Hudson Institute senior fellow Lee Smith.\r\n\r\nThe Trump White House has won bipartisan support and multilateral backing abroad for its recent Venezuela policy. While issuing unequivocal demands that President Nicolás Maduro step down and recognize national assembly leader and interim President Juan Guaidó, the administration has sent humanitarian assistance through the Colombian border to provide assistance to those in the region affected by the crisis. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 971
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FQbDho_mCd4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

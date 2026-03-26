@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PAzy2R1tSsM",
+    "language": "en",
+    "took_ms": 8477,
+    "method": null,
+    "title": "You are Not Special",
+    "channel": "S4 Events",
+    "upload_date": "20251023",
+    "duration_sec": 263,
+    "description": "This episode of Unsolicited Response took aim at the “we’re different” excuse that’s alive and well in OT.\n\nMedical, automotive, data centers, voting systems, they all said they were special too. Turns out, they just delayed fixing the same hardware problems everyone else had to face.\n\nOT isn't immune. The longer you resist secure hardware practices, the harder the landing.",
+    "view_count": 58
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PAzy2R1tSsM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u7-OFXLLsmU",
+    "language": "en",
+    "took_ms": 9101,
+    "method": null,
+    "title": "DEF CON 33 - Building a Malware Museum - Mikko Hypponen",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2411,
+    "description": "Culture isn’t just found in galleries or libraries - it lives in code, on screens, and sometimes, in the viruses that once infected our machines. Building a Malware Museum tells the story behind creating the world’s first online Malware Museum and its evolution into the Museum of Malware Art in Helsinki.\n\nOnly we can save the culture of our time. And our culture is digital. Preserving digital culture is hard: Software rots. Hardware vanishes. File formats die. And some digital artifacts - like computer viruses - were never meant to survive.\n\nMikko Hypponen has been archiving malware since 1991, originally for research - but today, this collection also holds cultural value. These digital fossils now offer a glimpse into a forgotten world of underground creativity, early hacking culture, and unintended digital aesthetics. Thanks to modern emulation techniques, it’s now possible to safely relive how those early viruses looked, sounded, and behaved.\n\nIn November 2024, Mikko opened the world's first Museum of Malware Art, in Helsinki. This art museum features modern art commissioned from artists around the world, all inspired by malware or cyber attacks.\n\nThis is a journey through preservation, nostalgia, and the art of archiving what was never meant to last. Because even malware is part of our history.",
+    "view_count": 6086
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u7-OFXLLsmU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

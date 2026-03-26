@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z_PbYH88d3k",
+    "language": "en",
+    "took_ms": 8914,
+    "method": null,
+    "title": "DEF CON 30 - Panel - Emerging Technical Cyber Policy Topics",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 4672,
+    "description": "The DEF CON community confronts difficult challenges daily, overcoming many through defensive levers, such as tools, technology, and process. How about a push to make a Nation (or Nations) more secure with actionable directives? Larger, more stubborn challenges require other tools, including those dealt with at the public policy layer, such as executive orders, Congressional action, agency rules and guidance, or collective industry action. Hackers and policymakers will raise several such challenges and moderate discussions about which policy levers may be able to address them, and how.",
+    "view_count": 450
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z_PbYH88d3k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

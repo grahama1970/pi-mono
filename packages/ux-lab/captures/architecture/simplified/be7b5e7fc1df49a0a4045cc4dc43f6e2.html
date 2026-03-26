@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QUERYSPEC PIPELINE | Architecture Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#523787",
+                        "inverse-on-surface": "#313030",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-background": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-fixed-variant": "#523787",
+                        "on-error": "#690005",
+                        "outline": "#958da1",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "on-primary-container": "#ede0ff",
+                        "inverse-primary": "#732ee4",
+                        "primary-fixed": "#eaddff",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "background": "#131313",
+                        "primary": "#d2bbff",
+                        "tertiary": "#00e479",
+                        "surface-container-highest": "#353534",
+                        "surface": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed-dim": "#d2bbff",
+                        "surface-container": "#201f1f",
+                        "secondary-fixed": "#eaddff",
+                        "tertiary-fixed": "#60ff99",
+                        "surface-variant": "#353534",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary-container": "#84ffa8",
+                        "on-tertiary": "#003919",
+                        "tertiary-container": "#00773c",
+                        "tertiary-fixed-dim": "#00e479",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary": "#3f008e",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#393939",
+                        "on-primary-fixed": "#25005a",
+                        "on-secondary-fixed": "#25005a",
+                        "outline-variant": "#4a4455",
+                        "surface-tint": "#d2bbff",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "primary-container": "#7c3aed",
+                        "on-secondary": "#3b1e6f",
+                        "on-tertiary-fixed": "#00210c",
+                        "secondary": "#d2bbff",
+                        "on-secondary-container": "#c3a6ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+        }
+        .canvas-grid {
+            background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .pulse-green {
+            box-shadow: 0 0 0 0 rgba(0, 228, 121, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 228, 121, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 228, 121, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 228, 121, 0); }
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#131313] border-b border-[#2a2a2a]/30 flex justify-between items-center w-full px-6 h-16 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#d2bbff]">sensors</span>
+<h1 class="font-['Space_Grotesk'] tracking-tight uppercase font-bold text-lg text-[#d2bbff]">QUERYSPEC PIPELINE</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-[#00e479]/10 px-3 py-1.5 border border-[#00e479]/20">
+<span class="w-2 h-2 rounded-full bg-[#00e479] pulse-green"></span>
+<span class="font-['JetBrains_Mono'] text-[10px] font-bold text-[#00e479] tracking-widest uppercase">AGENT ACTIVE</span>
+</div>
+<div class="w-8 h-8 bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-outline">more_vert</span>
+</div>
+</div>
+</header>
+<div class="flex-1 flex overflow-hidden">
+<!-- SideNavBar (Left Panel: Architectures List) -->
+<aside class="flex flex-col h-full w-64 border-r border-[#2a2a2a] bg-[#0e0e0e] py-4">
+<div class="px-6 mb-8">
+<h2 class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#7c3aed] font-black">PROJECTS</h2>
+<p class="font-['JetBrains_Mono'] text-[10px] text-[#a1a1a1] opacity-70">v4.0.2-stable</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active Item -->
+<div class="bg-[#2a2a2a] text-[#00e479] border-l-2 border-[#00e479] flex items-center gap-3 px-6 py-3 cursor-pointer transition-transform hover:translate-x-1">
+<span class="material-symbols-outlined text-sm">account_tree</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">QuerySpec Pipeline</span>
+</div>
+<div class="text-[#a1a1a1] opacity-70 hover:bg-[#131313] hover:text-[#d2bbff] flex items-center gap-3 px-6 py-3 cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">SPARTA Recall</span>
+</div>
+<div class="text-[#a1a1a1] opacity-70 hover:bg-[#131313] hover:text-[#d2bbff] flex items-center gap-3 px-6 py-3 cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined text-sm">database</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">Vector Vault</span>
+</div>
+<div class="text-[#a1a1a1] opacity-70 hover:bg-[#131313] hover:text-[#d2bbff] flex items-center gap-3 px-6 py-3 cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined text-sm">hub</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">Neural Mesh</span>
+</div>
+</nav>
+<div class="mt-auto px-6 space-y-4 pt-4 border-t border-white/5">
+<div class="flex items-center gap-3 text-[#a1a1a1] opacity-70 hover:text-[#d2bbff] cursor-pointer">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">Logs</span>
+</div>
+<div class="flex items-center gap-3 text-[#a1a1a1] opacity-70 hover:text-[#d2bbff] cursor-pointer">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">Settings</span>
+</div>
+</div>
+</aside>
+<!-- Center Panel: Excalidraw-style Canvas -->
+<main class="flex-1 relative bg-surface canvas-grid flex items-center justify-center overflow-hidden">
+<!-- Floating Toolbar -->
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-[#2a2a2a] border border-outline-variant/20 h-12 flex items-center px-1 shadow-2xl z-40">
+<div class="flex items-center gap-1">
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">lock_open</span>
+</button>
+<div class="w-[1px] h-6 bg-outline-variant/30 mx-1"></div>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors text-primary">
+<span class="material-symbols-outlined text-[20px]">pan_tool</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">rectangle</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">circle</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">title</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">ink_eraser</span>
+</button>
+</div>
+</div>
+<!-- Canvas Placeholder Visual -->
+<div class="w-full h-full flex items-center justify-center opacity-40 mix-blend-screen pointer-events-none">
+<img class="w-2/3 h-auto grayscale invert brightness-150 contrast-125" data-alt="Technical architectural diagram blueprint with glowing purple lines and abstract node structures on a dark grid background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvgP-oWKdZb5KV4h1s-LK5qeKzEnn-P9DmfJtzoD5NKv17-dq7vLKVym11WlePh67taV-6dIKUymKqY3yT7v6dQ6qRKmPH7lg7SIsVhMFvymtIJ6FDuRqvdVhO8ejRqBKNWl4eHnNsCXoYQsnrHwmEzbu7rcW5Lp5a_FXUV9nO0MVfw9c7T1ep2bOYI9bRUdjeY9hANaZNpwnw41RB5prpQPhBaVR6vsGrN8eFrLhzz-EILH9wGZdbIAG0yRiOUgmASbCUfVUT-fo"/>
+</div>
+<!-- Canvas Coordinates HUD -->
+<div class="absolute bottom-4 left-6 font-['JetBrains_Mono'] text-[10px] text-outline flex gap-4 uppercase tracking-tighter">
+<span>X: 1042.88</span>
+<span>Y: -452.01</span>
+<span>Z: 100%</span>
+</div>
+</main>
+<!-- Right Panel: Data View -->
+<aside class="w-80 bg-[#0e0e0e] border-l border-[#2a2a2a] flex flex-col">
+<div class="flex border-b border-[#2a2a2a]">
+<button class="flex-1 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-primary border-b-2 border-primary">Properties</button>
+<button class="flex-1 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-outline hover:text-on-surface">Code</button>
+<button class="flex-1 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-outline hover:text-on-surface">Files</button>
+</div>
+<div class="p-6 space-y-8 overflow-y-auto flex-1">
+<section>
+<h3 class="font-['JetBrains_Mono'] text-[10px] text-tertiary mb-4 uppercase tracking-widest">Metadata</h3>
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="font-['JetBrains_Mono'] text-[9px] text-outline uppercase">Identifier</label>
+<div class="bg-surface-container-high px-3 py-2 font-['JetBrains_Mono'] text-xs">QS-PIPE-01</div>
+</div>
+<div class="space-y-1">
+<label class="font-['JetBrains_Mono'] text-[9px] text-outline uppercase">Latency Threshold</label>
+<div class="bg-surface-container-high px-3 py-2 font-['JetBrains_Mono'] text-xs">14ms</div>
+</div>
+</div>
+</section>
+<section>
+<h3 class="font-['JetBrains_Mono'] text-[10px] text-tertiary mb-4 uppercase tracking-widest">Configuration</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="font-['JetBrains_Mono'] text-xs text-on-surface">Auto-Scale</span>
+<span class="material-symbols-outlined text-tertiary text-lg" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="font-['JetBrains_Mono'] text-xs text-on-surface">Persistence</span>
+<span class="material-symbols-outlined text-outline text-lg">toggle_off</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="font-['JetBrains_Mono'] text-xs text-on-surface">Vectorization</span>
+<span class="material-symbols-outlined text-tertiary text-lg" style="font-variation-settings: 'FILL' 1;">toggle_on</span>
+</div>
+</div>
+</section>
+<section>
+<h3 class="font-['JetBrains_Mono'] text-[10px] text-tertiary mb-4 uppercase tracking-widest">History</h3>
+<div class="space-y-2">
+<div class="flex items-center gap-3 text-[10px] font-['JetBrains_Mono'] text-outline">
+<span class="text-tertiary">14:22</span>
+<span>Schema Commit v4.1</span>
+</div>
+<div class="flex items-center gap-3 text-[10px] font-['JetBrains_Mono'] text-outline opacity-50">
+<span>14:18</span>
+<span>Node "InputGate" Added</span>
+</div>
+</div>
+</section>
+</div>
+</aside>
+</div>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-center items-center h-14 bg-[#131313] border-t border-[#2a2a2a]">
+<button class="h-10 px-8 bg-primary-container text-white font-['JetBrains_Mono'] font-bold text-sm uppercase tracking-widest flex items-center gap-3 transition-all hover:bg-primary-container/90 active:scale-[0.99]">
+<span class="material-symbols-outlined text-sm">save</span>
+            Save to Memory
+        </button>
+</footer>
+</body></html>

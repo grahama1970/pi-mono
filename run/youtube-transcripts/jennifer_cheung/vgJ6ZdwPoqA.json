@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vgJ6ZdwPoqA",
+    "language": "en",
+    "took_ms": 8741,
+    "method": null,
+    "title": "DEF CON Safe Mode Payment Village - Menaka BaskerPillai  - Architecting Modern Payment Gateways",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2043,
+    "description": "In this session am going to explain how to work with payment gateways and how to implement a secured payment gateways in .net core web Apps. This session also includes some core concepts of Azure that plays an important role in transaction.",
+    "view_count": 337
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vgJ6ZdwPoqA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QARwgoJ-IbA",
+    "language": "en",
+    "took_ms": 9024,
+    "method": null,
+    "title": "DEF CON 33 - What’s Really in the Box? The Case for Hardware Provenance and HBOMs - Allan Friedman",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1462,
+    "description": "As software supply chains embrace transparency through SBOMs, hardware remains a black box. Yet the chips inside our IoT devices carry just as much — if not more — risk. From cloned components to opaque fabs, the semiconductor supply chain is fast becoming a national security flashpoint. Governments are scrambling to respond with blunt tools like bans and onshoring, but these approaches are slow, costly, and often impractical. Traditional BOMs focus on procurement and production — what gets bought and assembled — but they rarely capture origin, integrity, or risk context. They weren’t built to expose inter-organizational dependencies or detect supply chain manipulation. Enter the HBOM Initiative — a new effort to bring visibility, traceability, and accountability to the hardware supply chain. By developing tools and practices for a hardware bill of materials (HBOM), we aim to expose hidden risks, trace chip provenance, and empower sectors to make smarter, risk-informed decisions without sacrificing adaptability or innovation. This talk will explore why HBOMs are inevitable, what makes them hard, and how the hacker and security community can help shape the future of hardware trust.",
+    "view_count": 200
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QARwgoJ-IbA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

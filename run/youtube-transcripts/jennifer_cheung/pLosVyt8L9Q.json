@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pLosVyt8L9Q",
+    "language": "en",
+    "took_ms": 8162,
+    "method": null,
+    "title": "DEF CON 30  - Martin Doyhenard  - Internet Server Error  - Exploiting Interprocess Communication",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2906,
+    "description": "In this talk I will show how to reverse engineer a proprietary HTTP Server in order to leverage memory corruption vulnerabilities using high level HTTP protocol exploitation techniques. To do so, I will present two critical vulnerabilities, CVE-2022-22536 and CVE-2022-22532, which were found in SAP's proprietary HTTP Server, and could be used by a remote unauthenticated attacker to compromise any SAP installation in the world.\n\nFirst, I will explain how to escalate an error in the request handling process to Desynchronize data buffers and hijack every user’s account with Advanced Response Smuggling. Furthermore, as the primitives of this vulnerability do not rely on header parsing errors, I will show a new technique to persist the attack using the first Desync botnet in history. This attack will prove to be effective even in an “impossible to exploit” scenario: without a Proxy!\n\nNext I will examine a Use-After-Free in the shared memory used for Inter-Process Communication. By exploiting the incorrect deallocation, I will show how to tamper messages belonging to other TCP connections and take control of all responses using Cache Poisoning and Response Splitting theory.\n\nFinally, as the affected buffers could also contain IPC control data, I will explain how to corrupt memory address pointers and end up obtaining RCE.",
+    "view_count": 1802
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pLosVyt8L9Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

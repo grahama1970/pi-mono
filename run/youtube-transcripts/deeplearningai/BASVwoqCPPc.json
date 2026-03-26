@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BASVwoqCPPc",
+    "language": "en",
+    "took_ms": 8685,
+    "method": null,
+    "title": "Why You Need Users to Break Your AI Project",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260212",
+    "duration_sec": 54,
+    "description": "Your AI idea sounds perfect on paper.\nThen real users show up.\n\nThe fastest way to improve your AI project is to let people break it early. Prototypes aren’t for impressing, they’re for revealing the truth.\n\nTest small. Learn fast. Fix early.",
+    "view_count": 6460
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BASVwoqCPPc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

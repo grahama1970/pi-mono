@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F4zyWVDRik8",
+    "language": "en",
+    "took_ms": 8326,
+    "method": null,
+    "title": "The Race Against ISIS",
+    "channel": "Hudson Institute",
+    "upload_date": "20141202",
+    "duration_sec": 3869,
+    "description": "Hudson Institute’s Center for Religious Freedom hosted Dr. Alam Marogy for a presentation on the current situation in Iraq and her foundation’s efforts to train clergy from Middle Eastern Churches to protect and preserve ancient Church documents and chronicle contemporary events and human rights abuses. Nina Shea, Senior Fellow and Director of the Center for Religious Freedom at Hudson Institute, moderated the event. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 623
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F4zyWVDRik8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

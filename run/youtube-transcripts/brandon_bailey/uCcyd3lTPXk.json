@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uCcyd3lTPXk",
+    "language": "en",
+    "took_ms": 8966,
+    "method": null,
+    "title": "DEF CON 32 - MFT Malicious Fungible Tokens  - Mauro Eldritch, Cybelle Oliveira",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1300,
+    "description": "In this technical talk, we will uncover a new aspect of NFTs: using them as attack vectors to relay C2 commands. Fingerprinting a system? Exfiltrating information? Encrypting and wiping data? Executing arbitrary commands? Of course! But with a dark twist: deployed NFTs are blockchain-backed assets immune to takedowns. Imagine having your own “immortal” C2 Server for less than $10 dollars in $ETH.\n\nFor this, we will introduce “mFT” an open-source tool that automates the creation of malicious payloads and provide sample harmless NFTs, allowing attendees to explore this novel attack vector on their own machines safely. This talk is the spiritual successor of \"Everything is a C2 if you're brave enough\".",
+    "view_count": 303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uCcyd3lTPXk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

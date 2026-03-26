@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3zqPY8ftrq8",
+    "language": "en",
+    "took_ms": 8724,
+    "method": null,
+    "title": "Assessing The Balance Between Visibility And Confidentiality In OT",
+    "channel": "S4 Events",
+    "upload_date": "20230104",
+    "duration_sec": 1695,
+    "description": "OT Detection companies began with and still greatly rely on passive monitoring of plaintext control system protocols for both asset inventory and detection capabilities. Most of the secure control system protocol efforts, such as Modbus/TCP Security and CIP Security, have taken a \"wrap-it-in-TLS\" approach. The traffic is more secure and no longer available for OT Detection products.\n\nJoe Slowik looks at the value of confidentiality and whether it is worth it for the loss of visibility. It's a classic argument, well presented. He comes down on the visibility side based on what he calls a \"threat centric defense\" approach. Joe says this could change if the threat changes. What do you think?",
+    "view_count": 809
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3zqPY8ftrq8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

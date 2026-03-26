@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WHD8NAY9BhU",
+    "language": "en",
+    "took_ms": 8204,
+    "method": null,
+    "title": "DEF CON 33 - Creating a Virtual Ship Environment Optimized for Cybersecurity Use - Jeff Greer",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1380,
+    "description": "Current ship simulators are designed to help masters and mates pass their STCW exams. They were never designed for cybersecurity use. So, here is the interesting question that will be considered during the presentation. What is the ideal architecture of a virtual ship environment for cybersecurity education, assessment, and research use? Recent work at UNCW suggests there is a need for a hybrid virtual environment comprised of a full mission (above and below the waterline) ship simulator coupled with sub-system device emulators and specialized software applications. Examples of required device emulators include communication devices, bridge instruments, and industrial controllers. Coupling can be accomplished through logical or physical means. Examples of specialized software applications include network traffic generation, strategically located test access points for staging exploits, cyber data analytics, and trainer control over directed simulations. Cybersecurity use cases are being used to help shape derivative functional requirements. Rather than develop a novel virtual environment from scratch, UNCW has been looking into the feasibility of augmenting an existing, commercially available ship simulator with new functionality such that it is fit for cybersecurity use. Unitest’s, Winterthur X92 marine engine simulator is an ideal candidate that will be briefly demonstrated during the presentation.",
+    "view_count": 131
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WHD8NAY9BhU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

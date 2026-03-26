@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3RkBeEpidcs",
+    "language": "en",
+    "took_ms": 8679,
+    "method": null,
+    "title": "When Iran Gets the Bomb: What Will It Do? What Will Others D",
+    "channel": "Hudson Institute",
+    "upload_date": "20120629",
+    "duration_sec": 5047,
+    "description": "As the world debates whether a steep price should be paid to stop prospects of an Iranian nuclear weapon, there remains little understanding of what consequences might flow from Iran's possession of such weapons.  Hudson Institute will host a conference to analyze a world in which first Iran, and then some of Iran's neighbors, become nuclear weapons states.  The conference does not seek to prejudge whether Iran will be stopped from reaching its nuclear goals, but to explore in greater depth the",
+    "view_count": 638
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3RkBeEpidcs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

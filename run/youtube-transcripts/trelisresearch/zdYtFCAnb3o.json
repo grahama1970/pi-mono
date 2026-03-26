@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zdYtFCAnb3o",
+    "language": "en",
+    "took_ms": 8893,
+    "method": null,
+    "title": "Jupyter Llama",
+    "channel": "Trelis Research",
+    "upload_date": "20230804",
+    "duration_sec": 210,
+    "description": "A Jupyter Notebook Chat Assistant built on Llama 2.\n- Upload pdf or text files for analysis.\n- No data goes to OpenAI.\n- No data is used for training language models.\n\nLinks:\nGoogle Colab Notebook (Updated to match the CodeLlama video: https://youtu.be/rjSWCMVbD_U) https://colab.research.google.com/drive/17GjLg0zB6VSpFcoO_r_wZtaGqNV6VCxC?usp=sharing\nFind Trelis on HuggingFace: https://huggingface.co/Trelis\nGPTQ Repo: https://github.com/PanQiWei/AutoGPTQ/\nGPTQ Models on HuggingFace: https://huggingface.co/TheBloke/Llama-2-7b-Chat-GPTQ\n\nCopyright © 2023 Trelis LTD. MIT License.",
+    "view_count": 1356
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zdYtFCAnb3o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

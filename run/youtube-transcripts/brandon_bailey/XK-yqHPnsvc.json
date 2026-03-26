@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XK-yqHPnsvc",
+    "language": "en",
+    "took_ms": 8721,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - JunWei Song & KunYu Chen -  QuarkEngine",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1842,
+    "description": "Android malware analysis engine is not a new story. Every antivirus company has their own secrets to build it. With python and curiosity, we develop a malware scoring system from the perspective of Taiwan Criminal Law in an easy but solid way.",
+    "view_count": 590
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XK-yqHPnsvc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

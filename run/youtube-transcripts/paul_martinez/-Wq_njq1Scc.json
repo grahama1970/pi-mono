@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-Wq_njq1Scc",
+    "language": "en",
+    "took_ms": 9296,
+    "method": null,
+    "title": "Testing (And Results) Of Level 1 Device Protocol Stacks",
+    "channel": "S4 Events",
+    "upload_date": "20250714",
+    "duration_sec": 1344,
+    "description": "PLC and other Level 1 device protocol stacks were a disaster 15 years ago. Most have improved, and some are still lacking. Edward shows his protocol stack testing methodology and toolkit, some classes of errors and crashes, and share results they have found in this project.\n\nAfter this session you should know how to test your own Level 1 devices or what to ask your PLC vendors.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 148
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -Wq_njq1Scc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

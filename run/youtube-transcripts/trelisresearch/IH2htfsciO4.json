@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IH2htfsciO4",
+    "language": "en",
+    "took_ms": 9121,
+    "method": null,
+    "title": "Mistral Large vs GPT4 - Practical Benchmarking!",
+    "channel": "Trelis Research",
+    "upload_date": "20240228",
+    "duration_sec": 1661,
+    "description": "➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Function-calling Models (incl. OpenChat 3.5): https://trelis.com/function-calling/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Link (supports the channel):\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nVIDEO RESOURCES:\n-Carlini Website: https://nicholas.carlini.com/\n-Carlini Github: https://github.com/carlini/yet-another-applied-llm-benchmark\n-Trelis fork w/ Custom LLM: https://github.com/TrelisResearch/yet-another-applied-llm-benchmark\n\nTIMESTAMPS:\n0:00 A practitioner's guide to evaluating LLMs\n00:45 Nicolas Carlini's LLM Benchmark Blog Post\n1:15 Benchmarking results of GPT4 vs Claude vs Gemini vs Mistral\n4:16 Mistral Large vs Mixtral vs OpenChat vs Qwen\n11:32 Running custom evaluations using Runpod\n26:26 Final Thoughts",
+    "view_count": 2101
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IH2htfsciO4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

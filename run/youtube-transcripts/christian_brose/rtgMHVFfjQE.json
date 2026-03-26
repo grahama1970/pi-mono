@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rtgMHVFfjQE",
+    "language": "en",
+    "took_ms": 8506,
+    "method": null,
+    "title": "U.S. Options in Afghanistan and Pakistan",
+    "channel": "Hudson Institute",
+    "upload_date": "20170413",
+    "duration_sec": 5808,
+    "description": "Ambassadors Zalmay Khalilzad, Robin Raphel, and Husain Haqqani discuss the role of Afghanistan and Pakistan in the global war on terrorism",
+    "view_count": 14458
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rtgMHVFfjQE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

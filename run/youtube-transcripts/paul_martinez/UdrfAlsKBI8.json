@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UdrfAlsKBI8",
+    "language": "en",
+    "took_ms": 8024,
+    "method": null,
+    "title": "The Next Generation Secure PLC",
+    "channel": "S4 Events",
+    "upload_date": "20160906",
+    "duration_sec": 3256,
+    "description": "PLC's, RTU's and other controllers have made securing industrial control systems (ICS) almost impossible. These devices were insecure by design. The features and functions provided everything an attacker would want without a vulnerability and exploit.\n\nFortunately this is changing. We are now seeing signed firmware, encrypted ICS protocols and other important security features so that an asset owner who cares about security can purchase or upgrade to a securable solution.\n\nThis panel discussion brings together the top PLC experts from the top PLC vendors: General Electric, Rockwell Automation, Schneider Electric and Siemens.",
+    "view_count": 795
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UdrfAlsKBI8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

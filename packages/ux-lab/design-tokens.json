@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "name": "Embry OS — NVIS MIL-STD-3009",
+    "description": "Unified design tokens for all ux-lab components. Source of truth: EmbryStyle.ts + DESIGN.md",
+    "version": "2.0"
+  },
+  "colors": {
+    "bg": {
+      "primary": "#141414",
+      "card": "#1a1a1a",
+      "panel": "#111111",
+      "deep": "#0b1220",
+      "header": "#0f172a"
+    },
+    "text": {
+      "primary": "#e2e8f0",
+      "dim": "#64748b",
+      "muted": "#334155"
+    },
+    "border": {
+      "default": "rgba(255,255,255,0.13)",
+      "hover": "rgba(255,255,255,0.25)"
+    },
+    "status": {
+      "green": "#00ff88",
+      "red": "#ff4444",
+      "amber": "#ffaa00",
+      "blue": "#4a9eff"
+    },
+    "accent": "#7c3aed",
+    "cyan": "#22d3ee",
+    "clusters": {
+      "droid": "#7c3aed",
+      "daemon": "#22d3ee",
+      "mcp": "#4a9eff",
+      "mission": "#ffaa00",
+      "terminal": "#00ff88"
+    },
+    "frameworks": {
+      "SPARTA": "#7c3aed",
+      "ATT&CK": "#ff4444",
+      "D3FEND": "#00ff88",
+      "NIST": "#4a9eff",
+      "CWE": "#ffaa00"
+    }
+  },
+  "typography": {
+    "headline": "Space Grotesk, system-ui, sans-serif",
+    "body": "Inter, system-ui, sans-serif",
+    "mono": "JetBrains Mono, Consolas, monospace",
+    "sizes": {
+      "heading": "14px",
+      "body": "13px",
+      "label": "10px",
+      "code": "11px",
+      "tiny": "9px"
+    }
+  },
+  "tiers": {
+    "T0": { "color": "#00ff88", "label": "DETERMINISTIC", "description": "Regex match on binary strings" },
+    "T1": { "color": "#4a9eff", "label": "AST", "description": "Treesitter parse of recovered source" },
+    "T2": { "color": "#ffaa00", "label": "LLM", "description": "LLM-generated explanation" }
+  },
+  "nodeShapes": {
+    "namespace": { "shape": "circle", "radius": 18 },
+    "rpc": { "shape": "circle", "radius": 8 },
+    "event": { "shape": "circle", "radius": 5 },
+    "schema": { "shape": "rect", "width": 14, "height": 14, "rx": 3 },
+    "state_machine": { "shape": "circle", "radius": 12, "doubleRing": true },
+    "parameter": { "shape": "diamond", "size": 8 },
+    "cli_command": { "shape": "circle", "radius": 10 }
+  },
+  "edgeStyles": {
+    "contains": { "stroke": "#64748b", "strokeWidth": 1, "dashArray": "4 3", "arrow": false },
+    "payload": { "stroke": "#22d3ee", "strokeWidth": 1.5, "arrow": true },
+    "emits": { "stroke": "#ffaa00", "strokeWidth": 1.5, "arrow": true },
+    "triggers": { "stroke": "#00ff88", "strokeWidth": 1.5, "arrow": true },
+    "has_parameter": { "stroke": "#7c3aed", "strokeWidth": 1, "dashArray": "2 2", "arrow": false }
+  },
+  "layout": {
+    "topBarHeight": "48px",
+    "sidebarWidth": "80px",
+    "detailPanelWidth": "30%",
+    "graphWidth": "70%",
+    "chatBarHeight": "56px"
+  }
+}

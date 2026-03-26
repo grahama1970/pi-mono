@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SRALfyEspms",
+    "language": "en",
+    "took_ms": 9082,
+    "method": null,
+    "title": "DEF CON 33 - ReVault! Compromised by your Secure SoC - Philippe Laulheret",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2521,
+    "description": "We all love security, right? And when we trust a security component to safeguard our most valuable assets such as passwords, key material and biometrics, we want to believe they're doing a good job at it. But what happens when this assumption is flawed, and the chip that was going to protect our assets turns against us?\n\nIn this talk we'll present the ReVault attack that targets the [REDACTED] chip embedded in over 100 different laptops models from [VENDOR]. We will demonstrate how a low privilege user can fully compromise the chip, plunder its secrets, gain persistence on its application firmware and even hack Windows back. Are you ready for the heist?",
+    "view_count": 669
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SRALfyEspms: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "20wbA_ijjmg",
+    "language": "en",
+    "took_ms": 8820,
+    "method": null,
+    "title": "Preparing Fineweb - A Finely Cleaned Common Crawl Dataset",
+    "channel": "Trelis Research",
+    "upload_date": "20240603",
+    "duration_sec": 2190,
+    "description": "➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/15KQFPUFPKi3G3VpFvXOhO6ceX4nrUdg7zn-L-cL96gg/edit?usp=sharing\n- Dataset: https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu\n- fineweb.py: https://github.com/huggingface/datatrove/blob/main/examples/fineweb.py\n- Fineweb blog: https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1\n\nTIMESTAMPS:\n0:00 Common Crawl Data Processing Pipeline\n0:42 Video Overview\n1:50 Common Crawl Raw Dataset\n3:19 Common Crawl improves over time?\n5:35 Dataset Comparisons: C4, RefinedWeb, Fineweb, Llama 3, Phi-3\n9:38 Data Processing Pipeline and Datatrove\n13:39 Quality filters: Gopher, C4, Fineweb\n20:39 Deduplication strategies\n25:43 Fineweb edu: LLM assisted dataset filtering\n28:43 Training a classifier for dataset filtering\n33:15 My recommendation: Fineweb Edu Latest Crawl\n35:22 Why is Llama 3 better than Llama 2?",
+    "view_count": 4995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 20wbA_ijjmg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EHCHJyAv7XI",
+    "language": "en",
+    "took_ms": 7615,
+    "method": null,
+    "title": "LIVE Hosting SpaceX / NASA TESS mission",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180419",
+    "duration_sec": 5198,
+    "description": "SpaceX is launching a brand new, and quite possibly one of the last non-block five Falcon 9's for NASA at 22:51 UTC (6:51 Eastern) out of Cape Canaveral Air Force Station's SLC-40. SpaceX will be attempting to land this booster on \"Of Course I still Love you.\" \n\nTESS is the Transiting Exoplanet Survey Satellite and was manufactured by Orbital ATK and led by MIT to help search for exoplanets orbiting other stars. \n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 50798
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EHCHJyAv7XI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

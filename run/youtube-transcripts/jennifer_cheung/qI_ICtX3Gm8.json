@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qI_ICtX3Gm8",
+    "language": "en",
+    "took_ms": 7895,
+    "method": null,
+    "title": "DEF CON 31 - Defending KA-SAT - Mark Colaluca and Nick Saunders",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2724,
+    "description": "In February 2022, the Viasat owned KA-SAT network experienced a significant cyberattack that resulted in a partial outage of services for thousands of users in Ukraine and tens of thousands of users in other parts of Europe. This presentation will provide detailed background on the attack, which involved the deployment of malware against terminals on the network, as well as several distinct network-based attacks that appeared focused on further denying connectivity to KA-SAT users. These network-based attacks needed to be characterized and responded to by Viasat’s operational teams in real-time, and the attacks continued with intensity for many weeks after the original malware incident.\n\nViasat will share the story of how it responded and performed a rapid forensic on several impacted terminals to determine within 36 hours that the terminal flash memory had been overwritten with a distinctive pattern in the attack. This presentation will explain details around the forensic analysis as well as the process of reverse engineering the malicious toolkit to verify it would produce the observed flash memory effects. Viasat will also share technical details of over-the-air network attacks that were used to attack the KA-SAT network.",
+    "view_count": 5334
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qI_ICtX3Gm8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

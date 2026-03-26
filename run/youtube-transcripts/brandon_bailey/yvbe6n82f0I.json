@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yvbe6n82f0I",
+    "language": "en",
+    "took_ms": 9252,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - \"Fortress Island\" Physical Security in Voting Systems - Drew Springall",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 2012,
+    "description": "Physical security has long been a core component of voting system defenses through the use of keyed locks and tamper-evident seals/tape/stickers. With procedural protections requiring their use, arbitrary voters are explicitly permitted to physically interact with these systems in a semi-private setting (voting booth) under the assumption that the hardware’s attack surface can be sufficiently scoped to a set of intended, known-safe interactions (i.e. limit/prevent access to I/O interfaces, administrative controls, storage devices, etc.). Some have even cited these specific defenses as preexisting and sufficient mitigations for vulnerabilities in already-deployed voting system such that further remediation is not needed. Unfortunately, this assumption does not hold under scrutiny. This presentation provides a review of publicly available sources from vendors, jurisdictions, and assorted other entities and reveals substantial weaknesses in the design, configuration, and deployment of such defensive devices.",
+    "view_count": 2845
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yvbe6n82f0I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

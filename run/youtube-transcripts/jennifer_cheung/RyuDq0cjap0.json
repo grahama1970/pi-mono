@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RyuDq0cjap0",
+    "language": "en",
+    "took_ms": 9437,
+    "method": null,
+    "title": "DEF CON 32 - Porn & Privacy - ET",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1269,
+    "description": "As our social lives are highly intertwined with our online lives, people share a lot of information and create pictures and content that needs to be secured. In this talk I cover obscenity laws, revenge porn (nonconsensual distribution of intimate images), stalking, catfishing and sextortion and how people can prevent information being leaked as well as how to recover from it.",
+    "view_count": 2679
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RyuDq0cjap0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EXmq8aQN4wY",
+    "language": "en",
+    "took_ms": 8087,
+    "method": null,
+    "title": "Machine Learning in Production, now available at DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 70,
+    "description": "Learn more: https://bit.ly/48ebmK8\n\nMachine learning engineering for production refers to the tools, techniques, and practical experiences that transform theoretical ML knowledge into a production-ready skillset.\n\nThe Machine Learning in Production course covers how to conceptualize integrated systems that continuously operate in production as well as solve common challenges unique to the production environment. In striking contrast with standard machine learning modeling, production systems need to handle relentlessly evolving data. Moreover, the production system must run non-stop at the minimum cost while producing the maximum performance.\n\nIn this Machine Learning in Production course, you will build intuition about designing a production ML system end-to-end: project scoping, data needs, modeling strategies, and deployment patterns and technologies. You will learn strategies for addressing common challenges in production like establishing a model baseline, addressing concept drift, and performing error analysis. You’ll follow a framework for developing, deploying, and continuously improving a productionized ML application.\n\nUnderstanding machine learning and deep learning concepts is essential, but if you’re looking to build an effective AI career, you need experience preparing your projects for deployment as well. Machine learning engineering for production combines the foundational concepts of machine learning with the skills and best practices of modern software development necessary to successfully deploy and maintain ML systems in real-world environments.\n\nBy the end of this program, you will be ready to:\n\n- Design an ML production system end-to-end: project scoping, data needs, modeling strategies, and deployment requirements.\n- Establish a model baseline, address concept drift, and prototype how to develop, deploy, and continuously improve a productionized ML application.\n\nEnroll now: https://bit.ly/48ebmK8",
+    "view_count": 2538
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EXmq8aQN4wY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

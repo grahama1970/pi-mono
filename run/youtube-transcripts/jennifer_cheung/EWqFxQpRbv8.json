@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EWqFxQpRbv8",
+    "language": "en",
+    "took_ms": 8207,
+    "method": null,
+    "title": "DEF CON 29-  Dennis Giese - Robots with lasers and cameras but no security   Liberating your vacuum",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2014,
+    "description": "Vacuum robots are becoming increasingly popular and affordable as their technology grows ever more advanced, including sensors like lasers and cameras. It is easy to imagine interesting new projects to exploit these capabilities. However, all of them rely on sending data to the cloud. Do you trust the companies promise that no video streams are uploaded to the cloud and that your personal data is safe? Why not collect the dust with open-source software?\n\nI previously showed ways to root robots such as Roborock and Xiaomi, which enabled owners to use their devices safely with open-source home automation. In response, vendors began locking down their devices with technologies like Secure Boot, SELinux, LUKS encrypted partitions and custom crypto that prevents gaining control over our own devices. This talk will update my newest methods for rooting these devices.\n\nThe market of vacuum robots expanded in the past 2 years. In particular, the Dreame company has recently released many models with interesting hardware, like ToF cameras and line lasers. This can be a nice alternative for rooting. I will show easy ways to get root access on these devices and bypass all security. I will also discuss backdoors and security issues I discovered from analysis. You will be surprised what the developers left in the firmware.\n\nREFERENCES:\nUnleash your smart-home devices: Vacuum Cleaning Robot Hacking (34C3)\nhttps://dontvacuum.me/talks/34c3-2017/34c3.html\n\nHaving fun with IoT: Reverse Engineering and Hacking of Xiaomi IoT Devices\nhttps://dontvacuum.me/talks/DEFCON26/DEFCON26-Having_fun_with_IoT-Xiaomi.html\n\nhttps://linux-sunxi.org/Main_Page",
+    "view_count": 20718
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EWqFxQpRbv8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

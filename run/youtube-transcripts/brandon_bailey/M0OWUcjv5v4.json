@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "M0OWUcjv5v4",
+    "language": "en",
+    "took_ms": 10113,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Alex Pearlman - A Cohort of Pirate Ships",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 1082,
+    "description": "A presentation on our newly published research on ethics attitudes and preferences in biomedical citizen science, biohacker, and community bio groups. As biomedical citizen science initiatives become more prevalent, the unique ethical issues that they raise are attracting policy attention. One issue identified as a significant concern is the ethical oversight of bottom-up biomedical citizen science projects that are designed and executed primarily or solely by members of the public. That is because the federal rules that require ethical oversight of research by institutional review boards generally do not apply to such projects, creating what has been called an ethics gap. Working to close this gap, practitioners and scholars have considered new mechanisms of ethical oversight for biomedical citizen science. To date, however, participants’ attitudes about ethics and oversight preferences have not been systematically examined. This information is useful to efforts to develop ethical oversight mechanisms because it provides a basis for evaluating the likely effectiveness of specific features of such mechanisms and their acceptability from the perspective of biomedical citizen scientists. Here, we report data from qualitative interviews with 35 stakeholders (some from BHV!) in bottom-up biomedical citizen science about their general ethics attitudes and preferences regarding ethical oversight. Interviewees described ten ethical priorities and endorsed oversight mechanisms that are voluntary, community-driven, and offer guidance. Conversely, interviewees rejected mechanisms that are mandatory, hierarchical, and inflexible. Applying these findings, we conclude that expert consultation and community review models appear to align well with ethical priorities and oversight preferences of many biomedical citizen scientists, although local conditions should guide the development and use of mechanisms in specific communities.",
+    "view_count": 994
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] M0OWUcjv5v4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

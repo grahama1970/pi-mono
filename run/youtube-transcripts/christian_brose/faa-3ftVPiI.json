@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "faa-3ftVPiI",
+    "language": "en",
+    "took_ms": 9489,
+    "method": null,
+    "title": "Mexico: A Leading Nation Battles Drug Cartels, Crime, and Corruption",
+    "channel": "Hudson Institute",
+    "upload_date": "20170628",
+    "duration_sec": 5833,
+    "description": "Mexico, a leading Latin American nation that has successfully revamped its economy over the last three decades, is increasingly threatened by drug cartels, crime, and corruption. The expansion of lawlessness in certain regions of the country threatens Mexico’s advancements in manufacturing, education, and health care, and jeopardizes the country’s economic stability and vital tourism industry.\n\nOn Wednesday, June 28, Hudson Institute hosted a panel discussion on the state of Mexico’s struggle against drugs and crime, as well as its ongoing efforts to expand the rule of law. Former Mexican diplomat Ambassador Jorge Guajardo and Latin American journalist Armando González joined Hudson Institute’s Ambassador Jaime Daremblum and David Murray for this timely event.",
+    "view_count": 755
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] faa-3ftVPiI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

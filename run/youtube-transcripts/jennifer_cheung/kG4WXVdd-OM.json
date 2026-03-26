@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kG4WXVdd-OM",
+    "language": "en",
+    "took_ms": 8556,
+    "method": null,
+    "title": "DEF CON - 30 LiveCTF - Day 1 Part 2",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 7167,
+    "description": "LIve coverage of Day 2 of the DEF CON 30 CTF",
+    "view_count": 582
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kG4WXVdd-OM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

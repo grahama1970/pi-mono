@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QNEQFL-pZlI",
+    "language": "en",
+    "took_ms": 8752,
+    "method": null,
+    "title": "What Would Jefferson Do? UVA and the Crisis of Liberal Educa",
+    "channel": "Hudson Institute",
+    "upload_date": "20120629",
+    "duration_sec": 5772,
+    "description": "In a Washington Post article published on June 22, University of Virginia Professor James Ceaser took on the abrupt decision by his university's Board of Visitors to fire President Teresa Sullivan by invoking the name of the school's founder, Thomas Jefferson, and his vision for liberal education:What has been lost in the secrecy surrounding the board's actions is any understanding of the educational issues at stake. News reports indicate that the board identified departments such as German and",
+    "view_count": 128
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QNEQFL-pZlI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

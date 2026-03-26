@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#00315d",
+                        "surface-container-high": "#2a2a2a",
+                        "error-container": "#93000a",
+                        "on-secondary": "#003919",
+                        "on-secondary-container": "#007239",
+                        "on-primary": "#3f008e",
+                        "surface-container": "#201f1f",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "primary-container": "#7c3aed",
+                        "tertiary-fixed": "#d4e3ff",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary-fixed": "#25005a",
+                        "tertiary": "#a4c9ff",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed-variant": "#005228",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary-container": "#0068bb",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#d2bbff",
+                        "inverse-primary": "#732ee4",
+                        "secondary-fixed": "#60ff99",
+                        "primary-fixed": "#eaddff",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e5e2e1",
+                        "surface-tint": "#d2bbff",
+                        "on-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "surface-bright": "#393939",
+                        "secondary-fixed-dim": "#00e479",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-variant": "#353534",
+                        "surface-dim": "#131313",
+                        "on-primary-container": "#ede0ff",
+                        "secondary": "#f5fff3",
+                        "primary": "#d2bbff",
+                        "surface": "#131313",
+                        "on-tertiary-fixed-variant": "#004884",
+                        "on-secondary-fixed": "#00210c",
+                        "on-tertiary-container": "#dae7ff",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "outline": "#958da1",
+                        "outline-variant": "#4a4455",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#34ff8d"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["JetBrains Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .dot-grid {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .ghost-border {
+            border: 1px solid rgba(255, 255, 255, 0.13);
+        }
+        .accent-glow {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden selection:bg-primary-container/30">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 w-full bg-[#131313]/70 backdrop-blur-xl border-b border-white/10">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#d2bbff] font-headline">MOODBOARD_OS</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-[#d2bbff] border-b-2 border-[#7c3aed] pb-1 font-headline text-sm tracking-wide" href="#">Canvas</a>
+<a class="text-white/40 hover:text-white/80 transition-colors font-headline text-sm tracking-wide" href="#">Assets</a>
+<a class="text-white/40 hover:text-white/80 transition-colors font-headline text-sm tracking-wide" href="#">Team</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest px-3 py-1.5 rounded-lg flex items-center gap-2 ghost-border">
+<span class="material-symbols-outlined text-white/40 text-sm">search</span>
+<span class="font-label text-[10px] text-white/20 uppercase tracking-widest">Search Assets...</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-white/40 hover:bg-white/5 rounded-lg transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-white/40 hover:bg-white/5 rounded-lg transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-white/10 overflow-hidden ml-2">
+<img class="w-full h-full object-cover" data-alt="User profile avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTYEStSid710RYvFlmvetz8FyM57NZo6NaYM2Llh8gOl-QLXp7yZ4sGJTvIm3vQCxkIGPAM_L6tXpep4xXFSGja73BdAUo1zJ5u2PBS6jX3aq_gWUSCBs86VgYvkIsLLHvkruiyhrcKXsmDwg0EIc1yXBSorNOT7JOlxzVesioP-AwpaCMohXMtFoA3ZGluFFXAGLZg5OyU5tK20U7WCpzCQdbOoPxeBCmtmNrN6MIbNkryMZbtMdFrczN3IZCqgpQAsB2FzkTlHY3"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Canvas Workspace -->
+<main class="relative w-screen h-screen dot-grid pt-16 cursor-crosshair">
+<!-- Context Menu (Simulated Right Click) -->
+<div class="fixed top-48 left-1/4 z-40 w-48 bg-surface-container/90 backdrop-blur-xl rounded-xl ghost-border overflow-hidden p-1 shadow-2xl">
+<button class="w-full flex items-center gap-3 px-3 py-2 text-sm text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="font-headline font-medium">Add</span>
+<span class="ml-auto font-label text-[10px] text-on-surface-variant">A</span>
+</button>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-sm text-on-surface hover:bg-primary-container/20 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">layers</span>
+<span class="font-headline font-medium">Group</span>
+<span class="ml-auto font-label text-[10px] text-on-surface-variant">⌘G</span>
+</button>
+<div class="h-px bg-white/10 my-1"></div>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-sm text-error hover:bg-error-container/20 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+<span class="font-headline font-medium">Delete</span>
+<span class="ml-auto font-label text-[10px] text-error/50">⌫</span>
+</button>
+</div>
+<!-- Loose Masonry Grid Layout -->
+<div class="p-12 grid grid-cols-12 gap-8 max-w-[1600px] mx-auto mt-12">
+<!-- Asset 1: Large App Screen -->
+<div class="col-span-4 translate-y-8 group">
+<div class="bg-surface-container rounded-xl overflow-hidden ghost-border group-hover:border-primary/40 transition-all cursor-pointer">
+<div class="aspect-[4/5] bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Clean mobile app UI design dark mode" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnrncJtsSQopNVEeMrPAj5QPkCmY2568WeyM9TfzRMMwfX3xBnMJbTQpBHSFfkiU11JXlJrK3pJzuH59C9oIN14WvRFTumk6lDLJRVEQ4z2_ZsqvdEM8JAtTjj1MtfQugZKWNk8eRqKkesBEsVc-Dm93bfJFPuKTsNQ5ETiQnE-j_lZQGZgguwL6Nl8w8OWRWUhErvwexfxevWUOxBAstD0c_50sZxa7hhpNiiz-REnnIEt_DnnQqIofYtRRoqxcaJQ5NXwP4KpetH"/>
+</div>
+<div class="p-4 flex justify-between items-center border-t border-white/5">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">App_Interface_v2</span>
+<span class="font-label text-[10px] text-white/20">1200x1500</span>
+</div>
+</div>
+</div>
+<!-- Asset 2: Selected Item (Accent Glow) -->
+<div class="col-span-3 -translate-y-4">
+<div class="bg-surface-container rounded-xl overflow-hidden border-2 border-[#7c3aed] accent-glow cursor-move">
+<div class="aspect-square bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="Blue atmospheric landscape lake and mountains" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6ExnYezzN3EyVQOOKJ0Ao-7YKFIe3fpSMXHRCnPAck0bC8oD1ZA0XqOlhAxCIyhnd_oKJ_1dr3HTEMxkxgoH-fBq0Hm9TcGJ0Bhn7HbUxwx9NANnoZ-kdQcTikYw88oyPNZG2POFC7Js4Jnhqm35cEiknj17qvlzAyQNnrKALxx0hkhqEzMT0WnApuOhkJC5lnFidOziln5V-YRLU1Ljz99OCMFQN8Gf52dZiu4dCXWjsaJLzfW_Fs8P_9lTQtwtFmAYJis59HAwb"/>
+</div>
+<div class="p-4 bg-primary-container/10 flex justify-between items-center">
+<span class="font-label text-[10px] text-primary uppercase tracking-widest font-bold">Hero_Background_A</span>
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim shadow-[0_0_8px_#00ff88]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset 3: Horizontal Mockup -->
+<div class="col-span-5 translate-x-4 translate-y-16 group">
+<div class="bg-surface-container rounded-xl overflow-hidden ghost-border group-hover:border-primary/40 transition-all cursor-pointer">
+<div class="aspect-video bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Modern web design dashboard interface mockups" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk3qSwH5QSjOkHx0-x2dx4yWtgHgJN4e4W5EqDX3CFUk8yRuTXTQJHmu0q51TjR71IWX2845_WhEv_W6j9inqQBi7YMm6xtY7Mype2YnBaVHrgHoXKcmBFjL_QjP2wjhxoPWD6XHGGeVZJZ00mobpoZafvnt2uKlgN2Gx9uexLtIr8ASUdVviATQysQF9kJNQ5rL4LlKL_4Luv7FoGBpHaOaIuR8JW7ONmc6-D9B-NEGV3-BrtBuYds-UjFXnTFlLxaBsZnKR29gnt"/>
+</div>
+<div class="p-4 flex justify-between items-center border-t border-white/5">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Dashboard_Final</span>
+<span class="font-label text-[10px] text-white/20">1920x1080</span>
+</div>
+</div>
+</div>
+<!-- Asset 4: Portrait Landscape -->
+<div class="col-span-3 -translate-y-20 translate-x-8 group">
+<div class="bg-surface-container rounded-xl overflow-hidden ghost-border group-hover:border-primary/40 transition-all cursor-pointer">
+<div class="aspect-[2/3] bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="High mountain peaks with mist and fog" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNYfXaXv8cdjTB4Dv8WlWMI_vkIgAf-B6RX4F3UV1lK0rtfjn6Mn6QV02iiXu2odfGakC8X2NlPSSleu20RKxmb66J-Pz9UQKtsYpaXA7TUG3vFGfBSEwi8bGiTIQKKE1LeNSi3pHGr7NxgcSJrxWEZ_9cbSE0UdfmcFvNRqnJ0fzZzkimgY2AOqTF4BC3PWBmK1nQwirT3KIwMX9hAVxpSh7cpZeF1iKjC7Sqr84TOysjGyzULSCC88duxFlXnDU42a2bAduzjmE_"/>
+</div>
+<div class="p-4 flex justify-between items-center border-t border-white/5">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Atmosphere_Ref_01</span>
+</div>
+</div>
+</div>
+<!-- Asset 5: Small UI Component -->
+<div class="col-span-3 translate-y-4 group">
+<div class="bg-surface-container rounded-xl overflow-hidden ghost-border group-hover:border-primary/40 transition-all cursor-pointer">
+<div class="aspect-square p-8 flex items-center justify-center bg-surface-container-lowest">
+<div class="w-full h-full rounded-2xl bg-gradient-to-br from-primary-container to-tertiary shadow-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-5xl">grid_view</span>
+</div>
+</div>
+<div class="p-4 flex justify-between items-center border-t border-white/5">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Icon_Set_WIP</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Asset Label Hover Simulation -->
+<div class="absolute top-2/3 right-[15%] pointer-events-none">
+<div class="px-2 py-1 bg-[#7c3aed] text-white text-[9px] font-label rounded-md mb-2">Designer_Active</div>
+<div class="w-5 h-5 border-2 border-[#7c3aed] rounded-full flex items-center justify-center">
+<div class="w-1 h-1 bg-[#7c3aed] rounded-full"></div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 bg-[#201f1f]/80 backdrop-blur-lg rounded-2xl mb-8 mx-auto w-fit shadow-[0_0_20px_rgba(124,58,237,0.3)] ghost-border">
+<button class="text-white/60 px-4 py-2 hover:text-[#d2bbff] transition-all flex flex-col items-center gap-1 group">
+<span class="material-symbols-outlined text-xl">add_circle</span>
+<span class="font-label text-[10px] uppercase tracking-widest hidden md:block">Add</span>
+</button>
+<!-- Zoom Controller -->
+<div class="flex items-center gap-3 px-4 py-2 border-x border-white/10 group">
+<span class="material-symbols-outlined text-white/40 text-lg">zoom_out</span>
+<div class="w-32 h-1 bg-white/10 rounded-full relative">
+<div class="absolute left-0 top-0 h-full w-[65%] bg-primary shadow-[0_0_8px_rgba(210,187,255,0.5)] rounded-full"></div>
+<div class="absolute left-[65%] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-2 border-primary cursor-pointer transition-transform hover:scale-125"></div>
+</div>
+<span class="material-symbols-outlined text-white/40 text-lg">zoom_in</span>
+<span class="font-label text-[10px] text-primary ml-1">65%</span>
+</div>
+<button class="bg-[#7c3aed] text-white rounded-xl px-4 py-2 scale-110 flex flex-col items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-xl">grid_view</span>
+<span class="font-label text-[10px] uppercase tracking-widest hidden md:block">Grid</span>
+</button>
+<button class="text-white/60 px-4 py-2 hover:text-[#d2bbff] transition-all flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-xl">layers</span>
+<span class="font-label text-[10px] uppercase tracking-widest hidden md:block">Layers</span>
+</button>
+<button class="text-white/60 px-4 py-2 hover:text-[#d2bbff] transition-all flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-xl">ios_share</span>
+<span class="font-label text-[10px] uppercase tracking-widest hidden md:block">Share</span>
+</button>
+</div>
+</body></html>

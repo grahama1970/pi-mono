@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6OFZjlym4r0",
+    "language": "en",
+    "took_ms": 7785,
+    "method": null,
+    "title": "DEF CON 33 - Access Control Done Right the First Time - Tim Clevenger",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1371,
+    "description": "Are you looking to install or upgrade a physical access control system? Having installed, repaired and upgraded dozens of large and small access control systems, I have found that many vendors install a \"minimum viable product\" that can leave your system unreliable and trivial to bypass.\n\nThis session will give you the tools and knowledge you need to work with your vendor to implement your system using best practices in the following areas:\n\nWiring, supervision, encryption and tamper-resistance\nChoosing clone-resistant badges and securely configuring badge readers\nSecuring controller equipment and managing issued badges\nMaintaining the system for maximum security and uptime",
+    "view_count": 537
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6OFZjlym4r0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qFVTy4TgtZk",
+    "language": "en",
+    "took_ms": 8750,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - Whitney Champion - Osquery OPENSOC CTF Tool Demo",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 511,
+    "description": "Every year the Blue Team Village hosts OpenSOC. A unique defense CTF meant to teach and test practical incident response skills in an environment that's as close to \"the real thing\" as it gets.\n\nThis year BTV wanted to do more. We know that some Blue Teamers might be unfamiliar with some of the tools used by OpenSOC. And we didn't want that to keep anyone from playing this incredible defense simulation.\n\nSo this year we are dedicating all day Thursday to demo the various OpenSOC tools, before OpenSOC starts on Friday. These are tools like Graylog, Moloch, Zeek, Osquery, and others that Blue Teamers rely on every day to defend their networks against attackers.\n\nThat means that after you LEARN the tools, you can PLAY the OpenSOC CTF, and then take that knowledge back to your own Blue Team to DO the work of defending your network.",
+    "view_count": 311
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qFVTy4TgtZk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

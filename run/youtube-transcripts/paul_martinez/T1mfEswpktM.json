@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T1mfEswpktM",
+    "language": "en",
+    "took_ms": 8406,
+    "method": null,
+    "title": "Kicking Off S4x19",
+    "channel": "S4 Events",
+    "upload_date": "20190913",
+    "duration_sec": 456,
+    "description": "Behind the scenes of Dale and three ICSsec influencers getting ready to go on the S4x19 Main Stage. This is the first of the S4x19 Vlogs.",
+    "view_count": 64
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T1mfEswpktM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

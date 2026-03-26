@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UmBNgn_9-zY",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "DEF CON 32 - Building a secure resilient nationwide EV charging network - Harry Krejsa, Sarah Hipel",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1374,
+    "description": "Unprecedented investments in vehicle electrification are creating new pathways for hackers to exploit EVs and EV chargers. Many of these risks are theoretical and have not been demonstrated in the wild…yet. Policymakers are racing to better understand systemic cyber risks present in this new EV ecosystem—particularly those which might impact the electric grid—so we can devise effective mitigations now. This talk offers a White House policymaker’s perspective on the changing EV landscape, new policy measures under consideration to identify and reduce the impact of vulnerabilities, and the critical role that hackers can play in focusing our work.",
+    "view_count": 429
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UmBNgn_9-zY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

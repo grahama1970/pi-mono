@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ikQEgqt1q6s",
+    "language": "en",
+    "took_ms": 9770,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Wes Lambert - Onions In the Cloud Make the CISO Proud",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 5958,
+    "description": "It's been said that 94% of enterprises already use a cloud service, and that 30% of all IT budgets are allocated to cloud computing. What does this mean for network defenders? It means that many organizations are invested in the cloud, and unfortunately, many organizations still have little visibility into inter-instance, instance-to-internet, and control plane activity, as well as management functions and bucket access within the cloud. While some of this activity may be logged, it may not be analyzed or aggregated for quick review. In this workshop, we'll cover how Security Onion, a completely free and open platform for intrusion detection, enterprise security monitoring, and log management can be leveraged to increase visibility in the cloud. By using Security Onion, defenders can facilitate effective threat detection and ease compliance efforts. Attendees should walk away with an understanding of how they can utilize Security Onion to find evil in their cloud environments and make their adversaries cry.",
+    "view_count": 936
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ikQEgqt1q6s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

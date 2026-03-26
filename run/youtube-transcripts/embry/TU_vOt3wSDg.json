@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TU_vOt3wSDg",
+    "language": "en",
+    "took_ms": 7613,
+    "method": null,
+    "title": "A conversation with NASA admin Jim Bridenstine inside SpaceX HQ",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20191011",
+    "duration_sec": 966,
+    "description": "Sorry for the low quality video and audio, this was a literal last minute interview opportunity. I hope the high quality conversation makes up for the low quality video. \n\nHere's a few relevant links:\n\n\"How SpaceX and Boeing will get Astronauts to the ISS\" - https://youtu.be/RqLNIBAroGY\n\n\"Why have SpaceX, Boeing and Blue Origin ditched abort towers\" - https://youtu.be/0MaeHNU2660\n\n\"A conversation with Elon Musk about Starship\" - https://youtu.be/cIQ36Kt7UVg\n\n--------------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 284385
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TU_vOt3wSDg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

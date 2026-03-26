@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PiF2Aln-L3w",
+    "language": "en",
+    "took_ms": 8833,
+    "method": null,
+    "title": "Heroes of NLP: Oren Etzioni",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201013",
+    "duration_sec": 2088,
+    "description": "Heroes of NLP is a video interview series featuring Andrew Ng, the founder of DeepLearning.AI, in conversation with thought leaders in NLP. Watch Andrew lead an enlightening discourse around how these industry and academic experts started in AI, their previous and current research projects, how their understanding of AI has changed through the decades, and what advice they can provide for learners of NLP. \n\nLooking to build a career in NLP? Enroll in the DeepLearning.AI NLP Specialization: https://bit.ly/33BaG0b\n\nComment below with links if you recognize any of the papers referenced in this interview!\n\nThis is an interview featuring Andrew Ng and Oren Etioni, CEO of the Allen Institute for Artificial Intelligence. \n\n00:54 - 03:44 How did you get started in AI? Tell us your personal story\n03:44 - 07:43 Open Information Extraction from the web\n07:43 - 13:28 Semantic Scholar project; and the story behind it help sort out rapidly growing literature with the rise of COVID-10\n13:28 - 17:57 Advice for someone that’s looking to work on or to launch a startup in NLP and the “dirty little secret of data”\n17:57 - 21:00 Prediction on the future of NLP trends when researchers are building bigger and bigger models\n21:00 - 23:35 Green AI\n23:35 - 26:38 Advice for someone trying to build a career and looking at academia and in industry\n26:38 - 31:44 Thoughts on bias, audit and regulating AI \n31:44 - 34:09 Advice for someone trying to break into NLP",
+    "view_count": 3206
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PiF2Aln-L3w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

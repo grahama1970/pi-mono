@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IiMladUbL6E",
+    "language": "en",
+    "took_ms": 10030,
+    "method": null,
+    "title": "DEF CON 29 - Cedric Owens - Gone Apple Pickin:  Red Teaming MacOS Environments in 2021",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 3124,
+    "description": "Though the vast majority of US companies are enterprise Windows shops, there is a growing percentage of companies that are shifting away from this model. Most of these types of companies tend to be based in the SF Bay Area and are often tech companies. This talk will provide a glimpse into what common attack paths in these environments look like in the absence of typical enterprise Active Directory implementations. Examples include techniques for targeting macOS endpoints, cloud and IdaaS, CI/CD pipeline, and other fun approaches. I will begin by discussing common tech stacks and macOS deployments and then move into macOS initial access (including the Gatekeeper bypass I found) and post exploitation options in these modern tech environments as well as detection opportunities.",
+    "view_count": 7762
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IiMladUbL6E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

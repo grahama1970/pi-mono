@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oiQ6_vWOxqE",
+    "language": "en",
+    "took_ms": 9254,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Nicholas Childs - Don’t fear the BUS, it won’t run you over",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1798,
+    "description": "This talk is a basic introduction to aircraft avionics comm/nav bus systems and the expansion of the network to more vulnerable areas than have seen before. It is more of a primer and 101 for stepping into a the larger world of aerospace networks.",
+    "view_count": 532
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oiQ6_vWOxqE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

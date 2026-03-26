@@ -1,0 +1,141 @@
+# Classifier Lab End-to-End Test Manifest
+# Tests the full pipeline: Create → Research → Data → Tune → Train → Evaluate → Promote
+# Run via: POST /api/test-runner/run { manifest: "test-manifest-classifier-lab-e2e.yaml" }
+
+name: "Classifier Lab E2E Pipeline"
+description: "Creates a classifier project from scratch and runs through all 7 pipeline stages"
+timeout: 300000  # 5 minutes for full pipeline
+
+steps:
+  # ── Phase 1: Navigate to Classifier Lab ────────────────────────
+  - name: "Open Classifier Lab"
+    action: navigate
+    url: "http://localhost:3002/#classifier-lab"
+    wait: 3000
+
+  - name: "Click Classifier Lab in nav"
+    action: click
+    selector: "div:has(> div:first-child > span)"
+    textContent: "Classifier Lab"
+    wait: 2000
+
+  - name: "Verify inner view loaded"
+    action: assert
+    type: exists
+    selector: "[data-testid='classifier-lab']"
+
+  # ── Phase 2: Create new project via API ────────────────────────
+  - name: "Create test project via API"
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/projects/classifier-lab/create"
+    body:
+      name: "e2e-test-beans"
+    assert:
+      status: 200
+      body.status: "CREATED"
+
+  # ── Phase 3: Verify project appears in left pane ───────────────
+  - name: "Refresh and select new project"
+    action: evaluate
+    expression: |
+      // Wait for project list to reload, then click the new project
+      await new Promise(r => setTimeout(r, 2000));
+      const items = document.querySelectorAll('[data-testid^="clf-project-"]');
+      for (const item of items) {
+        if (item.textContent?.includes('e2e-test-beans')) {
+          item.click();
+          return 'found';
+        }
+      }
+      return 'not-found';
+    assert:
+      result: "found"
+
+  # ── Phase 4: Research tab ──────────────────────────────────────
+  - name: "Click Research tab"
+    action: click
+    selector: "[data-testid='clf-tab-research']"
+    wait: 1500
+
+  - name: "Screenshot Research tab"
+    action: screenshot
+    filename: "clf-e2e-01-research.png"
+
+  # ── Phase 5: Data tab — verify empty state ─────────────────────
+  - name: "Click Data tab"
+    action: click
+    selector: "[data-testid='clf-tab-data']"
+    wait: 1500
+
+  - name: "Screenshot Data tab (should show no data)"
+    action: screenshot
+    filename: "clf-e2e-02-data-empty.png"
+
+  # ── Phase 6: Copy beans data to test project via API ───────────
+  - name: "Copy beans data to test project"
+    action: api
+    method: POST
+    url: "http://localhost:3001/api/projects/classifier-lab/copy-data"
+    body:
+      source: "beans"
+      target: "e2e-test-beans"
+    assert:
+      status: 200
+
+  - name: "Reload Data tab"
+    action: click
+    selector: "[data-testid='clf-tab-data']"
+    wait: 2000
+
+  - name: "Screenshot Data tab (should show beans classes)"
+    action: screenshot
+    filename: "clf-e2e-03-data-loaded.png"
+
+  - name: "Verify data gate passed"
+    action: assert
+    type: textContent
+    selector: "[data-testid='clf-main']"
+    contains: "VALIDATION PASSED"
+
+  # ── Phase 7: Check gated tabs are now accessible ───────────────
+  - name: "Click Tune tab (should be unblocked)"
+    action: click
+    selector: "[data-testid='clf-tab-tune']"
+    wait: 1500
+
+  - name: "Screenshot Tune tab"
+    action: screenshot
+    filename: "clf-e2e-04-tune.png"
+
+  # ── Phase 8: Evaluate tab ──────────────────────────────────────
+  - name: "Click Evaluate tab"
+    action: click
+    selector: "[data-testid='clf-tab-evaluate']"
+    wait: 1500
+
+  - name: "Screenshot Evaluate tab"
+    action: screenshot
+    filename: "clf-e2e-05-evaluate.png"
+
+  # ── Phase 9: Promote tab ───────────────────────────────────────
+  - name: "Click Promote tab"
+    action: click
+    selector: "[data-testid='clf-tab-promote']"
+    wait: 1500
+
+  - name: "Screenshot Promote tab"
+    action: screenshot
+    filename: "clf-e2e-06-promote.png"
+
+  # ── Phase 10: Cleanup ─────────────────────────────────────────
+  - name: "Delete test project"
+    action: api
+    method: DELETE
+    url: "http://localhost:3001/api/projects/classifier-lab/projects/e2e-test-beans"
+    assert:
+      status: 200
+
+  - name: "Final screenshot"
+    action: screenshot
+    filename: "clf-e2e-07-final.png"

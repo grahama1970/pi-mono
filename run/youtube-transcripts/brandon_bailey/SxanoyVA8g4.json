@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SxanoyVA8g4",
+    "language": "en",
+    "took_ms": 2797,
+    "method": null,
+    "title": "DEF CON Safe Mode Crypto and Privacy Village -Kelley Robinson- What if we had TLS for phone numbers?",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1526,
+    "description": "If you've noticed a surge in unwanted robocalls from your own area code in the last few years, you're not alone. The way telephony systems are set up today, anyone can spoof a call or a text from any number. With an estimated 85 billion spam calls globally, it's time to address the problem. This talk will discuss the latest advancements with STIR (Secure Telephone Identity Revisited) and SHAKEN (Signature-based Handling of Asserted information using toKENs), new tech standards that use well accepted public key cryptography methods to validate caller identification. We'll discuss the path and challenges to getting this implemented industry wide, where this tech will fall short, and what we can do to limit exposure to call spam and fraud in the meantime.",
+    "view_count": 653
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SxanoyVA8g4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

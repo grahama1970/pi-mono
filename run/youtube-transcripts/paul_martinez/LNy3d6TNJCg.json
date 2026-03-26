@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LNy3d6TNJCg",
+    "language": "en",
+    "took_ms": 7752,
+    "method": null,
+    "title": "Asset Owners As The Last Mile Of Cybersecurity",
+    "channel": "S4 Events",
+    "upload_date": "20240715",
+    "duration_sec": 1653,
+    "description": "The 'last mile problem' in logistics management refers to the breakdown between the relatively robust and efficient global supply chain system that reliably and economically moves goods great distances, and the heterogenous array of circumstances in the 'last mile' of delivery where operations can be brittle, expensive, and inefficient.\n\nMatt Tompkins argues that contemporary cybersecurity operations are prone to the same dynamic: the ecosystem of government agencies and top tier cybersecurity vendors is increasingly reliable and effective at marshaling coordinated detection, assessment, warning, and mitigation in response to cyber threats; but delivering on the final objective of infrastructure cybersecurity still depends on a heterogenous array of end users with divergent abilities, interest, and needs.\n\nLogistics managers address the last mile problem with a variegated and multi-pronged approach that can inform the cybersecurity community's resolution of the same problem: identifying specific common-denominator challenges where solutions can be deployed or replicated at scale for outsized impact; developing mechanisms to efficiently customize approaches where implementation is a one-size-fits-one situation; taking measures to reinforce points of failure where race-to-the-bottom environments leave a dearth of cybersecurity implementation; and building capacity to reinforce success when best-in-class implementers need partners to meet them where they are.",
+    "view_count": 269
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LNy3d6TNJCg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

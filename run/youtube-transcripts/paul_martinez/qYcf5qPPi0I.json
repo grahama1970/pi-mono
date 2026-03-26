@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qYcf5qPPi0I",
+    "language": "en",
+    "took_ms": 7530,
+    "method": null,
+    "title": "Advanced Vulnerability Information Sharing ... A Success Story in OT",
+    "channel": "S4 Events",
+    "upload_date": "20240429",
+    "duration_sec": 1709,
+    "description": "In early 2023, the US government informed Rockwell Automation of APT activity against a select set of their ControlLogix communication modules used widely across critical infrastructure.\n\nWith help of US Government partners, Rockwell was able to call up an A-Team of defenders from partners such as Dragos, Tenable, Mandiant, and Talos to power charge their efforts mitigating this threat and shield customers from exposure. This was the first effort of its kind to successfully bridge the competitor communication gap to head-off a real APT exploit at the pass before customers were impacted.\n\nDespite industry narratives about the unlikely success of such cross-vendor collaboration, these defenders put aside their affiliations and worked closely with Rockwell and each other for the benefit of all customers potentially impacted. In turn, Rockwell was able to defend customers at a level we could not have achieved alone.\n\nMaggie shares this story as a win for the community, a model for future use, and an insight into lessons learned fighting an APT threat as a true cross-vendor team.",
+    "view_count": 485
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qYcf5qPPi0I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

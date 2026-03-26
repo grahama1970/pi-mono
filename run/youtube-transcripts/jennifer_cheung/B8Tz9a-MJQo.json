@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B8Tz9a-MJQo",
+    "language": "en",
+    "took_ms": 8960,
+    "method": null,
+    "title": "DEF CON 31 - IOT Village Interview - video team",
+    "channel": "DEFCONConference",
+    "upload_date": "20230830",
+    "duration_sec": 496,
+    "description": "Silk interviews the folks from the IoT Village\n\ncreated by: https://www.youtube.com/channel/UCbHYwhbarpO6vXgbIYmcXnQ",
+    "view_count": 1575
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B8Tz9a-MJQo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

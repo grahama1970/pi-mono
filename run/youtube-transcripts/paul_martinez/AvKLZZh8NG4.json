@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AvKLZZh8NG4",
+    "language": "en",
+    "took_ms": 7542,
+    "method": null,
+    "title": "What to Patch When in OT - A Methodology",
+    "channel": "S4 Events",
+    "upload_date": "20200325",
+    "duration_sec": 1943,
+    "description": "Ralph Langner, Art Manion and Dale Peterson tackle this difficult and oft discussed topic. There were two main goals:\n\n1) Use a risk based approach to significantly reduce the number of patches that need to be applied immediately or frequently.\n\n2) Automate the evaluation of the patches so creating this prioritized patching list is simple and not time consuming.\n\nThe method uses four factors, each rated high, medium or low, and a decision tree. Three of the factors come from the asset management system (criticality, exposure, and safety), the fourth is exploitation (is it being exploited). \n\nThe panel does not claim the decision trees or factors are perfect. However this automated decision tree approach is something that meets both of the goals.",
+    "view_count": 737
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AvKLZZh8NG4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

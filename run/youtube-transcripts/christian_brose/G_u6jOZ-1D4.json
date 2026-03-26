@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G_u6jOZ-1D4",
+    "language": "en",
+    "took_ms": 9083,
+    "method": null,
+    "title": "John Lee on Regulations Forcing Jobs to China for Fox Business",
+    "channel": "Hudson Institute",
+    "upload_date": "20110914",
+    "duration_sec": 243,
+    "description": "Hudson Visiting Fellow John Lee joined Fox Business on September 12 to discuss U.S. regulations forcing jobs to China.",
+    "view_count": 171
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G_u6jOZ-1D4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

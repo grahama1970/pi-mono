@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ei31A4SJcAo",
+    "language": "en",
+    "took_ms": 8107,
+    "method": null,
+    "title": "A Discussion on the Defense Industrial Base with Government Leaders",
+    "channel": "Hudson Institute",
+    "upload_date": "20210114",
+    "duration_sec": 2862,
+    "description": "Join Hudson Institute for an expert panel discussion on the FY20 Industrial Capabilities Report and the issues confronting the Defense Industrial Base. This conversation will be moderated by Jeb Nadaner, Deputy Assistant Secretary of Defense for Industrial Policy.\n\nThe FY20 Industrial Capabilities Report transcribes the defense department’s priority industrial base risks and vulnerabilities; major developments and impacts of the coronavirus pandemic; and industrial base investments and initiatives executed in the previous fiscal year. The report promotes a strategy for a robust, resilient, secure, and innovative industrial base, which will require a substantial commitment of capital investment and resources, and continuation of the reforms undertaken in the past several years.",
+    "view_count": 1088
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ei31A4SJcAo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6fnGAmE1Nfw",
+    "language": "en",
+    "took_ms": 7554,
+    "method": null,
+    "title": "Mikko Hypponen Cyber Geopolitics",
+    "channel": "S4 Events",
+    "upload_date": "20160706",
+    "duration_sec": 1821,
+    "description": "Mikko Hypponen gave the S4x16 Day Two Keynote address on Cyber Geopolitics. This is a big picture keynote about walls, power, control and how technology has played a role over centuries. He then discusses the future and challenge of dealing with the latest technology: cyber.\n\nMy favorite quote from the keynote is \"War has been a real driver of technology, and technology has been a real driver of war\". \n\nMikko tackles the concept of deterrence in cyber, and he has a very good and graphic Coca-Cola bottling factory example at 16:30, and cybercrime unicorns at 19:50.",
+    "view_count": 6236
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6fnGAmE1Nfw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

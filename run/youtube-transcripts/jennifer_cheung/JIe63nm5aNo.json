@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JIe63nm5aNo",
+    "language": "en",
+    "took_ms": 9538,
+    "method": null,
+    "title": "DEF CON Safe Mode Blockchain Village - Josh McIntyre - Chaintuts -  Bitcoin Address Generator",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 1718,
+    "description": "Chaintuts - Building a Microcontroller Bitcoin Address Generator",
+    "view_count": 302
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JIe63nm5aNo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

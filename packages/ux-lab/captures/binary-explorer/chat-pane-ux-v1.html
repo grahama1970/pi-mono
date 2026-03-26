@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Explorer Chat Pane</title>
+    <style>
+        /* NVIS MIL-STD-3009 Design System */
+        :root {
+            --green: #00ff88;
+            --red: #ff4444;
+            --amber: #ffaa00;
+            --blue: #4a9eff;
+            --accent: #7c3aed;
+            --white: #e2e8f0;
+            --dim: #64748b;
+            --muted: #334155;
+            --bg: #141414;
+            --bgCard: #1a1a1a;
+            --bgPanel: #111111;
+            --bgDeep: #0b1220;
+            --border: rgba(255,255,255,0.13);
+            --borderHover: rgba(255,255,255,0.25);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh; /* Ensure full viewport height */
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .graph-pane {
+            width: 65%;
+            background-color: var(--bgDeep);
+            /* Placeholder for graph */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dim);
+            font-size: 20px;
+        }
+
+        .chat-pane {
+            width: 35%;
+            background-color: var(--bgPanel);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .activity-bar {
+            width: 48px;
+            background-color: var(--bgDeep);
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+
+        /* Chat Pane Components */
+        .breadcrumb-trail {
+            background-color: var(--bgDeep);
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-bottom: var(--border) 1px solid;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--white);
+            margin-right: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .breadcrumb:last-child {
+            margin-right: 0;
+        }
+
+        .breadcrumb.active {
+            font-weight: bold;
+        }
+
+        .breadcrumb.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .breadcrumb .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .breadcrumb .separator {
+            color: var(--muted);
+            margin: 0 5px;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .node-switch-divider {
+            width: 100%;
+            height: 1px;
+            background-color: var(--border);
+            margin: 12px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .node-switch-divider span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            background-color: var(--bgPanel);
+            padding: 0 5px;
+        }
+
+        .node-switch-divider .color-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 3px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            background-color: var(--accent);
+            color: var(--white);
+            align-self: flex-end;
+        }
+
+        .message.assistant {
+            background-color: var(--bgCard);
+            color: var(--white);
+            align-self: flex-start;
+        }
+
+        .message code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            background-color: rgba(255,255,255,0.05);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .message .show-in-graph {
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 3px;
+        }
+
+        .message .show-in-graph:hover {
+            color: var(--accent);
+        }
+
+        .chat-input-area {
+            background-color: var(--bgDeep);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-top: var(--border) 1px solid;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            background-color: var(--bg);
+            border: none;
+            color: var(--white);
+            padding: 8px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .chat-input::placeholder {
+            color: var(--dim);
+            font-style: italic;
+        }
+
+        .send-button {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            color: var(--dim);
+            margin-bottom: 10px;
+        }
+
+        .empty-state .message {
+            font-size: 13px;
+            color: var(--dim);
+            margin-bottom: 20px;
+        }
+
+        .question-chips {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .question-chip {
+            background-color: var(--bgCard);
+            border: var(--border) 1px solid;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .question-chip:hover {
+            border-color: var(--accent);
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            margin: 0;
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none;
+        }
+
+        /* Activity Bar */
+        .activity-bar {
+            width: 48px;
+            background-color: var(--bgDeep);
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+
+        .activity-bar-icon {
+            color: var(--dim);
+            font-size: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .activity-bar-icon:hover {
+            color: var(--white);
+        }
+
+        /* Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        /* Markdown Styling (basic) */
+        .message h2 {
+            font-size: 13px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .message ul {
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .message li {
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 3px;
+        }
+
+        .node-chip {
+            background-color: var(--bgCard);
+            border: var(--border) 1px solid;
+            color: var(--white);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="graph-pane">
+        Force-Directed Graph (Placeholder)
+    </div>
+    <div class="chat-pane">
+
+        <!-- Breadcrumb Trail -->
+        <div class="breadcrumb-trail">
+            <div class="breadcrumb">
+                <span class="color-dot" style="background-color: var(--blue);"></span>
+                <span class="node-name">main</span>
+            </div>
+        </div>
+
+        <!-- Chat Messages (Empty State) -->
+        <div class="chat-messages empty-state-container" id="empty-state">
+            <div class="empty-state">
+                <div class="icon">
+                    &#x1F50D; <!-- Magnifying Glass -->
+                </div>
+                <div class="message">Click a node or ask a question</div>
+                <div class="question-chips">
+                    <div class="question-chip">What handles authentication?</div>
+                    <div class="question-chip">Show the attack surface</div>
+                    <div class="question-chip">How does SSE streaming work?</div>
+                    <div class="question-chip">What state machines exist?</div>
+                    <div class="question-chip">Find all external API calls</div>
+                    <div class="question-chip">What connects to the daemon namespace?</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages (Active Conversation) -->
+        <div class="chat-messages active-conversation-container hidden" id="active-conversation">
+
+            <!-- Node Switch Divider 1 -->
+            <div class="node-switch-divider">
+                <span><span class="color-dot" style="background-color: var(--green);"></span><span class="node-name">entrypoint</span></span>
+            </div>
+
+            <div class="message assistant">
+                The <code>entrypoint</code> function is the first code executed when the binary runs. It initializes the runtime environment and calls <code>main</code>. <a href="#" class="show-in-graph">↗</a>
+            </div>
+            <div class="message user">
+                What does `main` do?
+            </div>
+            <div class="message assistant">
+                The <code>main</code> function parses command-line arguments and dispatches to the appropriate handler. It uses the <code>parse_args</code> function to handle the arguments. <a href="#" class="show-in-graph">↗</a>
+            </div>
+
+            <!-- Node Switch Divider 2 -->
+            <div class="node-switch-divider">
+                <span><span class="color-dot" style="background-color: var(--amber);"></span><span class="node-name">parse_args</span></span>
+            </div>
+
+            <div class="message assistant">
+                The <code>parse_args</code> function uses the <code>getopt</code> library to parse command-line options. It then validates the arguments and sets up the program's configuration. <a href="#" class="show-in-graph">↗</a>
+            </div>
+            <div class="message user">
+                What are the core schemas?
+            </div>
+            <div class="message assistant">
+                The core schemas are defined in the <code>schema.proto</code> file. They include the <code>User</code>, <code>Event</code>, and <code>Log</code> schemas. <a href="#" class="show-in-graph">↗</a>
+            </div>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="chat-input-area">
+            <div class="node-chip">main</div>
+            <input type="text" class="chat-input" placeholder="Ask about main...">
+            <button class="send-button">Send</button>
+        </div>
+    </div>
+
+    <div class="activity-bar">
+        <div class="activity-bar-icon">&#x2699;</div> <!-- Gear -->
+        <div class="activity-bar-icon">&#x270E;</div> <!-- Pencil -->
+        <div class="activity-bar-icon">&#x3C;&#x2F;&gt;</div> <!-- Code -->
+    </div>
+</div>
+
+<script>
+    // Toggle between empty state and active conversation (for demonstration)
+    document.addEventListener('DOMContentLoaded', function() {
+        const emptyState = document.getElementById('empty-state');
+        const activeConversation = document.getElementById('active-conversation');
+
+        // Simulate node selection by hiding empty state and showing active conversation
+        // In a real application, this would be triggered by a graph node click
+        setTimeout(() => {
+            emptyState.classList.add('hidden');
+            activeConversation.classList.remove('hidden');
+        }, 1000); // Simulate a 1-second delay
+    });
+</script>
+
+</body>
+</html>

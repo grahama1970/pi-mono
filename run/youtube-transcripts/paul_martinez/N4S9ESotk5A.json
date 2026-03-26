@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N4S9ESotk5A",
+    "language": "en",
+    "took_ms": 9261,
+    "method": null,
+    "title": "What To Do 1st, 2nd, 3rd #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250529",
+    "duration_sec": 161,
+    "description": "And maybe more importantly the decision on what cyber hygiene not to do.",
+    "view_count": 932
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N4S9ESotk5A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

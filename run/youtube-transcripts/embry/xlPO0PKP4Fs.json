@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xlPO0PKP4Fs",
+    "language": "en",
+    "took_ms": 8669,
+    "method": null,
+    "title": "Why were there missing rungs on the Lunar Lander’s Ladder?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190719",
+    "duration_sec": 887,
+    "description": "Something about the Apollo missions always confused me, sure, the step off of the lunar lander’s 91 cm footpad was a small step, but the step just before that was actually enormous! \n\nI’m talking about this, the huge gap between the last rung on the ladder and the ground. Why on the Moon is that gap so huge?! Isn’t it dangerous to require an astronaut to jump down onto the surface and jump back up?\n\nThe lunar lander’s ladder had nine rungs all spaced 22.8 cm (9”) apart, but the gap between the last rung and the ground was about three times that at a whopping 76 cm (30”)! So really, the ladder wasn’t missing one rung, it was missing two!\n\nI mean sure, the gravity’s only 1/6th that of Earth’s, but wouldn’t it have been so much safer if there was even one more rung to close that gap up a little? \n \nSo today we’re going to look into why NASA and the Lunar Lander’s manufacturer Grumman, chose a ladder of this length, we’ll talk about design considerations of the hardware, the unknown conditions of the lunar surface, and the astronauts who were basically too smooth of pilots to get the ladder’s last rung any closer to the surface of the moon.\n\n---------------------------------------------\n\nHUGE thanks to my Moon Walker Patreon supporters! Blake Jacobs, Eli Burton, Jethro, Mac Malkawi, Neurostream, Ole Mathias Heggem and James Locke.\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 826189
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xlPO0PKP4Fs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

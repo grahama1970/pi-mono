@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6mNnPISidlg",
+    "language": "en",
+    "took_ms": 9794,
+    "method": null,
+    "title": "Build safe and reliable LLM applications with guardrails in this new course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241113",
+    "duration_sec": 168,
+    "description": "Enroll for free: https://bit.ly/4ero9Zu\n\nLearn to build safe, production-ready LLM applications!\n\nIn our new course, Safe and Reliable AI via Guardrails, taught by Shreya Rajpal, co-founder & CEO of GuardrailsAI, you’ll learn to use guardrails to prevent common LLM issues like hallucinations, sensitive information leaks, and off-topic responses.\n\nThrough hands-on exercises, you’ll add guardrails to a RAG-powered customer service chatbot, implementing techniques that validate and verify inputs and outputs. You’ll also explore pre-built guardrails from the GuardrailsAI hub and learn to build custom protections, including PII detection and focused response controls.\n\nIn detail, you’ll: \n\n- Identify common issues like hallucinations, off-topic replies, sensitive info leaks, and reputation risks.\n- Use input and output guards to validate and verify responses, reducing these risks.\n- Prevent your chatbot from discussing confidential topics, such as internal projects.\n- Use an NLI model to ensure responses are based on trusted information.\n- Detect and redact sensitive information in user prompts and outputs.\n- Limit responses to relevant topics, keeping conversations focused.\n- Prevent mentions of competitors with a name detection pipeline and entity recognition.\n\nThis course equips you to confidently build and deploy safe, reliable LLM-powered applications ready for real-world use.\n\nLearn more: https://bit.ly/4ero9Zu",
+    "view_count": 6244
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6mNnPISidlg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

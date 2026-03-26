@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cf49UdCWhZY",
+    "language": "en",
+    "took_ms": 8937,
+    "method": null,
+    "title": "Strengthening U.S. Manufacturing: Restoring the Industrial Commons",
+    "channel": "Hudson Institute",
+    "upload_date": "20200929",
+    "duration_sec": 3856,
+    "description": "Panel experts will summarize the impact of increased reliance on outsourcing on the strength and competitiveness of U.S. manufacturing while also suggesting policy changes U.S. leaders can take to curtail and reverse the trends.\n\nHudson Institute Senior Fellow Tom Duesterberg will moderate the event.",
+    "view_count": 717
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cf49UdCWhZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

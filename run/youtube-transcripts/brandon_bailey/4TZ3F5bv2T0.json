@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4TZ3F5bv2T0",
+    "language": "en",
+    "took_ms": 9317,
+    "method": null,
+    "title": "DEF CON 33 - Data Duplication Village - Tracking 300K+ Drives -",
+    "channel": "DEFCONConference",
+    "upload_date": "20251021",
+    "duration_sec": 3600,
+    "description": "Backblaze Drive Stats is an open dataset that has tracked hard drive and SSD reliability across our data centers since 2013. In this 2025 talk at the Def Con DDV, Stephanie and Pat cover recent backend upgrades—including a modular versioning system and migration to Snowflake with Trino and Iceberg—that improved data processing and failure validation. We'll also share updated AFR trends by drive model and size, SSD tracking challenges, and share how drive insights have underpinned performance improvements in data centers.",
+    "view_count": 2514
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4TZ3F5bv2T0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

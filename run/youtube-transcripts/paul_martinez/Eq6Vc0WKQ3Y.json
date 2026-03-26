@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Eq6Vc0WKQ3Y",
+    "language": "en",
+    "took_ms": 8790,
+    "method": null,
+    "title": "Software Update Frameworks and the CI Supply Chain",
+    "channel": "S4 Events",
+    "upload_date": "20240718",
+    "duration_sec": 1236,
+    "description": "The ability to update software on devices is a valuable tool for protecting critical systems from evolving threats. However, this capability is not without risk.  There have been an alarming number of vulnerabilities that were introduced through a malicious software patch or a flaw in the update process. New software update frameworks have been developed to mitigate this risk, but they come with new levels of complexity, and they may not work on segmented network architectures or be suitable for embedded devices.   \n\nBrian focuses on TUF (The Update Framework), a software update approach that addresses many common vulnerabilities and consider how it can be applied in a critical infrastructure environment. It is compared against SUIT (Software Update for IoT) and UpKit, two alternative structures that are intended for use on embedded systems.\n\nAttack trees are used to compare these models and visually explain the strengths and challenges that may be encountered when they are applied in a network that follows the Purdue or ISA-99/IEC 62443 network architecture. The role of metadata such as an SBOM and vendor test results are also be considered. These concepts are merged to re-cast software updates into the context of an integrated supply-chain and configuration management system.",
+    "view_count": 156
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Eq6Vc0WKQ3Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

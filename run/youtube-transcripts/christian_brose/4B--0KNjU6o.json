@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4B--0KNjU6o",
+    "language": "en",
+    "took_ms": 8807,
+    "method": null,
+    "title": "Reaching an Endgame in Ukraine",
+    "channel": "Hudson Institute",
+    "upload_date": "20230504",
+    "duration_sec": 3561,
+    "description": "With speculation rife about a spring counteroffensive, continued churn in Vladimir Putin’s approach to his illegal war, and the Vilnius NATO summit in July, the coming months will be critical for Ukraine’s future.   \n\nJoin us for a conversation about the latest developments in Ukraine and what an endgame could look like with visiting former Ukrainian Foreign Minister Pavlo Klimkin, International Republican Institute Senior Advisor for Transatlantic Strategy Reka Szemerkenyi, and Hudson Senior Fellow Luke Coffey.",
+    "view_count": 2786
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4B--0KNjU6o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

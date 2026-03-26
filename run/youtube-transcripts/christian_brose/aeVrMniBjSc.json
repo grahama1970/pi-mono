@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aeVrMniBjSc",
+    "language": "en",
+    "took_ms": 8019,
+    "method": null,
+    "title": "Vice President Mike Pence's Remarks on the Administration's Policy Towards China",
+    "channel": "Hudson Institute",
+    "upload_date": "20181004",
+    "duration_sec": 2589,
+    "description": "On October 4, Vice President Mike Pence delivered a major speech on the administration’s policy towards China at Hudson Institute.",
+    "view_count": 541156
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aeVrMniBjSc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MvaUcc0mNOU",
+    "language": "en",
+    "took_ms": 11015,
+    "method": null,
+    "title": "Test Time Compute, Part 2: Verifiers",
+    "channel": "Trelis Research",
+    "upload_date": "20241004",
+    "duration_sec": 3600,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n➡️ Test Time Compute, Part 1: Sampling and Chain of Thought - https://youtu.be/qJoy8U27NPo\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1k6Hqn1_HYZ0CVFj2S4B2kvggw6WZajP5eHaWhO77tBE/edit?usp=sharing\n- GSM8K: https://huggingface.co/datasets/openai/gsm8k\n- Chain of Thought Paper: https://arxiv.org/abs/2201.11903\n- Let’s Verify Step by Step: https://arxiv.org/abs/2305.20050\n- Large Language Monkeys: https://arxiv.org/abs/2407.21787\n- Are more LLM calls all you need?: https://arxiv.org/abs/2403.02419\n\nTIMESTAMPS:\n0:00 Sampling and Verification\n0:36 Training Compute vs Test Time Compute\n1:50 Part 1 Recap: Sampling and Chain of Thought\n3:30 Video Overview: Parallel Sampling and Filtering with Verifiers\n4:33 How to sample multiple answers in parallel\n7:08 Verifier Methods\n11:05 Improving verifiers with fine-tuning or prompt optimisation\n12:50 Output verifiers versus process verifiers\n15:00 Majority Voting and Monte Carlo (MCTS)\n16:40 Notebook Setup - Trelis.com/advanced-inference\n18:55 Installation of vLLM (with guided decoding)\n22:20 Loading Llama 3.2 1B (as opposed to 3B in Part 1)\n23:58 Baseline Single-shot approach\n28:48 Parallel sampling approach (Pass@n / perfect verifier)\n32:00 Parallel sampling with a voting verifier (using vLLM guided decoding)\n39:22 Prompt optimisation for verifiers\n43:25 Parallel sampling with a scoring verifier (1-10)\n46:45 Parallel sampling with a binary true/false scoring verifier\n48:23 Llama 3.2 1B Results\n51:29 Literature Review (Let’s Verify Step by Step, Large Language Monkeys, Are more LLM calls all you need? Tree of Thought)\n59:30 Resources",
+    "view_count": 2164
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MvaUcc0mNOU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

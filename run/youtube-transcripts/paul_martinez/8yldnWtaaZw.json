@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8yldnWtaaZw",
+    "language": "en",
+    "took_ms": 7523,
+    "method": null,
+    "title": "OnRamp: OT Supply Chain",
+    "channel": "S4 Events",
+    "upload_date": "20250305",
+    "duration_sec": 1555,
+    "description": "SolarWinds and other security incidents have highlighted the need to include supply chain security in your OT security program. Cassie Crossley plays a big role in this across Schneider Electric's product lines and in industry efforts. \n\nThis session will cover SBOMs, of course, but a lot more than SBOMs. Attend this session if you are a vendor trying to design your supply chain security program or an asset owner needing to know what to ask your vendors about their supply chain.\n\nThe OnRamp is S4's 101-Level Training Course. Check out the OnRamp playlist on the S4 Events Youtube Channel. This year's 5 sessions update the OnRamp training with topics that have become more important the last two years.",
+    "view_count": 366
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8yldnWtaaZw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

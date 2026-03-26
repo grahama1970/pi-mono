@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZwPfapsgCeI",
+    "language": "en",
+    "took_ms": 3019,
+    "method": null,
+    "title": "Paleček",
+    "channel": "karpathy",
+    "upload_date": "20090627",
+    "duration_sec": 27,
+    "description": "Paleček, Král Šumavy",
+    "view_count": 4224
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZwPfapsgCeI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

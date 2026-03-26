@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fiXBY09_XIg",
+    "language": "en",
+    "took_ms": 8818,
+    "method": null,
+    "title": "SBOM... Who Pays For It?",
+    "channel": "S4 Events",
+    "upload_date": "20201028",
+    "duration_sec": 208,
+    "description": "In this S4x20 clip, Allen Friedman leads a discussion with an ICS asset owner, Kaleem Khawaja of BP, and an ICS vendor, David Foose of Emerson, on who would do what and who would pay for maintaining a SBOM on an ICS.",
+    "view_count": 142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fiXBY09_XIg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

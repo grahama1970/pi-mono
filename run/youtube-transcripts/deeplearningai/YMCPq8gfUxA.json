@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YMCPq8gfUxA",
+    "language": "en",
+    "took_ms": 9249,
+    "method": null,
+    "title": "How to #BeADeepLearner",
+    "channel": "DeepLearningAI",
+    "upload_date": "20220126",
+    "duration_sec": 5700,
+    "description": "Event Agenda:\n- 20 mins: Event kickoff + Opening speech by Andrew Ng \n- 60 mins: speaker introduction + Q&A on Discourse: \n\nHow to participate in Q&A:\n- Join our community on Discourse to post questions to our speakers and discuss with others.\n- After logging in, go to the Ask Me Anything category (https://community.deeplearning.ai/c/deep-learning-specialization/events-office-hour/beadeeplearner-a-live-ama-event/236) and post your questions or upvote others. \n- If you are new to Discourse, click here (https://community.deeplearning.ai/invites/UKRd8Y29Xb) to sign up first\n- To participate, simply ask a question by creating a topic, upvote others', or reply to posts!\n\nThis event is for anyone who are AI beginners and looking to build a career in AI, as well as anyone who have questions about Deep Learning Specialization and how it helps you grow your skills in AI. \n\nCheck out Deep Learning Specialization at https://www.deeplearning.ai/program/deep-learning-specialization/",
+    "view_count": 7957
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YMCPq8gfUxA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

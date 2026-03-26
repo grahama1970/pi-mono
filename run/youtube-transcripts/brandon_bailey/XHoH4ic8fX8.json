@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XHoH4ic8fX8",
+    "language": "en",
+    "took_ms": 8822,
+    "method": null,
+    "title": "DEF CON 33 - Shaking Out Shells with SSHamble - HD Moore",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1227,
+    "description": "Secure Shell (SSH) is finally fun again! After a wild two years, including a near-miss backdoor, clever cryptographic failures, unauthenticated remote code execution in OpenSSH, and piles of state machine bugs and authentication bypass issues, the security of SSH implementations has never been more relevant. This session is an extension of our 2024 work (Unexpected Exposures in the Secure Shell) and includes new research as well as big updates to our open source research and assessment tool, SSHamble.",
+    "view_count": 290
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XHoH4ic8fX8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

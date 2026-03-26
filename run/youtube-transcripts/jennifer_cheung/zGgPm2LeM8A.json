@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zGgPm2LeM8A",
+    "language": "en",
+    "took_ms": 8044,
+    "method": null,
+    "title": "DEF CON 32 - DC101 - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2708,
+    "description": "What you need to know to get the most out of your first DEF CON.",
+    "view_count": 279
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zGgPm2LeM8A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AGr25lmSflk",
+    "language": "en",
+    "took_ms": 7506,
+    "method": null,
+    "title": "DEF CON 30 Blue Team Village - Filipi Pires - Malware Hunting Discovering techniques in PDF",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3098,
+    "description": "",
+    "view_count": 763
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AGr25lmSflk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

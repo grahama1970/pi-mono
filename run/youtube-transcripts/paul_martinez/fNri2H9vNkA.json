@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fNri2H9vNkA",
+    "language": "en",
+    "took_ms": 7783,
+    "method": null,
+    "title": "Keeping Time In A Warzone",
+    "channel": "S4 Events",
+    "upload_date": "20240701",
+    "duration_sec": 1811,
+    "description": "To protect themselves in the midst of Russian aggression, the Ukrainian military utilizes electronic warfare to blanket critical infrastructure to defeat radar and GPS guided smart munitions. This has the unintended consequence of disrupting GPS synchrophasor clock measurements and creating service outages on an already beleaguered and damaged transmission electric grid. \n\nJoe Marshall will tell an incredible story of how a group of engineers and security professionals from a diverse coalition of organizations came together to solve this electronic warfare GPS problem in an unconventional technical way, and helped stabilize parts of the transmission grid of Ukraine. It’s a story about good people who wanted to help Ukraine keep the lights on and save lives. Ultimately, it’s a story about being on the frontier of grid resiliency, solving unconventional issues in the most adverse of conditions: War.",
+    "view_count": 695
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fNri2H9vNkA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

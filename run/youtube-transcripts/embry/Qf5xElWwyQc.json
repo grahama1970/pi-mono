@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Qf5xElWwyQc",
+    "language": "en",
+    "took_ms": 9350,
+    "method": null,
+    "title": "How SpaceX lands the Falcon 9: Grid Fins, Thrusters and Engines!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170603",
+    "duration_sec": 434,
+    "description": "Have you ever wondered how SpaceX controls the first stage of their Falcon 9 to nail a bullseye from 70 miles in altitude and after traveling up to 5,000 mph?\n\nSpaceX has three main systems that help steer the first stage of their impressive Falcon 9 rocket. They are grid fins, nitrogen thrusters and the merlin engines themselves. We show you how these systems interact and then try and land a first stage ourselves in Kerbal Space Program!\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nShow your support on Patreon - http://patreon.com/everydayastronaut",
+    "view_count": 201518
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Qf5xElWwyQc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5an8N-tx6zg",
+    "language": "en",
+    "took_ms": 8334,
+    "method": null,
+    "title": "Badgerboard : Weaseling Out The Unknown",
+    "channel": "S4 Events",
+    "upload_date": "20240704",
+    "duration_sec": 1596,
+    "description": "Communication on the backplanes of PLCs has been largely unavailable for visibility, protection and detection. Carl and the team at Talos Intelligence tried to change that.\n\nCarl will present and release research that enabled Snort network IDS visibility directly into a popular PLC's backplane traffic. This visibility is read only, and is not subject to any other modules censoring data. By utilizing the power of a FPGA and custom bitcode, they were able to lift raw traffic from the backplane bus directly into network traffic that could be consumed by any network sensor.\n\nThis is an entirely new layer of visibility in a world where ICS security starts at the network layer. This talk includes the code release of all Badgerboard associated code, which includes the associated FPGA logic, as well as the layers required to lift the traffic into valid UDP network traffic. \n\nDale's note: I'm excited for this session. Sounds like a classic Stage 2 deep dive on the bleeding edge.",
+    "view_count": 161
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5an8N-tx6zg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

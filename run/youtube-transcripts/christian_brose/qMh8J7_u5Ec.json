@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qMh8J7_u5Ec",
+    "language": "en",
+    "took_ms": 8550,
+    "method": null,
+    "title": "Energy Security in the 118th Congress: A Discussion with Rep. August Pfluger",
+    "channel": "Hudson Institute",
+    "upload_date": "20230112",
+    "duration_sec": 2656,
+    "description": "Energy Security in the 118th Congress: A Discussion with Rep. August Pfluger",
+    "view_count": 509
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qMh8J7_u5Ec: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

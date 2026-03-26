@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5CuA14klgMg",
+    "language": "en",
+    "took_ms": 9064,
+    "method": null,
+    "title": "Implementing a New Maritime Strategy",
+    "channel": "Hudson Institute",
+    "upload_date": "20210802",
+    "duration_sec": 3760,
+    "description": "Join Hudson Institute Senior Fellow Bryan Clark for a discussion with Rep. Elaine Luria (D-VA) on U.S. maritime strategy, the U.S. Navy’s future, and the challenges of deterring China. Congress is considering the Biden Administration’s first defense budget, which would shrink the U.S. fleet to prioritize current readiness and future research and development within a lower overall budget than in preceding years. This approach is described as “divesting to invest,” but may not be appropriate given the accelerating threat posed by China. Please join Congresswoman Luria and Bryan Clark to discuss alternative strategies the Navy could pursue to continue deterring China and their implications for programs, budgets, and operations.",
+    "view_count": 1260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5CuA14klgMg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uZhDNZVBJVc",
+    "language": "en",
+    "took_ms": 9001,
+    "method": null,
+    "title": "Hank Cardello on Better-For-You Foods for First Business News",
+    "channel": "Hudson Institute",
+    "upload_date": "20111017",
+    "duration_sec": 181,
+    "description": "Senior Fellow Hank Cardello joined First Business News on October 15th to discuss the Obesity Solutions Initiative's groundbreaking new study on \"Better-For-You\" foods and profitability of companies.",
+    "view_count": 330
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uZhDNZVBJVc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

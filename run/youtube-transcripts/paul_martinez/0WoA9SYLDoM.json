@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0WoA9SYLDoM",
+    "language": "en",
+    "took_ms": 8719,
+    "method": null,
+    "title": "ICS Security Assessment Methodology, Tools & Tips",
+    "channel": "S4 Events",
+    "upload_date": "20160719",
+    "duration_sec": 3387,
+    "description": "Dale Peterson of Digital Bond describes how to perform an ICS / SCADA cyber security assessment in this S4xJapan video. \n\nHe goes into a lot of detail on the tools and how to use them in the fragile and insecure by design environment that is an ICS.\n\nThere are also useful tips on when to bother applying security patches (this will likely surprise you), the importance of identifying the impact of a vulnerability, and an efficient risk reduction approach.",
+    "view_count": 19706
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0WoA9SYLDoM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

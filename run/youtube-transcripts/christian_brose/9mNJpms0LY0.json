@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9mNJpms0LY0",
+    "language": "en",
+    "took_ms": 10571,
+    "method": null,
+    "title": "Mistakes to Success: Learning and Adapting When Things Go Wr",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 5914,
+    "description": "Do foundations make mistakes? If so, why do we so seldom hear about them? And if foundations don’t talk freely about their errors, how can they learn from them? Robert Giloth, Vice President of the Center for Family Economic Success at Baltimore’s Annie E. Casey Foundation, has set about to remedy that deficiency by editing, with Colin Austin, a collection of essays entitled Mistakes to Success: Learning and Adapting When Things Go Wrong. Here’s how he describes the purpose of the volume: - Capt",
+    "view_count": 20
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9mNJpms0LY0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

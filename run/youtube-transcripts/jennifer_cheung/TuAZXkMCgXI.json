@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TuAZXkMCgXI",
+    "language": "en",
+    "took_ms": 8097,
+    "method": null,
+    "title": "DEF CON 32 -  How State Laws Meant to Protect Children Raise Other Risks - Anthony Hendricks",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1319,
+    "description": "On February 25, 1998, hip-hop group the Wu-Tang Clan made Grammy history… for all the wrong reasons. After losing in the Rap Album of the Year category, Wu-Tang member ODB stormed the stage, interrupting an acceptance speech to declare the now infamous phrase “Wu-Tang is for the children.” Anyone who has heard a song from Wu-Tang knows that despite ODB’s insistence, it is certainly not true. It appears that States may be taking this same approach when it comes to children's privacy and safety online. Despite these laws being for the protection of children, they often raise other unintended consequences. State legislatures around the country are debating new laws to protect children online. This year, Tennessee, Maryland, Virginia, Georgia, Utah, and Florida have passed legislation focused on children's privacy, usually through restrictions on social media use. While privacy advocates have championed these laws, they have been met with criticism and, in some instances, legal challenges. This is because in order to implement laws that apply to kids online, companies have to identify which users are kids—which requires the collection of sensitive personal information. Along with this privacy tension, there are First Amendment protection concerns that these laws limit online speech. This presentation will explore how youth privacy laws may not be protecting children in the ways that we hope by first discussing the attempts made by states to address youth privacy. Then, analyzing the unintended privacy consequences, focusing on how states are required to collect sensitive information that we are often trying to protect. Next, we will examine the First Amendment concerns using the example of the challenges to California’s Age Appropriate Design Code Act before finally discussing a path forward to protecting children.",
+    "view_count": 2983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TuAZXkMCgXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

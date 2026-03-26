@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tyrGSQmJ-gk",
+    "language": "en",
+    "took_ms": 7828,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Michael Lewellen - Ethereum Hacks & How to Stop Them",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 2717,
+    "description": "Learn about some of the recent smart contract security incidents and how to stop them using OpenZeppelin security tools like Defender.",
+    "view_count": 1325
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tyrGSQmJ-gk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

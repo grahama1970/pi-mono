@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HnNqbeT1OKs",
+    "language": "en",
+    "took_ms": 8612,
+    "method": null,
+    "title": "ExxonMobil OPA Interview",
+    "channel": "S4 Events",
+    "upload_date": "20170806",
+    "duration_sec": 1786,
+    "description": "ExxonMobil has led the effort to create the Open Process Automation forum for \"developing a standards-based, open, secure, interoperable process control architecture.\" Dale Peterson had an opportunity to ask Steve Bitar questions on OPA on the S4x17 stage.\n\n0:35 What is the OPA program? \nOriginal reaction from DCS vendors was \"we like everything about Open Process Automation, except the open bit.\" The near term goals of the OPA is to complete a prototype in 2017 and build a coalition of the willing to move this idea forward.\n\n4:55 Biggest success in the first year? In years two and three?\n\n9:35 What have you learned in the first year of public OPA?\n\n11:30 Start of the hard questions\n11:42 Why would a DCS vendor that provides the whole solution be interested in giving up their advantage? Why would they want OPA to succeed?\n\n14:57 Do you see DCS vendors shifting fundamental business model from providing a semi-custom solution to a product that this strategy envisions?\n\n16:40 Where will the stringent support requirements for the system be in this new model?\n\n21:15 Are there many new players, people who haven't been able to sell to ExxonMobil or the industry, involved in ICS.\n\n22:42 Do see upgrades of parts of the system every 3 to 5 years or is it still a ~20 year lifecycle and then full replacement?\n\n25:05 Won't this open approach introduce variability in design that conflicts with ExxonMobil's approach to commonality in design?\n\n27:50 What is your strategy to not build a better obsolete system if some or a lot of this moves to the \"cloud\"?",
+    "view_count": 1121
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HnNqbeT1OKs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

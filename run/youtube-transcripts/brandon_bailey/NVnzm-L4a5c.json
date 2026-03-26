@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NVnzm-L4a5c",
+    "language": "en",
+    "took_ms": 7620,
+    "method": null,
+    "title": "DEF CON 31 - How Vulns in Global Transportation Payment Systems Cost You - Omer Attias",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2029,
+    "description": "Public transportation payment systems have undergone significant changes over the years. Recently, mobile payment solutions have become increasingly popular, allowing passengers to pay for their fare using their smartphones or other mobile devices.\n\nThe evolution of public transportation payment systems has been driven by the need for faster, more convenient, and more secure payment methods, and this trend is likely to continue in the years to come, But how secure are mobile payment solutions for public transportation?\n\nIn this presentation, we will examine the security risks associated with transportation applications, using Moovit as a case study. Moovit is a widely used transportation app operating in over 100 countries and 5000+ cities. Through our investigation of the app's API, including SSL-encrypted data, we discovered specific vulnerabilities, which we will discuss. We will also demonstrate a custom user interface that can obtain a \"free ticket\" and cause someone else to pay. Furthermore, we will explain how an attacker could gain unauthorized access to and exfiltrate Personal Identifiable Information (PII) of registered users. Our findings offer practical recommendations to improve the security of transportation apps.",
+    "view_count": 22429
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NVnzm-L4a5c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

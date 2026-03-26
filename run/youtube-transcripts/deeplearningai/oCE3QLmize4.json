@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oCE3QLmize4",
+    "language": "en",
+    "took_ms": 8279,
+    "method": null,
+    "title": "Heroes of Deep Learning: Geoff Hinton on Career Advice",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200122",
+    "duration_sec": 90,
+    "description": "“Read the literature, but don’t read too much of it.” Geoff Hinton\n tells you how to get started in our Heroes of Deep Learning series.\n\nTake the Deep Learning Specialization: http://bit.ly/36naAqR \nCheck out all our courses: https://deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch\n\ndeeplearning.ai Twitter: https://twitter.com/deeplearningai_\ndeeplearning.ai Linkedin: https://www.linkedin.com/company/deeplearningai/",
+    "view_count": 7613
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oCE3QLmize4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

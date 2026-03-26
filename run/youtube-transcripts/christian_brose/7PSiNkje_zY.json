@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7PSiNkje_zY",
+    "language": "en",
+    "took_ms": 8783,
+    "method": null,
+    "title": "Marco Rubio on the Case for American Intervention",
+    "channel": "Hudson Institute",
+    "upload_date": "20160513",
+    "duration_sec": 210,
+    "description": "Senator Marco Rubio talks about the role of American intervention since World War II.",
+    "view_count": 348
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7PSiNkje_zY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

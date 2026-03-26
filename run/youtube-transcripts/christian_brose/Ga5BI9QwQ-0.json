@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ga5BI9QwQ-0",
+    "language": "en",
+    "took_ms": 10571,
+    "method": null,
+    "title": "After the Election: Can the New Congress Repeal Health Care",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 5595,
+    "description": "Many victorious candidates in the newly elected Republican-controlled House campaigned on repealing health care reform. But with the Senate remaining under Democratic control, what will become of efforts to“repeal and replace” President Obama’s Affordable Care Act? - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 15
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ga5BI9QwQ-0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

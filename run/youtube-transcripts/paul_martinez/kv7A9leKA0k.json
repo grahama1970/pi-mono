@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kv7A9leKA0k",
+    "language": "en",
+    "took_ms": 8536,
+    "method": null,
+    "title": "Cyber Physical with Jason Larsen",
+    "channel": "S4 Events",
+    "upload_date": "20200415",
+    "duration_sec": 343,
+    "description": "5-minutes from Jason's Highway training session. In this clip we show excerpts of \"physics payloads\" in a cyber / physical attack on an ICS. Jason covers a number of different categories of physics payloads, quickly and yet still in technical detail. The whole 40-minute session is amazing.",
+    "view_count": 559
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kv7A9leKA0k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

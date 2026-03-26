@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sMmnp8piIE8",
+    "language": "en",
+    "took_ms": 9672,
+    "method": null,
+    "title": "Christopher Sands on Border Security at the Vancouver Olympic Games",
+    "channel": "Hudson Institute",
+    "upload_date": "20100226",
+    "duration_sec": 262,
+    "description": "Hudson Senior Fellow Christopher Sands discusses border security at the 2010 Vancouver Winter Olympics.",
+    "view_count": 141
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sMmnp8piIE8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

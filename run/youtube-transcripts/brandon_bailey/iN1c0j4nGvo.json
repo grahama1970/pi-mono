@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iN1c0j4nGvo",
+    "language": "en",
+    "took_ms": 8717,
+    "method": null,
+    "title": "DEF CON 32 - Navigating the Cyber Security Labyrinth Choose Your Own Security Adventure - punkcoder",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1639,
+    "description": "Over the last 36 months, the cybersecurity landscape has evolved with unprecedented complexity, marked by ransomware, supply chain attacks, zero-days, remote work challenges, and more. Amid mass layoffs and pervasive mental burnout, organizations face daunting tasks in defending against escalating cyber threats. Layoffs exacerbate the skills gap, leaving teams stretched thin. Mental burnout hampers practitioners' abilities. In this talk, we'll explore the impacts of recent and chart a path forward for application security. As a lone AppSec professional, your choices will shape the future. Will you navigate through complexity or become lost in redundant complications?",
+    "view_count": 640
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iN1c0j4nGvo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

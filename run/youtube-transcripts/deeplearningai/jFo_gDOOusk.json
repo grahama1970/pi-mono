@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jFo_gDOOusk",
+    "language": "en",
+    "took_ms": 7680,
+    "method": null,
+    "title": "LangChain for LLM Application Development: A short course by DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230531",
+    "duration_sec": 184,
+    "description": "Learn for free: https://learn.deeplearning.ai/\n\nIn LangChain for LLM Application Development, you will gain essential skills in expanding the use cases and capabilities of language models in application development using the LangChain framework.\n\nLearn more: https://www.deeplearning.ai/",
+    "view_count": 33536
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jFo_gDOOusk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

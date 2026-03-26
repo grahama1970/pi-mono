@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TIUkONyNAb4",
+    "language": "en",
+    "took_ms": 7430,
+    "method": null,
+    "title": "Very Few Parameter Fine tuning with ReFT and LoRA",
+    "channel": "Trelis Research",
+    "upload_date": "20240501",
+    "duration_sec": 3278,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-fine-tuning/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Trelis Livestreams: Thursdays 5 pm Irish time on YouTube and X.\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1_ZNQGKDQlqPsdJ5ttG6BRXusvZy5mdclHEpwfrwmkNQ/edit?usp=sharing\n- StanfordNLP \"pyreft\" repo: https://github.com/stanfordnlp/pyreft\n\nTIMESTAMPS:\n0:00 ReFT and LoRA Fine-tuning with few parameters\n0:42 Video Overview\n1:59 Transformer Architecture Review\n10:14 Weight fine-tuning with LoRA\n12:56 Representation Fine-tuning (ReFT)\n18:23 Comparing LoRA with ReFT\n20:51 Fine-tuning GPU setup\n22:09 LoRA Fine-tuning walk-through\n37:05 ReFT fine-tuning walk through\n42:46 Combining ReFT fine-tunes\n45:15 Orthogonality and combining fine-tunes\n48:33 Limitations of LoReFT and LoRA fine-tuning\n52:20 Fine-tuning tips",
+    "view_count": 3559
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TIUkONyNAb4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

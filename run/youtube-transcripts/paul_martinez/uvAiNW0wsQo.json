@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uvAiNW0wsQo",
+    "language": "en",
+    "took_ms": 8025,
+    "method": null,
+    "title": "ICS-Patch ... What To Patch When In ICS",
+    "channel": "S4 Events",
+    "upload_date": "20210602",
+    "duration_sec": 1330,
+    "description": "ICS-Patch leverages the CERT/CC SSVC Decision Tree approach for determining what patches are important and a patching cadence. One of the most important customizations is all of the factors can either be pulled from an asset inventory or a CVSS feed. This means the evaluation of 10's or 100's of thousand asset/patch pairs can be automated and an ASAP, Scheduled, Defer answer provided.\n\nLinks:\nICS-Patch Paper: https://dale-peterson.com/wp-content/uploads/2020/10/ICS-Patch-0_1.pdf\nS4x19 How To Fix CVSS Session: https://youtu.be/-6cThOCm9co\nS4x20 SSVC Session: https://youtu.be/AvKLZZh8NG4",
+    "view_count": 888
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uvAiNW0wsQo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

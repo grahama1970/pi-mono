@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BEhcBHRXUVg",
+    "language": "en",
+    "took_ms": 8663,
+    "method": null,
+    "title": "ICS Security - February Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20220303",
+    "duration_sec": 3575,
+    "description": "Chris Sistrunk will join Dale Peterson to discuss the top three stories of February, give their win, fail and prediction, and respond to your live questions and comments on LinkedIn and YouTube.",
+    "view_count": 204
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BEhcBHRXUVg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

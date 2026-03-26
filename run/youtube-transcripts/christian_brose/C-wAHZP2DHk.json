@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C-wAHZP2DHk",
+    "language": "en",
+    "took_ms": 7803,
+    "method": null,
+    "title": "Should the FCC Adopt Receiver Standards?",
+    "channel": "Hudson Institute",
+    "upload_date": "20210616",
+    "duration_sec": 3059,
+    "description": "Join Hudson Institute’s Director for the Center for the Economics of the Internet Harold Furchtgott-Roth and Federal Communications Commissioner Nathan Simington for a discussion on the federal government’s role in regulating wireless radio receiver standards.\n\nFrom the phones in our pockets to American military equipment, wireless radio-powered devices run the modern world. As the number of these devices grows, so too does the need to minimize the amount of interference between them. The Federal Communications Commission (FCC) has traditionally focused its model of interference on emissions; but as spectrum usage becomes denser and valuable midband spectrum scarcer, should the FCC take up the question of interference where it happens—receivers? Please join Hudson Institute for this important discussion.",
+    "view_count": 379
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C-wAHZP2DHk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

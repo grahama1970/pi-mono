@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8-wzjpZA2sc",
+    "language": "en",
+    "took_ms": 8496,
+    "method": null,
+    "title": "AI for Good: A discussion on addressing real-world problems with AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230928",
+    "duration_sec": 3629,
+    "description": "Much of the conversation about AI these days is focused on cutting-edge technologies, like generative AI, and the potential risks these technologies could pose to society. At the same time, AI is one of our most powerful tools when it comes to addressing the biggest challenges we face in the areas of climate change, public health, and disaster management. AI has already been deployed as a key component of many real-world applications that are having a positive impact on things like making renewable energy sources a more viable alternative to fossil fuels, providing access to reliable information in more of the world’s languages, and allowing for more effective planning, logistics, and resource allocation in the event of a disaster.\r\n\r\nJoin in on our panel of experts with Andrew Ng, Robert Monarch, Juan Lavista Ferres, and Iva Gumnishka to learn more about how AI is impacting the world in a positive way.\r\n\r\nThis event is inspired by DeepLearning.AI’s specialization, AI For Good, created in collaboration with Microsoft’s AI For Good lab and instructor Robert Monarch, who has developed AI systems for public health and disaster response efforts around the world.\n\nPlease take a moment to register for our AI For Good course here: \nhttps://bit.ly/3ZwZEUQ\n\nTo learn more about us and signup for future events:\nDeepLearning.AI: https://www.deeplearning.ai/\r\n\r\nSpeakers:\r\n\r\nAndrew Ng, Founder of DeepLearning.AI\nhttps://www.linkedin.com/in/andrewyng/\r\n\r\nRobert Monarch, Instructor for AI for Good Specialization\nhttps://www.linkedin.com/in/robertjmunro/\n\r\nJuan Lavista Ferres, Vice President and Chief Data Scientist of the Microsoft AI for Good Lab \nhttps://www.linkedin.com/in/jlavista/\r\n\r\nIva Gumnishka, Founder of Humans in the Loop\nhttps://www.linkedin.com/in/ivagumnishka/",
+    "view_count": 19486
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8-wzjpZA2sc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

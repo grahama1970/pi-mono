@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jKMd7U3nwdw",
+    "language": "en",
+    "took_ms": 2783,
+    "method": null,
+    "title": "[4k Clean Audio] Starship Static Fire // A:B Comparison w/ Deluge",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230814",
+    "duration_sec": 160,
+    "description": "A comparison of SpaceX's Starship boosters performing static fires on the orbital launch mounts. The first one without the deluge system was performed on February 9, 2023, lighting 31 engines and lasting about 7 seconds. The static fire with the deluge was performed on August 6th, 2023 lighting 29 engines for approximately 2.7 seconds.\n\nVideo by Ryan Chylinski and audio by Andrew Keating from Cosmic Perspective - https://www.youtube.com/cosmicperspective\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 165085
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jKMd7U3nwdw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

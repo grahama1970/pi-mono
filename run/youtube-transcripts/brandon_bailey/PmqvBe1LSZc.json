@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PmqvBe1LSZc",
+    "language": "en",
+    "took_ms": 8881,
+    "method": null,
+    "title": "DEF CON 32 - Defeating EDR Evading Malware with Memory Forensics - Case, Sellers, Richard, et al.",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2627,
+    "description": "Endpoint detection and response (EDR) software has gained significant market share due to its ability to examine system state for signs of malware and attacker activity well beyond what traditional anti-virus software is capable of detecting. This deep inspection capability of EDRs has led to an arms race with malware developers who want to evade EDRs while still achieving desired goals, such as code injection, lateral movement, and credential theft. This monitoring and evasion occurs in the lowest levels of hardware and software, including call stack frames, exception handlers, system calls, and manipulation of native instructions. Given this reality, EDRs are limited in how much lower they can operate to maintain an advantage. The success of EDR bypasses has led to their use in many high-profile attacks and by prolific ransomware groups.\n\nIn this talk, we discuss our research effort that led to the development of new memory forensics techniques for the detection of the bypasses that malware uses to evade EDRs. This includes bypass techniques, such as direct and indirect system calls, module overwriting, malicious exceptions handlers, and abuse of debug registers. Our developed capabilities were created as new plugins to the Volatility memory analysis framework, version 3, and will be released after the talk.",
+    "view_count": 9539
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PmqvBe1LSZc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

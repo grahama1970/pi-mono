@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QmcXtfLU1Xw",
+    "language": "en",
+    "took_ms": 9880,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Pedro Umbelino ,João Morais -   Android Bug Foraging",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2501,
+    "description": "In this session, we will analyze four real-world examples of different high impact android vulnerabilities. We will show how we discover, developed, and leveraged the vulnerabilities into a fully working proof-of-concept, devised meaningful attack scenarios (demos included), and how our work was approached by the different vendors.",
+    "view_count": 594
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QmcXtfLU1Xw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

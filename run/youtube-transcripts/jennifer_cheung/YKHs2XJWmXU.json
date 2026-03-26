@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YKHs2XJWmXU",
+    "language": "en",
+    "took_ms": 9141,
+    "method": null,
+    "title": "DEF CON 33 - Managing Bug Bounties @ Scale - Gabriel Nitu, Jay Dancer, PayPal, Ryan Nolette & Goshak",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3523,
+    "description": "Bug bounty programs have become a cornerstone of modern security strategy, but managing them at scale is anything but simple. In this panel, leaders from some of the world’s largest and most mature bug bounty programs, including Amazon, PayPal, AWS, Shopify, and Splunk, will share hard-won insights from the frontlines.\n\nWe will explore the nuances of triage, researcher relationships, reward strategies, internal buy-in, legal hurdles, and responsible scaling. Panelists will also discuss how bug bounty culture is shifting, what is working (and what is not), and how they are evolving their programs to meet today’s threat landscape.\n\nWhether you are running a bounty program, hacking in one, or simply curious about what happens behind the scenes, this candid discussion will surface lessons, real-world experiences, and future-focused perspectives from those who lead these programs every day.",
+    "view_count": 386
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YKHs2XJWmXU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

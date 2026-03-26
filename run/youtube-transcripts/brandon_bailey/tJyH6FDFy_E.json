@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tJyH6FDFy_E",
+    "language": "en",
+    "took_ms": 8806,
+    "method": null,
+    "title": "DEF CON 32 - Famous and Not So Famous Unsolved Codes  - Elonka Dunin & Klaus",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2971,
+    "description": "There are many famous codes and ciphers still waiting to be solved, such as the encrypted Voynich manuscript and Edward Elgar's Dorabella cipher. All hold a special fascination. In this talk, prepare to be entertained and informed by Elonka Dunin and Klaus Schmeh, as we briefly discuss the encryption on Kryptos, the mysterious sculpture at the center of CIA Headquarters; NKrypt, an encrypted sculpture in Australia; an encrypted engraving on an early 20th century German silver cigarette case; details about the message attached to the leg of a WWII carrier pigeon that was found in an English chimney; an encrypted postcard by the owner of UK's Luton soccer team; and the intriguing encrypted messages created by the mysterious Henry Debosnys while awaiting his murder trial in New York in the late 1800s.",
+    "view_count": 925
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tJyH6FDFy_E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

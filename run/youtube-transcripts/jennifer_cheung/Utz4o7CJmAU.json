@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Utz4o7CJmAU",
+    "language": "en",
+    "took_ms": 8068,
+    "method": null,
+    "title": "DEF CON 32 - War Games  Red Team for OT Based on Real World Case Studies- Shishir Gupta",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1388,
+    "description": "In this talk, Shishir will share some critical insights from performing a decade worth of Red Team (attack simulation) exercises for large-scale industrial operations across the globe.\n\nThe presentation will also cover real-world examples of attack vectors leveraged by Google's Mandiant Red Team while performing offensive security exercises for operational technology and control system environments.\n\nThis talk will cover:\n\nInsights into common TTPs and attack vectors for large-scale industrial networks\nNetwork propagation and mission execution across ICS-OT attack life-cycle\nExamples from real-world case studies of penetrating cyber-physical systems",
+    "view_count": 4579
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Utz4o7CJmAU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

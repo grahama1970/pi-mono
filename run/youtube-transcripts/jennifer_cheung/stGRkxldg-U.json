@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "stGRkxldg-U",
+    "language": "en",
+    "took_ms": 9534,
+    "method": null,
+    "title": "DEF CON 33 - OverLAPS: Overriding LAPS Logic  - Antoine Goichot",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1279,
+    "description": "Local Administrator Password Solution (LAPS) automates local admin password rotation and secure storage in Active Directory (AD) or Microsoft Entra ID. It ensures that each system has a unique and strong password.\n\nIn OverLAPS: Overriding LAPS Logic, we will revisit and extend our previous research (Malicious use of \"Local Administrator Password Solution\", Hack.lu 2017) by exposing client-side attacks in Windows LAPS (\"LAPSv2\"). After a brief overview of LAPS's evolution, from clear-text fields in AD with Microsoft LAPS (\"LAPSv1\") to encrypted AD attributes or Entra ID storage with Windows LAPS, we will explore the client-side logic of Windows LAPS. Unlike prior work that exfiltrates passwords only after directory compromise, we will focus on abusing LAPS to maintain presence on compromised endpoints, both on-prem and Entra-joined devices.\n\nWe will leverage PDB symbols and light static analysis to understand how LAPS works internally, then use Frida for dynamic hooking to capture, manipulate, and rotate admin passwords on demand. We will also reproduce Frida proof-of-concepts using Microsoft Detours for in-process hooks.\n\nAttendees will gain practical insights into new attack vectors against Windows LAPS, enabling them to assess, reproduce, and defend against client-side attacks in their own environments.",
+    "view_count": 679
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] stGRkxldg-U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

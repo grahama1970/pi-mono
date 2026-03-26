@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "varyJ1QNUOU",
+    "language": "en",
+    "took_ms": 8186,
+    "method": null,
+    "title": "Corruption in International Sports: Delivering Justice with the Rodchenkov Act",
+    "channel": "Hudson Institute",
+    "upload_date": "20210212",
+    "duration_sec": 3541,
+    "description": "Join Hudson Institute for an expert panel discussion on how enforcement of the Rodchenkov Act can help clean up doping fraud in international sports, deliver justice for the victims of these corrupt acts, and hold kleptocracies accountable for their role in this practice.",
+    "view_count": 595
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] varyJ1QNUOU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

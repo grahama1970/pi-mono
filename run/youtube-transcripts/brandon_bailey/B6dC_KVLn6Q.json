@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B6dC_KVLn6Q",
+    "language": "en",
+    "took_ms": 9831,
+    "method": null,
+    "title": "DEF CON 33 - Conjuring Hardware Failures for Cross-ring Privilege Escalation - Christopher Domas",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2702,
+    "description": "Catastrophic hardware failures. From an aging I/O device to cosmic ray bit flips, memory degradation to CPU fires. When an unrecoverable hardware error is detected, the common platform response is to generate a Machine Check Exception, and shut down before the problem gets worse.\n\nIn this talk, we'll see what happens when we circumvent all the traditional fail safes. What happens when, instead of exceptionally rare failures from natural causes, we deliberately create these fatal events from software. When instead of a platform shutdown, we force the system to limp along, damaged but alive. We'll show how carefully injecting these signals during privileged CPU operations can disrupt secure transitions, how those disruptions progress to cascading system failures, and how to ride the chaos to gain hardware privilege escalation. Finally, we'll see how to undo the damage, recover from the unrecoverable, and let the system continue as if nothing happened - now with a foothold in privileged space, all through hardware failure events synthesized through software-only attacks.\n\nWe'll conclude by showing how to use this vector to reveal all-new hardware vulnerabilities, and walk through a brave new world of machine check research opportunities - for both attackers and defenders - across technologies and architectures.",
+    "view_count": 3410
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B6dC_KVLn6Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CwKXA7TFu8Q",
+    "language": "en",
+    "took_ms": 9238,
+    "method": null,
+    "title": "Commissioner Michael O'Rielly Discusses Telecommunications P",
+    "channel": "Hudson Institute",
+    "upload_date": "20140127",
+    "duration_sec": 3238,
+    "description": "Recently confirmed Commissioner Michael O'Rielly of the Federal Communications Commission will make one of his first public speeches on telecommunications policy at the Hudson Institute.\r\nHe was nominated for a seat on the Federal Communications Commission by President Barack Obama on August 1, 2013 and was confirmed unanimously by the United States Senate.\r\nPrior to joining the FCC, Commissioner O'Rielly served as a Policy Advisor in the Office of the Senate Republican Whip, led by U.S. Senator",
+    "view_count": 103
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CwKXA7TFu8Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

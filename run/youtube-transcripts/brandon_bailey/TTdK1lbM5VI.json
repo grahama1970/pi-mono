@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TTdK1lbM5VI",
+    "language": "en",
+    "took_ms": 8111,
+    "method": null,
+    "title": "DEF CON 33 - How Not to IoT:Lessons in Security Failures - Zoltan \"zh4ck\" Balazs",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2607,
+    "description": "Welcome to the “fun” world of IoT, where security is often an afterthought and vulnerabilities lurk around every corner. This presentation is a guide for vendors on what not to do when designing IoT devices and a survival manual for users to spot insecure gadgets. Ever wondered if your IoT device is spilling your home WiFi secrets to the cloud over HTTP? Spoiler alert: maybe :) Pairing your device over open WiFi and HTTP while providing your home WiFi credentials? Just to vacuum clean your home?\nHow about IoT devices lying about their Android version? But don’t worry, it already comes with malware pre-infected. Wouldn’t it be nice to access the clear-text admin passwords before authentication? How about multiple different ways to do that? Would you like to see reverse engineering an N-day command injection vulnerability in the login form of a popular NAS device? What could be the easiest way to figure out the (static) AES encryption key for a home security alarm solution? Just RTFM! Why bother with memory corruption when command injection is still the king of IoT threats? I'll break it down for you, with an analysis of challenges with scalable IoT memory corruption exploits, and the challenges with blind ROP. Last but not least, let’s discuss why Busybox is “not the best” choice for IoT development.",
+    "view_count": 10635
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TTdK1lbM5VI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

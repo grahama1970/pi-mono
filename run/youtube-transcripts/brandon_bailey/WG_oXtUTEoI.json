@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WG_oXtUTEoI",
+    "language": "en",
+    "took_ms": 9628,
+    "method": null,
+    "title": "DEF CON 32 - Transforming AppSec  Protecting 'Everything as Code' - Kunal Bhattacharya",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2698,
+    "description": "The continuous adoption of emerging technological trends like Mobile, IoT, Cloud, Blockchains, and now GenAI has transformed application security from simple threat modeling and SAST/DAST scans to comprehensive proactive prevention and real-time detection of security anomalies. This panel will discuss the dynamic nature of AppSec as the lines between traditional infrastructure and cloud environments blur. We will explore the importance of maintaining a comprehensive security posture within 'everything as code' ecosystems, emphasizing proper configuration and secret management to secure infrastructure effectively.",
+    "view_count": 404
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WG_oXtUTEoI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

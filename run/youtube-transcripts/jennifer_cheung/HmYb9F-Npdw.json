@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HmYb9F-Npdw",
+    "language": "en",
+    "took_ms": 8907,
+    "method": null,
+    "title": "DEF CON 29 Red Team Village -  A discussion about the Red Team Village CyberWraith",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 2285,
+    "description": "A discussion about the Red Team Village CyberWraith",
+    "view_count": 988
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HmYb9F-Npdw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

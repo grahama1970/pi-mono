@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Wqh0ulnUrms",
+    "language": "en",
+    "took_ms": 8376,
+    "method": null,
+    "title": "Finding N-Day Vulnerabilities in an ICS Embedded Devices",
+    "channel": "S4 Events",
+    "upload_date": "20180403",
+    "duration_sec": 1651,
+    "description": "N-Day is a software component vulnerability that is publicly known, but not recognized as being part of a software product that it is used in. We have a lot of these in ICS software and firmware.\n\nAng Cui and Joseph Pantoga of Red Balloon Security presents on how to automate the finding of N-Days and how to fix the N-Days. They uses VxWorks as an example.\n\nThe predict the number of N-Day vulnerabilities will explode, and propose an automated method for remediating this risk.",
+    "view_count": 857
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Wqh0ulnUrms: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

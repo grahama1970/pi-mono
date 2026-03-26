@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SzAmGg2TVBg",
+    "language": "en",
+    "took_ms": 7696,
+    "method": null,
+    "title": "Break into NLP hosted by deeplearning.ai",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200729",
+    "duration_sec": 5625,
+    "description": "Welcome to Break into NLP - a virtual live event! \n\nNLP is an essential part of the practical application of AI. To celebrate the launch of Sequence Models, Course 3 of Natural Language Processing - a deeplearning.ai Specialization - we’ve assembled a panel of experts in the NLP field. They’re going to talk about their current projects, and the future of NLP and also provide career advice for ML practitioners or non-MLEs hoping to break into NLP. \n\nAgenda: PDT (*subject to change)\n\nMC: Ryan Keenan, Director of Product at deeplearning.ai\n\nOpening Keynote: Łukasz Kaiser, Staff Research Scientist at Google Brain\n\nKeynote Speech: Andrew Ng, Founder of deeplearning.ai\n\nPanel discussion: (listed in alphabetical order by last name)\n     Kenneth Church, Distinguished Scientist, Baidu USA\n     Marti Hearst, Professor, School of Information and EECS Department, UC Berkeley\n     Łukasz Kaiser, Staff Research Scientist at Google Brain\n     Younes Mourri, Instructor of AI at Stanford University\n     Andrew Ng, Founder of deeplearning.ai\n\nQ&A (Questions will be sourced from deeplearning.ai's NLP learners on Slack community)\n\nCourse demo: Younes Mourri, Instructor of AI at Stanford University\n\n\nEnroll in NLP Specialization: https://bit.ly/2ZsUtrK\nEnroll in Course 3 of NLP Specialization: https://bit.ly/2Wq7Kzy\nCheck out all our courses: https://bit.ly/38Yikm5",
+    "view_count": 43359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SzAmGg2TVBg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

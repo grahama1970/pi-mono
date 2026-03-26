@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "27fv-maYVm0",
+    "language": "en",
+    "took_ms": 8112,
+    "method": null,
+    "title": "DEF CON 30  - Melvin Langvik - Taking a Dump In The Cloud",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2411,
+    "description": "Taking a Dump In The Cloud is a tale of countless sleepless nights spent reversing and understanding the integration between Microsoft Office resources and how desktop applications access them. The release of the TeamFiltration toolkit, a modern toolkit connecting all the data points to more effectively launch attacks against Microsoft Azure Tenants, understanding the benefits of non-interactive logins and how one can abuse the magic of Microsofts OAuth implementation with Single-Sign-On to automagically exfiltrate all the loot. Streamlining the process of account enumeration and validation. Thoughts on working effectively against Azure Smart Lockout. Exploring options of vertical movement given common AAD configurations, and more!",
+    "view_count": 3899
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 27fv-maYVm0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

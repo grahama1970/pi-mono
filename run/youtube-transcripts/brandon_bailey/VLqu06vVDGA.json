@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VLqu06vVDGA",
+    "language": "en",
+    "took_ms": 7897,
+    "method": null,
+    "title": "DEF CON 31 - Shall We Play a Game - Craig Martell",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2829,
+    "description": "In 1979, NORAD was duped by a simulation that caused NORAD (North American Aerospace Defense) to believe a full-scale Soviet nuclear attack was underway. This only legitimized the plot in the 1983 classic, War Games, of the possibility of a computer making unstoppable, life-altering decisions. On the 40th anniversary of the movie that predicted the potential role of AI in military systems, LLMs have become a sensation and increasingly, synonymous with AI. This is a dangerous detour in AI’s development, one that humankind can’t afford to take. Join Dr. Martell for an off-the-cuff discussion on what’s at stake as the Department of Defense presses forward to balance agility with accountability and the role hackers play in ensuring the responsible and secure use of AI from the boardroom to the battlefield.",
+    "view_count": 2441
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VLqu06vVDGA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

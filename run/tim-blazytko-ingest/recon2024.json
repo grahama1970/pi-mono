@@ -1,0 +1,2299 @@
+Tier 1: Trying direct youtube-transcript-api...
+{
+  "meta": {
+    "video_id": "UbkVuwGTljI",
+    "language": "en",
+    "took_ms": 1068,
+    "method": "direct",
+    "title": "Recon2024 - Tim Blazytko & Moritz Schloegel - The Future Of Reverse Engineering With LLMs",
+    "channel": "Recon Conference",
+    "upload_date": "20250326",
+    "duration_sec": 1580,
+    "description": "In our talk, we take a closer look at Large Language Models (LLMs) in reverse engineering, highlighting both their current uses and future potential. We address the opportunities and challenges presented by LLMs, from enhancing code analysis to navigating issues of inaccuracies and privacy. To address these challenges, we introduce ReverserAI as a platform designed to explore and expand the capabilities of LLMs within this field. We further illustrate how local, privacy-focused LLM setups can overcome existing privacy limitations. Lastly, we explore and showcase ways to significantly improve current LLM outputs by combining them with traditional static analysis techniques, for example in the context of malware analysis. Our discussion also covers the anticipated evolution of LLM technology, underscoring its promise to advance the field.\n\nLLMs like ChatGPT have made significant strides, excelling in tasks from text and image generation to coding, expanding the horizons of \"artificial intelligence\". Despite these advancements, their application in reverse engineering has been underexplored. Existing efforts, such as enhancing decompiler output through better naming and interactive code explanations, have shown promise, as evidenced by a surge in supportive plugins. However, these approaches face challenges, including irrelevant suggestions and inaccuracies, and hallucinations due to limited context or input size. Another significant downside is their service-oriented usage, which requires constant internet access, incurs ongoing costs, and raises privacy concerns when dealing with sensitive data.\n\nDespite these challenges, we believe that we are just scratching the surface of how LLMs can support reverse engineering efforts. This talk aims to delve into previously unexplored opportunities of LLMs, extending beyond current applications. For this purpose, we introduce ReverserAI, a plugin serving as a testbed for new techniques, enhancing LLMs' support in reverse engineering tasks. We begin by showing how to run a local, privacy-sensitive setup of an LLM and demonstrate that modern consumer-grade hardware suffices to achieve good performance. Subsequently, we explore the synergy between conventional code analysis techniques and LLMs to refine outcomes, the preprocessing of binaries for malware analysis, as well as the identification & naming of API functions in statically-linked executables. Moreover, we examine the current limitations of these methods and discuss areas that remain inaccessible.\n\nFinally, we look forward to future developments in LLM technology, such as improvements in handling larger code bases and the rise of local LLM implementations and explore how these could further advance reverse engineering practices, as their capabilities expand.\n\nTim Blazytko bio:\n\nTim Blazytko is a well-known binary security researcher and co-founder of emproof. After working on novel methods for code deobfuscation, fuzzing and root cause analysis during his PhD, Tim now builds code obfuscation schemes tailored to embedded devices. Moreover, he gives trainings on reverse engineering & code deobfuscation, analyzes malware and performs security audits.\n\nMoritz Schloegel bio:\n\nMoritz Schloegel is a binary security researcher at the CISPA Helmholtz Center for Information Security. He is currently in the last year of his PhD and focuses on automated finding, understanding, and exploitation of bugs. Furthermore, he possesses a deep passion for exploring the complexities of (de-)obfuscation, emphasizing automated deobfuscation attacks and their countermeasures.",
+    "view_count": 898
+  },
+  "transcript": [
+    {
+      "text": "okay hi guys we are M and Tim today we",
+      "start": 5.6,
+      "duration": 8.039
+    },
+    {
+      "text": "talk about the future of reverse",
+      "start": 11.48,
+      "duration": 4.4
+    },
+    {
+      "text": "engineering with large language",
+      "start": 13.639,
+      "duration": 5.241
+    },
+    {
+      "text": "models uh I think most of you guys know",
+      "start": 15.88,
+      "duration": 5.68
+    },
+    {
+      "text": "us um I am a trainer for vcation",
+      "start": 18.88,
+      "duration": 4.08
+    },
+    {
+      "text": "techniques and",
+      "start": 21.56,
+      "duration": 6.879
+    },
+    {
+      "text": "the engineer Mo the top Works has his",
+      "start": 22.96,
+      "duration": 7.559
+    },
+    {
+      "text": "PhD done",
+      "start": 28.439,
+      "duration": 4.16
+    },
+    {
+      "text": "and we've given several talks together",
+      "start": 30.519,
+      "duration": 5.401
+    },
+    {
+      "text": "in the last years today we talk about",
+      "start": 32.599,
+      "duration": 7.001
+    },
+    {
+      "text": "large language models for RSE",
+      "start": 35.92,
+      "duration": 7.4
+    },
+    {
+      "text": "engineering um what is good what works",
+      "start": 39.6,
+      "duration": 5.88
+    },
+    {
+      "text": "what might work what doesn't",
+      "start": 43.32,
+      "duration": 6.28
+    },
+    {
+      "text": "work then the role of local llms which",
+      "start": 45.48,
+      "duration": 8.04
+    },
+    {
+      "text": "it can play and finally how you can",
+      "start": 49.6,
+      "duration": 6.24
+    },
+    {
+      "text": "enhance them to static",
+      "start": 53.52,
+      "duration": 6.92
+    },
+    {
+      "text": "analysis so let's start with llm and",
+      "start": 55.84,
+      "duration": 6.399
+    },
+    {
+      "text": "so as my",
+      "start": 60.44,
+      "duration": 4.799
+    },
+    {
+      "text": "disclaimer are pretty over and at the",
+      "start": 62.239,
+      "duration": 6.161
+    },
+    {
+      "text": "same time pretty fast developing field",
+      "start": 65.239,
+      "duration": 5.761
+    },
+    {
+      "text": "and therefore this talk today doesn't",
+      "start": 68.4,
+      "duration": 6.56
+    },
+    {
+      "text": "have uh the approach to be academically",
+      "start": 71.0,
+      "duration": 7.72
+    },
+    {
+      "text": "correct it's more about um our",
+      "start": 74.96,
+      "duration": 5.64
+    },
+    {
+      "text": "experience in ver engineering while",
+      "start": 78.72,
+      "duration": 4.359
+    },
+    {
+      "text": "using them on our own so we want to",
+      "start": 80.6,
+      "duration": 5.04
+    },
+    {
+      "text": "tease its powers",
+      "start": 83.079,
+      "duration": 6.321
+    },
+    {
+      "text": "and and there also not strategic twoes",
+      "start": 85.64,
+      "duration": 5.159
+    },
+    {
+      "text": "or",
+      "start": 89.4,
+      "duration": 4.679
+    },
+    {
+      "text": "it's more about the general state of the",
+      "start": 90.799,
+      "duration": 5.721
+    },
+    {
+      "text": "top llm for",
+      "start": 94.079,
+      "duration": 5.32
+    },
+    {
+      "text": "the and as from this claimer to",
+      "start": 96.52,
+      "duration": 6.52
+    },
+    {
+      "text": "disclaimer it's only to snapshot so we",
+      "start": 99.399,
+      "duration": 5.601
+    },
+    {
+      "text": "may",
+      "start": 103.04,
+      "duration": 4.92
+    },
+    {
+      "text": "outdated so if you think about what you",
+      "start": 105.0,
+      "duration": 6.2
+    },
+    {
+      "text": "could do with chbt or engineering you",
+      "start": 107.96,
+      "duration": 6.759
+    },
+    {
+      "text": "might think about hey it might of",
+      "start": 111.2,
+      "duration": 6.959
+    },
+    {
+      "text": "functions it's mind in nam of",
+      "start": 114.719,
+      "duration": 5.841
+    },
+    {
+      "text": "variables Maybe",
+      "start": 118.159,
+      "duration": 5.121
+    },
+    {
+      "text": "codes or explaining",
+      "start": 120.56,
+      "duration": 5.68
+    },
+    {
+      "text": "codes also answering generic questions",
+      "start": 123.28,
+      "duration": 3.959
+    },
+    {
+      "text": "about",
+      "start": 126.24,
+      "duration": 3.999
+    },
+    {
+      "text": "codes",
+      "start": 127.239,
+      "duration": 3.0
+    },
+    {
+      "text": "and so today we will not highly Focus",
+      "start": 131.52,
+      "duration": 7.64
+    },
+    {
+      "text": "things instead we will talk about some",
+      "start": 136.0,
+      "duration": 8.64
+    },
+    {
+      "text": "use cases which we had in the past where",
+      "start": 139.16,
+      "duration": 5.48
+    },
+    {
+      "text": "LM and we have seven use cases one of",
+      "start": 145.16,
+      "duration": 7.12
+    },
+    {
+      "text": "them the first one is function P",
+      "start": 149.56,
+      "duration": 5.08
+    },
+    {
+      "text": "selection the idea there is if you're",
+      "start": 152.28,
+      "duration": 3.44
+    },
+    {
+      "text": "doing",
+      "start": 154.64,
+      "duration": 5.04
+    },
+    {
+      "text": "Bal and you have a large finity with 1K",
+      "start": 155.72,
+      "duration": 7.519
+    },
+    {
+      "text": "2K 5K functions and you don't know where",
+      "start": 159.68,
+      "duration": 7.44
+    },
+    {
+      "text": "to look at one idea would be that you",
+      "start": 163.239,
+      "duration": 8.0
+    },
+    {
+      "text": "can use LM to basically rename or",
+      "start": 167.12,
+      "duration": 6.92
+    },
+    {
+      "text": "function such that you can take a look",
+      "start": 171.239,
+      "duration": 6.64
+    },
+    {
+      "text": "based on the function if they",
+      "start": 174.04,
+      "duration": 3.839
+    },
+    {
+      "text": "might so you could ask for C large",
+      "start": 178.239,
+      "duration": 6.28
+    },
+    {
+      "text": "scales for the given compile output",
+      "start": 181.84,
+      "duration": 4.959
+    },
+    {
+      "text": "analyze the code and suest the meaning",
+      "start": 184.519,
+      "duration": 3.44
+    },
+    {
+      "text": "through",
+      "start": 186.799,
+      "duration": 5.121
+    },
+    {
+      "text": "function so and then you might end up",
+      "start": 187.959,
+      "duration": 6.761
+    },
+    {
+      "text": "with something like function name like",
+      "start": 191.92,
+      "duration": 4.72
+    },
+    {
+      "text": "set value to",
+      "start": 194.72,
+      "duration": 6.0
+    },
+    {
+      "text": "mem or call function pointers with",
+      "start": 196.64,
+      "duration": 6.959
+    },
+    {
+      "text": "arguments well I'm not saying they are",
+      "start": 200.72,
+      "duration": 5.519
+    },
+    {
+      "text": "not cases that this might be",
+      "start": 203.599,
+      "duration": 7.041
+    },
+    {
+      "text": "helpful but in this case for most use",
+      "start": 206.239,
+      "duration": 8.92
+    },
+    {
+      "text": "cases it's pretty generic and not",
+      "start": 210.64,
+      "duration": 10.12
+    },
+    {
+      "text": "that we can words if a lot of functions",
+      "start": 215.159,
+      "duration": 9.401
+    },
+    {
+      "text": "are getting Ed to decompile code analyze",
+      "start": 220.76,
+      "duration": 6.399
+    },
+    {
+      "text": "for instance so here it's a",
+      "start": 224.56,
+      "duration": 4.52
+    },
+    {
+      "text": "hallucination of",
+      "start": 227.159,
+      "duration": 6.961
+    },
+    {
+      "text": "LM where it just put something in there",
+      "start": 229.08,
+      "duration": 6.799
+    },
+    {
+      "text": "which has been part of the",
+      "start": 234.12,
+      "duration": 5.8
+    },
+    {
+      "text": "instructions but not much more so this",
+      "start": 235.879,
+      "duration": 6.321
+    },
+    {
+      "text": "is entirely",
+      "start": 239.92,
+      "duration": 5.76
+    },
+    {
+      "text": "useless however there are also some",
+      "start": 242.2,
+      "duration": 8.36
+    },
+    {
+      "text": "cases where the L function like",
+      "start": 245.68,
+      "duration": 7.16
+    },
+    {
+      "text": "initial",
+      "start": 250.56,
+      "duration": 7.359
+    },
+    {
+      "text": "or or post if you see something like",
+      "start": 252.84,
+      "duration": 8.359
+    },
+    {
+      "text": "that in additionally classified binary",
+      "start": 257.919,
+      "duration": 6.321
+    },
+    {
+      "text": "you will see oh well this is something I",
+      "start": 261.199,
+      "duration": 6.801
+    },
+    {
+      "text": "should take a closer look at so",
+      "start": 264.24,
+      "duration": 7.48
+    },
+    {
+      "text": "basically this can also be",
+      "start": 268.0,
+      "duration": 3.72
+    },
+    {
+      "text": "a second new case is the identification",
+      "start": 271.919,
+      "duration": 7.481
+    },
+    {
+      "text": "functions let's say you are",
+      "start": 276.039,
+      "duration": 10.321
+    },
+    {
+      "text": "doing or in general have St ex where you",
+      "start": 279.4,
+      "duration": 11.68
+    },
+    {
+      "text": "don't can decide between code and Li",
+      "start": 286.36,
+      "duration": 9.279
+    },
+    {
+      "text": "code in these cases for common Li",
+      "start": 291.08,
+      "duration": 8.92
+    },
+    {
+      "text": "functions it might bees like that where",
+      "start": 295.639,
+      "duration": 7.161
+    },
+    {
+      "text": "you it's copy",
+      "start": 300.0,
+      "duration": 6.4
+    },
+    {
+      "text": "thatb and if you take a closer look at",
+      "start": 302.8,
+      "duration": 5.72
+    },
+    {
+      "text": "the Cs you will",
+      "start": 306.4,
+      "duration": 5.88
+    },
+    {
+      "text": "see it's not wrong well well it is wrong",
+      "start": 308.52,
+      "duration": 6.519
+    },
+    {
+      "text": "but it's not that wrong what this code",
+      "start": 312.28,
+      "duration": 3.919
+    },
+    {
+      "text": "does is",
+      "start": 315.039,
+      "duration": 5.761
+    },
+    {
+      "text": "menop if so it's not a copy back for it",
+      "start": 316.199,
+      "duration": 7.481
+    },
+    {
+      "text": "doesn't have to do with LA",
+      "start": 320.8,
+      "duration": 6.56
+    },
+    {
+      "text": "but it still P points the copy",
+      "start": 323.68,
+      "duration": 6.6
+    },
+    {
+      "text": "functionality of copying memory",
+      "start": 327.36,
+      "duration": 6.44
+    },
+    {
+      "text": "so it b a good approximation but",
+      "start": 330.28,
+      "duration": 6.359
+    },
+    {
+      "text": "Incorrect and for many use cases",
+      "start": 333.8,
+      "duration": 4.88
+    },
+    {
+      "text": "something like that can give you a good",
+      "start": 336.639,
+      "duration": 4.321
+    },
+    {
+      "text": "high high level specification that you",
+      "start": 338.68,
+      "duration": 4.44
+    },
+    {
+      "text": "get at least an base understanding",
+      "start": 340.96,
+      "duration": 4.28
+    },
+    {
+      "text": "before you look",
+      "start": 343.12,
+      "duration": 5.56
+    },
+    {
+      "text": "at and then one of the most obvious use",
+      "start": 345.24,
+      "duration": 6.32
+    },
+    {
+      "text": "cases is enhanced de compiler output",
+      "start": 348.68,
+      "duration": 7.12
+    },
+    {
+      "text": "let's say we ask the qvt something like",
+      "start": 351.56,
+      "duration": 6.919
+    },
+    {
+      "text": "enhance the F de compile output by",
+      "start": 355.8,
+      "duration": 5.04
+    },
+    {
+      "text": "suggesting um more meaning for variable",
+      "start": 358.479,
+      "duration": 4.801
+    },
+    {
+      "text": "names also at",
+      "start": 360.84,
+      "duration": 4.28
+    },
+    {
+      "text": "comments",
+      "start": 363.28,
+      "duration": 4.919
+    },
+    {
+      "text": "then um you probably can't that it's",
+      "start": 365.12,
+      "duration": 6.919
+    },
+    {
+      "text": "also attended it says it function is",
+      "start": 368.199,
+      "duration": 7.201
+    },
+    {
+      "text": "copy memory and it gave it meaning for",
+      "start": 372.039,
+      "duration": 6.201
+    },
+    {
+      "text": "names and also edit comments which are",
+      "start": 375.4,
+      "duration": 7.079
+    },
+    {
+      "text": "quite quite fitting so for M Copy this",
+      "start": 378.24,
+      "duration": 7.359
+    },
+    {
+      "text": "works quite well so basically what they",
+      "start": 382.479,
+      "duration": 7.16
+    },
+    {
+      "text": "can say is how common small code these",
+      "start": 385.599,
+      "duration": 8.561
+    },
+    {
+      "text": "CES work quite well however let's take",
+      "start": 389.639,
+      "duration": 6.521
+    },
+    {
+      "text": "another",
+      "start": 394.16,
+      "duration": 5.4
+    },
+    {
+      "text": "function which is",
+      "start": 396.16,
+      "duration": 3.4
+    },
+    {
+      "text": "know if we give it to that without any",
+      "start": 404.28,
+      "duration": 7.759
+    },
+    {
+      "text": "further explanation it tells us it's",
+      "start": 407.68,
+      "duration": 8.0
+    },
+    {
+      "text": "conform and builds a lot of variables",
+      "start": 412.039,
+      "duration": 7.6
+    },
+    {
+      "text": "which look FL but just entirely",
+      "start": 415.68,
+      "duration": 8.16
+    },
+    {
+      "text": "so basically it's not all",
+      "start": 419.639,
+      "duration": 9.68
+    },
+    {
+      "text": "attention another thing is the analys",
+      "start": 423.84,
+      "duration": 5.479
+    },
+    {
+      "text": "guidance let's say you used to analy Cod",
+      "start": 429.8,
+      "duration": 8.28
+    },
+    {
+      "text": "and anal Cod but now you",
+      "start": 434.479,
+      "duration": 6.921
+    },
+    {
+      "text": "have and you are might have looked at",
+      "start": 438.08,
+      "duration": 6.799
+    },
+    {
+      "text": "that before maybe not but at least you",
+      "start": 441.4,
+      "duration": 5.84
+    },
+    {
+      "text": "are not that familiar with it and then",
+      "start": 444.879,
+      "duration": 5.16
+    },
+    {
+      "text": "you take a look at the code and don't",
+      "start": 447.24,
+      "duration": 5.519
+    },
+    {
+      "text": "understand much then you could say",
+      "start": 450.039,
+      "duration": 4.361
+    },
+    {
+      "text": "explain me the following",
+      "start": 452.759,
+      "duration": 4.921
+    },
+    {
+      "text": "assembly and it gives you a good",
+      "start": 454.4,
+      "duration": 6.72
+    },
+    {
+      "text": "understanding instruction by",
+      "start": 457.68,
+      "duration": 7.359
+    },
+    {
+      "text": "instruction it might",
+      "start": 461.12,
+      "duration": 5.44
+    },
+    {
+      "text": "dets",
+      "start": 465.039,
+      "duration": 6.28
+    },
+    {
+      "text": "high and at least add more cont to",
+      "start": 466.56,
+      "duration": 8.599
+    },
+    {
+      "text": "that some time",
+      "start": 471.319,
+      "duration": 8.32
+    },
+    {
+      "text": "each so for small",
+      "start": 475.159,
+      "duration": 6.561
+    },
+    {
+      "text": "doesn't have to",
+      "start": 479.639,
+      "duration": 4.361
+    },
+    {
+      "text": "anal what",
+      "start": 481.72,
+      "duration": 5.439
+    },
+    {
+      "text": "this this",
+      "start": 484.0,
+      "duration": 3.159
+    },
+    {
+      "text": "works let's use for the identification",
+      "start": 487.319,
+      "duration": 4.84
+    },
+    {
+      "text": "of",
+      "start": 491.319,
+      "duration": 4.681
+    },
+    {
+      "text": "Alm for inst let's say hey analyze the",
+      "start": 492.159,
+      "duration": 5.921
+    },
+    {
+      "text": "code and explain what it",
+      "start": 496.0,
+      "duration": 5.44
+    },
+    {
+      "text": "does so for the same as for samp",
+      "start": 498.08,
+      "duration": 7.2
+    },
+    {
+      "text": "instance we get an answer like this is",
+      "start": 501.44,
+      "duration": 6.24
+    },
+    {
+      "text": "some kind of data transformation it",
+      "start": 505.28,
+      "duration": 4.68
+    },
+    {
+      "text": "might be ention orc",
+      "start": 507.68,
+      "duration": 5.0
+    },
+    {
+      "text": "it usov to",
+      "start": 509.96,
+      "duration": 6.24
+    },
+    {
+      "text": "mem well I don't know I'm not",
+      "start": 512.68,
+      "duration": 6.56
+    },
+    {
+      "text": "surprised so this is Prett generic or",
+      "start": 516.2,
+      "duration": 6.04
+    },
+    {
+      "text": "wrong or I don't know how call",
+      "start": 519.24,
+      "duration": 5.0
+    },
+    {
+      "text": "that",
+      "start": 522.24,
+      "duration": 6.4
+    },
+    {
+      "text": "however um for",
+      "start": 524.24,
+      "duration": 4.4
+    },
+    {
+      "text": "explanation I cont like I give it",
+      "start": 528.76,
+      "duration": 7.36
+    },
+    {
+      "text": "example and say the following code",
+      "start": 532.72,
+      "duration": 7.28
+    },
+    {
+      "text": "crypto Alm which one",
+      "start": 536.12,
+      "duration": 8.159
+    },
+    {
+      "text": "with that context it tells me well this",
+      "start": 540.0,
+      "duration": 7.959
+    },
+    {
+      "text": "is Alm it seems to be the",
+      "start": 544.279,
+      "duration": 7.961
+    },
+    {
+      "text": "key so basically add in context what you",
+      "start": 547.959,
+      "duration": 5.32
+    },
+    {
+      "text": "expect",
+      "start": 552.24,
+      "duration": 6.48
+    },
+    {
+      "text": "it or at giv class then it's able to",
+      "start": 553.279,
+      "duration": 9.481
+    },
+    {
+      "text": "characteristics of4 like two with count",
+      "start": 558.72,
+      "duration": 7.92
+    },
+    {
+      "text": "of6 stuff like that so here the lesson",
+      "start": 562.76,
+      "duration": 5.6
+    },
+    {
+      "text": "is context",
+      "start": 566.64,
+      "duration": 6.24
+    },
+    {
+      "text": "of this but also works by",
+      "start": 568.36,
+      "duration": 8.52
+    },
+    {
+      "text": "verification let's say we have on",
+      "start": 572.88,
+      "duration": 8.04
+    },
+    {
+      "text": "this code kind statistics based",
+      "start": 576.88,
+      "duration": 8.24
+    },
+    {
+      "text": "statistics and got like 100 functions",
+      "start": 580.92,
+      "duration": 8.039
+    },
+    {
+      "text": "which tell us this might be ask for then",
+      "start": 585.12,
+      "duration": 6.24
+    },
+    {
+      "text": "we could because we don't want to",
+      "start": 588.959,
+      "duration": 4.801
+    },
+    {
+      "text": "inspect everything on our own then we",
+      "start": 591.36,
+      "duration": 6.12
+    },
+    {
+      "text": "could ask a specific question like hey",
+      "start": 593.76,
+      "duration": 6.0
+    },
+    {
+      "text": "given",
+      "start": 597.48,
+      "duration": 5.64
+    },
+    {
+      "text": "as for answer yes or no and something",
+      "start": 599.76,
+      "duration": 6.84
+    },
+    {
+      "text": "like that is often a good filter for for",
+      "start": 603.12,
+      "duration": 6.159
+    },
+    {
+      "text": "positives if you work",
+      "start": 606.6,
+      "duration": 7.2
+    },
+    {
+      "text": "with and then final this case script",
+      "start": 609.279,
+      "duration": 7.641
+    },
+    {
+      "text": "development let's say you are doing",
+      "start": 613.8,
+      "duration": 7.24
+    },
+    {
+      "text": "analysis and see in the code some",
+      "start": 616.92,
+      "duration": 5.88
+    },
+    {
+      "text": "keytion some",
+      "start": 621.04,
+      "duration": 4.68
+    },
+    {
+      "text": "string which do X or or something like",
+      "start": 622.8,
+      "duration": 7.56
+    },
+    {
+      "text": "that then you can tell it",
+      "start": 625.72,
+      "duration": 4.64
+    },
+    {
+      "text": "comut um this one that Implement",
+      "start": 630.44,
+      "duration": 7.36
+    },
+    {
+      "text": "string so we have context",
+      "start": 634.04,
+      "duration": 6.52
+    },
+    {
+      "text": "please and then it will go something",
+      "start": 637.8,
+      "duration": 8.4
+    },
+    {
+      "text": "like that where me either or at least",
+      "start": 640.56,
+      "duration": 9.839
+    },
+    {
+      "text": "parti so if we get it from Context and",
+      "start": 646.2,
+      "duration": 8.52
+    },
+    {
+      "text": "overall task fine enough this",
+      "start": 650.399,
+      "duration": 9.24
+    },
+    {
+      "text": "works so let inter",
+      "start": 654.72,
+      "duration": 4.919
+    },
+    {
+      "text": "these for are of a good approxim and",
+      "start": 659.88,
+      "duration": 6.72
+    },
+    {
+      "text": "give you",
+      "start": 664.92,
+      "duration": 4.8
+    },
+    {
+      "text": "some in",
+      "start": 666.6,
+      "duration": 3.12
+    },
+    {
+      "text": "theil",
+      "start": 672.519,
+      "duration": 3.481
+    },
+    {
+      "text": "however",
+      "start": 674.36,
+      "duration": 6.2
+    },
+    {
+      "text": "can and what seem to be common PN is any",
+      "start": 676.0,
+      "duration": 7.36
+    },
+    {
+      "text": "cont what you are doing what you expect",
+      "start": 680.56,
+      "duration": 7.399
+    },
+    {
+      "text": "to be S at the same time they don't have",
+      "start": 683.36,
+      "duration": 6.44
+    },
+    {
+      "text": "any",
+      "start": 687.959,
+      "duration": 8.281
+    },
+    {
+      "text": "so don't expect to question they will",
+      "start": 689.8,
+      "duration": 6.44
+    },
+    {
+      "text": "anwers so talking about the",
+      "start": 697.279,
+      "duration": 8.56
+    },
+    {
+      "text": "general like how what use cases are the",
+      "start": 700.68,
+      "duration": 7.839
+    },
+    {
+      "text": "question is do I have to trigger check",
+      "start": 705.839,
+      "duration": 6.321
+    },
+    {
+      "text": "te all the time your webs for inst and",
+      "start": 708.519,
+      "duration": 6.801
+    },
+    {
+      "text": "there the answer is in the last years",
+      "start": 712.16,
+      "duration": 5.2
+    },
+    {
+      "text": "there were quite a lot of tools and this",
+      "start": 715.32,
+      "duration": 4.72
+    },
+    {
+      "text": "is only a selection",
+      "start": 717.36,
+      "duration": 5.8
+    },
+    {
+      "text": "um tools and Commercial element that",
+      "start": 720.04,
+      "duration": 5.64
+    },
+    {
+      "text": "basically",
+      "start": 723.16,
+      "duration": 4.08
+    },
+    {
+      "text": "integrated",
+      "start": 725.68,
+      "duration": 5.76
+    },
+    {
+      "text": "into your choice for instance to name",
+      "start": 727.24,
+      "duration": 6.2
+    },
+    {
+      "text": "some tools",
+      "start": 731.44,
+      "duration": 5.0
+    },
+    {
+      "text": "forto",
+      "start": 733.44,
+      "duration": 3.0
+    },
+    {
+      "text": "Coop",
+      "start": 739.04,
+      "duration": 3.0
+    },
+    {
+      "text": "ninja so for Toto for instance it has a",
+      "start": 743.399,
+      "duration": 8.961
+    },
+    {
+      "text": "feature to be de compiler and then to",
+      "start": 747.24,
+      "duration": 8.68
+    },
+    {
+      "text": "like explain functions or variables",
+      "start": 752.36,
+      "duration": 7.08
+    },
+    {
+      "text": "coming ninja this is as far as I know up",
+      "start": 755.92,
+      "duration": 7.2
+    },
+    {
+      "text": "until now the only commercial plug which",
+      "start": 759.44,
+      "duration": 6.8
+    },
+    {
+      "text": "integrates CH like features this has a",
+      "start": 763.12,
+      "duration": 6.2
+    },
+    {
+      "text": "bunch of plugins functionalities like",
+      "start": 766.24,
+      "duration": 6.52
+    },
+    {
+      "text": "laming variables so for instance in this",
+      "start": 769.32,
+      "duration": 6.8
+    },
+    {
+      "text": "part this part of the code you see that",
+      "start": 772.76,
+      "duration": 5.84
+    },
+    {
+      "text": "it highlights some variables that you",
+      "start": 776.12,
+      "duration": 5.32
+    },
+    {
+      "text": "can you",
+      "start": 778.6,
+      "duration": 5.84
+    },
+    {
+      "text": "can",
+      "start": 781.44,
+      "duration": 3.0
+    },
+    {
+      "text": "if comp you also can ask some questions",
+      "start": 784.88,
+      "duration": 6.24
+    },
+    {
+      "text": "to the code",
+      "start": 789.12,
+      "duration": 6.8
+    },
+    {
+      "text": "itself so this is one talking about",
+      "start": 791.12,
+      "duration": 7.6
+    },
+    {
+      "text": "GS they",
+      "start": 795.92,
+      "duration": 5.44
+    },
+    {
+      "text": "also they",
+      "start": 798.72,
+      "duration": 6.359
+    },
+    {
+      "text": "have one of them is that",
+      "start": 801.36,
+      "duration": 8.4
+    },
+    {
+      "text": "interage so you have to online your cont",
+      "start": 805.079,
+      "duration": 6.281
+    },
+    {
+      "text": "and like",
+      "start": 809.76,
+      "duration": 5.0
+    },
+    {
+      "text": "that in many cases for example if you",
+      "start": 811.36,
+      "duration": 6.88
+    },
+    {
+      "text": "come from Germany you don't",
+      "start": 814.76,
+      "duration": 3.48
+    },
+    {
+      "text": "have then every cost money so let's say",
+      "start": 818.44,
+      "duration": 10.88
+    },
+    {
+      "text": "one but",
+      "start": 825.839,
+      "duration": 3.481
+    },
+    {
+      "text": "have and",
+      "start": 830.32,
+      "duration": 7.12
+    },
+    {
+      "text": "thens it can Su up pry quickly so cost",
+      "start": 833.32,
+      "duration": 7.28
+    },
+    {
+      "text": "factor is same",
+      "start": 837.44,
+      "duration": 4.8
+    },
+    {
+      "text": "however in",
+      "start": 840.6,
+      "duration": 5.919
+    },
+    {
+      "text": "our our use cases the privy is is larg",
+      "start": 842.24,
+      "duration": 7.76
+    },
+    {
+      "text": "to consern in many cases you are not",
+      "start": 846.519,
+      "duration": 6.481
+    },
+    {
+      "text": "allowed to share",
+      "start": 850.0,
+      "duration": 5.04
+    },
+    {
+      "text": "information because",
+      "start": 853.0,
+      "duration": 3.88
+    },
+    {
+      "text": "you're",
+      "start": 855.04,
+      "duration": 6.08
+    },
+    {
+      "text": "customer or are",
+      "start": 856.88,
+      "duration": 7.6
+    },
+    {
+      "text": "working allow to",
+      "start": 861.12,
+      "duration": 3.36
+    },
+    {
+      "text": "share allow",
+      "start": 866.0,
+      "duration": 5.959
+    },
+    {
+      "text": "so there are many new cases where you",
+      "start": 869.32,
+      "duration": 5.56
+    },
+    {
+      "text": "can't use",
+      "start": 871.959,
+      "duration": 4.8
+    },
+    {
+      "text": "commercial",
+      "start": 874.88,
+      "duration": 5.16
+    },
+    {
+      "text": "to the question there is are you",
+      "start": 876.759,
+      "duration": 4.561
+    },
+    {
+      "text": "required",
+      "start": 880.04,
+      "duration": 5.32
+    },
+    {
+      "text": "to to limit yourself and don't use this",
+      "start": 881.32,
+      "duration": 7.319
+    },
+    {
+      "text": "tech and",
+      "start": 885.36,
+      "duration": 3.279
+    },
+    {
+      "text": "wellc and",
+      "start": 889.88,
+      "duration": 3.44
+    },
+    {
+      "text": "will right",
+      "start": 896.639,
+      "duration": 4.0
+    },
+    {
+      "text": "there's a",
+      "start": 905.36,
+      "duration": 2.32
+    },
+    {
+      "text": "coup they are slower they are less",
+      "start": 908.279,
+      "duration": 8.12
+    },
+    {
+      "text": "powerful and you have to have",
+      "start": 913.32,
+      "duration": 6.439
+    },
+    {
+      "text": "computation resources",
+      "start": 916.399,
+      "duration": 3.36
+    },
+    {
+      "text": "so completely nonscientific scientific",
+      "start": 922.199,
+      "duration": 5.921
+    },
+    {
+      "text": "anecdotal evidence based on our",
+      "start": 925.839,
+      "duration": 6.601
+    },
+    {
+      "text": "experience when functions like the",
+      "start": 928.12,
+      "duration": 8.88
+    },
+    {
+      "text": "GP when use online requ less than two",
+      "start": 932.44,
+      "duration": 10.92
+    },
+    {
+      "text": "seconds and running a local L thise mro",
+      "start": 937.0,
+      "duration": 9.36
+    },
+    {
+      "text": "which",
+      "start": 943.36,
+      "duration": 3.0
+    },
+    {
+      "text": "on1 seconds",
+      "start": 946.519,
+      "duration": 4.401
+    },
+    {
+      "text": "and is about 10 seconds it doesn't sound",
+      "start": 952.92,
+      "duration": 6.359
+    },
+    {
+      "text": "so bad right I you can do that you can",
+      "start": 956.839,
+      "duration": 4.44
+    },
+    {
+      "text": "do that 10 times but when you're",
+      "start": 959.279,
+      "duration": 4.92
+    },
+    {
+      "text": "renaming thousands of functions in a",
+      "start": 961.279,
+      "duration": 6.48
+    },
+    {
+      "text": "binary this becomes quite",
+      "start": 964.199,
+      "duration": 3.56
+    },
+    {
+      "text": "an in terms of how powerful items are",
+      "start": 968.319,
+      "duration": 9.041
+    },
+    {
+      "text": "there was more than parameters that make",
+      "start": 973.44,
+      "duration": 5.92
+    },
+    {
+      "text": "up for performance but parameters",
+      "start": 977.36,
+      "duration": 4.8
+    },
+    {
+      "text": "something that we can so here's an",
+      "start": 979.36,
+      "duration": 6.36
+    },
+    {
+      "text": "estimate of what jet GPT",
+      "start": 982.16,
+      "duration": 7.599
+    },
+    {
+      "text": "GPT uh gp4 use inms parameters that's",
+      "start": 985.72,
+      "duration": 5.44
+    },
+    {
+      "text": "not the official numbers they have not",
+      "start": 989.759,
+      "duration": 3.52
+    },
+    {
+      "text": "released but we can see that the latest",
+      "start": 991.16,
+      "duration": 5.359
+    },
+    {
+      "text": "version gp4 is assumed to use 1.5",
+      "start": 993.279,
+      "duration": 7.841
+    },
+    {
+      "text": "trillion param now compare that to the",
+      "start": 996.519,
+      "duration": 6.961
+    },
+    {
+      "text": "billion of the",
+      "start": 1001.12,
+      "duration": 5.36
+    },
+    {
+      "text": "loed",
+      "start": 1003.48,
+      "duration": 3.0
+    },
+    {
+      "text": "by",
+      "start": 1006.639,
+      "duration": 3.0
+    },
+    {
+      "text": "very there's a second local the",
+      "start": 1013.6,
+      "duration": 5.76
+    },
+    {
+      "text": "mix7 which is larger",
+      "start": 1016.72,
+      "duration": 5.2
+    },
+    {
+      "text": "receive what",
+      "start": 1019.36,
+      "duration": 4.719
+    },
+    {
+      "text": "BRS",
+      "start": 1021.92,
+      "duration": 6.72
+    },
+    {
+      "text": "before the things require TR",
+      "start": 1024.079,
+      "duration": 9.321
+    },
+    {
+      "text": "Hardware goodia CPU the 3090 or 4090",
+      "start": 1028.64,
+      "duration": 7.199
+    },
+    {
+      "text": "should work or Arm",
+      "start": 1033.4,
+      "duration": 6.96
+    },
+    {
+      "text": "based tend to work well that's",
+      "start": 1035.839,
+      "duration": 8.441
+    },
+    {
+      "text": "what probably I make work stations the",
+      "start": 1040.36,
+      "duration": 6.319
+    },
+    {
+      "text": "same and when you have this",
+      "start": 1044.28,
+      "duration": 5.08
+    },
+    {
+      "text": "Hardware you're good to go you can",
+      "start": 1046.679,
+      "duration": 6.0
+    },
+    {
+      "text": "already use loc LM for your reverse",
+      "start": 1049.36,
+      "duration": 6.319
+    },
+    {
+      "text": "engineering um we out there and try that",
+      "start": 1052.679,
+      "duration": 7.0
+    },
+    {
+      "text": "for you so compared to gp4 on the use",
+      "start": 1055.679,
+      "duration": 6.801
+    },
+    {
+      "text": "cases has been talking about a bit",
+      "start": 1059.679,
+      "duration": 6.88
+    },
+    {
+      "text": "before we've tried to see how that works",
+      "start": 1062.48,
+      "duration": 4.96
+    },
+    {
+      "text": "it's",
+      "start": 1066.559,
+      "duration": 4.801
+    },
+    {
+      "text": "obvious comparison but we with you",
+      "start": 1067.44,
+      "duration": 7.719
+    },
+    {
+      "text": "here we can see that the small mod is",
+      "start": 1071.36,
+      "duration": 8.04
+    },
+    {
+      "text": "okay for raming functions",
+      "start": 1075.159,
+      "duration": 6.241
+    },
+    {
+      "text": "okayish when identifying Library",
+      "start": 1079.4,
+      "duration": 4.0
+    },
+    {
+      "text": "functions but for everything else it's",
+      "start": 1081.4,
+      "duration": 4.2
+    },
+    {
+      "text": "probably more a Miss",
+      "start": 1083.4,
+      "duration": 6.92
+    },
+    {
+      "text": "than whereas the larer model is doing",
+      "start": 1085.6,
+      "duration": 8.48
+    },
+    {
+      "text": "better it's performing okayish to I",
+      "start": 1090.32,
+      "duration": 6.04
+    },
+    {
+      "text": "would",
+      "start": 1094.08,
+      "duration": 2.28
+    },
+    {
+      "text": "say now the",
+      "start": 1096.6,
+      "duration": 4.88
+    },
+    {
+      "text": "question than",
+      "start": 1099.4,
+      "duration": 4.88
+    },
+    {
+      "text": "that and the answer is always to such a",
+      "start": 1101.48,
+      "duration": 8.04
+    },
+    {
+      "text": "question is yes so we already have",
+      "start": 1104.28,
+      "duration": 8.399
+    },
+    {
+      "text": "how context can turn your completely",
+      "start": 1109.52,
+      "duration": 8.84
+    },
+    {
+      "text": "useless useless response to something",
+      "start": 1112.679,
+      "duration": 5.681
+    },
+    {
+      "text": "works what we can do to get there is use",
+      "start": 1119.28,
+      "duration": 5.8
+    },
+    {
+      "text": "the already aw information in our to",
+      "start": 1122.679,
+      "duration": 5.521
+    },
+    {
+      "text": "right so let's incorporate whatever",
+      "start": 1125.08,
+      "duration": 6.92
+    },
+    {
+      "text": "insights we have from our music from our",
+      "start": 1128.2,
+      "duration": 8.44
+    },
+    {
+      "text": "and make that that to the",
+      "start": 1132.0,
+      "duration": 7.6
+    },
+    {
+      "text": "L so how does",
+      "start": 1136.64,
+      "duration": 6.919
+    },
+    {
+      "text": "for example for function rename",
+      "start": 1139.6,
+      "duration": 7.84
+    },
+    {
+      "text": "well we could rename only relevant",
+      "start": 1143.559,
+      "duration": 7.36
+    },
+    {
+      "text": "functions which is a subset of all",
+      "start": 1147.44,
+      "duration": 6.52
+    },
+    {
+      "text": "functions this is increases speed and",
+      "start": 1150.919,
+      "duration": 4.961
+    },
+    {
+      "text": "depending on how we choose these",
+      "start": 1153.96,
+      "duration": 3.52
+    },
+    {
+      "text": "functions",
+      "start": 1155.88,
+      "duration": 4.64
+    },
+    {
+      "text": "accuracy what our relevant functions I'm",
+      "start": 1157.48,
+      "duration": 5.84
+    },
+    {
+      "text": "hinting at well take a look at this",
+      "start": 1160.52,
+      "duration": 6.24
+    },
+    {
+      "text": "example and The crucial thing you to see",
+      "start": 1163.32,
+      "duration": 6.359
+    },
+    {
+      "text": "is that itates strings like",
+      "start": 1166.76,
+      "duration": 5.919
+    },
+    {
+      "text": "proxy and given this context it's pretty",
+      "start": 1169.679,
+      "duration": 5.24
+    },
+    {
+      "text": "easy",
+      "start": 1172.679,
+      "duration": 6.321
+    },
+    {
+      "text": "for nothing at all uh to infer that this",
+      "start": 1174.919,
+      "duration": 7.801
+    },
+    {
+      "text": "is configure proxy settings so if we use",
+      "start": 1179.0,
+      "duration": 7.919
+    },
+    {
+      "text": "strings and up functions",
+      "start": 1182.72,
+      "duration": 4.199
+    },
+    {
+      "text": "complex but there were some simple trick",
+      "start": 1189.2,
+      "duration": 7.719
+    },
+    {
+      "text": "that helps assume the",
+      "start": 1192.6,
+      "duration": 4.319
+    },
+    {
+      "text": "following we",
+      "start": 1196.96,
+      "duration": 6.88
+    },
+    {
+      "text": "functions might",
+      "start": 1200.559,
+      "duration": 3.281
+    },
+    {
+      "text": "some something like which is",
+      "start": 1205.6,
+      "duration": 6.8
+    },
+    {
+      "text": "absolutely finger it",
+      "start": 1209.72,
+      "duration": 6.16
+    },
+    {
+      "text": "doesn't have complex on the",
+      "start": 1212.4,
+      "duration": 8.2
+    },
+    {
+      "text": "underly called crch so here's one thing",
+      "start": 1215.88,
+      "duration": 7.52
+    },
+    {
+      "text": "we can do we can start from the B up and",
+      "start": 1220.6,
+      "duration": 6.28
+    },
+    {
+      "text": "just gr all way up from the lead not to",
+      "start": 1223.4,
+      "duration": 5.639
+    },
+    {
+      "text": "the top",
+      "start": 1226.88,
+      "duration": 5.279
+    },
+    {
+      "text": "file exe so",
+      "start": 1229.039,
+      "duration": 6.12
+    },
+    {
+      "text": "LM launch file so the difference here is",
+      "start": 1232.159,
+      "duration": 7.441
+    },
+    {
+      "text": "solely the this and this is very simple",
+      "start": 1235.159,
+      "duration": 7.441
+    },
+    {
+      "text": "but surprisingly",
+      "start": 1239.6,
+      "duration": 6.199
+    },
+    {
+      "text": "effective now with these things",
+      "start": 1242.6,
+      "duration": 7.4
+    },
+    {
+      "text": "included locals work nicely and there's",
+      "start": 1245.799,
+      "duration": 7.401
+    },
+    {
+      "text": "already a number of out",
+      "start": 1250.0,
+      "duration": 5.08
+    },
+    {
+      "text": "there two",
+      "start": 1253.2,
+      "duration": 6.24
+    },
+    {
+      "text": "things one talk about first revers is",
+      "start": 1255.08,
+      "duration": 6.52
+    },
+    {
+      "text": "tips",
+      "start": 1259.44,
+      "duration": 5.44
+    },
+    {
+      "text": "bym it's more of aound than finished so",
+      "start": 1261.6,
+      "duration": 5.8
+    },
+    {
+      "text": "feel free to try it out to test whether",
+      "start": 1264.88,
+      "duration": 4.32
+    },
+    {
+      "text": "it works for your use cases or whether",
+      "start": 1267.4,
+      "duration": 2.56
+    },
+    {
+      "text": "you",
+      "start": 1269.2,
+      "duration": 3.32
+    },
+    {
+      "text": "cance results what we've shown before",
+      "start": 1269.96,
+      "duration": 6.199
+    },
+    {
+      "text": "and it contains both these mod",
+      "start": 1272.52,
+      "duration": 3.639
+    },
+    {
+      "text": "the compx information were available",
+      "start": 1281.799,
+      "duration": 4.921
+    },
+    {
+      "text": "which makes it quite nice but the",
+      "start": 1284.64,
+      "duration": 4.84
+    },
+    {
+      "text": "question once again is com and yes of",
+      "start": 1286.72,
+      "duration": 4.88
+    },
+    {
+      "text": "course there's a lot we could do better",
+      "start": 1289.48,
+      "duration": 6.199
+    },
+    {
+      "text": "we could try to optimize our queries",
+      "start": 1291.6,
+      "duration": 7.439
+    },
+    {
+      "text": "some engineering get the most number",
+      "start": 1295.679,
+      "duration": 6.841
+    },
+    {
+      "text": "that we ask we could simply go to some",
+      "start": 1299.039,
+      "duration": 8.201
+    },
+    {
+      "text": "like this and see whe there are new",
+      "start": 1302.52,
+      "duration": 8.759
+    },
+    {
+      "text": "models try or we could",
+      "start": 1307.24,
+      "duration": 7.52
+    },
+    {
+      "text": "find that's a little bit that course",
+      "start": 1311.279,
+      "duration": 7.4
+    },
+    {
+      "text": "there's another like",
+      "start": 1314.76,
+      "duration": 3.919
+    },
+    {
+      "text": "that's exactly it's focusing on comp",
+      "start": 1319.039,
+      "duration": 10.481
+    },
+    {
+      "text": "as before but the figure is it uses the",
+      "start": 1324.6,
+      "duration": 7.72
+    },
+    {
+      "text": "version of the M 7 so we've seen before",
+      "start": 1329.52,
+      "duration": 5.2
+    },
+    {
+      "text": "the M 7B the 7 billion it didn't really",
+      "start": 1332.32,
+      "duration": 4.08
+    },
+    {
+      "text": "work for",
+      "start": 1334.72,
+      "duration": 4.04
+    },
+    {
+      "text": "us but",
+      "start": 1336.4,
+      "duration": 6.24
+    },
+    {
+      "text": "what was they use all",
+      "start": 1338.76,
+      "duration": 5.96
+    },
+    {
+      "text": "functions",
+      "start": 1342.64,
+      "duration": 6.12
+    },
+    {
+      "text": "verion to continuously train the small",
+      "start": 1344.72,
+      "duration": 6.0
+    },
+    {
+      "text": "and to tailor it specifically to the",
+      "start": 1348.76,
+      "duration": 3.039
+    },
+    {
+      "text": "class",
+      "start": 1350.72,
+      "duration": 5.439
+    },
+    {
+      "text": "enhancing the decompile renaming the",
+      "start": 1351.799,
+      "duration": 7.321
+    },
+    {
+      "text": "function notes and surprisingly if you",
+      "start": 1356.159,
+      "duration": 7.281
+    },
+    {
+      "text": "do that it can actually keep up with GPT",
+      "start": 1359.12,
+      "duration": 7.039
+    },
+    {
+      "text": "for on this very",
+      "start": 1363.44,
+      "duration": 4.479
+    },
+    {
+      "text": "specific",
+      "start": 1366.159,
+      "duration": 4.4
+    },
+    {
+      "text": "and information but the key thing here",
+      "start": 1367.919,
+      "duration": 4.961
+    },
+    {
+      "text": "really is that fine tuning can help you",
+      "start": 1370.559,
+      "duration": 4.72
+    },
+    {
+      "text": "get a very small model which might",
+      "start": 1372.88,
+      "duration": 7.56
+    },
+    {
+      "text": "easily your machine do tasks as good",
+      "start": 1375.279,
+      "duration": 5.161
+    },
+    {
+      "text": "there's still a couple of things that",
+      "start": 1381.84,
+      "duration": 6.4
+    },
+    {
+      "text": "are now it's",
+      "start": 1384.76,
+      "duration": 3.48
+    },
+    {
+      "text": "like brok as a cross",
+      "start": 1394.12,
+      "duration": 5.919
+    },
+    {
+      "text": "function hard",
+      "start": 1396.88,
+      "duration": 5.159
+    },
+    {
+      "text": "but the thing",
+      "start": 1400.039,
+      "duration": 4.361
+    },
+    {
+      "text": "is an automated",
+      "start": 1402.039,
+      "duration": 5.401
+    },
+    {
+      "text": "analyst version of yourself simply Al",
+      "start": 1404.4,
+      "duration": 7.08
+    },
+    {
+      "text": "that can help you selection or some that",
+      "start": 1407.44,
+      "duration": 5.68
+    },
+    {
+      "text": "make your nature",
+      "start": 1411.48,
+      "duration": 5.36
+    },
+    {
+      "text": "easier so where are we going with",
+      "start": 1413.12,
+      "duration": 6.88
+    },
+    {
+      "text": "that well what we certainly expect it's",
+      "start": 1416.84,
+      "duration": 5.52
+    },
+    {
+      "text": "hard to the Future certainly",
+      "start": 1420.0,
+      "duration": 8.559
+    },
+    {
+      "text": "expect will scale quickly scale art",
+      "start": 1422.36,
+      "duration": 11.08
+    },
+    {
+      "text": "especially always more input more",
+      "start": 1428.559,
+      "duration": 8.881
+    },
+    {
+      "text": "Contex basically",
+      "start": 1433.44,
+      "duration": 4.0
+    },
+    {
+      "text": "and will",
+      "start": 1441.919,
+      "duration": 2.76
+    },
+    {
+      "text": "definitely all we do hope that we are",
+      "start": 1452.76,
+      "duration": 4.64
+    },
+    {
+      "text": "getting some sort of semantic con where",
+      "start": 1455.24,
+      "duration": 5.2
+    },
+    {
+      "text": "we describing what we looking for andc",
+      "start": 1457.4,
+      "duration": 6.879
+    },
+    {
+      "text": "some pinpoints potentially prop that or",
+      "start": 1460.44,
+      "duration": 6.08
+    },
+    {
+      "text": "we can use it for completely",
+      "start": 1464.279,
+      "duration": 6.081
+    },
+    {
+      "text": "prioritizing what to look at",
+      "start": 1466.52,
+      "duration": 3.84
+    },
+    {
+      "text": "another nice thing would be some sort of",
+      "start": 1472.279,
+      "duration": 5.241
+    },
+    {
+      "text": "patch recomendation",
+      "start": 1474.48,
+      "duration": 3.04
+    },
+    {
+      "text": "systems",
+      "start": 1477.72,
+      "duration": 8.199
+    },
+    {
+      "text": "siming similar things so all things that",
+      "start": 1479.32,
+      "duration": 6.599
+    },
+    {
+      "text": "potentially now with that let's",
+      "start": 1486.88,
+      "duration": 7.2
+    },
+    {
+      "text": "quickly summarize about so are good for",
+      "start": 1489.52,
+      "duration": 6.56
+    },
+    {
+      "text": "approximation toel understanding but",
+      "start": 1494.08,
+      "duration": 5.0
+    },
+    {
+      "text": "they are often wrong can will be wrong",
+      "start": 1496.08,
+      "duration": 4.56
+    },
+    {
+      "text": "it will be very wrong it will be",
+      "start": 1499.08,
+      "duration": 3.52
+    },
+    {
+      "text": "somewhat wrong and that's up to you to",
+      "start": 1500.64,
+      "duration": 4.48
+    },
+    {
+      "text": "decide and you always have to keep in",
+      "start": 1502.6,
+      "duration": 6.24
+    },
+    {
+      "text": "mind they have no real",
+      "start": 1505.12,
+      "duration": 3.72
+    },
+    {
+      "text": "understanding one nice thing you can do",
+      "start": 1510.679,
+      "duration": 5.321
+    },
+    {
+      "text": "to make that more accurate is Contex in",
+      "start": 1512.72,
+      "duration": 5.28
+    },
+    {
+      "text": "Cas you",
+      "start": 1516.0,
+      "duration": 6.2
+    },
+    {
+      "text": "that another thing is that local are",
+      "start": 1518.0,
+      "duration": 7.48
+    },
+    {
+      "text": "somewhat worse wor but you can go with",
+      "start": 1522.2,
+      "duration": 8.16
+    },
+    {
+      "text": "them and well on your views on privacy",
+      "start": 1525.48,
+      "duration": 7.52
+    },
+    {
+      "text": "that might be a",
+      "start": 1530.36,
+      "duration": 2.64
+    },
+    {
+      "text": "nice so I would invite everybody if you",
+      "start": 1534.48,
+      "duration": 4.64
+    },
+    {
+      "text": "didn't",
+      "start": 1537.88,
+      "duration": 6.039
+    },
+    {
+      "text": "already of field Tri can actually be",
+      "start": 1539.12,
+      "duration": 7.32
+    },
+    {
+      "text": "quite nice they won't solve all of your",
+      "start": 1543.919,
+      "duration": 6.081
+    },
+    {
+      "text": "problems but they can give you a nice",
+      "start": 1546.44,
+      "duration": 6.56
+    },
+    {
+      "text": "help through all your journey but please",
+      "start": 1550.0,
+      "duration": 5.6
+    },
+    {
+      "text": "don't J that of that ladies and",
+      "start": 1553.0,
+      "duration": 3.96
+    },
+    {
+      "text": "gentlemen we are happy to answer",
+      "start": 1555.6,
+      "duration": 4.52
+    },
+    {
+      "text": "questions or your",
+      "start": 1556.96,
+      "duration": 10.8
+    },
+    {
+      "text": "experiences here right now or us in",
+      "start": 1560.12,
+      "duration": 7.64
+    }
+  ],
+  "full_text": "okay hi guys we are M and Tim today we talk about the future of reverse engineering with large language models uh I think most of you guys know us um I am a trainer for vcation techniques and the engineer Mo the top Works has his PhD done and we've given several talks together in the last years today we talk about large language models for RSE engineering um what is good what works what might work what doesn't work then the role of local llms which it can play and finally how you can enhance them to static analysis so let's start with llm and so as my disclaimer are pretty over and at the same time pretty fast developing field and therefore this talk today doesn't have uh the approach to be academically correct it's more about um our experience in ver engineering while using them on our own so we want to tease its powers and and there also not strategic twoes or it's more about the general state of the top llm for the and as from this claimer to disclaimer it's only to snapshot so we may outdated so if you think about what you could do with chbt or engineering you might think about hey it might of functions it's mind in nam of variables Maybe codes or explaining codes also answering generic questions about codes and so today we will not highly Focus things instead we will talk about some use cases which we had in the past where LM and we have seven use cases one of them the first one is function P selection the idea there is if you're doing Bal and you have a large finity with 1K 2K 5K functions and you don't know where to look at one idea would be that you can use LM to basically rename or function such that you can take a look based on the function if they might so you could ask for C large scales for the given compile output analyze the code and suest the meaning through function so and then you might end up with something like function name like set value to mem or call function pointers with arguments well I'm not saying they are not cases that this might be helpful but in this case for most use cases it's pretty generic and not that we can words if a lot of functions are getting Ed to decompile code analyze for instance so here it's a hallucination of LM where it just put something in there which has been part of the instructions but not much more so this is entirely useless however there are also some cases where the L function like initial or or post if you see something like that in additionally classified binary you will see oh well this is something I should take a closer look at so basically this can also be a second new case is the identification functions let's say you are doing or in general have St ex where you don't can decide between code and Li code in these cases for common Li functions it might bees like that where you it's copy thatb and if you take a closer look at the Cs you will see it's not wrong well well it is wrong but it's not that wrong what this code does is menop if so it's not a copy back for it doesn't have to do with LA but it still P points the copy functionality of copying memory so it b a good approximation but Incorrect and for many use cases something like that can give you a good high high level specification that you get at least an base understanding before you look at and then one of the most obvious use cases is enhanced de compiler output let's say we ask the qvt something like enhance the F de compile output by suggesting um more meaning for variable names also at comments then um you probably can't that it's also attended it says it function is copy memory and it gave it meaning for names and also edit comments which are quite quite fitting so for M Copy this works quite well so basically what they can say is how common small code these CES work quite well however let's take another function which is know if we give it to that without any further explanation it tells us it's conform and builds a lot of variables which look FL but just entirely so basically it's not all attention another thing is the analys guidance let's say you used to analy Cod and anal Cod but now you have and you are might have looked at that before maybe not but at least you are not that familiar with it and then you take a look at the code and don't understand much then you could say explain me the following assembly and it gives you a good understanding instruction by instruction it might dets high and at least add more cont to that some time each so for small doesn't have to anal what this this works let's use for the identification of Alm for inst let's say hey analyze the code and explain what it does so for the same as for samp instance we get an answer like this is some kind of data transformation it might be ention orc it usov to mem well I don't know I'm not surprised so this is Prett generic or wrong or I don't know how call that however um for explanation I cont like I give it example and say the following code crypto Alm which one with that context it tells me well this is Alm it seems to be the key so basically add in context what you expect it or at giv class then it's able to characteristics of4 like two with count of6 stuff like that so here the lesson is context of this but also works by verification let's say we have on this code kind statistics based statistics and got like 100 functions which tell us this might be ask for then we could because we don't want to inspect everything on our own then we could ask a specific question like hey given as for answer yes or no and something like that is often a good filter for for positives if you work with and then final this case script development let's say you are doing analysis and see in the code some keytion some string which do X or or something like that then you can tell it comut um this one that Implement string so we have context please and then it will go something like that where me either or at least parti so if we get it from Context and overall task fine enough this works so let inter these for are of a good approxim and give you some in theil however can and what seem to be common PN is any cont what you are doing what you expect to be S at the same time they don't have any so don't expect to question they will anwers so talking about the general like how what use cases are the question is do I have to trigger check te all the time your webs for inst and there the answer is in the last years there were quite a lot of tools and this is only a selection um tools and Commercial element that basically integrated into your choice for instance to name some tools forto Coop ninja so for Toto for instance it has a feature to be de compiler and then to like explain functions or variables coming ninja this is as far as I know up until now the only commercial plug which integrates CH like features this has a bunch of plugins functionalities like laming variables so for instance in this part this part of the code you see that it highlights some variables that you can you can if comp you also can ask some questions to the code itself so this is one talking about GS they also they have one of them is that interage so you have to online your cont and like that in many cases for example if you come from Germany you don't have then every cost money so let's say one but have and thens it can Su up pry quickly so cost factor is same however in our our use cases the privy is is larg to consern in many cases you are not allowed to share information because you're customer or are working allow to share allow so there are many new cases where you can't use commercial to the question there is are you required to to limit yourself and don't use this tech and wellc and will right there's a coup they are slower they are less powerful and you have to have computation resources so completely nonscientific scientific anecdotal evidence based on our experience when functions like the GP when use online requ less than two seconds and running a local L thise mro which on1 seconds and is about 10 seconds it doesn't sound so bad right I you can do that you can do that 10 times but when you're renaming thousands of functions in a binary this becomes quite an in terms of how powerful items are there was more than parameters that make up for performance but parameters something that we can so here's an estimate of what jet GPT GPT uh gp4 use inms parameters that's not the official numbers they have not released but we can see that the latest version gp4 is assumed to use 1.5 trillion param now compare that to the billion of the loed by very there's a second local the mix7 which is larger receive what BRS before the things require TR Hardware goodia CPU the 3090 or 4090 should work or Arm based tend to work well that's what probably I make work stations the same and when you have this Hardware you're good to go you can already use loc LM for your reverse engineering um we out there and try that for you so compared to gp4 on the use cases has been talking about a bit before we've tried to see how that works it's obvious comparison but we with you here we can see that the small mod is okay for raming functions okayish when identifying Library functions but for everything else it's probably more a Miss than whereas the larer model is doing better it's performing okayish to I would say now the question than that and the answer is always to such a question is yes so we already have how context can turn your completely useless useless response to something works what we can do to get there is use the already aw information in our to right so let's incorporate whatever insights we have from our music from our and make that that to the L so how does for example for function rename well we could rename only relevant functions which is a subset of all functions this is increases speed and depending on how we choose these functions accuracy what our relevant functions I'm hinting at well take a look at this example and The crucial thing you to see is that itates strings like proxy and given this context it's pretty easy for nothing at all uh to infer that this is configure proxy settings so if we use strings and up functions complex but there were some simple trick that helps assume the following we functions might some something like which is absolutely finger it doesn't have complex on the underly called crch so here's one thing we can do we can start from the B up and just gr all way up from the lead not to the top file exe so LM launch file so the difference here is solely the this and this is very simple but surprisingly effective now with these things included locals work nicely and there's already a number of out there two things one talk about first revers is tips bym it's more of aound than finished so feel free to try it out to test whether it works for your use cases or whether you cance results what we've shown before and it contains both these mod the compx information were available which makes it quite nice but the question once again is com and yes of course there's a lot we could do better we could try to optimize our queries some engineering get the most number that we ask we could simply go to some like this and see whe there are new models try or we could find that's a little bit that course there's another like that's exactly it's focusing on comp as before but the figure is it uses the version of the M 7 so we've seen before the M 7B the 7 billion it didn't really work for us but what was they use all functions verion to continuously train the small and to tailor it specifically to the class enhancing the decompile renaming the function notes and surprisingly if you do that it can actually keep up with GPT for on this very specific and information but the key thing here really is that fine tuning can help you get a very small model which might easily your machine do tasks as good there's still a couple of things that are now it's like brok as a cross function hard but the thing is an automated analyst version of yourself simply Al that can help you selection or some that make your nature easier so where are we going with that well what we certainly expect it's hard to the Future certainly expect will scale quickly scale art especially always more input more Contex basically and will definitely all we do hope that we are getting some sort of semantic con where we describing what we looking for andc some pinpoints potentially prop that or we can use it for completely prioritizing what to look at another nice thing would be some sort of patch recomendation systems siming similar things so all things that potentially now with that let's quickly summarize about so are good for approximation toel understanding but they are often wrong can will be wrong it will be very wrong it will be somewhat wrong and that's up to you to decide and you always have to keep in mind they have no real understanding one nice thing you can do to make that more accurate is Contex in Cas you that another thing is that local are somewhat worse wor but you can go with them and well on your views on privacy that might be a nice so I would invite everybody if you didn't already of field Tri can actually be quite nice they won't solve all of your problems but they can give you a nice help through all your journey but please don't J that of that ladies and gentlemen we are happy to answer questions or your experiences here right now or us in",
+  "errors": []
+}

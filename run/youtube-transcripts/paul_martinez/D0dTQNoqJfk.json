@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D0dTQNoqJfk",
+    "language": "en",
+    "took_ms": 8356,
+    "method": null,
+    "title": "Why DevOps in ICS?",
+    "channel": "S4 Events",
+    "upload_date": "20201103",
+    "duration_sec": 184,
+    "description": "Kelly Shortridge gave an important, eye-opening keynote at S4x20 on why we need to be starting on DevOps in ICS. Here is a 3-minute highlight clip. Beyond explaining the benefits, I think her best point is the ICS community needs to start working with this in predictive maintenance and other lower consequence areas to build up the skill set.",
+    "view_count": 385
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D0dTQNoqJfk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

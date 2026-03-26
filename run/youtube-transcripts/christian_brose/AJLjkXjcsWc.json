@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AJLjkXjcsWc",
+    "language": "en",
+    "took_ms": 8035,
+    "method": null,
+    "title": "A View of the U.S. Election From Iraq",
+    "channel": "Hudson Institute",
+    "upload_date": "20161104",
+    "duration_sec": 5421,
+    "description": "Feisal Istrabadi, Nussaibah Younis, Michael Doran and Michael Pregent discuss U.S.-Iraq relations under the next president and the fight against ISIS.",
+    "view_count": 828
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AJLjkXjcsWc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

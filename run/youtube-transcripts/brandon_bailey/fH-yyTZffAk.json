@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fH-yyTZffAk",
+    "language": "en",
+    "took_ms": 9872,
+    "method": null,
+    "title": "DEF CON 29 Ham Radio Village - Bryan Fields - Spectrum Coordination  for Amateur Radio",
+    "channel": "DEFCONConference",
+    "upload_date": "20220309",
+    "duration_sec": 3906,
+    "description": "",
+    "view_count": 1815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fH-yyTZffAk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

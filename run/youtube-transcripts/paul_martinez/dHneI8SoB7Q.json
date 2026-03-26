@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dHneI8SoB7Q",
+    "language": "en",
+    "took_ms": 9672,
+    "method": null,
+    "title": "Interview with Justine Bone of MedSec on St. Jude Disclosures / Short Selling",
+    "channel": "S4 Events",
+    "upload_date": "20170124",
+    "duration_sec": 1758,
+    "description": "Vulnerability disclosure is always a controversial topic, and in the end the person or company finding the vulnerability gets to decide what to do with it.\n\nMedSec tried a different path. They licensed the vulnerability information to Muddy Waters, who then published intentionally non-specific information on the vulnerabilities and shorted the stock. MedSec had a financial interest in St. Jude's stock price going down.\n\nDale Peterson interviewed MedSec CEO Justine Bone at S4x17 to better understand the vulnerabilities, what MedSec hoped to accomplish, why they chose this path, if they believed it was ethical to profit in this way, and if Justine or MedSec will do this again.",
+    "view_count": 1113
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dHneI8SoB7Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

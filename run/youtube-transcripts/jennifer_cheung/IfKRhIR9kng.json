@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IfKRhIR9kng",
+    "language": "en",
+    "took_ms": 7814,
+    "method": null,
+    "title": "DEF CON 31 - Packet Hacking Village - Pwning the Pwners with Mindware - Frank D9 DiGiovanni",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2448,
+    "description": "Traditionally the cyber attacker has an asymmetric advantage over the cyber defender. But does it have to be that way? Is it possible for the cyber defender to take an \"offensive stance.\" This talk will show how the emerging science of cyberpsychology and the leveraging of AI can provide the defender with the ability to pwn the most vulnerable component in the cyberattack kill chain, the attack's human operator. Leveraging the DoD's \"Tularosa Study,\" this talk will cover a theoretical framework for achieving this objective, outline an operational vignette, and then cover some the specifics for such an approach.",
+    "view_count": 1600
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IfKRhIR9kng: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

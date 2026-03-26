@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "exBBTJAkGp4",
+    "language": "en",
+    "took_ms": 9838,
+    "method": null,
+    "title": "Another Storm Brewing Over Potential UN Regulation of the In",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 3721,
+    "description": "Please join Hudson Institute's Center on Economics of the Internet for an address on UN internet regulation by Ambassador David Gross. Ambassador Gross is currently a partner at Wiley Rein, LLP and is one of the world's foremost experts on international telecommunications, having addressed the United Nations General Assembly and led more U.S. delegations at major international telecommunication conferences than anyone in modern history. Drawing on his more than 25 years of experience as a global",
+    "view_count": 17
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] exBBTJAkGp4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

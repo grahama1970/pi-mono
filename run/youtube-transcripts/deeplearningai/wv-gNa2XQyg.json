@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wv-gNa2XQyg",
+    "language": "en",
+    "took_ms": 9331,
+    "method": null,
+    "title": "Learn to deploy serverless agentic workflows in this new course with AWS",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241016",
+    "duration_sec": 182,
+    "description": "Enroll now: https://bit.ly/4gZ0v9n\n\nIntroducing \"Serverless Agentic Workflows with Amazon Bedrock.\"\n\nDo you want to build scalable agents that can handle real-world tasks without the need to manage infrastructure? This course, made in collaboration with Amazon Web Services, and taught by Mike Chambers, Specialist Developer Advocate for Machine Learning, will teach you how to build and deploy serverless agentic applications with built-in guardrails for responsible and secure operations.\n\nWhat you’ll learn:\n\n- Build agents that handle API calls, calculations, and data retrieval.\n- Deploy a customer service bot for a fictional tea mug business that can handle queries, process orders, and integrate with CRMs in real-time.\n- Implement safeguards to protect sensitive information and prevent unintended outputs.\n- Deploy your agent using Amazon Bedrock’s fully managed, serverless services.\n\nWhy take this course?\n\n- No need to manage servers – focus on deploying and scaling effortlessly.\n- Learn how to design responsible agents with guardrails to ensure safe and accurate responses.\n- Connect your agent to tools and databases seamlessly with Amazon Bedrock’s graphical interface.\n\nLearn more: https://bit.ly/4gZ0v9n",
+    "view_count": 3643
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wv-gNa2XQyg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

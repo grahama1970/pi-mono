@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LxFCGcP6KL0",
+    "language": "en",
+    "took_ms": 8466,
+    "method": null,
+    "title": "Cybersecurity Oversight and Governance: Managing the Risk",
+    "channel": "S4 Events",
+    "upload_date": "20200318",
+    "duration_sec": 1831,
+    "description": "Lisa Sotto of Hunton Andrews Kurth LLP presents the current law related to executive and board governance and cyber risk. What is in place today and what is coming. This can help ICS security professionals understand how to communicate with executives.\n\nLisa begins with a brief overview of the threat landscape. She then discusses the existing laws and frameworks. The SEC guidance beginning at 11:00 are extremely important and worth watching. She covers cybersecurity law related to critical infrastructure in other countries, including China.\n\nAt 23:50 Lisa discusses the Board's role in overseeing and managing cyber risk. \"Boards that ignore cybersecurity do so at their own peril.\"\n\nNote: there is a microphone change at 10:30 that eliminates the slight scratching sound.",
+    "view_count": 3197
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LxFCGcP6KL0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

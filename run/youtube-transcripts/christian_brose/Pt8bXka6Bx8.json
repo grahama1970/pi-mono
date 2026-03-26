@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Pt8bXka6Bx8",
+    "language": "en",
+    "took_ms": 8063,
+    "method": null,
+    "title": "Israel, Iran, and the Future of the Iranian Nuclear Deal: A Conversation with Ron Dermer",
+    "channel": "Hudson Institute",
+    "upload_date": "20180510",
+    "duration_sec": 3978,
+    "description": "On May 10th, Hudson Institute hosted Israel's ambassador to the U.S., Ron Dermer, for a discussion on the future of the Iran Deal after President Trump's withdrawal announcement. The discussion was hosted by Hudson senior fellow Michael Doran.",
+    "view_count": 3051
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Pt8bXka6Bx8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

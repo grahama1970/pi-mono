@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ezo0Lf-7l6M",
+    "language": "en",
+    "took_ms": 8803,
+    "method": null,
+    "title": "DEF CON 31 - Top Tips for new DEF CON Attendees - video team",
+    "channel": "DEFCONConference",
+    "upload_date": "20230812",
+    "duration_sec": 977,
+    "description": "Silk asks attendees of DEF CON 31 for their best DEF CON tips.\n\nDrink water.\n\nCreated by: https://www.youtube.com/channel/UCbHYwhbarpO6vXgbIYmcXnQ",
+    "view_count": 16008
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ezo0Lf-7l6M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "If_DLcudsX4",
+    "language": "en",
+    "took_ms": 9096,
+    "method": null,
+    "title": "Innovative CIP Security Training",
+    "channel": "S4 Events",
+    "upload_date": "20170721",
+    "duration_sec": 308,
+    "description": "This is a 5 minute edited clip from a longer S4x17 session that show how Arizona Public service went from 4% engaged in traditional training to 83% engaged in this online story-based training. You get to see some of the impressive examples in this 5 minute clip.",
+    "view_count": 750
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] If_DLcudsX4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

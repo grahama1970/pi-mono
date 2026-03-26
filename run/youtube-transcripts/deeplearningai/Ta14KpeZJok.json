@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ta14KpeZJok",
+    "language": "en",
+    "took_ms": 7850,
+    "method": null,
+    "title": "Machine Learning Engineering for Production (MLOps)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210630",
+    "duration_sec": 4195,
+    "description": "Welcome to our event celebrating the launch of Machine Learning Engineering for Production (MLOps) Specialization featuring AI leaders in MLOps.\n\nTopics we plan to cover:\n-To what extent does the role of Data Scientist or MLE involve MLOps?\n-How is MLOps actually implemented in an industry setting? Is there some kind of a framework people use?\n-Is MLOps suitable for early-stage startups or only teams with enough resources as the big tech companies do?\n-The latest trends on MLOps and how will the future of it evolve.\n-What do you see as the biggest challenges for MLOps adoption?\n-Apart from taking courses, what are some of the other resources or activities might recommend to learners interested in gaining practical experience with MLOps?\n\nSpeakers:\n-Andrew Ng, Founder, DeepLearning.AI\n-Robert Crowe, TensorFlow Developer Engineer, Google\n-Laurence Moroney, AI Advocate, Google\n-Chip Huyen, Adjunct Lecturer, Stanford University\n-Rajat Monga, co-founder, Stealth Startup;  Former lead of TensorFlow, Google\n-Event moderator: Ryan Keenan, Director of Product, DeepLearning.AI\n\nLet us know what you think of the event by filling out a quick survey here: https://bit.ly/3janNgZ\n\nTo learn more about DeepLearning.AI and sign up for future events: https://www.deeplearning.ai/events/\nTo sign up for Machine Learning Engineering for Production (MLOps), https://bit.ly/3j1DEhB",
+    "view_count": 54036
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ta14KpeZJok: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

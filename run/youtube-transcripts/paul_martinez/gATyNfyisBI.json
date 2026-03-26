@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gATyNfyisBI",
+    "language": "en",
+    "took_ms": 9568,
+    "method": null,
+    "title": "Aspect Modeling for Process Variable Anomaly Detection",
+    "channel": "S4 Events",
+    "upload_date": "20240815",
+    "duration_sec": 1898,
+    "description": "Ryan demonstrates how to achieve a method of \"Agentless OT EDR\" for IACS process endpoints with cyber-physical \"Aspect Models\".\n\nBy leveraging Machine-to-Machine APIs and protocols, such as OPC-UA, using existing intermediary and process endpoint systems, he shows how extending collection and analysis across cyber-physical process variables supports the creation of \"aspect models\" for autonomous threat detection, root-cause analysis and incident response.\n\nIn contrast to complex digital twin systems, Ryan explains the concept of aspect models as detectors of discrete cyber-physical system behaviour, at the endpoint or process level, based on one or more process variables, which automatically form intuitive chains of process endpoint activity for automated root cause analysis (e.g., cybersecurity threat, system fault, or equipment failure).",
+    "view_count": 237
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gATyNfyisBI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kdPSq9c4SjI",
+    "language": "en",
+    "took_ms": 8791,
+    "method": null,
+    "title": "Problems with ICS Proprietary Encryption (or Encraption)",
+    "channel": "S4 Events",
+    "upload_date": "20160918",
+    "duration_sec": 1116,
+    "description": "If you hear that a radio or ICS system that you are considering uses proprietary encryption, run away (or do a lot of due diligence). It is hard enough to implement vetted crypto primitives and protocols correctly. It is even harder for a vendor to invent their own that is any good.\n\nAt 5:15 of this short S4xEurope video, Vladimir Dashchenko of Kaspersky Lab goes over three different proprietary encryption algorithms used in ICS. All have serious problems that would lead the asset owner / user to have a false sense of confidentiality provided by the encraption.",
+    "view_count": 428
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kdPSq9c4SjI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

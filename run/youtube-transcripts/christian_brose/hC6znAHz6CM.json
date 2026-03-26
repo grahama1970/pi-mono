@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hC6znAHz6CM",
+    "language": "en",
+    "took_ms": 8598,
+    "method": null,
+    "title": "Sri Lanka: A Growing Hub in the Indo-Pacific",
+    "channel": "Hudson Institute",
+    "upload_date": "20170309",
+    "duration_sec": 4213,
+    "description": "Ambassador Husain Haqqani and Ambassador Prasad Kariyawasam of Sri Lanka will discuss Sri Lanka's growing economic prominence in the Indo-Pacific.",
+    "view_count": 841
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hC6znAHz6CM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

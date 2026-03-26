@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AlQCf2iYWCg",
+    "language": "en",
+    "took_ms": 8650,
+    "method": null,
+    "title": "New course: Vector Databases: from Embeddings to Applications with Weaviate",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231108",
+    "duration_sec": 145,
+    "description": "Enroll now: https://bit.ly/3Qs4z5o\n\nWith the increasing adoption of Large Language Models (LLMs), vector databases have emerged as indispensable assets as they provide LLMs with access to real-time and proprietary data, enabling the development of Retrieval Augmented Generation (RAG) applications.\n\nIn \"Vector Databases: from Embeddings to Applications,\" you’ll gain the knowledge to make informed decisions about when and how to apply vector databases to your applications. \n\nYou’ll explore: \n\n-How to use vector databases and LLMs to gain deeper insights into your data.\n-Build labs that show how to form embeddings and use several search techniques to find similar embeddings.\n-Explore algorithms for fast searches through vast datasets and build applications ranging from RAG to multilingual search.\n-Acquire practical coding skills in vector databases.\n\nStart using vector databases efficiently today! \n\nLearn more: https://bit.ly/3Qs4z5o",
+    "view_count": 4581
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AlQCf2iYWCg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

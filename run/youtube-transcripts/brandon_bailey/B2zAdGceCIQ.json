@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B2zAdGceCIQ",
+    "language": "en",
+    "took_ms": 8896,
+    "method": null,
+    "title": "DEF CON 33 Video Team - Ch0wn35",
+    "channel": "DEFCONConference",
+    "upload_date": "20250820",
+    "duration_sec": 244,
+    "description": "d3dbot interviews Artts and Entertainment Goon Ch0wn35 about DEF CON 33.",
+    "view_count": 1797
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B2zAdGceCIQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

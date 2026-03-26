@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i_e4anGal1w",
+    "language": "en",
+    "took_ms": 8925,
+    "method": null,
+    "title": "DEF CON Safe Mode Lock Picking Village - Steven Collins - Cuff Stuff",
+    "channel": "DEFCONConference",
+    "upload_date": "20200818",
+    "duration_sec": 478,
+    "description": "",
+    "view_count": 1431
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i_e4anGal1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

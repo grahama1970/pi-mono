@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WFhoV1c0rlc",
+    "language": "en",
+    "took_ms": 8320,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Brandon Bailey - Exploiting Spacecraft",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2806,
+    "description": "This presentation will describe the high-level cyber threat landscape for space systems and focus on three examples: Command Replay Attack, Command Link Intrusion, and Denial of Service using GPS jamming. These three attacks were performed using high fidelity ground-to-space simulators to demonstrate the benefit of performing such research using simulation. These simulations leverage many of the same software components used in operations today for several operational missions. Recommendations are provided on how to protect against the attacks and references are provided so the audience can build their own simulations to begin their own research.",
+    "view_count": 1046
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WFhoV1c0rlc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

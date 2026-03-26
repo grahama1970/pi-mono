@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SabG8x5EdX4",
+    "language": "en",
+    "took_ms": 8373,
+    "method": null,
+    "title": "Europe at Sea: Mediterranean and Baltic Security Challenges",
+    "channel": "Hudson Institute",
+    "upload_date": "20150727",
+    "duration_sec": 3949,
+    "description": "Rear Admiral Chris Parry and Seth Cropsey discuss European maritime challenges.",
+    "view_count": 26512
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SabG8x5EdX4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

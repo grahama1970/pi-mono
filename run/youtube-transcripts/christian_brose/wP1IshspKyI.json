@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wP1IshspKyI",
+    "language": "en",
+    "took_ms": 8819,
+    "method": null,
+    "title": "The Realignment Ep. 33: Matt Stoller, the COVID-19 Economy",
+    "channel": "Hudson Institute",
+    "upload_date": "20200428",
+    "duration_sec": 3024,
+    "description": "Matt Stoller, Director of Research at the American Economic Liberties Project, returns to The Realignment to discuss the structure of the economy during and after the COVID-19 outbreak",
+    "view_count": 2578
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wP1IshspKyI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

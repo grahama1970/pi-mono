@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tcBYaZqdc4A",
+    "language": "en",
+    "took_ms": 8211,
+    "method": null,
+    "title": "New course! Getting Started with Mistral is live",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240422",
+    "duration_sec": 116,
+    "description": "Enroll now: https://bit.ly/4d0p2J2\n\nWe’re excited to introduce a new short course built in collaboration with Mistral AI: Getting Started with Mistral. \n\nIn this course, you'll access Mistral AI's collection of open source and commercial models, including the Mixtral 8x7B model, via API calls. You'll learn about selecting the right model for your use case, and get hands-on with features like effective prompting techniques, function calling, JSON mode, and RAG.\n\nThis beginner-friendly course is perfect for recommending to your friends and colleagues who want to leverage large language models in a clear and approachable way.\n\nIn detail:\n\n- Access and prompt Mistral models via API calls for tasks, and decide whether your task is either a simple, medium, or advanced, and consider speed requirements to choose an appropriate model.\n- Learn to use Mistral's native function calling, in which you give an LLM tools it can call as needed to perform tasks that are better performed by traditional code, such as querying a database for numerical data. \n- Build a basic RAG system from scratch with similarity search, properly chunk data, create embeddings, and implement this tool as a function in your chat system.\n- Build a chat interface to interact with the Mistral models and ask questions about a document that you upload.\n\nBy the end of this course, you'll be equipped to use Mistral AI's leading open source and commercial models.\n\nLearn more: https://bit.ly/4d0p2J2",
+    "view_count": 5068
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tcBYaZqdc4A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

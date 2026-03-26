@@ -1,0 +1,3598 @@
+{
+  "meta": {
+    "video_id": "5moW9ag8OPk",
+    "language": "en",
+    "took_ms": 1706,
+    "method": "direct",
+    "title": "The Future is No Longer a Prediction. It is an AI-Generated Graph",
+    "channel": "Discover AI",
+    "upload_date": "20260304",
+    "duration_sec": 1806,
+    "description": "The Topologization of Semantic Flow: Discretizing Associative Language into Structural AI Reasoning Graphs.\n\nDeconstructing 5 ArXiv pre-prints on the Topologization of Language, Reasoning, and our Collective Future.\n\nThe Final Insight: AI isn't just predicting what will happen next. Through PseudoAct's code, RUMAD's swarms, and the Corporate Imaginary's rhetoric, AI is literally compiling the future.\n\nThe future is no longer a prediction; it is an AI generated graph.\n\nAll rights w/ authors: \n\n1st Pre-print\nRUMAD: Reinforcement-Unifying Multi-Agent Debate\nAAAI Track\nChao Wang\nTsinghua University\nShenzhen, China\nwangchao23@mails.tsinghua.edu.cn\nHan Lin\nZhejiang University\nHangzhou, China\nTsinghua University\nShenzhen, China\nhlin@zju.edu.cn\nHuaze Tang\nTsinghua University\nShenzhen, China\nthz21@mails.tsinghua.edu.cn\nHuijing Lin\nTsinghua University\nShenzhen, China\nlinhj24@mails.tsinghua.edu.cn\nWenbo Ding\nTsinghua University\nShenzhen, China\nding.wenbo@sz.tsinghua.edu.cn\narXiv:2602.23864\n\n\n2nd Pre-print\nHIERARCHICAL CONCEPT-BASED INTERPRETABLE MODELS\nOscar Hill\nUniversity of Cambridge\nogh22@cam.ac.uk\nMateo Espinosa Zarlenga\nUniversity of Oxford\ntrin4380@ox.ac.uk\nMateja Jamnik\nUniversity of Cambridge\nmj201@cam.ac.uk\narXiv:2602.23947\n\n\n3rd Pre-print\nLLM-Driven Multi-Turn Task-Oriented Dialogue Synthesis for Realistic\nReasoning\nYu Zhu, Kai Yang\nDepartment of Computer Science and Technology, Tongji University\narXiv:2602.2361\n\n\n4th Pre-print\nPseudoAct: Leveraging Pseudocode Synthesis for Flexible Planning and Action Control in Large\nLanguage Model Agents\nYihan (Logon) Wen, Xin Chen\nDepartment of Electrical and Computer Engineering, Texas A&M University, College Station, TX, USA\narXiv:2602.23668\n\n\n5th Pre-print\nThe Compulsory Imaginary: AGI and Corporate Authority\nEmilio Barkett\nColumbia University\nCorrespondence: eab2291@columbia.ed\narXiv:2602.23679\n#airesearch \n#aiexplained \n#scienceexplained",
+    "view_count": 2346
+  },
+  "transcript": [
+    {
+      "text": "Hello community. So great that you are",
+      "start": 0.24,
+      "duration": 4.8
+    },
+    {
+      "text": "back. Today we talk about AI and we talk",
+      "start": 2.639,
+      "duration": 5.521
+    },
+    {
+      "text": "about language hits logic and I want to",
+      "start": 5.04,
+      "duration": 5.36
+    },
+    {
+      "text": "show you five new AI publication",
+      "start": 8.16,
+      "duration": 4.88
+    },
+    {
+      "text": "published today. But they cause a",
+      "start": 10.4,
+      "duration": 4.96
+    },
+    {
+      "text": "problem. Let me show you now. The first",
+      "start": 13.04,
+      "duration": 4.159
+    },
+    {
+      "text": "publication by Chinua University is",
+      "start": 15.36,
+      "duration": 4.16
+    },
+    {
+      "text": "beautiful. A reinforcement unifying",
+      "start": 17.199,
+      "duration": 5.121
+    },
+    {
+      "text": "multi- aent debate. And this is a new",
+      "start": 19.52,
+      "duration": 5.2
+    },
+    {
+      "text": "framework here to formulate here a",
+      "start": 22.32,
+      "duration": 5.6
+    },
+    {
+      "text": "dynamic communication topology control",
+      "start": 24.72,
+      "duration": 6.065
+    },
+    {
+      "text": "on multi- aent debate structures.",
+      "start": 27.92,
+      "duration": 4.56
+    },
+    {
+      "text": "[snorts] And I would say hey this sounds",
+      "start": 30.785,
+      "duration": 3.774
+    },
+    {
+      "text": "great. This sounds like technology. No,",
+      "start": 32.48,
+      "duration": 4.16
+    },
+    {
+      "text": "we have a controller that regulates an",
+      "start": 34.559,
+      "duration": 4.721
+    },
+    {
+      "text": "inter agent communication in multi- aent",
+      "start": 36.64,
+      "duration": 5.759
+    },
+    {
+      "text": "communication structures.",
+      "start": 39.28,
+      "duration": 5.84
+    },
+    {
+      "text": "The problem is it has a content agnostic",
+      "start": 42.399,
+      "duration": 5.041
+    },
+    {
+      "text": "observation scheme",
+      "start": 45.12,
+      "duration": 4.4
+    },
+    {
+      "text": "and I didn't notice it. And then in the",
+      "start": 47.44,
+      "duration": 3.599
+    },
+    {
+      "text": "second paper here by University of",
+      "start": 49.52,
+      "duration": 3.76
+    },
+    {
+      "text": "Cambridge and University of Oxford about",
+      "start": 51.039,
+      "duration": 4.561
+    },
+    {
+      "text": "a hierarchical conceptbased",
+      "start": 53.28,
+      "duration": 6.079
+    },
+    {
+      "text": "interpretable AI model they told us hey",
+      "start": 55.6,
+      "duration": 6.639
+    },
+    {
+      "text": "we explicit model concept relationships",
+      "start": 59.359,
+      "duration": 5.041
+    },
+    {
+      "text": "through hierarchical structures and I",
+      "start": 62.239,
+      "duration": 4.321
+    },
+    {
+      "text": "said this is a beautiful idea and I",
+      "start": 64.4,
+      "duration": 4.0
+    },
+    {
+      "text": "looked at the paper read the paper and I",
+      "start": 66.56,
+      "duration": 4.72
+    },
+    {
+      "text": "said this is strange but suddenly we",
+      "start": 68.4,
+      "duration": 5.52
+    },
+    {
+      "text": "have the feeling we we have to fit",
+      "start": 71.28,
+      "duration": 5.76
+    },
+    {
+      "text": "something into a classification system.",
+      "start": 73.92,
+      "duration": 4.64
+    },
+    {
+      "text": "And then the third paper and this is",
+      "start": 77.04,
+      "duration": 3.92
+    },
+    {
+      "text": "here by Dongji University and they",
+      "start": 78.56,
+      "duration": 4.879
+    },
+    {
+      "text": "published here an LLMdriven multi-turn",
+      "start": 80.96,
+      "duration": 6.159
+    },
+    {
+      "text": "task oriented dialogue synthesis for",
+      "start": 83.439,
+      "duration": 6.241
+    },
+    {
+      "text": "realistic reasoning of AI and I thought",
+      "start": 87.119,
+      "duration": 4.241
+    },
+    {
+      "text": "what a beautiful study it's amazing",
+      "start": 89.68,
+      "duration": 4.24
+    },
+    {
+      "text": "technological they propose here an",
+      "start": 91.36,
+      "duration": 4.48
+    },
+    {
+      "text": "LLMdriven framework for synthesizing",
+      "start": 93.92,
+      "duration": 5.199
+    },
+    {
+      "text": "multi-turn task oriented dialogues here",
+      "start": 95.84,
+      "duration": 6.48
+    },
+    {
+      "text": "in realistic reasoning scenarios and the",
+      "start": 99.119,
+      "duration": 4.721
+    },
+    {
+      "text": "reason they do this is because they",
+      "start": 102.32,
+      "duration": 3.839
+    },
+    {
+      "text": "don't have the data so they have to",
+      "start": 103.84,
+      "duration": 5.36
+    },
+    {
+      "text": "synthesize iz those data for our AI to",
+      "start": 106.159,
+      "duration": 5.28
+    },
+    {
+      "text": "learn and I could feel something was",
+      "start": 109.2,
+      "duration": 4.48
+    },
+    {
+      "text": "wrong. Those three paper they went in a",
+      "start": 111.439,
+      "duration": 4.161
+    },
+    {
+      "text": "direction something was happening inside",
+      "start": 113.68,
+      "duration": 3.68
+    },
+    {
+      "text": "of me.",
+      "start": 115.6,
+      "duration": 3.119
+    },
+    {
+      "text": "And if you look at the synthetic",
+      "start": 117.36,
+      "duration": 3.28
+    },
+    {
+      "text": "generation process everything is",
+      "start": 118.719,
+      "duration": 4.0
+    },
+    {
+      "text": "absolutely beautiful. It is logic. It is",
+      "start": 120.64,
+      "duration": 4.32
+    },
+    {
+      "text": "pure. It is exactly what mathematic",
+      "start": 122.719,
+      "duration": 6.32
+    },
+    {
+      "text": "would order us to do. And then Texas&M",
+      "start": 124.96,
+      "duration": 6.079
+    },
+    {
+      "text": "University no agriculture and",
+      "start": 129.039,
+      "duration": 5.28
+    },
+    {
+      "text": "manufacturing I think no mechanical P so",
+      "start": 131.039,
+      "duration": 4.881
+    },
+    {
+      "text": "act",
+      "start": 134.319,
+      "duration": 4.241
+    },
+    {
+      "text": "leveraging cyto code synthesis for",
+      "start": 135.92,
+      "duration": 4.959
+    },
+    {
+      "text": "flexible planning and action control in",
+      "start": 138.56,
+      "duration": 5.12
+    },
+    {
+      "text": "LLM agents",
+      "start": 140.879,
+      "duration": 4.881
+    },
+    {
+      "text": "and I said this is a beautiful study",
+      "start": 143.68,
+      "duration": 4.72
+    },
+    {
+      "text": "this is a fantastic technology it",
+      "start": 145.76,
+      "duration": 5.52
+    },
+    {
+      "text": "synthesizes a structured soyo code",
+      "start": 148.4,
+      "duration": 6.8
+    },
+    {
+      "text": "planning that decomposes uh certain task",
+      "start": 151.28,
+      "duration": 6.64
+    },
+    {
+      "text": "complexity into multip able lower",
+      "start": 155.2,
+      "duration": 5.52
+    },
+    {
+      "text": "complexity subtasks and explicitly",
+      "start": 157.92,
+      "duration": 6.319
+    },
+    {
+      "text": "encodes here absoid code control flow",
+      "start": 160.72,
+      "duration": 6.56
+    },
+    {
+      "text": "for our AI to follow",
+      "start": 164.239,
+      "duration": 5.521
+    },
+    {
+      "text": "and then I think it happened because I",
+      "start": 167.28,
+      "duration": 5.52
+    },
+    {
+      "text": "had a feeling that we are trying to do a",
+      "start": 169.76,
+      "duration": 4.88
+    },
+    {
+      "text": "mathematical operation on the human",
+      "start": 172.8,
+      "duration": 5.04
+    },
+    {
+      "text": "language that are",
+      "start": 174.64,
+      "duration": 6.64
+    },
+    {
+      "text": "not really working there's no rigidity",
+      "start": 177.84,
+      "duration": 6.56
+    },
+    {
+      "text": "in the human language for this and then",
+      "start": 181.28,
+      "duration": 4.879
+    },
+    {
+      "text": "yeah and you have here beautiful",
+      "start": 184.4,
+      "duration": 4.88
+    },
+    {
+      "text": "structure website code plan synthesizes",
+      "start": 186.159,
+      "duration": 5.121
+    },
+    {
+      "text": "here in high level logic primitives and",
+      "start": 189.28,
+      "duration": 4.239
+    },
+    {
+      "text": "when I read logic primitives I thought",
+      "start": 191.28,
+      "duration": 4.16
+    },
+    {
+      "text": "this is like mathematics in the 19th",
+      "start": 193.519,
+      "duration": 4.0
+    },
+    {
+      "text": "century there was a time in mathematics",
+      "start": 195.44,
+      "duration": 4.879
+    },
+    {
+      "text": "where we tried to prove everything one",
+      "start": 197.519,
+      "duration": 5.36
+    },
+    {
+      "text": "and one equal two we tried to prove",
+      "start": 200.319,
+      "duration": 5.601
+    },
+    {
+      "text": "everything from the most atomistic",
+      "start": 202.879,
+      "duration": 4.72
+    },
+    {
+      "text": "logical primitive mathematical",
+      "start": 205.92,
+      "duration": 3.92
+    },
+    {
+      "text": "primitives and I have the feeling we are",
+      "start": 207.599,
+      "duration": 4.161
+    },
+    {
+      "text": "now at this very same point in the",
+      "start": 209.84,
+      "duration": 3.6
+    },
+    {
+      "text": "development of artificial intelligent",
+      "start": 211.76,
+      "duration": 4.16
+    },
+    {
+      "text": "the next AI systems",
+      "start": 213.44,
+      "duration": 4.32
+    },
+    {
+      "text": "And then I read this and this was for",
+      "start": 215.92,
+      "duration": 4.399
+    },
+    {
+      "text": "Columbia University.",
+      "start": 217.76,
+      "duration": 5.039
+    },
+    {
+      "text": "And then I understood something and this",
+      "start": 220.319,
+      "duration": 5.761
+    },
+    {
+      "text": "is a beautiful study about a different",
+      "start": 222.799,
+      "duration": 5.601
+    },
+    {
+      "text": "public persona. It's about the CEO of",
+      "start": 226.08,
+      "duration": 5.12
+    },
+    {
+      "text": "OpenAI and the CEO of Entropic and they",
+      "start": 228.4,
+      "duration": 5.04
+    },
+    {
+      "text": "publish and they communicate. They",
+      "start": 231.2,
+      "duration": 4.959
+    },
+    {
+      "text": "communicate to their community to the",
+      "start": 233.44,
+      "duration": 4.32
+    },
+    {
+      "text": "coder and to the developer and the",
+      "start": 236.159,
+      "duration": 3.761
+    },
+    {
+      "text": "software engineers and they communicate",
+      "start": 237.76,
+      "duration": 4.0
+    },
+    {
+      "text": "also to the shareholders and they",
+      "start": 239.92,
+      "duration": 4.239
+    },
+    {
+      "text": "communicate to the policy institution.",
+      "start": 241.76,
+      "duration": 5.28
+    },
+    {
+      "text": "And here we have now a study by Columbia",
+      "start": 244.159,
+      "duration": 4.561
+    },
+    {
+      "text": "University",
+      "start": 247.04,
+      "duration": 5.68
+    },
+    {
+      "text": "about imaginary structures and",
+      "start": 248.72,
+      "duration": 6.159
+    },
+    {
+      "text": "authority. And I thought what is",
+      "start": 252.72,
+      "duration": 4.639
+    },
+    {
+      "text": "strange? What has this to do with AI?",
+      "start": 254.879,
+      "duration": 4.721
+    },
+    {
+      "text": "Turns out this was the key that I missed",
+      "start": 257.359,
+      "duration": 5.601
+    },
+    {
+      "text": "in the other four studies",
+      "start": 259.6,
+      "duration": 5.039
+    },
+    {
+      "text": "because",
+      "start": 262.96,
+      "duration": 3.6
+    },
+    {
+      "text": "they had a look at this communication",
+      "start": 264.639,
+      "duration": 4.321
+    },
+    {
+      "text": "patterns now and they imagined that",
+      "start": 266.56,
+      "duration": 4.24
+    },
+    {
+      "text": "there are something that was known it's",
+      "start": 268.96,
+      "duration": 6.239
+    },
+    {
+      "text": "called the sociotechnical imaginaries",
+      "start": 270.8,
+      "duration": 6.24
+    },
+    {
+      "text": "and these imaginaries are built through",
+      "start": 275.199,
+      "duration": 4.161
+    },
+    {
+      "text": "a structurally consistent human",
+      "start": 277.04,
+      "duration": 4.96
+    },
+    {
+      "text": "rhetorical strategy",
+      "start": 279.36,
+      "duration": 5.68
+    },
+    {
+      "text": "and they found out that both CEOs more",
+      "start": 282.0,
+      "duration": 5.6
+    },
+    {
+      "text": "or less converge",
+      "start": 285.04,
+      "duration": 4.64
+    },
+    {
+      "text": "to make it easy how they examine how our",
+      "start": 287.6,
+      "duration": 4.08
+    },
+    {
+      "text": "vision of a scientific and technological",
+      "start": 289.68,
+      "duration": 4.079
+    },
+    {
+      "text": "process let's say what is the benefit of",
+      "start": 291.68,
+      "duration": 4.72
+    },
+    {
+      "text": "AI why should we further invest in AI",
+      "start": 293.759,
+      "duration": 4.481
+    },
+    {
+      "text": "why should we do research in AI on what",
+      "start": 296.4,
+      "duration": 5.28
+    },
+    {
+      "text": "topic of AI humanity is it more of an",
+      "start": 298.24,
+      "duration": 6.08
+    },
+    {
+      "text": "augmented AI is an AI takes over",
+      "start": 301.68,
+      "duration": 4.64
+    },
+    {
+      "text": "everything what about the public",
+      "start": 304.32,
+      "duration": 3.599
+    },
+    {
+      "text": "purposes what about the collective",
+      "start": 306.32,
+      "duration": 4.159
+    },
+    {
+      "text": "future that we want to achieve what is",
+      "start": 307.919,
+      "duration": 5.521
+    },
+    {
+      "text": "our goal in AI what we want to see for",
+      "start": 310.479,
+      "duration": 6.0
+    },
+    {
+      "text": "the community and they extended the",
+      "start": 313.44,
+      "duration": 5.039
+    },
+    {
+      "text": "sociotechnical imaginaries framework",
+      "start": 316.479,
+      "duration": 5.201
+    },
+    {
+      "text": "from a nation state perspective now to a",
+      "start": 318.479,
+      "duration": 5.601
+    },
+    {
+      "text": "private firm perspective that is really",
+      "start": 321.68,
+      "duration": 4.0
+    },
+    {
+      "text": "at the frontier of a transformative",
+      "start": 324.08,
+      "duration": 4.72
+    },
+    {
+      "text": "technological development and then I had",
+      "start": 325.68,
+      "duration": 6.0
+    },
+    {
+      "text": "a feeling and I guess now you have to",
+      "start": 328.8,
+      "duration": 5.6
+    },
+    {
+      "text": "help me because I will show you here my",
+      "start": 331.68,
+      "duration": 5.519
+    },
+    {
+      "text": "thoughts but I'm not yet finished I have",
+      "start": 334.4,
+      "duration": 5.28
+    },
+    {
+      "text": "not yet reached the synthesis the",
+      "start": 337.199,
+      "duration": 6.641
+    },
+    {
+      "text": "conclusion so maybe you can help me",
+      "start": 339.68,
+      "duration": 6.72
+    },
+    {
+      "text": "five research papers published today",
+      "start": 343.84,
+      "duration": 4.48
+    },
+    {
+      "text": "complete different but all five papers",
+      "start": 346.4,
+      "duration": 4.56
+    },
+    {
+      "text": "are somehow connected and I think the",
+      "start": 348.32,
+      "duration": 4.48
+    },
+    {
+      "text": "deep connection between all those paper",
+      "start": 350.96,
+      "duration": 4.959
+    },
+    {
+      "text": "is we have a collision between two",
+      "start": 352.8,
+      "duration": 4.56
+    },
+    {
+      "text": "fundamentally different mathematical",
+      "start": 355.919,
+      "duration": 4.0
+    },
+    {
+      "text": "structures no we have the human language",
+      "start": 357.36,
+      "duration": 4.399
+    },
+    {
+      "text": "with all its beauty expressiveness and",
+      "start": 359.919,
+      "duration": 4.321
+    },
+    {
+      "text": "everything and we map it to a continuous",
+      "start": 361.759,
+      "duration": 4.801
+    },
+    {
+      "text": "associative manifold or what you would",
+      "start": 364.24,
+      "duration": 4.239
+    },
+    {
+      "text": "call a simple mathematical vector space",
+      "start": 366.56,
+      "duration": 4.479
+    },
+    {
+      "text": "no for a ra system and on the other hand",
+      "start": 368.479,
+      "duration": 5.121
+    },
+    {
+      "text": "we have the discrete topological graphs",
+      "start": 371.039,
+      "duration": 5.201
+    },
+    {
+      "text": "of pure computational logic where we",
+      "start": 373.6,
+      "duration": 3.92
+    },
+    {
+      "text": "know the mathematics where we know",
+      "start": 376.24,
+      "duration": 2.64
+    },
+    {
+      "text": "exactly how to operate on a graph",
+      "start": 377.52,
+      "duration": 5.28
+    },
+    {
+      "text": "theoretical operator on fields here but",
+      "start": 378.88,
+      "duration": 6.64
+    },
+    {
+      "text": "somehow the human language is not really",
+      "start": 382.8,
+      "duration": 6.399
+    },
+    {
+      "text": "the computational framework here for a",
+      "start": 385.52,
+      "duration": 7.399
+    },
+    {
+      "text": "logical application",
+      "start": 389.199,
+      "duration": 3.72
+    },
+    {
+      "text": "and I have the feeling that every paper",
+      "start": 392.96,
+      "duration": 4.56
+    },
+    {
+      "text": "that I just showed you is kind of let's",
+      "start": 394.479,
+      "duration": 5.601
+    },
+    {
+      "text": "be very unscientific inventing a kind of",
+      "start": 397.52,
+      "duration": 5.519
+    },
+    {
+      "text": "a mechanism to solve the same problem",
+      "start": 400.08,
+      "duration": 4.8
+    },
+    {
+      "text": "how do we build rigid discrete creates",
+      "start": 403.039,
+      "duration": 4.16
+    },
+    {
+      "text": "scaffolds, graph trees, algorithm, AI",
+      "start": 404.88,
+      "duration": 4.879
+    },
+    {
+      "text": "structures to",
+      "start": 407.199,
+      "duration": 4.881
+    },
+    {
+      "text": "make the human language and the human",
+      "start": 409.759,
+      "duration": 5.761
+    },
+    {
+      "text": "action somehow handable to artificial",
+      "start": 412.08,
+      "duration": 6.08
+    },
+    {
+      "text": "intelligence or other words to constrain",
+      "start": 415.52,
+      "duration": 6.079
+    },
+    {
+      "text": "and channel the associative fluidity of",
+      "start": 418.16,
+      "duration": 7.039
+    },
+    {
+      "text": "the human language towards a pure dry",
+      "start": 421.599,
+      "duration": 6.32
+    },
+    {
+      "text": "mathematical high probability task",
+      "start": 425.199,
+      "duration": 6.56
+    },
+    {
+      "text": "probability distribution peak structure.",
+      "start": 427.919,
+      "duration": 6.4
+    },
+    {
+      "text": "You see it doesn't go together somehow.",
+      "start": 431.759,
+      "duration": 4.801
+    },
+    {
+      "text": "Somehow there is something missing. Let",
+      "start": 434.319,
+      "duration": 5.041
+    },
+    {
+      "text": "me give an example. I would say imagine",
+      "start": 436.56,
+      "duration": 5.6
+    },
+    {
+      "text": "the human language no or go in a",
+      "start": 439.36,
+      "duration": 5.04
+    },
+    {
+      "text": "mathematical reframing with the vastness",
+      "start": 442.16,
+      "duration": 4.64
+    },
+    {
+      "text": "of a latent space here for an LLM. It's",
+      "start": 444.4,
+      "duration": 5.04
+    },
+    {
+      "text": "like a river. It is associative water.",
+      "start": 446.8,
+      "duration": 4.88
+    },
+    {
+      "text": "It flows everywhere simultaneously",
+      "start": 449.44,
+      "duration": 4.319
+    },
+    {
+      "text": "carving out meandering everything",
+      "start": 451.68,
+      "duration": 4.639
+    },
+    {
+      "text": "organic path here into the landscape",
+      "start": 453.759,
+      "duration": 4.16
+    },
+    {
+      "text": "based on the path of the least",
+      "start": 456.319,
+      "duration": 3.841
+    },
+    {
+      "text": "resistant. Or you can see statistic",
+      "start": 457.919,
+      "duration": 4.56
+    },
+    {
+      "text": "probability here is really here",
+      "start": 460.16,
+      "duration": 4.56
+    },
+    {
+      "text": "happening in nature.",
+      "start": 462.479,
+      "duration": 3.84
+    },
+    {
+      "text": "And if you go with a classical",
+      "start": 464.72,
+      "duration": 3.599
+    },
+    {
+      "text": "old-fashioned react agent or a multi-",
+      "start": 466.319,
+      "duration": 4.32
+    },
+    {
+      "text": "aent chat, what is it? It's just like a",
+      "start": 468.319,
+      "duration": 4.081
+    },
+    {
+      "text": "flood. You know, the water just spills",
+      "start": 470.639,
+      "duration": 5.12
+    },
+    {
+      "text": "over, spills into valleys here, retraces",
+      "start": 472.4,
+      "duration": 5.76
+    },
+    {
+      "text": "here its own puddles and wastes immense",
+      "start": 475.759,
+      "duration": 4.801
+    },
+    {
+      "text": "energy. Immense tokens are wasted here.",
+      "start": 478.16,
+      "duration": 5.84
+    },
+    {
+      "text": "It is just an uncontrolled flooding.",
+      "start": 480.56,
+      "duration": 5.919
+    },
+    {
+      "text": "The first study of today rumat here is",
+      "start": 484.0,
+      "duration": 5.759
+    },
+    {
+      "text": "kind of now in my reframing that I do in",
+      "start": 486.479,
+      "duration": 5.84
+    },
+    {
+      "text": "my human language and I communicate now",
+      "start": 489.759,
+      "duration": 5.361
+    },
+    {
+      "text": "with you and I bring a different image",
+      "start": 492.319,
+      "duration": 5.761
+    },
+    {
+      "text": "now room is a hydroelectric grid manager",
+      "start": 495.12,
+      "duration": 4.799
+    },
+    {
+      "text": "instead of letting all the rivers flow",
+      "start": 498.08,
+      "duration": 4.72
+    },
+    {
+      "text": "to into each other a fully connected n*",
+      "start": 499.919,
+      "duration": 5.84
+    },
+    {
+      "text": "n graph it dynamically opens and closes",
+      "start": 502.8,
+      "duration": 5.839
+    },
+    {
+      "text": "here specific aqueducts these are of",
+      "start": 505.759,
+      "duration": 4.401
+    },
+    {
+      "text": "course our communication channels and",
+      "start": 508.639,
+      "duration": 3.12
+    },
+    {
+      "text": "our communication edges on a graph",
+      "start": 510.16,
+      "duration": 4.319
+    },
+    {
+      "text": "structure based on the pressure",
+      "start": 511.759,
+      "duration": 5.2
+    },
+    {
+      "text": "maximizing the energy output calculating",
+      "start": 514.479,
+      "duration": 5.521
+    },
+    {
+      "text": "here maybe the entropy while minimizing",
+      "start": 516.959,
+      "duration": 5.601
+    },
+    {
+      "text": "here the waste optimizing here the",
+      "start": 520.0,
+      "duration": 4.48
+    },
+    {
+      "text": "tokens.",
+      "start": 522.56,
+      "duration": 4.32
+    },
+    {
+      "text": "So this is the first view how you can",
+      "start": 524.48,
+      "duration": 4.32
+    },
+    {
+      "text": "see the first paper. The second paper if",
+      "start": 526.88,
+      "duration": 4.079
+    },
+    {
+      "text": "we stay in the same frame acts now as a",
+      "start": 528.8,
+      "duration": 4.32
+    },
+    {
+      "text": "water filtration hierarchy separating",
+      "start": 530.959,
+      "duration": 4.161
+    },
+    {
+      "text": "here the muddy water the river water you",
+      "start": 533.12,
+      "duration": 3.44
+    },
+    {
+      "text": "know where we have some in the",
+      "start": 535.12,
+      "duration": 3.36
+    },
+    {
+      "text": "mathematical view some dense embeddings",
+      "start": 536.56,
+      "duration": 4.8
+    },
+    {
+      "text": "here of our vectors. Now we separate",
+      "start": 538.48,
+      "duration": 5.76
+    },
+    {
+      "text": "this into distinct trackable chemical",
+      "start": 541.36,
+      "duration": 5.599
+    },
+    {
+      "text": "streams or let's call them concepts and",
+      "start": 544.24,
+      "duration": 5.76
+    },
+    {
+      "text": "subconcepts that arranged now in a",
+      "start": 546.959,
+      "duration": 4.801
+    },
+    {
+      "text": "branching tree in a mathematical",
+      "start": 550.0,
+      "duration": 4.48
+    },
+    {
+      "text": "structure. So you see what we do. We",
+      "start": 551.76,
+      "duration": 4.4
+    },
+    {
+      "text": "have here the river and then we want",
+      "start": 554.48,
+      "duration": 4.64
+    },
+    {
+      "text": "somehow to channel here this mightiness",
+      "start": 556.16,
+      "duration": 6.96
+    },
+    {
+      "text": "of this river into sub channels and and",
+      "start": 559.12,
+      "duration": 6.48
+    },
+    {
+      "text": "trackable chemical streams and branching",
+      "start": 563.12,
+      "duration": 4.56
+    },
+    {
+      "text": "tree structure. And I guess you get the",
+      "start": 565.6,
+      "duration": 4.0
+    },
+    {
+      "text": "idea.",
+      "start": 567.68,
+      "duration": 4.56
+    },
+    {
+      "text": "The next study compulsionary imaginary",
+      "start": 569.6,
+      "duration": 4.4
+    },
+    {
+      "text": "represents here if you want a political",
+      "start": 572.24,
+      "duration": 4.159
+    },
+    {
+      "text": "zoning board where the river is crossing",
+      "start": 574.0,
+      "duration": 4.48
+    },
+    {
+      "text": "a particular piece of land. Yeah. It",
+      "start": 576.399,
+      "duration": 3.921
+    },
+    {
+      "text": "uses your conversational patterns and",
+      "start": 578.48,
+      "duration": 4.32
+    },
+    {
+      "text": "rhetoric to convince now the public or",
+      "start": 580.32,
+      "duration": 5.36
+    },
+    {
+      "text": "the owner of the land that building this",
+      "start": 582.8,
+      "duration": 6.0
+    },
+    {
+      "text": "specific canal system to regulate the",
+      "start": 585.68,
+      "duration": 6.48
+    },
+    {
+      "text": "river is inevitable guiding here our",
+      "start": 588.8,
+      "duration": 4.96
+    },
+    {
+      "text": "societal",
+      "start": 592.16,
+      "duration": 4.48
+    },
+    {
+      "text": "discussion complexity and we say hey",
+      "start": 593.76,
+      "duration": 5.759
+    },
+    {
+      "text": "it's there's only one probable path no",
+      "start": 596.64,
+      "duration": 5.52
+    },
+    {
+      "text": "we have to further invest I need another",
+      "start": 599.519,
+      "duration": 5.601
+    },
+    {
+      "text": "100 billion US dollars here to invest to",
+      "start": 602.16,
+      "duration": 5.359
+    },
+    {
+      "text": "build data center there is no other way",
+      "start": 605.12,
+      "duration": 4.0
+    },
+    {
+      "text": "forward",
+      "start": 607.519,
+      "duration": 5.281
+    },
+    {
+      "text": "and the whole society is buying it. And",
+      "start": 609.12,
+      "duration": 5.279
+    },
+    {
+      "text": "this is interesting because this is now",
+      "start": 612.8,
+      "duration": 5.52
+    },
+    {
+      "text": "rhetoric. This is now almost nothing to",
+      "start": 614.399,
+      "duration": 6.321
+    },
+    {
+      "text": "do here with the complexity of human",
+      "start": 618.32,
+      "duration": 5.12
+    },
+    {
+      "text": "language. But this is how you use the",
+      "start": 620.72,
+      "duration": 4.96
+    },
+    {
+      "text": "human language to influence other human",
+      "start": 623.44,
+      "duration": 4.24
+    },
+    {
+      "text": "in the decision process. But of course,",
+      "start": 625.68,
+      "duration": 4.399
+    },
+    {
+      "text": "we can use AI to alter the decision",
+      "start": 627.68,
+      "duration": 4.399
+    },
+    {
+      "text": "process in the communication patterns",
+      "start": 630.079,
+      "duration": 4.88
+    },
+    {
+      "text": "between AI and human or AI and EI",
+      "start": 632.079,
+      "duration": 4.801
+    },
+    {
+      "text": "agents.",
+      "start": 634.959,
+      "duration": 4.721
+    },
+    {
+      "text": "So you see those five papers somehow",
+      "start": 636.88,
+      "duration": 5.36
+    },
+    {
+      "text": "subconsciously caused some chaos here",
+      "start": 639.68,
+      "duration": 4.88
+    },
+    {
+      "text": "and I'm still not yet sorted out but I",
+      "start": 642.24,
+      "duration": 4.24
+    },
+    {
+      "text": "want to give you my understanding. I",
+      "start": 644.56,
+      "duration": 3.6
+    },
+    {
+      "text": "think under the hood this tension is a",
+      "start": 646.48,
+      "duration": 3.12
+    },
+    {
+      "text": "battle that we have currently in AI",
+      "start": 648.16,
+      "duration": 3.28
+    },
+    {
+      "text": "research between the good old",
+      "start": 649.6,
+      "duration": 5.04
+    },
+    {
+      "text": "grandfather mathematical highdimensional",
+      "start": 651.44,
+      "duration": 6.0
+    },
+    {
+      "text": "vector spaces our rack systems no and",
+      "start": 654.64,
+      "duration": 4.639
+    },
+    {
+      "text": "everything that is now here in graph",
+      "start": 657.44,
+      "duration": 5.28
+    },
+    {
+      "text": "theory and complexity that we have that",
+      "start": 659.279,
+      "duration": 7.761
+    },
+    {
+      "text": "we try to throw on AI to somehow make it",
+      "start": 662.72,
+      "duration": 6.799
+    },
+    {
+      "text": "reason you might ask why should it",
+      "start": 667.04,
+      "duration": 4.56
+    },
+    {
+      "text": "reason well it's about decision and",
+      "start": 669.519,
+      "duration": 4.241
+    },
+    {
+      "text": "decision lead to action and action lead",
+      "start": 671.6,
+      "duration": 4.239
+    },
+    {
+      "text": "here to strategy frameworks and strate",
+      "start": 673.76,
+      "duration": 6.0
+    },
+    {
+      "text": "Strategy frameworks lead to policy.",
+      "start": 675.839,
+      "duration": 5.601
+    },
+    {
+      "text": "Now we assume and we think in",
+      "start": 679.76,
+      "duration": 4.4
+    },
+    {
+      "text": "similarities. No, this is for any",
+      "start": 681.44,
+      "duration": 5.28
+    },
+    {
+      "text": "measured here a dotproduct here of a",
+      "start": 684.16,
+      "duration": 4.239
+    },
+    {
+      "text": "dense vector in a particular",
+      "start": 686.72,
+      "duration": 4.0
+    },
+    {
+      "text": "mathematical field. No, logical",
+      "start": 688.399,
+      "duration": 5.201
+    },
+    {
+      "text": "reasoning requires no explicit state",
+      "start": 690.72,
+      "duration": 5.359
+    },
+    {
+      "text": "transition. If you think about partially",
+      "start": 693.6,
+      "duration": 4.4
+    },
+    {
+      "text": "observable mock of decision processes in",
+      "start": 696.079,
+      "duration": 4.721
+    },
+    {
+      "text": "mathematics, mutual exclusivity and",
+      "start": 698.0,
+      "duration": 5.2
+    },
+    {
+      "text": "causality and the causality we have as",
+      "start": 700.8,
+      "duration": 4.719
+    },
+    {
+      "text": "you seen in my last video in AI research",
+      "start": 703.2,
+      "duration": 4.319
+    },
+    {
+      "text": "with directed basically graph our deck",
+      "start": 705.519,
+      "duration": 3.76
+    },
+    {
+      "text": "system and the tree structure that we",
+      "start": 707.519,
+      "duration": 4.241
+    },
+    {
+      "text": "have no",
+      "start": 709.279,
+      "duration": 6.0
+    },
+    {
+      "text": "so you see humans think in similarities",
+      "start": 711.76,
+      "duration": 6.639
+    },
+    {
+      "text": "and we convert this into a dot product",
+      "start": 715.279,
+      "duration": 5.521
+    },
+    {
+      "text": "into explicit states transition and",
+      "start": 718.399,
+      "duration": 5.44
+    },
+    {
+      "text": "somehow we lose a little bit of the",
+      "start": 720.8,
+      "duration": 4.96
+    },
+    {
+      "text": "complexity. enough of the beauty of",
+      "start": 723.839,
+      "duration": 4.321
+    },
+    {
+      "text": "human language.",
+      "start": 725.76,
+      "duration": 4.0
+    },
+    {
+      "text": "Now the first two studies that I showed",
+      "start": 728.16,
+      "duration": 2.96
+    },
+    {
+      "text": "you here in the first second of this",
+      "start": 729.76,
+      "duration": 5.04
+    },
+    {
+      "text": "video I call it graphing the mind to",
+      "start": 731.12,
+      "duration": 5.68
+    },
+    {
+      "text": "build graph out of something that is",
+      "start": 734.8,
+      "duration": 4.96
+    },
+    {
+      "text": "just here a beautiful idea but we have",
+      "start": 736.8,
+      "duration": 5.92
+    },
+    {
+      "text": "to take it we have to put it into our",
+      "start": 739.76,
+      "duration": 5.84
+    },
+    {
+      "text": "data center and we have to morph it",
+      "start": 742.72,
+      "duration": 4.799
+    },
+    {
+      "text": "trying to put it in our data center so",
+      "start": 745.6,
+      "duration": 5.919
+    },
+    {
+      "text": "we have to build graphs out of it",
+      "start": 747.519,
+      "duration": 6.401
+    },
+    {
+      "text": "now in room here in this it's a",
+      "start": 751.519,
+      "duration": 4.801
+    },
+    {
+      "text": "beautiful study don't get me wrong yeah",
+      "start": 753.92,
+      "duration": 5.039
+    },
+    {
+      "text": "but it polyps the richness of the human",
+      "start": 756.32,
+      "duration": 6.24
+    },
+    {
+      "text": "language into a simple proximity metric",
+      "start": 758.959,
+      "duration": 5.521
+    },
+    {
+      "text": "allowing thereby a hard reinforcement",
+      "start": 762.56,
+      "duration": 3.6
+    },
+    {
+      "text": "learning algorithm that is based on our",
+      "start": 764.48,
+      "duration": 6.159
+    },
+    {
+      "text": "old PPL to prune the conversation graph.",
+      "start": 766.16,
+      "duration": 8.56
+    },
+    {
+      "text": "It is a beautiful idea but is this the",
+      "start": 770.639,
+      "duration": 6.32
+    },
+    {
+      "text": "way forward? I want to show you there",
+      "start": 774.72,
+      "duration": 3.76
+    },
+    {
+      "text": "are a lot of technological",
+      "start": 776.959,
+      "duration": 5.201
+    },
+    {
+      "text": "implementation of AI that are just",
+      "start": 778.48,
+      "duration": 5.76
+    },
+    {
+      "text": "maximally reducing the beauty and",
+      "start": 782.16,
+      "duration": 5.119
+    },
+    {
+      "text": "expressiveness of human language and I",
+      "start": 784.24,
+      "duration": 5.839
+    },
+    {
+      "text": "would not be sure that this is the way",
+      "start": 787.279,
+      "duration": 5.36
+    },
+    {
+      "text": "forward",
+      "start": 790.079,
+      "duration": 4.961
+    },
+    {
+      "text": "in the hierarchical concept base we have",
+      "start": 792.639,
+      "duration": 4.64
+    },
+    {
+      "text": "more or less the same",
+      "start": 795.04,
+      "duration": 6.479
+    },
+    {
+      "text": "you have a dense beautiful cloud here of",
+      "start": 797.279,
+      "duration": 5.921
+    },
+    {
+      "text": "whatever you're talking about in a",
+      "start": 801.519,
+      "duration": 4.161
+    },
+    {
+      "text": "domain architecture and then you use",
+      "start": 803.2,
+      "duration": 4.8
+    },
+    {
+      "text": "sparse autoenccoder",
+      "start": 805.68,
+      "duration": 4.8
+    },
+    {
+      "text": "uh the classical encoder part of a",
+      "start": 808.0,
+      "duration": 5.2
+    },
+    {
+      "text": "transformer architecture to force here",
+      "start": 810.48,
+      "duration": 4.96
+    },
+    {
+      "text": "this magnificent manifold that we have",
+      "start": 813.2,
+      "duration": 5.92
+    },
+    {
+      "text": "in I don't know 124 dimension into a",
+      "start": 815.44,
+      "duration": 7.12
+    },
+    {
+      "text": "discrete taxonomy like a tree and we are",
+      "start": 819.12,
+      "duration": 5.68
+    },
+    {
+      "text": "forcing our probability distribution",
+      "start": 822.56,
+      "duration": 5.12
+    },
+    {
+      "text": "into a rigid mathematical hierarchy",
+      "start": 824.8,
+      "duration": 4.96
+    },
+    {
+      "text": "because otherwise we could not handle it",
+      "start": 827.68,
+      "duration": 3.92
+    },
+    {
+      "text": "otherwise we cannot code it otherwise we",
+      "start": 829.76,
+      "duration": 4.0
+    },
+    {
+      "text": "cannot compute it.",
+      "start": 831.6,
+      "duration": 4.239
+    },
+    {
+      "text": "So you see whatever we throw at AI",
+      "start": 833.76,
+      "duration": 5.12
+    },
+    {
+      "text": "currently is just an approximation.",
+      "start": 835.839,
+      "duration": 6.721
+    },
+    {
+      "text": "We force somehow the human language to",
+      "start": 838.88,
+      "duration": 8.319
+    },
+    {
+      "text": "warp to transform to morph into discrete",
+      "start": 842.56,
+      "duration": 7.04
+    },
+    {
+      "text": "taxonomy structures mathematical",
+      "start": 847.199,
+      "duration": 5.841
+    },
+    {
+      "text": "hierarchy structure and I'm not sure if",
+      "start": 849.6,
+      "duration": 6.239
+    },
+    {
+      "text": "this is the way forward.",
+      "start": 853.04,
+      "duration": 4.239
+    },
+    {
+      "text": "Let me give an example of the beauty of",
+      "start": 855.839,
+      "duration": 2.8
+    },
+    {
+      "text": "the human language and suddenly I'm",
+      "start": 857.279,
+      "duration": 3.36
+    },
+    {
+      "text": "amazed about myself. But yeah, we're",
+      "start": 858.639,
+      "duration": 4.88
+    },
+    {
+      "text": "into this video. So let's go.",
+      "start": 860.639,
+      "duration": 4.88
+    },
+    {
+      "text": "We could also see this from a different",
+      "start": 863.519,
+      "duration": 3.601
+    },
+    {
+      "text": "perspective. Now this two paper for",
+      "start": 865.519,
+      "duration": 5.041
+    },
+    {
+      "text": "example rumor I can see also as the",
+      "start": 867.12,
+      "duration": 5.839
+    },
+    {
+      "text": "macro level of an agent swarm",
+      "start": 870.56,
+      "duration": 6.0
+    },
+    {
+      "text": "communication pattern and hike I can see",
+      "start": 872.959,
+      "duration": 6.32
+    },
+    {
+      "text": "as the micro level of a latent",
+      "start": 876.56,
+      "duration": 5.519
+    },
+    {
+      "text": "representation complexity. Why? because",
+      "start": 879.279,
+      "duration": 4.721
+    },
+    {
+      "text": "they deploy remarkable similar",
+      "start": 882.079,
+      "duration": 3.521
+    },
+    {
+      "text": "mathematical",
+      "start": 884.0,
+      "duration": 4.399
+    },
+    {
+      "text": "approaches structures",
+      "start": 885.6,
+      "duration": 6.08
+    },
+    {
+      "text": "like forcing continuous unstructured LLM",
+      "start": 888.399,
+      "duration": 6.481
+    },
+    {
+      "text": "outputs into explicit mathematically",
+      "start": 891.68,
+      "duration": 5.279
+    },
+    {
+      "text": "constrained topologies.",
+      "start": 894.88,
+      "duration": 4.959
+    },
+    {
+      "text": "If you read both papers here with this",
+      "start": 896.959,
+      "duration": 4.56
+    },
+    {
+      "text": "in your mind, you will see immediately",
+      "start": 899.839,
+      "duration": 4.0
+    },
+    {
+      "text": "what I mean.",
+      "start": 901.519,
+      "duration": 4.401
+    },
+    {
+      "text": "And I think that both these first papers",
+      "start": 903.839,
+      "duration": 4.961
+    },
+    {
+      "text": "solve the same fundamental problem. Huh?",
+      "start": 905.92,
+      "duration": 6.8
+    },
+    {
+      "text": "Governability AEI system. We cannot",
+      "start": 908.8,
+      "duration": 7.2
+    },
+    {
+      "text": "handle our AI system.",
+      "start": 912.72,
+      "duration": 5.04
+    },
+    {
+      "text": "Rumor if you want solves the",
+      "start": 916.0,
+      "duration": 3.68
+    },
+    {
+      "text": "catastrophic token burning of multi-",
+      "start": 917.76,
+      "duration": 5.12
+    },
+    {
+      "text": "aent systems. No, but how? It uses a",
+      "start": 919.68,
+      "duration": 5.68
+    },
+    {
+      "text": "content agnostic reinforcement learning",
+      "start": 922.88,
+      "duration": 5.12
+    },
+    {
+      "text": "agent to dynamically root or cut off",
+      "start": 925.36,
+      "duration": 5.68
+    },
+    {
+      "text": "communication PS in our in our",
+      "start": 928.0,
+      "duration": 5.76
+    },
+    {
+      "text": "complexity on our manifold.",
+      "start": 931.04,
+      "duration": 5.52
+    },
+    {
+      "text": "I don't think this is the way forward or",
+      "start": 933.76,
+      "duration": 5.68
+    },
+    {
+      "text": "if you go with high. Yeah,",
+      "start": 936.56,
+      "duration": 4.8
+    },
+    {
+      "text": "it solves the manual annotation",
+      "start": 939.44,
+      "duration": 3.759
+    },
+    {
+      "text": "bottlenecks and the flat representation",
+      "start": 941.36,
+      "duration": 3.44
+    },
+    {
+      "text": "of what we used to call concept",
+      "start": 943.199,
+      "duration": 3.2
+    },
+    {
+      "text": "bottleneck models.",
+      "start": 944.8,
+      "duration": 3.12
+    },
+    {
+      "text": "And as I told you, it uses sparse",
+      "start": 946.399,
+      "duration": 5.12
+    },
+    {
+      "text": "autoenccoder to organically crack open",
+      "start": 947.92,
+      "duration": 5.919
+    },
+    {
+      "text": "the high-level concepts that we have in",
+      "start": 951.519,
+      "duration": 6.481
+    },
+    {
+      "text": "human language into simpler subconcepts",
+      "start": 953.839,
+      "duration": 6.481
+    },
+    {
+      "text": "and then it builds in a beautiful",
+      "start": 958.0,
+      "duration": 4.72
+    },
+    {
+      "text": "mathematical way a neural architecture",
+      "start": 960.32,
+      "duration": 5.199
+    },
+    {
+      "text": "that explicitly wires these hierarchies",
+      "start": 962.72,
+      "duration": 6.16
+    },
+    {
+      "text": "together back together. Now in a simpler",
+      "start": 965.519,
+      "duration": 6.401
+    },
+    {
+      "text": "way in the subconcept way allowing here",
+      "start": 968.88,
+      "duration": 5.04
+    },
+    {
+      "text": "maybe even humans to intervene at",
+      "start": 971.92,
+      "duration": 5.12
+    },
+    {
+      "text": "precise logical depths but we lose",
+      "start": 973.92,
+      "duration": 4.4
+    },
+    {
+      "text": "something. If you look here at the",
+      "start": 977.04,
+      "duration": 5.2
+    },
+    {
+      "text": "mathematical algorithms you see if you",
+      "start": 978.32,
+      "duration": 6.8
+    },
+    {
+      "text": "crack open here a highle concept that we",
+      "start": 982.24,
+      "duration": 5.36
+    },
+    {
+      "text": "humans have in our mind if we have",
+      "start": 985.12,
+      "duration": 4.56
+    },
+    {
+      "text": "experienced it from so many different",
+      "start": 987.6,
+      "duration": 4.239
+    },
+    {
+      "text": "perspectives. You know I can reframe",
+      "start": 989.68,
+      "duration": 3.68
+    },
+    {
+      "text": "here these studies four or five",
+      "start": 991.839,
+      "duration": 3.841
+    },
+    {
+      "text": "different times and you will always",
+      "start": 993.36,
+      "duration": 5.36
+    },
+    {
+      "text": "discover newer elements.",
+      "start": 995.68,
+      "duration": 4.719
+    },
+    {
+      "text": "If we break it down into one",
+      "start": 998.72,
+      "duration": 4.479
+    },
+    {
+      "text": "mathematical hierarchy.",
+      "start": 1000.399,
+      "duration": 4.081
+    },
+    {
+      "text": "Yeah. And then we have only one",
+      "start": 1003.199,
+      "duration": 3.921
+    },
+    {
+      "text": "mathematical method to solve it. So you",
+      "start": 1004.48,
+      "duration": 6.0
+    },
+    {
+      "text": "see we lose we lose massive information.",
+      "start": 1007.12,
+      "duration": 5.6
+    },
+    {
+      "text": "We use massive",
+      "start": 1010.48,
+      "duration": 5.2
+    },
+    {
+      "text": "other paths of deciding of arguing of",
+      "start": 1012.72,
+      "duration": 5.28
+    },
+    {
+      "text": "communicating. The density of our",
+      "start": 1015.68,
+      "duration": 5.599
+    },
+    {
+      "text": "communication between AI agent is not",
+      "start": 1018.0,
+      "duration": 8.24
+    },
+    {
+      "text": "like a human way. It is like stupid",
+      "start": 1021.279,
+      "duration": 7.28
+    },
+    {
+      "text": "androids.",
+      "start": 1026.24,
+      "duration": 3.839
+    },
+    {
+      "text": "Yeah. By the way, if you want to learn",
+      "start": 1028.559,
+      "duration": 2.961
+    },
+    {
+      "text": "more about concept embedding models,",
+      "start": 1030.079,
+      "duration": 3.12
+    },
+    {
+      "text": "I've just read this study and I highly",
+      "start": 1031.52,
+      "duration": 2.96
+    },
+    {
+      "text": "recommend this study also. It's from",
+      "start": 1033.199,
+      "duration": 4.081
+    },
+    {
+      "text": "December 2022. They go here and show you",
+      "start": 1034.48,
+      "duration": 4.479
+    },
+    {
+      "text": "here really the conditioning of the",
+      "start": 1037.28,
+      "duration": 3.6
+    },
+    {
+      "text": "classification task on immediate level",
+      "start": 1038.959,
+      "duration": 4.161
+    },
+    {
+      "text": "human like concepts. Have a look at this",
+      "start": 1040.88,
+      "duration": 5.28
+    },
+    {
+      "text": "real interesting idea. But given here",
+      "start": 1043.12,
+      "duration": 4.559
+    },
+    {
+      "text": "what I just told you about the beauty of",
+      "start": 1046.16,
+      "duration": 3.12
+    },
+    {
+      "text": "the human language and I tell you this",
+      "start": 1047.679,
+      "duration": 3.521
+    },
+    {
+      "text": "as a theoretical physicist I'm a little",
+      "start": 1049.28,
+      "duration": 4.399
+    },
+    {
+      "text": "bit amazed about myself.",
+      "start": 1051.2,
+      "duration": 7.24
+    },
+    {
+      "text": "See this also from this perspective. No",
+      "start": 1053.679,
+      "duration": 4.761
+    },
+    {
+      "text": "I can talk to you in this beautiful",
+      "start": 1058.64,
+      "duration": 4.399
+    },
+    {
+      "text": "human language so I can easily reframe",
+      "start": 1060.24,
+      "duration": 4.88
+    },
+    {
+      "text": "it another time.",
+      "start": 1063.039,
+      "duration": 4.88
+    },
+    {
+      "text": "Rumat is a deaf conductor of our",
+      "start": 1065.12,
+      "duration": 4.88
+    },
+    {
+      "text": "orchestra. Let's say you're in Vienna",
+      "start": 1067.919,
+      "duration": 4.801
+    },
+    {
+      "text": "and you just you go here for a filmonic",
+      "start": 1070.0,
+      "duration": 5.12
+    },
+    {
+      "text": "event or whatever. Yeah. And now imagine",
+      "start": 1072.72,
+      "duration": 5.04
+    },
+    {
+      "text": "you have the I don't know six brilliant",
+      "start": 1075.12,
+      "duration": 4.799
+    },
+    {
+      "text": "expert here and you have the orchestra",
+      "start": 1077.76,
+      "duration": 4.64
+    },
+    {
+      "text": "and everything. But then you have one",
+      "start": 1079.919,
+      "duration": 5.12
+    },
+    {
+      "text": "conductor. This is our controller and",
+      "start": 1082.4,
+      "duration": 5.36
+    },
+    {
+      "text": "this controller is absolutely deaf. He",
+      "start": 1085.039,
+      "duration": 5.76
+    },
+    {
+      "text": "doesn't he doesn't hear anything but he",
+      "start": 1087.76,
+      "duration": 5.76
+    },
+    {
+      "text": "is the conductor of the orchestra. So",
+      "start": 1090.799,
+      "duration": 4.481
+    },
+    {
+      "text": "this is exactly the mathematical method",
+      "start": 1093.52,
+      "duration": 5.039
+    },
+    {
+      "text": "we apply. Now at rum the conductor only",
+      "start": 1095.28,
+      "duration": 5.44
+    },
+    {
+      "text": "sees here if you want a monitor in front",
+      "start": 1098.559,
+      "duration": 4.401
+    },
+    {
+      "text": "of him showing here the heart rates and",
+      "start": 1100.72,
+      "duration": 4.0
+    },
+    {
+      "text": "the voting alignments of the expert of",
+      "start": 1102.96,
+      "duration": 4.24
+    },
+    {
+      "text": "the orchestrator. This is exactly the",
+      "start": 1104.72,
+      "duration": 5.04
+    },
+    {
+      "text": "cosign similarity of their embeddings.",
+      "start": 1107.2,
+      "duration": 5.44
+    },
+    {
+      "text": "And if two experts have an identical",
+      "start": 1109.76,
+      "duration": 4.64
+    },
+    {
+      "text": "embedding structure in a high",
+      "start": 1112.64,
+      "duration": 4.08
+    },
+    {
+      "text": "dimensional vector space the conductor",
+      "start": 1114.4,
+      "duration": 5.12
+    },
+    {
+      "text": "physically moots one of them to save",
+      "start": 1116.72,
+      "duration": 5.6
+    },
+    {
+      "text": "money to save tokens. But if one expert,",
+      "start": 1119.52,
+      "duration": 6.399
+    },
+    {
+      "text": "if one player has a unique embedding",
+      "start": 1122.32,
+      "duration": 6.56
+    },
+    {
+      "text": "structure suddenly and remember this",
+      "start": 1125.919,
+      "duration": 6.961
+    },
+    {
+      "text": "room at this RL controller is deaf,",
+      "start": 1128.88,
+      "duration": 6.72
+    },
+    {
+      "text": "the conductor gives them a megaphone, an",
+      "start": 1132.88,
+      "duration": 6.24
+    },
+    {
+      "text": "open communication channel.",
+      "start": 1135.6,
+      "duration": 7.199
+    },
+    {
+      "text": "So having no idea about what they are",
+      "start": 1139.12,
+      "duration": 6.0
+    },
+    {
+      "text": "talking, no idea about the complexity of",
+      "start": 1142.799,
+      "duration": 4.561
+    },
+    {
+      "text": "the communication, no idea about the",
+      "start": 1145.12,
+      "duration": 4.88
+    },
+    {
+      "text": "semantic whatever of the communication,",
+      "start": 1147.36,
+      "duration": 5.36
+    },
+    {
+      "text": "it is just looking here for similar",
+      "start": 1150.0,
+      "duration": 5.76
+    },
+    {
+      "text": "patterns. And I think this is the wrong",
+      "start": 1152.72,
+      "duration": 4.8
+    },
+    {
+      "text": "way to you. Yeah, I know AI is a",
+      "start": 1155.76,
+      "duration": 3.44
+    },
+    {
+      "text": "beautiful pattern matching machine, but",
+      "start": 1157.52,
+      "duration": 4.96
+    },
+    {
+      "text": "this is maybe not the optimal way to",
+      "start": 1159.2,
+      "duration": 5.12
+    },
+    {
+      "text": "compare your communication channels",
+      "start": 1162.48,
+      "duration": 4.24
+    },
+    {
+      "text": "between AI.",
+      "start": 1164.32,
+      "duration": 5.84
+    },
+    {
+      "text": "Another reframing. Heism heism acts now",
+      "start": 1166.72,
+      "duration": 5.6
+    },
+    {
+      "text": "like a prism. You remember when you were",
+      "start": 1170.16,
+      "duration": 4.16
+    },
+    {
+      "text": "a child and you you were in a room",
+      "start": 1172.32,
+      "duration": 4.0
+    },
+    {
+      "text": "outside of sunshine and you just open it",
+      "start": 1174.32,
+      "duration": 3.84
+    },
+    {
+      "text": "a little bit and you hold your prism to",
+      "start": 1176.32,
+      "duration": 4.0
+    },
+    {
+      "text": "it and suddenly the white light comes in",
+      "start": 1178.16,
+      "duration": 4.48
+    },
+    {
+      "text": "and you have then all the different",
+      "start": 1180.32,
+      "duration": 4.239
+    },
+    {
+      "text": "rainbow colors here coming out of this",
+      "start": 1182.64,
+      "duration": 4.72
+    },
+    {
+      "text": "prism was just amazing. Now the same is",
+      "start": 1184.559,
+      "duration": 5.681
+    },
+    {
+      "text": "now happening here. Huh? We have here if",
+      "start": 1187.36,
+      "duration": 6.08
+    },
+    {
+      "text": "you want a a concept coming in. This is",
+      "start": 1190.24,
+      "duration": 5.36
+    },
+    {
+      "text": "the the white sunshine. But with this",
+      "start": 1193.44,
+      "duration": 4.32
+    },
+    {
+      "text": "prism, we are able here to discover",
+      "start": 1195.6,
+      "duration": 4.0
+    },
+    {
+      "text": "distinct color spectra. This means",
+      "start": 1197.76,
+      "duration": 4.32
+    },
+    {
+      "text": "different subconcepts in a mathematical",
+      "start": 1199.6,
+      "duration": 5.68
+    },
+    {
+      "text": "way. We can build autocon subspaces and",
+      "start": 1202.08,
+      "duration": 5.04
+    },
+    {
+      "text": "we can build a new cabinets where the",
+      "start": 1205.28,
+      "duration": 4.24
+    },
+    {
+      "text": "opening of ros forces you to go through",
+      "start": 1207.12,
+      "duration": 4.16
+    },
+    {
+      "text": "exact drawers and you have not to go to",
+      "start": 1209.52,
+      "duration": 3.6
+    },
+    {
+      "text": "apple. Then you have to go bananas. All",
+      "start": 1211.28,
+      "duration": 4.32
+    },
+    {
+      "text": "the different flavors and color spectra",
+      "start": 1213.12,
+      "duration": 5.52
+    },
+    {
+      "text": "that we found out. Yeah. But these",
+      "start": 1215.6,
+      "duration": 5.76
+    },
+    {
+      "text": "subconcepts are logical constructs of",
+      "start": 1218.64,
+      "duration": 5.44
+    },
+    {
+      "text": "the human language. But is this the way",
+      "start": 1221.36,
+      "duration": 4.08
+    },
+    {
+      "text": "we should go with artificial",
+      "start": 1224.08,
+      "duration": 3.28
+    },
+    {
+      "text": "intelligence?",
+      "start": 1225.44,
+      "duration": 4.88
+    },
+    {
+      "text": "Is this really what what would enable us",
+      "start": 1227.36,
+      "duration": 6.72
+    },
+    {
+      "text": "here for a better reasoning capacity?",
+      "start": 1230.32,
+      "duration": 5.52
+    },
+    {
+      "text": "Let's take the other one. Let's go over",
+      "start": 1234.08,
+      "duration": 4.4
+    },
+    {
+      "text": "here with study four and five. So to act",
+      "start": 1235.84,
+      "duration": 4.48
+    },
+    {
+      "text": "and real reasoning structuring time and",
+      "start": 1238.48,
+      "duration": 3.76
+    },
+    {
+      "text": "the dialogue and you see it's",
+      "start": 1240.32,
+      "duration": 3.28
+    },
+    {
+      "text": "interesting that more and more the",
+      "start": 1242.24,
+      "duration": 3.6
+    },
+    {
+      "text": "dialogue comes into place. It is not",
+      "start": 1243.6,
+      "duration": 5.04
+    },
+    {
+      "text": "about the perfect decision of an AI. It",
+      "start": 1245.84,
+      "duration": 4.88
+    },
+    {
+      "text": "is about a dialogue and it is either",
+      "start": 1248.64,
+      "duration": 3.919
+    },
+    {
+      "text": "between agent and agent or human and",
+      "start": 1250.72,
+      "duration": 4.4
+    },
+    {
+      "text": "agent. And this dialogue brings so many",
+      "start": 1252.559,
+      "duration": 6.321
+    },
+    {
+      "text": "more additional dimensions into play.",
+      "start": 1255.12,
+      "duration": 6.08
+    },
+    {
+      "text": "You remember realizing we have to",
+      "start": 1258.88,
+      "duration": 5.76
+    },
+    {
+      "text": "synthesize here multi-turn dialogues as",
+      "start": 1261.2,
+      "duration": 5.76
+    },
+    {
+      "text": "training data. So what it does it embeds",
+      "start": 1264.64,
+      "duration": 4.64
+    },
+    {
+      "text": "hidden logical constraints here that are",
+      "start": 1266.96,
+      "duration": 4.8
+    },
+    {
+      "text": "from the mathematical engine synthesized",
+      "start": 1269.28,
+      "duration": 4.639
+    },
+    {
+      "text": "into a particular scenario. So it",
+      "start": 1271.76,
+      "duration": 4.88
+    },
+    {
+      "text": "mathematically forces now an LLM to",
+      "start": 1273.919,
+      "duration": 5.681
+    },
+    {
+      "text": "traverse a specific dependency path to",
+      "start": 1276.64,
+      "duration": 5.519
+    },
+    {
+      "text": "answer a question. But maybe this is not",
+      "start": 1279.6,
+      "duration": 4.88
+    },
+    {
+      "text": "necessary at all. If you ask me a simple",
+      "start": 1282.159,
+      "duration": 3.52
+    },
+    {
+      "text": "question, I can give you a simple",
+      "start": 1284.48,
+      "duration": 3.84
+    },
+    {
+      "text": "answer. Why I should not hop about a a",
+      "start": 1285.679,
+      "duration": 5.521
+    },
+    {
+      "text": "threepart answer here with some logical",
+      "start": 1288.32,
+      "duration": 4.479
+    },
+    {
+      "text": "dependencies?",
+      "start": 1291.2,
+      "duration": 3.599
+    },
+    {
+      "text": "Um yeah, I understand you want to have",
+      "start": 1292.799,
+      "duration": 4.561
+    },
+    {
+      "text": "complex reasoning training data for",
+      "start": 1294.799,
+      "duration": 4.721
+    },
+    {
+      "text": "reinforcement learning, especially if",
+      "start": 1297.36,
+      "duration": 4.96
+    },
+    {
+      "text": "you have no verifiable reward function.",
+      "start": 1299.52,
+      "duration": 5.6
+    },
+    {
+      "text": "But is this the way forward?",
+      "start": 1302.32,
+      "duration": 4.64
+    },
+    {
+      "text": "Or I think about Pyo act. I think Pyo",
+      "start": 1305.12,
+      "duration": 3.84
+    },
+    {
+      "text": "act is the culmination.",
+      "start": 1306.96,
+      "duration": 4.959
+    },
+    {
+      "text": "It just rejects associative step-by-step",
+      "start": 1308.96,
+      "duration": 5.12
+    },
+    {
+      "text": "thinking. No, it writes down a DAG",
+      "start": 1311.919,
+      "duration": 4.801
+    },
+    {
+      "text": "first. F writes down a Sydo code. It",
+      "start": 1314.08,
+      "duration": 4.56
+    },
+    {
+      "text": "elimates here all the language",
+      "start": 1316.72,
+      "duration": 4.72
+    },
+    {
+      "text": "generation simply fulfilling here a",
+      "start": 1318.64,
+      "duration": 5.6
+    },
+    {
+      "text": "localized note requirement.",
+      "start": 1321.44,
+      "duration": 5.44
+    },
+    {
+      "text": "I just break down everything into a",
+      "start": 1324.24,
+      "duration": 4.48
+    },
+    {
+      "text": "graph. And then I have single nodes and",
+      "start": 1326.88,
+      "duration": 3.52
+    },
+    {
+      "text": "node have requirements and dependencies",
+      "start": 1328.72,
+      "duration": 3.68
+    },
+    {
+      "text": "and complexities and interlink",
+      "start": 1330.4,
+      "duration": 4.08
+    },
+    {
+      "text": "structures and whatever and the world",
+      "start": 1332.4,
+      "duration": 4.48
+    },
+    {
+      "text": "becomes so simple.",
+      "start": 1334.48,
+      "duration": 5.04
+    },
+    {
+      "text": "But remember the beauty of our LLMs was",
+      "start": 1336.88,
+      "duration": 5.039
+    },
+    {
+      "text": "here not only here from a stocastic and",
+      "start": 1339.52,
+      "duration": 5.039
+    },
+    {
+      "text": "a statistical principle but my goodness",
+      "start": 1341.919,
+      "duration": 4.801
+    },
+    {
+      "text": "human language is so beautiful. You con",
+      "start": 1344.559,
+      "duration": 4.801
+    },
+    {
+      "text": "can construct whatever you want and now",
+      "start": 1346.72,
+      "duration": 4.88
+    },
+    {
+      "text": "reduce the context to only the current",
+      "start": 1349.36,
+      "duration": 4.799
+    },
+    {
+      "text": "single node in a graph representation",
+      "start": 1351.6,
+      "duration": 5.04
+    },
+    {
+      "text": "that might not reflect here the whole",
+      "start": 1354.159,
+      "duration": 4.88
+    },
+    {
+      "text": "complexity of a domain here for a single",
+      "start": 1356.64,
+      "duration": 4.24
+    },
+    {
+      "text": "task.",
+      "start": 1359.039,
+      "duration": 4.481
+    },
+    {
+      "text": "I'm not happy with this. And then the",
+      "start": 1360.88,
+      "duration": 6.0
+    },
+    {
+      "text": "fifth paper of course sociological view",
+      "start": 1363.52,
+      "duration": 5.44
+    },
+    {
+      "text": "as I told you here between here the CEO",
+      "start": 1366.88,
+      "duration": 5.2
+    },
+    {
+      "text": "of openi and the co of entropic.",
+      "start": 1368.96,
+      "duration": 6.24
+    },
+    {
+      "text": "this human hacking here. The human way",
+      "start": 1372.08,
+      "duration": 5.839
+    },
+    {
+      "text": "to argue how do humans push forward",
+      "start": 1375.2,
+      "duration": 5.92
+    },
+    {
+      "text": "their systems and of course the job of",
+      "start": 1377.919,
+      "duration": 5.76
+    },
+    {
+      "text": "CEOs is to sell their product and get",
+      "start": 1381.12,
+      "duration": 5.36
+    },
+    {
+      "text": "investors on board. So they use",
+      "start": 1383.679,
+      "duration": 4.801
+    },
+    {
+      "text": "conversational rhetorical patterns to",
+      "start": 1386.48,
+      "duration": 4.8
+    },
+    {
+      "text": "convince human. So why the hell do I",
+      "start": 1388.48,
+      "duration": 6.0
+    },
+    {
+      "text": "need suddenly here this CEO perspective?",
+      "start": 1391.28,
+      "duration": 4.56
+    },
+    {
+      "text": "Well, it tells us something. Do you",
+      "start": 1394.48,
+      "duration": 3.84
+    },
+    {
+      "text": "remember me here of the CEO of Open AI",
+      "start": 1395.84,
+      "duration": 5.44
+    },
+    {
+      "text": "always telling us about hey we need a AI",
+      "start": 1398.32,
+      "duration": 6.4
+    },
+    {
+      "text": "or AGI here because it will cure cancer.",
+      "start": 1401.28,
+      "duration": 5.84
+    },
+    {
+      "text": "I noticed now for three four five years",
+      "start": 1404.72,
+      "duration": 4.959
+    },
+    {
+      "text": "this communication and that it is the",
+      "start": 1407.12,
+      "duration": 5.679
+    },
+    {
+      "text": "inevitable path of history. No. So what",
+      "start": 1409.679,
+      "duration": 4.561
+    },
+    {
+      "text": "they do if you look at this in a",
+      "start": 1412.799,
+      "duration": 3.441
+    },
+    {
+      "text": "mathematical view they prune the",
+      "start": 1414.24,
+      "duration": 4.319
+    },
+    {
+      "text": "political conversation graph and they",
+      "start": 1416.24,
+      "duration": 5.679
+    },
+    {
+      "text": "offer here their shareholders and their",
+      "start": 1418.559,
+      "duration": 5.921
+    },
+    {
+      "text": "stockholders here. Clearly there is only",
+      "start": 1421.919,
+      "duration": 5.201
+    },
+    {
+      "text": "one way forward and nobody is",
+      "start": 1424.48,
+      "duration": 4.8
+    },
+    {
+      "text": "questioning this tactic and this is a",
+      "start": 1427.12,
+      "duration": 5.439
+    },
+    {
+      "text": "beautiful rhetorical pattern where they",
+      "start": 1429.28,
+      "duration": 6.56
+    },
+    {
+      "text": "try now to reduce the complexity into a",
+      "start": 1432.559,
+      "duration": 5.681
+    },
+    {
+      "text": "simple mathematical singular way",
+      "start": 1435.84,
+      "duration": 4.959
+    },
+    {
+      "text": "forward. So what you see what those cos",
+      "start": 1438.24,
+      "duration": 5.36
+    },
+    {
+      "text": "are doing here of our AI companies they",
+      "start": 1440.799,
+      "duration": 4.481
+    },
+    {
+      "text": "collapse here the multi-dimensional",
+      "start": 1443.6,
+      "duration": 5.439
+    },
+    {
+      "text": "debate of how how AI should be governed",
+      "start": 1445.28,
+      "duration": 6.879
+    },
+    {
+      "text": "let's say or maybe even restrain by some",
+      "start": 1449.039,
+      "duration": 6.961
+    },
+    {
+      "text": "rules no into a binary outcome and it is",
+      "start": 1452.159,
+      "duration": 5.76
+    },
+    {
+      "text": "either you support it or you hinder here",
+      "start": 1456.0,
+      "duration": 4.08
+    },
+    {
+      "text": "the progress of AI it is clear you are",
+      "start": 1457.919,
+      "duration": 4.481
+    },
+    {
+      "text": "either A or B there's nothing in between",
+      "start": 1460.08,
+      "duration": 3.92
+    },
+    {
+      "text": "it is like you to say hey there are only",
+      "start": 1462.4,
+      "duration": 3.68
+    },
+    {
+      "text": "two political parties and you just you",
+      "start": 1464.0,
+      "duration": 4.0
+    },
+    {
+      "text": "have to belong to one political party",
+      "start": 1466.08,
+      "duration": 3.68
+    },
+    {
+      "text": "and if you belong to one political party",
+      "start": 1468.0,
+      "duration": 3.679
+    },
+    {
+      "text": "you have to fight the other one there's",
+      "start": 1469.76,
+      "duration": 5.039
+    },
+    {
+      "text": "no other way and I think this is not the",
+      "start": 1471.679,
+      "duration": 5.041
+    },
+    {
+      "text": "right way forward neither for humans nor",
+      "start": 1474.799,
+      "duration": 3.921
+    },
+    {
+      "text": "for the eye system because I don't want",
+      "start": 1476.72,
+      "duration": 4.16
+    },
+    {
+      "text": "that this is imprinted here on the",
+      "start": 1478.72,
+      "duration": 3.6
+    },
+    {
+      "text": "decision-m process and on the",
+      "start": 1480.88,
+      "duration": 5.679
+    },
+    {
+      "text": "communication process of AI agents",
+      "start": 1482.32,
+      "duration": 6.32
+    },
+    {
+      "text": "but this is exactly what rumor our very",
+      "start": 1486.559,
+      "duration": 5.521
+    },
+    {
+      "text": "first study does to agents",
+      "start": 1488.64,
+      "duration": 5.36
+    },
+    {
+      "text": "now and this is applied to the",
+      "start": 1492.08,
+      "duration": 4.079
+    },
+    {
+      "text": "communication within the society the",
+      "start": 1494.0,
+      "duration": 4.559
+    },
+    {
+      "text": "human society it is absolutely",
+      "start": 1496.159,
+      "duration": 5.361
+    },
+    {
+      "text": "Fascinating to see the similar parallel",
+      "start": 1498.559,
+      "duration": 5.841
+    },
+    {
+      "text": "patterns between the human communication",
+      "start": 1501.52,
+      "duration": 5.12
+    },
+    {
+      "text": "to other humans and what we want to",
+      "start": 1504.4,
+      "duration": 6.0
+    },
+    {
+      "text": "imprint on our AI decision complexities.",
+      "start": 1506.64,
+      "duration": 5.919
+    },
+    {
+      "text": "Think about it. What is the outlook of",
+      "start": 1510.4,
+      "duration": 4.639
+    },
+    {
+      "text": "today?",
+      "start": 1512.559,
+      "duration": 4.48
+    },
+    {
+      "text": "We are no longer trying to teach our",
+      "start": 1515.039,
+      "duration": 3.841
+    },
+    {
+      "text": "neural network or transform or whatever",
+      "start": 1517.039,
+      "duration": 5.52
+    },
+    {
+      "text": "you have to do logic to decide to come",
+      "start": 1518.88,
+      "duration": 7.039
+    },
+    {
+      "text": "up with a logical conclusion purely via",
+      "start": 1522.559,
+      "duration": 5.921
+    },
+    {
+      "text": "next token prediction. And I think the",
+      "start": 1525.919,
+      "duration": 4.561
+    },
+    {
+      "text": "future of AI is just wrapping this",
+      "start": 1528.48,
+      "duration": 5.12
+    },
+    {
+      "text": "continuous associative language engine",
+      "start": 1530.48,
+      "duration": 5.84
+    },
+    {
+      "text": "inside our discrete classical",
+      "start": 1533.6,
+      "duration": 5.199
+    },
+    {
+      "text": "computational graphs. We need both of",
+      "start": 1536.32,
+      "duration": 5.28
+    },
+    {
+      "text": "them.",
+      "start": 1538.799,
+      "duration": 5.36
+    },
+    {
+      "text": "I think the LLM will continue to provide",
+      "start": 1541.6,
+      "duration": 6.24
+    },
+    {
+      "text": "the semantic intuition, the nuances, the",
+      "start": 1544.159,
+      "duration": 5.76
+    },
+    {
+      "text": "beauty of the human language and",
+      "start": 1547.84,
+      "duration": 4.64
+    },
+    {
+      "text": "therefore constitute the interface and",
+      "start": 1549.919,
+      "duration": 4.481
+    },
+    {
+      "text": "all the external graph from a PO",
+      "start": 1552.48,
+      "duration": 4.4
+    },
+    {
+      "text": "topology to the code state machine to",
+      "start": 1554.4,
+      "duration": 4.96
+    },
+    {
+      "text": "tree low level optimizers like we've",
+      "start": 1556.88,
+      "duration": 4.64
+    },
+    {
+      "text": "seen in our five papers. I think they",
+      "start": 1559.36,
+      "duration": 5.28
+    },
+    {
+      "text": "will just provide the safety the bounds",
+      "start": 1561.52,
+      "duration": 5.84
+    },
+    {
+      "text": "and the reasoning rigor",
+      "start": 1564.64,
+      "duration": 5.519
+    },
+    {
+      "text": "but this is just an element. So whenever",
+      "start": 1567.36,
+      "duration": 5.04
+    },
+    {
+      "text": "you had in my last videos the impression",
+      "start": 1570.159,
+      "duration": 4.961
+    },
+    {
+      "text": "that I want to force or press the",
+      "start": 1572.4,
+      "duration": 5.519
+    },
+    {
+      "text": "complexity of a human communication like",
+      "start": 1575.12,
+      "duration": 5.679
+    },
+    {
+      "text": "the human language into a rigid pattern",
+      "start": 1577.919,
+      "duration": 6.24
+    },
+    {
+      "text": "of mathematics. Yes, maybe it was my",
+      "start": 1580.799,
+      "duration": 6.321
+    },
+    {
+      "text": "goal and maybe I was fascinated. But now",
+      "start": 1584.159,
+      "duration": 5.041
+    },
+    {
+      "text": "I see more and more the more studies I",
+      "start": 1587.12,
+      "duration": 4.799
+    },
+    {
+      "text": "read about it that we lose here so much",
+      "start": 1589.2,
+      "duration": 5.76
+    },
+    {
+      "text": "information, so much context. If we do",
+      "start": 1591.919,
+      "duration": 5.521
+    },
+    {
+      "text": "this simplification, if we do this",
+      "start": 1594.96,
+      "duration": 5.199
+    },
+    {
+      "text": "breakdown into subcategories,",
+      "start": 1597.44,
+      "duration": 4.32
+    },
+    {
+      "text": "subclassifications",
+      "start": 1600.159,
+      "duration": 3.681
+    },
+    {
+      "text": "just to handle it mathematically and",
+      "start": 1601.76,
+      "duration": 4.32
+    },
+    {
+      "text": "therefore be able to code it. This is",
+      "start": 1603.84,
+      "duration": 5.199
+    },
+    {
+      "text": "not the way forward.",
+      "start": 1606.08,
+      "duration": 4.719
+    },
+    {
+      "text": "And you might ask, hey, what is lost",
+      "start": 1609.039,
+      "duration": 4.24
+    },
+    {
+      "text": "when we force the human language into a",
+      "start": 1610.799,
+      "duration": 6.24
+    },
+    {
+      "text": "purely computable hierarchy?",
+      "start": 1613.279,
+      "duration": 5.76
+    },
+    {
+      "text": "I think human reasoning is powerful",
+      "start": 1617.039,
+      "duration": 4.961
+    },
+    {
+      "text": "because it is associative and any",
+      "start": 1619.039,
+      "duration": 5.201
+    },
+    {
+      "text": "breakthrough in science. Go and read any",
+      "start": 1622.0,
+      "duration": 4.799
+    },
+    {
+      "text": "book about physics for example. It",
+      "start": 1624.24,
+      "duration": 6.16
+    },
+    {
+      "text": "rarely happens with strict cyto code for",
+      "start": 1626.799,
+      "duration": 6.961
+    },
+    {
+      "text": "step in plan. No, it happened because",
+      "start": 1630.4,
+      "duration": 6.08
+    },
+    {
+      "text": "some unexpected associative leaps",
+      "start": 1633.76,
+      "duration": 6.24
+    },
+    {
+      "text": "happened across unrelated domains. You",
+      "start": 1636.48,
+      "duration": 5.12
+    },
+    {
+      "text": "have heard this. No, I was standing in",
+      "start": 1640.0,
+      "duration": 3.039
+    },
+    {
+      "text": "the shower and suddenly had a beautiful",
+      "start": 1641.6,
+      "duration": 3.92
+    },
+    {
+      "text": "idea about this is exactly what I'm",
+      "start": 1643.039,
+      "duration": 5.52
+    },
+    {
+      "text": "talking about. You cannot logically",
+      "start": 1645.52,
+      "duration": 6.24
+    },
+    {
+      "text": "deduct here creativity. It just happens",
+      "start": 1648.559,
+      "duration": 5.841
+    },
+    {
+      "text": "to us humans because we have this",
+      "start": 1651.76,
+      "duration": 6.159
+    },
+    {
+      "text": "associative knowledge. And I tell you",
+      "start": 1654.4,
+      "duration": 5.519
+    },
+    {
+      "text": "not was not only reading those five",
+      "start": 1657.919,
+      "duration": 4.401
+    },
+    {
+      "text": "papers. I was reading also 10 other",
+      "start": 1659.919,
+      "duration": 5.281
+    },
+    {
+      "text": "papers here on vision language model and",
+      "start": 1662.32,
+      "duration": 5.44
+    },
+    {
+      "text": "the same problem we have now if we go",
+      "start": 1665.2,
+      "duration": 5.28
+    },
+    {
+      "text": "from language models here to vision",
+      "start": 1667.76,
+      "duration": 5.84
+    },
+    {
+      "text": "language models and it was this cross",
+      "start": 1670.48,
+      "duration": 6.0
+    },
+    {
+      "text": "reference here between language and",
+      "start": 1673.6,
+      "duration": 6.799
+    },
+    {
+      "text": "visual interpretation also that caused",
+      "start": 1676.48,
+      "duration": 6.4
+    },
+    {
+      "text": "me to create here this video for you",
+      "start": 1680.399,
+      "duration": 5.481
+    },
+    {
+      "text": "today.",
+      "start": 1682.88,
+      "duration": 3.0
+    },
+    {
+      "text": "Think about what could go wrong. If",
+      "start": 1686.32,
+      "duration": 3.92
+    },
+    {
+      "text": "rumor at our very first study",
+      "start": 1688.399,
+      "duration": 4.16
+    },
+    {
+      "text": "aggressively mute agents whose cosign",
+      "start": 1690.24,
+      "duration": 5.039
+    },
+    {
+      "text": "similarity drops belows a threshold, it",
+      "start": 1692.559,
+      "duration": 5.041
+    },
+    {
+      "text": "might kill one agent that is making a",
+      "start": 1695.279,
+      "duration": 4.561
+    },
+    {
+      "text": "brilliant but a nonlinear associative",
+      "start": 1697.6,
+      "duration": 4.72
+    },
+    {
+      "text": "connection that looks like a noise to",
+      "start": 1699.84,
+      "duration": 6.48
+    },
+    {
+      "text": "the simple PO controller. Or if forces",
+      "start": 1702.32,
+      "duration": 6.88
+    },
+    {
+      "text": "the real world concepts into exclusive",
+      "start": 1706.32,
+      "duration": 5.92
+    },
+    {
+      "text": "hierarchical trees, it fails to capture",
+      "start": 1709.2,
+      "duration": 6.0
+    },
+    {
+      "text": "the tangles. If you want rimatic nature",
+      "start": 1712.24,
+      "duration": 5.679
+    },
+    {
+      "text": "of the human understanding, yeah, it",
+      "start": 1715.2,
+      "duration": 4.959
+    },
+    {
+      "text": "just fails to get all the nuances that",
+      "start": 1717.919,
+      "duration": 5.681
+    },
+    {
+      "text": "we have and by forcing LLMs and this is",
+      "start": 1720.159,
+      "duration": 6.4
+    },
+    {
+      "text": "the third paper in the code into the",
+      "start": 1723.6,
+      "duration": 6.079
+    },
+    {
+      "text": "code primitives like in the mathematical",
+      "start": 1726.559,
+      "duration": 6.0
+    },
+    {
+      "text": "primitives no we risk returning to the",
+      "start": 1729.679,
+      "duration": 5.6
+    },
+    {
+      "text": "brittleleness of a pure symbolic eye of",
+      "start": 1732.559,
+      "duration": 5.961
+    },
+    {
+      "text": "the 1990s.",
+      "start": 1735.279,
+      "duration": 3.241
+    },
+    {
+      "text": "So what is the final sword? what is what",
+      "start": 1739.039,
+      "duration": 5.041
+    },
+    {
+      "text": "I'm fighting with today and I'm going to",
+      "start": 1741.44,
+      "duration": 5.359
+    },
+    {
+      "text": "be mean because I'm going to give you an",
+      "start": 1744.08,
+      "duration": 5.199
+    },
+    {
+      "text": "an image. I'm going to build you an",
+      "start": 1746.799,
+      "duration": 4.161
+    },
+    {
+      "text": "image with my language and I'm going to",
+      "start": 1749.279,
+      "duration": 4.4
+    },
+    {
+      "text": "tell you imagine the ultimate meta",
+      "start": 1750.96,
+      "duration": 5.599
+    },
+    {
+      "text": "narrative of all these four papers is",
+      "start": 1753.679,
+      "duration": 6.0
+    },
+    {
+      "text": "the engineering of constraint for AI and",
+      "start": 1756.559,
+      "duration": 4.641
+    },
+    {
+      "text": "they represent the scientific",
+      "start": 1759.679,
+      "duration": 3.761
+    },
+    {
+      "text": "community's realization that the",
+      "start": 1761.2,
+      "duration": 4.0
+    },
+    {
+      "text": "associative richness of the human",
+      "start": 1763.44,
+      "duration": 5.28
+    },
+    {
+      "text": "language is like a raw unstable fuel",
+      "start": 1765.2,
+      "duration": 6.8
+    },
+    {
+      "text": "fuel cell no like a battery but to",
+      "start": 1768.72,
+      "duration": 5.6
+    },
+    {
+      "text": "achieve the complex reasoning that we're",
+      "start": 1772.0,
+      "duration": 3.6
+    },
+    {
+      "text": "looking for in in artificial",
+      "start": 1774.32,
+      "duration": 4.16
+    },
+    {
+      "text": "intelligence either a single agent logic",
+      "start": 1775.6,
+      "duration": 6.24
+    },
+    {
+      "text": "or uh swarm debate.",
+      "start": 1778.48,
+      "duration": 7.04
+    },
+    {
+      "text": "This semantical fuel must be ignited and",
+      "start": 1781.84,
+      "duration": 6.16
+    },
+    {
+      "text": "it must be ignited inside these heavy",
+      "start": 1785.52,
+      "duration": 4.879
+    },
+    {
+      "text": "iron cylinders of a hierarchical",
+      "start": 1788.0,
+      "duration": 5.84
+    },
+    {
+      "text": "topological algorithm.",
+      "start": 1790.399,
+      "duration": 4.88
+    },
+    {
+      "text": "And with this sword I would like to",
+      "start": 1793.84,
+      "duration": 5.28
+    },
+    {
+      "text": "leave you for today's video. I hope you",
+      "start": 1795.279,
+      "duration": 5.52
+    },
+    {
+      "text": "enjoyed it a little bit. There was some",
+      "start": 1799.12,
+      "duration": 3.6
+    },
+    {
+      "text": "new information, new food for thoughts",
+      "start": 1800.799,
+      "duration": 3.681
+    },
+    {
+      "text": "and I would love to see you in my next",
+      "start": 1802.72,
+      "duration": 4.559
+    },
+    {
+      "text": "video.",
+      "start": 1804.48,
+      "duration": 2.799
+    }
+  ],
+  "full_text": "Hello community. So great that you are back. Today we talk about AI and we talk about language hits logic and I want to show you five new AI publication published today. But they cause a problem. Let me show you now. The first publication by Chinua University is beautiful. A reinforcement unifying multi- aent debate. And this is a new framework here to formulate here a dynamic communication topology control on multi- aent debate structures. [snorts] And I would say hey this sounds great. This sounds like technology. No, we have a controller that regulates an inter agent communication in multi- aent communication structures. The problem is it has a content agnostic observation scheme and I didn't notice it. And then in the second paper here by University of Cambridge and University of Oxford about a hierarchical conceptbased interpretable AI model they told us hey we explicit model concept relationships through hierarchical structures and I said this is a beautiful idea and I looked at the paper read the paper and I said this is strange but suddenly we have the feeling we we have to fit something into a classification system. And then the third paper and this is here by Dongji University and they published here an LLMdriven multi-turn task oriented dialogue synthesis for realistic reasoning of AI and I thought what a beautiful study it's amazing technological they propose here an LLMdriven framework for synthesizing multi-turn task oriented dialogues here in realistic reasoning scenarios and the reason they do this is because they don't have the data so they have to synthesize iz those data for our AI to learn and I could feel something was wrong. Those three paper they went in a direction something was happening inside of me. And if you look at the synthetic generation process everything is absolutely beautiful. It is logic. It is pure. It is exactly what mathematic would order us to do. And then Texas&M University no agriculture and manufacturing I think no mechanical P so act leveraging cyto code synthesis for flexible planning and action control in LLM agents and I said this is a beautiful study this is a fantastic technology it synthesizes a structured soyo code planning that decomposes uh certain task complexity into multip able lower complexity subtasks and explicitly encodes here absoid code control flow for our AI to follow and then I think it happened because I had a feeling that we are trying to do a mathematical operation on the human language that are not really working there's no rigidity in the human language for this and then yeah and you have here beautiful structure website code plan synthesizes here in high level logic primitives and when I read logic primitives I thought this is like mathematics in the 19th century there was a time in mathematics where we tried to prove everything one and one equal two we tried to prove everything from the most atomistic logical primitive mathematical primitives and I have the feeling we are now at this very same point in the development of artificial intelligent the next AI systems And then I read this and this was for Columbia University. And then I understood something and this is a beautiful study about a different public persona. It's about the CEO of OpenAI and the CEO of Entropic and they publish and they communicate. They communicate to their community to the coder and to the developer and the software engineers and they communicate also to the shareholders and they communicate to the policy institution. And here we have now a study by Columbia University about imaginary structures and authority. And I thought what is strange? What has this to do with AI? Turns out this was the key that I missed in the other four studies because they had a look at this communication patterns now and they imagined that there are something that was known it's called the sociotechnical imaginaries and these imaginaries are built through a structurally consistent human rhetorical strategy and they found out that both CEOs more or less converge to make it easy how they examine how our vision of a scientific and technological process let's say what is the benefit of AI why should we further invest in AI why should we do research in AI on what topic of AI humanity is it more of an augmented AI is an AI takes over everything what about the public purposes what about the collective future that we want to achieve what is our goal in AI what we want to see for the community and they extended the sociotechnical imaginaries framework from a nation state perspective now to a private firm perspective that is really at the frontier of a transformative technological development and then I had a feeling and I guess now you have to help me because I will show you here my thoughts but I'm not yet finished I have not yet reached the synthesis the conclusion so maybe you can help me five research papers published today complete different but all five papers are somehow connected and I think the deep connection between all those paper is we have a collision between two fundamentally different mathematical structures no we have the human language with all its beauty expressiveness and everything and we map it to a continuous associative manifold or what you would call a simple mathematical vector space no for a ra system and on the other hand we have the discrete topological graphs of pure computational logic where we know the mathematics where we know exactly how to operate on a graph theoretical operator on fields here but somehow the human language is not really the computational framework here for a logical application and I have the feeling that every paper that I just showed you is kind of let's be very unscientific inventing a kind of a mechanism to solve the same problem how do we build rigid discrete creates scaffolds, graph trees, algorithm, AI structures to make the human language and the human action somehow handable to artificial intelligence or other words to constrain and channel the associative fluidity of the human language towards a pure dry mathematical high probability task probability distribution peak structure. You see it doesn't go together somehow. Somehow there is something missing. Let me give an example. I would say imagine the human language no or go in a mathematical reframing with the vastness of a latent space here for an LLM. It's like a river. It is associative water. It flows everywhere simultaneously carving out meandering everything organic path here into the landscape based on the path of the least resistant. Or you can see statistic probability here is really here happening in nature. And if you go with a classical old-fashioned react agent or a multi- aent chat, what is it? It's just like a flood. You know, the water just spills over, spills into valleys here, retraces here its own puddles and wastes immense energy. Immense tokens are wasted here. It is just an uncontrolled flooding. The first study of today rumat here is kind of now in my reframing that I do in my human language and I communicate now with you and I bring a different image now room is a hydroelectric grid manager instead of letting all the rivers flow to into each other a fully connected n* n graph it dynamically opens and closes here specific aqueducts these are of course our communication channels and our communication edges on a graph structure based on the pressure maximizing the energy output calculating here maybe the entropy while minimizing here the waste optimizing here the tokens. So this is the first view how you can see the first paper. The second paper if we stay in the same frame acts now as a water filtration hierarchy separating here the muddy water the river water you know where we have some in the mathematical view some dense embeddings here of our vectors. Now we separate this into distinct trackable chemical streams or let's call them concepts and subconcepts that arranged now in a branching tree in a mathematical structure. So you see what we do. We have here the river and then we want somehow to channel here this mightiness of this river into sub channels and and trackable chemical streams and branching tree structure. And I guess you get the idea. The next study compulsionary imaginary represents here if you want a political zoning board where the river is crossing a particular piece of land. Yeah. It uses your conversational patterns and rhetoric to convince now the public or the owner of the land that building this specific canal system to regulate the river is inevitable guiding here our societal discussion complexity and we say hey it's there's only one probable path no we have to further invest I need another 100 billion US dollars here to invest to build data center there is no other way forward and the whole society is buying it. And this is interesting because this is now rhetoric. This is now almost nothing to do here with the complexity of human language. But this is how you use the human language to influence other human in the decision process. But of course, we can use AI to alter the decision process in the communication patterns between AI and human or AI and EI agents. So you see those five papers somehow subconsciously caused some chaos here and I'm still not yet sorted out but I want to give you my understanding. I think under the hood this tension is a battle that we have currently in AI research between the good old grandfather mathematical highdimensional vector spaces our rack systems no and everything that is now here in graph theory and complexity that we have that we try to throw on AI to somehow make it reason you might ask why should it reason well it's about decision and decision lead to action and action lead here to strategy frameworks and strate Strategy frameworks lead to policy. Now we assume and we think in similarities. No, this is for any measured here a dotproduct here of a dense vector in a particular mathematical field. No, logical reasoning requires no explicit state transition. If you think about partially observable mock of decision processes in mathematics, mutual exclusivity and causality and the causality we have as you seen in my last video in AI research with directed basically graph our deck system and the tree structure that we have no so you see humans think in similarities and we convert this into a dot product into explicit states transition and somehow we lose a little bit of the complexity. enough of the beauty of human language. Now the first two studies that I showed you here in the first second of this video I call it graphing the mind to build graph out of something that is just here a beautiful idea but we have to take it we have to put it into our data center and we have to morph it trying to put it in our data center so we have to build graphs out of it now in room here in this it's a beautiful study don't get me wrong yeah but it polyps the richness of the human language into a simple proximity metric allowing thereby a hard reinforcement learning algorithm that is based on our old PPL to prune the conversation graph. It is a beautiful idea but is this the way forward? I want to show you there are a lot of technological implementation of AI that are just maximally reducing the beauty and expressiveness of human language and I would not be sure that this is the way forward in the hierarchical concept base we have more or less the same you have a dense beautiful cloud here of whatever you're talking about in a domain architecture and then you use sparse autoenccoder uh the classical encoder part of a transformer architecture to force here this magnificent manifold that we have in I don't know 124 dimension into a discrete taxonomy like a tree and we are forcing our probability distribution into a rigid mathematical hierarchy because otherwise we could not handle it otherwise we cannot code it otherwise we cannot compute it. So you see whatever we throw at AI currently is just an approximation. We force somehow the human language to warp to transform to morph into discrete taxonomy structures mathematical hierarchy structure and I'm not sure if this is the way forward. Let me give an example of the beauty of the human language and suddenly I'm amazed about myself. But yeah, we're into this video. So let's go. We could also see this from a different perspective. Now this two paper for example rumor I can see also as the macro level of an agent swarm communication pattern and hike I can see as the micro level of a latent representation complexity. Why? because they deploy remarkable similar mathematical approaches structures like forcing continuous unstructured LLM outputs into explicit mathematically constrained topologies. If you read both papers here with this in your mind, you will see immediately what I mean. And I think that both these first papers solve the same fundamental problem. Huh? Governability AEI system. We cannot handle our AI system. Rumor if you want solves the catastrophic token burning of multi- aent systems. No, but how? It uses a content agnostic reinforcement learning agent to dynamically root or cut off communication PS in our in our complexity on our manifold. I don't think this is the way forward or if you go with high. Yeah, it solves the manual annotation bottlenecks and the flat representation of what we used to call concept bottleneck models. And as I told you, it uses sparse autoenccoder to organically crack open the high-level concepts that we have in human language into simpler subconcepts and then it builds in a beautiful mathematical way a neural architecture that explicitly wires these hierarchies together back together. Now in a simpler way in the subconcept way allowing here maybe even humans to intervene at precise logical depths but we lose something. If you look here at the mathematical algorithms you see if you crack open here a highle concept that we humans have in our mind if we have experienced it from so many different perspectives. You know I can reframe here these studies four or five different times and you will always discover newer elements. If we break it down into one mathematical hierarchy. Yeah. And then we have only one mathematical method to solve it. So you see we lose we lose massive information. We use massive other paths of deciding of arguing of communicating. The density of our communication between AI agent is not like a human way. It is like stupid androids. Yeah. By the way, if you want to learn more about concept embedding models, I've just read this study and I highly recommend this study also. It's from December 2022. They go here and show you here really the conditioning of the classification task on immediate level human like concepts. Have a look at this real interesting idea. But given here what I just told you about the beauty of the human language and I tell you this as a theoretical physicist I'm a little bit amazed about myself. See this also from this perspective. No I can talk to you in this beautiful human language so I can easily reframe it another time. Rumat is a deaf conductor of our orchestra. Let's say you're in Vienna and you just you go here for a filmonic event or whatever. Yeah. And now imagine you have the I don't know six brilliant expert here and you have the orchestra and everything. But then you have one conductor. This is our controller and this controller is absolutely deaf. He doesn't he doesn't hear anything but he is the conductor of the orchestra. So this is exactly the mathematical method we apply. Now at rum the conductor only sees here if you want a monitor in front of him showing here the heart rates and the voting alignments of the expert of the orchestrator. This is exactly the cosign similarity of their embeddings. And if two experts have an identical embedding structure in a high dimensional vector space the conductor physically moots one of them to save money to save tokens. But if one expert, if one player has a unique embedding structure suddenly and remember this room at this RL controller is deaf, the conductor gives them a megaphone, an open communication channel. So having no idea about what they are talking, no idea about the complexity of the communication, no idea about the semantic whatever of the communication, it is just looking here for similar patterns. And I think this is the wrong way to you. Yeah, I know AI is a beautiful pattern matching machine, but this is maybe not the optimal way to compare your communication channels between AI. Another reframing. Heism heism acts now like a prism. You remember when you were a child and you you were in a room outside of sunshine and you just open it a little bit and you hold your prism to it and suddenly the white light comes in and you have then all the different rainbow colors here coming out of this prism was just amazing. Now the same is now happening here. Huh? We have here if you want a a concept coming in. This is the the white sunshine. But with this prism, we are able here to discover distinct color spectra. This means different subconcepts in a mathematical way. We can build autocon subspaces and we can build a new cabinets where the opening of ros forces you to go through exact drawers and you have not to go to apple. Then you have to go bananas. All the different flavors and color spectra that we found out. Yeah. But these subconcepts are logical constructs of the human language. But is this the way we should go with artificial intelligence? Is this really what what would enable us here for a better reasoning capacity? Let's take the other one. Let's go over here with study four and five. So to act and real reasoning structuring time and the dialogue and you see it's interesting that more and more the dialogue comes into place. It is not about the perfect decision of an AI. It is about a dialogue and it is either between agent and agent or human and agent. And this dialogue brings so many more additional dimensions into play. You remember realizing we have to synthesize here multi-turn dialogues as training data. So what it does it embeds hidden logical constraints here that are from the mathematical engine synthesized into a particular scenario. So it mathematically forces now an LLM to traverse a specific dependency path to answer a question. But maybe this is not necessary at all. If you ask me a simple question, I can give you a simple answer. Why I should not hop about a a threepart answer here with some logical dependencies? Um yeah, I understand you want to have complex reasoning training data for reinforcement learning, especially if you have no verifiable reward function. But is this the way forward? Or I think about Pyo act. I think Pyo act is the culmination. It just rejects associative step-by-step thinking. No, it writes down a DAG first. F writes down a Sydo code. It elimates here all the language generation simply fulfilling here a localized note requirement. I just break down everything into a graph. And then I have single nodes and node have requirements and dependencies and complexities and interlink structures and whatever and the world becomes so simple. But remember the beauty of our LLMs was here not only here from a stocastic and a statistical principle but my goodness human language is so beautiful. You con can construct whatever you want and now reduce the context to only the current single node in a graph representation that might not reflect here the whole complexity of a domain here for a single task. I'm not happy with this. And then the fifth paper of course sociological view as I told you here between here the CEO of openi and the co of entropic. this human hacking here. The human way to argue how do humans push forward their systems and of course the job of CEOs is to sell their product and get investors on board. So they use conversational rhetorical patterns to convince human. So why the hell do I need suddenly here this CEO perspective? Well, it tells us something. Do you remember me here of the CEO of Open AI always telling us about hey we need a AI or AGI here because it will cure cancer. I noticed now for three four five years this communication and that it is the inevitable path of history. No. So what they do if you look at this in a mathematical view they prune the political conversation graph and they offer here their shareholders and their stockholders here. Clearly there is only one way forward and nobody is questioning this tactic and this is a beautiful rhetorical pattern where they try now to reduce the complexity into a simple mathematical singular way forward. So what you see what those cos are doing here of our AI companies they collapse here the multi-dimensional debate of how how AI should be governed let's say or maybe even restrain by some rules no into a binary outcome and it is either you support it or you hinder here the progress of AI it is clear you are either A or B there's nothing in between it is like you to say hey there are only two political parties and you just you have to belong to one political party and if you belong to one political party you have to fight the other one there's no other way and I think this is not the right way forward neither for humans nor for the eye system because I don't want that this is imprinted here on the decision-m process and on the communication process of AI agents but this is exactly what rumor our very first study does to agents now and this is applied to the communication within the society the human society it is absolutely Fascinating to see the similar parallel patterns between the human communication to other humans and what we want to imprint on our AI decision complexities. Think about it. What is the outlook of today? We are no longer trying to teach our neural network or transform or whatever you have to do logic to decide to come up with a logical conclusion purely via next token prediction. And I think the future of AI is just wrapping this continuous associative language engine inside our discrete classical computational graphs. We need both of them. I think the LLM will continue to provide the semantic intuition, the nuances, the beauty of the human language and therefore constitute the interface and all the external graph from a PO topology to the code state machine to tree low level optimizers like we've seen in our five papers. I think they will just provide the safety the bounds and the reasoning rigor but this is just an element. So whenever you had in my last videos the impression that I want to force or press the complexity of a human communication like the human language into a rigid pattern of mathematics. Yes, maybe it was my goal and maybe I was fascinated. But now I see more and more the more studies I read about it that we lose here so much information, so much context. If we do this simplification, if we do this breakdown into subcategories, subclassifications just to handle it mathematically and therefore be able to code it. This is not the way forward. And you might ask, hey, what is lost when we force the human language into a purely computable hierarchy? I think human reasoning is powerful because it is associative and any breakthrough in science. Go and read any book about physics for example. It rarely happens with strict cyto code for step in plan. No, it happened because some unexpected associative leaps happened across unrelated domains. You have heard this. No, I was standing in the shower and suddenly had a beautiful idea about this is exactly what I'm talking about. You cannot logically deduct here creativity. It just happens to us humans because we have this associative knowledge. And I tell you not was not only reading those five papers. I was reading also 10 other papers here on vision language model and the same problem we have now if we go from language models here to vision language models and it was this cross reference here between language and visual interpretation also that caused me to create here this video for you today. Think about what could go wrong. If rumor at our very first study aggressively mute agents whose cosign similarity drops belows a threshold, it might kill one agent that is making a brilliant but a nonlinear associative connection that looks like a noise to the simple PO controller. Or if forces the real world concepts into exclusive hierarchical trees, it fails to capture the tangles. If you want rimatic nature of the human understanding, yeah, it just fails to get all the nuances that we have and by forcing LLMs and this is the third paper in the code into the code primitives like in the mathematical primitives no we risk returning to the brittleleness of a pure symbolic eye of the 1990s. So what is the final sword? what is what I'm fighting with today and I'm going to be mean because I'm going to give you an an image. I'm going to build you an image with my language and I'm going to tell you imagine the ultimate meta narrative of all these four papers is the engineering of constraint for AI and they represent the scientific community's realization that the associative richness of the human language is like a raw unstable fuel fuel cell no like a battery but to achieve the complex reasoning that we're looking for in in artificial intelligence either a single agent logic or uh swarm debate. This semantical fuel must be ignited and it must be ignited inside these heavy iron cylinders of a hierarchical topological algorithm. And with this sword I would like to leave you for today's video. I hope you enjoyed it a little bit. There was some new information, new food for thoughts and I would love to see you in my next video.",
+  "errors": []
+}

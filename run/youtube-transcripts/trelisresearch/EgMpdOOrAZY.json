@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EgMpdOOrAZY",
+    "language": "en",
+    "took_ms": 8896,
+    "method": null,
+    "title": "Embeddings vs Fine Tuning  - Part 3: Unsupervised Fine tuning",
+    "channel": "Trelis Research",
+    "upload_date": "20230921",
+    "duration_sec": 1288,
+    "description": "*Unsupervised Fine-tuning Notebook*\nBuy Access Here: https://buy.stripe.com/5kA28UcWh2Hxf3a00p\n\n*Fine-tuning Repository Access*\n1. Unsupervised Fine-tuning Notebook\n2. Supervised Fine-tuning Notebook\n3. Q&A Dataset Preparation Scripts\n4. Scripts to create and use Embeddings\n5. Forum Support\nLearn More: https://trelis.com/advanced-fine-tuning-scripts/\n\n*Other Resources*\nPresentation Slides: \nhttps://docs.google.com/presentation/d/1RX29qObB1nwPOslDR5rmBxNQXAHmBbAzg9sJ22com6Y/edit?usp=sharing\n\n0:00 Part 3: Unsupervised Fine-tuning\n2:20 Video Overview\n3:21 Cleaning up datasets\n10:34 Unsupervised fine-tuning in google colab.\n20:09 Pro tips\n21:08 Scripts and GitHub Repo Access",
+    "view_count": 4506
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EgMpdOOrAZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

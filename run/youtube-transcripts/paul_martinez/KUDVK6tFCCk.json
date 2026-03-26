@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KUDVK6tFCCk",
+    "language": "en",
+    "took_ms": 8398,
+    "method": null,
+    "title": "How Do Insurance Companies Make Money?",
+    "channel": "S4 Events",
+    "upload_date": "20230911",
+    "duration_sec": 112,
+    "description": "2 minutes from Monica Tigleanu's S4x23 session. What most OT security professionals under appreciate is float. Warren Buffett goes on an on about the value of float in the insurance and reinsurance industry. You can have an underwriting loss and still make money from the float. And when you have a good year with underwriting profit, it becomes a great year with underwriting profit + float.",
+    "view_count": 1164
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KUDVK6tFCCk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

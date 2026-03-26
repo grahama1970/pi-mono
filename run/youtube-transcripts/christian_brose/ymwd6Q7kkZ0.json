@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ymwd6Q7kkZ0",
+    "language": "en",
+    "took_ms": 8032,
+    "method": null,
+    "title": "Herbert London at the Reclaim American Liberty Conference",
+    "channel": "Hudson Institute",
+    "upload_date": "20100219",
+    "duration_sec": 265,
+    "description": "Hudson Institute President Herb London gives a great review of the 1st Reclaim American Liberty conference held in New York City.",
+    "view_count": 197
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ymwd6Q7kkZ0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

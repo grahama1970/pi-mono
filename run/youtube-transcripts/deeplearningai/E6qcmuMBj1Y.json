@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E6qcmuMBj1Y",
+    "language": "en",
+    "took_ms": 9496,
+    "method": null,
+    "title": "New course with crewAI! Join Practical Multi AI Agents and Advanced Use Cases",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241023",
+    "duration_sec": 172,
+    "description": "Enroll for free: https://bit.ly/3Nvw1hy\n\nWe’re excited to introduce \"Practical Multi AI Agents and Advanced Use Cases with crewAI,\" taught by João Moura, the founder of crewAI. This course is designed for those who want to build advanced agentic workflows that deliver measurable value through automation and collaboration.\n\nJoão is back to help you explore how multi-agent systems are used in real businesses today and how to improve them through performance testing and human feedback. \n\nYou'll create crews, organize them into workflows, and build pipelines for more efficient automation. The course covers practical applications like project planning, lead scoring, and content creation at scale.\n\nYou'll work on several practical use cases, including:\n\n- An automated project planning crew that breaks down projects, estimates time, and allocates resources.\n- A progress report generator that interacts with project management tools like Trello.\n- A sales pipeline agent that gets and enriches lead information, scores them, and drafts personalized emails for qualified leads.\n- A customer support analysis pipeline that creates issue reports and visualizations.\n- A content creation crew that researches online, uses RAG to generate content, refines it, and creates social media posts.\n\nWhether you’ve taken the previous crewAI course or are new to multi-agent systems, this course offers a hands-on, practical approach to building solutions that work in real-world settings.\n\nLearn more: https://bit.ly/3Nvw1hy",
+    "view_count": 6500
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E6qcmuMBj1Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

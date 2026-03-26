@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YPcOwKtRuDQ",
+    "language": "en",
+    "took_ms": 7960,
+    "method": null,
+    "title": "DEF CON 32 - Anyone can hack IoT- Beginner’s Guide to Hacking Your First IoT Device - Andrew Bellini",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3252,
+    "description": "Yes, anyone can hack IoT devices and I’ll show you how! It doesn’t matter if you’re an experienced pen tester in other fields, completely new to cybersecurity or just IoT curious, by the end of this talk you’ll have the knowledge to hack your first device. You might be thinking - but I thought IoT was complicated, required knowledge of hardware, and expensive tools. In this talk, I’m here to dispel those myths by directly showing you the methodology, tools and tactics you can use to go and hack an IoT device today (or maybe when you get home). I’ll cover what IoT devices are best for beginners, what tools you need (and don’t need), how to build a small toolkit for less than $100, common tactics to get a foothold into IoT devices and how to find your first vulnerability or bug.",
+    "view_count": 296292
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YPcOwKtRuDQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

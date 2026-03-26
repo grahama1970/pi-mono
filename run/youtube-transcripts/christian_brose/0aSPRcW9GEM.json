@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0aSPRcW9GEM",
+    "language": "en",
+    "took_ms": 9614,
+    "method": null,
+    "title": "Counterbalance Podcast | The Facts: Is Ukraine Losing? Can It Still Win? (feat. Peter Rough)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240321",
+    "duration_sec": 2542,
+    "description": "Is Ukraine losing? Can it still win? Where does international support stand now, and where will it be going forward? Host Peter Rough addresses these questions and more having just returned from an overseas study trip to Moldova and Ukraine. Mike Doran joins him to discover what Peter saw, heard, and learned from his travels.",
+    "view_count": 5504
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0aSPRcW9GEM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

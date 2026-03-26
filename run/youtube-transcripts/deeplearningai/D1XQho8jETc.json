@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D1XQho8jETc",
+    "language": "en",
+    "took_ms": 9455,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Jacky Liang: Why Agents Can't Find the Right Docs (And How Postgres Fixes It)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 1806,
+    "description": "At AI Dev 25 x NYC, Jacky Liang, Developer Advocate at TigerData, showcased hy AI agents struggle to find the correct documentation and how to fix this using PostgreSQL. \n\nMost production RAG systems fail because vector search alone hallucinates or misses exact term matches in legal clauses, technical specs, and domain-specific content. \n\nThis technical talk shows how to implement hybrid retrieval directly in Postgres by combining BM25 statistical ranking with pgvector semantic search. \n\nAttendees will learn how to build a working RAG pipeline that queries knowledge bases with both search phrases and embedding vectors, returning ranked results weighted by both keyword relevance and semantic similarity—eliminating the need for external search infrastructure like Elasticsearch.\n\n----------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai",
+    "view_count": 487
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D1XQho8jETc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

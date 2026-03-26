@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rqMNllTo6wc",
+    "language": "en",
+    "took_ms": 9269,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - CARVER Vuln Analysis & US Voting System - Moore, Young, Baggett",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 2667,
+    "description": "During World War II, the predecessor to the CIA, the Office of Strategic Services, developed a framework for the French Resistance to identify vulnerabilities in key German defenses and infrastructure. The framework, titled “CARVER” applies the following designations to enumerated components of complex systems: Criticality, Accessibility, Recepurability, Vulnerability, Effect, Recognizability. The same framework, viewed through a security framework, will highlight a system’s strengths or weaknesses, depending on the analyst’s tasking. This panel will examine voting systems in the context of the CARVER framework.",
+    "view_count": 1220
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rqMNllTo6wc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

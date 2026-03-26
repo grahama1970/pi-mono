@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AM4IRwWokwY",
+    "language": "en",
+    "took_ms": 8314,
+    "method": null,
+    "title": "DEF CON 31 - Car Hacking Village - Exploiting Wireless Side Channels in EV Charging - Kohler,  Baker",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2686,
+    "description": "The Combined Charging System (CCS), one of the most widely used DC rapid charging technologies for EVs, is vulnerable to wireless attacks. The charging cable acts as unintentional antenna, leaking the power-line communication (PLC) signals and letting an adversary inject their own with off-the-shelf radio equipment. We show how we can eavesdrop on charging communication, or terminate multiple charging sessions wirelessly. These vulnerabilities have been known for several years, but are still present in CCS standards, while the new North American Charging Standard (NACS) uses the same vulnerable physical layer as well. How do we secure these charging systems now we're in so deep?",
+    "view_count": 3924
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AM4IRwWokwY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

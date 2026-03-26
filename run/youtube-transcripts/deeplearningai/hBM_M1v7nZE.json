@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hBM_M1v7nZE",
+    "language": "en",
+    "took_ms": 7935,
+    "method": null,
+    "title": "Carbon Aware Computing for GenAI Developers, a new course with Google Cloud is live!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240626",
+    "duration_sec": 171,
+    "description": "Enroll for free: https://bit.ly/3KUeqyw\n\nToday we’re launching Carbon Aware Computing for GenAI Developers, a new short course made in collaboration with Google Cloud and taught by Nikita Namjoshi, Developer Advocate at Google Cloud and Google Fellow on the Permafrost Discovery Gateway.\n\nTraining, fine-tuning, and serving generative AI models can be demanding in terms of compute and energy. But these processes don't have to be as carbon-intensive if you choose when and where to run them in the cloud. In this course, you’ll learn how to perform model training and inference jobs with cleaner, low-carbon energy in the cloud.\n\nExplore how to measure the environmental impact of your machine learning jobs and how to optimize their use of clean electricity, and:\n\n- Query real-time electricity grid data: Explore the world map, and based on latitude and longitude coordinates, get the power breakdown of a region (e.g. wind, hydro, coal etc.) and the carbon intensity (CO2 equivalent emissions per kWh of energy consumed).\n- Train a model with low-carbon energy: Select a region that has a low average carbon intensity to upload your training job and data. Optimize even further by selecting the lowest carbon intensity region using real-time grid data from ElectricityMaps.\n- Retrieve measurements of the carbon footprint for ongoing cloud jobs.\n- Use the Google Cloud Carbon Footprint tool, which provides a comprehensive measure of your carbon footprint by estimating greenhouse gas emissions from your usage of Google Cloud.\n\nThroughout the course, you'll work with ElectricityMaps, a free API for querying electricity grid information globally. You'll also use Google Cloud to run a model training job in a cloud data center that is powered by low-carbon energy.\n\nGet started, and learn how to make more carbon-aware decisions as a developer!\n\nLearn more: https://bit.ly/3KUeqyw",
+    "view_count": 4217
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hBM_M1v7nZE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

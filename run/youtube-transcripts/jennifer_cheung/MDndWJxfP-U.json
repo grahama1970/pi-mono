@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MDndWJxfP-U",
+    "language": "en",
+    "took_ms": 8756,
+    "method": null,
+    "title": "DEF CON 32 - The hack, the crash and two smoking barrels.  - Thomas Sermpinis",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2378,
+    "description": "This is not a talk in which I will demonstrate exploit chains obtained from the underworld after signing with blood. It’s about sharing meaningful stories from said underworld. The automotive underworld of huge corporations, short deadlines and lukewarm engineers. The one where companies fight for packing more and more functionality inside your computer on wheels, without paying attention to one of the things that our life actually depends on right now, cybersecurity.\n\nWhile others talk about extremely significant remote vulnerabilities, I will focus on a high-level view of architecture and design of vehicles and where security fits in these processes. I will go through a journey of exploitation, from discovering 0days, to persuading engineers for the significance of a finding, by putting him in the driving seat and engaging the breaks mid-journey.\n\nI will conclude, trying to understand why this is happening, why this behavior towards security still exists in the automotive industry, and how a small manufacturer managed to create one of the most secure embedded systems I faced in my career. All this, with a series of demos in real targets, and a real ECU on stage.\n\nOur ultimate goal is to help people understand the state of the industry, spark the interest which can come out of hacking a computer on wheels, and try to raise awareness with a bit of hack, a bit of crash and two smoking barrels.",
+    "view_count": 2211
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MDndWJxfP-U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

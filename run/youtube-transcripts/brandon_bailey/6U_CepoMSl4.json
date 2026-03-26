@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6U_CepoMSl4",
+    "language": "en",
+    "took_ms": 9859,
+    "method": null,
+    "title": "DEF CON 33 - Don’t Cry Wolf: Evidence based assessments of ICS Threats - Jimmy Wylie & Sam Hanson",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1435,
+    "description": "CS Malware is rare. Yet, ICS Malware like FrostyGoop and TRISIS, and related discoveries like COSMICENERGY, were all found on VirusTotal, so analysts still hunt for novel ICS Malware in public malware repositories. In the process, they discover all kinds of tools: research, CTFs, obfuscated nonsense code with no effects, and sometimes, malware targeting ICS/OT sites. But how do they find and filter out the benign from malicious? Or the ICS and ICS-related malware from regular IT malware?\n\nIn this talk, we will use recently discovered samples to walk through the process of hunting and analyzing potential ICS threats. We’ll show the simple queries we use to cast a net, our typical analysis process, and relevant follow-on actions like victim notification. Lastly, we’ll discuss how we decide whether a sample is ICS malware using Dragos’s ICS malware definition.",
+    "view_count": 389
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6U_CepoMSl4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

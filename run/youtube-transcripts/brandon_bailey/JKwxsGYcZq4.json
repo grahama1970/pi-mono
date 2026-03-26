@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JKwxsGYcZq4",
+    "language": "en",
+    "took_ms": 7873,
+    "method": null,
+    "title": "DEF CON 33 - Voice Cloning Air Traffic Control: Vulnerabilities at Runway Crossings  - Andrew Logan",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1358,
+    "description": "Voice cloning technology has advanced significantly, enabling the creation of convincing voice replicas using consumer-grade devices and publicly available tools. This poses critical challenges to aviation communication, where trust between pilots and air traffic controllers is paramount. The reliance on AM radio, with its low fidelity and lack of authentication, exacerbates the risk of fraudulent communications. This talk examines trust factors within aviation's air traffic control system, focusing on how air traffic controllers' voices can be cloned and where planes are most at risk. The talk explores FCC enforcement techniques for locating malicious actors, historical perspectives on alternative radio technologies, and the secondary systems pilots employ during communication failures. Simulated attacks will demonstrate how these vulnerabilities could disrupt operations, particularly at critical points such as runway crossings and in low-visibility conditions.\n\nTo mitigate these risks, this talk evaluates existing safeguards, including the Traffic Collision Avoidance System (TCAS), and discusses emerging technologies such as stop bars and guided runway lighting.",
+    "view_count": 840
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JKwxsGYcZq4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

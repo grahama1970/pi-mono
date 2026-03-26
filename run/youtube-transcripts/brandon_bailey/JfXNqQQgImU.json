@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JfXNqQQgImU",
+    "language": "en",
+    "took_ms": 9686,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Ted Harrington - When Penetration Testing Isn't Penetration Testing At All",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 1808,
+    "description": "When companies want to build secure IoT systems, they know they need to test their system for security flaws, which typically leads them to seek out “penetration testing.” However, this term has become so misused across the security community that it’s hard to decipher what is really happening.\nSo where does that leave you? What is your security testing program actually doing (and not doing)?\n\nIn this keynote, you’ll learn the often widely misunderstood difference about what penetration testing is (and is not). Drawing insights from the #1 bestselling book Hackable, you’ll learn why the distinction matters, and you’ll get an insight into the more advanced tactics used by ethical hackers, such as functionality abuse and exploit chaining. By design, this keynote is more strategic rather than technical, and will equip you with insights to think differently about your security testing program. As a result, you’ll leave with new ideas about how to build better, more secure systems.",
+    "view_count": 1203
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JfXNqQQgImU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

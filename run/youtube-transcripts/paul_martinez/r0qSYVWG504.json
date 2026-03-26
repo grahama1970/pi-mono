@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r0qSYVWG504",
+    "language": "en",
+    "took_ms": 9132,
+    "method": null,
+    "title": "From One Classroom to a Thousand People",
+    "channel": "S4 Events",
+    "upload_date": "20251113",
+    "duration_sec": 187,
+    "description": "This Unsolicited Response looked back at how far S4 has come—from a small classroom at FIU to a global gathering of the best in OT security.\n\nIt’s grown, but hasn’t lost what mattered most. The community. The energy. The weird stories. And the cowboy boots.\n\nThanks to everyone who’s been part of the journey.",
+    "view_count": 48
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r0qSYVWG504: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

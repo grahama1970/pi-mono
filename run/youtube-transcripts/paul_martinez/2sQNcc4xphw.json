@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2sQNcc4xphw",
+    "language": "en",
+    "took_ms": 7677,
+    "method": null,
+    "title": "The SBOM Challenge",
+    "channel": "S4 Events",
+    "upload_date": "20230522",
+    "duration_sec": 2840,
+    "description": "The team from Idaho National Laboratory (INL) created and ran the Software Bill of Materials (SBOM) Challenge at S4x23. This video is the debrief of the Challenge by Ginger Wright and Hannah Pearson Kleinheider.\n\nThe participants in the Challenge included: aDolus, Cybeats, Finite State, Netrise, and Security Risk Advisors.\n\nThe goals of the SBOM Challenge were:\n1. Create SBOMs from binary files\n2. Identify vulnerabilities in the SBOM components\n3. Take in and process a VEX\n\nThe creation and running of the Challenge was a challenge in itself, especially since this was the first time it was run.",
+    "view_count": 638
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2sQNcc4xphw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

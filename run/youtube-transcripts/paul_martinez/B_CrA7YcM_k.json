@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B_CrA7YcM_k",
+    "language": "en",
+    "took_ms": 10009,
+    "method": null,
+    "title": "7. Incident Response with Chris Sistrunk",
+    "channel": "S4 Events",
+    "upload_date": "20201120",
+    "duration_sec": 2895,
+    "description": "Chris tells you the why's and how's to create and exercise an incident response plan for an ICS cyber incident. Some of the information would apply to any cyber incident response plan, and the really valuable info is how to tailor it for ICS and some examples of what Chris has seen in his ICS incident response experience.\n\nQuestions to consider and discuss:\n\n1. What would be some of the most efficient detection measures in your ICS? (By efficient I mean where you get the best detection information for the next dollar or hour spent on detection. Low false positives, low manpower requirements, low cost to purchase and deploy)\n\n2. What roles would you have on your ICS Incident Response team and what other resources may you call on to help with the incident?\n\n3. Chris mentioned donuts ... what's your best tip for talking with and learning from Operations? with IT and IT security?",
+    "view_count": 1377
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B_CrA7YcM_k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

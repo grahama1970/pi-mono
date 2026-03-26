@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dRL9NtegG6M",
+    "language": "en",
+    "took_ms": 7790,
+    "method": null,
+    "title": "DEF CON 30 BiC Village - Stephanie Barnes - A Bridge Across the Digital Divide",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2127,
+    "description": "Forbes points to the number of Black crypto investors be  the largest demographic of crypto investors at 23% and to be on track to double to 44% (Hale, 2022). This type of investing provides Minorities with a gateway to not only feel more in control of their wealth, but also an introduction to other emerging technologies such as NFTs and Blockchain. With the current administration looking into developing a digital dollar the headlines have pointed to how this could help undeserved communities that have already adopted digital payment in the form of apps such as Cashapp, Paypal, and Venmo. With the rise in reported incidents in these unregulated applications stealing money and closing accounts the bridge that a digital dollar could be could also turn into another avenue for exploitation of a disenfranchised population if they (we) are not part of the development.",
+    "view_count": 695
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dRL9NtegG6M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Uj-l08LL_iM",
+    "language": "en",
+    "took_ms": 8198,
+    "method": null,
+    "title": "Embracing Emerging Technologies to Protect from Past and Future Threats",
+    "channel": "S4 Events",
+    "upload_date": "20240822",
+    "duration_sec": 1097,
+    "description": "In today's industry where we have bespoke tools and require a heavy level of professional services to accompany those tools, Dan presents the ideas of what a SAE J3016 equivalent automation level for cybersecurity would look like. \n\nThis is a critical area as the ratio of most asset owner internal security teams to number of sites they are responsible for is a very skewed ratio. Even with outside professional services, a sizable catastrophic cyber event faces real \"run on the bank\" issues for incident response providers that a theoretical level 3-5 automation approach with less of a dependence on human led, professional services could help asset owners scale with.",
+    "view_count": 261
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Uj-l08LL_iM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

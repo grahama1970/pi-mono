@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "t3bKDBtdSw8",
+    "language": "en",
+    "took_ms": 7944,
+    "method": null,
+    "title": "DEF CON 33 - Thinking Like a Hacker in the Age of AI - Richard 'neuralcowboy' Thieme",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2851,
+    "description": "The accelerating evolution of technology, specifically AI, has created a \"meta-system\" so complex and intertwined with all domains of knowledge and human life that it effectively operates on a meta-level, shaping our reality and exceeding our control. The meta-system requires collaboration among all of its parts for effect management. We need to think on a meta-level because the meta-system is thinking about us in its own unique terms. We must adopt a \"hacker\" mindset – thinking critically, creatively, collaboratively, and systematically – to navigate this new reality.",
+    "view_count": 10554
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] t3bKDBtdSw8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

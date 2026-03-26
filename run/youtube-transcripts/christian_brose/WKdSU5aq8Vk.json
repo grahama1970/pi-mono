@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WKdSU5aq8Vk",
+    "language": "en",
+    "took_ms": 8870,
+    "method": null,
+    "title": "Tevi Troy on Fox and Friends discussing the Health Care Debate",
+    "channel": "Hudson Institute",
+    "upload_date": "20100323",
+    "duration_sec": 211,
+    "description": "Hudson Visiting Senior Fellow Tevi Troy appeared on Fox and Friends on March 15, 2010 to discuss the Health Care debate raging in Congress.",
+    "view_count": 106
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WKdSU5aq8Vk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

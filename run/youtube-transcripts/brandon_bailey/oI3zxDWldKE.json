@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oI3zxDWldKE",
+    "language": "en",
+    "took_ms": 8308,
+    "method": null,
+    "title": "DEF CON 33 - VDP in Aviation   How it shouldn't be done!  - Matt Gaffney",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1287,
+    "description": "Vulnerability Disclosure in Aviation has long been, and continues to be, a very sensitive topic. Whilst large improvements have been made by some in recent years, there are still some corners of the industry who could do much better. Gaffers has experience in both submitting and receiving vulnerability disclosures within the industry and will share some stories highlighting the good, the bad, and the ugly.",
+    "view_count": 127
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oI3zxDWldKE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

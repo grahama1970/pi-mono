@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "73z3-j9uGis",
+    "language": "en",
+    "took_ms": 8905,
+    "method": null,
+    "title": "DEF CON 31 - #NoFilter  Abusing Windows Filtering Platform for privilege escalation - Ron Ben Yizhak",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2140,
+    "description": "Privilege escalation is a common attack vector in the Windows OS.\n\nToday, there are multiple offensive tools in the wild that can execute code as “NT AUTHORITY\\SYSTEM” (Meterpreter, CobaltStrike, Potato tools), and they all usually do so by duplicating tokens and manipulating services in some way or another. This talk will show an evasive and undetected privilege escalation technique that abuses the Windows Filtering Platform (WFP). This platform processes network traffic and allow configuring filters that permit or block communication.\n\nIt is built-in component of the operating system since Windows Vista, and doesn’t require an installation. My research started from reverse-engineering a single RPC method in an OS service and ended with several techniques to abuse a system kernel component, that allow executing programs as “NT AUTHORITY\\SYSTEM”, as well as other users that are logged on the the machine without triggering any traditional detection algorithms.\n\nThe various components of the Windows Filtering Platform will be analyzed, such as the Basic Filtering Engine, the TCPIP driver and the IPSec protocol, while focusing on how to abuse them and extract valuable data from them.",
+    "view_count": 3668
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 73z3-j9uGis: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

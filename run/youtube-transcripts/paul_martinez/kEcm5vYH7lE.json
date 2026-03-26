@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kEcm5vYH7lE",
+    "language": "en",
+    "took_ms": 10350,
+    "method": null,
+    "title": "On Data, Complexity and Asking Questions That Matter",
+    "channel": "S4 Events",
+    "upload_date": "20230306",
+    "duration_sec": 2125,
+    "description": "The theme for S4x23 was Explore! Andrea Jones-Rooy gave a great opening keynote that got rave reviews and set the tone for the event. \n\nAndrea is an explorer in her own right, and this is what had S4 seek her out for the keynote. She is \n- a Professor at the NYU Center for Data Science\n- a standup comedian\n- a circus artist\n\nand she took advantage of all these skills to bring her message to the S4 audience.\n\n(How many OT Security sessions end with an interpretative dance summary)",
+    "view_count": 1035
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kEcm5vYH7lE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

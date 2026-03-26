@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BgneDTH81EY",
+    "language": "en",
+    "took_ms": 8600,
+    "method": null,
+    "title": "DEF CON 33 - Exploiting Security Side Channels in E2E Encrypted Msngrs - G Gegenheuber,  M Gunther",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2442,
+    "description": "With billions of users worldwide, mobile messaging apps like WhatsApp and Signal have become critical for personal and professional communication. While these platforms promise security and privacy, our research uncovers two significant vulnerabilities that expose users to stealthy tracking and security degradation.\n\nFirst, we reveal how delivery receipts --commonly used to confirm message delivery-- can be exploited to track a user's online status, screen activity, and device usage without their knowledge. This technique enables passive surveillance, draining a target's battery and data allowance while remaining entirely invisible to them.\n\nSecond, we demonstrate a novel attack on WhatsApp's implementation of the Signal Protocol, specifically targeting its Perfect Forward Secrecy (PFS) mechanism. By depleting a victim's stash of ephemeral encryption keys, an attacker can weaken message security, disrupt communication, and exploit flaws in the prekey refilling process.\n\nBoth attacks require nothing more than the victim's phone number and leverage fundamental design choices in these widely used platforms.\n\nThis talk will provide an in-depth analysis of these vulnerabilities, their implications, and potential mitigations -- challenging the security assumptions of modern encrypted messaging.",
+    "view_count": 8002
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BgneDTH81EY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

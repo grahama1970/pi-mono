@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L2z5pjKRdO0",
+    "language": "en",
+    "took_ms": 8052,
+    "method": null,
+    "title": "NOW!: Dale Peterson's S4x13 SCADA Apologist Keynote",
+    "channel": "S4 Events",
+    "upload_date": "20180924",
+    "duration_sec": 618,
+    "description": "S4x13 program chair Dale Peterson introduces the theme of the conference NOW!\n\nInsecure by design and fragile ICS that run the critical infrastructure must be upgraded or replaced now. It is not something that we should be resigned to live with for decades.\n\nHe urges the S4 audience of ICS security technical experts to stop being SCADA apologists because it is convincing decision makers this is an intractable problem that we must live with for decades ... and action is not necessary.",
+    "view_count": 214
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L2z5pjKRdO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

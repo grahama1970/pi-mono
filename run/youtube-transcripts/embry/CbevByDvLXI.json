@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CbevByDvLXI",
+    "language": "en",
+    "took_ms": 9224,
+    "method": null,
+    "title": "Why does SpaceX keep changing the BFR? The evolution of BFR",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180920",
+    "duration_sec": 1080,
+    "description": "Elon Musk updated the world with the plans for SpaceX's BFR at SpaceX HQ in Hawthorne. I attended to learn about all the new exciting changes! For now, we're going to just look at what has changed with the vehicle over the years and why it keeps changing. Later we'll do more in depth videos about Yusaku Maezawa's beautiful #dearmoon project and the weird reentry system of the new BFR!\n\nFollow up video: Why SpaceX's BFS will fall like a skydiver and not fly like an airplane -  https://youtu.be/SCCw_M8MAU0\n\nShow your support and join our exclusive discord channel and subreddit by becoming a Patron - http://patreon.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nAll music is original! Check out the songs on soundcloud! http://soundcloud.com/everydayastronaut",
+    "view_count": 912900
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CbevByDvLXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

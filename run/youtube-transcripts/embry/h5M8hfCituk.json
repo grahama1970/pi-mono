@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "h5M8hfCituk",
+    "language": "en",
+    "took_ms": 8770,
+    "method": null,
+    "title": "Live Hosting Rocket Lab \"It's Business Time\" (Scrubbed but still informative) :D",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180623",
+    "duration_sec": 7727,
+    "description": "My favorite black rocket, Rocket Lab's Electron, is launching their first commercial payload out of their gorgeous launch site LC 1 on the Mahia Peninsula in New Zealand! \n\nThe start of their launch window is scheduled for lift off at 02:27 UTC (10:27 PM Eastern) on Saturday (Friday for the US), June 23rd (22nd). Have I confused you yet?\n\nThey're to be launching four smallsats and a technology demonstrator into low Earth orbit in a 500km by 250km orbit at 85 degrees, and then circularize with their Curie kick stage into their final 500km x 500km orbit. \n\nIf you need a reminder of why the Electron is awesome, I have a video about that! Check it out! https://youtu.be/C0STPK3g9c8\n\n\n\nFollow and Like my upcoming new series on Facebook Watch with Space.com \"Spacing Out!\" - https://www.facebook.com/SpacingOutEverydayAstronaut/\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 34629
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] h5M8hfCituk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5WYuwcuwlg8",
+    "language": "en",
+    "took_ms": 9351,
+    "method": null,
+    "title": "America and Saudi Arabia at a Strategic Crossroads: Crown Prince Mohammed bin Salman’s US Visit",
+    "channel": "Hudson Institute",
+    "upload_date": "20251126",
+    "duration_sec": 3363,
+    "description": "Hudson Institute’s Michael Doran and Bernard Haykel will discuss Crown Prince Mohammed bin Salman’s recent visit to the United States and its implications for the future of the US-Saudi partnership. They will explore the evolving strategic alignment between Washington and Riyadh, the significance of recent US arms sales, how Iran has shaped the broader regional landscape, and the Trump administration’s approach to Saudi Arabia. The discussion will also examine Saudi Arabia’s domestic transformation under Vision 2030, the kingdom’s shifting global posture, and the opportunities and challenges ahead.",
+    "view_count": 3780
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5WYuwcuwlg8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

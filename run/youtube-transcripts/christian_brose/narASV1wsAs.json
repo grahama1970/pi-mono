@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "narASV1wsAs",
+    "language": "en",
+    "took_ms": 8054,
+    "method": null,
+    "title": "Motherland Lost: The Egyptian and Coptic Quest for Modernity",
+    "channel": "Hudson Institute",
+    "upload_date": "20130822",
+    "duration_sec": 5049,
+    "description": "In his new book, Motherland Lost: The Egyptian and Coptic Quest for Modernity (Hoover Institution), Hudson Institute Research Fellow Samuel Tadros argues that the modern plight of Copts is inseparable from Egypt's quest for modernity. As Egypt's intellectuals and state modernizers attempted to answer the challenges posed by the discovery of the West's advancement, Copts were faced with a similar crisis with the onslaught of foreign missionaries and the challenge of modernizing their ancient chur",
+    "view_count": 1367
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] narASV1wsAs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

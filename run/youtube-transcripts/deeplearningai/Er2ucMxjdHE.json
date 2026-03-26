@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Er2ucMxjdHE",
+    "language": "en",
+    "took_ms": 7953,
+    "method": null,
+    "title": "C5W3L02 Picking the most likely sentence",
+    "channel": "DeepLearningAI",
+    "upload_date": "20180205",
+    "duration_sec": 536,
+    "description": "Take the Deep Learning Specialization: http://bit.ly/3azPTKP\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 38498
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Er2ucMxjdHE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

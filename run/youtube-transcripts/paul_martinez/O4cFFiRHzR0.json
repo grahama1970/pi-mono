@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O4cFFiRHzR0",
+    "language": "en",
+    "took_ms": 7677,
+    "method": null,
+    "title": "OPC UA as the Bridge to IoT",
+    "channel": "S4 Events",
+    "upload_date": "20180312",
+    "duration_sec": 1652,
+    "description": "Randy Armstrong, of the OPC Foundation, makes a pitch that OPC UA is the best choice to connect ICS and IoT.\n\nOPC UA has:\n- Security, signed and encrypted messages (including the open source protocol stacks)\n- Interoperability\n- Extensible and Adaptable\n- Pub/Sub to the cloud\n\nAnd then Randy gets into some use cases.",
+    "view_count": 851
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O4cFFiRHzR0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MmpkfM8I33Q",
+    "language": "en",
+    "took_ms": 8158,
+    "method": null,
+    "title": "DEF CON 32 - Hacking Millions of Modems and Investigating Who Hacked My Modem - Sam Curry",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1498,
+    "description": "On December 25th, 2021, I discovered that my modem had been hacked after a strange IP address replayed my traffic. I began researching who they were, how it happened, and eventually discovered a vulnerability which allowed me to passively monitor, change configurations, and execute commands on millions of devices. This talk details 3 years of intermittent web research on ISP security and how broadband equipment is becoming scarily centralized.",
+    "view_count": 99445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MmpkfM8I33Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

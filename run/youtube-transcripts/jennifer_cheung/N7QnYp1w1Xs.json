@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N7QnYp1w1Xs",
+    "language": "en",
+    "took_ms": 8176,
+    "method": null,
+    "title": "DEF CON 31 - ndays are also 0days - Bohan Liu, Zheng Wang, GuanCheng Li",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2390,
+    "description": "Chromium is not only the most popular browser in the world but also one of the most widely integrated supply chain components. Nowadays, a large number of popular software is built on frameworks based on Chromium, such as CEF and Electron. This means that vulnerabilities in Chromium will directly affect popular software. In addition, according to Google's vulnerability disclosure policy, most of the details of Chromium vulnerabilities will be publicly disclosed 14 weeks after being fixed, and many of these vulnerabilities are high-impact and may lead to RCE. Unfortunately, we have found that much downstream software is unable to timely fix the Chromium vulnerabilities. This creates a window of opportunity for attackers to carry out RCE attacks on popular software. The cost for attackers to exploit these vulnerabilities during this window is relatively low, as it falls between the time of the Chromium vulnerability disclosure and the completion of fixes for popular software. We refer to this window as the \"RCE window period\".\n\nIn this topic, we will first evaluate the \"RCE window period\" of more than 20 popular software. In the upcoming section, we will showcase how to transform Chromium nday vulnerabilities into popular software 0day vulnerabilities in a low-cost manner within the \"RCE window period\". To illustrate this process, we will use over 10 RCE 0day vulnerabilities in popular software that we have discovered as examples. Some software will attempt to enable sandbox to mitigate this problem, so we will also provide examples of how to bypass the sandbox by exploiting vulnerabilities in the software itself rather than a Chromium sandbox bug.\n\nFinally, we will discuss the reasons for the existence of the RCE window period and the lessons learned from it, hoping to help software developers improve the security of their products.",
+    "view_count": 797
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N7QnYp1w1Xs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

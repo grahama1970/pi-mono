@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yGvEIvrjGL0",
+    "language": "en",
+    "took_ms": 8978,
+    "method": null,
+    "title": "DEF CON 31 - DC101  Welcome to DEF CON - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3782,
+    "description": "DEF CON 101 began as a way to introduce n00bs to DEF CON. The idea was to help attendees get the best experience out of DEF CON (and also tell them how to survive the weekend!). The DEF CON 101 panel has been a way for people who have participated in making DEF CON what it is today to share those experiences and, hopefully, inspire attendees to expand their horizons. DEF CON offers so much more than just talks and the DEF CON 101 panel is the perfect place to learn about DEF CON so you can get the best experience possible. Come watch us talk about what we love about DEF CON, give you tips and tricks, and maybe even make some new friends!",
+    "view_count": 1564
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yGvEIvrjGL0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

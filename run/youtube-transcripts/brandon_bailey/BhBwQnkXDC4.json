@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BhBwQnkXDC4",
+    "language": "en",
+    "took_ms": 7922,
+    "method": null,
+    "title": "DEF CON 32 - From Theory to Reality Demonstrating the Simplicity of SPARTA Techniques - Randi Tinney",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1486,
+    "description": "Demonstrating the transition from theorized space cyber attacks to practical proof of concepts. The presentation will utilize a simple yet effective attack, a man-in-the-middle attack, on the ground infrastructure to demonstrate how many SPARTA techniques and sub-techniques can be performed against a spacecraft from the ground infrastructure. By illustrating the significant impact of this simplified concept, we aim to emphasize the urgent need for enhanced cybersecurity measures throughout the entire lifecycle of space missions and break the inherit trust between the ground and spacecraft.",
+    "view_count": 729
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BhBwQnkXDC4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FBPiZ27TI8g",
+    "language": "en",
+    "took_ms": 9977,
+    "method": null,
+    "title": "this sound does not exist (making music with HarmonAI)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20221109",
+    "duration_sec": 551,
+    "description": "Tired of the same music again and again? Here is something new.\nThe computer explains how to generate music with HarmonAI.\n\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n\ncheck\nhttp://thissounddoesnotexist.org/\n\nThe tools the computer use to create the movie:\nHarmonAI:\nhttps://www.harmonai.org/\nStable Diffusion:\nhttps://stability.ai/blog/stable-diffusion-public-release\nOpen A.I. GPT-3 playground:\nhttps://beta.openai.com/playground\nOpen A.I. Jukebox\nhttps://openai.com/blog/jukebox/\n\nwatch the prompt video\nhttps://www.youtube.com/watch?v=RUatYr6PZdo&t=2s\n\n\nC O N T A C T:\nnobodyandthecomputer@gmail.com\n\nChapters:\n0:00 Introduction \n0:37 What is HarmonAI?\n1:15 Its like Stable Diffusion but with audio?\n1:45 What is the difference with Open A.I. Jukebox?\n2:27 Generate your own sample with HarmonAI\n3:29 The models\n4:50 Generate samples\n5:56 Make a beat with a sample\n6:56 this sound does not exist the webpage\n7:20 Train your own model\n8:27 This drum solo does not exist",
+    "view_count": 26465
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FBPiZ27TI8g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iO79UTHS3so",
+    "language": "en",
+    "took_ms": 8586,
+    "method": null,
+    "title": "Livestream - Transformers from scratch",
+    "channel": "Trelis Research",
+    "upload_date": "20240510",
+    "duration_sec": 3730,
+    "description": "Part 1: Building a weather prediction model using a transformer architecture.\nPart 2 next week here: https://youtube.com/live/O9f8GWnHl7w?feature=share\nNotebook: https://colab.research.google.com/drive/1EpHL-VgZu5AWAu00DN6eplRmD12DD2QE?usp=sharing\n\nTrelis Resources: Trelis.com/About",
+    "view_count": 1104
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iO79UTHS3so: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

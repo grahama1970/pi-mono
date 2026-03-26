@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LLM Eval Lab — Model Evaluation Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg-nvis: #0b1220;
+            --surface-card: #151d2e;
+            --accent-muted: #6366f1;--accent-teal: #2dd4bf;--border-soft: rgba(148, 163, 184, 0.08);
+            --shadow-elevated: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+        body {
+            background-color: var(--bg-nvis);
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        .card-elevated {
+            background-color: var(--surface-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow-elevated);
+            border: 1px solid var(--border-soft);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6366f1",
+                        "secondary": "#2dd4bf",
+                        "surface": "#151d2e",
+                        "background": "#0b1220",
+                        "on-surface": "#e2e8f0",
+                        "on-surface-muted": "#94a3b8",
+                        "border-color": "rgba(148, 163, 184, 0.1)"
+                    },
+                    fontFamily: {
+                        "body": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: { "xl": "12px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="overflow-hidden h-screen flex flex-col">
+<header class="bg-background border-b border-border-color flex justify-between items-center w-full px-8 h-16 shrink-0 z-10">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-teal-400">LLM EVAL LAB</span>
+<nav class="hidden md:flex gap-8 items-center text-sm font-medium">
+<a class="text-on-surface border-b-2 border-primary py-5 px-1" href="#">Dashboard</a>
+<a class="text-on-surface-muted hover:text-on-surface transition-colors" href="#">Models</a>
+<a class="text-on-surface-muted hover:text-on-surface transition-colors" href="#">Datasets</a>
+<a class="text-on-surface-muted hover:text-on-surface transition-colors" href="#">Evaluation</a>
+</nav>
+</div>
+<div class="flex items-center gap-5">
+<button class="material-symbols-outlined text-on-surface-muted hover:text-primary transition-colors">search</button>
+<button class="material-symbols-outlined text-on-surface-muted hover:text-primary transition-colors">notifications</button>
+<div class="h-8 w-8 rounded-full bg-surface border border-border-color flex items-center justify-center text-xs font-bold text-primary">JD</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden p-6 gap-6">
+<div class="w-1/4 min-w-[340px] flex flex-col gap-4 overflow-y-auto custom-scrollbar">
+<div class="card-elevated p-6 space-y-8">
+<div>
+<h2 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted mb-6">Configuration</h2>
+<div class="space-y-6">
+<div>
+<label class="block text-[11px] font-medium text-on-surface-muted uppercase mb-2 px-1">Ground Truth Dataset</label>
+<select class="w-full bg-background/50 border border-border-color rounded-lg text-on-surface text-sm focus:ring-1 focus:ring-primary focus:border-primary px-3 py-2.5 outline-none appearance-none cursor-pointer">
+<option>benchmark_v2.json</option>
+<option>qa_ground_truth.json</option>
+</select>
+</div>
+<div>
+<div class="flex justify-between items-center mb-3 px-1">
+<label class="text-[11px] font-medium text-on-surface-muted uppercase">Confidence Threshold</label>
+<span class="text-primary font-mono font-bold text-sm">80%</span>
+</div>
+<input class="w-full h-1.5 bg-background rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="50" type="range" value="80"/>
+</div>
+<div>
+<label class="block text-[11px] font-medium text-on-surface-muted uppercase mb-2 px-1">Model Source</label>
+<div class="flex p-1 bg-background rounded-xl border border-border-color">
+<button class="flex-1 bg-primary text-white text-xs py-2 rounded-lg font-medium shadow-sm transition-all">Local</button>
+<button class="flex-1 text-on-surface-muted hover:text-on-surface text-xs py-2 rounded-lg transition-all">API</button>
+<button class="flex-1 text-on-surface-muted hover:text-on-surface text-xs py-2 rounded-lg transition-all">All</button>
+</div>
+</div>
+<div>
+<button class="w-full flex justify-between items-center text-[11px] font-medium text-on-surface-muted uppercase hover:text-primary transition-colors py-2 group">
+<span>Default System Prompt</span>
+<span class="text-[10px] lowercase px-2 py-0.5 bg-background border border-border-color rounded">expand</span>
+</button>
+</div>
+<div class="pt-6 border-t border-border-color">
+<label class="block text-[11px] font-medium text-on-surface-muted uppercase mb-4 px-1">Cost Estimation</label>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-[10px] text-on-surface-muted mb-1.5 px-1">Batch Size</label>
+<input class="w-full bg-background border border-border-color rounded-lg text-on-surface font-mono text-xs px-3 py-2 outline-none focus:ring-1 focus:ring-primary/50" type="text" value="90,000"/>
+</div>
+<div>
+<label class="block text-[10px] text-on-surface-muted mb-1.5 px-1">Avg Tokens</label>
+<input class="w-full bg-background border border-border-color rounded-lg text-on-surface font-mono text-xs px-3 py-2 outline-none focus:ring-1 focus:ring-primary/50" type="text" value="512"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-3 mt-auto">
+<button class="w-full bg-primary hover:bg-indigo-500 text-white font-semibold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+                Run Find-Minimum
+            </button>
+<button class="w-full border border-border-color hover:bg-white/5 text-on-surface-muted hover:text-on-surface font-semibold py-4 rounded-xl transition-all">
+                Compare Models
+            </button>
+</div>
+</div>
+<div class="w-1/4 min-w-[340px] flex flex-col gap-4 overflow-hidden">
+<div class="card-elevated flex flex-col h-full overflow-hidden">
+<div class="p-6 shrink-0 border-b border-border-color">
+<h2 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">Model Registry</h2>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface z-10 border-b border-border-color">
+<tr class="text-on-surface-muted">
+<th class="px-6 py-4 text-[10px] font-semibold uppercase">Alias</th>
+<th class="px-4 py-4 text-[10px] font-semibold uppercase text-right">Size</th>
+<th class="px-4 py-4 text-[10px] font-semibold uppercase">Prov</th>
+<th class="px-4 py-4 text-[10px] font-semibold uppercase text-center">JSON</th>
+</tr>
+</thead>
+<tbody class="font-mono text-xs">
+<tr class="hover:bg-white/5 transition-colors border-b border-border-color/5">
+<td class="px-6 py-4 text-on-surface">qwen3:1.7b</td>
+<td class="px-4 py-4 text-right text-on-surface-muted">1.7B</td>
+<td class="px-4 py-4 text-on-surface-muted">ollama</td>
+<td class="px-4 py-4 text-center text-secondary">Y</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors border-b border-border-color/5">
+<td class="px-6 py-4 text-on-surface">qwen2.5-coder:7b</td>
+<td class="px-4 py-4 text-right text-on-surface-muted">7B</td>
+<td class="px-4 py-4 text-on-surface-muted">ollama</td>
+<td class="px-4 py-4 text-center text-secondary">Y</td>
+</tr>
+<tr class="bg-secondary/10 border-l-4 border-secondary transition-colors">
+<td class="px-6 py-4 font-bold text-secondary">qwen3:8b</td>
+<td class="px-4 py-4 text-right text-secondary/80">8B</td>
+<td class="px-4 py-4 text-secondary/80">ollama</td>
+<td class="px-4 py-4 text-center text-secondary font-bold">Y</td>
+</tr>
+<tr class="bg-red-500/10 border-l-4 border-red-500/50 transition-colors">
+<td class="px-6 py-4 font-bold text-red-400">deepseek</td>
+<td class="px-4 py-4 text-right text-red-400/80">671B</td>
+<td class="px-4 py-4 text-red-400/80">chutes</td>
+<td class="px-4 py-4 text-center text-red-400">Y</td>
+</tr>
+<tr class="opacity-30 hover:opacity-60 transition-colors border-b border-border-color/5">
+<td class="px-6 py-4">llama3.2:1b</td>
+<td class="px-4 py-4 text-right">1B</td>
+<td class="px-4 py-4">local</td>
+<td class="px-4 py-4 text-center">N</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-6 overflow-y-auto custom-scrollbar">
+<div class="card-elevated p-5 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-6">
+<span class="text-sm font-medium flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                    Testing <span class="text-primary font-bold">qwen3:8b</span> <span class="text-on-surface-muted">(3/7)...</span>
+</span>
+<div class="w-64 h-2 bg-background rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 40%"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] uppercase font-bold tracking-[0.2em] text-on-surface-muted">Current Task Active</span>
+</div>
+</div>
+<div class="space-y-6 pb-6">
+<div class="card-elevated overflow-hidden">
+<div class="p-6 border-b border-border-color flex justify-between items-center">
+<h3 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">Evaluation Live Feed</h3>
+<span class="text-[10px] px-2 py-0.5 bg-background border border-border-color rounded text-secondary">Real-time</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono text-xs">
+<thead>
+<tr class="text-on-surface-muted border-b border-border-color/5 bg-background/30">
+<th class="px-6 py-4 font-semibold uppercase text-[10px]">Model</th>
+<th class="px-6 py-4 font-semibold uppercase text-[10px] text-right">JSON%</th>
+<th class="px-6 py-4 font-semibold uppercase text-[10px] text-right">Action%</th>
+<th class="px-6 py-4 font-semibold uppercase text-[10px] text-right">Latency</th>
+<th class="px-6 py-4 font-semibold uppercase text-[10px] text-right">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-border-color/5 hover:bg-white/2 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<span class="text-on-surface font-semibold">qwen3:8b</span>
+<span class="bg-secondary/15 text-secondary text-[9px] px-2 py-0.5 rounded-full font-bold">BEST VALUE</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right text-secondary">98.2%</td>
+<td class="px-6 py-5 text-right text-secondary">87.0%</td>
+<td class="px-6 py-5 text-right text-on-surface-muted">12.4s</td>
+<td class="px-6 py-5 text-right"><span class="bg-secondary/20 text-secondary px-2 py-1 rounded text-[10px] font-bold">PASS</span></td>
+</tr>
+<tr class="border-b border-border-color/5 hover:bg-white/2 transition-colors">
+<td class="px-6 py-5 text-on-surface">qwen2.5-coder:7b</td>
+<td class="px-6 py-5 text-right text-secondary/80">94.1%</td>
+<td class="px-6 py-5 text-right text-on-surface-muted">72.4%</td>
+<td class="px-6 py-5 text-right text-on-surface-muted">14.1s</td>
+<td class="px-6 py-5 text-right"><span class="bg-secondary/20 text-secondary px-2 py-1 rounded text-[10px] font-bold">PASS</span></td>
+</tr>
+<tr class="hover:bg-white/2 transition-colors">
+<td class="px-6 py-5 text-on-surface">qwen3:1.7b</td>
+<td class="px-6 py-5 text-right text-red-400">42.0%</td>
+<td class="px-6 py-5 text-right text-red-400">11.5%</td>
+<td class="px-6 py-5 text-right text-on-surface-muted">4.2s</td>
+<td class="px-6 py-5 text-right"><span class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-[10px] font-bold">FAIL</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="card-elevated overflow-hidden">
+<div class="p-6 border-b border-border-color">
+<h3 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">Provider Economics</h3>
+</div>
+<div class="p-0">
+<table class="w-full text-left font-mono text-xs">
+<thead class="bg-background/40">
+<tr class="text-on-surface-muted">
+<th class="px-6 py-3 font-semibold text-[10px] uppercase">Provider</th>
+<th class="px-4 py-3 font-semibold text-[10px] uppercase text-right">In $/M</th>
+<th class="px-4 py-3 font-semibold text-[10px] uppercase text-right">Out $/M</th>
+<th class="px-4 py-3 font-semibold text-[10px] uppercase text-right">Est. Cost</th>
+<th class="px-6 py-3 font-semibold text-[10px] uppercase text-right">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="bg-secondary/5 border-l-4 border-secondary">
+<td class="px-6 py-4 font-bold text-secondary">Local (Ollama)</td>
+<td class="px-4 py-4 text-right">0.00</td>
+<td class="px-4 py-4 text-right">0.00</td>
+<td class="px-4 py-4 text-right font-bold">$0.00</td>
+<td class="px-6 py-4 text-right">--:--</td>
+</tr>
+<tr class="border-b border-border-color/5">
+<td class="px-6 py-4 text-on-surface">Chutes.ai</td>
+<td class="px-4 py-4 text-right">0.05</td>
+<td class="px-4 py-4 text-right">0.05</td>
+<td class="px-4 py-4 text-right">$4.50</td>
+<td class="px-6 py-4 text-right">~14m</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 rounded-xl p-8 flex items-center gap-6 shadow-xl shadow-secondary/5">
+<div class="bg-secondary text-background w-14 h-14 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-3xl">verified</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold tracking-[0.2em] text-secondary/80 mb-1">Recommended for Production</p>
+<h4 class="font-bold text-on-surface text-2xl tracking-tight mb-1">qwen3:8b (8B, ollama)</h4>
+<p class="font-medium text-on-surface-muted text-sm">87% functional accuracy, <span class="text-secondary font-mono">$0.00/batch</span> — Passed all core benchmarks</p>
+</div>
+</div>
+<div class="card-elevated overflow-hidden">
+<div class="p-6 border-b border-border-color">
+<h3 class="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">Judge Verdict Comparison</h3>
+</div>
+<div class="grid grid-cols-2 divide-x divide-border-color/20">
+<div class="p-6 bg-white/[0.02]">
+<div class="flex justify-between items-center mb-6">
+<span class="text-[10px] text-primary font-bold uppercase tracking-widest bg-primary/10 px-2 py-1 rounded">qwen3:8b</span>
+<span class="text-[10px] text-secondary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span> MATCH (0.94)
+                            </span>
+</div>
+<div class="font-mono text-[11px] text-on-surface-muted leading-relaxed">
+<span class="text-primary/60">SYSTEM:</span> Use JSON only.<br/>
+<span class="text-primary/60">USER:</span> Extract items from list.<br/>
+<div class="mt-4 p-4 bg-background/50 rounded-lg border border-border-color/20 text-on-surface">
+                                {<br/>
+                                  "status": "success",<br/>
+                                  "data": [<br/>
+                                    {"id": 1, "item": "bench_v2"},<br/>
+                                    {"id": 2, "item": "threshold_80"}<br/>
+                                  ]<br/>
+                                }
+                            </div>
+</div>
+</div>
+<div class="p-6 bg-white/[0.01]">
+<div class="flex justify-between items-center mb-6">
+<span class="text-[10px] text-on-surface-muted font-bold uppercase tracking-widest bg-white/5 px-2 py-1 rounded">deepseek-671b</span>
+<span class="text-[10px] text-red-400 font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">cancel</span> MISMATCH (0.21)
+                            </span>
+</div>
+<div class="font-mono text-[11px] text-on-surface-muted/60 leading-relaxed">
+<span class="text-on-surface-muted/40">SYSTEM:</span> Use JSON only.<br/>
+<span class="text-on-surface-muted/40">USER:</span> Extract items from list.<br/>
+<div class="mt-4 p-4 bg-background/30 rounded-lg border border-red-500/10 text-on-surface-muted/40">
+                                Thinking: The user wants a JSON object...<br/>
+                                Here is the JSON you requested:<br/>
+                                { "items": [ "bench_v2", "threshold_80" ] }
+                            </div>
+</div>
+<div class="mt-6 flex items-start gap-2 p-3 bg-red-500/5 border border-red-500/10 rounded-lg">
+<span class="material-symbols-outlined text-red-400 text-sm mt-0.5">warning</span>
+<span class="text-[10px] text-red-400/80 font-medium">Model ignored "JSON ONLY" constraint (included chain of thought).</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+
+</body></html>

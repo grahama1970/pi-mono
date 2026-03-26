@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7hu2V3F5Jxc",
+    "language": "en",
+    "took_ms": 8562,
+    "method": null,
+    "title": "The Chinese Colossus: Is the Middle Kingdom's Past a Guide t",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 7105,
+    "description": "With a formidable military, a rapidly expanding population, and growing economic prowess, China is emerging as a twenty-first-century global superpower. Even though China is an international leader in modern business and technology, both its attitude toward the present and view of the future are rooted in the past — and we need to understand that connection in order to address the challenges presented by Asia's giant.\n \nIn The Mind of Empire: China's History and Modern Foreign Relations (Univers",
+    "view_count": 385
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7hu2V3F5Jxc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

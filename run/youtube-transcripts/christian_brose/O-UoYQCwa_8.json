@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O-UoYQCwa_8",
+    "language": "en",
+    "took_ms": 9173,
+    "method": null,
+    "title": "Russia's Demographic Crisis: Dimensions. Causes Implications",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6349,
+    "description": "Russia's demographic trends portend a crisis of alarming proportions for the country's future human and social capital, as explicated in grave detail in the National Bureau of Asian Research report Russia's Peacetime Demographic Crisis: Dimensions, Causes, Implications (May 2010) by Nicholas Eberstadt.  - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 14728
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O-UoYQCwa_8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+        .promptfoo-grid {
+            display: grid;
+            grid-template-columns: 280px repeat(3, 1fr);
+        }
+        .cell-hover:hover {
+            background-color: rgba(124, 58, 237, 0.05);
+            outline: 1px solid rgba(124, 58, 237, 0.3);
+            z-index: 10;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-surface": "#dce2f6",
+                        "tertiary": "#00e479",
+                        "on-tertiary": "#003919",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-container-lowest": "#070e1c",
+                        "tertiary-container": "#00773c",
+                        "on-surface": "#dce2f6",
+                        "outline-variant": "#4a4455",
+                        "surface-container-high": "#232a39",
+                        "primary-container": "#7c3aed",
+                        "surface-container": "#19202e",
+                        "error": "#ffb4ab",
+                        "secondary": "#a4c9ff",
+                        "on-secondary": "#00315d",
+                        "secondary-container": "#3b93f3",
+                        "primary-fixed": "#eaddff",
+                        "on-tertiary-fixed": "#00210c",
+                        "surface-container-low": "#151b2a",
+                        "background": "#0c1321",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#2e3544",
+                        "surface-tint": "#d2bbff",
+                        "on-primary": "#3f008e",
+                        "outline": "#958da1",
+                        "surface": "#0c1321",
+                        "surface-variant": "#2e3544",
+                        "on-secondary-fixed-variant": "#004884",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "inverse-on-surface": "#2a3040",
+                        "inverse-primary": "#732ee4",
+                        "surface-bright": "#323949",
+                        "on-secondary-fixed": "#001c39",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "tertiary-fixed": "#60ff99",
+                        "on-tertiary-container": "#84ffa8",
+                        "on-primary-fixed": "#25005a",
+                        "tertiary-fixed-dim": "#00e479",
+                        "on-background": "#dce2f6",
+                        "primary": "#d2bbff",
+                        "primary-fixed-dim": "#d2bbff",
+                        "surface-dim": "#0c1321",
+                        "on-primary-container": "#ede0ff",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-secondary-container": "#002a52"
+                    },
+                    borderRadius: {"DEFAULT": "0", "lg": "0", "xl": "0", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface overflow-hidden">
+<header class="flex justify-between items-center w-full px-6 h-14 bg-[#0c1321] border-b border-[#4a4455]/20 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="text-lg font-bold tracking-tighter text-[#7c3aed]">PROMPT_LAB_OPT</div>
+<div class="hidden md:flex items-center gap-1 bg-surface-container-high px-3 py-1 border-b border-primary/40">
+<span class="material-symbols-outlined text-sm text-primary">terminal</span>
+<span class="text-xs uppercase tracking-widest font-bold">prompt-lab optimize — taxonomy_v1</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 h-8 bg-surface-container text-[#d2bbff]/60 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[18px]">security</span>
+<span class="text-[10px] font-bold tracking-widest uppercase">Sec-Enclave: Active</span>
+</div>
+<span class="material-symbols-outlined text-[#d2bbff]/60 hover:bg-[#2e3544] p-2 transition-colors cursor-pointer">settings</span>
+<div class="w-8 h-8 bg-primary-container flex items-center justify-center">
+<img alt="Operator" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABOGDI1z1uGr3NRshKmlekFG0MSp__FbAraTVBk8NjH3QSdhAnQP2gh3wx85Z_VIrDg31311DSdqxOcLM_OPxdvF-J5_JWSNCH2PgXQf4eIeCckBQpc2FVrl5iH-6VXgf8pacAuvbQlqhEqZT4TVQV-s4Iwrl3re9-jgLga7hhj78v8v8uMyi1v95SX6x36sBDeJexzInDNvuk3HKIZkXH3Aknlrq8oJfoG7OZtunZ0Ga-QUJeBIe3b3e_nB73DYcCTCuFOEqyCCY"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-3.5rem)]">
+<nav class="hidden md:flex flex-col w-16 bg-[#151b2a] border-r border-[#4a4455]/20 items-center py-6 gap-8">
+<div class="text-[#7c3aed]"><span class="material-symbols-outlined">tune</span></div>
+<div class="text-[#d2bbff]/30 hover:text-[#d2bbff] cursor-pointer"><span class="material-symbols-outlined">analytics</span></div>
+<div class="text-[#d2bbff]/30 hover:text-[#d2bbff] cursor-pointer"><span class="material-symbols-outlined">history</span></div>
+<div class="mt-auto text-[#d2bbff]/30 hover:text-[#d2bbff] cursor-pointer"><span class="material-symbols-outlined">menu_book</span></div>
+</nav>
+<main class="flex-1 flex overflow-hidden">
+<section class="w-[450px] border-r border-outline-variant/30 flex flex-col bg-surface overflow-hidden">
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">System Prompt Editor</h2>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<div class="space-y-3">
+<label class="text-[10px] font-black uppercase tracking-widest text-primary/70">Instructional Context</label>
+<div class="relative">
+<textarea class="w-full h-64 bg-surface-container p-4 font-mono text-sm border border-outline-variant/30 focus:ring-1 focus:ring-primary text-primary-fixed resize-none" spellcheck="false">You are a cybersecurity taxonomy classifier. Your task is to analyze incident descriptions and map them to the unified impact framework. 
+Use precise terminology and prioritize structural vulnerability indicators over high-level symptoms.</textarea>
+<div class="absolute bottom-3 right-3 flex gap-4 text-[9px] font-mono text-outline uppercase bg-surface-container-high/80 px-2 py-1">
+<span>Tokens: 42</span>
+<span>v1.2.0-delta</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-outline-variant/10 pb-1">
+<label class="text-[10px] font-black uppercase tracking-widest text-primary/70">Models In Loop</label>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between p-3 bg-surface-container-highest/30 border-l-2 border-secondary">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-secondary">memory</span>
+<span class="text-[11px] font-bold">DeepSeek-V3</span>
+</div>
+<span class="text-[9px] font-mono text-outline">TEMP: 0.7</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-highest/30 border-l-2 border-secondary">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-secondary">memory</span>
+<span class="text-[11px] font-bold">qwen2.5:7b</span>
+</div>
+<span class="text-[9px] font-mono text-outline">TEMP: 0.3</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-highest/30 border-l-2 border-outline-variant/40 opacity-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-outline">cloud</span>
+<span class="text-[11px] font-bold text-outline">text-gemini</span>
+</div>
+<span class="text-[9px] font-mono text-outline">BUSY</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/20 bg-surface-container-low">
+<button class="w-full py-4 bg-tertiary hover:bg-tertiary/90 text-on-tertiary font-black uppercase tracking-[0.25em] flex items-center justify-center gap-3 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">bolt</span>
+                        OPTIMIZE INFERENCE
+                    </button>
+</div>
+</section>
+<section class="flex-1 flex flex-col bg-surface-container-lowest overflow-hidden">
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-low flex justify-between items-center h-14">
+<div class="flex items-center gap-4">
+<h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">PromptFoo Evaluation Grid</h2>
+<div class="h-4 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-2">
+<span class="text-[9px] font-bold bg-secondary/10 text-secondary px-2">3 TEST CASES</span>
+<span class="text-[9px] font-bold bg-tertiary/10 text-tertiary px-2 uppercase">Live Syncing</span>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<div class="promptfoo-grid min-w-[1000px]">
+<div class="sticky top-0 z-20 bg-surface-container border-b border-r border-outline-variant/30 p-4 flex items-center">
+<span class="text-[10px] font-black uppercase tracking-widest text-outline">Test Cases \ Models</span>
+</div>
+<div class="sticky top-0 z-20 bg-surface-container border-b border-outline-variant/30 p-4 text-center">
+<div class="text-[11px] font-bold">DeepSeek-V3</div>
+<div class="text-[9px] font-mono text-tertiary">0.929 F1 / BEST</div>
+</div>
+<div class="sticky top-0 z-20 bg-surface-container border-b border-outline-variant/30 p-4 text-center">
+<div class="text-[11px] font-bold">qwen2.5:7b</div>
+<div class="text-[9px] font-mono text-on-surface/50">0.881 F1</div>
+</div>
+<div class="sticky top-0 z-20 bg-surface-container border-b border-outline-variant/30 p-4 text-center">
+<div class="text-[11px] font-bold opacity-50">text-gemini</div>
+<div class="text-[9px] font-mono text-secondary animate-pulse">RUNNING...</div>
+</div>
+<div class="p-4 border-b border-r border-outline-variant/20 bg-surface-container-low/50">
+<div class="text-[10px] font-bold text-primary mb-1">TC-01</div>
+<div class="text-[11px] font-mono leading-tight">T1547.001 Registry Run Keys / Startup Folder</div>
+<div class="mt-2 text-[9px] text-tertiary uppercase font-bold flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-tertiary"></span> Corruption+Persist
+                            </div>
+</div>
+<div class="p-4 border-b border-outline-variant/20 cell-hover cursor-pointer transition-colors flex flex-col justify-center items-center gap-2">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 text-[10px] font-bold">PASS</span>
+<div class="flex flex-wrap justify-center gap-1">
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Corruption</span>
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Persist</span>
+</div>
+<span class="text-[10px] font-mono text-outline">42ms</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20 cell-hover cursor-pointer transition-colors flex flex-col justify-center items-center gap-2">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 text-[10px] font-bold">PASS</span>
+<div class="flex flex-wrap justify-center gap-1">
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Corruption</span>
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Persist</span>
+</div>
+<span class="text-[10px] font-mono text-outline">128ms</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-highest/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline/30 animate-spin">sync</span>
+</div>
+<div class="p-4 border-b border-r border-outline-variant/20 bg-surface-container-low/50">
+<div class="text-[10px] font-bold text-primary mb-1">TC-02</div>
+<div class="text-[11px] font-mono leading-tight">SI-2 Flaw Remediation via automated patching</div>
+<div class="mt-2 text-[9px] text-tertiary uppercase font-bold flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-tertiary"></span> Resilience+Fragility+Harden
+                            </div>
+</div>
+<div class="p-4 border-b border-outline-variant/20 cell-hover cursor-pointer transition-colors flex flex-col justify-center items-center gap-2">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 text-[10px] font-bold">PASS</span>
+<div class="flex flex-wrap justify-center gap-1">
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Resilience</span>
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Harden</span>
+</div>
+<span class="text-[10px] font-mono text-outline">61ms</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20 cell-hover cursor-pointer transition-colors flex flex-col justify-center items-center gap-2 ring-1 ring-error/30 bg-error/5">
+<span class="px-2 py-0.5 bg-error/10 text-error border border-error/20 text-[10px] font-bold">FAIL</span>
+<div class="flex flex-wrap justify-center gap-1">
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Resilience</span>
+</div>
+<span class="text-[10px] font-mono text-outline">184ms</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-highest/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline/30 animate-spin">sync</span>
+</div>
+<div class="p-4 border-b border-r border-outline-variant/20 bg-surface-container-low/50">
+<div class="text-[10px] font-bold text-primary mb-1">TC-03</div>
+<div class="text-[11px] font-mono leading-tight">d3f:NetworkIsolation Network Isolation (E-4)</div>
+<div class="mt-2 text-[9px] text-tertiary uppercase font-bold flex items-center gap-1">
+<span class="w-1 h-1 rounded-full bg-tertiary"></span> Resilience+Isolate
+                            </div>
+</div>
+<div class="p-4 border-b border-outline-variant/20 cell-hover cursor-pointer transition-colors flex flex-col justify-center items-center gap-2">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 text-[10px] font-bold">PASS</span>
+<div class="flex flex-wrap justify-center gap-1">
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Isolate</span>
+</div>
+<span class="text-[10px] font-mono text-outline">39ms</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20 cell-hover cursor-pointer transition-colors flex flex-col justify-center items-center gap-2">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 text-[10px] font-bold">PASS</span>
+<div class="flex flex-wrap justify-center gap-1">
+<span class="text-[9px] bg-surface-container px-1.5 py-0.5 border border-outline-variant/20">Isolate</span>
+</div>
+<span class="text-[10px] font-mono text-outline">142ms</span>
+</div>
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-highest/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline/30 animate-spin">sync</span>
+</div>
+</div>
+</div>
+<div class="h-64 border-t border-outline-variant/40 bg-surface-container shadow-[0_-10px_30px_rgba(0,0,0,0.5)] flex flex-col">
+<div class="px-4 py-2 bg-surface-container-highest flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-black uppercase tracking-widest text-secondary">Inspection Shard</span>
+<span class="text-[10px] font-mono text-outline">CELL_SELECTED: [TC-01, DeepSeek-V3]</span>
+</div>
+<div class="flex gap-4">
+<button class="text-[9px] font-bold text-outline hover:text-on-surface uppercase tracking-tighter flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">content_copy</span> Copy JSON
+                            </button>
+<button class="text-[9px] font-bold text-outline hover:text-on-surface uppercase tracking-tighter flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">open_in_full</span> Expand
+                            </button>
+</div>
+</div>
+<div class="flex-1 overflow-hidden flex">
+<div class="flex-1 p-4 font-mono text-[11px] overflow-y-auto bg-surface-container-lowest/50 border-r border-outline-variant/10">
+<pre class="text-primary-fixed">{
+  "verdict": "CRITICAL",
+  "tags": ["Corruption", "Persist"],
+  "confidence": 0.984,
+  "inference_path": "registry_run_key -&gt; persistence_vector_3",
+  "meta": {
+    "tokens": 142,
+    "ms": 42
+  }
+}</pre>
+</div>
+<div class="w-64 p-4 space-y-4">
+<div class="space-y-1">
+<div class="text-[9px] font-black uppercase tracking-widest text-outline">Converged Prompt</div>
+<div class="text-[10px] text-on-surface/80 leading-relaxed bg-surface-container-highest p-2 border-l border-primary">
+                                    "Classify incident &lt;INPUT&gt; into taxonomy_v1..."
+                                </div>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="flex-1 py-2 bg-primary-container text-[10px] font-bold uppercase tracking-widest text-on-primary-container">Approve</button>
+<button class="flex-1 py-2 border border-outline-variant/30 text-[10px] font-bold uppercase tracking-widest text-outline">Reject</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<footer class="fixed bottom-0 left-0 right-0 h-10 bg-[#0b1220] border-t border-outline-variant/30 flex items-center px-6 justify-between z-[60]">
+<div class="flex gap-6">
+<div class="flex items-center gap-2 text-[9px] font-mono text-outline">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> SYSTEM_READY
+            </div>
+<div class="flex items-center gap-2 text-[9px] font-mono text-outline">
+<span class="material-symbols-outlined text-[12px]">database</span> DB_CONNECTED
+            </div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest">Global Variant Status: <span class="text-tertiary">STABLE</span></span>
+<button class="bg-primary-container text-white text-[10px] font-bold px-4 py-1 uppercase tracking-widest hover:brightness-110">Save State</button>
+</div>
+</footer>
+
+</body></html>

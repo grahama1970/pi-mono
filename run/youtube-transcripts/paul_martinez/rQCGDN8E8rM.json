@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rQCGDN8E8rM",
+    "language": "en",
+    "took_ms": 8986,
+    "method": null,
+    "title": "Mikko Hypponen, Author of If It's Smart, It's Vulnerable",
+    "channel": "S4 Events",
+    "upload_date": "20220810",
+    "duration_sec": 2523,
+    "description": "On this episode of the Unsolicited Response Show, Dale Peterson talks with Mikko Hypponen about his new book: If It's Smart, It's Vulnerable. (https://www.amazon.com/If-Its-Smart-Vulnerable/dp/1119895189/)\n\nAs with all books, Dale asks who Mikko wrote the book for, who is the intended reader. Then they dig into some of the interesting parts for the security professional including:\n\n- What security tasks should we expect users to do (and why security training fails)\n\n- Whose responsible for IoT/IIoT cybersecurity? How are we going to succeed in security IoT, and what regulation might work?\n\n- Hypponen's Law: If It's Smart, It's Vulnerable\n\n- Cyber Deterrence\n\n- Why have their been so few cyber attacks on critical infrastructure?\n\nand more.",
+    "view_count": 671
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rQCGDN8E8rM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N0XFOS1kHaM",
+    "language": "en",
+    "took_ms": 8590,
+    "method": null,
+    "title": "DEF CON 33 - Resilient & Reconfigurable Maritime Comms - Avinash Srinivasan, Brien Croteau",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1487,
+    "description": "With the maritime industry handling a large portion of global trade, efficient, secure information transfer is essential. Technologies like unmanned aerial vehicles (UAVs), autonomous underwater vehicles (AUVs), and the Internet of Ships (IoS) are enhancing communication and operational efficiency, but they also pose security and network management challenges. Compromised IT systems can lead to easy access to operational technology (OT) networks, increasing the risk of zero-day attacks. This talk presents the current state of maritime comms and explore the feasibility of an SDN-SDR driven cross-layer framework using SATCOM infrastructure for a resilient and reconfigurable maritime comms in dynamic, resource-constrained environments.",
+    "view_count": 103
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N0XFOS1kHaM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

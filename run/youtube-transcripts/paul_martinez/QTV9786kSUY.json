@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QTV9786kSUY",
+    "language": "en",
+    "took_ms": 8929,
+    "method": null,
+    "title": "Interview with Kelly Jackson Higgins (plus pirates)",
+    "channel": "S4 Events",
+    "upload_date": "20190923",
+    "duration_sec": 1653,
+    "description": "We flipped the tables and recorded Kelly interviewing Dale Peterson in the S4x19 Green Room. There is some fun shots of the pirates (Bryan Owen, Billy Rios and Jonathan Butts + Eric Byres as the shark) getting ready to go on stage at S4x19 at the beginning as well.",
+    "view_count": 108
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QTV9786kSUY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

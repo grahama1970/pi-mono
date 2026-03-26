@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "djzA04jfNy4",
+    "language": "en",
+    "took_ms": 7759,
+    "method": null,
+    "title": "Assessing Competition in U.S. Wireless Markets: Review of th",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 4539,
+    "description": "Competition for wireless services is not a distant hypothetical concept for most Americans. More than 90% of all Americans use wireless phones; some of us have more than one wireless device. On television, on radio, in newspapers, and on the Internet, we are greeted with advertisements for wireless communications services. Many consumers upgrade their services every year or two to take advantage of better phones, new services, and lower prices. Competition in the wireless industry is also examin",
+    "view_count": 26
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] djzA04jfNy4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

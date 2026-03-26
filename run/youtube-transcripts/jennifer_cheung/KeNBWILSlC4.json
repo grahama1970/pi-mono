@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KeNBWILSlC4",
+    "language": "en",
+    "took_ms": 8898,
+    "method": null,
+    "title": "DEF CON 33 - All your keyboards are belong to us! - Federico Lucifredi",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2254,
+    "description": "This is a live tutorial of hacking against keyboards of all forms. Attacking the keyboard is the ultimate strategy to hijack a session before it is encrypted, capturing plaintext at the source and (often) in much simpler ways than those required to attack network protocols.\n\nIn this session we explore available attack vectors against traditional keyboards, starting with plain old keyloggers. We then advance to \"Van Eck Phreaking\" style attacks against individual keystroke emanations as well as RF wireless connections, and we finally graduate to the new hotness: acoustic attacks by eavesdropping on the sound of you typing!\n\nUse your newfound knowledge for good, with great power comes great responsibility!\n\nA subset of signal leak attacks focusing on keyboards. This talk is compiled with open sources, no classified material will be discussed.",
+    "view_count": 2069
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KeNBWILSlC4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

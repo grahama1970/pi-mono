@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uXPDq2zEdZk",
+    "language": "en",
+    "took_ms": 9235,
+    "method": null,
+    "title": "Is EU losing the AI race?",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260213",
+    "duration_sec": 39,
+    "description": "Andrew Ng explains why you can't lead the AI revolution by trying to slow it down. A sharp critique of why heavy-handed regulation like the EU AI Act stifles the very innovation it aims to control.\n\nAt AI Dev, we explore the real-world impact of AI policy, building, and deployment.\n\nWe’ll continue these conversations at AI Dev 26 × San Francisco, April 28–29.\n\nTickets available: https://ai-dev.deeplearning.ai/",
+    "view_count": 45260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uXPDq2zEdZk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

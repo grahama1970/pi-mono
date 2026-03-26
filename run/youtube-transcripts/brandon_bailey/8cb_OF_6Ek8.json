@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8cb_OF_6Ek8",
+    "language": "en",
+    "took_ms": 7592,
+    "method": null,
+    "title": "DEF CON 33 - The Ghost of Internet Explorer in Windows - George Hughey, Rohit Mothe",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2657,
+    "description": "In 2023, Microsoft detected a nation state actor (Forest Blizzard/STRONTIUM) exploiting a \"zero-click\" remote code execution vulnerability in Outlook by sending a malicious email. Microsoft fixed this in part by adding a call to the MapUrlToZone API, which determines where a path is located so callers can make a trust decision. Critical components like Outlook, Office, Windows Shell and sandboxes rely on MapUrlToZone to make intelligent security decisions, but little research has historically focused on MapUrlToZone itself. Microsoft Security Response Center has a unique role in analyzing systemic trends in areas like this and drive deep technical research to remediate security issues. This talk will focus on MSRC's review of the MapUrlToZone API which identified several novel ways to trick Windows into thinking that a remote untrusted file exists on the local machine. We will talk about how we approached this research and exploited key differences in how MapUrlToZone and the Windows filesystem parse file paths. In total, this research identified a dozen CVEs across various vulnerability types. All of the issues covered have been fixed with CVEs in early 2025. In addition to the individual fixes for this component, we'll also cover how MSRC worked with internal teams to build more comprehensive mitigations.",
+    "view_count": 2342
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8cb_OF_6Ek8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

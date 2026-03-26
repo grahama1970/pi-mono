@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_ghyf3J92UQ",
+    "language": "en",
+    "took_ms": 7884,
+    "method": null,
+    "title": "DEFE CON 33 - Deploying Deception in Depth for ICS - Brent Muir",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1338,
+    "description": "This session will introduce the strategy of designing and deploying deception strategies across ICS environments, by leveraging and operationalizing the Mitre Engage adversarial framework. This presentation will discuss the complexities related to deploying deception within ICS environments, and how to design a deception strategy geared towards the adversaries targeting your environment. A real-world case study, focusing on APT44, will demonstrate how to implement a deception strategy for Critical Infrastructure organisations.",
+    "view_count": 142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _ghyf3J92UQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

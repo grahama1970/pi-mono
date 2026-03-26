@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SONIC_OBSERVATORY | S07_COMPILE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed": "#004621",
+              "outline-variant": "#484848",
+              "on-tertiary": "#002a52",
+              "on-background": "#ffffff",
+              "on-surface": "#ffffff",
+              "tertiary-container": "#499dfe",
+              "primary-fixed": "#b28cff",
+              "outline": "#767575",
+              "error-dim": "#d73357",
+              "surface-container-high": "#202020",
+              "error-container": "#a70138",
+              "surface-container-lowest": "#000000",
+              "tertiary-fixed": "#7bb3ff",
+              "on-secondary-fixed-variant": "#006632",
+              "primary-dim": "#8a4cfc",
+              "secondary-fixed": "#00fd87",
+              "secondary-dim": "#00ed7e",
+              "primary-container": "#b28cff",
+              "on-primary-fixed": "#000000",
+              "surface-tint": "#bd9dff",
+              "background": "#0e0e0e",
+              "secondary-fixed-dim": "#00ed7e",
+              "surface-bright": "#2c2c2c",
+              "surface-dim": "#0e0e0e",
+              "on-secondary": "#005b2c",
+              "inverse-surface": "#fcf9f8",
+              "surface-container-low": "#131313",
+              "surface-container-highest": "#262626",
+              "tertiary-fixed-dim": "#5da5ff",
+              "secondary-container": "#006d37",
+              "inverse-primary": "#742fe5",
+              "on-primary-fixed-variant": "#390083",
+              "primary-fixed-dim": "#a67aff",
+              "on-tertiary-fixed-variant": "#003a6d",
+              "surface": "#0e0e0e",
+              "on-tertiary-fixed": "#001833",
+              "tertiary": "#6aabff",
+              "on-secondary-container": "#e3ffe4",
+              "on-primary": "#3c0089",
+              "on-error-container": "#ffb2b9",
+              "on-error": "#490013",
+              "surface-container": "#191a1a",
+              "secondary": "#00fd87",
+              "on-tertiary-container": "#001e3c",
+              "surface-variant": "#262626",
+              "on-primary-container": "#2e006c",
+              "inverse-on-surface": "#565555",
+              "primary": "#bd9dff",
+              "tertiary-dim": "#4fa0ff",
+              "on-surface-variant": "#adaaaa",
+              "error": "#ff6e84"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .pipeline-active {
+        box-shadow: 0 0 15px rgba(189, 157, 255, 0.4);
+      }
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #0e0e0e; }
+      ::-webkit-scrollbar-thumb { background: #262626; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50 shadow-2xl shadow-violet-900/10 flex items-center justify-between px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-['Space_Grotesk'] font-bold tracking-widest text-violet-500 uppercase">SONIC_OBSERVATORY</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-['Inter'] tracking-tight font-medium text-sm text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Dashboard</a>
+<a class="font-['Inter'] tracking-tight font-medium text-sm text-violet-400 border-b-2 border-violet-500 pb-1" href="#">Pipeline</a>
+<a class="font-['Inter'] tracking-tight font-medium text-sm text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors cursor-pointer">search</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar (Stepper) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col py-4 overflow-y-auto hidden md:flex">
+<div class="px-6 py-4 mb-2">
+<h2 class="font-['Space_Grotesk'] text-xs uppercase tracking-[0.2em] text-on-surface-variant">PIPELINE_v2.1</h2>
+<p class="font-['Space_Grotesk'] text-[10px] text-secondary mt-1">STATUS: S07_ACTIVE</p>
+</div>
+<nav class="flex flex-col flex-1">
+<!-- S00 to S06 -->
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S00_INIT</span>
+</div>
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S01_CORE</span>
+</div>
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S02_STEM</span>
+</div>
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S03_FREQ</span>
+</div>
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S04_LYRIC</span>
+</div>
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S05_MELOD</span>
+</div>
+<div class="text-zinc-500 flex items-center gap-3 px-6 py-2.5 hover:bg-zinc-800/40 transition-all font-label text-[10px] tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span>S06_HARMN</span>
+</div>
+<!-- S07 ACTIVE -->
+<div class="bg-zinc-800 text-primary border-l-4 border-primary flex items-center gap-3 px-6 py-3 font-label text-[10px] tracking-wider uppercase pipeline-active">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>S07_COMPL</span>
+</div>
+<div class="text-zinc-600 flex items-center gap-3 px-6 py-2.5 font-label text-[10px] tracking-wider uppercase cursor-not-allowed">
+<span class="w-2 h-2 rounded-full bg-zinc-800"></span>
+<span>S08_MIXIN</span>
+</div>
+<div class="text-zinc-600 flex items-center gap-3 px-6 py-2.5 font-label text-[10px] tracking-wider uppercase cursor-not-allowed">
+<span class="w-2 h-2 rounded-full bg-zinc-800"></span>
+<span>S09_OUTPT</span>
+</div>
+</nav>
+<div class="mt-auto px-6 py-6">
+<button class="w-full py-3 bg-zinc-800 border border-zinc-700 hover:border-secondary text-on-surface font-label text-[10px] tracking-widest uppercase transition-all active:translate-x-1">
+                EXECUTE_COMPILE
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 pt-16 min-h-screen bg-[#0e0e0e]">
+<div class="max-w-7xl mx-auto p-8 space-y-12">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-l-2 border-primary pl-6">
+<div>
+<h1 class="text-4xl font-extrabold tracking-tighter font-headline mb-2 uppercase">S07 Compile</h1>
+<div class="flex items-center gap-4 text-on-surface-variant font-label text-sm">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-xs">target</span> YuE target</span>
+<span class="w-1 h-1 bg-zinc-700 rounded-full"></span>
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-xs">audio_file</span> text + audio ref</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 bg-amber-500/10 border-l-2 border-amber-500 flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+<span class="font-label text-[10px] font-bold text-amber-500 tracking-[0.2em]">COMPILING</span>
+</div>
+</div>
+</div>
+<!-- Top Section: Source Knowledge Grid -->
+<section class="space-y-4">
+<div class="flex items-center gap-3 mb-6">
+<span class="font-label text-xs font-bold tracking-[0.3em] text-zinc-600 uppercase">01 / Source Knowledge</span>
+<div class="h-px flex-1 bg-zinc-800"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-5 space-y-3">
+<div class="flex items-center justify-between font-label text-[10px] border-b border-zinc-800 pb-2">
+<span class="text-zinc-500 uppercase">S00: Heart tags</span>
+<div class="flex gap-2">
+<span class="bg-red-500/10 text-red-400 px-2 py-0.5 border border-red-500/20">anger 0.91</span>
+<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 border border-blue-500/20">sadness 0.87</span>
+<span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 border border-amber-500/20">fear 0.72</span>
+</div>
+</div>
+<div class="flex items-center justify-between font-label text-[10px] border-b border-zinc-800 pb-2">
+<span class="text-zinc-500 uppercase">S01: Lore theme</span>
+<span class="text-zinc-300 italic">'signal, silence, lost frequencies'</span>
+</div>
+<div class="flex items-center justify-between font-label text-[10px] border-b border-zinc-800 pb-2">
+<span class="text-zinc-500 uppercase">S02: Reference songs</span>
+<span class="text-zinc-300">Portishead, Massive Attack, Dead Can Dance</span>
+</div>
+<div class="flex items-center justify-between font-label text-[10px]">
+<span class="text-zinc-500 uppercase">S03: Stem analysis</span>
+<span class="text-zinc-300">Sparse bass, ghost snare, reverbed pads</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 space-y-3">
+<div class="flex items-center justify-between font-label text-[10px] border-b border-zinc-800 pb-2">
+<span class="text-zinc-500 uppercase">S04: Lyrics summary</span>
+<span class="text-zinc-300">4 sections, 10 lines, fear -&gt; anger -&gt; trust</span>
+</div>
+<div class="flex items-center justify-between font-label text-[10px] border-b border-zinc-800 pb-2">
+<span class="text-zinc-500 uppercase">S05: Annotation</span>
+<span class="text-zinc-300">42 syllables, 85 BPM, D minor</span>
+</div>
+<div class="flex items-center justify-between font-label text-[10px]">
+<span class="text-zinc-500 uppercase">S06: MIDI</span>
+<span class="text-zinc-300">8 bars, Dm-Am-Bb-Gm, 44 notes</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Middle Section: Target Platform -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="font-label text-xs font-bold tracking-[0.3em] text-zinc-600 uppercase">02 / Target Platform</span>
+<div class="h-px flex-1 bg-zinc-800"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- YuE Card (Selected) -->
+<div class="group relative bg-zinc-800 border-2 border-primary p-6 transition-all cursor-pointer">
+<div class="absolute -top-3 left-4 bg-primary text-on-primary px-2 py-0.5 font-label text-[9px] font-bold tracking-widest uppercase">SELECTED</div>
+<h3 class="font-headline font-bold text-xl mb-3">YuE</h3>
+<p class="font-label text-xs text-on-surface-variant leading-relaxed uppercase tracking-tight">lyrics + genre + dual track audio ref</p>
+<div class="mt-4 flex justify-end">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- MusicGen Card -->
+<div class="group bg-surface-container hover:bg-surface-container-high border border-zinc-800 hover:border-zinc-600 p-6 transition-all cursor-pointer">
+<h3 class="font-headline font-bold text-xl mb-3 text-on-surface-variant group-hover:text-on-surface">MusicGen</h3>
+<p class="font-label text-xs text-zinc-500 leading-relaxed uppercase tracking-tight">prompt + melody audio</p>
+</div>
+<!-- Sonauto Card -->
+<div class="group bg-surface-container hover:bg-surface-container-high border border-zinc-800 hover:border-zinc-600 p-6 transition-all cursor-pointer">
+<h3 class="font-headline font-bold text-xl mb-3 text-on-surface-variant group-hover:text-on-surface">Sonauto</h3>
+<p class="font-label text-xs text-zinc-500 leading-relaxed uppercase tracking-tight">prompt + lyrics + tags + audio URL</p>
+</div>
+<!-- Suno Card -->
+<div class="group bg-surface-container hover:bg-surface-container-high border border-zinc-800 hover:border-zinc-600 p-6 transition-all cursor-pointer">
+<h3 class="font-headline font-bold text-xl mb-3 text-on-surface-variant group-hover:text-on-surface">Suno</h3>
+<p class="font-label text-xs text-zinc-500 leading-relaxed uppercase tracking-tight">prompt + lyrics + audio snippet</p>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Compiled Output -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="font-label text-xs font-bold tracking-[0.3em] text-zinc-600 uppercase">03 / Compiled Output</span>
+<div class="h-px flex-1 bg-zinc-800"></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- LEFT: Code Block -->
+<div class="lg:col-span-2 flex flex-col">
+<div class="bg-zinc-800/50 px-4 py-2 border-t border-x border-zinc-700 flex items-center justify-between">
+<span class="font-label text-[10px] text-zinc-400 uppercase tracking-widest">TEXT_PROMPT.md</span>
+<span class="material-symbols-outlined text-zinc-500 text-sm cursor-pointer hover:text-white">content_copy</span>
+</div>
+<div class="bg-[#0d1117] p-8 border border-zinc-800 h-full">
+<code class="text-secondary font-mono text-sm leading-relaxed block">
+                                Genre: atmospheric dark trip-hop, sparse instrumentation, deep sustained bass in D minor, dry intimate vocals, ghost snare on 3, Rhodes-like pad sustain, 85 BPM 4/4
+                            </code>
+</div>
+</div>
+<!-- RIGHT: Audio Refs -->
+<div class="space-y-4">
+<div class="bg-surface-container-low p-6 border-l-2 border-secondary flex flex-col h-full">
+<h4 class="font-label text-[10px] text-zinc-500 uppercase tracking-widest mb-6">AUDIO_REFERENCES</h4>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label text-xs text-zinc-300">Vocal Reference</span>
+<button class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-primary hover:text-black transition-colors">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+<p class="text-[10px] font-mono text-zinc-500">stems/verse/vocals.wav (30s)</p>
+<div class="h-1 bg-zinc-800 w-full mt-1">
+<div class="h-full bg-secondary-dim w-1/3"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label text-xs text-zinc-300">Instrumental Reference</span>
+<button class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-primary hover:text-black transition-colors">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+</button>
+</div>
+<p class="text-[10px] font-mono text-zinc-500">stems/verse/instrumental_mix.wav (30s)</p>
+<div class="h-1 bg-zinc-800 w-full mt-1">
+<div class="h-full bg-secondary-dim w-1/2"></div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-zinc-800/50">
+<p class="text-[9px] font-label text-zinc-500 italic leading-tight">
+                                    Note: Passed via --vocal-ref and --instrumental-ref to YuE engine.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Section -->
+<footer class="mt-20 py-8 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="flex items-center gap-4">
+<span class="px-2 py-0.5 bg-zinc-800 font-label text-[10px] text-zinc-400">ROUND 2/5</span>
+<p class="text-xs font-label text-on-surface-variant tracking-wide uppercase">convergence corrections applied to prompt</p>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-zinc-500 hover:text-on-surface font-label text-xs uppercase tracking-widest transition-colors">
+                        Re-simulate
+                    </button>
+<button class="flex items-center gap-4 px-10 py-4 bg-primary text-on-primary font-headline font-bold text-sm uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all">
+                        Generate
+                        <span class="material-symbols-outlined">trending_flat</span>
+</button>
+</div>
+</footer>
+</div>
+</main>
+<!-- Background Decoration -->
+<div class="fixed top-0 right-0 w-1/3 h-screen bg-gradient-to-l from-violet-900/5 to-transparent pointer-events-none z-0"></div>
+<div class="fixed bottom-0 left-0 w-1/4 h-1/2 bg-gradient-to-tr from-emerald-900/5 to-transparent pointer-events-none z-0"></div>
+</body></html>

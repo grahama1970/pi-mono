@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C4HxJQ2QzWo",
+    "language": "en",
+    "took_ms": 7629,
+    "method": null,
+    "title": "Reinforcement Learning for LLMs in 2025",
+    "channel": "Trelis Research",
+    "upload_date": "20250210",
+    "duration_sec": 4699,
+    "description": "🔑 Get access to the ADVANCED-fine-tuning Repo: https://trelis.com/ADVANCED-fine-tuning/\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Work for Trelis: https://trelis.com/jobs/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n📸 Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nPart 2 (understanding GRPO): https://youtu.be/iHlarYGLMbY\nPart 3 (SFT vs GRPO): https://youtu.be/CsqYlV8X8og\n\nTIMESTAMPS:\n00:00 Introduction to Reinforcement Learning\n00:56 Practical Programming for RL\n01:59 Setting Up the Environment\n02:40 Cloning and Configuring Repositories\n04:10 Understanding the Dataset\n05:03 Supervised Fine Tuning and Reinforcement Learning\n08:54 Downloading and Preparing the Dataset\n09:09 Installing Necessary Libraries\n13:58 Implementing the Answer Checker\n22:30 Running Inference and Evaluating Performance\n28:53 Analyzing Results and Setting Baselines\n31:03 Batch Inference Script Breakdown\n38:00 Preparing for Reinforcement Learning\n38:57 Understanding Think Tags in Dataset Generation\n39:36 Improving Performance with Supervised Fine Tuning\n41:09 Creating and Filtering the Dataset\n41:20 Introduction to Preference Fine Tuning\n42:21 Generating ORPO Pairs\n46:03 Training the Model with Supervised Fine Tuning\n49:26 Setting Up and Running the Training Script\n50:47 Evaluating the Model's Performance\n01:02:35 Exploring ORPO Training\n01:07:49 Theory and History of Reinforcement Learning\n01:13:54 Final Evaluation and Insights",
+    "view_count": 15356
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C4HxJQ2QzWo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

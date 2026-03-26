@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RXssgm6_w10",
+    "language": "en",
+    "took_ms": 8013,
+    "method": null,
+    "title": "Why can't America build any more F 22s",
+    "channel": "Sandboxx",
+    "upload_date": "20210625",
+    "duration_sec": 623,
+    "description": "The F 22 was the world's first true stealth fighter. And it ushered in the fifth generation of fighter platforms that would eventually come to include the F 35 along with China's J 20 and Russia SU 56.\n\nAnd while that makes the F 22 older than its competition, the jet itself is still widely considered to be the most capable of the lot, at least in terms of duking it out in the skies while the F 35 is widely seen as the most technologically advanced fighter in the world today.",
+    "view_count": 492690
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RXssgm6_w10: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

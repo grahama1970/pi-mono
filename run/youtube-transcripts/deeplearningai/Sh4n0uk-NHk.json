@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Sh4n0uk-NHk",
+    "language": "en",
+    "took_ms": 8183,
+    "method": null,
+    "title": "New course with Cohere: Large Language Models with Semantic Search",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230816",
+    "duration_sec": 168,
+    "description": "Enroll today: https://bit.ly/3OLOEzo\n\nThe new course  \"Large Language Models with Semantic Search,\" created in collaboration with Cohere, is live! \n\nInstructed by Jay Alammar, Cohere's director and engineering fellow, and Luis Serrano, developer relations lead, this course offers a comprehensive to improving search accuracy and effectiveness. \n\nHere's what you can expect:\n\n- Understand LLM Fundamentals: Deepen your understanding of how large language models work, equipping you to become a more proficient AI builder.\n- Enhance Keyword Search: Learn to integrate ReRank, a tool that boosts the quality of keyword or vector search systems without overhauling existing frameworks.\n- Leverage Dense Retrieval: Discover how to use embeddings and large language models to enhance Q&A capabilities in your search applications.\n- Evaluate and Implement: Gain insights into evaluating your search models and efficiently implementing these techniques in your projects.\n- Real-World Application: Work with the Wikipedia dataset to understand how to optimize processes like retrieval and nearest neighbors, providing practical experience with large data sets.\n\nBy the end of the course, you will gain a deeper understanding of the fundamentals of how Large Language Models (LLMs) work, enhancing your skills as an AI developer. \n\nLearn more: https://bit.ly/3OLOEzo",
+    "view_count": 11607
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Sh4n0uk-NHk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

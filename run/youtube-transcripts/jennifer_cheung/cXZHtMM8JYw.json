@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cXZHtMM8JYw",
+    "language": "en",
+    "took_ms": 8802,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Justin Hutchens - Bypassing Multifactor Auth w/ Realtime Replay",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2569,
+    "description": "In the not-too-distance past, it was fairly easy for red-teamers to conquer almost any environment with a combination of password sprays, or by leveraging social engineering to lure victims to fake login sites and harvest their credentials. But in the current landscape, there are new road-blocks to contend with. Nearly every company and organization has now deployed some form of Multi-Factor Authentication (MFA) on their perimeter services. Fortunately, for red-teamers, the vast majority of implementations of MFA across the Internet (email-based, SMS, OTP, and push requests) all share a common critical flaw that can still be easily circumvented using a modern revision of the classic “credential harvesting” attacks. This talk will offer a comprehensive methodology for how a red team can effectively bypass nearly any MFA service using Python-Flask and browser emulation libraries (Mechanize or Selenium) to replay MFA credentials in real-time, establish legitimate user sessions, and then harvest the session tokens to assume access to those compromised sessions. This methodology will prove once again, that the advantage is still square in the hands of the red team, and that even now…ALL YOUR BASE ARE BELONG TO US!!!",
+    "view_count": 872
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cXZHtMM8JYw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

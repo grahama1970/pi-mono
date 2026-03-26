@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_mPW_iul97M",
+    "language": "en",
+    "took_ms": 7465,
+    "method": null,
+    "title": "DEF CON 30 Car Hacking Village - Kevin2600, Li Swei - Biometrics System Hacking of the Smart Vehicle",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2400,
+    "description": "Biometric systems such as face recognition, voice-print identification is extensively used for personal identification. In recent years more and more vehicle makers are implemented the facial recognition systems into the modern vehicle. However, how secure these systems really are? \n\nIn this talk, we will present some of simple yet very practical attack methods, to bypass the face recognition systems found on some modern vehicles, in order to login or even start the engine. \n\nWe will also diving into the journey of how to spoof the voiceprint based system. To trick the Smart speakers authentication mechanism to shopping online. Or generated a \"unharmed\" song with a specific command secretly embedded within. eg. \"Open the car window\"",
+    "view_count": 2939
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _mPW_iul97M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

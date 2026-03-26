@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f09E75bWvkk",
+    "language": "en",
+    "took_ms": 8831,
+    "method": null,
+    "title": "TRITON - Schneider Electric Analysis and Disclosure",
+    "channel": "S4 Events",
+    "upload_date": "20180123",
+    "duration_sec": 1552,
+    "description": "This presentation on the TRITON malware was groundbreaking. Not in the technical details, although those were important, but in the fact that an ICS vendor analyzed an attack on their equipment and disclosed what the attack did to their system. They set the bar for other vendors to meet or exceed.\n\nIt gets serious at 7:20. Schneider Electric actually fixed the bugs in the malware and ran it in their lab to see exactly what it did to the targeted version of the Tricon Controller. \"The intent was not to crash these controllers but to have power over them\".\n\nThere are a lot of interesting technical details in this including how the malware would hide once installed. And they released tools to detect it and remove it from memory.",
+    "view_count": 13050
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f09E75bWvkk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

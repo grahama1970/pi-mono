@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AFM28axyCfg",
+    "language": "en",
+    "took_ms": 9943,
+    "method": null,
+    "title": "Two ways data can leak in Cursor or Windsurf",
+    "channel": "Trelis Research",
+    "upload_date": "20250410",
+    "duration_sec": 42,
+    "description": "📜Learn more about Trelis at Trelis.com\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Cursor Security Deep Research Report: https://chatgpt.com/share/67f6407c-7184-8003-bd60-b45e17258437 (caution: check sources)\n- Windsurf Security Deep Research Report: https://chatgpt.com/share/67f640d3-311c-8003-bd37-30a2473dcc52 (caution: check sources)\n\nTIMESTAMPS:\n0:00 Is my data at risk using Cursor or Windsurf?\n1:34 Leakage of environment variables (passwords) due to .cursorignore failing\n2:30 Two ways data can be transferred to Cursor or Windsurf\n3:07 Using .cursorignore in Cursor\n5:58 Cursor and Windsurf have broad access to your files (no sandboxing)\n7:31 .codeiumignore is more robust than .cursorignore for blocking data leakage\n9:64 Data risks posed by automated tool calls / agents\n10:55 Malicious instructions found while web searching or in code bases\n11:56 Cursor Security Docs: .cursorignore is only on a “best effort” basis\n13:45 Enabling Privacy mode and Workspace Trust on Cursor\n14:53 Disabling snippet telemetry (formerly zero-data?) on Windsurf (workspace trust is the same approach as for cursor)\n15:40 Security recommendations for developers and organisations using agents\n16:39 Security suggestions for Cursor and Windsurf\n17:43 Resources",
+    "view_count": 941
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AFM28axyCfg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

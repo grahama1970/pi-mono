@@ -1,0 +1,37 @@
+[
+  {
+    "view": "flow",
+    "screenId": "84b3ed5d3b6248208c751138568b0040",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/flow.png"
+  },
+  {
+    "view": "strings",
+    "screenId": "0d70a60bf513414799006ef0cda8fdd3",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/strings.png"
+  },
+  {
+    "view": "symbols",
+    "screenId": "03537ffb69b3495a9477d5846696ac2c",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/symbols.png"
+  },
+  {
+    "view": "decompiler",
+    "screenId": "ab46ad29affa45069ce1843879c124cf",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/decompiler.png"
+  },
+  {
+    "view": "vulnerabilities",
+    "screenId": "b6034eb10d2a4a8d8be9db11b4235d3a",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/vulnerabilities.png"
+  },
+  {
+    "view": "history",
+    "screenId": "9df8747c56cf4b939a1df2226d58e80c",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/history.png"
+  },
+  {
+    "view": "settings",
+    "screenId": "157c39384445423da4ef549bcd15b8be",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/binary-explorer/stitch/views/settings.png"
+  }
+]

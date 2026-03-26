@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XUX9S9IqAX8",
+    "language": "en",
+    "took_ms": 8697,
+    "method": null,
+    "title": "IDEFICS 2 API Endpoint, vLLM vs TGI, and General Fine-tuning tips",
+    "channel": "Trelis Research",
+    "upload_date": "20240503",
+    "duration_sec": 3581,
+    "description": "Learn more about Trelis at Trelis.com/About\n\nVideo Notes:\n- When first trying TGI, the model responds to image requests with an empty string. This is because the model expects exact syntax for the prompt request. For best performance, I needed to add \"\\\\nAssistant:\" to the end of the prompt. Towards the end of the video, I add \"\\\\n\" and that is sufficient to get a response.\n\nCHAPTERS\n00:00 Introduction\n01:41 Latest video on representation fine-tuning and fine-tuning with Lora\n02:26 Deploying IDEFICS multimodal model on TGI for inference\n09:07 Answering questions from the chat\n17:28 Transformer architectures and building models from scratch\n28:54 Quantized model versions and inference\n32:48 Lora vs QLoRA for fine-tuning\n36:31 ORPO (preference fine-tuning + supervised fine-tuning)\n45:49 Training models from scratch and datasets\n58:45 Wrap-up and upcoming videos",
+    "view_count": 1140
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XUX9S9IqAX8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

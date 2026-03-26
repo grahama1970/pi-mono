@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "bg-main": "#0b1220",
+                        "cell-bg": "#141414",
+                        "cell-border": "#2e3544",
+                        "on-surface": "#e2e8f0",
+                        "accent": "#7c3aed",
+                        "terminal-pass": "#00ff88",
+                        "terminal-fail": "#ff4444",
+                        "jupyter-blue": "#42a5f5",
+                        "jupyter-red": "#ef5350"
+                    },
+                    fontFamily: {
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px"
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { 
+            font-family: 'JetBrains Mono', monospace; 
+            background-color: #0b1220; 
+            color: #e2e8f0; 
+        }
+        .notebook-cell {
+            @apply flex gap-4 mb-4;
+        }
+        .cell-indicator {
+            @apply w-16 text-right pt-2 font-mono text-[11px] select-none;
+        }
+        .cell-content {
+            @apply flex-1 border border-[#2e3544] bg-[#141414] overflow-hidden;
+        }
+        .cell-label {
+            @apply px-4 py-1 text-[9px] uppercase tracking-widest text-[#958da1] border-b border-[#2e3544] bg-[#0c1321];
+        }
+        .diff-add { background-color: rgba(0, 255, 136, 0.1); color: #00ff88; }
+        .diff-remove { background-color: rgba(255, 68, 68, 0.1); color: #ff4444; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0b1220; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<header class="text-[#7c3aed] font-mono uppercase tracking-tighter text-sm flex justify-between items-center w-full px-8 py-4 bg-[#0b1220] border-b border-[#151b2a]">
+<div class="font-mono font-bold text-lg tracking-widest text-[#d2bbff]">PROMPT_LAB</div>
+<div class="flex items-center gap-6">
+<span class="text-[10px] text-[#958da1]">KERNEL_STATUS: <span class="text-terminal-pass">IDLE</span></span>
+<span class="material-symbols-outlined text-[#958da1] cursor-pointer hover:text-white">settings</span>
+</div>
+</header>
+<main class="mt-8 flex-1 flex flex-col max-w-5xl mx-auto w-full px-4 pb-20">
+<div class="notebook-cell">
+<div class="cell-indicator text-jupyter-blue">In [1]:</div>
+<div class="cell-content">
+<div class="cell-label flex justify-between">
+<span>SYSTEM_PROMPT</span>
+</div>
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface resize-none p-4 leading-relaxed outline-none" rows="6" spellcheck="false">You are a helpful assistant that summarizes reports. Focus on the key metrics and avoid jargon. Always include the fiscal quarter in the header.</textarea>
+</div>
+</div>
+<div class="notebook-cell">
+<div class="cell-indicator text-jupyter-blue">In [2]:</div>
+<div class="cell-content">
+<div class="cell-label flex justify-between items-center">
+<span>TEST_CASES_COLLECTION</span>
+<button class="text-[#7c3aed] text-[10px] flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-[12px]">add</span> ADD_CASE
+                    </button>
+</div>
+<div class="p-0 divide-y divide-[#2e3544]">
+<div class="grid grid-cols-12 gap-0 p-4 items-start group hover:bg-[#1c2230]">
+<div class="col-span-1 text-[10px] text-[#958da1] pt-1">01.</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50 uppercase">Input</div>
+<div class="text-xs">Summarize Q3 fiscal report - SaaS vertical.</div>
+</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50 uppercase">Expect</div>
+<div class="text-xs text-[#00ff88]">{ "saas_rev": 12.4 }</div>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="text-[#4a4455] hover:text-terminal-fail"><span class="material-symbols-outlined">remove</span></button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-0 p-4 items-start group hover:bg-[#1c2230]">
+<div class="col-span-1 text-[10px] text-[#958da1] pt-1">02.</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50 uppercase">Input</div>
+<div class="text-xs">Dates and 'Project Phoenix' mentions.</div>
+</div>
+<div class="col-span-5 pr-4">
+<div class="text-[9px] text-[#958da1] mb-1 opacity-50 uppercase">Expect</div>
+<div class="text-xs text-[#00ff88]">{ "mentions": ["Phoenix"] }</div>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="text-[#4a4455] hover:text-terminal-fail"><span class="material-symbols-outlined">remove</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 my-8 relative">
+<div class="h-[1px] flex-1 bg-[#2e3544]"></div>
+<div class="flex items-center gap-4 bg-[#0b1220] px-4">
+<button class="bg-[#7c3aed] text-white font-mono font-bold text-xs px-8 py-3 hover:bg-[#9255ff] flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span> EXECUTE_CELL_OPTIMIZATION
+                </button>
+<div class="relative">
+<select class="bg-[#141414] border border-[#2e3544] text-[#d2bbff] font-mono text-[11px] py-3 pl-4 pr-10 appearance-none focus:ring-1 focus:ring-accent outline-none">
+<option>DEEPSEEK-V3-STABLE</option>
+<option>GPT-4O-MINI</option>
+<option>CLAUDE-3.5-SONNET</option>
+</select>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#958da1]">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<div class="h-[1px] flex-1 bg-[#2e3544]"></div>
+</div>
+<div class="notebook-cell">
+<div class="cell-indicator text-jupyter-red">Out [3]:</div>
+<div class="cell-content">
+<div class="cell-label">OPTIMIZATION_LOG</div>
+<div class="p-4 font-mono text-[11px] space-y-1 bg-[#0c1321]">
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:11]</span> <span>INITIALIZING_AGENT_RUN...</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:13]</span> <span class="text-terminal-pass">ROUND_01: CASE_01 ... PASS</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:14]</span> <span class="text-terminal-fail">ROUND_01: CASE_02 ... FAIL (JSON_MISMATCH)</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:16]</span> <span>CALCULATING_PROMPT_VARIANTS...</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:18]</span> <span class="text-terminal-pass">ROUND_02: CASE_01 ... PASS</span></div>
+<div class="flex gap-4"><span class="text-[#958da1]">[14:02:19]</span> <span class="text-terminal-pass">ROUND_02: CASE_02 ... PASS</span></div>
+<div class="flex gap-4 pt-2 border-t border-[#2e3544] mt-2"><span class="text-[#958da1]">[14:02:20]</span> <span class="text-accent font-bold text-[12px]">OPTIMIZATION_COMPLETE: SCORE_100%</span></div>
+</div>
+</div>
+</div>
+<div class="notebook-cell">
+<div class="cell-indicator text-jupyter-red">Out [4]:</div>
+<div class="cell-content">
+<div class="cell-label">PROMPT_DIFF_RESULT</div>
+<div class="bg-[#0c1321] text-xs leading-relaxed font-mono p-4">
+<div class="opacity-50 mb-2">@@ -4,8 +4,8 @@</div>
+<div class="flex gap-4"><span class="w-4 text-right opacity-30 select-none">4</span><span>You are a helpful assistant that summarizes reports.</span></div>
+<div class="flex gap-4 diff-remove"><span class="w-4 text-right opacity-30 select-none">5</span><span>- Focus on the key metrics and avoid jargon.</span></div>
+<div class="flex gap-4 diff-add"><span class="w-4 text-right opacity-30 select-none">5</span><span>+ Focus exclusively on SaaS vertical metrics. Format output as valid JSON.</span></div>
+<div class="flex gap-4"><span class="w-4 text-right opacity-30 select-none">6</span><span>Always include the fiscal quarter in the header.</span></div>
+<div class="flex gap-4 diff-add"><span class="w-4 text-right opacity-30 select-none">7</span><span>+ If no data is found, return null for that specific key.</span></div>
+</div>
+<div class="p-4 border-t border-[#2e3544] flex gap-4 bg-[#141414]">
+<button class="bg-terminal-pass/10 text-terminal-pass border border-terminal-pass/40 font-mono font-bold text-[11px] px-6 py-2 hover:bg-terminal-pass hover:text-black">
+                        APPROVE_CHANGES
+                    </button>
+<button class="bg-[#2e3544] text-[#958da1] font-mono font-bold text-[11px] px-6 py-2 hover:bg-terminal-fail hover:text-black">
+                        REJECT_VARIANT
+                    </button>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

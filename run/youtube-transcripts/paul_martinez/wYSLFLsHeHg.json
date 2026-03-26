@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wYSLFLsHeHg",
+    "language": "en",
+    "took_ms": 8193,
+    "method": null,
+    "title": "Visibility Metrics",
+    "channel": "S4 Events",
+    "upload_date": "20240808",
+    "duration_sec": 1762,
+    "description": "Improving visibility in the control network is perhaps one of the most common recommendations from cybersecurity professionals. At this point, the main questions are 1.) how to decide what should be done first? and 2.) how to justify the investment to the plant management team?\n\nAnswering those questions requires a reliable and validated assessment of current visibility. Unfortunately, visibility is a qualitative term with no universal scale or benchmarks. As a result, the process involves dealing with a highly subjective component of the defence strategy (i.e., my concept of good visibility vs yours).\n\nOscar presents a simple framework to evaluate visibility through Indirect measurable parameters (i.e., proxies). The goal is to develop a formalized and verifiable procedure to assess visibility objectively.",
+    "view_count": 239
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wYSLFLsHeHg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

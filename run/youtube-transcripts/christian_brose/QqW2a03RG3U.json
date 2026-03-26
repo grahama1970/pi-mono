@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QqW2a03RG3U",
+    "language": "en",
+    "took_ms": 9023,
+    "method": null,
+    "title": "Space and Missile Defense Forces and Capabilities for the Warfighter",
+    "channel": "Hudson Institute",
+    "upload_date": "20160212",
+    "duration_sec": 3196,
+    "description": "Lt. Gen. David Mann, Hudson Fellow Rebeccah Heinrichs, and Missile Defense Caucus Co-Chairs Reps. Doug Lamborn (R-CO) and Trent Franks (R-AZ) discuss the military's space and missile defense capability requirements.",
+    "view_count": 515
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QqW2a03RG3U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

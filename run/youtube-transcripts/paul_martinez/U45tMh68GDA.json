@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U45tMh68GDA",
+    "language": "en",
+    "took_ms": 9105,
+    "method": null,
+    "title": "Evaluating Vendor AI Claims",
+    "channel": "S4 Events",
+    "upload_date": "20250416",
+    "duration_sec": 2107,
+    "description": "How do you, the customer, evaluate the benefits of a products' AI claims and capabilties? How do know if their AI approach is a dead end or the start of something that will show great improvement in the next 1 - 3 years?\n\nIn 2024/2025 almost every vendor highlights the benefits of \"advanced AI\" in their products. OT security vendors do this. DCS, SCADA and PLC vendors do this. It's rare to see a product that doesn't pitch their AI as a reason to buy.\n\nIn this session, Clint Bodungen will give you an approach to get answers to those questions before you commit to a product or vendor.",
+    "view_count": 339
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U45tMh68GDA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

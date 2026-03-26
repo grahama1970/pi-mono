@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T1FdPpk6sVM",
+    "language": "en",
+    "took_ms": 7955,
+    "method": null,
+    "title": "Case Study: An ICS Breach, an Investigation and Mitigations",
+    "channel": "S4 Events",
+    "upload_date": "20200506",
+    "duration_sec": 1972,
+    "description": "Joel Langill, aka SCADAhacker, provides detailed (anonymized) information on an attack on an ICS, how it was investigated, and how the risk was addressed.  Pull quote \"We have active, persistent foothold from Russian owned assets.\"\n\nShodan identified a customer's name on Internet accessible ICS. Joel used hping to determine that modification of control logic and displays could be done over the Internet. The asset owner allowed Joel to monitor the communication to the site for five days. He found 3100 unauthorized access in less than a week.\n\nThe rest of the session is on how Joel analyzed these connections and importantly, recommended mitigations. He goes into detail on a variety of free tools and how they are best used, and the mitigations are not difficult or expensive.\n\nLots of nuggets, like malware on a ICS download site, listen carefully.",
+    "view_count": 735
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T1FdPpk6sVM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

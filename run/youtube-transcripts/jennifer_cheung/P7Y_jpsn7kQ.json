@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P7Y_jpsn7kQ",
+    "language": "en",
+    "took_ms": 9031,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village  - Josh McIntyre - Subtle Ways to Lose Your Cryptocurrency",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 2412,
+    "description": "As the cryptocurrency ecosystem grows, thieves and scammers are evolving their tactics to get their piece of someone else's crypto pie. This talk will examine common ways that users lose cryptocurrency, and how to prevent these types of attacks. We will cover attack vectors such as malware, social engineering, user error, and more.",
+    "view_count": 1597
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P7Y_jpsn7kQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R0OdB-p-ns4",
+    "language": "en",
+    "took_ms": 9647,
+    "method": null,
+    "title": "AI Dev 25 | Harrison Chase: Long Term Memory with LangGraph",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 5499,
+    "description": "How do you build AI agents that remember, learn, and adapt over time? During AI Dev 25, Harrison Chase, Co-founder and CEO of LangChain, introduced the core concepts of long-term memory in AI agents—and how to implement them using LangGraph.\n\nThe session covered three key memory types:\n– Semantic memory (facts and information)\n– Procedural memory (skills and behaviors)\n– Episodic memory (past interactions and events)\n\nTo bring these ideas to life, Harrison walked through building a personalized email assistant that uses all three memory types to create more intelligent and context-aware interactions.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 2796
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R0OdB-p-ns4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

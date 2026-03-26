@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EphRqE09uQk",
+    "language": "en",
+    "took_ms": 7673,
+    "method": null,
+    "title": "DEF CON Safe Mode ICS Village -  Marie Otis  - MITRE ICS ATT&CK",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 1401,
+    "description": "",
+    "view_count": 286
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EphRqE09uQk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

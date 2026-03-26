@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VeJcQbvStZY",
+    "language": "en",
+    "took_ms": 9274,
+    "method": null,
+    "title": "Organization and Innovation in Air Traffic Control",
+    "channel": "Hudson Institute",
+    "upload_date": "20140116",
+    "duration_sec": 5638,
+    "description": "America's air traffic control system—long viewed as the world's most advanced—has failed to keep pace with modern information and communications technologies and has fallen behind the capabilities of many other national and regional systems. \n\nHudson Institute has released a path-breaking study of the problem and blueprint for reform—Organization and Innovation in Air Traffic Control—by Robert W. Poole, Jr. The report is available here.\n\nOn January 16, 2014, Mr. Poole and other aviation specialists discussed his report and the political flight path ahead for upgrading the U.S. air traffic infrastructure.",
+    "view_count": 160
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VeJcQbvStZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

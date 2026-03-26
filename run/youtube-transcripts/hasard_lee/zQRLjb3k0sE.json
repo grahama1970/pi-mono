@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zQRLjb3k0sE",
+    "language": "en",
+    "took_ms": 8914,
+    "method": null,
+    "title": "The First Audiobook Ever Recorded in a Jet",
+    "channel": "Hasard Lee",
+    "upload_date": "20230615",
+    "duration_sec": 28,
+    "description": "",
+    "view_count": 33947
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zQRLjb3k0sE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

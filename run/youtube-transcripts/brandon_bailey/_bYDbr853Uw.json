@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_bYDbr853Uw",
+    "language": "en",
+    "took_ms": 8833,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Travis Palmer - Passwd Cracking Beyond 15 Chars, Under $500",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2537,
+    "description": "Most of us understand that it is a good idea to tailor an attack to a password policy. That being said, most password policies are fairly homogeneous. Does a minimum eight characters and at least three of four categories for complexity sound familiar? The hashcat-herders among us have prepared well for this endeavor. Many have hoarded hundreds of gigabytes of dumped passwords from hacked sites using these exact kinds of policies. Which means, when the hashes get dumped, sometimes more than half of a domain can be cracked in a single day. So… what if you have to crack passwords written under a different policy, like a paranoid 15 character minimum? Those gigabytes of dictionaries, full of shorter passwords, aren’t going to rockyou into domain admin anymore. It’s time to dive into the hashes with combinations of combinators, purple rain attacks, and word-level linguistically correct Markov chains. Along with the techniques themselves, this presentation will include the real-world results of various cracking attacks against a ~6000 person domain, at a Fortune 500 with a mature security program. As well as some recommendations for policies that allow memorable passwords while actually making them difficult to crack.",
+    "view_count": 3347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _bYDbr853Uw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

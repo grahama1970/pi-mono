@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0M14yenB4TQ",
+    "language": "en",
+    "took_ms": 9581,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - RedDragon - Chinese Military Bioweapons and Intimidation Operations",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 1942,
+    "description": "Chinese Military Bio Weapons Future State is third in a three part series examining the Chinese military use of biological reagents in a kinetic capacity. The unrestricted warfare strategy outlined in the early 1990's clearly defines this Chinese military initiative. The supply chain, Program 863 and other supporting components of his strategy will be revealed.\n\nIt is TLP : RED",
+    "view_count": 2240
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0M14yenB4TQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

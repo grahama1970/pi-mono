@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AisXxU1yodo",
+    "language": "en",
+    "took_ms": 7949,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Patrick Kiley - Experimental Aviation Risks and Rewards",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1616,
+    "description": "This talk will cover a hacker’s perspective of building your own aircraft, what I consider to be the ultimate maker/hacker project. Over 10 years ago, I decided to see if I could build an aircraft from a set of plans. The model I chose was a 4 seat AeroCanard FG, a somewhat controversial derivative of the Cozy Mark IV. The Cozy itself was also a derivative, basically a widened version of the Burt Rutan designed Long EZ. This talk will cover why someone would choose to build their own aircraft. All of these topics will cover the risk as I see it as a professional who has been in the information risk field his entire professional career.",
+    "view_count": 302
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AisXxU1yodo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

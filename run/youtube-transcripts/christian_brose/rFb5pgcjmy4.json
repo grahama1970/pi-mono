@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rFb5pgcjmy4",
+    "language": "en",
+    "took_ms": 10637,
+    "method": null,
+    "title": "The Political Situation in Kyrgyzstan: Implications for the",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6900,
+    "description": "The situation in Kyrgyzstan has a critical bearing on American national security. The Manas Transit Center outside the Kyrgyz capital of Bishkek is the vital supply link for U.S. and NATO forces fighting in Afghanistan. In the last year, the political situation in Kyrgyzstan has undergone dramatic change. The former president, Kurmanbek Bakiyev, was overthrown, elections were held, and Kyrgyzstan adopted a new constitution and became a parliamentary republic. How have these changes affected U.S.",
+    "view_count": 197
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rFb5pgcjmy4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

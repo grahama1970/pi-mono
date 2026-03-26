@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7YAAWjGhuZY",
+    "language": "en",
+    "took_ms": 7658,
+    "method": null,
+    "title": "The Drone Threat To ICS",
+    "channel": "S4 Events",
+    "upload_date": "20170315",
+    "duration_sec": 2273,
+    "description": "Kevin Finisterre of Department 13 provides an entertaining session on drones and how they could be used to attack industrial control systems (ICS). It has a number of videos demonstrating capabilities.\n\nKevin also provides guidance on how to defend against the increasing drone threat.",
+    "view_count": 2362
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7YAAWjGhuZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

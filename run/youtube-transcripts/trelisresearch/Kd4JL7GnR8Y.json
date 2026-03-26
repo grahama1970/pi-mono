@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Kd4JL7GnR8Y",
+    "language": "en",
+    "took_ms": 7851,
+    "method": null,
+    "title": "Pushing Models and Adapters to HuggingFace | Free Notebook",
+    "channel": "Trelis Research",
+    "upload_date": "20240110",
+    "duration_sec": 2723,
+    "description": "Check out https://Trelis.com for ADVANCED fine-tuning resources!\n\nVideo Resources:\n- Notebook: https://github.com/TrelisResearch/install-guides/blob/main/Pushing_to_Hub.ipynb\n- Slides: https://docs.google.com/presentation/d/1M__GakiQL2-92APrvwIZUdA3MyC2DGmAntQmkmK8eBs/edit?usp=sharing\n- Get Video + Model updates: https://Trelis.Substack.com\n\nChapters:\n0:00 How to push models to hugging face?\n0:15 Video overview\n1:00 LLM Notebook Setup\n2:49 Runpod Fine-tuning Setup\n4:39 Vast AI Fine-tuning Setup\n5:45 Downloading and loading models\n8:58 Push 16-bit models to hugging face\n18:59 Merging and Pushing LoRA adapters to HuggingFace\n29:30 Merging and Pushing QLora (quantised) models to HuggingFace\n39:33 Best model format for training\n40:49 Best model formats for inference\n44:12 Free and advanced resources\n44:42 How to get video/model updates",
+    "view_count": 4409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Kd4JL7GnR8Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

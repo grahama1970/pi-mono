@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cvp0WZqIJ_4",
+    "language": "en",
+    "took_ms": 8898,
+    "method": null,
+    "title": "Make Cursor Understand Folder Structure - Coding with LLMs",
+    "channel": "Trelis Research",
+    "upload_date": "20240914",
+    "duration_sec": 233,
+    "description": "➡️ Trelis Flatten: https://github.com/TrelisResearch/flatten\n\nOTHER TRELIS LINKS:\n➡️ Trelis Repos & Discord: https://Trelis.com/About\n➡️ Trelis Newsletter: https://blog.Trelis.com\n\nA simple tool to flatten your repo into,\na) a yaml file with the file/folder structure\nb) a text file with all of your repo content (except for stuff in .gitignore and .flattenignore)\n\nYes, it's true you can already query the entire file structure with cursor, but this allows for a more concise way of feeding in context on structure when trying to work on just a few files in detail.",
+    "view_count": 4455
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cvp0WZqIJ_4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

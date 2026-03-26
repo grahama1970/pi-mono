@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8tAxHrntBJs",
+    "language": "en",
+    "took_ms": 8731,
+    "method": null,
+    "title": "Language Theoretic Security (langsec) Applied to ICS",
+    "channel": "S4 Events",
+    "upload_date": "20180218",
+    "duration_sec": 2824,
+    "description": "We were thrilled to have some of the world's top security researchers enter the ICS world and present at S4x14. In this case, S4 veteran Darren Highfill introduced langsec pioneers Sergey Bratus and Meredith Patterson to the world of ICS, and they worked together to give a novel talk to the ICS community.\n\nAfter an introduction to langsec, they look at the DNP3 protocol. They actually created a DNP3 parser using the Hammer parser generator library. But you start to see the problems, or challenges, in a robust DNP3 protocol stack with the context dependency between the three DNP3 layers.\n\nThe money quote from the session was \"Your parser two layers down from where you started parsing the packet has to be able to refer back up to its ancestor just to know how many bytes it is suppose to parse. This puts us way, way, way out in to heavily context sensitive territory.\" After listening to this talk it is not surprising that DNP3 protocol stacks are bug filled.\n\nThe presenters actually worked with Adam Crain & Chris Sistrunk to analyze a specific Project Robus DNP3 protocol stack vulnerability from a langsec perspective. The DNP3 protocol requires a Transport Frame to have at least one valid APU. Bad things happened when this was violated.\n\nI found myself writing down a number of notes to think about more from this session.\n\n- Context Dependency - Do you have to have additional information to determine the value or meaning.\n- Weird Machines - Hidden functionality unintentionally built into a device.\n- You save when you throw out bad input early.\n- Computational power is a privilege; don't expose it to an attacker too early.\n- If you want fast, simplify your language.",
+    "view_count": 690
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8tAxHrntBJs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pYOTepnYvQ0",
+    "language": "en",
+    "took_ms": 8736,
+    "method": null,
+    "title": "Question Everything #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250905",
+    "duration_sec": 11,
+    "description": "Flashy threat groups with logos and theme music don’t mean it’s real risk.\n\nAsk the right questions—was it targeted, was it critical, did it actually do anything?",
+    "view_count": 1206
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pYOTepnYvQ0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

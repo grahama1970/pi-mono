@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9IN1Aj56hYA",
+    "language": "en",
+    "took_ms": 9805,
+    "method": null,
+    "title": "DEF CON 32 -  Hunters and Gatherers A Deep Dive into the World of Bug Bounties - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3397,
+    "description": "Join us for an insightful panel discussion where we bring together seasoned Bug Bounty Program Managers and adept bug bounty hunters. This panel aims to address pressing questions and share diverse perspectives on the evolving landscape of bug bounties. We will dive into the challenges faced by both hunters and managers, discuss strategies to enhance the impact of submissions, and explore the future of bug bounties in the face of emerging technologies, evolving trends, and threats. We will also highlight the importance of bug bounties in the current cybersecurity landscape and share the top elements that contribute to a successful bug bounty program. Lastly, we will provide recommendations for organizations looking to mature their bug bounty programs but are hesitant about expanding. This panel promises to be a valuable opportunity for learning, sharing, and networking for anyone involved or interested in the world of bug bounties.",
+    "view_count": 537
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9IN1Aj56hYA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

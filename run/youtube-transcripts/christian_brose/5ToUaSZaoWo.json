@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5ToUaSZaoWo",
+    "language": "en",
+    "took_ms": 8937,
+    "method": null,
+    "title": "The Iran-Russia Alliance",
+    "channel": "Hudson Institute",
+    "upload_date": "20230223",
+    "duration_sec": 3673,
+    "description": "Russia’s use of Iranian-made drones in Ukraine reveals that the alliance between Moscow and Tehran is more multifaceted and dangerous than previously understood. Indeed, the Shahed-131 and Shahed-136 loitering munitions have inflicted heavy damage on Ukraine’s critical infrastructure. Moreover, the Wall Street Journal revealed that “Moscow and Tehran are moving ahead with plans to build a new factory in Russia that could make at least 6,000 Iranian-designed drones.” Not only will this joint venture resupply Russia’s arsenal, but it will also lead to an increase in the size and sophistication of Iran’s defense industrial base. What is the full extent of the threat? How should the United States respond?",
+    "view_count": 1717
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5ToUaSZaoWo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

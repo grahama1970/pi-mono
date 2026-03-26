@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DNVkPyif_hM",
+    "language": "en",
+    "took_ms": 8767,
+    "method": null,
+    "title": "Fortinet Keynote: The Year of Disruption",
+    "channel": "S4 Events",
+    "upload_date": "20210201",
+    "duration_sec": 1306,
+    "description": "In this 20-minute virtual keynote Dale Peterson lays out the cause of ICS disruption (it’s not increased threat) and three disruptions coming in OT and ICS Security.\n1. IT / OT integration, not convergence\n2. Cloud services beyond the buzzword – closed loop services with control and process variable anomaly detection\n3. Next generation PLC – virtualization, shorter lifetime, security",
+    "view_count": 372
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DNVkPyif_hM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

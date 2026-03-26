@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l4AYXglQo9E",
+    "language": "en",
+    "took_ms": 7707,
+    "method": null,
+    "title": "AirPower in Hawaii!",
+    "channel": "Sandboxx",
+    "upload_date": "20250422",
+    "duration_sec": 109,
+    "description": "Why is Alex Hollings in Hawaii? It's not just for the great shirts.",
+    "view_count": 24137
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l4AYXglQo9E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

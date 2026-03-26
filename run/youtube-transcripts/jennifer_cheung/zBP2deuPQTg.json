@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zBP2deuPQTg",
+    "language": "en",
+    "took_ms": 8849,
+    "method": null,
+    "title": "DEF CON 32 -Your Smartcard is Dumb A Brief History of Hacking Access Control Systems - Chad Shortman",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3201,
+    "description": "Have you ever wondered how those little boxes that you tap your card to open doors work? What are they reading on the card? How do they ultimately unlock the door? And, are they even secure? In this talk, we will answer all of those questions and more. We will walk through how access-control systems, in general, work, and dig into the details of the most popular systems. Fortunately for the entertainment value of this talk, there be dragons in our doors. We will walk through some of the most high-profile attacks in detail and then dive into some more fundamental flaws with how the systems are designed. All of these discussions will be accompanied with live demos and first hand experience. After this talk, you will look at the world, especially doors, differently -- weaknesses everywhere! My hope is that we can all learn from past mistakes and create a more secure and less frustrating tomorrow together",
+    "view_count": 53302
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zBP2deuPQTg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

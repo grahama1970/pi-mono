@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R26pGUKU6ME",
+    "language": "en",
+    "took_ms": 8103,
+    "method": null,
+    "title": "DEF CON 31 Packet Hacking Village - The Importance of Arts and Crafts in ThreatOps - Pete Hay",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2619,
+    "description": "Cybersecurity professionals spend an huge amount of time attempting to use a visual medium to communicate complicated concepts in a simple yet information-dense manner. However if you ask 10 analysts to map out the same incident, you'll get 10 divergent diagrams. In this presentation we present a method of leveling-up your cybersecurity-related arts and crafts skills: effectively diagramming incidents, threat reports, threat intel, and reporting to support full-spectrum ThreatOps.",
+    "view_count": 603
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R26pGUKU6ME: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

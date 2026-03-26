@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iP_UmDs_i5s",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "How Deepseek v3 made Compute and Export Controls Less Relevant",
+    "channel": "Trelis Research",
+    "upload_date": "20250103",
+    "duration_sec": 3717,
+    "description": "➡️ Get access to the ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click LLM Templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nKEY TRELIS LINKS:\n🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Join the Trelis Team: https://trelis.com/developer-collaborations/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1j_sUkTav5TEqZn14fIRFLDmHd6FH9_2RaODpplfzjyk/edit?usp=sharing\n- Deepseek v3 paper: https://github.com/deepseek-ai/DeepSeek-V3/blob/main/DeepSeek_V3.pdf\n- Deepseek v2 paper: https://arxiv.org/abs/2405.04434\n- Auxiliary-loss-free paper: https://arxiv.org/html/2408.15664v1\n\nTIMESTAMPS:\n00:00:00 - Deepseek V3 performance\n00:01:37 - Performance comparison with Claude Sonnet and GPT-4o\n00:03:34 - Speed tests vs Sonnet and GPT-4o\n00:08:14 - Discussion of model size and deployment requirements for self-hosting\n00:12:20 - Analysis of GPU types and export restrictions\n00:14:40 - Explanation of training efficiency improvements\n00:20:23 - Overview of model architecture evolution over 2022-2024\n00:27:38 - Introduction of Mixture of Experts concept\n00:31:33 - Discussion of load balancing problems\n00:36:04 - Explanation of Deepseek's load balancing solution (auxiliary loss free approach)\n00:42:25 - Introduction of three additional Deepseek optimisation techniques (FP8 training, MLA, Multi-token Prediction).\n00:42:49 - Discussion of 8-bit training\n00:45:08 - Explanation of compressed attention (MLA, latent attention)\n00:54:39 - Details of multi-token prediction\n00:59:40 - Benefits of speculative decoding\n01:01:31 - Conclusion and summary of Deepseek improvements",
+    "view_count": 8083
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iP_UmDs_i5s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

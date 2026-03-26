@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6Nby-Vi1hlw",
+    "language": "en",
+    "took_ms": 8797,
+    "method": null,
+    "title": "DEF CON 30 - John Midgley - OpenCola The AntiSocial Network",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2220,
+    "description": "The internet, as it stands today, is not a very trustworthy environment, as evidenced by the numerous headlines of companies abusing personal data and activity. This is not really surprising since companies are responsible for optimizing revenue, which is often at odds with user benefit. The result of these incentives has produced or exacerbated significant problems: tech silos, misinformation, privacy abuse, concentration of wealth, the attention economy, etc. We built OpenCola, free and open source, as an alternative to existing big-tech applications. It puts users in control of their personal activity and the algorithms that shape the flow of data to them. We believe that this solution, although simple, can significantly mitigate the challenges facing the Internet.",
+    "view_count": 3020
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6Nby-Vi1hlw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

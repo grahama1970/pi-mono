@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0TdY9JUaybc",
+    "language": "en",
+    "took_ms": 8090,
+    "method": null,
+    "title": "DEF CON 32 - Jake Braun - DEF CON Franklin Project",
+    "channel": "DEFCONConference",
+    "upload_date": "20240810",
+    "duration_sec": 1150,
+    "description": "DEF CON Franklin will infuse research from the hacker community into national security and foreign policy debates. We aim to lift up groundbreaking work happening across villages and deliver this critical research to key policymakers across the globe. Aside from policy work, Franklin will empower individual members of the community to volunteer directly with under-resourced critical infrastructure that support our world.\n\nJacob H Braun\n\nJake Braun served in the White House as Acting Principal Deputy National Cyber Director from May 2023 to July 2024. Prior to joining the White House Office of the National Cyber Director, he was appointed by President Joseph Biden as Senior Counselor to the Secretary of Homeland Security. Braun is also a lecturer at the University of Chicago’s Harris School of Public Policy Studies and Chairman of the Cyber Policy Initiative there.\n\nFrom 2009 to 2011, Braun served as White House Liaison to the U.S. Department of Homeland Security. Braun is also co-founder of the DEF CON Voting Machine Hacking Village (Voting Village) hacker conference.",
+    "view_count": 5320
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0TdY9JUaybc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

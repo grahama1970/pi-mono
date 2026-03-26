@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "j3A5zQAAwcc",
+    "language": "en",
+    "took_ms": 8860,
+    "method": null,
+    "title": "DEF CON 32 - Locksport Competitions: Compete in the Olympics of Locks  -Matt Burrough",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1469,
+    "description": "Picking locks is fun, but what if you want more? Ever considered competing against other lock enthusiasts? In this talk we'll discuss the exciting lock-related competitions that take place around the world, how to find them, and what it takes to compete and win.",
+    "view_count": 579
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] j3A5zQAAwcc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Mao8x3jsLVs",
+    "language": "en",
+    "took_ms": 8164,
+    "method": null,
+    "title": "Navy Boot Camp Overview",
+    "channel": "Sandboxx",
+    "upload_date": "20211206",
+    "duration_sec": 281,
+    "description": "This video was put together to inform friends and family members of the RTC recruit experience from the moment a recruit arrives until they become a Sailor.  More than 40,000 recruits train annually at the Navy's only boot camp. \n\n(U.S. Navy video by Mass Communication Specialist 1st Class Spencer Fling)",
+    "view_count": 245152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Mao8x3jsLVs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vCoQjn82JhU",
+    "language": "en",
+    "took_ms": 9173,
+    "method": null,
+    "title": "Cyber-Physical Attacks with Marina Krotofil",
+    "channel": "S4 Events",
+    "upload_date": "20230906",
+    "duration_sec": 3456,
+    "description": "Marina Krotofil recently published the paper Industrial Control Systems: Engineering Foundations and Cyber-Physical Attack Lifecycle which is a detailed paper on cyber attacks that cause a physical impact on the system being monitored and controlled. Link to paper: https://www.cyberphysicalsecurity.info\n\nIt took Marina 1.5 years to write this paper, which is more accurately described as a short book. We discuss:\n\n- the work she is doing to help Ukrainian critical infrastructure security during wartime\n\n- what got Marina interested in cyber-physical security 10+ years ago\n\n- the current understanding of cyber-physical in the OT security community\n\n- Chapter 2: Engineering Foundations as a great intro for those in IT to understand basic automation principles\n\n- Chapter 3: Very detailed explanation of a specific process (we don't spend much time on this)\n\n- The Cyber-Physical Attack Lifecycle with emphasis on the Damage Loop. \"Plant shutdown is risky for the attacker as it may instigate an investigation\"\n\n- Chapter 4.6 is a great conclusion",
+    "view_count": 800
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vCoQjn82JhU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ixnra7LETIA",
+    "language": "en",
+    "took_ms": 9179,
+    "method": null,
+    "title": "New course! Build Apps with Windsurf’s AI Coding Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250226",
+    "duration_sec": 241,
+    "description": "Learn more: https://bit.ly/4ieJ2JF\n\nJoin our latest course Build Apps with Windsurf's AI Coding Agents, built in partnership with Windsurf and taught by Anshul Ramachandra.\n\nAI-assisted Integrated Development Environments, or IDEs, make coding and development workflows faster, more efficient, and more fun.\n\nAgentic tools like Windsurf are more than just code autocomplete—they are collaborative coding agents that help you break down complex applications, iterate efficiently, and generate code that spans multiple files. Using an AI coding agent effectively requires a new approach to prompting, iteration, and structuring development tasks.\n\nIn this course, you'll learn the inner workings of coding agents and how to use Windsurf to code and build several applications. \n\nIn details, you'll:\n\n- Learn how to get started with Windsurf, and build your first app (a snake game) in a couple of minutes.\n- Look at the evolution of AI coding assistants, from simple code suggestions to agentic systems that collaborate with developers.\n- Use an AI agent to analyze and resolve issues in Javascript code, like debugging test issues and multi-file refactoring.\n- Learn mental models to understand how coding agents combine human-action tracking, tool integration, and context awareness in their agentic coding workflow.\n- Learn the challenges of code search and discovery of AI coding agents and how a multi-step retrieval approach helps overcome them.\n- Use Windsurf to analyze and understand an old large codebase and update it to the latest versions of frameworks and packages used in it. \n- Use Windsurf to build a Wikipedia data analysis app — retrieving, parsing, and analyzing word frequencies.\n- Enhance the performance of your Wikipedia app by adding caching and while doing so learn how to course-correct when the AI agent produces unexpected results.\n- Learn tips and tricks such as command, autocomplete, @mentions, and explain functionalities to maximize your interactions with the overall AI system as you build a full-stack app to visualize the data of your Wikipedia analysis app.\n- Leverage the multimodal capabilities of the AI agent to increase your development velocity with an example in which you upload a mockup with sketched-out reference UI features to add new functionalities to your app.\n\nBy the end of this course, you’ll understand agentic coding in-depth and learn to use it to make your development process faster, more efficient, and more enjoyable.\n\nEnroll now: https://bit.ly/4ieJ2JF",
+    "view_count": 5295
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ixnra7LETIA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

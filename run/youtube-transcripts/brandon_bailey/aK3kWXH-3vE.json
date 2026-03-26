@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aK3kWXH-3vE",
+    "language": "en",
+    "took_ms": 9224,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - Panel - Meet A Mentor Program",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 5352,
+    "description": "The Blue Team Village is proud to introduce the Meet-a-Mentor program. Come meet the Core Mentors and learn how you can take part of the program as either mentor or mentee.\n\nThe Meet-a-Mentor program seeks to bring together mentors and mentees based on shared experiences and areas of interest in order to develop the mentee’s goals and career skills, help them address and overcome challenges in their career and/or workplace, and also to broaden the mentor’s perspectives and mentoring skills.",
+    "view_count": 180
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aK3kWXH-3vE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

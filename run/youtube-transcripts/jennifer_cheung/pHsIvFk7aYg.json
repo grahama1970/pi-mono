@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pHsIvFk7aYg",
+    "language": "en",
+    "took_ms": 7639,
+    "method": null,
+    "title": "DEF CON 30  - Jimi 'jimi2x\" Allee - Chromebook Breakout - Escaping Jail Using a Pico Ducky",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2911,
+    "description": "Learn how we used our Pico Ducky to escape Chromebook jail, rescue our friends along the way, and have some fun Living Off the Land! Leveraging a discovered (but previously disclosed) Command Injection vulnerability in the ChromeOS crosh shell, we rabbithole into the internal ChromeOS Linux system, obtain persistence across reboots, and exfiltrate user data even before Developer Mode has been enabled. Learn how to provision and utilize local services in order to perform Privilege Escalations, and also create a 'Master Key' with the Pico Ducky and custom GTFO 1-liners, in order to perform a full Chromebook Breakout!",
+    "view_count": 1096
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pHsIvFk7aYg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WzhERAdzrsM",
+    "language": "en",
+    "took_ms": 8429,
+    "method": null,
+    "title": "Michael Horowitz on the Korean Conflict for Fox 5 in Washington, DC",
+    "channel": "Hudson Institute",
+    "upload_date": "20101130",
+    "duration_sec": 308,
+    "description": "Hudson Senior Fellow Michael Horowitz joined Washington's Fox 5 News on November 24th to discuss the Korean conflict and its implications.",
+    "view_count": 174
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WzhERAdzrsM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

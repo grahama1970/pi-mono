@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0rdpLlh13V4",
+    "language": "en",
+    "took_ms": 8417,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Byeongcheol Yoo  - Will Secure Element Strengthen Crypto Wallets",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 2685,
+    "description": "Cryptocurrency wallets are used to store the public and private keys of your account, keep track of the balance, conduct transactions in sending and receiving the currencies, as well as other functions with the blockchain. Wallets are divided into two types: software (a.k.a. hot) wallets and hardware (a.k.a. cold) wallets. Software wallets are accounts on cryptocurrency exchanges or accounts based on online websites. Hardware wallets are accounts stored on an offline means.\n\n  In this talk, we deal with a comparative analysis of all categories of these wallets. For this, first, we present a systematic method to evaluate the risk of cryptocurrency wallets, and then we review two hardware wallets ('Ledger Nano S' and 'Trezor One', both of which are the world's best-selling wallet) and four software wallets ('Bread', 'Trust Wallet' for mobile, and 'Copay', 'Electrum' for PC).",
+    "view_count": 841
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0rdpLlh13V4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

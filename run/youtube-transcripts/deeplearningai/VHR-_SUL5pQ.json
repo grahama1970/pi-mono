@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VHR-_SUL5pQ",
+    "language": "en",
+    "took_ms": 7850,
+    "method": null,
+    "title": "\"Introducing Multimodal Llama 3.2\" is here! Enroll for free",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241009",
+    "duration_sec": 173,
+    "description": "Enroll now: https://bit.ly/4gX9yrq\n\nThe Llama 3.2 open multimodal model dropped a few days ago, and we worked with Meta to launch \"Introducing Multimodal Llama 3.2,\" a short course on how to use it! \n\nWe’re pleased to launch Introducing Multimodal Llama 3.2, and learn from Amit Sangani, Senior Director of AI Partner Engineering at Meta, to learn all about the latest additions to the Llama models 3.1 and 3.2, from custom tool calling to multimodality and the new Llama stack.\n\nYou’ll learn about the new vision capabilities that Llama 3.2 brings to the Llama family, and how to leverage this along with tool-calling, and Llama Stack, an open-source orchestration layer for building on top of the Llama family of models.\n\nYou’ll get hands-on and:\n\n- Learn about the new models, how they were trained, their features, and how they fit into the Llama family.\n- Understand how to do multimodal prompting with Llama and work on advanced image reasoning use cases such as understanding errors on a car dashboard, adding up the total of three photographed restaurant receipts, grading written math homework, and many more.\n- Learn different roles—system, user, assistant, ipython—in the Llama 3.1 and 3.2 family and the prompt format that identifies those roles.\n- Understand how Llama uses the tiktoken tokenizer, and how it has expanded to a 128k vocabulary size that improves encoding efficiency and enables support for seven non-English languages.\n- Learn how to prompt Llama to call built-in and custom tools with examples for web search and solving math equations.\n- Learn about Llama Stack API, a standardized interface for canonical toolchain components like fine-tuning or synthetic data generation to customize Llama models and build agentic applications.\n\nStart building exciting applications on Llama!\n\nLearn more: https://bit.ly/4gX9yrq",
+    "view_count": 4628
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VHR-_SUL5pQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

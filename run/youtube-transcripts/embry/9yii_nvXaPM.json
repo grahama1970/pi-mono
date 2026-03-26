@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9yii_nvXaPM",
+    "language": "en",
+    "took_ms": 8818,
+    "method": null,
+    "title": "#SpaceX’s #Starship Super Heavy Booster falling from space and being caught by the launch tower!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20241018",
+    "duration_sec": 60,
+    "description": "",
+    "view_count": 68918866
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9yii_nvXaPM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

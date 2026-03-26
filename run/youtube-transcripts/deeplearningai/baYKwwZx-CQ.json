@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "baYKwwZx-CQ",
+    "language": "en",
+    "took_ms": 9003,
+    "method": null,
+    "title": "Generative AI for Software Development is open for enrollment!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240925",
+    "duration_sec": 180,
+    "description": "Enroll now: https://bit.ly/4gAPuuO\n\n“Generative AI is not just a tool for creating content faster. It's a paradigm shift in how you can approach problems and solutions in software development. It offers a way to automate and enhance creativity, reducing the time from concept to product. Whether you're building enterprise applications or indie games, understanding generative AI will give you a significant edge.” – Laurence Moroney, AI luminary and instructor for Generative AI for Software Development\n\nThis new skill certificate, launching today, equips you with practical AI tools and techniques to add to your software development skillset. Through three comprehensive courses, you'll learn to leverage the potential of generative AI across the entire development lifecycle.\n\nIntroduction to Generative AI for Software Development:\n\n- Use LLMs for code analysis, dramatically reducing critical bugs\n- Optimize algorithms with AI, turning O(n^2) solutions into O(n log n) efficiency\n- Generate AI-powered test suites that uncover elusive edge cases\n\nTeam Software Engineering with AI:\n\n- Create exhaustive test suites for complex scenarios, including concurrency and security issues\n- Develop self-updating documentation systems that evolve with your code\n- Implement AI-assisted performance profiling to supercharge your applications\n\nAI-Powered Software and System Design:\n\n- Explore Configuration-Driven Development for adaptive application creation\n- Optimize complex database queries and system architectures\n- Refactor monolithic applications into microservices with AI guidance\n\nThroughout the program, you'll work on real-world projects, applying AI to solve practical software development challenges. You'll learn to use AI not just as a coding assistant, but as a collaborative partner in the entire development process - from initial design to testing and optimization.\n\nThis course is designed for developers at all levels, from students building their foundation to experienced professionals looking to stay at the cutting edge of development practices.\n\nReady to get started? Enroll here and be at the forefront of the AI-powered future of coding.\n\nLearn more: https://bit.ly/4gAPuuO",
+    "view_count": 6824
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] baYKwwZx-CQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_XKeskLFvBM",
+    "language": "en",
+    "took_ms": 9263,
+    "method": null,
+    "title": "Fact: A victorious Ukraine means a safer Taiwan",
+    "channel": "Hudson Institute",
+    "upload_date": "20231120",
+    "duration_sec": 40,
+    "description": "",
+    "view_count": 193
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _XKeskLFvBM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

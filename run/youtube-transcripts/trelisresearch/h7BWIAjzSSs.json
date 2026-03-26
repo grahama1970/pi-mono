@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "h7BWIAjzSSs",
+    "language": "en",
+    "took_ms": 7603,
+    "method": null,
+    "title": "Mistral 7B",
+    "channel": "Trelis Research",
+    "upload_date": "20231002",
+    "duration_sec": 1114,
+    "description": "Resources:\n*LLM comparison notebook* https://github.com/TrelisResearch/install-guides\n*Runpod affiliate link* https://tinyurl.com/yjxbdc9w\n*Supervised Fine-tuning Tutorial* https://youtu.be/DMcxxg5iEZQ\n\n0:00 Intro\n0:08 Video Overview\n0:34 Mistral 7B architecture and design\n3:33 Runpod setup\n4:24 Mistral 7B Evaluation \n6:18 Test 1: Random sequence reversal\n7:24 Test 2: Code generation\n9:03 Test 3: Passkey retrieval\n10:26 Test 4: Fine-tuning\n13:06 Evaluation Summary\n14:30 EXTRA: Grouped Query Attention\n15:31 EXTRA: Sliding Window Attention",
+    "view_count": 1727
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] h7BWIAjzSSs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

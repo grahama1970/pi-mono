@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2Zf8SwzOOac",
+    "language": "en",
+    "took_ms": 7808,
+    "method": null,
+    "title": "Going Small When Attacking a Process (Triangles)",
+    "channel": "S4 Events",
+    "upload_date": "20171019",
+    "duration_sec": 1925,
+    "description": "Jason Larsen kicked off S4x14 with an instant classic S4 talk, and not because it spawned a lot of triangle jokes.\n\n4kB of free space. That is all Jason had on this sensor to implement the attack and whatever measures to hide the attack from the operator. This is not enough space to record and replay data to fool the control room. Most of the talk discusses how to create the sensor output in a way that an experienced operator and automated alarms would not release the output is not real.",
+    "view_count": 259
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2Zf8SwzOOac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MWvpOW-PRJI",
+    "language": "en",
+    "took_ms": 7676,
+    "method": null,
+    "title": "DEF CON 33 - Siriously Leaky: Exploring Overlooked Attack Surfaces in Apple's Ecosystem - Richard Im",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2707,
+    "description": "Apple champions user privacy and security, but beneath its glossy screens and polished interfaces lies an overlooked field of subtle vulnerabilities lurking within trusted, everyday features: Siri, Spotlight, Safari, Apple Intelligence, and Apple's official support systems. This talk dives deeply into multiple zero-day issues discovered on fully updated, non-jailbroken iPhones—no specialized tools required. I'll demonstrate how missing lock-state checks, Siri context confusion, race conditions, faulty Unicode parsing, incomplete patches, and other subtle oversights enabled me to bypass Face ID locks, retrieve sensitive user data, spoof emails, and trigger daemon crashes. Specifically, I'll show you how I disclosed sensitive data on locked devices via Siri (CVE-2025-24198) and Spotlight (CVE-2024-44235), bypassed Safari's Face ID protection on private tabs (CVE-2025-30468), executed deceptive email spoofing (CVE-2025-24225), leaked Apple Intelligence internal prompts and Private Cloud Compute data to ChatGPT, and exploited an unresolved IDOR vulnerability on Apple's support site to retrieve almost any customer data.",
+    "view_count": 428
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MWvpOW-PRJI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

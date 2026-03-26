@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f-LTMUFQzjQ",
+    "language": "en",
+    "took_ms": 9314,
+    "method": null,
+    "title": "DEF CON 33 - Emulating Embedded Linux Devices at Scale w LightTouch Firmware Rehosting - S Polke",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2307,
+    "description": "We will present a higher-level “rehosting” approach to the emulation of embedded Linux systems.\n\nWhile most existing embedded Linux emulation frameworks work in userspace, we try not to touch userspace or modify a firmware image at all. Instead, we take a higher-level and somewhat “hybrid” approach, which involves building patched Linux kernels and using modified or custom QEMU machines. We do this to model the terrain of a system as closely as possible to that which a userspace firmware image expects, allowing userspace to run essentially unimpeded.\n\nThis approach involves a considerable amount of reverse-engineering of userspace binaries and libraries, alongside poring over whatever GPL code we can find, in order to write kernel patches, dummy drivers and make QEMU changes “reactively”. Our goal is to end up with a rehosting environment which, from the perspective of userspace, looks almost exactly like the real system.",
+    "view_count": 714
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f-LTMUFQzjQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

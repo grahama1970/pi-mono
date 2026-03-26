@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-btN8T6WvYg",
+    "language": "en",
+    "took_ms": 8503,
+    "method": null,
+    "title": "DEF CON 29 Ham Radio Village - Jon Marler - Amateur Radio Digital Modes Primer",
+    "channel": "DEFCONConference",
+    "upload_date": "20220309",
+    "duration_sec": 3384,
+    "description": "",
+    "view_count": 5197
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -btN8T6WvYg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

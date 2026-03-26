@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f-9oT7LElkQ",
+    "language": "en",
+    "took_ms": 8055,
+    "method": null,
+    "title": "World in Danger: A Conversation on the Future of Europe with Ambassador Wolfgang Ischinger",
+    "channel": "Hudson Institute",
+    "upload_date": "20201204",
+    "duration_sec": 3565,
+    "description": "Join Hudson Institute for a discussion with Ambassador Wolfgang Ischinger, author of the recently published World in Danger: Germany and Europe in an Uncertain Time. Hudson Institute Distinguished Fellow Walter Russell Mead will moderate the conversation.",
+    "view_count": 904
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f-9oT7LElkQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

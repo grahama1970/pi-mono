@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZvtZWPKCs-I",
+    "language": "en",
+    "took_ms": 8183,
+    "method": null,
+    "title": "CyberX 2020 Global IOT and ICS Risk Report",
+    "channel": "S4 Events",
+    "upload_date": "20200228",
+    "duration_sec": 1695,
+    "description": "Dan Shugrue of CyberX presents the key findings from their 2020 Global IOT and ICS Risk Report. And then introduces some broad based suggestions on how to address these risks leveraging some of the guidance from INL's CCE.",
+    "view_count": 747
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZvtZWPKCs-I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

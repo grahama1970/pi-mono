@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rogtZjpyoVQ",
+    "language": "en",
+    "took_ms": 7622,
+    "method": null,
+    "title": "DEF CON 31 - Unlocking Doors from Half a Continent Away -  Trevor Stevado, Sam Haskins",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2277,
+    "description": "Contactless credentials have become increasingly popular for secure authentication and access control systems due to their convenience and efficiency. In this talk, we will discuss a specific weakness in the ISO 14443A protocol that enables replay attacks over moderate latency connections, leading to the potential for long-range relay attacks.\n\nDuring the presentation, we will delve into the history of contactless credential attacks, how manufacturers have adapted, and discuss why we focused on a relay attack. We will provide an overview of the ISO 14443A protocol and explain how the relay attack is executed and the ‘features’ of the underlying protocol that make it possible. Finally, we will demonstrate and release a new tool to make this relay attack feasible with the Proxmark, as we attempt to unlock a door in Ottawa, ON with a card on-stage in Vegas.\n\nIn addition, we will discuss the response from HID Global following our responsible disclosure against their SEOS readers and suggest mitigations to prevent these attacks on your access control systems.",
+    "view_count": 3078
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rogtZjpyoVQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

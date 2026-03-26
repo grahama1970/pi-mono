@@ -1,0 +1,22 @@
+[
+  {
+    "name": "setup-tab",
+    "prompt": "Show the SETUP tab of the prompt-lab optimize dashboard. This is the initial state before optimization runs. Left pane: system prompt textarea with 'You are a cybersecurity taxonomy classifier...' text, editable. Below: Test Cases section showing 3 of 8 cases (T1547.001 Registry Run Keys expected Corruption+Persist, SI-2 Flaw Remediation expected Resilience+Fragility+Harden, d3f:NetworkIsolation Network Isolation expected Resilience+Isolate). Each case has colored tag pills (purple for conceptual, blue for tactical). Buttons: '+ Add Custom' and 'Import from Ground Truth'. Below: Model chips (DeepSeek-V3, qwen2.5:7b, text-gemini selected; qwen2.5:14b unselected). Big green 'Optimize 3 Models' button. Right pane: empty state saying 'Select models and test cases, then click Optimize'. Tab bar at top: Setup (active), Running, Results, History. NVIS dark theme."
+  },
+  {
+    "name": "running-tab",
+    "prompt": "Show the RUNNING tab during an active optimization. Tab bar: Setup, Running (active with green dot), Results, History. Left pane same as setup but Optimize button now disabled showing 'Optimizing...'. Right pane shows live progress: model comparison table at top (DeepSeek-V3: Round 2 of 5, F1 0.619; qwen2.5:7b: Round 1 of 5, spinner; text-gemini: Queued). Below: streaming results for DeepSeek-V3 Round 1 rows (Registry Run Keys FAIL F1=0.333, Flaw Remediation PASS F1=0.857, Network Isolation PASS F1=0.667). Round 2 starting with spinner. Progress bar. NVIS colors."
+  },
+  {
+    "name": "results-tab",
+    "prompt": "Show the RESULTS tab after optimization completes. Tab bar: Setup, Running, Results (active), History. Right pane: Model summary cards at top (DeepSeek-V3 F1=0.929 PASS green border BEST badge, qwen2.5:7b F1=0.881 PASS, text-gemini F1=0.912 PASS). DeepSeek-V3 selected showing detail: green-bordered FINAL RESULT card with results table (Registry Run Keys F1=1.000, Flaw Remediation F1=0.857, Network Isolation F1=0.929, Avg=0.929). Converged prompt in purple pre block. Collapsed iteration log. Bottom: Approve & Save All green button, Reject gray button, note about saving per-model files."
+  },
+  {
+    "name": "history-tab",
+    "prompt": "Show the HISTORY tab listing previous optimization runs. Tab bar: Setup, Running, Results, History (active). Table of past runs: Date, Prompt, Models, Best F1, Status. Rows: 2026-03-20 taxonomy_v1 3 models F1=0.929 PASS, 2026-03-18 taxonomy_v1 2 models F1=0.812 PASS, 2026-03-15 taxonomy_v1 1 model F1=0.641 FAIL. Click row to view results. F1 trend sparkline. NVIS dark theme."
+  },
+  {
+    "name": "context-menu-note",
+    "prompt": "Show the results tab with a right-click context menu visible. The user has right-clicked on the DeepSeek-V3 results row for Registry Run Keys (F1=1.000). A dark popup context menu appears at the cursor position with options: 'Add Note', 'Copy Response JSON', 'Compare with Other Models', 'View Iteration History', 'Flag for Review'. The 'Add Note' option is highlighted. Below the menu, show what happens when Add Note is clicked: a small inline note editor appears below the row with a textarea and Save button. Example note text: 'DeepSeek needs the Persistence disambiguation rule'. NVIS dark theme, menu has subtle purple border."
+  }
+]

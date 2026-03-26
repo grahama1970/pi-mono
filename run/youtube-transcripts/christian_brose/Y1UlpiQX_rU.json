@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y1UlpiQX_rU",
+    "language": "en",
+    "took_ms": 8140,
+    "method": null,
+    "title": "John Lee on Trade Trouble with China for Fox Business",
+    "channel": "Hudson Institute",
+    "upload_date": "20101102",
+    "duration_sec": 233,
+    "description": "Hudson Visiting Fellow John Lee joined Fox Business on November 1st to discuss growing trade trouble with China.",
+    "view_count": 298
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y1UlpiQX_rU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

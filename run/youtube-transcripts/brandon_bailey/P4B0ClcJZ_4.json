@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P4B0ClcJZ_4",
+    "language": "en",
+    "took_ms": 7906,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Kelley Robinson - 2FA in 2020 and Beyond",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1582,
+    "description": "Security professionals agree: SMS based Two-factor Authentication (2FA) is insecure, yet thousands of companies still employ this method to secure their customer-facing applications. This talk will look at the evolution of authentication and provide a data-driven analysis of the tradeoffs between the different types of factors available.",
+    "view_count": 533
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P4B0ClcJZ_4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fW2NsQt5uM4",
+    "language": "en",
+    "took_ms": 9200,
+    "method": null,
+    "title": "Competing with China through Budget Agility",
+    "channel": "Hudson Institute",
+    "upload_date": "20210305",
+    "duration_sec": 2835,
+    "description": "Join Hudson Institute’s Center for Defense Concepts and Technologies Adjunct Fellow Dr. Dan Patt and experts Elaine McCusker, Lt. Gen. S. Clinton Hinote, Michael Brown, and Bill Greenwalt for a discussion on the influence of resource allocation over Sino-U.S. competition.",
+    "view_count": 13800
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fW2NsQt5uM4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

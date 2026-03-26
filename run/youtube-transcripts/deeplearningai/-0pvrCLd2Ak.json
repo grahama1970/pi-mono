@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-0pvrCLd2Ak",
+    "language": "en",
+    "took_ms": 10120,
+    "method": null,
+    "title": "Mastering RLHF with AWS: A Hands-on Workshop on Reinforcement Learning from Human Feedback",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230803",
+    "duration_sec": 3661,
+    "description": "Enroll in Generative AI with LLMs here:\nhttps://bit.ly/3rVrDB6\n\nJoin us for a hands-on workshop where you will learn about Reinforcement Learning (RL) and learn how to harness the power of Human Feedback (HF) on Amazon Web Services (AWS). \n\nThis event is designed to equip participants with the skills and knowledge required to excel in RL applications and effectively leverage human input to enhance AI systems. Whether you're a seasoned data scientist, an aspiring AI enthusiast, or a business professional seeking to understand the potential of RL, this workshop offers a unique opportunity to unlock its true potential. \n\nThis workshop is based off the foundational learnings of DeepLearning.AI’s course on Generative AI with LLMs built in collaboration with AWS team. Everything covered in the workshop is presented as continued education from the course.\n\n​​About the Speakers:\n\nAntje Barth, is a Principal Developer Advocate for AI and ML at AWS. She is co-author of the O’Reilly book \"Data Science on AWS\". Antje frequently speaks at AI/ML conferences, events, and meetups around the world. She also co-founded the Düsseldorf chapter of Women in Big Data.\n\nhttps://www.linkedin.com/in/antje-barth/\n\nChris Fregly,  is a Principal Solution Architect for AI and Machine Learning at Amazon Web Services (AWS) based in San Francisco, California. He is co-author of the O'Reilly Book, \"Data Science on AWS.\" Chris is also the Founder of the global meetup series titled, \"Data Science on AWS.\" He regularly speaks at AI and Machine Learning conferences across the world including O’Reilly AI, Open Data Science Conference (ODSC), Big Data London, Big Data Spain, and Nvidia GPU Technology Conference (GTC). Previously, Chris was founder at PipelineAI where he worked with many AI-first startups and enterprises to continuously deploy ML/AI Pipelines using Apache Spark, Kubernetes, TensorFlow, Kubeflow, Ray, Amazon EKS, and Amazon SageMaker.\n\nhttps://www.linkedin.com/in/cfregly/\n\nAbout DeepLearning.AI :\n\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community. DeepLearning.AI was founded in 2017 by machine learning and education pioneer Andrew Ng to fill a need for world-class AI education. DeepLearning.AI has created high-quality AI programs on Coursera that have gained an extensive global following. By providing a platform for education and fostering a tight-knit community, DeepLearning.AI has become the pathway for anyone looking to build an AI career.\n\nSign up for our Generative AI with LLMs course here:\nhttps://bit.ly/3rVrDB6\n\nSign up for our newsletter The Batch, for AI Industry updates:\nhttps://www.deeplearning.ai/the-batch/\n\nHave feedback for us? Fill out survey here:\nhttps://forms.gle/58cUmGNkPWQ7oEZW7",
+    "view_count": 24910
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -0pvrCLd2Ak: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

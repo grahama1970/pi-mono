@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XwSJ8hloGvY",
+    "language": "en",
+    "took_ms": 3329,
+    "method": null,
+    "title": "Triton - A Report From The Trenches",
+    "channel": "S4 Events",
+    "upload_date": "20190311",
+    "duration_sec": 1596,
+    "description": "Julian Gutmanis was in the plant that was compromised by Triton, and he was involved in the response and recovery. This is his first hand report. Here are some of the highlights:\n\n- the initial outage was related to one down controller on a Saturday in early June, 2017\n- six controllers went down in the August, 2017 attack\n- DCS reflected normal operation during both outages\n- \"at this point we had considered the entire organization to be compromised ... we know the ESD systems and the integrity of these systems can no longer be trusted ... we know there is some unknown operating program in the controllers memory, and we could be facing a complete loss of control\". \n- Schneider Electric did not provide information on Triton; information sharing was in one direction. The asset owner provided the Triton info, but did not get information back. The first they heard about Schneider analysis was at S4x18.\n- They were worried about time-delayed attacks after communication to the adversary was terminated.\n- \"There was a significant eradication event\".\n- The asset owner was lucky it wasn't worse, but it was expensive.\n- Lessons learned.\n\n\n\n-",
+    "view_count": 5555
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XwSJ8hloGvY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

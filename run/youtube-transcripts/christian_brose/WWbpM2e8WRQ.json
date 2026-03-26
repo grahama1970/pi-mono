@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WWbpM2e8WRQ",
+    "language": "en",
+    "took_ms": 7771,
+    "method": null,
+    "title": "Confronting a New Era of Global Threats: A Conversation with US Senator John Cornyn",
+    "channel": "Hudson Institute",
+    "upload_date": "20210327",
+    "duration_sec": 3121,
+    "description": "Join Hudson Institute Senior Fellow Tim Morrison and U.S. Senator John Cornyn (R-TX) for a discussion on the future of nuclear arms control, competing with China’s semiconductor industry, and the rapidly evolving global threat landscape.\n\nFrom outdated nuclear treaties to not-so-secret plans for Chinese tech domination, today’s global security threats are more complex than ever before. How can the U.S. maintain its competitive edge in this environment? Please join us for this timely discussion.",
+    "view_count": 629
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WWbpM2e8WRQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

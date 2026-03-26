@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4pkzY95Otm4",
+    "language": "en",
+    "took_ms": 8559,
+    "method": null,
+    "title": "Beyond Jupyter Notebooks: MLOps Environment Setup & First Deployment",
+    "channel": "DeepLearningAI",
+    "upload_date": "20220928",
+    "duration_sec": 3492,
+    "description": "Join us for a live, interactive workshop on how to set up your new computer to build and deploy industry-standard machine learning applications so that you’re ready to maximize your impact during your first week on the job.\r\n\nMacOS will be used for the demo, and all setup and deployment code will be provided.  Windows and Linux resources will also be provided to attendees following the event. Those with a non-technical background are welcome to attend as well. Special thanks to FourthBrain for co-hosting the event with us!\n\nWe will be taking questions during the event. Please submit your question or upvote others' here: https://app.sli.do/event/qKV8BV4SRt8aJh4XrsZn7m\n\nSpeaker\nDr. Greg Loughnane, Head of Product & Curriculum at FourthBrain\nhttps://www.linkedin.com/in/gregloughnane/\n\nLet us know how we're doing? We will be giving out discount codes for a selected number of people who fill out the survey: https://forms.gle/FtcJLWfMXGmF13KM6\n\nLooking to connect with your peer learners, share projects, and swap advice? Join our AI community: \nhttps://community.deeplearning.ai/invites/ddzDLVa2jv\n\nTo learn more about us and signup for future events:\nDeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 23558
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4pkzY95Otm4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H2RjbQ0YpAU",
+    "language": "en",
+    "took_ms": 8002,
+    "method": null,
+    "title": "DEF CON Safe Mode ICS Village -  Demirel Temel  - Playing with Electricity",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 3565,
+    "description": "Hacking Into distribution companies.",
+    "view_count": 512
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H2RjbQ0YpAU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

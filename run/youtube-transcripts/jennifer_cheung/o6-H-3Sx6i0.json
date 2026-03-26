@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "o6-H-3Sx6i0",
+    "language": "en",
+    "took_ms": 7918,
+    "method": null,
+    "title": "DEF CON 33 - Incident Response from a Maritime Sysadmin’s War Room - Kit Louttit, Steve Winston",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1602,
+    "description": "Cyber Security threats encountered in the Maritime Industry from both an Executive and Technical Perspective. The presentation is based on current events and starts with the Executive Director of The Marine Exchange of Southern California giving his side of the story followed by the technical and first-hand incident response breakdown from the Senior Systems Administrator.",
+    "view_count": 325
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] o6-H-3Sx6i0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

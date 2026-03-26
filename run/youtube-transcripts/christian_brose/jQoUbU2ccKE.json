@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jQoUbU2ccKE",
+    "language": "en",
+    "took_ms": 8517,
+    "method": null,
+    "title": "A Conversation from the Front Lines with Commander of the Georgian Legion Mamuka Mamulashvili",
+    "channel": "Hudson Institute",
+    "upload_date": "20221215",
+    "duration_sec": 2135,
+    "description": "Since 2014, volunteers from Georgia and around the world have been fighting against Russia's invasion of Ukraine as part of the Georgian Legion. Commanded by veteran fighter Mamuka Mamulashvili, the Georgian Legion has proven itself on the battlefield in some of the most important battles of the war. Join us for a conversation with Commander Mamulashvili as he and Hudson Senior Fellow Luke Coffey discuss the current situation on the front lines of Ukraine’s heroic defense against Russian aggression and what the future holds for the region.",
+    "view_count": 5539
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jQoUbU2ccKE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

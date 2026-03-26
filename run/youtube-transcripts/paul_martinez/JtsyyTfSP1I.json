@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JtsyyTfSP1I",
+    "language": "en",
+    "took_ms": 9495,
+    "method": null,
+    "title": "Secure Coding Practices for PLC's",
+    "channel": "S4 Events",
+    "upload_date": "20200401",
+    "duration_sec": 1504,
+    "description": "We have learned that secure coding practices in application development can dramatically reduce the number of bugs and exploitable vulnerability. Are there or should there be secure coding / programming practices for PLC's? Of course the answer is yes.\n\nJake Brodsky of Jacobs provides important examples of Security Coding Practices for PLC's on the S4x20 Stage 2: Technical Deep Dives. He points out that it is too often assumed that bad things won't happen because the HMI won't send such a command, but what if it is an attacker who chooses not to use or respect the HMI limitations.",
+    "view_count": 3242
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JtsyyTfSP1I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e9ljJ8aQoiU",
+    "language": "en",
+    "took_ms": 8814,
+    "method": null,
+    "title": "Advancing Innovation and Healthcare in India",
+    "channel": "Hudson Institute",
+    "upload_date": "20161110",
+    "duration_sec": 7893,
+    "description": "A conference on the Modi administration's efforts to improve public healthcare in India, and opportunities for private sector coordination. Speakers included Ambassador Taranjit Singh Sandhu, Ambassador Husain Haqqani, Amit Kapoor, Ranjana Smetacek, Kevin Walker, Amiee Aloi, Jeffrey Hamilton, and Jeremiah Norris.",
+    "view_count": 989
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e9ljJ8aQoiU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

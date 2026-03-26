@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KfxPF9xjFrE",
+    "language": "en",
+    "took_ms": 8846,
+    "method": null,
+    "title": "Is The Purdue Model Dead?",
+    "channel": "S4 Events",
+    "upload_date": "20190817",
+    "duration_sec": 1839,
+    "description": "Joel Langill and Brad Hegrat join Dale Peterson to answer this question. The Purdue Model was used as THE MODEL when it came to ICS security, and it worked well in a traditional plant or factory environment. Is this true in the coming world of cloud services, IIoT and other changes? Joel, Brad and Dale discuss and actually reach a mostly common understanding.",
+    "view_count": 7371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KfxPF9xjFrE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

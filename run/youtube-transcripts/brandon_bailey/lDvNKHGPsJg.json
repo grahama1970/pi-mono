@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lDvNKHGPsJg",
+    "language": "en",
+    "took_ms": 7610,
+    "method": null,
+    "title": "DEF CON 30 - Ben Barnea, Ophir Harpaz - Exploring Ancient Ruins to Find Modern Bugs",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2726,
+    "description": "MS-RPC is Microsoft's implementation of the Remote Procedure Calls protocol. Even though the protocol is extremely widespread, and serves as the basis for nearly all Windows services on both managed and unmanaged networks, little has been published about MS-RPC, its attack surface and design flaws.\n\nIn this talk, we will walkthrough and demonstrate a 0-day RCE vulnerability which we discovered through our research of MS-RPC. When exploited, this vulnerability allows an attacker to execute code remotely and potentially take over the Domain Controller. We believe this vulnerability may belong to a somewhat novel bug-class which is unique to RPC server implementations, and would like to share this idea as a possible research direction with the audience.\n\nTo aid future research into the topic of MS-RPC, we will share a deep, technical overview of the RPC system in Windows, explain why we decided to target it, and point out several design flaws. We will also outline the methodology we developed around RPC as a research target along with some tools we built to facilitate the bug-hunting process.",
+    "view_count": 1361
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lDvNKHGPsJg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

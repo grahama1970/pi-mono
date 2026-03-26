@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hGUMUG9VLKU",
+    "language": "en",
+    "took_ms": 8363,
+    "method": null,
+    "title": "DEF CON Safe Mode Lock Bypass Village - Bill Graydon  - Alarms and Access Controlled Doors",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 3233,
+    "description": "",
+    "view_count": 4902
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hGUMUG9VLKU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

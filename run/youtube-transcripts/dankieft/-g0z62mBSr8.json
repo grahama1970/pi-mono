@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-g0z62mBSr8",
+    "language": "en",
+    "took_ms": 7803,
+    "method": null,
+    "title": "Google Veo 3.1 Deep Dive -  Does it Beat Sora 2?",
+    "channel": "Dan Kieft",
+    "upload_date": "20251104",
+    "duration_sec": 990,
+    "description": "Google Veo 3.1 vs Sora 2, which AI video generator is better?\nTry Veo 3.1 & Sora 2 on OpenArt 👉 https://openart.ai/home/?ref=veo3vsSora2\n\nIn this tutorial I walk you through different ways of how you can use Google Veo 3.1. We will test out the ingredients feature and I will walk you through how to use the start and end frame on veo 3.1 Lastly we will compare it to sora 2 to see which model you should use for your generations. \n\n👉My Ai Toolkit - https://dankieft.carrd.co/\nMy toolkit gives you over 30+ ai tools that I've gathered over the years and use daily. You'll also get access to my free newsletter that educates you about the latest ai tools.\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 35683
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -g0z62mBSr8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "bg-main": "#0b1220",
+                        "surface": "#111827",
+                        "accent": "#7c3aed",
+                        "border-subtle": "#1f2937",
+                        "text-main": "#e2e8f0",
+                        "text-muted": "#94a3b8",
+                        "terminal-pass": "#00ff88",
+                        "terminal-fail": "#ff4444"
+                    },
+                    fontFamily: {
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "none": "0px"
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { 
+            font-family: 'JetBrains Mono', monospace; 
+            background-color: #0b1220; 
+            color: #e2e8f0; 
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0b1220; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; }
+        .form-input {
+            @apply w-full bg-[#070b14] border border-[#1f2937] focus:border-[#7c3aed] focus:ring-0 text-sm text-text-main p-4;
+        }
+        .diff-added {
+            @apply border-l-2 border-[#00ff88] bg-[#00ff88]/5 px-4 py-0.5;
+        }
+        .diff-removed {
+            @apply border-l-2 border-[#ff4444] bg-[#ff4444]/5 px-4 py-0.5;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<header class="border-b border-border-subtle px-8 py-4 flex justify-between items-center bg-bg-main">
+<div class="font-bold tracking-tighter text-accent">PROMPT_LAB // OPTIMIZER</div>
+<div class="text-[10px] text-text-muted uppercase tracking-widest">Minimal_Form_Approach_v2</div>
+</header>
+<main class="max-w-4xl mx-auto w-full px-8 py-10 space-y-12">
+<section class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="text-accent text-xs">01</span>
+<h2 class="text-xs font-bold uppercase tracking-widest text-text-muted">System Prompt</h2>
+</div>
+<textarea class="form-input min-h-[200px] resize-none leading-relaxed" placeholder="Enter the system persona and behavioral constraints here...">You are a highly efficient data extraction assistant. Your task is to process technical reports and output structured JSON. 
+Constraints:
+- Only output valid JSON.
+- Focus on quantitative metrics.
+- If a value is missing, use null.</textarea>
+</section>
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-2">
+<span class="text-accent text-xs">02</span>
+<h2 class="text-xs font-bold uppercase tracking-widest text-text-muted">Test Cases</h2>
+</div>
+<button class="text-[10px] text-accent hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span> ADD_NEW_CASE
+                </button>
+</div>
+<div class="border border-border-subtle bg-[#070b14]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-subtle text-[10px] text-text-muted uppercase tracking-wider">
+<th class="px-4 py-3 font-medium border-r border-border-subtle w-12 text-center">#</th>
+<th class="px-6 py-3 font-medium border-r border-border-subtle">User Prompt</th>
+<th class="px-6 py-3 font-medium">Expected JSON</th>
+<th class="px-4 py-3 w-10"></th>
+</tr>
+</thead>
+<tbody class="text-xs divide-y divide-border-subtle">
+<tr class="group hover:bg-white/5">
+<td class="px-4 py-4 text-center border-r border-border-subtle text-text-muted">01</td>
+<td class="px-6 py-4 border-r border-border-subtle align-top">
+<div class="line-clamp-3">Summarize the Q3 fiscal report focusing on the SaaS vertical.</div>
+</td>
+<td class="px-6 py-4 font-mono text-terminal-pass align-top">
+                                { "summary": "...", "metrics": { "saas_rev": 12.4 } }
+                            </td>
+<td class="px-4 py-4 text-center">
+<button class="text-text-muted hover:text-terminal-fail material-symbols-outlined text-sm">remove</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="px-4 py-4 text-center border-r border-border-subtle text-text-muted">02</td>
+<td class="px-6 py-4 border-r border-border-subtle align-top">
+<div class="line-clamp-3">Extract all dates and mention of 'Project Phoenix' from the log.</div>
+</td>
+<td class="px-6 py-4 font-mono text-terminal-pass align-top">
+                                { "dates": [], "mentions": ["Phoenix"] }
+                            </td>
+<td class="px-4 py-4 text-center">
+<button class="text-text-muted hover:text-terminal-fail material-symbols-outlined text-sm">remove</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="flex flex-wrap gap-4 items-center bg-surface p-6 border border-border-subtle">
+<button class="bg-accent hover:bg-white hover:text-bg-main text-white px-8 py-3 text-sm font-bold tracking-tight transition-colors">
+                EXECUTE OPTIMIZATION
+            </button>
+<div class="flex items-center gap-2 px-4 py-3 border border-border-subtle bg-bg-main flex-1 max-w-[240px]">
+<span class="text-[10px] text-text-muted font-bold">MODEL:</span>
+<select class="bg-transparent border-none focus:ring-0 text-xs text-text-main p-0 w-full cursor-pointer uppercase">
+<option>DeepSeek-V3-Stable</option>
+<option>GPT-4o-Latest</option>
+<option>Claude-3.5-Sonnet</option>
+</select>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="text-accent text-xs">03</span>
+<h2 class="text-xs font-bold uppercase tracking-widest text-text-muted">Optimization Log</h2>
+</div>
+<div class="bg-bg-main border border-border-subtle p-5 font-mono text-[11px] space-y-2 leading-relaxed">
+<div class="flex gap-4"><span class="text-text-muted">[14:20:01]</span> <span>Initialization complete. Loading 2 test cases...</span></div>
+<div class="flex gap-4"><span class="text-text-muted">[14:20:02]</span> <span class="text-terminal-pass">Iteration 01: Case 01 Passed</span></div>
+<div class="flex gap-4"><span class="text-text-muted">[14:20:03]</span> <span class="text-terminal-fail">Iteration 01: Case 02 Failed (Key Mismatch)</span></div>
+<div class="flex gap-4"><span class="text-text-muted">[14:20:05]</span> <span class="text-accent">Heuristic engine adjusting prompt parameters...</span></div>
+<div class="flex gap-4"><span class="text-text-muted">[14:20:07]</span> <span class="text-terminal-pass">Iteration 02: All cases passed. Finalizing.</span></div>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="text-accent text-xs">04</span>
+<h2 class="text-xs font-bold uppercase tracking-widest text-text-muted">Optimized Diff Output</h2>
+</div>
+<div class="bg-bg-main border border-border-subtle overflow-hidden">
+<div class="p-4 border-b border-border-subtle text-[10px] text-text-muted">MODIFIED_PROMPT_v1.0.2</div>
+<div class="p-6 font-mono text-xs leading-6 bg-[#070b14]">
+<div class="text-text-muted mb-2">@@ -4,8 +4,8 @@</div>
+<div class="px-4">You are a highly efficient data extraction assistant.</div>
+<div class="diff-removed">- Focus on quantitative metrics.</div>
+<div class="diff-added">+ Focus exclusively on SaaS vertical metrics. Format as strict JSON.</div>
+<div class="px-4">If a value is missing, use null.</div>
+<div class="diff-added">+ Ensure all keys are lowercased and snake_case.</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-terminal-pass/10 hover:bg-terminal-pass hover:text-bg-main text-terminal-pass border border-terminal-pass/30 py-4 text-xs font-bold tracking-widest transition-all">
+                    APPROVE CHANGES
+                </button>
+<button class="flex-1 bg-white/5 hover:bg-white/10 text-text-muted border border-border-subtle py-4 text-xs font-bold tracking-widest transition-all">
+                    REJECT VARIANT
+                </button>
+</div>
+</section>
+</main>
+<footer class="mt-auto border-t border-border-subtle py-6 px-8 flex justify-center text-[10px] text-text-muted uppercase tracking-[0.3em]">
+        System Status: Operational
+    </footer>
+
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IpsfTP386yQ",
+    "language": "en",
+    "took_ms": 8696,
+    "method": null,
+    "title": "The Consequences of the Emerging American-Iranian Nuclear",
+    "channel": "Hudson Institute",
+    "upload_date": "20150603",
+    "duration_sec": 3406,
+    "description": "Lee Smith and Efraim Inbar discuss the impact of the  emerging American-Iranian nuclear deal. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 379
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IpsfTP386yQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

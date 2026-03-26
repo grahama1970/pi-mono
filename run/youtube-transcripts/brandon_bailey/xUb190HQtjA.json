@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xUb190HQtjA",
+    "language": "en",
+    "took_ms": 8997,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Jay Balan - 5 Years of IoT Vulnerability Research and Countless 0days",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 2569,
+    "description": "How many 0days can a research team discover in 4 years of vulnerability research in IoT? How many of them are relevant and can be used even today? How to get started (or advance further) with IoT vulnerability research? This talk will answer all these questions and show you some hands-on shell-popping and authentication bypasses as well as some new 0days published this year",
+    "view_count": 2883
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xUb190HQtjA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

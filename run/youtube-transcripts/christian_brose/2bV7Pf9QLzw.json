@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2bV7Pf9QLzw",
+    "language": "en",
+    "took_ms": 8160,
+    "method": null,
+    "title": "Weitz 10 21 10 US Arms Deal with Saudi",
+    "channel": "Hudson Institute",
+    "upload_date": "20101022",
+    "duration_sec": 277,
+    "description": "",
+    "view_count": 88
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2bV7Pf9QLzw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

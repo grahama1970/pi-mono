@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "slhdowWjSuU",
+    "language": "en",
+    "took_ms": 8646,
+    "method": null,
+    "title": "DEF CON 30 - Tamper Evident Village",
+    "channel": "DEFCONConference",
+    "upload_date": "20220908",
+    "duration_sec": 503,
+    "description": "Silk tries out the wares of the Tamper Evident Village:\n\nSee more of SIlk's hacker videos at :\nYouTube.com/alexchaveriat\nYouTube.com/hackerhangouts",
+    "view_count": 1397
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] slhdowWjSuU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

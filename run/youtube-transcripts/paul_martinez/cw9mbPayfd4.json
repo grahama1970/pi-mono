@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cw9mbPayfd4",
+    "language": "en",
+    "took_ms": 9292,
+    "method": null,
+    "title": "Tying Security Architecture Into Control Room Operations",
+    "channel": "S4 Events",
+    "upload_date": "20230914",
+    "duration_sec": 1422,
+    "description": "Chad Lloyd of Schneider Electric introduces the three types of memory areas: Frequent Access, Occasional Access, Rare Access memory areas. Chad then discusses how they attempted to change firewall rules quickly to limit access to the occasional and rare access areas, and how this didn't work.\n\nWhen firewall rules didn't work, they looked at the IPS feature flipped on its head. It was normally blocking, but could open it up temporarily based on certain packets over a secure link from the control room. Essentially creating a finite state machine. The speed of change was less than the required 50ms.",
+    "view_count": 903
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cw9mbPayfd4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

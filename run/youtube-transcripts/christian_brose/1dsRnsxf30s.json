@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1dsRnsxf30s",
+    "language": "en",
+    "took_ms": 9820,
+    "method": null,
+    "title": "Cooperative Threat Reduction in the 21st Century",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 5078,
+    "description": "Cooperative Threat Reduction (CTR) in today's world must address the complex challenges posed by weapons of mass destruction (WMD) to national security and global stability.  Effective CTR requires a network of diverse stakeholders to secure WMD-related materials, technologies, and knowledge; prevent their misuse; and reduce or mitigate the risks caused by their availability.  How do U.S. CTR programs and initiatives need to adapt to continue to be effective in the 21st century?  How should the",
+    "view_count": 76
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1dsRnsxf30s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

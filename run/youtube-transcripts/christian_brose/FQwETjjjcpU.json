@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FQwETjjjcpU",
+    "language": "en",
+    "took_ms": 10314,
+    "method": null,
+    "title": "Dialogues on American Foreign Policy and World Affairs: A Conversation with Jake Sullivan",
+    "channel": "Hudson Institute",
+    "upload_date": "20190315",
+    "duration_sec": 2704,
+    "description": "Hudson Institute hosted Jake Sullivan, former national security adviser to Vice President Joe Biden, for a one-on-one discussion with Hudson Institute Distinguished Fellow Walter Russell Mead on U.S. national security threats and opportunities. Mead explored Mr. Sullivan’s perspective on the future of the Middle East; Russia and Transatlantic relations; the challenge of a rising China; and other concerns facing American policymakers today and in the years ahead.\n\nA prominent voice on national security and foreign affairs, Mr. Sullivan also served as director of policy planning at the U.S. Department of State and as deputy chief of staff to Secretary of State Hillary Clinton.\n\nDialogues on American Foreign Policy and World Affairs is a Hudson discussion series moderated by Walter Russell Mead, one of America’s leading analysts of international affairs and Global View columnist at The Wall Street Journal. The series features influential policymakers and opinion leaders in candid conversation on timely questions of international affairs and national security.",
+    "view_count": 2217
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FQwETjjjcpU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

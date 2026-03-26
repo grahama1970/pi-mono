@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cR-NQqMmMrw",
+    "language": "en",
+    "took_ms": 7563,
+    "method": null,
+    "title": "Create AI Animation Avatars That Can Talk & Walk (Step-by-Step)",
+    "channel": "Dan Kieft",
+    "upload_date": "20250722",
+    "duration_sec": 697,
+    "description": "Learn How to Create AI animated avatars that can Talk & walk\nTry out OpenArt 👉 https://openart.ai/home?ref=talkingavatar\n\nIn this video I show you how to build your own AI animated Avatar that can talk and walk. This is perfect for building your own faceless youtube channel and you can easily tailor it to your liking. If you want to use my prompts make sure you sign up to my newsletter\n\n👉My Prompts https://dk-avatar.carrd.co/\n\nTools Used\nOpenArt -  https://openart.ai/home?ref=talkingavatar\nElevenlabs  - https://try.elevenlabs.io/swqj\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 47332
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cR-NQqMmMrw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

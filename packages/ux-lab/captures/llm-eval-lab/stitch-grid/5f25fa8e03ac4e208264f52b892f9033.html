@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#5a2e00",
+              "on-surface-variant": "#adaaaa",
+              "surface": "#0e0e0e",
+              "inverse-primary": "#006f16",
+              "secondary-container": "#860dd4",
+              "on-error": "#450900",
+              "outline-variant": "#494847",
+              "on-primary": "#006413",
+              "secondary-dim": "#a33ef1",
+              "on-secondary-container": "#faeaff",
+              "secondary": "#c67eff",
+              "surface-container-lowest": "#000000",
+              "surface-container-high": "#201f1f",
+              "tertiary-container": "#fd8b00",
+              "inverse-surface": "#fcf8f8",
+              "primary": "#9cff93",
+              "on-surface": "#ffffff",
+              "surface-bright": "#2c2c2c",
+              "on-secondary": "#340058",
+              "surface-container": "#1a1919",
+              "primary-fixed": "#00fc40",
+              "tertiary-fixed": "#ff9734",
+              "on-tertiary-container": "#442100",
+              "error-dim": "#d53d18",
+              "tertiary": "#ff9f4a",
+              "error-container": "#b92902",
+              "outline": "#777575",
+              "background": "#0e0e0e",
+              "on-secondary-fixed-variant": "#7a00c4",
+              "on-secondary-fixed": "#510085",
+              "on-error-container": "#ffd2c8",
+              "on-primary-fixed": "#00440a",
+              "inverse-on-surface": "#565554",
+              "on-background": "#ffffff",
+              "secondary-fixed-dim": "#dfb3ff",
+              "on-tertiary-fixed": "#291200",
+              "on-primary-fixed-variant": "#006513",
+              "tertiary-fixed-dim": "#f58600",
+              "surface-container-highest": "#262626",
+              "primary-container": "#00fc40",
+              "on-tertiary": "#532a00",
+              "error": "#ff7351",
+              "surface-container-low": "#131313",
+              "surface-dim": "#0e0e0e",
+              "secondary-fixed": "#e8c5ff",
+              "primary-fixed-dim": "#00ec3b",
+              "on-primary-container": "#005a10",
+              "primary-dim": "#00ec3b",
+              "surface-tint": "#9cff93",
+              "tertiary-dim": "#ed8200",
+              "surface-variant": "#262626"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #494847;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9cff93;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
+<div class="flex h-screen overflow-hidden">
+<aside class="hidden md:flex flex-col h-full py-6 bg-[#0e0e0e] text-[#9cff93] font-['JetBrains_Mono'] text-[11px] uppercase tracking-widest docked h-screen w-64 border-r border-[#ffffff15] shrink-0">
+<div class="px-6 mb-8">
+<h1 class="font-['Space_Grotesk'] text-xl font-black text-white">LAB_01</h1>
+<p class="text-neutral-500 mt-1">Active Session</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 bg-[#9cff9310] text-[#9cff93] border-r-2 border-[#9cff93] transition-all duration-200 Active: translate-x-1" href="#">
+<span class="material-symbols-outlined mr-3">terminal</span>
+<span>Playground</span>
+</a>
+<a class="flex items-center px-6 py-3 text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">fact_check</span>
+<span>Evaluations</span>
+</a>
+<a class="flex items-center px-6 py-3 text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">query_stats</span>
+<span>Results</span>
+</a>
+</nav>
+<div class="px-6 mb-6">
+<button class="w-full py-2 bg-primary text-on-primary font-bold tracking-tighter text-sm uppercase">NEW_EVAL</button>
+</div>
+<div class="mt-auto space-y-1">
+<a class="flex items-center px-6 py-3 text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">menu_book</span>
+<span>Docs</span>
+</a>
+<a class="flex items-center px-6 py-3 text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span>Settings</span>
+</a>
+<div class="px-6 pt-4 mt-4 border-t border-[#ffffff10] flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">account_circle</span>
+</div>
+<div>
+<div class="text-white">OPERATOR_01</div>
+<div class="text-[9px] text-neutral-500">ROOT ACCESS</div>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
+<header class="flex justify-between items-center px-6 w-full bg-[#0e0e0e] text-[#9cff93] font-['Space_Grotesk'] tracking-wider uppercase text-sm docked full-width top-0 h-14 border-b border-[#ffffff15] shrink-0">
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] font-bold text-[#9cff93] tracking-tighter text-lg">LLM_EVAL_LAB</span>
+<div class="h-4 w-[1px] bg-outline-variant opacity-30"></div>
+<div class="hidden sm:flex gap-6 items-center">
+<span class="text-[#9cff93] border-b-2 border-[#9cff93] h-14 flex items-center">PLAYGROUND</span>
+<span class="text-neutral-500 hover:text-[#9cff93] hover:bg-[#9cff9310] transition-colors duration-200 h-14 flex items-center px-2 cursor-pointer">LIBRARY</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container px-3 py-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-[10px] w-48 font-mono" placeholder="SEARCH_COMMANDS..." type="text"/>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">sensors</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-white transition-colors">account_circle</span>
+</div>
+</header>
+<div class="flex-1 flex flex-col overflow-hidden">
+<section class="p-4 border-b border-outline-variant/10 bg-surface-container-low">
+<div class="max-w-7xl mx-auto flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline text-xs font-bold tracking-[0.2em] text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 bg-primary animate-pulse"></span>
+                                SYSTEM_ARCHITECTURE
+                            </h2>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-[10px] font-mono border border-outline-variant/30 hover:border-primary/50 transition-colors uppercase">Save Config</button>
+<button class="px-3 py-1 text-[10px] font-mono bg-secondary/10 text-secondary border border-secondary/20 hover:bg-secondary/20 transition-colors uppercase">Export Logs</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="md:col-span-3">
+<label class="block text-[10px] font-mono text-neutral-500 mb-1 uppercase tracking-tighter">Global System Prompt</label>
+<textarea class="w-full h-20 bg-surface-container-highest border-none focus:ring-1 focus:ring-primary/50 text-xs font-mono p-3 custom-scrollbar" placeholder="Enter behavioral parameters for all models..."></textarea>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-1 gap-2">
+<div>
+<label class="block text-[10px] font-mono text-neutral-500 mb-1 uppercase">Temperature</label>
+<input class="w-full accent-primary bg-surface-container" type="range"/>
+<div class="flex justify-between text-[8px] font-mono mt-1 text-neutral-400"><span>0.0</span><span>1.0</span></div>
+</div>
+<div>
+<label class="block text-[10px] font-mono text-neutral-500 mb-1 uppercase">Top P</label>
+<input class="w-full accent-secondary bg-surface-container" type="range"/>
+<div class="flex justify-between text-[8px] font-mono mt-1 text-neutral-400"><span>0.0</span><span>1.0</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="flex-1 overflow-x-auto overflow-y-hidden custom-scrollbar bg-surface flex">
+<div class="min-w-[400px] flex-1 border-r border-outline-variant/10 flex flex-col">
+<div class="p-3 border-b border-outline-variant/10 bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xs" data-weight="fill">terminal</span>
+</div>
+<select class="bg-transparent border-none focus:ring-0 text-xs font-headline font-bold uppercase tracking-tight appearance-none pr-8 cursor-pointer text-white">
+<option>GPT-4o PROTOTYPE</option>
+<option>GPT-3.5 TURBO</option>
+<option>CLAUDE 3 OPUS</option>
+</select>
+</div>
+<span class="text-[9px] font-mono text-primary bg-primary/10 px-2 py-0.5">READY</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-mono text-primary">USER</span>
+<div class="h-[1px] flex-1 bg-outline-variant/10"></div>
+</div>
+<div class="bg-surface-container-high p-4 text-xs leading-relaxed border-l-2 border-primary/30">
+                                    Explain quantum entanglement using a laboratory metaphor.
+                                </div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-mono text-on-surface-variant">GPT-4o</span>
+<div class="h-[1px] flex-1 bg-outline-variant/10"></div>
+</div>
+<div class="text-xs leading-relaxed font-body text-neutral-300">
+                                    Imagine two specialized measurement devices in different wings of the lab. Once "entangled," adjusting a dial on Device A instantaneously forces Device B to mirror that exact setting, regardless of the physical distance between the clean rooms. It's as if the lab's underlying data fabric ignores spatial constraints.
+                                </div>
+</div>
+</div>
+</div>
+<div class="min-w-[400px] flex-1 border-r border-outline-variant/10 flex flex-col">
+<div class="p-3 border-b border-outline-variant/10 bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-xs" data-weight="fill">terminal</span>
+</div>
+<select class="bg-transparent border-none focus:ring-0 text-xs font-headline font-bold uppercase tracking-tight appearance-none pr-8 cursor-pointer text-white">
+<option>CLAUDE 3.5 SONNET</option>
+<option>GPT-4o PROTOTYPE</option>
+<option>LLAMA 3 70B</option>
+</select>
+</div>
+<span class="text-[9px] font-mono text-secondary bg-secondary/10 px-2 py-0.5">READY</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-mono text-primary">USER</span>
+<div class="h-[1px] flex-1 bg-outline-variant/10"></div>
+</div>
+<div class="bg-surface-container-high p-4 text-xs leading-relaxed border-l-2 border-primary/30">
+                                    Explain quantum entanglement using a laboratory metaphor.
+                                </div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-mono text-on-surface-variant">CLAUDE 3.5</span>
+<div class="h-[1px] flex-1 bg-outline-variant/10"></div>
+</div>
+<div class="text-xs leading-relaxed font-body text-neutral-300">
+                                    Consider two centrifuges calibrated at the exact same frequency. In the quantum lab, if you stop one centrifuge, the other halts at the precise micro-second, sharing a single "operational state." They aren't communicating; they are existing as a single distributed experimental unit.
+                                </div>
+</div>
+</div>
+</div>
+<div class="min-w-[400px] flex-1 flex flex-col bg-surface-container-low/30">
+<div class="p-3 border-b border-outline-variant/10 bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-neutral-400 text-xs">add</span>
+</div>
+<button class="text-xs font-headline font-bold uppercase tracking-tight text-neutral-500 hover:text-white transition-colors">
+                                    ADD MODEL STREAM
+                                </button>
+</div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center opacity-20 grayscale">
+<span class="material-symbols-outlined text-6xl mb-4">analytics</span>
+<p class="font-mono text-[10px] uppercase tracking-widest">Awaiting Parallel Stream</p>
+</div>
+</div>
+</div>
+<footer class="p-6 bg-surface-container-high border-t border-outline-variant/20">
+<div class="max-w-4xl mx-auto relative group">
+<div class="absolute -top-6 left-0 flex gap-2">
+<div class="px-2 py-1 bg-surface-container-highest border border-outline-variant/20 flex items-center gap-2 cursor-pointer hover:bg-surface-bright">
+<span class="material-symbols-outlined text-[10px]">attach_file</span>
+<span class="text-[9px] font-mono uppercase">Context_File</span>
+</div>
+<div class="px-2 py-1 bg-surface-container-highest border border-outline-variant/20 flex items-center gap-2 cursor-pointer hover:bg-surface-bright">
+<span class="material-symbols-outlined text-[10px]">history</span>
+<span class="text-[9px] font-mono uppercase">Recall_History</span>
+</div>
+</div>
+<div class="flex items-end gap-3 bg-surface-container-lowest p-1 ring-1 ring-outline-variant/30 focus-within:ring-primary/50 transition-all duration-300">
+<textarea class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-body py-3 px-4 resize-none custom-scrollbar" placeholder="Type prompt for all models... (CMD + Enter to Execute)" rows="1"></textarea>
+<button class="bg-primary hover:bg-primary-container text-on-primary p-3 m-1 transition-all Active:scale-95 group">
+<span class="material-symbols-outlined font-bold group-hover:rotate-12 transition-transform">send</span>
+</button>
+</div>
+<div class="mt-3 flex justify-between items-center px-1">
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<span class="text-[9px] font-mono text-neutral-500 uppercase">Input Tokens: 42</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+<span class="text-[9px] font-mono text-neutral-500 uppercase">Context window: 128k</span>
+</div>
+</div>
+<div class="text-[9px] font-mono text-neutral-500 uppercase">LAB_ENV: PROD_v2.4</div>
+</div>
+</div>
+</footer>
+</div>
+</main>
+</div>
+<div class="fixed bottom-6 right-6 z-50 md:hidden">
+<button class="w-14 h-14 bg-primary text-on-primary flex items-center justify-center shadow-[0_0_20px_rgba(156,255,147,0.3)] Active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</div>
+<div class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0e0e0e] flex items-center justify-around px-6 border-t border-[#ffffff10] z-40">
+<div class="flex flex-col items-center gap-1 text-[#9cff93]">
+<span class="material-symbols-outlined text-xl">terminal</span>
+<span class="text-[8px] font-mono">LAB</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-neutral-500">
+<span class="material-symbols-outlined text-xl">fact_check</span>
+<span class="text-[8px] font-mono">EVAL</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-neutral-500">
+<span class="material-symbols-outlined text-xl">query_stats</span>
+<span class="text-[8px] font-mono">DATA</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-neutral-500">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="text-[8px] font-mono">SYS</span>
+</div>
+</div>
+</body></html>

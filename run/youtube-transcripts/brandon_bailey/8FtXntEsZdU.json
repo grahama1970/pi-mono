@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8FtXntEsZdU",
+    "language": "en",
+    "took_ms": 9081,
+    "method": null,
+    "title": "DEF CON Safe Mode Password Village  - Lets crack rockyou txt without using rockyou txt",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 6578,
+    "description": "The RockYou leak was a big deal back in 2009. 14.3 million unique passwords were leaked to the public domain. This has been a go to list for a number of crackers, but we take it for granted because it was a plaintext leak. We decided to hash the entire list in MD5 and crack it using only candidates that did not originate from the leak for fun.",
+    "view_count": 926
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8FtXntEsZdU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

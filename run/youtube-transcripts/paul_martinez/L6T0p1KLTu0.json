@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L6T0p1KLTu0",
+    "language": "en",
+    "took_ms": 8026,
+    "method": null,
+    "title": "The Future of ICS Security Products ... What You Need To Know",
+    "channel": "S4 Events",
+    "upload_date": "20191206",
+    "duration_sec": 1846,
+    "description": "Deciding on an ICS security product purchase is difficult now with the large number of new vendors offering asset inventory and detection solutions. To make matters even harder, most of these companies will not be in business in three years and the products will look very different.\n\nThis talk tells you what the products will look like in 2 - 5 years, how you should develop and implement a strategy, and how to integrate your OT solutions with the enterprise.",
+    "view_count": 2253
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L6T0p1KLTu0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

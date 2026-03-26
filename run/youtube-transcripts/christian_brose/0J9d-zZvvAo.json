@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0J9d-zZvvAo",
+    "language": "en",
+    "took_ms": 8733,
+    "method": null,
+    "title": "Celebrating Global Philanthropy",
+    "channel": "Hudson Institute",
+    "upload_date": "20170307",
+    "duration_sec": 8158,
+    "description": "Philanthropy and international development leaders discuss the 2016 Index of Global Philanthropy and Remittances, with Hudson Institute’s Center for Global Prosperity and Indiana University Lilly Family School of Philanthropy, Kenneth R. Weinstein, Amir Pasic, Carol Adelman, Todd Young, Una Osili, Doug Rutzen, David Schwartz, and Dennis Whittle.",
+    "view_count": 259
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0J9d-zZvvAo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tLw-F-b7cdo",
+    "language": "en",
+    "took_ms": 9251,
+    "method": null,
+    "title": "Adapting Zones And Conduits – A Transformation Story",
+    "channel": "S4 Events",
+    "upload_date": "20241006",
+    "duration_sec": 1661,
+    "description": "Zones & Conduits? How is this old topic at S4 in 2024?\n\nWhile the theory is old, implementing this at a super major like Chevron is still bleeding edge. Dennis explains a rollout on a large, global scale with multiple ICS types including different DCS and SCADA vendors, hundreds of different networking designs, and models, and 1000’s of assets for brownfield. \n\nJoin Dennis on a journey as they adopt Zones and Conduits, a risk-based architectural model, and integrate zero trust principles to fortify our industrial control system (CS) security. He explores the challenges of traditional ICS models, Chevron's decision to transition, and the risk-based approach underlying Zones and Conduits. Discover how zero trust principles, including micro segmentation and continuous authentication, enhance Chevron's security posture.",
+    "view_count": 656
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tLw-F-b7cdo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

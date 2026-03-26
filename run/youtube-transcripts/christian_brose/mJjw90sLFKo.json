@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mJjw90sLFKo",
+    "language": "en",
+    "took_ms": 8480,
+    "method": null,
+    "title": "Iran and Latin America: What Next after Chavez?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6566,
+    "description": "For some years now, the Iranian government has sought to develop new ties with potential allies in Latin America—aided and abetted by Venezuelan strongman Hugo Chavez—particularly with Bolivia, Ecuador, and Nicaragua. Lately, with Chavez's health in question, Iran has sought another beachhead into Latin America by strengthening its ties to Argentina. Alongside its anti-U.S. strategic partnerships, Argentina's Kirchner administration has drawn sharp criticism for its financial recklessness, viola",
+    "view_count": 203
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mJjw90sLFKo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

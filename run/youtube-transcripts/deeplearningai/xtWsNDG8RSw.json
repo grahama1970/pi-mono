@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xtWsNDG8RSw",
+    "language": "en",
+    "took_ms": 8867,
+    "method": null,
+    "title": "New course with Weaviate: Building Multimodal Search and RAG",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240513",
+    "duration_sec": 206,
+    "description": "Enroll now: https://bit.ly/3JVgIwW\n\nLearn how to build multimodal search and RAG systems. RAG systems enhance an LLM by incorporating proprietary data into the prompt context. Typically, RAG applications use text documents, but, what if the desired context includes multimedia like images, audio, and video? This course covers the technical aspects of implementing RAG with multimodal data to accomplish this.\n\n- Learn how multimodal models are trained through contrastive learning and implement it on a real dataset.\n- Build any-to-any multimodal search to retrieve relevant context across different data types.\n- Learn how LLMs are trained to understand multimodal data through visual instruction tuning and use them on multiple image reasoning examples\n- Implement an end-to-end multimodal RAG system that analyzes retrieved multimodal context to generate insightful answers\n- Explore industry applications like visually analyzing invoices and flowcharts to output structured data.\n- Create a multi-vector recommender system that suggests relevant items by comparing their similarities across multiple modalities.\n\nAs AI systems increasingly need to process and reason over multiple data modalities, learning how to build such systems is an important skill for AI developers.\n\nThis course equips you with the key skills to embed, retrieve, and generate across different modalities. By gaining a strong foundation in multimodal AI, you'll be prepared to build smarter search, RAG, and recommender systems.\n\nLearn more: https://bit.ly/3JVgIwW",
+    "view_count": 3393
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xtWsNDG8RSw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

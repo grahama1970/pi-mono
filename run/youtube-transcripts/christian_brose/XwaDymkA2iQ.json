@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XwaDymkA2iQ",
+    "language": "en",
+    "took_ms": 8165,
+    "method": null,
+    "title": "Religious Freedom in Vietnam: Its Importance for Regional and Global Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20160912",
+    "duration_sec": 8890,
+    "description": "Elliot Abrams, Nina Shea, Kristina Arriaga & Vo Van Ai (Vietnam Committee on Human Rights) on U.S. policy and religious freedom in South East Asia",
+    "view_count": 961
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XwaDymkA2iQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

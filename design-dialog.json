@@ -1,0 +1,75 @@
+{
+  "component": "MusicLabDashboard",
+  "outcome": "Converged",
+  "final_mockup": "packages/ux-lab/captures/music-lab/dashboard/mockup-r3.html",
+  "rounds": [
+    {
+      "round": 1,
+      "steve": {
+        "rationale": "packages/ux-lab/captures/music-lab/dashboard/steve-rationale-r1.md",
+        "mockup": "packages/ux-lab/captures/music-lab/dashboard/mockup-r1.html"
+      },
+      "nico": {
+        "critique": "packages/ux-lab/captures/music-lab/dashboard/nico-critique-r1.md",
+        "findings": [
+          {
+            "id": "CRIT-R1-01",
+            "severity": "HIGH",
+            "title": "Fixed-Size Layout"
+          },
+          {
+            "id": "CRIT-R1-02",
+            "severity": "MEDIUM",
+            "title": "Implied Shared Timeline"
+          },
+          {
+            "id": "CRIT-R1-03",
+            "severity": "LOW",
+            "title": "Round Selector Ambiguity"
+          },
+          {
+            "id": "CRIT-R1-04",
+            "severity": "LOW",
+            "title": "Brittle Height Calculation"
+          }
+        ]
+      },
+      "converged": false
+    },
+    {
+      "round": 2,
+      "steve": {
+        "rationale": "packages/ux-lab/captures/music-lab/dashboard/steve-rationale-r2.md",
+        "mockup": "packages/ux-lab/captures/music-lab/dashboard/mockup-r2.html"
+      },
+      "nico": {
+        "critique": "packages/ux-lab/captures/music-lab/dashboard/nico-critique-r2.md",
+        "findings": [
+          {
+            "id": "CRIT-R2-01",
+            "severity": "MEDIUM",
+            "title": "Lyrics Pane Not Synced to Timeline"
+          },
+          {
+            "id": "CRIT-R2-02",
+            "severity": "LOW",
+            "title": "Confusing Color for Playhead"
+          }
+        ]
+      },
+      "converged": false
+    },
+    {
+      "round": 3,
+      "steve": {
+        "rationale": "packages/ux-lab/captures/music-lab/dashboard/steve-rationale-r3.md",
+        "mockup": "packages/ux-lab/captures/music-lab/dashboard/mockup-r3.html"
+      },
+      "nico": {
+        "critique": "packages/ux-lab/captures/music-lab/dashboard/nico-critique-r3.md",
+        "findings": []
+      },
+      "converged": true
+    }
+  ]
+}

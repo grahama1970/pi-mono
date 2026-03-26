@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gnlkQkGt_CM",
+    "language": "en",
+    "took_ms": 7700,
+    "method": null,
+    "title": "NIS2 As A Multi-Country Cyber Regulation Experiment",
+    "channel": "S4 Events",
+    "upload_date": "20250324",
+    "duration_sec": 1813,
+    "description": "The EU's Network and Information Security 2 (NIS2) Directive required each EU Member State to turn NIS2 into national law and related regulations and administrative provisions. While the EU may prefer as much unanimity in approach, each country will find it's own way to implement and enforce NIS2. This makes NIS2 the best opportunity to see what works and doesn't work in OT security regulatory and government actions. It can be viewed as a regulatory experiment.\n\nWhile the experiment is just beginning, Dennis provides some early information on the different NIS2 approaches being pursued in various European countries and provide some ideas on how we can measure success 3 years from now.",
+    "view_count": 376
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gnlkQkGt_CM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

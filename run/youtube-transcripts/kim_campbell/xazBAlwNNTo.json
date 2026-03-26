@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xazBAlwNNTo",
+    "language": "en",
+    "took_ms": 8623,
+    "method": null,
+    "title": "Sandboxx Address Cards (SAC's)",
+    "channel": "Sandboxx",
+    "upload_date": "20180221",
+    "duration_sec": 35,
+    "description": "Sandboxx Address Cards (SACs) are now standard issue at US Marine boot camp, San Diego and Parris Island. Sam explains how the SACs enable us to relay recruits addresses to family and friends so you can start writing letters as soon as possible.",
+    "view_count": 1831
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xazBAlwNNTo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

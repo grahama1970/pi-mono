@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "j8ZiIOd53JU",
+    "language": "en",
+    "took_ms": 7734,
+    "method": null,
+    "title": "DEF CON 31 - The GitHub Actions Worm  - Asi Greenholts",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2422,
+    "description": "GitHub is the most popular platform to host Open Source projects therefore, the popularity of their CI/CD platform - GitHub Actions is rising, which makes it an attractive target for attackers.\n\nIn this talk I’ll show you how an attacker can take advantage of the Custom GitHub Actions ecosystem by infecting one Action to spread malicious code to other Actions and projects by showing you a demo of POC worm.\n\nWe will start by exploring the ways in which Actions are loosely and implicitly dependent on other Actions. This will allow us to create a dependency tree of Actions that starts from a project that we want to attack and hopefully ends in a vulnerable Action that we can take control of.\n\nWe will then dive down to how GitHub Actions is working under the hood and I’ll show you how an attacker that is in control of an Action can utilize the mechanism of the GitHub Actions Runner to infect other Actions that are dependent on their Action and eventually infect the targeted project.\n\nFinally, after we’ve gained all of the theoretical knowledge I’ll show you a demo with POC malware that is spreading through Actions and we will talk on how to defend against this kind of attack.",
+    "view_count": 8888
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] j8ZiIOd53JU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

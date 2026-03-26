@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jsWyvMptBo8",
+    "language": "en",
+    "took_ms": 8769,
+    "method": null,
+    "title": "U.S.-Russian Relations: Stagnation or Modernization?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 10813,
+    "description": "As Russian President Dmitri Medvedev moves toward the end of his first term of office, what awaits Russia and U.S.-Russian relations? Medvedev has spoken of the need to modernize the Russian economy, attract foreign investment, implement institutional reforms, and create Russia’s own version of Silicon Valley. At the same time, his political mentor, Prime Minister Vladimir Putin, has warned against “unjustified liberal experiments” and has proceeded with consolidation of major industries in the State’s hands. Putin’s massive clout remains largely unchallenged.",
+    "view_count": 158
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jsWyvMptBo8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

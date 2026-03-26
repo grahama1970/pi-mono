@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "slsw68EnsH8",
+    "language": "en",
+    "took_ms": 9402,
+    "method": null,
+    "title": "DEF CON 30 - Packet Hacking Village Interview",
+    "channel": "DEFCONConference",
+    "upload_date": "20220812",
+    "duration_sec": 59,
+    "description": "Ry Boken interviews Riverside of the Packet Hacking Village to bring us all up to speed on what the PHV has in store for DEF CON 30.",
+    "view_count": 1681
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] slsw68EnsH8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

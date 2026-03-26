@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m9QVfYVJ7R8",
+    "language": "en",
+    "took_ms": 7880,
+    "method": null,
+    "title": "DEF CON 32 - Breaching AWS Through Shadow Resources - Yakir Kadkoda, Michael Katchinskiy, Ofek Itach",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2232,
+    "description": "The cloud seems complex, but it's what happens behind the scenes that really complicates things. Some services utilize others as resources as part of their logic/operation. Interestingly enough, it turns out that this could lead to catastrophic results if done unsafely.\n\nThis talk will present six critical vulnerabilities that we found in AWS, along with the stories and methodologies behind them. These vulnerabilities, which were all promptly acknowledged and fixed by AWS, could allow external attackers to breach almost any AWS account. The vulnerabilities range from remote code execution, which could lead to full account takeover, to information disclosure, potentially exposing sensitive data, or causing denial of service. The session will share our story of discovery, how we were able to identify commonalities among them, and how we developed a method to uncover more vulnerabilities and enhance the impact by using common techniques leading to privilege escalation. We will then detail our approach for mapping service external resources and release our Open-Source tool to research service internal API calls. We will also present a method to check if accounts have been vulnerable to this vector in the past.\n\nWe will conclude our talk with the lessons learned during this research and our future line of research. We will highlight new areas that cloud researchers need to explore when hunting for cloud vulnerabilities and highlight best practices for developers to use in complex environments.",
+    "view_count": 2202
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m9QVfYVJ7R8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

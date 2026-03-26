@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UhBOp04J43E",
+    "language": "en",
+    "took_ms": 9417,
+    "method": null,
+    "title": "S4x18 ICS Capture The Flag (CTF) Competition",
+    "channel": "S4 Events",
+    "upload_date": "20181011",
+    "duration_sec": 786,
+    "description": "Reid Wightman provided an overview of the ICS CTF and interviewed the winning team from Booz Allen Hamilton. Network diagrams, pictures, examples of the 48 flags, tips for future competitors and more.\n\nAt 10:07 the winners discuss some of their favorite flags.",
+    "view_count": 432
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UhBOp04J43E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

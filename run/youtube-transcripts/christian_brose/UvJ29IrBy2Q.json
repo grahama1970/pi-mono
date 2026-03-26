@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UvJ29IrBy2Q",
+    "language": "en",
+    "took_ms": 7643,
+    "method": null,
+    "title": "Kleptocratic Regimes and National Security: A Pervasive Threat and How It Can be Neutralized (4)",
+    "channel": "Hudson Institute",
+    "upload_date": "20171115",
+    "duration_sec": 662,
+    "description": "Michael Miklaucic: The Convergence of Terrorism, Organized Crime, Corruption and Illicit Power Structures",
+    "view_count": 288
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UvJ29IrBy2Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tCY78m5DJU4",
+    "language": "en",
+    "took_ms": 8819,
+    "method": null,
+    "title": "S1 E1: This Week in Spaceflight History  -  Myasishchev VM-T Atlant (Jan 6, 1982)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170105",
+    "duration_sec": 8560,
+    "description": "Each week I take The Orbital Mechanics podcast's series \"This week in Spaceflight History\" and I recreate the mission in Kerbal Space Program with my friend Jacob. This week's mission was to fly the Myasishchev VM-T Atlant with cargo from one runway to another runway. \n\nTune in LIVE ever Wednesday at 9:00 Central (3:00 UTC) to join the action at http://twitch.tv/everydayastronaut\n\nMake sure and check out the Orbital Mechanics Podcast each week to get the run down on the mission!",
+    "view_count": 6314
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tCY78m5DJU4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

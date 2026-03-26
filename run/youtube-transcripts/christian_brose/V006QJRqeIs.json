@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V006QJRqeIs",
+    "language": "en",
+    "took_ms": 9541,
+    "method": null,
+    "title": "2018 Nicaraguan Protests: President Ortega's Violent Crackdown",
+    "channel": "Hudson Institute",
+    "upload_date": "20180808",
+    "duration_sec": 5614,
+    "description": "In recent months, Nicaragua has become a new and acute source of instability in the Western hemisphere. On April 18, a peaceful demonstration against proposed reforms to the country’s social security system quickly ignited much wider civilian protests against the government of President Daniel Ortega. Violent repression of these protests resulted in 30 people being killed in the first 5 days, and the death toll has since climbed into the hundreds, with many of the casualties being students attacked by Ortega-aligned paramilitary groups. These protests are the largest of President Ortega’s tenure, and the deadliest since the Nicaragua revolution, which ended in 1990.\n\nMeanwhile, the economy is paralyzed and an increasing number citizen are now seeking asylum in neighboring countries. The Inter-American Commission of Human Rights, the Organization of American States (OAS), the U.S. Government and the European Union have condemned Nicaraguan repression and called for an orderly transition to democracy. But Ortega refuses to hold early elections as a way out of the crisis and has claimed “victory” and “normality” after removing barricades through the country.\n\nOn August 8, Hudson Institute hosted a panel to discuss the recent unrest in Nicaragua. Panelists will include Dr. John Polga-Hecimovich, assistant professor of comparative politics in the Political Science Department at the U.S. Naval Academy; Eduardo Ulibarri, the former Costa Rican Ambassador to the United Nations; and Víctor Agustín Cuadras Andino, a Nicaraguan youth leader and activist. The discussion was moderated by Ambassador Jaime Daremblum, a Hudson senior fellow and director of the Center for Latin American Studies.",
+    "view_count": 689
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V006QJRqeIs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

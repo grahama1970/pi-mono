@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bpUxuOdfGHM",
+    "language": "en",
+    "took_ms": 7882,
+    "method": null,
+    "title": "DEF CON 33 - Red Russians: How Russian APT groups follow offensive security research - Will Thomas",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1457,
+    "description": "Offensive security is meant to improve defenses, but what happens when hostile nation-states start learning from us too? This talk explores how Russian intelligence services and advanced persistent threat (APT) groups have adopted and adapted techniques developed by Red Teamers, sometimes within weeks of public disclosure. These campaigns involve taking newly disclosed exploits, tools, and tricks to exploit modern enterprise systems, such as Microsoft 365 services, Windows features, software development systems, authentication systems, and cloud infrastructure. Throughout the talk, detection engineering and threat hunting tips shall be provided to offer attendees a technique for detecting and preventing these types of attacks.\n\nFor Red Teamers, this talks is a wake-up call: the same tools and tradecraft used to test enterprise security are increasingly turning up in real-world espionage campaigns, sometimes targeting the very governments and public services we rely on. For Blue Teamers, this talk is a reminder to pay close attention to the cutting edge of offensive tooling.",
+    "view_count": 2022
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bpUxuOdfGHM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

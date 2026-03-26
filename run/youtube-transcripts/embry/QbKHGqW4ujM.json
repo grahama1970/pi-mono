@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QbKHGqW4ujM",
+    "language": "en",
+    "took_ms": 9246,
+    "method": null,
+    "title": "Watch Rocket Lab return to flight with their awesome Electron rocket!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20200831",
+    "duration_sec": 4364,
+    "description": "In light of the previous launch’s failure to reach orbit, Rocket Lab is once more go for launch. “I Can’t Believe It’s Not Optical,” launching from Mahia, New Zealand, will fly Capella Space’s first operational earth-observation satellite into orbit.\n\nIn a play on the infamous ‘I Can’t Believe It’s Not Butter’ advertising campaign, the mission name emphasizes Capella Space’s radar imaging technology. SAR, or synthetic aperture radar, allows the company to deliver hourly images irrespective of weather and time of day.\n\nWant to learn more?!? Read our Prelaunch Preview - https://everydayastronaut.com/i-cant-believe-its-not-optical-electron/\n\n --------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 155365
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QbKHGqW4ujM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

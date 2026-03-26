@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L9CF1-n0GZw",
+    "language": "en",
+    "took_ms": 9020,
+    "method": null,
+    "title": "Rob Lee on US Government Activities, Disagreements with Dale, and the Market for ICS Security Pro's",
+    "channel": "S4 Events",
+    "upload_date": "20210526",
+    "duration_sec": 3154,
+    "description": "Rob Lee of Dragos joins Dale Peterson on the Unsolicited Response show to discuss:\n\n02:15  The Biden Administration efforts on OT Cybersecurity. What they are; the pro's and con's of these efforts; and where they might be successful.\n\n26:20 Rob and Dale talk about their disagreement on where Detection products, and to a lesser extent threat intel, like Dragos and others offer should be considered in relation to other security controls and solutions.\n\n46:06 The prospects for an entry level and mid level ICS Security Professional in 2021 and the upcoming years.\n\nSubscribe to Dale's ICS Security Friday News and Note: https://friday.dale-peterson.com/signup",
+    "view_count": 1823
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L9CF1-n0GZw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

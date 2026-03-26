@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Fy-3P8v5e8g",
+    "language": "en",
+    "took_ms": 7777,
+    "method": null,
+    "title": "DEF CON 32 - Video Team - Hardware Hacking/Soldering Skills",
+    "channel": "DEFCONConference",
+    "upload_date": "20240810",
+    "duration_sec": 78,
+    "description": "",
+    "view_count": 3060
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Fy-3P8v5e8g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bw4pdiUmrnk",
+    "language": "en",
+    "took_ms": 9591,
+    "method": null,
+    "title": "Malware on ICS",
+    "channel": "S4 Events",
+    "upload_date": "20201204",
+    "duration_sec": 157,
+    "description": "In this S4x20 clip, Ben Goerz gives 3 examples of malware they found in their OT environment. It is from his Threat Hunting with What You Have session.\n\nThey found something as simple and available as DNS logs to be helpful for this, and gave some other examples in the full video. #otsecurity #icssecurity",
+    "view_count": 192
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bw4pdiUmrnk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

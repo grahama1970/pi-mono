@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_Z3SC2ebJBA",
+    "language": "en",
+    "took_ms": 8698,
+    "method": null,
+    "title": "You Use AI Every Day… Without Knowing It",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260301",
+    "duration_sec": 30,
+    "description": "Your phone unlocked with your face. Your inbox filtered itself. Your work commute route was chosen for you. You've been using AI all day.",
+    "view_count": 9267
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _Z3SC2ebJBA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

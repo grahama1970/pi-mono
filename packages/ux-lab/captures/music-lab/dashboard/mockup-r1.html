@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MusicLab Dashboard - R1</title>
+    <style>
+        :root {
+            --bg-deep: #0b1220;
+            --card: #1a1a1a;
+            --nvis-green: #00ff88;
+            --nvis-red: #ff4444;
+            --nvis-amber: #ffaa00;
+            --nvis-blue: #4a9eff;
+            --accent: #7c3aed;
+            --text-white: #e2e8f0;
+            --text-dim: #64748b;
+            --border-color: rgba(255, 255, 255, 0.13);
+            --border-radius: 12px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .dashboard-container {
+            width: 1440px;
+            height: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: var(--card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+        }
+
+        .song-meta { display: flex; align-items: center; gap: 24px; }
+        .song-title { font-size: 1.2rem; font-weight: 600; }
+        .meta-item { color: var(--text-dim); }
+        .meta-item strong { color: var(--text-white); }
+        
+        .convergence-status { display: flex; align-items: center; gap: 8px; }
+        .status-indicator { width: 12px; height: 12px; border-radius: 50%; }
+        .status-indicator.converging { background-color: var(--nvis-amber); }
+        .status-indicator.converged { background-color: var(--nvis-green); }
+        .status-indicator.failed { background-color: var(--nvis-red); }
+        .status-text { font-weight: 500; }
+
+        .round-selector { display: flex; gap: 8px; }
+        .round-selector button {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-dim);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .round-selector button.active {
+            background: var(--accent);
+            color: var(--text-white);
+            border-color: var(--accent);
+        }
+
+        /* Layout Grid */
+        .dashboard-grid {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 40fr 25fr 35fr;
+            gap: 16px;
+            height: calc(100% - 74px); /* Rough height of header */
+        }
+
+        .pane {
+            background-color: var(--card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .pane-header {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pane-content {
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #piano-roll-view { grid-column: 1 / 3; grid-row: 1 / 2; }
+        #waveform-view { grid-column: 1 / 3; grid-row: 2 / 3; }
+        #convergence-chart { grid-column: 1 / 2; grid-row: 3 / 4; }
+        #lyrics-editor { grid-column: 2 / 3; grid-row: 3 / 4; }
+
+        /* Placeholder Content */
+        .placeholder-piano-roll {
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(0,0,0,0.1),
+                rgba(0,0,0,0.1) 12.4%,
+                rgba(0,0,0,0.2) 12.5%
+            );
+            height: 100%;
+        }
+        .placeholder-piano-roll .note {
+            position: absolute;
+            background-color: var(--nvis-blue);
+            border-radius: 3px;
+            height: 10px;
+        }
+
+        .placeholder-waveform svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .placeholder-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .placeholder-lyrics {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        .placeholder-lyrics .active-word {
+            color: var(--text-white);
+            background-color: var(--accent);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="song-meta">
+                <div class="song-title">Horus "Whisperheads"</div>
+                <div class="meta-item">KEY: <strong>D minor</strong></div>
+                <div class="meta-item">BPM: <strong>85</strong></div>
+                <div class="convergence-status">
+                    <div class="status-indicator converging"></div>
+                    <span class="status-text">Converging</span>
+                </div>
+            </div>
+            <div class="round-selector">
+                <span>ROUND:</span>
+                <button>1</button>
+                <button>2</button>
+                <button class="active">3</button>
+                <button>4</button>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <div id="piano-roll-view" class="pane">
+                <div class="pane-header">Piano Roll</div>
+                <div class="pane-content placeholder-piano-roll">
+                     <div class="note" style="top: 30%; left: 5%; width: 10%;"></div>
+                     <div class="note" style="top: 50%; left: 18%; width: 5%;"></div>
+                     <div class="note" style="top: 40%; left: 25%; width: 15%;"></div>
+                     <div class="note" style="top: 60%; left: 42%; width: 8%;"></div>
+                </div>
+            </div>
+            <div id="waveform-view" class="pane">
+                <div class="pane-header">Waveform</div>
+                <div class="pane-content placeholder-waveform">
+                    <svg preserveAspectRatio="none" viewBox="0 0 500 100">
+                        <path d="M0,50 L50,60 L100,40 L150,55 L200,45 L250,50 L300,70 L350,30 L400,50 L450,65 L500,50" stroke="var(--nvis-green)" fill="none" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="convergence-chart" class="pane">
+                <div class="pane-header">Convergence</div>
+                <div class="pane-content placeholder-chart">
+                    <svg preserveAspectRatio="none" viewBox="0 0 200 100">
+                        <path d="M0,80 C20,10 80,10 100,50 S180,90 200,20" stroke="var(--nvis-amber)" fill="none" stroke-width="2"/>
+                        <line x1="0" y1="20" x2="200" y2="20" stroke="var(--nvis-green)" stroke-width="1" stroke-dasharray="4"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="lyrics-editor" class="pane">
+                <div class="pane-header">Lyrics</div>
+                <div class="pane-content placeholder-lyrics">
+Whispers in the dark, a silent plea
+Fading echoes of a memory
+I see the world in shades of grey
+While <span class="active-word">shadows</span> dance and lead the way...
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

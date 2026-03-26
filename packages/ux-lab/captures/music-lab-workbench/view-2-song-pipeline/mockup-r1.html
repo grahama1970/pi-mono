@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Lab — Song Pipeline: Whisperheads</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #141414;
+    --card: #1a1a1a;
+    --card2: #1e1e1e;
+    --green: #00ff88;
+    --red: #ff4444;
+    --amber: #ffaa00;
+    --blue: #4a9eff;
+    --accent: #7c3aed;
+    --white: #e2e8f0;
+    --dim: #64748b;
+    --border: #252525;
+    --font: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    height: 52px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--dim);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .back-btn:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+
+  .song-crumb {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+
+  .crumb-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgba(255,170,0,0.12);
+    color: var(--amber);
+    border: 1px solid rgba(255,170,0,0.25);
+    margin-left: 8px;
+  }
+
+  .crumb-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: currentColor;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 6px 14px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-ghost { background: transparent; color: var(--dim); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-green { background: rgba(0,255,136,0.12); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+
+  /* PIPELINE STAGES */
+  .pipeline-strip {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    flex-shrink: 0;
+  }
+
+  .stages-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    height: 60px;
+  }
+
+  .stage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex: 1;
+    border-bottom: 2px solid transparent;
+  }
+
+  .stage::after {
+    content: '→';
+    position: absolute;
+    right: -2px;
+    color: var(--border);
+    font-size: 16px;
+    z-index: 2;
+  }
+
+  .stage:last-child::after { display: none; }
+
+  .stage.done {
+    border-bottom-color: var(--green);
+  }
+
+  .stage.active {
+    border-bottom-color: var(--amber);
+    background: rgba(255,170,0,0.04);
+  }
+
+  .stage.pending {
+    opacity: 0.45;
+  }
+
+  .stage-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .stage.done .stage-num { background: rgba(0,255,136,0.15); color: var(--green); }
+  .stage.active .stage-num { background: rgba(255,170,0,0.15); color: var(--amber); }
+  .stage.pending .stage-num { background: rgba(255,255,255,0.06); color: var(--dim); }
+
+  .stage-info { display: flex; flex-direction: column; gap: 1px; }
+  .stage-name { font-size: 12px; font-weight: 600; }
+  .stage-sub { font-size: 10px; color: var(--dim); }
+
+  /* BODY LAYOUT */
+  .body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* LEFT PANEL */
+  .left-panel {
+    width: 340px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .panel-section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .panel-toggle { color: var(--dim); font-size: 10px; }
+
+  .panel-body {
+    padding: 0 16px 14px;
+  }
+
+  /* Story brief */
+  .story-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--white);
+    opacity: 0.85;
+  }
+
+  .story-meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  .meta-pill span:last-child { color: var(--white); }
+
+  /* Lyrics panel */
+  .lyrics-text {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--white);
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  .lyrics-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+
+  .lyrics-section-label:first-child { margin-top: 0; }
+
+  /* Reference cards scroll */
+  .refs-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .ref-card {
+    flex-shrink: 0;
+    width: 100px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .ref-cover {
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ref-c1 { background: linear-gradient(135deg,#1a0533,#0f3460); }
+  .ref-c2 { background: linear-gradient(135deg,#0d1a0d,#1a3a1a); }
+  .ref-c3 { background: linear-gradient(135deg,#1a0a00,#2a0a1a); }
+
+  .ref-body { padding: 6px 8px; }
+  .ref-title { font-size: 10px; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ref-artist { font-size: 9px; color: var(--dim); }
+  .ref-badge { font-size: 9px; color: var(--accent); font-weight: 600; margin-top: 2px; }
+
+  /* MIDDLE PANEL */
+  .mid-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .panel-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .block-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .block-body { padding: 16px; }
+
+  /* Convergence chart */
+  .chart-wrap {
+    position: relative;
+    height: 180px;
+  }
+
+  .chart-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .chart-axis {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+
+  .chart-grid-line {
+    stroke: var(--border);
+    stroke-width: 0.5;
+    stroke-dasharray: 3 3;
+  }
+
+  .chart-threshold-line {
+    stroke: var(--green);
+    stroke-width: 1;
+    stroke-dasharray: 5 3;
+    opacity: 0.6;
+  }
+
+  .chart-line {
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .chart-area {
+    fill: url(#chartGradient);
+    opacity: 0.35;
+  }
+
+  .chart-dot {
+    fill: var(--amber);
+  }
+
+  .chart-dot-current {
+    fill: var(--green);
+    filter: drop-shadow(0 0 4px var(--green));
+  }
+
+  .chart-label {
+    fill: var(--dim);
+    font-size: 9px;
+    font-family: var(--font);
+  }
+
+  .chart-label-green {
+    fill: var(--green);
+    font-size: 9px;
+    font-family: var(--font);
+  }
+
+  .threshold-label {
+    fill: var(--green);
+    font-size: 9px;
+    font-family: var(--font);
+  }
+
+  /* Reasoning log */
+  .log-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .log-entry {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .log-entry:last-child { border-bottom: none; }
+
+  .log-time {
+    font-size: 10px;
+    color: var(--dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 1px;
+    font-variant-numeric: tabular-nums;
+    width: 44px;
+  }
+
+  .log-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    flex-shrink: 0;
+  }
+
+  .log-icon-memory { background: rgba(74,158,255,0.15); color: var(--blue); }
+  .log-icon-reason { background: rgba(124,58,237,0.15); color: var(--accent); }
+  .log-icon-score  { background: rgba(255,170,0,0.15); color: var(--amber); }
+  .log-icon-ok     { background: rgba(0,255,136,0.15); color: var(--green); }
+  .log-icon-err    { background: rgba(255,68,68,0.15); color: var(--red); }
+
+  .log-content { flex: 1; }
+
+  .log-msg {
+    font-size: 12px;
+    color: var(--white);
+    line-height: 1.4;
+    opacity: 0.9;
+  }
+
+  .log-sub {
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 2px;
+  }
+
+  .log-score {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-weight: 700;
+    background: rgba(255,170,0,0.1);
+    color: var(--amber);
+    margin-left: 6px;
+  }
+
+  .log-score-green {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-weight: 700;
+    background: rgba(0,255,136,0.1);
+    color: var(--green);
+    margin-left: 6px;
+  }
+
+  /* RIGHT PANEL */
+  .right-panel {
+    width: 280px;
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    flex-shrink: 0;
+  }
+
+  .right-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+
+  .score-summary-card {
+    background: rgba(255,170,0,0.06);
+    border: 1px solid rgba(255,170,0,0.2);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+
+  .score-big {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--amber);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .score-label { font-size: 11px; color: var(--dim); margin-top: 4px; }
+  .score-delta { font-size: 12px; color: var(--green); font-weight: 600; margin-top: 4px; }
+
+  .target-bar {
+    margin-top: 12px;
+  }
+
+  .target-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--dim);
+    margin-bottom: 4px;
+  }
+
+  .target-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    position: relative;
+    overflow: visible;
+  }
+
+  .target-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--green), var(--amber));
+    position: relative;
+  }
+
+  .target-threshold {
+    position: absolute;
+    top: -4px;
+    width: 2px;
+    height: 14px;
+    background: var(--green);
+    border-radius: 1px;
+    left: 20%;
+  }
+
+  .round-timeline {
+    margin-bottom: 16px;
+  }
+
+  .round-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 11px;
+  }
+
+  .round-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .round-score-pill {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+
+  .pill-red { background: rgba(255,68,68,0.1); color: var(--red); }
+  .pill-amber { background: rgba(255,170,0,0.1); color: var(--amber); }
+  .pill-green { background: rgba(0,255,136,0.1); color: var(--green); }
+
+  .round-label { color: var(--dim); flex: 1; }
+
+  /* Review CTA */
+  .review-cta {
+    background: rgba(124,58,237,0.08);
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 16px;
+  }
+
+  .cta-title { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+  .cta-sub { font-size: 11px; color: var(--dim); line-height: 1.5; margin-bottom: 12px; }
+
+  .btn-review {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: all 0.15s;
+  }
+
+  .btn-review:hover { background: #6d28d9; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="back-btn">← Library</div>
+  <span style="color:var(--border);">/</span>
+  <div class="song-crumb">
+    Whisperheads
+    <span class="crumb-status"><span class="crumb-dot"></span>Converging</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-ghost">↓ Export</button>
+    <button class="btn btn-ghost">⚙ Edit Brief</button>
+    <button class="btn btn-primary">▶ Resume</button>
+  </div>
+</nav>
+
+<!-- PIPELINE STAGES -->
+<div class="pipeline-strip">
+  <div class="stages-row">
+    <div class="stage done">
+      <div class="stage-num">✓</div>
+      <div class="stage-info">
+        <div class="stage-name" style="color:var(--green);">Memory</div>
+        <div class="stage-sub">Graham's influences</div>
+      </div>
+    </div>
+    <div class="stage done">
+      <div class="stage-num">✓</div>
+      <div class="stage-info">
+        <div class="stage-name" style="color:var(--green);">Story</div>
+        <div class="stage-sub">Narrative brief</div>
+      </div>
+    </div>
+    <div class="stage done">
+      <div class="stage-num">✓</div>
+      <div class="stage-info">
+        <div class="stage-name" style="color:var(--green);">Lyrics</div>
+        <div class="stage-sub">4 verses, 2 choruses</div>
+      </div>
+    </div>
+    <div class="stage active">
+      <div class="stage-num">4</div>
+      <div class="stage-info">
+        <div class="stage-name" style="color:var(--amber);">Music</div>
+        <div class="stage-sub">Converging · round 7</div>
+      </div>
+    </div>
+    <div class="stage pending">
+      <div class="stage-num">5</div>
+      <div class="stage-info">
+        <div class="stage-name">Voice</div>
+        <div class="stage-sub">Waiting on music</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- LEFT PANEL: Brief + Lyrics + Refs -->
+  <aside class="left-panel">
+
+    <!-- Story brief -->
+    <div class="panel-section" style="flex-shrink:0;">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span style="color:var(--green);">▸</span> Story Brief
+        </div>
+        <span class="panel-toggle">▾</span>
+      </div>
+      <div class="panel-body">
+        <p class="story-text">
+          A figure dissolves into the noise of a city they no longer recognise. The song captures the moment when familiarity curdles into estrangement — walking streets that remember you, but you cannot remember them. Melodic uncertainty, pockets of warmth swallowed by static.
+        </p>
+        <div class="story-meta">
+          <div class="meta-pill"><span>Mood</span><span>Melancholy · Uncertain</span></div>
+          <div class="meta-pill"><span>Arc</span><span>Arrival → Dissolution</span></div>
+          <div class="meta-pill"><span>Setting</span><span>Urban · Night</span></div>
+          <div class="meta-pill"><span>Tempo</span><span>Slow build</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lyrics -->
+    <div class="panel-section" style="flex:1;overflow-y:auto;">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span style="color:var(--accent);">▸</span> Lyrics
+        </div>
+        <span class="panel-toggle">▾</span>
+      </div>
+      <div class="panel-body">
+        <div class="lyrics-section-label">Verse 1</div>
+        <div class="lyrics-text">
+          The streetlights know my name<br>
+          but I've forgotten theirs<br>
+          I'm tracing ghost-lines back<br>
+          to somewhere I can't place
+        </div>
+
+        <div class="lyrics-section-label">Chorus</div>
+        <div class="lyrics-text">
+          Whisperheads, you pull me down<br>
+          below the signal, below the sound<br>
+          where static finds a face<br>
+          and love dissolves in frequency
+        </div>
+
+        <div class="lyrics-section-label">Verse 2</div>
+        <div class="lyrics-text">
+          I left a mark on every door<br>
+          but the city's changed the locks<br>
+          the windows show a version<br>
+          I can't seem to recognize
+        </div>
+
+        <div class="lyrics-section-label">Bridge</div>
+        <div class="lyrics-text">
+          Maybe I'm the one who shifted<br>
+          maybe it was always this<br>
+          a city made of memories<br>
+          that never quite existed
+        </div>
+      </div>
+    </div>
+
+    <!-- References -->
+    <div class="panel-section" style="flex-shrink:0;">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span style="color:var(--blue);">▸</span> Reference Tracks
+        </div>
+        <span class="panel-toggle">▾</span>
+      </div>
+      <div class="panel-body" style="padding-bottom:12px;">
+        <div class="refs-scroll">
+          <div class="ref-card">
+            <div class="ref-cover ref-c1">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0.5;">🌊</div>
+            </div>
+            <div class="ref-body">
+              <div class="ref-title">Motion Picture Soundtrack</div>
+              <div class="ref-artist">Radiohead</div>
+              <div class="ref-badge">Mood match</div>
+            </div>
+          </div>
+          <div class="ref-card">
+            <div class="ref-cover ref-c2">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0.5;">🌿</div>
+            </div>
+            <div class="ref-body">
+              <div class="ref-title">Holocene</div>
+              <div class="ref-artist">Bon Iver</div>
+              <div class="ref-badge">Texture ref</div>
+            </div>
+          </div>
+          <div class="ref-card">
+            <div class="ref-cover ref-c3">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0.5;">⚡</div>
+            </div>
+            <div class="ref-body">
+              <div class="ref-title">Teardrop</div>
+              <div class="ref-artist">Massive Attack</div>
+              <div class="ref-badge">Rhythm ref</div>
+            </div>
+          </div>
+          <div class="ref-card">
+            <div class="ref-cover" style="background:linear-gradient(135deg,#100020,#200030);">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0.5;">🌙</div>
+            </div>
+            <div class="ref-body">
+              <div class="ref-title">Intro</div>
+              <div class="ref-artist">The xx</div>
+              <div class="ref-badge">Sparse ref</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MIDDLE PANEL: Chart + Log -->
+  <main class="mid-panel">
+
+    <!-- Convergence chart -->
+    <div class="panel-block">
+      <div class="block-header">
+        <div class="block-title">Convergence Score · 7 rounds</div>
+        <div style="display:flex;gap:12px;align-items:center;font-size:11px;">
+          <span style="color:var(--dim);">Start: <strong style="color:var(--white);">0.42</strong></span>
+          <span style="color:var(--dim);">Now: <strong style="color:var(--amber);">0.18</strong></span>
+          <span style="color:var(--dim);">Target: <strong style="color:var(--green);">&lt; 0.20</strong></span>
+        </div>
+      </div>
+      <div class="block-body">
+        <div class="chart-wrap">
+          <svg class="chart-svg" viewBox="0 0 520 160" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffaa00" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#ffaa00" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Grid lines -->
+            <line class="chart-grid-line" x1="60" y1="20" x2="500" y2="20"/>
+            <line class="chart-grid-line" x1="60" y1="50" x2="500" y2="50"/>
+            <line class="chart-grid-line" x1="60" y1="80" x2="500" y2="80"/>
+            <line class="chart-grid-line" x1="60" y1="110" x2="500" y2="110"/>
+            <line class="chart-grid-line" x1="60" y1="140" x2="500" y2="140"/>
+
+            <!-- Y axis labels: 0 at bottom=140, 0.5 at top=20 -->
+            <!-- scale: y = 140 - (score/0.55) * 120 -->
+            <text class="chart-label" x="52" y="23" text-anchor="end">0.50</text>
+            <text class="chart-label" x="52" y="53" text-anchor="end">0.40</text>
+            <text class="chart-label" x="52" y="83" text-anchor="end">0.30</text>
+            <text class="chart-label" x="52" y="113" text-anchor="end">0.20</text>
+            <text class="chart-label" x="52" y="143" text-anchor="end">0.10</text>
+
+            <!-- Threshold at 0.20 -->
+            <!-- y = 140 - (0.20/0.50) * 120 = 140 - 48 = 92 -->
+            <line class="chart-threshold-line" x1="60" y1="92" x2="500" y2="92"/>
+            <text class="threshold-label" x="504" y="95">≤0.20</text>
+
+            <!-- X axis round labels: rounds 1-7 spaced 440/6 = 73.3px apart starting x=60 -->
+            <!-- r1=60, r2=133, r3=207, r4=280, r5=353, r6=427, r7=500 -->
+            <text class="chart-label" x="60" y="155" text-anchor="middle">R1</text>
+            <text class="chart-label" x="133" y="155" text-anchor="middle">R2</text>
+            <text class="chart-label" x="207" y="155" text-anchor="middle">R3</text>
+            <text class="chart-label" x="280" y="155" text-anchor="middle">R4</text>
+            <text class="chart-label" x="353" y="155" text-anchor="middle">R5</text>
+            <text class="chart-label" x="427" y="155" text-anchor="middle">R6</text>
+            <text class="chart-label-green" x="500" y="155" text-anchor="middle">R7</text>
+
+            <!-- Data: scores per round
+              R1=0.42 → y=140-(0.42/0.50)*120 = 140-100.8 = 39.2
+              R2=0.38 → y=140-91.2 = 48.8
+              R3=0.34 → y=140-81.6 = 58.4
+              R4=0.28 → y=140-67.2 = 72.8
+              R5=0.24 → y=140-57.6 = 82.4
+              R6=0.21 → y=140-50.4 = 89.6
+              R7=0.18 → y=140-43.2 = 96.8
+            -->
+
+            <!-- Area -->
+            <path class="chart-area"
+              d="M60,39 L133,49 L207,58 L280,73 L353,82 L427,90 L500,97 L500,140 L60,140 Z"/>
+
+            <!-- Line -->
+            <path class="chart-line"
+              d="M60,39 L133,49 L207,58 L280,73 L353,82 L427,90 L500,97"/>
+
+            <!-- Dots -->
+            <circle class="chart-dot" cx="60" cy="39" r="3"/>
+            <circle class="chart-dot" cx="133" cy="49" r="3"/>
+            <circle class="chart-dot" cx="207" cy="58" r="3"/>
+            <circle class="chart-dot" cx="280" cy="73" r="3"/>
+            <circle class="chart-dot" cx="353" cy="82" r="3"/>
+            <circle class="chart-dot" cx="427" cy="90" r="3"/>
+            <circle class="chart-dot-current" cx="500" cy="97" r="5"/>
+
+            <!-- Score annotations -->
+            <text class="chart-label" x="60" y="33" text-anchor="middle" style="fill:var(--white);opacity:0.7;">0.42</text>
+            <text class="chart-label-green" x="500" y="91" text-anchor="middle" style="font-weight:700;">0.18</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent Reasoning Log -->
+    <div class="panel-block">
+      <div class="block-header">
+        <div class="block-title">Agent Reasoning Log</div>
+        <div style="font-size:11px;color:var(--dim);">Round 7 · Music stage</div>
+      </div>
+      <div class="block-body" style="padding:0 12px;">
+        <div class="log-scroll">
+
+          <div class="log-entry">
+            <div class="log-time">14:22</div>
+            <div class="log-icon log-icon-memory">M</div>
+            <div class="log-content">
+              <div class="log-msg">Retrieved Graham's memory profile: prefers minor keys, sparse arrangements, no heavy percussion</div>
+              <div class="log-sub">memory-agent · 3 nodes matched</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-time">14:22</div>
+            <div class="log-icon log-icon-reason">⚙</div>
+            <div class="log-content">
+              <div class="log-msg">Evaluating previous arrangement: bass line too prominent at bar 4–5, competing with vocal placeholder</div>
+              <div class="log-sub">music-critic agent · pass 3</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-time">14:23</div>
+            <div class="log-icon log-icon-reason">⚙</div>
+            <div class="log-content">
+              <div class="log-msg">Adjusting chord voicing: Dm → Dm7 in bar 6 to soften the resolution. Adding pad layer under melody.</div>
+              <div class="log-sub">music-composer agent · revision 2/3</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-time">14:23</div>
+            <div class="log-icon log-icon-score">★</div>
+            <div class="log-content">
+              <div class="log-msg">
+                Scoring arrangement vs brief and memory profile
+                <span class="log-score">0.18</span>
+                <span style="font-size:10px;color:var(--green);margin-left:4px;">↓ 0.03 from R6</span>
+              </div>
+              <div class="log-sub">convergence-scorer · delta −0.03</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-time">14:24</div>
+            <div class="log-icon log-icon-ok">✓</div>
+            <div class="log-content">
+              <div class="log-msg">Score 0.18 is below convergence threshold 0.20. Music stage complete.</div>
+              <div class="log-sub">pipeline-controller · advancing to Voice stage</div>
+            </div>
+          </div>
+
+          <div class="log-entry">
+            <div class="log-time">14:24</div>
+            <div class="log-icon log-icon-reason">⚙</div>
+            <div class="log-content">
+              <div class="log-msg">Awaiting Graham approval before Voice synthesis. Flagging for review.</div>
+              <div class="log-sub">horus-coordinator · paused at gate</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT PANEL: Score + Rounds + CTA -->
+  <aside class="right-panel">
+
+    <div class="right-title">Convergence</div>
+
+    <div class="score-summary-card">
+      <div class="score-big">0.18</div>
+      <div class="score-label">current score (threshold ≤ 0.20)</div>
+      <div class="score-delta">↓ 0.57 improvement over 7 rounds</div>
+      <div class="target-bar">
+        <div class="target-label">
+          <span>0.42</span><span>0.20 target</span><span>0.00</span>
+        </div>
+        <div class="target-track">
+          <div class="target-fill" style="width:82%;"></div>
+          <div class="target-threshold"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-title" style="margin-top:4px;">Round History</div>
+
+    <div class="round-timeline">
+      <div class="round-item">
+        <div class="round-num">1</div>
+        <div class="round-label">Initial arrangement</div>
+        <div class="round-score-pill pill-red">0.42</div>
+      </div>
+      <div class="round-item">
+        <div class="round-num">2</div>
+        <div class="round-label">Removed reverb</div>
+        <div class="round-score-pill pill-red">0.38</div>
+      </div>
+      <div class="round-item">
+        <div class="round-num">3</div>
+        <div class="round-label">Simplified drums</div>
+        <div class="round-score-pill pill-red">0.34</div>
+      </div>
+      <div class="round-item">
+        <div class="round-num">4</div>
+        <div class="round-label">Key change Dm7</div>
+        <div class="round-score-pill pill-amber">0.28</div>
+      </div>
+      <div class="round-item">
+        <div class="round-num">5</div>
+        <div class="round-label">Adjusted bass</div>
+        <div class="round-score-pill pill-amber">0.24</div>
+      </div>
+      <div class="round-item">
+        <div class="round-num">6</div>
+        <div class="round-label">Added pad layer</div>
+        <div class="round-score-pill pill-amber">0.21</div>
+      </div>
+      <div class="round-item" style="background:rgba(0,255,136,0.04);border-radius:6px;padding:6px 4px;">
+        <div class="round-num" style="background:rgba(0,255,136,0.15);color:var(--green);">7</div>
+        <div class="round-label" style="color:var(--white);">Softened chords</div>
+        <div class="round-score-pill pill-green">0.18 ✓</div>
+      </div>
+    </div>
+
+    <!-- Review CTA -->
+    <div class="review-cta">
+      <div class="cta-title">Ready for Voice Stage</div>
+      <div class="cta-sub">Music has converged (score 0.18 &lt; 0.20). Review the arrangement before Horus generates vocal synthesis.</div>
+      <button class="btn-review">▶ Review Audio</button>
+    </div>
+
+  </aside>
+</div>
+
+</body>
+</html>

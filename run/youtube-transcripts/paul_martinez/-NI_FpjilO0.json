@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-NI_FpjilO0",
+    "language": "en",
+    "took_ms": 8651,
+    "method": null,
+    "title": "Applying the Rust Programming Language in ICS",
+    "channel": "S4 Events",
+    "upload_date": "20200429",
+    "duration_sec": 2062,
+    "description": "Adam Crain of Automatak makes the case to use Rust, rather than C or other alternatives, as the programming language in ICS. He begins with a meta point that we can't get rid of bugs because we have not given developers the tools they need.\n\nThis is Stage 2: Technical Deep Dives, so this is a technical session. He goes through simple code samples and shows how it prevents bug classes / problems that can happen in C. Adam does a good job though of making the key points understandable to most.\n\nHalf way through Adam makes the case that the bigger benefit of Rust over C is productivity, not security. And he includes categories of development where Rust does not make sense.\n\nFinally he introduces Rodbus, Modbus client and server written in Rust that is available on crates.io.",
+    "view_count": 2064
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -NI_FpjilO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

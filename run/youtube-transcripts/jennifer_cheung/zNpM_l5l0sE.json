@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zNpM_l5l0sE",
+    "language": "en",
+    "took_ms": 8050,
+    "method": null,
+    "title": "DEF CON 31 - Badge of Shame  Breaking into Secure Facilities with OSDP -Dan Petro, David Vargas",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2566,
+    "description": "Breaking into secure facilities used to be possible by inserting a listening device (such as an ESPKey) behind an RFID card reader and sniffing the unencrypted Wiegand badge numbers over the wire as they go to the backend controller. The physical security industry has taken notice and there's a new sheriff in town: The encrypted protocol OSDP which is starting to be rolled into production. Surely encryption will solve our problems and prevent MitM attacks right? ... right?\n\nIn this presentation, we'll demonstrate over a dozen vulnerabilities, concerning problems, and general \"WTF\"s in the OSDP protocol that let it be subverted, coerced, and totally bypassed. This ranges from deeply in-the-weeds clever cryptographic attacks, to boneheaded mistakes that undermine the whole thing. We will also demonstrate a practical pentesting tool that can be inserted behind an RFID badge reader to exploit these vulnerabilities.\n\nGet your orange vest and carry a ladder, because we're going onsite!",
+    "view_count": 108765
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zNpM_l5l0sE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

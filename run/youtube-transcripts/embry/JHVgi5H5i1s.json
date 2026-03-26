@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JHVgi5H5i1s",
+    "language": "en",
+    "took_ms": 8812,
+    "method": null,
+    "title": "SpaceX Reveals New Starship Lunar Lander Plans!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20251030",
+    "duration_sec": 3192,
+    "description": "SpaceX revealed new renders and plans for their upcoming HLS Starship lunar lander for the Artemis program. I thought we could go over the press release together with a fine tooth comb and talk about all the new things!\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check it out anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) by searching Everyday Astronaut",
+    "view_count": 190163
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JHVgi5H5i1s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

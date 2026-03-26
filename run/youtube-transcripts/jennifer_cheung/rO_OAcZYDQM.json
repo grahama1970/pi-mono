@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rO_OAcZYDQM",
+    "language": "en",
+    "took_ms": 8763,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - Kevin Skoglund - Are Barcodes on Ballots Bad",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1796,
+    "description": "This presentation focuses on the use of barcodes on ballots, specifically barcodes on ballots that store vote selections. Skoglund teaches us how voting systems store votes and barcodes, explains how to decode them, and explores their attack surface from a security perspective. Through close examination of three examples (ES&S ExpressVote, Dominion ImageCast X, Unisyn Freedom Vote Tablet), the presentation explains potential attacks, and highlights detection and mitigation strategies.",
+    "view_count": 952
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rO_OAcZYDQM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

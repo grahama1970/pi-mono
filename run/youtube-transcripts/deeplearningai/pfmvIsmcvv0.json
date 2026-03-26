@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pfmvIsmcvv0",
+    "language": "en",
+    "took_ms": 7789,
+    "method": null,
+    "title": "[AI Access] Applied Analytics from End-to-End",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210309",
+    "duration_sec": 3710,
+    "description": "Welcome to our event series AI Access. Get the most critical AI trends, learn about best practices, and deep dive into a real-world use case with current AI practitioners. \n\nIn this event, Zachary Hanif (https://www.linkedin.com/in/zachary-hanif-942bab49/), the Senior Director of Machine Learning from Capital One, will explore a set of machine learning challenges and demonstrate how ML, distributed data engineering, and a product-oriented mindset can result in impactful results. \n\nFor our audience who have registered the Slido ticket, while you are listening to the presentation, please log in to our Slido page to submit your questions or upvote others’. You will find the Slido access link in your registration confirmation email or the reminder emails.\n\nTo learn more about us, \nDeepLearning.AI: https://www.deeplearning.ai/\n\nTo check out the previous AI Access event where\nPatrick Hebron, Director of ML from Adobe talking about Integrating Design and Technical Innovation in AI-First Products: https://youtu.be/kk6rh45r0fo\n\nStay tuned for DeepLearning.AI future events: https://www.deeplearning.ai/events/",
+    "view_count": 7191
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pfmvIsmcvv0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

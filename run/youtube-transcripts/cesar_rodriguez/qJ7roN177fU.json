@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qJ7roN177fU",
+    "language": "en",
+    "took_ms": 8041,
+    "method": null,
+    "title": "USMC Silent Drill Platoon",
+    "channel": "Sandboxx",
+    "upload_date": "20170628",
+    "duration_sec": 261,
+    "description": "The United States Marine Corps Silent Drill Platoon is a twenty-four man rifle platoon often referred to as “The Marching 24.” This highly-skilled platoon performs unique silent precision exhibition drills to demonstrate  the discipline and professionalism of the Marine Corps.",
+    "view_count": 24569
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qJ7roN177fU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

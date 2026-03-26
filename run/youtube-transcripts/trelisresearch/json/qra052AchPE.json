@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qra052AchPE",
+    "language": "en",
+    "took_ms": 6267,
+    "method": null,
+    "title": "Train an LLM from Scratch with Karpathy's Nanochat",
+    "channel": "Trelis Research",
+    "upload_date": "20251202",
+    "duration_sec": 1745,
+    "description": "Github Repo: https://github.com/TrelisResearch/nanochat\nOne-click Runpod Template: https://console.runpod.io/deploy?template=ikas3s2cii&ref=jmfkcdio\nOriginal Karpathy Repo: https://github.com/karpathy/nanochat\nWandb logs: https://wandb.ai/trelis/nanochat\nModel repo: https://huggingface.co/Trelis/nanochat\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nLearn more about Trelis ADVANCED-fine-tuning repo: https://trelis.com/advanced-fine-tuning\n\n💡 Done-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Train an LLM from scratch with $100 (Nanochat by Karpathy)\n1:44 One-click Runpod Template: https://console.runpod.io/deploy?template=ikas3s2cii&ref=jmfkcdio\n4:46 Running speedrun.sh script with wandb\n7:55 Tokenizer Training (Byte Pair Encoding, BPE)\n10:52 Pretraining on 10B tokens of fine-web edu\n15:15 Pre-training evaluation and Mid-training on Smoltalk+\n17:33 Instructions on pushing and pulling checkpoints to / from HuggingFace Hub\n18:49 Instructions for running the chat interface / UI\n21:15 Post-training on benchmark training/aux splits\n23:11 Demo of running the chat interface \n25:29 Pushing the model, optimizer, report and tokenizer to hub\n28:20 Resources: Model and Repo",
+    "view_count": 5562
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "\nCould not retrieve a transcript for the video https://www.youtube.com/watch?v=qra052AchPE! This is most likely caused by:\n\nYouTube is blocking requests from your IP. This usually is due to one of the following reasons:\n- You have done too many requests and your IP has been blocked by YouTube\n- You are doing requests from an IP belonging to a cloud provider (like AWS, Google Cloud Platform, Azure, etc.). Unfortunately, most IPs from cloud providers are blocked by YouTube.\n\nThere are two things you can do to work around this:\n1. Use proxies to hide your IP address, as explained in the \"Working around IP bans\" section of the README (https://github.com/jdepoix/youtube-transcript-api?tab=readme-ov-file#working-around-ip-bans-requestblocked-or-ipblocked-exception).\n2. (NOT RECOMMENDED) If you authenticate your requests using cookies, you will be able to continue doing requests for a while. However, YouTube will eventually permanently ban the account that you have used to authenticate with! So only do this if you don't mind your account being banned!\n\nIf you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!"
+  ]
+}

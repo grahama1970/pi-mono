@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Observatory - S03: LEARN FROM MUSIC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&amp;family=Space_Grotesk:wght@300;400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#0e0e0e",
+            "outline-variant": "#484848",
+            "on-tertiary-fixed": "#001833",
+            "on-secondary-fixed": "#004621",
+            "inverse-on-surface": "#565555",
+            "error-dim": "#d73357",
+            "inverse-primary": "#742fe5",
+            "secondary": "#00fd87",
+            "tertiary-dim": "#4fa0ff",
+            "error-container": "#a70138",
+            "outline": "#767575",
+            "secondary-fixed": "#00fd87",
+            "tertiary": "#6aabff",
+            "secondary-fixed-dim": "#00ed7e",
+            "on-primary": "#3c0089",
+            "surface-container-high": "#202020",
+            "background": "#0e0e0e",
+            "on-primary-fixed": "#000000",
+            "surface-dim": "#0e0e0e",
+            "on-secondary-fixed-variant": "#006632",
+            "on-secondary-container": "#e3ffe4",
+            "surface-variant": "#262626",
+            "on-primary-container": "#2e006c",
+            "on-tertiary-container": "#001e3c",
+            "secondary-dim": "#00ed7e",
+            "on-surface": "#ffffff",
+            "on-surface-variant": "#adaaaa",
+            "on-secondary": "#005b2c",
+            "tertiary-fixed-dim": "#5da5ff",
+            "primary-fixed": "#b28cff",
+            "surface-tint": "#bd9dff",
+            "surface-container-low": "#131313",
+            "surface-container-highest": "#262626",
+            "tertiary-container": "#499dfe",
+            "on-primary-fixed-variant": "#390083",
+            "on-background": "#ffffff",
+            "surface-container": "#191a1a",
+            "primary-container": "#b28cff",
+            "error": "#ff6e84",
+            "tertiary-fixed": "#7bb3ff",
+            "on-tertiary-fixed-variant": "#003a6d",
+            "on-tertiary": "#002a52",
+            "secondary-container": "#006d37",
+            "on-error-container": "#ffb2b9",
+            "surface-container-lowest": "#000000",
+            "primary-fixed-dim": "#a67aff",
+            "on-error": "#490013",
+            "primary": "#bd9dff",
+            "inverse-surface": "#fcf9f8",
+            "surface-bright": "#2c2c2c",
+            "primary-dim": "#8a4cfc"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      background-color: #0e0e0e;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-72 left-0 sticky flex flex-col py-12 gap-y-4 bg-[#131313] border-r border-[#484848]/15">
+<div class="px-8 mb-8">
+<h2 class="font-['Space_Grotesk'] uppercase tracking-widest text-xs text-[#00fd87] mb-1">PIPELINE</h2>
+<p class="font-['Space_Grotesk'] text-[10px] text-[#adaaaa] opacity-60">OPERATOR MODE</p>
+</div>
+<nav class="flex flex-col">
+<div class="group px-8 py-3 flex items-center gap-4 text-[#adaaaa] opacity-60 hover:opacity-100 hover:bg-[#262626] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">lightbulb</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">S00: THE THOUGHT</span>
+</div>
+<div class="group px-8 py-3 flex items-center gap-4 text-[#adaaaa] opacity-60 hover:opacity-100 hover:bg-[#262626] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">S01: RECALL LORE</span>
+</div>
+<div class="group px-8 py-3 flex items-center gap-4 text-[#adaaaa] opacity-60 hover:opacity-100 hover:bg-[#262626] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">search</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">S02: FIND REFERENCE SONGS</span>
+</div>
+<!-- ACTIVE TAB: S03 -->
+<div class="group px-8 py-3 flex items-center gap-4 text-[#00fd87] border-l-2 border-[#00fd87] bg-[#191a1a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">analytics</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs font-bold">S03: LEARN FROM MUSIC</span>
+</div>
+<div class="group px-8 py-3 flex items-center gap-4 text-[#adaaaa] opacity-60 hover:opacity-100 hover:bg-[#262626] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-xs">S04: ARCHIVE</span>
+</div>
+</nav>
+<div class="mt-auto px-8">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-[#191a1a] border border-[#484848]/10">
+<div class="w-8 h-8 rounded bg-primary-dim flex items-center justify-center overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Technical operator avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALeBmUcgHNGHfodAbb95HaCulA07wDVH0gImOE_KSEbaHf5hfyUpqRM34zw_GpR1TjF_1wOqz2R5YPRo2tSa91_hrfWnPZkodtfGHJkReCEAgWw5IaSjTBdxHbA-rjp2pahRbKwTAjcgzw6pZGAQSgg3GQ9yBmL-0PcHvybsOAfjc088KmA_6kD5IRhla-aF2LtgZXqj5kQomkpnPK9abl_bedSaZsV6cqAwti0vBSZGPVqRrsW1xBdoMk-0e2SRaef1vGx5r2p38"/>
+</div>
+<div class="overflow-hidden">
+<p class="font-['Space_Grotesk'] text-[10px] text-on-surface truncate">OPERATOR_01</p>
+<p class="font-['Space_Grotesk'] text-[8px] text-[#00fd87] uppercase">Authorized</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col">
+<!-- TopNavBar Anchor -->
+<header class="flex justify-between items-center px-8 h-16 w-full top-0 sticky bg-[#0e0e0e] border-none z-10">
+<div class="flex items-center gap-6">
+<h1 class="text-xl font-black tracking-tighter text-[#bd9dff] uppercase font-['Inter']">Sonic Observatory</h1>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<div class="flex items-center gap-3">
+<span class="font-['Space_Grotesk'] text-[#bd9dff]">S03</span>
+<span class="font-bold text-on-surface">Learn From Music</span>
+<span class="text-[#adaaaa] text-sm">Portishead - Roads</span>
+<span class="flex items-center gap-1 bg-secondary-container/20 text-secondary text-[10px] px-2 py-0.5 rounded-full font-bold font-['Space_Grotesk']">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'wght' 700;">check</span>
+            DONE
+          </span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#adaaaa] hover:text-[#bd9dff] transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 text-[#adaaaa] hover:text-[#bd9dff] transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Canvas Content -->
+<div class="p-12 max-w-6xl w-full mx-auto space-y-12">
+<!-- Stem Analysis Section -->
+<section class="space-y-8">
+<div class="flex items-end justify-between">
+<div>
+<h3 class="font-['Space_Grotesk'] text-xs tracking-[0.2em] text-[#adaaaa] uppercase mb-2">Technical Breakdown</h3>
+<h2 class="text-3xl font-black tracking-tight font-['Inter']">Stem Analysis</h2>
+</div>
+<div class="text-right">
+<p class="font-['Space_Grotesk'] text-[10px] text-[#00fd87]">SIGNAL_STRENGTH: OPTIMAL</p>
+</div>
+</div>
+<div class="space-y-6 bg-surface-container-low p-8 rounded-xl border border-outline-variant/5">
+<!-- Vocal Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="font-['Space_Grotesk'] text-[11px] uppercase tracking-widest text-[#7c3aed]">Vocal</label>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">70% PROMINENCE</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#7c3aed] rounded-full transition-all duration-1000" style="width: 70%;"></div>
+</div>
+</div>
+<!-- Bass Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="font-['Space_Grotesk'] text-[11px] uppercase tracking-widest text-[#4a9eff]">Bass</label>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">45% PROMINENCE</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#4a9eff] rounded-full transition-all duration-1000" style="width: 45%;"></div>
+</div>
+</div>
+<!-- Drums Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="font-['Space_Grotesk'] text-[11px] uppercase tracking-widest text-[#ff4444]">Drums</label>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">55% PROMINENCE</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#ff4444] rounded-full transition-all duration-1000" style="width: 55%;"></div>
+</div>
+</div>
+<!-- Keys Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="font-['Space_Grotesk'] text-[11px] uppercase tracking-widest text-[#00ff88]">Keys</label>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">60% PROMINENCE</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#00ff88] rounded-full transition-all duration-1000" style="width: 60%;"></div>
+</div>
+</div>
+<!-- Guitar Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="font-['Space_Grotesk'] text-[11px] uppercase tracking-widest text-[#ffaa00]">Guitar</label>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">30% PROMINENCE</span>
+</div>
+<div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#ffaa00] rounded-full transition-all duration-1000" style="width: 30%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Arrangement Notes Section -->
+<section>
+<div class="bg-[#111111] border border-outline-variant/10 rounded-xl overflow-hidden shadow-2xl">
+<div class="px-8 py-4 border-b border-outline-variant/10 flex items-center gap-3 bg-surface-container">
+<span class="material-symbols-outlined text-secondary text-lg">description</span>
+<h3 class="font-['Space_Grotesk'] text-sm font-bold uppercase tracking-widest">Arrangement Notes</h3>
+</div>
+<div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+<ul class="space-y-4">
+<li class="flex gap-4 group">
+<span class="w-1.5 h-1.5 rounded-full bg-[#4a9eff] mt-2 group-hover:scale-150 transition-transform"></span>
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#4a9eff] mb-1">Bass</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Sustained half notes during fear/sadness sections</p>
+</div>
+</li>
+<li class="flex gap-4 group">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ff4444] mt-2 group-hover:scale-150 transition-transform"></span>
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#ff4444] mb-1">Drums</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Sparse — kick on 1, ghost snare on 3</p>
+</div>
+</li>
+<li class="flex gap-4 group">
+<span class="w-1.5 h-1.5 rounded-full bg-[#00ff88] mt-2 group-hover:scale-150 transition-transform"></span>
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#00ff88] mb-1">Keys</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Wide voicings, pad-like sustain</p>
+</div>
+</li>
+</ul>
+<ul class="space-y-4">
+<li class="flex gap-4 group">
+<span class="w-1.5 h-1.5 rounded-full bg-[#7c3aed] mt-2 group-hover:scale-150 transition-transform"></span>
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#7c3aed] mb-1">Vocal</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Dry in verses, reverb in chorus</p>
+</div>
+</li>
+<li class="flex gap-4 group">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ffaa00] mt-2 group-hover:scale-150 transition-transform"></span>
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] uppercase text-[#ffaa00] mb-1">Guitar</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Clean arpeggios, barely present</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Status Footer -->
+<footer class="mt-auto pt-12 border-t border-outline-variant/10">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<p class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant uppercase tracking-wider">
+                RVC Model: training... <span class="text-secondary">horus-graham-v3.pth</span>
+</p>
+</div>
+<div class="h-3 w-px bg-outline-variant/30"></div>
+<p class="font-['Space_Grotesk'] text-[10px] text-[#adaaaa]">47 MIN SOURCE AUDIO</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 bg-surface-variant rounded border border-outline-variant/20">
+<p class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant uppercase tracking-widest">Latency: 14ms</p>
+</div>
+<div class="px-3 py-1 bg-surface-variant rounded border border-outline-variant/20">
+<p class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant uppercase tracking-widest">FPS: 60.0</p>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</main>
+<!-- Contextual Floating Action Button -->
+<button class="fixed bottom-12 right-12 w-14 h-14 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-2xl hover:scale-110 transition-transform active:scale-95 z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</body></html>

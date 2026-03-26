@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wvIdHqhPVTs",
+    "language": "en",
+    "took_ms": 9028,
+    "method": null,
+    "title": "Unsolicited Response - Heroes v. Guides",
+    "channel": "S4 Events",
+    "upload_date": "20200805",
+    "duration_sec": 267,
+    "description": "Ron Fabela takes 5 minutes to prod the community to stop trying to be the hero and guide our Operations charges to success ... and of course it's Ronnie so it's funny.",
+    "view_count": 165
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wvIdHqhPVTs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i0cXyiZv_qc",
+    "language": "en",
+    "took_ms": 9125,
+    "method": null,
+    "title": "DEF CON 32 - Video Team - WHITERABBITNEO",
+    "channel": "DEFCONConference",
+    "upload_date": "20240919",
+    "duration_sec": 723,
+    "description": "BB and the crew learn all about the OpenSource Red Team AI Model Whiterabbitneo",
+    "view_count": 3511
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i0cXyiZv_qc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

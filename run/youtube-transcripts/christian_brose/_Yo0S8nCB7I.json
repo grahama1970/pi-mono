@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_Yo0S8nCB7I",
+    "language": "en",
+    "took_ms": 9322,
+    "method": null,
+    "title": "Broken Cities or Civic Renewal?",
+    "channel": "Hudson Institute",
+    "upload_date": "20121129",
+    "duration_sec": 7054,
+    "description": "Just over two years ago, the citizens of Bell, California, discovered from an exposé in the Los Angeles Times that their city officials were among the highest paid in the nation, in spite of the city's underperforming economy and high unemployment rate. After some officials were arrested, the city was left with no functioning government and empty coffers.\r\rThis might seem like the least favorable environment for encouraging civic engagement in public affairs, but that is not how Pepperdine Unive",
+    "view_count": 49
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _Yo0S8nCB7I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

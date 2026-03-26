@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tJ4tG7nRUyU",
+    "language": "en",
+    "took_ms": 8834,
+    "method": null,
+    "title": "DEF CON 33 - So Long, and Thanks for All the Phish - Harrison Sand, Erlend Leiknes",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2169,
+    "description": "A rare look behind the scenes of a global phishing-as-a-service operation. We tell the story of how we infiltrated a phishing group, cracked their software, exploited a hidden backdoor, and followed an OSINT rabbit hole to uncover the identify of the primary software developer.",
+    "view_count": 767
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tJ4tG7nRUyU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

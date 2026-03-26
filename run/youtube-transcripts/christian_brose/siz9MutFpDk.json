@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "siz9MutFpDk",
+    "language": "en",
+    "took_ms": 9942,
+    "method": null,
+    "title": "The Economics of Net Neutrality",
+    "channel": "Hudson Institute",
+    "upload_date": "20141001",
+    "duration_sec": 4548,
+    "description": "Hudson Institute’s Center for the Economics of the Internet welcomed Professor Tom Hazlett of Clemson University to discuss the potential impact of network neutrality regulation. Harold Furchtgott-Roth, Hudson Institute senior fellow and director of the Center for the Economics of the Internet, moderated the discussion. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1205
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] siz9MutFpDk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

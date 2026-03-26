@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "77AixFQKwVI",
+    "language": "en",
+    "took_ms": 8139,
+    "method": null,
+    "title": "DEF CON 33 -  How Nation-State Hackers Turn Human Error into Catastrophic Failures - N Case, J McCoy",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2163,
+    "description": "Nation-state hackers pose a formidable threat to critical infrastructure, compromising national security, intellectual property, and public safety. This presentation will delve into the tactics, techniques, and procedures (TTPs) employed by nation-state actors, providing a core understanding essential for developing effective defense strategies. Through an in-depth analysis of three real-world case studies, we will expose the implications of nation-state attacks on laboratory, critical infrastructure, and industrial systems. We will examine how these attacks exploit human vulnerabilities, such as social engineering and insider threats, as well as system weaknesses, including misconfiguration and software vulnerabilities. Drawing from recent breaches in research laboratories and industrial manufacturing facilities, we will identify the root causes of these incidents, including human error, malicious insider actions, and inadequate security controls. This presentation aims to provide attendees with a comprehensive understanding of nation-state attack patterns, enabling them to strengthen their organization’s defenses against these sophisticated threats.",
+    "view_count": 732
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 77AixFQKwVI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

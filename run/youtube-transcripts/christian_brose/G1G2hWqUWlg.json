@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G1G2hWqUWlg",
+    "language": "en",
+    "took_ms": 9432,
+    "method": null,
+    "title": "The Ambassadors Series: The Romanian Presidency and the European Union",
+    "channel": "Hudson Institute",
+    "upload_date": "20190319",
+    "duration_sec": 3382,
+    "description": "Hudson Institute hosted Romanian Ambassador George Maior for a discussion on the Romanian presidency of the European Union. The conversation was moderated by Walter Russell Mead, the Ravenel B. Curry III Distinguished Fellow in Strategy and Statesmanship at Hudson.\n\nRomania has begun its six-month presidency of the Council of the European Union at a critical juncture marked by the looming Brexit deadline, the upcoming European Parliament elections and continued security challenges on its Eastern border. Hudson is pleased to host Ambassador Maior as he discusses the agenda that Romania has set for the EU; its key role in defending the Black Sea and NATO’s eastern flank and in promoting energy security; and the future of the EU post-Brexit. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 363
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G1G2hWqUWlg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

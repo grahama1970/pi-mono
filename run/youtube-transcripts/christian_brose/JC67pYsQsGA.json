@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JC67pYsQsGA",
+    "language": "en",
+    "took_ms": 9035,
+    "method": null,
+    "title": "Is the Era of a Vibrant, Innovative Internet Coming to a Close?: A Discussion with Senator Deb Fisch",
+    "channel": "Hudson Institute",
+    "upload_date": "20150720",
+    "duration_sec": 2853,
+    "description": "Senator Deb Fischer joins Harold Furchtgott-Roth for a discussion on Internet regulation and the FCC.",
+    "view_count": 542
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JC67pYsQsGA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

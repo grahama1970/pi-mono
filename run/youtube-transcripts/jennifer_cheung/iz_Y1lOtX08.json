@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iz_Y1lOtX08",
+    "language": "en",
+    "took_ms": 9335,
+    "method": null,
+    "title": "DEF CON 29 - Zabrocki,  Matrosov - Glitching RISC-V chips: MTVEC corruption for hardening ISA",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 3165,
+    "description": "RISC-V is an open standard instruction set architecture (ISA) provided under open-source licenses that do not require fees to use. ISA is based on established reduced instruction set computer (RISC) principles. RISC-V has features to increase computer speed, while reducing cost and power use.\n\nMany industry players like Google, IBM, NVIDIA, Qualcomm, and Samsung are members of the RISC-V Foundation and have long supported RISC-V development. In 2016, NVIDIA unveiled plans to replace the internal microcontrollers of their graphic cards with next-gen RISC-V-based controllers built for upcoming NVIDIA GPUs.\n\nNVIDIA's Product Security undertook a detailed architectural analysis and research of the RISC-V IP, discovering a potential risk with the ambiguous specification of the Machine Trap Base Address (MTVEC) register. This ambiguity leads to potential fault injection vulnerabilities under physical attack models.",
+    "view_count": 3812
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iz_Y1lOtX08: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KpxHU5NPsPk",
+    "language": "en",
+    "took_ms": 9718,
+    "method": null,
+    "title": "DEF CON 33 - Quantum Resistant Healthcare - Katarina Amrichova",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1703,
+    "description": "Quantum computers are steadily improving, and experts estimate that within the next 30 years, quantum computers will be able to break certain cryptographic algorithms, such as those used to protect against eavesdropping during internet communications. All industries—especially those hosting critical infrastructure like healthcare—need to prepare for this shift and begin transitioning to post-quantum cryptography to ensure quantum resistance. In this talk, we will discuss the quantum threat and use specific examples from Siemens Healthineers’ environment to highlight the key aspects vendors must consider when transitioning to post-quantum cryptography.",
+    "view_count": 603
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KpxHU5NPsPk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7Ds8M38GqP8",
+    "language": "en",
+    "took_ms": 8719,
+    "method": null,
+    "title": "DEF CON 30 - Silk - XOR Machine",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 179,
+    "description": "See more of SIlk's hacker videos at :\nYouTube.com/alexchaveriat\nYouTube.com/hackerhangouts",
+    "view_count": 5062
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7Ds8M38GqP8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

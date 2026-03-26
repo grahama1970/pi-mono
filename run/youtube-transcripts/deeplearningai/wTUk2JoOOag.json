@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wTUk2JoOOag",
+    "language": "en",
+    "took_ms": 9541,
+    "method": null,
+    "title": "The Boring Way to Learn AI (That Actually Works)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260205",
+    "duration_sec": 37,
+    "description": "Most people don’t fail at AI because it’s hard.\nThey fail because they start too big.\n\nTiny projects build momentum.\nMomentum builds confidence.\nAnd confidence keeps you going.\n\nIf you want to level up in AI, start small on purpose.",
+    "view_count": 235952
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wTUk2JoOOag: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

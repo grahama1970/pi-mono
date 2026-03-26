@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Wc9GPvu-Yso",
+    "language": "en",
+    "took_ms": 7776,
+    "method": null,
+    "title": "DEF CON 33 - Real Exploits, Testbed Validation, Policy Gaps in Maritime Connectivity - Juwon Cho",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1477,
+    "description": "Despite their widespread use in maritime and remote communication environments, VSAT systems have not received sufficient attention regarding their security vulnerabilities. Recent incidents, such as the Lab Dookhtegan hacker group's attack on Iranian ship networks and the demonstration of firmware reverse engineering and remote root exploitation targeting VSAT modems (e.g., Newtec MDM2200) at DEFCON, highlight the critical security challenges associated with VSAT systems. Against this backdrop, our research team presents a detailed overview of our ongoing research since 2023, encompassing the collection and re-hosting of VSAT firmware, as well as systematic vulnerability analysis through the ACU web interface. Specifically, we provide an in-depth analysis and demonstration of recently discovered VSAT ACU web vulnerabilities (CVE-2023-44852 ~ CVE-2023-44857). Additionally, we describe the application of experimental testbed environments based on the methodology proposed in the paper \"Securing Maritime Autonomous Surface Ships: Cyber Threat Scenarios and Testbed Validation.\" This research aims to thoroughly analyze the security vulnerabilities and attack potentials inherent in VSAT systems, emphasizing the importance of strengthening maritime cyber security and fostering international collaboration, while providing practical recommendations for policy and technological enhancements.",
+    "view_count": 224
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Wc9GPvu-Yso: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

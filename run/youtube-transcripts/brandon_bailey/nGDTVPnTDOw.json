@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nGDTVPnTDOw",
+    "language": "en",
+    "took_ms": 9165,
+    "method": null,
+    "title": "DEF CON 32 - The Interplay between Safety and Security in Aviation Systems - Lillian Ash Baker",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1204,
+    "description": "Safety has been at the forefront of Civil Aviation since the formalization of DO-178, Software Considerations in Airborne Systems and Equipment Certification, in 1981. However, times have changed since then and we live in a world with seemingly limitless connectivity. DO-356A, Airworthiness Security Methods and Considerations, forms the cybersecurity bedrock in which aviation systems are designed and implemented. In this talk, participants will learn about how Safety and Security is applied to system design and how they interact with one another. Design Assurance Levels (DAL) and Security Assurance Levels (SAL) concepts are presented and explained what their purpose is. This talk is designed to appeal to the general cybersecurity community by introducing fundamentals of Safety analyses and discussing how Safety and Security interact with one another.\n\nThis talk will first touch upon fundamental documents that form the Certification basis for System Development (ARP4754B), System Safety (ARP4761A), and Security Considerations (DO-356A). From there, it walk through pieces that form a safety analysis and Design Assurance Level (DAL), walk through a system architecture under consideration, and learn about how Safety and requirements in a system can be used to inform the Threat Model for the system. From there, we end with a discussion on how Security Mitigations are assigned Security Assurance Level (SAL) and what this means for developers.",
+    "view_count": 1104
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nGDTVPnTDOw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

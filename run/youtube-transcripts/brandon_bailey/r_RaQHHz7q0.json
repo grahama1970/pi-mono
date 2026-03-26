@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "r_RaQHHz7q0",
+    "language": "en",
+    "took_ms": 8709,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - Holger Unterbrink - Reversing With Dynamic Data Resolver",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 3571,
+    "description": "DDR is an IDA plugin that instruments binaries using the DynamoRIO framework. In this presentation we will show you best practices how to reverse engineer malware with DDR. The talk will discuss the internals of DDR and show you by demonstration, the advantages of the tool.",
+    "view_count": 408
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] r_RaQHHz7q0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

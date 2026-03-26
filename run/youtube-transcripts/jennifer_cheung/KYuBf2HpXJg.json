@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KYuBf2HpXJg",
+    "language": "en",
+    "took_ms": 7895,
+    "method": null,
+    "title": "DEF CON 30 - Andrew Logan - Tracking  Military Ghost Helicopters over Washington DC",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1132,
+    "description": "There's a running joke around Washington D.C. that the \"State Bird\" is the helicopter. Yet 96% of helicopter noise complaints from 2018-2021 went unattributed: D.C. Residents can not tell a news helicopter from a black hawk. Flight tracking sites remove flights as a paid service to aircraft owners and government agencies; even in the best case these sites do not receive tracking information from most military helicopters due to a Code of Federal Regulations exemption for \"sensitive government mission for national defense, homeland security, intelligence or law enforcement.\" This makes an enormous amount of helicopter flights untraceable even for the FAA and leaves residents in the dark.\n\nWhat if we could help residents identify helicopters? What if we could crowd source helicopter tracking? What if we could collect images to identify helicopters using computer vision? What if we could make aircraft radio as accessible as reading a map? What if we could make spotting helicopters a game that appeals to the competitive spirit of Washingtonians? And what if we could do all of this... on Twitter?",
+    "view_count": 120061
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KYuBf2HpXJg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

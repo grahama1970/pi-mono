@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mPx6CH3fJHI",
+    "language": "en",
+    "took_ms": 9229,
+    "method": null,
+    "title": "Bringing DevSecOps to ICS",
+    "channel": "S4 Events",
+    "upload_date": "20180225",
+    "duration_sec": 1858,
+    "description": "Matt Franz found disclosed the first vulns in ICS back in 2007, and then he left the ICS world. In recent years he has lived in the DevOps world and discusses how this can help in ICS. \n\nHe discusses his professional journey and how he went from breaking things to building and running applications and systems.\n\n\"In DevSecOps it is essential that security does not slow things down.\" Feedback loops and pain driving change is essential. Continual experimentation and change is the rule. \"IT has lost, everything is about putting the tools and power in the developers' hands\".\n\nMatt talks about how he staffs and runs a DevSecOps team and what he has learned.",
+    "view_count": 598
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mPx6CH3fJHI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eBkduAj_Ruc",
+    "language": "en",
+    "took_ms": 8685,
+    "method": null,
+    "title": "DEF CON 33 - Policy Preview",
+    "channel": "DEFCONConference",
+    "upload_date": "20250719",
+    "duration_sec": 83,
+    "description": "What does Policy @ DEF CON have in store for you  this year? Find out in this preview short.",
+    "view_count": 5633
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eBkduAj_Ruc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

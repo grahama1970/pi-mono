@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hnUG3hB0qVI",
+    "language": "en",
+    "took_ms": 9007,
+    "method": null,
+    "title": "DEF CON 32 - Programming a CTS-V Gauge Cluster into an ATS-V, out of pure spite - Varjitt Jeeva",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 916,
+    "description": "Some cars are over-engineered, some are too basic, and some check every box except one. I did that research over months when trying to buy a new car, and landed on a 6MT Cadillac ATS-V while only wanting and dealing with Japanese cars, specifically Lexus/Toyota. The one thing it was missing was a digital gauge cluster, and programmers were asking $350, so I set off to figure it out myself. I then dove deep into GM electronics and programming, found a smart dude who initially cracked it all for free to spite all the money-grabbing gatekeepers, then became a hyprocrite, backtracking asking thousands to reveal his learnings. This presentation will go over how I programmed that cluster, posted everything on Github, out of spite.",
+    "view_count": 1898
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hnUG3hB0qVI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

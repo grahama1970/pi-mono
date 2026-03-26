@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0pnEUAwoDP0",
+    "language": "en",
+    "took_ms": 8941,
+    "method": null,
+    "title": "How to Build, Evaluate, and Iterate on LLM Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231205",
+    "duration_sec": 3732,
+    "description": "LLM Agents are one of the most in-demand uses of large language models. This workshop, led by the expert founders of LlamaIndex and TruEra, will show you how to develop, evaluate, and iterate LLM Agents, so that you can build powerful, effective LLM Agents quickly.\n\r\n\r\nIn this workshop, you will learn:\r\n\r\nHow to use a framework like LlamaIndex to build your LLM Agent\r\nHow to evaluate your LLM Agent using open source LLM Observability tools like TruLens - testing for effectiveness, hallucinations, and bias\r\nHow to iterate your way to an effective app that will be approved for production\r\nWhat to do to keep your app high performing in production\r\n\nSlides:\nhttps://docs.google.com/presentation/d/1gnXhucgiI7I7enBDSGmvTmLqKvs3zZIKWyjf0bsydsc/edit?usp=sharing\n\nNotebook:\nhttps://colab.research.google.com/github/truera/trulens/blob/main/trulens_eval/examples/expositional/frameworks/llama_index/llama_index_agents.ipynb\n\n\r\nThis event is inspired by DeepLearning.AI’s GenAI short courses, created in collaboration with AI companies across the globe. Our courses help you learn new skills, tools, and concepts efficiently within 1 hour.\r\n\r\nhttps://bit.ly/41arJ59\n\n\r\nAbout LlamaIndex\r\n\r\nLlamaIndex is a simple, flexible data framework for connecting custom data sources to large language models. https://www.llamaindex.ai/\r\n\r\nAbout TruEra\r\n\r\nTruEra is a leader in AI Observability, providing solutions for monitoring, testing, and debugging both predictive and generative AI. It also offers the free, open source TruLens library for testing and tracking LLM app experiments. www.truera.com\r\n\r\n\r\n\r\nSpeakers:\r\n\r\nJerry Liu, CEO, LllamaIndex\r\n\r\nhttps://www.linkedin.com/in/jerry-liu-64390071/\r\n\r\nAnupam Datta, President and Chief Scientist, TruEra\r\n\r\nhttps://www.linkedin.com/in/anupamdatta/",
+    "view_count": 47307
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0pnEUAwoDP0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

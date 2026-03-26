@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "h68BEwCj2tE",
+    "language": "en",
+    "took_ms": 8715,
+    "method": null,
+    "title": "Taiwan's China Strategy",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6689,
+    "description": "In response to the continued rise of the People's Republic of China, Taiwan is pursuing a political, economic, and military strategy to help stabilize relations with its mainland neighbor. The military strategy is based on Taiwanese and American forces providing an effective balance against Chinese capabilities in the Taiwan Strait, thereby deterring potential Chinese expansion. The political and economic strategy is to help moderate Beijing's behavior and even hasten the process of political an",
+    "view_count": 527
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] h68BEwCj2tE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

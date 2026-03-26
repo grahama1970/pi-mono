@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-VGZ8DGkiyc",
+    "language": "en",
+    "took_ms": 7799,
+    "method": null,
+    "title": "Exclusive look inside Rocket Lab's factory!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20181021",
+    "duration_sec": 490,
+    "description": "Rocket Lab may have just dropped a nuke on the small sat launch market by secretly opening up an enormous factory in Auckland, New Zealand.\n\nWith only about 72 hours notice, I wound up flying to New Zealand to get an exclusive look at their new 7,500 sq/m (80,700 sq/ft) factory that is streamlined for an impressive production rate.\n\nMore pictures here! - https://everydayastronaut.com/inside-rocketlab/\n\nWant early access to the entire 80 minute long Peter Beck interview? Become a patron! - http://patreon.com/everydayastronaut\n\nA rundown on the Electron rocket! - https://youtu.be/C0STPK3g9c8\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nAll music is original! Check out the songs on soundcloud! http://soundcloud.com/everydayastronaut\n\nBuying a Tesla? Already ordered a model 3? Consider using my link for a referral! http://ts.la/tim19804",
+    "view_count": 275998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -VGZ8DGkiyc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

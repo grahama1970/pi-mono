@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n8w85LpRplY",
+    "language": "en",
+    "took_ms": 8988,
+    "method": null,
+    "title": "DEF CON 32 - Measuring the Tor Network - Silvia Puglisi, Roger Dingledine",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2495,
+    "description": "Millions of people around the world use Tor every day to protect themselves from surveillance and censorship. While the Tor Browser and its protocol are widely known, the backbone of the Tor ecosystem, its extensive network of volunteer relays, is often subject to speculation and misinformation. The Tor Project is dedicated to supporting this network and fostering a vibrant, diverse community of relay operators.\n\nThis talk will focus on our efforts to maintain a healthy network and community, and detect and mitigate attacks -- all with the help of metrics and analysis of usage patterns. By illustrating how we collect safe-enough metrics for an anonymity network, we will offer insights into how we identify unusual activity and other noteworthy events on the network. We will also discuss our ongoing strategies for addressing current and future network health challenges.\n\nIf you are interested in understanding the inner workings of the Tor network and its relay community and how we keep this vital ecosystem running, this talk is for you.",
+    "view_count": 1737
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n8w85LpRplY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

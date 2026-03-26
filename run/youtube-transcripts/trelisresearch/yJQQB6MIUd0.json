@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yJQQB6MIUd0",
+    "language": "en",
+    "took_ms": 7204,
+    "method": null,
+    "title": "Understanding TRM and HRM",
+    "channel": "Trelis Research",
+    "upload_date": "20251010",
+    "duration_sec": 3649,
+    "description": "Thanks to Runpod for sponsoring compute, affiliate link: https://runpod.io?ref=jmfkcdio\n\nIn this video I talk about HRM and TRM and how they work for solving ARC tasks and what we might learn for more broadly for LLMs and machine learning",
+    "view_count": 1808
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yJQQB6MIUd0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GAt0-ZedlVY",
+    "language": "en",
+    "took_ms": 7774,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - Susan Greenhalgh -  Wireless Odyssey",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1500,
+    "description": "In February, the U.S. Election Assistance Commission (EAC) passed new voting system standards, the federal voluntary voting system guidelines or VVSG 2.0. The new guidelines that were presented to the EAC, voted on, and adopted, had a significant change in them from the guidelines that had gone through the federally mandated public hearing and comment period. The new standards, that had not been vetted publicly, suddenly allowed the\ninclusion of wireless networking devices like modems, chips or radios.\n\nThis presentation aims to tell the story of how the computer security community successfully advocated for the federal voting system standards to ban all wireless networking capability in federally certified voting systems, only to have the EAC change the publicly vetted version of the standards, in secret, behind closed doors, at the eleventh hour, at the request of the voting system vendors, to allow wireless devices.",
+    "view_count": 560
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GAt0-ZedlVY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

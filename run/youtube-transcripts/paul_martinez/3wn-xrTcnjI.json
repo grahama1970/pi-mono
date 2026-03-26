@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3wn-xrTcnjI",
+    "language": "en",
+    "took_ms": 9362,
+    "method": null,
+    "title": "Safety Needs To Learn From Security ... And Security From Business",
+    "channel": "S4 Events",
+    "upload_date": "20170918",
+    "duration_sec": 1931,
+    "description": "Dale Peterson's keynote from S4xEurope in June 2017 hits three things that fly in the face of conventional wisdom, and he believes are essential to managing ICS security risk.\n\n1. The appealing idea of mapping successful approaches in Safety to Security (SILs as a model for SALs) and learning from how Safety programs succeeded is a flawed concept that does not work.\n\n2. Just the opposite is true. Safety needs to bring security expertise into their PHA's and safety approaches. How could a cyber attack or incident cause a high consequence event an how will the safety/protection program prevent this even with an attacker with complete privileges and logical access.\n\n3. Most of the focus on cyber risk reduction has been on the likelihood portion of the risk equation. In many cases a focus on reducing consequences will lead to more efficient and effective risk reduction.",
+    "view_count": 487
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3wn-xrTcnjI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

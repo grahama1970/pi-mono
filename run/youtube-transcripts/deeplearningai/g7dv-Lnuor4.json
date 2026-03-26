@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g7dv-Lnuor4",
+    "language": "en",
+    "took_ms": 9044,
+    "method": null,
+    "title": "Machine Learning Specialization by DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230308",
+    "duration_sec": 131,
+    "description": "Enroll in the Machine Learning Specialization 👉 https://bit.ly/3ZRBXpq\n\nThis 3-course specialization is a foundational online program created in collaboration between DeepLearning.AI and Stanford Online. It's a beginner-friendly program that will teach you the fundamentals of machine learning and how to use these techniques to build real-world AI applications. \n\nTaught by Andrew Ng, an AI visionary who has led critical research at Stanford University and groundbreaking work at Google Brain, Baidu, and Landing.AI to advance the AI field.\n\nThe specialization provides a broad introduction to modern machine learning, including:\n\nSupervised learning (multiple linear regression, logistic regression, neural networks, and decision trees)\nUnsupervised learning (clustering, dimensionality reduction, recommender systems)\nBest practices for artificial intelligence and machine learning innovation (evaluating and tuning models, taking a data-centric approach to improving performance, and more.)\n\nLearn more: https://bit.ly/3ZRBXpq\n\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community.",
+    "view_count": 73241
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g7dv-Lnuor4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

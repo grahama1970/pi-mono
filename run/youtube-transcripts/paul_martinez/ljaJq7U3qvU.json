@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ljaJq7U3qvU",
+    "language": "en",
+    "took_ms": 8792,
+    "method": null,
+    "title": "Operating With Adversary Supplied Components",
+    "channel": "S4 Events",
+    "upload_date": "20250317",
+    "duration_sec": 1740,
+    "description": "The US Government's focus on rip and replace and bans for PRC sourced components in the grid infrastructure space has potential to make the cyber and safety landscape worse. Operating through these risks, rather than around them may be the only solution. (this same problem exists in other sectors and other countries with real and potential adversary suppliers)\n\nEmma gives examples of where rip and replace of PRC components causes non-obvious problems and in many cases is impossible in the near to medium term. Given these facts, Emma gives alternate approaches on how to reduce the risk of continued operation with adversary supplied components.",
+    "view_count": 845
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ljaJq7U3qvU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

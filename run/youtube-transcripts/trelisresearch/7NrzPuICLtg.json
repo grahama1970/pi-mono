@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7NrzPuICLtg",
+    "language": "en",
+    "took_ms": 8925,
+    "method": null,
+    "title": "Anonymizing Sensitive Data in LLM Prompts",
+    "channel": "Trelis Research",
+    "upload_date": "20240530",
+    "duration_sec": 2145,
+    "description": "➡️ ADVANCED-inference Repo (incl. notebooks in this vid.): https://trelis.com/enterprise-server-api-and-inference-guide/\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1XBqaN73xRDyGGWLkWchdrmwW-d__dRddCfU4nrmn9TA/edit?usp=sharing\n- Phi-3 Mini: https://huggingface.co/microsoft/Phi-3-mini-4k-instruct\n- Presidio: https://microsoft.github.io/presidio/supported_entities/\n- spaCy model: https://huggingface.co/spacy/en_core_web_lg/tree/main/ner\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nTIMESTAMPS:\n0:00 Data Anonymization for LLMs\n0:52 Anonymisation Performance\n2:20 Video Overview\n3:21 Anonymisation Techniques\n11:05 Libraries - Presidio, Outlines\n13:38 Notebook Demo: Using Presidio for Anonymisation\n27:31 Notebook Demo: Using Phi-3 Mini + Outlines\n31:35 Notes on vLLM, TGI and GGUF on Mac\n35:14 Resources",
+    "view_count": 5420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7NrzPuICLtg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

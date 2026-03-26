@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZZkE7nPOtjE",
+    "language": "en",
+    "took_ms": 7834,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - David Waldrop - The DevOps and Agile Security Toolkit",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 3017,
+    "description": "The DevOps & Agile Security Toolkit - In this talk, we will look at integrating security into Agile and DevOps. We will discuss strategies, training, tools, and techniques that will let your organization move quickly while doing so safely.",
+    "view_count": 472
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZZkE7nPOtjE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

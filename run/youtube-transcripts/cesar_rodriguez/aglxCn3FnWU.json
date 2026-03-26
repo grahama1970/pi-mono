@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aglxCn3FnWU",
+    "language": "en",
+    "took_ms": 8147,
+    "method": null,
+    "title": "Turning the B-1 Bomber into a supersonic gunship?!",
+    "channel": "Sandboxx",
+    "upload_date": "20230809",
+    "duration_sec": 58,
+    "description": "Boeing's plan to turn the B-1B Lancer into a supersonic gunship may have been just a bit too crazy to become real... but it sure could have been cool.\n\n#b1b #b1bomber #boeing #airpower",
+    "view_count": 99807
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aglxCn3FnWU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

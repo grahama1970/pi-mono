@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ouyln7CeWJU",
+    "language": "en",
+    "took_ms": 8298,
+    "method": null,
+    "title": "DEF CON 30 - Dr. James Pavur - Space Jam: Exploring Radio Frequency Attacks in Outer Space",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2165,
+    "description": "Satellite designs are myriad as stars in the sky, but one common denominator across all modern missions is their dependency on long-distance radio links. In this briefing, we will turn a hacker’s eye towards the signals that are the lifeblood of space missions. We’ll learn how both state and non-state actors can, and have, executed physical-layer attacks on satellite communications systems and what their motivations have been for causing such disruption.\n\nBuilding on this foundation, we’ll present modern evolutions of these attack strategies which can threaten next-generation space missions. From jamming, to spoofing, to signal hijacking, we’ll see how radio links represent a key attack surface for space platforms and how technological developments make these attacks ever more accessible and affordable. We’ll simulate strategies attackers may use to cause disruption in key space communications links and even model attacks which may undermine critical safety controls involved in rocket launches.\n\nThe presentation will conclude with a discussion of strategies which can defend against many of these attacks.\n\nWhile this talk includes technical components, it is intended to be accessible to all audiences and does not assume any prior background in radio communications, astrodynamics, or aerospace engineering. The hope is to provide a launchpad for researchers across the security community to contribute to protecting critical infrastructure in space and beyond.",
+    "view_count": 13366
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ouyln7CeWJU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

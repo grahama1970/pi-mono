@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-rsoiKFN1sA",
+    "language": "en",
+    "took_ms": 8918,
+    "method": null,
+    "title": "How To Edit a Podcast for Beginners | Riverside Editor Tutorial",
+    "channel": "Dan Kieft",
+    "upload_date": "20240329",
+    "duration_sec": 653,
+    "description": "How To Edit a Podcast for Beginners | Riverside Editor Tutorial\nUse \"DanKieft\" for 15% discount 👉 https://creators.riverside.fm/DanKieft\n\nIn this step by step tutorial I teach you how you can edit your own podcast. If you are a beginner and you want to learn how to start editing your podcast then this video is for you. In this riverside.fm tutorial I go over all the steps on how to create your podcast and how to edit your podcast clips with riverside FM.\n\nIf you want to try out Riverside yourself then use code \"DanKieft\" for a 15% discount.",
+    "view_count": 1753
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -rsoiKFN1sA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GxN4Y2as-OM",
+    "language": "en",
+    "took_ms": 8731,
+    "method": null,
+    "title": "Controlled Chaos - The Inevitable Marriage of DevOps & Security",
+    "channel": "S4 Events",
+    "upload_date": "20200504",
+    "duration_sec": 1657,
+    "description": "Kelly Shortridge of Capsule8 gives a talk on the S4x20 Main Stage that is a bit jarring to the ICS security community. It's best encapsulated by these two quotes:\n\n1. \"Infosec has a choice: marry DevOps or be rendered impotent or irrelevant.\"\n2. \"ICS is not exempt.\"\n\nThis is a fast paced session with a lot for the ICS security professional to take in. Speed & stability are not conflicting goals ... DIE not CIA ... DevOps not DevSecOps ... infosec has failed, try something else ... start with your digital twin and analytics. Watch a 1x speed and take notes.",
+    "view_count": 2254
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GxN4Y2as-OM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

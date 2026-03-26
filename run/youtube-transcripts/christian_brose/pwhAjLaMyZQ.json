@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pwhAjLaMyZQ",
+    "language": "en",
+    "took_ms": 8911,
+    "method": null,
+    "title": "The Ambassadors Series: British Ambassador Discusses the Evolving U.S.-U.K. Relationship",
+    "channel": "Hudson Institute",
+    "upload_date": "20181126",
+    "duration_sec": 3468,
+    "description": "On November 26, Hudson Institute hosted Sir Kim Darroch, British Ambassador to the United States, for a discussion about the current state of U.S.-U.K. relations. The conversation was moderated by Walter Russell Mead, the Ravenel B. Curry III Distinguished Fellow in Strategy and Statesmanship at Hudson Institute.\r\n\r\nThe U.S.-U.K. relationship faces new challenges and opportunities for cooperation. The continuing negotiations over Brexit have generated uncertainty over Great Britain’s future relationship with the European Union. Despite that uncertainty, the United Kingdom and United States remain close allies across a wide range of issues, from driving back ISIS to ensuring freedom of navigation in the South China Sea. Hudson Institute is pleased to host Sir Darroch to discuss the future of the special relationship. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1564
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pwhAjLaMyZQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wjz9Lq9cNAM",
+    "language": "en",
+    "took_ms": 9062,
+    "method": null,
+    "title": "AoD Podcast | Is War Today More Like Star Wars or Mad Max? (feat. Michael Doran)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240710",
+    "duration_sec": 1554,
+    "description": "Should the U.S. military be building an army that is technologically smart, small and hyper-effective, or should it be pumping out 20th century bullets, artillery and tanks in overwhelming numbers? In his new article \"Battlefield: Star Wars vs. Mad Max,\" Hudson Senior Fellow Michael Doran argues that the wars in Ukraine and Gaza should demonstrate to Israel and the U.S. that contrary to popular opinion modern wars are just as slow, big and resource heavy as they've ever been. A hybrid Mad Max style industrial base will be needed to win modern wars. \n\nRead Michael Doran's Tablet piece with co-author Can Kasapoglu in Tablet: https://www.tabletmag.com/sections/israel-middle-east/articles/gates-of-gaza",
+    "view_count": 1876
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wjz9Lq9cNAM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

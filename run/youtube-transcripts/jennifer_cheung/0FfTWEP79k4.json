@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0FfTWEP79k4",
+    "language": "en",
+    "took_ms": 7936,
+    "method": null,
+    "title": "DEF CON 32 - Hacking Corporate Banking for Fun and Profit - niks, Charles Waterhouse",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1272,
+    "description": "I conducted thorough research on a corporate banking software widely utilized by numerous banks globally. This research was conducted during a bug bounty program for a leading bank in middle east, which employs this software. By examining their marketing brochures, we identified the third party company responsible for its development and after looking at their client we found out, their software is utilized by 60-70% of banks worldwide.\n\nIn this talk i will explain how did i recon corporate banking application from extracting interesting endpoints and methods. Further used them to find attack surface. Furthermore, I will delve into the methods used to uncover critical vulnerabilities within their application, including SQL injections, bypassing access control mechanisms etc.",
+    "view_count": 1337
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0FfTWEP79k4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

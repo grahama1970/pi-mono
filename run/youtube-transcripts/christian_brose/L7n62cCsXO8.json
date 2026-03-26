@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L7n62cCsXO8",
+    "language": "en",
+    "took_ms": 7845,
+    "method": null,
+    "title": "The Future of US-China Relations: A Conversation with Representative Michael McCaul",
+    "channel": "Hudson Institute",
+    "upload_date": "20210312",
+    "duration_sec": 1972,
+    "description": "Join Hudson Institute Senior Fellow Eric Brown, Adjunct Fellow Nury Turkel, and Ranking Member of the House Foreign Affairs Committee Representative Michael McCaul (R-TX) for a discussion on U.S.-China relations.",
+    "view_count": 1736
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L7n62cCsXO8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AY8RBt5J1mg",
+    "language": "en",
+    "took_ms": 8841,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Igal Flegmann - I know who has access to my cloud, do you",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 1313,
+    "description": "Working in security over the last few years I have learned that it is nearly impossible to stop a breach from happening. While having great security practices such as: Isolated password-less identities, isolated devices, and condition access; will help you stop 99% of the attacks we need to ask ourselves the following questions: Are we monitoring our infrastructure for changes that might open an attack vector? Are we ready to detect and remediate our next breach before the attacker can do any damage? Azure Security Center provides us with some great tools to check some of these errors. For example, it will alert on the SSH port being left open but it would not alert on a very large IP address range being added to your networking rules. The Solution? CloudWatcher our open-source tool that monitors your Azure Subscription ACLs and will alert you if they changed based on the baseline you have created.",
+    "view_count": 807
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AY8RBt5J1mg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

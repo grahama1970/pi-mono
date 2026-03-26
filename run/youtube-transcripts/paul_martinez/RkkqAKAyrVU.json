@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RkkqAKAyrVU",
+    "language": "en",
+    "took_ms": 8946,
+    "method": null,
+    "title": "Not a True Copy: An In Depth Look at a Common Backup Format",
+    "channel": "S4 Events",
+    "upload_date": "20240912",
+    "duration_sec": 1622,
+    "description": "Reliable and authentic backups are the cornerstone of every business continuity plan, and even more important in the age of ransomware. What if the software doing your backups is tampering with the file structure of your drives?\n\nWhile analyzing and reconstructing NTFS volumes that were “backed up” by Acronis, a popular backup solution, Ron and his team uncovered unexpected modifications to the actual volume records.\n\nThese modifications are a one-way street, leaving you completely dependent on Acronis tools to get your data back; worse yet, the backup archives cannot be effectively scanned and analyzed — steps critical for good malware detection and vulnerability management.\n\nThis situation results in extreme vendor lock-in and hinders the ability to do forensics and attestation. If you need to meet FAT and SAT attestation requirements, provide SBOMs for deployed software or hunt for vulnerabilities offline, these back-up formats can be a critical blocker.\n\nRon describes how to identify unscannable backups and explore how to mitigate the risk they represent.",
+    "view_count": 303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RkkqAKAyrVU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

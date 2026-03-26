@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KytDyg5s-E8",
+    "language": "en",
+    "took_ms": 8746,
+    "method": null,
+    "title": "DEF CON 32 - How I Developed a Low Cost Raspberry Pi Based Device for ADS B Spoof - Angelina Tsuboi",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1201,
+    "description": "As a pilot and cybersecurity researcher, I am very interested of the nexus between aviation and security. To explore this interest, I developed a device called Fly Catcher - a device that detects for aircraft spoofing by monitoring for malicious ADS-B signals in the 1090MHz frequency. The device consists of a 1090 MHz antenna, a Flight Aware RTL SDR, a custom 3D printed case, a portable battery charger, and a MicroUSB cable.\n\nThe device receives ADS-B information from the antenna and the software-defined radio, which is then passed into a Convolutional Neural Network written with Python to detect whether or not the aircraft is spoofed. I trained the neural network on a dataset of valid ADS-B signals as well as a generated spoofed set of aircraft signals, to teach Fly Catcher how to detect and flag any suspicious ADS-B signals. It does this by checking for discrepancies in the signal's characteristics, such as its location, velocity, and identification.\n\nThe result outputted by the neural network is then displayed onto a radar screen allowing users to detect spoofed aircraft near them. To test the device, I brought it with me for an hour-long flight to scan for a wide variety of aircraft enroute. After the flight, the data was fed into the Neural Network to analyze any spoofed aircraft I might have encountered.",
+    "view_count": 1455
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KytDyg5s-E8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

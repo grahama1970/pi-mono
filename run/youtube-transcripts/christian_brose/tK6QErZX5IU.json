@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tK6QErZX5IU",
+    "language": "en",
+    "took_ms": 8877,
+    "method": null,
+    "title": "Herb London on the Many Layers of the Egyptian Uprising",
+    "channel": "Hudson Institute",
+    "upload_date": "20110216",
+    "duration_sec": 212,
+    "description": "Hudson President Herbert London discusses the different factions to the Egyptian uprising and compares them to revolutions throughout history.",
+    "view_count": 124
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tK6QErZX5IU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

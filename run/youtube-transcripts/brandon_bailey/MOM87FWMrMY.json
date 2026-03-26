@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MOM87FWMrMY",
+    "language": "en",
+    "took_ms": 10061,
+    "method": null,
+    "title": "DEF CON 30 - Gamer Hat",
+    "channel": "DEFCONConference",
+    "upload_date": "20220813",
+    "duration_sec": 57,
+    "description": "Hats are a thing at DEF CON. This one's  a gamer hat.",
+    "view_count": 2483
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MOM87FWMrMY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

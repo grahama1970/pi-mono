@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Zl66JuKjSCo",
+    "language": "en",
+    "took_ms": 9438,
+    "method": null,
+    "title": "Reasoning Models and Chinese Models",
+    "channel": "Trelis Research",
+    "upload_date": "20250117",
+    "duration_sec": 2001,
+    "description": "🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Join the Trelis Team: https://trelis.com/developer-collaborations/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n📸 Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO Links:\n- ARC Prize: https://arcprize.org/blog/oai-o3-pub-breakthrough\n- Trelis video on Deepseek v3: https://www.youtube.com/watch?v=iP_UmDs_i5s\n- Reasoning Models Tested: o1, R1-Lite (Deepseek), QwQ, Gemini Flash Thinking\n- Qwen Process Reward Model: https://huggingface.co/Qwen/Qwen2.5-Math-PRM-72B\n\nTIMESTAMPS:\n00:00:00 - Introduction to reasoning models and their significance, particularly those from Chinese labs\n00:09:18 - Detailed explanation of how reasoning models work, including the concept of reasoning traces and verification\n00:22:26 - Discussion of the emergence of strong models from Chinese companies (DeepSeek, Qwen, Minimax) and their technical achievements",
+    "view_count": 1701
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Zl66JuKjSCo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

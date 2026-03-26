@@ -1,0 +1,807 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Binary Explorer — droid</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#111111;--card:#1a1a1a;--panel:#151515;--inset:#0e0e0e;--accent:#7c3aed;--passed:#00ff88;--failed:#ff4444;--warn:#ffaa00;--running:#4a9eff;--cyan:#22d3ee;--text:#e2e8f0;--dim:#64748b;--muted:#334155;--border:rgba(255,255,255,0.08);--radius:10px;--font:Inter,system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono',Consolas,monospace}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6}
+::selection{background:var(--accent);color:white}
+
+/* ── Topbar ── */
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 24px;background:#0a0a0a;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.topbar .logo{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase}
+.topbar h1{font-size:15px;font-weight:800;letter-spacing:-0.02em}
+.topbar .sub{font-size:12px;color:var(--dim)}
+.topbar .sp{flex:1}
+.pill{font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:0.04em;border:1px solid}
+.pill-runtime{background:rgba(124,58,237,0.12);color:var(--accent);border-color:rgba(124,58,237,0.3)}
+.pill-arch{background:rgba(74,158,255,0.1);color:var(--running);border-color:rgba(74,158,255,0.2)}
+.pill-size{background:rgba(100,116,139,0.15);color:var(--dim);border-color:rgba(100,116,139,0.2)}
+
+/* ── Layout ── */
+.main{max-width:1440px;margin:0 auto;padding:20px 24px 120px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.card-hdr{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.card-hdr .icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.card-hdr .title{font-size:13px;font-weight:700}
+.card-hdr .count{font-size:11px;color:var(--dim);font-family:var(--mono)}
+.card-hdr .sp{flex:1}
+.card-body{padding:14px 16px}
+
+/* ── Graph Container ── */
+.graph-wrap{background:var(--inset);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative}
+.graph-canvas{width:100%;height:480px;position:relative}
+.graph-legend{position:absolute;bottom:12px;left:12px;display:flex;gap:8px;z-index:5}
+.graph-legend .gl{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--dim);background:rgba(0,0,0,0.7);padding:3px 8px;border-radius:4px;backdrop-filter:blur(8px)}
+.gl .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.graph-title{position:absolute;top:12px;left:16px;z-index:5}
+.graph-title h3{font-size:14px;font-weight:800;letter-spacing:-0.02em}
+.graph-title p{font-size:10px;color:var(--dim)}
+
+/* ── Nodes (SVG simulation) ── */
+.node-cluster{position:absolute;border-radius:50%;opacity:0.08}
+.node{position:absolute;width:10px;height:10px;border-radius:50%;cursor:pointer;transition:transform 0.15s}
+.node:hover{transform:scale(1.8);z-index:10}
+.node-label{position:absolute;font-size:7px;color:var(--dim);white-space:nowrap;pointer-events:none;font-family:var(--mono)}
+.edge{position:absolute;height:1px;transform-origin:left center;opacity:0.12}
+
+/* ── Section Header ── */
+.sec{display:flex;align-items:center;gap:10px;margin:28px 0 12px}
+.sec h2{font-size:16px;font-weight:800;letter-spacing:-0.02em}
+.sec .line{flex:1;height:1px;background:var(--border)}
+.sec .badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(124,58,237,0.1);color:var(--accent);border:1px solid rgba(124,58,237,0.2);font-family:var(--mono)}
+
+/* ── RPC Method List ── */
+.rpc-ns{margin-bottom:12px}
+.rpc-ns-hdr{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer}
+.rpc-ns-hdr .ns{font-size:12px;font-weight:700;font-family:var(--mono);color:var(--cyan)}
+.rpc-ns-hdr .cnt{font-size:10px;color:var(--dim)}
+.rpc-list{display:flex;flex-wrap:wrap;gap:4px;padding:4px 0 4px 16px}
+.rpc-tag{font-size:9px;font-family:var(--mono);padding:3px 8px;border-radius:4px;background:var(--inset);border:1px solid var(--border);color:var(--text);cursor:pointer;transition:all 0.15s}
+.rpc-tag:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(34,211,238,0.05)}
+.rpc-tag.active{border-color:var(--accent);color:var(--accent);background:rgba(124,58,237,0.08)}
+
+/* ── State Machine ── */
+.sm-flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:8px 0}
+.sm-state{font-size:9px;font-family:var(--mono);padding:3px 8px;border-radius:4px;background:var(--inset);border:1px solid var(--border);color:var(--text)}
+.sm-state.active{background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.3);color:var(--accent)}
+.sm-state.noise{opacity:0.3;text-decoration:line-through}
+.sm-arrow{color:var(--dim);font-size:10px}
+.sm-name{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--warn);margin-bottom:4px}
+
+/* ── Events ── */
+.evt-group{margin-bottom:8px}
+.evt-prefix{font-size:10px;font-weight:700;color:var(--running);margin-bottom:4px}
+.evt-list{display:flex;flex-wrap:wrap;gap:3px}
+.evt-tag{font-size:8px;font-family:var(--mono);padding:2px 6px;border-radius:3px;background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.15);color:var(--running)}
+
+/* ── Schema ── */
+.schema-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px}
+.schema-name{font-size:11px;font-weight:700;font-family:var(--mono);color:var(--warn);margin-bottom:6px}
+.schema-fields{display:flex;flex-wrap:wrap;gap:3px}
+.sf{font-size:8px;font-family:var(--mono);padding:2px 6px;border-radius:3px;background:var(--inset);border:1px solid var(--border);color:var(--dim)}
+.sf.key{color:var(--cyan);border-color:rgba(34,211,238,0.2)}
+
+/* ── LLM Explanation ── */
+.explain{background:var(--panel);border-left:2px solid var(--accent);border-radius:0 6px 6px 0;padding:10px 14px;margin:8px 0;font-size:11px;line-height:1.7;color:var(--dim)}
+.explain strong{color:var(--text);font-size:9px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px}
+.explain code{background:var(--inset);padding:1px 5px;border-radius:3px;font-size:10px;color:var(--cyan);font-family:var(--mono)}
+.explain .evidence{font-size:9px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+.explain .evidence code{color:var(--dim)}
+
+/* ── CLI Commands ── */
+.cli-tree{padding:8px 0}
+.cli-cmd{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:6px;margin-bottom:2px;cursor:pointer;transition:background 0.15s}
+.cli-cmd:hover{background:rgba(255,255,255,0.03)}
+.cli-cmd .name{font-size:12px;font-weight:600;font-family:var(--mono);color:var(--passed);min-width:90px}
+.cli-cmd .desc{font-size:11px;color:var(--dim);flex:1}
+.cli-cmd .arrow{color:var(--muted);font-size:10px}
+
+/* ── Chat Panel ── */
+.chat-dock{position:fixed;bottom:0;left:0;right:0;z-index:200;pointer-events:none}
+.chat-container{max-width:1440px;margin:0 auto;padding:0 24px;display:flex;justify-content:flex-end}
+.chat-panel{width:420px;pointer-events:all;background:#0a0a0a;border:1px solid var(--border);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 -4px 30px rgba(0,0,0,0.5)}
+.chat-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer}
+.chat-hdr .dot{width:8px;height:8px;border-radius:50%;background:var(--passed);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.chat-hdr .title{font-size:12px;font-weight:700;flex:1}
+.chat-hdr .collapse{font-size:14px;color:var(--dim);cursor:pointer}
+.chat-messages{height:260px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.chat-msg{max-width:90%;padding:8px 12px;border-radius:8px;font-size:11px;line-height:1.6}
+.chat-msg.system{background:var(--panel);color:var(--dim);align-self:flex-start;border:1px solid var(--border);font-size:10px}
+.chat-msg.user{background:rgba(124,58,237,0.15);color:var(--text);align-self:flex-end;border:1px solid rgba(124,58,237,0.2)}
+.chat-msg.assistant{background:var(--card);color:var(--text);align-self:flex-start;border:1px solid var(--border)}
+.chat-msg code{background:var(--inset);padding:1px 4px;border-radius:3px;font-size:10px;color:var(--cyan);font-family:var(--mono)}
+.chat-input-wrap{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--border);background:var(--panel)}
+.chat-input{flex:1;background:var(--inset);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:11px;font-family:var(--font);outline:none;resize:none}
+.chat-input::placeholder{color:var(--muted)}
+.chat-input:focus{border-color:var(--accent)}
+.chat-send{width:32px;height:32px;border-radius:6px;background:var(--accent);border:none;color:white;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-send:hover{background:#6d28d9}
+
+/* ── Detail Panel (right slide) ── */
+.detail-overlay{position:fixed;top:0;right:-440px;width:440px;height:100vh;background:#0d0d0d;border-left:1px solid var(--border);z-index:150;transition:right 0.25s ease;overflow-y:auto;padding:20px}
+.detail-overlay.open{right:0}
+.detail-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:6px;background:var(--panel);border:1px solid var(--border);color:var(--dim);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.detail-title{font-size:16px;font-weight:800;margin-bottom:4px}
+.detail-sub{font-size:11px;color:var(--dim);margin-bottom:16px}
+
+/* ── Binary Identity Bar ── */
+.identity-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.id-cell{background:var(--card);padding:12px 14px;text-align:center}
+.id-cell .val{font-size:18px;font-weight:800;font-family:var(--mono);color:var(--text)}
+.id-cell .lbl{font-size:8px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+.id-cell .val.accent{color:var(--accent)}
+.id-cell .val.cyan{color:var(--cyan)}
+.id-cell .val.green{color:var(--passed)}
+
+/* ── Utilities ── */
+.mt-sm{margin-top:8px}
+.mb-sm{margin-bottom:8px}
+.flex-between{display:flex;justify-content:space-between;align-items:center}
+.scroll-x{overflow-x:auto;scrollbar-width:thin}
+</style></head><body>
+
+<!-- ════════ TOPBAR ════════ -->
+<div class="topbar">
+  <span class="logo">Embry OS</span>
+  <h1>Binary Explorer</h1>
+  <span class="sub">/ droid · Feature Extraction + Architecture</span>
+  <div class="sp"></div>
+  <span class="pill pill-runtime">Bun SEA</span>
+  <span class="pill pill-arch">x86_64</span>
+  <span class="pill pill-size">153 MB</span>
+</div>
+
+<!-- ════════ MAIN ════════ -->
+<div class="main">
+
+<!-- ── Identity Bar ── -->
+<div class="identity-bar">
+  <div class="id-cell"><div class="val accent">7</div><div class="lbl">CLI Commands</div></div>
+  <div class="id-cell"><div class="val cyan">82</div><div class="lbl">RPC Methods</div></div>
+  <div class="id-cell"><div class="val" style="color:var(--running)">59</div><div class="lbl">Event Types</div></div>
+  <div class="id-cell"><div class="val" style="color:var(--warn)">6</div><div class="lbl">State Machines</div></div>
+  <div class="id-cell"><div class="val green">9</div><div class="lbl">Schemas</div></div>
+  <div class="id-cell"><div class="val">303</div><div class="lbl">AST Symbols</div></div>
+</div>
+
+<!-- ── Relationship Graph ── -->
+<div class="sec"><h2>Architecture Graph</h2><div class="line"></div><span class="badge">D3 force-graph</span></div>
+
+<div class="graph-wrap">
+  <div class="graph-title">
+    <h3>Feature Relationships</h3>
+    <p>Edges inferred from shared schema fields · Click any node to inspect</p>
+  </div>
+  <div class="graph-canvas" id="graph">
+    <!-- Cluster backgrounds -->
+    <div class="node-cluster" style="width:220px;height:220px;background:var(--accent);left:80px;top:60px"></div>
+    <div class="node-cluster" style="width:260px;height:260px;background:var(--cyan);left:320px;top:30px"></div>
+    <div class="node-cluster" style="width:180px;height:180px;background:var(--running);right:160px;top:80px"></div>
+    <div class="node-cluster" style="width:160px;height:160px;background:var(--warn);left:200px;bottom:60px"></div>
+    <div class="node-cluster" style="width:140px;height:140px;background:var(--passed);right:80px;bottom:80px"></div>
+
+    <!-- ── droid.* cluster ── -->
+    <div class="node" style="width:14px;height:14px;background:var(--accent);left:140px;top:120px" title="droid.initialize_session"></div>
+    <div class="node-label" style="left:158px;top:122px">droid.initialize_session</div>
+    <div class="node" style="background:var(--accent);left:120px;top:160px" title="droid.add_user_message"></div>
+    <div class="node" style="background:var(--accent);left:170px;top:175px" title="droid.session_notification"></div>
+    <div class="node-label" style="left:184px;top:177px">droid.session_notification</div>
+    <div class="node" style="background:var(--accent);left:100px;top:200px" title="droid.request_permission"></div>
+    <div class="node" style="background:var(--accent);left:155px;top:220px" title="droid.ask_user"></div>
+    <div class="node" style="background:var(--accent);left:190px;top:145px" title="droid.interrupt_session"></div>
+    <div class="node" style="background:var(--accent);left:130px;top:250px" title="droid.list_skills"></div>
+    <div class="node" style="background:var(--accent);left:200px;top:195px" title="droid.update_session_settings"></div>
+
+    <!-- ── daemon.* cluster ── -->
+    <div class="node" style="width:14px;height:14px;background:var(--cyan);left:400px;top:80px" title="daemon.authenticate"></div>
+    <div class="node-label" style="left:418px;top:82px">daemon.authenticate</div>
+    <div class="node" style="background:var(--cyan);left:380px;top:120px" title="daemon.create_terminal"></div>
+    <div class="node-label" style="left:394px;top:122px">daemon.create_terminal</div>
+    <div class="node" style="background:var(--cyan);left:440px;top:140px" title="daemon.list_terminals"></div>
+    <div class="node" style="background:var(--cyan);left:360px;top:165px" title="daemon.write_terminal_data"></div>
+    <div class="node" style="background:var(--cyan);left:420px;top:185px" title="daemon.create_automation"></div>
+    <div class="node-label" style="left:434px;top:187px">daemon.create_automation</div>
+    <div class="node" style="background:var(--cyan);left:460px;top:110px" title="daemon.run_automation"></div>
+    <div class="node" style="background:var(--cyan);left:480px;top:155px" title="daemon.pause_automation"></div>
+    <div class="node" style="background:var(--cyan);left:500px;top:200px" title="daemon.git_commit"></div>
+    <div class="node" style="background:var(--cyan);left:390px;top:220px" title="daemon.search_sessions"></div>
+    <div class="node" style="background:var(--cyan);left:450px;top:240px" title="daemon.generate_semantic_diff"></div>
+
+    <!-- ── MCP cluster ── -->
+    <div class="node" style="width:12px;height:12px;background:var(--running);right:220px;top:120px" title="daemon.add_mcp_server"></div>
+    <div class="node-label" style="right:100px;top:100px">MCP Integration</div>
+    <div class="node" style="background:var(--running);right:200px;top:155px" title="daemon.toggle_mcp_server"></div>
+    <div class="node" style="background:var(--running);right:240px;top:180px" title="daemon.authenticate_mcp_server"></div>
+    <div class="node" style="background:var(--running);right:180px;top:200px" title="daemon.list_mcp_tools"></div>
+    <div class="node" style="background:var(--running);right:220px;top:225px" title="droid.toggle_mcp_tool"></div>
+    <div class="node" style="background:var(--running);right:260px;top:150px" title="mcp_auth_required"></div>
+    <div class="node" style="background:var(--running);right:190px;top:245px" title="mcp_auth_completed"></div>
+
+    <!-- ── Mission cluster ── -->
+    <div class="node" style="width:12px;height:12px;background:var(--warn);left:240px;bottom:120px" title="mission_accepted"></div>
+    <div class="node-label" style="left:170px;bottom:90px">Mission Orchestration</div>
+    <div class="node" style="background:var(--warn);left:280px;bottom:140px" title="mission_run_started"></div>
+    <div class="node" style="background:var(--warn);left:260px;bottom:100px" title="mission_paused"></div>
+    <div class="node" style="background:var(--warn);left:300px;bottom:110px" title="mission_state_changed"></div>
+    <div class="node" style="background:var(--warn);left:320px;bottom:145px" title="worker_started"></div>
+    <div class="node" style="background:var(--warn);left:340px;bottom:120px" title="worker_completed"></div>
+    <div class="node" style="background:var(--warn);left:220px;bottom:145px" title="mission_heartbeat"></div>
+
+    <!-- ── Terminal cluster ── -->
+    <div class="node" style="background:var(--passed);right:120px;bottom:140px" title="schema:s6I"></div>
+    <div class="node-label" style="right:50px;bottom:150px">Terminal Schema</div>
+    <div class="node" style="background:var(--passed);right:140px;bottom:110px" title="terminal_data_event"></div>
+    <div class="node" style="background:var(--passed);right:100px;bottom:100px" title="terminal_exit_event"></div>
+
+    <!-- Static edge lines (CSS positioned) -->
+    <div class="edge" style="width:120px;background:var(--accent);left:200px;top:170px;transform:rotate(15deg)"></div>
+    <div class="edge" style="width:80px;background:var(--cyan);left:420px;top:160px;transform:rotate(-20deg)"></div>
+    <div class="edge" style="width:150px;background:var(--warn);left:280px;top:300px;transform:rotate(10deg)"></div>
+    <div class="edge" style="width:100px;background:var(--running);right:200px;top:200px;transform:rotate(25deg)"></div>
+  </div>
+  <div class="graph-legend">
+    <div class="gl"><div class="dot" style="background:var(--accent)"></div>droid.* session</div>
+    <div class="gl"><div class="dot" style="background:var(--cyan)"></div>daemon.* server</div>
+    <div class="gl"><div class="dot" style="background:var(--running)"></div>MCP integration</div>
+    <div class="gl"><div class="dot" style="background:var(--warn)"></div>Mission orchestration</div>
+    <div class="gl"><div class="dot" style="background:var(--passed)"></div>Terminal / PTY</div>
+  </div>
+</div>
+
+<div class="explain" style="margin-top:12px">
+  <strong>LLM Architecture Analysis</strong>
+  Droid implements a <strong style="color:var(--text)">client-daemon split architecture</strong>. The <code>droid.*</code> namespace (25 methods) handles the interactive session — user messages, permissions, tool confirmations. The <code>daemon.*</code> namespace (57 methods) is the long-running server managing terminals, automations, git operations, and session persistence. Both namespaces share MCP server management methods (add/remove/toggle/auth), indicating MCP is a first-class subsystem accessible from either surface. The <code>sessionId</code> field appears in 23 methods across both namespaces — it's the primary correlation key linking client requests to daemon state.
+  <div class="evidence">Evidence: 82 RPC methods extracted via <code>method:KH.literal</code> pattern · 9 Zod schemas with shared field overlap · 59 event types grouped by prefix</div>
+</div>
+
+<!-- ── CLI Commands ── -->
+<div class="sec"><h2>CLI Commands</h2><div class="line"></div><span class="badge">7 from --help</span></div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="cli-tree">
+      <div class="cli-cmd"><span class="name">exec</span><span class="desc">Execute a single command (non-interactive)</span><span class="arrow">→</span></div>
+      <div class="cli-cmd"><span class="name">daemon</span><span class="desc">Run the Factory daemon server</span><span class="arrow">→</span></div>
+      <div class="cli-cmd"><span class="name">mcp</span><span class="desc">Manage MCP servers</span><span class="arrow">→</span></div>
+      <div class="cli-cmd"><span class="name">plugin</span><span class="desc">Manage plugins</span><span class="arrow">→</span></div>
+      <div class="cli-cmd"><span class="name">search</span><span class="desc">Search across local sessions</span><span class="arrow">→</span></div>
+      <div class="cli-cmd"><span class="name">computer</span><span class="desc">Manage relay computer registrations</span><span class="arrow">→</span></div>
+      <div class="cli-cmd"><span class="name">update</span><span class="desc">Check for and install Droid updates</span><span class="arrow">→</span></div>
+    </div>
+    <div class="explain">
+      <strong>LLM Explanation</strong>
+      The CLI exposes two operational modes: <code>exec</code> for one-shot commands (CI/automation) and interactive mode (default, no subcommand). The <code>daemon</code> subcommand starts the long-running server that the GUI connects to via JSON-RPC over WebSocket. <code>mcp</code> and <code>plugin</code> manage the extension system. <code>search</code> provides local session search without needing the daemon. <code>computer</code> suggests remote machine relay support — likely for multi-machine workflows. <code>update</code> is a self-updater, common in Bun SEA binaries distributed outside package managers.
+      <div class="evidence">Source: <code>--help</code> output parsing · Ground truth</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── State Machines ── -->
+<div class="sec"><h2>State Machines</h2><div class="line"></div><span class="badge">6 enum groups</span></div>
+
+<div class="grid-2">
+  <!-- Mission State -->
+  <div class="card">
+    <div class="card-hdr">
+      <div class="icon" style="background:rgba(255,170,0,0.12);color:var(--warn)">M</div>
+      <span class="title">Mission Lifecycle</span>
+      <span class="sp"></span>
+      <span class="count">12 states</span>
+    </div>
+    <div class="card-body">
+      <div class="sm-flow">
+        <span class="sm-state active">awaiting_input</span><span class="sm-arrow">→</span>
+        <span class="sm-state">initializing</span><span class="sm-arrow">→</span>
+        <span class="sm-state active">running</span><span class="sm-arrow">→</span>
+        <span class="sm-state">paused</span><span class="sm-arrow">→</span>
+        <span class="sm-state">orchestrator_turn</span><span class="sm-arrow">→</span>
+        <span class="sm-state active">completed</span>
+      </div>
+      <div class="sm-flow" style="margin-top:4px">
+        <span class="sm-state noise">team</span>
+        <span class="sm-state noise">team_annual</span>
+        <span class="sm-state noise">payg</span>
+        <span class="sm-state noise">enterprise</span>
+        <span class="sm-state noise">fast</span>
+        <span class="sm-state noise">custom</span>
+      </div>
+      <div class="explain">
+        <strong>LLM Explanation</strong>
+        Two merged enums detected in variable <code>M</code>. The first 6 states form the <strong style="color:var(--text)">mission execution lifecycle</strong>: user submits a goal (<code>awaiting_input</code>), system initializes workers (<code>initializing</code>), runs them in parallel (<code>running</code>), can pause for human review (<code>paused</code>/<code>orchestrator_turn</code>), then completes. The remaining states (<code>team</code>, <code>payg</code>, <code>enterprise</code>) are <strong style="color:var(--text)">pricing tier labels</strong> — a second enum packed into the same minified variable. These should be filtered from the state machine diagram.
+        <div class="evidence">Evidence: <code>M.State="value"</code> pattern · 6 mission states correlate with <code>mission_state_changed</code> event</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connection State -->
+  <div class="card">
+    <div class="card-hdr">
+      <div class="icon" style="background:rgba(74,158,255,0.12);color:var(--running)">B</div>
+      <span class="title">Connection + Conversation</span>
+      <span class="sp"></span>
+      <span class="count">24 states (mixed)</span>
+    </div>
+    <div class="card-body">
+      <div class="sm-flow">
+        <span class="sm-state active">connecting</span><span class="sm-arrow">→</span>
+        <span class="sm-state active">connected</span><span class="sm-arrow">→</span>
+        <span class="sm-state">disconnected</span><span class="sm-arrow">→</span>
+        <span class="sm-state">failed</span><span class="sm-arrow">→</span>
+        <span class="sm-state">disabled</span>
+      </div>
+      <div class="sm-flow" style="margin-top:4px">
+        <span class="sm-state active">idle</span><span class="sm-arrow">→</span>
+        <span class="sm-state">streaming_assistant_message</span><span class="sm-arrow">→</span>
+        <span class="sm-state">waiting_for_tool_confirmation</span><span class="sm-arrow">→</span>
+        <span class="sm-state">executing_tool</span><span class="sm-arrow">→</span>
+        <span class="sm-state">compacting_conversation</span>
+      </div>
+      <div class="sm-flow" style="margin-top:4px">
+        <span class="sm-state noise">white</span>
+        <span class="sm-state noise">browser</span>
+        <span class="sm-state noise">swatch</span>
+        <span class="sm-state noise">solid</span>
+        <span class="sm-state noise">dashed</span>
+        <span class="sm-state noise">dialog</span>
+        <span class="sm-state noise">mermaid</span>
+        <span class="sm-state noise">openai</span>
+      </div>
+      <div class="explain">
+        <strong>LLM Explanation</strong>
+        Three distinct enums merged into variable <code>B</code>. <strong style="color:var(--text)">(1) WebSocket connection state</strong>: <code>connecting → connected → disconnected → failed → disabled</code>. <strong style="color:var(--text)">(2) Conversation turn state</strong>: <code>idle → streaming_assistant_message → waiting_for_tool_confirmation → executing_tool → compacting_conversation</code>. The conversation state machine drives the UI — it knows when to show a spinner, when to show a permission dialog, and when the agent is actively running a tool. <strong style="color:var(--text)">(3) UI/CSS noise</strong>: <code>white, swatch, solid, dashed, dialog</code> etc. are CSS style tokens packed into the same variable by the minifier.
+        <div class="evidence">Evidence: <code>B.State="value"</code> pattern · Connection states correlate with <code>daemon.connection_status</code> RPC · Conversation states correlate with <code>droid_working_state_changed</code> event</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Provider State -->
+  <div class="card">
+    <div class="card-hdr">
+      <div class="icon" style="background:rgba(0,255,136,0.12);color:var(--passed)">F</div>
+      <span class="title">LLM Provider</span>
+      <span class="sp"></span>
+      <span class="count">10 states</span>
+    </div>
+    <div class="card-body">
+      <div class="sm-flow">
+        <span class="sm-state">bedrock</span>
+        <span class="sm-state active">anthropic</span>
+        <span class="sm-state">vertex_anthropic</span>
+        <span class="sm-state">bedrock_anthropic</span>
+        <span class="sm-state">openai</span>
+        <span class="sm-state">azure_openai</span>
+        <span class="sm-state">google</span>
+        <span class="sm-state">fireworks</span>
+        <span class="sm-state">baseten</span>
+        <span class="sm-state">none</span>
+      </div>
+      <div class="explain">
+        <strong>LLM Explanation</strong>
+        Not a state machine — this is an <strong style="color:var(--text)">LLM provider enum</strong>. Droid supports 9 backends with a <code>none</code> fallback. <code>anthropic</code> is the primary provider. The <code>bedrock_anthropic</code> and <code>vertex_anthropic</code> variants indicate enterprise deployments route through AWS Bedrock or GCP Vertex rather than direct Anthropic API. <code>fireworks</code> and <code>baseten</code> are inference-as-a-service platforms, suggesting support for open-weight models.
+        <div class="evidence">Evidence: <code>F.Provider="value"</code> enum · No transition ordering — selector, not FSM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Permission State -->
+  <div class="card">
+    <div class="card-hdr">
+      <div class="icon" style="background:rgba(255,68,68,0.12);color:var(--failed)">T</div>
+      <span class="title">Permission Resolution</span>
+      <span class="sp"></span>
+      <span class="count">11 states</span>
+    </div>
+    <div class="card-body">
+      <div class="sm-flow">
+        <span class="sm-state active">proceed_once</span><span class="sm-arrow">→</span>
+        <span class="sm-state">proceed_always</span><span class="sm-arrow">→</span>
+        <span class="sm-state">proceed_auto_run</span><span class="sm-arrow">→</span>
+        <span class="sm-state">proceed_auto_run_low</span><span class="sm-arrow">→</span>
+        <span class="sm-state">proceed_auto_run_medium</span><span class="sm-arrow">→</span>
+        <span class="sm-state">proceed_auto_run_high</span>
+      </div>
+      <div class="sm-flow" style="margin-top:4px">
+        <span class="sm-state">proceed_edit</span>
+        <span class="sm-state" style="border-color:rgba(255,68,68,0.3);color:var(--failed)">cancel</span>
+        <span class="sm-state" style="border-color:rgba(255,68,68,0.3);color:var(--failed)">stop</span>
+      </div>
+      <div class="explain">
+        <strong>LLM Explanation</strong>
+        The <strong style="color:var(--text)">tool permission escalation ladder</strong>. When droid wants to run a tool, the user can: allow once (<code>proceed_once</code>), always for this tool (<code>proceed_always</code>), or enable auto-run at varying risk levels (<code>low</code>/<code>medium</code>/<code>high</code>). <code>proceed_edit</code> lets the user modify the tool call before executing. <code>cancel</code> rejects this call; <code>stop</code> terminates the entire session. This maps directly to the <code>permission_resolved</code> event and <code>droid.request_permission</code> RPC method.
+        <div class="evidence">Evidence: <code>T.Resolution="value"</code> enum · Correlates with <code>permission_resolved</code> event + <code>droid.request_permission</code> RPC</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RPC Methods ── -->
+<div class="sec"><h2>JSON-RPC Methods</h2><div class="line"></div><span class="badge">82 methods · 3 namespaces</span></div>
+
+<div class="card">
+  <div class="card-body">
+    <!-- droid namespace -->
+    <div class="rpc-ns">
+      <div class="rpc-ns-hdr"><span class="ns">droid.*</span><span class="cnt">— 25 methods (client session API)</span></div>
+      <div class="rpc-list">
+        <span class="rpc-tag active">session_notification</span>
+        <span class="rpc-tag">request_permission</span>
+        <span class="rpc-tag">ask_user</span>
+        <span class="rpc-tag active">initialize_session</span>
+        <span class="rpc-tag">load_session</span>
+        <span class="rpc-tag">add_user_message</span>
+        <span class="rpc-tag">interrupt_session</span>
+        <span class="rpc-tag">kill_worker_session</span>
+        <span class="rpc-tag">update_session_settings</span>
+        <span class="rpc-tag">toggle_mcp_server</span>
+        <span class="rpc-tag">authenticate_mcp_server</span>
+        <span class="rpc-tag">cancel_mcp_auth</span>
+        <span class="rpc-tag">clear_mcp_auth</span>
+        <span class="rpc-tag">submit_mcp_auth_code</span>
+        <span class="rpc-tag">add_mcp_server</span>
+        <span class="rpc-tag">remove_mcp_server</span>
+        <span class="rpc-tag">list_mcp_registry</span>
+        <span class="rpc-tag">list_mcp_tools</span>
+        <span class="rpc-tag">toggle_mcp_tool</span>
+        <span class="rpc-tag">list_skills</span>
+        <span class="rpc-tag">submit_bug_report</span>
+      </div>
+    </div>
+
+    <!-- daemon namespace -->
+    <div class="rpc-ns">
+      <div class="rpc-ns-hdr"><span class="ns">daemon.*</span><span class="cnt">— 55 methods (server-side daemon)</span></div>
+      <div class="rpc-list">
+        <span class="rpc-tag active">authenticate</span>
+        <span class="rpc-tag">connection_status</span>
+        <span class="rpc-tag active">create_terminal</span>
+        <span class="rpc-tag">write_terminal_data</span>
+        <span class="rpc-tag">resize_terminal</span>
+        <span class="rpc-tag">close_terminal</span>
+        <span class="rpc-tag">list_terminals</span>
+        <span class="rpc-tag active">create_automation</span>
+        <span class="rpc-tag">run_automation</span>
+        <span class="rpc-tag">pause_automation</span>
+        <span class="rpc-tag">resume_automation</span>
+        <span class="rpc-tag">get_automation_history</span>
+        <span class="rpc-tag">get_automation_visual</span>
+        <span class="rpc-tag">update_automation_model</span>
+        <span class="rpc-tag">rename_automation</span>
+        <span class="rpc-tag">delete_automation</span>
+        <span class="rpc-tag active">initialize_session</span>
+        <span class="rpc-tag">load_session</span>
+        <span class="rpc-tag">add_user_message</span>
+        <span class="rpc-tag">interrupt_session</span>
+        <span class="rpc-tag">close_session</span>
+        <span class="rpc-tag">kill_worker_session</span>
+        <span class="rpc-tag">list_opened_sessions</span>
+        <span class="rpc-tag">list_available_sessions</span>
+        <span class="rpc-tag">update_session_settings</span>
+        <span class="rpc-tag">validate_working_directory</span>
+        <span class="rpc-tag">list_files</span>
+        <span class="rpc-tag">search_files</span>
+        <span class="rpc-tag">search_sessions</span>
+        <span class="rpc-tag">archive_session</span>
+        <span class="rpc-tag">unarchive_session</span>
+        <span class="rpc-tag active">git_diff</span>
+        <span class="rpc-tag">git_push</span>
+        <span class="rpc-tag">git_commit</span>
+        <span class="rpc-tag">create_pr</span>
+        <span class="rpc-tag">get_semantic_diff_cache</span>
+        <span class="rpc-tag">save_semantic_diff_cache</span>
+        <span class="rpc-tag">generate_semantic_diff</span>
+        <span class="rpc-tag">start_code_server</span>
+      </div>
+    </div>
+
+    <!-- tunnel namespace -->
+    <div class="rpc-ns">
+      <div class="rpc-ns-hdr"><span class="ns">tunnel.*</span><span class="cnt">— 2 methods (relay)</span></div>
+      <div class="rpc-list">
+        <span class="rpc-tag">init</span>
+        <span class="rpc-tag">ready</span>
+      </div>
+    </div>
+
+    <div class="explain">
+      <strong>LLM Explanation</strong>
+      The RPC surface reveals a <strong style="color:var(--text)">3-layer architecture</strong>. <code>droid.*</code> is the thin client — it manages the interactive session (messages, permissions, tool use) and delegates heavy work to the daemon. <code>daemon.*</code> is the persistence layer — it owns terminals (PTY multiplexing), automations (scheduled tasks with cron), git operations (commit/push/PR/semantic diff), session lifecycle, and file system access. The overlap in MCP methods (14 methods duplicated across both namespaces) suggests the client can manage MCP servers directly in CLI mode, while the daemon handles it in GUI/daemon mode. <code>tunnel.*</code> (<code>init</code>/<code>ready</code>) is a lightweight relay handshake for the <code>computer</code> CLI command — remote machine access.
+      <div class="evidence">Evidence: 82 methods via <code>method:KH.literal</code> pattern · Namespace split by dotted prefix · 14 MCP methods shared across namespaces</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Event Types ── -->
+<div class="sec"><h2>Event Types</h2><div class="line"></div><span class="badge">59 events · 15 groups</span></div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="grid-3" style="gap:10px">
+      <div class="evt-group">
+        <div class="evt-prefix">mission.*</div>
+        <div class="evt-list">
+          <span class="evt-tag">mission_accepted</span>
+          <span class="evt-tag">mission_paused</span>
+          <span class="evt-tag">mission_resumed</span>
+          <span class="evt-tag">mission_run_started</span>
+          <span class="evt-tag">mission_state_changed</span>
+          <span class="evt-tag">mission_features_changed</span>
+          <span class="evt-tag">mission_progress_entry</span>
+          <span class="evt-tag">mission_heartbeat</span>
+          <span class="evt-tag">mission_worker_started</span>
+          <span class="evt-tag">mission_worker_completed</span>
+        </div>
+      </div>
+      <div class="evt-group">
+        <div class="evt-prefix">worker.*</div>
+        <div class="evt-list">
+          <span class="evt-tag">worker_started</span>
+          <span class="evt-tag">worker_selected_feature</span>
+          <span class="evt-tag">worker_completed</span>
+          <span class="evt-tag">worker_failed</span>
+          <span class="evt-tag">worker_paused</span>
+        </div>
+      </div>
+      <div class="evt-group">
+        <div class="evt-prefix">session.*</div>
+        <div class="evt-list">
+          <span class="evt-tag">session_title_updated</span>
+          <span class="evt-tag">session_token_usage_changed</span>
+          <span class="evt-tag">session_inactivity</span>
+          <span class="evt-tag">session_unsubscribed</span>
+        </div>
+      </div>
+      <div class="evt-group">
+        <div class="evt-prefix">mcp.*</div>
+        <div class="evt-list">
+          <span class="evt-tag">mcp_status_changed</span>
+          <span class="evt-tag">mcp_auth_required</span>
+          <span class="evt-tag">mcp_auth_completed</span>
+          <span class="evt-tag">mcp_tool</span>
+        </div>
+      </div>
+      <div class="evt-group">
+        <div class="evt-prefix">tool.*</div>
+        <div class="evt-list">
+          <span class="evt-tag">tool_use</span>
+          <span class="evt-tag">tool_result</span>
+          <span class="evt-tag">tool_progress_update</span>
+        </div>
+      </div>
+      <div class="evt-group">
+        <div class="evt-prefix">thinking.*</div>
+        <div class="evt-list">
+          <span class="evt-tag">thinking</span>
+          <span class="evt-tag">thinking_text_delta</span>
+          <span class="evt-tag">redacted_thinking</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="explain" style="margin-top:12px">
+      <strong>LLM Explanation</strong>
+      The event taxonomy reveals a <strong style="color:var(--text)">two-level worker model</strong>. Missions decompose into features, each assigned to a worker. The lifecycle is: <code>mission_accepted</code> → <code>mission_run_started</code> → N × (<code>worker_started</code> → <code>worker_selected_feature</code> → <code>worker_completed</code>/<code>worker_failed</code>) → <code>mission_state_changed(completed)</code>. Workers can be paused independently (<code>worker_paused</code>) without pausing the mission. The <code>mission_heartbeat</code> event suggests long-running missions report liveness. Tool execution events (<code>tool_use</code> → <code>tool_result</code>) stream within each worker's context. The <code>thinking</code> events expose Claude's chain-of-thought reasoning with <code>redacted_thinking</code> for extended thinking content.
+      <div class="evidence">Evidence: 59 event types via <code>KH.literal</code> extraction · Prefix grouping · Mission/worker correlation via shared state machine M</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Schemas ── -->
+<div class="sec"><h2>Data Schemas</h2><div class="line"></div><span class="badge">9 Zod schemas</span></div>
+
+<div class="grid-2">
+  <div class="schema-card">
+    <div class="flex-between mb-sm">
+      <span class="schema-name">ax0 — Authentication</span>
+      <span class="pill pill-runtime" style="font-size:8px">12 fields</span>
+    </div>
+    <div class="schema-fields">
+      <span class="sf key">token</span>
+      <span class="sf key">apiKey</span>
+      <span class="sf key">connectionId</span>
+      <span class="sf">caller</span>
+      <span class="sf key">method</span>
+      <span class="sf key">userId</span>
+      <span class="sf key">orgId</span>
+      <span class="sf">isDroidCLIInPath</span>
+      <span class="sf">droidCLIVersion</span>
+      <span class="sf">homedir</span>
+      <span class="sf">platform</span>
+    </div>
+    <div class="explain" style="margin-top:8px;font-size:10px">
+      <strong>LLM Explanation</strong>
+      The daemon authentication handshake. Client sends <code>token</code> or <code>apiKey</code> + client metadata (<code>platform</code>, <code>droidCLIVersion</code>). The <code>orgId</code>/<code>userId</code> fields indicate multi-tenant support — likely for team/enterprise plans.
+    </div>
+  </div>
+
+  <div class="schema-card">
+    <div class="flex-between mb-sm">
+      <span class="schema-name">s6I — Terminal Operations</span>
+      <span class="pill pill-arch" style="font-size:8px">30 fields</span>
+    </div>
+    <div class="schema-fields">
+      <span class="sf key">terminalId</span>
+      <span class="sf">cols</span>
+      <span class="sf">rows</span>
+      <span class="sf">cwd</span>
+      <span class="sf">env</span>
+      <span class="sf">data</span>
+      <span class="sf key">pid</span>
+      <span class="sf">state</span>
+      <span class="sf">serialized</span>
+      <span class="sf">plainText</span>
+      <span class="sf">cursorHidden</span>
+      <span class="sf key">exitCode</span>
+      <span class="sf">signal</span>
+      <span class="sf key">sessionId</span>
+    </div>
+    <div class="explain" style="margin-top:8px;font-size:10px">
+      <strong>LLM Explanation</strong>
+      Covers the full PTY lifecycle: create (<code>terminalId</code>, <code>cols</code>, <code>rows</code>, <code>cwd</code>), I/O (<code>data</code>, <code>serialized</code>, <code>plainText</code>), resize, and exit (<code>exitCode</code>, <code>signal</code>). The <code>sessionId</code> field links each terminal to its parent agent session. The daemon multiplexes multiple terminals per session.
+    </div>
+  </div>
+
+  <div class="schema-card">
+    <div class="flex-between mb-sm">
+      <span class="schema-name">Gy0 — Automation Engine</span>
+      <span class="pill" style="font-size:8px;background:rgba(255,170,0,0.1);color:var(--warn);border-color:rgba(255,170,0,0.2)">82 fields</span>
+    </div>
+    <div class="schema-fields">
+      <span class="sf key">automationId</span>
+      <span class="sf">name</span>
+      <span class="sf">description</span>
+      <span class="sf">status</span>
+      <span class="sf key">schedule</span>
+      <span class="sf">model</span>
+      <span class="sf">tags</span>
+      <span class="sf">nextRunAt</span>
+      <span class="sf">isValid</span>
+      <span class="sf">path</span>
+      <span class="sf key">prompt</span>
+      <span class="sf">cwd</span>
+      <span class="sf">runId</span>
+      <span class="sf">startedAt</span>
+      <span class="sf">completedAt</span>
+      <span class="sf">durationMs</span>
+      <span class="sf">errorMessage</span>
+      <span class="sf">isRetry</span>
+    </div>
+    <div class="explain" style="margin-top:8px;font-size:10px">
+      <strong>LLM Explanation</strong>
+      The largest schema — covers the full automation CRUD + execution tracking. Automations have a <code>schedule</code> (cron), a <code>prompt</code> (the instruction), a <code>model</code> (which LLM to use), and run history with <code>durationMs</code>/<code>errorMessage</code>/<code>isRetry</code> tracking. The <code>get_automation_visual</code> RPC method suggests a diagram/timeline view exists in the GUI. This maps to the <code>daemon.create_automation</code> through <code>daemon.delete_automation</code> RPC cluster.
+    </div>
+  </div>
+
+  <div class="schema-card">
+    <div class="flex-between mb-sm">
+      <span class="schema-name">by0 — Session Settings</span>
+      <span class="pill pill-arch" style="font-size:8px">10 fields</span>
+    </div>
+    <div class="schema-fields">
+      <span class="sf key">autonomyMode</span>
+      <span class="sf key">interactionMode</span>
+      <span class="sf key">autonomyLevel</span>
+      <span class="sf key">modelId</span>
+      <span class="sf">reasoningEffort</span>
+      <span class="sf">specModeModelId</span>
+      <span class="sf">specModeReasoningEffort</span>
+      <span class="sf">availableModels</span>
+      <span class="sf key">resolutionChain</span>
+    </div>
+    <div class="explain" style="margin-top:8px;font-size:10px">
+      <strong>LLM Explanation</strong>
+      Per-session configuration for autonomy and model selection. <code>autonomyMode</code>/<code>autonomyLevel</code> control how much the agent can do without permission (maps to state machine T). <code>specModeModelId</code> suggests a separate "speculation mode" model — likely a faster model for drafting that the primary model reviews. <code>resolutionChain</code> likely defines the fallback order when the primary model is unavailable.
+    </div>
+  </div>
+</div>
+
+<!-- ── Binary Identity ── -->
+<div class="sec"><h2>Binary Identity</h2><div class="line"></div><span class="badge">ELF metadata</span></div>
+
+<div class="card">
+  <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;font-size:11px">
+    <div>
+      <div style="font-size:9px;color:var(--dim);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Runtime</div>
+      <div style="font-weight:700;color:var(--accent)">Bun Single-Executable Application</div>
+      <div style="color:var(--dim);margin-top:4px">16 bundled JS asset files carved from $bunfs/root/</div>
+    </div>
+    <div>
+      <div style="font-size:9px;color:var(--dim);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Architecture</div>
+      <div>x86_64 · 64-bit · little-endian</div>
+      <div style="color:var(--dim);margin-top:4px">153 MB · dynamically linked · not stripped</div>
+    </div>
+    <div>
+      <div style="font-size:9px;color:var(--dim);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Shared Libraries</div>
+      <div style="font-family:var(--mono);font-size:10px;line-height:1.8">
+        libc.so.6<br>ld-linux-x86-64.so.2<br>libpthread.so.0<br>libdl.so.2<br>libm.so.6
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<!-- ════════ CHAT PANEL ════════ -->
+<div class="chat-dock">
+  <div class="chat-container">
+    <div class="chat-panel">
+      <div class="chat-hdr">
+        <div class="dot"></div>
+        <span class="title">Ask about droid</span>
+        <span style="font-size:9px;color:var(--dim);font-family:var(--mono)">grounded in 82 RPC + 59 events + 9 schemas</span>
+        <span class="collapse">—</span>
+      </div>
+      <div class="chat-messages">
+        <div class="chat-msg system">Context loaded: droid ELF analysis — 82 RPC methods, 59 event types, 6 state machines, 9 schemas, 303 AST symbols. Ask me anything about the binary's architecture.</div>
+
+        <div class="chat-msg user">What happens when a mission is paused?</div>
+
+        <div class="chat-msg assistant">When a mission is paused, three things happen simultaneously:<br><br>1. State machine <code>M</code> transitions <code>running → paused</code><br>2. Event <code>mission_paused</code> fires via <code>droid.session_notification</code> to all connected clients<br>3. Each active worker receives <code>worker_paused</code><br><br>The daemon holds the mission state at <code>paused</code> until <code>daemon.resume_automation</code> is called, which emits <code>mission_resumed</code> and restarts the workers.<br><br>The <code>orchestrator_turn</code> state suggests there's an intermediate state where the orchestrator (not a worker) has control — likely for reviewing worker output before continuing.</div>
+
+        <div class="chat-msg user">How does MCP authentication work?</div>
+
+        <div class="chat-msg assistant">The MCP auth flow is a 4-step OAuth-style handshake:<br><br>1. Client calls <code>daemon.add_mcp_server</code> with server URL<br>2. Server responds with <code>mcp_auth_required</code> event (needs user action)<br>3. User completes auth in browser, then calls <code>droid.submit_mcp_auth_code</code> with the code<br>4. <code>mcp_auth_completed</code> event fires, server status changes via <code>mcp_status_changed</code><br><br>Cancellation: <code>daemon.cancel_mcp_auth</code> aborts mid-flow. <code>daemon.clear_mcp_auth</code> revokes existing credentials.<br><br>Both <code>droid.*</code> and <code>daemon.*</code> namespaces expose identical MCP methods — the client can manage MCP servers directly in CLI mode without the daemon.</div>
+
+        <div class="chat-msg user">What's the speculation mode?</div>
+
+        <div class="chat-msg assistant">Schema <code>by0</code> has two model fields: <code>modelId</code> and <code>specModeModelId</code>, each with a separate <code>reasoningEffort</code>. This is speculative execution:<br><br>A fast model (<code>specModeModelId</code>, likely Haiku) generates a draft response while the user is still reading. The primary model (<code>modelId</code>, likely Sonnet/Opus) then validates or corrects it. If the speculation was correct, the user sees instant response. If not, the primary model's output replaces it.<br><br>The <code>autonomyLevel</code> field likely gates whether speculation runs automatically or waits for user confirmation.</div>
+      </div>
+      <div class="chat-input-wrap">
+        <input class="chat-input" placeholder="Ask about the binary's architecture, features, or relationships..." />
+        <button class="chat-send">↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ DETAIL PANEL (slide-in) ════════ -->
+<div class="detail-overlay" id="detail">
+  <button class="detail-close" onclick="this.parentElement.classList.remove('open')">×</button>
+  <div class="detail-title">daemon.create_terminal</div>
+  <div class="detail-sub">JSON-RPC method · daemon namespace</div>
+
+  <div style="font-size:10px;font-weight:700;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">Related Schema</div>
+  <div class="schema-card" style="margin-bottom:16px">
+    <span class="schema-name">s6I</span>
+    <div class="schema-fields">
+      <span class="sf key">terminalId</span>
+      <span class="sf">cols</span>
+      <span class="sf">rows</span>
+      <span class="sf">cwd</span>
+      <span class="sf">env</span>
+    </div>
+  </div>
+
+  <div style="font-size:10px;font-weight:700;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">Related Events</div>
+  <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px">
+    <span class="evt-tag">terminal_data</span>
+    <span class="evt-tag">terminal_exit</span>
+  </div>
+
+  <div style="font-size:10px;font-weight:700;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">Related Methods</div>
+  <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px">
+    <span class="rpc-tag">daemon.write_terminal_data</span>
+    <span class="rpc-tag">daemon.resize_terminal</span>
+    <span class="rpc-tag">daemon.close_terminal</span>
+    <span class="rpc-tag">daemon.list_terminals</span>
+  </div>
+
+  <div class="explain">
+    <strong>LLM Explanation</strong>
+    Creates a new PTY terminal session within the daemon. The client specifies dimensions (<code>cols</code>×<code>rows</code>), working directory (<code>cwd</code>), and environment variables (<code>env</code>). Returns a <code>terminalId</code> used for all subsequent I/O. Terminal data streams back via events. The <code>sessionId</code> linkage means each agent conversation can have multiple terminals — used by the <code>exec</code> CLI command and tool execution.
+  </div>
+
+  <div style="font-size:10px;font-weight:700;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin:16px 0 8px">Extraction Evidence</div>
+  <div style="font-size:10px;font-family:var(--mono);color:var(--dim);background:var(--inset);padding:10px;border-radius:6px;line-height:1.8;border:1px solid var(--border)">
+    method: KH.literal("daemon.create_terminal")<br>
+    offset: .rodata + 0x2a4f10<br>
+    confidence: deterministic (regex match)<br>
+    tier: 0 (no LLM)
+  </div>
+</div>
+
+</body></html>

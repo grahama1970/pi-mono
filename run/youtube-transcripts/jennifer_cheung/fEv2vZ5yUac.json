@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fEv2vZ5yUac",
+    "language": "en",
+    "took_ms": 9448,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village  - Matt Gaffney - MITM The Mystery in the Middle",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 3216,
+    "description": "I intend on delivering an overview of the following:\nSystems which interact with the AISD highlighting to operators the importance of cybersecurity in this network domain of aircraft.\nARINC 821\nElectronic Flight Bags\nGround systems\nPKI used\nFlight Attendant Panels\nMaintenance terminals\nThreats to the AISD and where I feel security concerns exist.\nI will NOT discuss any vulnerabilities i may or may not have discovered but are there any other topics related to the AISD you would like me to include? I am especially interested to hear from operators and their feedback.",
+    "view_count": 261
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fEv2vZ5yUac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

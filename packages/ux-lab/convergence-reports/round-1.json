@@ -1,0 +1,397 @@
+{
+  "round": 1,
+  "avgScore": 5.9,
+  "reviewCount": 15,
+  "perPersona": [
+    {
+      "persona": "tim-blazytko",
+      "avg": 6.5,
+      "count": 5
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "avg": 5.4,
+      "count": 5
+    },
+    {
+      "persona": "liveoverflow",
+      "avg": 5.8,
+      "count": 5
+    }
+  ],
+  "criticisms": [
+    {
+      "category": "other",
+      "count": 22,
+      "examples": [
+        "Real-time stats (334 features, 755 edges) and namespace breakdowns provide immediate context for scale and complexity.",
+        "Authentication/authorization metadata (e.g., “requires admin”, “token-bound”) is absent — a major gap for security analysis or exploit development.",
+        "No visible sorting controls (alphabetical, by address, by size) — critical for RE when scanning large binaries or comparing symbol tables.",
+        "Missing critical RE columns: no visible address (VA/RVA), size, or entropy/entropy-based tags — essential for function boundary analysis and obfuscation detection.",
+        "No visible column customization or export capability — limits workflow integration with external tools (e.g., IDA, Ghidra, custom scripts).",
+        "No visible memory map, section headers, or entropy analysis — missing foundational ELF introspection that RE pros expect at first glance.",
+        "Add a “Quick Insights” panel showing section headers, entry point, and entropy heatmap — this would instantly signal “serious tool” to a low-level RE professional.",
+        "No visible shape coding — all nodes appear as dots or small circles; adding shapes (e.g., squares for namespaces, diamonds for state machines) would improve accessibility and reduce cognitive load.",
+        "No branch target visualization or control flow graph — the “graph” appears to be a high-level feature/namespace dependency map, not a CFG.",
+        "Symbolic resolution and library call identification are not shown — no indication of imported/exported symbols, libc calls, or PLT/GOT entries.",
+        "Metadata summary at bottom (T0/T1/T2, namespaces, features, edges) provides quick statistical context — useful for triage.",
+        "Feature-rich metadata panel (namespaces, connections, stats) provides deep context once the user knows what to look for.",
+        "“6/334 in scene” is cryptic — doesn’t explain why only 6 are shown or how to reveal more. No “load more” or “expand all” affordance.",
+        "Metadata summary at bottom (features, edges, namespaces) gives immediate context — useful for triage.",
+        "Replace “6/334 in scene” with “Showing 6 of 334 features — click to expand full graph” and add a “+ Load All” button near the viewport controls.",
+        "No visual indicators for dangerous patterns (e.g., buffer ops, unvalidated args, hardcoded creds) — misses opportunity to flag potential bugs proactively.",
+        "Add a “VULN HINTS” toggle that overlays icons or colors on functions matching known dangerous patterns (e.g., strcpy, system, recv with no length check).",
+        "No Python pseudocode is visible — the core requirement of this evaluation is unmet. The interface shows no function-level logic translation.",
+        "“SOURCE PATTERNS (0 available)” implies the tool hasn’t extracted or rendered any function logic at all — critical for educational use.",
+        "The UI prioritizes graph topology over code semantics; without pseudocode, it’s useless for teaching binary logic to Python-savvy learners.",
+        "Visual indicators (T0/T1/T2, confidence %) provide quick risk/complexity heuristics — helpful for prioritizing analysis.",
+        "Integrate a “Teach Me” mode that auto-generates annotated pseudocode for top features (e.g., “request_permission”) with links to CTF-style explanations."
+      ]
+    },
+    {
+      "category": "schema-detail",
+      "count": 18,
+      "examples": [
+        "Introduce edge bundling and node clustering by namespace or function type to reduce visual clutter and improve readability of large graphs.",
+        "No visible parameter types, request/response schemas, or calling conventions for RPC nodes — critical for interface reconstruction or fuzzing.",
+        "Add a “Node Details” panel that expands on selected RPC nodes to show: parameter types, return schema, calling convention (e.g., sysv, fastcall), and associated function addresses or symbol names.",
+        "No address/offset display per node — makes it hard to correlate with disassemblers or debuggers.",
+        "Add a “Sort By” dropdown (Address, Name, Size, Type) and toggle for “Raw ELF View” to expose actual section/symbol table structure.",
+        "Include virtual address (VA) or offset in node labels (e.g., “daemon.* namespace @ 0x401000”) to enable cross-referencing with IDA/Ghidra.",
+        "No low-level binary format details visible: no field type annotations (uint32_t, char*, etc.), no byte sizes, no endianness, no raw offsets — critical for actual reverse engineering.",
+        "The “DROID” panel shows aggregated stats (334 features, 755 edges) but lacks structural breakdowns — no structs, no memory layout, no disassembly or hex view.",
+        "Bitfields, unions, or alignment padding are not represented — making it impossible to reconstruct or patch binary structures accurately.",
+        "Visual graph rendering with node types (rpc, event, schema) and namespace grouping offers a macro-level structural view — valuable for initial reconnaissance.",
+        "Add a “Struct Viewer” pane that displays parsed ELF structures with field names, types, sizes, offsets, and endianness — similar to Ghidra’s Data Type Manager or IDA’s struct editor.",
+        "Legend is minimal and lacks hover tooltips or interactive filtering — in complex graphs, users need to dynamically isolate node types, which isn’t evident here.",
+        "Introduce shape + color coding for node types (e.g., hexagons for namespaces, rounded rectangles for state machines) to support colorblind users and improve visual parsing.",
+        "Add an interactive legend with toggle buttons to show/hide node types — this would allow analysts to progressively focus on relevant subsystems (e.g., “show only cli commands and state machines”).",
+        "No field offsets, sizes, or type definitions shown for selected nodes — hides the structural details that define binary behavior.",
+        "Metadata summary (T0/T1/T2, confidence, ELF type, feature counts) is well-organized and immediately actionable for triage.",
+        "Display field metadata (offset, size, type, alignment) in the detail panel when a symbol, struct, or section is selected — this is the bread and butter of reverse engineering.",
+        "“Click to select node” instructions are buried in header; no visual cue or tooltip to explain interaction model."
+      ]
+    },
+    {
+      "category": "disassembly",
+      "count": 9,
+      "examples": [
+        "No linkage between RPC endpoints and their implementing functions (e.g., no symbol resolution or cross-references to disassembly).",
+        "Information density is low in the central pane; lacks disassembly, hex dump, or symbol table views that are standard in professional RE tools.",
+        "Integrate a hex/assembly view toggle that synchronizes with selected nodes — allowing analysts to jump from high-level graph to low-level bytes instantly.",
+        "No visible assembly view whatsoever — critical omission for any professional RE tool. No mnemonics, no operands, no hex addresses, no opcode bytes.",
+        "Add a disassembly pane (Intel syntax by default) with:",
+        "Integrate a CFG view toggle that overlays assembly with control flow edges — essential for understanding logic flow in obfuscated or packed binaries.",
+        "No raw data view (hex, disassembly, or JSON dump) — critical for RE work where byte-level inspection is non-negotiable.",
+        "Add a “Raw View” toggle (hex + disassembly + JSON) for any selected node — mandatory for professional RE.",
+        "Add a “Pseudocode View” toggle that renders each selected function as Python-like pseudocode with inline comments explaining assembly idioms (e.g., “# equivalent to cmp eax, 0; jz label”)."
+      ]
+    },
+    {
+      "category": "empty-canvas",
+      "count": 8,
+      "examples": [
+        "Empty central graph viewport on first load is confusing — no visual feedback or “no nodes selected” prompt; feels broken or incomplete.",
+        "Graph viewport is empty on load — no immediate visual representation of control flow, data flow, or call graph, which is critical for RE workflow (unlike IDA/Ghidra’s disassembly view on open).",
+        "Replace the blank graph viewport with a default disassembly or function graph view (even if simplified) to immediately convey binary structure.",
+        "The graph canvas is currently empty (6/334 nodes in scene) — this makes it impossible to evaluate spatial layout, clustering, or edge density, which are critical for assessing graph usability in RE.",
+        "Empty graph on first load is confusing — no visual feedback or “getting started” prompt to explain what the user should do next.",
+        "The central graph canvas is empty on first load — no visual scaffolding or “hello world” example to demonstrate what a populated graph looks like. This risks confusion for beginners.",
+        "“ANALYSIS” tab is active by default, but the graph is empty — no indication that the user must first select a binary or trigger a render. This breaks the “overview → detail” flow.",
+        "“Start Exploring” screen is empty by default — no auto-highlighted risky functions or entry points (main, signal handlers, network binds) to jumpstart analysis."
+      ]
+    },
+    {
+      "category": "selection-feedback",
+      "count": 5,
+      "examples": [
+        "Integrate a “Fuzz Template Generator” button that auto-generates AFL++ or libfuzzer harness stubs based on the selected RPC’s inferred interface — turning analysis into actionable tooling.",
+        "Introduce a “Export to CSV/JSON” button with column selection and filtering persistence — critical for batch analysis and correlation with other datasets.",
+        "Add a subtle “spinning node” or “pulse animation” on the selected binary (e.g., “droid”) when clicked, followed by a radial “bloom” of connected nodes to visually tie action to result.",
+        "No explicit “Find Vulnerable Functions” or “Highlight Input Handlers” toggle — forces manual exploration even for common patterns (e.g., strcpy, recv, fopen).",
+        "Auto-load and highlight the “main” function + any network-related functions (bind, listen, accept) on first load — gives immediate attack surface context without clicking “Show Namespaces.”"
+      ]
+    },
+    {
+      "category": "onboarding",
+      "count": 4,
+      "examples": [
+        "“+ INGEST BINARY” button is buried; no onboarding or “Start Here” cue for new users — reduces discoverability.",
+        "Add a “Welcome Graph” or “Sample Analysis” on first load showing a minimal connected graph with tooltips explaining interactions (click, double-click, right-click).",
+        "No onboarding tour, tooltips, or “CTF Beginner Mode” toggle — critical for educational accessibility.",
+        "Introduce a “Beginner Mode” toggle that simplifies the UI, highlights key features, and replaces advanced queries with “What is this binary doing?” or “Find the main function.”"
+      ]
+    },
+    {
+      "category": "tree-view",
+      "count": 4,
+      "examples": [
+        "No visible toggle between layout algorithms (hierarchical, radial, dagre) — critical for call graph analysis where parent-child relationships matter.",
+        "Add a layout selector (Force / Hierarchical / Dagre) with auto-switching based on graph density or user-defined call hierarchy depth.",
+        "The tree appears to be an abstraction (e.g., “daemon.* namespace” with counts) rather than a direct reflection of ELF section headers or symbol table entries — risks hiding low-level details REs need.",
+        "Hide advanced graph controls (Force, Hierarchy, Cluster) behind a “Show Advanced” toggle until the user has loaded at least one binary and interacted with the graph — reduce cognitive load early on."
+      ]
+    },
+    {
+      "category": "graph-layout",
+      "count": 3,
+      "examples": [
+        "Force-directed layout is active but not yet populated — in binary graphs, this often leads to chaotic edge crossings and node overlap without constraints.",
+        "Add toggleable columns for `Address`, `Size`, `Entropy`, and `Tags`, with persistent layout saving.",
+        "“Show Namespaces” and “Show Top Hubs” are abstract; no indication of how they map to actual sections, symbols, or memory layout — forces guesswork."
+      ]
+    },
+    {
+      "category": "loading-indicator",
+      "count": 2,
+      "examples": [
+        "No visible loading state or animation when graph populates — feels static and unresponsive. Beginner won’t know if action succeeded or if tool is frozen.",
+        "Advanced features like “Force”, “Hierarchy”, “Cluster”, and “Viewport” controls are exposed immediately without tooltips or progressive disclosure — could intimidate or mislead new users."
+      ]
+    },
+    {
+      "category": "navigation",
+      "count": 1,
+      "examples": [
+        "Column widths are fixed and not resizable — long feature names or namespace paths get truncated, reducing readability."
+      ]
+    },
+    {
+      "category": "context-menu",
+      "count": 1,
+      "examples": [
+        "Add a “Getting Started” overlay or tour on first load: Show a sample graph with annotations explaining nodes, edges, and interaction modes (click, double-click, right-click)."
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_first_01",
+      "score": 7.5,
+      "weaknesses": [
+        "Empty central graph viewport on first load is confusing — no visual feedback or “no nodes selected” prompt; feels broken or incomplete."
+      ],
+      "suggestions": [
+        "“+ INGEST BINARY” button is buried; no onboarding or “Start Here” cue for new users — reduces discoverability.",
+        "Add a “Welcome Graph” or “Sample Analysis” on first load showing a minimal connected graph with tooltips explaining interactions (click, double-click, right-click)."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7.5/10\n\n3. Strengths  \n- Clear project and binary selection UI with visual highlighting (e.g., “droid” selected in green) — reduces cognitive load for analysts.  \n- Rich metadata panel at bottom (T0/T1/T2, confidence, namespaces, features) provides immediate context for triage — useful for agentic pipelines.  \n- Integration hooks visible (e.g., “analyze-elf + treesitter”) suggest extensibility for automated workflows — aligns with agentic RE philosophy.\n\n4. Weaknesses  \n- Empty central graph viewport on first load is confusing — no visual feedback or “no nodes selected” prompt; feels broken or incomplete.  \n- Suggested queries in right panel are helpful but lack execution context — no “Run Query” button or visual mapping to graph nodes.  \n- “+ INGEST BINARY” button is buried; no onboarding or “Start Here” cue for new users — reduces discoverability.\n\n5. What you would change  \n- Add a “Welcome Graph” or “Sample Analysis” on first load showing a minimal connected graph with tooltips explaining interactions (click, double-click, right-click).  \n- Make suggested queries actionable — add “▶ Run” buttons that auto-populate the graph and highlight relevant nodes, bridging analysis intent to visualization."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_graph_01",
+      "score": 7,
+      "weaknesses": [
+        "Force-directed layout is active but not yet populated — in binary graphs, this often leads to chaotic edge crossings and node overlap without constraints.",
+        "No visible toggle between layout algorithms (hierarchical, radial, dagre) — critical for call graph analysis where parent-child relationships matter."
+      ],
+      "suggestions": [
+        "Real-time stats (334 features, 755 edges) and namespace breakdowns provide immediate context for scale and complexity.",
+        "Add a layout selector (Force / Hierarchical / Dagre) with auto-switching based on graph density or user-defined call hierarchy depth.",
+        "Introduce edge bundling and node clustering by namespace or function type to reduce visual clutter and improve readability of large graphs."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- The interface cleanly separates binary ingestion, namespace filtering, and feature visualization — excellent for iterative exploration.  \n- Suggested queries (e.g., “What does request_permission do?”) demonstrate agentic guidance, reducing cognitive load for analysts.  \n- Real-time stats (334 features, 755 edges) and namespace breakdowns provide immediate context for scale and complexity.\n\n4. Weaknesses  \n- Force-directed layout is active but not yet populated — in binary graphs, this often leads to chaotic edge crossings and node overlap without constraints.  \n- No visible toggle between layout algorithms (hierarchical, radial, dagre) — critical for call graph analysis where parent-child relationships matter.  \n- Layout stability cannot be assessed yet, but absence of “freeze layout” or “pin node” controls suggests potential instability during interaction.\n\n5. What you would change  \n- Add a layout selector (Force / Hierarchical / Dagre) with auto-switching based on graph density or user-defined call hierarchy depth.  \n- Introduce edge bundling and node clustering by namespace or function type to reduce visual clutter and improve readability of large graphs."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_detail_01",
+      "score": 4,
+      "weaknesses": [
+        "No visible parameter types, request/response schemas, or calling conventions for RPC nodes — critical for interface reconstruction or fuzzing.",
+        "No linkage between RPC endpoints and their implementing functions (e.g., no symbol resolution or cross-references to disassembly).",
+        "Authentication/authorization metadata (e.g., “requires admin”, “token-bound”) is absent — a major gap for security analysis or exploit development."
+      ],
+      "suggestions": [
+        "Add a “Node Details” panel that expands on selected RPC nodes to show: parameter types, return schema, calling convention (e.g., sysv, fastcall), and associated function addresses or symbol names.",
+        "Integrate a “Fuzz Template Generator” button that auto-generates AFL++ or libfuzzer harness stubs based on the selected RPC’s inferred interface — turning analysis into actionable tooling."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n3. Strengths  \n- Clear visual distinction between node types (rpc, event, schema, state machine, cli command, namespace) via color-coded legend — useful for rapid triage.  \n- Aggregated feature stats (334 features, 755 edges) and namespace breakdown provide high-level context for binary complexity.  \n- Suggested queries (e.g., “How does request_permission connect to kill_worker_session?”) hint at intent-aware navigation — valuable for hypothesis-driven RE.\n\n4. Weaknesses  \n- No visible parameter types, request/response schemas, or calling conventions for RPC nodes — critical for interface reconstruction or fuzzing.  \n- No linkage between RPC endpoints and their implementing functions (e.g., no symbol resolution or cross-references to disassembly).  \n- Authentication/authorization metadata (e.g., “requires admin”, “token-bound”) is absent — a major gap for security analysis or exploit development.\n\n5. What you would change  \n- Add a “Node Details” panel that expands on selected RPC nodes to show: parameter types, return schema, calling convention (e.g., sysv, fastcall), and associated function addresses or symbol names.  \n- Integrate a “Fuzz Template Generator” button that auto-generates AFL++ or libfuzzer harness stubs based on the selected RPC’s inferred interface — turning analysis into actionable tooling."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_tree_01",
+      "score": 7,
+      "weaknesses": [
+        "No visible sorting controls (alphabetical, by address, by size) — critical for RE when scanning large binaries or comparing symbol tables.",
+        "The tree appears to be an abstraction (e.g., “daemon.* namespace” with counts) rather than a direct reflection of ELF section headers or symbol table entries — risks hiding low-level details REs need.",
+        "No address/offset display per node — makes it hard to correlate with disassemblers or debuggers."
+      ],
+      "suggestions": [
+        "Add a “Sort By” dropdown (Address, Name, Size, Type) and toggle for “Raw ELF View” to expose actual section/symbol table structure.",
+        "Include virtual address (VA) or offset in node labels (e.g., “daemon.* namespace @ 0x401000”) to enable cross-referencing with IDA/Ghidra."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- The interface clearly separates binaries, namespaces, and features with collapsible tree nodes — this mirrors a logical RE workflow from binary → namespace → symbol/function.  \n- Visual indicators (icons, color-coded tags like “rpc”, “event”, “schema”) help quickly distinguish node types without needing to hover or open context menus.  \n- Aggregated metrics (e.g., “334 features · 3 namespaces · 6 state machines”) provide immediate context on scale and complexity — useful for triage.\n\n4. Weaknesses  \n- No visible sorting controls (alphabetical, by address, by size) — critical for RE when scanning large binaries or comparing symbol tables.  \n- The tree appears to be an abstraction (e.g., “daemon.* namespace” with counts) rather than a direct reflection of ELF section headers or symbol table entries — risks hiding low-level details REs need.  \n- No address/offset display per node — makes it hard to correlate with disassemblers or debuggers.\n\n5. What you would change  \n- Add a “Sort By” dropdown (Address, Name, Size, Type) and toggle for “Raw ELF View” to expose actual section/symbol table structure.  \n- Include virtual address (VA) or offset in node labels (e.g., “daemon.* namespace @ 0x401000”) to enable cross-referencing with IDA/Ghidra."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_table_01",
+      "score": 7,
+      "weaknesses": [
+        "Missing critical RE columns: no visible address (VA/RVA), size, or entropy/entropy-based tags — essential for function boundary analysis and obfuscation detection.",
+        "No visible column customization or export capability — limits workflow integration with external tools (e.g., IDA, Ghidra, custom scripts).",
+        "Column widths are fixed and not resizable — long feature names or namespace paths get truncated, reducing readability."
+      ],
+      "suggestions": [
+        "Add toggleable columns for `Address`, `Size`, `Entropy`, and `Tags`, with persistent layout saving.",
+        "Introduce a “Export to CSV/JSON” button with column selection and filtering persistence — critical for batch analysis and correlation with other datasets."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10  \n\n**Strengths**  \n- Clear categorization of features by type (e.g., `cli_command`, `event`) with confidence scores — useful for triaging high-value functions during analysis.  \n- Integration of namespace context (`daemon.*`, `droid.*`, `tunnel.*`) aids in understanding feature scope and potential attack surface boundaries.  \n- Suggested queries panel provides guided exploration — valuable for junior analysts or when pivoting across complex binaries.  \n\n**Weaknesses**  \n- Missing critical RE columns: no visible address (VA/RVA), size, or entropy/entropy-based tags — essential for function boundary analysis and obfuscation detection.  \n- No visible column customization or export capability — limits workflow integration with external tools (e.g., IDA, Ghidra, custom scripts).  \n- Column widths are fixed and not resizable — long feature names or namespace paths get truncated, reducing readability.  \n\n**What you would change**  \n- Add toggleable columns for `Address`, `Size`, `Entropy`, and `Tags`, with persistent layout saving.  \n- Introduce a “Export to CSV/JSON” button with column selection and filtering persistence — critical for batch analysis and correlation with other datasets."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_first_01",
+      "score": 7,
+      "weaknesses": [
+        "Graph viewport is empty on load — no immediate visual representation of control flow, data flow, or call graph, which is critical for RE workflow (unlike IDA/Ghidra’s disassembly view on open).",
+        "Information density is low in the central pane; lacks disassembly, hex dump, or symbol table views that are standard in professional RE tools.",
+        "No visible memory map, section headers, or entropy analysis — missing foundational ELF introspection that RE pros expect at first glance."
+      ],
+      "suggestions": [
+        "Replace the blank graph viewport with a default disassembly or function graph view (even if simplified) to immediately convey binary structure.",
+        "Add a “Quick Insights” panel showing section headers, entry point, and entropy heatmap — this would instantly signal “serious tool” to a low-level RE professional."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clean, dark-themed UI with logical panel separation (binaries list, graph viewport, analysis sidebar) — reduces visual fatigue during long sessions.  \n- Feature-rich metadata panel (namespaces, CLI commands, state machines) provides immediate context without requiring deep navigation — useful for triage.  \n- Suggested queries in the ANALYSIS tab are thoughtful and guide the user toward meaningful reverse engineering questions — lowers entry barrier for junior analysts.\n\n4. Weaknesses  \n- Graph viewport is empty on load — no immediate visual representation of control flow, data flow, or call graph, which is critical for RE workflow (unlike IDA/Ghidra’s disassembly view on open).  \n- Information density is low in the central pane; lacks disassembly, hex dump, or symbol table views that are standard in professional RE tools.  \n- No visible memory map, section headers, or entropy analysis — missing foundational ELF introspection that RE pros expect at first glance.\n\n5. What you would change  \n- Replace the blank graph viewport with a default disassembly or function graph view (even if simplified) to immediately convey binary structure.  \n- Add a “Quick Insights” panel showing section headers, entry point, and entropy heatmap — this would instantly signal “serious tool” to a low-level RE professional."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_data_01",
+      "score": 4,
+      "weaknesses": [
+        "No low-level binary format details visible: no field type annotations (uint32_t, char*, etc.), no byte sizes, no endianness, no raw offsets — critical for actual reverse engineering.",
+        "The “DROID” panel shows aggregated stats (334 features, 755 edges) but lacks structural breakdowns — no structs, no memory layout, no disassembly or hex view.",
+        "Bitfields, unions, or alignment padding are not represented — making it impossible to reconstruct or patch binary structures accurately."
+      ],
+      "suggestions": [
+        "Visual graph rendering with node types (rpc, event, schema) and namespace grouping offers a macro-level structural view — valuable for initial reconnaissance.",
+        "Add a “Struct Viewer” pane that displays parsed ELF structures with field names, types, sizes, offsets, and endianness — similar to Ghidra’s Data Type Manager or IDA’s struct editor.",
+        "Integrate a hex/assembly view toggle that synchronizes with selected nodes — allowing analysts to jump from high-level graph to low-level bytes instantly."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n3. Strengths:\n- The interface provides high-level feature categorization (e.g., cli command, event, state machine) which helps orient analysts quickly.\n- Integration of suggested queries (e.g., “What does request_permission do?”) hints at AI-assisted exploration — useful for triaging unknown binaries.\n- Visual graph rendering with node types (rpc, event, schema) and namespace grouping offers a macro-level structural view — valuable for initial reconnaissance.\n\n4. Weaknesses:\n- No low-level binary format details visible: no field type annotations (uint32_t, char*, etc.), no byte sizes, no endianness, no raw offsets — critical for actual reverse engineering.\n- The “DROID” panel shows aggregated stats (334 features, 755 edges) but lacks structural breakdowns — no structs, no memory layout, no disassembly or hex view.\n- Bitfields, unions, or alignment padding are not represented — making it impossible to reconstruct or patch binary structures accurately.\n\n5. What you would change:\n- Add a “Struct Viewer” pane that displays parsed ELF structures with field names, types, sizes, offsets, and endianness — similar to Ghidra’s Data Type Manager or IDA’s struct editor.\n- Integrate a hex/assembly view toggle that synchronizes with selected nodes — allowing analysts to jump from high-level graph to low-level bytes instantly."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_graph_01",
+      "score": 7,
+      "weaknesses": [
+        "The graph canvas is currently empty (6/334 nodes in scene) — this makes it impossible to evaluate spatial layout, clustering, or edge density, which are critical for assessing graph usability in RE.",
+        "No visible shape coding — all nodes appear as dots or small circles; adding shapes (e.g., squares for namespaces, diamonds for state machines) would improve accessibility and reduce cognitive load.",
+        "Legend is minimal and lacks hover tooltips or interactive filtering — in complex graphs, users need to dynamically isolate node types, which isn’t evident here."
+      ],
+      "suggestions": [
+        "Introduce shape + color coding for node types (e.g., hexagons for namespaces, rounded rectangles for state machines) to support colorblind users and improve visual parsing.",
+        "Add an interactive legend with toggle buttons to show/hide node types — this would allow analysts to progressively focus on relevant subsystems (e.g., “show only cli commands and state machines”)."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clear legend at top of graph view explicitly maps node types (rpc, event, schema, state machine, cli command, namespace) to colors — this is essential for quick orientation.  \n- Node types are visually distinct via color coding, which supports rapid pattern recognition during analysis (e.g., state machines in magenta, cli commands in orange).  \n- The bottom panel provides structured metadata (namespaces, top features by connections) that complements the graph and aids in contextual understanding.\n\n4. Weaknesses  \n- The graph canvas is currently empty (6/334 nodes in scene) — this makes it impossible to evaluate spatial layout, clustering, or edge density, which are critical for assessing graph usability in RE.  \n- No visible shape coding — all nodes appear as dots or small circles; adding shapes (e.g., squares for namespaces, diamonds for state machines) would improve accessibility and reduce cognitive load.  \n- Legend is minimal and lacks hover tooltips or interactive filtering — in complex graphs, users need to dynamically isolate node types, which isn’t evident here.\n\n5. What you would change  \n- Introduce shape + color coding for node types (e.g., hexagons for namespaces, rounded rectangles for state machines) to support colorblind users and improve visual parsing.  \n- Add an interactive legend with toggle buttons to show/hide node types — this would allow analysts to progressively focus on relevant subsystems (e.g., “show only cli commands and state machines”)."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_code_01",
+      "score": 4,
+      "weaknesses": [
+        "No visible assembly view whatsoever — critical omission for any professional RE tool. No mnemonics, no operands, no hex addresses, no opcode bytes.",
+        "No branch target visualization or control flow graph — the “graph” appears to be a high-level feature/namespace dependency map, not a CFG.",
+        "Symbolic resolution and library call identification are not shown — no indication of imported/exported symbols, libc calls, or PLT/GOT entries."
+      ],
+      "suggestions": [
+        "Metadata summary at bottom (T0/T1/T2, namespaces, features, edges) provides quick statistical context — useful for triage.",
+        "Add a disassembly pane (Intel syntax by default) with:",
+        "Integrate a CFG view toggle that overlays assembly with control flow edges — essential for understanding logic flow in obfuscated or packed binaries."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n3. Strengths  \n- Clean, modern UI with logical panel separation (binaries list, graph view, analysis sidebar) — good for exploratory navigation.  \n- Suggested queries in the ANALYSIS panel show intent to guide users toward meaningful reverse engineering questions (e.g., “How do daemon.* and droid.* interact?”).  \n- Metadata summary at bottom (T0/T1/T2, namespaces, features, edges) provides quick statistical context — useful for triage.\n\n4. Weaknesses  \n- No visible assembly view whatsoever — critical omission for any professional RE tool. No mnemonics, no operands, no hex addresses, no opcode bytes.  \n- No branch target visualization or control flow graph — the “graph” appears to be a high-level feature/namespace dependency map, not a CFG.  \n- Symbolic resolution and library call identification are not shown — no indication of imported/exported symbols, libc calls, or PLT/GOT entries.\n\n5. What you would change  \n- Add a disassembly pane (Intel syntax by default) with:  \n  • Opcode bytes on left, mnemonic + operands on right  \n  • Hex addresses with symbolic names (e.g., `call printf@plt`)  \n  • Cross-references and jump arrows visually connecting branches  \n- Integrate a CFG view toggle that overlays assembly with control flow edges — essential for understanding logic flow in obfuscated or packed binaries.\n\nThis tool is currently a “binary feature explorer,” not a reverse engineering environment. It’s useful for high-level triage — but not for actual disassembly or code analysis. For that, you still need IDA, Ghidra, or x64dbg."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_detail_01",
+      "score": 5,
+      "weaknesses": [
+        "No raw data view (hex, disassembly, or JSON dump) — critical for RE work where byte-level inspection is non-negotiable.",
+        "No field offsets, sizes, or type definitions shown for selected nodes — hides the structural details that define binary behavior.",
+        "“Show Namespaces” and “Show Top Hubs” are abstract; no indication of how they map to actual sections, symbols, or memory layout — forces guesswork."
+      ],
+      "suggestions": [
+        "Metadata summary (T0/T1/T2, confidence, ELF type, feature counts) is well-organized and immediately actionable for triage.",
+        "Add a “Raw View” toggle (hex + disassembly + JSON) for any selected node — mandatory for professional RE.",
+        "Display field metadata (offset, size, type, alignment) in the detail panel when a symbol, struct, or section is selected — this is the bread and butter of reverse engineering."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10  \n\n3. Strengths  \n- Clean, modern UI with intuitive navigation and visual hierarchy — excellent for high-level exploration and onboarding.  \n- Suggested queries and “Ask about this binary…” chat interface lower the barrier to entry for analysts unfamiliar with the binary’s internals.  \n- Metadata summary (T0/T1/T2, confidence, ELF type, feature counts) is well-organized and immediately actionable for triage.  \n\n4. Weaknesses  \n- No raw data view (hex, disassembly, or JSON dump) — critical for RE work where byte-level inspection is non-negotiable.  \n- No field offsets, sizes, or type definitions shown for selected nodes — hides the structural details that define binary behavior.  \n- “Show Namespaces” and “Show Top Hubs” are abstract; no indication of how they map to actual sections, symbols, or memory layout — forces guesswork.  \n\n5. What you would change  \n- Add a “Raw View” toggle (hex + disassembly + JSON) for any selected node — mandatory for professional RE.  \n- Display field metadata (offset, size, type, alignment) in the detail panel when a symbol, struct, or section is selected — this is the bread and butter of reverse engineering."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_first_01",
+      "score": 6,
+      "weaknesses": [
+        "Empty graph on first load is confusing — no visual feedback or “getting started” prompt to explain what the user should do next.",
+        "No onboarding tour, tooltips, or “CTF Beginner Mode” toggle — critical for educational accessibility."
+      ],
+      "suggestions": [
+        "Feature-rich metadata panel (namespaces, connections, stats) provides deep context once the user knows what to look for.",
+        "Introduce a “Beginner Mode” toggle that simplifies the UI, highlights key features, and replaces advanced queries with “What is this binary doing?” or “Find the main function.”"
+      ],
+      "fullText": "1. PASS  \n2. Score: 6/10  \n\n3. Strengths  \n- Clean, dark-themed UI with clear visual hierarchy — reduces cognitive load for users already familiar with RE tools.  \n- Suggested queries panel offers concrete starting points (“How do daemon.* namespace and droid.* namespace interact?”), which is helpful for guided exploration.  \n- Feature-rich metadata panel (namespaces, connections, stats) provides deep context once the user knows what to look for.  \n\n4. Weaknesses  \n- Empty graph on first load is confusing — no visual feedback or “getting started” prompt to explain what the user should do next.  \n- No onboarding tour, tooltips, or “CTF Beginner Mode” toggle — critical for educational accessibility.  \n- Suggested queries are advanced and assume prior knowledge (e.g., “trace the B:Connection state machine”) — not scaffolded for novices.  \n\n5. What you would change  \n- Add a “First Steps” modal or tooltip chain on first load: “Click a binary → See graph → Right-click nodes for context → Try a suggested query.”  \n- Introduce a “Beginner Mode” toggle that simplifies the UI, highlights key features, and replaces advanced queries with “What is this binary doing?” or “Find the main function.”  \n\n> Would I feature this in a YouTube tutorial?  \n> **Yes — but only after adding beginner scaffolding.** The tool has strong bones for teaching, but right now it’s like handing a beginner a disassembler without a “Hello World” example. With minor UX tweaks, this could be a killer educational tool for my channel."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_prog_01",
+      "score": 5,
+      "weaknesses": [
+        "No visible loading state or animation when graph populates — feels static and unresponsive. Beginner won’t know if action succeeded or if tool is frozen.",
+        "“Click to select node” instructions are buried in header; no visual cue or tooltip to explain interaction model.",
+        "“6/334 in scene” is cryptic — doesn’t explain why only 6 are shown or how to reveal more. No “load more” or “expand all” affordance."
+      ],
+      "suggestions": [
+        "Metadata summary at bottom (features, edges, namespaces) gives immediate context — useful for triage.",
+        "Add a subtle “spinning node” or “pulse animation” on the selected binary (e.g., “droid”) when clicked, followed by a radial “bloom” of connected nodes to visually tie action to result.",
+        "Replace “6/334 in scene” with “Showing 6 of 334 features — click to expand full graph” and add a “+ Load All” button near the viewport controls."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n3. Strengths  \n- Clean, dark-themed UI with high contrast for readability — excellent for long RE sessions.  \n- Suggested queries panel is pedagogically strong; guides beginners toward meaningful exploration (e.g., “What does request_permission do?”).  \n- Metadata summary at bottom (features, edges, namespaces) gives immediate context — useful for triage.\n\n4. Weaknesses  \n- No visible loading state or animation when graph populates — feels static and unresponsive. Beginner won’t know if action succeeded or if tool is frozen.  \n- “Click to select node” instructions are buried in header; no visual cue or tooltip to explain interaction model.  \n- “6/334 in scene” is cryptic — doesn’t explain why only 6 are shown or how to reveal more. No “load more” or “expand all” affordance.\n\n5. What you would change  \n- Add a subtle “spinning node” or “pulse animation” on the selected binary (e.g., “droid”) when clicked, followed by a radial “bloom” of connected nodes to visually tie action to result.  \n- Replace “6/334 in scene” with “Showing 6 of 334 features — click to expand full graph” and add a “+ Load All” button near the viewport controls."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_learn_01",
+      "score": 7,
+      "weaknesses": [
+        "The central graph canvas is empty on first load — no visual scaffolding or “hello world” example to demonstrate what a populated graph looks like. This risks confusion for beginners.",
+        "“ANALYSIS” tab is active by default, but the graph is empty — no indication that the user must first select a binary or trigger a render. This breaks the “overview → detail” flow.",
+        "Advanced features like “Force”, “Hierarchy”, “Cluster”, and “Viewport” controls are exposed immediately without tooltips or progressive disclosure — could intimidate or mislead new users."
+      ],
+      "suggestions": [
+        "Add a “Getting Started” overlay or tour on first load: Show a sample graph with annotations explaining nodes, edges, and interaction modes (click, double-click, right-click).",
+        "Hide advanced graph controls (Force, Hierarchy, Cluster) behind a “Show Advanced” toggle until the user has loaded at least one binary and interacted with the graph — reduce cognitive load early on."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clear visual hierarchy: The left sidebar (projects → binaries → ingest) provides a logical entry point for newcomers to select and load binaries.  \n- Contextual metadata panel (bottom) gives immediate stats (features, edges, namespaces) — useful for orienting users before diving into the graph.  \n- Suggested queries in the right panel act as guided discovery prompts, nudging users toward meaningful questions without overwhelming them.\n\n4. Weaknesses  \n- The central graph canvas is empty on first load — no visual scaffolding or “hello world” example to demonstrate what a populated graph looks like. This risks confusion for beginners.  \n- “ANALYSIS” tab is active by default, but the graph is empty — no indication that the user must first select a binary or trigger a render. This breaks the “overview → detail” flow.  \n- Advanced features like “Force”, “Hierarchy”, “Cluster”, and “Viewport” controls are exposed immediately without tooltips or progressive disclosure — could intimidate or mislead new users.\n\n5. What you would change  \n- Add a “Getting Started” overlay or tour on first load: Show a sample graph with annotations explaining nodes, edges, and interaction modes (click, double-click, right-click).  \n- Hide advanced graph controls (Force, Hierarchy, Cluster) behind a “Show Advanced” toggle until the user has loaded at least one binary and interacted with the graph — reduce cognitive load early on."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_vuln_01",
+      "score": 7,
+      "weaknesses": [
+        "No explicit “Find Vulnerable Functions” or “Highlight Input Handlers” toggle — forces manual exploration even for common patterns (e.g., strcpy, recv, fopen).",
+        "“Start Exploring” screen is empty by default — no auto-highlighted risky functions or entry points (main, signal handlers, network binds) to jumpstart analysis.",
+        "No visual indicators for dangerous patterns (e.g., buffer ops, unvalidated args, hardcoded creds) — misses opportunity to flag potential bugs proactively."
+      ],
+      "suggestions": [
+        "Add a “VULN HINTS” toggle that overlays icons or colors on functions matching known dangerous patterns (e.g., strcpy, system, recv with no length check).",
+        "Auto-load and highlight the “main” function + any network-related functions (bind, listen, accept) on first load — gives immediate attack surface context without clicking “Show Namespaces.”"
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clear visual separation of namespaces (daemon.*, droid.*, tunnel.*) helps segment attack surface by subsystem — useful for isolating network, auth, or IPC handlers.  \n- “Top Features by Connections” highlights high-traffic or central functions (e.g., add_mcp_server, archive_session) — a good heuristic for finding entry points or critical logic.  \n- Suggested queries (e.g., “What is the attack surface of daemon.* namespace?”) guide beginners and reduce cognitive load during time-constrained CTFs.\n\n4. Weaknesses  \n- No explicit “Find Vulnerable Functions” or “Highlight Input Handlers” toggle — forces manual exploration even for common patterns (e.g., strcpy, recv, fopen).  \n- “Start Exploring” screen is empty by default — no auto-highlighted risky functions or entry points (main, signal handlers, network binds) to jumpstart analysis.  \n- No visual indicators for dangerous patterns (e.g., buffer ops, unvalidated args, hardcoded creds) — misses opportunity to flag potential bugs proactively.\n\n5. What you would change  \n- Add a “VULN HINTS” toggle that overlays icons or colors on functions matching known dangerous patterns (e.g., strcpy, system, recv with no length check).  \n- Auto-load and highlight the “main” function + any network-related functions (bind, listen, accept) on first load — gives immediate attack surface context without clicking “Show Namespaces.”"
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_code_01",
+      "score": 4,
+      "weaknesses": [
+        "No Python pseudocode is visible — the core requirement of this evaluation is unmet. The interface shows no function-level logic translation.",
+        "“SOURCE PATTERNS (0 available)” implies the tool hasn’t extracted or rendered any function logic at all — critical for educational use.",
+        "The UI prioritizes graph topology over code semantics; without pseudocode, it’s useless for teaching binary logic to Python-savvy learners."
+      ],
+      "suggestions": [
+        "Visual indicators (T0/T1/T2, confidence %) provide quick risk/complexity heuristics — helpful for prioritizing analysis.",
+        "Add a “Pseudocode View” toggle that renders each selected function as Python-like pseudocode with inline comments explaining assembly idioms (e.g., “# equivalent to cmp eax, 0; jz label”).",
+        "Integrate a “Teach Me” mode that auto-generates annotated pseudocode for top features (e.g., “request_permission”) with links to CTF-style explanations."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10  \n\n3. Strengths  \n- The interface presents high-level metadata (namespaces, features, edges) in a structured, digestible format — useful for rapid triage.  \n- Suggested queries in the ANALYSIS panel are pedagogically sound, guiding users toward meaningful exploration (e.g., “What does request_permission do?”).  \n- Visual indicators (T0/T1/T2, confidence %) provide quick risk/complexity heuristics — helpful for prioritizing analysis.  \n\n4. Weaknesses  \n- No Python pseudocode is visible — the core requirement of this evaluation is unmet. The interface shows no function-level logic translation.  \n- “SOURCE PATTERNS (0 available)” implies the tool hasn’t extracted or rendered any function logic at all — critical for educational use.  \n- The UI prioritizes graph topology over code semantics; without pseudocode, it’s useless for teaching binary logic to Python-savvy learners.  \n\n5. What you would change  \n- Add a “Pseudocode View” toggle that renders each selected function as Python-like pseudocode with inline comments explaining assembly idioms (e.g., “# equivalent to cmp eax, 0; jz label”).  \n- Integrate a “Teach Me” mode that auto-generates annotated pseudocode for top features (e.g., “request_permission”) with links to CTF-style explanations."
+    }
+  ],
+  "timestamp": "2026-03-25T21:40:13.384Z"
+}

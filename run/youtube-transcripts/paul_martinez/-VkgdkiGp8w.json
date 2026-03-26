@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-VkgdkiGp8w",
+    "language": "en",
+    "took_ms": 8445,
+    "method": null,
+    "title": "Risk Prioritization With SAST/DAST Symbolic Execution",
+    "channel": "S4 Events",
+    "upload_date": "20240606",
+    "duration_sec": 1232,
+    "description": "I have a huge amount of unpatched vulnerabilities in my ICS. What should I patch when?\n\nSusan suggests and describes novel technologies, like hybrid Static Application Security Testing (SAST) and Dynamic Application Security Testing (DAST) Symbolic Execution with Confidence Scoring as a method that can provide risk prioritization with high certainty. \n\nShe explores emerging Machine Learning (ML) vulnerability analysis science approaches and how they can be applied by both expert and non-expert OT/ICS cybersecurity professionals.\n\nDale's note: What to patch when is a question many have tried to answer (including me with my ICS-Patch decision tree). I thought this approach might be new and interesting for many attendees.",
+    "view_count": 245
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -VkgdkiGp8w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

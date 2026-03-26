@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gwheQMTpPvw",
+    "language": "en",
+    "took_ms": 7883,
+    "method": null,
+    "title": "Women In ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20230111",
+    "duration_sec": 1879,
+    "description": "Donna Cusimano, Kim Legelis, and Saltanat Mashirov join Dale Peterson to talk about the Women In ICS Security Program at S4x23, Feb 13-16 in Miami South Beach. (see s4xevents.com/women). \n\nThese are three of a team of volunteers that have put together important career, education, and networking opportunities for the 100 free Women in ICS Security ticket holders and another ~150 women who will attend on a paid ticket. Really impressed and looking forward to seeing what this will accomplish.",
+    "view_count": 528
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gwheQMTpPvw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

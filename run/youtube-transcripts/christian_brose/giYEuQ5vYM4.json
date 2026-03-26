@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "giYEuQ5vYM4",
+    "language": "en",
+    "took_ms": 8847,
+    "method": null,
+    "title": "The Chinese Communist Party Does Not Represent the Chinese People",
+    "channel": "Hudson Institute",
+    "upload_date": "20220914",
+    "duration_sec": 174,
+    "description": "Hudson Institute’s China Center presents a new series entitled, “Evening Chats with Mike Pompeo: A Message to the Chinese People.” In this series, seventieth US Secretary of State Michael R. Pompeo speaks directly to the Chinese people about the Chinese Communist Party and US-China relations.\n\nIn this first episode, Pompeo explains that despite its rhetoric the Chinese Communist Party is a totalitarian, one-party government that neither represents the Chinese people nor governs in their interests.\n\nTranscript: https://s3.amazonaws.com/media.hudson.org/Episode+1%EF%BC%8C+EnglishChinese+Texts+%E4%B8%AD%E8%8B%B1%E6%96%87.pdf\n\nTo learn more about Hudson Institute’s China Center, please visit us at https://www.hudson.org/policycenters/48-china-center",
+    "view_count": 90407
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] giYEuQ5vYM4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

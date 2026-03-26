@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n5yiUW0wSzA",
+    "language": "en",
+    "took_ms": 8074,
+    "method": null,
+    "title": "Learn How to Build Multimodal Search and RAG",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240520",
+    "duration_sec": 1394,
+    "description": "Enroll in the full course ➡️ https://bit.ly/4bLKe40\n\nLearn how to build multimodal search and RAG systems. RAG systems enhance an LLM by incorporating proprietary data into the prompt context. Typically, RAG applications use text documents, but, what if the desired context includes multimedia like images, audio, and video? This course covers the technical aspects of implementing RAG with multimodal data to accomplish this.\n\nLearn how multimodal models are trained through contrastive learning and implement it on a real dataset.\nBuild any-to-any multimodal search to retrieve relevant context across different data types.\nLearn how LLMs are trained to understand multimodal data through visual instruction tuning and use them on multiple image reasoning examples\nImplement an end-to-end multimodal RAG system that analyzes retrieved multimodal context to generate insightful answers\nExplore industry applications like visually analyzing invoices and flowcharts to output structured data.\nCreate a multi-vector recommender system that suggests relevant items by comparing their similarities across multiple modalities.\nAs AI systems increasingly need to process and reason over multiple data modalities, learning how to build such systems is an important skill for AI developers.\n\nThis course equips you with the key skills to embed, retrieve, and generate across different modalities. By gaining a strong foundation in multimodal AI, you’ll be prepared to build smarter search, RAG, and recommender systems.\n\nEnroll in the full course ➡️ https://bit.ly/4bLKe40",
+    "view_count": 9573
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n5yiUW0wSzA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

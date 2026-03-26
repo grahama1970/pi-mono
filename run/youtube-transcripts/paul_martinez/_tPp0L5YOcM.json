@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_tPp0L5YOcM",
+    "language": "en",
+    "took_ms": 7717,
+    "method": null,
+    "title": "An Economic Analysis of ICS Attacks",
+    "channel": "S4 Events",
+    "upload_date": "20171204",
+    "duration_sec": 1831,
+    "description": "Alvaro Cardenas begins by descirbing the attacks in Colombia on critical infrastructure, primarily physical attacks. 67% of the worldwide attacks on electric infrastructure between 1994 and 2004 occurred in Colombia. Taking out transmission and distribution towers and substations.\n\nA service company that was contracted to repair the towers was actually paying some guerilla groups to destroy the tower so they could get more work and revenue. They even asked the guerillas to not destroy towers on weekends or holidays so the service company did not have to pay overtime. They also asked them to restrict the damage to easy to access towers so they could fix them faster.\n\nThere was a financial incentive for the service company to damage the towers. They paid the guerillas about $4K per tower and the repair contract was between $27K and $83K per tower. Alvaro then goes into a mathematical model of that financial incentive situation and some suggestions of a model that would remove the incentive. Basically the price to take the tower down needed to increase, and this could be achieved by removing the certainty a specific service company will get the repair contract.",
+    "view_count": 159
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _tPp0L5YOcM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

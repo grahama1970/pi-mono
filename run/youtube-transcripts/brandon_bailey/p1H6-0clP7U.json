@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p1H6-0clP7U",
+    "language": "en",
+    "took_ms": 9360,
+    "method": null,
+    "title": "DEF CON 32 - RF Attacks on Aviation's Defense Against Mid-Air Collisions - G. Longo, V. Lenders",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1581,
+    "description": "Aviation's Traffic Collision Avoidance System (TCAS) II has been touted as a foolproof safety net since its introduction in the 1980s. But what if we told you that this supposedly impenetrable system can be compromised? For years, attacks on TCAS have been mere theoretical exercises, foiled by an (accidental) built in security feature. That is, until now. In this presentation, we'll reveal the first working RF attacks on TCAS II, demonstrating how to hijack collision avoidance displays and create fake Traffic Advisories (TAs) and Resolution Advisories (RAs). We'll walk you through the technical challenges of building the necessary tooling using commercial off-the-shelf hardware.\n\nBut that's not all. Our research has also uncovered a second attack capable of remotely disabling an aircraft's TCAS capabilities, rendering it vulnerable to mid-air collisions. The implications are clear: if our findings can be exploited in real-world scenarios, the safety of millions of passengers hangs in the balance. Join us as we lift the lid on this shocking vulnerability and explore the dark side of aviation security.",
+    "view_count": 7001
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p1H6-0clP7U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

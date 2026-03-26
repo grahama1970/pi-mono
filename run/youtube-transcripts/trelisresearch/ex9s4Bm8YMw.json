@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ex9s4Bm8YMw",
+    "language": "en",
+    "took_ms": 8593,
+    "method": null,
+    "title": "What is time series forecasting",
+    "channel": "Trelis Research",
+    "upload_date": "20250524",
+    "duration_sec": 112,
+    "description": "📜 Get Repo access: www.Trelis.com/ADVANCED-time-series\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo links:\nSlides: https://docs.google.com/presentation/d/1gEsVnP1pIBhB-vHHXjAFmL9jRUEAR5xwFkhBawZngmY/edit?usp=sharing\nPatchTST: ibm-granite/granite-timeseries-patchtst\nChronos: https://huggingface.co/amazon/chronos-t5-large\n\nTIMESTAMPS:\n0:00 Timeseries forecasting with Chronos and PatchTST\n0:41 Video Overview\n1:05 What is time-series forecasting\n3:04 PatchTST Architecture\n5:00 Chronos Architecture\n8:24 The difference between encoder-decoder and decoder\n11:24 When to use Chronos vs PatchTST for time-series forecasting\n14:56 Repo access and scripts: Trelis.com/ADVANCED-time-series\n15:31 Forecasting with PatchTST\n31:33 Training PatchTST from scratch\n40:06 Forecasting with Chronos\n46:34 Fine-tuning Chronos models\n55:53 Final tips, and resources",
+    "view_count": 790
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ex9s4Bm8YMw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

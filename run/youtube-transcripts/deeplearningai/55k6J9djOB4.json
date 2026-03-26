@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "55k6J9djOB4",
+    "language": "en",
+    "took_ms": 8565,
+    "method": null,
+    "title": "New course: Vibe Coding 101 with Replit",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250326",
+    "duration_sec": 131,
+    "description": "Learn more: https://bit.ly/4hP6TPN\n\nCoding agents are changing the way software is built—helping you write, test, and refine code more quickly. But using these tools effectively takes more than just writing a prompt and hoping for the best.\n\nIn our new free course, Vibe Coding 101 with Replit, taught by its President, Michael Catasta, and Matt Palmer, Head of Developer Relations, you’ll learn to build web apps collaboratively with an AI coding assistant in Replit’s cloud environment. You’ll go beyond one-shot prompting and learn practical techniques that help you plan, debug, and iterate with more control.\n\nBy the end of the course, you’ll be able to:\n\n- Use coding agents effectively to build, host, and share web applications in Replit\n- Apply structured development practices like writing product requirement documents, creating wireframes, and crafting effective prompts to guide the coding process\n- Build and deploy two applications—a website performance analyzer and a voting app—while using the assistant to debug, customize, and strengthen your coding skills\n\nNo prior app-building experience is required!\n\nEnroll now: https://bit.ly/4hP6TPN",
+    "view_count": 26178
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 55k6J9djOB4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4C7mik7N2gA",
+    "language": "en",
+    "took_ms": 8927,
+    "method": null,
+    "title": "Connect a Llama 2 Chatbot to the Internet",
+    "channel": "Trelis Research",
+    "upload_date": "20230811",
+    "duration_sec": 699,
+    "description": "Search Bing with a Llama 2 chatbot!\n\nOR add any of your own custom functions (search google, search for papers, search for patents, connect to any api).\n\n# Colab Notebooks\n\n**Basic Chatbot with function calling**\n- Search Bing.\n- Upload pdf or text files for analysis.\n- Get access here: (https://colab.research.google.com/drive/1u8x41Jx8WWtI-nzHOgqTxkS3Q_lcjaSX?usp=sharing).\n\n**Jupyter fLlama Pro**\n- Add and call any custom function.\n- Search for papers on ArXiv.\n- Get access here: https://buy.stripe.com/4gw4h27BX81R9IQaEL. €9.99 (or $10.99) per seat/user. Access will be provided within 24 hours of purchase.\n\nALSO - CHECK OUT OUR FINE-TUNING NOTEBOOKS:\n\nQLoRa Training Notebook for Llama 2 (FREE)\nAccess the Google Colab script here: https://colab.research.google.com/drive/1uMSS1o_8YOPyG1X_4k6ENEE3kJfBGGhH?usp=sharing\n\nQLoRa ADVANCED Training Notebook (PAID)\nThis advanced script provides improved performance when training with small datasets:\n- Includes a prompt loss-mask for improved performance when structured responses are required.\n- Includes a stop token after responses - allowing the model to provide a short response (e.g., a function call) and then stop.\nRequest access here: https://buy.stripe.com/5kA5l69K52Hxf3a006. €14.99 (or $16.49) per seat/user. Access will be provided within 24 hours of purchase.\n\nAdditional Resources:\n- Function calling dataset: https://huggingface.co/datasets/Trelis/function_calling_extended\n\n\n00:00 Connect a Llama chatbot to Bing\n00:30 Connecting to Google Colab\n01:00 Obtaining API Keys for Bing\n01:35 Loading the Language Model\n02:15 Asking fLlama to search Bing\n03:58 Setting up Custom Functions",
+    "view_count": 4621
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4C7mik7N2gA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

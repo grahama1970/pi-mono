@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bN2Yc34SwSc",
+    "language": "en",
+    "took_ms": 9421,
+    "method": null,
+    "title": "Richard Seiersen Author Of The Metrics Manifesto",
+    "channel": "S4 Events",
+    "upload_date": "20220629",
+    "duration_sec": 3234,
+    "description": "Dale Peterson interviewed Richard Seiersen, author of new book The Metrics Manifesto: Confronting Security With Data.\n\n- For security controls - what would I see that would show me it is working? How do I measure the effectiveness and efficiency of my security controls?\n- why is so much of the book code, and can the book be valuable if you don't go through the code?\n- a lot of time spent on categories of metrics: burndown and survival, arrival and escapes, and wait time\n- most of the examples in the book are vuln prevention and remediation ... how will the statistics deal with increases due to SBOMs? ... how to address vulnerabilities with very different related risk?\n- how to address the CISO wanting a single dashboard with OT and IT metrics with very different risk related to those metrics?\n- the concept of value of / return on control and how some CISOs are dealing with cyber risk\n- using SME beliefs as data\n- and a lot more\n\nLinks:\n- The Metrics Manifesto: https://www.amazon.com/Prove-Confronting-Security-Data/dp/111951536X\n- The book's site: https://themetricsmanifesto.com\n- Richard Seiersen's S4x18 video How To Measure Anything In Cybersecurity Risk: https://youtu.be/xhfCLefVXMs",
+    "view_count": 666
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bN2Yc34SwSc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

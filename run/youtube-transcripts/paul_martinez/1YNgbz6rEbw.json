@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1YNgbz6rEbw",
+    "language": "en",
+    "took_ms": 7691,
+    "method": null,
+    "title": "PLC Library To Detect Abnormalities",
+    "channel": "S4 Events",
+    "upload_date": "20220815",
+    "duration_sec": 1814,
+    "description": "Gloria Cedillo on S4x22's Stage 2: Technical Deep Dives shows how to use PLC functionality to create blocks that form a PLC Detection Library. She stresses many times that we should \"use what we have\" in the midst of this dense technical talk.\n\nThe presentation uses a Rockwell Automation / Allen-Bradley as the example and shows how the PLC library is composed of blocks around:\n- Controller Performance\n- Operation\n- Risk of Misuse/Abuse\n- Security Handlers\n\nFinally, it was interesting to see how some of the items in the detection library align with the Top 20 Secure PLC Coding Practices.",
+    "view_count": 399
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1YNgbz6rEbw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

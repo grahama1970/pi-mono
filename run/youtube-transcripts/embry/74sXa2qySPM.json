@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "74sXa2qySPM",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "Watch Rocket Lab Try To CATCH Electron w/ a Helicopter For The First Time!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20220503",
+    "duration_sec": 7800,
+    "description": "Rocket Lab is preparing for its There and Back Again mission that will launch from Launch Complex-1A, Māhia Peninsula, New Zealand. On the There and Back Again mission, Electron will carry 34 payloads for commercial operators Alba Orbital, Astrix Astronautics, Aurora Propulsion Technologies, E-Space, Unseenlabs, and Swarm Technologies via global launch services provider Spaceflight Inc. Moreover, this mission will mark the first attempt of a mid-air helicopter capture of the Electron launch vehicle as it returns to Earth from space.\n\nNeed to know more information? Check out our Prelaunch Preview - \nhttps://everydayastronaut.com/there-and-back-again-electron/\n\n-------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 290549
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 74sXa2qySPM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

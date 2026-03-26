@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ro-EkKjj_wc",
+    "language": "en",
+    "took_ms": 9173,
+    "method": null,
+    "title": "Flipping Locks - Remote Badge Cloning with the Flipper Zero and More - Langston Clements & Dan Goga",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2223,
+    "description": "Traditional RFID badge cloning methods require you to be within 3 feet of your target. So how can you conduct a physical penetration test and clone a badge without interacting with a person? Companies have increasingly adopted a hybrid work environment, allowing employees to work remotely, which has decreased the amount of foot traffic in and out of a building at any given time. This session discusses two accessible, entry-level hardware designs you can build in a day and deploy in the field, along with the tried-and-true social engineering techniques that can increase your chances of remotely cloning an RFID badge.\n\nLangston and Dan discuss their Red Team adventures using implant devices, a Flipper Zero and an iCopy-X. As a bonus the two will explain how to perform a stealthy HID iClass SE/SEOS downgrade and legacy attack! This presentation is supplemented with files and instructions that are available for download in order to build your own standalone gooseneck reader, wall implant and clipboard cloning devices!",
+    "view_count": 4759
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ro-EkKjj_wc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sDgMG4Ze5zg",
+    "language": "en",
+    "took_ms": 8515,
+    "method": null,
+    "title": "Why Is The US Air Force Buying The New F 15 EX?",
+    "channel": "Sandboxx",
+    "upload_date": "20210316",
+    "duration_sec": 352,
+    "description": "The U.S. Air Force just started taking deliveries on Boeing's new F-15EX, but why invest in new \"old\" fighters in this era of stealth jets like the F-35 and F-22? Here's everything you need to know.",
+    "view_count": 593983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sDgMG4Ze5zg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

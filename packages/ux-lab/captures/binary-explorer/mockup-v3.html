@@ -1,0 +1,1229 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Binary Explorer v3 — Investigation Notebook</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c0c;--surface:#131316;--card:#1a1a1e;--inset:#0a0a0d;--gutter:#101014;
+  --accent:#7c3aed;--accent-dim:rgba(124,58,237,0.12);
+  --green:#00ff88;--red:#ff4444;--warn:#ffaa00;--blue:#4a9eff;--cyan:#22d3ee;--orange:#f97316;
+  --text:#e2e8f0;--prose:#b8bcc8;--dim:#64748b;--muted:#334155;--border:rgba(255,255,255,0.07);
+  --radius:8px;
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Code',Consolas,monospace;
+  --margin-w:64px;--narrative-max:820px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.75}
+::selection{background:var(--accent);color:white}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--muted);border-radius:3px}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:12px;padding:10px 24px;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topbar .logo{font-size:9px;font-weight:800;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;padding:3px 8px;border:1px solid rgba(124,58,237,0.3);border-radius:4px}
+.topbar h1{font-size:15px;font-weight:800;letter-spacing:-0.02em}
+.topbar .sub{font-size:11px;color:var(--dim)}
+.topbar .sp{flex:1}
+.pill{font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:0.04em;border:1px solid}
+.pill-v{background:rgba(124,58,237,0.1);color:var(--accent);border-color:rgba(124,58,237,0.25)}
+.pill-arch{background:rgba(74,158,255,0.08);color:var(--blue);border-color:rgba(74,158,255,0.18)}
+.pill-size{background:rgba(100,116,139,0.1);color:var(--dim);border-color:rgba(100,116,139,0.15)}
+
+/* ── LAYOUT: sidebar + narrative ── */
+.layout{display:flex;min-height:calc(100vh - 45px)}
+
+/* ── TOC SIDEBAR ── */
+.toc{position:sticky;top:45px;height:calc(100vh - 45px);width:260px;min-width:260px;overflow-y:auto;padding:24px 16px;border-right:1px solid var(--border);background:var(--gutter);flex-shrink:0}
+.toc-title{font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
+.toc-section{display:block;padding:6px 10px;margin-bottom:2px;border-radius:5px;font-size:11px;color:var(--dim);text-decoration:none;transition:all 0.15s;line-height:1.5;cursor:pointer}
+.toc-section:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.toc-section.active{background:var(--accent-dim);color:var(--accent);font-weight:600}
+.toc-section .toc-num{font-family:var(--mono);font-size:9px;color:var(--muted);margin-right:6px;font-weight:400}
+.toc-section .toc-tier{float:right;font-size:8px;font-family:var(--mono);padding:1px 5px;border-radius:3px;background:rgba(255,255,255,0.04);color:var(--muted)}
+.toc-divider{height:1px;background:var(--border);margin:12px 0}
+.toc-stats{margin-top:16px;padding:12px;background:var(--inset);border-radius:var(--radius);border:1px solid var(--border)}
+.toc-stats .stat-row{display:flex;justify-content:space-between;align-items:center;font-size:10px;padding:3px 0}
+.toc-stats .stat-row .val{font-family:var(--mono);font-weight:700}
+.toc-stats .stat-row .lbl{color:var(--dim)}
+
+/* ── NARRATIVE COLUMN ── */
+.narrative{flex:1;max-width:var(--narrative-max);padding:32px 40px 120px;margin:0 auto}
+
+/* ── SECTION HEADER (investigation question) ── */
+.investigation-q{margin:56px 0 24px;position:relative;scroll-margin-top:80px}
+.investigation-q:first-child{margin-top:0}
+.investigation-q .q-number{font-size:9px;font-family:var(--mono);color:var(--accent);letter-spacing:0.1em;font-weight:700;margin-bottom:4px;text-transform:uppercase}
+.investigation-q h2{font-size:22px;font-weight:800;letter-spacing:-0.03em;line-height:1.3;color:var(--text)}
+.investigation-q .q-meta{display:flex;gap:8px;align-items:center;margin-top:8px}
+
+/* ── TIER BADGES ── */
+.tier{display:inline-flex;align-items:center;gap:4px;font-size:8px;font-family:var(--mono);font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:0.04em;white-space:nowrap}
+.tier-0{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2)}
+.tier-1{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.2)}
+.tier-2{background:rgba(124,58,237,0.1);color:var(--accent);border:1px solid rgba(124,58,237,0.25)}
+.tier-mixed{background:rgba(255,170,0,0.1);color:var(--warn);border:1px solid rgba(255,170,0,0.2)}
+
+/* ── NARRATIVE PROSE ── */
+.prose-block{color:var(--prose);font-size:14px;line-height:1.85;margin:16px 0}
+.prose-block p{margin-bottom:16px}
+.prose-block strong{color:var(--text);font-weight:700}
+.prose-block code{background:var(--inset);padding:2px 6px;border-radius:3px;font-size:12px;color:var(--cyan);font-family:var(--mono);border:1px solid rgba(34,211,238,0.1)}
+.prose-block .callout{color:var(--accent);font-weight:600}
+.prose-block a.xref{color:var(--cyan);text-decoration:none;border-bottom:1px dashed rgba(34,211,238,0.3);cursor:pointer}
+.prose-block a.xref:hover{color:var(--text);border-bottom-color:var(--text)}
+
+/* ── EVIDENCE BLOCK ── */
+.evidence-block{position:relative;margin:20px 0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.evidence-block .ev-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--inset);border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+.evidence-block .ev-header:hover{background:rgba(255,255,255,0.02)}
+.evidence-block .ev-chevron{font-size:10px;color:var(--dim);transition:transform 0.2s;width:14px;text-align:center}
+.evidence-block.collapsed .ev-chevron{transform:rotate(-90deg)}
+.evidence-block .ev-title{font-size:11px;font-weight:700;color:var(--text)}
+.evidence-block .ev-count{font-size:9px;font-family:var(--mono);color:var(--dim)}
+.evidence-block .ev-spacer{flex:1}
+.evidence-block .ev-source{font-size:8px;font-family:var(--mono);color:var(--muted);padding:2px 6px;background:rgba(255,255,255,0.03);border-radius:3px}
+.evidence-block .ev-body{padding:14px}
+.evidence-block.collapsed .ev-body{display:none}
+
+/* ── MARGIN ANNOTATIONS ── */
+.margin-note{position:absolute;left:-72px;width:60px;text-align:right;font-size:8px;font-family:var(--mono);color:var(--muted);line-height:1.4}
+.margin-note .mn-tier{display:block;margin-bottom:2px}
+.margin-note .mn-confidence{display:block;color:var(--green)}
+.margin-note .mn-offset{display:block;color:var(--muted);font-size:7px}
+
+/* ── INLINE DATA GRIDS ── */
+.data-grid{display:flex;flex-wrap:wrap;gap:4px}
+.data-tag{font-size:9px;font-family:var(--mono);padding:3px 8px;border-radius:4px;background:var(--inset);border:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all 0.15s}
+.data-tag:hover{border-color:var(--cyan);color:var(--cyan)}
+.data-tag.ns-droid{color:var(--accent);border-color:rgba(124,58,237,0.2)}
+.data-tag.ns-daemon{color:var(--cyan);border-color:rgba(34,211,238,0.15)}
+.data-tag.ns-mcp{color:var(--blue);border-color:rgba(74,158,255,0.15)}
+.data-tag.ns-mission{color:var(--warn);border-color:rgba(255,170,0,0.15)}
+.data-tag.ns-tunnel{color:var(--dim);border-color:rgba(100,116,139,0.15)}
+.data-tag.evt{font-size:8px;padding:2px 6px;border-radius:3px;background:rgba(74,158,255,0.06);border-color:rgba(74,158,255,0.12);color:var(--blue)}
+.data-tag.schema{color:var(--warn);border-color:rgba(255,170,0,0.15)}
+
+/* ── INLINE STATE FLOW ── */
+.state-flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:12px 0}
+.state-node{font-size:10px;font-family:var(--mono);padding:4px 10px;border-radius:5px;background:var(--inset);border:1px solid var(--border);color:var(--text)}
+.state-node.active{background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.3);color:var(--accent)}
+.state-node.terminal{border-color:rgba(0,255,136,0.3);color:var(--green)}
+.state-node.error{border-color:rgba(255,68,68,0.3);color:var(--red)}
+.state-node.noise{opacity:0.3;text-decoration:line-through}
+.state-arrow{color:var(--muted);font-size:11px;font-family:var(--mono)}
+
+/* ── INLINE SVG MINI-GRAPH ── */
+.mini-graph{margin:20px 0;background:var(--inset);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative}
+.mini-graph svg{display:block}
+.mini-graph .mg-caption{position:absolute;bottom:8px;right:12px;font-size:8px;font-family:var(--mono);color:var(--muted)}
+
+/* ── SCHEMA TABLE ── */
+.schema-table{width:100%;border-collapse:collapse;font-size:11px}
+.schema-table th{text-align:left;font-size:9px;font-weight:700;color:var(--dim);letter-spacing:0.06em;text-transform:uppercase;padding:6px 10px;border-bottom:1px solid var(--border);background:var(--inset)}
+.schema-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,0.03);font-family:var(--mono);font-size:10px;color:var(--dim);vertical-align:top}
+.schema-table td.field-name{color:var(--text);font-weight:600}
+.schema-table td.field-key{color:var(--cyan)}
+.schema-table tr:hover td{background:rgba(255,255,255,0.015)}
+.schema-table .overlap-badge{font-size:7px;background:rgba(255,170,0,0.1);color:var(--warn);padding:1px 5px;border-radius:2px;border:1px solid rgba(255,170,0,0.15);margin-left:4px}
+
+/* ── RISK BLOCK ── */
+.risk-block{margin:20px 0;padding:14px 16px;border-left:3px solid var(--red);background:rgba(255,68,68,0.03);border-radius:0 var(--radius) var(--radius) 0}
+.risk-block .risk-title{font-size:10px;font-weight:800;color:var(--red);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.risk-block p{font-size:12px;color:var(--prose);line-height:1.7;margin-bottom:8px}
+.risk-block p:last-child{margin-bottom:0}
+.risk-block code{background:var(--inset);padding:1px 5px;border-radius:3px;font-size:10px;color:var(--cyan);font-family:var(--mono)}
+
+/* ── CHAT WOVEN IN ── */
+.chat-question{margin:48px 0 20px;padding:16px 20px;background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.15);border-radius:var(--radius);position:relative;scroll-margin-top:80px}
+.chat-question::before{content:"USER QUESTION";font-size:8px;font-weight:800;letter-spacing:0.1em;color:var(--accent);position:absolute;top:-8px;left:16px;background:var(--bg);padding:0 6px}
+.chat-question p{font-size:14px;font-weight:600;color:var(--text);font-style:italic}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin:20px 0}
+.stats-row.cols-4{grid-template-columns:repeat(4,1fr)}
+.stats-row.cols-6{grid-template-columns:repeat(6,1fr)}
+.stat-cell{background:var(--card);padding:14px 16px;text-align:center}
+.stat-cell .stat-val{font-size:22px;font-weight:800;font-family:var(--mono)}
+.stat-cell .stat-lbl{font-size:8px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+
+/* ── UNKNOWNS ── */
+.unknown-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.unknown-item:last-child{border-bottom:none}
+.unknown-item .unknown-icon{width:24px;height:24px;border-radius:50%;background:rgba(255,170,0,0.1);border:1px solid rgba(255,170,0,0.2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px}
+.unknown-item .unknown-text{font-size:12px;color:var(--prose);line-height:1.6}
+.unknown-item .unknown-text strong{color:var(--text)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .toc{display:none}
+  .margin-note{display:none}
+  .narrative{padding:24px 20px 120px}
+}
+</style></head><body>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TOPBAR                                       -->
+<!-- ════════════════════════════════════════════ -->
+<div class="topbar">
+  <span class="logo">Embry OS</span>
+  <h1>Binary Explorer</h1>
+  <span class="sub">/ droid &middot; Investigation Notebook</span>
+  <div class="sp"></div>
+  <span class="pill pill-v">v3 narrative</span>
+  <span class="pill pill-arch">Bun SEA &middot; x86_64</span>
+  <span class="pill pill-size">153 MB</span>
+</div>
+
+<div class="layout">
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS SIDEBAR                    -->
+<!-- ════════════════════════════════════════════ -->
+<nav class="toc">
+  <div class="toc-title">Investigation</div>
+
+  <a class="toc-section active" href="#exec-summary">
+    <span class="toc-num">00</span>Executive Summary
+  </a>
+  <a class="toc-section" href="#what-is">
+    <span class="toc-num">01</span>What is this binary?
+    <span class="toc-tier">T0</span>
+  </a>
+  <a class="toc-section" href="#how-communicate">
+    <span class="toc-num">02</span>How does it communicate?
+    <span class="toc-tier">T0+T2</span>
+  </a>
+  <a class="toc-section" href="#internal-states">
+    <span class="toc-num">03</span>What are its internal states?
+    <span class="toc-tier">T1+T2</span>
+  </a>
+  <a class="toc-section" href="#events">
+    <span class="toc-num">04</span>What events does it emit?
+    <span class="toc-tier">T0</span>
+  </a>
+  <a class="toc-section" href="#data">
+    <span class="toc-num">05</span>What data does it handle?
+    <span class="toc-tier">T1</span>
+  </a>
+  <a class="toc-section" href="#auth-deep">
+    <span class="toc-num">06</span>How does authentication work?
+    <span class="toc-tier">T2</span>
+  </a>
+  <a class="toc-section" href="#attack-surface">
+    <span class="toc-num">07</span>Attack Surface
+    <span class="toc-tier">T2</span>
+  </a>
+  <a class="toc-section" href="#unknowns">
+    <span class="toc-num">08</span>Unknowns &amp; Gaps
+  </a>
+
+  <div class="toc-divider"></div>
+
+  <div class="toc-stats">
+    <div class="stat-row"><span class="lbl">RPC Methods</span><span class="val" style="color:var(--cyan)">82</span></div>
+    <div class="stat-row"><span class="lbl">Event Types</span><span class="val" style="color:var(--blue)">59</span></div>
+    <div class="stat-row"><span class="lbl">State Machines</span><span class="val" style="color:var(--warn)">6</span></div>
+    <div class="stat-row"><span class="lbl">Schemas</span><span class="val" style="color:var(--green)">9</span></div>
+    <div class="stat-row"><span class="lbl">AST Symbols</span><span class="val">303</span></div>
+    <div class="stat-row"><span class="lbl">CLI Commands</span><span class="val" style="color:var(--accent)">7</span></div>
+  </div>
+
+  <div style="margin-top:16px;font-size:9px;color:var(--muted);line-height:1.5;padding:0 4px">
+    <div style="margin-bottom:6px"><span class="tier tier-0">T0</span> Deterministic</div>
+    <div style="margin-bottom:6px"><span class="tier tier-1">T1</span> AST / Heuristic</div>
+    <div><span class="tier tier-2">T2</span> LLM-inferred</div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- NARRATIVE CONTENT                             -->
+<!-- ════════════════════════════════════════════ -->
+<main class="narrative">
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 00. EXECUTIVE SUMMARY                        -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="exec-summary">
+  <div class="q-number">Section 00</div>
+  <h2>Executive Summary</h2>
+</div>
+
+<div class="stats-row cols-6">
+  <div class="stat-cell"><div class="stat-val" style="color:var(--accent)">7</div><div class="stat-lbl">CLI Commands</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--cyan)">82</div><div class="stat-lbl">RPC Methods</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--blue)">59</div><div class="stat-lbl">Event Types</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--warn)">6</div><div class="stat-lbl">State Machines</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--green)">9</div><div class="stat-lbl">Schemas</div></div>
+  <div class="stat-cell"><div class="stat-val">303</div><div class="stat-lbl">AST Symbols</div></div>
+</div>
+
+<div class="prose-block">
+  <p>This is <strong>droid</strong> &mdash; a 153 MB ELF binary built as a Bun Single-Executable Application targeting x86_64 Linux. It is an AI-powered coding agent with a client-daemon architecture: users interact through a CLI or GUI client that communicates with a long-running daemon process over JSON-RPC via WebSocket.</p>
+
+  <p>The investigation extracted <strong>82 RPC methods</strong> across three namespaces, <strong>59 event types</strong> grouped into 15 semantic families, <strong>6 state machine enums</strong> (of which 3 contain noise from minification), <strong>9 Zod validation schemas</strong> with significant field overlap, and <strong>303 AST symbols</strong> from the embedded JavaScript bundle. Extraction was performed using a three-tier approach: <span class="tier tier-0">T0</span> deterministic regex on string literals, <span class="tier tier-1">T1</span> AST-based heuristic analysis, and <span class="tier tier-2">T2</span> LLM-guided interpretation of ambiguous structures.</p>
+
+  <p>The most architecturally significant finding is the <strong>mission orchestration subsystem</strong>: droid can decompose a user goal into features, assign each to a parallel worker, pause/resume individual workers, and report progress through a heartbeat mechanism. This goes well beyond a simple chat agent &mdash; it is a <strong>task execution engine with job scheduling, terminal multiplexing, and git integration</strong>.</p>
+</div>
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 01. WHAT IS THIS BINARY?                     -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="what-is">
+  <div class="q-number">Section 01</div>
+  <h2>What is this binary?</h2>
+  <div class="q-meta">
+    <span class="tier tier-0">T0 DETERMINISTIC</span>
+    <span style="font-size:10px;color:var(--dim)">ELF headers + string extraction</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>Let's start with what we can say with absolute certainty. The ELF headers tell us this is an <code>x86_64</code> dynamically-linked binary, 153 MB, not stripped. It links against standard glibc (<code>libc.so.6</code>, <code>libpthread.so.0</code>, <code>libdl.so.2</code>, <code>libm.so.6</code>) plus the dynamic linker itself. No exotic shared libraries &mdash; all the interesting logic is in the embedded JavaScript.</p>
+
+  <p>The Bun SEA (Single-Executable Application) format packs a complete JavaScript runtime plus bundled application code into a single ELF binary. We carved <strong>16 bundled JS asset files</strong> from the <code>$bunfs/root/</code> virtual filesystem embedded in the binary's data section. These assets contain the minified application code, and they're our primary analysis target.</p>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">Binary Identity</span>
+    <span class="ev-count">6 fields</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-0">T0</span>
+    <span class="ev-source">.rodata + ELF headers</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Property</th><th>Value</th><th>Source</th></tr>
+      <tr><td class="field-name">Runtime</td><td>Bun Single-Executable Application</td><td style="font-size:9px;color:var(--dim)">$bunfs magic bytes</td></tr>
+      <tr><td class="field-name">Architecture</td><td>x86_64 &middot; 64-bit &middot; little-endian</td><td style="font-size:9px;color:var(--dim)">ELF header e_machine</td></tr>
+      <tr><td class="field-name">Size</td><td>153 MB &middot; dynamically linked &middot; not stripped</td><td style="font-size:9px;color:var(--dim)">stat + readelf</td></tr>
+      <tr><td class="field-name">Bundled assets</td><td>16 JS files in $bunfs/root/</td><td style="font-size:9px;color:var(--dim)">bunfs carving</td></tr>
+      <tr><td class="field-name">Shared libs</td><td>libc.so.6, libpthread.so.0, libdl.so.2, libm.so.6, ld-linux-x86-64.so.2</td><td style="font-size:9px;color:var(--dim)">ldd / readelf</td></tr>
+      <tr><td class="field-name">CLI subcommands</td><td>exec, daemon, mcp, plugin, search, computer, update</td><td style="font-size:9px;color:var(--dim)">--help output</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">CLI Command Tree</span>
+    <span class="ev-count">7 commands</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-0">T0</span>
+    <span class="ev-source">--help parsing</span>
+  </div>
+  <div class="ev-body" style="padding:0">
+    <table class="schema-table">
+      <tr><th>Command</th><th>Description</th><th>Role</th></tr>
+      <tr><td class="field-key">exec</td><td>Execute a single command (non-interactive)</td><td style="font-size:9px;color:var(--dim)">CI / automation entry point</td></tr>
+      <tr><td class="field-key">daemon</td><td>Run the Factory daemon server</td><td style="font-size:9px;color:var(--dim)">Long-running server process</td></tr>
+      <tr><td class="field-key">mcp</td><td>Manage MCP servers</td><td style="font-size:9px;color:var(--dim)">Extension management</td></tr>
+      <tr><td class="field-key">plugin</td><td>Manage plugins</td><td style="font-size:9px;color:var(--dim)">Extension management</td></tr>
+      <tr><td class="field-key">search</td><td>Search across local sessions</td><td style="font-size:9px;color:var(--dim)">Offline session search</td></tr>
+      <tr><td class="field-key">computer</td><td>Manage relay computer registrations</td><td style="font-size:9px;color:var(--dim)">Remote machine access</td></tr>
+      <tr><td class="field-key">update</td><td>Check for and install Droid updates</td><td style="font-size:9px;color:var(--dim)">Self-updater</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>The CLI surface reveals two operational modes. The default (no subcommand) launches an interactive coding session. <code>exec</code> runs a one-shot command for CI pipelines and scripts. The <code>daemon</code> subcommand starts the long-running server that the GUI connects to &mdash; this is the separation point between the thin client and the persistent backend. <code>computer</code> is the most interesting outlier: it manages "relay computer registrations," strongly suggesting droid can reach across machines to execute commands on remote hosts.</p>
+</div>
+
+<div class="risk-block">
+  <div class="risk-title">&#9888; What Could Go Wrong</div>
+  <p>The <code>update</code> subcommand implements a self-updater. In Bun SEA binaries distributed outside package managers, this means the binary rewrites itself in-place. If the update mechanism doesn't verify signatures or uses HTTP instead of HTTPS for the download, an attacker on the network path could replace the binary with a malicious version. We don't have visibility into the update URL or verification logic from static analysis alone.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 02. HOW DOES IT COMMUNICATE?                  -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="how-communicate">
+  <div class="q-number">Section 02</div>
+  <h2>How does it communicate?</h2>
+  <div class="q-meta">
+    <span class="tier tier-0">T0</span>
+    <span class="tier tier-2">T2</span>
+    <span style="font-size:10px;color:var(--dim)">82 RPC methods &middot; 3 namespaces</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>Droid speaks <strong>JSON-RPC over WebSocket</strong>. Every method we extracted follows the <code>namespace.method_name</code> pattern, and there are exactly three namespaces. Understanding this split is the key to understanding the architecture.</p>
+
+  <p>The <code>droid.*</code> namespace (25 methods) is the <strong>interactive session API</strong>. This is what the user touches: sending messages, granting permissions, managing tool confirmations. Think of it as the thin client &mdash; it knows about the conversation but delegates all heavy work to the daemon.</p>
+
+  <p>The <code>daemon.*</code> namespace (55 methods) is the <strong>persistence and execution layer</strong>. It owns terminals (PTY multiplexing), automations (scheduled tasks with cron expressions), git operations (commit, push, PR creation, semantic diffs), session lifecycle, and filesystem access. When you ask droid to "commit my changes," the client relays that to <code>daemon.git_commit</code> which actually runs the git operations.</p>
+
+  <p>The <code>tunnel.*</code> namespace (2 methods) is minimal: just <code>init</code> and <code>ready</code>. This is the handshake for the <a class="xref" href="#what-is"><code>computer</code></a> CLI command &mdash; a relay protocol for remote machine access.</p>
+</div>
+
+<!-- Inline namespace graph (SVG) -->
+<div class="mini-graph">
+  <svg width="100%" height="260" viewBox="0 0 740 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background clusters -->
+    <rect x="30" y="30" width="200" height="200" rx="100" fill="#7c3aed" opacity="0.04"/>
+    <rect x="270" y="20" width="240" height="220" rx="110" fill="#22d3ee" opacity="0.04"/>
+    <rect x="560" y="60" width="150" height="140" rx="70" fill="#4a9eff" opacity="0.04"/>
+
+    <!-- Edges -->
+    <line x1="210" y1="100" x2="300" y2="90" stroke="#7c3aed" stroke-width="1" opacity="0.15"/>
+    <line x1="210" y1="140" x2="300" y2="130" stroke="#7c3aed" stroke-width="1" opacity="0.15"/>
+    <line x1="210" y1="170" x2="300" y2="165" stroke="#7c3aed" stroke-width="1" opacity="0.12"/>
+    <line x1="490" y1="110" x2="580" y2="120" stroke="#22d3ee" stroke-width="1" opacity="0.15"/>
+    <line x1="490" y1="140" x2="580" y2="135" stroke="#22d3ee" stroke-width="1" opacity="0.12"/>
+
+    <!-- droid.* namespace label -->
+    <text x="130" y="22" fill="#7c3aed" font-family="JetBrains Mono,Consolas,monospace" font-size="10" font-weight="700" text-anchor="middle">droid.* (25)</text>
+
+    <!-- droid nodes -->
+    <circle cx="100" cy="80" r="5" fill="#7c3aed"/><text x="112" y="83" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">initialize_session</text>
+    <circle cx="80" cy="110" r="4" fill="#7c3aed"/><text x="90" y="113" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">add_user_message</text>
+    <circle cx="120" cy="135" r="5" fill="#7c3aed"/><text x="132" y="138" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">request_permission</text>
+    <circle cx="90" cy="160" r="4" fill="#7c3aed"/><text x="100" y="163" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">session_notification</text>
+    <circle cx="140" cy="175" r="4" fill="#7c3aed"/>
+    <circle cx="70" cy="190" r="3" fill="#7c3aed"/>
+    <circle cx="160" cy="200" r="3" fill="#7c3aed"/>
+    <circle cx="110" cy="210" r="3" fill="#7c3aed"/>
+
+    <!-- daemon.* namespace label -->
+    <text x="390" y="14" fill="#22d3ee" font-family="JetBrains Mono,Consolas,monospace" font-size="10" font-weight="700" text-anchor="middle">daemon.* (55)</text>
+
+    <!-- daemon nodes -->
+    <circle cx="320" cy="60" r="5" fill="#22d3ee"/><text x="332" y="63" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">authenticate</text>
+    <circle cx="350" cy="85" r="4" fill="#22d3ee"/><text x="360" y="88" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">create_terminal</text>
+    <circle cx="300" cy="105" r="4" fill="#22d3ee"/>
+    <circle cx="380" cy="110" r="5" fill="#22d3ee"/><text x="392" y="113" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">create_automation</text>
+    <circle cx="430" cy="90" r="4" fill="#22d3ee"/><text x="440" y="93" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">git_commit</text>
+    <circle cx="340" cy="135" r="3" fill="#22d3ee"/>
+    <circle cx="410" cy="140" r="3" fill="#22d3ee"/>
+    <circle cx="460" cy="120" r="3" fill="#22d3ee"/>
+    <circle cx="320" cy="160" r="4" fill="#22d3ee"/><text x="330" y="163" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">search_sessions</text>
+    <circle cx="380" cy="170" r="3" fill="#22d3ee"/>
+    <circle cx="440" cy="165" r="3" fill="#22d3ee"/>
+    <circle cx="470" cy="150" r="3" fill="#22d3ee"/>
+    <circle cx="350" cy="195" r="3" fill="#22d3ee"/>
+    <circle cx="400" cy="200" r="3" fill="#22d3ee"/>
+    <circle cx="310" cy="190" r="3" fill="#22d3ee"/>
+
+    <!-- tunnel.* namespace label -->
+    <text x="635" y="55" fill="#4a9eff" font-family="JetBrains Mono,Consolas,monospace" font-size="10" font-weight="700" text-anchor="middle">tunnel.* (2)</text>
+
+    <!-- tunnel nodes -->
+    <circle cx="610" cy="110" r="5" fill="#4a9eff"/><text x="622" y="113" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">init</text>
+    <circle cx="650" cy="140" r="5" fill="#4a9eff"/><text x="662" y="143" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">ready</text>
+
+    <!-- Shared MCP link -->
+    <line x1="170" y1="200" x2="310" y2="190" stroke="#4a9eff" stroke-width="1" opacity="0.2" stroke-dasharray="4,3"/>
+    <text x="240" y="202" fill="#4a9eff" font-family="JetBrains Mono,monospace" font-size="7" opacity="0.5">14 shared MCP methods</text>
+  </svg>
+  <div class="mg-caption">Namespace topology &middot; node size ~ method count</div>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">droid.* Methods (25)</span>
+    <span class="ev-count">interactive session API</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-0">T0</span>
+    <span class="ev-source">KH.literal pattern</span>
+  </div>
+  <div class="ev-body">
+    <div class="data-grid">
+      <span class="data-tag ns-droid">initialize_session</span>
+      <span class="data-tag ns-droid">load_session</span>
+      <span class="data-tag ns-droid">add_user_message</span>
+      <span class="data-tag ns-droid">interrupt_session</span>
+      <span class="data-tag ns-droid">kill_worker_session</span>
+      <span class="data-tag ns-droid">session_notification</span>
+      <span class="data-tag ns-droid">request_permission</span>
+      <span class="data-tag ns-droid">ask_user</span>
+      <span class="data-tag ns-droid">update_session_settings</span>
+      <span class="data-tag ns-droid">toggle_mcp_server</span>
+      <span class="data-tag ns-droid">authenticate_mcp_server</span>
+      <span class="data-tag ns-droid">cancel_mcp_auth</span>
+      <span class="data-tag ns-droid">clear_mcp_auth</span>
+      <span class="data-tag ns-droid">submit_mcp_auth_code</span>
+      <span class="data-tag ns-droid">add_mcp_server</span>
+      <span class="data-tag ns-droid">remove_mcp_server</span>
+      <span class="data-tag ns-droid">list_mcp_registry</span>
+      <span class="data-tag ns-droid">list_mcp_tools</span>
+      <span class="data-tag ns-droid">toggle_mcp_tool</span>
+      <span class="data-tag ns-droid">list_skills</span>
+      <span class="data-tag ns-droid">submit_bug_report</span>
+    </div>
+  </div>
+</div>
+
+<div class="evidence-block collapsed">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">daemon.* Methods (55)</span>
+    <span class="ev-count">persistence + execution layer</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-0">T0</span>
+    <span class="ev-source">KH.literal pattern</span>
+  </div>
+  <div class="ev-body">
+    <div class="data-grid">
+      <span class="data-tag ns-daemon">authenticate</span>
+      <span class="data-tag ns-daemon">connection_status</span>
+      <span class="data-tag ns-daemon">create_terminal</span>
+      <span class="data-tag ns-daemon">write_terminal_data</span>
+      <span class="data-tag ns-daemon">resize_terminal</span>
+      <span class="data-tag ns-daemon">close_terminal</span>
+      <span class="data-tag ns-daemon">list_terminals</span>
+      <span class="data-tag ns-daemon">create_automation</span>
+      <span class="data-tag ns-daemon">run_automation</span>
+      <span class="data-tag ns-daemon">pause_automation</span>
+      <span class="data-tag ns-daemon">resume_automation</span>
+      <span class="data-tag ns-daemon">get_automation_history</span>
+      <span class="data-tag ns-daemon">get_automation_visual</span>
+      <span class="data-tag ns-daemon">update_automation_model</span>
+      <span class="data-tag ns-daemon">rename_automation</span>
+      <span class="data-tag ns-daemon">delete_automation</span>
+      <span class="data-tag ns-daemon">initialize_session</span>
+      <span class="data-tag ns-daemon">load_session</span>
+      <span class="data-tag ns-daemon">add_user_message</span>
+      <span class="data-tag ns-daemon">interrupt_session</span>
+      <span class="data-tag ns-daemon">close_session</span>
+      <span class="data-tag ns-daemon">kill_worker_session</span>
+      <span class="data-tag ns-daemon">list_opened_sessions</span>
+      <span class="data-tag ns-daemon">list_available_sessions</span>
+      <span class="data-tag ns-daemon">update_session_settings</span>
+      <span class="data-tag ns-daemon">validate_working_directory</span>
+      <span class="data-tag ns-daemon">list_files</span>
+      <span class="data-tag ns-daemon">search_files</span>
+      <span class="data-tag ns-daemon">search_sessions</span>
+      <span class="data-tag ns-daemon">archive_session</span>
+      <span class="data-tag ns-daemon">unarchive_session</span>
+      <span class="data-tag ns-daemon">git_diff</span>
+      <span class="data-tag ns-daemon">git_push</span>
+      <span class="data-tag ns-daemon">git_commit</span>
+      <span class="data-tag ns-daemon">create_pr</span>
+      <span class="data-tag ns-daemon">get_semantic_diff_cache</span>
+      <span class="data-tag ns-daemon">save_semantic_diff_cache</span>
+      <span class="data-tag ns-daemon">generate_semantic_diff</span>
+      <span class="data-tag ns-daemon">start_code_server</span>
+    </div>
+  </div>
+</div>
+
+<div class="evidence-block collapsed">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">tunnel.* Methods (2)</span>
+    <span class="ev-count">relay handshake</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-0">T0</span>
+    <span class="ev-source">KH.literal pattern</span>
+  </div>
+  <div class="ev-body">
+    <div class="data-grid">
+      <span class="data-tag ns-tunnel">init</span>
+      <span class="data-tag ns-tunnel">ready</span>
+    </div>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>The most telling detail in the RPC surface is the <strong>14 MCP methods duplicated across both namespaces</strong>. Both <code>droid.*</code> and <code>daemon.*</code> expose identical methods for adding, removing, toggling, and authenticating MCP servers. This isn't an accident &mdash; it means the CLI client can manage MCP servers directly (without the daemon running), while the GUI routes everything through the daemon. Two paths to the same capability, unified by namespace mirroring.</p>
+
+  <p>The correlation key is <code>sessionId</code>. It appears in <strong>23 methods</strong> across both namespaces, linking every client request to its daemon-side state. When you see <code>sessionId</code> in a schema, that field is the thread tying together the conversation, the terminals it spawned, the automations it triggered, and the git operations it performed.</p>
+</div>
+
+<div class="risk-block">
+  <div class="risk-title">&#9888; What Could Go Wrong</div>
+  <p>The <code>daemon.start_code_server</code> method suggests the daemon can start a code-server (VS Code in the browser) instance. If this binds to <code>0.0.0.0</code> instead of <code>127.0.0.1</code>, any machine on the network gets a code editor with the daemon's permissions. Combined with <code>daemon.validate_working_directory</code> and <code>daemon.list_files</code>, an unauthenticated or weakly-authenticated daemon could expose the entire filesystem.</p>
+  <p>The tunnel system (<code>tunnel.init</code> / <code>tunnel.ready</code> + <code>computer</code> CLI) is a remote execution mechanism. How does it authenticate? Does the relay server validate both ends? Without more context, this is the highest-risk surface in the binary.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 03. INTERNAL STATES                           -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="internal-states">
+  <div class="q-number">Section 03</div>
+  <h2>What are its internal states?</h2>
+  <div class="q-meta">
+    <span class="tier tier-1">T1 AST</span>
+    <span class="tier tier-2">T2 LLM</span>
+    <span style="font-size:10px;color:var(--dim)">6 enum groups &middot; 3 contain minifier noise</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>We extracted 6 enum groups from the minified JavaScript using the <code>Variable.State="value"</code> pattern. Here's the critical insight: <strong>three of these enums are "polluted" by the minifier</strong>, which packs multiple unrelated enums into the same variable to save bytes. The LLM tier was essential for separating signal from noise.</p>
+</div>
+
+<!-- Mission Lifecycle -->
+<div class="prose-block" style="position:relative">
+  <p><strong>Mission Lifecycle (variable <code>M</code>, 12 states)</strong> &mdash; This is the heart of droid's orchestration engine. A mission starts when the user submits a goal. The system decomposes it into features, initializes workers, and runs them in parallel. Any worker can be paused independently for human review, and there's a special <code>orchestrator_turn</code> state where the coordinator (not a worker) takes control to evaluate progress and decide what to do next.</p>
+</div>
+
+<div class="state-flow">
+  <span class="state-node active">awaiting_input</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">initializing</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node active">running</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">paused</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">orchestrator_turn</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node terminal">completed</span>
+</div>
+<div style="margin-top:6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+  <span style="font-size:9px;color:var(--dim);margin-right:6px">Minifier noise (same variable):</span>
+  <span class="state-node noise">team</span>
+  <span class="state-node noise">team_annual</span>
+  <span class="state-node noise">payg</span>
+  <span class="state-node noise">enterprise</span>
+  <span class="state-node noise">fast</span>
+  <span class="state-node noise">custom</span>
+</div>
+
+<div class="evidence-block collapsed" style="margin-top:16px">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">Noise Classification Rationale</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-2">T2 LLM</span>
+  </div>
+  <div class="ev-body">
+    <div class="prose-block" style="margin:0;font-size:12px">
+      <p style="margin-bottom:8px">The second group (<code>team</code>, <code>team_annual</code>, <code>payg</code>, <code>enterprise</code>, <code>fast</code>, <code>custom</code>) are pricing tier labels, not mission states. Evidence: (1) they have no corresponding events (no <code>mission_state_changed</code> ever carries these values), (2) the naming convention is completely different from the lifecycle states, (3) <code>payg</code> = "pay as you go" and <code>team_annual</code> are clearly subscription types. The minifier packed two unrelated enums into variable <code>M</code>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Inline mini state diagram for mission -->
+<div class="mini-graph">
+  <svg width="100%" height="200" viewBox="0 0 700 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- States as rounded rects -->
+    <rect x="20" y="75" width="100" height="36" rx="6" fill="#1a1a1e" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="70" y="97" fill="#7c3aed" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">awaiting_input</text>
+
+    <rect x="150" y="75" width="80" height="36" rx="6" fill="#1a1a1e" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="190" y="97" fill="#e2e8f0" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">initializing</text>
+
+    <rect x="260" y="75" width="70" height="36" rx="6" fill="#1a1a1e" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="295" y="97" fill="#7c3aed" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">running</text>
+
+    <rect x="360" y="35" width="65" height="36" rx="6" fill="#1a1a1e" stroke="rgba(255,170,0,0.5)" stroke-width="1"/>
+    <text x="392" y="57" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">paused</text>
+
+    <rect x="360" y="115" width="110" height="36" rx="6" fill="#1a1a1e" stroke="rgba(255,170,0,0.5)" stroke-width="1"/>
+    <text x="415" y="137" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">orchestrator_turn</text>
+
+    <rect x="530" y="75" width="80" height="36" rx="6" fill="#1a1a1e" stroke="rgba(0,255,136,0.5)" stroke-width="1.5"/>
+    <text x="570" y="97" fill="#00ff88" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">completed</text>
+
+    <!-- Arrows -->
+    <line x1="120" y1="93" x2="148" y2="93" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+    <line x1="230" y1="93" x2="258" y2="93" stroke="#64748b" stroke-width="1" marker-end="url(#arrowhead)"/>
+    <path d="M330 85 Q345 53 358 53" fill="none" stroke="#ffaa00" stroke-width="1" opacity="0.5" marker-end="url(#arrowhead-warn)"/>
+    <path d="M425 53 Q480 53 528 85" fill="none" stroke="#00ff88" stroke-width="1" opacity="0.5" marker-end="url(#arrowhead-green)"/>
+    <path d="M330 100 Q345 133 358 133" fill="none" stroke="#ffaa00" stroke-width="1" opacity="0.5" marker-end="url(#arrowhead-warn)"/>
+    <path d="M470 133 Q500 133 528 100" fill="none" stroke="#00ff88" stroke-width="1" opacity="0.5" marker-end="url(#arrowhead-green)"/>
+    <path d="M392 35 Q392 20 295 20 Q260 20 260 73" fill="none" stroke="#64748b" stroke-width="1" opacity="0.3" stroke-dasharray="3,3"/>
+    <text x="330" y="15" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7" opacity="0.5">resume</text>
+
+    <defs>
+      <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#64748b"/></marker>
+      <marker id="arrowhead-warn" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#ffaa00"/></marker>
+      <marker id="arrowhead-green" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#00ff88"/></marker>
+    </defs>
+  </svg>
+  <div class="mg-caption">Mission lifecycle state machine &middot; T1 extraction + T2 interpretation</div>
+</div>
+
+<!-- Connection + Conversation State -->
+<div class="prose-block">
+  <p><strong>Connection + Conversation (variable <code>B</code>, 24 states)</strong> &mdash; Three completely different enums crammed into one variable by the minifier. The first is the <strong>WebSocket connection state machine</strong>: <code>connecting &rarr; connected &rarr; disconnected &rarr; failed &rarr; disabled</code>. Standard reconnection logic.</p>
+
+  <p>The second is the <strong>conversation turn state machine</strong>, and it's the one that drives the UI moment-to-moment. When the agent is thinking, the state is <code>streaming_assistant_message</code>. When it wants to run a tool, it enters <code>waiting_for_tool_confirmation</code> &mdash; the client shows a permission dialog. After the user approves, it moves to <code>executing_tool</code>. Between turns, <code>compacting_conversation</code> handles context window management. This is the pulse of the entire user experience.</p>
+</div>
+
+<div class="state-flow">
+  <span style="font-size:9px;color:var(--dim);margin-right:4px">WS:</span>
+  <span class="state-node active">connecting</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node active">connected</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">disconnected</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node error">failed</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">disabled</span>
+</div>
+<div class="state-flow">
+  <span style="font-size:9px;color:var(--dim);margin-right:4px">Turn:</span>
+  <span class="state-node active">idle</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">streaming_assistant_message</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">waiting_for_tool_confirmation</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">executing_tool</span>
+  <span class="state-arrow">&rarr;</span>
+  <span class="state-node">compacting_conversation</span>
+</div>
+<div style="margin-top:6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+  <span style="font-size:9px;color:var(--dim);margin-right:6px">CSS noise:</span>
+  <span class="state-node noise">white</span>
+  <span class="state-node noise">browser</span>
+  <span class="state-node noise">swatch</span>
+  <span class="state-node noise">solid</span>
+  <span class="state-node noise">dashed</span>
+  <span class="state-node noise">dialog</span>
+  <span class="state-node noise">mermaid</span>
+  <span class="state-node noise">openai</span>
+</div>
+
+<!-- Other state machines: brief -->
+<div class="prose-block">
+  <p><strong>LLM Provider (variable <code>F</code>, 10 values)</strong> &mdash; Not a state machine at all. This is a selector enum: <code>anthropic</code>, <code>bedrock</code>, <code>vertex_anthropic</code>, <code>bedrock_anthropic</code>, <code>openai</code>, <code>azure_openai</code>, <code>google</code>, <code>fireworks</code>, <code>baseten</code>, <code>none</code>. Anthropic is the primary provider. The Bedrock and Vertex variants indicate enterprise deployments that route through AWS or GCP rather than hitting Anthropic directly. <code>fireworks</code> and <code>baseten</code> are inference platforms for open-weight models.</p>
+
+  <p><strong>Permission Resolution (variable <code>T</code>, 11 values)</strong> &mdash; The tool permission escalation ladder. When droid wants to run a tool: <code>proceed_once</code> (allow this one call), <code>proceed_always</code> (always allow this tool), <code>proceed_auto_run</code> (auto-approve below a risk level), with granular levels <code>low</code>/<code>medium</code>/<code>high</code>. The user can also <code>proceed_edit</code> (modify the tool call before running it), <code>cancel</code> (reject this call), or <code>stop</code> (kill the session). This maps directly to the <a class="xref" href="#how-communicate"><code>droid.request_permission</code></a> RPC method and the <code>permission_resolved</code> event.</p>
+</div>
+
+<div class="risk-block">
+  <div class="risk-title">&#9888; What Could Go Wrong</div>
+  <p>The <code>proceed_auto_run_high</code> permission level is dangerous by design. Once a user sets autonomy to "high," the agent can execute any tool &mdash; including terminal commands, file writes, and git operations &mdash; without asking. If the agent is tricked via prompt injection in a file it reads, that injection inherits the auto-run permissions. The <code>proceed_edit</code> escape hatch suggests the developers know this is a concern.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 04. EVENTS                                    -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="events">
+  <div class="q-number">Section 04</div>
+  <h2>What events does it emit?</h2>
+  <div class="q-meta">
+    <span class="tier tier-0">T0 DETERMINISTIC</span>
+    <span style="font-size:10px;color:var(--dim)">59 event types &middot; 15 semantic groups</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>Droid emits 59 distinct event types, which we grouped into 15 families by prefix. The event system tells us more about the architecture than the RPC methods do, because events reveal <strong>what the system thinks is important enough to broadcast</strong>. The heaviest event families are mission orchestration (10 events), worker lifecycle (5 events), and tool execution (3 events).</p>
+
+  <p>The most revealing event is <code>mission_heartbeat</code>. It means missions are expected to be <strong>long-running</strong> &mdash; minutes to hours &mdash; and the system needs a liveness signal to distinguish "still working" from "hung." The heartbeat, combined with <code>mission_progress_entry</code>, tells us the GUI likely has a progress timeline or dashboard for watching missions unfold in real time.</p>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">Full Event Taxonomy</span>
+    <span class="ev-count">59 events &middot; 15 groups</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-0">T0</span>
+    <span class="ev-source">KH.literal extraction</span>
+  </div>
+  <div class="ev-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--warn);margin-bottom:6px">mission.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">mission_accepted</span>
+          <span class="data-tag evt">mission_paused</span>
+          <span class="data-tag evt">mission_resumed</span>
+          <span class="data-tag evt">mission_run_started</span>
+          <span class="data-tag evt">mission_state_changed</span>
+          <span class="data-tag evt">mission_features_changed</span>
+          <span class="data-tag evt">mission_progress_entry</span>
+          <span class="data-tag evt">mission_heartbeat</span>
+          <span class="data-tag evt">mission_worker_started</span>
+          <span class="data-tag evt">mission_worker_completed</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:6px">worker.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">worker_started</span>
+          <span class="data-tag evt">worker_selected_feature</span>
+          <span class="data-tag evt">worker_completed</span>
+          <span class="data-tag evt">worker_failed</span>
+          <span class="data-tag evt">worker_paused</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:6px">session.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">session_title_updated</span>
+          <span class="data-tag evt">session_token_usage_changed</span>
+          <span class="data-tag evt">session_inactivity</span>
+          <span class="data-tag evt">session_unsubscribed</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:6px">mcp.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">mcp_status_changed</span>
+          <span class="data-tag evt">mcp_auth_required</span>
+          <span class="data-tag evt">mcp_auth_completed</span>
+          <span class="data-tag evt">mcp_tool</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--accent);margin-bottom:6px">tool.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">tool_use</span>
+          <span class="data-tag evt">tool_result</span>
+          <span class="data-tag evt">tool_progress_update</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--dim);margin-bottom:6px">thinking.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">thinking</span>
+          <span class="data-tag evt">thinking_text_delta</span>
+          <span class="data-tag evt">redacted_thinking</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--dim);margin-bottom:6px">permission.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">permission_requested</span>
+          <span class="data-tag evt">permission_resolved</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--dim);margin-bottom:6px">terminal.*</div>
+        <div class="data-grid" style="margin-bottom:12px">
+          <span class="data-tag evt">terminal_data</span>
+          <span class="data-tag evt">terminal_exit</span>
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:var(--dim);margin-bottom:6px">other</div>
+        <div class="data-grid">
+          <span class="data-tag evt">droid_working_state_changed</span>
+          <span class="data-tag evt">connection_changed</span>
+          <span class="data-tag evt">assistant_message_delta</span>
+          <span class="data-tag evt">assistant_message_completed</span>
+          <span class="data-tag evt">user_message</span>
+          <span class="data-tag evt">error</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>The <strong>worker model is two-level</strong>. A mission decomposes into features (tracked by <code>mission_features_changed</code>). Each feature is assigned to a worker. The lifecycle reads: <code>mission_accepted</code> &rarr; <code>mission_run_started</code> &rarr; N &times; (<code>worker_started</code> &rarr; <code>worker_selected_feature</code> &rarr; <code>worker_completed</code> | <code>worker_failed</code>) &rarr; <code>mission_state_changed(completed)</code>. Workers can be paused independently without halting the mission. This is a proper job scheduler, not just a chat loop.</p>
+
+  <p>The <code>thinking</code> events are also architecturally significant. <code>thinking_text_delta</code> streams Claude's chain-of-thought reasoning to the client in real time. <code>redacted_thinking</code> is specifically for extended thinking output that gets redacted &mdash; the event exists so the UI can show "thinking..." without revealing the content. This tells us the binary has first-class support for Anthropic's extended thinking feature.</p>
+</div>
+
+<div class="risk-block">
+  <div class="risk-title">&#9888; What Could Go Wrong</div>
+  <p>The <code>session_token_usage_changed</code> event broadcasts token counts to connected clients. If the WebSocket connection isn't authenticated per-session, one client could subscribe to another session's events, leaking the content of private conversations via token usage patterns (timing attacks) or direct event content.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 05. DATA SCHEMAS                              -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="data">
+  <div class="q-number">Section 05</div>
+  <h2>What data does it handle?</h2>
+  <div class="q-meta">
+    <span class="tier tier-1">T1 AST</span>
+    <span style="font-size:10px;color:var(--dim)">9 Zod schemas &middot; field overlap analysis</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>We extracted 9 Zod validation schemas from the AST. Zod schemas are gold for reverse engineering &mdash; they tell us the <strong>exact shape of data</strong> the application expects, complete with field names, types, and optional/required status. The minifier obfuscated the schema variable names (<code>ax0</code>, <code>s6I</code>, <code>Gy0</code>, <code>by0</code>, etc.) but the field names inside are preserved.</p>
+
+  <p>The most important insight from schema analysis is <strong>field overlap</strong>. When two schemas share field names, it usually means they participate in the same data flow. <code>sessionId</code> appears in 5 of 9 schemas &mdash; it is the universal correlation key. <code>automationId</code> bridges the automation and session schemas. <code>terminalId</code> links terminal operations to sessions.</p>
+</div>
+
+<!-- Schema overlap mini-graph -->
+<div class="mini-graph">
+  <svg width="100%" height="220" viewBox="0 0 700 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Schema nodes -->
+    <rect x="40" y="30" width="130" height="30" rx="5" fill="#1a1a1e" stroke="#ffaa00" stroke-width="1"/>
+    <text x="105" y="49" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">ax0 Auth (12f)</text>
+
+    <rect x="250" y="20" width="160" height="30" rx="5" fill="#1a1a1e" stroke="#ffaa00" stroke-width="1"/>
+    <text x="330" y="39" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">Gy0 Automation (82f)</text>
+
+    <rect x="500" y="30" width="160" height="30" rx="5" fill="#1a1a1e" stroke="#ffaa00" stroke-width="1"/>
+    <text x="580" y="49" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">s6I Terminal (30f)</text>
+
+    <rect x="100" y="100" width="160" height="30" rx="5" fill="#1a1a1e" stroke="#ffaa00" stroke-width="1"/>
+    <text x="180" y="119" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">by0 Session Cfg (10f)</text>
+
+    <rect x="350" y="100" width="130" height="30" rx="5" fill="#1a1a1e" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="415" y="119" fill="#e2e8f0" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">Mission (est.)</text>
+
+    <rect x="550" y="100" width="120" height="30" rx="5" fill="#1a1a1e" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+    <text x="610" y="119" fill="#e2e8f0" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle">Git Ops (est.)</text>
+
+    <!-- sessionId hub -->
+    <circle cx="330" cy="160" r="22" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="1"/>
+    <text x="330" y="163" fill="#22d3ee" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">sessionId</text>
+
+    <!-- Edges to sessionId -->
+    <line x1="105" y1="60" x2="315" y2="142" stroke="#22d3ee" stroke-width="1" opacity="0.2"/>
+    <line x1="330" y1="50" x2="330" y2="138" stroke="#22d3ee" stroke-width="1" opacity="0.2"/>
+    <line x1="580" y1="60" x2="345" y2="142" stroke="#22d3ee" stroke-width="1" opacity="0.2"/>
+    <line x1="180" y1="130" x2="315" y2="148" stroke="#22d3ee" stroke-width="1" opacity="0.2"/>
+    <line x1="415" y1="130" x2="338" y2="148" stroke="#22d3ee" stroke-width="1" opacity="0.2"/>
+    <line x1="610" y1="130" x2="348" y2="155" stroke="#22d3ee" stroke-width="1" opacity="0.2"/>
+
+    <!-- automationId link -->
+    <line x1="330" y1="50" x2="330" y2="100" stroke="#ffaa00" stroke-width="1" opacity="0.15" stroke-dasharray="4,3"/>
+    <text x="280" y="80" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="7" opacity="0.5">automationId</text>
+
+    <!-- terminalId link -->
+    <line x1="580" y1="60" x2="580" y2="100" stroke="#ffaa00" stroke-width="1" opacity="0.15" stroke-dasharray="4,3"/>
+    <text x="530" y="80" fill="#ffaa00" font-family="JetBrains Mono,monospace" font-size="7" opacity="0.5">terminalId</text>
+
+    <text x="330" y="205" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="8" text-anchor="middle">sessionId appears in 5/9 schemas &mdash; universal correlation key</text>
+  </svg>
+  <div class="mg-caption">Schema field overlap &middot; T1 analysis</div>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">ax0 &mdash; Authentication Schema</span>
+    <span class="ev-count">12 fields</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-1">T1</span>
+    <span class="ev-source">Zod extraction</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Field</th><th>Role</th><th>Overlap</th></tr>
+      <tr><td class="field-key">token</td><td>OAuth/session token</td><td></td></tr>
+      <tr><td class="field-key">apiKey</td><td>Alternative: direct API key auth</td><td></td></tr>
+      <tr><td class="field-key">connectionId</td><td>WebSocket connection identifier</td><td></td></tr>
+      <tr><td class="field-name">caller</td><td>Client type (CLI/GUI/automation)</td><td></td></tr>
+      <tr><td class="field-key">method</td><td>Auth method discriminator</td><td></td></tr>
+      <tr><td class="field-key">userId</td><td>Authenticated user</td><td><span class="overlap-badge">5 schemas</span></td></tr>
+      <tr><td class="field-key">orgId</td><td>Organization (multi-tenant)</td><td><span class="overlap-badge">3 schemas</span></td></tr>
+      <tr><td class="field-name">isDroidCLIInPath</td><td>Client metadata: CLI in $PATH?</td><td></td></tr>
+      <tr><td class="field-name">droidCLIVersion</td><td>Client metadata: version string</td><td></td></tr>
+      <tr><td class="field-name">homedir</td><td>Client home directory</td><td></td></tr>
+      <tr><td class="field-name">platform</td><td>Client OS (linux/darwin/win32)</td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="evidence-block collapsed">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">s6I &mdash; Terminal Operations Schema</span>
+    <span class="ev-count">30 fields (showing key 14)</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-1">T1</span>
+    <span class="ev-source">Zod extraction</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Field</th><th>Role</th><th>Overlap</th></tr>
+      <tr><td class="field-key">terminalId</td><td>PTY instance identifier</td><td></td></tr>
+      <tr><td class="field-name">cols</td><td>Terminal width</td><td></td></tr>
+      <tr><td class="field-name">rows</td><td>Terminal height</td><td></td></tr>
+      <tr><td class="field-name">cwd</td><td>Working directory</td><td><span class="overlap-badge">3 schemas</span></td></tr>
+      <tr><td class="field-name">env</td><td>Environment variables</td><td></td></tr>
+      <tr><td class="field-name">data</td><td>I/O buffer (stdin/stdout)</td><td></td></tr>
+      <tr><td class="field-key">pid</td><td>OS process ID</td><td></td></tr>
+      <tr><td class="field-name">state</td><td>Terminal state</td><td></td></tr>
+      <tr><td class="field-name">serialized</td><td>Terminal screen serialize</td><td></td></tr>
+      <tr><td class="field-name">plainText</td><td>Stripped ANSI output</td><td></td></tr>
+      <tr><td class="field-name">cursorHidden</td><td>Cursor visibility flag</td><td></td></tr>
+      <tr><td class="field-key">exitCode</td><td>Process exit code</td><td></td></tr>
+      <tr><td class="field-name">signal</td><td>Kill signal if terminated</td><td></td></tr>
+      <tr><td class="field-key">sessionId</td><td>Parent session</td><td><span class="overlap-badge">5 schemas</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="evidence-block collapsed">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">Gy0 &mdash; Automation Engine Schema</span>
+    <span class="ev-count">82 fields (showing key 17)</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-1">T1</span>
+    <span class="ev-source">Zod extraction</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Field</th><th>Role</th><th>Overlap</th></tr>
+      <tr><td class="field-key">automationId</td><td>Automation instance identifier</td><td></td></tr>
+      <tr><td class="field-name">name</td><td>User-facing name</td><td></td></tr>
+      <tr><td class="field-name">description</td><td>Automation description</td><td></td></tr>
+      <tr><td class="field-name">status</td><td>Current state</td><td></td></tr>
+      <tr><td class="field-key">schedule</td><td>Cron expression</td><td></td></tr>
+      <tr><td class="field-name">model</td><td>LLM model for this automation</td><td><span class="overlap-badge">2 schemas</span></td></tr>
+      <tr><td class="field-name">tags</td><td>User-defined labels</td><td></td></tr>
+      <tr><td class="field-name">nextRunAt</td><td>Next scheduled execution</td><td></td></tr>
+      <tr><td class="field-name">isValid</td><td>Validation flag</td><td></td></tr>
+      <tr><td class="field-name">path</td><td>Working directory path</td><td></td></tr>
+      <tr><td class="field-key">prompt</td><td>LLM instruction for this automation</td><td></td></tr>
+      <tr><td class="field-name">cwd</td><td>Execution directory</td><td><span class="overlap-badge">3 schemas</span></td></tr>
+      <tr><td class="field-name">runId</td><td>Execution run ID</td><td></td></tr>
+      <tr><td class="field-name">startedAt</td><td>Run start timestamp</td><td></td></tr>
+      <tr><td class="field-name">completedAt</td><td>Run end timestamp</td><td></td></tr>
+      <tr><td class="field-name">durationMs</td><td>Run duration in ms</td><td></td></tr>
+      <tr><td class="field-name">errorMessage</td><td>Error details if failed</td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="evidence-block collapsed">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">by0 &mdash; Session Settings Schema</span>
+    <span class="ev-count">10 fields</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-1">T1</span>
+    <span class="ev-source">Zod extraction</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Field</th><th>Role</th><th>Overlap</th></tr>
+      <tr><td class="field-key">autonomyMode</td><td>Permission model selector</td><td></td></tr>
+      <tr><td class="field-key">interactionMode</td><td>UI interaction style</td><td></td></tr>
+      <tr><td class="field-key">autonomyLevel</td><td>Auto-run risk threshold</td><td></td></tr>
+      <tr><td class="field-key">modelId</td><td>Primary LLM model</td><td><span class="overlap-badge">2 schemas</span></td></tr>
+      <tr><td class="field-name">reasoningEffort</td><td>Primary model effort level</td><td></td></tr>
+      <tr><td class="field-name">specModeModelId</td><td>Speculation draft model</td><td></td></tr>
+      <tr><td class="field-name">specModeReasoningEffort</td><td>Draft model effort level</td><td></td></tr>
+      <tr><td class="field-name">availableModels</td><td>Enabled model list</td><td></td></tr>
+      <tr><td class="field-key">resolutionChain</td><td>Model fallback ordering</td><td></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>The <strong>speculation mode</strong> in the session settings schema is worth calling out. Two separate model fields (<code>modelId</code> and <code>specModeModelId</code>) each with their own <code>reasoningEffort</code> parameter means droid runs <strong>two models concurrently</strong>: a fast "draft" model that starts generating immediately while the primary model is still processing. If the draft is correct, the user sees instant response. If not, the primary model's output replaces it. This is speculative decoding applied at the application level.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 06. AUTHENTICATION DEEP-DIVE (CHAT-STYLE)    -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="auth-deep">
+  <div class="q-number">Section 06</div>
+  <h2>How does authentication work?</h2>
+  <div class="q-meta">
+    <span class="tier tier-2">T2 LLM</span>
+    <span style="font-size:10px;color:var(--dim)">Deep-dive from interactive investigation</span>
+  </div>
+</div>
+
+<div class="chat-question">
+  <p>"Walk me through how a client authenticates with the daemon. What's the exact sequence?"</p>
+</div>
+
+<div class="prose-block">
+  <p>Authentication happens at daemon connection time, before any session work begins. Here's the sequence we can reconstruct from the schema and RPC evidence:</p>
+
+  <p><strong>Step 1: WebSocket connect.</strong> The client opens a WebSocket to the daemon. Connection state enters <code>connecting</code> (state machine <code>B</code>). No auth yet &mdash; this is just transport.</p>
+
+  <p><strong>Step 2: <code>daemon.authenticate</code> call.</strong> The client sends schema <code>ax0</code> as the payload. It includes <em>either</em> a <code>token</code> (OAuth-style, from a browser login flow) <em>or</em> an <code>apiKey</code> (for programmatic access). The <code>method</code> field discriminates which auth path to take. Alongside the credential, the client sends metadata: <code>platform</code>, <code>droidCLIVersion</code>, <code>isDroidCLIInPath</code>, <code>homedir</code>. This metadata isn't for auth &mdash; it's telemetry and compatibility checking.</p>
+
+  <p><strong>Step 3: Org resolution.</strong> The <code>userId</code> and <code>orgId</code> fields in the auth schema suggest multi-tenant support. After authentication, the daemon resolves which organization the user belongs to. This determines quota limits (the pricing tiers from state machine <code>M</code>: <code>team</code>, <code>payg</code>, <code>enterprise</code>).</p>
+
+  <p><strong>Step 4: Connection established.</strong> State transitions to <code>connected</code>. The client receives a <code>connectionId</code> for this session's WebSocket. From here, the client can call any <code>droid.*</code> method.</p>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">Evidence: Auth Flow Reconstruction</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-2">T2</span>
+    <span class="ev-source">Cross-reference analysis</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Evidence</th><th>Source</th><th>Confidence</th></tr>
+      <tr><td class="field-name">daemon.authenticate is the first RPC call</td><td style="font-size:9px;color:var(--dim)">Method name semantics + schema ax0 is labeled "auth"</td><td style="font-size:9px;color:var(--green)">High</td></tr>
+      <tr><td class="field-name">token vs apiKey dual auth</td><td style="font-size:9px;color:var(--dim)">Both fields in ax0 + method discriminator field</td><td style="font-size:9px;color:var(--green)">High</td></tr>
+      <tr><td class="field-name">connectionId returned after auth</td><td style="font-size:9px;color:var(--dim)">Field exists in auth schema, not in request fields</td><td style="font-size:9px;color:var(--warn)">Medium</td></tr>
+      <tr><td class="field-name">orgId resolves pricing tier</td><td style="font-size:9px;color:var(--dim)">Pricing tier enum in same variable M as mission states</td><td style="font-size:9px;color:var(--warn)">Medium</td></tr>
+      <tr><td class="field-name">Client metadata is telemetry, not auth</td><td style="font-size:9px;color:var(--dim)">isDroidCLIInPath + version are read-only client facts</td><td style="font-size:9px;color:var(--green)">High</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="chat-question">
+  <p>"What about MCP server authentication? That's a separate flow, right?"</p>
+</div>
+
+<div class="prose-block">
+  <p>Completely separate. MCP (Model Context Protocol) servers are external extensions &mdash; third-party services that provide additional tools to the agent. Their auth is a <strong>4-step OAuth-style handshake</strong> initiated by the user, not the daemon's own authentication:</p>
+
+  <p><strong>1.</strong> Client calls <code>daemon.add_mcp_server</code> with the server URL.<br>
+  <strong>2.</strong> Daemon contacts the MCP server. If it requires auth, <code>mcp_auth_required</code> event fires to the client.<br>
+  <strong>3.</strong> The user completes authentication in a browser (OAuth redirect), then calls <code>droid.submit_mcp_auth_code</code> with the authorization code.<br>
+  <strong>4.</strong> Daemon exchanges the code for a token. <code>mcp_auth_completed</code> fires. The server's status changes via <code>mcp_status_changed</code>.</p>
+
+  <p>Cancellation at any point via <code>droid.cancel_mcp_auth</code>. Credential revocation via <code>droid.clear_mcp_auth</code>. Both namespaces expose these methods because CLI users bypass the daemon for MCP management.</p>
+</div>
+
+<div class="risk-block">
+  <div class="risk-title">&#9888; What Could Go Wrong</div>
+  <p>The daemon authentication schema accepts <code>apiKey</code> as an alternative to <code>token</code>. API keys are long-lived, don't rotate automatically, and are stored somewhere on disk. If the daemon binds to <code>0.0.0.0</code> (which <code>start_code_server</code> suggests is possible), a leaked API key gives full agent access from any machine. The <code>homedir</code> field in the auth payload is client-supplied and could be spoofed &mdash; if the daemon uses it to resolve file paths, that's a directory traversal vector.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 07. ATTACK SURFACE                            -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="attack-surface">
+  <div class="q-number">Section 07</div>
+  <h2>Attack Surface</h2>
+  <div class="q-meta">
+    <span class="tier tier-2">T2 LLM</span>
+    <span style="font-size:10px;color:var(--dim)">Inferred from RPC + schema + event correlation</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>We can classify the 82 RPC methods into three exposure tiers based on who can invoke them and what they can do:</p>
+</div>
+
+<div class="stats-row cols-4" style="margin:20px 0">
+  <div class="stat-cell"><div class="stat-val" style="color:var(--red)">12</div><div class="stat-lbl">User-facing</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--warn)">38</div><div class="stat-lbl">Daemon-internal</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--green)">18</div><div class="stat-lbl">Read-only</div></div>
+  <div class="stat-cell"><div class="stat-val" style="color:var(--blue)">14</div><div class="stat-lbl">MCP (shared)</div></div>
+</div>
+
+<div class="prose-block">
+  <p><strong>User-facing methods</strong> (12) are the ones directly triggered by user actions in the CLI or GUI: <code>add_user_message</code>, <code>request_permission</code>, <code>ask_user</code>, <code>interrupt_session</code>, <code>update_session_settings</code>, session init/load, and the permission resolution chain. These are the primary interaction surface and the most tested code paths.</p>
+
+  <p><strong>Daemon-internal methods</strong> (38) are the execution layer. Terminal operations, git operations, automation CRUD, session management, file system access. These are invoked by the daemon's own logic or by the agent's tool execution. The key risk here is that many of these methods <strong>perform irreversible operations</strong>: <code>git_push</code>, <code>git_commit</code>, <code>create_pr</code>, <code>write_terminal_data</code>, <code>delete_automation</code>. If the agent is compromised via prompt injection, these are the methods that cause real damage.</p>
+
+  <p><strong>Read-only methods</strong> (18) are safe by design: listing sessions, terminals, files, MCP tools, automation history. They can leak information but can't modify state.</p>
+
+  <p><strong>The MCP surface</strong> (14 methods) is the external extension interface and therefore the least trusted. MCP servers can provide arbitrary tools, and the <code>toggle_mcp_tool</code> method suggests granular enable/disable control &mdash; but once enabled, the tool inherits the agent's permissions.</p>
+</div>
+
+<div class="evidence-block">
+  <div class="ev-header" onclick="this.parentElement.classList.toggle('collapsed')">
+    <span class="ev-chevron">&#9660;</span>
+    <span class="ev-title">High-Risk Method Matrix</span>
+    <span class="ev-count">Top 10 by impact</span>
+    <span class="ev-spacer"></span>
+    <span class="tier tier-2">T2</span>
+  </div>
+  <div class="ev-body">
+    <table class="schema-table">
+      <tr><th>Method</th><th>Impact</th><th>Auth Required</th><th>Risk</th></tr>
+      <tr><td class="field-key">daemon.git_push</td><td style="font-size:10px">Pushes code to remote repository</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--red)">HIGH</td></tr>
+      <tr><td class="field-key">daemon.create_pr</td><td style="font-size:10px">Creates pull request with code changes</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--red)">HIGH</td></tr>
+      <tr><td class="field-key">daemon.write_terminal_data</td><td style="font-size:10px">Sends arbitrary input to PTY</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--red)">HIGH</td></tr>
+      <tr><td class="field-key">daemon.start_code_server</td><td style="font-size:10px">Starts VS Code server (network-accessible)</td><td style="font-size:9px;color:var(--warn)">Unknown</td><td style="font-size:9px;color:var(--red)">HIGH</td></tr>
+      <tr><td class="field-key">tunnel.init</td><td style="font-size:10px">Initiates remote machine relay</td><td style="font-size:9px;color:var(--warn)">Unknown</td><td style="font-size:9px;color:var(--red)">HIGH</td></tr>
+      <tr><td class="field-key">daemon.delete_automation</td><td style="font-size:10px">Removes scheduled automation</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--warn)">MEDIUM</td></tr>
+      <tr><td class="field-key">daemon.run_automation</td><td style="font-size:10px">Triggers automation execution</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--warn)">MEDIUM</td></tr>
+      <tr><td class="field-key">droid.update_session_settings</td><td style="font-size:10px">Can escalate autonomy level</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--warn)">MEDIUM</td></tr>
+      <tr><td class="field-key">daemon.add_mcp_server</td><td style="font-size:10px">Adds external tool provider</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--warn)">MEDIUM</td></tr>
+      <tr><td class="field-key">daemon.validate_working_directory</td><td style="font-size:10px">Probes filesystem paths</td><td style="font-size:9px;color:var(--green)">Session auth</td><td style="font-size:9px;color:var(--dim)">LOW</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="risk-block">
+  <div class="risk-title">&#9888; What Could Go Wrong</div>
+  <p>The most dangerous combination is <code>update_session_settings</code> (which can set <code>autonomyLevel</code> to high) followed by <code>daemon.write_terminal_data</code> (which sends arbitrary commands to a PTY). If a prompt injection convinces the agent to first escalate its own permissions and then execute shell commands, the entire host is compromised. The permission system exists to prevent exactly this, but the <code>proceed_auto_run_high</code> level is a designed bypass.</p>
+  <p>The <code>daemon.generate_semantic_diff</code> + <code>daemon.save_semantic_diff_cache</code> pair is less obvious but still concerning: if the semantic diff cache is shared across sessions, a malicious diff summary could mislead a reviewer in a different session into approving a backdoored PR.</p>
+</div>
+
+
+<!-- ─────────────────────────────────────────── -->
+<!-- 08. UNKNOWNS & GAPS                           -->
+<!-- ─────────────────────────────────────────── -->
+<div class="investigation-q" id="unknowns">
+  <div class="q-number">Section 08</div>
+  <h2>Unknowns &amp; Gaps</h2>
+  <div class="q-meta">
+    <span style="font-size:10px;color:var(--dim)">What the analysis couldn't determine</span>
+  </div>
+</div>
+
+<div class="prose-block">
+  <p>Every analysis has blind spots. Here's what we know we don't know, ranked by how much it would change our understanding if resolved:</p>
+</div>
+
+<div style="padding:0 0 40px">
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>Tunnel protocol details.</strong> We know <code>tunnel.init</code> and <code>tunnel.ready</code> exist, and that the <code>computer</code> CLI manages relay registrations. But we have zero visibility into the relay server, the authentication between endpoints, or the transport encryption. Is this a direct peer connection, or does it relay through a central server? The answer determines whether droid is a local-only tool or a distributed agent platform.</div>
+  </div>
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>Rate limiting and quota enforcement.</strong> The pricing tier enum (<code>team</code>, <code>payg</code>, <code>enterprise</code>) tells us quotas exist, but we can't see the enforcement mechanism. Is it client-side (easily bypassed) or server-side? Does <code>session_token_usage_changed</code> report actual API token counts, or is it an abstraction?</div>
+  </div>
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>Plugin system architecture.</strong> The <code>plugin</code> CLI subcommand exists but we found no <code>plugin.*</code> RPC namespace. Either plugins are managed entirely client-side, or the plugin API is hidden behind a different string pattern our extraction missed. Without this, we can't assess the plugin security model.</div>
+  </div>
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>Session persistence format.</strong> The daemon manages sessions (<code>archive_session</code>, <code>unarchive_session</code>, <code>search_sessions</code>) but we don't know where they're stored. Local SQLite? Filesystem JSON? Cloud API? The <code>search_sessions</code> method suggests indexed search, which implies a database, but we can't confirm.</div>
+  </div>
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>Automation scheduling backend.</strong> The <code>schedule</code> field in Gy0 is a cron expression, but we don't know if the daemon runs its own scheduler or delegates to the OS (systemd timers, launchd). The <code>nextRunAt</code> field suggests internal scheduling, but the <code>isRetry</code> field suggests retry logic which adds complexity.</div>
+  </div>
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>The remaining 5 schemas.</strong> We detailed 4 of 9 Zod schemas (ax0, s6I, Gy0, by0). The other 5 are smaller and less distinctive, but they may contain MCP tool definitions, mission worker state, or git operation payloads. Further AST analysis could resolve these.</div>
+  </div>
+  <div class="unknown-item">
+    <div class="unknown-icon">?</div>
+    <div class="unknown-text"><strong>303 AST symbols.</strong> We focused on RPC methods, events, state machines, and schemas. The remaining ~150 symbols are a mix of internal utility functions, UI component names, and error strings. A systematic triage of these could reveal additional subsystems we haven't identified.</div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:40px 0;border-top:1px solid var(--border);margin-top:20px">
+  <div style="font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px">End of Investigation</div>
+  <div style="font-size:11px;color:var(--muted)">Binary Explorer v3 &middot; Notebook Analysis &middot; EMBRY OS</div>
+  <div style="font-size:10px;color:var(--muted);margin-top:4px">
+    <span class="tier tier-0" style="margin-right:4px">T0</span> 47 deterministic extractions &middot;
+    <span class="tier tier-1" style="margin:0 4px">T1</span> 63 AST-based &middot;
+    <span class="tier tier-2" style="margin:0 4px">T2</span> 29 LLM-inferred
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TOC ACTIVE STATE TRACKING                     -->
+<!-- ════════════════════════════════════════════ -->
+<script>
+(function(){
+  const sections = document.querySelectorAll('.investigation-q');
+  const links = document.querySelectorAll('.toc-section');
+
+  function updateActive(){
+    let current = '';
+    sections.forEach(function(s){
+      const top = s.getBoundingClientRect().top;
+      if(top < 120) current = s.id;
+    });
+    links.forEach(function(l){
+      const href = l.getAttribute('href');
+      if(href && href.slice(1) === current) l.classList.add('active');
+      else l.classList.remove('active');
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, {passive:true});
+  updateActive();
+})();
+</script>
+
+</body></html>

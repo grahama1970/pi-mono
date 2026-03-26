@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1wAdJOFS6Vg",
+    "language": "en",
+    "took_ms": 8805,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village  - Ham Radio Snail Mail  NTS and the Radiogram Format",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 5757,
+    "description": "",
+    "view_count": 472
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1wAdJOFS6Vg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

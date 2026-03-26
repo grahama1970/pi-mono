@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aEkBZBdwK5M",
+    "language": "en",
+    "took_ms": 7727,
+    "method": null,
+    "title": "Magnificent Delusions: Pakistan, the United States, and an E",
+    "channel": "Hudson Institute",
+    "upload_date": "20131118",
+    "duration_sec": 5689,
+    "description": "Pakistan and the U.S. have been allies since Pakistan's birth in 1947, but the relationship has never been friction-free. The discovery of Osama bin Laden in the Pakistani garrison city of Abbottabad exposed the schism that has long plagued what may be America's most difficult external relationship. Opinion polls show that a majority of citizens in both countries do not trust each other. The U.S. increasingly sees nuclear-armed Pakistan, home to a growing Islamist insurgency, as a threat to its",
+    "view_count": 5283
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aEkBZBdwK5M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

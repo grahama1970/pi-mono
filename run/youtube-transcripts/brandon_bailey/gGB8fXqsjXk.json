@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gGB8fXqsjXk",
+    "language": "en",
+    "took_ms": 7576,
+    "method": null,
+    "title": "DEF CON 31 Policy - Putting Your Money Where Your Cyber Is  SW Liability - Andrea Matwyshyn",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3200,
+    "description": "Are you interested in discussing the future of “shifting liability for software products and services to promote secure development practices”? If so, join a guided discussion led by law and engineering Prof. Andrea Matwyshyn on Pillar 3 of the Biden-Harris National Cybersecurity Strategy. After a brief introduction to the history of software liability and what (various forms of) “security liability” already exist, we will engage in structured legal exercises intended to help us discuss, crystalize, and clarify the relevant variables that courts, regulators, and policymakers will consider in deciding how to generate the next generation of security liability. We will talk through what the legal future is likely to hold (and assess what we think it should hold). We will debate the edge cases and try to generate some consensus, as well as perhaps a master list of concerns that can help further inform policymakers’ thinking on the future of security and software liability policy.",
+    "view_count": 673
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gGB8fXqsjXk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

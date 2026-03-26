@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fdGscHAlgfE",
+    "language": "en",
+    "took_ms": 9072,
+    "method": null,
+    "title": "U.S.-Indonesian Convergence: A Roundtable on Aligning U.S. and Indonesian Indo-Pacific Strategies",
+    "channel": "Hudson Institute",
+    "upload_date": "20200218",
+    "duration_sec": 5505,
+    "description": "",
+    "view_count": 545
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fdGscHAlgfE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

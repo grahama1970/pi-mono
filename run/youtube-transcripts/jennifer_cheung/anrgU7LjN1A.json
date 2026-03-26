@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "anrgU7LjN1A",
+    "language": "en",
+    "took_ms": 8853,
+    "method": null,
+    "title": "DEF CON 32 - Warflying in a Cessna - Matt Thomassen, Sean McKeever",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1468,
+    "description": "Wardriving is cool, and airplanes are cool. What happens if we combine the two? Is it safe? Is it legal? How much WiFi is it possible to see from an airplane? How far does WiFi leak into the atmosphere? How far away can we see an access point? Can we catch a specific network at 1500 feet above the ground? How about 2500? We loaded up a small plane and flew around in circles to find out. This talk will share both our preparation and our results, including figuring out the best places to warfly, what equipment to use, and how to do it safely. We will present the flights we made, the data we gathered, how we analyzed it, and what we discovered. (Spoiler alert: flying a Cessna is a really, really non-stealthy way to collect information about wireless access points.)",
+    "view_count": 5154
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] anrgU7LjN1A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

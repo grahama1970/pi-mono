@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RyAkpzastAc",
+    "language": "en",
+    "took_ms": 8838,
+    "method": null,
+    "title": "Dale Peterson Interviews Brian Scott on ONCD",
+    "channel": "S4 Events",
+    "upload_date": "20240408",
+    "duration_sec": 1883,
+    "description": "A fireside chat on the S4x24 Main Stage. Dale asks Brian Scott about:\n\n- the overlap between the various federal organizations and what role the Office of the National Cyber Director does to address disagreements, conflicts, etc.\n\n- the annual review of the implementation of the National Cybersecurity Strategy to create version 2.0.\n\n- will 2.0 be more results focused and have metrics?\n\n- what sectors have gaps in authority to implement cybersecurity regulations?\n\n- how should an asset owner deal with the deluge of information and guidance coming out from the US Government?\n\n- the IoT security labeling program, secure Internet routing, OT in space, ...\n\n- should a S4 attendee interact with ONCD?",
+    "view_count": 259
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RyAkpzastAc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

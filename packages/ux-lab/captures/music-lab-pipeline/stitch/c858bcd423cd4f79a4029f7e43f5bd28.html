@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Observatory | S02: Find Reference Songs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#005b2c",
+                        "surface-dim": "#0e0e0e",
+                        "tertiary-fixed": "#7bb3ff",
+                        "on-surface-variant": "#adaaaa",
+                        "tertiary": "#6aabff",
+                        "secondary-fixed": "#00fd87",
+                        "on-secondary-container": "#e3ffe4",
+                        "on-tertiary": "#002a52",
+                        "secondary": "#00fd87",
+                        "surface-container-high": "#202020",
+                        "inverse-surface": "#fcf9f8",
+                        "primary-fixed-dim": "#a67aff",
+                        "surface-container": "#191a1a",
+                        "surface-container-highest": "#262626",
+                        "tertiary-container": "#499dfe",
+                        "on-primary-fixed": "#000000",
+                        "outline": "#767575",
+                        "surface-variant": "#262626",
+                        "primary-dim": "#8a4cfc",
+                        "on-secondary-fixed-variant": "#006632",
+                        "secondary-dim": "#00ed7e",
+                        "on-primary-container": "#2e006c",
+                        "on-primary": "#3c0089",
+                        "on-surface": "#ffffff",
+                        "on-error-container": "#ffb2b9",
+                        "error-dim": "#d73357",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "outline-variant": "#484848",
+                        "primary-container": "#b28cff",
+                        "on-tertiary-fixed": "#001833",
+                        "inverse-primary": "#742fe5",
+                        "on-primary-fixed-variant": "#390083",
+                        "error-container": "#a70138",
+                        "surface-bright": "#2c2c2c",
+                        "primary-fixed": "#b28cff",
+                        "surface": "#0e0e0e",
+                        "on-tertiary-container": "#001e3c",
+                        "on-secondary-fixed": "#004621",
+                        "secondary-container": "#006d37",
+                        "on-error": "#490013",
+                        "error": "#ff6e84",
+                        "surface-container-lowest": "#000000",
+                        "on-background": "#ffffff",
+                        "surface-container-low": "#131313",
+                        "primary": "#bd9dff",
+                        "background": "#0e0e0e",
+                        "surface-tint": "#bd9dff",
+                        "tertiary-dim": "#4fa0ff",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "inverse-on-surface": "#565555"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .tonal-shift {
+            background-color: #131313;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar -->
+<nav class="w-full sticky top-0 z-50 flex justify-between items-center px-8 h-16 w-full bg-[#0e0e0e] border-none font-['Inter'] tracking-tight text-sm">
+<div class="flex items-center gap-6">
+<div class="text-xl font-bold tracking-tighter text-white uppercase">Sonic Observatory</div>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-[#adaaaa] hover:text-white transition-colors duration-200 active:scale-95 duration-100" href="#">DASHBOARD</a>
+<a class="text-violet-400 font-bold hover:text-white transition-colors duration-200 active:scale-95 duration-100" href="#">OBSERVATORY</a>
+<a class="text-[#adaaaa] hover:text-white transition-colors duration-200 active:scale-95 duration-100" href="#">LIBRARY</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm text-[#adaaaa] mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface-variant" placeholder="Global Scan..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-white cursor-pointer" data-icon="notifications_paused">notifications_paused</span>
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-white cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-violet-500 cursor-pointer text-2xl" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</nav>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 bg-[#131313] border-none tonal-shift flex flex-col h-full overflow-y-auto z-40">
+<div class="px-6 py-4 flex flex-col gap-1 mb-6">
+<div class="flex items-center gap-2">
+<img alt="Operator Profile" class="w-8 h-8 rounded-full border border-secondary/30" data-alt="Close up of futuristic operator avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfc9hvccD6gyJHoi_q-Vq2tpxa1xQHILs-1sUBMv8cMBcv9F5kKBEKCRYr_BYTawpD--muZ3C0SVZHIAowspBNwom7IepxJ4ySCuvHFNrgtetydbXDQ9csuRe7rM489xvpI9_Hox8aBzxdpUU2G9m7petAsLnjbnoeQtZ_UGt_UvZcjZ1RsdXTwxuz-CfjiM7YDn0hlTAri9Z9_4B_RMy476pzs0N3dGiPvKJ10GnUpsR2BBedpcAfdPmXKTZVj-1f88Wzvkbe-ag"/>
+<div>
+<div class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px] text-white">OPERATOR_01</div>
+<div class="font-['Space_Grotesk'] uppercase tracking-widest text-[8px] text-secondary">STATUS: ENCRYPTED</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col font-['Space_Grotesk'] uppercase tracking-widest text-xs">
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-3 hover:bg-[#191a1a] hover:text-white transition-all hover:translate-x-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>S00: INGEST</span>
+</div>
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-3 hover:bg-[#191a1a] hover:text-white transition-all hover:translate-x-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>S01: DECODE</span>
+</div>
+<div class="text-[#00fd87] border-l-2 border-[#00fd87] bg-[#191a1a] px-6 py-4 flex items-center gap-3 transition-all hover:translate-x-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="analytics">analytics</span>
+<span>S02: ANALYZE</span>
+</div>
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-3 hover:bg-[#191a1a] hover:text-white transition-all hover:translate-x-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="memory">memory</span>
+<span>S03: RENDER</span>
+</div>
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-3 hover:bg-[#191a1a] hover:text-white transition-all hover:translate-x-1 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="folder_zip">folder_zip</span>
+<span>S04: ARCHIVE</span>
+</div>
+</div>
+<div class="mt-auto px-6 py-8 flex flex-col gap-4">
+<button class="bg-secondary/10 border border-secondary/30 text-secondary font-['Space_Grotesk'] text-[10px] py-3 rounded-md tracking-[0.2em] hover:bg-secondary/20 transition-all active:scale-95">
+                    INITIATE_SEQUENCE
+                </button>
+<div class="flex flex-col gap-2 font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">
+<div class="flex items-center gap-2 text-[#adaaaa] hover:text-white cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>System Logs</span>
+</div>
+<div class="flex items-center gap-2 text-[#adaaaa] hover:text-white cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="developer_board">developer_board</span>
+<span>Terminal</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 p-12 overflow-y-auto no-scrollbar">
+<!-- Breadcrumb / Header Area -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="font-['Space_Grotesk'] font-bold text-primary tracking-tighter text-xl">S02</span>
+<div class="h-px w-12 bg-outline-variant/30"></div>
+<span class="text-on-surface-variant font-['Space_Grotesk'] text-[10px] tracking-[0.3em] uppercase">Phase: Ref_Analysis</span>
+</div>
+<h1 class="text-4xl font-extrabold tracking-tight text-white mb-2">Find Reference Songs</h1>
+<div class="font-['Space_Grotesk'] text-on-surface-variant/60 text-xs tracking-wide">
+<span class="text-secondary/80">/consume-music</span> --arc s00-s01 --mode search
+                    </div>
+</div>
+<div class="flex items-center gap-6 pb-2">
+<div class="text-right">
+<div class="text-[10px] font-['Space_Grotesk'] text-on-surface-variant tracking-widest uppercase mb-1">SCAN_RESULTS</div>
+<div class="text-white font-bold text-lg">3 MATCHES</div>
+</div>
+<div class="bg-secondary/20 border border-secondary/40 text-secondary px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-['Space_Grotesk'] font-bold text-xs">DONE</span>
+</div>
+</div>
+</div>
+<!-- Content Area: Tonal Layering -->
+<div class="grid grid-cols-1 gap-6">
+<!-- Song Panel Container -->
+<div class="bg-[#111111] p-8 rounded-xl border border-outline-variant/5">
+<!-- Song Card 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg border-l-2 border-primary-dim hover:bg-surface-container-high transition-colors mb-4">
+<div class="flex items-center gap-5">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img alt="Album Art" class="w-full h-full object-cover grayscale opacity-60" data-alt="Moody dark album art placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGTy-dqKZ-F4VgenZVhD3hbnK_jX66M__ymgEgS-J8jqFIEYIANLphy7ZoilDlrmxFNv1U0UyRw5on174-ImmiN0DgYwdq1ERKl7XkYkxq-VKIfVhEg8rdnb8El3qOxJ83Se0gDz_rujH-x-ONTupYa3kRJGBudlGABzRdCyskxrTxwwm0Nr2BT5I4GmBGfPSA_XRz3KV6zn5VRdG6ScVV6wbMDVFDbpcVJXOWcJAEhEwUciG7nbE1dz7zi_zyY4VrNzJKAgeD0Ko"/>
+</div>
+<div>
+<h3 class="text-[13px] font-bold text-white">Roads</h3>
+<p class="text-[11px] text-[#adaaaa]">Portishead — Dummy (1994)</p>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-tertiary-container/20 text-tertiary text-[9px] font-['Space_Grotesk'] uppercase rounded-full">sadness</span>
+<span class="px-2 py-0.5 bg-error-container/20 text-error text-[9px] font-['Space_Grotesk'] uppercase rounded-full">fear</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-['Space_Grotesk'] text-secondary text-sm font-bold">92% MATCH</div>
+<div class="w-24 h-1 bg-surface-container-lowest mt-1 overflow-hidden rounded-full">
+<div class="h-full bg-secondary w-[92%]"></div>
+</div>
+</div>
+</div>
+<!-- Song Card 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg border-l-2 border-primary-dim hover:bg-surface-container-high transition-colors mb-4">
+<div class="flex items-center gap-5">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img alt="Album Art" class="w-full h-full object-cover grayscale opacity-60" data-alt="Abstract deep blue album art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARJIy_HFKxkDUImQNIXsE_ux0PSAU8BpJM44nilxlBQ3zwiX_zMyiwLZvyTxq96NI7BnD9vOkbmYVY03wJMxMq6ulLt9DYXUmI59DcLGWv3yqFL_E_geNAh3ml0FnHrwS1NOITLYv1xFoBjanyxd9hP5Ms1R4k2deVKJGvlfH9VuwZFA_-ywbE_xTCNMNSHMDwWU7mNnenaS0O03P67dF4ctB3TZ-oKDPpb6gimZiV3mSIwswTPoOTj4vXBobOIdWF4bG6mtnk_ws"/>
+</div>
+<div>
+<h3 class="text-[13px] font-bold text-white">Teardrop</h3>
+<p class="text-[11px] text-[#adaaaa]">Massive Attack — Mezzanine (1998)</p>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-secondary-container/20 text-secondary text-[9px] font-['Space_Grotesk'] uppercase rounded-full">trust</span>
+<span class="px-2 py-0.5 bg-tertiary-container/20 text-tertiary text-[9px] font-['Space_Grotesk'] uppercase rounded-full">sadness</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-['Space_Grotesk'] text-secondary text-sm font-bold">87% MATCH</div>
+<div class="w-24 h-1 bg-surface-container-lowest mt-1 overflow-hidden rounded-full">
+<div class="h-full bg-secondary w-[87%]"></div>
+</div>
+</div>
+</div>
+<!-- Song Card 3 -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg border-l-2 border-primary-dim hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-5">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant/10">
+<img alt="Album Art" class="w-full h-full object-cover grayscale opacity-60" data-alt="Ethereal high contrast album cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvfqWSAvxunfdpy8mSBsTZEk9bhc9tdrZ7O5hAWyIoeA2jkwSq_8M7TVKMzCHXRgcZi82tC4omJzK4KjmyQbJZXpjiObatFPRE6w2k5sSktHFp-yBJQzorMmDYsFNRGNgtF5Y74JJQ7iHeCYkqlXdjyhVMNTlAm_iOf5dlpYPEHMTEJOpbte1FXUlPEQhYLQqWZYuNj89ZegO_UIQILxeXkUcU_4Y10nSp7ccPInchdy71oi6PPwQU9NLKMfrsSaYxBiuAll4OTDM"/>
+</div>
+<div>
+<h3 class="text-[13px] font-bold text-white">The Host of Seraphim</h3>
+<p class="text-[11px] text-[#adaaaa]">Dead Can Dance — The Serpents Egg (1988)</p>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-error-container/20 text-error text-[9px] font-['Space_Grotesk'] uppercase rounded-full">fear</span>
+<span class="px-2 py-0.5 bg-error-container/40 text-error-dim text-[9px] font-['Space_Grotesk'] uppercase rounded-full">anger</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-['Space_Grotesk'] text-tertiary text-sm font-bold">78% MATCH</div>
+<div class="w-24 h-1 bg-surface-container-lowest mt-1 overflow-hidden rounded-full">
+<div class="h-full bg-tertiary w-[78%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Technical Readout Panel -->
+<div class="grid grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
+<div class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant tracking-widest uppercase mb-4">Acoustic_Spectral_Depth</div>
+<div class="flex items-end gap-1 h-12">
+<div class="bg-secondary w-full h-[60%] opacity-40"></div>
+<div class="bg-secondary w-full h-[80%] opacity-60"></div>
+<div class="bg-secondary w-full h-[40%] opacity-30"></div>
+<div class="bg-secondary w-full h-[95%] opacity-100"></div>
+<div class="bg-secondary w-full h-[70%] opacity-50"></div>
+<div class="bg-secondary w-full h-[85%] opacity-70"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 col-span-2 flex items-center justify-between">
+<div>
+<div class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">Observation_Log</div>
+<div class="font-['Space_Grotesk'] text-xs text-secondary">MATCH FOUND: TRIPLE_NODE_CONVERGENCE</div>
+</div>
+<button class="bg-primary/10 border border-primary/40 text-primary font-['Space_Grotesk'] text-[10px] px-6 py-2 rounded uppercase tracking-widest hover:bg-primary/20 transition-all">
+                            Export Manifest
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

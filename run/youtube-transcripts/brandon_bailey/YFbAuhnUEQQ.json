@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YFbAuhnUEQQ",
+    "language": "en",
+    "took_ms": 7687,
+    "method": null,
+    "title": "DEF CON 31 - HL7Magic  Medical Data Hacking Made Easy - Katie Inns",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1296,
+    "description": "In recent years, the use of internet-connected devices has become more prevalent in the healthcare sector, particularly as a means to communicate patient data. Therefore, it is essential that security testing is carried out against these devices to identify misconfigurations that could cause a severe impact, such as the prescription of incorrect drugs.\n\nModern healthcare protocols such as FHIR (Fast Healthcare Interoperability Resources) use the HTTP protocol to communicate, making security testing relatively straightforward. However, the use of older protocols such as HL7 (Health Level Seven) is more widespread across medical devices in the industry. These protocols are bespoke and difficult to read or intercept using current commercial and open-source security tooling, making testing of these devices challenging and cumbersome.\n\nTo address this challenge, I have developed a tool (HL7Magic) to provide security testers with an easier method of intercepting and changing HL7 messages sent to and from medical devices. This tool was created for the purpose of being integrated into Burp Suite as an extension, although it can exist independently.\n\nAfter talking about how the HL7Magic was created, I will give a short demonstration using the tool for security research purpose or to identify existing CVE’s across your estate. HL7Magic will be open sourced and collaborations to improve it further will be welcomed.",
+    "view_count": 2407
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YFbAuhnUEQQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

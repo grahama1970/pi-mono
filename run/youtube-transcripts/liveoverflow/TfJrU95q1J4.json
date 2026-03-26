@@ -1,0 +1,973 @@
+{
+  "meta": {
+    "video_id": "TfJrU95q1J4",
+    "language": "en",
+    "took_ms": 1401,
+    "method": "direct",
+    "title": "The Heap: How to exploit a Heap Overflow - bin 0x15",
+    "channel": "LiveOverflow",
+    "upload_date": "20160930",
+    "duration_sec": 731,
+    "description": "We are solving heap1 from exploit-exercises.com by exploiting a heap overflow.\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.\n\n#BinaryExploitation #HeapOverflow",
+    "view_count": 109281
+  },
+  "transcript": [
+    {
+      "text": "In the last video we learned some basics about\nhow the heap works and now we want to apply",
+      "start": 0.17,
+      "duration": 4.31
+    },
+    {
+      "text": "this to heap level 1 from exploit-exercsies\nprotostar to solve it.",
+      "start": 4.48,
+      "duration": 10.97
+    },
+    {
+      "text": "Actually I want try something.",
+      "start": 15.45,
+      "duration": 1.87
+    },
+    {
+      "text": "We do some roleplaying.",
+      "start": 17.32,
+      "duration": 1.14
+    },
+    {
+      "text": "Let’s first be the security researcher who\nwant’s to find a bug to exploit in this",
+      "start": 18.46,
+      "duration": 4.76
+    },
+    {
+      "text": "binary.",
+      "start": 23.22,
+      "duration": 1.38
+    },
+    {
+      "text": "Afterwards we play developer trying to understand\nthe exploit to fix the issue.",
+      "start": 24.6,
+      "duration": 5.08
+    },
+    {
+      "text": "So we put on our black hoodie and get started…",
+      "start": 29.68,
+      "duration": 3.87
+    },
+    {
+      "text": "first we open the binary heap1 in gdb and\nexecute it.",
+      "start": 33.55,
+      "duration": 3.949
+    },
+    {
+      "text": "We get a segfault.",
+      "start": 37.499,
+      "duration": 1.0
+    },
+    {
+      "text": "And it also shows us that the segfault was\ncaused by strcpy, because it tried to copy",
+      "start": 38.499,
+      "duration": 5.33
+    },
+    {
+      "text": "a string from the address 0, to this other\naddress here, and 0 is obviously not valid",
+      "start": 43.829,
+      "duration": 5.71
+    },
+    {
+      "text": "memory - so it crashes.",
+      "start": 49.539,
+      "duration": 2.14
+    },
+    {
+      "text": "We know how linux binaries work, so we make\nan educated guess that this application might",
+      "start": 51.679,
+      "duration": 5.02
+    },
+    {
+      "text": "require some input and we try the arguments.",
+      "start": 56.699,
+      "duration": 3.67
+    },
+    {
+      "text": "Run with aaaa.",
+      "start": 60.369,
+      "duration": 2.7
+    },
+    {
+      "text": "Again another segfault, but the attentive\nviewer will notice that the address is now",
+      "start": 63.069,
+      "duration": 4.611
+    },
+    {
+      "text": "different, so this is a different strcpy,\nwhich again can’t copy from address 0, so",
+      "start": 67.68,
+      "duration": 6.14
+    },
+    {
+      "text": "we guess that it requires another argument.",
+      "start": 73.82,
+      "duration": 2.979
+    },
+    {
+      "text": "And this time the program runs through without\nerrors.",
+      "start": 76.799,
+      "duration": 4.561
+    },
+    {
+      "text": "Now we try to find a bug, so the simplest\nthing to do is, we just throw some long inputs",
+      "start": 81.36,
+      "duration": 4.91
+    },
+    {
+      "text": "at the program and see if something happens.",
+      "start": 86.27,
+      "duration": 3.059
+    },
+    {
+      "text": "So for the first argument I choose to do a\npattern with letters and for the second argument",
+      "start": 89.329,
+      "duration": 4.881
+    },
+    {
+      "text": "I do numbers, just so I could idnetify them\nif something would occur.",
+      "start": 94.21,
+      "duration": 4.72
+    },
+    {
+      "text": "We run that, and we got a different segfault.",
+      "start": 98.93,
+      "duration": 3.319
+    },
+    {
+      "text": "Again because of strcpy, but this time the\ndestination address looks invalid.",
+      "start": 102.249,
+      "duration": 5.86
+    },
+    {
+      "text": "It tried to copy the string with the numbers,\nwhich we know is the second argument, to the",
+      "start": 108.109,
+      "duration": 4.931
+    },
+    {
+      "text": "address 46,46,46,46 which is the hexcode for\nFFFF.",
+      "start": 113.04,
+      "duration": 4.929
+    },
+    {
+      "text": "So whatever happened, we somehow overwrote\nan address, that is used as the destination",
+      "start": 117.969,
+      "duration": 5.35
+    },
+    {
+      "text": "of the strcpy.",
+      "start": 123.319,
+      "duration": 1.43
+    },
+    {
+      "text": "And this means we can now use the first argument\nto fully control where we want to write.",
+      "start": 124.749,
+      "duration": 5.9
+    },
+    {
+      "text": "And we can fully choose what to write, with\nthe second argument.",
+      "start": 130.649,
+      "duration": 4.23
+    },
+    {
+      "text": "Now we have a lot of freedom what we want\nto overwrite.",
+      "start": 134.879,
+      "duration": 3.61
+    },
+    {
+      "text": "For example we can overwrite the return pointer\non the stack to redirect code execution, or",
+      "start": 138.489,
+      "duration": 4.881
+    },
+    {
+      "text": "we can overwrite an entry of the global offset\ntable, which I explained in a previous video,",
+      "start": 143.37,
+      "duration": 5.28
+    },
+    {
+      "text": "to achieve the same.",
+      "start": 148.65,
+      "duration": 1.07
+    },
+    {
+      "text": "Let’s do the latter one, it’s usually\nmore reliable than the stack - which likes",
+      "start": 149.72,
+      "duration": 4.34
+    },
+    {
+      "text": "to move around.",
+      "start": 154.06,
+      "duration": 2.36
+    },
+    {
+      "text": "So let’s check what kind of function is\ncalled after the evil strcpy.",
+      "start": 156.42,
+      "duration": 3.539
+    },
+    {
+      "text": "We can peak into the source code and see that\nthere is a printf, and we could assume that",
+      "start": 159.959,
+      "duration": 4.151
+    },
+    {
+      "text": "we want to overwrite printf on the global\noffset table, but that is deceiving.",
+      "start": 164.11,
+      "duration": 3.579
+    },
+    {
+      "text": "That’s not the case.",
+      "start": 167.689,
+      "duration": 1.291
+    },
+    {
+      "text": "So let’s better stick to the assembly.",
+      "start": 168.98,
+      "duration": 2.97
+    },
+    {
+      "text": "First of all we have to find the location\nfrom were we were calling the strcpy.",
+      "start": 171.95,
+      "duration": 4.92
+    },
+    {
+      "text": "We can use backtrace for that, which will\nlook at the stack and the stored return pointers",
+      "start": 176.87,
+      "duration": 4.77
+    },
+    {
+      "text": "to figure out where we are - as a sidenote,\nif you found a bug that smashes the stack,",
+      "start": 181.64,
+      "duration": 5.11
+    },
+    {
+      "text": "then backtrace can not make much sense of\nit anymore.",
+      "start": 186.75,
+      "duration": 3.2
+    },
+    {
+      "text": "So it doesn’t always work.",
+      "start": 189.95,
+      "duration": 1.78
+    },
+    {
+      "text": "And here we can see that currently we are\nin strcpy, but we were coming from this address.",
+      "start": 191.73,
+      "duration": 6.27
+    },
+    {
+      "text": "So let’s set the disassemblu flavor to sane\nintel syntax and disasemble the address.",
+      "start": 198.0,
+      "duration": 5.68
+    },
+    {
+      "text": "This will now disassemble the whole function\nthis address belongs to.",
+      "start": 203.68,
+      "duration": 3.7
+    },
+    {
+      "text": "Our address ended in 5a, so we are here after\nthe strcpy.",
+      "start": 207.38,
+      "duration": 3.67
+    },
+    {
+      "text": "And as you can see there is a call to puts\nnext.",
+      "start": 211.05,
+      "duration": 4.549
+    },
+    {
+      "text": "Which btw is not printf like in the source\ncode.",
+      "start": 215.599,
+      "duration": 2.541
+    },
+    {
+      "text": "That’s because the compiler replaced the\nprintf with puts for optimization reasons.",
+      "start": 218.14,
+      "duration": 4.679
+    },
+    {
+      "text": "Ok, so let’s overwrite the global offset\ntable entry for puts.",
+      "start": 222.819,
+      "duration": 4.541
+    },
+    {
+      "text": "As shown in the got video we can figure out\nthe address of puts by first disassembling",
+      "start": 227.36,
+      "duration": 5.01
+    },
+    {
+      "text": "the function trapoline in the procedure linkage\ntable, which would now jump to an address",
+      "start": 232.37,
+      "duration": 4.339
+    },
+    {
+      "text": "stored at this address.",
+      "start": 236.709,
+      "duration": 2.051
+    },
+    {
+      "text": "So this means this is the address of the puts\nglobal offset table entry.",
+      "start": 238.76,
+      "duration": 4.5
+    },
+    {
+      "text": "So this is the target we want to write to,\nthus we place it in the first argument.",
+      "start": 243.26,
+      "duration": 4.959
+    },
+    {
+      "text": "gdb run, but we use backticks in the first\nargument to execute /bin/echo.",
+      "start": 248.219,
+      "duration": 6.031
+    },
+    {
+      "text": "As you know echo simply outputs whatever you\npass to it as arguments, and we can use that",
+      "start": 254.25,
+      "duration": 4.58
+    },
+    {
+      "text": "to get characters with hexvalues we can’t\ntype.",
+      "start": 258.83,
+      "duration": 3.02
+    },
+    {
+      "text": "For example the hex value 8.",
+      "start": 261.85,
+      "duration": 2.03
+    },
+    {
+      "text": "So echo -ne, -n because we don’t want that\necho places a newline at the end of the output.,",
+      "start": 263.88,
+      "duration": 5.95
+    },
+    {
+      "text": "and -e because we want echo to convert hex\nescaped numbers into the raw characters.",
+      "start": 269.83,
+      "duration": 5.36
+    },
+    {
+      "text": "Just to make sure everything works we echo\nthe whole test string up to the Fs again.",
+      "start": 275.19,
+      "duration": 4.96
+    },
+    {
+      "text": "Now echo inside of the backticks will be executed\nand the output of that will be placed inside",
+      "start": 280.15,
+      "duration": 4.98
+    },
+    {
+      "text": "of the quotes as the first argument.",
+      "start": 285.13,
+      "duration": 1.77
+    },
+    {
+      "text": "And when we run this we get the same segfault\nas before, so all is fine.",
+      "start": 286.9,
+      "duration": 6.51
+    },
+    {
+      "text": "Next step is obviously to replace the Fs with\nthe address of the puts global offset table",
+      "start": 293.41,
+      "duration": 4.41
+    },
+    {
+      "text": "entry.",
+      "start": 297.82,
+      "duration": 4.19
+    },
+    {
+      "text": "And when we now run it we get a segfault somehwere\nelse, this time because of 30303030, which",
+      "start": 302.01,
+      "duration": 6.871
+    },
+    {
+      "text": "is ascii for 0000.",
+      "start": 308.881,
+      "duration": 2.599
+    },
+    {
+      "text": "And when we look at the registers with info\nregisters we can see that we sucessfully got",
+      "start": 311.48,
+      "duration": 5.06
+    },
+    {
+      "text": "control of EIP, which means we can now redirect\ncode anywhere we want.",
+      "start": 316.54,
+      "duration": 6.74
+    },
+    {
+      "text": "In this case we want to call winner, winner\nhas this address here.",
+      "start": 323.28,
+      "duration": 4.7
+    },
+    {
+      "text": "So we place that into the second argument\ninstead of argv2 by using echo in backticks.",
+      "start": 327.98,
+      "duration": 6.45
+    },
+    {
+      "text": "We execute it and we get winner.",
+      "start": 334.43,
+      "duration": 4.38
+    },
+    {
+      "text": "Which also works great outside of gdb.",
+      "start": 338.81,
+      "duration": 4.07
+    },
+    {
+      "text": "In summary we can say this:\nwe identified a bug by guessing and playing",
+      "start": 342.88,
+      "duration": 4.28
+    },
+    {
+      "text": "around with it.",
+      "start": 347.16,
+      "duration": 1.15
+    },
+    {
+      "text": "Through gdb we learned that somehow we can\ncontrol the destination of a strcpy, and we",
+      "start": 348.31,
+      "duration": 5.29
+    },
+    {
+      "text": "learned we even control what we want to copy.",
+      "start": 353.6,
+      "duration": 3.06
+    },
+    {
+      "text": "And we abused that to overwrite the function\naddress of puts to redirect code execution",
+      "start": 356.66,
+      "duration": 5.72
+    },
+    {
+      "text": "to the winner function.",
+      "start": 362.38,
+      "duration": 1.93
+    },
+    {
+      "text": "All without knowing why this even happened\nand not even knowing that the heap was involved",
+      "start": 364.31,
+      "duration": 4.69
+    },
+    {
+      "text": "at all.",
+      "start": 369.0,
+      "duration": 2.02
+    },
+    {
+      "text": "Being a good security researcher we create\na writeup, an advisory for this.",
+      "start": 371.02,
+      "duration": 5.28
+    },
+    {
+      "text": "Providing our proof of concept exploit as\nwell as some additional information that might",
+      "start": 376.3,
+      "duration": 3.6
+    },
+    {
+      "text": "help the developer.",
+      "start": 379.9,
+      "duration": 2.35
+    },
+    {
+      "text": "Now let’s change sides and become the developer.",
+      "start": 382.25,
+      "duration": 6.33
+    },
+    {
+      "text": "We take off our black hoodie, and put on our\ngrey hoodie.",
+      "start": 388.58,
+      "duration": 3.6
+    },
+    {
+      "text": "Because that's what developers wear.",
+      "start": 392.18,
+      "duration": 1.78
+    },
+    {
+      "text": "So we just got this email from this dude who\nfound a bug in our program.",
+      "start": 393.96,
+      "duration": 4.66
+    },
+    {
+      "text": "He even provided a Proof of Concept exploit\nwith it.",
+      "start": 398.62,
+      "duration": 2.62
+    },
+    {
+      "text": "Now we want to figure out why and how this\nhappened, so we can fix it.",
+      "start": 401.24,
+      "duration": 4.36
+    },
+    {
+      "text": "In the advisory it says that it has to do\nsomething with strcpy.",
+      "start": 405.6,
+      "duration": 3.44
+    },
+    {
+      "text": "So we read the manual about strcpy.",
+      "start": 409.04,
+      "duration": 1.97
+    },
+    {
+      "text": "And have this “oh shit” moment when we\nrealized we didn’t even read the documentation",
+      "start": 411.01,
+      "duration": 4.52
+    },
+    {
+      "text": "that would have told us what a bad idea that\nwas.",
+      "start": 415.53,
+      "duration": 2.51
+    },
+    {
+      "text": "So now we could fix that.",
+      "start": 418.04,
+      "duration": 1.79
+    },
+    {
+      "text": "For example using strncpy or use strlen to\ncheck the length before we copy it and then",
+      "start": 419.83,
+      "duration": 5.25
+    },
+    {
+      "text": "exit.",
+      "start": 425.08,
+      "duration": 1.83
+    },
+    {
+      "text": "But because we are a good developer we try\nto learn from this advisory and try to understand",
+      "start": 426.91,
+      "duration": 4.27
+    },
+    {
+      "text": "how the exploit exactly works.",
+      "start": 431.18,
+      "duration": 1.89
+    },
+    {
+      "text": "In the last video, the heap malloc introduction\nvideo, we already thought about how the heap",
+      "start": 433.07,
+      "duration": 5.26
+    },
+    {
+      "text": "should look like from this program.",
+      "start": 438.33,
+      "duration": 1.75
+    },
+    {
+      "text": "So let’s see how it looks in reality.",
+      "start": 440.08,
+      "duration": 3.08
+    },
+    {
+      "text": "To do this let’s set a breakpoint after\neach malloc and strcpy.",
+      "start": 443.16,
+      "duration": 3.49
+    },
+    {
+      "text": "We dissasemble main and look for all those\ncalls and set breakpoints afterwards.",
+      "start": 446.65,
+      "duration": 7.0
+    },
+    {
+      "text": "Then we run it with the proof of concept exploit\narguments.",
+      "start": 453.65,
+      "duration": 2.92
+    },
+    {
+      "text": "And we hit the first breakpoint.",
+      "start": 456.57,
+      "duration": 2.55
+    },
+    {
+      "text": "So now the first malloc happened.",
+      "start": 459.12,
+      "duration": 1.09
+    },
+    {
+      "text": "So we are currently here in the assembler\ncode and the result of malloc is in eax.",
+      "start": 460.21,
+      "duration": 3.92
+    },
+    {
+      "text": "So eax contains the address on the heap where\nwe have enough space for the internet struct",
+      "start": 464.13,
+      "duration": 5.2
+    },
+    {
+      "text": "i1.",
+      "start": 469.33,
+      "duration": 1.0
+    },
+    {
+      "text": "And we can look at this address and we can\nsee it’s simply 0.",
+      "start": 470.33,
+      "duration": 4.6
+    },
+    {
+      "text": "With info proc mappings we can see the memory\nsegments, and there is also the heap and we",
+      "start": 474.93,
+      "duration": 4.91
+    },
+    {
+      "text": "can have a look at that.",
+      "start": 479.84,
+      "duration": 1.73
+    },
+    {
+      "text": "Oh, maybe it’s a good idea to add this heap\noutput as a gdb hook as well.",
+      "start": 481.57,
+      "duration": 6.54
+    },
+    {
+      "text": "So we see it automatically at each breakpoint.",
+      "start": 488.11,
+      "duration": 3.36
+    },
+    {
+      "text": "define hook-stop\nx/64wx 0x",
+      "start": 491.47,
+      "duration": 4.03
+    },
+    {
+      "text": "end",
+      "start": 495.5,
+      "duration": 1.19
+    },
+    {
+      "text": "So if we now continue we should set the priority\nof i1 to 1, and then malloc for the name.",
+      "start": 496.69,
+      "duration": 8.52
+    },
+    {
+      "text": "Let’s have a closer look at the heap.",
+      "start": 505.21,
+      "duration": 2.75
+    },
+    {
+      "text": "So as we learned the i1 variable points here.",
+      "start": 507.96,
+      "duration": 3.37
+    },
+    {
+      "text": "So this is where the struct starts and you\ncan se that the first attribute, which is",
+      "start": 511.33,
+      "duration": 4.41
+    },
+    {
+      "text": "the priority is set to 1.",
+      "start": 515.74,
+      "duration": 2.159
+    },
+    {
+      "text": "And before that we have the heap metadata,\nthe chunk header, which contains the lnegth",
+      "start": 517.899,
+      "duration": 4.76
+    },
+    {
+      "text": "of this chunk, including the last bit set\nto 1 which means that the previous block is",
+      "start": 522.659,
+      "duration": 5.68
+    },
+    {
+      "text": "not free.",
+      "start": 528.339,
+      "duration": 1.0
+    },
+    {
+      "text": "It’s in use.",
+      "start": 529.339,
+      "duration": 1.0
+    },
+    {
+      "text": "And what we see is what we expected, we see\nhere two chunks of 8 bytes, including the",
+      "start": 530.339,
+      "duration": 6.17
+    },
+    {
+      "text": "headers it’s obviously 16 bytes.",
+      "start": 536.509,
+      "duration": 2.751
+    },
+    {
+      "text": "Another cool thing we can do is to define\na variable i1 in gdb and set it to the address",
+      "start": 539.26,
+      "duration": 5.03
+    },
+    {
+      "text": "of this object.",
+      "start": 544.29,
+      "duration": 1.13
+    },
+    {
+      "text": "Aaand we can even add the type of this variable\nwhich is “struct internet”.",
+      "start": 545.42,
+      "duration": 4.57
+    },
+    {
+      "text": "Now we can print this variable i1 and gdb\ncan display us the attributes priority and",
+      "start": 549.99,
+      "duration": 5.329
+    },
+    {
+      "text": "name.",
+      "start": 555.319,
+      "duration": 1.0
+    },
+    {
+      "text": "And we can see that priority is 1, and name\nis still zero, because we have allocated memory",
+      "start": 556.319,
+      "duration": 4.861
+    },
+    {
+      "text": "for the name but not yet assigned it to the\ni1 attribute name.",
+      "start": 561.18,
+      "duration": 3.68
+    },
+    {
+      "text": "If we continue to the next breakpoint the\naddress of the name got assigned and the i2",
+      "start": 564.86,
+      "duration": 5.72
+    },
+    {
+      "text": "object got allocated.",
+      "start": 570.58,
+      "duration": 1.609
+    },
+    {
+      "text": "And the result of malloc is again in eax,\nthat’s the address of the i2 object.",
+      "start": 572.189,
+      "duration": 5.45
+    },
+    {
+      "text": "So we can also define the variable i2 in gdb.",
+      "start": 577.639,
+      "duration": 2.51
+    },
+    {
+      "text": "And when we print that we can see that it’s\nstill empty.",
+      "start": 580.149,
+      "duration": 2.88
+    },
+    {
+      "text": "Now if we continue the priority of i2 should\nbe set to two, which we can verify by looking",
+      "start": 583.029,
+      "duration": 7.081
+    },
+    {
+      "text": "at the heap memory as well when we print the\ni2 object.",
+      "start": 590.11,
+      "duration": 5.32
+    },
+    {
+      "text": "Also all of our 4 mallocs are done now.",
+      "start": 595.43,
+      "duration": 4.07
+    },
+    {
+      "text": "And if we compare that to what we expected\nin the earlier video, we can see that it fits",
+      "start": 599.5,
+      "duration": 4.319
+    },
+    {
+      "text": "perfectly.",
+      "start": 603.819,
+      "duration": 1.231
+    },
+    {
+      "text": "There is only one thing that we didn’t talk\nabout yet, and that’s this big value after",
+      "start": 605.05,
+      "duration": 6.339
+    },
+    {
+      "text": "all chunks at the end.",
+      "start": 611.389,
+      "duration": 2.331
+    },
+    {
+      "text": "Well this area down here is all free memory\nand in exploitation terms this is often referred",
+      "start": 613.72,
+      "duration": 4.919
+    },
+    {
+      "text": "to as the wilderness.",
+      "start": 618.639,
+      "duration": 1.351
+    },
+    {
+      "text": "This is number is the remaining size of the\nheap.",
+      "start": 619.99,
+      "duration": 3.75
+    },
+    {
+      "text": "This whole thing is basically a huge heap\nchunk, and that number is its length.",
+      "start": 623.74,
+      "duration": 5.43
+    },
+    {
+      "text": "I made a three part video about the cookbook\nchallenge from a ctf, and that exploit abuses",
+      "start": 629.17,
+      "duration": 6.68
+    },
+    {
+      "text": "this number to redirect code execution.",
+      "start": 635.85,
+      "duration": 1.82
+    },
+    {
+      "text": "It’s super awesome.",
+      "start": 637.67,
+      "duration": 1.0
+    },
+    {
+      "text": "You should watch it.",
+      "start": 638.67,
+      "duration": 1.62
+    },
+    {
+      "text": "Anyway.",
+      "start": 640.29,
+      "duration": 1.0
+    },
+    {
+      "text": "Right now the name of i1 is still an empty\nstring.",
+      "start": 641.29,
+      "duration": 2.839
+    },
+    {
+      "text": "But this is about to change with the next\nbreakpoint.",
+      "start": 644.129,
+      "duration": 3.02
+    },
+    {
+      "text": "Because we are about to execute the first\nstrcpy, which copies this super long first",
+      "start": 647.149,
+      "duration": 4.771
+    },
+    {
+      "text": "argument.",
+      "start": 651.92,
+      "duration": 1.0
+    },
+    {
+      "text": "Continue.",
+      "start": 652.92,
+      "duration": 1.0
+    },
+    {
+      "text": "Now first thing we notice is here in the heap\nmemory.",
+      "start": 653.92,
+      "duration": 2.88
+    },
+    {
+      "text": "Those ascii characters appear and it looks\nlike they have overwritten a lot of stuf on",
+      "start": 656.8,
+      "duration": 4.469
+    },
+    {
+      "text": "the heap.",
+      "start": 661.269,
+      "duration": 1.0
+    },
+    {
+      "text": "What earlier was supposed to be chunk header\nmetadata, like the size is now 44444444.",
+      "start": 662.269,
+      "duration": 5.541
+    },
+    {
+      "text": "Let’s have a look at the objects i1 and\ni2.",
+      "start": 667.81,
+      "duration": 4.009
+    },
+    {
+      "text": "So i1 looks fine, i1 has still priority 1\nand name with the string that we passed to",
+      "start": 671.819,
+      "duration": 4.591
+    },
+    {
+      "text": "it.",
+      "start": 676.41,
+      "duration": 1.989
+    },
+    {
+      "text": "How about i2?",
+      "start": 678.399,
+      "duration": 1.231
+    },
+    {
+      "text": "Uh… that looks fucked.",
+      "start": 679.63,
+      "duration": 1.869
+    },
+    {
+      "text": "Priority is now a super huge number.",
+      "start": 681.499,
+      "duration": 1.611
+    },
+    {
+      "text": "In fact that’s just 45454545 in decimal,\nand that’s the Es.",
+      "start": 683.11,
+      "duration": 2.789
+    },
+    {
+      "text": "And the name is 46464646, which we know are\nFs.",
+      "start": 685.899,
+      "duration": 1.0
+    },
+    {
+      "text": "And yeah, we seem to have overwritten a lot\nof stuff on the heap.",
+      "start": 686.899,
+      "duration": 1.0
+    },
+    {
+      "text": "Infact we have overwritten the next chunk\non the heap after the i1 name.",
+      "start": 687.899,
+      "duration": 4.141
+    },
+    {
+      "text": "And now the next strcpy will take i2->name,\nwhich is pointing to some bad memory and try",
+      "start": 692.04,
+      "duration": 5.729
+    },
+    {
+      "text": "to copy there the 2nd argument.",
+      "start": 697.769,
+      "duration": 2.281
+    },
+    {
+      "text": "Really frckn awesome.",
+      "start": 700.05,
+      "duration": 2.27
+    },
+    {
+      "text": "So this challenge showed one aspect of heap\nexploits.",
+      "start": 702.32,
+      "duration": 3.81
+    },
+    {
+      "text": "It doesn’t attack the heap algorithm itself,\nit attacks the application, which uses objects",
+      "start": 706.13,
+      "duration": 4.939
+    },
+    {
+      "text": "on the heap that we can modify by overwriting\nstuff.",
+      "start": 711.069,
+      "duration": 5.08
+    },
+    {
+      "text": "And those modified objects then bend the execution\nflow.",
+      "start": 716.149,
+      "duration": 3.081
+    },
+    {
+      "text": "Cool, huh?",
+      "start": 719.23,
+      "duration": 0.68
+    }
+  ],
+  "full_text": "In the last video we learned some basics about\nhow the heap works and now we want to apply this to heap level 1 from exploit-exercsies\nprotostar to solve it. Actually I want try something. We do some roleplaying. Let’s first be the security researcher who\nwant’s to find a bug to exploit in this binary. Afterwards we play developer trying to understand\nthe exploit to fix the issue. So we put on our black hoodie and get started… first we open the binary heap1 in gdb and\nexecute it. We get a segfault. And it also shows us that the segfault was\ncaused by strcpy, because it tried to copy a string from the address 0, to this other\naddress here, and 0 is obviously not valid memory - so it crashes. We know how linux binaries work, so we make\nan educated guess that this application might require some input and we try the arguments. Run with aaaa. Again another segfault, but the attentive\nviewer will notice that the address is now different, so this is a different strcpy,\nwhich again can’t copy from address 0, so we guess that it requires another argument. And this time the program runs through without\nerrors. Now we try to find a bug, so the simplest\nthing to do is, we just throw some long inputs at the program and see if something happens. So for the first argument I choose to do a\npattern with letters and for the second argument I do numbers, just so I could idnetify them\nif something would occur. We run that, and we got a different segfault. Again because of strcpy, but this time the\ndestination address looks invalid. It tried to copy the string with the numbers,\nwhich we know is the second argument, to the address 46,46,46,46 which is the hexcode for\nFFFF. So whatever happened, we somehow overwrote\nan address, that is used as the destination of the strcpy. And this means we can now use the first argument\nto fully control where we want to write. And we can fully choose what to write, with\nthe second argument. Now we have a lot of freedom what we want\nto overwrite. For example we can overwrite the return pointer\non the stack to redirect code execution, or we can overwrite an entry of the global offset\ntable, which I explained in a previous video, to achieve the same. Let’s do the latter one, it’s usually\nmore reliable than the stack - which likes to move around. So let’s check what kind of function is\ncalled after the evil strcpy. We can peak into the source code and see that\nthere is a printf, and we could assume that we want to overwrite printf on the global\noffset table, but that is deceiving. That’s not the case. So let’s better stick to the assembly. First of all we have to find the location\nfrom were we were calling the strcpy. We can use backtrace for that, which will\nlook at the stack and the stored return pointers to figure out where we are - as a sidenote,\nif you found a bug that smashes the stack, then backtrace can not make much sense of\nit anymore. So it doesn’t always work. And here we can see that currently we are\nin strcpy, but we were coming from this address. So let’s set the disassemblu flavor to sane\nintel syntax and disasemble the address. This will now disassemble the whole function\nthis address belongs to. Our address ended in 5a, so we are here after\nthe strcpy. And as you can see there is a call to puts\nnext. Which btw is not printf like in the source\ncode. That’s because the compiler replaced the\nprintf with puts for optimization reasons. Ok, so let’s overwrite the global offset\ntable entry for puts. As shown in the got video we can figure out\nthe address of puts by first disassembling the function trapoline in the procedure linkage\ntable, which would now jump to an address stored at this address. So this means this is the address of the puts\nglobal offset table entry. So this is the target we want to write to,\nthus we place it in the first argument. gdb run, but we use backticks in the first\nargument to execute /bin/echo. As you know echo simply outputs whatever you\npass to it as arguments, and we can use that to get characters with hexvalues we can’t\ntype. For example the hex value 8. So echo -ne, -n because we don’t want that\necho places a newline at the end of the output., and -e because we want echo to convert hex\nescaped numbers into the raw characters. Just to make sure everything works we echo\nthe whole test string up to the Fs again. Now echo inside of the backticks will be executed\nand the output of that will be placed inside of the quotes as the first argument. And when we run this we get the same segfault\nas before, so all is fine. Next step is obviously to replace the Fs with\nthe address of the puts global offset table entry. And when we now run it we get a segfault somehwere\nelse, this time because of 30303030, which is ascii for 0000. And when we look at the registers with info\nregisters we can see that we sucessfully got control of EIP, which means we can now redirect\ncode anywhere we want. In this case we want to call winner, winner\nhas this address here. So we place that into the second argument\ninstead of argv2 by using echo in backticks. We execute it and we get winner. Which also works great outside of gdb. In summary we can say this:\nwe identified a bug by guessing and playing around with it. Through gdb we learned that somehow we can\ncontrol the destination of a strcpy, and we learned we even control what we want to copy. And we abused that to overwrite the function\naddress of puts to redirect code execution to the winner function. All without knowing why this even happened\nand not even knowing that the heap was involved at all. Being a good security researcher we create\na writeup, an advisory for this. Providing our proof of concept exploit as\nwell as some additional information that might help the developer. Now let’s change sides and become the developer. We take off our black hoodie, and put on our\ngrey hoodie. Because that's what developers wear. So we just got this email from this dude who\nfound a bug in our program. He even provided a Proof of Concept exploit\nwith it. Now we want to figure out why and how this\nhappened, so we can fix it. In the advisory it says that it has to do\nsomething with strcpy. So we read the manual about strcpy. And have this “oh shit” moment when we\nrealized we didn’t even read the documentation that would have told us what a bad idea that\nwas. So now we could fix that. For example using strncpy or use strlen to\ncheck the length before we copy it and then exit. But because we are a good developer we try\nto learn from this advisory and try to understand how the exploit exactly works. In the last video, the heap malloc introduction\nvideo, we already thought about how the heap should look like from this program. So let’s see how it looks in reality. To do this let’s set a breakpoint after\neach malloc and strcpy. We dissasemble main and look for all those\ncalls and set breakpoints afterwards. Then we run it with the proof of concept exploit\narguments. And we hit the first breakpoint. So now the first malloc happened. So we are currently here in the assembler\ncode and the result of malloc is in eax. So eax contains the address on the heap where\nwe have enough space for the internet struct i1. And we can look at this address and we can\nsee it’s simply 0. With info proc mappings we can see the memory\nsegments, and there is also the heap and we can have a look at that. Oh, maybe it’s a good idea to add this heap\noutput as a gdb hook as well. So we see it automatically at each breakpoint. define hook-stop\nx/64wx 0x end So if we now continue we should set the priority\nof i1 to 1, and then malloc for the name. Let’s have a closer look at the heap. So as we learned the i1 variable points here. So this is where the struct starts and you\ncan se that the first attribute, which is the priority is set to 1. And before that we have the heap metadata,\nthe chunk header, which contains the lnegth of this chunk, including the last bit set\nto 1 which means that the previous block is not free. It’s in use. And what we see is what we expected, we see\nhere two chunks of 8 bytes, including the headers it’s obviously 16 bytes. Another cool thing we can do is to define\na variable i1 in gdb and set it to the address of this object. Aaand we can even add the type of this variable\nwhich is “struct internet”. Now we can print this variable i1 and gdb\ncan display us the attributes priority and name. And we can see that priority is 1, and name\nis still zero, because we have allocated memory for the name but not yet assigned it to the\ni1 attribute name. If we continue to the next breakpoint the\naddress of the name got assigned and the i2 object got allocated. And the result of malloc is again in eax,\nthat’s the address of the i2 object. So we can also define the variable i2 in gdb. And when we print that we can see that it’s\nstill empty. Now if we continue the priority of i2 should\nbe set to two, which we can verify by looking at the heap memory as well when we print the\ni2 object. Also all of our 4 mallocs are done now. And if we compare that to what we expected\nin the earlier video, we can see that it fits perfectly. There is only one thing that we didn’t talk\nabout yet, and that’s this big value after all chunks at the end. Well this area down here is all free memory\nand in exploitation terms this is often referred to as the wilderness. This is number is the remaining size of the\nheap. This whole thing is basically a huge heap\nchunk, and that number is its length. I made a three part video about the cookbook\nchallenge from a ctf, and that exploit abuses this number to redirect code execution. It’s super awesome. You should watch it. Anyway. Right now the name of i1 is still an empty\nstring. But this is about to change with the next\nbreakpoint. Because we are about to execute the first\nstrcpy, which copies this super long first argument. Continue. Now first thing we notice is here in the heap\nmemory. Those ascii characters appear and it looks\nlike they have overwritten a lot of stuf on the heap. What earlier was supposed to be chunk header\nmetadata, like the size is now 44444444. Let’s have a look at the objects i1 and\ni2. So i1 looks fine, i1 has still priority 1\nand name with the string that we passed to it. How about i2? Uh… that looks fucked. Priority is now a super huge number. In fact that’s just 45454545 in decimal,\nand that’s the Es. And the name is 46464646, which we know are\nFs. And yeah, we seem to have overwritten a lot\nof stuff on the heap. Infact we have overwritten the next chunk\non the heap after the i1 name. And now the next strcpy will take i2->name,\nwhich is pointing to some bad memory and try to copy there the 2nd argument. Really frckn awesome. So this challenge showed one aspect of heap\nexploits. It doesn’t attack the heap algorithm itself,\nit attacks the application, which uses objects on the heap that we can modify by overwriting\nstuff. And those modified objects then bend the execution\nflow. Cool, huh?",
+  "errors": []
+}

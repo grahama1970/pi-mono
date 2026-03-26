@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1Hx-PzyGtX0",
+    "language": "en",
+    "took_ms": 8839,
+    "method": null,
+    "title": "DEF CON 32 - Process Injection Attacks w ROP - Bramwell Brizendine, Shiva Shashank Kusuma",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1367,
+    "description": "This talk showcases techniques for process injection using advanced return-oriented programming (ROP). Process injection via ROP introduces significant hurdles, requiring many WinAPIs to be chained together, each with complex parameters and return values. We give practical details on how to best manage this. One seemingly insurmountable challenge is in identifying the target binary, as string comparison can be extremely difficult in ROP, as needed ROP gadgets may be lacking. We unveil a unique, universal solution, giving a reliable means of string comparison via ROP, which works all the time, allowing a specific process to be pinpointed and injected into via ROP.\n\nWe created numerous patterns for different WinAPIs, allowing for as many as a dozen ways of preparing a specific WinAPI via ROP, if using an approach centered around the PUSHAD instruction. With some WinAPIs, there are zero patterns for PUSHAD, forcing us to rely upon the much lauded “sniper” approach. We document all such variations of patterns for the WinAPIs in our demonstrated process injection. This research is not intended to demo a one-off example of process injection via ROP, but to provide a methodology that can be used time and time again, providing unique templates for others to use the same WinAPIs when attempting process injection via ROP.",
+    "view_count": 1126
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1Hx-PzyGtX0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

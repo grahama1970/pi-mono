@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C8F5kvm2B5s",
+    "language": "en",
+    "took_ms": 9957,
+    "method": null,
+    "title": "DEF CON 33 - Veilid la revoluçion : Your data is yours to own - Katelyn Bowden & Paul Miller",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1386,
+    "description": "At DEFCon 31 Veilid was revealed to the world as a part of the Bovine Resurrection, we generated press coverage worldwide, and managed to drag the window over on how the press talked about digital privacy. Now we come to the Crypto and Privacy Village to spread the good word of the future restored, how we can seize the means of computation, and HOW YOU CAN HELP. We'll talk about the whys and hows of the Veilid Framework, and what this new combined technology stack means for restoring the future we were promised.\n\nWe'll be covering the fundamentals of Veilid, as well as talking about progress made and the apps that have been released on our framework.",
+    "view_count": 248
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C8F5kvm2B5s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

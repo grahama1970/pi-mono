@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y-znlJ32BXU",
+    "language": "en",
+    "took_ms": 8873,
+    "method": null,
+    "title": "Ambassador Taranjit Singh Sandhu on the U.S.-India Partnership",
+    "channel": "Hudson Institute",
+    "upload_date": "20200629",
+    "duration_sec": 2328,
+    "description": "Join Hudson Institute for a conversation with India’s Ambassador to the U.S. Taranjit Singh Sandhu on the strategic relationship between the United States and India, which could be a defining partnership of the 21st century.",
+    "view_count": 3889
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y-znlJ32BXU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

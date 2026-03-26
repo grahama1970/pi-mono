@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OZn_M3qQOw4",
+    "language": "en",
+    "took_ms": 8770,
+    "method": null,
+    "title": "New course with LangChain: Build LLM Apps with LangChain.js",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240110",
+    "duration_sec": 187,
+    "description": "Enroll now: https://bit.ly/41TA4dP\n\nThis course will show webdevs how to expand their toolkits with LangChain.js, a popular JavaScript framework for building with LLMs, and will cover useful concepts for creating powerful, context-aware applications.\n\nAfter taking this course, you will:\n\n- Be able to use LangChain’s underlying abstractions to build your own JavaScript apps.\n- Understand the basics of retrieval augmented generation (RAG).\n- Have the structure of a basic conversational retrieval system that you can use for your own chatbots.\n\nLearn more: https://bit.ly/41TA4dP",
+    "view_count": 3848
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OZn_M3qQOw4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

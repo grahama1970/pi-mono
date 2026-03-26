@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9W0Mxfqsi0E",
+    "language": "en",
+    "took_ms": 7870,
+    "method": null,
+    "title": "Edgard from Nozomi (Part 2)",
+    "channel": "S4 Events",
+    "upload_date": "20230419",
+    "duration_sec": 2750,
+    "description": "The August 2021 Unsolicited Response episode with Edgard Capdevielle, CEO of Nozomi Networks, was a fan favorite. So I invited Edgard back, like the first time it was a wide ranging and fun conversation. His budget analogy of OT security and a new child in the family was Dale's favorite part. \n\nThey cover a lot of ground including:\n- the OT visibility and detection market growth in the last two years\n- whether he stands by his 2021 view that a company that does \"X, Y, Z and OT security\" doesn't really do OT security\n- how much of the back end (non-sensor) part of the market is moving to the cloud now and what will it be in three years. Plus some disagreements / discussion on architecture\n- budget muscle and momentum\n- what sort of metrics should an asset owner use to determine the value of these OT visibility and detection solutions\n- how is the US Government affecting the market\n\nEnjoy!",
+    "view_count": 1031
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9W0Mxfqsi0E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

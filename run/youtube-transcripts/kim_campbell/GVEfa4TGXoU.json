@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GVEfa4TGXoU",
+    "language": "en",
+    "took_ms": 8827,
+    "method": null,
+    "title": "The crazy firepower in American jets",
+    "channel": "Sandboxx",
+    "upload_date": "20220808",
+    "duration_sec": 423,
+    "description": "We're trying something a little different today with a short, unscripted video from Alex Hollings. This time, Alex covers the massive scale of the rounds fired by weapon systems like the M61 Vulcan in many American fighters and the massive GAU-8 carried by the legendary A-10 Thunderbolt II. \n\n📱 Follow Sandboxx News on social\nTwitter: https://twitter.com/sandboxxnews\nInstagram: https://instagram.com/sandboxxnews\nFacebook: https://facebook.com/sandboxxnews\nTikTok: https://www.tiktok.com/@sandboxxnews\n\n📱 Follow Alex Hollings on social\nTwitter: https://twitter.com/AlexHollings52\nInstagram: https://www.instagram.com/alexhollingswrites\nFacebook: https://www.facebook.com/AlexHollingsWrites\nTikTok: https://www.tiktok.com/@alexhollings52",
+    "view_count": 50670
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GVEfa4TGXoU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

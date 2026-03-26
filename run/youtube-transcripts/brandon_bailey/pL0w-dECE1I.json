@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pL0w-dECE1I",
+    "language": "en",
+    "took_ms": 10480,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Kaustubh -  Offensive Embedded Exploitation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 3975,
+    "description": "The world is moving towards smart culture everything nowadays is smart, and mostly all are those smart devices are basically embedded devices with internet connectivity or some provision to connect with the internet. Since these devices are booming in market this also tempting lots of people/groups for hacking. In this 1 hour talk we will discuss how to test the embedded/IoT devices, it would give you a methodology for assessment, how to perform firmware analysis, identifying vulnerable components, basic approach for reverse engineering the binaries to discover potential remote code execution, memory corruption vulnerabilities by looking for native vulnerable functions in C or bad implementation of functions like System, popen, pclose etc. After conducting static analysis, firmware analysis we will move towards dynamic testing approach which include web application testing, Underlying OS security testing, identifying vulnerabilities and misconfiguration in device. At last we will move towards fuzzing the device via web application parameters and installing appropriate debugger on device to identify memory corruption vulnerabilities.\nDELIVERABLES\nMethodology for testing embedded devices\nDeep dive into device security testing from beginner level to developing exploit\nAnd At last, a good intro into how to break known security boundary of embedded/IoT devices by knowing its weakness and thereby securing it.",
+    "view_count": 403
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pL0w-dECE1I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-Pqz3C9gNCw",
+    "language": "en",
+    "took_ms": 11530,
+    "method": null,
+    "title": "DEF CON 31 War Stories - A Different Uber Post Mortem - Joe Sullivan",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 2959,
+    "description": "The federal criminal case of United States v. Joseph Sullivan, NDCA 3-20-CR-337 WHO, has been covered and debated quite publicly since I was fired by the new Uber CEO in November 2017, a year after the incident. Most discussion has focused on questions of my guilt or innocence, the culpability of other executives at the company, and the implications of the case for other security executives.\n\nLess has been written about the guilt or innocence of those who accessed Uber’s AWS environment in October 2016 and triggered an incident response by emailing me and asking for payment. After we met them, my team and I did not consider those 19- and 20-year-old kids to be criminal actors and treated them as security researchers. Yet both also faced federal criminal charges.\n\nDuring my talk I will review the extraordinary investigation done by my team at Uber and put it into the context of other historical cases we and I had worked on. Whether or not you consider them to be security researchers, there are many lessons to be learned related to the dynamics between researchers and companies and the dynamics between companies and the government.",
+    "view_count": 8904
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -Pqz3C9gNCw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

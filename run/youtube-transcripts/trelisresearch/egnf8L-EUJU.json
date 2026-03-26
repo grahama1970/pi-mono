@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "egnf8L-EUJU",
+    "language": "en",
+    "took_ms": 7662,
+    "method": null,
+    "title": "Embeddings vs Fine Tuning  - Part 1, Embeddings",
+    "channel": "Trelis Research",
+    "upload_date": "20230914",
+    "duration_sec": 1882,
+    "description": "*Embedding Notebook*\n1. Create Embeddings with OpenAI, marco, or Llama 2.\n2. Run inference with injected embeddings \nBuy Access Here: https://buy.stripe.com/eVa5l6cWh0zpg7edRc\n\n*Supervised Fine-tuning Notebook - see Part 2*\n- Run fine-tuning using a Q&A dataset.\nBuy Access Here: https://buy.stripe.com/4gw6pag8t5TJ9IQbJ6\n\n*Fine-tuning Repository Access*\n1. Supervised Fine-tuning Notebook\n2. Q&A Dataset Preparation Scripts\n3. Embedding Notebook (Scripts to create and use Embeddings)\n4. Forum Support\nLearn More: https://trelis.com/advanced-fine-tuning-scripts/\n\n*Other Resources*\nPresentation Slides: https://docs.google.com/presentation/d/1_rs38dKhojMHJJ2tVVYRv4s9bi3obas-BXyzsWGIoOA/edit?usp=sharing\n\nSBERT Embeddings: https://www.sbert.net/docs/pretrained-models/msmarco-v5.html\n\n0:00 Should I use embeddings or fine-tuning?\n0:35 How does semantic search work?\n2:10 How to use embeddings with a language model?\n3:00 The two keys to success with embeddings\n4:00 How do cosine similarity and dot product similarity work?\n5:00 How to embed a dataset? Touch Rugby Rules\n6:00 How to prepare data for embedding?\n7:00 Chunking a dataset for embeddings\n9:30 What length of embeddings should I use?\n11:00 Loading Llama 2 13B with GPTQ in Google Colab\n12:00 Installing Llama 2 13B with GPTQ\n13:00 Llama Performance without Embeddings\n16:00 What embeddings should I use?\n16:40 How to use OpenAI Embeddings\n17:10 Using SBERT or \"Marco\" embeddings\n18:00 How to create embeddings from data.\n19:30 Calculating similarity using the dot product\n20:40 Evaluating performance using embeddings\n22:45 Using ChatGPT to Evaluate Performance of Embeddings\n24:30 Llama 13-B Incorrect, GPT-4 Correct\n25:00 Llama 13-B and GPT-4 Incorrect\n26:00 Embeddings incorrect AND Llama 13B and GPT-4 Hallucinate\n27:33 Summary of Embeddings Performance with Llama 2 and GPT-4\n28:40 Pro tips for further improving performance with embeddings\n29:00 ColBERT approach to improve embeddings\n30:05 Top Tips for using Embeddings with Language Models",
+    "view_count": 8445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] egnf8L-EUJU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mVqNxvfaVGg",
+    "language": "en",
+    "took_ms": 7702,
+    "method": null,
+    "title": "DEF CON 33 - State of the Pops: Mapping the Digital Waters - Vlatko Kosturjak & MJ Casado",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1665,
+    "description": "The maritime industry is rapidly digitizing, but how well is it securing its foundational digital infrastructure? In this talk, we present the results of a large-scale passive reconnaissance effort targeting the top 50 global maritime organizations—leveraging only open source intelligence (OSINT) and LLM-assisted analysis. By focusing on core security controls such as DNS, email authentication protocols, and other foundational internet services, we uncover a troubling landscape. All data was collected non-intrusively and ethically, relying exclusively on public data. Results will be presented in an anonymized and aggregated fashion, with a strong emphasis on reproducibility. In true hacker village spirit, we will release all scripts and tools used—empowering attendees to replicate the analysis, audit other industries, or expand upon our methodology. This session will not only highlight the maritime sector’s digital weaknesses but also demonstrate how anyone with OSINT skills and curiosity can surface meaningful insights about critical industries—with zero packets sent to the targets.",
+    "view_count": 172
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mVqNxvfaVGg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

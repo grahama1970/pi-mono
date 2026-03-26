@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qcwmNAXTmL8",
+    "language": "en",
+    "took_ms": 9805,
+    "method": null,
+    "title": "Ronan K. McGovern @ MIT StandUp Comedy Gig 2010",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20101118",
+    "duration_sec": 441,
+    "description": "Ronan's first live standup comedy performance. Jokes based on Irish and MIT stereotypes.",
+    "view_count": 1212
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qcwmNAXTmL8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

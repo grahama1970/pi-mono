@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Lab — Audio Review: Whisperheads</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #141414;
+    --card: #1a1a1a;
+    --card2: #1e1e1e;
+    --green: #00ff88;
+    --red: #ff4444;
+    --amber: #ffaa00;
+    --blue: #4a9eff;
+    --accent: #7c3aed;
+    --white: #e2e8f0;
+    --dim: #64748b;
+    --border: #252525;
+    --font: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  }
+
+  body {
+    background: rgba(0,0,0,0.65);
+    color: var(--white);
+    font-family: var(--font);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  /* Background: pipeline view dimmed */
+  .bg-pipeline {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dim);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Slide-over panel */
+  .slide-over {
+    position: relative;
+    z-index: 10;
+    width: 480px;
+    height: 100vh;
+    background: var(--card);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: -20px 0 60px rgba(0,0,0,0.6);
+  }
+
+  /* HEADER */
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .panel-title-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .panel-title {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+
+  .panel-subtitle {
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .close-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+
+  .close-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+
+  /* A/B TOGGLE */
+  .ab-bar {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .ab-label { font-size: 11px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .ab-toggle {
+    display: flex;
+    gap: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ab-btn {
+    padding: 5px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: var(--dim);
+    transition: all 0.15s;
+  }
+
+  .ab-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  .ab-desc {
+    font-size: 11px;
+    color: var(--dim);
+    margin-left: 4px;
+  }
+
+  .ab-version-badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(124,58,237,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(124,58,237,0.25);
+    font-weight: 600;
+  }
+
+  /* SCROLL CONTENT */
+  .scroll-body {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  /* WAVEFORM SECTION */
+  .waveform-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .waveform-wrap {
+    position: relative;
+    height: 72px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+
+  .waveform-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    left: 38%;
+  }
+
+  .playhead-knob {
+    position: absolute;
+    top: -3px;
+    left: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+  }
+
+  /* Transport controls */
+  .transport {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .transport-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .transport-btn:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+
+  .transport-play {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green);
+    border: none;
+    color: var(--bg);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(0,255,136,0.3);
+    transition: all 0.15s;
+  }
+
+  .transport-play:hover { box-shadow: 0 0 20px rgba(0,255,136,0.5); }
+
+  .transport-time {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--white);
+    margin-left: 4px;
+  }
+
+  .transport-total { color: var(--dim); }
+
+  .transport-vol {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .vol-slider {
+    width: 60px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .vol-fill {
+    height: 100%;
+    background: var(--white);
+    border-radius: 2px;
+    width: 75%;
+  }
+
+  /* MIR BADGES */
+  .mir-section {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .mir-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+    min-width: 70px;
+    flex: 1;
+  }
+
+  .mir-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .mir-val {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .mir-sub { font-size: 9px; color: var(--dim); }
+
+  /* CHORD TIMELINE */
+  .chord-section {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chord-timeline-wrap {
+    position: relative;
+    height: 36px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+  }
+
+  .chord-block {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    border-right: 1px solid rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+
+  .chord-block:last-child { border-right: none; }
+
+  .chord-playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--green);
+    opacity: 0.8;
+    left: 38%;
+  }
+
+  /* STEM MIXER */
+  .stem-section {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stem-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .stem-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stem-label {
+    width: 52px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .stem-color-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stem-fader-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .stem-fader {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .stem-fill {
+    height: 100%;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .stem-knob {
+    position: absolute;
+    right: 0;
+    top: -4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    cursor: grab;
+    transform: translateX(50%);
+  }
+
+  .stem-db {
+    width: 32px;
+    font-size: 10px;
+    color: var(--dim);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .stem-mute {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-size: 9px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .stem-mute:hover { color: var(--white); }
+  .stem-mute.muted { background: rgba(255,68,68,0.15); color: var(--red); border-color: rgba(255,68,68,0.3); }
+
+  /* VOICE GALLERY */
+  .voice-section {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .voice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .voice-card {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .voice-card:hover { border-color: rgba(124,58,237,0.4); }
+
+  .voice-card.selected {
+    border-color: var(--accent);
+    background: rgba(124,58,237,0.06);
+  }
+
+  .voice-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .voice-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .voice-name { font-size: 12px; font-weight: 700; color: var(--white); }
+  .voice-desc { font-size: 10px; color: var(--dim); margin-top: 2px; line-height: 1.4; }
+
+  .voice-tags {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .voice-tag {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    color: var(--dim);
+    border: 1px solid var(--border);
+  }
+
+  /* FOOTER ACTIONS */
+  .panel-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .btn-lg {
+    flex: 1;
+    padding: 11px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-approve {
+    background: var(--green);
+    color: var(--bg);
+  }
+
+  .btn-approve:hover { box-shadow: 0 0 16px rgba(0,255,136,0.35); }
+
+  .btn-reject {
+    background: rgba(255,68,68,0.1);
+    color: var(--red);
+    border: 1px solid rgba(255,68,68,0.25);
+    flex: 0;
+    padding: 11px 20px;
+  }
+
+  .btn-reject:hover { background: rgba(255,68,68,0.18); }
+
+  .btn-defer {
+    background: transparent;
+    color: var(--dim);
+    border: 1px solid var(--border);
+    flex: 0;
+    padding: 11px 16px;
+  }
+
+  .btn-defer:hover { color: var(--white); }
+
+  /* Waveform bars */
+  .wf-bar { fill: var(--amber); opacity: 0.6; }
+  .wf-bar-played { fill: var(--amber); opacity: 1; }
+  .wf-mirror { fill: var(--amber); opacity: 0.2; }
+  .wf-mirror-played { fill: var(--amber); opacity: 0.35; }
+</style>
+</head>
+<body>
+
+<!-- DIM BACKGROUND (represents pipeline behind the slide-over) -->
+<div class="bg-pipeline">
+  <div style="text-align:center;opacity:0.3;">
+    <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Whisperheads · Pipeline View</div>
+    <div style="font-size:12px;">dimmed behind review panel</div>
+  </div>
+</div>
+
+<!-- SLIDE-OVER PANEL (480px) -->
+<div class="slide-over">
+
+  <!-- HEADER -->
+  <div class="panel-header">
+    <div class="panel-title-row">
+      <div class="panel-title">Review Audio</div>
+      <div class="panel-subtitle">
+        <span>Whisperheads</span>
+        <span style="color:var(--border);">·</span>
+        <span>Round 7 · D minor · 85 BPM</span>
+        <span style="color:var(--border);">·</span>
+        <span style="color:var(--amber);">Music Stage</span>
+      </div>
+    </div>
+    <div class="close-btn">✕</div>
+  </div>
+
+  <!-- A/B TOGGLE -->
+  <div class="ab-bar">
+    <span class="ab-label">Version</span>
+    <div class="ab-toggle">
+      <button class="ab-btn active">A</button>
+      <button class="ab-btn">B</button>
+    </div>
+    <span class="ab-desc">A = Round 7 (current) · B = Round 6</span>
+    <div class="ab-version-badge">A is newer ↑</div>
+  </div>
+
+  <!-- SCROLL BODY -->
+  <div class="scroll-body">
+
+    <!-- WAVEFORM -->
+    <div class="waveform-section">
+      <div class="section-label" style="margin-bottom:8px;">
+        Waveform
+        <span style="color:var(--green);font-size:10px;">▶ playing</span>
+      </div>
+
+      <div class="waveform-wrap">
+        <!-- SVG waveform with mirrored bars -->
+        <svg class="waveform-svg" viewBox="0 0 440 72" preserveAspectRatio="none">
+          <!-- Center line -->
+          <line x1="0" y1="36" x2="440" y2="36" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+          <!-- Generated waveform bars (80 bars, 5.5px wide, 1px gap) -->
+          <!-- Heights vary to look like a real waveform. Played portion (0-38%) brighter -->
+
+          <!-- Bar macro: x, h_up, played? -->
+          <!-- I'll use path for efficiency, alternating heights -->
+          <!-- Bars: each bar is 5px wide at x = i*5.5, centered at y=36 -->
+          <!-- heights array (rough sine with noise): -->
+
+          <!-- played section (x < 168) -->
+          <rect class="wf-bar-played" x="0" y="30" width="4" height="12"/>
+          <rect class="wf-mirror-played" x="0" y="36" width="4" height="6"/>
+          <rect class="wf-bar-played" x="5.5" y="24" width="4" height="24"/>
+          <rect class="wf-mirror-played" x="5.5" y="36" width="4" height="12"/>
+          <rect class="wf-bar-played" x="11" y="28" width="4" height="16"/>
+          <rect class="wf-mirror-played" x="11" y="36" width="4" height="8"/>
+          <rect class="wf-bar-played" x="16.5" y="18" width="4" height="36"/>
+          <rect class="wf-mirror-played" x="16.5" y="36" width="4" height="18"/>
+          <rect class="wf-bar-played" x="22" y="22" width="4" height="28"/>
+          <rect class="wf-mirror-played" x="22" y="36" width="4" height="14"/>
+          <rect class="wf-bar-played" x="27.5" y="14" width="4" height="44"/>
+          <rect class="wf-mirror-played" x="27.5" y="36" width="4" height="22"/>
+          <rect class="wf-bar-played" x="33" y="20" width="4" height="32"/>
+          <rect class="wf-mirror-played" x="33" y="36" width="4" height="16"/>
+          <rect class="wf-bar-played" x="38.5" y="26" width="4" height="20"/>
+          <rect class="wf-mirror-played" x="38.5" y="36" width="4" height="10"/>
+          <rect class="wf-bar-played" x="44" y="12" width="4" height="48"/>
+          <rect class="wf-mirror-played" x="44" y="36" width="4" height="24"/>
+          <rect class="wf-bar-played" x="49.5" y="16" width="4" height="40"/>
+          <rect class="wf-mirror-played" x="49.5" y="36" width="4" height="20"/>
+          <rect class="wf-bar-played" x="55" y="22" width="4" height="28"/>
+          <rect class="wf-mirror-played" x="55" y="36" width="4" height="14"/>
+          <rect class="wf-bar-played" x="60.5" y="8" width="4" height="56"/>
+          <rect class="wf-mirror-played" x="60.5" y="36" width="4" height="28"/>
+          <rect class="wf-bar-played" x="66" y="14" width="4" height="44"/>
+          <rect class="wf-mirror-played" x="66" y="36" width="4" height="22"/>
+          <rect class="wf-bar-played" x="71.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror-played" x="71.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar-played" x="77" y="18" width="4" height="36"/>
+          <rect class="wf-mirror-played" x="77" y="36" width="4" height="18"/>
+          <rect class="wf-bar-played" x="82.5" y="10" width="4" height="52"/>
+          <rect class="wf-mirror-played" x="82.5" y="36" width="4" height="26"/>
+          <rect class="wf-bar-played" x="88" y="16" width="4" height="40"/>
+          <rect class="wf-mirror-played" x="88" y="36" width="4" height="20"/>
+          <rect class="wf-bar-played" x="93.5" y="24" width="4" height="24"/>
+          <rect class="wf-mirror-played" x="93.5" y="36" width="4" height="12"/>
+          <rect class="wf-bar-played" x="99" y="12" width="4" height="48"/>
+          <rect class="wf-mirror-played" x="99" y="36" width="4" height="24"/>
+          <rect class="wf-bar-played" x="104.5" y="18" width="4" height="36"/>
+          <rect class="wf-mirror-played" x="104.5" y="36" width="4" height="18"/>
+          <rect class="wf-bar-played" x="110" y="22" width="4" height="28"/>
+          <rect class="wf-mirror-played" x="110" y="36" width="4" height="14"/>
+          <rect class="wf-bar-played" x="115.5" y="6" width="4" height="60"/>
+          <rect class="wf-mirror-played" x="115.5" y="36" width="4" height="30"/>
+          <rect class="wf-bar-played" x="121" y="14" width="4" height="44"/>
+          <rect class="wf-mirror-played" x="121" y="36" width="4" height="22"/>
+          <rect class="wf-bar-played" x="126.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror-played" x="126.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar-played" x="132" y="18" width="4" height="36"/>
+          <rect class="wf-mirror-played" x="132" y="36" width="4" height="18"/>
+          <rect class="wf-bar-played" x="137.5" y="10" width="4" height="52"/>
+          <rect class="wf-mirror-played" x="137.5" y="36" width="4" height="26"/>
+          <rect class="wf-bar-played" x="143" y="22" width="4" height="28"/>
+          <rect class="wf-mirror-played" x="143" y="36" width="4" height="14"/>
+          <rect class="wf-bar-played" x="148.5" y="16" width="4" height="40"/>
+          <rect class="wf-mirror-played" x="148.5" y="36" width="4" height="20"/>
+          <rect class="wf-bar-played" x="154" y="12" width="4" height="48"/>
+          <rect class="wf-mirror-played" x="154" y="36" width="4" height="24"/>
+          <rect class="wf-bar-played" x="159.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror-played" x="159.5" y="36" width="4" height="16"/>
+
+          <!-- unplayed section (x >= 168) -->
+          <rect class="wf-bar" x="165" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="165" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="170.5" y="24" width="4" height="24"/>
+          <rect class="wf-mirror" x="170.5" y="36" width="4" height="12"/>
+          <rect class="wf-bar" x="176" y="14" width="4" height="44"/>
+          <rect class="wf-mirror" x="176" y="36" width="4" height="22"/>
+          <rect class="wf-bar" x="181.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="181.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="187" y="10" width="4" height="52"/>
+          <rect class="wf-mirror" x="187" y="36" width="4" height="26"/>
+          <rect class="wf-bar" x="192.5" y="18" width="4" height="36"/>
+          <rect class="wf-mirror" x="192.5" y="36" width="4" height="18"/>
+          <rect class="wf-bar" x="198" y="26" width="4" height="20"/>
+          <rect class="wf-mirror" x="198" y="36" width="4" height="10"/>
+          <rect class="wf-bar" x="203.5" y="12" width="4" height="48"/>
+          <rect class="wf-mirror" x="203.5" y="36" width="4" height="24"/>
+          <rect class="wf-bar" x="209" y="8" width="4" height="56"/>
+          <rect class="wf-mirror" x="209" y="36" width="4" height="28"/>
+          <rect class="wf-bar" x="214.5" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="214.5" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="220" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="220" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="225.5" y="14" width="4" height="44"/>
+          <rect class="wf-mirror" x="225.5" y="36" width="4" height="22"/>
+          <rect class="wf-bar" x="231" y="22" width="4" height="28"/>
+          <rect class="wf-mirror" x="231" y="36" width="4" height="14"/>
+          <rect class="wf-bar" x="236.5" y="6" width="4" height="60"/>
+          <rect class="wf-mirror" x="236.5" y="36" width="4" height="30"/>
+          <rect class="wf-bar" x="242" y="18" width="4" height="36"/>
+          <rect class="wf-mirror" x="242" y="36" width="4" height="18"/>
+          <rect class="wf-bar" x="247.5" y="24" width="4" height="24"/>
+          <rect class="wf-mirror" x="247.5" y="36" width="4" height="12"/>
+          <rect class="wf-bar" x="253" y="12" width="4" height="48"/>
+          <rect class="wf-mirror" x="253" y="36" width="4" height="24"/>
+          <rect class="wf-bar" x="258.5" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="258.5" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="264" y="10" width="4" height="52"/>
+          <rect class="wf-mirror" x="264" y="36" width="4" height="26"/>
+          <rect class="wf-bar" x="269.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="269.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="275" y="14" width="4" height="44"/>
+          <rect class="wf-mirror" x="275" y="36" width="4" height="22"/>
+          <rect class="wf-bar" x="280.5" y="22" width="4" height="28"/>
+          <rect class="wf-mirror" x="280.5" y="36" width="4" height="14"/>
+          <rect class="wf-bar" x="286" y="18" width="4" height="36"/>
+          <rect class="wf-mirror" x="286" y="36" width="4" height="18"/>
+          <rect class="wf-bar" x="291.5" y="8" width="4" height="56"/>
+          <rect class="wf-mirror" x="291.5" y="36" width="4" height="28"/>
+          <rect class="wf-bar" x="297" y="14" width="4" height="44"/>
+          <rect class="wf-mirror" x="297" y="36" width="4" height="22"/>
+          <rect class="wf-bar" x="302.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="302.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="308" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="308" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="313.5" y="12" width="4" height="48"/>
+          <rect class="wf-mirror" x="313.5" y="36" width="4" height="24"/>
+          <rect class="wf-bar" x="319" y="22" width="4" height="28"/>
+          <rect class="wf-mirror" x="319" y="36" width="4" height="14"/>
+          <rect class="wf-bar" x="324.5" y="10" width="4" height="52"/>
+          <rect class="wf-mirror" x="324.5" y="36" width="4" height="26"/>
+          <rect class="wf-bar" x="330" y="18" width="4" height="36"/>
+          <rect class="wf-mirror" x="330" y="36" width="4" height="18"/>
+          <rect class="wf-bar" x="335.5" y="24" width="4" height="24"/>
+          <rect class="wf-mirror" x="335.5" y="36" width="4" height="12"/>
+          <rect class="wf-bar" x="341" y="6" width="4" height="60"/>
+          <rect class="wf-mirror" x="341" y="36" width="4" height="30"/>
+          <rect class="wf-bar" x="346.5" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="346.5" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="352" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="352" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="357.5" y="14" width="4" height="44"/>
+          <rect class="wf-mirror" x="357.5" y="36" width="4" height="22"/>
+          <rect class="wf-bar" x="363" y="22" width="4" height="28"/>
+          <rect class="wf-mirror" x="363" y="36" width="4" height="14"/>
+          <rect class="wf-bar" x="368.5" y="10" width="4" height="52"/>
+          <rect class="wf-mirror" x="368.5" y="36" width="4" height="26"/>
+          <rect class="wf-bar" x="374" y="18" width="4" height="36"/>
+          <rect class="wf-mirror" x="374" y="36" width="4" height="18"/>
+          <rect class="wf-bar" x="379.5" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="379.5" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="385" y="12" width="4" height="48"/>
+          <rect class="wf-mirror" x="385" y="36" width="4" height="24"/>
+          <rect class="wf-bar" x="390.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="390.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="396" y="8" width="4" height="56"/>
+          <rect class="wf-mirror" x="396" y="36" width="4" height="28"/>
+          <rect class="wf-bar" x="401.5" y="22" width="4" height="28"/>
+          <rect class="wf-mirror" x="401.5" y="36" width="4" height="14"/>
+          <rect class="wf-bar" x="407" y="16" width="4" height="40"/>
+          <rect class="wf-mirror" x="407" y="36" width="4" height="20"/>
+          <rect class="wf-bar" x="412.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="412.5" y="36" width="4" height="16"/>
+          <rect class="wf-bar" x="418" y="26" width="4" height="20"/>
+          <rect class="wf-mirror" x="418" y="36" width="4" height="10"/>
+          <rect class="wf-bar" x="423.5" y="18" width="4" height="36"/>
+          <rect class="wf-mirror" x="423.5" y="36" width="4" height="18"/>
+          <rect class="wf-bar" x="429" y="24" width="4" height="24"/>
+          <rect class="wf-mirror" x="429" y="36" width="4" height="12"/>
+          <rect class="wf-bar" x="434.5" y="20" width="4" height="32"/>
+          <rect class="wf-mirror" x="434.5" y="36" width="4" height="16"/>
+        </svg>
+
+        <!-- Playhead -->
+        <div class="playhead">
+          <div class="playhead-knob"></div>
+        </div>
+      </div>
+
+      <!-- Transport -->
+      <div class="transport">
+        <button class="transport-btn">⏮</button>
+        <button class="transport-btn">⏪</button>
+        <button class="transport-play">▶</button>
+        <button class="transport-btn">⏩</button>
+        <button class="transport-btn">⏭</button>
+        <span class="transport-time">1:18 <span class="transport-total">/ 3:22</span></span>
+        <div class="transport-vol">
+          🔊
+          <div class="vol-slider"><div class="vol-fill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIR BADGES -->
+    <div class="mir-section">
+      <div class="mir-badge">
+        <div class="mir-label">BPM</div>
+        <div class="mir-val" style="color:var(--blue);">85</div>
+        <div class="mir-sub">stable</div>
+      </div>
+      <div class="mir-badge">
+        <div class="mir-label">Key</div>
+        <div class="mir-val" style="color:var(--accent);">D min</div>
+        <div class="mir-sub">aeolian</div>
+      </div>
+      <div class="mir-badge">
+        <div class="mir-label">Loudness</div>
+        <div class="mir-val" style="color:var(--amber);">−14</div>
+        <div class="mir-sub">LUFS integrated</div>
+      </div>
+      <div class="mir-badge">
+        <div class="mir-label">Duration</div>
+        <div class="mir-val" style="color:var(--white);">3:22</div>
+        <div class="mir-sub">8 bars</div>
+      </div>
+      <div class="mir-badge">
+        <div class="mir-label">Energy</div>
+        <div class="mir-val" style="color:var(--green);">0.34</div>
+        <div class="mir-sub">low–mid</div>
+      </div>
+    </div>
+
+    <!-- CHORD TIMELINE -->
+    <div class="chord-section">
+      <div class="section-label">
+        Chord Timeline · 8 bars
+        <span style="font-size:9px;color:var(--dim);">D minor · aeolian mode</span>
+      </div>
+      <div class="chord-timeline-wrap">
+        <!-- 8 bars, each proportional width -->
+        <div class="chord-block" style="width:12.5%;background:rgba(124,58,237,0.25);color:#b47eff;">Dm</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(74,158,255,0.15);color:var(--blue);">F</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(0,255,136,0.1);color:#80ffbb;">Gm</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(74,158,255,0.15);color:var(--blue);">C</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(124,58,237,0.25);color:#b47eff;">Dm7</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(255,170,0,0.12);color:var(--amber);">B♭</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(74,158,255,0.15);color:var(--blue);">C</div>
+        <div class="chord-block" style="width:12.5%;background:rgba(124,58,237,0.3);color:#b47eff;">Dm</div>
+        <!-- playhead marker -->
+        <div class="chord-playhead"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;">
+        <span style="font-size:9px;color:var(--dim);">Bar 1</span>
+        <span style="font-size:9px;color:var(--dim);">Bar 4</span>
+        <span style="font-size:9px;color:var(--dim);">Bar 8</span>
+      </div>
+    </div>
+
+    <!-- STEM MIXER -->
+    <div class="stem-section">
+      <div class="section-label">Stem Mixer</div>
+      <div class="stem-list">
+
+        <!-- Vocal -->
+        <div class="stem-item">
+          <div class="stem-color-dot" style="background:#7c3aed;"></div>
+          <div class="stem-label">Vocal</div>
+          <div class="stem-fader-wrap">
+            <div class="stem-fader">
+              <div class="stem-fill" style="width:78%;background:linear-gradient(90deg,rgba(124,58,237,0.6),#7c3aed);">
+                <div class="stem-knob" style="background:#7c3aed;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="stem-db">−2.1</div>
+          <div class="stem-mute">M</div>
+        </div>
+
+        <!-- Bass -->
+        <div class="stem-item">
+          <div class="stem-color-dot" style="background:#4a9eff;"></div>
+          <div class="stem-label">Bass</div>
+          <div class="stem-fader-wrap">
+            <div class="stem-fader">
+              <div class="stem-fill" style="width:55%;background:linear-gradient(90deg,rgba(74,158,255,0.5),#4a9eff);">
+                <div class="stem-knob" style="background:#4a9eff;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="stem-db">−5.8</div>
+          <div class="stem-mute">M</div>
+        </div>
+
+        <!-- Drums -->
+        <div class="stem-item">
+          <div class="stem-color-dot" style="background:#ff4444;"></div>
+          <div class="stem-label">Drums</div>
+          <div class="stem-fader-wrap">
+            <div class="stem-fader">
+              <div class="stem-fill" style="width:42%;background:linear-gradient(90deg,rgba(255,68,68,0.5),#ff4444);">
+                <div class="stem-knob" style="background:#ff4444;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="stem-db">−8.2</div>
+          <div class="stem-mute muted">M</div>
+        </div>
+
+        <!-- Keys -->
+        <div class="stem-item">
+          <div class="stem-color-dot" style="background:#00ff88;"></div>
+          <div class="stem-label">Keys</div>
+          <div class="stem-fader-wrap">
+            <div class="stem-fader">
+              <div class="stem-fill" style="width:68%;background:linear-gradient(90deg,rgba(0,255,136,0.4),#00ff88);">
+                <div class="stem-knob" style="background:#00ff88;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="stem-db">−3.4</div>
+          <div class="stem-mute">M</div>
+        </div>
+
+        <!-- Synth -->
+        <div class="stem-item">
+          <div class="stem-color-dot" style="background:#ffaa00;"></div>
+          <div class="stem-label">Synth</div>
+          <div class="stem-fader-wrap">
+            <div class="stem-fader">
+              <div class="stem-fill" style="width:50%;background:linear-gradient(90deg,rgba(255,170,0,0.5),#ffaa00);">
+                <div class="stem-knob" style="background:#ffaa00;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="stem-db">−6.0</div>
+          <div class="stem-mute">M</div>
+        </div>
+
+        <!-- Guitar -->
+        <div class="stem-item">
+          <div class="stem-color-dot" style="background:#ff6b6b;"></div>
+          <div class="stem-label">Guitar</div>
+          <div class="stem-fader-wrap">
+            <div class="stem-fader">
+              <div class="stem-fill" style="width:30%;background:linear-gradient(90deg,rgba(255,107,107,0.5),#ff6b6b);">
+                <div class="stem-knob" style="background:#ff6b6b;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="stem-db">−11.5</div>
+          <div class="stem-mute">M</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VOICE GALLERY -->
+    <div class="voice-section">
+      <div class="section-label">
+        Voice Gallery
+        <span style="font-size:9px;color:var(--dim);">select for Voice stage</span>
+      </div>
+      <div class="voice-grid">
+
+        <div class="voice-card selected">
+          <div class="voice-avatar" style="background:rgba(124,58,237,0.2);">🎤</div>
+          <div class="voice-name">Lyra</div>
+          <div class="voice-desc">Warm mezzo-soprano. Natural vibrato, cinematic quality.</div>
+          <div class="voice-tags">
+            <span class="voice-tag">mezzo</span>
+            <span class="voice-tag">warm</span>
+            <span class="voice-tag">cinematic</span>
+          </div>
+        </div>
+
+        <div class="voice-card">
+          <div class="voice-avatar" style="background:rgba(74,158,255,0.2);">🎙</div>
+          <div class="voice-name">Sable</div>
+          <div class="voice-desc">Deep alto, breathy texture. Best for melancholic themes.</div>
+          <div class="voice-tags">
+            <span class="voice-tag">alto</span>
+            <span class="voice-tag">breathy</span>
+            <span class="voice-tag">dark</span>
+          </div>
+        </div>
+
+        <div class="voice-card">
+          <div class="voice-avatar" style="background:rgba(0,255,136,0.15);">🎵</div>
+          <div class="voice-name">Vael</div>
+          <div class="voice-desc">Androgynous tenor. Clear, precise articulation.</div>
+          <div class="voice-tags">
+            <span class="voice-tag">tenor</span>
+            <span class="voice-tag">clear</span>
+          </div>
+        </div>
+
+        <div class="voice-card">
+          <div class="voice-avatar" style="background:rgba(255,170,0,0.15);">🌊</div>
+          <div class="voice-name">Aether</div>
+          <div class="voice-desc">Ethereal soprano. Heavy reverb processing. Choir-like.</div>
+          <div class="voice-tags">
+            <span class="voice-tag">soprano</span>
+            <span class="voice-tag">ethereal</span>
+            <span class="voice-tag">choir</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end scroll-body -->
+
+  <!-- FOOTER ACTIONS -->
+  <div class="panel-footer">
+    <button class="btn-lg btn-reject">✕ Reject</button>
+    <button class="btn-lg btn-approve">✓ Approve · Start Voice Stage</button>
+    <button class="btn-lg btn-defer">Later</button>
+  </div>
+
+</div>
+
+</body>
+</html>

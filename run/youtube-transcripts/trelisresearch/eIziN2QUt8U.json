@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eIziN2QUt8U",
+    "language": "en",
+    "took_ms": 8848,
+    "method": null,
+    "title": "Fine-tune Multi-modal LLaVA Vision and Language Models",
+    "channel": "Trelis Research",
+    "upload_date": "20240215",
+    "duration_sec": 3066,
+    "description": "➡️ ADVANCED Vision Fine-tuning Repo: https://trelis.com/advanced-vision/\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\nKEY TRELIS LINKS:\n🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Work for Trelis: https://trelis.com/jobs/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n\n**Video Resources**\nSlides: https://docs.google.com/presentation/d/1C4MmT3-JNRpVMgoA14pQC7Ie6vBo0gj70CR_jqTIpos/edit?usp=sharing\nIDEFICS: https://huggingface.co/HuggingFaceM4/idefics-9b-instruct\nLLaVA: https://llava.hliu.cc/\n\nAffiliate Links (support the channel):\n- RunPod - https://tinyurl.com/4b6ecbbn\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n\nChapters:\n0:00 Fine-tuning Multi-modal Models\n0:16 Overview\n1:30 LLaVA vs ChatGPT\n4:53 Applications\n5:37 Multi-modal model architecture\n9:05 Vision Encoder architecture\n14:00 LLaVA 1.5 architecture\n16:30 LLaVA 1.6 architecture\n18:30 IDEFICS architecture\n22:00 Data creation\n24:11 Dataset creation\n25:29 Fine-tuning\n34:25 Inference and Evaluation\n37:34 Data loading\n40:00 LoRA setup\n42:52 Recap so far\n43.25 Evaluation pre-training\n44:26 Training\n45:40 Evaluation post-training\n46:45 Technical clarifications\n50:29 Summary",
+    "view_count": 43375
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eIziN2QUt8U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8wFTdCDMOuk",
+    "language": "en",
+    "took_ms": 7546,
+    "method": null,
+    "title": "Ralph Langner on Lean OT Security",
+    "channel": "S4 Events",
+    "upload_date": "20180228",
+    "duration_sec": 919,
+    "description": "Ralph Langner talks about a new term he is using Lean OT Security. \"Lean OT Security is an approach aiming at making OT security more efficient\"\n\nHe started with what hasn't made a difference in OT security:\n- Wake up calls like Stuxnet, Ukraine and Triton\n- Trying to get Governments involved\n- Name and shame insecure by design vendors\n- Scare tactics and FUD\nNone of this made much of a difference, and we too often default to they don't get it.\n\nWhat might make OT Security better? Can we learn from the Lean Startup Movement? From Lean Manufacturing focus on reducing waste? Can we find some short term gain that outweighs waste? Can we get the end users involved and use them as the experts.\n\nRalph finishes with the principles of Lean OT Security.",
+    "view_count": 1174
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8wFTdCDMOuk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

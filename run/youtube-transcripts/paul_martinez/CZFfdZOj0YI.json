@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CZFfdZOj0YI",
+    "language": "en",
+    "took_ms": 8514,
+    "method": null,
+    "title": "Securing California's Distributed Energy Resources (DER)",
+    "channel": "S4 Events",
+    "upload_date": "20200611",
+    "duration_sec": 2364,
+    "description": "California is amongst the largest deployments of rooftop solar power. Tom Tansy of SunSpec shows how California is approaching securing the smart inverters to prevent DER based attacks on the grid. This is captured in California Rule 21, and is likely to impact DER security across the US. Like many ICS protocols it uses TLS and uses certificates for mutual authentication. SunSpec set ups and is operating the related PKI.\n\nTom looks at the threats today and what are likely threats will be as the amount of DER increases.\n\nAt the end you will see some tough questions and potential issues with the California approach.",
+    "view_count": 245
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CZFfdZOj0YI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

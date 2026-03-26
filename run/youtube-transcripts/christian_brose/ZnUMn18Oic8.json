@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZnUMn18Oic8",
+    "language": "en",
+    "took_ms": 8678,
+    "method": null,
+    "title": "India & the U.S.: Strategic Partners for the Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20210115",
+    "duration_sec": 3333,
+    "description": "Join Hudson Institute for an expert panel discussion on where the India-U.S. partnership stands today and prospects for the months and years ahead. This conversation will be moderated by Dr. Aparna Pande, Director Initiative on the Future of India and South Asia, Hudson Institute.",
+    "view_count": 2110
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZnUMn18Oic8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1oAPx1St4oA",
+    "language": "en",
+    "took_ms": 11329,
+    "method": null,
+    "title": "Seventy-Five Years of India-US Partnership",
+    "channel": "Hudson Institute",
+    "upload_date": "20221026",
+    "duration_sec": 5550,
+    "description": "Ever since India gained independence 75 years ago, the partnership between India and the United States has been critical. Successive American administrations have described relations with Delhi as the defining partnership of the twenty-first century, while successive Indian governments have referred to the US as India’s most important partner. The two countries are linked economically, with bilateral trade between the two countries standing at $160 billion annually, which includes $20 billion in defense trade. India is also key to the US’s Indo-Pacific strategy and is critical to the Quadrilateral Security Dialogue, or Quad.\n\nPlease join Hudson Institute and Takshashila Institution for a discussion on the partnership between the oldest democracy and the largest democracy. Participants include Amb. Arun Kumar Singh, former Indian ambassador to the United States; Amb. Atul Keshap, former US ambassador to India; Daniel Castro, vice president of Information Technology and Innovation Fund (ITIF); and Narayan Ramachandran, co-founder and senior fellow at Takshashila Institution.",
+    "view_count": 2822
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1oAPx1St4oA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

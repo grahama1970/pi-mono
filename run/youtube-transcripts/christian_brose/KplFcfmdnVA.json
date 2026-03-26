@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KplFcfmdnVA",
+    "language": "en",
+    "took_ms": 8854,
+    "method": null,
+    "title": "Weighing the Prospective U.S.-Iran Nuclear Deal",
+    "channel": "Hudson Institute",
+    "upload_date": "20141119",
+    "duration_sec": 5201,
+    "description": "Lee Smith lead a panel discussion with David Albright, Michael Doran, Hillel Fradkin and Ray Takeyh on the impact of a nuclear deal with Iran. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1464
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KplFcfmdnVA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

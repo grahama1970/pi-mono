@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_jIxp52PJmE",
+    "language": "en",
+    "took_ms": 8669,
+    "method": null,
+    "title": "A Conversation with Indian Ambassador Taranjit Singh Sandhu",
+    "channel": "Hudson Institute",
+    "upload_date": "20210625",
+    "duration_sec": 3505,
+    "description": "Please join Hudson Institute President and CEO John Walters and India’s Ambassador to the U.S. Taranjit Singh Sandhu for a discussion on U.S.-India relations.\n\nBoth India and the U.S. face many challenges, including ongoing efforts to combat COVID-19, vaccine distribution, and emerging threats in the Indo-Pacific. These challenges also create opportunities for partnership between the two countries. Join Ambassador Sandhu and John Walters as they discuss these topics and the future of U.S.-India relations.",
+    "view_count": 1546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _jIxp52PJmE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

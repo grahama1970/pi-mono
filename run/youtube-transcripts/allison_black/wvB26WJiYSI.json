@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wvB26WJiYSI",
+    "language": "en",
+    "took_ms": 7799,
+    "method": null,
+    "title": "The Air Force wants to re-arm and re-fuel F-35s in under 30 minutes #f35",
+    "channel": "Sandboxx",
+    "upload_date": "20250214",
+    "duration_sec": 133,
+    "description": "Integrated Combat Turns are a vital part of keeping F-35s in the air, and in the fight, but because they involve refueling and re-arming the fighter while its powerful engine continues to burn, it has to be done right — and above all else — safely. \n\nStay on top of Defense News by subscribing to Sandboxx!",
+    "view_count": 34877
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wvB26WJiYSI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

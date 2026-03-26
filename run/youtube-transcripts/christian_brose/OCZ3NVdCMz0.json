@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OCZ3NVdCMz0",
+    "language": "en",
+    "took_ms": 8237,
+    "method": null,
+    "title": "The Future of North Africa—Reports from Libya, Tunisia, and Morocco",
+    "channel": "Hudson Institute",
+    "upload_date": "20160629",
+    "duration_sec": 5574,
+    "description": "Eric Brown, Sarah Feuer, Lee Smith, and Samuel Tadros discuss the prospects for lasting democracy and persistence of extremist sects in North Africa. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 2438
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OCZ3NVdCMz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

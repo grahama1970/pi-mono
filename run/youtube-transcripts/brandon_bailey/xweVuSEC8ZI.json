@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xweVuSEC8ZI",
+    "language": "en",
+    "took_ms": 7901,
+    "method": null,
+    "title": "DEF CON 31 - There Are No Mushroom Clouds in Cyberwar -  Mieke Eoyang",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 1077,
+    "description": "This presentation will discuss the history of cyberwarfare, highlighting the misconceptions between nuclear deterrence and the nature of cyber conflict. It will shed light on this association in popular culture, including in movies like \"WarGames,\" which influenced then President Ronald Reagan and fed his concerns about potential hacking into U.S. weapons systems. These concerns and other influences helped to shape early perceptions about the cyber domain, which immediately became intertwined with notions of strategic weapons and catastrophic effects. In subsequent decades, continued theorizing about cyberwarfare envisioned strategic cyber attacks that could cause decisive effects, stoking fears of a \"Cyber Pearl Harbor.\" However, the reality is that cyber operations are ephemeral and cyber effects are hard to attribute and are rarely decisive. The turning point in U.S. cyber strategy occurred in lead up to the 2018 midterm election, with the adoption of a new approach focused on defending forward, which involved actively disrupting malicious cyber activity before it affected the U.S. Homeland. This strategy was further informed by Russia’s 2022 invasion of Ukraine, which demonstrated how cyber capabilities may be used in large-scale conventional conflict. Looking ahead, in terms of protecting Americans and strengthening our global Allies and partners, we know that private industry and individual volunteers will play a critical role, including many of the participants at DEF CON. This recognition acknowledges that cyberwarfare is pervasive and requires collective engagement.",
+    "view_count": 11262
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xweVuSEC8ZI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Lxg9YyFJ8s0",
+    "language": "en",
+    "took_ms": 7592,
+    "method": null,
+    "title": "DEF CON 32 - Attacks on GenAI data & using vector encryption to stop them - Patrick Walsh, Bob Wall",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1578,
+    "description": "As the adoption of GenAI tools has soared, security has done little to keep up. New classes of data, and especially vector data, is flooding into new and untested data stores. Vector databases are getting copies of health data, financial data, HR data, emails, and everything else, but they have no intrinsic security. What's worse, the vectors themselves can be reversed in embedding inversion attacks that turn those vectors back into faces, sentences, and even pictures. We discuss these new attacks and a new branch of cryptography, vector encryption, which allows for privacy preserving searches to happen over the encrypted vectors. We'll discuss the benefits, trade-offs, and current state of the field and the open source software we've built to meet the new need.",
+    "view_count": 880
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Lxg9YyFJ8s0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uYTbxNtZ1z4",
+    "language": "en",
+    "took_ms": 7983,
+    "method": null,
+    "title": "DEF CON 30 - Stewart Scott, Trey Herr - Dragon Tails: Supply-side Security& Intl Vuln Disclosure Law",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 943,
+    "description": "This talk will present a study of the reliance of proprietary and open source software on Chinese vulnerability research. A difficult political environment for Chinese security researchers became acute when a law requiring vulnerability disclosure to government and banning it to all others but the affected vendor took effect in Sept. 2021. No public evaluation of this law's impact has yet been made. This talk will present results of a quantitative analysis on the changing proportion of Chinese-based disclosures to major software products from Google, Microsoft, Apple, and VMWare alongside several major open source packages. The analysis will measure change over time in response to evolving Chinese legislation, significant divergence from data on the allocation of bug bounty rewards, and notable trends in the kinds of disclosed vulnerabilities. The Chinese research community’s prowess is well known, from exploits at the Tianfu Cup to preeminent enterprise labs like Qihoo 360. However, the recent law aiming to give the Chinese government early access to the community’s discoveries—and the government’s apparent willingness to enforce it even on high-profile corporations as seen in its punishment of Alibaba—demand more thorough scrutiny. This talk will address implications for policy and the wider hacker community.",
+    "view_count": 434
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uYTbxNtZ1z4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

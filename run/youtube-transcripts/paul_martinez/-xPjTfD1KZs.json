@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-xPjTfD1KZs",
+    "language": "en",
+    "took_ms": 8676,
+    "method": null,
+    "title": "Remote Control Automobiles: Hacking The Snapshot Dongle",
+    "channel": "S4 Events",
+    "upload_date": "20171219",
+    "duration_sec": 1983,
+    "description": "Corey Thuen of Digital Bond Labs takes a look at the security and security ramifications of the Progressive Snapshot dongle that connects to a car's OBD-II port. He quickly shows the device is insecure by design like the PLC's investigated in Project Basecamp. By this we mean the Snapshot dongle is missing even the most basic security controls. An attacker does not need to defeat security to attack the dongle and then the automobile.\n\nCorey also found that the dongle was written without even the most basic secure coding practices. So if an attacker wanted to find and exploit vulnerabilities, which is not necessary today, it would not be difficult.\n\nThe second half of the talk looks at some basic and advanced things an attacker might do with access to a car's CANBus.",
+    "view_count": 4704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -xPjTfD1KZs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

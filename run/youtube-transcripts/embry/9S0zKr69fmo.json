@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9S0zKr69fmo",
+    "language": "en",
+    "took_ms": 7885,
+    "method": null,
+    "title": "S1 E3: This Week in Spaceflight History - Little Joe LJ-1B",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170120",
+    "duration_sec": 2937,
+    "description": "Each week I take The Orbital Mechanics podcast's series \"This week in Spaceflight History\" and I recreate the mission in Kerbal Space Program with my friend Uncle Dad. This week's mission, LJ-1B occurred on Jan 21, 1960 out of Wallops Flight Facility in Virginia. Little Joe was a very small suborbital rocket that was used to test the launch escape system of the first manned spacecraft, the Mercury Capsule. \n\nTune in LIVE ever Wednesday at 9:00 Central (3:00 UTC) to join the action at http://twitch.tv/everydayastronaut\n\nMake sure and check out the Orbital Mechanics Podcast each week to get the run down on the mission!",
+    "view_count": 3066
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9S0zKr69fmo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fMxSRFYXMV0",
+    "language": "en",
+    "took_ms": 7903,
+    "method": null,
+    "title": "DEF CON 31 - The Art of Compromising C2 Servers  A Web App Vulns Perspective - Vangelis Stykas",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2105,
+    "description": "C2 servers of mobile and Windows malware are usually left to their own fate after they have been discovered and the malware is no longer effective. We are going to take a deep dive into the rabbit hole of attacking and owning C2 servers, exposing details about their infrastructure, code bases, and the identity of the companies and individuals that operate and profit from them.\n\nWhile understanding and reversing malware is a highly skilled procedure, attacking the C2 itself rarely requires a lot of technical skills. Most of the C2 servers have the same typical HTTP problems that can be detected by off-the-shelf vulnerability scanners.\n\nBy exploiting low-hanging fruit vulnerabilities, an attacker can obtain unauthorized access to administrative functions, allowing them to command thousands of devices and further explore other attack vectors. This can give them access to administrator panels and malware source code, and result in the identity of threat actors being exposed.",
+    "view_count": 16273
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fMxSRFYXMV0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

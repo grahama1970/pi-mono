@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jALLbBisg_8",
+    "language": "en",
+    "took_ms": 7832,
+    "method": null,
+    "title": "DEF CON 32 - Troll Trapping Through TAS Tools  Exposing Speedrunning Cheaters - Allan Cecil",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2629,
+    "description": "Trolls cheating in video games by passing Tool-Assisted Speedruns off as human effort break leaderboards and stifle speedrunners. Why do they do it when they could make a cool game hack or TAS to show off their work, and how do you trap these trolls? The answer is to use their own tools against them, often with popcorn bucket worthy results like taking down Guinness World Records. From a TASVideos member taking on 1980's Dragster cheat Todd Rogers, a passing mention of Billy Mitchell, and the TASBot team investigating Super Mario Maker shenanigans, this talk covers several notable cheating incidents and concludes with a systematic takedown of a troll that chilled the Diablo speedrunning community for more than a decade.\n\nThis talk includes several investigations I have been a part of in some capacity and will ultimately include additional references in the coming months; I've broken the references out by game, presented in Markdown format like the rest of this document:",
+    "view_count": 988
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jALLbBisg_8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

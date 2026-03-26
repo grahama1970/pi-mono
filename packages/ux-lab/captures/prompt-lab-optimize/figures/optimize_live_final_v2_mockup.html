@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0b1220; color: #e2e8f0; font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; line-height: 1.6; padding: 20px 24px; max-width: 1100px; }
+
+h1 { font-size: 13px; font-weight: 700; color: #7c3aed; font-family: -apple-system, sans-serif; }
+.meta { font-size: 10px; color: #334155; margin: 2px 0 20px; }
+
+.model { margin-bottom: 28px; }
+.model-head { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 6px; }
+.model-select { font-size: 11px; font-weight: 700; color: #e2e8f0; background: #0b1220; border: 1px solid rgba(124,58,237,0.3); border-radius: 4px; padding: 3px 8px; cursor: pointer; outline: none; font-family: -apple-system, sans-serif; }
+.model-stats { font-size: 10px; color: #64748b; font-family: -apple-system, sans-serif; margin-left: auto; }
+.pass { color: #00ff88; font-weight: 700; }
+.fail { color: #ff4444; font-weight: 700; }
+
+table { width: 100%; border-collapse: collapse; margin: 4px 0; }
+th { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #334155; padding: 5px 6px; text-align: left; font-family: -apple-system, sans-serif; position: sticky; top: 0; background: #0b1220; }
+td { padding: 5px 6px; border-top: 1px solid rgba(255,255,255,0.04); vertical-align: top; font-size: 9px; color: #64748b; }
+
+/* Truncation with hover */
+.trunc { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: help; }
+.trunc:hover { white-space: normal; max-width: none; background: #141e2e; position: relative; z-index: 1; padding: 4px 6px; border-radius: 3px; box-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+
+.sys { color: #7c3aed; }
+.usr { color: #4a9eff; }
+.resp { color: #64748b; }
+.f1 { font-size: 10px; font-weight: 700; font-family: -apple-system, sans-serif; text-align: right; white-space: nowrap; }
+.f1g { color: #00ff88; }
+.f1y { color: #ffaa00; }
+.f1r { color: #ff4444; }
+
+/* Round separator */
+.round-sep td { border-top: 2px solid rgba(124,58,237,0.2); font-size: 8px; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.05em; font-family: -apple-system, sans-serif; padding: 8px 6px 4px; }
+
+/* Summary row */
+.sum td { border-top: 2px solid rgba(255,255,255,0.08); font-weight: 700; font-family: -apple-system, sans-serif; font-size: 10px; }
+
+/* Waiting */
+.waiting { color: #7c3aed; font-style: italic; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { display: inline-block; width: 8px; height: 8px; border: 1.5px solid #7c3aed; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 3px; }
+
+/* Badge */
+.b { display: inline-block; padding: 0px 4px; border-radius: 2px; font-size: 8px; font-weight: 700; font-family: -apple-system, sans-serif; margin-right: 3px; }
+.bp { background: rgba(0,255,136,0.1); color: #00ff88; }
+.bf { background: rgba(255,68,68,0.1); color: #ff4444; }
+
+.actions { margin-top: 20px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 8px; }
+.btn { padding: 6px 20px; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: -apple-system, sans-serif; }
+.btn-a { border: 1px solid #00ff88; background: rgba(0,255,136,0.1); color: #00ff88; font-weight: 700; }
+.btn-r { border: 1px solid rgba(255,255,255,0.13); background: transparent; color: #64748b; }
+</style>
+</head>
+<body>
+
+<h1>prompt-lab optimize — taxonomy_v1</h1>
+<div class="meta">Threshold: F1 ≥ 0.800 · Max rounds: 5</div>
+
+<!-- ═══ DeepSeek — DONE in 2 rounds ═══ -->
+<div class="model">
+  <div class="model-head">
+    <select class="model-select">
+      <option selected>DeepSeek-V3</option>
+      <option>qwen2.5:7b</option>
+      <option>text-gemini</option>
+      <option>qwen2.5:14b</option>
+    </select>
+    <span class="model-stats">2 rounds · 1 failure fixed · <span class="pass">F1 0.929 PASS</span></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:8%">Round</th>
+      <th style="width:22%">System Prompt</th>
+      <th style="width:25%">User Prompt</th>
+      <th style="width:30%">Response</th>
+      <th style="width:5%" class="f1">F1</th>
+    </tr></thead>
+    <tbody>
+      <!-- Round 1 -->
+      <tr class="round-sep"><td colspan="5">Round 1</td></tr>
+      <tr>
+        <td>1.1</td>
+        <td class="trunc sys" title="You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags from the given security control or technique. Return ONLY valid JSON: {&quot;conceptual&quot;:[...],&quot;tactical&quot;:[...],&quot;confidence&quot;:0.8} Valid conceptual: Precision, Resilience, Fragility, Corruption, Loyalty, Stealth. Valid tactical: Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist. Choose tags that best describe the PRIMARY purpose.">You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags...</td>
+        <td class="trunc usr" title="Control: Registry Run Keys / Startup Folder&#10;Description: Adversaries may achieve persistence by adding a program to a startup folder or referencing it with a Registry run key.">Control: Registry Run Keys / Startup Folder Description: Adversaries may achieve persistence...</td>
+        <td class="resp"><span class="b bf">FAIL</span>{"conceptual":["Corruption","Persistence"],"tactical":["Persist"],"confidence":0.95}</td>
+        <td class="f1 f1r">0.333</td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td class="trunc sys" title="(same as 1.1)">↑ same</td>
+        <td class="trunc usr" title="Control: Flaw Remediation&#10;Description: The organization identifies, reports, and corrects information system flaws.">Control: Flaw Remediation Description: The organization identifies, reports...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</td>
+        <td class="f1 f1g">0.857</td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td class="trunc sys" title="(same as 1.1)">↑ same</td>
+        <td class="trunc usr" title="Control: Network Isolation&#10;Description: Configuring a network to deny connections based on source or destination IP address ranges.">Control: Network Isolation Description: Configuring a network to deny connections...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.88}</td>
+        <td class="f1 f1y">0.667</td>
+      </tr>
+
+      <!-- Round 2 -->
+      <tr class="round-sep"><td colspan="5">Round 2 — added: "Persistence is NOT a tag — use Persist"</td></tr>
+      <tr>
+        <td>2.1</td>
+        <td class="trunc sys" title="You are a cybersecurity taxonomy classifier... IMPORTANT: Use ONLY exact tag names. &quot;Persistence&quot; is NOT a tag — use &quot;Persist&quot;. Valid conceptual: Precision, Resilience, Fragility, Corruption, Loyalty, Stealth. Valid tactical: Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist.">...IMPORTANT: "Persistence" is NOT a tag — use "Persist"...</td>
+        <td class="trunc usr" title="Control: Registry Run Keys / Startup Folder&#10;Description: Adversaries may achieve persistence by adding a program to a startup folder or referencing it with a Registry run key.">Control: Registry Run Keys / Startup Folder...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.95}</td>
+        <td class="f1 f1g">1.000</td>
+      </tr>
+      <tr>
+        <td>2.2</td>
+        <td class="trunc sys" title="(same as 2.1)">↑ same</td>
+        <td class="trunc usr" title="Control: Flaw Remediation...">Control: Flaw Remediation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</td>
+        <td class="f1 f1g">0.857</td>
+      </tr>
+      <tr>
+        <td>2.3</td>
+        <td class="trunc sys" title="(same as 2.1)">↑ same</td>
+        <td class="trunc usr" title="Control: Network Isolation...">Control: Network Isolation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.92}</td>
+        <td class="f1 f1g">0.929</td>
+      </tr>
+
+      <tr class="sum"><td colspan="4" style="text-align:right;">Avg F1</td><td class="f1 pass">0.929</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ qwen — 4 rounds ═══ -->
+<div class="model">
+  <div class="model-head">
+    <select class="model-select">
+      <option>DeepSeek-V3</option>
+      <option selected>qwen2.5:7b</option>
+      <option>text-gemini</option>
+      <option>qwen2.5:14b</option>
+    </select>
+    <span class="model-stats">4 rounds · 3 failures fixed · <span class="pass">F1 0.881 PASS</span></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:8%">Round</th>
+      <th style="width:22%">System Prompt</th>
+      <th style="width:25%">User Prompt</th>
+      <th style="width:30%">Response</th>
+      <th style="width:5%" class="f1">F1</th>
+    </tr></thead>
+    <tbody>
+      <tr class="round-sep"><td colspan="5">Round 1</td></tr>
+      <tr>
+        <td>1.1</td>
+        <td class="trunc sys" title="(base prompt — same as DeepSeek R1)">Base prompt (same as DeepSeek)</td>
+        <td class="trunc usr" title="Control: Registry Run Keys / Startup Folder&#10;Description: Adversaries may achieve persistence...">Control: Registry Run Keys...</td>
+        <td class="resp"><span class="b bf">FAIL</span>{"conceptual":["Corruption","Persistence"],"tactical":[]}</td>
+        <td class="f1 f1r">0.333</td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr" title="Control: Flaw Remediation...">Control: Flaw Remediation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"]}</td>
+        <td class="f1 f1g">0.857</td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr" title="Control: Network Isolation...">Control: Network Isolation...</td>
+        <td class="resp">{"conceptual":["Resilience"],"tactical":["Isolate"]}</td>
+        <td class="f1 f1y">0.595</td>
+      </tr>
+
+      <tr class="round-sep"><td colspan="5">Round 2 — added: STRICT RULES + INVALID tag list</td></tr>
+      <tr>
+        <td>2.1</td>
+        <td class="trunc sys" title="RULES (STRICT): 1. ONLY exact tag names 2. NEVER use descriptors 3. ALWAYS 1+ conceptual AND tactical. INVALID: Persistence, Defense, Attack, Security. VALID CONCEPTUAL (6): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth. VALID TACTICAL (8): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist">RULES (STRICT): 1. ONLY exact tag names 2. NEVER use descriptors...</td>
+        <td class="trunc usr">Control: Registry Run Keys...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Corruption"],"tactical":["Persist"]}</td>
+        <td class="f1 f1g">1.000</td>
+      </tr>
+      <tr>
+        <td>2.2</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Flaw Remediation...</td>
+        <td class="resp"><span class="b bf">FAIL</span>{"conceptual":["Resilience"],"tactical":["Harden"]}</td>
+        <td class="f1 f1y">0.667</td>
+      </tr>
+      <tr>
+        <td>2.3</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Network Isolation...</td>
+        <td class="resp">{"conceptual":["Resilience"],"tactical":["Isolate"]}</td>
+        <td class="f1 f1y">0.667</td>
+      </tr>
+
+      <tr class="round-sep"><td colspan="5">Round 3 — added: domain HINTS</td></tr>
+      <tr>
+        <td>3.1</td>
+        <td class="trunc sys" title="...HINTS: Fixing/patching → Resilience + Fragility + Harden. Network segmentation → Resilience + Isolate. Backdoor/implant → Corruption + Persist.">...HINTS: Fixing → Resilience+Fragility+Harden...</td>
+        <td class="trunc usr">Control: Registry Run Keys...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Corruption"],"tactical":["Persist"]}</td>
+        <td class="f1 f1g">1.000</td>
+      </tr>
+      <tr>
+        <td>3.2</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Flaw Remediation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"]}</td>
+        <td class="f1 f1g">0.857</td>
+      </tr>
+      <tr>
+        <td>3.3</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Network Isolation...</td>
+        <td class="resp"><span class="b bf">FAIL</span>{"conceptual":["Resilience"]}</td>
+        <td class="f1 f1r">0.571</td>
+      </tr>
+
+      <tr class="round-sep"><td colspan="5">Round 4 — added: "ALWAYS tactical: Isolate for network isolation"</td></tr>
+      <tr>
+        <td>4.1</td>
+        <td class="trunc sys" title="...Network segmentation/isolation → ALWAYS tactical: Isolate. EVERY response MUST have ≥1 tactical.">...ALWAYS tactical: Isolate. MUST have ≥1 tactical...</td>
+        <td class="trunc usr">Control: Registry Run Keys...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Corruption"],"tactical":["Persist"]}</td>
+        <td class="f1 f1g">1.000</td>
+      </tr>
+      <tr>
+        <td>4.2</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Flaw Remediation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"]}</td>
+        <td class="f1 f1g">0.857</td>
+      </tr>
+      <tr>
+        <td>4.3</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Network Isolation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience"],"tactical":["Isolate"]}</td>
+        <td class="f1 f1g">0.786</td>
+      </tr>
+
+      <tr class="sum"><td colspan="4" style="text-align:right;">Avg F1</td><td class="f1 pass">0.881</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ text-gemini — IN PROGRESS ═══ -->
+<div class="model">
+  <div class="model-head">
+    <select class="model-select">
+      <option>DeepSeek-V3</option>
+      <option>qwen2.5:7b</option>
+      <option selected>text-gemini</option>
+      <option>qwen2.5:14b</option>
+    </select>
+    <span class="model-stats"><span class="waiting"><span class="spinner"></span>Round 2 · 1 failure fixed...</span></span>
+  </div>
+  <table>
+    <thead><tr>
+      <th style="width:8%">Round</th>
+      <th style="width:22%">System Prompt</th>
+      <th style="width:25%">User Prompt</th>
+      <th style="width:30%">Response</th>
+      <th style="width:5%" class="f1">F1</th>
+    </tr></thead>
+    <tbody>
+      <tr class="round-sep"><td colspan="5">Round 1</td></tr>
+      <tr>
+        <td>1.1</td>
+        <td class="trunc sys">Base prompt</td>
+        <td class="trunc usr">Control: Registry Run Keys...</td>
+        <td class="resp"><span class="b bf">FAIL</span>{"conceptual":["Corruption","Persistence"],"tactical":["Persist"]}</td>
+        <td class="f1 f1r">0.333</td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Flaw Remediation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"]}</td>
+        <td class="f1 f1g">0.857</td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Network Isolation...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Resilience"],"tactical":["Isolate"]}</td>
+        <td class="f1 f1g">0.929</td>
+      </tr>
+
+      <tr class="round-sep"><td colspan="5">Round 2 — added: disambiguation note</td></tr>
+      <tr>
+        <td>2.1</td>
+        <td class="trunc sys">..."Persistence" is NOT a tag...</td>
+        <td class="trunc usr">Control: Registry Run Keys...</td>
+        <td class="resp"><span class="b bp">PASS</span>{"conceptual":["Corruption"],"tactical":["Persist"]}</td>
+        <td class="f1 f1g">1.000</td>
+      </tr>
+      <tr>
+        <td>2.2</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Flaw Remediation...</td>
+        <td class="waiting"><span class="spinner"></span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.3</td>
+        <td class="trunc sys">↑ same</td>
+        <td class="trunc usr">Control: Network Isolation...</td>
+        <td class="waiting"><span class="spinner"></span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="actions">
+  <button class="btn btn-a">Approve & Save All</button>
+  <button class="btn btn-r">Reject</button>
+</div>
+
+</body>
+</html>

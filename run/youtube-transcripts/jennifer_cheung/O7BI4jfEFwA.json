@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O7BI4jfEFwA",
+    "language": "en",
+    "took_ms": 7817,
+    "method": null,
+    "title": "DEF CON 33 - Exploiting Shadow Data from AI Models and Embeddings - Patrick Walsh",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2902,
+    "description": "This talk explores the hidden risks in apps leveraging modern AI systems—especially those using large language models (LLMs) and retrieval-augmented generation (RAG) workflows. We demonstrate how sensitive data, such as personally identifiable information (PII) and social security numbers, can be extracted through real-world attacks. We’ll demonstrate model inversion attacks targeting fine-tuned models, and embedding inversion attacks on vector databases among others. The point is to show how PII scanning tools fail to recognize the rich data that lives in these systems and how much of privacy disaster these AI ecosystems really are.",
+    "view_count": 161376
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O7BI4jfEFwA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

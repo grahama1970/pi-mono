@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BeJ1cFfLTIE",
+    "language": "en",
+    "took_ms": 9423,
+    "method": null,
+    "title": "The State and Future of Egypt’s Islamists",
+    "channel": "Hudson Institute",
+    "upload_date": "20141218",
+    "duration_sec": 5346,
+    "description": "Hudson Institute hosted a panel discussion on the future of Egypt’s Islamists and Samuel Tadros’s two new reports featuring Mokhtar Awad of the Center for American Progress, William McCants of the Brookings Institution, and Eric Trager of the Washington Institute. Samuel Tadros moderated the discussion.",
+    "view_count": 1209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BeJ1cFfLTIE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

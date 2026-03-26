@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bVKtcu82a8w",
+    "language": "en",
+    "took_ms": 7810,
+    "method": null,
+    "title": "DEF CON 32 -Ticking SQLi - Iggy",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1508,
+    "description": "Explore the intricacies of time-based SQL injection through the lens of Operation GhostShell. This session delves into the methods used by attackers to exploit time delays for data extraction, highlighting real-world examples and the impact of these breaches on major universities. Attendees will gain a deep understanding of the technical aspects, see live demonstrations, and learn practical defense strategies to safeguard against such vulnerabilities. Perfect for security professionals seeking to enhance their knowledge of advanced SQLi techniques and mitigation.",
+    "view_count": 864
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bVKtcu82a8w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

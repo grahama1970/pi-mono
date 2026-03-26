@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "weDQ1FP3CJs",
+    "language": "en",
+    "took_ms": 9358,
+    "method": null,
+    "title": "Event Highlights: The Rumsfeld Era at the Pentagon: Inside Perspectives",
+    "channel": "Hudson Institute",
+    "upload_date": "20110407",
+    "duration_sec": 260,
+    "description": "March 29, 2011\r\nSpeakers in order: Douglas Feith, Gen. Peter Pace, Jamie McIntyre, Lewis Libby, and Sec. Donald Rumsfeld\r\n\r\nFew Americans have spent more time near the center of power than former Secretary of Defense Donald Rumsfeld. His years at the helm of the Pentagon have included momentous times, including the 9/11 attack. He was instrumental in devising the U.S. response to that attack and the overall U.S. strategy for the war on terrorism, including the campaigns in Afghanistan and Iraq. \r\n\r\nNow he has written Known and Unknown, a best-selling memoir of his half-century career, sharing previously undisclosed details that may force historians to rethink much of the conventional wisdom about recent history. Secretary Rumsfeld's book reveals what happened behind the scenes during critical moments of the Bush administration, as the President's inner circle debated how best to defend our country. \r\n\r\nHudson Institute was pleased to host a discussion of Rumsfeld's memoir by a panel of insiders: General Peter Pace, former Chairman of the Joint Chiefs of Staff; Lewis Libby, Senior Vice President at Hudson Institute and former chief of staff to Vice President Cheney; Douglas Feith, Hudson Institute Senior Fellow and former Under Secretary of Defense for Policy; Jamie McIntyre, former Senior Pentagon correspondent for CNN; and Secretary Donald Rumsfeld, who responded to the panel's comments.",
+    "view_count": 574
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] weDQ1FP3CJs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

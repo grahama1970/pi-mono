@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iTGnoDEYlog",
+    "language": "en",
+    "took_ms": 8247,
+    "method": null,
+    "title": "DEF CON 33 - Investigating Threat Actor Targeting Researchers, Academics - C Tafani-Dereeper, M Muir",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2139,
+    "description": "You patch vulnerabilities, sandbox malware, and audit code. You know not to click suspicious links. But what if the real threat isn't in phishing emails or zero-days—but in the very tools and research you're relying on? In late 2024, we uncovered a new threat actor, MUT-1244, targeting security professionals, red teamers, and academics. They use trojanized proof-of-concept exploits and fake software updates to exploit trust in open-source tools and research environments.\n\nDuring our investigation, we discovered over 390,000 leaked credentials that MUT-1244 exfiltrated from a compromised actor, revealing the scale of their operation. In this talk, we'll reveal how MUT-1244 operates through fake GitHub profiles and showcase our use of OSINT to map their infrastructure and tactics. We'll also share our attribution findings and methodology.\n\nAttendees can expect to hear technical details of the campaigns conducted by this threat actor, some notes on attribution, ideas for detecting this activity in your environment and the story of how the speakers discovered over 390,000 credentials inadvertently stolen from unrelated threat actors by MUT-1244.",
+    "view_count": 818
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iTGnoDEYlog: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3827sS0xPIc",
+    "language": "en",
+    "took_ms": 9639,
+    "method": null,
+    "title": "We Need To Get Balanced #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250612",
+    "duration_sec": 64,
+    "description": "",
+    "view_count": 1222
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3827sS0xPIc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

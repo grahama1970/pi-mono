@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W1-8K9tW0nA",
+    "language": "en",
+    "took_ms": 8708,
+    "method": null,
+    "title": "Fueling American Growth: How Energy Independence Will Power Our Transportation Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20150714",
+    "duration_sec": 3130,
+    "description": "Hudson Institute hosted a day-long conference to address the critical economic, political, and technological issues surrounding future fuels and their impact on America’s energy security. John Hofmeister, the former president of Shell Oil Company, delivered the keynote address.",
+    "view_count": 51
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W1-8K9tW0nA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

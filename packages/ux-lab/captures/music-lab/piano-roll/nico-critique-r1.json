@@ -1,0 +1,87 @@
+{
+  "findings": [
+    {
+      "severity": "HIGH",
+      "category": "Interaction Feasibility",
+      "description": "Drum hit notes (visible as ~4\u20136px tall red rectangles near E2) are far below any usable click/drag target size. At this canvas scale (~215px tall for A#1\u2013E5, ~4 octaves), individual pitch lanes are ~4px high. WCAG minimum is 44\u00d744px for touch; desktop minimum is ~10\u201312px. These notes are effectively non-interactive.",
+      "suggestion": "Enforce a minimum rendered note height of 10px regardless of zoom level. Consider a separate 'compact view' toggle vs an 'edit view' where note lanes expand to \u226516px. Drums should map to a dedicated percussive lane with fixed larger targets rather than pitched rows."
+    },
+    {
+      "severity": "HIGH",
+      "category": "Interaction Feasibility",
+      "description": "No playhead indicator is visible in the mockup. Without a playhead, click-to-play (jump-to-position) has no visual anchor, and play state cannot be communicated. This is a blocking gap before the playheadPosition prop can even be wired up.",
+      "suggestion": "Add a vertical playhead line (1\u20132px, high-contrast \u2014 recommend #f8fafc or accent amber) spanning the full pitch axis height. It must be its own absolutely-positioned overlay element, not baked into the canvas draw pass, so it can animate via CSS/RAF without re-rendering notes."
+    },
+    {
+      "severity": "HIGH",
+      "category": "Accessibility",
+      "description": "All 6 instruments are distinguished by color alone. VOCAL (purple ~#8b5cf6) and BASS (blue ~#3b82f6) share the blue-violet hue family and will be indistinguishable to deuteranopes (~8% of male users). DRUMS (red ~#ef4444) and GUITAR (pink/salmon ~#ec4899) share the red-pink family and collapse under protanopia. This is a WCAG 1.4.1 (Use of Color) failure.",
+      "suggestion": "Add a secondary differentiator per instrument: a distinct fill pattern (diagonal hatch, dot fill, solid, etc.) rendered inside the note rectangles. A data-instrument attribute on each note element also enables CSS-level overrides for high-contrast mode. Legend dots should be 12\u00d712px minimum with a shape variant (circle, square, diamond, etc.) per instrument."
+    },
+    {
+      "severity": "HIGH",
+      "category": "Data Density",
+      "description": "At 64 bars with the same canvas width (~870px), each bar compresses to ~13.5px. Sub-beat notes become 1\u20132px wide \u2014 unpaintable, unclickable, and visually indistinguishable from rendering noise. There is no zoom, windowing, or horizontal scroll mechanism designed into this mockup.",
+      "suggestion": "The component API must include a viewport: { startBar, endBar } prop and a zoom: number scalar. Render only notes within the visible window. Provide a minimap/overview strip below the main canvas (like DAW-style overview rulers) for navigation at 64+ bars. This is a required architectural decision before implementation begins."
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Data Density",
+      "description": "The pitch axis spans A#1\u2013E5 (~4 octaves) but nearly all note content sits between E2 and E5. The bottom octave (A#1\u2013D2) contains only a few sparse bass hits and wastes ~20% of vertical canvas space. The song spec calls for C3\u2013C5.",
+      "suggestion": "Default pitchRange to [C3, C5] as specified, with auto-expand if note data falls outside bounds. Expose pitchRange: [MidiNote, MidiNote] as a prop so consumers can override. Remove the dead bottom space from this mockup."
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Data Density",
+      "description": "The pitch axis only labels E and A# rows (every ~5 semitones). This is not musically intuitive \u2014 users think in terms of C, D, E, F, G, A, B natural notes with sharps/flats as modifiers. Finding a specific pitch requires counting from a labeled row.",
+      "suggestion": "Label all natural notes (C, D, E, F, G, A, B) on the pitch axis, with sharps/flats shown in a smaller/dimmer style. Highlight the tonic row (D in this case) with a faint background tint. Use #64748b dim token for the non-tonic labels."
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Component API Shape",
+      "description": "The mockup implies a single onNoteClick handler, but the component needs to distinguish between selection (multi-select with Shift/Cmd) and playback trigger (single click \u2192 audition note). Conflating these into one callback forces the parent to implement selection state internally, breaking the controlled-component contract.",
+      "suggestion": "Separate the API: onNoteClick(noteId, event) for audition, onSelectionChange(selectedIds: string[]) for selection state, and selectedNoteIds: string[] as a controlled prop. Also add onNoteDrag(noteId, deltaBars, deltaPitch) for future drag-to-edit support. Full recommended prop interface:\n\n```ts\ninterface PianoRollViewProps {\n  notes: NoteEvent[];\n  sections: SectionMarker[];\n  chords: ChordAnnotation[];\n  bpm: number;\n  totalBars: number;\n  pitchRange?: [MidiNote, MidiNote];\n  viewport?: { startBar: number; endBar: number };\n  zoom?: number;\n  playheadPosition?: number; // in bars, fractional\n  selectedNoteIds?: string[];\n  onNoteClick?: (noteId: string, e: React.MouseEvent) => void;\n  onSelectionChange?: (ids: string[]) => void;\n  onNoteDrag?: (noteId: string, deltaBars: number, deltaPitch: number) => void;\n  onPlayheadSeek?: (bar: number) => void;\n  instruments?: InstrumentConfig[]; // name, color, pattern\n}\n```"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "NVIS Compliance",
+      "description": "Background color of the piano roll canvas reads as approximately #1e2540 \u2014 slightly brighter than the spec'd #0b1220 container bg. This creates a faint card-lift effect that is unspecified and may not use the correct EMBRY surface token. Cannot confirm exact hex from the screenshot alone.",
+      "suggestion": "Verify the canvas background maps to the correct EMBRY surface/card token (likely --surface-1 or equivalent), not a hardcoded value. The outer container bg (#0b1220) and inner canvas bg should use distinct but spec'd tokens, not ad-hoc hex values. Request a token audit pass from the design system team."
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Interaction Feasibility",
+      "description": "No hover state design is present. Users cannot tell which notes are interactive vs. decorative, and there is no affordance for drag handles on note edges (resize duration). Without hover feedback, the component will feel broken at first use.",
+      "suggestion": "Define hover states: note brightens to ~90% opacity overlay on hover, cursor changes to grab, and edge handles (4px wide) appear on note ends with resize-x cursor. These must be in the design spec before implementation to avoid costly CSS rework."
+    },
+    {
+      "severity": "LOW",
+      "category": "Data Density",
+      "description": "The 'bars' label at the bar 5 boundary visually overlaps with the section transition ('Chorus' label) and chord annotation ('Dm'). At smaller viewports this will become a collision.",
+      "suggestion": "Stagger the bar number row, section label row, and chord annotation row into three distinct vertical bands above or below the main canvas, each with their own fixed-height lane. Do not overlap them in the same vertical space."
+    },
+    {
+      "severity": "LOW",
+      "category": "Data Density",
+      "description": "Beat grid lines are uniform \u2014 every bar line has equal visual weight. This makes it hard to count bars quickly at a glance, especially as bar count grows.",
+      "suggestion": "Use three visual weights for grid lines: beat subdivisions (faintest, ~10% opacity), bar lines (medium, ~25% opacity), and 4-bar phrase boundaries (strongest, ~45% opacity). This is standard DAW practice and significantly aids spatial orientation."
+    },
+    {
+      "severity": "LOW",
+      "category": "Accessibility",
+      "description": "The legend color swatches in the header are very small (~8px circles). At high DPI or for users with reduced vision, these are difficult to associate with note colors in the canvas.",
+      "suggestion": "Increase legend swatch size to 12\u00d712px minimum. Add a short instrument abbreviation inside or next to each note rectangle at zoom levels where it fits (e.g. 'B' for Bass, 'K' for Keys). Consider a tooltip on hover over any note showing instrument name and pitch."
+    }
+  ],
+  "summary": "The visual language is solid \u2014 dark theme tokens appear consistent with NVIS spec, instrument color choices are vibrant and legible in isolation, and the section/chord annotation system is a genuinely useful DAW-like touch. However, there are four blocking issues that must be resolved before a single line of component code is written: (1) note interaction targets are too small for the drum/short-note cases, (2) no playhead is designed, (3) color-only instrument differentiation fails WCAG 1.4.1, and (4) no zoom/windowing strategy exists for 64-bar scalability. The component API shape also needs a formal spec split \u2014 particularly separating selection from playback callbacks. Recommend a focused design revision addressing the four HIGH items before handing off to implementation.",
+  "approval": false,
+  "meta": {
+    "reviewer": "Nico Bailon (via subagent-service)",
+    "backend": "claude/sonnet",
+    "source_image": "packages/ux-lab/captures/music-lab/piano-roll.png",
+    "date": "2026-03-15",
+    "duration_ms": 147792,
+    "cost_usd": 0.211,
+    "round": 1
+  }
+}

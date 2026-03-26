@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LLM_EVAL_LAB - Evaluation Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed-variant": "#5a2e00",
+                        "on-surface-variant": "#adaaaa",
+                        "surface": "#0e0e0e",
+                        "inverse-primary": "#006f16",
+                        "secondary-container": "#860dd4",
+                        "on-error": "#450900",
+                        "outline-variant": "#494847",
+                        "on-primary": "#006413",
+                        "secondary-dim": "#a33ef1",
+                        "on-secondary-container": "#faeaff",
+                        "secondary": "#c67eff",
+                        "surface-container-lowest": "#000000",
+                        "surface-container-high": "#201f1f",
+                        "tertiary-container": "#fd8b00",
+                        "inverse-surface": "#fcf8f8",
+                        "primary": "#9cff93",
+                        "on-surface": "#ffffff",
+                        "surface-bright": "#2c2c2c",
+                        "on-secondary": "#340058",
+                        "surface-container": "#1a1919",
+                        "primary-fixed": "#00fc40",
+                        "tertiary-fixed": "#ff9734",
+                        "on-tertiary-container": "#442100",
+                        "error-dim": "#d53d18",
+                        "tertiary": "#ff9f4a",
+                        "error-container": "#b92902",
+                        "outline": "#777575",
+                        "background": "#0e0e0e",
+                        "on-secondary-fixed-variant": "#7a00c4",
+                        "on-secondary-fixed": "#510085",
+                        "on-error-container": "#ffd2c8",
+                        "on-primary-fixed": "#00440a",
+                        "inverse-on-surface": "#565554",
+                        "on-background": "#ffffff",
+                        "secondary-fixed-dim": "#dfb3ff",
+                        "on-tertiary-fixed": "#291200",
+                        "on-primary-fixed-variant": "#006513",
+                        "tertiary-fixed-dim": "#f58600",
+                        "surface-container-highest": "#262626",
+                        "primary-container": "#00fc40",
+                        "on-tertiary": "#532a00",
+                        "error": "#ff7351",
+                        "surface-container-low": "#131313",
+                        "surface-dim": "#0e0e0e",
+                        "secondary-fixed": "#e8c5ff",
+                        "primary-fixed-dim": "#00ec3b",
+                        "on-primary-container": "#005a10",
+                        "primary-dim": "#00ec3b",
+                        "surface-tint": "#9cff93",
+                        "tertiary-dim": "#ed8200",
+                        "surface-variant": "#262626"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { backdrop-filter: blur(12px); background: rgba(26, 25, 25, 0.4); }
+        .technical-skeleton { border: 1px solid rgba(73, 72, 71, 0.15); }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #494847; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9cff93; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar Shell -->
+<aside class="hidden md:flex flex-col h-screen w-64 border-r border-[#ffffff15] bg-[#0e0e0e] fixed left-0 top-0 py-6 z-50">
+<div class="px-6 mb-8">
+<h1 class="font-['Space_Grotesk'] text-xl font-black text-white">LAB_01</h1>
+<div class="flex items-center gap-2 mt-2 opacity-60">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant">Active Session</span>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 font-['JetBrains_Mono'] text-[11px] uppercase tracking-widest text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">terminal</span>
+                Playground
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-['JetBrains_Mono'] text-[11px] uppercase tracking-widest bg-[#9cff9310] text-[#9cff93] border-r-2 border-[#9cff93] translate-x-1" href="#">
+<span class="material-symbols-outlined text-lg">fact_check</span>
+                Evaluations
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-['JetBrains_Mono'] text-[11px] uppercase tracking-widest text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">query_stats</span>
+                Results
+            </a>
+</nav>
+<div class="px-4 mt-8">
+<button class="w-full bg-primary text-on-primary py-3 font-['JetBrains_Mono'] text-[11px] font-bold uppercase tracking-widest rounded-sm hover:opacity-90 transition-opacity">
+                NEW_EVAL
+            </button>
+</div>
+<div class="mt-auto px-3 pt-6 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 font-['JetBrains_Mono'] text-[11px] uppercase tracking-widest text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">menu_book</span>
+                Docs
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-['JetBrains_Mono'] text-[11px] uppercase tracking-widest text-neutral-500 hover:bg-[#ffffff05] hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+                Settings
+            </a>
+<div class="flex items-center gap-3 px-4 py-4 border-t border-[#ffffff10] mt-4">
+<div class="w-8 h-8 rounded-sm bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-sm text-secondary">memory</span>
+</div>
+<div class="overflow-hidden">
+<p class="font-['JetBrains_Mono'] text-[10px] text-white truncate">System Operator</p>
+<p class="font-['JetBrains_Mono'] text-[8px] text-on-surface-variant uppercase">Admin Access</p>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center px-6 w-full h-14 bg-[#0e0e0e] border-b border-[#ffffff15] sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] font-bold text-[#9cff93] tracking-tighter text-lg">LLM_EVAL_LAB</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-6">
+<span class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-[#9cff93] border-b-2 border-[#9cff93] cursor-pointer h-14 flex items-center">Ground Truth</span>
+<span class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-neutral-500 hover:text-[#9cff93] hover:bg-[#9cff9310] transition-colors duration-200 cursor-pointer h-14 flex items-center px-2">Data Drift</span>
+<span class="font-['Space_Grotesk'] tracking-wider uppercase text-sm text-neutral-500 hover:text-[#9cff93] hover:bg-[#9cff9310] transition-colors duration-200 cursor-pointer h-14 flex items-center px-2">Version History</span>
+</div>
+<div class="flex items-center gap-3 border-l border-[#ffffff15] pl-6">
+<button class="p-2 text-neutral-400 hover:text-[#9cff93] transition-colors">
+<span class="material-symbols-outlined text-xl">memory</span>
+</button>
+<button class="p-2 text-neutral-400 hover:text-[#9cff93] transition-colors">
+<span class="material-symbols-outlined text-xl">sensors</span>
+</button>
+<button class="p-2 text-neutral-400 hover:text-[#9cff93] transition-colors">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
+<!-- Page Header Section -->
+<section class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-secondary-container text-white font-['JetBrains_Mono'] text-[10px] tracking-tighter uppercase">Analytical_Module</span>
+<span class="text-on-surface-variant font-['JetBrains_Mono'] text-[10px]">VER: 4.2.0-STABLE</span>
+</div>
+<h2 class="font-headline text-4xl font-bold tracking-tight text-on-surface uppercase mb-2">Ground Truth Management</h2>
+<p class="text-on-surface-variant font-body max-w-xl">Curate and maintain the definitive dataset for model benchmarking. Ensure high-fidelity expected outputs for objective evaluation.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-5 py-2.5 bg-surface-container-high border border-outline-variant font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-white flex items-center gap-2 hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-sm">upload_file</span>
+                        Batch Import
+                    </button>
+<button class="px-5 py-2.5 bg-primary text-on-primary font-['JetBrains_Mono'] text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700;">add</span>
+                        Add Question
+                    </button>
+</div>
+</section>
+<!-- Stats Bar (Asymmetric Component) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#ffffff10] border border-[#ffffff10] mb-8">
+<div class="bg-surface p-4">
+<p class="text-[10px] font-['JetBrains_Mono'] uppercase tracking-widest text-on-surface-variant mb-1">Total_Prompts</p>
+<p class="text-2xl font-['JetBrains_Mono'] text-primary">1,248</p>
+</div>
+<div class="bg-surface p-4">
+<p class="text-[10px] font-['JetBrains_Mono'] uppercase tracking-widest text-on-surface-variant mb-1">Active_Evals</p>
+<p class="text-2xl font-['JetBrains_Mono'] text-secondary">08</p>
+</div>
+<div class="bg-surface p-4">
+<div class="flex items-center gap-2 mb-1">
+<p class="text-[10px] font-['JetBrains_Mono'] uppercase tracking-widest text-on-surface-variant">Last_Sync</p>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+</div>
+<p class="text-2xl font-['JetBrains_Mono'] text-white">02:14:55</p>
+</div>
+<div class="bg-surface p-4">
+<p class="text-[10px] font-['JetBrains_Mono'] uppercase tracking-widest text-on-surface-variant mb-1">Data_Quality</p>
+<p class="text-2xl font-['JetBrains_Mono'] text-primary">99.8%</p>
+</div>
+</div>
+<!-- Table Filter Bar -->
+<div class="flex flex-col md:flex-row items-center gap-4 mb-4">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="w-full bg-surface-container-highest border-none focus:ring-1 focus:ring-primary text-on-surface font-['JetBrains_Mono'] text-xs py-3 pl-10 pr-4 placeholder:text-neutral-600" placeholder="QUERY_SYSTEM_PROMPTS..." type="text"/>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto">
+<select class="bg-surface-container-highest border-none text-on-surface font-['JetBrains_Mono'] text-xs py-3 px-4 focus:ring-1 focus:ring-primary min-w-[140px]">
+<option>ALL_MODES</option>
+<option>EXACT_MATCH</option>
+<option>SEMANTIC</option>
+<option>FUZZY</option>
+</select>
+<button class="p-3 bg-surface-container-highest text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Laboratory Data Grid -->
+<div class="overflow-x-auto technical-skeleton">
+<table class="w-full border-collapse text-left">
+<thead>
+<tr class="bg-surface-container-low border-b border-[#ffffff10]">
+<th class="px-6 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant">Prompt ID</th>
+<th class="px-6 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant">Prompt Text</th>
+<th class="px-6 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant">Expected Output</th>
+<th class="px-6 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant">Eval Mode</th>
+<th class="px-6 py-4 font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#ffffff05]">
+<!-- Row 1 -->
+<tr class="hover:bg-[#ffffff03] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-['JetBrains_Mono'] text-[11px] text-secondary font-medium">PRM-00412</span>
+</td>
+<td class="px-6 py-4 max-w-xs xl:max-w-md">
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">Summarize the following legal document regarding data privacy in the EU, focusing specifically on the right to be forgotten...</p>
+</td>
+<td class="px-6 py-4 max-w-xs">
+<p class="font-['JetBrains_Mono'] text-[11px] text-on-surface line-clamp-2 bg-surface-container-lowest p-2 border border-[#ffffff05]">Output should emphasize GDPR Article 17, mentioning the specific conditions for erasure...</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-primary/10 text-primary font-['JetBrains_Mono'] text-[10px] uppercase">SEMANTIC</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<button class="p-2 text-on-surface-variant hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[#ffffff03] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-['JetBrains_Mono'] text-[11px] text-secondary font-medium">PRM-00876</span>
+</td>
+<td class="px-6 py-4 max-w-xs xl:max-w-md">
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">Extract all chemical compounds mentioned in the research paper and list them in a JSON array format.</p>
+</td>
+<td class="px-6 py-4 max-w-xs">
+<p class="font-['JetBrains_Mono'] text-[11px] text-on-surface line-clamp-2 bg-surface-container-lowest p-2 border border-[#ffffff05]">["H2O", "C6H12O6", "NaCl", "CH4", "CO2"]</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-tertiary/10 text-tertiary font-['JetBrains_Mono'] text-[10px] uppercase">EXACT_MATCH</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<button class="p-2 text-on-surface-variant hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#ffffff03] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-['JetBrains_Mono'] text-[11px] text-secondary font-medium">PRM-01022</span>
+</td>
+<td class="px-6 py-4 max-w-xs xl:max-w-md">
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">Check for toxicity in the following user-generated comment and provide a boolean classification.</p>
+</td>
+<td class="px-6 py-4 max-w-xs">
+<p class="font-['JetBrains_Mono'] text-[11px] text-on-surface line-clamp-2 bg-surface-container-lowest p-2 border border-[#ffffff05]">toxicity: false</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-primary/10 text-primary font-['JetBrains_Mono'] text-[10px] uppercase">CLASSIFICATION</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<button class="p-2 text-on-surface-variant hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[#ffffff03] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="font-['JetBrains_Mono'] text-[11px] text-secondary font-medium">PRM-00331</span>
+</td>
+<td class="px-6 py-4 max-w-xs xl:max-w-md">
+<p class="font-body text-sm text-on-surface-variant line-clamp-2 leading-relaxed">Translate the technical manual from English to German, ensuring all automotive terms are preserved.</p>
+</td>
+<td class="px-6 py-4 max-w-xs">
+<p class="font-['JetBrains_Mono'] text-[11px] text-on-surface line-clamp-2 bg-surface-container-lowest p-2 border border-[#ffffff05]">Die Kraftstoffpumpe muss alle 50.000 Kilometer gewartet werden...</p>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 bg-secondary/10 text-secondary font-['JetBrains_Mono'] text-[10px] uppercase">FUZZY_SCORE</span>
+</td>
+<td class="px-6 py-4 text-right whitespace-nowrap">
+<button class="p-2 text-on-surface-variant hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination/Footer Actions -->
+<div class="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+<p class="font-['JetBrains_Mono'] text-[10px] text-on-surface-variant uppercase tracking-widest">Showing 1-10 of 1,248 entries</p>
+<div class="flex items-center gap-1">
+<button class="w-10 h-10 flex items-center justify-center technical-skeleton text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center technical-skeleton bg-primary/10 text-primary border border-primary/20">
+<span class="font-['JetBrains_Mono'] text-xs">01</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center technical-skeleton text-on-surface-variant hover:bg-[#ffffff05]">
+<span class="font-['JetBrains_Mono'] text-xs">02</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center technical-skeleton text-on-surface-variant hover:bg-[#ffffff05]">
+<span class="font-['JetBrains_Mono'] text-xs">03</span>
+</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-10 h-10 flex items-center justify-center technical-skeleton text-on-surface-variant hover:bg-[#ffffff05]">
+<span class="font-['JetBrains_Mono'] text-xs">125</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center technical-skeleton text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Technical Summary Section (Asymmetric Bento) -->
+<section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 glass-panel p-6 technical-skeleton">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline text-lg font-bold text-white uppercase tracking-wider">Ground Truth Integrity</h3>
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<div class="flex items-end gap-2 mb-4">
+<div class="flex-1 bg-surface-container-highest h-1.5 overflow-hidden">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+<span class="font-['JetBrains_Mono'] text-xs text-primary">94.2%</span>
+</div>
+<p class="font-body text-xs text-on-surface-variant leading-relaxed">Automated integrity checks have verified 1,176/1,248 prompts. Current inconsistencies detected in linguistic variance for translation sets.</p>
+</div>
+<div class="bg-surface-container-low p-6 technical-skeleton relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5">
+<span class="material-symbols-outlined text-9xl">analytics</span>
+</div>
+<h3 class="font-headline text-lg font-bold text-white uppercase tracking-wider mb-4">Export Protocol</h3>
+<div class="space-y-3">
+<button class="w-full py-2 bg-surface-container-highest border border-outline-variant text-white font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest hover:border-secondary transition-colors text-left px-4">DOWNLOAD_JSON_L</button>
+<button class="w-full py-2 bg-surface-container-highest border border-outline-variant text-white font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest hover:border-secondary transition-colors text-left px-4">GENERATE_CSV_EXPORT</button>
+<button class="w-full py-2 bg-surface-container-highest border border-outline-variant text-white font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest hover:border-secondary transition-colors text-left px-4">SYNC_AWS_S3</button>
+</div>
+</div>
+</section>
+</main>
+<!-- System Footer -->
+<footer class="mt-auto border-t border-[#ffffff10] px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-['JetBrains_Mono'] text-[10px] text-on-surface-variant uppercase">Core_System: Active</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-['JetBrains_Mono'] text-[10px] text-on-surface-variant uppercase">Database: Synchronized</span>
+</div>
+</div>
+<p class="font-['JetBrains_Mono'] text-[10px] text-neutral-600">LLM_EVAL_LAB // OPS_NODE_01 // SECURE_SHELL</p>
+</footer>
+</div>
+<!-- Mobile Nav Anchor -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low border-t border-[#ffffff15] flex justify-around items-center h-16 px-4 z-50">
+<a class="flex flex-col items-center gap-1 text-[#9cff93]" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="text-[9px] uppercase font-['JetBrains_Mono']">Evals</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-neutral-500" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="text-[9px] uppercase font-['JetBrains_Mono']">Lab</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-neutral-500" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[9px] uppercase font-['JetBrains_Mono']">Stats</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-neutral-500" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[9px] uppercase font-['JetBrains_Mono']">Admin</span>
+</a>
+</nav>
+</body></html>

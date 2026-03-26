@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pnc1fDNbaP0",
+    "language": "en",
+    "took_ms": 9162,
+    "method": null,
+    "title": "The Promise of Social Impact Bonds: A Discussion with the UK",
+    "channel": "Hudson Institute",
+    "upload_date": "20130506",
+    "duration_sec": 3222,
+    "description": "With the August 2012 announcement of an agreement in New York City to reduce recidivism among adolescent boys at Rikers Island, Social Impact Bonds officially arrived on American shores. One of the most talked-about social innovations in recent years, Social Impact Bonds are a financing tool for social programs that simultaneously leverage the resources of the private and philanthropic sectors, provide steady funding streams for high-performing social service organizations, and enable government",
+    "view_count": 123
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pnc1fDNbaP0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

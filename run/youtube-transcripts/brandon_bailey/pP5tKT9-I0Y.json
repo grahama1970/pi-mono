@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pP5tKT9-I0Y",
+    "language": "en",
+    "took_ms": 9232,
+    "method": null,
+    "title": "DEF CON 30  - Nikita Kurtin - Bypassing Android Permissions From All Protection Levels",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1941,
+    "description": "Exploring in depth the android permission mechanism, through different protection levels.\n\nStep by step exploitations techniques that affect more than 98% of all Android devices including the last official release (Android 12).\n\nIn this talk I reveal a few different techniques that I uncovered in my research, which can allow hackers to bypass permissions from all protection levels in any Android device, which is more than 3 billion active devices according to the google official stats.\n\nThese vulnerabilities enable the hacker to bypass the security measures of android, by abusing default (built in) services and get access to abilities and resources which are protected by permission mechanism.\n\nSome vulnerabilities are partially fixed, others won't be fixed as google considers as intended behavior.\n\nIn this talk I'll survey the different vulnerabilities, and deep dive into a few of different exploitations.\n\nFinally, I'll demonstrate how those techniques can be combined together to create real life implications and to use for: Ransomware, Clickjacking, Uninstalling other apps and more, completely undetected by security measures.",
+    "view_count": 9156
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pP5tKT9-I0Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

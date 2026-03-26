@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hdzKlVjaj-k",
+    "language": "en",
+    "took_ms": 9622,
+    "method": null,
+    "title": "Ann Marlowe Discussing Gaddafi's Death On Location From Libya for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20111025",
+    "duration_sec": 255,
+    "description": "Hudson Visiting Fellow Ann Marlowe joined Fox News via phone live from Libya on October 20th to discuss the death of Muammar Gaddafi.",
+    "view_count": 1492
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hdzKlVjaj-k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

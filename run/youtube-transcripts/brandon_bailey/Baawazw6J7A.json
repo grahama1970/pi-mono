@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Baawazw6J7A",
+    "language": "en",
+    "took_ms": 8937,
+    "method": null,
+    "title": "DEF CON 31 Policy - All Your Vulns Are Belong to Terms and Conditions -",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3113,
+    "description": "What happens when a vulnerability is submitted to a programme? Why do some disclosures take forever? What are governments doing about vulnerability disclosure and why are they so bothered about it? Why do people not understand what the words “vulnerability disclosure” mean and why can’t policy makers quite get their heads around 0 days? Why are companies in some sectors just not adopting CVD even though governments are passing it into law? Have we got RAS or can we think of anymore TLAs to add to the CRA, NIS and VDP? What are countries and regions around the world doing and how do they differ? And yes, what the heck is an equities process?",
+    "view_count": 638
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Baawazw6J7A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

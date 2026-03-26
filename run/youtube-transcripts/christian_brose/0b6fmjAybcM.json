@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0b6fmjAybcM",
+    "language": "en",
+    "took_ms": 9671,
+    "method": null,
+    "title": "AoD Podcast | From Thumb Drives to AI: Our '90s Defense Software Needs an Update (feat. Bryan Clark)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240417",
+    "duration_sec": 2571,
+    "description": "Bryan Clark, senior fellow and director of Hudson's Center for Defense Concepts and Technology, joins the show to explain why an emphasis on software-centric innovation is needed to keep America's defense tech at the cutting edge in an era of great power competition. He illustrates how Ukraine is an example of resourceful software-centric warfare, and why the United States urgently needs to resolve its development issues now to stop China from invading Taiwan.",
+    "view_count": 429
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0b6fmjAybcM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZLGBHxs7rTU",
+    "language": "en",
+    "took_ms": 9982,
+    "method": null,
+    "title": "DEF CON 29 - Panel - Rebooting Critical Infrastructure Protection - LIVE",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 2997,
+    "description": "In 1998 the US government issued the first major policy document on Critical Infrastructure Protection (CIP). Since then, CIP has become one of the most fundamental tasks for governments everywhere, and has given birth to a plethora of institutions and processes seeking to manage what is called a “Public Private Partnership” between government, industry, and civil society. But despite all the efforts put into information exchanges, incident management, but also supply chain protection and even national industrial policies, cyber-attacks have not decreased, both in the United States and elsewhere. What else needs to be done? What lessons learned are there from international experiences? And how can the community help best?",
+    "view_count": 1158
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZLGBHxs7rTU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

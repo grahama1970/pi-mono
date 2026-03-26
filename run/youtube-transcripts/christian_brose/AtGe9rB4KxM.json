@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AtGe9rB4KxM",
+    "language": "en",
+    "took_ms": 11648,
+    "method": null,
+    "title": "AoD Podcast | How the US Can Win The Cold War Against China in the 21st Century (Dmitri Alperovitch)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240605",
+    "duration_sec": 1716,
+    "description": "Whether it's deterrence from kinetic conflict over Taiwan, the race for Artificial Intelligence and supersonics, or the protection of technological supply chains, Xi Jinping and the Chinese Communist Party are the single most capable global competitors. Dmitri Alperovitch joins host Marshall Kosloff to explain the how and why behind America's need to win the coming cold war with China, and how to keep it \"cold.\"",
+    "view_count": 4193
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AtGe9rB4KxM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

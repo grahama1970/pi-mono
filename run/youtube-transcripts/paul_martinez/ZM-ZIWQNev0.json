@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZM-ZIWQNev0",
+    "language": "en",
+    "took_ms": 7488,
+    "method": null,
+    "title": "Exploitable Vulnerabilities (Weaknesses) Hidden Deep In ICS",
+    "channel": "S4 Events",
+    "upload_date": "20200309",
+    "duration_sec": 1795,
+    "description": "Mark Carrigan of PAS looks at a different type of vulnerabilities, really more of weaknesses or flaws related to the process that can be exploited by an attacker with automation and engineering skills. He goes over examples ubiquitous weaknesses (found in most systems) and unique weaknesses (specific to a vendor / model). \n\nHe also covers the number of classic vulnerabilities by ICS vendor.",
+    "view_count": 414
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZM-ZIWQNev0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

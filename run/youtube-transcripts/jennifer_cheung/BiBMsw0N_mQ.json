@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BiBMsw0N_mQ",
+    "language": "en",
+    "took_ms": 8212,
+    "method": null,
+    "title": "DEF CON 32 - Detecting persistent threats on Draytek  devices - Octavio Gianatiempo,  Gastón Aznarez",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2142,
+    "description": "Advanced attackers are increasingly choosing edge devices as targets, many of which are security appliances such as VPNs and Firewalls. They run closed-source firmware, and defenders and researchers must understand it to assess its security and integrity. We faced this firsthand when a client that used Draytek equipment was compromised. With at least 500k Draytek routers exposed to the Internet globally, no working tools exist to extract their firmware and assist researchers and defenders working with them.\n\nWe reverse-engineered Draytek's firmware format, developed tools to extract it, and discovered that its RTOS kernel can load code modules dynamically. These stored modules remain active even after firmware upgrades, inadvertently facilitating persistent threats. We crafted and uploaded malicious modules using our tools and newly found vulnerabilities to achieve persistence.\n\nEnd-users lack straightforward means to detect such compromises. In response to this threat, we developed our own module to assess the integrity of other modules loaded in memory, mitigating its impact. In our pursuit of a more secure internet, we are sharing our knowledge and opening our tools to the community, enabling observability, hardening, transparency, and vulnerability research on Draytek edge devices.",
+    "view_count": 870
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BiBMsw0N_mQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

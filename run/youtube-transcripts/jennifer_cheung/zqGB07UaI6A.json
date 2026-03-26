@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zqGB07UaI6A",
+    "language": "en",
+    "took_ms": 8603,
+    "method": null,
+    "title": "DEF CON 32 - Breaking Boundaries: Popping Shells in the Airgap w $10 & Arduino Magic - Daniel Beard",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1458,
+    "description": "Many medical devices are “not connected to a network”, so let’s bring our own! This talk will teach you how to create a BadUSB device that can wirelessly execute payloads on “airgapped” systems like medical devices that aren’t connected to the internet. With only $10 of off-the-shelf hardware and some basic Arduino code you too can start popping shells in the device lab.",
+    "view_count": 1086
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zqGB07UaI6A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pJ4sqtreefc",
+    "language": "en",
+    "took_ms": 9333,
+    "method": null,
+    "title": "Maintaining US Semiconductor Leadership",
+    "channel": "Hudson Institute",
+    "upload_date": "20210520",
+    "duration_sec": 3514,
+    "description": "With the manufacturing of advanced semiconductors shifting outside the U.S. in recent years, American chip manufacturers are facing intense competition from global competitors in the race for technological advances that will shape the future and are key to economic competitiveness. The economic disruptions of a global pandemic and the severity of the semiconductor shortage in recent months have only served to highlight critical issues facing the semiconductor industry. Hudson has convened a distinguished panel with both policy experts and cutting-edge technologists from major chipmakers to discuss the state of the industry, important new developments, and the public policies needed to maintain crucial U.S. leadership in both innovation and domestic manufacturing.",
+    "view_count": 1510
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pJ4sqtreefc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

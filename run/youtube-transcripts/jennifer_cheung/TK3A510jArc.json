@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TK3A510jArc",
+    "language": "en",
+    "took_ms": 8127,
+    "method": null,
+    "title": "DEF CON 32 - Using AI Computer Vision in Your OSINT Data Analysis  - Mike Raggo",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3159,
+    "description": "OSINT is a great mechanism for the collection of data, but what do you do with all of it once it’s collected? It can take significant time with the human eye to analyze each image or video. Furthermore, you may miss important artifacts in the foreground or background. Computer vision can churn through the plethora of data to pull out the relevant evidence at lightning speed. For the last 5 years we’ve been exploring the use of Azure and AWS for computer vision to rapidly process large sets of image and video data acquisitions for forensic evidence.Through the use of AI we have analyzed thousands of images and videos to perform object detection, facial recognition, OCR, voice to text analysis, and more. In this session we’ll explore the use of cloud platforms to exponentially increase your analysis of uncovering key artifacts to your case using demos and real world examples. We then apply chronolocation analysis to allow an investigator to paint a true-life narrative, for example an individual with a weapon at a location at a particular time. We’ll provide live demos of common scenarios to reveal benefits to processing your data collections in a rapid, efficient, comprehensive, and accurate manner. We’ll then wrap-up the presentation with additional AI computer vision recommendations and resources.",
+    "view_count": 6996
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TK3A510jArc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

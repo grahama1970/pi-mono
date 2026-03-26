@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aYzY3y4zjJM",
+    "language": "en",
+    "took_ms": 8733,
+    "method": null,
+    "title": "Plumbing and Cybersecurity: Basically The Same",
+    "channel": "S4 Events",
+    "upload_date": "20240506",
+    "duration_sec": 1232,
+    "description": "Even though evidence suggests the internet is not actually a series of tubes, OT cybersecurity sure seems to be a whole lot like plumbing.  Cyberattacks act like water, finding their way in any crack over time.  The tools are the same: filters (firewalls), backflow preventers (data diodes), leak detection.  Both have conflicts between designers and practitioners, and nobody seems to care about either plumbing or cybersecurity until something has gone terribly wrong.  \n\nThis session used plumbing as a guide for those to want to better understand good OT cybersecurity practices, how to use forward thinking design to limit the impact of an attack (“if you didn’t put that pool on the roof, you wouldn’t have to worry about it leaking”), and how to explain exactly what it is you do in OT cybersecurity to people who influence your budget, staff, and quality of life. We’ve had over 2000 years of plumbing experience to learn what works.  We’ve got to get OT cybersecurity right… right now. \n\nColin Dunn is a licensed Professional Engineer and designer of piping and plumbing systems (and the Founder & CEO of an ICS security vendor).",
+    "view_count": 525
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aYzY3y4zjJM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

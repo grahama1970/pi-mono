@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dNklIfTAf0E",
+    "language": "en",
+    "took_ms": 7808,
+    "method": null,
+    "title": "2013 Bradley Symposium Panel Discussion: Economic Opportunity at Risk?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140220",
+    "duration_sec": 6032,
+    "description": "The Bradley brothers believed that their commercial success could only have been possible within a system of democratic capitalism and the institutions, principles, and values that sustain and nurture it. Are the conditions of economic opportunity still present today in America and around the world? What can we do to cultivate those conditions?\n\nTo mark the occasion, Bradley asked previous prize winners to gather on June 12 to discuss the question \"Are We Freer Than We Were Ten Years Ago?\" Are we fulfilling the foundation's mission to preserve and defend the tradition of free, representative government and private enterprise that enabled America and, indeed, the West to flourish economically and intellectually? What has changed over the past ten years, and what will the next ten years bring?",
+    "view_count": 50
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dNklIfTAf0E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

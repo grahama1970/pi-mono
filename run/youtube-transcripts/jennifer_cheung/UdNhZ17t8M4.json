@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UdNhZ17t8M4",
+    "language": "en",
+    "took_ms": 8735,
+    "method": null,
+    "title": "DEF CON 33 - Paywall Optional: Stream for Free w/ New Technique,  RRE -  Farzan Karim",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1218,
+    "description": "Modern web applications don’t just expose APIs, they expose attack paths. Recursive Request Exploits (RRE) are a new class of attack that weaponizes interdependent web requests to systematically bypass authentication, authorization, and payment controls.\n\nThis talk introduces RRE, a methodology that automates recursive request discovery, maps hidden relationships between API and web calls, and exploits overlooked logic flaws. Using a real-world case study, we’ll show how this technique was used to bypass premium paywalls on a major streaming platform without requiring authentication or hacking DRM.\n\nBut this isn’t just a one-off streaming exploit, RRE exposes a fundamental flaw in how checkout logic is enforced across e-commerce and digital subscriptions. By chaining requests together in unintended ways, attackers can exploit blind spots in authentication, entitlement, and payment flows to gain unauthorized access. What was once considered security through obscurity is now an active attack surface.\n\nWe’ll release exploit code, via a Burp Suite extension, that automates RRE discovery and exploitation, giving security professionals the tools to both weaponize and defend against these attacks.",
+    "view_count": 1007
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UdNhZ17t8M4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

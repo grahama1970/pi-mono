@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XFExdM7zrx4",
+    "language": "en",
+    "took_ms": 7792,
+    "method": null,
+    "title": "US Dept of Defense Panel",
+    "channel": "S4 Events",
+    "upload_date": "20230807",
+    "duration_sec": 1788,
+    "description": "Daryl Haegley leads a panel of US Department of Defense executives in a discussion on OT Cybersecurity on bases and other facilities and systems that DoD owns and relies on. In the second half they focus on how the commercial OT security community can help DoD achieve its mission. And finally they tackle the question of how much coordination is occurring between .gov organizations.",
+    "view_count": 297
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XFExdM7zrx4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

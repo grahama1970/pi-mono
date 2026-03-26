@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PYESJHwrmCs",
+    "language": "en",
+    "took_ms": 7434,
+    "method": null,
+    "title": "3-Minutes on Langner's Stuxnet Deep Dive",
+    "channel": "S4 Events",
+    "upload_date": "20191031",
+    "duration_sec": 232,
+    "description": "Ralph Langner's Stuxnet Deep Dive was amazing. He walked an audience of 60 experts, plus 60 Minutes, step by step through the Stuxnet PLC code. It is the most downloaded technical ICS video, between its previous hosting location and here. Here is 3-minutes of what was an hour session.",
+    "view_count": 312
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PYESJHwrmCs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

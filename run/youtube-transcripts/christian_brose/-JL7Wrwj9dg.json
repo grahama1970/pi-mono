@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-JL7Wrwj9dg",
+    "language": "en",
+    "took_ms": 8741,
+    "method": null,
+    "title": "Commission Chairman Ajit Pai on Economic Analysis at the FCC",
+    "channel": "Hudson Institute",
+    "upload_date": "20170405",
+    "duration_sec": 3894,
+    "description": "FCC Chairman Ajit Pai joins Harold Furchtgott-Roth for a speech on the role of economic analysis at the FCC.",
+    "view_count": 770
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -JL7Wrwj9dg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

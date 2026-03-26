@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ec7hA8jptEk",
+    "language": "en",
+    "took_ms": 7989,
+    "method": null,
+    "title": "Ryuk Activity On Oil/Gas Environments",
+    "channel": "S4 Events",
+    "upload_date": "20200803",
+    "duration_sec": 1196,
+    "description": "Clint Bodungen and his team have responded to two incidents, and knows of three others, where Ryuk had touched OT systems in the oil and gas sector. The incidents were within about two months of each other and had similar TTP's.\n\nIn this session Clint adds and clarifies detail from the related Coast Guard alerts and news coverage.",
+    "view_count": 308
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ec7hA8jptEk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

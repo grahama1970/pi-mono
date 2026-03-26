@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QZToIgzWwbg",
+    "language": "en",
+    "took_ms": 8759,
+    "method": null,
+    "title": "A Large Supply Chain Security Program",
+    "channel": "S4 Events",
+    "upload_date": "20240624",
+    "duration_sec": 1556,
+    "description": "OEMs are expected to deliver secure products and services. The NIST, CISA, and MITRE frameworks are just the start. Are they enough?\n\nCassie Crossley describes how a very large OEM, Schneider Electric, has structured more than 13 supply chain security initiatives including R&D security, secure development, SBOMs, vulnerability management, and 3rd party risk management.",
+    "view_count": 392
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QZToIgzWwbg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

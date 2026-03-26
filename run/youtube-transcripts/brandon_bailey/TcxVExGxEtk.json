@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TcxVExGxEtk",
+    "language": "en",
+    "took_ms": 8573,
+    "method": null,
+    "title": "DEF CON 33 - Firmware Decryption: For, and By, the Cryptographically Illiterate - Craig Heffner",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1253,
+    "description": "It's no secret that embedded devices are rife with security bugs just waiting to be found. However, vendors increasingly encrypt their firmware to prevent analysis by researchers, professionals, and inquisitive minds. In this talk, we examine common encryption techniques in real-world devices and how to crack the code—with or without hardware.",
+    "view_count": 396
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TcxVExGxEtk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

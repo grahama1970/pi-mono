@@ -1,0 +1,1033 @@
+{
+  "meta": {
+    "video_id": "T03idxny9jE",
+    "language": "en",
+    "took_ms": 1371,
+    "method": "direct",
+    "title": "First Stack Buffer Overflow to modify Variable - bin 0x0C",
+    "channel": "LiveOverflow",
+    "upload_date": "20160130",
+    "duration_sec": 681,
+    "description": "We will write our first Buffer Overflow for the stack0 level of exploit-exercises.com. \n\nstack0: https://exploit.education/protostar/stack-zero/\nIntel Reference: intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.\n\n#BinaryExploitation #BufferOverflow",
+    "view_count": 203852
+  },
+  "transcript": [
+    {
+      "text": "In this episode we will have a look at the\nfirst level of protostar from exploit-exercises.com.",
+      "start": 6.37,
+      "duration": 6.05
+    },
+    {
+      "text": "If you have questions about the setup, you\ncan watch the previous video.",
+      "start": 12.42,
+      "duration": 3.73
+    },
+    {
+      "text": "Generally I advise you to stop the video right\nhere, and work on it by yourself first.",
+      "start": 16.15,
+      "duration": 5.44
+    },
+    {
+      "text": "Maybe give it a day and see how much you can\nfigure out.",
+      "start": 21.59,
+      "duration": 2.5
+    },
+    {
+      "text": "And after that, watch my explanation.",
+      "start": 24.09,
+      "duration": 2.45
+    },
+    {
+      "text": "But if you feel completely lost, then just\nfollow me.",
+      "start": 26.54,
+      "duration": 3.37
+    },
+    {
+      "text": "This here should give you enough information\nto solve the next level on your own.",
+      "start": 29.91,
+      "duration": 3.46
+    },
+    {
+      "text": "So let’s first have a look at the challenge\ndescription.",
+      "start": 33.37,
+      "duration": 3.68
+    },
+    {
+      "text": "This level introduces the concept that memory\ncan be accessed outside of its allocated region,",
+      "start": 37.05,
+      "duration": 5.349
+    },
+    {
+      "text": "how the stack variables are laid out, and\nthat modifying outside of the allocated memory",
+      "start": 42.399,
+      "duration": 4.96
+    },
+    {
+      "text": "can modify program execution.",
+      "start": 47.359,
+      "duration": 2.75
+    },
+    {
+      "text": "And this level is located at /opt/protostar/bin/stack0",
+      "start": 50.109,
+      "duration": 3.13
+    },
+    {
+      "text": "Ok.",
+      "start": 53.239,
+      "duration": 1.57
+    },
+    {
+      "text": "Next we will have a look at the source code\nwhich is provided below.",
+      "start": 54.809,
+      "duration": 3.451
+    },
+    {
+      "text": "Let’s start with a first quick overview.",
+      "start": 58.26,
+      "duration": 3.11
+    },
+    {
+      "text": "This is clearly a program written in C. It\nreads some input with gets(), then checks",
+      "start": 61.37,
+      "duration": 5.19
+    },
+    {
+      "text": "the modified variable and prints either a\nsuccess or fail message.",
+      "start": 66.56,
+      "duration": 4.34
+    },
+    {
+      "text": "So obviously the goal of this level is to\nmake the program print the success string.",
+      "start": 70.9,
+      "duration": 5.15
+    },
+    {
+      "text": "Note, this level is not about executing arbitrary\ncode to gain root privileges.",
+      "start": 76.05,
+      "duration": 4.92
+    },
+    {
+      "text": "First we have to understand a couple of basics.",
+      "start": 80.97,
+      "duration": 2.09
+    },
+    {
+      "text": "A real full root exploit will come in later\nlevels.",
+      "start": 83.06,
+      "duration": 3.72
+    },
+    {
+      "text": "So for now, let’s focus on this smaller\ngoal.",
+      "start": 86.78,
+      "duration": 3.39
+    },
+    {
+      "text": "We can also execute the stack0 program.",
+      "start": 90.17,
+      "duration": 2.57
+    },
+    {
+      "text": "And we can see that it seems to wait for some\ninput, and then prints “Try again?”.",
+      "start": 92.74,
+      "duration": 4.83
+    },
+    {
+      "text": "Ok so let’s have a more detailed look at\nthe code.",
+      "start": 97.57,
+      "duration": 2.21
+    },
+    {
+      "text": "There are two local variables.",
+      "start": 99.78,
+      "duration": 2.28
+    },
+    {
+      "text": "An integer number modified, and a char array\nbuffer with space for 64 characters.",
+      "start": 102.06,
+      "duration": 5.76
+    },
+    {
+      "text": "An array of chars in C is basically just a\nstring.",
+      "start": 107.82,
+      "duration": 3.49
+    },
+    {
+      "text": "Then modified will be set to 0.",
+      "start": 111.31,
+      "duration": 1.48
+    },
+    {
+      "text": "And apparently never changed changed.",
+      "start": 112.79,
+      "duration": 3.27
+    },
+    {
+      "text": "Next is the gets function with our 64 character\nlong char buffer.",
+      "start": 116.06,
+      "duration": 3.76
+    },
+    {
+      "text": "Let’s have a look at the gets man page.",
+      "start": 119.82,
+      "duration": 3.24
+    },
+    {
+      "text": "So gets is used to read a string from the\ninput.",
+      "start": 123.06,
+      "duration": 3.46
+    },
+    {
+      "text": "When we scroll down we can also find a Bugs\nsection, which is telling us, to never use",
+      "start": 126.52,
+      "duration": 5.65
+    },
+    {
+      "text": "gets()!",
+      "start": 132.17,
+      "duration": 1.33
+    },
+    {
+      "text": "This cannot be more clear that this is the\nvulnerability in this program.",
+      "start": 133.5,
+      "duration": 3.909
+    },
+    {
+      "text": "As an explanation it says, that it’s impossible\nto tell how many characters gets will read.",
+      "start": 137.409,
+      "duration": 5.271
+    },
+    {
+      "text": "It has been used to break computer security.",
+      "start": 142.68,
+      "duration": 3.13
+    },
+    {
+      "text": "And after the gets call, modified is compared\nto 0.",
+      "start": 145.81,
+      "duration": 3.16
+    },
+    {
+      "text": "If it is not 0, we have won.",
+      "start": 148.97,
+      "duration": 2.47
+    },
+    {
+      "text": "But how can modified ever become non zero?",
+      "start": 151.44,
+      "duration": 2.379
+    },
+    {
+      "text": "It’s set to 0 and never changed.",
+      "start": 153.819,
+      "duration": 2.361
+    },
+    {
+      "text": "btw.",
+      "start": 156.18,
+      "duration": 1.0
+    },
+    {
+      "text": "the volatile is a way to tell the compiler,\nthat it should not optimize the usage of this",
+      "start": 157.18,
+      "duration": 4.839
+    },
+    {
+      "text": "variable.",
+      "start": 162.019,
+      "duration": 1.0
+    },
+    {
+      "text": "Because at first glance it looks like modified\nwill always be 0 and thus it might simply",
+      "start": 163.019,
+      "duration": 4.17
+    },
+    {
+      "text": "remove the unnecessary if-case.",
+      "start": 167.189,
+      "duration": 3.14
+    },
+    {
+      "text": "But with volatile we can force the compiler\nto keep it as it is.",
+      "start": 170.329,
+      "duration": 4.041
+    },
+    {
+      "text": "I think we have a good understanding of this\nprogram now in C. Let’s open it with gdb",
+      "start": 174.37,
+      "duration": 4.819
+    },
+    {
+      "text": "and start debugging.",
+      "start": 179.189,
+      "duration": 2.81
+    },
+    {
+      "text": "First let’s set a breakpoint in main with\nbreak *main.",
+      "start": 181.999,
+      "duration": 4.011
+    },
+    {
+      "text": "Then type run or short r to start the program\nfrom the beginning.",
+      "start": 186.01,
+      "duration": 3.589
+    },
+    {
+      "text": "Now it stopped at the start of main.",
+      "start": 189.599,
+      "duration": 2.72
+    },
+    {
+      "text": "With disassemble you can disassemble the current\nfunction.",
+      "start": 192.319,
+      "duration": 3.571
+    },
+    {
+      "text": "But also set the disassembly-flavor to intel,\nbecause I like it more.",
+      "start": 195.89,
+      "duration": 4.08
+    },
+    {
+      "text": "Let’s try to understand fully what is happening\nhere.",
+      "start": 199.97,
+      "duration": 2.78
+    },
+    {
+      "text": "I ignored those parts in my reverse-engineering\nintroduction, but here we need to fully understand",
+      "start": 202.75,
+      "duration": 6.16
+    },
+    {
+      "text": "how the stack works.",
+      "start": 208.91,
+      "duration": 1.83
+    },
+    {
+      "text": "So let’s start with the first instruction\n‘push ebp’.",
+      "start": 210.74,
+      "duration": 3.94
+    },
+    {
+      "text": "A quick flashback to my CPU introduction video.",
+      "start": 214.68,
+      "duration": 2.369
+    },
+    {
+      "text": "I mentioned that the stack is just a memory\narea at the bottom.",
+      "start": 217.049,
+      "duration": 4.0
+    },
+    {
+      "text": "When we look at the mapped memory with ‘info\nproc mappings’, we can see that the stack",
+      "start": 221.049,
+      "duration": 5.601
+    },
+    {
+      "text": "goes from bffeb000 to c0000.",
+      "start": 226.65,
+      "duration": 4.959
+    },
+    {
+      "text": "And because the stack grows from the bottom,\nit starts at the highest address.",
+      "start": 231.609,
+      "duration": 4.69
+    },
+    {
+      "text": "c0000 doesnt belong to it anymore, so basically\nthe stack starts at c0000-8.",
+      "start": 236.299,
+      "duration": 5.76
+    },
+    {
+      "text": "which is bfffff8.",
+      "start": 242.059,
+      "duration": 2.591
+    },
+    {
+      "text": "So push EBP.",
+      "start": 244.65,
+      "duration": 1.369
+    },
+    {
+      "text": "EBP is a register which is used as the base\npointer.",
+      "start": 246.019,
+      "duration": 4.241
+    },
+    {
+      "text": "And it contains an address pointing somwhere\ninto the stack.",
+      "start": 250.26,
+      "duration": 3.64
+    },
+    {
+      "text": "esp right now is actually bffff7bc.",
+      "start": 253.9,
+      "duration": 1.0
+    },
+    {
+      "text": "And at that position is this b7something value.",
+      "start": 254.9,
+      "duration": 1.0
+    },
+    {
+      "text": "Ok so whatever the meaning of this address\nis, it seems to be important, because it get’s",
+      "start": 255.9,
+      "duration": 4.03
+    },
+    {
+      "text": "pushed on the stack.",
+      "start": 259.93,
+      "duration": 1.0
+    },
+    {
+      "text": "Which is like saving the value.",
+      "start": 260.93,
+      "duration": 1.38
+    },
+    {
+      "text": "And at the end of the main function you find\na leave.",
+      "start": 262.31,
+      "duration": 3.479
+    },
+    {
+      "text": "And the intel instruction reference tells\nus that leave is just basically a mov esp,",
+      "start": 265.789,
+      "duration": 5.97
+    },
+    {
+      "text": "ebp and pop ebp.",
+      "start": 271.759,
+      "duration": 1.701
+    },
+    {
+      "text": "As you can see the start and end of a function\nis symmetrical.",
+      "start": 273.46,
+      "duration": 5.16
+    },
+    {
+      "text": "At the start we push ebp and mov esp into\nebp.",
+      "start": 278.62,
+      "duration": 4.22
+    },
+    {
+      "text": "And when the function is done, we do the reverse.",
+      "start": 282.84,
+      "duration": 2.18
+    },
+    {
+      "text": "Don’t worry, I will illustrate this nicely\nin a moment.",
+      "start": 285.02,
+      "duration": 3.329
+    },
+    {
+      "text": "Just one more little thing.",
+      "start": 288.349,
+      "duration": 1.931
+    },
+    {
+      "text": "After those two instructions we mask esp,\nwhich basically just sets the last 4 bits",
+      "start": 290.28,
+      "duration": 4.68
+    },
+    {
+      "text": "to 0, to keep it nicely aligned.",
+      "start": 294.96,
+      "duration": 2.32
+    },
+    {
+      "text": "Not that important.",
+      "start": 297.28,
+      "duration": 1.0
+    },
+    {
+      "text": "And then we subtract hex 60 from it.",
+      "start": 298.28,
+      "duration": 2.58
+    },
+    {
+      "text": "So ESP, the stack pointer now points to a\nbit lower address than ebp.",
+      "start": 300.86,
+      "duration": 5.33
+    },
+    {
+      "text": "And the next instruction moves a 0 at the\nmemory location at offset hex 5c from the",
+      "start": 306.19,
+      "duration": 5.449
+    },
+    {
+      "text": "stack pointer.",
+      "start": 311.639,
+      "duration": 1.0
+    },
+    {
+      "text": "And that seems to perfectly match our modified\nvariable that gets set to 0.",
+      "start": 312.639,
+      "duration": 6.12
+    },
+    {
+      "text": "At first it’s a lot to take in.",
+      "start": 318.759,
+      "duration": 1.611
+    },
+    {
+      "text": "But let’s do it again but this time with\nan animation.",
+      "start": 320.37,
+      "duration": 4.03
+    },
+    {
+      "text": "So here on the left you can see the assembler\ncode.",
+      "start": 324.4,
+      "duration": 2.51
+    },
+    {
+      "text": "And on the right I will illustrate the stack.",
+      "start": 326.91,
+      "duration": 1.9
+    },
+    {
+      "text": "with the 3 important registers, the instruction\npointer EIP, the stack pointer ESP and the",
+      "start": 328.81,
+      "duration": 5.479
+    },
+    {
+      "text": "base pointer EBP.",
+      "start": 334.289,
+      "duration": 3.681
+    },
+    {
+      "text": "So first it starts somewhere else with a ‘call\nmain’.",
+      "start": 337.97,
+      "duration": 3.319
+    },
+    {
+      "text": "Call will push the theoretically next instruction\npointer onto the stack.",
+      "start": 341.289,
+      "duration": 4.801
+    },
+    {
+      "text": "And then jump to our main function.",
+      "start": 346.09,
+      "duration": 1.82
+    },
+    {
+      "text": "As you can see, when the address of the next\ninstruction was pushed, the stack pointer",
+      "start": 347.91,
+      "duration": 5.07
+    },
+    {
+      "text": "got incremented and the address placed there.",
+      "start": 352.98,
+      "duration": 4.05
+    },
+    {
+      "text": "So now comes our push EBP.",
+      "start": 357.03,
+      "duration": 2.75
+    },
+    {
+      "text": "I will illustrate with some arrows that this\nvalue is a stack address, which points to",
+      "start": 359.78,
+      "duration": 4.669
+    },
+    {
+      "text": "another location on the stack.",
+      "start": 364.449,
+      "duration": 2.22
+    },
+    {
+      "text": "Now we overwrite EBP with the value from ESP.",
+      "start": 366.669,
+      "duration": 3.78
+    },
+    {
+      "text": "mov ebp, esp.",
+      "start": 370.449,
+      "duration": 2.551
+    },
+    {
+      "text": "Then we subtract hex 0x60 from esp.",
+      "start": 373.0,
+      "duration": 3.15
+    },
+    {
+      "text": "Look at the stack now.",
+      "start": 376.15,
+      "duration": 2.539
+    },
+    {
+      "text": "This area between esp and ebp is called a\nstack frame.",
+      "start": 378.689,
+      "duration": 5.031
+    },
+    {
+      "text": "This is now a small area of memory, that we\ncan use for local variables and calculations",
+      "start": 383.72,
+      "duration": 5.64
+    },
+    {
+      "text": "inside the main function.",
+      "start": 389.36,
+      "duration": 2.029
+    },
+    {
+      "text": "And do you notice where EBP is pointing to?",
+      "start": 391.389,
+      "duration": 2.71
+    },
+    {
+      "text": "It’s pointing to the OLD ebp.",
+      "start": 394.099,
+      "duration": 2.831
+    },
+    {
+      "text": "So this area here is basically the stack frame\nof the previous function, which called main.",
+      "start": 396.93,
+      "duration": 8.829
+    },
+    {
+      "text": "And we know that we move 0 into esp+0x5c.",
+      "start": 405.759,
+      "duration": 3.93
+    },
+    {
+      "text": "Which we think is the modified variable.",
+      "start": 409.689,
+      "duration": 3.72
+    },
+    {
+      "text": "And that’s true.",
+      "start": 413.409,
+      "duration": 1.171
+    },
+    {
+      "text": "The local variables all have their space in\nthis stack frame.",
+      "start": 414.58,
+      "duration": 3.73
+    },
+    {
+      "text": "And it’s so big, because it had to make\nspace for at least 64 characters and the modified",
+      "start": 418.31,
+      "duration": 4.129
+    },
+    {
+      "text": "integer.",
+      "start": 422.439,
+      "duration": 2.07
+    },
+    {
+      "text": "At the end of this function we will now perform\na leave.",
+      "start": 424.509,
+      "duration": 2.94
+    },
+    {
+      "text": "Which moves EBP into ESP.",
+      "start": 427.449,
+      "duration": 2.94
+    },
+    {
+      "text": "Effectively destroying the previous stack\nframe.",
+      "start": 430.389,
+      "duration": 3.28
+    },
+    {
+      "text": "Then we pop EBP, which restores the previous\nstack frame.",
+      "start": 433.669,
+      "duration": 3.051
+    },
+    {
+      "text": "Isn’t that amazing?",
+      "start": 436.72,
+      "duration": 1.17
+    },
+    {
+      "text": "But WAIT!",
+      "start": 437.89,
+      "duration": 1.0
+    },
+    {
+      "text": "it gets cooler.",
+      "start": 438.89,
+      "duration": 1.25
+    },
+    {
+      "text": "How do we now know where to return to from\nmain?",
+      "start": 440.14,
+      "duration": 3.279
+    },
+    {
+      "text": "Well if you remember, call pushed the address\nof the instruction after the call.",
+      "start": 443.419,
+      "duration": 5.581
+    },
+    {
+      "text": "So the next value on the stack is where we\nwant to return to.",
+      "start": 449.0,
+      "duration": 3.539
+    },
+    {
+      "text": "And the ret instruction is basically just\npopping this address into the instruction",
+      "start": 452.539,
+      "duration": 4.43
+    },
+    {
+      "text": "pointer.",
+      "start": 456.969,
+      "duration": 1.0
+    },
+    {
+      "text": "And thus jumping back where we came from.",
+      "start": 457.969,
+      "duration": 2.5
+    },
+    {
+      "text": "Computers.",
+      "start": 460.469,
+      "duration": 1.0
+    },
+    {
+      "text": "ha! aren’t they mindblowing.",
+      "start": 461.469,
+      "duration": 2.201
+    },
+    {
+      "text": "So much smart stuff in there.",
+      "start": 463.67,
+      "duration": 1.989
+    },
+    {
+      "text": "Now let’s continue with the assembler code.",
+      "start": 465.659,
+      "duration": 2.76
+    },
+    {
+      "text": "After a value on the stack got set to 0, we\nprepare the eax register with an address from",
+      "start": 468.419,
+      "duration": 5.921
+    },
+    {
+      "text": "the stack at offset 0x1c.",
+      "start": 474.34,
+      "duration": 2.24
+    },
+    {
+      "text": "LEA (load effective address) is similar to\na move, but instead of moving the content",
+      "start": 476.58,
+      "duration": 6.649
+    },
+    {
+      "text": "of an register offset into a register, it\nmoves the address of an register offset into",
+      "start": 483.229,
+      "duration": 4.96
+    },
+    {
+      "text": "a register.",
+      "start": 488.189,
+      "duration": 1.41
+    },
+    {
+      "text": "And this address then get’s placed at the\ntop of the stack.",
+      "start": 489.599,
+      "duration": 3.31
+    },
+    {
+      "text": "This is called calling convention.",
+      "start": 492.909,
+      "duration": 2.38
+    },
+    {
+      "text": "The programs and functions have to agree how\nto pass function parameters in assembler.",
+      "start": 495.289,
+      "duration": 4.891
+    },
+    {
+      "text": "In this case the parameters are placed on\nthe stack.",
+      "start": 500.18,
+      "duration": 3.169
+    },
+    {
+      "text": "And the gets function takes one parameter,\nwhich points to a character buffer.",
+      "start": 503.349,
+      "duration": 4.721
+    },
+    {
+      "text": "and the character buffer is on the stack,\nthus we have to pass it the address where",
+      "start": 508.07,
+      "duration": 4.0
+    },
+    {
+      "text": "the character buffer starts.",
+      "start": 512.07,
+      "duration": 2.93
+    },
+    {
+      "text": "Afterwards we read the value we previously\nset to 0, and with test we can check if it",
+      "start": 515.0,
+      "duration": 5.02
+    },
+    {
+      "text": "is 0 or not.",
+      "start": 520.02,
+      "duration": 1.019
+    },
+    {
+      "text": "And branch off to print one of the messages.",
+      "start": 521.039,
+      "duration": 3.981
+    },
+    {
+      "text": "So let’s remove the breakpoint form main\nwith ‘del’ delete and set a breakpoint",
+      "start": 525.02,
+      "duration": 3.55
+    },
+    {
+      "text": "before and after the gets.",
+      "start": 528.57,
+      "duration": 1.329
+    },
+    {
+      "text": "Before we restart, I want to show you a cool\ntrick.",
+      "start": 529.899,
+      "duration": 2.531
+    },
+    {
+      "text": "We will define a hook, that will execute some\ngdb commands when we stop at a breakpoint.",
+      "start": 532.43,
+      "duration": 5.57
+    },
+    {
+      "text": "To do this type\ndefine hook-stop",
+      "start": 538.0,
+      "duration": 3.26
+    },
+    {
+      "text": "then info registers to show the registers\nand x/24wx $esp.",
+      "start": 541.26,
+      "duration": 7.1
+    },
+    {
+      "text": "and x/2i $eip\nand finish with end.",
+      "start": 548.36,
+      "duration": 4.64
+    },
+    {
+      "text": "This will now print the registers, the stack\nand the next two instructions every time when",
+      "start": 553.0,
+      "duration": 6.26
+    },
+    {
+      "text": "we hit a breakpoint.",
+      "start": 559.26,
+      "duration": 1.49
+    },
+    {
+      "text": "Now restart the program.",
+      "start": 560.75,
+      "duration": 1.0
+    },
+    {
+      "text": "Boom.",
+      "start": 561.75,
+      "duration": 1.0
+    },
+    {
+      "text": "first breakpoint.",
+      "start": 562.75,
+      "duration": 1.0
+    },
+    {
+      "text": "Now continue and enter a couple of capital\nA’s.",
+      "start": 563.75,
+      "duration": 1.0
+    },
+    {
+      "text": "Do you see those hex 41s.",
+      "start": 564.75,
+      "duration": 1.49
+    },
+    {
+      "text": "those are all the As you have entered.",
+      "start": 566.24,
+      "duration": 2.58
+    },
+    {
+      "text": "Now let’s see the content of the address\nwe check if it’s 0.",
+      "start": 568.82,
+      "duration": 4.23
+    },
+    {
+      "text": "Simply examine $esp + hex 5c.",
+      "start": 573.05,
+      "duration": 4.06
+    },
+    {
+      "text": "Still 0.",
+      "start": 577.11,
+      "duration": 1.13
+    },
+    {
+      "text": "But it shows us where it is located on the\nstack. and when we look at our stack, we see",
+      "start": 578.24,
+      "duration": 4.5
+    },
+    {
+      "text": "that our As are still a little bit too far\naway.",
+      "start": 582.74,
+      "duration": 3.69
+    },
+    {
+      "text": "So let’s count how much we need.",
+      "start": 586.43,
+      "duration": 1.68
+    },
+    {
+      "text": "4 characters here.",
+      "start": 588.11,
+      "duration": 1.33
+    },
+    {
+      "text": "Then 4 times 4 that’s 16 for a row.",
+      "start": 589.44,
+      "duration": 3.35
+    },
+    {
+      "text": "And we have 3 full rows.",
+      "start": 592.79,
+      "duration": 1.35
+    },
+    {
+      "text": "And with the next full row we can apparently\nwrite into those zeroes.",
+      "start": 594.14,
+      "duration": 3.74
+    },
+    {
+      "text": "So run again.",
+      "start": 597.88,
+      "duration": 1.58
+    },
+    {
+      "text": "Enter that many characters.",
+      "start": 599.46,
+      "duration": 1.47
+    },
+    {
+      "text": "I like to use recognizable patterns.",
+      "start": 600.93,
+      "duration": 1.85
+    },
+    {
+      "text": "So I can clearly see which letter which row\nis.",
+      "start": 602.78,
+      "duration": 3.869
+    },
+    {
+      "text": "looks promising.",
+      "start": 606.649,
+      "duration": 3.781
+    },
+    {
+      "text": "So a single step forward, and it will load\nthe modified variable from the stack into",
+      "start": 610.43,
+      "duration": 3.719
+    },
+    {
+      "text": "eax.",
+      "start": 614.149,
+      "duration": 1.451
+    },
+    {
+      "text": "And indeed.",
+      "start": 615.6,
+      "duration": 1.0
+    },
+    {
+      "text": "Those are the characters that we entered.",
+      "start": 616.6,
+      "duration": 2.09
+    },
+    {
+      "text": "Let’s try this without gdb.",
+      "start": 618.69,
+      "duration": 5.269
+    },
+    {
+      "text": "We can use echo and our previous string and\npipe it into the stack0 program.",
+      "start": 623.959,
+      "duration": 5.751
+    },
+    {
+      "text": "Cool!",
+      "start": 629.71,
+      "duration": 1.04
+    },
+    {
+      "text": "it worked.",
+      "start": 630.75,
+      "duration": 2.07
+    },
+    {
+      "text": "Before we end, let me show you how we can\nmake the input a bit more convenient thanks",
+      "start": 632.82,
+      "duration": 4.67
+    },
+    {
+      "text": "to python.",
+      "start": 637.49,
+      "duration": 1.33
+    },
+    {
+      "text": "With python -c we can specify a command that\nshould be executed.",
+      "start": 638.82,
+      "duration": 4.63
+    },
+    {
+      "text": "Then we can use print and pythons cool string\nsyntax which allows us to repeat this character",
+      "start": 643.45,
+      "duration": 4.7
+    },
+    {
+      "text": "multiple times.",
+      "start": 648.15,
+      "duration": 2.04
+    },
+    {
+      "text": "With this knowledge you should be able to\nsolve stack1 and stack2.",
+      "start": 650.19,
+      "duration": 3.11
+    },
+    {
+      "text": "It’s pretty much the same task, just with\nsome different ways of input and a different",
+      "start": 653.3,
+      "duration": 4.33
+    },
+    {
+      "text": "vulnerable function.",
+      "start": 657.63,
+      "duration": 1.459
+    },
+    {
+      "text": "But if you invest some time, you can absolutely\nsolve it.",
+      "start": 659.089,
+      "duration": 3.571
+    },
+    {
+      "text": "And I will not make a video about those.",
+      "start": 662.66,
+      "duration": 3.0
+    },
+    {
+      "text": "Next video will be about stack3.",
+      "start": 665.66,
+      "duration": 2.369
+    },
+    {
+      "text": "This is when things start to get juicy.",
+      "start": 668.029,
+      "duration": 2.201
+    },
+    {
+      "text": "See you next time!",
+      "start": 670.23,
+      "duration": 1.37
+    }
+  ],
+  "full_text": "In this episode we will have a look at the\nfirst level of protostar from exploit-exercises.com. If you have questions about the setup, you\ncan watch the previous video. Generally I advise you to stop the video right\nhere, and work on it by yourself first. Maybe give it a day and see how much you can\nfigure out. And after that, watch my explanation. But if you feel completely lost, then just\nfollow me. This here should give you enough information\nto solve the next level on your own. So let’s first have a look at the challenge\ndescription. This level introduces the concept that memory\ncan be accessed outside of its allocated region, how the stack variables are laid out, and\nthat modifying outside of the allocated memory can modify program execution. And this level is located at /opt/protostar/bin/stack0 Ok. Next we will have a look at the source code\nwhich is provided below. Let’s start with a first quick overview. This is clearly a program written in C. It\nreads some input with gets(), then checks the modified variable and prints either a\nsuccess or fail message. So obviously the goal of this level is to\nmake the program print the success string. Note, this level is not about executing arbitrary\ncode to gain root privileges. First we have to understand a couple of basics. A real full root exploit will come in later\nlevels. So for now, let’s focus on this smaller\ngoal. We can also execute the stack0 program. And we can see that it seems to wait for some\ninput, and then prints “Try again?”. Ok so let’s have a more detailed look at\nthe code. There are two local variables. An integer number modified, and a char array\nbuffer with space for 64 characters. An array of chars in C is basically just a\nstring. Then modified will be set to 0. And apparently never changed changed. Next is the gets function with our 64 character\nlong char buffer. Let’s have a look at the gets man page. So gets is used to read a string from the\ninput. When we scroll down we can also find a Bugs\nsection, which is telling us, to never use gets()! This cannot be more clear that this is the\nvulnerability in this program. As an explanation it says, that it’s impossible\nto tell how many characters gets will read. It has been used to break computer security. And after the gets call, modified is compared\nto 0. If it is not 0, we have won. But how can modified ever become non zero? It’s set to 0 and never changed. btw. the volatile is a way to tell the compiler,\nthat it should not optimize the usage of this variable. Because at first glance it looks like modified\nwill always be 0 and thus it might simply remove the unnecessary if-case. But with volatile we can force the compiler\nto keep it as it is. I think we have a good understanding of this\nprogram now in C. Let’s open it with gdb and start debugging. First let’s set a breakpoint in main with\nbreak *main. Then type run or short r to start the program\nfrom the beginning. Now it stopped at the start of main. With disassemble you can disassemble the current\nfunction. But also set the disassembly-flavor to intel,\nbecause I like it more. Let’s try to understand fully what is happening\nhere. I ignored those parts in my reverse-engineering\nintroduction, but here we need to fully understand how the stack works. So let’s start with the first instruction\n‘push ebp’. A quick flashback to my CPU introduction video. I mentioned that the stack is just a memory\narea at the bottom. When we look at the mapped memory with ‘info\nproc mappings’, we can see that the stack goes from bffeb000 to c0000. And because the stack grows from the bottom,\nit starts at the highest address. c0000 doesnt belong to it anymore, so basically\nthe stack starts at c0000-8. which is bfffff8. So push EBP. EBP is a register which is used as the base\npointer. And it contains an address pointing somwhere\ninto the stack. esp right now is actually bffff7bc. And at that position is this b7something value. Ok so whatever the meaning of this address\nis, it seems to be important, because it get’s pushed on the stack. Which is like saving the value. And at the end of the main function you find\na leave. And the intel instruction reference tells\nus that leave is just basically a mov esp, ebp and pop ebp. As you can see the start and end of a function\nis symmetrical. At the start we push ebp and mov esp into\nebp. And when the function is done, we do the reverse. Don’t worry, I will illustrate this nicely\nin a moment. Just one more little thing. After those two instructions we mask esp,\nwhich basically just sets the last 4 bits to 0, to keep it nicely aligned. Not that important. And then we subtract hex 60 from it. So ESP, the stack pointer now points to a\nbit lower address than ebp. And the next instruction moves a 0 at the\nmemory location at offset hex 5c from the stack pointer. And that seems to perfectly match our modified\nvariable that gets set to 0. At first it’s a lot to take in. But let’s do it again but this time with\nan animation. So here on the left you can see the assembler\ncode. And on the right I will illustrate the stack. with the 3 important registers, the instruction\npointer EIP, the stack pointer ESP and the base pointer EBP. So first it starts somewhere else with a ‘call\nmain’. Call will push the theoretically next instruction\npointer onto the stack. And then jump to our main function. As you can see, when the address of the next\ninstruction was pushed, the stack pointer got incremented and the address placed there. So now comes our push EBP. I will illustrate with some arrows that this\nvalue is a stack address, which points to another location on the stack. Now we overwrite EBP with the value from ESP. mov ebp, esp. Then we subtract hex 0x60 from esp. Look at the stack now. This area between esp and ebp is called a\nstack frame. This is now a small area of memory, that we\ncan use for local variables and calculations inside the main function. And do you notice where EBP is pointing to? It’s pointing to the OLD ebp. So this area here is basically the stack frame\nof the previous function, which called main. And we know that we move 0 into esp+0x5c. Which we think is the modified variable. And that’s true. The local variables all have their space in\nthis stack frame. And it’s so big, because it had to make\nspace for at least 64 characters and the modified integer. At the end of this function we will now perform\na leave. Which moves EBP into ESP. Effectively destroying the previous stack\nframe. Then we pop EBP, which restores the previous\nstack frame. Isn’t that amazing? But WAIT! it gets cooler. How do we now know where to return to from\nmain? Well if you remember, call pushed the address\nof the instruction after the call. So the next value on the stack is where we\nwant to return to. And the ret instruction is basically just\npopping this address into the instruction pointer. And thus jumping back where we came from. Computers. ha! aren’t they mindblowing. So much smart stuff in there. Now let’s continue with the assembler code. After a value on the stack got set to 0, we\nprepare the eax register with an address from the stack at offset 0x1c. LEA (load effective address) is similar to\na move, but instead of moving the content of an register offset into a register, it\nmoves the address of an register offset into a register. And this address then get’s placed at the\ntop of the stack. This is called calling convention. The programs and functions have to agree how\nto pass function parameters in assembler. In this case the parameters are placed on\nthe stack. And the gets function takes one parameter,\nwhich points to a character buffer. and the character buffer is on the stack,\nthus we have to pass it the address where the character buffer starts. Afterwards we read the value we previously\nset to 0, and with test we can check if it is 0 or not. And branch off to print one of the messages. So let’s remove the breakpoint form main\nwith ‘del’ delete and set a breakpoint before and after the gets. Before we restart, I want to show you a cool\ntrick. We will define a hook, that will execute some\ngdb commands when we stop at a breakpoint. To do this type\ndefine hook-stop then info registers to show the registers\nand x/24wx $esp. and x/2i $eip\nand finish with end. This will now print the registers, the stack\nand the next two instructions every time when we hit a breakpoint. Now restart the program. Boom. first breakpoint. Now continue and enter a couple of capital\nA’s. Do you see those hex 41s. those are all the As you have entered. Now let’s see the content of the address\nwe check if it’s 0. Simply examine $esp + hex 5c. Still 0. But it shows us where it is located on the\nstack. and when we look at our stack, we see that our As are still a little bit too far\naway. So let’s count how much we need. 4 characters here. Then 4 times 4 that’s 16 for a row. And we have 3 full rows. And with the next full row we can apparently\nwrite into those zeroes. So run again. Enter that many characters. I like to use recognizable patterns. So I can clearly see which letter which row\nis. looks promising. So a single step forward, and it will load\nthe modified variable from the stack into eax. And indeed. Those are the characters that we entered. Let’s try this without gdb. We can use echo and our previous string and\npipe it into the stack0 program. Cool! it worked. Before we end, let me show you how we can\nmake the input a bit more convenient thanks to python. With python -c we can specify a command that\nshould be executed. Then we can use print and pythons cool string\nsyntax which allows us to repeat this character multiple times. With this knowledge you should be able to\nsolve stack1 and stack2. It’s pretty much the same task, just with\nsome different ways of input and a different vulnerable function. But if you invest some time, you can absolutely\nsolve it. And I will not make a video about those. Next video will be about stack3. This is when things start to get juicy. See you next time!",
+  "errors": []
+}

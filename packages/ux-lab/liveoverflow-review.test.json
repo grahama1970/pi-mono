@@ -1,0 +1,2558 @@
+{
+  "version": 2,
+  "baseUrl": "http://localhost:5173",
+  "category": "persona-reviews",
+  "persona": "liveoverflow",
+  "tests": [
+    {
+      "id": "lo_first_01",
+      "group": "first-impressions",
+      "label": "LiveOverflow: Beginner onboarding experience",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "onboarding",
+          "review_criteria": "As a security educator who makes complex topics accessible: Could a CTF beginner understand how to use this tool? Is there guidance on what to do first? Does the empty-graph progressive disclosure help or confuse newcomers? What would you add to make this a teaching tool? Would you feature this in a YouTube tutorial?"
+        }
+      ]
+    },
+    {
+      "id": "lo_first_02",
+      "group": "first-impressions",
+      "label": "LiveOverflow: Initial confusion level assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "confusion-level",
+          "review_criteria": "As someone who remembers being a beginner: On a scale of 1-10, how confusing is the initial experience? What are the first three questions a newcomer would ask? Are there any obvious UI elements that would mislead someone who's never used a binary analysis tool? Would you recommend this to a viewer who just finished their first CTF?"
+        }
+      ]
+    },
+    {
+      "id": "lo_first_03",
+      "group": "first-impressions",
+      "label": "LiveOverflow: Call-to-action clarity",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "cta-clarity",
+          "review_criteria": "As someone who designs educational content: Is the primary call-to-action obvious? Does the user know what to click first? Is the 'Seed Namespaces' button discoverable or buried? Would a first-time user understand what 'seed namespaces' means? Should there be a 'Get Started' or 'Load Example Binary' button instead?"
+        }
+      ]
+    },
+    {
+      "id": "lo_first_04",
+      "group": "first-impressions",
+      "label": "LiveOverflow: Empty state helpfulness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "empty-state",
+          "review_criteria": "As someone who believes in learning by doing: Does the empty graph state teach you anything? Is there a message explaining why it's empty and what to do? Are there example queries or a tutorial overlay? Would an interactive walkthrough (like GitHub's first-repo experience) be more effective? Does the empty state make you want to explore or close the tab?"
+        }
+      ]
+    },
+    {
+      "id": "lo_first_05",
+      "group": "first-impressions",
+      "label": "LiveOverflow: Binary overview comprehension",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "binary-overview",
+          "review_criteria": "As someone who explains binaries to millions: After seeding and clicking a namespace, can you understand what the binary does at a high level? Is the overview adequate for forming a mental model? Would a beginner understand the relationship between namespaces, functions, and data structures? Is there a 'what is this binary?' summary anywhere?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_01",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Empty scene to populated transition",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 4000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "empty-to-populated",
+          "review_criteria": "As someone who believes UI should tell a story: Is the transition from empty to populated graph smooth and understandable? Does the animation convey that nodes are 'appearing' in response to your action? Is it clear that you caused this to happen? Would a beginner understand that clicking 'Seed Namespaces' loads the binary's structure? Is there a loading indicator?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_02",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Seed namespaces discovery flow",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "seed-flow",
+          "review_criteria": "As someone who designs learning progressions: Does the seed namespaces flow teach you about the binary's structure? Are the namespace names meaningful to a beginner? Can you understand what each namespace contains before clicking it? Is the progression from namespace \u2192 function \u2192 detail intuitive? Would you know the next step without a tutorial?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_03",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Click-to-expand progressive pattern",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); return 'double-clicked to expand'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "click-to-expand",
+          "review_criteria": "As someone who teaches by showing: Is the click-to-expand pattern discoverable? Does single-click show detail and double-click expand? Is this convention explained anywhere? Would a beginner accidentally expand or not know they can expand? Is the expansion visually clear (new nodes appearing, animation)? Does it feel like exploring a map?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_04",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Detail level progression",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "detail-levels",
+          "review_criteria": "As someone who structures explanations from simple to complex: Does the detail panel progressively show more information? Is there a summary view vs full detail view? Can a beginner understand the summary without knowing assembly? Does the detail panel overwhelm with too much data at once? Would you want a 'beginner mode' vs 'expert mode'?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_05",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Information overload assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "info-overload",
+          "review_criteria": "As someone who carefully manages cognitive load in tutorials: After expanding a namespace, is the amount of visible information manageable? Are there too many nodes visible at once? Is the graph cluttered or clean? Would you feel overwhelmed or oriented? What percentage of on-screen information can you process at a glance? Is there a way to simplify the view?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_06",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Tooltip and hover helpfulness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); return 'hovered node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "tooltip-help",
+          "review_criteria": "As someone who uses tooltips as micro-lessons: Do graph nodes show tooltips on hover? Is the tooltip content useful (not just the name)? Does it give enough context to decide whether to click? Are tooltips shown for buttons and UI controls? Would tooltips alone be enough to learn the interface without documentation? Are they too verbose or too minimal?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_07",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Suggested queries for exploration",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "suggested-queries",
+          "review_criteria": "As someone who believes in guided exploration: Are there suggested queries or next-step hints visible? Do they teach you what kinds of questions you can ask? Are the suggestions contextual (different after seeding vs after selecting a node)? Would a beginner learn the tool's capabilities from the suggestions alone? Are they engaging or boring?"
+        }
+      ]
+    },
+    {
+      "id": "lo_prog_08",
+      "group": "progressive-disclosure",
+      "label": "LiveOverflow: Guided exploration flow",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const links = document.querySelectorAll('a, button, [style*=cursor]'); for (const l of links) { if (l.textContent?.includes('How do')) { l.click(); return 'clicked suggestion'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "guided-exploration",
+          "review_criteria": "As someone who designs learning paths: Is there a guided exploration mode or tutorial? Can you follow suggested queries to learn the tool step by step? Does each step build on the previous one? Would a 5-minute guided tour teach you 80% of the tool? Is the guidance optional and dismissable for experienced users?"
+        }
+      ]
+    },
+    {
+      "id": "lo_learn_01",
+      "group": "learning-path",
+      "label": "LiveOverflow: Feature discovery order",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "feature-discovery",
+          "review_criteria": "As someone who thinks about pedagogical order: In what order would a newcomer discover features? Is the order logical (overview \u2192 detail \u2192 code \u2192 chat)? Are advanced features hidden until basics are understood? Could someone accidentally discover a confusing advanced feature before understanding the basics? Is there a natural flow?"
+        }
+      ]
+    },
+    {
+      "id": "lo_learn_02",
+      "group": "learning-path",
+      "label": "LiveOverflow: Complexity ramp from simple to advanced",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "complexity-ramp",
+          "review_criteria": "As someone who structures tutorials from easy to hard: Does the tool's complexity ramp gradually? Can you use the graph without understanding assembly? Is the code view an optional deep-dive? Are there clear skill-level boundaries (beginner can browse graph, intermediate reads C, expert reads ASM)? Would you structure a tutorial series around this tool's natural complexity ramp?"
+        }
+      ]
+    },
+    {
+      "id": "lo_learn_03",
+      "group": "learning-path",
+      "label": "LiveOverflow: Terminology clarity for newcomers",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "terminology",
+          "review_criteria": "As someone who defines terms before using them: Are technical terms explained or at least linked to definitions? Would a CS student who hasn't taken a systems course understand 'namespace', 'schema', 'RPC endpoint'? Are there any terms that are project-specific jargon (SPARTA, mind tags) that need explanation? Would a glossary tooltip help?"
+        }
+      ]
+    },
+    {
+      "id": "lo_learn_04",
+      "group": "learning-path",
+      "label": "LiveOverflow: Jargon and insider knowledge assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "jargon-assessment",
+          "review_criteria": "As someone who translates expert knowledge for beginners: How much insider knowledge does this tool assume? Are CWE numbers meaningful without context? Would someone know what D3FEND or ATT&CK means? Are node type icons self-explanatory? How many clicks before you encounter something you can't understand without a security background?"
+        }
+      ]
+    },
+    {
+      "id": "lo_learn_05",
+      "group": "learning-path",
+      "label": "LiveOverflow: Documentation links and help",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "docs-help",
+          "review_criteria": "As someone who links to resources in videos: Are there documentation links or help buttons? Can you get contextual help for what you're looking at? Is there a help overlay or keyboard shortcut reference? Would inline documentation slow down experienced users? Is the help system searchable? Would you link to this tool's docs from a video?"
+        }
+      ]
+    },
+    {
+      "id": "lo_learn_06",
+      "group": "learning-path",
+      "label": "LiveOverflow: Help system and support resources",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'F1', bubbles: true })); return 'pressed F1'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "help-system",
+          "review_criteria": "As someone who makes tools accessible: Is there an in-app help system (F1, ?, help icon)? Does it open contextual help or a generic page? Are there video tutorials linked from the app? Is there a community channel (Discord, forum) linked? Would the help system be sufficient for someone stuck during a CTF?"
+        }
+      ]
+    },
+    {
+      "id": "lo_vuln_01",
+      "group": "vulnerability-hunting",
+      "label": "LiveOverflow: Attack surface identification",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "attack-surface",
+          "review_criteria": "As someone who hunts for bugs in CTF challenges: Can you identify the binary's attack surface (input handlers, network listeners, file parsers)? Are these highlighted or do you have to find them yourself? Would a beginner know where to start looking for vulnerabilities? Is there a 'find interesting functions' feature? Would this help you during a CTF time crunch?"
+        }
+      ]
+    },
+    {
+      "id": "lo_vuln_02",
+      "group": "vulnerability-hunting",
+      "label": "LiveOverflow: Authentication feature identification",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "auth-features",
+          "review_criteria": "As someone who looks for auth bypasses: Can you quickly find authentication-related functions? Are password checks, token validation, and session management functions highlighted? Can you trace the authentication flow through the graph? Would this tool help you find a login bypass faster than reading source code? Are there CWE tags for auth-related weaknesses?"
+        }
+      ]
+    },
+    {
+      "id": "lo_vuln_03",
+      "group": "vulnerability-hunting",
+      "label": "LiveOverflow: Data parsing and input handling",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "data-parsing",
+          "review_criteria": "As someone who exploits parser bugs: Can you find data parsing functions (string parsing, format parsing, protocol decoding)? Are buffer operations highlighted? Can you trace from user input to parsing function? Are there CWE tags for common parsing bugs (buffer overflow, format string, integer overflow)? Would this help write a fuzzer input?"
+        }
+      ]
+    },
+    {
+      "id": "lo_vuln_04",
+      "group": "vulnerability-hunting",
+      "label": "LiveOverflow: Input validation assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "input-validation",
+          "review_criteria": "As someone who bypasses input validation for fun: Can you see where input validation happens? Are validation checks mapped to CWE weaknesses? Can you trace what happens when validation fails vs succeeds? Would the tool help you identify missing validation? Can a beginner understand which functions are security-critical?"
+        }
+      ]
+    },
+    {
+      "id": "lo_vuln_05",
+      "group": "vulnerability-hunting",
+      "label": "LiveOverflow: Privilege escalation path discovery",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "privesc-paths",
+          "review_criteria": "As someone who chains bugs for privilege escalation: Can you trace paths between low-privilege and high-privilege functions? Are permission checks visible in the graph? Can you identify functions that change privilege level? Would the graph view help you visualize a multi-step exploit chain? Is there ATT&CK mapping for privilege escalation techniques?"
+        }
+      ]
+    },
+    {
+      "id": "lo_vuln_06",
+      "group": "vulnerability-hunting",
+      "label": "LiveOverflow: Security-relevant filtering",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "security-filtering",
+          "review_criteria": "As someone who needs to quickly find the interesting parts: Can you filter to show only security-relevant functions (crypto, network, auth, memory allocation)? Is there a 'security hotspots' view? Can you sort by risk score? Would a beginner know which filters to apply for vulnerability hunting? Does filtering reduce the graph to a manageable size?"
+        }
+      ]
+    },
+    {
+      "id": "lo_code_01",
+      "group": "code-view",
+      "label": "LiveOverflow: Python pseudocode quality for learning",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "python-quality",
+          "review_criteria": "As someone who uses Python to explain binary concepts: Is the Python pseudocode readable for someone who knows Python but not assembly? Does it accurately represent the binary's logic? Are comments included to explain non-obvious operations? Would you use this in a tutorial to explain what a function does? Is it better than reading raw C decompilation?"
+        }
+      ]
+    },
+    {
+      "id": "lo_code_02",
+      "group": "code-view",
+      "label": "LiveOverflow: Beginner readability of decompiled code",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "beginner-readability",
+          "review_criteria": "As someone who teaches code reading: Can a beginner read the decompiled C code? Are variable names meaningful or cryptic? Is the code formatting clean? Are there line-by-line explanations available? Would you want an 'annotated mode' that adds educational comments? Could a student learn what the function does from this view alone?"
+        }
+      ]
+    },
+    {
+      "id": "lo_code_03",
+      "group": "code-view",
+      "label": "LiveOverflow: Comment and annotation helpfulness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "comments-helpfulness",
+          "review_criteria": "As someone who relies on good comments to explain code: Are there LLM-generated comments explaining what the code does? Are the comments accurate and helpful? Do they explain the 'why' not just the 'what'? Would a beginner understand the security implications from the comments? Are there too many or too few comments?"
+        }
+      ]
+    },
+    {
+      "id": "lo_code_04",
+      "group": "code-view",
+      "label": "LiveOverflow: ASM-to-Python bridge for learning",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "asm-python-bridge",
+          "review_criteria": "As someone who teaches assembly by comparing to high-level languages: Can you view ASM and Python side-by-side? Are corresponding lines linked or highlighted? Can a student trace from a Python line back to the ASM instructions that implement it? Would this teach someone how compilers work? Is this better than existing tools like Compiler Explorer for binary analysis education?"
+        }
+      ]
+    },
+    {
+      "id": "lo_code_05",
+      "group": "code-view",
+      "label": "LiveOverflow: Educational value of code representations",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "educational-value",
+          "review_criteria": "As someone who evaluates tools for educational potential: Does having ASM, C, and Python views of the same function teach you something about abstraction levels? Is the relationship between views clear? Would you use this in a university course or workshop? What's missing that would make this a killer educational tool? Would you make a video about this?"
+        }
+      ]
+    },
+    {
+      "id": "lo_code_06",
+      "group": "code-view",
+      "label": "LiveOverflow: Copy-paste utility for writeups",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "copy-paste-writeup",
+          "review_criteria": "As someone who includes code in CTF writeups and videos: Can you easily copy code snippets for a writeup? Does the copy include syntax highlighting metadata (for Markdown code blocks)? Can you copy with or without line numbers? Is the formatting blog-ready? Would you use this to prepare screenshots or code snippets for a YouTube video?"
+        }
+      ]
+    },
+    {
+      "id": "lo_chat_01",
+      "group": "chat-exploration",
+      "label": "LiveOverflow: Natural language question understanding",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "nl-understanding",
+          "review_criteria": "As someone who explains things in plain English: Can the chat understand plain English questions about the binary? Could a beginner ask 'what does this program do?' and get a useful answer? Does it handle vague questions gracefully? Is the chat the most beginner-friendly entry point to analysis? Would you recommend starting with the chat instead of the graph?"
+        }
+      ]
+    },
+    {
+      "id": "lo_chat_02",
+      "group": "chat-exploration",
+      "label": "LiveOverflow: Question suggestion quality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "question-suggestions",
+          "review_criteria": "As someone who structures learning with good questions: Are the suggested questions educational? Do they teach you how to think about binary analysis? Are they ordered from simple to complex? Do they adapt to the current context? Would a beginner learn the tool's capabilities just by clicking through suggestions? Are they engaging enough to be clickbait-worthy?"
+        }
+      ]
+    },
+    {
+      "id": "lo_chat_03",
+      "group": "chat-exploration",
+      "label": "LiveOverflow: Follow-up question quality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const links = document.querySelectorAll('a, button, [style*=cursor]'); for (const l of links) { if (l.textContent?.includes('How do')) { l.click(); return 'clicked suggestion'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "followup-quality",
+          "review_criteria": "As someone who builds understanding through Q&A: After clicking a suggested question, are follow-up questions offered? Do they go deeper into the topic? Is there a natural conversation flow? Can you build up understanding iteratively? Would this feel like talking to a knowledgeable mentor? Does the conversation get more technical as it progresses?"
+        }
+      ]
+    },
+    {
+      "id": "lo_chat_04",
+      "group": "chat-exploration",
+      "label": "LiveOverflow: Error recovery and graceful failures",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "error-recovery",
+          "review_criteria": "As someone who knows beginners make mistakes: What happens when you ask a question the chat can't answer? Is the error message helpful ('I don't know' vs 'Try asking about...')? Can you rephrase and try again easily? Does the chat suggest alternatives when it fails? Would a frustrated beginner give up or try again based on the error handling?"
+        }
+      ]
+    },
+    {
+      "id": "lo_chat_05",
+      "group": "chat-exploration",
+      "label": "LiveOverflow: Entity highlighting in chat responses",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "entity-highlighting",
+          "review_criteria": "As someone who believes in visual connections: When the chat mentions a function or node, is it highlighted or linked? Can you click an entity in the chat to select it in the graph? Are entity names styled differently from regular text? Does this create a tangible connection between the conversation and the visual display? Would this help a beginner connect abstract concepts to concrete UI elements?"
+        }
+      ]
+    },
+    {
+      "id": "lo_chat_06",
+      "group": "chat-exploration",
+      "label": "LiveOverflow: Conversation flow and natural feel",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "conversation-flow",
+          "review_criteria": "As someone who values clear communication: Does the chat feel like talking to a knowledgeable colleague or a stiff robot? Is the tone appropriate for both beginners and experts? Are responses concise or do they dump too much information? Is there a conversation history? Would you enjoy using this as a primary interface for binary analysis?"
+        }
+      ]
+    },
+    {
+      "id": "lo_visual_01",
+      "group": "visual-design",
+      "label": "LiveOverflow: Color coding clarity and meaning",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "color-coding",
+          "review_criteria": "As someone who uses color to teach: Are the colors in the graph meaningful (different colors for different types)? Is there a legend explaining the color coding? Would a colorblind viewer understand the graph? Are the colors consistent throughout the tool (same type = same color everywhere)? Is the color scheme aesthetically pleasing for screenshots and videos?"
+        }
+      ]
+    },
+    {
+      "id": "lo_visual_02",
+      "group": "visual-design",
+      "label": "LiveOverflow: Icon meaning and consistency",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "icon-meaning",
+          "review_criteria": "As someone who makes every visual element teach: Do the icons in the toolbar and views convey their meaning without labels? Are icon metaphors appropriate (magnifying glass for search, tree for hierarchy)? Would a newcomer understand the view-switching icons? Are icons consistent with common conventions? Would you understand every button without hovering for a tooltip?"
+        }
+      ]
+    },
+    {
+      "id": "lo_visual_03",
+      "group": "visual-design",
+      "label": "LiveOverflow: Graph readability at different zoom levels",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const svg = document.querySelector('svg'); if (svg) { svg.dispatchEvent(new WheelEvent('wheel', { deltaY: -200, bubbles: true })); return 'zoomed in'; } return 'no svg'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "graph-readability",
+          "review_criteria": "As someone who makes screenshots and thumbnails: Is the graph readable at the current zoom level? Can you read node labels? Are edges clear at both zoomed-in and zoomed-out levels? Would a screenshot of this graph be understandable in a YouTube thumbnail? Is there a 'presentation mode' for making clean screenshots?"
+        }
+      ]
+    },
+    {
+      "id": "lo_visual_04",
+      "group": "visual-design",
+      "label": "LiveOverflow: Contrast ratios for readability",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "contrast-ratios",
+          "review_criteria": "As someone who records screens for videos: Are the contrast ratios good for recording? Is the text readable against the background in all panels? Are interactive elements (buttons, links) clearly distinguishable from static text? Would the UI look good in a YouTube video without color correction? Is the dark theme dark enough or too dark?"
+        }
+      ]
+    },
+    {
+      "id": "lo_visual_05",
+      "group": "visual-design",
+      "label": "LiveOverflow: Font sizes and readability",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "font-sizes",
+          "review_criteria": "As someone who records at 1080p and 4K: Are font sizes appropriate for screen recording? Can you read the code at 1080p without zooming? Is the monospace font chosen well for code display? Are the fonts consistent across the tool? Can you increase font size (Ctrl++/Cmd++) without breaking the layout? Would viewers complain about readability?"
+        }
+      ]
+    },
+    {
+      "id": "lo_ctf_01",
+      "group": "ctf-workflow",
+      "label": "LiveOverflow: Investigation journal for CTF writeups",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "ctf-journal",
+          "review_criteria": "As someone who writes CTF writeups: Is there an investigation journal that records your analysis steps? Could you export it as a writeup? Does it capture screenshots of the graph at each step? Would this save time writing a CTF writeup after the competition? Can you add personal notes alongside automated recording?"
+        }
+      ]
+    },
+    {
+      "id": "lo_ctf_02",
+      "group": "ctf-workflow",
+      "label": "LiveOverflow: Screenshot capability for writeups",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "screenshot-cap",
+          "review_criteria": "As someone who includes many screenshots in writeups: Is there a built-in screenshot or export-to-image feature? Can you capture just the graph, just the code, or the full view? Would the exported image look professional? Can you annotate the screenshot before exporting? Would this replace OBS + screenshot tool for documentation?"
+        }
+      ]
+    },
+    {
+      "id": "lo_ctf_03",
+      "group": "ctf-workflow",
+      "label": "LiveOverflow: Step recording for analysis replay",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "step-recording",
+          "review_criteria": "As someone who demonstrates analysis step-by-step: Does the tool record your analysis steps automatically? Can you replay them like a presentation? Could you share a recording with students? Would step recording enable 'analysis demos' where the graph builds up progressively? Is this better than recording a screen capture?"
+        }
+      ]
+    },
+    {
+      "id": "lo_ctf_04",
+      "group": "ctf-workflow",
+      "label": "LiveOverflow: Export format for blog posts",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "export-format",
+          "review_criteria": "As someone who publishes writeups in Markdown: Can you export analysis results in a blog-friendly format? Is Markdown export available? Are code blocks properly formatted? Are graph images embedded or linked? Would the export be ready to paste into a blog post with minimal editing? Can you export to HTML for embedding in a website?"
+        }
+      ]
+    },
+    {
+      "id": "lo_interact_01",
+      "group": "graph-interaction",
+      "label": "LiveOverflow: Click behavior intuitiveness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "click-intuitive",
+          "review_criteria": "As someone who values intuitive interactions: Does clicking a node do what you'd expect? Is single-click = select and double-click = expand obvious? Are click targets large enough to hit easily? Does clicking empty space deselect? Is there visual feedback on hover (cursor change, highlight)? Would a newcomer understand the click model without instruction?"
+        }
+      ]
+    },
+    {
+      "id": "lo_interact_02",
+      "group": "graph-interaction",
+      "label": "LiveOverflow: Drag behavior in graph",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "drag-behavior",
+          "review_criteria": "As someone who expects drag to work like a map: Can you drag nodes to rearrange them? Can you drag the background to pan? Is the distinction between drag-node and drag-pan clear? Does drag feel smooth and responsive? Would a mobile/touch user be able to interact? Is there inertia/momentum when panning?"
+        }
+      ]
+    },
+    {
+      "id": "lo_interact_03",
+      "group": "graph-interaction",
+      "label": "LiveOverflow: Double-click expansion behavior",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); return 'double-clicked'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "dblclick-expansion",
+          "review_criteria": "As someone who discovers features by clicking: Is the double-click expansion behavior discoverable? What happens \u2014 does it expand neighbors, zoom in, or open a detail view? Is the result what you'd expect? Is there an undo if the expansion clutters the graph? Would a beginner accidentally trigger this and get confused?"
+        }
+      ]
+    },
+    {
+      "id": "lo_interact_04",
+      "group": "graph-interaction",
+      "label": "LiveOverflow: Right-click behavior expectations",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 200, clientY: 200 })); return 'right-clicked'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "right-click",
+          "review_criteria": "As someone who expects context menus in professional tools: Does right-click open a useful context menu or the browser default? If custom, are the options understandable to a beginner? Are advanced options hidden or grouped? Is there a 'What can I do here?' option? Would a beginner learn the tool's capabilities from the right-click menu?"
+        }
+      ]
+    },
+    {
+      "id": "lo_a11y_01",
+      "group": "accessibility",
+      "label": "LiveOverflow: Keyboard navigation support",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true })); return 'tabbed'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "keyboard-nav",
+          "review_criteria": "As someone who advocates for inclusive tools: Can you navigate the tool using only the keyboard? Does Tab move through interactive elements in a logical order? Can you use arrow keys in the graph? Are keyboard shortcuts available? Is there a keyboard shortcut reference? Would a viewer with a broken mouse be able to use this tool?"
+        }
+      ]
+    },
+    {
+      "id": "lo_a11y_02",
+      "group": "accessibility",
+      "label": "LiveOverflow: Screen reader compatibility hints",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "screen-reader",
+          "review_criteria": "As someone who wants tools to be accessible: Are there ARIA labels on interactive elements? Are graph nodes described with aria-label for screen readers? Is the graph structure conveyed through an accessible tree alternative? Are role attributes used correctly? While the graph is inherently visual, is there a text-based alternative representation?"
+        }
+      ]
+    },
+    {
+      "id": "lo_a11y_03",
+      "group": "accessibility",
+      "label": "LiveOverflow: Focus indicators and tab order",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "focus-indicators",
+          "review_criteria": "As someone who values WCAG compliance: Are focus indicators visible when tabbing through the UI? Are focused elements clearly highlighted? Is the tab order logical (left-to-right, top-to-bottom)? Are focus traps avoided? Can you see where focus is at all times? Would the focus indicators be visible in the dark theme?"
+        }
+      ]
+    },
+    {
+      "id": "lo_a11y_04",
+      "group": "accessibility",
+      "label": "LiveOverflow: Color-blind safety assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "colorblind-safety",
+          "review_criteria": "As someone who knows 8% of male viewers are colorblind: Does the graph rely solely on color to convey information? Are there shape, size, or pattern differences alongside color? Would a deuteranopic viewer miss critical information? Are the red/green color pairs avoided for important distinctions? Is there a colorblind mode? Would you add a disclaimer in a video about color-dependent features?"
+        }
+      ]
+    },
+    {
+      "id": "lo_error_01",
+      "group": "error-states",
+      "label": "LiveOverflow: Network error handling",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "network-errors",
+          "review_criteria": "As someone who demos tools live and things break: What happens if the backend is unreachable? Is there a clear error message or does the UI just hang? Would a beginner understand what went wrong? Is there a retry button? Does the error state look professional or like an unhandled exception? Would this embarrass you in a live demo?"
+        }
+      ]
+    },
+    {
+      "id": "lo_error_02",
+      "group": "error-states",
+      "label": "LiveOverflow: Empty results messaging",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const inputs = document.querySelectorAll('input[type=text], input[type=search], input:not([type])'); for (const i of inputs) { if (i.placeholder?.toLowerCase().includes('search') || i.placeholder?.toLowerCase().includes('filter')) { i.focus(); i.value = 'zzz_nonexistent_999'; i.dispatchEvent(new Event('input', { bubbles: true })); return 'searched nonsense'; } } return 'no search input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "empty-results",
+          "review_criteria": "As someone who encounters every edge case: When a search returns nothing, is the message helpful? Does it say 'no results' or does it say 'try X instead'? Is the empty state different from a loading state? Would a beginner think the tool is broken when they get no results? Is there a way to clear the search and try again that's obvious?"
+        }
+      ]
+    },
+    {
+      "id": "lo_error_03",
+      "group": "error-states",
+      "label": "LiveOverflow: Loading states and progress indication",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "persona_review",
+          "persona": "liveoverflow",
+          "persona_scope": "liveoverflow",
+          "name": "loading-states",
+          "review_criteria": "As someone who demos tools on camera: Are loading states clearly indicated (spinner, skeleton, progress bar)? Is there a way to know how long to wait? Does the UI remain interactive during loading? Would a viewer watching a demo understand that data is loading vs the tool being broken? Are loading animations smooth and professional?"
+        }
+      ]
+    }
+  ]
+}

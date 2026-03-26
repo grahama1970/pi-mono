@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "djM70O0SnsY",
+    "language": "en",
+    "took_ms": 8902,
+    "method": null,
+    "title": "DEF CON 33 - Stories from a Tor dev - Roger 'arma' Dingledine",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2567,
+    "description": "What is it actually like to support and balance a global anonymity network, with users ranging from political dissidents to national security analysts? You say it's important to teach law enforcement and governments about privacy and end-to-end encryption, but how do those conversations go in practice? I heard you accidentally got Russia to block all of Azure for a day? Are you ever going to do a Tor talk in China? Wait, who exactly tried to bribe you to leave bugs in Tor to support their criminal schemes?\n\nHistorically I've tried to downplay some of the excitement from operating the Tor network and teaching the world about Tor, but this year I'm going to try my hand at the \"war stories\" track.",
+    "view_count": 120067
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] djM70O0SnsY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

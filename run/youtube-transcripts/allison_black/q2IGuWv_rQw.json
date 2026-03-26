@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q2IGuWv_rQw",
+    "language": "en",
+    "took_ms": 7859,
+    "method": null,
+    "title": "The F-15EX's incredible new cockpit #f15 #f15ex #usaf",
+    "channel": "Sandboxx",
+    "upload_date": "20250312",
+    "duration_sec": 180,
+    "description": "The F-15EX may look like the old F-15 on the outside, but it's a whole different story inside the cockpit. \n\nStay on top of all things Defense by subscribing to Sandboxx News!",
+    "view_count": 54970
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q2IGuWv_rQw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9FBt_AVCHBs",
+    "language": "en",
+    "took_ms": 8749,
+    "method": null,
+    "title": "Run Distilled DeepSeek v3 Reasoning Models on Any Laptop with LMStudio",
+    "channel": "Trelis Research",
+    "upload_date": "20250131",
+    "duration_sec": 956,
+    "description": "➡️ More Trelis Resources: https://trelis.com\n➡️ Trelis Newsletter: https://trelis.substack.com\n\nSOFTWARE LINKS:\n➡️ LMStudio (Windows or Mac M1/2/3/4): https://lmstudio.ai/download\n➡️ llamafile (for Mac w/ Intel Chip): https://github.com/Mozilla-Ocho/llamafile\n\nRecommended Models for LMStudio:\n➡️ Windows: lmstudio-community/DeepSeek-R1-Distill-Qwen-1.5B-GGUF\n➡️ Mac with 8 GB RAM: lmstudio-community/DeepSeek-R1-Distill-Qwen-7B-GGUF OR lmstudio-community/DeepSeek-R1-Distill-Llama-8B-GGUF\n➡️ Mac w/ 16 GB RAM: lmstudio-community/DeepSeek-R1-Distill-Qwen-14B-GGUF OR lmstudio-community/DeepSeek-R1-Distill-Llama-8B-GGUF\n➡️ Mac w/ 32-128 GB RAM: lmstudio-community/DeepSeek-R1-Distill-Qwen-32B-GGUF OR lmstudio-community/DeepSeek-R1-Distill-Llama-70B-GGUF\n\nTIMESTAMPS:\n00:11 Downloading and Installing LM Studio\n00:41 Navigating LM Studio Interface\n01:01 Choosing and Running Models (DeepSeek v3 Reasoning Models via Qwen and Llama Distills)\n02:49 Testing Model Performance\n05:19 Using Larger Models\n09:32 Document Interaction and Limitations\n12:53 Mistral Small (not reasoning)\n13:45 Alternative Methods for Older Macs/PCs - llamafile\n15:51 Conclusion and Final Tips",
+    "view_count": 3001
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9FBt_AVCHBs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

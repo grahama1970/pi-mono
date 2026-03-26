@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ig8ZMiPwrAw",
+    "language": "en",
+    "took_ms": 7758,
+    "method": null,
+    "title": "DEF CON 33 - Silent Leaks: Harvesting Secrets from Shared Linux Environments - Cernica Ionut Cosmin",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1197,
+    "description": "You don’t need a kernel exploit to cross security boundaries in Linux, and all it takes is what the system already gives you. In this talk, I’ll expose a class of quiet yet dangerous vulnerabilities where common system features in multi-user Linux environments leak sensitive information between users by default.\n\nWe’ll explore how standard process inspection mechanisms and insecure scripting practices in real-world infrastructures, especially those used by large hosting panel providers can expose database passwords, API tokens, internal URLs, and other secrets to unprivileged users. I’ll demonstrate how simple, legitimate system behaviors can be passively weaponized to gather intelligence, fingerprint users, and pivot across services. All without ever escalating privileges or exploiting a single bug. This talk shows how misconfigurations and design oversights can open the door to unintended visibility.\n\nWhether you're a sysadmin, penetration tester, or just someone who lives in a shell, you’ll leave with a better understanding of what your environment might be silently exposing and how to lock it down.",
+    "view_count": 266
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ig8ZMiPwrAw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

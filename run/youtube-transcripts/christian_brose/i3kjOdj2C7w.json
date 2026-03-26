@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i3kjOdj2C7w",
+    "language": "en",
+    "took_ms": 9324,
+    "method": null,
+    "title": "Xi Jinping in Washington: The Taiwan Factor",
+    "channel": "Hudson Institute",
+    "upload_date": "20150909",
+    "duration_sec": 4307,
+    "description": "Parris Chang and Ian Easton join Seth Cropsey and Michael Pillsbury to discuss Taiwan's role and stake in U.S.-China relations.",
+    "view_count": 775
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i3kjOdj2C7w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

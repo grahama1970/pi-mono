@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GPODCSvZMyM",
+    "language": "en",
+    "took_ms": 9677,
+    "method": null,
+    "title": "DEF CON 32 - Open Sesame: how vulnerable is your stuff in electronic lockers -Dennis Giese, braelynn",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2408,
+    "description": "Physical security is often overlooked in many organizational threat models. An increasing amount of physical security devices with smart components are being introduced to the market with widespread adoption. This creates an enticing attack surface for physical red teams.\n\nLockers and cabinets equipped with electronic smart locks can be found in many places such as offices, factories, hospitals, labs, and gyms. With remote and hybrid work increasing in popularity, shared use office setups becoming the default. Co-working spaces in offices are now commonplace with lockers being installed for employee device storage. People generally trust that their belongings will be secure in these lockers and entrust the locks with sensitive information, like their personal PIN.\n\nIs there a more stealthy way to get into lockers that don't involve using a crowbar?\n\nIn this talk we will analyze the vulnerabilities affecting locks manufactured by the \"global leader in keyless lock solutions,\" Digilock and Schulte-Schlagbaum AG (SAG). Both companies have been in the physical security industry for many decades. What went wrong in the development of these devices and how can these vulnerabilities be fixed? We will also discuss several other vendors operating in this space and compare findings.\n\nWe will demonstrate practical physical and side-channel attacks targeting locks that accept a standard PIN and RFID. Learn why it is poor practice to reuse the same secret PIN for lockers and safes and devices such as mobile phones and laptops (especially if they are stored inside the lockers).",
+    "view_count": 7685
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GPODCSvZMyM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

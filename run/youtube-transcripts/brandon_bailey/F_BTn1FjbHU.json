@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F_BTn1FjbHU",
+    "language": "en",
+    "took_ms": 8380,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - Following Threat Actors  Rhythm to Give Them More Blues - Malachi Walker",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2231,
+    "description": "This session introduces Domain Intelligence Analysis: using DNS artifacts to improve threat detection and response before domains become public IOCs.",
+    "view_count": 444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F_BTn1FjbHU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

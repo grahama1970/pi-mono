@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mAjr5JXk2Us",
+    "language": "en",
+    "took_ms": 2936,
+    "method": null,
+    "title": "Street Driving with Comma 2 - Open Pilot Self Driving Car",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20210103",
+    "duration_sec": 203,
+    "description": "Driving around Boston in a Honda CR-V using a Comma 2 and Open Pilot.",
+    "view_count": 377
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mAjr5JXk2Us: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

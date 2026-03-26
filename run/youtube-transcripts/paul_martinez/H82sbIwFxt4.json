@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H82sbIwFxt4",
+    "language": "en",
+    "took_ms": 9455,
+    "method": null,
+    "title": "PIPEDREAM – Most Flexible & Capable ICS Malware To Date",
+    "channel": "S4 Events",
+    "upload_date": "20220502",
+    "duration_sec": 1902,
+    "description": "Rob Lee, founder and CEO of Dragos, gives the opening keynote of S4x22 Day 2 on the ICS malware they call PIPEDREAM. The first third of the keynote focuses on what this means for asset owners and how they should react. Who should prioritize threat hunting (\"you don't get to vote if you are a target\")? \n\nThe remainder of the talk is on the malware itself and a bit on mitigations. The PLC Proxy capabilities is particularly interesting. Even if you have heard about INCONTROLLER/PIPEDREAM before you will find this a worthwhile watch.",
+    "view_count": 10181
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H82sbIwFxt4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

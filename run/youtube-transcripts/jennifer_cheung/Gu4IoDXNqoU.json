@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gu4IoDXNqoU",
+    "language": "en",
+    "took_ms": 13667,
+    "method": null,
+    "title": "DEF CON 33 - Browser Extension Clickjacking: One Click and Your Credit Card Is Stolen  - Marek Tóth",
+    "channel": "DEFCONConference",
+    "upload_date": "20260218",
+    "duration_sec": 3009,
+    "description": "Browser extensions have become increasingly popular for enhancing the web browsing experience. Common examples are ad blockers, cryptocurrency wallets, and password managers. At the same time, modern websites frequently display intrusive elements, such as cookie consent banners, newsletter subscription modals, login forms, and other elements that require user interaction before the desired content can be displayed.\n\nIn this talk, I will present a new technique based on clickjacking principles that targets browser extensions, where I used fake intrusive elements to enforce user interaction. In my research, I tested this technique on the 11 most widely used password managers, which resulted in discovering multiple 0-day vulnerabilities that could affect tens of millions of users. Typically, just one click was required from a user to leak their stored private information, such as credit card details, personal data or login credentials (including TOTP). In some cases, it could lead to the exploitation of passkey authentication.\n\nThe described technique is general and can be applied to browser extensions beyond password managers, meaning other extensions may also be vulnerable to this type of attack. In addition to describing several methods of this technique, I will also recommend mitigations for developers to protect their extensions against this vulnerability.",
+    "view_count": 4347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gu4IoDXNqoU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

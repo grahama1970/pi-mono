@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S1Ezy99fM_A",
+    "language": "en",
+    "took_ms": 7827,
+    "method": null,
+    "title": "How to pick LoRA fine-tuning parameters?",
+    "channel": "Trelis Research",
+    "upload_date": "20240524",
+    "duration_sec": 3825,
+    "description": "➡️ More Resources and Support at Trelis.com/About\n\nTIMESTAMPS\n0:00 Welcome\n1:50 Mistral v0.3\n4:40 Phi-3 models\n9:20 Full fine-tuning\n14:20 LoRA\n39:40 Picking LoRA alpha and rank\n51:30 Running training with SFTTrainer from TRL\n\nIn this video I run through how to choose fine-tuning parameters including:\n- LoRA alpha and rank\n- Learning rate and schedule\n- Batch size\n- Optimizations (e.g. rank stabilized LoRA, loftQ, LoRA+)\n\nNotebook link: https://colab.research.google.com/drive/1WMbFXQoZZNZ0B4_RJwWvXXZAJZMGyvdq?usp=sharing",
+    "view_count": 3361
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S1Ezy99fM_A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

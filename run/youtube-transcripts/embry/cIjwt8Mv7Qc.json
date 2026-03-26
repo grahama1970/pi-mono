@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cIjwt8Mv7Qc",
+    "language": "en",
+    "took_ms": 8690,
+    "method": null,
+    "title": "NASA’s #CREW11 will return early because of a medical situation",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20260108",
+    "duration_sec": 59,
+    "description": "",
+    "view_count": 143489
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cIjwt8Mv7Qc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

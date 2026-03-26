@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GPqL9_muXJA",
+    "language": "en",
+    "took_ms": 9673,
+    "method": null,
+    "title": "DEF CON 33 - Deepfake Image and Video Detection  - Mike Raggo",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2926,
+    "description": "Performing analysis of fake images and videos can be challenging considering the plethora of techniques that can be used to create a deepfake. In this session, we'll explore methods for identifying fake images and videos whether created by AI, photoshopped, or GAN-generated media. We'll then use this for the basis of a live demonstration walking through methods of exposing signs of alteration or AI generation using more than a dozen techniques to expose these forgeries. We'll also highlight a free GPT tool for performing your own analysis. Finally, we'll provide additional resources and thoughts for the future of deepfake detection.",
+    "view_count": 21386
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GPqL9_muXJA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

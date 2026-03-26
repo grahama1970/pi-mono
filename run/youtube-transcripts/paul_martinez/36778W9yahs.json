@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "36778W9yahs",
+    "language": "en",
+    "took_ms": 8839,
+    "method": null,
+    "title": "Dave Whitehead On SBOMs, Manufacturing in the US, and more",
+    "channel": "S4 Events",
+    "upload_date": "20231018",
+    "duration_sec": 2438,
+    "description": "Dave Whitehead, CEO of SEL, joins Dale on the show to talk about:\n- The new SEL printed circuit board (PCB) factory in Idaho. Why they bucked the trend and did this. The benefits, the ROI, and more.\n- SEL's position on providing SBOMs to customers and their internal use of SBOMs\n- Where leaders tend to go wrong\n- Substation shootings\n- Market acceptance of SEL's Blueframe virtual platform\n\nLinks\n- Dave Whitehead's previous appearance on the Unsolicited Response Show https://youtu.be/pKGC5bUFYuY?si=l3RtDBkO1LDBrDUi\n- Want to advertise on the Unsolicited Response Show in 2024? https://dale-peterson.com/advertising/",
+    "view_count": 344
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 36778W9yahs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

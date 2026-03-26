@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BzCzsSbafyk",
+    "language": "en",
+    "took_ms": 8730,
+    "method": null,
+    "title": "Getting An Installed Base Off The Internet",
+    "channel": "S4 Events",
+    "upload_date": "20250728",
+    "duration_sec": 1617,
+    "description": "The S4 attendee has known since Eireann Leverett's session at S4x12 that there is a lot of OT that is Internet accessible. The bigger question is how to get this stuff off the Internet, besides public service announcements and browbeating. \n\nSchneider Electric decided to try to solve this problem by identifying Internet accessible Schneider Electric devices and developing a program to remove them. Anna shares details and results of the efforts. What worked. Where they hit dead ends. Ideas for other approaches. And more.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 214
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BzCzsSbafyk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

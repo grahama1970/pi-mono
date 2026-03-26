@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space_Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-surface": "#fcf9f8",
+            "surface-bright": "#2c2c2c",
+            "primary-container": "#b28cff",
+            "background": "#0e0e0e",
+            "tertiary-dim": "#4fa0ff",
+            "surface": "#0e0e0e",
+            "surface-dim": "#0e0e0e",
+            "on-primary-fixed-variant": "#390083",
+            "on-surface": "#ffffff",
+            "error": "#ff6e84",
+            "on-secondary": "#005b2c",
+            "on-error-container": "#ffb2b9",
+            "surface-variant": "#262626",
+            "surface-tint": "#bd9dff",
+            "secondary": "#00fd87",
+            "surface-container-lowest": "#000000",
+            "surface-container-high": "#202020",
+            "on-tertiary": "#002a52",
+            "primary-fixed-dim": "#a67aff",
+            "surface-container-low": "#131313",
+            "primary-dim": "#8a4cfc",
+            "tertiary-fixed": "#7bb3ff",
+            "secondary-container": "#006d37",
+            "on-surface-variant": "#adaaaa",
+            "on-secondary-fixed": "#004621",
+            "error-dim": "#d73357",
+            "inverse-on-surface": "#565555",
+            "secondary-dim": "#00ed7e",
+            "on-background": "#ffffff",
+            "outline-variant": "#484848",
+            "inverse-primary": "#742fe5",
+            "surface-container-highest": "#262626",
+            "outline": "#767575",
+            "on-primary-fixed": "#000000",
+            "on-secondary-container": "#e3ffe4",
+            "tertiary-container": "#499dfe",
+            "secondary-fixed-dim": "#00ed7e",
+            "primary-fixed": "#b28cff",
+            "on-secondary-fixed-variant": "#006632",
+            "on-tertiary-container": "#001e3c",
+            "primary": "#bd9dff",
+            "secondary-fixed": "#00fd87",
+            "on-primary-container": "#2e006c",
+            "on-tertiary-fixed-variant": "#003a6d",
+            "on-tertiary-fixed": "#001833",
+            "surface-container": "#191a1a",
+            "tertiary-fixed-dim": "#5da5ff",
+            "on-error": "#490013",
+            "error-container": "#a70138",
+            "on-primary": "#3c0089",
+            "tertiary": "#6aabff"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .glass-panel { background: rgba(25, 26, 26, 0.7); backdrop-filter: blur(12px); }
+    .tint-blue { color: #4a9eff; }
+    .tint-red { color: #ff4444; }
+    .tint-orange { color: #ff8c00; }
+  </style>
+</head>
+<body class="bg-[#0e0e0e] text-on-surface font-body overflow-hidden">
+<!-- TopNavBar Implementation -->
+<header class="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-800/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] flex items-center justify-between px-6 h-16">
+<div class="text-xl font-bold tracking-tighter text-white uppercase font-headline">Sonic Observatory</div>
+<nav class="hidden md:flex items-center gap-8 font-['Inter'] tracking-tight text-sm font-medium">
+<a class="text-neutral-500 hover:text-neutral-200 transition-colors" href="#">Project</a>
+<a class="text-neutral-500 hover:text-neutral-200 transition-colors" href="#">Arrangement</a>
+<a class="text-violet-400 border-b-2 border-violet-500 pb-1" href="#">Lyrics</a>
+<a class="text-neutral-500 hover:text-neutral-200 transition-colors" href="#">Mixer</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">settings</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="User avatar profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYsQfZqBzVpuHx_tVnkTb1Sw574fN_Mt9TuSvAa5UDhuXxSNbC6q2nMJTSaQLZii9gEJfi2oLFM_uenR8LNrsakPMLkZcId9c5HGs3q__iePUiP6ZiMC8YvDN6_g_9oTfqdL2V2wLL5d904Kl810Hwe1u_PxLtF-DI0mHycpF_h37Tp3i2Uj-jp9cYm8valLeLqt6a8iVEQPvG_JZANiShWu0mgcHMxeyYNQm-lF6-Z8jUV0M-lWmtezVemVReN1LPp3QFLjP7Eu8"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Implementation -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-neutral-900 flex flex-col border-r border-neutral-800/30 transition-transform duration-300 ease-in-out">
+<div class="p-6 border-b border-neutral-800/20">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-label uppercase tracking-widest text-[10px] text-on-surface-variant">Active Session</span>
+</div>
+<h2 class="font-headline font-extrabold text-white tracking-tight">Vocal Lab</h2>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto no-scrollbar">
+<div class="px-6 mb-4">
+<div class="flex items-center justify-between bg-surface-container-highest/30 p-3 rounded-lg border-l-2 border-tertiary">
+<div class="flex flex-col">
+<span class="text-[10px] font-label text-tertiary uppercase tracking-tighter">Current Stage</span>
+<span class="text-xs font-bold text-white">S04: Write + Converge</span>
+</div>
+<span class="material-symbols-outlined text-tertiary text-sm">lock_open</span>
+</div>
+</div>
+<a class="text-neutral-500 py-4 px-6 flex items-center gap-3 hover:bg-neutral-800 hover:text-violet-300 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label uppercase tracking-widest text-[10px]">Drafting</span>
+</a>
+<a class="bg-neutral-800/50 text-emerald-400 border-l-2 border-emerald-400 font-bold py-4 px-6 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined">segment</span>
+<span class="font-label uppercase tracking-widest text-[10px]">Structure</span>
+</a>
+<a class="text-neutral-500 py-4 px-6 flex items-center gap-3 hover:bg-neutral-800 hover:text-violet-300 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label uppercase tracking-widest text-[10px]">Rhyme Check</span>
+</a>
+<a class="text-neutral-500 py-4 px-6 flex items-center gap-3 hover:bg-neutral-800 hover:text-violet-300 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">mic_external_on</span>
+<span class="font-label uppercase tracking-widest text-[10px]">Vocal Sync</span>
+</a>
+<a class="text-neutral-500 py-4 px-6 flex items-center gap-3 hover:bg-neutral-800 hover:text-violet-300 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">flare</span>
+<span class="font-label uppercase tracking-widest text-[10px]">Mastering</span>
+</a>
+</nav>
+<div class="p-4 bg-neutral-950/40">
+<button class="w-full bg-primary text-on-primary font-label text-[11px] py-3 rounded-md font-bold tracking-[0.2em] hover:brightness-110 active:scale-95 transition-all">
+        RENDER TRACK
+      </button>
+<div class="mt-4 flex justify-around">
+<button class="text-neutral-500 hover:text-white transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">description</span>
+<span class="text-[9px] font-label">DOCS</span>
+</button>
+<button class="text-neutral-500 hover:text-white transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">help_center</span>
+<span class="text-[9px] font-label">SUPPORT</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 h-screen overflow-y-auto no-scrollbar bg-surface text-on-surface">
+<div class="max-w-4xl mx-auto px-12 py-12">
+<!-- Page Header with Badge -->
+<div class="flex items-center justify-between mb-12">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<h1 class="text-3xl font-extrabold tracking-tighter text-white font-headline">S04: Write + Converge Lyrics</h1>
+<div class="bg-amber-500/10 border border-amber-500/30 px-3 py-0.5 rounded-full">
+<span class="text-[10px] font-label font-bold text-amber-500 tracking-widest">CONVERGING</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-wider">Finalizing the Narrative Structure</p>
+</div>
+<div class="flex flex-col items-end">
+<div class="bg-surface-container-high px-4 py-2 rounded-full border border-outline-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-xs font-label text-on-surface-variant">Round 3/5</span>
+</div>
+</div>
+</div>
+<!-- Editor Interface (Notion-style) -->
+<div class="space-y-16 pb-32">
+<!-- Section 1: Verse 1 -->
+<section class="group relative">
+<div class="absolute -left-8 top-0 bottom-0 w-1 bg-tertiary-dim rounded-full"></div>
+<div class="mb-4">
+<span class="font-label text-xs font-bold text-tertiary-dim tracking-[0.2em]">VERSE 1</span>
+</div>
+<div class="space-y-6">
+<div class="relative">
+<p class="text-2xl font-light leading-relaxed text-on-surface/90">
+                The <span class="border-b-2 border-primary-dim text-white tint-blue">static</span> hums beneath the skin tonight
+              </p>
+<div class="flex gap-2 mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Sadness</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: mp</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Whisper</span>
+</div>
+</div>
+<div class="relative">
+<p class="text-2xl font-light leading-relaxed text-on-surface/90">
+                I trace the <span class="border-b-2 border-primary-dim text-white tint-blue">signals</span> where they <span class="tint-blue">blur</span> and <span class="tint-red">die</span>
+</p>
+<div class="flex gap-2 mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Sadness</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: mp</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Whisper</span>
+</div>
+</div>
+<div class="relative">
+<p class="text-2xl font-light leading-relaxed text-on-surface/90">
+                We built our towers from the <span class="tint-red">bones</span> of light
+              </p>
+<div class="flex gap-2 mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Sadness</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: mp</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Whisper</span>
+</div>
+</div>
+<div class="relative">
+<p class="text-2xl font-light leading-relaxed text-on-surface/90">
+                But every <span class="border-b-2 border-primary-dim text-white">frequency</span> must fade and fly
+              </p>
+<div class="flex gap-2 mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Sadness</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: mp</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Whisper</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Chorus -->
+<section class="group relative">
+<div class="absolute -left-8 top-0 bottom-0 w-1 bg-primary-dim rounded-full shadow-[0_0_12px_rgba(138,76,252,0.4)]"></div>
+<div class="mb-4">
+<span class="font-label text-xs font-bold text-primary-dim tracking-[0.2em]">CHORUS</span>
+</div>
+<div class="space-y-10">
+<div class="relative">
+<p class="text-3xl font-bold italic tracking-tight leading-tight text-on-surface">
+<span class="border-b-2 border-primary-dim">Whisperheads</span>, we carry the <span class="relative inline-block border-b-2 border-primary-dim">
+                frequency
+                <!-- Phonetic Timing Popup -->
+<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 bg-[#1a1a1a] border border-primary-dim rounded-lg p-3 shadow-2xl z-20 pointer-events-none transition-all scale-100">
+<span class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-xs text-primary-dim">segment</span>
+<span class="text-[9px] font-label font-black text-on-surface-variant tracking-widest uppercase">Phonetic Timing Data</span>
+</span>
+<span class="flex gap-2">
+<span class="flex-1 flex flex-col items-center bg-black/40 rounded py-1 border border-primary-dim/20">
+<span class="text-[10px] font-bold text-white">fre</span>
+<span class="text-[8px] font-mono text-secondary">1.0</span>
+<span class="w-1 h-1 bg-secondary rounded-full mt-1"></span>
+</span>
+<span class="flex-1 flex flex-col items-center bg-black/40 rounded py-1 border border-primary-dim/20">
+<span class="text-[10px] font-medium text-white/70">quen</span>
+<span class="text-[8px] font-mono text-secondary">1.5</span>
+<span class="w-1 h-1 bg-neutral-700 rounded-full mt-1"></span>
+</span>
+<span class="flex-1 flex flex-col items-center bg-black/40 rounded py-1 border border-primary-dim/20">
+<span class="text-[10px] font-bold text-white uppercase">cy</span>
+<span class="text-[8px] font-mono text-secondary">2.0</span>
+<span class="w-1 h-1 bg-secondary rounded-full mt-1"></span>
+</span>
+</span>
+<span class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#1a1a1a]"></span>
+</span>
+</span>
+</p>
+<div class="flex gap-2 mt-4 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Anger</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: f</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Belt</span>
+</div>
+</div>
+<div class="relative">
+<p class="text-3xl font-bold italic tracking-tight leading-tight text-on-surface">
+                Lost in the noise between what was and what we need
+              </p>
+<div class="flex gap-2 mt-4 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Anger</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: f</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Belt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Bridge -->
+<section class="group relative">
+<div class="absolute -left-8 top-0 bottom-0 w-1 bg-error rounded-full shadow-[0_0_12px_rgba(255,110,132,0.4)]"></div>
+<div class="mb-4">
+<span class="font-label text-xs font-bold text-error tracking-[0.2em]">BRIDGE</span>
+</div>
+<div class="space-y-8">
+<div class="relative">
+<p class="text-2xl font-black uppercase tracking-tighter text-error/90 leading-none">
+<span class="border-b-2 border-primary-dim tint-red">Fear</span> was the first <span class="border-b-2 border-primary-dim text-on-surface">frequency</span> we learned
+              </p>
+<div class="flex gap-2 mt-4 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Fear</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: ff</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Growl</span>
+</div>
+</div>
+<div class="relative">
+<p class="text-2xl font-black uppercase tracking-tighter text-error/90 leading-none">
+<span class="border-b-2 border-primary-dim tint-orange">Anger</span> <span class="tint-orange">burned</span> the <span class="border-b-2 border-primary-dim text-on-surface">archive</span> to <span class="tint-blue">ash</span>
+</p>
+<div class="flex gap-2 mt-4 opacity-60 group-hover:opacity-100 transition-opacity">
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Emotion: Fear</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Dynamics: ff</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-md text-[10px] font-label text-on-surface-variant border border-outline-variant cursor-pointer hover:bg-neutral-800">Vocal: Growl</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Floating Feedback Overlay (Subtle) -->
+<div class="fixed bottom-8 right-8 flex gap-4">
+<button class="flex items-center gap-2 bg-surface-container-highest/80 backdrop-blur-md px-4 py-2 rounded-lg border border-outline-variant hover:border-primary transition-all group">
+<span class="material-symbols-outlined text-sm text-primary">auto_fix</span>
+<span class="font-label text-[10px] font-bold uppercase tracking-widest text-on-surface-variant group-hover:text-white">AI Rhyme Assist</span>
+</button>
+<button class="flex items-center gap-2 bg-secondary text-on-secondary px-6 py-2 rounded-lg font-label text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-secondary/20 hover:scale-105 transition-transform">
+      SUBMIT ROUND
+    </button>
+</div>
+</body></html>

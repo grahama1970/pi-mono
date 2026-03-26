@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BxfoQir-bkQ",
+    "language": "en",
+    "took_ms": 8005,
+    "method": null,
+    "title": "China's Asia Strategy and the Next U.S. President",
+    "channel": "Hudson Institute",
+    "upload_date": "20151023",
+    "duration_sec": 6400,
+    "description": "Dan Blumenthal, Jacqueline Deal, Mark Stokes, and Michael Pillsbury discuss  what to expect in Chinese strategy in the coming years.",
+    "view_count": 13058
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BxfoQir-bkQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

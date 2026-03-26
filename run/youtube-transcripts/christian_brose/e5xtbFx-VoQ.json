@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e5xtbFx-VoQ",
+    "language": "en",
+    "took_ms": 7345,
+    "method": null,
+    "title": "Artificial Intelligence and Quantum Technology: Implications for U.S. National Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20190402",
+    "duration_sec": 6454,
+    "description": "Hudson Institute hosted a discussion on the increasing risk that rapidly emerging advanced technologies pose to U.S. national security. Competitor nations such as Russia and China have devoted significant resources to the areas of artificial intelligence (AI) and quantum information science, particularly quantum computing. A recent report from the bipartisan Commission on the National Defense Strategy for the United States warned: “U.S. superiority in key areas of innovation is decreasing or has disappeared [while] U.S. competitors are investing heavily in innovation.” Given the technologies’ enormous promise for benefiting human kind, how should Washington respond to ensure U.S. military superiority while promoting the peaceful use of AI and quantum technology? - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 6435
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e5xtbFx-VoQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

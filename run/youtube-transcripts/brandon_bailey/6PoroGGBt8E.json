@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6PoroGGBt8E",
+    "language": "en",
+    "took_ms": 2661,
+    "method": null,
+    "title": "DEF CON 29 Recon Village - Ladislav Baco - How Vigilant Researchers Can Uncover APT Attacks",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 1755,
+    "description": "How Vigilant Researchers Can Uncover APT Attacks",
+    "view_count": 998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6PoroGGBt8E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

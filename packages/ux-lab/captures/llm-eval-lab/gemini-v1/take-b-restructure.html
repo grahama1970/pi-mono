@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Minimum Finder - NVIS</title>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* NVIS Dark Theme Colors */
+        :root {
+            --bg-primary: #1a1b26; /* Dark navy/purple */
+            --bg-secondary: #242633; /* Slightly lighter dark for panes */
+            --bg-tertiary: #2e303e; /* Even lighter dark for cards/inputs */
+            --bg-panel-header: #292b3a; /* Darker than tertiary for headers/footer */
+            --text-primary: #e0e0e0; /* Off-white for main text */
+            --text-secondary: #a0a0a0; /* Gray for labels, subtle text */
+            --purple-accent: #8b5cf6; /* Vibrant purple for actions, highlights */
+            --purple-light: #a78bfa; /* Lighter purple for hover/glow */
+            --green-success: #4ade80; /* Bright green for pass/winner */
+            --red-fail: #ef4444; /* Bright red for fail */
+            --yellow-partial: #facc15; /* Bright yellow for partial */
+            --border-color: #3b3d4a; /* Subtle border for separation */
+            --outline-focus: #6d28d9; /* Darker purple for keyboard focus */
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.3);
+            --winner-glow: rgba(139, 92, 246, 0.2); /* Purple glow for winner */
+            --winner-border: #a78bfa; /* Lighter purple border for winner */
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex; /* For the fixed footer */
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll, panes handle their own */
+        }
+
+        /* Main Grid Container for 3 Panes */
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr 1.2fr; /* Left (fixed), Middle (fluid), Right (larger fluid) */
+            gap: 16px;
+            padding: 16px;
+            flex-grow: 1; /* Allow container to take available vertical space */
+            overflow: hidden; /* Hide scrollbars, panes will manage their own */
+        }
+
+        /* Pane Styling */
+        .left-pane, .middle-pane, .right-pane {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-y: auto; /* Enable scrolling for pane content */
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Spacing between cards/sections within panes */
+        }
+
+        .left-pane {
+            padding: 24px 16px; /* More vertical padding for config */
+            gap: 24px;
+        }
+
+        /* Pane Headers */
+        .pane-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 12px;
+        }
+
+        .pane-header h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .pane-header .count {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        /* General Components */
+        .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .config-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .select-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            appearance: none; /* Remove default arrow */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0a0a0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+        .select-input:focus {
+            outline: 2px solid var(--outline-focus);
+            outline-offset: 1px;
+        }
+
+        .icon-button {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .icon-button:hover {
+            background-color: var(--bg-tertiary);
+            border-color: var(--purple-accent);
+        }
+        .icon-button:focus {
+            outline: 2px solid var(--outline-focus);
+            outline-offset: 1px;
+        }
+
+        /* Threshold Gauge (simplified to prominent number + slider) */
+        .threshold-display {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--purple-light);
+            margin-bottom: 16px;
+            margin-top: 8px;
+        }
+        .threshold-display .small-text {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--purple-accent);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity .2s;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--purple-accent);
+            cursor: pointer;
+            border: 2px solid var(--bg-primary); /* Ring around thumb */
+            box-shadow: 0 0 0 2px var(--purple-accent); /* Outer ring */
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        .slider::-webkit-slider-thumb:hover {
+            background: var(--purple-light);
+        }
+        .slider::-moz-range-thumb

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SBZtw4LPtHg",
+    "language": "en",
+    "took_ms": 9083,
+    "method": null,
+    "title": "IATROGENICS - HARM DONE BY THE HEALER",
+    "channel": "S4 Events",
+    "upload_date": "20181015",
+    "duration_sec": 2081,
+    "description": "Dale Peterson was joined on the S4x18 Main Stage by Jake Brodsky and Joel Langill. Jake is famously conservative when it comes to applying security controls, and Joel is a big proponent of some security controls that Jake would pass on. And all three of us are highly opinionated, so it made for an interesting discussion.\n\nApplying security patches was an area where there was broad agreement that there are many security patches where applying the patch does more harm than good. This was used as an example and led us to areas where there was disagreement on whether a security control did more harm than good. These included:\n\n- Active Directory for computer and user management\n- Active Directory or similar for future PLC and other Level 1 user and device management\n- Internal ICS Security Zones\n- Many Roles (beyond Operator, Engineer, Administrator)\n\nThe specifics of each example are discussed. While the answers varied between the three of us, there was agreement on criteria such as size of the ICS, complexity of the ICS, and stability/frequency of change of the ICS.",
+    "view_count": 214
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SBZtw4LPtHg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

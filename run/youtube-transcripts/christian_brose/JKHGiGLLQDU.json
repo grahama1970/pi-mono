@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JKHGiGLLQDU",
+    "language": "en",
+    "took_ms": 9307,
+    "method": null,
+    "title": "The College Campus Tentifada: How It Started, Why It Matters, and How to Curb It",
+    "channel": "Hudson Institute",
+    "upload_date": "20240507",
+    "duration_sec": 3190,
+    "description": "Hudson’s Michael Doran hosts Columbia University Professor Ran Kivetz, Scholars for Peace in the Middle East Executive Director Asaf Romirowsky, and Senior Fellow and Tablet Editor at Large Liel Leibovitz. They will discuss the causes of the recent slate of pro-Hamas encampments on American college campuses, who is funding these protests, and what administrators and policymakers should do about this nascent national security threat.",
+    "view_count": 1214
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JKHGiGLLQDU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

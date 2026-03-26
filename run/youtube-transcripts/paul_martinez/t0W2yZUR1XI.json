@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "t0W2yZUR1XI",
+    "language": "en",
+    "took_ms": 9091,
+    "method": null,
+    "title": "Cyber Physical Attack Engineering",
+    "channel": "S4 Events",
+    "upload_date": "20170404",
+    "duration_sec": 2872,
+    "description": "Ralph Langner was as usual ahead of the curve when he presented Cyber Physical Attack Engineering back in January 2015 at S4x15.  This session focuses on how to orient and organize the ICS communities' thinking on attack / defense on ICS.\n\nThere is entirely too much attention paid to 0days and compromising an ICS computer or application. This is still trivial to do based on code quality and is almost always unnecessary. A more useful line of thinking is what would or could an attacker do with this access, what would be the intended result, and what can we do to defend against it.\n\n- At the 9 minute mark, Ralph discusses different types of ICS cyber-physical attacks.\n- At the 22 minute mark, he breaks down impact categories of cyber-physical attacks.\n- At the 29 minute mark, he discusses examples of how to identify the defensive controls to prevent catastrophic results.\n\nThe pull quote, in my opinion, was \"is there any combination of bits and bytes that if I throw that at this plant will result in harmful physical effects? This is a question that can be answered through engineering methodology\".",
+    "view_count": 1445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] t0W2yZUR1XI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

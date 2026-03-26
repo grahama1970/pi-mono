@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "StSLxFbVz0M",
+    "language": "en",
+    "took_ms": 8704,
+    "method": null,
+    "title": "DEF CON 30 - Tomer Bar - OopsSec -The bad, the worst and the ugly of APT’s operations security",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2761,
+    "description": "Advanced Persistent Threat groups invest in developing their arsenal of exploits and malware to stay below the radar and persist on the target machines for as long as possible. We were curious if the same efforts are invested in the operation security of these campaigns.\n\nWe started a journey researching active campaigns from the Middle East to the Far East including the Palestinian Authority, Turkey, and Iran, Russia, China, and North Korea. These campaigns were both state-sponsored, surveillance-targeted attacks and large-scale financially-motivated attacks.\n\nWe analyzed every technology used throughout the attack chain: Windows (Go-lang/.Net/Delphi) and Android malware; both on Windows and Linux-based C2 servers. \n\nWe found unbelievable mistakes which allow us to discover new advanced TTPs used by attackers, for example: bypassing iCloud two-factor authentication' and crypto wallet and NFT stealing methods. We were able to join the attackers' internal groups, view their chats, bank accounts and crypto wallets. In some cases, we were able to take down the entire campaign.\n\nWe will present our latest breakthroughs from our seven-year mind-game against the sophisticated Infy threat actor who successfully ran a 15-year active campaign using the most secured opSec attack chain we've encountered. We will explain how they improved their opSec over the years and how we recently managed to monitor their activity and could even cause a large-scale misinformation counterattack.\n\nWe will conclude by explaining how organizations can better defend themselves.",
+    "view_count": 44482
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] StSLxFbVz0M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

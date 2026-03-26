@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Rxx07Ubmcuc",
+    "language": "en",
+    "took_ms": 7451,
+    "method": null,
+    "title": "DEF CON 33 - Pre-Auth RCE, Arbitrary SMS & Adjacent Attacks on 5G and 4G_LTE Routers - Edward Warren",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1634,
+    "description": "This research examines security oversights in a range of modern 4G/5G routers used in small businesses, industrial IoT, and everyday mobile deployments. Several of these routers contain vulnerabilities reminiscent of older security flaws, such as weak default credentials, inadequate authentication checks, and command injection pathways. By reverse-engineering firmware and testing for insecure endpoints, it was possible to demonstrate remote code execution, arbitrary SMS sending, and other serious exploits affecting Tuoshi and KuWFi devices.\n\nThrough practical examples, including Burp Suite requests and Ghidra disassembly, the talk highlights how these weaknesses can grant attackers root access, allow fraudulent activity, or compromise entire networks. In each case, mitigation strategies and best practices—like robust authentication, regular firmware updates, and network segmentation—are emphasized. Ultimately, this presentation underscores the importance of continuous security scrutiny, even for modern hardware, and encourages the community to stay vigilant and collaborate in uncovering and addressing such pervasive vulnerabilities.",
+    "view_count": 531
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Rxx07Ubmcuc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

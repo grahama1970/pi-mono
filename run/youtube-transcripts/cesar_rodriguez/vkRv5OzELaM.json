@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vkRv5OzELaM",
+    "language": "en",
+    "took_ms": 7662,
+    "method": null,
+    "title": "Marine Corps Boot Camp Training Advice - Receiving",
+    "channel": "Sandboxx",
+    "upload_date": "20160713",
+    "duration_sec": 362,
+    "description": "Sandboxx is an app created by Marines to help Poolees get ready for boot camp. During boot camp and their careers, Marines can used Sandboxx to stay in touch with their families and units. \n\nDownload the Sandboxx app free: https://lynm.app.link/yts\n\nGet more from Sandboxx:\nhttps://www.facebook.com/sandboxxapp/ \nhttps://twitter.com/sandboxx\nhttps://www.instagram.com/sandboxxapp/\nhttps://www.pinterest.com/sandboxxapp/\nhttp://www.sandboxx.us/",
+    "view_count": 2822
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vkRv5OzELaM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

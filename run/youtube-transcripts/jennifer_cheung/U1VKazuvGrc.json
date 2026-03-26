@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U1VKazuvGrc",
+    "language": "en",
+    "took_ms": 7505,
+    "method": null,
+    "title": "DEF CON 33 - How a vuln in dealer software could've unlocked your car  - E Zveare, R Piyush",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2122,
+    "description": "Dealers are a vital part of the automotive industry – intentionally separate entities from the manufacturers, but highly interconnected. Most dealers use platforms built by the manufacturers that can be used to order cars, view/store customer information, and manage their day-to-day operations. Earlier this year, new vulnerabilities were discovered in a top automaker’s dealer platform that enabled the creation of a national admin account. This level of access, a privilege reserved for a select few corporate users, opened the door to a wide range of fun exploits.\n\nWant to start a car? Forget VINs – all you needed was someone’s name. Access to the enrollment systems made it possible to reassign ownership of cars and access remote control functionality.\n\nWant to find out who owns that sleek ride next to you? A quick glance at the VIN on the windshield was all you needed to pull down the owner’s personal information using the customer lookup tool.\n\nWant to impersonate the owner of a dealership to gain full access to everything? A user impersonation function was uncovered that made this possible - negating all the two-factor authentication systems.\n\nAll of this and much more was made possible through API flaws in a centralized dealer system. A system used by more than 1,000 dealers in the USA that you didn’t even know existed. A system that you would never have thought would be the unexpected connection to your car. We break down the full exploit from recon to initial access, from viewing PII to the satisfying roar of an engine coming to life.",
+    "view_count": 2051
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U1VKazuvGrc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

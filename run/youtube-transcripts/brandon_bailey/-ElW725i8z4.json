@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-ElW725i8z4",
+    "language": "en",
+    "took_ms": 8300,
+    "method": null,
+    "title": "DEF CON 33 - Critically Neglected: Cybersecurity for buildings  - Thomas Pope",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1392,
+    "description": "The rapid proliferation of consumer IoT devices has introduced new attack vectors beyond traditional exploitation. One overlooked risk lies in firmware persistence in returned devices—an issue that could enable mass surveillance, botnet propagation, or backdoor persistence at scale. This research investigates whether major retailers properly reset IoT firmware before reselling returned products, exposing critical gaps in supply chain security.\n\nIn this experiment, commercial IoT devices are purchased, modified with custom firmware embedding a simple callback, and then returned to the store. The devices are later repurchased and analyzed to determine if retailers performed proper firmware resets or if malicious code remained intact. Findings from this research reveal inconsistencies in retailer sanitization policies, with some major retailers failing to properly wipe and reflash firmware before resale. This talk will demonstrate examples of persistent firmware modifications, discuss the potential for IoT-based supply chain attacks, and propose real-world mitigation strategies for manufacturers, retailers, and consumers.\n\nAttendees will leave with a deeper understanding of how IoT firmware sanitization failures create a new class of attack vectors—and how threat actors could exploit this to build persistent IoT botnets, data-exfiltration implants, or unauthorized surveillance tools.",
+    "view_count": 427
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -ElW725i8z4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

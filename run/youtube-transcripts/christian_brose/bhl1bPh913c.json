@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bhl1bPh913c",
+    "language": "en",
+    "took_ms": 7685,
+    "method": null,
+    "title": "The Internet and IP Rights: Friends or Foes?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140501",
+    "duration_sec": 4777,
+    "description": "Some view the Internet as a lawless realm where everything is free for the taking and neither property nor copyrights have any particular meaning. For these individuals, the very concept of intellectual property is antithetical to their free-for-all perception of the Internet. \n\nFor others, the value of the Internet is dramatically magnified by intellectual property rights, from patent-protected network and user equipment to copyrighted software, videos, and exclusive content. In this view, intellectual property bolsters the Internet experience.",
+    "view_count": 194
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bhl1bPh913c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

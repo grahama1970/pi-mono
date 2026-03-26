@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JXQT_vxqwIs",
+    "language": "en",
+    "took_ms": 8668,
+    "method": null,
+    "title": "Adam Optimization Algorithm (C2W2L08)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 428,
+    "description": "Take the Deep Learning Specialization: http://bit.ly/2vBG4xl\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 263358
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JXQT_vxqwIs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8Ng91UY3D2M",
+    "language": "en",
+    "took_ms": 9078,
+    "method": null,
+    "title": "DEF CON 31 - Spread Spectrum techniques for anti drone evasion David Melendez, Gabriela Garcia",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2486,
+    "description": "The popularity of cheap and DIY drones has made them a target for attackers using radiofrequency (RF) signals. Frequency hopping is a technique that can be used to mitigate the risks associated with RF warfare. However, implementing frequency hopping in cheap and DIY drones presents several technical challenges, such as the need for a stable clock and synchronization between the transmitter and receiver without rising hardware costs. Despite these challenges, frequency hopping can significantly enhance the security of consumer and DIY drones making much more challenging or even useless anti-drone systems' role.",
+    "view_count": 3121
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8Ng91UY3D2M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

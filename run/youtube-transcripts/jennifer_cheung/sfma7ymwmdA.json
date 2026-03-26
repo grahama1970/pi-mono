@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sfma7ymwmdA",
+    "language": "en",
+    "took_ms": 8006,
+    "method": null,
+    "title": "DEF CON 32 - Bug Hunting In VMware Device Virtualization - JiaQing Huang, Hao Zheng, Yue Liu",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2351,
+    "description": "In this presentation, we will unveil a new attack surface: Device Virtualization in VMKernel. This isan unknown territory that has not been explored by security researchers to date. During the reverse engineering of the VMware Hypervisor, we discovered 8 vulnerabilities related to device virtualization, 3 of them have been assigned CVE number (some vulnerabilities have even been successfully exploited in Tianfu Cup), and the remaining 5 of our vulnerabilities have been officially confirmed by VMware.\n\nFirstly we will delve into the loading process of vmm, the implementation of data sharing between vmm and vmx, and VMware's UserRPC, which facilitates communication between the Hypervisor and the Host. These mechanisms are crucial in virtual device emulation.\n\nThen We will explain security issues in various parts of the USB system, including the host controller, VUsb middleware, and VUsb backend devices, based on the vulnerabilities we have unearthed.\n\nIn the end, We will primarily discuss the similarities and differences in SCSI-related device emulation in the virtual disk system between VMware Workstation and ESXi Additionally, we will cover design flaws related to disk device emulation that we discovered in VMKernel.",
+    "view_count": 603
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sfma7ymwmdA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

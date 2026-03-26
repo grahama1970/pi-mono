@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5y9HhDp3MHQ",
+    "language": "en",
+    "took_ms": 9008,
+    "method": null,
+    "title": "DEF CON 31 DCGVR Village - datalocaltmp - VR Workspaces",
+    "channel": "DEFCONConference",
+    "upload_date": "20240607",
+    "duration_sec": 2351,
+    "description": "presentation from DEF CON 31 DCGVR Village",
+    "view_count": 888
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5y9HhDp3MHQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

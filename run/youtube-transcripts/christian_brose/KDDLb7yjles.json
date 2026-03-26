@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KDDLb7yjles",
+    "language": "en",
+    "took_ms": 7987,
+    "method": null,
+    "title": "Remarks by His Eminence Cardinal Timothy Dolan",
+    "channel": "Hudson Institute",
+    "upload_date": "20150611",
+    "duration_sec": 3273,
+    "description": "Is there any hope that religious minorities can remain in the Middle East? A conference with Nina Shea, Cardinal Dolan, and Walter Russell Mead.",
+    "view_count": 2213
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KDDLb7yjles: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,2304 @@
+{
+  "meta": {
+    "video_id": "9Hm0obaDC58",
+    "language": "en",
+    "took_ms": 33533,
+    "method": "whisper-local",
+    "title": "Schizophrenic Files - Ange Albertini & Gynvael Coldwind - Area41 2014",
+    "channel": "GynvaelEN"
+  },
+  "transcript": [
+    {
+      "text": "Okay, let's start. So welcome to our talk. We'll talk about schizophrenic files and first",
+      "start": 8.05,
+      "duration": 6.56
+    },
+    {
+      "text": "This is yeah, hi, so my name is going to be a cold wind. I'm a security researcher at Google and drag on sector at the city",
+      "start": 16.05,
+      "duration": 7.36
+    },
+    {
+      "text": "F team. I'm a captain as the slides says I like hamburgers and",
+      "start": 23.41,
+      "duration": 4.64
+    },
+    {
+      "text": "Actually all opinions expressed during what I expressed during this talk belong to me and they are not the opinions of my power",
+      "start": 28.81,
+      "duration": 7.28
+    },
+    {
+      "text": "My lawyer nor my employer",
+      "start": 36.09,
+      "duration": 2.0
+    },
+    {
+      "text": "And I'm a reverse engineer and I'm the author of a website called corkaming, which is about reverse engineering and visual",
+      "start": 40.09,
+      "duration": 5.68
+    },
+    {
+      "text": "Documentations so first to introduce what we mean with the schizophrenic files",
+      "start": 46.01,
+      "duration": 4.64
+    },
+    {
+      "text": "It's like it's one file that doesn't generate an error. It's not about exploitation or crash here",
+      "start": 50.65,
+      "duration": 5.68
+    },
+    {
+      "text": "It's working under two different tools but or more and each time giving a different outputs",
+      "start": 56.33,
+      "duration": 5.86
+    },
+    {
+      "text": "So no errors, but something different",
+      "start": 62.19,
+      "duration": 2.56
+    },
+    {
+      "text": "And also very important. It's not like the file is just check comparing some internal version and then behaving differently",
+      "start": 65.75,
+      "duration": 6.52
+    },
+    {
+      "text": "It's like made passively because of a discrepancy between the passes, for example",
+      "start": 72.27,
+      "duration": 5.04
+    },
+    {
+      "text": "So the reason behind this oh yeah for first",
+      "start": 78.47,
+      "duration": 3.32
+    },
+    {
+      "text": "Ginfel and I have been",
+      "start": 82.95,
+      "duration": 2.0
+    },
+    {
+      "text": "Experiment with a",
+      "start": 86.11,
+      "duration": 1.52
+    },
+    {
+      "text": "specific files independently in the past and then together we have gathered enough material for a whole talk on the subject",
+      "start": 87.63,
+      "duration": 6.96
+    },
+    {
+      "text": "The main reason was fun because usually such case don't generate any kind of security well, they could but",
+      "start": 94.79,
+      "duration": 7.52
+    },
+    {
+      "text": "It's not like they would become a CV by themselves",
+      "start": 102.67,
+      "duration": 2.48
+    },
+    {
+      "text": "So the first reason is fun and then of course there are applications or even if it sounds like fun",
+      "start": 105.51,
+      "duration": 4.92
+    },
+    {
+      "text": "There could be several applications like bypassing security in various ways and one of the most",
+      "start": 110.43,
+      "duration": 5.32
+    },
+    {
+      "text": "famous example is the Android signing bug master key bug",
+      "start": 116.19,
+      "duration": 4.04
+    },
+    {
+      "text": "So first I'll hand it to Ginfel, which we'll talk about this topic",
+      "start": 120.59,
+      "duration": 3.82
+    },
+    {
+      "text": "Okay, so the first example because we have quite a lot of examples here",
+      "start": 124.87,
+      "duration": 3.6
+    },
+    {
+      "text": "First example is the zip file who is familiar with zip files?",
+      "start": 128.75,
+      "duration": 3.26
+    },
+    {
+      "text": "Okay, everyone so just kidding. This is actually an excerpt experts from my talk which was done in Polish language",
+      "start": 132.43,
+      "duration": 7.08
+    },
+    {
+      "text": "I don't expect you guys well everyone knows Polish language. So let's do it in English",
+      "start": 139.51,
+      "duration": 4.08
+    },
+    {
+      "text": "So the first zip trick which was actually the android master key bug",
+      "start": 144.67,
+      "duration": 4.32
+    },
+    {
+      "text": "Basically in the archive you can place a couple of files. We have which have the same name like the exact same name",
+      "start": 149.47,
+      "duration": 6.16
+    },
+    {
+      "text": "Of course, you cannot compress these files from the file system, but you can change the names in a hex editor or whatever, right?",
+      "start": 155.63,
+      "duration": 6.2
+    },
+    {
+      "text": "so",
+      "start": 162.15,
+      "duration": 1.16
+    },
+    {
+      "text": "What this person did and you should read this paper?",
+      "start": 163.31,
+      "duration": 3.52
+    },
+    {
+      "text": "It's actually pretty awesome is he created an archive which had two files named the same way and it turned",
+      "start": 166.83,
+      "duration": 6.76
+    },
+    {
+      "text": "Turned out that the signing was checked on the one file, but actually the second file was what was used later on",
+      "start": 173.59,
+      "duration": 7.28
+    },
+    {
+      "text": "Which means it bypassed the signing because the file to use for signing was okay, but the second last was second one was totally evil",
+      "start": 180.87,
+      "duration": 6.76
+    },
+    {
+      "text": "So this is the most simple trick. I guess like having a couple of same names in the archive",
+      "start": 187.63,
+      "duration": 5.48
+    },
+    {
+      "text": "Now the second trick with zip is actually a little more this will take some more slides and",
+      "start": 194.11,
+      "duration": 5.36
+    },
+    {
+      "text": "Well, as you know the zip file begins with pk letters, right?",
+      "start": 200.07,
+      "duration": 3.8
+    },
+    {
+      "text": "Wrong, so actually that's not true actually nobody knows how to interpret a zip",
+      "start": 204.59,
+      "duration": 5.64
+    },
+    {
+      "text": "But we'll get to it. So basically you start somewhere at the end at the end. There is something called",
+      "start": 210.39,
+      "duration": 5.68
+    },
+    {
+      "text": "The end of central directory, which is a small header which has a pointer to",
+      "start": 217.03,
+      "duration": 5.0
+    },
+    {
+      "text": "Well, more factors which are in the middle now the problem here is that",
+      "start": 222.91,
+      "duration": 4.12
+    },
+    {
+      "text": "Actually, we don't know how big this header at the end is",
+      "start": 227.83,
+      "duration": 3.64
+    },
+    {
+      "text": "Verfer we don't know where to look for it because it has at the end of this header",
+      "start": 231.83,
+      "duration": 5.2
+    },
+    {
+      "text": "Versa comment and the comment has variable size which means that the header can be anywhere from like just at the end of the file with no comment at all or it can be well",
+      "start": 237.03,
+      "duration": 10.36
+    },
+    {
+      "text": "64k into to the beginning of the file with a really long comment",
+      "start": 248.95,
+      "duration": 5.56
+    },
+    {
+      "text": "So this is the first problem and it's actually not defined in the zip standard where to start looking for this because we can look for it in two different ways",
+      "start": 255.51,
+      "duration": 7.88
+    },
+    {
+      "text": "Right, we can look start at the end and then assume we have a comment of length zero and we look for the header then there",
+      "start": 263.39,
+      "duration": 7.84
+    },
+    {
+      "text": "But and then we like iterate maybe there is a comment of length one maybe of two and we move to the beginning of the file looking for the header for the end of central directory",
+      "start": 271.67,
+      "duration": 10.04
+    },
+    {
+      "text": "On the other hand, we can do it the other way. I mean we can assume that there is a long comment where is the 64 kilobytes of comment and then decrease the size of comment by one and look there",
+      "start": 281.83,
+      "duration": 9.84
+    },
+    {
+      "text": "So these are two a's which leads to scissor from me, but I'm going to get to it because now",
+      "start": 292.19,
+      "duration": 5.84
+    },
+    {
+      "text": "I'm going to talk about something completely different, which isn't really different because I'm going to talk about the another header which is in the zip file",
+      "start": 298.35,
+      "duration": 7.32
+    },
+    {
+      "text": "So what you saw at the beginning here",
+      "start": 305.67,
+      "duration": 2.0
+    },
+    {
+      "text": "This is actually this isn't the zip header. This is usually what we see see where is the local file header it's actually a structure which",
+      "start": 308.07,
+      "duration": 7.92
+    },
+    {
+      "text": "Well, it describes one single file one single file which is in the zip and actually there are quite a lot of local file headers in the zip file",
+      "start": 316.91,
+      "duration": 7.2
+    },
+    {
+      "text": "Now for so actually each file in the zip has this",
+      "start": 325.55,
+      "duration": 3.84
+    },
+    {
+      "text": "Now there's also something called the central directory",
+      "start": 330.35,
+      "duration": 3.12
+    },
+    {
+      "text": "It's placed near the end of a zip file and it also has an entry for each file which is compressed",
+      "start": 333.47,
+      "duration": 6.44
+    },
+    {
+      "text": "These are kind of a done dance. So if one is broke and you can always use the other and there are quite a lot of problems with it",
+      "start": 340.55,
+      "duration": 6.28
+    },
+    {
+      "text": "However getting back to the to the point sorry",
+      "start": 347.91,
+      "duration": 3.84
+    },
+    {
+      "text": "Okay, so",
+      "start": 352.51,
+      "duration": 1.52
+    },
+    {
+      "text": "Getting back to the point of the end of central directory if we find it it actually has a pointer to the central directory and",
+      "start": 354.03,
+      "duration": 5.72
+    },
+    {
+      "text": "In the central directory there are a lot of files sorry entries for the files and there's also a pointer to the well to the local file header",
+      "start": 359.75,
+      "duration": 8.4
+    },
+    {
+      "text": "And the data because the data is always new to the local file header",
+      "start": 368.15,
+      "duration": 3.0
+    },
+    {
+      "text": "So I guess the question arises why do we need the central directory?",
+      "start": 371.27,
+      "duration": 3.56
+    },
+    {
+      "text": "We can just go through through the local file headers, right now the problem is that actually the local file header",
+      "start": 374.83,
+      "duration": 6.16
+    },
+    {
+      "text": "Doesn't have to be against the beginning of the file",
+      "start": 380.99,
+      "duration": 2.6
+    },
+    {
+      "text": "That's what I said that is wrong to assume that pk letters are always at the beginning of a file because at the beginning",
+      "start": 383.59,
+      "duration": 6.12
+    },
+    {
+      "text": "Of a file you can have anything and the local file header can start somewhere else",
+      "start": 389.75,
+      "duration": 3.76
+    },
+    {
+      "text": "And this is still a valid zip file because well the central directory will point the parser to wherever this structure is",
+      "start": 393.51,
+      "duration": 6.32
+    },
+    {
+      "text": "Now you can of course try to at least I assumed you can put one in the other like put one in the comment of the other",
+      "start": 401.03,
+      "duration": 7.88
+    },
+    {
+      "text": "However, and did try this and it doesn't really work so well with parser. So let's just skip it now",
+      "start": 409.23,
+      "duration": 6.92
+    },
+    {
+      "text": "We are looking for",
+      "start": 416.47,
+      "duration": 2.0
+    },
+    {
+      "text": "Well, we are looking for how to parse a zip file",
+      "start": 418.47,
+      "duration": 3.36
+    },
+    {
+      "text": "We can actually do it a couple of ways",
+      "start": 422.87,
+      "duration": 2.4
+    },
+    {
+      "text": "I already mentioned to like looking for vendor of central directory from the assuming that there is a large comment and assuming that",
+      "start": 425.27,
+      "duration": 6.32
+    },
+    {
+      "text": "There's no comment at all another way that is done is we can assume that we just ignore it and go through",
+      "start": 431.59,
+      "duration": 5.36
+    },
+    {
+      "text": "Local file headers and the data because we have the size of the data",
+      "start": 437.15,
+      "duration": 3.0
+    },
+    {
+      "text": "We can always skip through it and get to the next file and so on and so on. So this is stream parsing",
+      "start": 440.15,
+      "duration": 4.48
+    },
+    {
+      "text": "And",
+      "start": 445.35,
+      "duration": 1.28
+    },
+    {
+      "text": "Well, most of zip files can be parsed in this way because fair proper zip files which don't put any garbage in between",
+      "start": 446.63,
+      "duration": 7.44
+    },
+    {
+      "text": "Also, there's something I would like to call aggressive stream parsing which means",
+      "start": 455.59,
+      "duration": 4.0
+    },
+    {
+      "text": "Maybe a parser can look for this signature in the file and when it finds it it can assume well",
+      "start": 460.31,
+      "duration": 6.0
+    },
+    {
+      "text": "This is this is some file in the zip and I'm going to try to parse it try to extract it",
+      "start": 466.31,
+      "duration": 5.36
+    },
+    {
+      "text": "Let's call this aggressive stream now. I created actually a thing called abstract zip which merges all these ideas into one file",
+      "start": 472.63,
+      "duration": 8.24
+    },
+    {
+      "text": "So we have one file which can be parsed and these four different ways using well the end",
+      "start": 481.03,
+      "duration": 5.84
+    },
+    {
+      "text": "Endway which is",
+      "start": 488.47,
+      "duration": 2.0
+    },
+    {
+      "text": "Maybe skip here and first which is",
+      "start": 490.47,
+      "duration": 3.28
+    },
+    {
+      "text": "Meaning that there is no comment at all then very start first which means there is a huge comment and in the comment of this",
+      "start": 494.31,
+      "duration": 6.32
+    },
+    {
+      "text": "Actually various this and first look end of central directory header and also like all the other headers",
+      "start": 501.03,
+      "duration": 6.32
+    },
+    {
+      "text": "There is also another stream here another place in this file",
+      "start": 508.15,
+      "duration": 3.92
+    },
+    {
+      "text": "This is actually not linked to neither this nor this it means this is a separate file",
+      "start": 512.31,
+      "duration": 5.04
+    },
+    {
+      "text": "Which if you start parsing from the end like you shoot you will never encounter",
+      "start": 517.67,
+      "duration": 3.92
+    },
+    {
+      "text": "And there is also some syntax breakers is that which is actually garbage in between and after that",
+      "start": 522.39,
+      "duration": 4.64
+    },
+    {
+      "text": "There is another local file header with data",
+      "start": 527.03,
+      "duration": 2.0
+    },
+    {
+      "text": "Now let's look what how different programming languages react to this",
+      "start": 529.75,
+      "duration": 4.96
+    },
+    {
+      "text": "This is Python and Python does what it should do it means it actually well when I give it this",
+      "start": 534.95,
+      "duration": 5.04
+    },
+    {
+      "text": "So sorry this opens the abstract zip file and prints it and it displays only the end first file",
+      "start": 540.47,
+      "duration": 5.76
+    },
+    {
+      "text": "Which is the proper way of parsing zip now if we feed it to php",
+      "start": 546.31,
+      "duration": 5.28
+    },
+    {
+      "text": "I mean php is the obvious culprit right everyone something weird when we let's go for php",
+      "start": 551.67,
+      "duration": 4.72
+    },
+    {
+      "text": "And php says start first is in this archive. It's the same archive as before as python",
+      "start": 556.79,
+      "duration": 5.52
+    },
+    {
+      "text": "So but it actually reports a different file and this is fully a different file",
+      "start": 562.31,
+      "duration": 3.68
+    },
+    {
+      "text": "Now let's go for some more weirdness meaning Java",
+      "start": 566.95,
+      "duration": 2.4
+    },
+    {
+      "text": "So Java has something called zip input stream and it does stream parsing so opening the same abstract zip archive",
+      "start": 570.47,
+      "duration": 6.4
+    },
+    {
+      "text": "Well, it it sees only the readme underscore stream file which is totally different",
+      "start": 577.35,
+      "duration": 5.6
+    },
+    {
+      "text": "Now if we",
+      "start": 583.83,
+      "duration": 1.84
+    },
+    {
+      "text": "If we go through binwalk which binwalk is a aggressive forensics tool that is supposed to find many files in a hard drive image",
+      "start": 585.67,
+      "duration": 6.64
+    },
+    {
+      "text": "It actually finds all the files including including the aggressive one and lists them. So that's really good",
+      "start": 592.31,
+      "duration": 5.36
+    },
+    {
+      "text": "To sum up this actually most of the application and most of the libraries default libraries in programming languages",
+      "start": 598.47,
+      "duration": 6.64
+    },
+    {
+      "text": "Open and first they assume there is no comment at the end and start looking for the header from there",
+      "start": 605.83,
+      "duration": 5.52
+    },
+    {
+      "text": "And I guess only php and TCL goes",
+      "start": 612.15,
+      "duration": 3.68
+    },
+    {
+      "text": "Goes for the start first file and",
+      "start": 616.87,
+      "duration": 2.24
+    },
+    {
+      "text": "Java and rabbi goes for for stream parsing which is this is totally incorrect",
+      "start": 620.07,
+      "duration": 4.88
+    },
+    {
+      "text": "I mean this may pass but this is totally incorrect",
+      "start": 624.95,
+      "duration": 2.32
+    },
+    {
+      "text": "We shouldn't do it this way unless you are like parsing",
+      "start": 627.27,
+      "duration": 2.32
+    },
+    {
+      "text": "Streams of zip but zip isn't like correct format to do it",
+      "start": 630.31,
+      "duration": 3.44
+    },
+    {
+      "text": "And I guess only forensics tools do",
+      "start": 634.55,
+      "duration": 2.72
+    },
+    {
+      "text": "um",
+      "start": 638.15,
+      "duration": 0.96
+    },
+    {
+      "text": "Well find this aggressive stream which is which is good now",
+      "start": 639.11,
+      "duration": 3.44
+    },
+    {
+      "text": "I would like to thank these people more under felix salvation and euro for actually running all this application and this test for me",
+      "start": 642.95,
+      "duration": 6.72
+    },
+    {
+      "text": "Assuming that they are all okay and don't have any exploits in them. Thank you",
+      "start": 650.63,
+      "duration": 4.48
+    },
+    {
+      "text": "But why do we care so well it could be used to bypass some signing?",
+      "start": 655.91,
+      "duration": 4.56
+    },
+    {
+      "text": "I actually did during a code review find a bag like this where an archive was verified using",
+      "start": 660.47,
+      "duration": 6.48
+    },
+    {
+      "text": "And first method but when it was extracted using stream",
+      "start": 667.03,
+      "duration": 3.28
+    },
+    {
+      "text": "From the beginning of a file",
+      "start": 671.11,
+      "duration": 2.0
+    },
+    {
+      "text": "So this happens",
+      "start": 673.35,
+      "duration": 1.6
+    },
+    {
+      "text": "However, what I did I started I made four copies of this file and started putting the a car virus test inside each position",
+      "start": 674.95,
+      "duration": 8.0
+    },
+    {
+      "text": "And well most",
+      "start": 683.35,
+      "duration": 1.76
+    },
+    {
+      "text": "Antibersies only start at first",
+      "start": 685.11,
+      "duration": 2.24
+    },
+    {
+      "text": "Which is which is actually good because this means that well most applications open it this way",
+      "start": 687.35,
+      "duration": 4.8
+    },
+    {
+      "text": "So that that should be okay",
+      "start": 692.15,
+      "duration": 1.44
+    },
+    {
+      "text": "However, there are some",
+      "start": 693.59,
+      "duration": 1.52
+    },
+    {
+      "text": "Applications sorry some antivirus like software to try to open its and parse its stream only which means it doesn't find never finds the files which are opened by",
+      "start": 695.11,
+      "duration": 9.84
+    },
+    {
+      "text": "Well by using most of the applications which is which is bad for all tests you can you can",
+      "start": 706.23,
+      "duration": 4.24
+    },
+    {
+      "text": "You can see them here. I it's a spreadsheet which has all the results",
+      "start": 711.27,
+      "duration": 3.84
+    },
+    {
+      "text": "So I'll go on with the pdf file format if you're not familiar with the pdf file format",
+      "start": 720.93,
+      "duration": 5.12
+    },
+    {
+      "text": "I did a one-on-one with videos and examples",
+      "start": 726.05,
+      "duration": 2.16
+    },
+    {
+      "text": "Here's the URL and just as a reminder so pdf file is made of different objects that refer to each other",
+      "start": 729.09,
+      "duration": 7.44
+    },
+    {
+      "text": "There is structure we are graph structures",
+      "start": 736.53,
+      "duration": 1.92
+    },
+    {
+      "text": "So you see the trailer the root the pages and so on and basically here the trailer is the one pointing to the root",
+      "start": 738.45,
+      "duration": 5.68
+    },
+    {
+      "text": "And if you have an extra object that would be wouldn't be used by the other reference by the other object that would be fine",
+      "start": 744.53,
+      "duration": 5.28
+    },
+    {
+      "text": "So you can add a how do you say a parasite object which means that",
+      "start": 749.81,
+      "duration": 3.92
+    },
+    {
+      "text": "the",
+      "start": 753.97,
+      "duration": 2.0
+    },
+    {
+      "text": "When a pdf reader sees a document it means it's actually found the right trailer and the root",
+      "start": 755.97,
+      "duration": 6.96
+    },
+    {
+      "text": "The root objects and then everything can be can independently coexist in the same file",
+      "start": 763.65,
+      "duration": 5.04
+    },
+    {
+      "text": "So basically if we see the file trailer it says the start x ref line should be preceded by the trailer",
+      "start": 769.09,
+      "duration": 5.2
+    },
+    {
+      "text": "blah blah blah and also importantly there is a comment so if it",
+      "start": 774.85,
+      "duration": 3.76
+    },
+    {
+      "text": "If it starts with percentage it's a comment and should be ignored so what happens if you have for example",
+      "start": 779.33,
+      "duration": 5.68
+    },
+    {
+      "text": "This kind of trailer so one trailer defining a root, but this one is actually commented",
+      "start": 785.01,
+      "duration": 3.84
+    },
+    {
+      "text": "This one is is normal and this one actually doesn't have the trailer keyword",
+      "start": 789.41,
+      "duration": 3.68
+    },
+    {
+      "text": "So what would happen if those two should be rejected and actually you can put all those three in the same file and you get this",
+      "start": 793.49,
+      "duration": 6.96
+    },
+    {
+      "text": "So that's the same file so that's chrome and that's",
+      "start": 801.01,
+      "duration": 3.2
+    },
+    {
+      "text": "Well, you see it is this trailer that's Adobe reader and then that's too much while",
+      "start": 805.01,
+      "duration": 5.76
+    },
+    {
+      "text": "And this is all the same file and it's not about just a different picture",
+      "start": 811.33,
+      "duration": 3.52
+    },
+    {
+      "text": "It's true complete different documents",
+      "start": 815.09,
+      "duration": 2.0
+    },
+    {
+      "text": "So you can you could say that on the other way. This is a fake document and this is exploiting document for Adobe",
+      "start": 817.17,
+      "duration": 5.6
+    },
+    {
+      "text": "And then if someone opens it and doesn't see the right document they would just ignore the other objects",
+      "start": 823.09,
+      "duration": 4.96
+    },
+    {
+      "text": "Unless they have some foreign sickable so foreign six ability",
+      "start": 828.37,
+      "duration": 2.72
+    },
+    {
+      "text": "Another problem",
+      "start": 831.97,
+      "duration": 1.28
+    },
+    {
+      "text": "So this was clearly a problem with the non-respecting aspects",
+      "start": 833.25,
+      "duration": 3.6
+    },
+    {
+      "text": "But sometimes it's in the specs but the specs are too obscure and pdf is a very good candidate",
+      "start": 837.25,
+      "duration": 4.8
+    },
+    {
+      "text": "So it's like there are so many things in the pdf file format that actually",
+      "start": 842.53,
+      "duration": 3.52
+    },
+    {
+      "text": "I didn't know about it until recently and I expect most of you don't know about it",
+      "start": 846.69,
+      "duration": 4.96
+    },
+    {
+      "text": "So do anyone see anything special with this file",
+      "start": 851.97,
+      "duration": 3.44
+    },
+    {
+      "text": "So first who is usually using Adobe reader at some point?",
+      "start": 858.52,
+      "duration": 3.76
+    },
+    {
+      "text": "Yeah, for just for schizophren testing of course",
+      "start": 864.32,
+      "duration": 2.64
+    },
+    {
+      "text": "So here what's unusual is that there is this little icon",
+      "start": 867.28,
+      "duration": 2.56
+    },
+    {
+      "text": "It's not really a problem in itself",
+      "start": 870.24,
+      "duration": 1.76
+    },
+    {
+      "text": "It just means that the file has layer and this is a feature and now",
+      "start": 872.08,
+      "duration": 3.12
+    },
+    {
+      "text": "Do you see what's wrong?",
+      "start": 875.84,
+      "duration": 3.6
+    },
+    {
+      "text": "So basically what you see on the screen is not what you're going to print",
+      "start": 879.52,
+      "duration": 2.64
+    },
+    {
+      "text": "And this is transparent when you do that",
+      "start": 883.44,
+      "duration": 2.32
+    },
+    {
+      "text": "This is a feature so you because this file has layer",
+      "start": 885.76,
+      "duration": 3.68
+    },
+    {
+      "text": "And the layer are playing with the printability and view of your ability",
+      "start": 890.0,
+      "duration": 3.36
+    },
+    {
+      "text": "Then you don't have a warning because it's a feature so now",
+      "start": 893.6,
+      "duration": 3.2
+    },
+    {
+      "text": "We can see that's so it's called optional content configuration and you can see I define two layers",
+      "start": 897.44,
+      "duration": 5.36
+    },
+    {
+      "text": "I call them visible and printable",
+      "start": 903.04,
+      "duration": 1.76
+    },
+    {
+      "text": "But usually a documented a professional printing documents has like 15 layers or this kind of thing",
+      "start": 904.8,
+      "duration": 5.2
+    },
+    {
+      "text": "And then you just define default state export printable views",
+      "start": 910.4,
+      "duration": 4.0
+    },
+    {
+      "text": "Viewable for each of the layers. So it's even a part of the feature",
+      "start": 914.96,
+      "duration": 3.04
+    },
+    {
+      "text": "So there's no warning and you could argue that you see it in the preview",
+      "start": 918.64,
+      "duration": 3.84
+    },
+    {
+      "text": "Then I would say either just leave the page one unchanged or just do a minor change and put your difference at the fewer the next pages",
+      "start": 922.72,
+      "duration": 8.8
+    },
+    {
+      "text": "Or just do a minor change that the people are unlikely to spot in the difference of the file",
+      "start": 931.84,
+      "duration": 4.64
+    },
+    {
+      "text": "So in this case it's not even",
+      "start": 936.88,
+      "duration": 2.24
+    },
+    {
+      "text": "Yeah, it's in the specs. There's not even magic trick or misinterpretation",
+      "start": 941.12,
+      "duration": 4.0
+    },
+    {
+      "text": "Sadly, it's not so good for POC gtfo because it's Adobe only and what then displays with other readers that don't handle this feature",
+      "start": 945.76,
+      "duration": 8.08
+    },
+    {
+      "text": "Will vary with various readers, but then you could use the previous keys of friend type",
+      "start": 954.24,
+      "duration": 3.84
+    },
+    {
+      "text": "Like with the trailers so that's your trick or is only activated under Adobe so you could",
+      "start": 958.64,
+      "duration": 4.96
+    },
+    {
+      "text": "If someone is using another reader they have a normal document and if they use Adobe then they have a",
+      "start": 964.56,
+      "duration": 5.12
+    },
+    {
+      "text": "How do you say document with a printing trap and no warning?",
+      "start": 970.08,
+      "duration": 3.84
+    },
+    {
+      "text": "So this is very really used for bad purpose and of course this can be abused for obvious reasons",
+      "start": 974.56,
+      "duration": 6.48
+    },
+    {
+      "text": "Okay",
+      "start": 984.42,
+      "duration": 1.28
+    },
+    {
+      "text": "Now let's get to some tricks which I don't think they have some security implications, but they are still funny",
+      "start": 985.7,
+      "duration": 7.04
+    },
+    {
+      "text": "So this is a cute little trick I published years ago",
+      "start": 993.54,
+      "duration": 3.2
+    },
+    {
+      "text": "Uh, in hacking magazine when it was still decent enough to publish in",
+      "start": 997.22,
+      "duration": 4.24
+    },
+    {
+      "text": "Yes, so basically the bmp is a really simple format right well more or less",
+      "start": 1001.94,
+      "duration": 5.2
+    },
+    {
+      "text": "Anyway, you have a file header and you have an another header here and then you jump into pixel the data",
+      "start": 1007.78,
+      "duration": 5.76
+    },
+    {
+      "text": "Now verse this bf offset bits field here, which basically points to the beginning of the data now as you might suspect",
+      "start": 1013.86,
+      "duration": 8.4
+    },
+    {
+      "text": "Some applications ignore it and some application expect the data to be after the headers",
+      "start": 1023.38,
+      "duration": 4.8
+    },
+    {
+      "text": "Which means that you can put some pixel data here with one bitmap and you can put a proper",
+      "start": 1028.82,
+      "duration": 5.12
+    },
+    {
+      "text": "Picks pop sorry proper bitmap here and point to it in the header and some applications might",
+      "start": 1034.34,
+      "duration": 6.4
+    },
+    {
+      "text": "Display well proper image and we ever might just go for",
+      "start": 1041.22,
+      "duration": 3.76
+    },
+    {
+      "text": "For ignoring this field. So this is one file to different bitmaps again and",
+      "start": 1046.02,
+      "duration": 6.16
+    },
+    {
+      "text": "This is how it works thankfully most of applications are actually respect that",
+      "start": 1052.66,
+      "duration": 3.84
+    },
+    {
+      "text": "Are a series back that field",
+      "start": 1057.06,
+      "duration": 2.0
+    },
+    {
+      "text": "Another trick which is something that actually spoiled one of my ctf tasks, but",
+      "start": 1059.94,
+      "duration": 5.12
+    },
+    {
+      "text": "But I created that thankfully in a testing it's related to",
+      "start": 1065.86,
+      "duration": 2.96
+    },
+    {
+      "text": "compression in bmp so actually bmp can be compressed as",
+      "start": 1069.62,
+      "duration": 3.84
+    },
+    {
+      "text": "Compressed by run length encoding which is kind of quite quite interesting actually so it has",
+      "start": 1074.02,
+      "duration": 4.88
+    },
+    {
+      "text": "What you would expect from run length encoding meaning?",
+      "start": 1079.78,
+      "duration": 3.2
+    },
+    {
+      "text": "These are we upcoats one opcode is like you just put the length of like for example",
+      "start": 1083.62,
+      "duration": 4.48
+    },
+    {
+      "text": "12 and when you peep sorry put the color and this means that the next 12 pixels will be this color",
+      "start": 1088.58,
+      "duration": 8.24
+    },
+    {
+      "text": "And now you should actually assume that this is some kind of a script rendering the bitmap and this is not",
+      "start": 1097.46,
+      "duration": 5.04
+    },
+    {
+      "text": "Not pixel data, which is where now the second opcode when length is set to zero. This is actually an escape opcode and",
+      "start": 1102.9,
+      "duration": 6.56
+    },
+    {
+      "text": "the next value is more than two",
+      "start": 1110.34,
+      "duration": 2.0
+    },
+    {
+      "text": "It's called a row length which means that",
+      "start": 1113.06,
+      "duration": 2.56
+    },
+    {
+      "text": "You are supposed or actually that the coder is supposed to expect",
+      "start": 1116.42,
+      "duration": 3.44
+    },
+    {
+      "text": "this many",
+      "start": 1120.9,
+      "duration": 1.28
+    },
+    {
+      "text": "pixels",
+      "start": 1122.18,
+      "duration": 1.28
+    },
+    {
+      "text": "Not non-compressed afterwards and just copy them to",
+      "start": 1123.46,
+      "duration": 3.76
+    },
+    {
+      "text": "To the bitmap to output bitmap now actually",
+      "start": 1127.94,
+      "duration": 3.12
+    },
+    {
+      "text": "It bmp kind of extended this error",
+      "start": 1131.78,
+      "duration": 2.8
+    },
+    {
+      "text": "Sorry rle it added three more opcodes one",
+      "start": 1135.14,
+      "duration": 3.04
+    },
+    {
+      "text": "It is just end of line which means well wherever the cursor is on",
+      "start": 1138.18,
+      "duration": 4.72
+    },
+    {
+      "text": "Rendering the output bitmap",
+      "start": 1142.98,
+      "duration": 1.68
+    },
+    {
+      "text": "Just jump to the end of the line",
+      "start": 1145.78,
+      "duration": 2.0
+    },
+    {
+      "text": "And there is also the same for end of bitmap and there is something to just move the cursor by x y",
+      "start": 1148.1,
+      "duration": 5.68
+    },
+    {
+      "text": "Bites to a different sorry pixels to a different position",
+      "start": 1155.3,
+      "duration": 3.52
+    },
+    {
+      "text": "Now the question is I guess",
+      "start": 1159.3,
+      "duration": 2.24
+    },
+    {
+      "text": "What happens what data will be in the output bitmap if you just jump over some areas of space?",
+      "start": 1161.54,
+      "duration": 6.8
+    },
+    {
+      "text": "Will it be background will it be I don't know",
+      "start": 1168.42,
+      "duration": 2.08
+    },
+    {
+      "text": "Well, let's check actually very free options here the first one is",
+      "start": 1171.14,
+      "duration": 4.24
+    },
+    {
+      "text": "Well the blank spaces are actually filled with the background color here the background color is zero which is white",
+      "start": 1176.82,
+      "duration": 6.72
+    },
+    {
+      "text": "Zero as in the zero index in the palette of course",
+      "start": 1184.82,
+      "duration": 2.72
+    },
+    {
+      "text": "And this is how properly I think I expect bmp should be displayed if we go for a different viewer",
+      "start": 1188.66,
+      "duration": 7.2
+    },
+    {
+      "text": "However, it doesn't display it at all but it displays a different",
+      "start": 1196.18,
+      "duration": 4.0
+    },
+    {
+      "text": "Different part of a bitmap because it assumes that the missing pixels are all black and it feels the missing spaces with black",
+      "start": 1201.46,
+      "duration": 8.4
+    },
+    {
+      "text": "So you can already see what I did with this bitmap. I actually rendered the walls told it to render some",
+      "start": 1210.18,
+      "duration": 6.56
+    },
+    {
+      "text": "background color pixels in these areas and just jump between them",
+      "start": 1217.46,
+      "duration": 4.08
+    },
+    {
+      "text": "um",
+      "start": 1222.58,
+      "duration": 0.96
+    },
+    {
+      "text": "So again, this is very snuffing hidden here. This is",
+      "start": 1223.54,
+      "duration": 3.04
+    },
+    {
+      "text": "Well something is actually hidden where depending on what viewer you you are using and if you use genome and I think I of genome",
+      "start": 1227.14,
+      "duration": 6.4
+    },
+    {
+      "text": "The default viewer on under well genome",
+      "start": 1234.02,
+      "duration": 2.32
+    },
+    {
+      "text": "You can actually see everything because it assumes that background is just transparent",
+      "start": 1237.14,
+      "duration": 4.88
+    },
+    {
+      "text": "Which is quite weird for bmp's because we are not use I guess to bmp's having transparency",
+      "start": 1242.1,
+      "duration": 5.04
+    },
+    {
+      "text": "Um, but where it is so basically the same bitmap but three different things you can see and",
+      "start": 1247.78,
+      "duration": 6.56
+    },
+    {
+      "text": "so",
+      "start": 1255.14,
+      "duration": 3.63
+    },
+    {
+      "text": "Let's go on with the image and now the png file from it. So",
+      "start": 1260.05,
+      "duration": 3.36
+    },
+    {
+      "text": "Nice trick highlighted with a very cute book from Dominic from Reversity",
+      "start": 1264.53,
+      "duration": 3.84
+    },
+    {
+      "text": "So basically you have the same image data that is combining two images and each image is actually using only a part of the colors",
+      "start": 1268.69,
+      "duration": 7.2
+    },
+    {
+      "text": "But then there are two palettes actually even though it's a breach over the official specification",
+      "start": 1275.97,
+      "duration": 5.04
+    },
+    {
+      "text": "So if you use two palette data in the file what happens?",
+      "start": 1281.33,
+      "duration": 4.16
+    },
+    {
+      "text": "First it technically speaking it should reject the file or it at least",
+      "start": 1286.45,
+      "duration": 4.16
+    },
+    {
+      "text": "We will it take the first one or the second one and so that's a very cute PLC",
+      "start": 1291.41,
+      "duration": 3.76
+    },
+    {
+      "text": "Because you see that in one case so that's the same pictures using the same no two pictures using the same image data each of them",
+      "start": 1295.57,
+      "duration": 7.44
+    },
+    {
+      "text": "Using system colors of the whole palette and you see that one palette is using the higher nibble the high the high nibble of the",
+      "start": 1303.01,
+      "duration": 8.32
+    },
+    {
+      "text": "The palette itself and the other palette of this image is using the lower the lower nibble",
+      "start": 1312.21,
+      "duration": 6.24
+    },
+    {
+      "text": "So you see it's a way to uncode",
+      "start": 1318.85,
+      "duration": 2.0
+    },
+    {
+      "text": "Easily two palettes in one and then one file viewer takes the first palette chunk and another viewer takes the second one",
+      "start": 1321.41,
+      "duration": 8.72
+    },
+    {
+      "text": "So they should don't be there should be only one palette chunk but in standard they take the first one and ignore the next ones from now on",
+      "start": 1330.53,
+      "duration": 6.48
+    },
+    {
+      "text": "but still in any case it's against the specs and",
+      "start": 1337.17,
+      "duration": 3.12
+    },
+    {
+      "text": "This one is the one with the unusual behavior most of them just take the first chunk palette chunk",
+      "start": 1341.41,
+      "duration": 6.08
+    },
+    {
+      "text": "Well, now let's move on to some executable files",
+      "start": 1349.01,
+      "duration": 3.12
+    },
+    {
+      "text": "I do some stuff about the p files and I won't go in the details because typically the p files loader the executables of wind file format of window",
+      "start": 1352.53,
+      "duration": 9.36
+    },
+    {
+      "text": "is",
+      "start": 1362.69,
+      "duration": 2.0
+    },
+    {
+      "text": "Pretty backward compatible and whenever there was a change over the version",
+      "start": 1364.69,
+      "duration": 3.84
+    },
+    {
+      "text": "They actually just kill some weird bugs or something",
+      "start": 1368.85,
+      "duration": 3.44
+    },
+    {
+      "text": "So typically most of the time when there's evolution it actually",
+      "start": 1372.53,
+      "duration": 2.96
+    },
+    {
+      "text": "Kill something nesting from the past. There are very few differences among the",
+      "start": 1376.05,
+      "duration": 5.2
+    },
+    {
+      "text": "Things that change among the version of windows. So here you have xp",
+      "start": 1382.13,
+      "duration": 3.76
+    },
+    {
+      "text": "Vista",
+      "start": 1386.53,
+      "duration": 1.2
+    },
+    {
+      "text": "Vista 7 and windows 8 and only in the relocation types",
+      "start": 1387.73,
+      "duration": 4.0
+    },
+    {
+      "text": "There were some variation so for youtube bug type 4 high map to high-edge was actually doing nothing in the case of",
+      "start": 1392.13,
+      "duration": 8.48
+    },
+    {
+      "text": "xp and vista 7 and",
+      "start": 1401.81,
+      "duration": 2.0
+    },
+    {
+      "text": "That was fixing our windows 8 now there is the obscure",
+      "start": 1404.37,
+      "duration": 4.24
+    },
+    {
+      "text": "Type 9 that is more that was used for itanium",
+      "start": 1410.05,
+      "duration": 3.2
+    },
+    {
+      "text": "That is doing different result under xp and 7 but now is not supported anymore because they dropped itanium from with the",
+      "start": 1414.21,
+      "duration": 7.44
+    },
+    {
+      "text": "windows 8 whoa",
+      "start": 1421.73,
+      "duration": 1.28
+    },
+    {
+      "text": "So actually now what can we do so it's very easy to do a difference between those two versions or those two versions but",
+      "start": 1423.01,
+      "duration": 6.08
+    },
+    {
+      "text": "Well, I wanted to do",
+      "start": 1429.57,
+      "duration": 2.0
+    },
+    {
+      "text": "Skis of friend that would work independently on the",
+      "start": 1431.89,
+      "duration": 2.24
+    },
+    {
+      "text": "I would that would work correctly on the three versions but with the different behavior",
+      "start": 1434.69,
+      "duration": 3.68
+    },
+    {
+      "text": "So the trick is that you can apply a location on other relocations further in the list",
+      "start": 1438.61,
+      "duration": 4.24
+    },
+    {
+      "text": "So basically I will use this one to actually patch that one of type 9 into a type 10 and type 10 is hopefully",
+      "start": 1443.09,
+      "duration": 7.84
+    },
+    {
+      "text": "Locally supported by all the versions so in this case it won't do anything",
+      "start": 1451.65,
+      "duration": 3.6
+    },
+    {
+      "text": "Because it's still here because it's not patch and in the case of windows 8 my type 9 has been changing to type 10",
+      "start": 1455.97,
+      "duration": 6.16
+    },
+    {
+      "text": "I I showed that in the POC GTF4 issue 2. I think",
+      "start": 1462.61,
+      "duration": 4.64
+    },
+    {
+      "text": "That's the magazine of 12 is good speed if you're not aware of it",
+      "start": 1468.05,
+      "duration": 2.56
+    },
+    {
+      "text": "And the surface basically the floor flow is that my first relocation is processed",
+      "start": 1471.17,
+      "duration": 4.24
+    },
+    {
+      "text": "Then under xp and vista 7 it won't do anything",
+      "start": 1476.29,
+      "duration": 3.92
+    },
+    {
+      "text": "And under",
+      "start": 1480.77,
+      "duration": 1.44
+    },
+    {
+      "text": "Windows 8 it will actually patch relocation to then relocation to is in any case because it's just the next one on the file",
+      "start": 1482.93,
+      "duration": 7.12
+    },
+    {
+      "text": "Is processed and now under windows 8 it's the type 10 and then under xp and 7 it's still type 9 then it creates different results",
+      "start": 1490.53,
+      "duration": 8.0
+    },
+    {
+      "text": "So now we have a skis of friend that works in all case no error no bugs",
+      "start": 1498.85,
+      "duration": 4.32
+    },
+    {
+      "text": "But actually has a different loading behavior is this loaded different tree",
+      "start": 1503.25,
+      "duration": 4.8
+    },
+    {
+      "text": "Under different versions of windows",
+      "start": 1508.93,
+      "duration": 2.0
+    },
+    {
+      "text": "If you are if you are interested in",
+      "start": 1511.89,
+      "duration": 2.0
+    },
+    {
+      "text": "Elf",
+      "start": 1514.61,
+      "duration": 1.28
+    },
+    {
+      "text": "eccentricities I have I would do you recommend this talk by Julian Bangart and Sagar but you as you see plenty of fun with this time the Elf",
+      "start": 1515.89,
+      "duration": 8.48
+    },
+    {
+      "text": "Okay",
+      "start": 1528.2,
+      "duration": 1.2
+    },
+    {
+      "text": "Well, we already had the BMP we had PN 2 time full drift",
+      "start": 1529.64,
+      "duration": 3.28
+    },
+    {
+      "text": "Okay, this is I was also writing in some article about drift years ago and I",
+      "start": 1534.6,
+      "duration": 5.68
+    },
+    {
+      "text": "Stumbled upon this behavior, but never made a POC in as a skis of mimic POC yesterday",
+      "start": 1540.84,
+      "duration": 5.28
+    },
+    {
+      "text": "We talked with Anger and actually came up with this so you may not well you are guess all of you are familiar with animated drifts right",
+      "start": 1546.12,
+      "duration": 7.36
+    },
+    {
+      "text": "But animation was added later in the standard at the beginning",
+      "start": 1553.72,
+      "duration": 3.36
+    },
+    {
+      "text": "There was the idea of having multiple logical images or sorry one logical image and multiple physical images",
+      "start": 1557.08,
+      "duration": 6.64
+    },
+    {
+      "text": "And you define each physical image separately and you would also tell well",
+      "start": 1564.52,
+      "duration": 4.56
+    },
+    {
+      "text": "It would have its size and you tell hey render this add this coordinates on the logical image",
+      "start": 1569.08,
+      "duration": 6.48
+    },
+    {
+      "text": "So if you define three distinct",
+      "start": 1575.96,
+      "duration": 2.0
+    },
+    {
+      "text": "images then it would well render it into this now",
+      "start": 1579.48,
+      "duration": 4.96
+    },
+    {
+      "text": "um if you'd defined another tank that the tank which was added later and which was the speed of animation",
+      "start": 1585.32,
+      "duration": 7.28
+    },
+    {
+      "text": "uh, it would actually interpret this images not as",
+      "start": 1593.08,
+      "duration": 2.88
+    },
+    {
+      "text": "Physical images in one logical image, but as frames of animation",
+      "start": 1596.92,
+      "duration": 3.44
+    },
+    {
+      "text": "Now it varies again, let me do the different way. It varies no",
+      "start": 1601.0,
+      "duration": 4.24
+    },
+    {
+      "text": "free, uh, sorry frame speed defined that means that this is just an old school drift with one image",
+      "start": 1605.64,
+      "duration": 6.72
+    },
+    {
+      "text": "now",
+      "start": 1613.08,
+      "duration": 0.88
+    },
+    {
+      "text": "Certain browsers especially browsers, but not only tend to animate everything",
+      "start": 1613.96,
+      "duration": 4.16
+    },
+    {
+      "text": "I mean if they don't have defined with frame speed they just assume as frame speed some default frame speed",
+      "start": 1618.52,
+      "duration": 5.76
+    },
+    {
+      "text": "Which means that the image before would then look like this, but it would actually be animated",
+      "start": 1624.6,
+      "duration": 4.48
+    },
+    {
+      "text": "The first frame is always treated as background and it's always here as you can see",
+      "start": 1629.4,
+      "duration": 4.56
+    },
+    {
+      "text": "But the rest of the frames just like switch",
+      "start": 1634.2,
+      "duration": 2.32
+    },
+    {
+      "text": "Uh, now this actually gives us uh",
+      "start": 1639.01,
+      "duration": 2.0
+    },
+    {
+      "text": "Well a way to do create a schizoframic POC",
+      "start": 1641.73,
+      "duration": 2.88
+    },
+    {
+      "text": "Which means we define the first frame which is the background frame again with one image",
+      "start": 1644.93,
+      "duration": 3.84
+    },
+    {
+      "text": "And when we do quite a lot of frames with like just this pixel basically rendering in exact this spot",
+      "start": 1648.93,
+      "duration": 5.6
+    },
+    {
+      "text": "Um, and at the end we define another whole image, uh, I would like to",
+      "start": 1655.33,
+      "duration": 4.08
+    },
+    {
+      "text": "Well, say that every image has its own palette or can have its own palette. So this are like",
+      "start": 1660.45,
+      "duration": 5.84
+    },
+    {
+      "text": "226 colors and and well",
+      "start": 1666.53,
+      "duration": 3.52
+    },
+    {
+      "text": "So if this is interpreted as an animation what would happen is that you would see this and",
+      "start": 1670.29,
+      "duration": 5.36
+    },
+    {
+      "text": "Well, you didn't notice this because it's the same color as this and it would take quite a lot of long time to actually switch into this image",
+      "start": 1675.81,
+      "duration": 7.12
+    },
+    {
+      "text": "However, if the parser actually interprets this jiff correctly",
+      "start": 1683.25,
+      "duration": 4.24
+    },
+    {
+      "text": "It will not try to animate it and it will just jump to this image and it will show this image",
+      "start": 1687.57,
+      "duration": 4.32
+    },
+    {
+      "text": "So for example paint and uh, well, this is total commander's viewer actually do show it in correct way",
+      "start": 1692.37,
+      "duration": 6.56
+    },
+    {
+      "text": "According to me, however, all the browsers I tested tried to animate it and also Irfan",
+      "start": 1699.17,
+      "duration": 4.64
+    },
+    {
+      "text": "We tried to try to animate it",
+      "start": 1703.81,
+      "duration": 2.0
+    },
+    {
+      "text": "Um, Jim however was quite um",
+      "start": 1706.61,
+      "duration": 2.88
+    },
+    {
+      "text": "Handle did quite well because it created a lot of layers it called them very",
+      "start": 1710.45,
+      "duration": 5.84
+    },
+    {
+      "text": "Story them frames, but these are actually layers where the background image was the first image and the last frame was actually",
+      "start": 1716.85,
+      "duration": 6.72
+    },
+    {
+      "text": "The last frame so you could use it to see both images",
+      "start": 1723.73,
+      "duration": 2.8
+    },
+    {
+      "text": "Um, okay",
+      "start": 1727.65,
+      "duration": 4.26
+    },
+    {
+      "text": "So now we have we presented about the schizophrenia between different tools",
+      "start": 1731.91,
+      "duration": 4.48
+    },
+    {
+      "text": "So basically two tools behaving differently with the same file",
+      "start": 1736.47,
+      "duration": 3.04
+    },
+    {
+      "text": "But sometimes it happens that it's even worse that actually within the same tool",
+      "start": 1739.75,
+      "duration": 4.16
+    },
+    {
+      "text": "You have two parts of the tool that behave differently and then it's really difficult",
+      "start": 1743.99,
+      "duration": 4.72
+    },
+    {
+      "text": "Uh, so actually the first one was windrow when you open an archive with windrow as if with a windrow",
+      "start": 1749.19,
+      "duration": 6.16
+    },
+    {
+      "text": "The behavior to view the content of the file is not the same as when it you actually asked to extract and it was a problem for me when I was playing with polyglots",
+      "start": 1755.83,
+      "duration": 8.64
+    },
+    {
+      "text": "Because uh, I had I could open the file, but not I could and extract so in one case it was failing",
+      "start": 1764.87,
+      "duration": 5.2
+    },
+    {
+      "text": "But in the worst case it was doing nothing it was starting to do something then it was not crushing but not saying anything",
+      "start": 1770.31,
+      "duration": 6.24
+    },
+    {
+      "text": "So I feel free to experiment about that and also we're",
+      "start": 1776.79,
+      "duration": 3.28
+    },
+    {
+      "text": "What we saw earlier the problem with Adobe that uh viewing",
+      "start": 1780.63,
+      "duration": 3.92
+    },
+    {
+      "text": "Viewing the difference between viewing and printing",
+      "start": 1785.27,
+      "duration": 2.48
+    },
+    {
+      "text": "If you think about your next letter to H.I. It could have a nice consequence, right?",
+      "start": 1788.47,
+      "duration": 3.92
+    },
+    {
+      "text": "So um also on the way to the perfect scissor friends we had a couple of",
+      "start": 1793.19,
+      "duration": 5.44
+    },
+    {
+      "text": "Experimentations failures or maybe a just in progress and we need maybe your input for that. So",
+      "start": 1799.43,
+      "duration": 6.48
+    },
+    {
+      "text": "Yeah, we initially wanted to have",
+      "start": 1807.27,
+      "duration": 2.8
+    },
+    {
+      "text": "Kind of",
+      "start": 1811.35,
+      "duration": 1.28
+    },
+    {
+      "text": "Perfect scissor freni via on images via color profiles. So color profiles are those complex data that you embed with the file",
+      "start": 1812.63,
+      "duration": 8.32
+    },
+    {
+      "text": "So that the file is displayed is",
+      "start": 1821.11,
+      "duration": 1.84
+    },
+    {
+      "text": "Printed correctly and or a render correctly on your screen and so on",
+      "start": 1823.43,
+      "duration": 4.56
+    },
+    {
+      "text": "That's quite complex to be honest and basically you have the here different standards of color profiles",
+      "start": 1828.07,
+      "duration": 5.84
+    },
+    {
+      "text": "And you see the maps some colors differently and what happened if you would use some colors",
+      "start": 1834.31,
+      "duration": 4.8
+    },
+    {
+      "text": "That only works with one profile and not the other the problem here is that um",
+      "start": 1839.91,
+      "duration": 6.08
+    },
+    {
+      "text": "The how do you say the not so many",
+      "start": 1846.95,
+      "duration": 2.88
+    },
+    {
+      "text": "Easily accessible tool actually handle those it's really complex. So you know that photoshop",
+      "start": 1851.03,
+      "duration": 5.04
+    },
+    {
+      "text": "Do uh can handle that and so on but well for experimenting it just for the sake of experimenting",
+      "start": 1856.95,
+      "duration": 5.44
+    },
+    {
+      "text": "It's not so nice and especially creating those files. There are no rarely libraries are actually manipulate those files",
+      "start": 1862.39,
+      "duration": 5.84
+    },
+    {
+      "text": "There those not files, but these the profiles to be embedded with the file. So usually they just open",
+      "start": 1868.87,
+      "duration": 5.12
+    },
+    {
+      "text": "Picture but they are not they don't care about color profiles at all. So basically it's difficult to experiment with that",
+      "start": 1874.55,
+      "duration": 5.84
+    },
+    {
+      "text": "Another thing I experiment when playing with jpeg for another",
+      "start": 1881.75,
+      "duration": 3.84
+    },
+    {
+      "text": "Topic was that I saw that f and view even though it's commonly used it's supporting a lot more",
+      "start": 1886.79,
+      "duration": 5.28
+    },
+    {
+      "text": "Irregular large chunk types than all the others. So basically you you how you use a buggy",
+      "start": 1893.19,
+      "duration": 4.64
+    },
+    {
+      "text": "An official chunk type f and view is happy all the other",
+      "start": 1898.63,
+      "duration": 3.44
+    },
+    {
+      "text": "File viewer viewers are unhappy, but I couldn't get the others to work",
+      "start": 1903.83,
+      "duration": 5.6
+    },
+    {
+      "text": "So then it didn't work and also a bit like bmp which has enough set to the next data",
+      "start": 1909.51,
+      "duration": 5.04
+    },
+    {
+      "text": "I tried with flv",
+      "start": 1915.19,
+      "duration": 2.0
+    },
+    {
+      "text": "So flash video is not so complex in the format even typically we think that videos are huge",
+      "start": 1917.19,
+      "duration": 5.04
+    },
+    {
+      "text": "But they can be made pretty small and I tried to get some discrepancy very similar to the first bmp trick",
+      "start": 1922.31,
+      "duration": 6.16
+    },
+    {
+      "text": "But it didn't to work although at some point I had vlc saying I cannot load this video",
+      "start": 1928.95,
+      "duration": 4.72
+    },
+    {
+      "text": "But still it was playing some random sound. So maybe there is some possible thing to be found at this topic",
+      "start": 1933.67,
+      "duration": 5.28
+    },
+    {
+      "text": "I also yeah just for if you remember this guy who said he had right access on youtube by uploading a video",
+      "start": 1939.51,
+      "duration": 5.44
+    },
+    {
+      "text": "I'd created a pdf flv",
+      "start": 1945.51,
+      "duration": 2.4
+    },
+    {
+      "text": "Polyglot and I uploaded to youtube, but youtube refused after it uploaded it",
+      "start": 1948.07,
+      "duration": 4.48
+    },
+    {
+      "text": "I mean I still have it on my list. Let's say your file is incorrect",
+      "start": 1952.95,
+      "duration": 3.36
+    },
+    {
+      "text": "Next try maybe",
+      "start": 1957.03,
+      "duration": 1.6
+    },
+    {
+      "text": "But I have right writing rights on youtube. So png",
+      "start": 1958.79,
+      "duration": 3.92
+    },
+    {
+      "text": "png has many stuff like",
+      "start": 1963.19,
+      "duration": 2.0
+    },
+    {
+      "text": "So untilary chunks that will affect the rendering levels like color profiles",
+      "start": 1965.99,
+      "duration": 5.28
+    },
+    {
+      "text": "Gamma and transparency",
+      "start": 1972.39,
+      "duration": 2.0
+    },
+    {
+      "text": "So for pallets specific specifying how",
+      "start": 1974.79,
+      "duration": 2.88
+    },
+    {
+      "text": "If a color will be transparent with palleted images. It's often supported",
+      "start": 1978.23,
+      "duration": 4.48
+    },
+    {
+      "text": "Some stuff that could help me for the color profile parts like significant bits and chromacities",
+      "start": 1983.19,
+      "duration": 4.88
+    },
+    {
+      "text": "It's never supported and I was a bit disappointed that something I think used less like a",
+      "start": 1988.23,
+      "duration": 5.12
+    },
+    {
+      "text": "Physical size which means you define a pixel ratio. So instead of having square pixels if you want to squish your your your image",
+      "start": 1994.15,
+      "duration": 7.04
+    },
+    {
+      "text": "Then you say this my pixel actually two pixel wide and one pixel. It's not really dpi",
+      "start": 2001.35,
+      "duration": 4.4
+    },
+    {
+      "text": "I think it's pretty useless, but I was a bit disappointed to see it's actually supported anywhere",
+      "start": 2005.91,
+      "duration": 4.0
+    },
+    {
+      "text": "But I couldn't abuse that so",
+      "start": 2010.07,
+      "duration": 2.48
+    },
+    {
+      "text": "Maybe failures correctly, but maybe with some inputs or suggestions. I will actually made something out of that organ fail of course",
+      "start": 2013.35,
+      "duration": 7.8
+    },
+    {
+      "text": "so",
+      "start": 2021.83,
+      "duration": 1.2
+    },
+    {
+      "text": "conclusion",
+      "start": 2023.83,
+      "duration": 2.0
+    },
+    {
+      "text": "If you think about it all most of these file formats the specs are public the some parsers is often public and yet the result is very",
+      "start": 2026.63,
+      "duration": 8.48
+    },
+    {
+      "text": "messy, so",
+      "start": 2035.99,
+      "duration": 2.0
+    },
+    {
+      "text": "Sometimes the specs are okay, but in the case for example of zip even now the specs are still very messy and even worse",
+      "start": 2038.87,
+      "duration": 5.6
+    },
+    {
+      "text": "The parsers don't even respect them then it while it all makes the I would say our",
+      "start": 2044.47,
+      "duration": 5.2
+    },
+    {
+      "text": "Security of the computer at the software level",
+      "start": 2050.23,
+      "duration": 2.4
+    },
+    {
+      "text": "Less strong then there when they were whenever there was such a bug",
+      "start": 2054.07,
+      "duration": 3.6
+    },
+    {
+      "text": "You cannot claim a CV for that you cannot blame on the full disclosure or anything for badly parsing a picture",
+      "start": 2057.83,
+      "duration": 6.88
+    },
+    {
+      "text": "so basically",
+      "start": 2065.03,
+      "duration": 1.76
+    },
+    {
+      "text": "Until there is a crash on our exploit or something major like the android master key bug",
+      "start": 2066.79,
+      "duration": 4.4
+    },
+    {
+      "text": "Then there's nothing we can do to to shame highlight reports, you know, this kind of thing",
+      "start": 2071.59,
+      "duration": 5.76
+    },
+    {
+      "text": "Our POC's and slide are available at this address",
+      "start": 2078.31,
+      "duration": 2.88
+    },
+    {
+      "text": "I'd like to thank all these people for their contribution and so so there's gain fail so he's a and",
+      "start": 2083.59,
+      "duration": 6.0
+    },
+    {
+      "text": "Thanks you for your attention",
+      "start": 2091.75,
+      "duration": 2.0
+    },
+    {
+      "text": "Any questions? Thanks as well",
+      "start": 2093.75,
+      "duration": 10.83
+    },
+    {
+      "text": "So we do have time for questions if you have a question, please raise your hand so I can raise to you with the mic",
+      "start": 2104.66,
+      "duration": 4.72
+    },
+    {
+      "text": "Any questions just listen to the voices in your head. He's not that scary. There's one question over there",
+      "start": 2113.78,
+      "duration": 4.56
+    },
+    {
+      "text": "Just a note if you're looking at the slides we have a bonus round",
+      "start": 2119.14,
+      "duration": 4.08
+    },
+    {
+      "text": "so you can go for it",
+      "start": 2123.62,
+      "duration": 2.0
+    },
+    {
+      "text": "Yeah, we all know from the security point of view that the TIF format is a huge mess",
+      "start": 2126.82,
+      "duration": 6.24
+    },
+    {
+      "text": "TIF like in like in overflows in libtive the facts for image. Yeah, the two image file formats",
+      "start": 2134.02,
+      "duration": 7.36
+    },
+    {
+      "text": "Yeah, yeah, and have you found something funny to do with this image?",
+      "start": 2141.38,
+      "duration": 4.0
+    },
+    {
+      "text": "Actually multi-page documents and that I'm really messy",
+      "start": 2145.46,
+      "duration": 4.0
+    },
+    {
+      "text": "So I didn't look for the TIF. Did you go through it? I did some experience with the TIF",
+      "start": 2150.5,
+      "duration": 5.92
+    },
+    {
+      "text": "But not really for skis of friends or not really. I didn't really try but thanks for suggestion",
+      "start": 2156.42,
+      "duration": 4.48
+    },
+    {
+      "text": "So in a similar note, we didn't go through like HTML interpretation or CSS interpretation because why kick the like",
+      "start": 2160.98,
+      "duration": 6.56
+    },
+    {
+      "text": "Somebody who's already lying on the ground, right?",
+      "start": 2167.94,
+      "duration": 2.0
+    },
+    {
+      "text": "More questions over there",
+      "start": 2173.52,
+      "duration": 4.79
+    },
+    {
+      "text": "Hi",
+      "start": 2178.39,
+      "duration": 2.0
+    },
+    {
+      "text": "How many files were you able to put into one file so that all of them were still",
+      "start": 2180.63,
+      "duration": 6.24
+    },
+    {
+      "text": "Correct, I think you so as polyglot screen or something",
+      "start": 2188.07,
+      "duration": 2.96
+    },
+    {
+      "text": "So do you mean as since Kizafram I think the zip one was had the four different interpretations if that's what your question is about",
+      "start": 2191.59,
+      "duration": 7.28
+    },
+    {
+      "text": "I don't believe we did one which had more interpretation but being said",
+      "start": 2199.59,
+      "duration": 4.4
+    },
+    {
+      "text": "I guess like so I did mention in the zip part that you can look for the end of central directory header from",
+      "start": 2204.87,
+      "duration": 6.24
+    },
+    {
+      "text": "Assuming that there is no comment and assuming that there is a huge comment, right?",
+      "start": 2211.35,
+      "duration": 4.24
+    },
+    {
+      "text": "But actually what you can do you can also start looking in the middle and maybe if you'd like place quite a lot of end of central",
+      "start": 2215.83,
+      "duration": 7.12
+    },
+    {
+      "text": "Director is header at different possible locations. Maybe something tries to",
+      "start": 2222.95,
+      "duration": 3.44
+    },
+    {
+      "text": "Jump in the middle and and you'd be able to like",
+      "start": 2227.67,
+      "duration": 2.56
+    },
+    {
+      "text": "Trick another tool if that was your question one more question",
+      "start": 2230.87,
+      "duration": 5.2
+    },
+    {
+      "text": "Hi, thank you for your speak. I was wondering with the zip issue and how do the common implementation of windows or macOS",
+      "start": 2237.67,
+      "duration": 7.76
+    },
+    {
+      "text": "Deal with not so nice for method zip files like the explorer or the finder zip functionality",
+      "start": 2245.75,
+      "duration": 6.48
+    },
+    {
+      "text": "So actually",
+      "start": 2253.19,
+      "duration": 2.0
+    },
+    {
+      "text": "They were really boring boring as they didn't do anything",
+      "start": 2255.19,
+      "duration": 3.12
+    },
+    {
+      "text": "Out of what you would expect them to do which was",
+      "start": 2259.03,
+      "duration": 2.64
+    },
+    {
+      "text": "Yeah, which was surprising and I wasn't happy about it, but",
+      "start": 2262.23,
+      "duration": 2.96
+    },
+    {
+      "text": "Actually like I think there's a",
+      "start": 2266.31,
+      "duration": 2.72
+    },
+    {
+      "text": "File manager called unreal commander on windows if you want to test",
+      "start": 2269.75,
+      "duration": 4.56
+    },
+    {
+      "text": "Skizaframi or like weirdness in parsers. That is the perfect choice because they are like vulnerable to everything",
+      "start": 2274.95,
+      "duration": 6.24
+    },
+    {
+      "text": "Any more questions",
+      "start": 2285.48,
+      "duration": 4.48
+    },
+    {
+      "text": "One more here",
+      "start": 2289.96,
+      "duration": 6.57
+    },
+    {
+      "text": "Yeah on the zip file passing have you looked at av engines and if how they process it or",
+      "start": 2296.69,
+      "duration": 5.12
+    },
+    {
+      "text": "Like when you try and send zip files through gmail for instance, have you looked at how they handle it?",
+      "start": 2302.37,
+      "duration": 4.56
+    },
+    {
+      "text": "So I didn't understand sorry could you repeat sure with the zip file processing have you looked at how av engines",
+      "start": 2308.69,
+      "duration": 7.12
+    },
+    {
+      "text": "Might look at a zip file or for instance gmail won't make you attach zips or unzip and zip file for instance. Oh, okay, so",
+      "start": 2316.53,
+      "duration": 8.48
+    },
+    {
+      "text": "With with gmail and unzipping zips if that is a question",
+      "start": 2325.41,
+      "duration": 5.2
+    },
+    {
+      "text": "I hope it's all correct because I actually did a security review for that so",
+      "start": 2331.09,
+      "duration": 4.88
+    },
+    {
+      "text": "But being said I this did test because as you know gmail scans also files for viruses and I did an a-card test",
+      "start": 2337.97,
+      "duration": 5.92
+    },
+    {
+      "text": "We've written it was actually behaving very well as in I think it find all that instant instances",
+      "start": 2343.89,
+      "duration": 4.56
+    },
+    {
+      "text": "So but was okay no more questions",
+      "start": 2348.61,
+      "duration": 6.82
+    },
+    {
+      "text": "If not then it's the official break till half past four. There's actually muffins upstairs",
+      "start": 2356.23,
+      "duration": 6.32
+    },
+    {
+      "text": "And obviously water and club matter so enjoy the break. Thank you",
+      "start": 2362.63,
+      "duration": 3.52
+    }
+  ],
+  "full_text": "Okay, let's start. So welcome to our talk. We'll talk about schizophrenic files and first  This is yeah, hi, so my name is going to be a cold wind. I'm a security researcher at Google and drag on sector at the city  F team. I'm a captain as the slides says I like hamburgers and  Actually all opinions expressed during what I expressed during this talk belong to me and they are not the opinions of my power  My lawyer nor my employer  And I'm a reverse engineer and I'm the author of a website called corkaming, which is about reverse engineering and visual  Documentations so first to introduce what we mean with the schizophrenic files  It's like it's one file that doesn't generate an error. It's not about exploitation or crash here  It's working under two different tools but or more and each time giving a different outputs  So no errors, but something different  And also very important. It's not like the file is just check comparing some internal version and then behaving differently  It's like made passively because of a discrepancy between the passes, for example  So the reason behind this oh yeah for first  Ginfel and I have been  Experiment with a  specific files independently in the past and then together we have gathered enough material for a whole talk on the subject  The main reason was fun because usually such case don't generate any kind of security well, they could but  It's not like they would become a CV by themselves  So the first reason is fun and then of course there are applications or even if it sounds like fun  There could be several applications like bypassing security in various ways and one of the most  famous example is the Android signing bug master key bug  So first I'll hand it to Ginfel, which we'll talk about this topic  Okay, so the first example because we have quite a lot of examples here  First example is the zip file who is familiar with zip files?  Okay, everyone so just kidding. This is actually an excerpt experts from my talk which was done in Polish language  I don't expect you guys well everyone knows Polish language. So let's do it in English  So the first zip trick which was actually the android master key bug  Basically in the archive you can place a couple of files. We have which have the same name like the exact same name  Of course, you cannot compress these files from the file system, but you can change the names in a hex editor or whatever, right?  so  What this person did and you should read this paper?  It's actually pretty awesome is he created an archive which had two files named the same way and it turned  Turned out that the signing was checked on the one file, but actually the second file was what was used later on  Which means it bypassed the signing because the file to use for signing was okay, but the second last was second one was totally evil  So this is the most simple trick. I guess like having a couple of same names in the archive  Now the second trick with zip is actually a little more this will take some more slides and  Well, as you know the zip file begins with pk letters, right?  Wrong, so actually that's not true actually nobody knows how to interpret a zip  But we'll get to it. So basically you start somewhere at the end at the end. There is something called  The end of central directory, which is a small header which has a pointer to  Well, more factors which are in the middle now the problem here is that  Actually, we don't know how big this header at the end is  Verfer we don't know where to look for it because it has at the end of this header  Versa comment and the comment has variable size which means that the header can be anywhere from like just at the end of the file with no comment at all or it can be well  64k into to the beginning of the file with a really long comment  So this is the first problem and it's actually not defined in the zip standard where to start looking for this because we can look for it in two different ways  Right, we can look start at the end and then assume we have a comment of length zero and we look for the header then there  But and then we like iterate maybe there is a comment of length one maybe of two and we move to the beginning of the file looking for the header for the end of central directory  On the other hand, we can do it the other way. I mean we can assume that there is a long comment where is the 64 kilobytes of comment and then decrease the size of comment by one and look there  So these are two a's which leads to scissor from me, but I'm going to get to it because now  I'm going to talk about something completely different, which isn't really different because I'm going to talk about the another header which is in the zip file  So what you saw at the beginning here  This is actually this isn't the zip header. This is usually what we see see where is the local file header it's actually a structure which  Well, it describes one single file one single file which is in the zip and actually there are quite a lot of local file headers in the zip file  Now for so actually each file in the zip has this  Now there's also something called the central directory  It's placed near the end of a zip file and it also has an entry for each file which is compressed  These are kind of a done dance. So if one is broke and you can always use the other and there are quite a lot of problems with it  However getting back to the to the point sorry  Okay, so  Getting back to the point of the end of central directory if we find it it actually has a pointer to the central directory and  In the central directory there are a lot of files sorry entries for the files and there's also a pointer to the well to the local file header  And the data because the data is always new to the local file header  So I guess the question arises why do we need the central directory?  We can just go through through the local file headers, right now the problem is that actually the local file header  Doesn't have to be against the beginning of the file  That's what I said that is wrong to assume that pk letters are always at the beginning of a file because at the beginning  Of a file you can have anything and the local file header can start somewhere else  And this is still a valid zip file because well the central directory will point the parser to wherever this structure is  Now you can of course try to at least I assumed you can put one in the other like put one in the comment of the other  However, and did try this and it doesn't really work so well with parser. So let's just skip it now  We are looking for  Well, we are looking for how to parse a zip file  We can actually do it a couple of ways  I already mentioned to like looking for vendor of central directory from the assuming that there is a large comment and assuming that  There's no comment at all another way that is done is we can assume that we just ignore it and go through  Local file headers and the data because we have the size of the data  We can always skip through it and get to the next file and so on and so on. So this is stream parsing  And  Well, most of zip files can be parsed in this way because fair proper zip files which don't put any garbage in between  Also, there's something I would like to call aggressive stream parsing which means  Maybe a parser can look for this signature in the file and when it finds it it can assume well  This is this is some file in the zip and I'm going to try to parse it try to extract it  Let's call this aggressive stream now. I created actually a thing called abstract zip which merges all these ideas into one file  So we have one file which can be parsed and these four different ways using well the end  Endway which is  Maybe skip here and first which is  Meaning that there is no comment at all then very start first which means there is a huge comment and in the comment of this  Actually various this and first look end of central directory header and also like all the other headers  There is also another stream here another place in this file  This is actually not linked to neither this nor this it means this is a separate file  Which if you start parsing from the end like you shoot you will never encounter  And there is also some syntax breakers is that which is actually garbage in between and after that  There is another local file header with data  Now let's look what how different programming languages react to this  This is Python and Python does what it should do it means it actually well when I give it this  So sorry this opens the abstract zip file and prints it and it displays only the end first file  Which is the proper way of parsing zip now if we feed it to php  I mean php is the obvious culprit right everyone something weird when we let's go for php  And php says start first is in this archive. It's the same archive as before as python  So but it actually reports a different file and this is fully a different file  Now let's go for some more weirdness meaning Java  So Java has something called zip input stream and it does stream parsing so opening the same abstract zip archive  Well, it it sees only the readme underscore stream file which is totally different  Now if we  If we go through binwalk which binwalk is a aggressive forensics tool that is supposed to find many files in a hard drive image  It actually finds all the files including including the aggressive one and lists them. So that's really good  To sum up this actually most of the application and most of the libraries default libraries in programming languages  Open and first they assume there is no comment at the end and start looking for the header from there  And I guess only php and TCL goes  Goes for the start first file and  Java and rabbi goes for for stream parsing which is this is totally incorrect  I mean this may pass but this is totally incorrect  We shouldn't do it this way unless you are like parsing  Streams of zip but zip isn't like correct format to do it  And I guess only forensics tools do  um  Well find this aggressive stream which is which is good now  I would like to thank these people more under felix salvation and euro for actually running all this application and this test for me  Assuming that they are all okay and don't have any exploits in them. Thank you  But why do we care so well it could be used to bypass some signing?  I actually did during a code review find a bag like this where an archive was verified using  And first method but when it was extracted using stream  From the beginning of a file  So this happens  However, what I did I started I made four copies of this file and started putting the a car virus test inside each position  And well most  Antibersies only start at first  Which is which is actually good because this means that well most applications open it this way  So that that should be okay  However, there are some  Applications sorry some antivirus like software to try to open its and parse its stream only which means it doesn't find never finds the files which are opened by  Well by using most of the applications which is which is bad for all tests you can you can  You can see them here. I it's a spreadsheet which has all the results  So I'll go on with the pdf file format if you're not familiar with the pdf file format  I did a one-on-one with videos and examples  Here's the URL and just as a reminder so pdf file is made of different objects that refer to each other  There is structure we are graph structures  So you see the trailer the root the pages and so on and basically here the trailer is the one pointing to the root  And if you have an extra object that would be wouldn't be used by the other reference by the other object that would be fine  So you can add a how do you say a parasite object which means that  the  When a pdf reader sees a document it means it's actually found the right trailer and the root  The root objects and then everything can be can independently coexist in the same file  So basically if we see the file trailer it says the start x ref line should be preceded by the trailer  blah blah blah and also importantly there is a comment so if it  If it starts with percentage it's a comment and should be ignored so what happens if you have for example  This kind of trailer so one trailer defining a root, but this one is actually commented  This one is is normal and this one actually doesn't have the trailer keyword  So what would happen if those two should be rejected and actually you can put all those three in the same file and you get this  So that's the same file so that's chrome and that's  Well, you see it is this trailer that's Adobe reader and then that's too much while  And this is all the same file and it's not about just a different picture  It's true complete different documents  So you can you could say that on the other way. This is a fake document and this is exploiting document for Adobe  And then if someone opens it and doesn't see the right document they would just ignore the other objects  Unless they have some foreign sickable so foreign six ability  Another problem  So this was clearly a problem with the non-respecting aspects  But sometimes it's in the specs but the specs are too obscure and pdf is a very good candidate  So it's like there are so many things in the pdf file format that actually  I didn't know about it until recently and I expect most of you don't know about it  So do anyone see anything special with this file  So first who is usually using Adobe reader at some point?  Yeah, for just for schizophren testing of course  So here what's unusual is that there is this little icon  It's not really a problem in itself  It just means that the file has layer and this is a feature and now  Do you see what's wrong?  So basically what you see on the screen is not what you're going to print  And this is transparent when you do that  This is a feature so you because this file has layer  And the layer are playing with the printability and view of your ability  Then you don't have a warning because it's a feature so now  We can see that's so it's called optional content configuration and you can see I define two layers  I call them visible and printable  But usually a documented a professional printing documents has like 15 layers or this kind of thing  And then you just define default state export printable views  Viewable for each of the layers. So it's even a part of the feature  So there's no warning and you could argue that you see it in the preview  Then I would say either just leave the page one unchanged or just do a minor change and put your difference at the fewer the next pages  Or just do a minor change that the people are unlikely to spot in the difference of the file  So in this case it's not even  Yeah, it's in the specs. There's not even magic trick or misinterpretation  Sadly, it's not so good for POC gtfo because it's Adobe only and what then displays with other readers that don't handle this feature  Will vary with various readers, but then you could use the previous keys of friend type  Like with the trailers so that's your trick or is only activated under Adobe so you could  If someone is using another reader they have a normal document and if they use Adobe then they have a  How do you say document with a printing trap and no warning?  So this is very really used for bad purpose and of course this can be abused for obvious reasons  Okay  Now let's get to some tricks which I don't think they have some security implications, but they are still funny  So this is a cute little trick I published years ago  Uh, in hacking magazine when it was still decent enough to publish in  Yes, so basically the bmp is a really simple format right well more or less  Anyway, you have a file header and you have an another header here and then you jump into pixel the data  Now verse this bf offset bits field here, which basically points to the beginning of the data now as you might suspect  Some applications ignore it and some application expect the data to be after the headers  Which means that you can put some pixel data here with one bitmap and you can put a proper  Picks pop sorry proper bitmap here and point to it in the header and some applications might  Display well proper image and we ever might just go for  For ignoring this field. So this is one file to different bitmaps again and  This is how it works thankfully most of applications are actually respect that  Are a series back that field  Another trick which is something that actually spoiled one of my ctf tasks, but  But I created that thankfully in a testing it's related to  compression in bmp so actually bmp can be compressed as  Compressed by run length encoding which is kind of quite quite interesting actually so it has  What you would expect from run length encoding meaning?  These are we upcoats one opcode is like you just put the length of like for example  12 and when you peep sorry put the color and this means that the next 12 pixels will be this color  And now you should actually assume that this is some kind of a script rendering the bitmap and this is not  Not pixel data, which is where now the second opcode when length is set to zero. This is actually an escape opcode and  the next value is more than two  It's called a row length which means that  You are supposed or actually that the coder is supposed to expect  this many  pixels  Not non-compressed afterwards and just copy them to  To the bitmap to output bitmap now actually  It bmp kind of extended this error  Sorry rle it added three more opcodes one  It is just end of line which means well wherever the cursor is on  Rendering the output bitmap  Just jump to the end of the line  And there is also the same for end of bitmap and there is something to just move the cursor by x y  Bites to a different sorry pixels to a different position  Now the question is I guess  What happens what data will be in the output bitmap if you just jump over some areas of space?  Will it be background will it be I don't know  Well, let's check actually very free options here the first one is  Well the blank spaces are actually filled with the background color here the background color is zero which is white  Zero as in the zero index in the palette of course  And this is how properly I think I expect bmp should be displayed if we go for a different viewer  However, it doesn't display it at all but it displays a different  Different part of a bitmap because it assumes that the missing pixels are all black and it feels the missing spaces with black  So you can already see what I did with this bitmap. I actually rendered the walls told it to render some  background color pixels in these areas and just jump between them  um  So again, this is very snuffing hidden here. This is  Well something is actually hidden where depending on what viewer you you are using and if you use genome and I think I of genome  The default viewer on under well genome  You can actually see everything because it assumes that background is just transparent  Which is quite weird for bmp's because we are not use I guess to bmp's having transparency  Um, but where it is so basically the same bitmap but three different things you can see and  so  Let's go on with the image and now the png file from it. So  Nice trick highlighted with a very cute book from Dominic from Reversity  So basically you have the same image data that is combining two images and each image is actually using only a part of the colors  But then there are two palettes actually even though it's a breach over the official specification  So if you use two palette data in the file what happens?  First it technically speaking it should reject the file or it at least  We will it take the first one or the second one and so that's a very cute PLC  Because you see that in one case so that's the same pictures using the same no two pictures using the same image data each of them  Using system colors of the whole palette and you see that one palette is using the higher nibble the high the high nibble of the  The palette itself and the other palette of this image is using the lower the lower nibble  So you see it's a way to uncode  Easily two palettes in one and then one file viewer takes the first palette chunk and another viewer takes the second one  So they should don't be there should be only one palette chunk but in standard they take the first one and ignore the next ones from now on  but still in any case it's against the specs and  This one is the one with the unusual behavior most of them just take the first chunk palette chunk  Well, now let's move on to some executable files  I do some stuff about the p files and I won't go in the details because typically the p files loader the executables of wind file format of window  is  Pretty backward compatible and whenever there was a change over the version  They actually just kill some weird bugs or something  So typically most of the time when there's evolution it actually  Kill something nesting from the past. There are very few differences among the  Things that change among the version of windows. So here you have xp  Vista  Vista 7 and windows 8 and only in the relocation types  There were some variation so for youtube bug type 4 high map to high-edge was actually doing nothing in the case of  xp and vista 7 and  That was fixing our windows 8 now there is the obscure  Type 9 that is more that was used for itanium  That is doing different result under xp and 7 but now is not supported anymore because they dropped itanium from with the  windows 8 whoa  So actually now what can we do so it's very easy to do a difference between those two versions or those two versions but  Well, I wanted to do  Skis of friend that would work independently on the  I would that would work correctly on the three versions but with the different behavior  So the trick is that you can apply a location on other relocations further in the list  So basically I will use this one to actually patch that one of type 9 into a type 10 and type 10 is hopefully  Locally supported by all the versions so in this case it won't do anything  Because it's still here because it's not patch and in the case of windows 8 my type 9 has been changing to type 10  I I showed that in the POC GTF4 issue 2. I think  That's the magazine of 12 is good speed if you're not aware of it  And the surface basically the floor flow is that my first relocation is processed  Then under xp and vista 7 it won't do anything  And under  Windows 8 it will actually patch relocation to then relocation to is in any case because it's just the next one on the file  Is processed and now under windows 8 it's the type 10 and then under xp and 7 it's still type 9 then it creates different results  So now we have a skis of friend that works in all case no error no bugs  But actually has a different loading behavior is this loaded different tree  Under different versions of windows  If you are if you are interested in  Elf  eccentricities I have I would do you recommend this talk by Julian Bangart and Sagar but you as you see plenty of fun with this time the Elf  Okay  Well, we already had the BMP we had PN 2 time full drift  Okay, this is I was also writing in some article about drift years ago and I  Stumbled upon this behavior, but never made a POC in as a skis of mimic POC yesterday  We talked with Anger and actually came up with this so you may not well you are guess all of you are familiar with animated drifts right  But animation was added later in the standard at the beginning  There was the idea of having multiple logical images or sorry one logical image and multiple physical images  And you define each physical image separately and you would also tell well  It would have its size and you tell hey render this add this coordinates on the logical image  So if you define three distinct  images then it would well render it into this now  um if you'd defined another tank that the tank which was added later and which was the speed of animation  uh, it would actually interpret this images not as  Physical images in one logical image, but as frames of animation  Now it varies again, let me do the different way. It varies no  free, uh, sorry frame speed defined that means that this is just an old school drift with one image  now  Certain browsers especially browsers, but not only tend to animate everything  I mean if they don't have defined with frame speed they just assume as frame speed some default frame speed  Which means that the image before would then look like this, but it would actually be animated  The first frame is always treated as background and it's always here as you can see  But the rest of the frames just like switch  Uh, now this actually gives us uh  Well a way to do create a schizoframic POC  Which means we define the first frame which is the background frame again with one image  And when we do quite a lot of frames with like just this pixel basically rendering in exact this spot  Um, and at the end we define another whole image, uh, I would like to  Well, say that every image has its own palette or can have its own palette. So this are like  226 colors and and well  So if this is interpreted as an animation what would happen is that you would see this and  Well, you didn't notice this because it's the same color as this and it would take quite a lot of long time to actually switch into this image  However, if the parser actually interprets this jiff correctly  It will not try to animate it and it will just jump to this image and it will show this image  So for example paint and uh, well, this is total commander's viewer actually do show it in correct way  According to me, however, all the browsers I tested tried to animate it and also Irfan  We tried to try to animate it  Um, Jim however was quite um  Handle did quite well because it created a lot of layers it called them very  Story them frames, but these are actually layers where the background image was the first image and the last frame was actually  The last frame so you could use it to see both images  Um, okay  So now we have we presented about the schizophrenia between different tools  So basically two tools behaving differently with the same file  But sometimes it happens that it's even worse that actually within the same tool  You have two parts of the tool that behave differently and then it's really difficult  Uh, so actually the first one was windrow when you open an archive with windrow as if with a windrow  The behavior to view the content of the file is not the same as when it you actually asked to extract and it was a problem for me when I was playing with polyglots  Because uh, I had I could open the file, but not I could and extract so in one case it was failing  But in the worst case it was doing nothing it was starting to do something then it was not crushing but not saying anything  So I feel free to experiment about that and also we're  What we saw earlier the problem with Adobe that uh viewing  Viewing the difference between viewing and printing  If you think about your next letter to H.I. It could have a nice consequence, right?  So um also on the way to the perfect scissor friends we had a couple of  Experimentations failures or maybe a just in progress and we need maybe your input for that. So  Yeah, we initially wanted to have  Kind of  Perfect scissor freni via on images via color profiles. So color profiles are those complex data that you embed with the file  So that the file is displayed is  Printed correctly and or a render correctly on your screen and so on  That's quite complex to be honest and basically you have the here different standards of color profiles  And you see the maps some colors differently and what happened if you would use some colors  That only works with one profile and not the other the problem here is that um  The how do you say the not so many  Easily accessible tool actually handle those it's really complex. So you know that photoshop  Do uh can handle that and so on but well for experimenting it just for the sake of experimenting  It's not so nice and especially creating those files. There are no rarely libraries are actually manipulate those files  There those not files, but these the profiles to be embedded with the file. So usually they just open  Picture but they are not they don't care about color profiles at all. So basically it's difficult to experiment with that  Another thing I experiment when playing with jpeg for another  Topic was that I saw that f and view even though it's commonly used it's supporting a lot more  Irregular large chunk types than all the others. So basically you you how you use a buggy  An official chunk type f and view is happy all the other  File viewer viewers are unhappy, but I couldn't get the others to work  So then it didn't work and also a bit like bmp which has enough set to the next data  I tried with flv  So flash video is not so complex in the format even typically we think that videos are huge  But they can be made pretty small and I tried to get some discrepancy very similar to the first bmp trick  But it didn't to work although at some point I had vlc saying I cannot load this video  But still it was playing some random sound. So maybe there is some possible thing to be found at this topic  I also yeah just for if you remember this guy who said he had right access on youtube by uploading a video  I'd created a pdf flv  Polyglot and I uploaded to youtube, but youtube refused after it uploaded it  I mean I still have it on my list. Let's say your file is incorrect  Next try maybe  But I have right writing rights on youtube. So png  png has many stuff like  So untilary chunks that will affect the rendering levels like color profiles  Gamma and transparency  So for pallets specific specifying how  If a color will be transparent with palleted images. It's often supported  Some stuff that could help me for the color profile parts like significant bits and chromacities  It's never supported and I was a bit disappointed that something I think used less like a  Physical size which means you define a pixel ratio. So instead of having square pixels if you want to squish your your your image  Then you say this my pixel actually two pixel wide and one pixel. It's not really dpi  I think it's pretty useless, but I was a bit disappointed to see it's actually supported anywhere  But I couldn't abuse that so  Maybe failures correctly, but maybe with some inputs or suggestions. I will actually made something out of that organ fail of course  so  conclusion  If you think about it all most of these file formats the specs are public the some parsers is often public and yet the result is very  messy, so  Sometimes the specs are okay, but in the case for example of zip even now the specs are still very messy and even worse  The parsers don't even respect them then it while it all makes the I would say our  Security of the computer at the software level  Less strong then there when they were whenever there was such a bug  You cannot claim a CV for that you cannot blame on the full disclosure or anything for badly parsing a picture  so basically  Until there is a crash on our exploit or something major like the android master key bug  Then there's nothing we can do to to shame highlight reports, you know, this kind of thing  Our POC's and slide are available at this address  I'd like to thank all these people for their contribution and so so there's gain fail so he's a and  Thanks you for your attention  Any questions? Thanks as well  So we do have time for questions if you have a question, please raise your hand so I can raise to you with the mic  Any questions just listen to the voices in your head. He's not that scary. There's one question over there  Just a note if you're looking at the slides we have a bonus round  so you can go for it  Yeah, we all know from the security point of view that the TIF format is a huge mess  TIF like in like in overflows in libtive the facts for image. Yeah, the two image file formats  Yeah, yeah, and have you found something funny to do with this image?  Actually multi-page documents and that I'm really messy  So I didn't look for the TIF. Did you go through it? I did some experience with the TIF  But not really for skis of friends or not really. I didn't really try but thanks for suggestion  So in a similar note, we didn't go through like HTML interpretation or CSS interpretation because why kick the like  Somebody who's already lying on the ground, right?  More questions over there  Hi  How many files were you able to put into one file so that all of them were still  Correct, I think you so as polyglot screen or something  So do you mean as since Kizafram I think the zip one was had the four different interpretations if that's what your question is about  I don't believe we did one which had more interpretation but being said  I guess like so I did mention in the zip part that you can look for the end of central directory header from  Assuming that there is no comment and assuming that there is a huge comment, right?  But actually what you can do you can also start looking in the middle and maybe if you'd like place quite a lot of end of central  Director is header at different possible locations. Maybe something tries to  Jump in the middle and and you'd be able to like  Trick another tool if that was your question one more question  Hi, thank you for your speak. I was wondering with the zip issue and how do the common implementation of windows or macOS  Deal with not so nice for method zip files like the explorer or the finder zip functionality  So actually  They were really boring boring as they didn't do anything  Out of what you would expect them to do which was  Yeah, which was surprising and I wasn't happy about it, but  Actually like I think there's a  File manager called unreal commander on windows if you want to test  Skizaframi or like weirdness in parsers. That is the perfect choice because they are like vulnerable to everything  Any more questions  One more here  Yeah on the zip file passing have you looked at av engines and if how they process it or  Like when you try and send zip files through gmail for instance, have you looked at how they handle it?  So I didn't understand sorry could you repeat sure with the zip file processing have you looked at how av engines  Might look at a zip file or for instance gmail won't make you attach zips or unzip and zip file for instance. Oh, okay, so  With with gmail and unzipping zips if that is a question  I hope it's all correct because I actually did a security review for that so  But being said I this did test because as you know gmail scans also files for viruses and I did an a-card test  We've written it was actually behaving very well as in I think it find all that instant instances  So but was okay no more questions  If not then it's the official break till half past four. There's actually muffins upstairs  And obviously water and club matter so enjoy the break. Thank you",
+  "errors": []
+}

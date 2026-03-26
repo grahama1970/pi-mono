@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A6AkQrXDgQ4",
+    "language": "en",
+    "took_ms": 7818,
+    "method": null,
+    "title": "DEF CON 33 - Hull Integrity: Applying MOSAICS to Naval Mission Systems - Michael Frank",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 850,
+    "description": "As the lines between IT and operational technology continue to blur, our Naval fleet faces a growing attack surface from propulsion and power to weapons and control systems. Enter MOSAICS Block 1, a Department of Defense framework for operational technology security to ensure real-time monitoring, safe active asset discovery, and behavioral threat detection tailored for mission-critical ICS. In this session, we will walk through how MOSAICS is being applied to Naval mission systems, highlighting Department of the Navy use cases. We will break down the reference architecture and offer candid insights on adapting this framework to protect legacy systems at sea without compromising lethality. This talk is for ICS defenders, red teamers, and cyber policy leaders who want a front-row view into how the Department of the Navy is operationalizing OT security at scale.",
+    "view_count": 220
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A6AkQrXDgQ4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

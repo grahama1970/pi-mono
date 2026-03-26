@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MupiDPE_OOs",
+    "language": "en",
+    "took_ms": 8589,
+    "method": null,
+    "title": "Event Highlights--The Postal Service's Dilemma",
+    "channel": "Hudson Institute",
+    "upload_date": "20111117",
+    "duration_sec": 348,
+    "description": "The U.S. Postal Service has been a fixture of American life since the founding of our Nation.  The old U.S. Post Office was reorganized in 1970 as a government-sponsored enterprise (GSE), meant to be run like a business, free of political patronage and micromanaging.  Yet, the enterprise faced significant restraints imposed by the 1970 law and further impediments to economical operation by legislation enacted in 2006. These limits on the Postal Service's ability to perform were easily overcome for awhile, but no more.  For over two centuries, the business model of the Postal Service was to make substantial profits on letter mail, over which it has had a federally-sanctioned monopoly, and to use those profits to offset losses on other classes of service and to maintain the organization's \"infrastructure.\"  The problem is that in the past decade, electronic communications (e-mail, bill-paying, etc.) have so undermined demand that monopoly mail has fallen precipitously, along with the profits meant to undergird the rest of the Postal Service's activities.  \n\nIf it were an ordinary enterprise, the Postal Service would be in Chapter 11 (or even Chapter 9).  Actions by Congress and the Administration have enabled the Postal Service to avoid a shut-down of delivery services by delay of certain payments due the federal government.  But these are short-term relief actions and do not solve the underlying problem.  The reforms presently under consideration by Congress and the Administration are reasonably ambitious, but may fall short of giving the organization a reasonable lease on life.\n\nHudson Institute's Center on Economics of the Internet was pleased to host a discussion with Jim Miller, former chairman of the Federal Trade Commission and Director of the OMB during the Reagan Administration. He currently serves as a member of the Board of Governors of the United States Postal Service. Harold Furchtgott-Roth, Director of the Center, moderated the discussion.",
+    "view_count": 114
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MupiDPE_OOs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

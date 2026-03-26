@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F8H7C4hAVA0",
+    "language": "en",
+    "took_ms": 8792,
+    "method": null,
+    "title": "ICS Security: June Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20210701",
+    "duration_sec": 3171,
+    "description": "Marc Ayala joins Dale to discuss the three top stories and give their Win, Fail and Predictions. The stories are:\n- WaterISAC Report (and SF incident) \n- Colonial Pipeline testimony in Congress \n- Quick hit on Claroty raise and Mandiant/FireEye split \n\nJoin us and we will bring in your live comments and questions",
+    "view_count": 163
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F8H7C4hAVA0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

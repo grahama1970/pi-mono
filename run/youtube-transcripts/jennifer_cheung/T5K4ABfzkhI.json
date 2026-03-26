@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T5K4ABfzkhI",
+    "language": "en",
+    "took_ms": 7712,
+    "method": null,
+    "title": "DEF CON 32 - Behind Enemy Lines: Engaging and Disrupting Ransomware Web Panel - Vangelis Stykas",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2338,
+    "description": "Ransomware groups have become notably proficient at wreaking havoc across various sectors , but we can turn the tables. However, a less explored avenue in the fight against these digital adversaries lies in the proactive offense against their web panels. In this presentation, I will delve into the strategies and methodologies for infiltrating and commandeering the web panels used by ransomware groups to manage their malicious operations or the APIs used during their initial exfiltration of data.\n\nI will demonstrate how to leverage these vulnerabilities to gain unauthorized access to the ransomware groups' web panels. This access not only disrupts their operations but also opens a window to gather intelligence and potentially identify the operators behind those APTs. Let’s explore the frontiers of cyber offense, targeting the very command and control (C2) centers ransomware groups rely on, turning the tables in our ongoing battle against cyber threats, it’s our turn to wreak havoc.",
+    "view_count": 1814
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T5K4ABfzkhI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

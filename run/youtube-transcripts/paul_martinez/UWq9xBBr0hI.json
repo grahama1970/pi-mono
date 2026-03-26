@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UWq9xBBr0hI",
+    "language": "en",
+    "took_ms": 9080,
+    "method": null,
+    "title": "Overall Equipment Effectiveness (OEE) As An ICS Cybersecurity Metric",
+    "channel": "S4 Events",
+    "upload_date": "20190731",
+    "duration_sec": 2191,
+    "description": "Inaki Eguia first explains the OEE calculation and then goes over some ICS examples. He makes the case that OEE is a metric that should drive the determination of the security posture and where security related resources should be spent.",
+    "view_count": 145
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UWq9xBBr0hI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

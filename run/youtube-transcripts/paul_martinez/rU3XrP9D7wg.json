@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rU3XrP9D7wg",
+    "language": "en",
+    "took_ms": 7594,
+    "method": null,
+    "title": "Debate: Are OT Specific Tools & Talent Required To Detect Attacks On ICS?",
+    "channel": "S4 Events",
+    "upload_date": "20190821",
+    "duration_sec": 2237,
+    "description": "We called this the Miller's Crossing debate. Ben Miller took the pro position that OT Specific Tools & Talent are required. Steve Miller took the con position, and Dale Peterson moderated this 30 minute debate.\n\nWho do you think won?",
+    "view_count": 673
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rU3XrP9D7wg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

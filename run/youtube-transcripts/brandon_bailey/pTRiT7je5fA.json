@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pTRiT7je5fA",
+    "language": "en",
+    "took_ms": 9365,
+    "method": null,
+    "title": "DEF CON 31 - Meduza - Exiled Pirate Media Outlet Breaks Thru the Kremlin Propaganda Firewall -  Alex",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2015,
+    "description": "Meduza is an independent international Russian- and English-language publication that still reaches millions of people inside Russia. The newsroom is operating from exile for 8 years now with headquarters in Latvia. Despite being completely outlawed and banned by the Kremlin, Meduza continues to work even under such enormously tough circumstances and still delivers the truths about the war in Ukraine along with an unbiased reporting on the situation inside Russia.\n\nBut at DEF CON Meduza will not be presented as a media. The team tries to resist the total state control of the Internet in Russia and fight not only for the freedom of speech, but for the freedom of information for millions of people.\n\nMeduza CTO will explain how one of the most free internet has become one of the most regulated and censored ones within just a couple of years. Alex will share the practical experience of resisting censorship along with his (pessimistic) forecast for the future of the Internet in Russia (a new \"Iron Curtain')'. He will describe how the authorities were once again able to “deceive the people'' (before all that happened, there were no abrupt blockings in Russia and the habit of using VPN was not formed among internet users). This is important to not to let this scenario be repeated in whatever part of the world.\n\nTech Dept has always been an important part of Meduza newsroom, but in 2022 the tech guys became an even more crucial part of it. It is thanks to their work that the newsroom is able to successfully bypass blocking and retain the audience in Russia. And to protect the journalists and to repel various DDoS attacks on the infrastructure and products.",
+    "view_count": 1197
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pTRiT7je5fA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

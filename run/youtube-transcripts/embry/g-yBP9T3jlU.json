@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g-yBP9T3jlU",
+    "language": "en",
+    "took_ms": 7809,
+    "method": null,
+    "title": "Venera 14 - Venus lander - Today-ish in Spaceflight History",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180308",
+    "duration_sec": 4508,
+    "description": "On March 5th, 1982, the Soviet Union had success touching down on the fiery surface of Venus with their Venera 14 lander. Due to the crazy thick atmosphere of Venus, the probe only lasted 57 minutes on the surface. It was launched to Venus by a Proton-K/D-1 rocket on November 4th, 1981.\n\nThere's some ridiculous things that happened to this and other Venusian probes that we'll be sure and talk about. \n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 22507
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g-yBP9T3jlU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

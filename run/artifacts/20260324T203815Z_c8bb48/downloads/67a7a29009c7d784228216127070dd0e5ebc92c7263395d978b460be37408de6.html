@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<link rel="stylesheet" href="/style.css?v=1773805507">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://synthesis.to/feed.xml" />
+
+
+
+
+
+
+
+
+
+
+
+
+<title>Building a Pipeline for Agentic Malware Analysis | Tim Blazytko</title>
+
+<meta name="description" content="Building agentic malware-analysis workflows that combine strong initial triage with deeper automated recovery of malware structure and behavior.">
+<meta name="author" content="Tim Blazytko">
+<link rel="canonical" href="https://synthesis.to/2026/03/18/agentic_malware_analysis.html">
+<meta property="og:site_name" content="Tim Blazytko's Blog">
+<meta property="og:title" content="Building a Pipeline for Agentic Malware Analysis">
+<meta property="og:description" content="Building agentic malware-analysis workflows that combine strong initial triage with deeper automated recovery of malware structure and behavior.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://synthesis.to/2026/03/18/agentic_malware_analysis.html">
+<meta property="og:locale" content="en_US">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Building a Pipeline for Agentic Malware Analysis">
+<meta name="twitter:description" content="Building agentic malware-analysis workflows that combine strong initial triage with deeper automated recovery of malware structure and behavior.">
+<meta name="twitter:site" content="@mr_phrazer">
+<meta name="twitter:creator" content="@mr_phrazer">
+
+
+<meta property="article:published_time" content="2026-03-18T00:00:00+01:00">
+<meta property="article:modified_time" content="2026-03-18T00:00:00+01:00">
+<meta property="article:author" content="Tim Blazytko">
+
+<meta property="article:tag" content="reversing">
+
+<meta property="article:tag" content="malware">
+
+<meta property="article:tag" content="agentic">
+
+<meta property="article:tag" content="agents">
+
+<meta property="article:tag" content="automation">
+
+<meta property="article:tag" content="mcp">
+
+<meta property="article:tag" content="llm">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Tim Blazytko",
+  "url": "https://synthesis.to/2026/03/18/agentic_malware_analysis.html",
+  "sameAs": [
+    "https://www.linkedin.com/in/tim-blazytko/",
+    "https://twitter.com/mr_phrazer",
+    "https://www.youtube.com/channel/UCvqIHbFt-cw3pcPfPg1w0Yw",
+    "https://bsky.app/profile/mrphrazer.bsky.social",
+    "https://infosec.exchange/@mr_phrazer",
+    "https://github.com/mrphrazer"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building a Pipeline for Agentic Malware Analysis",
+  "description": "Building agentic malware-analysis workflows that combine strong initial triage with deeper automated recovery of malware structure and behavior.",
+  "keywords": "reversing, malware, agentic, agents, automation, mcp, llm",
+  "author": {
+    "@type": "Person",
+    "name": "Tim Blazytko"
+  },
+  "datePublished": "2026-03-18T00:00:00+01:00",
+  "dateModified": "2026-03-18T00:00:00+01:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://synthesis.to/2026/03/18/agentic_malware_analysis.html"
+  }
+}
+</script>
+
+</head>
+<body>
+<nav class="site-nav">
+  <a href="/">Home</a>
+  <a href="/trainings.html">Trainings</a>
+  <a href="/blog.html">Blog</a>
+  <a href="/tools.html">Tools</a>
+  <a href="/talks.html">Talks</a>
+  <a href="/publications.html">Publications</a>
+</nav>
+<div class="site-social">
+  <span>Find me:</span>
+  <a href="https://www.linkedin.com/in/tim-blazytko/" aria-label="LinkedIn">
+    <span class="icon" aria-hidden="true">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <title>LinkedIn</title>
+  <path d="M22.23 0H1.77C.79 0 0 .774 0 1.727V22.27C0 23.227.79 24 1.77 24H22.23C23.2 24 24 23.227 24 22.27V1.727C24 .774 23.2 0 22.23 0zM7.09 20.452H3.56V9h3.53v11.452zM5.325 7.433c-1.13 0-2.048-.927-2.048-2.068 0-1.142.918-2.068 2.048-2.068 1.13 0 2.048.926 2.048 2.068 0 1.141-.918 2.068-2.048 2.068zM20.452 20.452h-3.53v-5.569c0-1.327-.026-3.034-1.848-3.034-1.85 0-2.133 1.445-2.133 2.938v5.665h-3.53V9h3.39v1.561h.047c.473-.9 1.63-1.848 3.356-1.848 3.589 0 4.25 2.363 4.25 5.437v6.302z"/>
+</svg>
+
+    </span>
+    <span class="label">LinkedIn</span>
+  </a>
+  <a href="https://twitter.com/mr_phrazer" aria-label="Twitter">
+    <span class="icon" aria-hidden="true">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>X</title><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg>
+    </span>
+    <span class="label">Twitter</span>
+  </a>
+  <a href="https://www.youtube.com/channel/UCvqIHbFt-cw3pcPfPg1w0Yw" aria-label="YouTube">
+    <span class="icon" aria-hidden="true">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>YouTube</title><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </span>
+    <span class="label">YouTube</span>
+  </a>
+  <a href="https://bsky.app/profile/mrphrazer.bsky.social" aria-label="Bluesky">
+    <span class="icon" aria-hidden="true">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Bluesky</title><path d="M5.202 2.857C7.954 4.922 10.913 9.11 12 11.358c1.087-2.247 4.046-6.436 6.798-8.501C20.783 1.366 24 .213 24 3.883c0 .732-.42 6.156-.667 7.037-.856 3.061-3.978 3.842-6.755 3.37 4.854.826 6.089 3.562 3.422 6.299-5.065 5.196-7.28-1.304-7.847-2.97-.104-.305-.152-.448-.153-.327 0-.121-.05.022-.153.327-.568 1.666-2.782 8.166-7.847 2.97-2.667-2.737-1.432-5.473 3.422-6.3-2.777.473-5.899-.308-6.755-3.369C.42 10.04 0 4.615 0 3.883c0-3.67 3.217-2.517 5.202-1.026"/></svg>
+    </span>
+    <span class="label">Bluesky</span>
+  </a>
+  <a href="https://infosec.exchange/@mr_phrazer" aria-label="Mastodon">
+    <span class="icon" aria-hidden="true">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Mastodon</title><path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/></svg>
+    </span>
+    <span class="label">Mastodon</span>
+  </a>
+  <a href="https://github.com/mrphrazer" aria-label="GitHub">
+    <span class="icon" aria-hidden="true">
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </span>
+    <span class="label">GitHub</span>
+  </a>
+</div>
+<h1>Building a Pipeline for Agentic Malware Analysis</h1>
+<p>18 Mar 2026 - Tim Blazytko</p>
+
+<article class="post-content">
+<p>Large language models have already become useful helpers in reverse engineering: they can clean up decompiler output, suggest better function names, answer focused questions about unfamiliar code, and write small helper scripts. I discussed some of these LLM-assisted reversing use cases in my REcon 2024 talk <a href="https://synthesis.to/presentations/recon24_llm_reversing.pdf">The Future of Reverse Engineering with Large Language Models</a>. So far, though, the model has mostly stayed in a supporting role: we still decide what is worth following, what to inspect next, and where deeper reversing effort is needed.</p>
+
+<p>What changes this picture is the rise of agents. Once a model can use tools in a loop, inspect intermediate results, and continue analysis on its own, it can take over meaningful parts of the workflow. We already see that across tasks such as <a href="https://c.mov/nfuncs-agent/">solving CTF challenges</a>, <a href="https://security.googleblog.com/2023/08/ai-powered-fuzzing-breaking-bug-hunting.html">generating fuzzing harnesses</a>, <a href="https://zeltser.com/ai-malware-analysis-remnux">malware analysis</a>, and <a href="https://sean.heelan.io/2026/01/18/on-the-coming-industrialisation-of-exploit-generation-with-llms/">exploit-generation experiments</a>. However, while agents are already useful on their own, they become substantially more effective once they are given the right environment, tooling, and guidance.</p>
+
+<p>In this post, we show how to build such an agentic malware-analysis pipeline in practice. We demonstrate this on a concrete malware case study in which some functionality is easy to identify from strings and APIs, while other parts only reveal themselves after deeper analysis. We first introduce the basic ingredients of agentic workflows, then look at what a strong general-purpose agent can find in the sample on its own, and finally compare that to the same agent embedded in a structured workflow. This lets us compare what already works, what the pipeline improves, and which limitations remain.</p>
+
+<p>The companion repository with the analysis environment, pipeline, and sample setup is available <a href="https://github.com/mrphrazer/agentic-malware-analysis">here</a>.</p>
+
+<h2 id="agents">Agents</h2>
+
+<p>For the purposes of this post, we can use a simple definition: an <a href="https://simonwillison.net/2025/Sep/18/agents/"><em>agent</em> is an LLM that can use tools in a loop to achieve a goal</a>. Instead of answering once inside a single prompt, it can inspect tool output, decide what to do next, execute another step, and continue until it reaches a result. That is the key shift from <em>LLM-assisted reverse engineering</em> to <em>agentic workflows</em>.</p>
+
+<p>The basic loop is straightforward. The model receives a task, chooses a tool, sees the result, and repeats this process until it can produce a final answer. In simplified pseudocode, such a reverse-engineering agent could look as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># define tools
+</span><span class="n">tools</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">strings</span><span class="sh">"</span><span class="p">:</span> <span class="n">strings</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">disasm</span><span class="sh">"</span><span class="p">:</span> <span class="n">disasm</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">decompile</span><span class="sh">"</span><span class="p">:</span> <span class="n">decompile</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># set LLM instructions
+</span><span class="n">msgs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sh">"</span><span class="s">You are a reverse-engineering agent. </span><span class="sh">"</span>
+            <span class="sh">"</span><span class="s">Use tools to analyze binaries.</span><span class="sh">"</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sh">"</span><span class="s">Figure out what function sub_401230 does.</span><span class="sh">"</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># agent loop
+</span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">msgs</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">r</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="sh">"</span><span class="s">final</span><span class="sh">"</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">break</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">tools</span><span class="p">[</span><span class="n">r</span><span class="p">.</span><span class="n">tool_name</span><span class="p">](</span><span class="o">**</span><span class="n">r</span><span class="p">.</span><span class="n">tool_args</span><span class="p">)</span>
+    <span class="n">msgs</span> <span class="o">+=</span> <span class="p">[</span>
+        <span class="n">r</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">tool</span><span class="sh">"</span><span class="p">,</span>
+            <span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">:</span> <span class="n">r</span><span class="p">.</span><span class="n">tool_name</span><span class="p">,</span>
+            <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="nf">str</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+</code></pre></div></div>
+
+<p>The agent can retrieve strings, disassembly, and decompiler output, decide which tool to call next, observe the result, and iteratively refine its understanding until it can answer the question. Even this simple setup is already enough to turn a model from a passive assistant into an active analysis loop.</p>
+
+<p>While there are good reasons to implement such loops from scratch, and official examples from both <a href="https://cookbook.openai.com/examples/reasoning_function_calls">OpenAI</a> and <a href="https://docs.anthropic.com/en/docs/build-with-claude/computer-use">Anthropic</a> show this approach directly, in practice many people will use command-line agents such as OpenAI’s <a href="https://github.com/openai/codex">Codex CLI</a>, Anthropic’s <a href="https://github.com/anthropics/claude-code">Claude Code</a>, or open-source agents like <a href="https://github.com/anomalyco/opencode">opencode</a>. These tools already handle the interactive loop, tool execution, and session state for us.</p>
+
+<p>For reverse engineering, the next question is how we connect the right analysis tooling and how we guide the workflow. The <a href="https://modelcontextprotocol.io/"><em>Model Context Protocol (MCP)</em></a>, as defined in the <a href="https://modelcontextprotocol.io/specification/latest/">official specification</a>, standardizes how agents discover and call external tools. Through MCP, an agent can query a disassembler, collect metadata, inspect cross-references, or run helper scripts without us manually copying results back and forth. Projects such as <a href="https://github.com/LaurieWired/GhidraMCP">GhidraMCP</a> and <a href="https://github.com/mrexodia/ida-pro-mcp">ida-pro-mcp</a> make this kind of integration directly available for <a href="https://ghidra-sre.org/">Ghidra</a> and <a href="https://hex-rays.com/ida-pro/">IDA Pro</a>.</p>
+
+<p><a href="https://agentskills.io/"><em>Agent skills</em></a>, on the other hand, are reusable, task-specific workflows for agents. Their main purpose is to tell the agent how to approach a task. In practice, a skill can include a workflow, supporting scripts, file templates, examples, and concrete expectations for the output. This is useful across many reverse-engineering tasks: for a crackme, we may want the agent to first identify the relevant input checks and success paths before it starts patching the binary. For obfuscated code, we may want it to first classify the protection, determine where and how it appears in the binary, and then derive a suitable workflow and tooling strategy to deobfuscate it. In malware analysis, we may want the agent to first collect broad evidence such as strings and API imports, identify the most relevant points of interest, and only then inspect the surrounding code regions in the disassembler.</p>
+
+<p>However, tool access and workflow guidance still do not solve the main practical limitation of unstructured agent runs: the <em>context window</em>. This is the temporary amount of information an agent can keep in view during a session, including chat history, tool output, notes, and intermediate observations. In reverse engineering, this window fills up quickly. Large amounts of disassembly or decompiler output, especially for large functions or groups of related functions, can already consume a significant fraction of the available context. Once the context becomes too large, the agent usually compacts it into a summary. As a consequence, details may be lost, the analysis may drift, work may be repeated, or the agent may simply get lost.</p>
+
+<p>To deal with this limited context, two things are especially useful in practice: subagents and planning. With <em>subagents</em>, the main agent can offload focused work to a child agent with its own context window, such as analyzing a single function or tracing references to a string. Anthropic documents this pattern explicitly as <a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents">subagents</a>, while OpenAI discusses comparable delegation setups as <a href="https://openai.github.io/openai-agents-python/multi_agent/">multi-agent orchestration</a>. <em>Planning</em> helps with a different part of the same problem: it does not give the agent more context, but it can help it spend that context more deliberately. For example, Claude Code exposes this explicitly as <a href="https://docs.anthropic.com/en/docs/claude-code/common-workflows#plan-mode">Plan Mode</a>, where the agent first explores the problem with read-only operations and works out which evidence to collect and which leads are worth following.</p>
+
+<p>Still, neither subagents nor planning solve the underlying issue. If the context gets compacted, the agent may still lose track of prior findings because it has no <em>persistent memory</em>, no stable notes to recover from, and no workflow it can resume reliably.</p>
+
+<p>With these foundations in place, let us now look at what a strong agent can do with tool access alone. Afterwards, we will build a pipeline around the same setup and examine how much that changes the depth and reliability of the analysis.</p>
+
+<h2 id="baseline-unstructured-agent-based-malware-analysis">Baseline: Unstructured Agent-based Malware Analysis</h2>
+
+<p>To get a feeling for what a strong general-purpose agent can already do on its own, we start with a simple setup: direct access to a disassembler, but no task-specific workflow, no persistent case file, and no additional guidance beyond the analysis prompt. In other words, the agent can drive the tools, but it has to structure the investigation on its own. That setup is already useful in practice, and we should expect it to produce a decent first triage and some concrete leads. The more interesting question is where it starts to flatten out once the sample requires deeper reconstruction.</p>
+
+<p>As our test case, we use <code class="language-plaintext highlighter-rouge">mfc42ul.dll</code> from the German “Staatstrojaner” (federal Trojan horse) case publicized by the <a href="https://www.ccc.de/en/updates/2011/staatstrojaner">Chaos Computer Club (CCC)</a>. The sample is a good fit because some of its functionality is relatively easy to spot from strings, imports, and a quick pass through the code: screenshots, Skype interception, persistence, and covert communication. But it also contains deeper logic that is much harder to recover from a shallow analysis, including process-aware activation, command dispatching, protocol details, hardcoded C2 information, and the statically embedded AES key. That makes it a useful test case: it lets us judge not only whether the agent finds something interesting, but also how far the analysis actually goes.</p>
+
+<p>In our initial run, we use OpenAI’s <a href="https://github.com/openai/codex">Codex CLI</a> with <code class="language-plaintext highlighter-rouge">gpt-5.4 xhigh</code> and give it access to my headless Binary Ninja MCP server <a href="https://github.com/mrphrazer/binary-ninja-headless-mcp"><code class="language-plaintext highlighter-rouge">binary-ninja-headless-mcp</code></a>. We then ask the agent to analyze the sample via the MCP server and produce a detailed overview of the malware, its features, and the corresponding code locations. At this point, the agent has everything it needs to inspect the binary and drive the analysis on its own:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>› Analyze the malware in examples/samples/mfc42ul.dll
+  Give me a detailed overview of the sample’s functionality and features,
+  together with the corresponding code locations. Use the MCP server to
+  perform the analysis.
+</code></pre></div></div>
+
+<p>One first useful observation is that the agent does not behave randomly. Even without additional workflow guidance, it starts with a fairly sensible triage strategy: open the sample, collect high-level metadata, identify likely behavior from strings and imports, and then follow those leads into the code. The following excerpt shows how the run begins:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>• I’m analyzing examples/samples/mfc42ul.dll with the Binary Ninja MCP tools.
+
+• Updated Plan
+  └ Static malware triage and behavior reconstruction for the DLL using Binary
+    Ninja MCP.
+    □ Open the DLL in Binary Ninja and collect high-level metadata.
+    □ Identify likely behavior clusters from strings/xrefs.
+    □ Trace the main execution paths and map capabilities to concrete code locations.
+
+• Called
+  └ binary_ninja_headless_mcp.session.open({...})
+    ok session_id=...
+</code></pre></div></div>
+
+<p>As the run continues, the same pattern remains visible: broad metadata collection first, then pivots off suspicious strings and imports, and only gradually deeper inspection of the code.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>• The file is a 32-bit PE DLL with a large code surface, so I’m doing a fast
+  triage pass before drilling into behavior. I’m collecting exports,
+  imports, and structural metadata now, then I’ll pivot off suspicious
+  strings and entry-point code.
+</code></pre></div></div>
+
+<p>This is already a useful and fairly reasonable starting point. The agent is not guessing blindly; it is using the tooling in a disciplined way and follows a plausible initial workflow. At the same time, the limitation is already visible: the analysis is driven primarily by obvious pivots such as strings, imports, and surface-level structure. That is often enough for a first triage, but not necessarily enough to recover the deeper logic of the sample.</p>
+
+<p>After roughly 15 minutes and 268 tool calls, the agent produced a first high-level summary of the sample. The result is already quite useful for an initial triage. The agent:</p>
+
+<ul>
+  <li>
+    <p>identifies the dropped driver <code class="language-plaintext highlighter-rouge">winsys32.sys</code>, the corresponding installation logic, and the driver device <code class="language-plaintext highlighter-rouge">\\.\KeyboardClassC</code>, and ties them to functions such as <code class="language-plaintext highlighter-rouge">sub_1000e8a0</code> and <code class="language-plaintext highlighter-rouge">sub_10003a40</code>,</p>
+  </li>
+  <li>
+    <p>notices the Skype-related markers and target process names, and links them to nearby control logic around <code class="language-plaintext highlighter-rouge">sub_10007490</code>,</p>
+  </li>
+  <li>
+    <p>recovers the proxy-discovery logic in <code class="language-plaintext highlighter-rouge">sub_1000ead0</code>, including registry-based handling of Internet Explorer proxy settings,</p>
+  </li>
+  <li>
+    <p>identifies a proxy-aware outbound transport based on HTTP <code class="language-plaintext highlighter-rouge">CONNECT</code>, together with the protocol marker <code class="language-plaintext highlighter-rouge">C3PO-r2d2-POE</code>, in <code class="language-plaintext highlighter-rouge">sub_10006790</code>, and</p>
+  </li>
+  <li>
+    <p>finds a secondary payload path around <code class="language-plaintext highlighter-rouge">sub_1000d470</code>, including temporary-file staging, execution, and later cleanup.</p>
+  </li>
+</ul>
+
+<p>This is already a meaningful speedup for the initial analysis: the agent produces a useful high-level overview of the sample’s features and maps them to concrete code locations. At the same time, the result remains fairly shallow. It does not identify the cryptographic code, recover the hardcoded key, or reconstruct the deeper protocol logic. In other words, it is a good first triage, but not yet a deep analysis.</p>
+
+<p>Another practical problem is that the run nearly exhausts the available context window. By the end, only a small fraction of the context remains available. This makes the setup brittle: even when the agent finds useful leads, it has limited ability to preserve and build on them once the investigation grows larger or requires repeated deep dives into related code. Large chunks of disassembly and decompiler output consume context quickly, and once earlier findings are compacted into summaries, details can easily be lost.</p>
+
+<p>So the baseline is already helpful, but mostly as triage. It points us to relevant functionality, recovers several visible features, and gives us concrete starting points for manual inspection. What it does not yet provide is a deeper reconstruction of how the malware is organized internally.</p>
+
+<p>To see whether this is mostly a Codex-specific limitation or a more general pattern, we can repeat the same experiment with another strong agent. Using Anthropic’s <a href="https://github.com/anthropics/claude-code">Claude Code</a> with <code class="language-plaintext highlighter-rouge">Opus 4.6</code> and <code class="language-plaintext highlighter-rouge">high effort</code>, the overall picture improves somewhat. In a similar amount of time, Claude recovers a few additional details:</p>
+
+<ul>
+  <li>
+    <p>the audio-recording pipeline, including dual-channel capture and the related <code class="language-plaintext highlighter-rouge">waveIn*</code> handling,</p>
+  </li>
+  <li>
+    <p>the SNMP-based host fingerprinting together with the VMware MAC-prefix filter in the anti-analysis logic, and</p>
+  </li>
+  <li>
+    <p>the logic that reads the DLL’s own filename at runtime, suggesting that the sample checks whether it is still running under the expected module name.</p>
+  </li>
+</ul>
+
+<p>At the same time, the overall pattern remains the same: Claude also gives a useful first overview, but it still does not really reconstruct the deeper logic of the sample.</p>
+
+<p>Overall, these experiments suggest that changing the model helps only to a limited extent; it does not solve the main problem. As we will see, what matters much more is whether the agent has clear guidance, a structured plan, and a way to continue the analysis even after context-window resets. Let us now look at how to build that into the workflow.</p>
+
+<h2 id="agentic-analysis-pipeline">Agentic Analysis Pipeline</h2>
+
+<p>The earlier experiments already show the main limitations that the workflow needs to address. A strong general-purpose agent with access to a binary-analysis engine can produce a useful first triage: it recovers visible functionality, finds sensible pivots, and maps obvious behavior to code locations. In our case, that was enough to identify some of the easier-to-spot features, but not the cryptographic code, the deeper protocol logic, or the internal organization of the sample. At the same time, the run was already approaching the limits of the context window.</p>
+
+<p>To address these problems, we need a workflow that gives the agent a clear analytical structure and a persistent external memory it can return to. In the end, our goal is to make the analysis more repeatable, resumable, and capable of going deeper than unstructured tool-driven exploration without exhausting the context window unnecessarily. Therefore, we can now define four design goals for the workflow:</p>
+
+<ol>
+  <li>
+    <p><strong>Start with broad fingerprinting.</strong> The agent should first collect a wide range of signals—strings, API imports, symbol names, crypto indicators, points of interest, and other easy-to-extract artifacts—to build a rough high-level picture of the sample before drifting into deeper analysis.</p>
+  </li>
+  <li>
+    <p><strong>Keep raw evidence separate from higher-level reasoning.</strong> Raw artifacts (e.g., strings), extracted signals, planning results, hypotheses, and interpretations should not all be mixed together. This lets the agent work from structured summaries without losing access to the underlying evidence.</p>
+  </li>
+  <li>
+    <p><strong>Follow a clearly staged process.</strong> The workflow should make explicit what has already been done, what comes next, which questions remain open, and what every stage is expected to produce. In implementation terms, stages are defined by templates, expected output artifacts, and lightweight validators that check whether the required files and fields are present before the workflow continues. This ensures that the workflow produces explicit intermediate artifacts that later stages can build on directly.</p>
+  </li>
+  <li>
+    <p><strong>Externalize state to disk.</strong> Notes, artifacts, progress, hypotheses, and reports should be written to persistent storage so that the analysis can continue even after the context window fills up.</p>
+  </li>
+</ol>
+
+<p>We address these goals by structuring the agent around a staged workflow that roughly mirrors how a human analyst would approach a malware sample: first collecting broad signals such as strings, API imports, and signatures; then building a rough picture of the sample; forming initial hypotheses; prioritizing the most promising leads; and finally validating or falsifying those hypotheses through deeper analysis. To keep this workflow manageable, we <em>separate responsibilities</em> across three roles: the orchestrator, the planner, and the reporter.</p>
+
+<p>The <em>orchestrator</em> coordinates execution, initializes the case directory, checks artifact completeness, and manages phase transitions. The <em>planner</em> turns intermediate evidence into hypotheses, priorities, and concrete deep-analysis tasks. The <em>reporter</em> turns the accumulated artifacts into a consumable write-up, separates observed facts from inferred claims, and records uncertainty and next steps. During exploration, the orchestrator can also delegate focused collection tasks to subagents and merge their outputs back into the case state.</p>
+
+<p>At a high level, the workflow looks as follows:</p>
+
+<ol>
+  <li>
+    <p><strong>Broad fingerprinting and triage:</strong> Collect cheap signals such as file metadata, hashes, entropy-related hints, strings, imports, symbol names, <a href="https://virustotal.github.io/yara/"><code class="language-plaintext highlighter-rouge">YARA</code></a> matches, <a href="https://mandiant.github.io/capa/"><code class="language-plaintext highlighter-rouge">capa</code></a> results, compiler or packer hints, crypto-related indicators, and other obvious points of interest to build an initial picture of the sample.</p>
+  </li>
+  <li>
+    <p><strong>Filtering and grouping:</strong> Filter the raw output, group related findings, and surface the strings, imports, capability clues, and code regions that look most relevant.</p>
+  </li>
+  <li>
+    <p><strong>Hypothesis building:</strong> Use those findings to form initial ideas about what the sample does, which major components it seems to contain, and which leads are worth following.</p>
+  </li>
+  <li>
+    <p><strong>Internal structure mapping:</strong> Build a working map of how the sample appears to be organized internally: which parts seem to handle persistence, communication, collection, injection, or other major tasks, and how they fit together.</p>
+  </li>
+  <li>
+    <p><strong>Deep-analysis planning:</strong> Select and prioritize the functions, components, features, and hypotheses that are the best candidates for deeper inspection with the binary-analysis tooling.</p>
+  </li>
+  <li>
+    <p><strong>Targeted deep analysis:</strong> Inspect those high-priority targets with the binary-analysis tooling to validate or revise earlier assumptions and recover the missing low-level logic.</p>
+  </li>
+</ol>
+
+<p>The key improvement comes from imposing a structured workflow on the analysis. Instead of letting the agent interact with tools in an open-ended way, the workflow organizes the process into explicit stages with concrete intermediate artifacts. Raw evidence is collected first, then filtered and grouped, and then turned into hypotheses, structure maps, and plans for deeper inspection. As new evidence emerges, the agent can revise earlier assumptions and update the case state, while continuing from the artifacts produced so far.</p>
+
+<p>To support this, the pipeline uses a persistent on-disk case directory for every sample. After each major step, artifacts, notes, ranked observations, hypotheses, plans, and reports are updated and stored. In effect, this directory becomes the agent’s externalized working memory. If the context window gets compacted, the agent can reread prior artifacts and continue from the current state. This also makes the workflow inspectable and reproducible, since intermediate results are no longer hidden inside transient model context.</p>
+
+<p>We implemented this pipeline as a portable analysis environment that combines helper scripts, a reusable orchestration skill, and MCP-connected disassembler tooling into a single workflow. The agent runs inside a dedicated Docker container defined by the <a href="https://github.com/mrphrazer/agentic-malware-analysis/blob/main/Dockerfile">Dockerfile</a>, with access to the available tools, scripts, and MCP servers. The workflow is packaged as a <a href="https://github.com/mrphrazer/agentic-malware-analysis/tree/main/agent_helpers/claude/skills/malware-analysis-orchestrator"><code class="language-plaintext highlighter-rouge">malware-analysis-orchestrator</code> skill for Claude Code</a> together with a <a href="https://github.com/mrphrazer/agentic-malware-analysis/tree/main/agent_helpers/codex/skills/malware-analysis-orchestrator">matching Codex variant</a>, and can use either our <a href="https://github.com/mrphrazer/binary-ninja-headless-mcp">Binary Ninja Headless MCP server</a> or <a href="https://github.com/mrphrazer/ghidra-headless-mcp">Ghidra Headless MCP server</a> for static analysis. The setup is designed to remain generic across agents, binary formats, and analysis backends. The full pipeline is available on <a href="https://github.com/mrphrazer/agentic-malware-analysis">GitHub</a>.</p>
+
+<p>With that in place, we can rerun the same <code class="language-plaintext highlighter-rouge">mfc42ul.dll</code> sample under the structured workflow and compare the result to the earlier analysis.</p>
+
+<h2 id="evaluation">Evaluation</h2>
+
+<p>In the following, we focus on the Claude Code runs, since they produced the clearest write-up for this section. The runtime remained in roughly the same range as before. Codex improved in the same direction once the workflow was enabled as well, but we omit its output here because it would not change the overall conclusion.</p>
+
+<p>Before turning to the results, let us briefly recall what is present in <code class="language-plaintext highlighter-rouge">mfc42ul.dll</code>. Some features—such as screenshot capture, Skype interception, persistence, and proxy handling—were relatively easy to identify from strings, API imports, and a shallow code pass. However, the sample also contains deeper logic and embedded data that are much harder to recover, including process-aware activation, command dispatching, protocol details, hardcoded C2 information, and the statically embedded AES key. These are exactly the parts where the structured workflow has to prove its value.</p>
+
+<p>To evaluate this, we slightly expand the earlier query and explicitly instruct the agent to use the <code class="language-plaintext highlighter-rouge">malware-analysis-orchestrator</code> skill:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ Analyze the malware in examples/samples/mfc42ul.dll -- Give me a detailed
+  overview of the sample's functionality and features, together with the
+  corresponding code locations. Use the skill
+  /agent/agent_helpers/claude/skills/malware-analysis-orchestrator/ for
+  analysis.
+</code></pre></div></div>
+
+<p>After roughly 17 minutes, the workflow completes its first pass. The agent populates all 13 required case files, identifies 13 functional components, records 10 behavior hypotheses, and assigns HIGH confidence to 8 of them. Even before any dedicated deep-validation step, the resulting overview is already materially richer than the earlier triage-oriented summary. To keep the presentation manageable, we show a slightly shortened version of the first-pass output below:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>● Analysis complete. All 13 artifacts populated. Here is the detailed overview:
+
+  1. Process-Aware Initialization (sub_1000f590 @ 0x1000f590)
+  2. Persistence — AppInit_DLLs (sub_1000d680 @ 0x1000d680)
+  3. Persistence — Kernel Driver Service (sub_10003a40 @ 0x10003a40)
+  6. C2 Communication (sub_10006790 @ 0x10006790)
+  9. Skype VoIP Interception (sub_10007720 @ 0x10007720)
+  14. Central Orchestrator (sub_1000ecc0 @ 0x1000ecc0)
+
+  All artifacts are in status/000-mfc42ul.dll/. The analysis identified
+  13 functional components, 10 behavior hypotheses (8 HIGH confidence),
+  56 capa capabilities, and produced comprehensive IOCs for detection engineering.
+</code></pre></div></div>
+
+<p>Already at this stage, the workflow no longer stops at visible features alone. It begins to group functionality into components, map those components to specific code regions, and point toward the sample’s internal control structure. That is already a qualitatively different kind of result.</p>
+
+<p>The difference is not just that the workflow finds more. It also writes much more than a short final summary. Instead, the run produces a detailed set of intermediate artifacts for hypotheses, component mapping, planning, prioritization, and reporting. The following files are just a few examples of the case state the workflow yields:</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">05_behavior_hypotheses.md</code> records the current hypotheses, the supporting evidence, their confidence, and the checks that are still missing.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">08_deep_analysis_plan.md</code> turns those hypotheses into concrete follow-up tasks, with target functions, goals, and expected findings.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">09_priority_queue.md</code> tracks which open questions matter most, why they matter, and what depends on resolving them.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">10_reporting_draft.md</code> brings the current findings, code references, IOCs, and remaining gaps into a draft report that the agent can return to later.</p>
+  </li>
+</ul>
+
+<p>From a higher-level perspective, the earlier run compares to the structured workflow as follows:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aspect</th>
+      <th>Earlier run</th>
+      <th>Structured workflow</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Runtime</td>
+      <td>~15 min</td>
+      <td>~17 min</td>
+    </tr>
+    <tr>
+      <td>Output form</td>
+      <td>High-level triage summary</td>
+      <td>Structured case directory with 13 required files</td>
+    </tr>
+    <tr>
+      <td>Deeper logic recovery</td>
+      <td>Limited</td>
+      <td>Materially better</td>
+    </tr>
+    <tr>
+      <td>Follow-up readiness</td>
+      <td>Weak</td>
+      <td>Strong</td>
+    </tr>
+    <tr>
+      <td>Persistent state</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Most importantly, the first pass no longer leaves us with just a short summary. Because it produces ranked hypotheses and a persistent case directory, we can continue directly from that state rather than restarting the investigation. We therefore ask the agent to validate the 8 HIGH-confidence hypotheses. Roughly 30 minutes later, the workflow produces a much deeper second pass:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Validation Results
+
+H1: Full-Featured Surveillance RAT — VALIDATED
+- Discovered complete command dispatch vtable at 0x1003d7d0 with 10 remotely-callable commands
+- Mapped orchestrator vtable at 0x1003d7f8 with C2 data loop, heartbeat (byte 0x26), fingerprinting
+
+H3: Process-Aware Module Activation — VALIDATED
+- Confirmed GetModuleFileNameA + case-insensitive path matching in sub_10003990
+- Full init chain: DllMain → process detect → module alloc → orchestrator
+
+H6: C2 with AES-128 Encryption — VALIDATED
+- Protocol vtable at 0x1003d330: encrypt+send, recv+decrypt, raw I/O via WinSock send()/recv()
+- Encrypt: sub_10012130, Decrypt: sub_10013260, Key expansion: sub_10014410
+- Wire format: C3PO-r2d2-POE → 4-byte length → AES-128-ECB encrypted payload
+</code></pre></div></div>
+
+<p>Three improvements stand out here. First, the workflow recovers the internal command dispatch rather than stopping at the sample’s visible high-level capabilities. Second, it validates the process-aware activation logic and reconstructs the initialization chain from <code class="language-plaintext highlighter-rouge">DllMain</code> into the orchestrator. Third, it begins to recover the protocol layer itself, including the protocol vtable, the send and receive paths, and the cryptographic routines that are used together with the C2 communication.</p>
+
+<p>A closer look at the recovered command-dispatch table shows the kind of internal structure that the deeper pass can uncover:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Vtable Index</th>
+      <th>Function</th>
+      <th>Opcode</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>[0]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000d270</code></td>
+      <td>—</td>
+      <td>Driver drop/installation</td>
+    </tr>
+    <tr>
+      <td>[1]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000e2b0</code></td>
+      <td>—</td>
+      <td>Spawn monitoring thread</td>
+    </tr>
+    <tr>
+      <td>[2]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000e210</code></td>
+      <td>—</td>
+      <td>Driver cleanup (IOCTL 0xb2012)</td>
+    </tr>
+    <tr>
+      <td>[3]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000d680</code></td>
+      <td>—</td>
+      <td>AppInit_DLLs persistence write</td>
+    </tr>
+    <tr>
+      <td>[4]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000db50</code></td>
+      <td>—</td>
+      <td>Self-update via named pipe</td>
+    </tr>
+    <tr>
+      <td>[5]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000e120</code></td>
+      <td>—</td>
+      <td>System reboot (EWX_REBOOT|EWX_FORCE)</td>
+    </tr>
+    <tr>
+      <td>[6]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000e370</code></td>
+      <td>—</td>
+      <td>Config update (“%d %d %d %d %d %d”)</td>
+    </tr>
+    <tr>
+      <td>[7]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_1000d470</code></td>
+      <td>0x23</td>
+      <td>Download-and-execute (%TEMP%~tmp%08x~.exe)</td>
+    </tr>
+    <tr>
+      <td>[8]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_10006710</code></td>
+      <td>0x27</td>
+      <td>Enable + send command</td>
+    </tr>
+    <tr>
+      <td>[9]</td>
+      <td><code class="language-plaintext highlighter-rouge">sub_10006780</code></td>
+      <td>—</td>
+      <td>Disable (clear flag at obj+0x20)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Taken together, this is a substantial step up from the earlier runs. The workflow does not just recover a longer list of visible features; it begins to expose the malware’s internal organization: how capabilities are dispatched, how activation depends on the host process, and where protocol handling and cryptographic routines sit in relation to the C2 communication. At this point, the agent already leaves behind a much more useful working model of the sample than a conventional first-pass triage.</p>
+
+<p>The result is still not perfect. In this run, the agent did not recover the hardcoded C2 server or the embedded AES key, and it reported AES-128-ECB even though the sample actually uses AES-256-ECB. However, this miss should be interpreted in context. The workflow did identify the relevant protocol path, the wire format, the use of ECB mode, and the cryptographic routines involved in the C2 communication. In other words, it did not miss the protocol layer entirely; its reconstruction remained incomplete at some of the finer details. At the same time, the run remains non-deterministic: a rerun may recover additional details, emphasize different parts of the sample, or make different mistakes. The result should therefore not be treated as a final report, but as an intermediate state.</p>
+
+<p>Even with these gaps, the improvement is substantial. The structured workflow pushes the agent well beyond loose triage and leaves behind a much stronger intermediate state: a case directory with evidence, ranked hypotheses, priorities, and partially validated internal structure. In practice, that can save an analyst hours to days of early-stage work. Instead of spending most of the time collecting obvious clues and organizing first impressions, we can focus on validating deeper findings, resolving the remaining unknowns, and correcting the places where the agent is still wrong.</p>
+
+<p>Because the workflow preserves explicit case state, follow-up analysis also becomes much sharper. The analyst can guide the agent toward a specific hypothesis, subsystem, or unresolved question, and the agent can continue from the accumulated evidence rather than starting over. It can also annotate the analysis database itself—for example by renaming symbols, attaching notes, and marking relevant functions—so that the human analyst can continue from a better-structured and better-documented starting point.</p>
+
+<h2 id="closing-remarks">Closing Remarks</h2>
+
+<p>As we’ve seen, agents are already changing reverse engineering in a significant way. In this post, even the unstructured run was already useful as a first triage: it recovered visible functionality, pointed to relevant code locations, and produced concrete leads for follow-up. The real improvement, however, came from giving the agent a structured workflow, persistent case state, and the right analysis tooling. This also shows where agents are already particularly strong: scaling the mechanical parts of analysis, collecting evidence, correlating artifacts, generating scripts, and producing a first structured understanding of a binary far faster than a human could.</p>
+
+<p>And we are still early. Models, tools, and agentic workflows are improving quickly, and the current generation already shows how much repetitive reverse-engineering work can be automated. Over time, this will likely push human analysts away from manually performing every step themselves and more toward guiding workflows, validating results, refining assumptions, and deciding where deeper analysis is needed.</p>
+
+<p>But that does not make human expertise obsolete. Reverse engineering remains an adversarial task: binaries may be unusual, intentionally deceptive, or heavily obfuscated. In those settings, a plausible answer is not the same as a correct one. Agents can help explore and accelerate, but they still struggle when the analysis requires novel reasoning, strong validation, or a change in strategy.</p>
+
+<p>Obfuscation is a good example. Even agentic workflows that perform well on triage and structured analysis can still break down once strong control-flow obfuscation, virtualization, custom packing, or non-standard data encodings enter the picture. At that point, the challenge shifts from simply driving tools to understanding how the protections work, testing hypotheses against the binary, and designing the right custom tooling or deobfuscation workflow. An LLM can help with that process, but the direction still has to come from the analyst.</p>
+
+<p>In that sense, agents do not remove the need for reverse-engineering expertise; they raise the bar for where that expertise matters most. And if there is one area where this becomes especially visible, it is deobfuscation. For analysts who have to deal with protected or obfuscated binaries in practice, I cover many of these workflows in my hands-on training <a href="/training_software_deobfuscation.html">Software Deobfuscation Techniques</a>.</p>
+
+
+</article>
+
+<h2>Questions &amp; Feedback</h2>
+<p>Questions and feedback are welcome—feel free to reach out via email or any of the channels linked above.</p>
+
+<div class="section-highlight post-footer">
+  <h2>About the Author</h2>
+  <p>Tim Blazytko is a reverse engineering and binary analysis specialist focused on deobfuscation and automation; he regularly teaches and speaks at international conferences and consults independently.</p>
+  <div class="post-footer-links">
+    <span><strong>Trainings &amp; workshops:</strong> <a href="/trainings.html">Trainings</a></span>
+    <span class="post-footer-sep" aria-hidden="true">·</span>
+    <span><strong>Contact:</strong> <a href="mailto:tim@blazytko.to">tim@blazytko.to</a></span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1jM_r-pe8Ss",
+    "language": "en",
+    "took_ms": 7878,
+    "method": null,
+    "title": "DEF CON 29 - Slava Makkaveev - I know how to take over your Kindle with an e-book",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1139,
+    "description": "Since 2007, Amazon has sold tens of millions of Kindles, which is impressive. But this also means that tens of millions of people can be hacked through a software bug in those same Kindles. Their devices can be turned into bots, their private local networks can be compromised, and perhaps even information in their billing accounts can be stolen.\n\nThe easiest way to remotely reach a user's Kindle is through an e-book. A malicious book can be published and made available for free access in any virtual library, including the Kindle Store, or sent directly to the end-user device via Amazon services. While you might not be happy with the writing in a particular book, nobody expects to download one that is malicious. No such scenarios have been publicized. Antiviruses do not have signatures for e-books. But... we succeeded in making a malicious book for you. If you open this book on a Kindle device, it causes a hidden piece of code to be executed with root rights. From this moment on, you lost your e-reader, account and more.\n\nWant to know the details?",
+    "view_count": 2009
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1jM_r-pe8Ss: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

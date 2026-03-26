@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5mWnGZWUEMQ",
+    "language": "en",
+    "took_ms": 9302,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - A Review of Post Election Audits in Swing States - Susan Greenhalgh",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 1709,
+    "description": "The presentation is based on a new paper that examines which elements of a post-election audit are necessary to provide publicly available evidence to confirm the outcome of an election is correct. The paper and presentation take a close look at the post-election audits conducted after the 2024 election in the seven closely contested swing states and examines whether or not the audits conducted after the November election meet the criteria for effective, trustworthy, meaningful, and reliable audits.",
+    "view_count": 556
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5mWnGZWUEMQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

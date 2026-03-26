@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bQXyAOBtzBk",
+    "language": "en",
+    "took_ms": 9592,
+    "method": null,
+    "title": "The Crisis of Freedom in America: A Conversation with Os Guinness",
+    "channel": "Hudson Institute",
+    "upload_date": "20181105",
+    "duration_sec": 3476,
+    "description": "On November 5, Hudson Institute hosted author Os Guinness for a discussion about the state of freedom in the United States and his new book, Last Call for Liberty: How America’s Genius for Freedom Has Become Its Greatest Threat. The conversation will be moderated by Hudson Distinguished Fellow Walter Russell Mead.\r\n\r\nSince the 2016 campaign began, the level of rancor in U.S. politics has reached a crescendo, with many observers commenting that the country has not been so divided in generations. But the crisis is older than 2016. In his new book, Os Guinness argues that the conflict is rooted in two rival views of freedom, one embodied in “1776” and the ideals of the American Revolution, and the other in “1789” and the ideals of the French Revolution. Grounded in an exploration of history, civics, and ethics in the Jewish and Christian tradition, Guinness considers the ultimate prospects for human freedom today. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 6653
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bQXyAOBtzBk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

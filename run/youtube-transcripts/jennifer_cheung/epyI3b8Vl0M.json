@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "epyI3b8Vl0M",
+    "language": "en",
+    "took_ms": 8630,
+    "method": null,
+    "title": "DEF CON 33 - SCCM: The tree that always bears bad fruits - Mehdi 'kalimer0x00' Elyassa",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2336,
+    "description": "Microsoft Configuration Manager, better known as SCCM, has become my go-to target for red team operations. While multiple attack paths were uncovered recently, companies still struggle to close all security gaps. This is largely due to the solution's complexity and historical technical debt, which make it challenging to effectively address and mitigate all security vulnerabilities. Moreover, as it primarily manages computers, taking over an SCCM deployment often leads to the full compromise of the Active Directory, with less hassle than traditional attack paths.\n\nIn this talk, I'll be sharing insights gained from my research on the solution that led to the discovery of multiple 0 Day vulnerabilities, such as CVE-2024-43468, an unauthenticated SQL injection. After introducing key concepts, I'll delve into various techniques for performing reconnaissance, tips for understanding the hierarchy and tricks for bypassing certain security boundaries. The session will also cover the discovered vulnerabilities that can lead to the compromise of the deployment.\n\nAfter showcasing post-exploitation techniques from database access, I'll introduce a battle-tested open-source tool that implements them. And for those interested in persistence, a technique for installing a backdoor as a legitimate servicing endpoint will be shared.",
+    "view_count": 605
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] epyI3b8Vl0M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

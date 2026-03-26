@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oP570YmcQG4",
+    "language": "en",
+    "took_ms": 8890,
+    "method": null,
+    "title": "Trust, Reputation, Data Security, and You",
+    "channel": "S4 Events",
+    "upload_date": "20250505",
+    "duration_sec": 1852,
+    "description": "If a company suffers a major cyber incident, there's a good chance they will call in David Chamberlin to help them craft and deliver their crisis communications to media, customers, investors, and regulators. He has worked behind the scenes on some of the most prominent OT security incidents in the last two years.\n\nIn this keynote, David shared stories to help you understand what makes crisis communications work well or fail. And importantly, you will learn how you, the OT security professional or engineer, can best help crisis communication, both in advance and during an OT cyber incident.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 190
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oP570YmcQG4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

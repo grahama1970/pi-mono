@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_KAK64wtMe4",
+    "language": "en",
+    "took_ms": 10032,
+    "method": null,
+    "title": "What keeps everyone safe when rockets fail? Why did the failed Falcon 9 rocket land in the ocean?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20181208",
+    "duration_sec": 1690,
+    "description": "SpaceX experienced their first landing failure of a Falcon 9 since 2016! So what went wrong? What kept everyone safe? Is there a big risk of a failed rocket landing on people? \n\nToday we'll mostly be looking at the CRS-16 landing failure and using it as an example as what systems are on board, what programming is used and how the flight termination system works to keep us on the ground safe.\n\nWe'll dive into the details of its landing sequence by looking at it's exact trajectory using http://flightclub.io and I'll be explaining what exactly happened using Kerbal Space Program to simulate the failed grid fins.\n\nPlay the mission for yourself here! - https://steamcommunity.com/sharedfiles/filedetails/?id=1587695886\n\n\"What Exactly Caused SpaceX's Falcon 9 Landing Failure\" -https://youtu.be/Ge1_6MUWAYg\n\n\"Biggest Booms of Spaceflight History\" - https://youtu.be/WlQH3MHhm0Y\n\nThanks for the amazing website Declan! http://flightclub.io, and consider supporting his work through Patreon - https://www.patreon.com/flightclub/\n\nThanks so much to Daz Valdez of K Space Academy for letting me use his amazing footage!!! - https://www.youtube.com/watch?v=9XMfhKxwo2c\n\nGrid Fin Not-A-Coasters and SCIENCE T-Shirts are available on my new webstore! - https://shop.everydayastronaut.com/products/coaster-set\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nShow your support by becoming a Patreon - http://patreon.com/everydayastronaut\nThis video had two \"Moon Walkers\" who helped make this possible - Blake Jacobs and Mac Malkawi\n\nCheck out my new podcast!!!! - https://ourludicrousfuture.com\n\nThinking about ordering a Tesla? Get free unlimited supercharging!! http://ts.la/tim19804\n\nAlready order a Model 3 and waiting for delivery? You can use my referral code too (talk to your advisor) tim19804 :)",
+    "view_count": 428176
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _KAK64wtMe4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

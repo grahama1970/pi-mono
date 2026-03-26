@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1N76mJ1pMro",
+    "language": "en",
+    "took_ms": 8181,
+    "method": null,
+    "title": "Fine tuning Pixtral - Multi-modal Vision and Text Model",
+    "channel": "Trelis Research",
+    "upload_date": "20240923",
+    "duration_sec": 3322,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-vision/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO RESOURCES:\nSlides: https://docs.google.com/presentation/d/1U6NYnwFtx6ZdpeAFKOLVZJU7kDULgpg3W97NQzGRB1Q/edit?usp=sharing\n- Chess Dataset: https://huggingface.co/datasets/Trelis/chess_pieces\n- Pixtral model on HF: https://huggingface.co/mistralai/Pixtral-12B-2409\n- Pixtral community/transformers model + discussion: https://huggingface.co/mistral-community/pixtral-12b/discussions/4\n- vLLM docs: https://docs.vllm.ai/en/latest/getting_started/examples/offline_inference_pixtral.html#offline-inference-pixtral\n- Thumbnail created using Flux Schnell in this video: https://youtu.be/ThKYjTdkyP8\n\nTIMESTAMPS:\n0:00 How to fine-tune Pixtral.\n0:43 Video Overview\n1:27 Pixtral architecture and design choices\n3:51 Mistral’s custom image encoder - trained from scratch\n8:35 Fine-tuning Pixtral in a Jupyter notebook\n9:33 GPU setup for notebook fine-tuning and VRAM requirements\n12:23 Getting a “transformers” version of Pixtral for fine-tuning\n15:00 Loading Pixtral\n16:21 Dataset loading and preparation\n18:08 Chat templating (somewhat advanced, but recommended)\n23:33 Inspecting and evaluating baseline performance on the custom data\n26:34 Setting up data collation (including for multi-turn training).\n31:09 Training on completions only (tricky but improves performance)\n35:08 Setting up LoRA fine-tuning\n41:04 Setting up training arguments (batch size, learning rate, gradient checkpointing)\n43:36 Setting up tensor board\n46:48 Evaluating the trained model\n47:46 Merging LoRA adapters and pushing the model to hub\n49:07 Measuring performance on OCR (optical character recognition)\n50:28 Inferencing Pixtral with vLLM, setting up an API endpoint\n55:17 Video resources",
+    "view_count": 6341
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1N76mJ1pMro: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

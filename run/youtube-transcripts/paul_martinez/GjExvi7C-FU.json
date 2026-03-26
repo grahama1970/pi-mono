@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GjExvi7C-FU",
+    "language": "en",
+    "took_ms": 7677,
+    "method": null,
+    "title": "Pat Kennedy on Founding, Growing and Selling OSIsoft",
+    "channel": "S4 Events",
+    "upload_date": "20210714",
+    "duration_sec": 2853,
+    "description": "This is another episode with the founders of great ICS companies. Dr. J. Patrick Kennedy founded OSIsoft in 1980 and grew it to dominate the historian / data broker segment of the ICS market. OSIsoft was sold in 2021 to AVEVA for $5B. In this show we talk about:\n\n1:55 The starting and first decade of OSIsoft\n\n18:24 OSIsoft's motivation to focus on security before most other companies\n\n35:20 The acquisition decision and future",
+    "view_count": 1776
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GjExvi7C-FU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

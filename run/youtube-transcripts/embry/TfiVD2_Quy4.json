@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TfiVD2_Quy4",
+    "language": "en",
+    "took_ms": 7666,
+    "method": null,
+    "title": "LIVE Hosting SpaceX GovSat-1/SES-16",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180131",
+    "duration_sec": 5329,
+    "description": "It's the second SpaceX launch of 2018! SpaceX will launch a Falcon 9 rocket carrying a 4200 KG satellite called GovSat-1/SES-16 to Geostationary Transfer Orbit. This satellite serves the Luxembourg Government and a commercial customer SES. This is the 2nd flight of this particular Falcon 9 1st stage, having first flown last year for the NROL-76 mission, but it will be its last. \n\nDespite having plenty of fuel to land, they will be letting this one touch down softly in the ocean after its primary mission is over. This is because SpaceX has so many of these current block 3 boosters around which are not meant for long term reuse, and they require too much refurbishment to reuse them more than once, AND the drone ship needs to be ready for Falcon Heavy's center core next week. \n\nThis is the third time SES has opted to fly on a previously flown booster, they were the first customers to do so March, 2017 with mission SES-10. This is the 6th reuse of a booster for SpaceX. This is the 29th launch from SpaceX's launch pad, SLC-40, and the 48th over all launch of the Falcon 9. \n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 73143
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TfiVD2_Quy4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

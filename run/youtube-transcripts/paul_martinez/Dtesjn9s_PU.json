@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Dtesjn9s_PU",
+    "language": "en",
+    "took_ms": 9037,
+    "method": null,
+    "title": "Richard Clarke Keynote at S4x17",
+    "channel": "S4 Events",
+    "upload_date": "20170327",
+    "duration_sec": 1867,
+    "description": "This session jumps right into the challenges ICS security and Plant Managers face in asking for budget. Stated as clearly as I've ever heard in the first two minutes.\n\nDick then goes into six examples of things that happened in 2016 that have never happened before:\n\n1. A power outage occurred: Ukrainian Power Grid Attack \n2. The financial system is no longer sancrosanct: SWIFT was hacked by North Korea and stole money.\n3. NSA is no longer undisputed champ: NSA's attack techniques posted on the Internet\n4. Cyber due diligence in M&A caused major deal to change: Verizon buying Yahoo\n5. IoT zombie army happened: cameras attacked DNS\n6. Hospitals no longer off limits to attacks: Syria bombed hospitals and ransomware hit hospitals and shut them down (advice is pay up if hit because costs are small)\n\nIt's all FUD until it happens.\n\nAnother challenge is \"the problem is too big\"\n\nThird challenge is you can't put a reasonable probability on something that has never happened before.\n\nDick talks about the importance of setting goals, such as after x years everything in the medical industry must be deployed secure and all insecure devices must be replaced in y years. And doing this industry by industry.\n\nAnd these goals must be enforced through regulations. He believes in the absence of regulation security in ICS will not happen.\n\nRichard Clarke has a book coming out in May ... Warnings: Finding Cassandras to Stop Catastrophes3",
+    "view_count": 3045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Dtesjn9s_PU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

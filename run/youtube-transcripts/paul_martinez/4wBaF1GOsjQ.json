@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4wBaF1GOsjQ",
+    "language": "en",
+    "took_ms": 7815,
+    "method": null,
+    "title": "Ilan Gendelman of SIGA OT Solutions",
+    "channel": "S4 Events",
+    "upload_date": "20220511",
+    "duration_sec": 2715,
+    "description": "Unsolicited Response host Dale Peterson has been skeptical of the cost/benefit of accessing the electrical signals between Level 0 and Level 1 and creating a separate network to send that data to a platform for comparison to data at higher levels and analysis. This is a core part of SIGA's offering. \n\nDale and Ilan discuss what it actually does and doesn't do. What percentage of the Level 0 device communication needs to be monitored to get this information? The cost per sensor. And more. In the end they don't reach the same conclusion, but the decision points are clearer.\n\nThey finish discussing the back end processing for process variable anomaly detection, and how SIGA plans to compete with large vendors (GE, Siemens, ...), Azure and AWS, PI and specialized system vendors who have developed models.",
+    "view_count": 466
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4wBaF1GOsjQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

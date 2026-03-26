@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "890ZFTBsPCQ",
+    "language": "en",
+    "took_ms": 8702,
+    "method": null,
+    "title": "Launching a new series(!) and live tech talk w/ Alex Hollings",
+    "channel": "Sandboxx",
+    "upload_date": "20231023",
+    "duration_sec": 2659,
+    "description": "Sandboxx News editor-in-chief goes live to answer your questions and discuss ManPower — a new series launching tomorrow for Sandboxx News!\n\n📱 Follow Sandboxx News on social\nTwitter: https://twitter.com/sandboxxnews\nInstagram: https://instagram.com/sandboxxnews\nFacebook: https://facebook.com/sandboxxnews\nTikTok: https://www.tiktok.com/@sandboxxnews\n\n📱 Follow Alex Hollings on social\nTwitter: https://twitter.com/AlexHollings52\nInstagram: https://www.instagram.com/alexhollings52\nFacebook: https://www.facebook.com/AlexHollings...\nTikTok: https://www.tiktok.com/alexhollings52",
+    "view_count": 18731
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 890ZFTBsPCQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

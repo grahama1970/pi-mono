@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6mJaWlSNId8",
+    "language": "en",
+    "took_ms": 8559,
+    "method": null,
+    "title": "Marine Corps Boot Camp | Rappel Tower",
+    "channel": "Sandboxx",
+    "upload_date": "20210304",
+    "duration_sec": 68,
+    "description": "Have a fear of heights? Recruits at Marine Corps boot camp will quickly overcome their fears during their rappel tower training. \n\n(U.S. Marine Corps video by Lance Cpl Randall D. Whiteman)\n*No DoD endorsement implied.",
+    "view_count": 11380
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6mJaWlSNId8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

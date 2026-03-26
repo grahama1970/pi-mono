@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O1xhxAie7ac",
+    "language": "en",
+    "took_ms": 8811,
+    "method": null,
+    "title": "DEF CON 31 XR Village - The History of XR  From Fiction to Reality - Starr Brown, Bob Gourley",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 945,
+    "description": "In this discussion XR village Executive Director Starr Brown interviews Bob Gourley, whose site OODAloop.com has been tracking XR topics since 2003. Bob has leveraged his experience as a cybersecurity professional and an enterprise CTO to produce research and reporting on XR that points to a future of incredible potential, if we can mitigate the new threats this emerging technology brings with it. Starr Brown is a security professional with a knack for using collaboration and innovation to meet both compliance and security needs and was early in identifying the unique security and risk mitigation needs of XR, making her the perfect person to extract insights from Bob in this fireside chat.",
+    "view_count": 281
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O1xhxAie7ac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

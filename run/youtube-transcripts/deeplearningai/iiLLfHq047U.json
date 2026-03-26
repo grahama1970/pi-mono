@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iiLLfHq047U",
+    "language": "en",
+    "took_ms": 8666,
+    "method": null,
+    "title": "Learn to code, debug, and analyze data with AI assistance in Jupyter notebooks",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251103",
+    "duration_sec": 167,
+    "description": "Learn more: https://bit.ly/47AZws7\n\nOur latest course, Jupyter AI: AI Coding in Notebooks, taught by Andrew Ng and Brian Granger, co-founder of Project Jupyter, shows you how to use AI assistance directly inside Jupyter notebooks.\n\nAI coding assistants are transforming how we write, debug, and analyze code—but many don’t work well inside notebook environments. Jupyter AI changes that, bringing an intelligent, conversational coding partner right where you work.\n\nIn this course, you'll learn to:\n\n- Generate, refactor and explain code, including making API calls to services like OpenAI and performing statistical data analysis.\n- Build a book research assistant using the Open Library API by providing Jupyter AI with the API documentation as context.\n- Create a stock market data analysis workflow that you can use to perform analysis and visualization of financial data.\n\nBy the end, you’ll know how to use Jupyter AI to accelerate your development, improve your workflow, and build smarter applications—all within the notebook environment. \n\nEnroll now: https://bit.ly/47AZws7",
+    "view_count": 14544
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iiLLfHq047U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6B35QAfhIJQ",
+    "language": "en",
+    "took_ms": 9072,
+    "method": null,
+    "title": "Natural Gas Infrastructure and Power Grid: Richard Kruse and Michelle Bloodworth",
+    "channel": "Hudson Institute",
+    "upload_date": "20160406",
+    "duration_sec": 3078,
+    "description": "Richard Kruse and Michelle Bloodworth discuss the impact of shale natural gas on the American economy.",
+    "view_count": 388
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6B35QAfhIJQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

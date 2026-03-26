@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mbKaCQ2N6Iw",
+    "language": "en",
+    "took_ms": 7608,
+    "method": null,
+    "title": "Qwen3 Inference and MCP Agents",
+    "channel": "Trelis Research",
+    "upload_date": "20250505",
+    "duration_sec": 2294,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- mcp-run-python: https://ai.pydantic.dev/mcp/run-python/#installation\n\nTIMESTAMPS:\n0:00 Qwen3 Dense and Mixture of Expert Models\n0:29 Overview of the Qwen3 Family and Performance\n6:52 Qwen3 inference with vLLM and SGLang, thinking and no thinking\n17:39 Qwen3 inference benchmarking using llmperf\n26:54 Qwen3 MCP Agents\n37:26 Upcoming fine-tuning video & resources",
+    "view_count": 2912
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mbKaCQ2N6Iw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

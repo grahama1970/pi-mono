@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sI_iZ1IImpM",
+    "language": "en",
+    "took_ms": 8751,
+    "method": null,
+    "title": "Is Cybersecurity Fundamentally A Physics-Based Problem?",
+    "channel": "S4 Events",
+    "upload_date": "20240930",
+    "duration_sec": 1516,
+    "description": "Nic and the team at SEL have been researching the idea that cybersecurity has a fundamental basis in physics. Nic will present the findings, which highlight the role that modern information theory and the concept of semantic information play in cyber systems.\n\nNic explores ways we can understand how complexity, and ultimately uncertainty, impact the cybersecurity of these systems. Nic predicts that formalizing the relationship between complexity and security using information theory will ultimately allow industry to probabilistically ground relative measures of the security of systems across all mechanisms of security controls.\n\nDale's note: Ed Schweitzer mentioned this project on the S4 stage in S4x20, and I went back and forth on this idea with Nic multiple times. I'm not sure I understand it yet, and I think it needs some of the big brains at S4 to help this idea along (or disprove it).",
+    "view_count": 760
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sI_iZ1IImpM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

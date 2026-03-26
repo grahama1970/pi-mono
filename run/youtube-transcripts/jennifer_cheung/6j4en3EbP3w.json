@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6j4en3EbP3w",
+    "language": "en",
+    "took_ms": 7921,
+    "method": null,
+    "title": "DEF CON 31 - Retro Exploitation - Vintage Computing as a Vuln Research Playground - Wesley McGrew",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2654,
+    "description": "It can be very difficult for those new to hacking to learn about vulnerability discovery and exploit development on modern operating systems and software. The complexity of a modern computing environment, developer awareness of security risks, and the iterative development of exploit mitigations over the past three decades has put up an intimidating wall in front of those who would be interested in learning about vulnerability research. Vintage computing environments can provide an interesting and fun playground environment for learning and experimenting with reverse engineering, vulnerability discovery, and exploit development.\n\nIn this talk, Wesley will discuss the setup of a complete environment for hacking software for the Commodore Amiga line of computers, a 16/32 bit computing platform of the late 80s and early 90s (not to mention a dedicated following of users and software today). He will describe the hardware environment, OS architecture, and the practically endless library of software that can be used as interesting targets of research. On-system development and debugging software will be described, as well as using the modern Ghidra disassembler. A case study of identifying and exploiting a vulnerability in a 1994 vintage FTP client will be discussed in technical detail.",
+    "view_count": 671
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6j4en3EbP3w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

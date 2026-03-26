@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cI6WLiujJDY",
+    "language": "en",
+    "took_ms": 9300,
+    "method": null,
+    "title": "What AI Can and Cannot Do (AI For Everyone)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200128",
+    "duration_sec": 37,
+    "description": "Andrew Ng takes you through the situations in which ML works well and doesn't work well in AI For Everyone.\n\nEnroll in AI For Everyone: http://bit.ly/2O4UOe0\nCheck out all our courses at www.deeplearning.ai!\nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai/",
+    "view_count": 5091
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cI6WLiujJDY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

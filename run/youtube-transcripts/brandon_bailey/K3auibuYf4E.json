@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K3auibuYf4E",
+    "language": "en",
+    "took_ms": 8331,
+    "method": null,
+    "title": "DEF CON 30 -  Aviv Sassoon  -The Journey From Isolated Container to Cluster Admin",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2140,
+    "description": "Service Fabric is a scalable and reliable container orchestrator developed by Microsoft. It is widely used in Microsoft Azure as well as in Microsoft’s internal production environments as an infrastructure for containerized applications.\n\nDeveloping a container orchestrator is not an easy task as it involves harnessing many technologies in a complicated and distributed environment. This complexity can ultimately lead to security issues. Such security issues can impose a critical risk since compromising an infrastructure allows attackers to escalate their privileges and take over an entire environment quickly and effectively.\n\nIn this session, Aviv will share his research on Service Fabric and his journey of escalating from an isolated container to cluster admin. He will go through researching the code and finding a zero-day vulnerability, explaining his exploitation process in Azure Service Fabric offering while dealing with race conditions and other limitations, and explain how it all allowed him to break out of his container to later gain full control over the underlying Service Fabric cluster.\n\nIn the end, he will share his thoughts on security in the cloud and his concerns on cloud multitenancy.",
+    "view_count": 2380
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K3auibuYf4E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L6Y7q4Oh0sI",
+    "language": "en",
+    "took_ms": 8778,
+    "method": null,
+    "title": "Secure Development Is Not All The Same #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250515",
+    "duration_sec": 36,
+    "description": "Secure development isn’t created equal.",
+    "view_count": 1495
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L6Y7q4Oh0sI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

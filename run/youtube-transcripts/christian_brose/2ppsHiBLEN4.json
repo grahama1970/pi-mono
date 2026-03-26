@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2ppsHiBLEN4",
+    "language": "en",
+    "took_ms": 8530,
+    "method": null,
+    "title": "Energy Security and Economic Stability with Congressman Kelly Armstrong",
+    "channel": "Hudson Institute",
+    "upload_date": "20230515",
+    "duration_sec": 1885,
+    "description": "After the decrease in oil and natural gas production and the depletion of the Strategic Petroleum Reserve, America’s energy security is at risk. Join Hudson Senior Fellow Brigham McCown for a discussion with Congressman Kelly Armstrong (R-ND) on energy’s impact on economic stability and the role of energy production in North Dakota’s economy.",
+    "view_count": 485
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2ppsHiBLEN4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vRjB6TutzuM",
+    "language": "en",
+    "took_ms": 8741,
+    "method": null,
+    "title": "DEF CON 32 - The Village Peoples' Panel  What Really Goes On in a Village - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3311,
+    "description": "The Villages are a key part of the DEFCON experience - join this panel of staff members of the DEFCON Villages to get an inside scoop on all the intricacies of organizing a village. Topics from finding sponsors to setting up equipment to making sure everyone gets to take a break during the event - there's a whole lot that goes on behind the scenes at DEFCON villages!",
+    "view_count": 303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vRjB6TutzuM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

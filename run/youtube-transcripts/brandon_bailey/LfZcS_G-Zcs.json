@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LfZcS_G-Zcs",
+    "language": "en",
+    "took_ms": 9326,
+    "method": null,
+    "title": "DEF CON 31 - Small Leaks, Billions Of Dollars - Nikolaos Makriyannis, Oren Yomtov",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1988,
+    "description": "Multi-Party Computation (MPC) has become a common cryptographic technique for protecting hundreds of billions of dollars in cryptocurrency wallets. MPC algorithms are currently powering the wallets of Coinbase, Binance, Zengo, BitGo, Fireblocks and many other fintechs/banks servicing hundreds of millions of consumers and thousands of financial institutions.\n\nThis presentation examines the most common MPC protocols and implementations and shows that securing MPC remains a challenge for most companies.\n\nWe show practical key-exfiltration attacks requiring no more than a couple of hundred signatures. Namely, we show three different attacks on different protocols/implementations requiring 256, 16, and *one* signature, respectively.",
+    "view_count": 1269
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LfZcS_G-Zcs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

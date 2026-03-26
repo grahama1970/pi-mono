@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3lkaK4_5VMw",
+    "language": "en",
+    "took_ms": 8865,
+    "method": null,
+    "title": "National Security % Election Security: A Discussion with DOJ Assistant Attorney General John Demers",
+    "channel": "Hudson Institute",
+    "upload_date": "20201008",
+    "duration_sec": 2281,
+    "description": "Join Hudson Institute and John Demers, Assistant Attorney General for National Security at the U.S Department of Justice, for a discussion on Russia, China, and the unique threats they pose to American democratic institutions. The conversation will be hosted by Dan McKivergan, Hudson Institute Vice President for Government Relations.",
+    "view_count": 643
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3lkaK4_5VMw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

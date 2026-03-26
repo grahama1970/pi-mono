@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MqQbi-zescE",
+    "language": "en",
+    "took_ms": 9756,
+    "method": null,
+    "title": "Hypersonic missiles are about more than speed",
+    "channel": "Sandboxx",
+    "upload_date": "20230206",
+    "duration_sec": 46,
+    "description": "Hypersonic missiles, or missiles that can travel faster than Mach 5, are considered impossible to defend against... but not just because of their speed. \n#shorts #hypersonicmissile #hypersonic #defense #military #airpower",
+    "view_count": 38631
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MqQbi-zescE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

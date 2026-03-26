@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BcHL1n2SQOk",
+    "language": "en",
+    "took_ms": 10809,
+    "method": null,
+    "title": "Semi-Quantitative Cyber-Physical Risk Assessments",
+    "channel": "S4 Events",
+    "upload_date": "20230424",
+    "duration_sec": 2014,
+    "description": "Sinclair Koelemij has been involved in addressing risk in a variety for over four decades. He proposes the best risk assessment approach is between qualitative and quantitative risk assessment, a semi-qualitative risk assessment. He uses a reactor in a chemical plant to demonstrate this assessment approach.\n\nIn addition to learning about this approach, this is a good video to learn some of the engineering terms and techniques for process safety, risk and mitigation such as ALARP, LOPA, ROPA, and more.",
+    "view_count": 1980
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BcHL1n2SQOk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

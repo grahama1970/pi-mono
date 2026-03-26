@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p0go6a73Vm8",
+    "language": "en",
+    "took_ms": 7757,
+    "method": null,
+    "title": "Whit Diffie's S4x07 Keynote on the History of Cryptology",
+    "channel": "S4 Events",
+    "upload_date": "20181115",
+    "duration_sec": 3973,
+    "description": "This was the first keynote at the first S4 ever. Whit played a huge role in the development of a crypto community, and we wanted to begin to develop an ICS security community through, at least in part, S4. I think we generously called the attendance at 40, and you see the people and room in the Q&A at the end.\n\nThis is a great lecture on the history of cryptology, including very importantly how he and Marty Hellman developed public key cryptography. It's full of interesting facts and personal stories.",
+    "view_count": 1245
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p0go6a73Vm8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

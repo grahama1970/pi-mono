@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0b1220; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; line-height: 1.5; height: 100vh; display: flex; overflow: hidden; }
+
+/* ═══ LEFT PANE — inputs ═══ */
+.left { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+.left-header { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.left-header h1 { font-size: 13px; font-weight: 700; color: #7c3aed; }
+.left-header .sub { font-size: 10px; color: #334155; margin-top: 2px; }
+
+/* Agent indicator */
+.agent-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 600; float: right; margin-top: -18px; }
+.agent-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+.agent-active { border: 1px solid rgba(124,58,237,0.5); color: #7c3aed; }
+.agent-active .dot { background: #7c3aed; box-shadow: 0 0 8px #7c3aed99; }
+
+/* Tabs */
+.tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.tab { flex: 1; padding: 8px; text-align: center; font-size: 10px; font-weight: 600; cursor: pointer; color: #334155; border-bottom: 2px solid transparent; }
+.tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+
+/* System prompt section */
+.prompt-section { flex: 1; overflow: auto; padding: 12px 16px; }
+.prompt-editor { width: 100%; min-height: 180px; resize: vertical; background: #0f172a; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 8px; font-family: 'SF Mono', 'Menlo', monospace; font-size: 11px; line-height: 1.5; }
+
+/* Test cases section */
+.cases-section { padding: 12px 16px; overflow: auto; }
+.case-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px; margin-bottom: 2px; cursor: pointer; }
+.case-row:hover { background: rgba(124,58,237,0.06); }
+.case-id { font-size: 9px; font-weight: 700; color: #7c3aed; font-family: 'SF Mono', monospace; width: 90px; flex-shrink: 0; }
+.case-name { font-size: 10px; color: #4a9eff; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.case-tags { display: flex; gap: 2px; flex-shrink: 0; }
+.tag { font-size: 7px; font-weight: 700; padding: 1px 4px; border-radius: 2px; }
+.tag-c { background: rgba(124,58,237,0.12); color: #7c3aed; }
+.tag-t { background: rgba(74,158,255,0.12); color: #4a9eff; }
+.case-actions { display: flex; gap: 4px; padding: 8px 0; }
+.case-btn { font-size: 9px; padding: 3px 10px; border-radius: 3px; cursor: pointer; font-weight: 600; }
+.case-btn-add { border: 1px solid rgba(124,58,237,0.3); background: transparent; color: #7c3aed; }
+.case-btn-import { border: 1px solid rgba(255,255,255,0.13); background: transparent; color: #64748b; }
+
+/* Models section */
+.models-section { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+.model-chip { display: inline-block; font-size: 10px; padding: 3px 8px; border-radius: 4px; margin: 0 4px 4px 0; cursor: pointer; }
+.model-chip-on { border: 1px solid #7c3aed; background: rgba(124,58,237,0.12); color: #7c3aed; font-weight: 600; }
+.model-chip-off { border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #334155; }
+
+/* Optimize button */
+.optimize-btn { width: 100%; padding: 8px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 8px; border: 1px solid #00ff88; background: rgba(0,255,136,0.08); color: #00ff88; }
+.optimize-btn:hover { background: rgba(0,255,136,0.15); }
+
+.lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #334155; margin-bottom: 6px; }
+
+/* ═══ RIGHT PANE — results ═══ */
+.right { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Summary table */
+.summary-section { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+.summary-section .lbl { margin-bottom: 8px; }
+.summary-table { width: 100%; border-collapse: collapse; }
+.summary-table th { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #334155; padding: 5px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.summary-table td { padding: 6px 8px; font-size: 10px; color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; }
+.summary-table tr:hover td { background: rgba(124,58,237,0.04); }
+.summary-table tr.selected td { background: rgba(124,58,237,0.08); border-left: 2px solid #7c3aed; }
+.status { font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 3px; }
+.status-pass { background: rgba(0,255,136,0.1); color: #00ff88; }
+.status-fail { background: rgba(255,68,68,0.1); color: #ff4444; }
+.status-run { background: rgba(124,58,237,0.1); color: #7c3aed; }
+.f1 { font-weight: 700; font-family: 'SF Mono', monospace; }
+.f1g { color: #00ff88; }
+.f1y { color: #ffaa00; }
+.f1r { color: #ff4444; }
+.best-badge { font-size: 7px; font-weight: 700; padding: 1px 4px; border-radius: 2px; background: rgba(0,255,136,0.1); color: #00ff88; margin-left: 4px; vertical-align: middle; }
+
+/* Spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { display: inline-block; width: 8px; height: 8px; border: 1.5px solid #7c3aed; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 4px; }
+
+/* Detail view */
+.detail-section { flex: 1; overflow: auto; padding: 16px; }
+.detail-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.detail-model { font-size: 14px; font-weight: 700; color: #e2e8f0; }
+.detail-f1 { font-size: 12px; font-weight: 700; }
+
+/* Report card */
+.report { padding: 12px; border: 1px solid rgba(0,255,136,0.15); border-radius: 6px; background: rgba(0,255,136,0.02); margin-bottom: 12px; }
+.report-fail { border-color: rgba(255,68,68,0.15); background: rgba(255,68,68,0.02); }
+.report-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.report-label-pass { color: #00ff88; }
+.report-label-fail { color: #ff4444; }
+
+.result-table { width: 100%; border-collapse: collapse; }
+.result-table th { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #334155; padding: 4px 6px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.result-table td { padding: 5px 6px; font-size: 9px; color: #64748b; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.result-table .sum td { border-top: 2px solid rgba(255,255,255,0.08); font-weight: 700; font-size: 10px; }
+.b { display: inline-block; padding: 0px 4px; border-radius: 2px; font-size: 8px; font-weight: 700; margin-right: 3px; }
+.bp { background: rgba(0,255,136,0.1); color: #00ff88; }
+.bf { background: rgba(255,68,68,0.1); color: #ff4444; }
+
+/* Converged prompt */
+.prompt-file { font-size: 10px; font-weight: 600; color: #7c3aed; margin: 10px 0 4px; }
+.prompt-text { padding: 8px; background: rgba(124,58,237,0.04); border-left: 2px solid #7c3aed; border-radius: 0 3px 3px 0; font-family: 'SF Mono', monospace; font-size: 10px; color: #64748b; white-space: pre-wrap; max-height: 200px; overflow: auto; line-height: 1.5; }
+
+/* Iteration log */
+details { margin: 8px 0; }
+summary { font-size: 10px; color: #7c3aed; cursor: pointer; padding: 2px 0; }
+summary:hover { text-decoration: underline; }
+.log-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+.log-table th { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #334155; padding: 4px 6px; text-align: left; }
+.log-table td { padding: 4px 6px; font-size: 9px; color: #64748b; border-top: 1px solid rgba(255,255,255,0.03); font-family: 'SF Mono', monospace; }
+.round-sep td { border-top: 2px solid rgba(124,58,237,0.2); font-size: 8px; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.05em; font-family: -apple-system, sans-serif; padding: 6px 6px 3px; }
+.trunc { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Actions bar */
+.actions-bar { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.btn { padding: 6px 20px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; }
+.btn-approve { border: 1px solid #00ff88; background: rgba(0,255,136,0.1); color: #00ff88; }
+.btn-reject { border: 1px solid rgba(255,255,255,0.13); background: transparent; color: #64748b; }
+.save-note { font-size: 9px; color: #334155; margin-left: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     LEFT PANE — System Prompt + Test Cases + Models
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<div class="left">
+  <div class="left-header">
+    <h1>prompt-lab optimize</h1>
+    <div class="sub">taxonomy_v1 · Threshold: F1 ≥ 0.800</div>
+    <div class="agent-pill agent-active"><span class="dot"></span>AGENT DRIVING</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">Prompt</div>
+    <div class="tab">Test Cases</div>
+    <div class="tab">Models</div>
+  </div>
+
+  <!-- TAB 1: System prompt editor -->
+  <div class="prompt-section">
+    <div class="lbl">System Prompt (base — will be optimized per model)</div>
+    <textarea class="prompt-editor" spellcheck="false">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+
+Return ONLY valid JSON: {"conceptual":[...],"tactical":[...],"confidence":0.8}
+
+Valid conceptual: Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical: Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+Choose tags that best describe the PRIMARY purpose.</textarea>
+  </div>
+
+  <!-- TAB 2: Test cases (shown inline for mockup) -->
+  <div class="cases-section" style="border-top: 1px solid rgba(255,255,255,0.08);">
+    <div class="lbl">Test Cases (3 of 8)</div>
+    <div class="case-row">
+      <span class="case-id">T1547.001</span>
+      <span class="case-name">Registry Run Keys / Startup Folder</span>
+      <span class="case-tags"><span class="tag tag-c">Corruption</span><span class="tag tag-t">Persist</span></span>
+    </div>
+    <div class="case-row">
+      <span class="case-id">SI-2</span>
+      <span class="case-name">Flaw Remediation</span>
+      <span class="case-tags"><span class="tag tag-c">Resilience</span><span class="tag tag-c">Fragility</span><span class="tag tag-t">Harden</span></span>
+    </div>
+    <div class="case-row">
+      <span class="case-id">d3f:NetIso</span>
+      <span class="case-name">Network Isolation</span>
+      <span class="case-tags"><span class="tag tag-c">Resilience</span><span class="tag tag-t">Isolate</span></span>
+    </div>
+    <div class="case-actions">
+      <button class="case-btn case-btn-add">+ Add Custom</button>
+      <button class="case-btn case-btn-import">Import from Ground Truth</button>
+    </div>
+  </div>
+
+  <!-- TAB 3: Model selection -->
+  <div class="models-section">
+    <div class="lbl">Target Models (3 selected)</div>
+    <span class="model-chip model-chip-on">DeepSeek-V3</span>
+    <span class="model-chip model-chip-on">qwen2.5:7b</span>
+    <span class="model-chip model-chip-on">text-gemini</span>
+    <span class="model-chip model-chip-off">qwen2.5:14b</span>
+    <span class="model-chip model-chip-off">qwen2.5:3b</span>
+    <button class="optimize-btn">Optimize 3 Models</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     RIGHT PANE — Summary table + drill-down detail
+     ═══════════════════════════════════════════════════════════════════════════ -->
+
+<div class="right">
+
+  <!-- SUMMARY TABLE — always visible, one row per model -->
+  <div class="summary-section">
+    <div class="lbl">Model Results</div>
+    <table class="summary-table">
+      <thead><tr>
+        <th style="width:25%">Model</th>
+        <th style="width:12%">Status</th>
+        <th style="width:12%">F1</th>
+        <th style="width:10%">Rounds</th>
+        <th style="width:15%">Failures Fixed</th>
+        <th style="width:12%">Time</th>
+      </tr></thead>
+      <tbody>
+        <tr class="selected">
+          <td style="color:#e2e8f0;font-weight:600">DeepSeek-V3 <span class="best-badge">BEST</span></td>
+          <td><span class="status status-pass">PASS</span></td>
+          <td class="f1 f1g">0.929</td>
+          <td>2</td>
+          <td>1 / 1</td>
+          <td>4.2s</td>
+        </tr>
+        <tr>
+          <td style="color:#e2e8f0;font-weight:600">qwen2.5:7b</td>
+          <td><span class="status status-pass">PASS</span></td>
+          <td class="f1 f1g">0.881</td>
+          <td>4</td>
+          <td>3 / 3</td>
+          <td>38.1s</td>
+        </tr>
+        <tr>
+          <td style="color:#e2e8f0;font-weight:600">text-gemini</td>
+          <td><span class="status status-run"><span class="spinner"></span>Round 2</span></td>
+          <td class="f1" style="color:#7c3aed">—</td>
+          <td>2...</td>
+          <td>1...</td>
+          <td><span class="spinner"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DETAIL VIEW — shows selected model's full report -->
+  <div class="detail-section">
+    <div class="detail-header">
+      <span class="detail-model">DeepSeek-V3</span>
+      <span class="detail-f1 f1g">F1 0.929</span>
+      <span class="status status-pass">PASS</span>
+      <span style="font-size:9px;color:#334155;margin-left:auto">2 rounds · 1 failure fixed · 4.2s</span>
+    </div>
+
+    <!-- Final results table -->
+    <div class="report">
+      <div class="report-label report-label-pass">Final Result — one-shot responses with converged prompt</div>
+      <table class="result-table">
+        <thead><tr>
+          <th style="width:18%">Test Case</th>
+          <th style="width:47%">Response</th>
+          <th style="width:8%">F1</th>
+          <th style="width:7%"></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:#4a9eff">Registry Run Keys</td>
+            <td style="font-family:'SF Mono',monospace;font-size:9px">{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.95}</td>
+            <td class="f1 f1g">1.000</td>
+            <td><span class="b bp">PASS</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9eff">Flaw Remediation</td>
+            <td style="font-family:'SF Mono',monospace;font-size:9px">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</td>
+            <td class="f1 f1g">0.857</td>
+            <td><span class="b bp">PASS</span></td>
+          </tr>
+          <tr>
+            <td style="color:#4a9eff">Network Isolation</td>
+            <td style="font-family:'SF Mono',monospace;font-size:9px">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.92}</td>
+            <td class="f1 f1g">0.929</td>
+            <td><span class="b bp">PASS</span></td>
+          </tr>
+          <tr class="sum"><td colspan="2" style="text-align:right">Avg F1</td><td class="f1 f1g">0.929</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Converged system prompt — the deliverable -->
+    <div class="prompt-file">Converged prompt → taxonomy_v1.deepseek-v3.txt</div>
+    <div class="prompt-text">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+
+Return ONLY valid JSON: {"conceptual":[...],"tactical":[...],"confidence":0.8}
+
+IMPORTANT: Use ONLY exact tag names. "Persistence" is NOT a tag — use "Persist".
+
+Valid conceptual: Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical: Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+Choose tags that best describe the PRIMARY purpose. Be precise, not exhaustive.</div>
+
+    <!-- Iteration log — collapsed -->
+    <details>
+      <summary>Iteration log (2 rounds, 6 eval calls)</summary>
+      <table class="log-table">
+        <thead><tr><th style="width:6%">Rd</th><th style="width:26%">System Prompt</th><th style="width:22%">Test Case</th><th style="width:34%">Response</th><th style="width:6%">F1</th></tr></thead>
+        <tbody>
+          <tr class="round-sep"><td colspan="5">Round 1 — base prompt</td></tr>
+          <tr><td>1.1</td><td class="trunc" style="color:#7c3aed">Base prompt (372 chars)</td><td class="trunc" style="color:#4a9eff">Registry Run Keys</td><td><span class="b bf">FAIL</span>{"conceptual":["Corruption","Persistence"]...}</td><td class="f1 f1r">0.333</td></tr>
+          <tr><td>1.2</td><td style="color:#334155">↑ same</td><td class="trunc" style="color:#4a9eff">Flaw Remediation</td><td><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"]...}</td><td class="f1 f1g">0.857</td></tr>
+          <tr><td>1.3</td><td style="color:#334155">↑ same</td><td class="trunc" style="color:#4a9eff">Network Isolation</td><td><span class="b bp">PASS</span>{"conceptual":["Resilience"],"tactical":["Isolate"]}</td><td class="f1 f1y">0.667</td></tr>
+          <tr class="round-sep"><td colspan="5">Round 2 — added: "Persistence is NOT a tag — use Persist"</td></tr>
+          <tr><td>2.1</td><td class="trunc" style="color:#7c3aed">+42 chars: disambiguation</td><td class="trunc" style="color:#4a9eff">Registry Run Keys</td><td><span class="b bp">PASS</span>{"conceptual":["Corruption"],"tactical":["Persist"]}</td><td class="f1 f1g">1.000</td></tr>
+          <tr><td>2.2</td><td style="color:#334155">↑ same</td><td class="trunc" style="color:#4a9eff">Flaw Remediation</td><td><span class="b bp">PASS</span>{"conceptual":["Resilience","Fragility"]...}</td><td class="f1 f1g">0.857</td></tr>
+          <tr><td>2.3</td><td style="color:#334155">↑ same</td><td class="trunc" style="color:#4a9eff">Network Isolation</td><td><span class="b bp">PASS</span>{"conceptual":["Resilience"],"tactical":["Isolate"]}</td><td class="f1 f1g">0.929</td></tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+
+  <!-- Actions bar -->
+  <div class="actions-bar">
+    <button class="btn btn-approve">Approve & Save All</button>
+    <button class="btn btn-reject">Reject</button>
+    <span class="save-note">Saves 3 per-model prompts + updates taxonomy_v1.txt with DeepSeek-V3 (best F1)</span>
+  </div>
+
+</div>
+
+</body>
+</html>

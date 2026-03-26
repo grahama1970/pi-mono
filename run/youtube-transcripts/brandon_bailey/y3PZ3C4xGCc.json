@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y3PZ3C4xGCc",
+    "language": "en",
+    "took_ms": 9767,
+    "method": null,
+    "title": "DEF CON Safe Mode   Erik Hunstad   Domain Fronting is Dead Long Live Domain Fronting   Q&A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1775,
+    "description": "Question and Answer Session for Erik Hunstad - Domain Fronting is Deal Long Live Domain Fronting",
+    "view_count": 546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y3PZ3C4xGCc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

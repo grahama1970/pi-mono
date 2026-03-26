@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dCyH23VbI_s",
+    "language": "en",
+    "took_ms": 9355,
+    "method": null,
+    "title": "Irwin Stelzer on Current Economics in Europe",
+    "channel": "Hudson Institute",
+    "upload_date": "20110204",
+    "duration_sec": 157,
+    "description": "Hudson Senior Fellow and Director of Economic Policy Studies Irwin Stelzer discusses the current economic situation in Europe and German Chancellor Merkel's decision to consider bailing out other countries from their economic situations.",
+    "view_count": 152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dCyH23VbI_s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

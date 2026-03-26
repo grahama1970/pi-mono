@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_FJl-BXbUEM",
+    "language": "en",
+    "took_ms": 8587,
+    "method": null,
+    "title": "How to use Google's MusicLM in your daily journal",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230518",
+    "duration_sec": 401,
+    "description": "In this video, we're going to try out Google's MusicLM, where we can write a text and it generates music for us – a prompt-to-music system. If you want to give it a shot yourself, head over to:\nGoogle MusicLM\nhttps://aitestkitchen.withgoogle.com/\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n----------------------------------------------------------------------------------\n\n00:00 Intro\n01:00 Ringtone to Waking up\n01:39 Gym Music\n02:17 Office Music\n03:12 Shopping Music\n04:05 Romantic Dinner\n04:40 A.I. Dj\n05:40 Music to sleep\n06:11 Outro",
+    "view_count": 14925
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _FJl-BXbUEM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

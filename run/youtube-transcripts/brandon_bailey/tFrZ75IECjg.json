@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tFrZ75IECjg",
+    "language": "en",
+    "took_ms": 7868,
+    "method": null,
+    "title": "DEF CON 33 - Dead Reckoning: Hijacking Marine Autopilots - Carson Green & Rik Chatterjee",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1230,
+    "description": "We demonstrate a vulnerability in a commonly-used autopilot computer that allows unsigned firmware to be pushed through trusted update channels such as SD cards and NMEA 2000 networked chart plotters without authentication or cryptographic validation. We show how a malicious ‘.swup’ file can be crafted and accepted by the system to gain persistent code execution, enabling arbitrary CAN bus injection on marine control networks. The attack chain, reminiscent of removable media-style delivery in air-gapped systems, demonstrates how firmware-level control in marine environments can be leveraged to disrupt navigation subsystems. We will walk through firmware extraction, reverse engineering of firmware and CAN subroutines, firmware repackaging, and live effects on NMEA 2000 networks. No physical access to the autopilot is needed, the attack leverages trusted firmware delivery via the chart plotter over NMEA 2000.",
+    "view_count": 152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tFrZ75IECjg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

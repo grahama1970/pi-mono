@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Eval Lab - NVIS Dark Theme</title>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* NVIS Dark Theme Colors */
+        :root {
+            --bg: #0b1220;
+            --surface: #111827;
+            --border: #1e293b;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent: #7c3aed;
+            --green: #00ff88;
+            --red: #ff4444;
+            --amber: #fbbf24;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* General UI Elements */
+        .container {
+            max-width: 1200px; /* Constrain width for better readability */
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1; /* Allow content to grow */
+        }
+
+        .button {
+            background-color: var(--accent);
+            color: var(--text);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        .button:hover {
+            background-color: #6d28d9; /* Darker accent */
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+
+        .button svg {
+            fill: currentColor;
+        }
+
+        .input-field, .select-field {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            appearance: none; /* Remove default arrow for select */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            min-width: 150px; /* Ensure select is wide enough */
+        }
+
+        .select-field {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 1em;
+            padding-right: 30px; /* Make space for custom arrow */
+        }
+
+        .input-field:focus, .select-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-bar-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-bar label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .range-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1; /* Allow slider to take available space */
+            min-width: 120px; /* Minimum width for the slider + value */
+            max-width: 250px; /* Max width to prevent it from being too long */
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%; /* Take full width of its container */
+            height: 6px;
+            background: var(--border);
+            outline: none;
+            opacity: 0.8;
+            transition: opacity .2s;
+            border-radius: 3px;
+        }
+
+        .range-slider:hover {
+            opacity: 1;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: 2px solid var(--surface); /* To give it a visible border */
+            box-shadow: 0 0 0 2px var(--accent); /* Inner glow effect */
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            background-color: #6d28d9;
+            box-shadow: 0 0 0 2px #6d28d9;
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: 2px solid var(--surface);
+            box-shadow: 0 0 0 2px var(--accent);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .range-slider::-moz-range-thumb:hover {
+            background-color: #6d28d9;
+            box-shadow: 0 0 0 2px #6d28d9;
+        }
+
+        .threshold-value {
+            font-weight: 600;
+            color: var(--text);
+            min-width: 40px; /* Fixed width for alignment */
+            text-align: right;
+        }
+
+        /* Main Area - Model Pipeline */
+        .pipeline-container {
+            padding: 30px 20px;
+            display: flex;
+            gap: 25px;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            /* Hide scrollbar for aesthetic, but allow scrolling */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        .pipeline-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .model-card {
+            flex-shrink: 0; /* Prevent cards from shrinking */
+            width: 250px; /* Fixed width for consistent card size */
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            cursor: pointer;
+        }
+
+        .model-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px var(--shadow-color);
+        }
+
+        .model-card.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent), 0 6px 16px var(--shadow-color); /* Maintain shadow on select */
+        }
+
+        .model-card.winner {
+            border-color: var(--green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); /* Green glow */
+        }
+        .model-card.winner.selected {
+            box-shadow: 0 0 0 2px var(--green), 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .model-card.untested {
+            opacity: 0.6;
+            border-style: dotted;
+            color: var(--text-secondary);
+        }
+        .model-card.untested .sparkline-bar {
+            background-color: rgba(124, 58, 237, 0.2); /* Lighter accent for untested sparkline */
+        }
+
+        .model-card h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .model-card .size {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .model-card .f1-score {
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+        .model-card .f1-score.pass { color: var(--green); }
+        .model-card .f1-score.fail { color: var(--red); }
+        .model-card .f1-score.partial { color: var(--amber); }
+
+
+        .model-card .winner-badge {
+            background-color: var(--green);
+            color: var(--surface);
+            font-size: 0.7em;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            letter-spacing: 0.05em;
+        }
+
+        .model-card .fail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 68, 68, 0.1); /* Subtle red overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            pointer-events: none; /* Allow interaction with card below */
+        }
+
+        .model-card .fail-overlay .x-icon {
+            font-size: 4em;
+            color: var(--red);
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5); /* Slight glow for the X */
+        }
+
+        .sparkline-container {
+            display: flex;
+            width: 100%;
+            height: 40px;
+            gap: 2px;
+            align-items: flex-end; /* Bars grow from bottom */
+            margin-top: 10px;
+            padding: 0 5px; /* Little padding to not touch edges */
+        }
+
+        .sparkline-bar {
+            flex-grow: 1;
+            background-color: rgba(124, 58, 237, 0.4); /* Accent color */
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s ease, background-color 0.2s ease;
+            min-width: 2px; /* Ensure tiny bars are visible */
+        }
+        .sparkline-bar.pass { background-color: rgba(0, 255, 136, 0.6); }
+        .sparkline-bar.fail { background-color: rgba(255, 68, 68, 0.6); }
+        .sparkline-bar.partial { background-color: rgba(251, 191, 36, 0.6); }
+
+
+        /* Detail Panel */
+        .detail-panel {
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 20px;
+            margin-top: 20px; /* Space from pipeline */
+            border-radius: 8px;
+            box-shadow: 0 -2px 8px var(--shadow-color);
+        }
+
+        .detail-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .detail-panel-header h2 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .detail-panel-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+            line-height: 1;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        .detail-panel-toggle:hover {
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .detail-panel-content {
+            max-height: 500px; /* Default max height when expanded */
+            overflow-y: auto;
+            transition: max-height 0.3s ease-out, overflow-y 0.3s ease-out;
+            /* Hide scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .detail-panel-content::-webkit-scrollbar {
+            display: none;
+        }
+        .detail-panel-content.collapsed {
+            max-height: 0;
+            overflow-y: hidden;
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .detail-table th, .detail-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-table tr:hover {
+            background-color: rgba(124, 58, 237, 0.05); /* Subtle hover */
+        }
+
+        .status-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            white-space: nowrap; /* Prevent tag from breaking */
+        }
+        .status-tag.pass { background-color: rgba(0, 255, 136, 0.15); color: var(--green); }
+        .status-tag.fail { background-color: rgba(255, 68, 68, 0.15); color: var(--red); }
+        .status-tag.partial { background-color: rgba(251, 191, 36, 0.15); color: var(--amber); }
+        .status-tag.untested { background-color: rgba(148, 163, 184, 0.1); color: var(--text-secondary); }
+
+
+        /* Bottom Sticky Bar */
+        .bottom-sticky-bar {
+            background-color: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            bottom: 0;
+            z-index: 90;
+            box-shadow: 0 -4px 10px var(--shadow-color);
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 15px; /* Gap for wrapped items */
+        }
+
+        .recommendation-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .recommendation-info .label {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .recommendation-info .value {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .recommendation-info .model-name {
+            color: var(--green);
+        }
+
+        .apply-button {
+            background-color: var(--green);
+            color: var(--surface);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        .apply-button:hover {
+            background-color: #00cc66; /* Darker green */
+            box-shadow: 0 4px 10px rgba(0, 255, 136, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="top-bar-section">
+            <label for="groundTruthFile">Ground Truth:</label>
+            <select id="groundTruthFile" class="select-field">
+                <option value="developer-accuracy.json">Developer Accuracy (250 cases)</option>
+                <option value="marketing-copy.json">Marketing Copy (50 cases)</option>
+            </select>
+        </div>
+
+        <div class="top-bar-section range-slider-container">
+            <label for="threshold">Threshold:</label>
+            <input type="range" id="threshold" class="range-slider" min="0" max="100" value="85">
+            <span class="threshold-value" id="thresholdValue">85%</span>
+        </div>
+
+        <button class="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5V19L19 12L8 5Z"/>
+            </svg>
+            Run Pipeline
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="pipeline-container">
+
+            <!-- Model Card 1: qwen3:1.7b (FAIL) -->
+            <div class="model-card" data-model="qwen3:1.7b" data-status="fail" data-f1="25">
+                <h3>qwen3:1.7b</h3>
+                <span class="size">1.7B local</span>
+                <div class="f1-score fail">25%</div>
+                <div class="sparkline-container">
+                    <!-- Example sparkline data (heights are percentages of max height) -->
+                    <div class="sparkline-bar fail" style="height: 20%;"></div>
+                    <div class="sparkline-bar fail" style="height: 10%;"></div>
+                    <div class="sparkline-bar fail" style="height: 30%;"></div>
+                    <div class="sparkline-bar pass" style="height: 50%;"></div>
+                    <div class="sparkline-bar fail" style="height: 15%;"></div>
+                    <div class="sparkline-bar partial" style="height: 40%;"></div>
+                    <div class="sparkline-bar fail" style="height: 5%;"></div>
+                    <div class="sparkline-bar pass" style="height: 60%;"></div>
+                </div>
+                <div class="fail-overlay">
+                    <span class="x-icon">✕</span>
+                </div>
+            </div>
+
+            <!-- Model Card 2: qwen2.5-coder:7b (FAIL) -->
+            <div class="model-card" data-model="qwen2.5-coder:7b" data-status="fail" data-f1="71">
+                <h3>qwen2.5-coder:7b</h3>
+                <span class="size">7B local</span>
+                <div class="f1-score fail">71%</div>
+                <div class="sparkline-container">
+                    <div class="sparkline-bar pass" style="height: 80%;"></div>
+                    <div class="sparkline-bar fail" style="height: 40%;"></div>
+                    <div class="sparkline-bar pass" style="height: 90%;"></div>
+                    <div class="sparkline-bar partial" style="height: 60%;"></div>
+                    <div class="sparkline-bar pass" style="height: 75%;"></div>
+                    <div class="sparkline-bar fail" style="height: 30%;"></div>
+                    <div class="sparkline-bar pass" style="height: 85%;"></div>
+                    <div class="sparkline-bar pass" style="height: 70%;"></div>
+                </div>
+                <div class="fail-overlay">
+                    <span class="x-icon">✕</span>
+                </div>
+            </div>
+
+            <!-- Model Card 3: qwen3:8b (WINNER) -->
+            <div class="model-card winner selected" data-model="qwen3:8b" data-status="pass" data-f1="88">
+                <h3>qwen3:8b</h3>
+                <span class="size">8B local</span>
+                <div class="f1-score pass">88%</div>
+                <div class="sparkline-container">
+                    <div class="sparkline-bar pass" style="height: 95%;"></div>
+                    <div class="sparkline-bar pass" style="height: 85%;"></div>
+                    <div class="sparkline-bar pass" style="height: 90%;"></div>
+                    <div class="sparkline-bar pass" style="height: 70%;"></div>
+                    <div class="sparkline-bar pass" style="height: 99%;"></div>
+                    <div class="sparkline-bar partial" style="height: 60%;"></div>
+                    <div class="sparkline-bar pass" style="height: 80%;"></div>
+                    <div class="sparkline-bar pass" style="height: 90%;"></div>
+                </div>
+                <span class="winner-badge">WINNER</span>
+            </div>
+
+            <!-- Model Card 4: llama3:70b (UNTESTED) -->
+            <div class="model-card untested" data-model="llama3:70b" data-status="untested" data-f1="--">
+                <h3>llama3:70b</h3>
+                <span class="size">70B cloud</span>
+                <div class="f1-score partial">--</div>
+                <div class="sparkline-container">
+                    <!-- Default/grayed sparkline for untested -->
+                    <div class="sparkline-bar" style="height: 30%;"></div>
+                    <div class="sparkline-bar" style="height: 50%;"></div>
+                    <div class="sparkline-bar" style="height: 20%;"></div>
+                    <div class="sparkline-bar" style="height: 70%;"></div>
+                    <div class="sparkline-bar" style="height: 40%;"></div>
+                    <div class="sparkline-bar" style="height: 60%;"></div>
+                    <div class="sparkline-bar" style="height: 35%;"></div>
+                    <div class="sparkline-bar" style="height: 55%;"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="detail-panel">
+            <div class="detail-panel-header">
+                <h2 id="detailPanelTitle">Per-Case Results for qwen3:8b</h2>
+                <button

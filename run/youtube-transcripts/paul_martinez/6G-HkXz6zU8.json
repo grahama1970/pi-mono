@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6G-HkXz6zU8",
+    "language": "en",
+    "took_ms": 8798,
+    "method": null,
+    "title": "S4x20 ICS Security Conference: Jan 21-23 in Miami South Beach",
+    "channel": "S4 Events",
+    "upload_date": "20171015",
+    "duration_sec": 41,
+    "description": "S4 is the largest and most advanced ICS event every year. It is the place to meet the world's best and learn what is coming next. In fact, come to S4x20 and help create the future. \n\nS4x20 is 3-days, 3-stages, 60+ sessions with fresh and important content. And 500+ of the world's best converging to share ideas and fun in Miami South Beach.",
+    "view_count": 3846
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6G-HkXz6zU8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

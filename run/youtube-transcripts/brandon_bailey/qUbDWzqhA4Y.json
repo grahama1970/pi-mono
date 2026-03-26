@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qUbDWzqhA4Y",
+    "language": "en",
+    "took_ms": 8556,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Petros Koutrompis -  OU Having a Laugh -",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 1816,
+    "description": "Whether you are trying to attack or defend Active Directory, BloodHound has been the default tool for identifying attack paths. With its latest release, BloodHound3 has introduced a number of new edges including the collection of ACLs for Organizational Units.\n\nIn this talk we will present a method to abuse edit rights on an OU by serving malicious Group Policy Objects in order to compromise any computer or user object that is a member of the vulnerable OU or any of its child OUs.",
+    "view_count": 454
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qUbDWzqhA4Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1L08UNns5LU",
+    "language": "en",
+    "took_ms": 8858,
+    "method": null,
+    "title": "Summarising Files from Google Drive",
+    "channel": "Trelis Research",
+    "upload_date": "20230622",
+    "duration_sec": 80,
+    "description": "Summarise files set to public in your Google Drive.\n\nSummarise Me uses AI to generate summaries of pdfs up to 60,000 words in length.\n\nSummaries are powered by Anthropic's Claude model, which allows for much longer inputs than chatGPT by openai.\n\nSummariseMe directly reads all of the file content and generates a summary of the key points. This is unlike embedding search approaches where only portions of the document are fed as an input to the summary.",
+    "view_count": 1059
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1L08UNns5LU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

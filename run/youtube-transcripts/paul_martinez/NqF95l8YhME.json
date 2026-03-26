@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NqF95l8YhME",
+    "language": "en",
+    "took_ms": 8597,
+    "method": null,
+    "title": "Owl Cyber Defense - Edge Protection for the OT",
+    "channel": "S4 Events",
+    "upload_date": "20200321",
+    "duration_sec": 1775,
+    "description": "Scott Coleman and Dennis Lanahan of Owl Cyber Defense show how data diode technology can meet many of the US DHS recommendations and stop 583 documented cyber incidents. \n\nApproaches include one-way out, one-way in, and a two-way solution the uses two one-way data diodes.",
+    "view_count": 235
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NqF95l8YhME: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

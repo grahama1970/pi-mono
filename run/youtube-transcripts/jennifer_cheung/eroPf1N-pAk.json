@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eroPf1N-pAk",
+    "language": "en",
+    "took_ms": 8812,
+    "method": null,
+    "title": "DEF CON 33 - Rusty pearls: Postgres RCE on cloud databases - Tal 'TLP' Peleg, Coby Abrams",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1110,
+    "description": "In this session, we will delve into CVE-2024-10979, discovered by Varonis Threat Labs, and explain how it can be exploited to execute arbitrary code on cloud-hosted databases. Join us to gain insights into this significant Remote Code Execution (RCE) vulnerability and learn strategies for defending and testing managed databases for vulnerabilities.",
+    "view_count": 213
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eroPf1N-pAk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

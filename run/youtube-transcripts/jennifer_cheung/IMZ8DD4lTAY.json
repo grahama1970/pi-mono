@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IMZ8DD4lTAY",
+    "language": "en",
+    "took_ms": 8769,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village  - Samir Bhagwat - Fuzzing CAN   CAN FD ECU's and Network",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 2420,
+    "description": "Get an overview of fuzzing, various techniques used in vulnerability testing, and how to automate your Fuzzing.",
+    "view_count": 1151
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IMZ8DD4lTAY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

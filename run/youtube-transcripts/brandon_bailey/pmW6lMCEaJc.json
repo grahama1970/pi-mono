@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pmW6lMCEaJc",
+    "language": "en",
+    "took_ms": 9987,
+    "method": null,
+    "title": "DEF CON 31 - SODA Machine with DualD - video team",
+    "channel": "DEFCONConference",
+    "upload_date": "20230830",
+    "duration_sec": 143,
+    "description": "CauseEffect visits with DualD and a very unusual SODA machine.",
+    "view_count": 4323
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pmW6lMCEaJc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JH3IkZF_pa8",
+    "language": "en",
+    "took_ms": 8836,
+    "method": null,
+    "title": "Aparna Pande on the U.S.-India Relationship",
+    "channel": "Hudson Institute",
+    "upload_date": "20101108",
+    "duration_sec": 360,
+    "description": "Hudson Research Fellow Aparna Pande joined Al Jazeera English on November 7 to discuss India, Pakistan, and the United States.",
+    "view_count": 1970
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JH3IkZF_pa8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

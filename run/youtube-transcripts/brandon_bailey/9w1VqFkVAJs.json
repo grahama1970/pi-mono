@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9w1VqFkVAJs",
+    "language": "en",
+    "took_ms": 8838,
+    "method": null,
+    "title": "DEF CON 30 - Orange Tsai - Let's Dance in the Cache - Destabilizing Hash Table on Microsoft IIS",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2797,
+    "description": "Hash Table, as the most fundamental Data Structure in Computer Science, is extensively applied in Software Architecture to store data in an associative manner. However, its architecture makes it prone to Collision Attacks. To deal with this problem, 25 years ago, Microsoft designed its own Dynamic Hashing algorithm and applied it everywhere in IIS, the Web Server from Microsoft, to serve various data from HTTP Stack. As Hash Table is everywhere, isn't the design from Microsoft worth scrutinizing?\n\nWe dive into IIS internals through months of Reverse-Engineering efforts to examine both the Hash Table implementation and the use of Hash Table algorithms. Several types of attacks are proposed and uncovered in our research, including (1) A specially designed Zero-Hash Flooding Attack against Microsoft's self-implemented algorithm. (2) A Cache Poisoning Attack based on the inconsistency between Hash-Keys. (3) An unusual Authentication Bypass based on a hash collision.\n\nBy understanding this talk, the audience won't be surprised why we can destabilize the Hash Table easily. The audience will also learn how we explore the IIS internals and will be surprised by our results. These results could not only make a default installed IIS Server hang with 100% CPU but also modify arbitrary HTTP responses through crafted HTTP request. Moreover, we'll demonstrate how we bypass the authentication requirement with a single, crafted password by colliding the identity cache!",
+    "view_count": 1328
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9w1VqFkVAJs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

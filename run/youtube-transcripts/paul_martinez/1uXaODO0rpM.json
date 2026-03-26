@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1uXaODO0rpM",
+    "language": "en",
+    "took_ms": 8620,
+    "method": null,
+    "title": "The Future of OT Security, An Alternative Point Of View",
+    "channel": "S4 Events",
+    "upload_date": "20230601",
+    "duration_sec": 1879,
+    "description": "Rafael Maman of Sygnia begins with his view of a brief history of OT Security. At 6:30 Rafael asserts that the Purdue Model is OT Securities original sin and related commandments.\n\n15:20 Rafael presents what he calls an alternative point of view build around the Open Process Automation Forum features and architecture.",
+    "view_count": 1136
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1uXaODO0rpM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

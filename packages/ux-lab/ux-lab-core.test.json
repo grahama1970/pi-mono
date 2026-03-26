@@ -1,0 +1,1075 @@
+{
+  "version": 2,
+  "baseUrl": "http://localhost:3001",
+  "tests": [
+    {
+      "id": "sidebar_renders",
+      "group": "sidebar",
+      "label": "Sidebar renders with projects",
+      "steps": [
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-sidebar']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='sidebar-search']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-music-lab-pipeline']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-sparta-explorer']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-binary-explorer']"
+        },
+        {
+          "action": "screenshot",
+          "name": "sidebar_initial"
+        }
+      ]
+    },
+    {
+      "id": "sidebar_collapse",
+      "group": "sidebar",
+      "label": "Collapse sidebar",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='sidebar-toggle']"
+        },
+        {
+          "action": "wait",
+          "ms": 400
+        },
+        {
+          "action": "screenshot",
+          "name": "sidebar_collapsed"
+        },
+        {
+          "action": "assert",
+          "type": "style",
+          "selector": "[data-testid='project-sidebar']",
+          "property": "width",
+          "operator": "lt",
+          "value": 60
+        }
+      ]
+    },
+    {
+      "id": "sidebar_expand",
+      "group": "sidebar",
+      "label": "Expand sidebar",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='sidebar-toggle']"
+        },
+        {
+          "action": "wait",
+          "ms": 400
+        },
+        {
+          "action": "assert",
+          "type": "style",
+          "selector": "[data-testid='project-sidebar']",
+          "property": "width",
+          "operator": "gt",
+          "value": 200
+        }
+      ]
+    },
+    {
+      "id": "sidebar_search_filter",
+      "group": "sidebar",
+      "label": "Search filters project list",
+      "steps": [
+        {
+          "action": "type",
+          "selector": "[data-testid='sidebar-search']",
+          "text": "Binary"
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "screenshot",
+          "name": "sidebar_filtered"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-binary-explorer']"
+        }
+      ]
+    },
+    {
+      "id": "sidebar_search_clear",
+      "group": "sidebar",
+      "label": "Clear search restores projects",
+      "steps": [
+        {
+          "action": "clear",
+          "selector": "[data-testid='sidebar-search']"
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-sparta-explorer']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='project-music-lab-pipeline']"
+        }
+      ]
+    },
+    {
+      "id": "sidebar_select_project",
+      "group": "sidebar",
+      "label": "Click project selects it",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='project-sparta-explorer']"
+        },
+        {
+          "action": "wait",
+          "ms": 500
+        },
+        {
+          "action": "screenshot",
+          "name": "project_selected"
+        }
+      ]
+    },
+    {
+      "id": "tab_mockups",
+      "group": "tabs",
+      "label": "Mockups tab renders",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-mockups']"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "screenshot",
+          "name": "tab_mockups"
+        }
+      ]
+    },
+    {
+      "id": "tab_components",
+      "group": "tabs",
+      "label": "Components tab renders",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-components']"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "screenshot",
+          "name": "tab_components"
+        }
+      ]
+    },
+    {
+      "id": "tab_design_board",
+      "group": "tabs",
+      "label": "Design Board tab renders canvas",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-design-board']"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='design-board-canvas']"
+        },
+        {
+          "action": "screenshot",
+          "name": "tab_design_board"
+        }
+      ]
+    },
+    {
+      "id": "tab_reviews",
+      "group": "tabs",
+      "label": "Reviews tab renders",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-reviews']"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "screenshot",
+          "name": "tab_reviews"
+        }
+      ]
+    },
+    {
+      "id": "tab_testing",
+      "group": "tabs",
+      "label": "Testing tab renders",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-testing']"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "screenshot",
+          "name": "tab_testing"
+        }
+      ]
+    },
+    {
+      "id": "tab_final_site",
+      "group": "tabs",
+      "label": "Final Site renders live component",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-final-site']"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "screenshot",
+          "name": "tab_final_site"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "body",
+          "text": "LIVE_RENDER"
+        }
+      ]
+    },
+    {
+      "id": "canvas_cards_load",
+      "group": "design_board",
+      "label": "Canvas loads cards from API",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='project-music-lab-pipeline']"
+        },
+        {
+          "action": "wait",
+          "ms": 500
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid='tab-design-board']"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "assert",
+          "type": "not_exists",
+          "selector": "[data-testid='canvas-loading']"
+        },
+        {
+          "action": "assert",
+          "type": "not_exists",
+          "selector": "[data-testid='canvas-empty']"
+        },
+        {
+          "action": "screenshot",
+          "name": "canvas_loaded"
+        }
+      ]
+    },
+    {
+      "id": "canvas_toolbar",
+      "group": "design_board",
+      "label": "Left toolbar renders with tools",
+      "steps": [
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='canvas-toolbar']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='tool-select']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='tool-pan']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='tool-grid']"
+        }
+      ]
+    },
+    {
+      "id": "canvas_zoom_controls",
+      "group": "design_board",
+      "label": "Zoom controls render with 100%",
+      "steps": [
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='zoom-controls']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='zoom-out']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='zoom-in']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='zoom-reset']"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "[data-testid='zoom-level']",
+          "text": "100%"
+        }
+      ]
+    },
+    {
+      "id": "canvas_zoom_in",
+      "group": "design_board",
+      "label": "Zoom in changes percentage",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='zoom-in']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "[data-testid='zoom-level']",
+          "text": "110%"
+        },
+        {
+          "action": "screenshot",
+          "name": "zoomed_in"
+        }
+      ]
+    },
+    {
+      "id": "canvas_zoom_out",
+      "group": "design_board",
+      "label": "Zoom out changes percentage",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='zoom-out']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "[data-testid='zoom-level']",
+          "text": "100%"
+        }
+      ]
+    },
+    {
+      "id": "canvas_zoom_reset",
+      "group": "design_board",
+      "label": "Zoom reset returns to 100%",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='zoom-in']"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid='zoom-in']"
+        },
+        {
+          "action": "wait",
+          "ms": 100
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid='zoom-reset']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "[data-testid='zoom-level']",
+          "text": "100%"
+        }
+      ]
+    },
+    {
+      "id": "canvas_status",
+      "group": "design_board",
+      "label": "Status indicator shows nominal",
+      "steps": [
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='canvas-status']"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "[data-testid='canvas-status']",
+          "text": "SYSTEM NOMINAL"
+        }
+      ]
+    },
+    {
+      "id": "canvas_card_select",
+      "group": "design_board",
+      "label": "Click card shows ACTIVE label",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid^='canvas-card-']"
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "body",
+          "text": "ACTIVE"
+        },
+        {
+          "action": "screenshot",
+          "name": "card_selected"
+        }
+      ]
+    },
+    {
+      "id": "canvas_context_card",
+      "group": "design_board",
+      "label": "Right-click card shows card context menu",
+      "steps": [
+        {
+          "action": "rightclick",
+          "selector": "[data-testid^='canvas-card-']"
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='context-menu']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='ctx-delete']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='ctx-replace']"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='ctx-bring-forward']"
+        },
+        {
+          "action": "screenshot",
+          "name": "context_menu_card"
+        }
+      ]
+    },
+    {
+      "id": "canvas_context_dismiss",
+      "group": "design_board",
+      "label": "Click dismisses context menu",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='zoom-controls']"
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "assert",
+          "type": "not_exists",
+          "selector": "[data-testid='context-menu']"
+        }
+      ]
+    },
+    {
+      "id": "canvas_drag_card",
+      "group": "design_board",
+      "label": "Drag card repositions it",
+      "steps": [
+        {
+          "action": "drag",
+          "selector": "[data-testid^='canvas-card-']",
+          "dx": 200,
+          "dy": 100
+        },
+        {
+          "action": "wait",
+          "ms": 300
+        },
+        {
+          "action": "assert",
+          "type": "moved",
+          "selector": "[data-testid^='canvas-card-']",
+          "minDx": 50
+        },
+        {
+          "action": "screenshot",
+          "name": "card_dragged"
+        }
+      ]
+    },
+    {
+      "id": "canvas_tool_pan",
+      "group": "design_board",
+      "label": "Pan tool switch works",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tool-pan']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        },
+        {
+          "action": "screenshot",
+          "name": "pan_tool_active"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid='tool-select']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        }
+      ]
+    },
+    {
+      "id": "canvas_grid_toggle",
+      "group": "design_board",
+      "label": "Grid toggle works",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='tool-grid']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        },
+        {
+          "action": "screenshot",
+          "name": "grid_off"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid='tool-grid']"
+        },
+        {
+          "action": "wait",
+          "ms": 200
+        }
+      ]
+    },
+    {
+      "id": "hash_binary",
+      "group": "routing",
+      "label": "Hash #binary-explorer loads project",
+      "steps": [
+        {
+          "action": "navigate",
+          "hash": "binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "screenshot",
+          "name": "hash_binary"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "body",
+          "text": "Binary Explorer"
+        }
+      ]
+    },
+    {
+      "id": "hash_sparta",
+      "group": "routing",
+      "label": "Hash #sparta-explorer loads project",
+      "steps": [
+        {
+          "action": "navigate",
+          "hash": "sparta-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "screenshot",
+          "name": "hash_sparta"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "selector": "body",
+          "text": "SPARTA"
+        }
+      ]
+    },
+    {
+      "id": "hash_default",
+      "group": "routing",
+      "label": "No hash defaults to Music Lab + Design Board",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:3001/"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='design-board-canvas']"
+        },
+        {
+          "action": "screenshot",
+          "name": "default_route"
+        }
+      ]
+    },
+    {
+      "id": "project_switch",
+      "group": "navigation",
+      "label": "Switch project reloads content",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid='project-sparta-explorer']"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "screenshot",
+          "name": "switched_sparta"
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid='project-music-lab-pipeline']"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "screenshot",
+          "name": "switched_music"
+        }
+      ]
+    },
+    {
+      "id": "deploy_btn_exists",
+      "group": "navigation",
+      "label": "Deploy button renders",
+      "steps": [
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid='deploy-btn']"
+        }
+      ]
+    },
+    {
+      "id": "clf_renders",
+      "group": "classifier-lab",
+      "label": "Classifier Lab renders with project list",
+      "steps": [
+        {
+          "action": "navigate",
+          "hash": "classifier-lab"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid=clf-main]"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_initial"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_research",
+      "group": "classifier-lab",
+      "label": "Research tab shows SOTA markdown report",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-research]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "SOTA Analysis"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_research"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_data",
+      "group": "classifier-lab",
+      "label": "Data tab shows class distribution and validation gate",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-data]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Class Distribution"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "VALIDATION"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_data"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_tune",
+      "group": "classifier-lab",
+      "label": "Tune tab shows Optuna trials and HP importance",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-tune]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "HYPERPARAMETER OPTIMIZATION"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "OPTUNA TRIALS"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Hyperparameter Importance"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_tune"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_train",
+      "group": "classifier-lab",
+      "label": "Train tab shows leaderboard and GPU picker",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-train]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "LIVE TRAINING LEADERBOARD"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "RESOURCE ALLOCATION"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "convnextv2_nano"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_train"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_benchmark",
+      "group": "classifier-lab",
+      "label": "Benchmark tab shows comparison grid and parallel coordinates",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-benchmark]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "BACKBONE COMPARISON"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "PARALLEL COORDINATES"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_benchmark"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_evaluate",
+      "group": "classifier-lab",
+      "label": "Evaluate tab shows confusion matrix, metrics, holdout gate, shadow gauge",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-evaluate]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Confusion Matrix"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Per-Class Metrics"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "HOLDOUT PASSED"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Shadow Agreement"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_evaluate"
+        }
+      ]
+    },
+    {
+      "id": "clf_tab_promote",
+      "group": "classifier-lab",
+      "label": "Promote tab shows winner card, export options, deployment target",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-promote]"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Promote to Production"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "convnextv2_nano"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "ONNX"
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "Production Registry"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_promote"
+        }
+      ]
+    },
+    {
+      "id": "clf_project_select",
+      "group": "classifier-lab",
+      "label": "Clicking a project in left pane updates main view",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-train]"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-project-intent-clf]"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "assert",
+          "type": "text_contains",
+          "text": "INTENT-CLF"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_project_switch"
+        }
+      ]
+    },
+    {
+      "id": "clf_f1_colors",
+      "group": "classifier-lab",
+      "label": "F1 scores are color-coded (green >0.90, red <0.80)",
+      "steps": [
+        {
+          "action": "click",
+          "selector": "[data-testid=clf-tab-train]"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid=clf-project-intent-clf]"
+        },
+        {
+          "action": "assert",
+          "type": "exists",
+          "selector": "[data-testid=clf-project-negation-clf]"
+        },
+        {
+          "action": "screenshot",
+          "name": "clf_f1_colors"
+        }
+      ]
+    }
+  ]
+}

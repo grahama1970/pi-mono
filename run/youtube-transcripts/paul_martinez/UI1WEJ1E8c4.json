@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UI1WEJ1E8c4",
+    "language": "en",
+    "took_ms": 7542,
+    "method": null,
+    "title": "Interview with HD Moore",
+    "channel": "S4 Events",
+    "upload_date": "20230726",
+    "duration_sec": 2122,
+    "description": "HD Moore is most famous for his creation of the Metasploit penetration testing framework. It began in 2003 and hit the OT world in 2011. HD is now the Founder and CTO of RunZero, another cybersecurity startup that is starting to play in the OT Space.\n\nIn this episode we spend the first third of the show talking about Metasploit ... early reaction, OT modules, is Metasploit still necessary and useful today.\n\nWe then shift to creating asset inventories in IT and OT, which is what RunZero does.\n- Why HD decided to run back into the cybersecurity startup world?\n- How it started as a solo shop with HD writing all the code.\n- How HD things Shodan and RunZero are different.\n- What technique does RunZero use to 'scan'. A term that many fear in OT. Check out their approach to 'fragile devices'.\n- The OT reaction to this type of scanning.\n- What role uses the RunZero product?\n\nLinks: \nRunZero website: https://runzero.com\nS4x24 Call For Presentations: https://s4xevents.com/cfp",
+    "view_count": 1078
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UI1WEJ1E8c4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

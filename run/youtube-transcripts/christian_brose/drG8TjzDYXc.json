@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "drG8TjzDYXc",
+    "language": "en",
+    "took_ms": 9329,
+    "method": null,
+    "title": "Beyond Aid: How Philanthropy and Partnerships Can Drive Global Prosperity",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 5880,
+    "description": "The 2012 Index of Global Philanthropy and Remittances was released at this event, which showcased new statistics on private giving to the developing world for the year 2010. The distinguished panel discussed the changing architecture of foreign assistance and its implications for international development.",
+    "view_count": 68
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] drG8TjzDYXc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

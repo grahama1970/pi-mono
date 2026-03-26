@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nUh9GVVhjD8",
+    "language": "en",
+    "took_ms": 7904,
+    "method": null,
+    "title": "DEF CON 33 - Countering Forensics Software by Baiting Them  -  Weihan Goh, Joseph Lim & Isaac Soon",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1384,
+    "description": "There's been remarkably little discussion about how mobile forensic tools fare against adversarially modified environments, particularly in terms of forensic reliability. Tools (and investigators) often assume that target devices function as expected, with minimal scrutiny of whether that assumption holds. Our research demonstrates otherwise - sophisticated anti-forensic techniques placed within Android devices can silently compromise evidence, placing longstanding investigative and extraction methodologies at risk.\n\nOur research addresses a blind spot in Android logical extraction workflows - namely, an assumption that once mobile forensic software overcome the hurdle of device access, the extraction is assumed to follow correctly. While forensics software excel at getting a foot in the door, from our actual tests they offer little against stealthy, second-layer countermeasures that can silently manipulate or destroy data post-access.",
+    "view_count": 463
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nUh9GVVhjD8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

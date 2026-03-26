@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3c8XccN13fA",
+    "language": "en",
+    "took_ms": 8165,
+    "method": null,
+    "title": "Replacing Likelihood With Credibility In The Risk Equation",
+    "channel": "S4 Events",
+    "upload_date": "20250616",
+    "duration_sec": 1715,
+    "description": "Andrew makes the case \"credibility\" should replace \"likelihood\" in the risk equation, especially for low frequency, high impact events.\n\nNIST 800-30, IEC 62443-3-2 and many others model risk as \"consequence x likelihood\". A better word is \"credibility.\" Using \"credibility\" instead of \"likelihood\" makes it clear we are exercising judgement, rather than trying to estimate an objective probability.\n\nFurther, when we discount attack scenarios because of lack of credibility, we should document that assessment and decision for the court cases that will inevitably arise if we are mistaken and suffer a high-impact event. IEC 62443-3-2 is being updated as we speak, and this is an opportunity to update the wording to better reflect the realities of assessing and managing OT cyber risks.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 333
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3c8XccN13fA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

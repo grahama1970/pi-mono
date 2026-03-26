@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aRjNteZn4uo",
+    "language": "en",
+    "took_ms": 7834,
+    "method": null,
+    "title": "8. Edge, Fog and SDN for ICS with Tim Watkins",
+    "channel": "S4 Events",
+    "upload_date": "20201223",
+    "duration_sec": 2310,
+    "description": "We like to finish off our workshops with a future focused session. In the Highway, this is Tim Watkins of SEL on Edge, Fog and SDN. The farming example is great.\n\nAre you using any of these technologies? What would need to happen for you to use any of these technologies?",
+    "view_count": 556
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aRjNteZn4uo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

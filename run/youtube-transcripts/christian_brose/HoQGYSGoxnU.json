@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HoQGYSGoxnU",
+    "language": "en",
+    "took_ms": 7822,
+    "method": null,
+    "title": "Assessing the Armenia-Azerbaijan Agreement",
+    "channel": "Hudson Institute",
+    "upload_date": "20250808",
+    "duration_sec": 3569,
+    "description": "President Donald Trump has invited Azerbaijani President Ilham Aliyev and Armenian Prime Minister Nikol Pashinyan to the White House for a landmark summit aimed at ending decades of hostility. The leaders are expected to sign key agreements to establish lasting peace between their long-divided nations. \n\nResearch Fellow Zineb Riboua will moderate a conversation on the potential implications of this historic accord with Senior Fellow Michael Doran and Damjan Krnjević Mišković, professor of practice at Azerbaijan’s ADA University and editor of the policy journal Baku Dialogues.\n\nLearn more at: https://www.hudson.org/events/assessing-armenia-azerbaijan-agreement",
+    "view_count": 5153
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HoQGYSGoxnU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

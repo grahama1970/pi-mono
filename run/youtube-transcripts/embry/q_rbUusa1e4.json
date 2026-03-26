@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q_rbUusa1e4",
+    "language": "en",
+    "took_ms": 9064,
+    "method": null,
+    "title": "Pt 4 Eve Spaceplane \"Pants Destroyer\" development",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170112",
+    "duration_sec": 8547,
+    "description": "Phase 4 development of our multistage Eve spaceplane the \"Pants Destroyer\". This is actually the second half of a stream (sorry for the lack of an intro). We decided to go Buran style of the Eve's ascent out of Kerbin. From there we realized the easiest thing to do would be to land it on Minmus to refuel. We have all the pieces ready to make this into a legit mission! \n\nShow your support by visiting http://patreon.com/everydayastronaut\n\nStreamed live on http://Twitch.tv/everydayastronaut on 1/3/2017\n\nInstagram @EverydayAstronaut - http://instagram.com/everydayastronaut",
+    "view_count": 3834
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q_rbUusa1e4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

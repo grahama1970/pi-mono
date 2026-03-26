@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JmjWz3XVfEg",
+    "language": "en",
+    "took_ms": 7545,
+    "method": null,
+    "title": "DEF CON Policy - International Cyber Policy 101 - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 5392,
+    "description": "This session will help highlight the international landscape for cyber policy, highlighting the need for governments around the world to align on policy development and intervention. It will help establish a baseline of knowledge on what's happening in international cyber policy for those wanting to get up to speed, and will help set the scene for many of the policy discussions to come throughout DEF CON. This session goes hand-in-hand with the US policy 101.\n\nThe session will start with Peter Stephens of the OECD providing an overview of the main themes and topics being explored by policymakers around the world, as well as sharing what is likely to move forward through the year. Peter has direct experience of driving international policy development as he previously worked at the UK's Department for Digital, Culture, Media and Sport, where he developed the Code of Practice for Security of Consumer IoT. Peter then worked with ETSI to see the Code adopted as a standard across the European Union, and later worked with the Australian, Indian, and Singaporean governments as they explored adoption of the Code, so he has an excellent understanding of the benefits and challenges of international policy harmonization.\n\nThis portion of the session will be followed by a panel of representatives from the Australian government, the UK government, and the Center for Cybersecurity Policy and Law, which works with government on cyber policy issues around the world. These participants will each highlight top international cyber policy priorities and challenges for 2023-24, as well as how they approach policy development in the context of the global digital technology ecosystem.\n\nThis will be followed by audience Q&A so attendees can better explore the information provided and build an understanding of the international cyber policy landscape. This session establishes a baseline for many of the Policy @ DEF CON content to follow.\n\nThis is a double length session lasting 110 minutes.",
+    "view_count": 422
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JmjWz3XVfEg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f7u3am1gx70",
+    "language": "en",
+    "took_ms": 7881,
+    "method": null,
+    "title": "Island-Building in the Spratlys: Challenging the International Order in the South China Sea",
+    "channel": "Hudson Institute",
+    "upload_date": "20160222",
+    "duration_sec": 5694,
+    "description": "Patrick Cronin, Paul Giarra, Michael Frodl, and Seth  Cropsey will discuss the escalating situation in the  South China Sea and US policy options.",
+    "view_count": 2403
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f7u3am1gx70: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Oa5HJqMDpOI",
+    "language": "en",
+    "took_ms": 7786,
+    "method": null,
+    "title": "Is The Purdue Model Dead?",
+    "channel": "S4 Events",
+    "upload_date": "20190726",
+    "duration_sec": 133,
+    "description": "The 2-minute answer to the question from the end of the S4x19 discussion between Brad Hegrat, Joel Langill and Dale Peterson.",
+    "view_count": 1280
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Oa5HJqMDpOI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

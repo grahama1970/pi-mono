@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mPo-an8BUXc",
+    "language": "en",
+    "took_ms": 8503,
+    "method": null,
+    "title": "DEF CON 33 - Examining Access Control Vulnerabilities in GraphQL: A Feeld Case Study - Bogdan Tiron",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1519,
+    "description": "This talk explores the importance of implementing robust access controls in GraphQL and REST APIs and the severe consequences when these controls are not properly enforced. GraphQL, a flexible data query language, allows clients to request exactly the data they need, but without proper access control mechanisms, sensitive data can be easily exposed. Using the Feeld dating app as a case study, we will dive into a critical security review of how the lack of access controls in GraphQL and REST endpoints led to the exposure of users' personal data, including sensitive photos, videos and private messages. This session will highlight common access control vulnerabilities in GraphQL and REST implementations , real-world examples of security lapses, their impact and remediation.",
+    "view_count": 1323
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mPo-an8BUXc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

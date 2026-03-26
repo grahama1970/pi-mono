@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mBOWQoEwNoY",
+    "language": "en",
+    "took_ms": 9425,
+    "method": null,
+    "title": "ICS Security Random Walk with Dale Peterson and Ralph Langner",
+    "channel": "S4 Events",
+    "upload_date": "20201113",
+    "duration_sec": 4015,
+    "description": "This is a recording of Dale Peterson and Ralph Langner discussing a variety of ICS security topics and taking questions from the live online audience.",
+    "view_count": 588
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mBOWQoEwNoY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

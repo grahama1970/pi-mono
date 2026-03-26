@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "j6zAkb1aIQg",
+    "language": "en",
+    "took_ms": 9933,
+    "method": null,
+    "title": "What should you use Qwen 2.5 Omni for?",
+    "channel": "Trelis Research",
+    "upload_date": "20250405",
+    "duration_sec": 40,
+    "description": "📜 Get repo access at Trelis.com/ADVANCED-transcription\n\n📧 Get the Trelis AI Newsletter: https://trelis.substack.com\n\n❗️If you subscribed here, click the bell to be notified of new vids\n\n🤝 Work for Trelis: https://trelis.com/jobs/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nVideo Links:\n- HF Repo: https://huggingface.co/Qwen/Qwen2.5-Omni-7B/tree/main\n- Qwen2.5 Omni Paper: https://arxiv.org/pdf/2503.20215\n- Llama 3 Paper: https://arxiv.org/pdf/2407.21783\n- Moshi: https://arxiv.org/pdf/2410.00037\n\nTIMESTAMPS:\n0:00 Qwen 2.5 Onmi - Video, Text and Audio Inputs, Text and Audio Outputs.\n0:24 Qwen2.5 Architecture, incl. TMRoPE\n6:29 Qwen Omni vs Llama 3.\n7:43 Qwen Omni vs Moshi.\n9:32 Comparison with GPT-4o and Gemini Pro 2.5.\n13:09 How to run Qwen 2.5 Onmi on a GPU?\n18:19 Inference with Audio Inputs and Audio + Text Outputs.\n22:48 Inference with Video Input and Audio Output + Text Output. \n27:22 Qwen 2.5 Model Architecture Print-out\n29:20 When should you use Qwen 2.5 Omni?",
+    "view_count": 1111
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] j6zAkb1aIQg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

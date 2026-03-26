@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sqYRo0yBABo",
+    "language": "en",
+    "took_ms": 8854,
+    "method": null,
+    "title": "The Future of US Energy Production: A Conversation with Sen. Bill Cassidy",
+    "channel": "Hudson Institute",
+    "upload_date": "20220321",
+    "duration_sec": 2512,
+    "description": "U.S. oil production has fallen from pre-pandemic levels, and shortages of both oil and gas are contributing to global inflation and slower growth. Russia’s war on Ukraine has caused energy prices to spike even higher and has highlighted the vulnerability of U.S. allies that are heavily dependent on Russia’s energy sector. Join Hudson Senior Fellow Thomas Duesterberg for a discussion on these challenges with U.S. Senator Bill Cassidy, a prominent voice on the Senate’s Committee on Energy and Natural Resources.\n\nWatch on Hudson.org: https://www.hudson.org/events/2088-virtual-event-the-future-of-us-energy-production-a-conversation-with-sen-bill-cassidy-32022",
+    "view_count": 789
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sqYRo0yBABo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

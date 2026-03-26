@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8kZO-tKNgf8",
+    "language": "en",
+    "took_ms": 9248,
+    "method": null,
+    "title": "Senator Lindsey Graham on Lessons from the Syrian War and the Need for U.S. Leadership",
+    "channel": "Hudson Institute",
+    "upload_date": "20160408",
+    "duration_sec": 1226,
+    "description": "U.S. Senator Lindsey Graham spoke at the Hudson Institute on the lessons learned after five years of civil war in Syria and the need for U.S. leadership in the region.",
+    "view_count": 2042
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8kZO-tKNgf8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

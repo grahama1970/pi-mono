@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "piW-nUKIqkE",
+    "language": "en",
+    "took_ms": 7873,
+    "method": null,
+    "title": "DEF CON 32 - An adversarial approach to Airline Revenue Management Proving Ground - Craig Lester",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2556,
+    "description": "Richard Branson is oft quoted with the quip that the quickest way to become a millionaire in the Airline Industry is to start as a billionaire. An Industry constrained by high fixed capital costs, bi-lateral capacity treaties, airport slots and curfews, labour etc; Airlines use the practice of revenue management to fill planes, maximise earnings and keep competitors at bay. But you’re not interested in an economics talk – this is a hacker con. I’m here to provide a birds-eye view and introduction into how fares and ticketing work, debunking some myths while outlining system constraints and limitations that introduce vulnerabilities. As an outcome, attendees should gain an introductory understanding of airline industry pricing, published fares and terminology. With most blogged 'deals' patched quicker than RCEs, the deeper understanding of not what but how, facilitates a progression for those interested to interact on more specialised discussion forums.",
+    "view_count": 319
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] piW-nUKIqkE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kCSsp-4wDog",
+    "language": "en",
+    "took_ms": 9964,
+    "method": null,
+    "title": "TensorFlow: Advanced Techniques Specialization",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260225",
+    "duration_sec": 364,
+    "description": "Learn more: https://www.deeplearning.ai/courses/tensorflow-advanced-techniques-specialization/\n\nThe DeepLearning.AI TensorFlow: Advanced Techniques Specialization introduces the features of TensorFlow that provide learners with more control over their model architecture and tools that help them create and train advanced ML models.\n\nIn this Specialization, you will expand your knowledge of the Functional API and build exotic non-sequential model types. You will learn how to optimize training in different environments with multiple processors and chip types and get introduced to advanced computer vision scenarios such as object detection, image segmentation, and interpreting convolutions. You will also explore generative deep learning including the ways AIs can create new content from Style Transfer to Auto Encoding, VAEs, and GANs.\n\nWhat you will learn\n\n- Understand the underlying basis of the Functional API and build exotic non-sequential model types, custom loss functions, and layers.\n- Learn optimization and how to use GradientTape & Autograph, optimize training in different environments with multiple processors and chip types.\n- Practice object detection, image segmentation, and visual interpretation of convolutions.\n- Explore generative deep learning, and how AIs can create new content, from Style Transfer through Auto Encoding and VAEs to GANs.\n\nEnroll now: https://www.deeplearning.ai/courses/tensorflow-advanced-techniques-specialization/",
+    "view_count": 769
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kCSsp-4wDog: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

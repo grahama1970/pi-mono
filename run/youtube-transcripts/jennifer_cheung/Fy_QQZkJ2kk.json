@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Fy_QQZkJ2kk",
+    "language": "en",
+    "took_ms": 8962,
+    "method": null,
+    "title": "DEF CON 31 - A SSLippery Slope - Unraveling Hidden Dangers of Certificate Misuse - Bill Demirkapi",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2085,
+    "description": "Digital signatures are fundamental for verifying the authenticity and integrity of untrusted data in the digital world. They ensure that software, firmware, and other digital content are not tampered with during transmission or at rest. Code signing certificates are significantly more challenging to obtain when compared to alternatives like SSL or S/MIME certificates. The latter only has a single criterion- proof of control over a domain, while the former requires significant validation of the publisher itself.\n\nThis project uncovered a systemic vulnerability present in numerous signature validation implementations, enabling attackers to exploit valid certificates in an unintended manner. Vulnerable implementations mistakenly perceive files signed with incompatible certificates as legitimate, violating their respective specifications and allowing threat actors to sign untrusted code at little to no cost. In this talk, we will explore the problem at all levels, ranging from the fundamental theory to its application across multiple formats and real-world situations.",
+    "view_count": 2150
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Fy_QQZkJ2kk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

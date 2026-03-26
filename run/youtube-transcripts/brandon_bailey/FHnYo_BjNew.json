@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FHnYo_BjNew",
+    "language": "en",
+    "took_ms": 8369,
+    "method": null,
+    "title": "DEF CON 29 Payment Village -  Vahagn Vardanyan -  Racing Cryptoexchanges",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 766,
+    "description": "A talk on race condition vulnerabilities detected on large cryptocurrency exchanges and made it possible to manipulate the balance.",
+    "view_count": 1720
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FHnYo_BjNew: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OfQNgPfv97s",
+    "language": "en",
+    "took_ms": 9034,
+    "method": null,
+    "title": "Whisper Data Preparation and Fine tuning with Unsloth",
+    "channel": "Trelis Research",
+    "upload_date": "20251125",
+    "duration_sec": 2488,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-audio\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\n💰Runpod Affiliate Link, incl. bonus on signup: https://runpod.io?ref=jmfkcdio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Done-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Whisper timestamped: https://github.com/linto-ai/whisper-timestamped\n- Unsloth Whisper fine-tuning notebook: https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Whisper.ipynb\n\nTIMESTAMPS:\n0:00 Whisper preparation and fine-tuning with Unsloth\n0:40 Resources: Trelis.com/ADVANCED-audio\n1:23 One-click GPU and Jupyter Notebook Setup\n3:37 Whisper vs Voxtral vs Kyutai\n4:48 Installation of Unsloth and Whisper Timestamped\n7:52 Using Whisper Large versus Turbo\n8:53 Video Overview / Layout - How to prepare data and train\n11:33 Audio recording and transcription (with whisper timestamped)\n13:06 Whisper vs Whisper-Timestamped and the motivation for word timestamps\n15:34 Creating text/audio segments using word-timestamped transcripts\n18:46 Segment time-stamps using whisper (not easy to then chunk to less than 30s!!!)\n19:50 Word time-stamps with Whisper Timestamped\n20:56 Automated vs manual transcript cleanup techniques\n28:48 Dataset creation from audio and text segments\n20:53 Fine-tuning with Unsloth\n33:26 Word Error Rate - Teacher Force versus predict_with_generate\n36:11 Training hyperparameters and losses / results\n37:33 Evaluating base and fine-tuned model performance\n39:15 Merging, pushing to hub and preparing for inference (see also https://www.youtube.com/watch?v=qXtPPgujufI)\n40:21 Conclusion",
+    "view_count": 2693
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OfQNgPfv97s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

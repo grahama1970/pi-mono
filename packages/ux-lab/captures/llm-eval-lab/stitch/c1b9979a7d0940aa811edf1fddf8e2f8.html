@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TACTICAL_EVAL_v2.0 - Hyper-Dense Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                background-color: #0b1220;
+                color: #dce2f6;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11px;
+            }
+        }
+        :root {
+            --primary: #7c3aed;
+            --success: #00ff88;
+            --error: #ff4444;
+            --bg-dark: #0b1220;
+            --bg-surface: #070e1c;
+        }
+        .pill-toggle-active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .pill-toggle-inactive {
+            border: 1px solid #2e3544;
+            color: #94a3b8;
+        }
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070e1c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e3544;
+        }
+        .data-table th {
+            padding: 4px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+        }
+        .data-table td {
+            padding: 4px 8px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+<header class="bg-[#0b1220] border-b border-white/5 flex justify-between items-center w-full px-4 h-10 z-50">
+<div class="flex items-center gap-6">
+<span class="text-sm font-bold text-[#d2bbff] tracking-widest">TACTICAL_EVAL_v2.0</span>
+<nav class="hidden md:flex gap-4 h-full items-center text-[10px]">
+<a class="text-[#d2bbff] border-b border-[#7c3aed] px-1" href="#">MODELS</a>
+<a class="text-[#94a3b8] hover:text-white" href="#">EVALS</a>
+<a class="text-[#94a3b8] hover:text-white" href="#">DATASETS</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-black/40 px-2 py-0.5 border border-white/5 flex items-center gap-2">
+<span class="text-[9px] text-[#00ff88]">●</span>
+<span class="text-[9px] tracking-tighter text-[#94a3b8]">SYS_LOAD: 12%</span>
+</div>
+<div class="flex gap-1">
+<button class="p-1 text-[#94a3b8] hover:text-white"><span class="material-symbols-outlined text-sm">settings</span></button>
+<button class="p-1 text-[#94a3b8] hover:text-white"><span class="material-symbols-outlined text-sm">terminal</span></button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<section class="w-[40%] border-r border-white/10 bg-[#0b1220] flex flex-col overflow-hidden">
+<div class="p-3 space-y-4 overflow-y-auto flex-1">
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="text-[9px] uppercase tracking-widest text-[#94a3b8]">System_Prompt.cfg</label>
+<span class="text-[8px] text-[#4a4455]">LN: 1 COL: 1</span>
+</div>
+<textarea class="w-full bg-[#070e1c] border border-white/10 font-mono text-[10px] p-2 h-32 focus:border-[#7c3aed] outline-none text-[#dce2f6] resize-none" placeholder="Enter system instructions..."></textarea>
+</div>
+<div>
+<label class="block text-[9px] uppercase tracking-widest text-[#94a3b8] mb-1">User_Message.input</label>
+<textarea class="w-full bg-[#070e1c] border border-white/10 font-mono text-[10px] p-2 h-20 focus:border-[#7c3aed] outline-none text-[#dce2f6] resize-none" placeholder="Test query..."></textarea>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<label class="text-[9px] uppercase tracking-widest text-[#94a3b8]">Model_Registry</label>
+<div class="flex gap-1">
+<button class="text-[8px] text-[#7c3aed] hover:underline px-1 py-0.5 bg-white/5">ALL_LOCAL</button>
+<button class="text-[8px] text-[#7c3aed] hover:underline px-1 py-0.5 bg-white/5">ALL_API</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-1">
+<button class="pill-toggle-active flex flex-col p-1.5 text-left transition-colors">
+<span class="text-[10px] font-bold">qwen3:8b</span>
+<span class="text-[8px] opacity-80">8B, local</span>
+</button>
+<button class="pill-toggle-active flex flex-col p-1.5 text-left transition-colors">
+<span class="text-[10px] font-bold">llama3.2:1b</span>
+<span class="text-[8px] opacity-80">1B, local</span>
+</button>
+<button class="pill-toggle-active flex flex-col p-1.5 text-left transition-colors">
+<span class="text-[10px] font-bold">phi-4:mini</span>
+<span class="text-[8px] opacity-80">3B, local</span>
+</button>
+<button class="pill-toggle-inactive flex flex-col p-1.5 text-left transition-colors hover:bg-white/5">
+<span class="text-[10px] font-bold">deepseek-v3</span>
+<span class="text-[8px] opacity-60">671B, API</span>
+</button>
+<button class="pill-toggle-inactive flex flex-col p-1.5 text-left transition-colors hover:bg-white/5">
+<span class="text-[10px] font-bold">gpt-4o-mini</span>
+<span class="text-[8px] opacity-60">Cloud, API</span>
+</button>
+<button class="pill-toggle-inactive flex flex-col p-1.5 text-left transition-colors hover:bg-white/5">
+<span class="text-[10px] font-bold">mistral-lrg</span>
+<span class="text-[8px] opacity-60">123B, local</span>
+</button>
+</div>
+</div>
+<div class="bg-white/5 p-2 border border-white/5">
+<div class="flex justify-between items-center mb-1">
+<label class="text-[9px] uppercase tracking-widest text-[#94a3b8]">Eval_Threshold</label>
+<span class="text-[10px] font-bold text-[#00ff88]">0.85</span>
+</div>
+<input class="w-full h-1 bg-black appearance-none cursor-pointer accent-[#7c3aed]" max="1.0" min="0.5" step="0.01" type="range" value="0.85"/>
+</div>
+</div>
+<button class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold text-[11px] py-3 flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+            INITIATE_EVALUATION_SEQUENCE
+        </button>
+</section>
+<section class="flex-1 bg-[#070e1c] flex flex-col overflow-hidden">
+<div class="h-1/2 flex flex-col border-b border-white/10 overflow-hidden">
+<div class="px-3 py-2 bg-[#0b1220] flex items-center justify-between border-b border-white/5">
+<div class="flex items-center gap-2">
+<span class="text-[9px] text-[#94a3b8] uppercase">Execution_Queue</span>
+<span class="text-[9px] text-[#00ff88] animate-pulse">● LIVE</span>
+</div>
+<div class="text-[9px] text-[#94a3b8]">Testing 3/7 (42%)</div>
+</div>
+<div class="w-full h-[2px] bg-black">
+<div class="bg-[#00ff88] h-full" style="width: 42%;"></div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full data-table">
+<thead>
+<tr>
+<th>Rank</th>
+<th>Model</th>
+<th>Size</th>
+<th>Src</th>
+<th>Acc%</th>
+<th>JSON%</th>
+<th>Lat</th>
+<th class="text-right">Status</th>
+</tr>
+</thead>
+<tbody class="text-[10px]">
+<tr class="bg-[#7c3aed]/10 border-l-2 border-[#7c3aed] cursor-pointer hover:bg-[#7c3aed]/20">
+<td class="text-[#7c3aed] font-bold">#01</td>
+<td class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-[#7c3aed]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                qwen3:8b
+                            </td>
+<td>8B</td>
+<td>LOCAL</td>
+<td class="text-[#00ff88]">87.2%</td>
+<td>100%</td>
+<td>2.3s</td>
+<td class="text-right"><span class="bg-[#7c3aed] text-white px-1 text-[8px]">RECOMMENDED</span></td>
+</tr>
+<tr class="cursor-pointer hover:bg-white/5">
+<td class="text-[#94a3b8]">#02</td>
+<td class="font-bold">deepseek-v3</td>
+<td>671B</td>
+<td>API</td>
+<td class="text-[#00ff88]">85.4%</td>
+<td>98%</td>
+<td>1.8s</td>
+<td class="text-right"><span class="border border-[#00ff88] text-[#00ff88] px-1 text-[8px]">PASS</span></td>
+</tr>
+<tr class="cursor-pointer hover:bg-white/5">
+<td class="text-[#94a3b8]">#03</td>
+<td class="font-bold">mistral-large</td>
+<td>123B</td>
+<td>LOCAL</td>
+<td class="text-[#00ff88]">82.1%</td>
+<td>100%</td>
+<td>6.4s</td>
+<td class="text-right"><span class="border border-white/20 text-[#94a3b8] px-1 text-[8px]">PASS</span></td>
+</tr>
+<tr class="cursor-pointer hover:bg-white/5">
+<td class="text-[#94a3b8]">#04</td>
+<td class="font-bold">phi-4:mini</td>
+<td>3B</td>
+<td>LOCAL</td>
+<td class="text-[#ff4444]">74.5%</td>
+<td>85%</td>
+<td>0.9s</td>
+<td class="text-right"><span class="border border-[#ff4444] text-[#ff4444] px-1 text-[8px]">FAIL</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="h-1/2 flex flex-col bg-[#0b1220]">
+<div class="px-3 py-1.5 bg-[#070e1c] border-b border-white/10 flex items-center justify-between">
+<span class="text-[9px] uppercase tracking-widest text-[#94a3b8]">Detail_Panel: qwen3:8b</span>
+<div class="flex gap-2">
+<button class="text-[8px] bg-white/5 px-2 py-0.5 border border-white/10">EXPORT_JSON</button>
+<button class="text-[8px] bg-white/5 px-2 py-0.5 border border-white/10">VIEW_LOGS</button>
+</div>
+</div>
+<div class="flex-1 p-3 overflow-auto">
+<div class="grid grid-cols-2 gap-3 h-full">
+<div class="space-y-2 border-r border-white/5 pr-3">
+<div class="text-[8px] text-[#4a4455] uppercase font-bold">Execution_Trace</div>
+<div class="space-y-1.5">
+<div class="flex items-center justify-between text-[10px] bg-white/5 p-1">
+<span>CASE_01: JSON_VALIDATION</span>
+<span class="text-[#00ff88]">OK</span>
+</div>
+<div class="flex items-center justify-between text-[10px] bg-white/5 p-1">
+<span>CASE_02: SCHEMA_ADHERENCE</span>
+<span class="text-[#00ff88]">OK</span>
+</div>
+<div class="flex items-center justify-between text-[10px] bg-white/5 p-1 border-l-2 border-[#ff4444]">
+<span>CASE_03: LATENCY_THRESHOLD</span>
+<span class="text-[#ff4444]">WARN</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="text-[8px] text-[#4a4455] uppercase font-bold mb-1">Raw_Output.buffer</div>
+<div class="flex-1 bg-black p-2 font-mono text-[9px] text-[#00ff88] overflow-auto border border-white/5">
+                            {
+                              "status": "success",
+                              "model": "qwen3:8b",
+                              "response": "The requested calculation is 42...",
+                              "tokens_sec": 48.5,
+                              "finish_reason": "stop"
+                            }
+                        </div>
+</div>
+</div>
+</div>
+<div class="px-3 py-1 bg-[#070e1c] border-t border-white/10 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-colors">
+<span class="text-[8px] text-[#94a3b8]">COST_ESTIMATE: $0.0000 / 1k tokens</span>
+<span class="material-symbols-outlined text-sm text-[#4a4455]">expand_less</span>
+</div>
+</div>
+</section>
+</div>
+<footer class="bg-[#0b1220] h-5 border-t border-white/5 flex items-center justify-between px-3 font-mono text-[8px] uppercase tracking-tighter">
+<div class="flex gap-4">
+<span class="text-[#00ff88] flex items-center gap-1">SYS_ONLINE</span>
+<span class="text-[#94a3b8]">GPU: 64°C</span>
+<span class="text-[#94a3b8]">VRAM: 14.2/24GB</span>
+</div>
+<div class="flex gap-4">
+<span class="text-[#94a3b8]">NODE: T-400-EVAL</span>
+<span class="text-[#7c3aed]">UTC: 2023-10-27 14:32:01</span>
+</div>
+</footer>
+
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W44SORQo_ak",
+    "language": "en",
+    "took_ms": 9185,
+    "method": null,
+    "title": "OT Security Artist #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250508",
+    "duration_sec": 31,
+    "description": "\"Learn the rules like a pro so you can break them like an artist.\" - Picasso",
+    "view_count": 1319
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W44SORQo_ak: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

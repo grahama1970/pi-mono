@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "31xrNuH1RV4",
+    "language": "en",
+    "took_ms": 7825,
+    "method": null,
+    "title": "DEF CON 31 - Physical Attacks Against Smartphones - Christopher Wade",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2220,
+    "description": "Android devices are constantly improving their security to protect against attackers with physical access, with new protection techniques being added year-by-year. This talk aims to demonstrate vulnerabilities in modern Android smartphones that are still viable, despite the mitigations in place.\n\nIn the first phase of this talk, we will discuss analysis and exploitation of vendor-customised versions of Android's Recovery mode, demonstrating weaknesses that allow for privilege escalation to root, and traversal from Recovery to Android, without Bootloader access, using nothing but a Micro SD card.\n\nIn the second phase, we will discuss weaknesses in the Secondary Bootloader of devices produced by a popular smartphone manufacturer. We will demonstrate how, using a vulnerability in the core USB stack, code execution can be achieved, and a modified Android image can be booted, without compromising the functionality of the device.",
+    "view_count": 18893
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 31xrNuH1RV4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

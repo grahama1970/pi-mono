@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0JqHCxn_A-U",
+    "language": "en",
+    "took_ms": 10104,
+    "method": null,
+    "title": "Build and Train an LLM with JAX",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260304",
+    "duration_sec": 114,
+    "description": "Learn more: https://bit.ly/4rce49q\n\nIntroducing Build and Train an LLM with JAX, a short course built in partnership with Google and taught by Chris Achard, Developer Relations Engineer on Google's TPU Software team.\n\nJAX is the open-source numerical computing library that Google uses to build and train its most advanced models, including Gemini. It looks similar to NumPy, but adds automatic differentiation, just-in-time compilation, and the ability to scale training across thousands of CPUs, GPUs, and TPUs. In this course, you'll learn JAX by building and training a language model from scratch.\n\nYou'll implement a complete MiniGPT-style LLM with 20 million parameters—defining the architecture, loading and preprocessing training data, running the training loop, saving checkpoints, and finally chatting with your trained model through a graphical interface. Along the way, you'll work with key tools from the JAX ecosystem: Flax/NNX for neural network layers, Grain for data loading, Optax for optimization, and Orbax for checkpointing.\n\nIn detail, you'll:\n\n- Explore JAX's core concepts such as automatic differentiation, JIT compilation, and vectorized execution and see how it compares to NumPy, PyTorch, and TensorFlow in the broader ML landscape.\n- Build the architecture of a MiniGPT-style language model using JAX and Flax/NNX, implementing token embeddings and transformer blocks into a complete, trainable model.\n- Load and preprocess a dataset of mini stories for training, covering tokenization, batching, and structuring data for JAX's functional execution model.\n- Implement the full training loop: compute losses, apply gradients with Optax, and use JAX transformations to keep training efficient, then save your model with Orbax checkpointing.\n- Load a pretrained MiniGPT model and run inference through a chat interface to generate stories, completing the full build-train-deploy workflow.\n\nThe steps you'll follow to build and train MiniGPT are the same foundational steps Google uses to develop its more powerful models like Gemini. This course gives you hands-on experience with the tools and techniques at the core of modern LLM development.\n\nEnroll now: https://bit.ly/4rce49q",
+    "view_count": 1221
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0JqHCxn_A-U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-6wG9oEPDu4",
+    "language": "en",
+    "took_ms": 8158,
+    "method": null,
+    "title": "DEF CON 29 Blue Team Village - muteki -  Year of Mentoring BTV’s Meet a Mentor Turns One",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1960,
+    "description": "Blue Team Village's Meet-a-Mentor program turns 1 year old at DEF CON 29! Join us as we share all the work we've done and what we've learned in the past year, and also listen to three mentor-mentee matches share their experiences with us.\n\nVisit https://www.blueteamvillage.org/meet-a-mentor/ for more info on the program.",
+    "view_count": 228
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -6wG9oEPDu4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

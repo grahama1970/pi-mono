@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jc4K6768DsA",
+    "language": "en",
+    "took_ms": 7847,
+    "method": null,
+    "title": "Great Power Competition in the Middle East",
+    "channel": "Hudson Institute",
+    "upload_date": "20200611",
+    "duration_sec": 3546,
+    "description": "Join Hudson Institute for a discussion with Assistant Secretary of State David Schenker and other top experts on the trajectory of U.S. foreign policy in the Middle East. Hudson Senior Fellow Michael Doran will moderate the panel.",
+    "view_count": 3552
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jc4K6768DsA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

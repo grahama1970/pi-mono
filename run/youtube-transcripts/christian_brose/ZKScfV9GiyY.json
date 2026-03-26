@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZKScfV9GiyY",
+    "language": "en",
+    "took_ms": 8856,
+    "method": null,
+    "title": "Counterbalance Podcast | US-Israel: Will Biden Recognize a Palestinian State? (feat. Gadi Taub)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240215",
+    "duration_sec": 2860,
+    "description": "On this special edition of Counterbalance, co-hosts Mike Doran and Peter Rough are joined by Israeli intellectual Gadi Taub. Mike and Gadi recently started the Israel Update Podcast with Tablet magazine. This week on Counterbalance, the trio discuss the Biden administration’s attitude towards the war in Gaza, including the president calling Israel’s response in Gaza “over the top.” They also float the possibility of the Biden administration recognizing a Palestinian state as early as the summer. \n\nCheck out Tablet's Israel Update podcast with Mike & Gadi: https://www.tabletmag.com/tags/israel-update-podcast",
+    "view_count": 3524
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZKScfV9GiyY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

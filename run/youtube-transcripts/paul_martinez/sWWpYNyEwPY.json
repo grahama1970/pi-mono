@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sWWpYNyEwPY",
+    "language": "en",
+    "took_ms": 7722,
+    "method": null,
+    "title": "IronGate: Technical Deep Dive",
+    "channel": "S4 Events",
+    "upload_date": "20160612",
+    "duration_sec": 2058,
+    "description": "Rob Caldwell of FireEye provided the first technical briefing of the ICS malware known as IronGate at S4xEurope on 9 June 2016.\n\nHere are some highlights of the video:\n\n3:56 Why IRONGATE is interesting from a technical perspective.\n6:08 Is the industry numb to this type of release due to naming, hype, process?\n8:20 A flow chart showing the major steps of IRONGATE.\n14:20 The actual DLL replacement code.\n16:20 Record and replay code.\n19:25 Comparison and contrast with Stuxnet.\n\nThe last ten minutes is Q&A.",
+    "view_count": 775
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sWWpYNyEwPY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

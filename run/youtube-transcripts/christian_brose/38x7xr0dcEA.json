@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "38x7xr0dcEA",
+    "language": "en",
+    "took_ms": 8317,
+    "method": null,
+    "title": "Internet \"Governance\"—A View from One of the Pione",
+    "channel": "Hudson Institute",
+    "upload_date": "20121220",
+    "duration_sec": 4167,
+    "description": "First there was the Defense Department-funded Arpanet project connecting mainframe computers at four American universities in the late 1960s. And then, gradually, through a series of key steps—beginning in the United States and eventually involving the rest of the world—today's Internet emerged. Its central technologies and design principles—packet-switching, minimal intelligence at the core, reliance on innovation at the edges—have proved vastly more powerful than its pioneers ever imagined. Vo",
+    "view_count": 60
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 38x7xr0dcEA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

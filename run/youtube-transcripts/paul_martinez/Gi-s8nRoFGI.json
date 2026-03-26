@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gi-s8nRoFGI",
+    "language": "en",
+    "took_ms": 9716,
+    "method": null,
+    "title": "OnRamp: AI In OT & ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20250319",
+    "duration_sec": 1388,
+    "description": "AI. There has to be a session on AI in the OnRamp. Out of the huge number of submissions we selected a session that will quickly go through the different types of AI in use today, provide an example in OT where this is a good fit, and discuss the strengths and weaknesses of each type.\n\nAttend this session if you need help determining what type of AI you should be pursuing for a task or goal.\n\nThe OnRamp is S4's 101-Level Training Course. Check out the OnRamp playlist on the S4 Events Youtube Channel. This year's 5 sessions update the OnRamp training with topics that have become more important the last two years.",
+    "view_count": 749
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gi-s8nRoFGI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

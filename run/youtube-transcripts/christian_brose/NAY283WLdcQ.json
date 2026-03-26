@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NAY283WLdcQ",
+    "language": "en",
+    "took_ms": 10850,
+    "method": null,
+    "title": "A Conversation with Congressman Jake Ellzey on US National Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20220623",
+    "duration_sec": 2845,
+    "description": "From the withdrawal from Afghanistan to the war in Ukraine, the Biden administration has been marked by dramatic foreign policy events. Just under one year ago, Congressman Jake Ellzey (R-TX) was elected to Congress and has quickly become an important voice on foreign policy and national security affairs. A graduate of the Naval Academy and a fighter pilot who served in Iraq, Congressman Ellzey brings a unique perspective to the war in Ukraine and America’s national security challenges more generally. Please join Hudson Senior Fellow Peter Rough for a conversation with Congressman Ellzey on these questions and more.\n\nWatch on Hudson.org: https://www.hudson.org/events/2125-virtual-event-a-conversation-with-congressman-jake-ellzey-on-us-national-security-62022",
+    "view_count": 752
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NAY283WLdcQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

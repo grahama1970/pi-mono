@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oabdIS9PqAc",
+    "language": "en",
+    "took_ms": 8964,
+    "method": null,
+    "title": "DEF CON 31 DCGVR Village - Allen Baranov -What Is A GRC Hacker",
+    "channel": "DEFCONConference",
+    "upload_date": "20240402",
+    "duration_sec": 2651,
+    "description": "Talks from the DEF CON 31 DEF CON Groups Virtuality Village",
+    "view_count": 7045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oabdIS9PqAc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

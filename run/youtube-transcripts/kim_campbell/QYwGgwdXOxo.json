@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QYwGgwdXOxo",
+    "language": "en",
+    "took_ms": 8969,
+    "method": null,
+    "title": "The Space Force releases WILD X-37B pic from orbit",
+    "channel": "Sandboxx",
+    "upload_date": "20250222",
+    "duration_sec": 169,
+    "description": "The X-37B is America's highly secretive space plane. Here's some info about what it is, and what it may be up to. \n\nMake sure to subscribe to Sandboxx to stay on top of all Defense tech news!",
+    "view_count": 338266
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QYwGgwdXOxo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

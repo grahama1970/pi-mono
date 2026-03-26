@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cyHxoKvD8Ck",
+    "language": "en",
+    "took_ms": 7648,
+    "method": null,
+    "title": "DEF CON 30  - Nick Powers, Steven Flores  – ClickOnce AbUse for Trusted Code Execution",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2664,
+    "description": "Initial access payloads have historically had limited methods that work seamlessly in phishing campaigns and can maintain a level of evasion. This payload category has been dominated by Microsoft Office types, but as recent news has shown, the lifespan of even this technique is shortening. A vehicle for payload delivery that has been greatly overlooked for initial access is ClickOnce. ClickOnce is very versatile and has a lot of opportunities for maintaining a level of evasion and obfuscation. In this talk we’ll cover methods of bypassing Windows controls such as SmartScreen, application whitelisting, and trusted code abuses with ClickOnce applications. Additionally, we’ll discuss methods of turning regular signed or high reputation .NET assemblies into weaponized ClickOnce deployments. This will result in circumvention of common security controls and extend the value of ClickOnce in the offensive use case. Finally, we’ll discuss delivery mechanisms to increase the overall legitimacy of ClickOnce application deployment in phishing campaigns. This talk can bring to attention the power of ClickOnce applications and code execution techniques that are not commonly used.",
+    "view_count": 4021
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cyHxoKvD8Ck: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

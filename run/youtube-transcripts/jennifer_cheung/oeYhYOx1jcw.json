@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oeYhYOx1jcw",
+    "language": "en",
+    "took_ms": 8845,
+    "method": null,
+    "title": "DEF CON 31 Policy  - The Coming War on Encryption Part 3 - India McKinney",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2889,
+    "description": "In recent years, lawmakers around the world have proposed legislation aimed at ending encryption, under the guise of ending child exploitation. In the first half of 2023, we have already seen two serious legislative proposals in the Senate that would result in potentially disastrous legal risks for any company that provides encrypted messages.\n\nCome join us to get an update about the government’s efforts to break encryption – again. We’ll talk about what is different from the last Encryption Wars, what the conversation sounds like right now in DC*, and we’ve been doing to fight back. Most important, we’ll talk about what technologists can do to protect encryption and everyone who uses it.\n\n*when you read this, EARN IT and the STOP CSAM Act, both bills designed to break encryption, will have been marked up and passed out of the Senate Judiciary Committee. What happens after that is entirely dependent on many factors outside my control. The FBI is super gearing up to double down on their position, though.",
+    "view_count": 1498
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oeYhYOx1jcw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

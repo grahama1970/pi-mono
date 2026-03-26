@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gzEENWPRf6Q",
+    "language": "en",
+    "took_ms": 8592,
+    "method": null,
+    "title": "Learn to deploy AI models on edge devices like smartphones",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240528",
+    "duration_sec": 341,
+    "description": "Enroll in the full course 👉 https://bit.ly/4bzZD7L\n\nWe’re excited to announce that Introduction to On-Device AI, a new short course made in collaboration with Qualcomm and taught by Krishna Sridhar, Senior Director of Engineering at Qualcomm, is live!\n\nAs AI moves beyond the cloud, on-device inference is rapidly expanding to smartphones, IoT devices, robots, AR/VR headsets, and more. Over 6 billion mobile devices and billions of other edge devices are ready to run optimized AI models. \n\nIn this course, you’ll learn how to deploy AI models on edge devices using their local compute power for faster and more secure inference:\n\n- Explore how deploying models on device reduces latency, enhances efficiency, and preserves privacy.\n- Go through key concepts of on-device deployment such as neural network graph capture, on-device compilation, and hardware acceleration.\n- Convert pretrained models from PyTorch and TensorFlow for on-device compatibility.\n- Deploy a real-time image segmentation model on device with just a few lines of code.\n- Test your model performance and validate numerical accuracy when deploying to on-device environments\n- Quantize and make your model up to 4x faster and 4x smaller for higher on-device performance.\n- See a demonstration of the steps for integrating the model into a functioning Android app.\n\nIntroduction to On-Device AI launches soon. Sign up for the waitlist and be the first to enroll!\n\nEnroll in the full course 👉 https://bit.ly/4bzZD7L",
+    "view_count": 5540
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gzEENWPRf6Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

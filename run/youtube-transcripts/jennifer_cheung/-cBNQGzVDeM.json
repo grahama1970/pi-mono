@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-cBNQGzVDeM",
+    "language": "en",
+    "took_ms": 8636,
+    "method": null,
+    "title": "DEF CON 29 Recon Village  - Rae - Using OSINT to Aid in Human Trafficking and Smuggling Cases",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 1817,
+    "description": "Using OSINT to Aid in Human Trafficking and Smuggling Cases",
+    "view_count": 5335
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -cBNQGzVDeM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

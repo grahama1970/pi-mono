@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QhFNcGuFRzM",
+    "language": "en",
+    "took_ms": 8227,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Dan Gunter - Consider the Data Source",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 2970,
+    "description": "Protecting industrial control systems involves a variety of challenges, from low tolerance of downtime to requiring a very deliberate combination of approaches and tools to ensure the integrity and availability of the environment. These environmental challenges can often stovepipe our thoughts around how we can respond to threats to control systems in making us think that one source of data is the only option. In this talk, we will consider the strengths and weaknesses of different data sources to include network and host sources. Using data from MITRE Engenuity's recent ICS ATT&CK evaluation, we will talk about known attacker TTPs, how to detect TTPs, and how to improve the chance of adversary detection by diversifying data sources. As collecting and processing more data is both a technical and staffing challenge, we will discuss how analysis can scale without requiring a significant resource increase.",
+    "view_count": 298
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QhFNcGuFRzM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

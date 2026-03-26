@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "M_oKlByAPBU",
+    "language": "en",
+    "took_ms": 9686,
+    "method": null,
+    "title": "Egypt's Enduring Security Challenges",
+    "channel": "Hudson Institute",
+    "upload_date": "20160224",
+    "duration_sec": 4736,
+    "description": "Hudson Institute hosts a panel discussion with top Egypt analysts Samuel Tadros, Michael Wahid Hanna, Amy Hawthorne, and Mokhtar Awad and moderated by Eric Brown.",
+    "view_count": 782
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] M_oKlByAPBU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

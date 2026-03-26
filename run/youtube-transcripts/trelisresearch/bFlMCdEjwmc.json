@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bFlMCdEjwmc",
+    "language": "en",
+    "took_ms": 8577,
+    "method": null,
+    "title": "You want ChatGPT.. but with 128K Context Length!",
+    "channel": "Trelis Research",
+    "upload_date": "20231124",
+    "duration_sec": 226,
+    "description": "Learn more about LLMs at Trelis.com\n\nTry out the tool at chat.trelis.com\n\nOpen source project repo: https://github.com/mckaywrigley/chatbot-ui/\n\nNotes on chat.trelis.com :\n- chat.trelis.com does not collect conversation data\n- data flows to openai via your API key\n- api keys and chats are stored locally in your browser\n\nChapters\n0:00 Chatbot UI using GPT4 Turbo\n1:49 GPT4 Turbo summary quality\n2:29 Why use your own UI instead of chatGPT?",
+    "view_count": 998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bFlMCdEjwmc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

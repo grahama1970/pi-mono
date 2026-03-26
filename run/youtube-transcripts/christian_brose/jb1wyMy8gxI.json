@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jb1wyMy8gxI",
+    "language": "en",
+    "took_ms": 9833,
+    "method": null,
+    "title": "Hank Cardello on Pepsico Adapting Healthier Foods for CNBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20111129",
+    "duration_sec": 95,
+    "description": "Senior Fellow Hank Cardello participated in a special CNBC documentary on Pepsico marketing more \"better-for-you\" foods.",
+    "view_count": 730
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jb1wyMy8gxI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

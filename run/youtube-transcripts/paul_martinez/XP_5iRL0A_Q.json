@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XP_5iRL0A_Q",
+    "language": "en",
+    "took_ms": 8018,
+    "method": null,
+    "title": "Contextualized Physical Data: The Missing Piece For Situational Awareness",
+    "channel": "S4 Events",
+    "upload_date": "20221206",
+    "duration_sec": 1491,
+    "description": "Haakon Mørk on S4x22's Stage 2: Technical Deep Dives makes the case that showing system criticality and other contextualized physical data needs to be provided to the SOC. He provides examples and approaches to creating, accessing and providing this data. \n\nAnd he contends the data is so large it needs to be done in the cloud, which draws some questions. Q&A begins at 16:40.",
+    "view_count": 585
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XP_5iRL0A_Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

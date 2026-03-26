@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NocZi9hyrDg",
+    "language": "en",
+    "took_ms": 9027,
+    "method": null,
+    "title": "Fine-tune GPT-3.5-TURBO - A Crash Course",
+    "channel": "Trelis Research",
+    "upload_date": "20230831",
+    "duration_sec": 689,
+    "description": "A crash-course and 7-step guide to fine tuning gpt-3.5-turbo.\n\n*Resources:*\n- OpenAI Fine-tuning Guide: https://platform.openai.com/docs/guides/fine-tuning/\n- OpenAI API Docs: https://platform.openai.com/docs/api-reference/fine-tuning\n\n*Python Data Preparation and Analysis Scripts*\nPurchase here: https://buy.stripe.com/00g3cYcWh4PF2go5kB\n\n0:00 Fine-tune gpt 3.5 in seven steps\n0:08 Should I use fine-tuning?\n0:20 When does fine-tuning work?\n1:09 Step 1 - Preparing data for fine-tuning\n1:20 How much data do I need for fine-tuning?\n1:59 Fine-tuning on Twitter or blog data\n2:30 Step 2 - Using rewinder to automatically generate prompts for fine-tuning\n3:15 Step 3 - Prepare messages for OpenAI api\n4:25 Step 4 - Data validation for fine-tuning\n5:00 How much does fine-tuning cost with OpenAI?\n5:28 Step 5 - Running a fine-tuning job\n6:45 How long does fine-tuning take?\n7:00 Step 6 - Saving and visualising fine-tuning results\n8:30 Plotting and analysing fine-tuning results\n9:38 Step 7 - Manual inspection of results\n10:54 How do I know if fine-tuning worked?\n11:15 Where to find scripts for fine-tuning with OpenAi",
+    "view_count": 2250
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NocZi9hyrDg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

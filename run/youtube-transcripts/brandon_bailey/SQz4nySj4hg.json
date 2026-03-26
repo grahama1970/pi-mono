@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SQz4nySj4hg",
+    "language": "en",
+    "took_ms": 7921,
+    "method": null,
+    "title": "DEF CON 33 - One Modem to Brick Them All -Vulns in EV Charging Comms - Jan Berens, Marcell Szakaly",
+    "channel": "DEFCONConference",
+    "upload_date": "20250908",
+    "duration_sec": 2603,
+    "description": "In this talk we present a collection of attacks against the most widely used EV charging protocol, by exploiting flaws in the underlying power-line communication technologies affecting almost all EVs and chargers.\n\nSpecifically, we target the QCA 7000 Homeplug modem series, used by the two most popular EV charging systems, CCS and NACS.\n\nWe demonstrate multiple new vulnerabilities in the modems, enabling persistent denial of service.\n\nTo better understand the scope of these issues, we conduct a study of EV chargers and vehicles, and show widespread insecurities in existing deployments.\n\nWe show a variety of practical real-world scenarios where the HomePlug link can be used to hijack EV charging communications, even at a distance.\n\nFinally, we present results from reverse engineering the firmware and how we can gain code execution.",
+    "view_count": 15108
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SQz4nySj4hg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

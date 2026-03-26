@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MM-R3F65W3o",
+    "language": "en",
+    "took_ms": 7711,
+    "method": null,
+    "title": "Children of Misery: Guns and Gangs in Central America",
+    "channel": "Hudson Institute",
+    "upload_date": "20140911",
+    "duration_sec": 7366,
+    "description": "Hudson Institute’s Center for Latin American Studies hosted a discussion with noted regional experts. Moderated by Ambassador Jaime Daremblum, the panel examined the underlying social, economic, and political environment fueling gang activity, with particular focus on whether policymakers in the region have adopted the right responses to counter this crisis, or instead paid too little attention to its structural causes.",
+    "view_count": 291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MM-R3F65W3o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

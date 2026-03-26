@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gCVTbfDecwI",
+    "language": "en",
+    "took_ms": 8969,
+    "method": null,
+    "title": "DEF CON 31 - Prototype Pollution Leads to Remote Code Execution in NodeJS -  Shcherbakov, Balliu",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1217,
+    "description": "Many have heard about Prototype Pollution vulnerabilities in JavaScript applications. This kind of vulnerability allows an attacker to inject properties into an object's root prototype that may lead to flow control alteration and unexpected program behavior. Every time a successful exploit looks like magic or is limited to a denial of service (DoS). Would you be surprised if I told you that every application has a chain of methods that can be triggered by Prototype Pollution and leads to arbitrary code execution? Such gadgets populated Node.js core code and popular NPM packages. Keep calm. Not every app can be exploited! However, this fact increases the risk of exploitation many times over.\n\nIn our research, we studied Prototype Pollution beyond DoS and analyzed Node.js source code against the gadgets. We then analyzed 15 popular Node.js apps from GitHub and got 8 RCEs. Through this talk, I will elaborate on the detected gadgets and vulnerabilities. We will also take a look at how the recent changes in Node.js mitigate these issues.",
+    "view_count": 4064
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gCVTbfDecwI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

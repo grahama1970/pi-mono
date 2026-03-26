@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cO_MA1JjCZ0",
+    "language": "en",
+    "took_ms": 9921,
+    "method": null,
+    "title": "Build Custom LLM Benchmarks for your Application",
+    "channel": "Trelis Research",
+    "upload_date": "20250414",
+    "duration_sec": 2806,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-evals\n\nTrelis Evals (hosted solution) - Waitlist: https://forms.gle/q2bHurzLYNLW5d1U7\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- ADVANCED Evals Part 1: https://youtu.be/HgUnv_c6gOM\n- ADVANCED Evals Part 2: https://youtu.be/TyPSwGl1CCo\n- YourBench: https://github.com/huggingface/yourbench\n- LightEval: https://github.com/huggingface/lighteval\n\nTIMESTAMPS:\n0:00 Creating a custom benchmarking dataset\n0:31 Video Overview and Scripts (https://trelis.com/ADVANCED-evals)\n1:06 Quick-start with YourBench from HuggingFace\n7:47 Running YourBench locally to create a benchmark\n20:59 Advanced data generation notes (pdf conversion, estimating difficulty, citations, chunking, multi-hop, filtering)\n29:23 Evaluating a custom dataset  using LightEval\n36:29 Evaluation and Data Inspection with Trelis ADVANCED-evals\n46:01 Conclusion",
+    "view_count": 2542
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cO_MA1JjCZ0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uhP5VFSQ1kc",
+    "language": "en",
+    "took_ms": 7899,
+    "method": null,
+    "title": "Philosopher of Politics: A Tribute to Harvey C. Mansfield an",
+    "channel": "Hudson Institute",
+    "upload_date": "20121129",
+    "duration_sec": 9180,
+    "description": "Over the course of an extraordinary career spanning six decades, and as the author of fourteen books and translations, Professor Harvey C. Mansfield of Harvard University has made a lasting contribution to the history of political thought, uncovering important insights on the philosophical foundations of constitutionalism, self-government, executive power, political parties, and the powerful character of the American model.\r\rEarlier this year, Professor Mansfield celebrated his eightieth birthda",
+    "view_count": 2152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uhP5VFSQ1kc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

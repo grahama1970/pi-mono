@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "veicfLvqcOs",
+    "language": "en",
+    "took_ms": 8714,
+    "method": null,
+    "title": "DEF CON 30 - Octavio Gianatiempo, Octavio Galland - Hidden Attack Surface of OEM IoT devices",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2355,
+    "description": "In this presentation, we go over the main challenges we faced during our analysis of the top selling router in a local eCommerce, and how we found a zero-click remote unauthenticated RCE vulnerability. We will do a walkthrough on how we located the root cause of this vulnerability and found that it was ingrained in Realtek’s implementation of a networking functionality in its SDK for eCos devices.\n\nWe then present the method we used to automate the detection of this vulnerability in other firmware images. We reflect on the fact that on most routers this functionality is not even documented and can’t be disabled via the router’s web interface. We take this as an example of the hidden attack surface that lurks in OEM internet-connected devices.\n\nWe conclude by discussing why this vulnerability hasn’t been reported yet, despite being easy to spot (having no prior IoT experience), widespread (affecting multiple devices from different vendors), and critical.\n\nOur research highlights the poor state of firmware security, where vulnerable code introduced down the supply chain might never get reviewed and end up having a great impact, evidencing that security is not a priority for the vendors and opening the possibility for attackers to find high impact bugs with low investment and little prior knowledge.",
+    "view_count": 2351
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] veicfLvqcOs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

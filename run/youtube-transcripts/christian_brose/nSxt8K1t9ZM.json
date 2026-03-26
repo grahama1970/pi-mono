@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nSxt8K1t9ZM",
+    "language": "en",
+    "took_ms": 9795,
+    "method": null,
+    "title": "Medicare Part D Drug Benefit: Five Years Later—Is It Working",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6051,
+    "description": "Five years ago, in 2006, the U.S. Department of Health and Human Services (HHS) implemented the Medicare Part D program, which had become law in 2003. The 2006 implementation opened a heated debate, both on the merits of the original legislation as well as its implementation. There were wildly divergent projections on the program's overall cost and potential savings to seniors. In response, the Bush White House and then-HHS Secretary Michael Leavitt engineered a major effort designed at counteri",
+    "view_count": 125
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nSxt8K1t9ZM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

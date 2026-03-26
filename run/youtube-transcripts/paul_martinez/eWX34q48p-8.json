@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eWX34q48p-8",
+    "language": "en",
+    "took_ms": 9471,
+    "method": null,
+    "title": "CPlane's Orchestration Pilot In OPA",
+    "channel": "S4 Events",
+    "upload_date": "20210310",
+    "duration_sec": 2535,
+    "description": "Cplane.ai and ExxonMobil recently completed a pilot project showing how orchestration could simplify the deployment of a complex, multi-vendor system. This was actually a test of both Orchestration and the Open Process Automation (OPA) Forum's work.\n\nJohn Casey of Cplane.ai joined Dale Peterson on the show to try to explain exactly what the pilot project did and how orchestration could be useful in the Operation and Evolve phases of a ICS lifecycle. Orchestration is common in the enterprise, particularly in large telecom, and new to the ICS world. So John helps Dale grapple with the concept.",
+    "view_count": 250
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eWX34q48p-8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

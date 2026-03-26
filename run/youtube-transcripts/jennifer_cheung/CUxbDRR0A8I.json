@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CUxbDRR0A8I",
+    "language": "en",
+    "took_ms": 7840,
+    "method": null,
+    "title": "DEF CON 33 - Invoking Gemini Agents with a Google Calendar Invite - Ben Nassi, Or Yair, Stav Cohen",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2736,
+    "description": "Over the past two years, we have witnessed the emergence of a new class of attacks against LLM-powered systems known as Promptware.\n\nPromptware refers to prompts (in the form of text, images, or audio samples) engineered to exploit LLMs at inference time to perform malicious activities within the application context.\n\nWhile a growing body of research has already warned about a potential shift in the threat landscape posed to applications, Promptware has often been perceived as impractical and exotic due to the presumption that crafting such prompts requires specialized expertise in adversarial machine learning, a cluster of GPUs, and white-box access.\n\nThis talk will shatter this misconception forever.\n\nIn this talk, we introduce a new variant of Promptware called Targeted Promptware Attacks.\n\nIn these attacks, an attacker invites a victim to a Google Calendar meeting whose subject contains an indirect prompt injection.\n\nBy doing so, the attacker hijacks the application context, invokes its integrated agents, and exploits their permission to perform malicious activities.\n\nWe demonstrate 15 different exploitations of agent hijacking targeting the three most widely used Gemini for Workspace assistants: the web interface (www.gemini.google.com), the mobile application (Gemini for Mobile), and Google Assistant (which is powered by Gemini), which runs with OS permissions on Android devices.\n\nWe show that by sending a user an invitation for a meeting (or an email or sharing a Google Doc), attackers could hijack Gemini’s agents and exploit their tools to: Generate toxic content, perform spamming and phishing, delete a victim's calendar events, remotely control a victim's home appliances (connected windows, boiler, and lights), video stream a victim via Zoom, exfiltrate emails and calendar events, geolocate a victim, and launch a worm that tarets Gemini for Workspace clients.\n\nOur demonstrations show that Promptware is capable to perform (1) inter-agent lateral movement (triggering malicious activity between different Gemini agents), and (2) inter-device lateral movement, escaping the boundaries of Gemini and leveraging applications installed on a victim's smartphone to perform malicious activities with physical outcomes (e.g., activating the boiler and lights or opening a window in a victim's apartment).\n\nFinally, we assess the risk posed to end users using a dedicated threat analysis and risk assessment framework we developed.\n\nOur findings indicate that 73% of the identified risks are classified as high-critical, requiring the deployment of immediate mitigations.",
+    "view_count": 1509
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CUxbDRR0A8I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

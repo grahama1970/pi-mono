@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AOp0QtUORBc",
+    "language": "en",
+    "took_ms": 9006,
+    "method": null,
+    "title": "DEF CON 33 - Smart Bus Smart Hacking:  Free WiFi to Total Control  - Kai Ching Wang, Chiao-Lin Yu",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1265,
+    "description": "Have you ever wondered how the On-Board Units (OBUs) in smart buses communicate and authenticate with Advanced Public Transportation Services (APTS) and Advanced Driver Assistance Systems (ADAS)? Shockingly, these systems can be easily tampered with and forged! In this session, We will share over 10 different vulnerabilities discovered from real experiences riding public transit: starting from connecting to the bus-provided free WiFi, hacking into the vehicular router, gaining access to the bus’s private network area, and ultimately controlling the communication between ADAS and APTS—including manipulating onboard LED displays, stealing driver and passenger information, acquiring bus operational data, and even penetrating the backend API servers of the transportation company. We also uncovered severe vulnerabilities and backdoors in cybersecurity-certified vehicular routers and monitoring equipment that could potentially compromise all global units of the same model. Through this presentation, attendees will gain an in-depth understanding of attack vectors starting from open free WiFi, expose security design flaws in connected public transport vehicles, and discuss potential systemic issues from a regulatory and specification-setting perspective.",
+    "view_count": 662
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AOp0QtUORBc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

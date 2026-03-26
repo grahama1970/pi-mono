@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "00njwXnHAnY",
+    "language": "en",
+    "took_ms": 9121,
+    "method": null,
+    "title": "DEF CON Safe Mode - Whose Slide Is It Anyway - 1 of  2",
+    "channel": "DEFCONConference",
+    "upload_date": "20200828",
+    "duration_sec": 4412,
+    "description": "",
+    "view_count": 1884
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 00njwXnHAnY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

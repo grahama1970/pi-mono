@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tTkNWiYR_Vo",
+    "language": "en",
+    "took_ms": 9082,
+    "method": null,
+    "title": "\"Spaceships. For Earth.\" Tesla Commercial 2017 #projectloveday",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170505",
+    "duration_sec": 44,
+    "description": "Show your support through Patreon - http://patreon.com/everydayastronaut \n\nCheck out the Everyday Astronaut web store! - https://everydayastronaut.com/shop\n\nOur submission for Tesla's Project Loveday commercial contest.\n\nStory, Directed, co-edited and music by Tim Dodd (www.timdoddphotography.com)\nDirector of Photography, co-edited and music by Neal Johnson (www.johnsonscreative.com)\n\nAerial by Rotor Visual (https://www.facebook.com/rotorvisual/)",
+    "view_count": 629288
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tTkNWiYR_Vo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

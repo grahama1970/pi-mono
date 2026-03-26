@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2ykwT5DHPeU",
+    "language": "en",
+    "took_ms": 8541,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Panel - Hacking Aerospace Cybersecurity Regulation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2944,
+    "description": "The aerospace industry is highly regulated with a great deal of focus on cybersecurity. Other sectors have seen how good faith hackers and researchers can help increase resilience and highlight vulnerability – how best to do that in a highly regulated, safety critical industry like aerospace? Aerospace regulators have a key role in understanding risk and putting in place the legal frameworks and creating rules, regulations and best practice around good faith research, join us on a panel with the research community and aerospace regulators to chat about what where we are and what we need to do.",
+    "view_count": 223
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2ykwT5DHPeU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

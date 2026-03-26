@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zq9S97Jw3sk",
+    "language": "en",
+    "took_ms": 8740,
+    "method": null,
+    "title": "DC30 DCGVR Talks  - ExploitsAndDragons",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1263,
+    "description": "",
+    "view_count": 242
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zq9S97Jw3sk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YZ9nf6bd9EU",
+    "language": "en",
+    "took_ms": 8373,
+    "method": null,
+    "title": "3. ICS Protocols with Adam Crain",
+    "channel": "S4 Events",
+    "upload_date": "20201111",
+    "duration_sec": 1931,
+    "description": "Adam Crain explains ICS Protocols in 30 minutes. To meet this challenge he focuses on the purpose of these protocols, different key protocol features and how they apply to various industry sectors, the differences between DCS and SCADA protocols and more. It's not bits and bytes and very accessible.\n\nKey Questions:\n\n1) What protocol or protocol characteristics would be appropriate for a chemical manufacturing plant ICS? What protocol or protocol characteristics would be appropriate for a pipeline ICS?\n\n2) What is the difference between \"insecure by design\" and \"insecure by implementation\" and which of these does an asset owner have control over?\n\n3) Should the ICS community add security to ICS protocols by wrapping in TLS, bolt-on security, or new, purpose built secure ICS protocols?",
+    "view_count": 2698
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YZ9nf6bd9EU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

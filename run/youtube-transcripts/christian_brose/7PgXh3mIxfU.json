@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7PgXh3mIxfU",
+    "language": "en",
+    "took_ms": 9069,
+    "method": null,
+    "title": "Bangladesh: What’s Next?",
+    "channel": "Hudson Institute",
+    "upload_date": "20241001",
+    "duration_sec": 3850,
+    "description": "Bangladesh, a South Asian country of 175 million people with a gross domestic product of $460 billion, is strategically important for the United States. The US is the largest foreign investor in Bangladesh, and the country is part of the US-led Indo-Pacific strategy.\n\nIn June 2024, five months after Bangladesh held its general elections, the country was engulfed in mass protests and upheaval. After weeks of street protests and violence, then Prime Minister Sheikh Hasina Wajid stepped down and left the country, and the army helped install an interim government of technocrats led by Nobel laureate Muhammad Yunus.\n\nJoin Hudson for a conversation on developments in Bangladesh and their importance to US interests with former Foreign Secretary of India Harshvardhan Shringla, former Foreign Secretary of Bangladesh Farooq Sobhan, and Georgetown University Professor of Indian Politics Irfan Nooruddin. Dr. Aparna Pande will moderate the conversation.",
+    "view_count": 2957
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7PgXh3mIxfU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

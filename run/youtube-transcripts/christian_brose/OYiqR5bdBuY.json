@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OYiqR5bdBuY",
+    "language": "en",
+    "took_ms": 8229,
+    "method": null,
+    "title": "The Federal Role in Privacy: Getting It Right--A Discussion",
+    "channel": "Hudson Institute",
+    "upload_date": "20121016",
+    "duration_sec": 4937,
+    "description": "The Internet has substantially expanded demand for privacy. In addition to long-standing privacy interests for financial records, medical records, educational records, and other information, the internet has created a new range of privacy concerns from stalking to identity theft. To meet these and other new concerns, Congress considers many new privacy bills, and practically every federal agency has new rules on privacy.\r\r \r\rAmidst the many urgent efforts to do \"something\" to address p",
+    "view_count": 47
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OYiqR5bdBuY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

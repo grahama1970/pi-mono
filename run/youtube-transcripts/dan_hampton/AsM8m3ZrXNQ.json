@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AsM8m3ZrXNQ",
+    "language": "en",
+    "took_ms": 9566,
+    "method": null,
+    "title": "Marine Corps Boot Camp Combat Fitness Test",
+    "channel": "Sandboxx",
+    "upload_date": "20210304",
+    "duration_sec": 60,
+    "description": "The CFT is designed to ensure that Marines are able to meet the physical demands their jobs will require during combat. Not only do recruits need to pass the final CFT during boot camp in order to graduate, but will continue to take the CFT once a year for the rest of their Marine Corps career. \n\nView the 2021 CFT standards here:\n👉  http://sbxx.us/3sUEX3T\n\n(U.S. Marine Corps video by Lance Cpl. Godfrey Ampong/Released)\n*DoD endorsement not implied",
+    "view_count": 32495
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AsM8m3ZrXNQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

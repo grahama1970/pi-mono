@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XGKA-MAxih8",
+    "language": "en",
+    "took_ms": 8090,
+    "method": null,
+    "title": "Fighting Kleptocracy",
+    "channel": "Hudson Institute",
+    "upload_date": "20151214",
+    "duration_sec": 5384,
+    "description": "Ben Judah, Natalie Sedletska, Roman Borisovich, and Karen Dawisha talk kleptocracy and the West's role as a collaborator in kleptocratic governments.",
+    "view_count": 2199
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XGKA-MAxih8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

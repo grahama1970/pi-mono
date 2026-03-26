@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space_Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#001e3c",
+                        "surface-container-highest": "#262626",
+                        "error-container": "#a70138",
+                        "secondary-dim": "#00ed7e",
+                        "error": "#ff6e84",
+                        "tertiary": "#6aabff",
+                        "tertiary-container": "#499dfe",
+                        "primary-dim": "#8a4cfc",
+                        "primary": "#bd9dff",
+                        "secondary": "#00fd87",
+                        "surface-tint": "#bd9dff",
+                        "tertiary-dim": "#4fa0ff",
+                        "outline-variant": "#484848",
+                        "inverse-on-surface": "#565555",
+                        "on-tertiary-fixed": "#001833",
+                        "primary-fixed-dim": "#a67aff",
+                        "on-surface-variant": "#adaaaa",
+                        "on-secondary-fixed": "#004621",
+                        "tertiary-fixed": "#7bb3ff",
+                        "primary-container": "#b28cff",
+                        "surface-container-lowest": "#000000",
+                        "primary-fixed": "#b28cff",
+                        "surface-container-low": "#131313",
+                        "surface": "#0e0e0e",
+                        "on-error": "#490013",
+                        "surface-container": "#191a1a",
+                        "on-secondary-container": "#e3ffe4",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "on-primary": "#3c0089",
+                        "inverse-surface": "#fcf9f8",
+                        "on-background": "#ffffff",
+                        "on-tertiary": "#002a52",
+                        "on-error-container": "#ffb2b9",
+                        "surface-container-high": "#202020",
+                        "on-primary-container": "#2e006c",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "on-primary-fixed": "#000000",
+                        "background": "#0e0e0e",
+                        "secondary-container": "#006d37",
+                        "outline": "#767575",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "inverse-primary": "#742fe5",
+                        "secondary-fixed": "#00fd87",
+                        "on-primary-fixed-variant": "#390083",
+                        "error-dim": "#d73357",
+                        "on-secondary-fixed-variant": "#006632",
+                        "surface-bright": "#2c2c2c",
+                        "on-secondary": "#005b2c",
+                        "surface-dim": "#0e0e0e",
+                        "surface-variant": "#262626",
+                        "on-surface": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .waveform-bg {
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(72, 72, 72, 0.1) 2px, rgba(72, 72, 72, 0.1) 4px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="w-full h-16 flex items-center bg-[#0e0e0e] border-b border-outline-variant/10 px-8 justify-between z-50">
+<div class="flex items-center gap-8">
+<span class="font-headline text-xl font-bold tracking-tighter text-primary">Sonic Observatory</span>
+<div class="hidden md:flex items-center gap-6 font-body text-sm font-medium">
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">Projects</a>
+<a class="text-primary border-b-2 border-primary-dim py-5" href="#">Observatory</a>
+<a class="text-on-surface-variant hover:text-primary transition-all" href="#">Engines</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-highest px-4 py-1.5 rounded-lg flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface placeholder:text-outline w-48" placeholder="Search references..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">JD</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)]">
+<!-- Side Navigation Rail -->
+<aside class="h-screen w-64 flex flex-col bg-[#131313] border-r border-[#484848]/15 py-6 shrink-0">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,253,135,0.4)]"></div>
+<span class="font-label uppercase tracking-[1px] text-[10px] text-secondary">Project Alpha</span>
+</div>
+<p class="font-label text-[10px] text-on-surface-variant opacity-60">48kHz / 24-bit PCM</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-4 hover:bg-[#191a1a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">mic_external_on</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Capture</span>
+</div>
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-4 hover:bg-[#191a1a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">blur_linear</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Sequence</span>
+</div>
+<div class="bg-[#191a1a] text-secondary border-l-2 border-secondary px-6 py-4 flex items-center gap-4">
+<span class="material-symbols-outlined text-[20px]">settings_input_component</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Process</span>
+</div>
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-4 hover:bg-[#191a1a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">equalizer</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Mix</span>
+</div>
+<div class="text-[#adaaaa] px-6 py-4 flex items-center gap-4 hover:bg-[#191a1a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[20px]">ios_share</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Export</span>
+</div>
+</nav>
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full bg-surface-container-highest border border-outline-variant/20 py-3 rounded-lg flex items-center justify-center gap-2 group hover:border-primary transition-all">
+<span class="material-symbols-outlined text-sm group-hover:text-primary">add</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">New Session</span>
+</button>
+<div class="pt-4 border-t border-outline-variant/10 space-y-4">
+<div class="flex items-center gap-3 text-on-surface-variant cursor-pointer hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Library</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant cursor-pointer hover:text-on-surface">
+<span class="material-symbols-outlined text-[18px]">help_outline</span>
+<span class="font-label uppercase tracking-[1px] text-[10px]">Help</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Canvas -->
+<main class="flex-1 flex flex-col bg-surface overflow-y-auto custom-scrollbar">
+<!-- S03 Header Section -->
+<section class="p-12 pb-6 flex items-start justify-between">
+<div class="flex gap-8 items-center">
+<div class="relative group">
+<img alt="Album Art Placeholder" class="w-20 h-20 rounded-lg object-cover shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Dark moody cinematic album cover for Portishead" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJiBRcIXvw0svsKM5VBSFhFr0bPG95rjmCGuWVrn24077SjvA747LtULv1YGnHzAfdMkKIWzN90ioSaicN_My-OWlg3u5BmQtUWTfyaw2wQlOvI-P4EHhWptbcim4QKxr7QpFbwN0ob5WYgUeSl1bgMkO5haP--3O34K6ynYssz4JneXIqM_VyKP_6tSDs85jrot752sqSJioC6l0OwxZuXYorK8SbMQanYyutre2AS2mMt-Pe07CioKEuGJIbCalTKlfqFk3wU5k"/>
+<div class="absolute inset-0 border border-white/10 rounded-lg"></div>
+</div>
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h1 class="text-3xl font-headline font-extrabold tracking-tighter">Roads</h1>
+<span class="font-label text-[10px] bg-surface-container px-2 py-0.5 rounded border border-outline-variant/20 text-on-surface-variant tracking-widest uppercase">Reference</span>
+</div>
+<p class="font-body text-on-surface font-medium opacity-90">Portishead · Dummy 1994 · 85 BPM · D minor</p>
+<p class="font-body text-sm text-on-surface-variant mt-1">Select reference clips for <span class="text-primary-fixed italic">Whisperheads</span> session</p>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="bg-surface-container-low p-1 rounded-lg flex">
+<button class="px-6 py-2 rounded-md bg-surface-container-highest text-primary font-label uppercase tracking-widest text-[10px] shadow-sm">Song</button>
+<button class="px-6 py-2 rounded-md text-on-surface-variant font-label uppercase tracking-widest text-[10px] hover:text-on-surface transition-all">Stems</button>
+</div>
+</div>
+</section>
+<!-- Waveform Workspace -->
+<section class="px-12 py-6 flex-1 min-h-[400px]">
+<div class="w-full h-full bg-surface-container-low rounded-xl relative border border-outline-variant/5 overflow-hidden waveform-bg flex flex-col">
+<!-- Timeline markers -->
+<div class="h-8 w-full border-b border-outline-variant/10 flex items-center px-4 justify-between font-label text-[9px] text-outline tracking-widest">
+<span>0:00</span>
+<span>0:30</span>
+<span>1:00</span>
+<span>1:30</span>
+<span>2:00</span>
+<span>2:30</span>
+<span>3:00</span>
+<span>3:30</span>
+<span>4:00</span>
+<span>4:30</span>
+<span>5:00</span>
+</div>
+<div class="flex-1 relative flex items-center px-4">
+<!-- Main High-Fidelity Waveform -->
+<div class="w-full h-48 opacity-40 bg-gradient-to-r from-transparent via-on-surface-variant/20 to-transparent mask-image-[linear-gradient(to_bottom,black_20%,transparent_20%,transparent_80%,black_80%)] flex items-center justify-center">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path d="M0 50 Q 5 20, 10 50 T 20 50 T 30 50 T 40 80 T 50 20 T 60 50 T 70 50 T 80 10 T 90 90 T 100 50 T 110 50 T 120 30 T 130 70 T 140 50 T 150 50 T 160 10 T 170 90 T 180 50 T 190 50 T 200 40 T 210 60 T 220 50 T 230 50 T 240 20 T 250 80 T 260 50 T 270 50 T 280 45 T 290 55 T 300 50 T 310 50 T 320 15 T 330 85 T 340 50 T 350 50 T 360 35 T 370 65 T 380 50 T 390 50 T 400 5 T 410 95 T 420 50 T 430 50 T 440 25 T 450 75 T 460 50 T 470 50 T 480 40 T 490 60 T 500 50 T 510 50 T 520 20 T 530 80 T 540 50 T 550 50 T 560 10 T 570 90 T 580 50 T 590 50 T 600 30 T 610 70 T 620 50 T 630 50 T 640 40 T 650 60 T 660 50 T 670 50 T 680 15 T 690 85 T 700 50 T 710 50 T 720 35 T 730 65 T 740 50 T 750 50 T 760 5 T 770 95 T 780 50 T 790 50 T 800 25 T 810 75 T 820 50 T 830 50 T 840 40 T 850 60 T 860 50 T 870 50 T 880 20 T 890 80 T 900 50 T 910 50 T 920 10 T 930 90 T 940 50 T 950 50 T 960 30 T 970 70 T 980 50 T 990 50 T 1000 50" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<!-- Selection Region A (Green) -->
+<div class="absolute left-[15%] right-[65%] top-0 bottom-0 bg-secondary/10 border-x-2 border-secondary z-10 flex items-start px-4 pt-12 group cursor-pointer">
+<div class="bg-secondary text-on-secondary px-3 py-1 rounded-full font-label text-[10px] tracking-widest flex items-center gap-2 shadow-lg">
+<span class="material-symbols-outlined text-[12px]">east</span>
+                                Whisperheads verse ref
+                            </div>
+<!-- Left Handle -->
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-24 bg-secondary rounded-full cursor-col-resize flex flex-col items-center justify-center gap-1">
+<div class="w-0.5 h-6 bg-on-secondary/40 rounded-full"></div>
+</div>
+<!-- Right Handle -->
+<div class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-24 bg-secondary rounded-full cursor-col-resize flex flex-col items-center justify-center gap-1">
+<div class="w-0.5 h-6 bg-on-secondary/40 rounded-full"></div>
+</div>
+<!-- Popup Note Editor (Activated View) -->
+<div class="absolute top-[120%] left-0 w-72 bg-surface-container-highest border border-outline-variant/20 rounded-xl shadow-2xl p-6 z-30 backdrop-blur-xl bg-surface-container-highest/90">
+<div class="mb-4">
+<label class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest block mb-2">Technical Insight</label>
+<input class="w-full bg-surface-container-lowest border-none focus:ring-1 focus:ring-primary rounded-lg text-sm text-on-surface font-body p-3" type="text" value="sparse brooding bass feel"/>
+</div>
+<div class="mb-4">
+<label class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest block mb-2">Sentiment Vectors</label>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 rounded bg-error-container/20 border border-error/30 text-error font-label text-[9px] tracking-widest flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">favorite</span> FEAR
+                                        </span>
+<span class="px-2 py-1 rounded bg-tertiary-container/20 border border-tertiary/30 text-tertiary font-label text-[9px] tracking-widest flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">favorite</span> SADNESS
+                                        </span>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest block mb-2">Section Assignment</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border-none focus:ring-0 rounded-lg text-sm text-on-surface font-body p-3 appearance-none">
+<option>Verse</option>
+<option>Chorus</option>
+<option>Bridge</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="mt-6 flex justify-end gap-3">
+<button class="text-on-surface-variant font-label text-[10px] uppercase tracking-widest px-3 py-2 hover:text-on-surface">Delete</button>
+<button class="bg-primary text-on-primary font-label text-[10px] uppercase tracking-widest px-4 py-2 rounded-lg shadow-lg">Save Node</button>
+</div>
+</div>
+</div>
+<!-- Selection Region B (Purple) -->
+<div class="absolute left-[55%] right-[20%] top-0 bottom-0 bg-primary/10 border-x-2 border-primary z-10 flex items-start px-4 pt-12 group cursor-pointer">
+<div class="bg-primary text-on-primary px-3 py-1 rounded-full font-label text-[10px] tracking-widest flex items-center gap-2 shadow-lg opacity-80 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[12px]">east</span>
+                                Whisperheads chorus ref
+                            </div>
+<!-- Left Handle -->
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-24 bg-primary rounded-full cursor-col-resize flex flex-col items-center justify-center gap-1">
+<div class="w-0.5 h-6 bg-on-primary/40 rounded-full"></div>
+</div>
+<!-- Right Handle -->
+<div class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-24 bg-primary rounded-full cursor-col-resize flex flex-col items-center justify-center gap-1">
+<div class="w-0.5 h-6 bg-on-primary/40 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Playhead -->
+<div class="absolute top-0 bottom-0 left-[22%] w-0.5 bg-on-background z-20 shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+<div class="absolute -top-1 -left-1 w-3 h-3 bg-on-background rotate-45"></div>
+</div>
+</div>
+</section>
+<!-- Bottom Reference Clips Panel -->
+<section class="p-12 pt-0">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label text-[10px] uppercase tracking-[2px] text-on-surface-variant">Selected Reference Clips</h3>
+<button class="flex items-center gap-2 text-primary font-label text-[10px] uppercase tracking-widest group">
+<span class="material-symbols-outlined text-[16px] group-hover:scale-110 transition-transform">add_box</span> Export Reference Pack
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/5 hover:border-secondary/20 transition-all cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<h4 class="font-headline font-bold text-sm">Verse Ref</h4>
+<p class="font-label text-[10px] text-secondary tracking-widest">0:20 — 0:50</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">more_vert</span>
+</div>
+<div class="bg-surface-container-lowest h-1.5 w-full rounded-full overflow-hidden mb-2">
+<div class="bg-secondary h-full w-[30%] shadow-[0_0_8px_rgba(0,253,135,0.3)]"></div>
+</div>
+<p class="font-body text-[11px] text-on-surface-variant line-clamp-1 italic">"sparse brooding bass feel"</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/5 hover:border-primary/20 transition-all cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<h4 class="font-headline font-bold text-sm">Chorus Ref</h4>
+<p class="font-label text-[10px] text-primary tracking-widest">1:25 — 1:55</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">more_vert</span>
+</div>
+<div class="bg-surface-container-lowest h-1.5 w-full rounded-full overflow-hidden mb-2">
+<div class="bg-primary h-full w-[15%] shadow-[0_0_8px_rgba(189,157,255,0.3)]"></div>
+</div>
+<p class="font-body text-[11px] text-on-surface-variant line-clamp-1 italic">Layering vocal harmonies for depth...</p>
+</div>
+<!-- Add New Reference Slot -->
+<div class="border border-dashed border-outline-variant/20 rounded-xl flex flex-col items-center justify-center p-5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-outline text-3xl mb-2">add_circle</span>
+<p class="font-label text-[10px] uppercase tracking-widest text-outline">Add Reference Clip</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

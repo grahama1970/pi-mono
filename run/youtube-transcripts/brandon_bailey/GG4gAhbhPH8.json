@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GG4gAhbhPH8",
+    "language": "en",
+    "took_ms": 8625,
+    "method": null,
+    "title": "DEF CON 33 - Passkeys Pwned:Turning WebAuthn Against Itself - S Pratap Singh, J Lin, D Seetoh",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2019,
+    "description": "Over the past three years, passkeys have gained widespread adoption among major vendors like Apple, Google, and Microsoft, aiming to replace passwords with a more secure authentication method. However, passkeys haven't yet faced the extensive scrutiny that passwords have endured over decades. As they become central to enterprise identity, it's crucial to examine their resilience.\n\nThis presentation demonstrates how attackers can proxy WebAuthn API calls to forge passkey registration and authentication responses. We'll showcase this using a browser extension as an example, but the same technique applies to any website vulnerable to client-side script injection, such as XSS or misconfigured widgets. The extension serves merely as a controlled means to proxy credential flows and manipulate the WebAuthn process.\n\nWe'll delve into the underlying theory, present the exploit code, and provide a live demonstration of an attack that succeeds on sites relying on passkeys without enforcing attestation or metadata checks—a common scenario among vendors. If you’re relying on passkeys, this is the side of the flow you don’t usually get to see.",
+    "view_count": 895
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GG4gAhbhPH8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tZwaPDqXTgs",
+    "language": "en",
+    "took_ms": 9099,
+    "method": null,
+    "title": "DEF CON 33 - Carding, Sabotage & Survival: A Darknet Market Veteran’s Story - Godman666",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2539,
+    "description": "For over 10 years, I've operated at every level of darknet markets - from carding forums to multi-million dollar platforms. This is the unfiltered reality they don't teach you:\n\nThe evolution of scams: From simple carding to sophisticated exit strategies that still work today\nInfrastructure insights: How markets really operate behind the scenes (and why they always collapse)\nPsychological warfare: How one forged document can destroy a marketplace overnight\nThe Christmas Massacre: An inside look at the 45-minute market implosion that changed everything\nDEF CON's darknet challenge: What really happened that year\nI'll share never-before-seen screenshots, chat logs, and operational details that reveal why no market lasts forever. Whether you're a researcher, journalist, or just curious - this is the uncensored history of the darknet's most infamous moments.",
+    "view_count": 33219
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tZwaPDqXTgs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

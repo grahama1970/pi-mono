@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qJoy8U27NPo",
+    "language": "en",
+    "took_ms": 8872,
+    "method": null,
+    "title": "Test Time Compute, Part 1: Sampling and Chain of Thought",
+    "channel": "Trelis Research",
+    "upload_date": "20240930",
+    "duration_sec": 3298,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n➡️ Test Time Compute, Part 2: Verifiers - https://youtu.be/MvaUcc0mNOU\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1xGvkZ_9n9d_XSaPWyTgJ7PtxbtA58uJQVJBsFUDsl-c/edit?usp=sharing\n- Hotpot QA:https://huggingface.co/datasets/hotpotqa/hotpot_qa\n- GSM8K: https://huggingface.co/datasets/openai/gsm8k\n- Chain of Thought Paper: https://arxiv.org/abs/2201.11903\n\nTIMESTAMPS:\n0:00 OpenAI o1 type techniques for scaling test time compute\n1:52 Video Overview (temperature, chain of thought)\n2:17 Training compute versus test time compute\n6:28 Why spend more compute on test time / inference?\n10:50 Using verifiers to select the best answers\n12:00 Exploring and critiquing/verifying answers during inference\n15:02 Understanding Temperature for sampling\n19:41 Should you set temperature to zero?\n22:08 Beam search\n23:30 Problems with setting a non-zero temperature\n24:31 Using top p, top k, min p, and best of\n27:36 Recap on choosing temperature for sampling\n28:20 How to implement chain of thought\n29:40 Setup for notebook run-through on gsm8k and hotpot qa\n31:20 Using sampling and chain of thought on hotpotqa and gsm8k\n31:47 Running vllm in a Jupyter notebook (allows for batching)\n36:15 Scoring / Grading with OpenAI gpt4o-mini using regex enforcement\n39:39 Multi-threading the scoring / grading for speed\n40:30 Running the dataset multiple times to get the mean and mean absolute deviation of correct answers\n41:29 Controlling sampling parameters (min p, top p, top k, beam search, temperature)\n43:46 Running temperature / sampling ablations WITHOUT chain of thought\n46:48 Chain of Thought Setup\n49:02 Running ablations WITH chain of thought\n50:44 GSM8K Results Charts\n52:09 Hotpot QA Results Charts\n53:09 Recommendations on sampling, temperature and chain of thought\n55:17 Video resources",
+    "view_count": 5454
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qJoy8U27NPo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

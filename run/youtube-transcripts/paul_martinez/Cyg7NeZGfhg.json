@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cyg7NeZGfhg",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "Comparing Government Approaches To Critical Infrastructure Security",
+    "channel": "S4 Events",
+    "upload_date": "20180917",
+    "duration_sec": 1684,
+    "description": "Miguel Garcia-Menendez of CCI gives the S4x18 audience a sneak peak of the study they did on how government's around the world are addressing ICS cybersecurity for critical infrastructure.\n\nThe conclusions and key points from the study start at 11:15.",
+    "view_count": 220
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cyg7NeZGfhg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

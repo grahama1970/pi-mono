@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pzqu_qaoNuY",
+    "language": "en",
+    "took_ms": 8633,
+    "method": null,
+    "title": "DEF CON 29 - David Dworken - Worming through IDEs",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1369,
+    "description": "You might think that as long as you never hit run, opening up that interesting new POC in your IDE and checking out the code is safe. But it isn't. IDEs and developer tools are complex pieces of software that have vulnerabilities, just like everything else.\n\nWe'll start by discussing what a reasonable threat model is for IDEs. How do companies threat model their IDEs? What do users expect of their IDEs? Is viewing a file equivalent to executing it?\n\nThen we'll dive into the reality of it. Nearly every IDE examined was trivially vulnerable. But there were also a variety of subtle bugs lying underneath. We'll look at bugs in both local IDEs (like VSCode and IntelliJ) and cloud-based IDEs (like AWS Cloud9 and Github Codespaces).\n\nFinally, we'll show how an attacker could make a worm that would spread through attacking IDEs. View a malicious project? Let's automatically backdoor every project on a computer and keep spreading.\n\nREFERENCES:\nhttps://github.com/numirias/security/blob/master/doc/2019-06-04_ace-vim-neovim.md\nhttps://nvd.nist.gov/vuln/detail/CVE-2012-3479\nhttp://blog.saynotolinux.com/blog/2016/08/15/jetbrains-ide-remote-code-execution-and-local-file-disclosure-vulnerability-analysis/\nhttps://www.cvedetails.com/vulnerability-list/vendor_id-15146/product_id-49160/year-2019/Jetbrains-Intellij-Idea.html",
+    "view_count": 2160
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pzqu_qaoNuY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

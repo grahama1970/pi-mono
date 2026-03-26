@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --terminal-bg: #0b1220;
+            --terminal-text: #e2e8f0;
+            --terminal-accent: #7c3aed;
+            --terminal-green: #00ff88;
+            --terminal-red: #ff4444;
+            --terminal-blue: #4a9eff;
+            --terminal-dim: #4a4455;
+        }
+        body { 
+            font-family: 'JetBrains Mono', monospace; 
+            background-color: var(--terminal-bg);
+            color: var(--terminal-text);
+        }
+        .scanline-progress {
+            height: 1px;
+            width: 100%;
+            background: var(--terminal-green);
+            box-shadow: 0 0 8px var(--terminal-green);
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--terminal-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--terminal-dim); }
+        .section-block {
+            border-bottom: 1px solid rgba(74, 68, 85, 0.3);
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            color: var(--terminal-accent);
+        }
+        .terminal-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: repeating-linear-gradient(90deg, var(--terminal-accent) 0, var(--terminal-accent) 4px, transparent 4px, transparent 8px);
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="selection:bg-primary/30">
+<header class="sticky top-0 z-50 bg-surface border-b border-[var(--terminal-dim)]/40 bg-[var(--terminal-bg)]/80 backdrop-blur-md px-6 h-12 flex justify-between items-center text-[10px] uppercase tracking-widest font-bold">
+<div class="flex items-center gap-6">
+<span class="text-[var(--terminal-accent)]">PROMPT_LAB_OPT_V1.0.4</span>
+<span class="text-[var(--terminal-dim)]">|</span>
+<span class="text-[var(--terminal-green)] flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-[var(--terminal-green)] rounded-full animate-pulse"></span>
+            SYSTEM_READY
+        </span>
+</div>
+<div class="flex items-center gap-6 text-[var(--terminal-dim)]">
+<span>UTC: <span class="text-[var(--terminal-text)]" id="clock">14:32:01</span></span>
+<span class="text-[var(--terminal-text)]">SEC-ENCLAVE: ACTIVE</span>
+<div class="w-6 h-6 bg-[var(--terminal-accent)]/20 overflow-hidden border border-[var(--terminal-accent)]/40">
+<img alt="Operator" class="w-full h-full object-cover grayscale opacity-70" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABOGDI1z1uGr3NRshKmlekFG0MSp__FbAraTVBk8NjH3QSdhAnQP2gh3wx85Z_VIrDg31311DSdqxOcLM_OPxdvF-J5_JWSNCH2PgXQf4eIeCckBQpc2FVrl5iH-6VXgf8pacAuvbQlqhEqZT4TVQV-s4Iwrl3re9-jgLga7hhj78v8v8uMyi1v95SX6x36sBDeJexzInDNvuk3HKIZkXH3Aknlrq8oJfoG7OZtunZ0Ga-QUJeBIe3b3e_nB73DYcCTCuFOEqyCCY"/>
+</div>
+</div>
+</header>
+<main class="w-full">
+<section class="section-block">
+<div class="terminal-header">
+<span class="text-sm font-black">[01] SYSTEM_PROMPT_EDITOR</span>
+<span class="text-[10px] opacity-50">#taxonomy_v1.delta</span>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="bg-[var(--terminal-dim)]/10 p-4 border-l-2 border-[var(--terminal-accent)]">
+<div class="flex justify-between mb-2 text-[10px] text-[var(--terminal-dim)] uppercase font-bold">
+<span>Inbound Context Shard</span>
+<span>Lines: 04 // Tokens: 42</span>
+</div>
+<textarea class="w-full h-40 bg-transparent border-0 focus:ring-0 text-[var(--terminal-text)] font-mono text-sm leading-relaxed p-0 resize-none">You are a cybersecurity taxonomy classifier. Your task is to analyze incident descriptions and map them to the unified impact framework. 
+Use precise terminology and prioritize structural vulnerability indicators over high-level symptoms.</textarea>
+</div>
+</div>
+</section>
+<section class="section-block">
+<div class="terminal-header">
+<span class="text-sm font-black">[02] TEST_MATRIX</span>
+<span class="text-[10px] opacity-50">#evaluation_sets</span>
+</div>
+<div class="space-y-4">
+<div class="grid grid-cols-1 gap-1">
+<div class="group flex items-center justify-between p-3 border border-[var(--terminal-dim)]/20 hover:border-[var(--terminal-accent)]/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-[var(--terminal-accent)]">ID_TC-01</span>
+<span class="text-sm">T1547.001 Registry Run Keys / Startup Folder</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[9px] px-2 py-0.5 border border-[var(--terminal-green)] text-[var(--terminal-green)] font-bold uppercase tracking-widest">Corruption+Persist</span>
+<span class="material-symbols-outlined text-xs opacity-20">drag_indicator</span>
+</div>
+</div>
+<div class="group flex items-center justify-between p-3 border border-[var(--terminal-dim)]/20 hover:border-[var(--terminal-accent)]/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-[var(--terminal-accent)]">ID_TC-02</span>
+<span class="text-sm">SI-2 Flaw Remediation via automated patching</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[9px] px-2 py-0.5 border border-[var(--terminal-green)] text-[var(--terminal-green)] font-bold uppercase tracking-widest">Resilience+Fragility+Harden</span>
+<span class="material-symbols-outlined text-xs opacity-20">drag_indicator</span>
+</div>
+</div>
+<div class="group flex items-center justify-between p-3 border border-[var(--terminal-dim)]/20 hover:border-[var(--terminal-accent)]/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-[var(--terminal-accent)]">ID_TC-03</span>
+<span class="text-sm">d3f:NetworkIsolation Network Isolation for segment E-4</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[9px] px-2 py-0.5 border border-[var(--terminal-green)] text-[var(--terminal-green)] font-bold uppercase tracking-widest">Resilience+Isolate</span>
+<span class="material-symbols-outlined text-xs opacity-20">drag_indicator</span>
+</div>
+</div>
+</div>
+<button class="text-[10px] font-bold text-[var(--terminal-dim)] hover:text-[var(--terminal-accent)] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                APPEND_NEW_TEST_CASE
+            </button>
+</div>
+</section>
+<section class="section-block">
+<div class="terminal-header">
+<span class="text-sm font-black">[03] MODEL_ORCHESTRATION</span>
+<span class="text-[10px] opacity-50">#active_inference_nodes</span>
+</div>
+<div class="flex flex-wrap gap-4">
+<div class="flex flex-col gap-1 w-48 p-4 bg-[var(--terminal-dim)]/5 border-t-2 border-[var(--terminal-blue)]">
+<span class="text-[10px] font-bold text-[var(--terminal-blue)] uppercase">Primary_Node</span>
+<span class="text-sm font-bold">DeepSeek-V3</span>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[8px] px-1 border border-[var(--terminal-dim)]/40 text-[var(--terminal-dim)]">STABLE</span>
+<span class="text-[8px] text-[var(--terminal-green)]">ACTIVE</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 w-48 p-4 bg-[var(--terminal-dim)]/5 border-t-2 border-[var(--terminal-blue)]">
+<span class="text-[10px] font-bold text-[var(--terminal-blue)] uppercase">Secondary_Node</span>
+<span class="text-sm font-bold">qwen2.5:7b</span>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[8px] px-1 border border-[var(--terminal-dim)]/40 text-[var(--terminal-dim)]">LOCAL</span>
+<span class="text-[8px] text-[var(--terminal-green)]">ACTIVE</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 w-48 p-4 bg-[var(--terminal-dim)]/5 border-t-2 border-[var(--terminal-dim)]/40 opacity-50">
+<span class="text-[10px] font-bold text-[var(--terminal-dim)] uppercase">Auxiliary_Node</span>
+<span class="text-sm font-bold">text-gemini</span>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-[8px] px-1 border border-[var(--terminal-dim)]/40 text-[var(--terminal-dim)]">CLOUD</span>
+<span class="text-[8px] text-[var(--terminal-accent)]">SPAWNING...</span>
+</div>
+</div>
+<div class="flex items-center justify-center w-48 h-24 border border-dashed border-[var(--terminal-dim)]/20 hover:border-[var(--terminal-accent)]/50 transition-colors cursor-pointer group">
+<span class="text-[10px] font-bold group-hover:text-[var(--terminal-accent)]">+ ADD_NODE</span>
+</div>
+</div>
+</section>
+<section class="section-block">
+<div class="terminal-header">
+<span class="text-sm font-black">[04] COMPARATIVE_TELEMETRY</span>
+<span class="text-[10px] opacity-50">#bench_summary</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-[var(--terminal-dim)] border-b border-[var(--terminal-dim)]/20">
+<th class="py-4 font-black">NODE_ID</th>
+<th class="py-4 font-black">METRIC_F1</th>
+<th class="py-4 font-black">STATUS</th>
+<th class="py-4 font-black">EPOCHS</th>
+<th class="py-4 font-black">RANK</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[var(--terminal-dim)]/10">
+<tr class="hover:bg-white/5">
+<td class="py-4">DeepSeek-V3</td>
+<td class="py-4 text-[var(--terminal-green)] font-bold text-lg">0.929</td>
+<td class="py-4"><span class="text-[var(--terminal-green)]">[PASS]</span></td>
+<td class="py-4">2_ROUNDS</td>
+<td class="py-4 text-[var(--terminal-accent)] font-black">&gt;&gt;_BEST_&lt;&lt;</td>
+</tr>
+<tr class="hover:bg-white/5">
+<td class="py-4">qwen2.5:7b</td>
+<td class="py-4 font-bold text-lg">0.881</td>
+<td class="py-4"><span class="text-[var(--terminal-green)]">[PASS]</span></td>
+<td class="py-4">4_ROUNDS</td>
+<td class="py-4">-</td>
+</tr>
+<tr class="bg-[var(--terminal-accent)]/5">
+<td class="py-4 opacity-50">text-gemini</td>
+<td class="py-4">-</td>
+<td class="py-4">
+<div class="flex items-center gap-2">
+<span class="animate-pulse text-[var(--terminal-accent)]">RUNNING...</span>
+</div>
+</td>
+<td class="py-4">-</td>
+<td class="py-4">-</td>
+</tr>
+</tbody>
+</table>
+<div class="scanline-progress mt-[-1px]"></div>
+</div>
+</section>
+<section class="section-block">
+<div class="terminal-header">
+<span class="text-sm font-black">[05] CONVERGED_PROMPT_VARIANT</span>
+<span class="text-[10px] opacity-50">#optimized_shard_v12</span>
+</div>
+<div class="bg-black/40 border border-[var(--terminal-dim)]/20 p-8 font-mono relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-9xl">terminal</span>
+</div>
+<div class="mb-4 text-[9px] text-[var(--terminal-green)] font-bold">// GENERATED_OPTIMAL_LOGIC</div>
+<p class="text-sm leading-relaxed max-w-3xl">
+                Classify incident &lt;INPUT&gt; into taxonomy_v1. Parameters: <br/>
+                - <span class="text-[var(--terminal-blue)]">@structural_impact</span>: evaluate persistent state changes.<br/>
+                - <span class="text-[var(--terminal-blue)]">@resilience_score</span>: invert failure points if recovery exists.<br/>
+                - <span class="text-[var(--terminal-blue)]">@taxonomy_map</span>: [Corruption, Persistence, Resilience, Isolation, Fragility].<br/><br/>
+<span class="bg-[var(--terminal-accent)]/20 px-1">OUTPUT: JSON valid format only. Zero-shot reasoning enabled.</span>
+</p>
+</div>
+</section>
+<section class="section-block border-b-0 pb-32">
+<div class="terminal-header">
+<span class="text-sm font-black">[06] RESPONSE_SHARDS</span>
+<span class="text-[10px] opacity-50">#node_output_verification</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-3">
+<div class="text-[10px] font-bold text-[var(--terminal-dim)] uppercase">Source: TC-01_DeepSeek</div>
+<div class="p-4 bg-[var(--terminal-dim)]/10 border-l border-[var(--terminal-blue)] text-[11px] leading-tight">
+<pre class="text-[var(--terminal-blue)]">{
+  "verdict": "CRITICAL",
+  "tags": ["Corruption", "Persist"],
+  "confidence": 0.984,
+  "vector": [1, 0, 1, 0, 0]
+}</pre>
+</div>
+</div>
+<div class="space-y-3">
+<div class="text-[10px] font-bold text-[var(--terminal-dim)] uppercase">Source: TC-02_DeepSeek</div>
+<div class="p-4 bg-[var(--terminal-dim)]/10 border-l border-[var(--terminal-blue)] text-[11px] leading-tight">
+<pre class="text-[var(--terminal-blue)]">{
+  "verdict": "MODERATE",
+  "tags": ["Resilience", "Fragility", "Harden"],
+  "confidence": 0.912,
+  "vector": [0, 1, 1, 0, 1]
+}</pre>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[var(--terminal-bg)] via-[var(--terminal-bg)] to-transparent border-t border-[var(--terminal-dim)]/20 z-50">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4 text-[10px] font-bold">
+<span class="text-[var(--terminal-accent)] cursor-pointer hover:underline">&gt;_ HELP</span>
+<span class="text-[var(--terminal-dim)]">|</span>
+<span class="text-[var(--terminal-accent)] cursor-pointer hover:underline">&gt;_ EXPORT_JSON</span>
+<span class="text-[var(--terminal-dim)]">|</span>
+<span class="text-[var(--terminal-accent)] cursor-pointer hover:underline">&gt;_ CLEAR_CACHE</span>
+</div>
+<div class="flex gap-4">
+<button class="px-8 py-3 border border-[var(--terminal-red)]/50 text-[var(--terminal-red)] text-[11px] font-bold uppercase tracking-widest hover:bg-[var(--terminal-red)]/10 transition-all">
+                ABORT_OPTIMIZATION
+            </button>
+<button class="px-10 py-3 bg-[var(--terminal-green)] text-[var(--terminal-bg)] text-[11px] font-black uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(0,255,136,0.3)] hover:brightness-110 transition-all active:scale-[0.98]">
+                COMMIT_TO_PRODUCTION
+            </button>
+</div>
+</div>
+</footer>
+<script>
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getUTCHours()).padStart(2, '0');
+        const m = String(now.getUTCMinutes()).padStart(2, '0');
+        const s = String(now.getUTCSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
+</body></html>

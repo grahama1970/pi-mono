@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iz4JdPLZXXI",
+    "language": "en",
+    "took_ms": 8123,
+    "method": null,
+    "title": "A new Data Engineering Professional Certificate is joining our catalog!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240807",
+    "duration_sec": 89,
+    "description": "Pre-enroll now: https://bit.ly/3A6jQEp\n\nAnnouncing Data Engineering, a new advanced professional certificate offered through Coursera, now available for pre-enrollment!\nYou can’t have good data analysis without data that is effectively ingested, stored, transformed, and served to meet the needs of downstream data stakeholders such as data scientists and machine learning engineers.\n\nData engineering is the foundation that makes data useful in modern organizations, as it involves the development, implementation, and maintenance of systems that transform raw data into high-quality information for analysis and machine learning use cases. It intersects with several undercurrents, such as security, data management, DataOps, data architecture, orchestration, and software engineering.\n\nThis 4-course program will help you think, act, and function like a data engineer in the real world as you develop core skills to select the right technologies for your data architecture and pipelines. You'll learn about the entire data engineering lifecycle, from data generation to ingestion, transformation, storage, and serving. \n\nThese fundamental practices will allow you to tackle any data engineering problem systematically and grow your career in a high-demand field.\n\nFor aspiring data engineers, data engineers looking to refine their skills, and data stakeholders such as data team leads, the lessons in this specialization emphasize hands-on practice with cloud solutions, primarily AWS, and open source tools.\n\nTaught by industry expert Joe Reis, co-author of the best-selling book “Fundamentals of Data Engineering,” this professional certificate equips you with the skills and knowledge to excel in a high-demand field. \n\nPre-enroll now and get a 14-day free trial when the course launches, plus, be the first to know when it’s live!\n\nLearn more: https://bit.ly/3A6jQEp",
+    "view_count": 5346
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iz4JdPLZXXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

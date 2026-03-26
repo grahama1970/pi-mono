@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wp1ighuitNE",
+    "language": "en",
+    "took_ms": 8583,
+    "method": null,
+    "title": "Why use Keyword vs Vector Search?",
+    "channel": "Trelis Research",
+    "upload_date": "20250303",
+    "duration_sec": 1820,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠 Build & Deploy Faster\nFine-tuning, Inference, Audio, Evals, and Vision Tools: https://trelis.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nJoin the Trelis team: https://trelis.com/developer-collaborations/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\n📸 Thumbnail Tutorial\nSee How It’s Made: https://youtu.be/ThKYjTdkyP8\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1oCweGWEGxxS0gI0ynSxQsNUWmtVnsz1KzEjBrf3AEIE/edit?usp=sharing\n- Vectorchord-bm25: https://github.com/tensorchord/VectorChord-bm25\n- ChatGPT on Block-WeakAnd and RRF (Retrieval Rank Fusion): https://chatgpt.com/share/67c2f119-3d84-8003-a7b1-2c000e8a120a\n\nTIMESTAMPS:\n00:00 Introduction to Vector Search\n00:34 Pros and Cons of Keyword vs. Vector Search\n02:13 Understanding Vector Search\n03:35 Keyword Search Explained\n06:17 Comparing Search Techniques\n07:40 Handling Long Documents\n09:31 New and Infrequent Words\n10:50 LLMs and Query Optimization\n12:17 The Importance of Pagination\n13:22 Postgres Libraries for Search\n20:18 Implementing BM25 in Postgres with tensorchord's vectorchord-bm25\n23:50 Hybrid Search Techniques\n29:58 Conclusion and Further Resources",
+    "view_count": 2056
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wp1ighuitNE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

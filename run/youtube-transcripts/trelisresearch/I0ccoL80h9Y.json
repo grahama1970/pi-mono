@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I0ccoL80h9Y",
+    "language": "en",
+    "took_ms": 8981,
+    "method": null,
+    "title": "How to pick a GPU and Inference Engine?",
+    "channel": "Trelis Research",
+    "upload_date": "20240730",
+    "duration_sec": 3861,
+    "description": "➡️ Get Life-time Access to the ADVANCED-inference Repo (incl. inference scripts in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n\nERRATA:\nAt 57:45: I likely copied the ID of 70B (4xA40) instead of 405B (4xH100), so the results for 405B 4xH100 are incorrect.\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1di6NmxfM3aPWVAqunnlmQNNxwRC0RdEe4b6APlelm7U/edit?usp=sharing\n- SGLang: https://github.com/sgl-project/sglang\n- vLLM: https://github.com/vllm-project/vllm\n- TGI: https://github.com/huggingface/text-generation-inference\n- Nvidia NIM: https://docs.nvidia.com/nim/large-language-models/latest/introduction.html\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nTIMESTAMPS:\n0:00 How to pick a GPU and software for inference\n0:44 Video Overview\n1:51 Effect of Quantization on Quality\n9:23 Effect of Quantization on Speed\n14:03 Effect of GPU bandwidth relative to model size\n17:49 Effect of de-quantization on inference speed\n19:57 Marlin Kernels, AWQ and Neural Magic\n23:20 Inference Software - vLLM, TGI, SGLang, NIM\n25:22 Deploying one-click templates for inference\n33:52 Testing inference speed for a batch size of 1 and 64\n36:17 SGLang inference speed\n37:55 vLLM inference speed\n38:50 Text Generation Inference Speed\n40:41 Nvidia NIM Inference Speed\n42:13 Comparing vLLM, SGLang, TGI and NIM Inference Speed.\n43:13 Comparing inference costs for A40, A6000, A100 and H100\n45:36 Inference Setup for Llama 3.1 70B and 405B\n48:33 Running inference on Llama 8B on A40, A6000, A100 and H100\n51:10 Inference cost comparison for Llama 8B\n52:33 Running inference on Llama 70B and 405B on A40, A6000, A100 and H100\n55:19 Inference cost comparison for Llama 70B and 405B\n1:00:14 OpenAI GPT4o Inference Costs versus Llama 3.1 8B, 70B, 405B\n1:02:10 Final Inference Tips\n1:03:50 Resources",
+    "view_count": 13075
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I0ccoL80h9Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

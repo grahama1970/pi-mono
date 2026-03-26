@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4PIU33XdGyU",
+    "language": "en",
+    "took_ms": 8539,
+    "method": null,
+    "title": "Lewis Libby on U.S. Foreign Policy in Afghanistan and Iran for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20100909",
+    "duration_sec": 441,
+    "description": "Hudson Senior Vice President Lewis Libby appeared on the O'Reilly Factor on September 7, 2010 to discuss U.S. foreign policy in Afghanistan and Iran.",
+    "view_count": 1604
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4PIU33XdGyU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

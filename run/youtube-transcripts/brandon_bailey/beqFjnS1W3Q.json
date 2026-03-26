@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "beqFjnS1W3Q",
+    "language": "en",
+    "took_ms": 9182,
+    "method": null,
+    "title": "DEF CON Safe Mode DC Groups Village - DC619, DC858 San Diego - Saving Yourself from Microsoft",
+    "channel": "DEFCONConference",
+    "upload_date": "20200915",
+    "duration_sec": 2605,
+    "description": "",
+    "view_count": 2090
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] beqFjnS1W3Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

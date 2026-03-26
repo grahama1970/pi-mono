@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ev2XuAktWpM",
+    "language": "en",
+    "took_ms": 8569,
+    "method": null,
+    "title": "Solving ARC Tasks by Writing Python Programs",
+    "channel": "Trelis Research",
+    "upload_date": "20251107",
+    "duration_sec": 4050,
+    "description": "I provide an overview of research done by Lewis Hemens and myself as part of ARC Prize 2025\n\nThanks to Runpod for sponsorship. Affiliate link here for a bonus on signup: https://runpod.io?ref=jmfkcdio",
+    "view_count": 337
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ev2XuAktWpM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

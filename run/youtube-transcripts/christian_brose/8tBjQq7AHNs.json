@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8tBjQq7AHNs",
+    "language": "en",
+    "took_ms": 8618,
+    "method": null,
+    "title": "Virtual Event | A Conversation with Congressman Mike Turner on Ukraine",
+    "channel": "Hudson Institute",
+    "upload_date": "20220218",
+    "duration_sec": 2305,
+    "description": "Please join Hudson Institute in welcoming Congressman Mike Turner (R-OH), a prominent voice in the U.S. House of Representatives on defense policy and transatlantic security issues, as he offers his perspectives on the Ukraine crisis, and, on the eve of the Munich Security Conference, the challenge and importance of a robust, united response to Russian aggression. Congressman Turner, the Ranking Member on the House Permanent Select Intelligence Committee and a longtime member of the House Armed Services Committee, served as president of the NATO Parliamentary Assembly (2014-2016), and currently chairs the assembly’s Defense and Security Committee. \n\nWatch on Hudson.org https://www.hudson.org/events/2076-virtual-event-a-conversation-with-congressman-mike-turner-on-ukraine22022",
+    "view_count": 1062
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8tBjQq7AHNs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

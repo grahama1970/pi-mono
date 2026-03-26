@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V62IzKoo2-s",
+    "language": "en",
+    "took_ms": 9279,
+    "method": null,
+    "title": "Transcribe British and American English Variants",
+    "channel": "Trelis Research",
+    "upload_date": "20251208",
+    "duration_sec": 1063,
+    "description": "Model Collection: https://huggingface.co/collections/Trelis/transcribe-british-and-american-english-spelling\nEnglish Variant Converter: https://github.com/TrelisResearch/whisper-english-variant-converter\nWhisper Fine-tuning Video: https://youtu.be/OfQNgPfv97s\nWhisper Server with Faster Whisper / ctranslate2: https://youtu.be/qXtPPgujufI\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🤝 NOW HIRING on Contract: Voice Model Developer: \nApply here: https://forms.gle/5H1kgv8aQH9AXufB9\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\n💰Runpod Affiliate Link, incl. bonus on signup: https://runpod.io?ref=jmfkcdio\n\nTIMESTAMPS:\n0:00 British English and American English Whisper Transcription\n0:36 British / American English Transcription Model Variants - Tiny + Turbo\n1:35 Whisper tends to transcribe to American English\n2:49 Demonstration / Quick-start with Trelis Transcription Models\n5:26 Evaluating model performance transcribing to variants\n8:17 Evaluating fine-tuned performance on LibriSpeech\n10:40 Whisper English Variants Converter - Open Source Conversion Library\n17:10 Video Summary",
+    "view_count": 458
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V62IzKoo2-s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

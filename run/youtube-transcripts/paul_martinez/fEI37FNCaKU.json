@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fEI37FNCaKU",
+    "language": "en",
+    "took_ms": 8633,
+    "method": null,
+    "title": "Anatomy Of A Maritime Port Attack",
+    "channel": "S4 Events",
+    "upload_date": "20220513",
+    "duration_sec": 2219,
+    "description": "Keith Walsh of Armis walks through in detail an attack on a US maritime port in October of 2021 on Stage 3 at S4x22.",
+    "view_count": 851
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fEI37FNCaKU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

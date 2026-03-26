@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bipxQsmyROY",
+    "language": "en",
+    "took_ms": 10872,
+    "method": null,
+    "title": "Automatic Recovery At Level 0",
+    "channel": "S4 Events",
+    "upload_date": "20230413",
+    "duration_sec": 1263,
+    "description": "Jens Meggers proposes something unique, automatic recovery at Level 0 of the Purdue Model on S4x23's Stage 2. After setting the stage and some scenarios where this would be most valuable and how data between Level 0 and 1 is monitored, the technical solution and automated recovery options are described at 11:50.",
+    "view_count": 837
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bipxQsmyROY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

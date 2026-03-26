@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vfFKq6pq8vE",
+    "language": "en",
+    "took_ms": 8656,
+    "method": null,
+    "title": "Deputy Administrator Bonnie Glick on America's Foreign Assistance Leadership",
+    "channel": "Hudson Institute",
+    "upload_date": "20200529",
+    "duration_sec": 2728,
+    "description": "Join Hudson Institute for a conversation with Deputy Administrator of the U.S. Agency for International Development Bonnie Glick on the role of U.S. foreign assistance in great power competition during the COVID-19 pandemic. The discussion will be moderated by Hudson Fellow Blaise Misztal.",
+    "view_count": 368
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vfFKq6pq8vE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tWEZ3OrpjpU",
+    "language": "en",
+    "took_ms": 11903,
+    "method": null,
+    "title": "Richard Weitz on the Trilateral Nuclear Deal between Iran, Turkey, and Brazil",
+    "channel": "Hudson Institute",
+    "upload_date": "20100520",
+    "duration_sec": 215,
+    "description": "Hudson Senior Fellow and Director of the Center for Political-Military Analysis Richard Weitz discusses the May 19th deal between Iran, Brazil, and Turkey that will have Iran deposit 1,200 kg of low-enriched uranium in Turkey.",
+    "view_count": 671
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tWEZ3OrpjpU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

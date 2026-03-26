@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ep7uaxwN-mQ",
+    "language": "en",
+    "took_ms": 9049,
+    "method": null,
+    "title": "New course with CircleCI: Automated Testing for LLMOps",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240124",
+    "duration_sec": 170,
+    "description": "Enroll now: https://bit.ly/47HoFza\n\nIn this course, you will learn how to create a continuous integration (CI) workflow to evaluate your LLM applications at every iteration for more efficient application development.\n\nWhen building applications with generative AI, model behavior is less predictable than traditional software. Systematic testing can make a difference in saving you development time and cost. \n\nCI, a key part of LLMOps, involves making small changes to software in development and testing them to identify bugs before they escalate, allowing faster and more cost-effective fixes, enabling teams to concentrate on building new features and facilitates quicker product iteration and delivery.\n\nAfter completing this course, you will be able to:\n\n- Write robust LLM evaluations to cover common problems like hallucinations, data drift, and harmful or offensive output.\n- Build a continuous integration workflow to automatically evaluate every change to your application.\n- Orchestrate your CI workflow to run specific evaluations at different stages of development.\n\nElevate your LLM-based testing process and learn from instructor Rob Zuber, Chief Technology Officer (CTO) at CircleCI. \n\nLearn more: https://bit.ly/47HoFza",
+    "view_count": 3297
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ep7uaxwN-mQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

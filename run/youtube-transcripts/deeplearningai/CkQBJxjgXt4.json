@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CkQBJxjgXt4",
+    "language": "en",
+    "took_ms": 8294,
+    "method": null,
+    "title": "Learn to align LLMs through post-training in this new course with AMD!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251028",
+    "duration_sec": 148,
+    "description": "Learn more: https://bit.ly/47ict9O\n\nLearn to align and optimize LLMs for real-world applications through post-training. In this course, created in partnership with AMD, you’ll learn how to apply fine-tuning and reinforcement learning techniques to shape model behavior, improve reasoning, and make LLMs safer and more reliable. \n\nLarge language models are powerful, but raw pretrained models aren’t ready for production applications. Post-training is what adapts an LLM to follow instructions, show reasoning, and behave more safely. \n\nMany developers still assume “LLMs inherently hallucinate,” or “only experts can tune models.” Recent advances have changed what’s feasible. If you ship LLM features (e.g., developer copilots, customer support agents, internal assistants) or work on ML/AI platform teams, understanding post-training is becoming a must-have skill.\n\nThis course, consisting of 5 modules and taught by Sharon Zhou (VP of AI at AMD and instructor to popular DeepLearning.AI courses), will guide you through various aspects of post-training:\n\n- Post-training in the LLM lifecycle: Learn where post-training fits, key ideas in fine-tuning and RL, how models gain reasoning, and how these methods power products.\n- Core techniques: Understand fine-tuning, RLHF, reward modeling, and RL algorithms (PPO, GRPO). Use LoRA for efficient fine-tuning.\n- Evaluation and error analysis: Design evals, detect reward hacking, diagnose failures, and red team to test model robustness.\n- Data for post-training: Prepare fine-tuning/LoRA datasets, combine fine-tuning + RLHF, create synthetic data, and balance data and rewards.\n- From post-training to production: Learn industry-leading production pipelines, set go/no-go rules, and run data feeedback loops from your logs.\n\nEnroll now: https://bit.ly/47ict9O",
+    "view_count": 4638
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CkQBJxjgXt4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

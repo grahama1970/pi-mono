@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KKHC5Hir-9c",
+    "language": "en",
+    "took_ms": 8549,
+    "method": null,
+    "title": "Sending Basic Training Letters with Sandboxx",
+    "channel": "Sandboxx",
+    "upload_date": "20171207",
+    "duration_sec": 37,
+    "description": "As of February 10, 2018 Sandboxx Letters no longer include a pre-stamped return envelope.\n\nSending basic training letters to your loved ones is made better by Sandboxx. Take a picture and write a message on our app and we’ll do the rest. We convert it into a physical letter, mail it to your heroes and include a return envelope so they never miss a moment. \n \n\nTo start sending letters to basic training and more, download the Sandboxx app today at https://link.sandboxx.us/youtube.\n\nGet more from Sandboxx:\n\nhttps://www.facebook.com/sandboxxapp/ \nhttps://twitter.com/sandboxx\nhttps://www.instagram.com/sandboxxapp/\nhttps://www.pinterest.com/sandboxxapp/\nhttp://www.sandboxx.us/",
+    "view_count": 58405
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KKHC5Hir-9c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

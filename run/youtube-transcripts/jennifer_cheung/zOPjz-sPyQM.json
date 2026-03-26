@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zOPjz-sPyQM",
+    "language": "en",
+    "took_ms": 9402,
+    "method": null,
+    "title": "DEF CON 32 - Listen to the Whispers: Web Timing Attacks that Actually Work - James Kettle",
+    "channel": "DEFCONConference",
+    "upload_date": "20241117",
+    "duration_sec": 2557,
+    "description": "Websites are riddled with timing oracles eager to divulge their innermost secrets. It's time we started listening to them.\n\nIn this session, I'll unleash novel attack concepts to coax out server secrets including masked misconfigurations, blind data-structure injection, hidden routes to forbidden areas, and a vast expanse of invisible attack-surface.\n\nThis is not a theoretical threat; every technique will be illustrated with multiple real-world case studies on diverse targets. Unprecedented advances have made these attacks both accurate and efficient; in the space of ten seconds you can now reliably detect a sub-millisecond differential with no prior configuration or 'lab conditions' required. In other words, I'm going to share timing attacks you can actually use.\n\nTo help, I'll equip you with a suite of battle-tested open-source tools enabling both hands-free automated exploitation, and custom attack scripting. I'll also share a little CTF to help you hone your new skillset.\n\nWant to take things further? I'll help you transform your own attack ideas from theory to reality, by sharing a methodology refined through testing countless concepts on thousands of websites. We've neglected this omnipresent and incredibly powerful side-channel for too long.",
+    "view_count": 27057
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zOPjz-sPyQM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

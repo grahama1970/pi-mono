@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TACTICAL_EVAL_v1.0 - Model Evaluation Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#ffdad6",
+              "surface-bright": "#323949",
+              "surface-container-high": "#232a39",
+              "on-secondary-container": "#007239",
+              "surface-dim": "#0c1321",
+              "surface": "#0c1321",
+              "surface-container": "#19202e",
+              "surface-variant": "#2e3544",
+              "error": "#ffb4ab",
+              "on-secondary": "#003919",
+              "surface-tint": "#d2bbff",
+              "surface-container-highest": "#2e3544",
+              "on-surface-variant": "#ccc3d8",
+              "secondary": "#f5fff3",
+              "inverse-primary": "#732ee4",
+              "error-container": "#93000a",
+              "primary-fixed": "#eaddff",
+              "surface-container-lowest": "#070e1c",
+              "tertiary": "#f9bd22",
+              "on-background": "#dce2f6",
+              "tertiary-container": "#836100",
+              "on-primary-fixed": "#25005a",
+              "secondary-fixed-dim": "#00e479",
+              "secondary-fixed": "#60ff99",
+              "primary-fixed-dim": "#d2bbff",
+              "on-tertiary-container": "#ffe2ab",
+              "tertiary-fixed": "#ffdf9f",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "on-tertiary-fixed": "#261a00",
+              "tertiary-fixed-dim": "#f9bd22",
+              "inverse-on-surface": "#2a3040",
+              "inverse-surface": "#dce2f6",
+              "on-primary-container": "#ede0ff",
+              "on-secondary-fixed-variant": "#005228",
+              "on-primary-fixed-variant": "#5a00c6",
+              "primary": "#d2bbff",
+              "outline": "#958da1",
+              "surface-container-low": "#151b2a",
+              "on-error": "#690005",
+              "on-tertiary": "#402d00",
+              "on-primary": "#3f008e",
+              "on-secondary-fixed": "#00210c",
+              "secondary-container": "#34ff8d",
+              "outline-variant": "#4a4455",
+              "primary-container": "#7c3aed",
+              "on-surface": "#dce2f6",
+              "background": "#0c1321"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"none": "0", "DEFAULT": "0", "lg": "0", "xl": "0", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #0c1321;
+            color: #dce2f6;
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070e1c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e3544;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+<!-- TOP APP BAR -->
+<header class="bg-[#0c1321] text-[#7c3aed] font-['Space_Grotesk'] tracking-tighter uppercase docked full-width top-0 border-b-0 flex justify-between items-center w-full px-6 h-14 z-50">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold text-[#d2bbff] tracking-[0.2em]">TACTICAL_EVAL_v1.0</span>
+<nav class="hidden md:flex gap-6 h-full items-center">
+<a class="text-[#d2bbff] border-b-2 border-[#7c3aed] h-full flex items-center px-2" href="#">MODELS</a>
+<a class="text-[#94a3b8] hover:bg-[#2e3544] transition-colors duration-100 px-2 h-full flex items-center" href="#">EVALS</a>
+<a class="text-[#94a3b8] hover:bg-[#2e3544] transition-colors duration-100 px-2 h-full flex items-center" href="#">DATASETS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-[#151b2a] px-3 py-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-mono text-[10px] tracking-widest text-[#94a3b8]">SYS_READY: 0ms</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-[#94a3b8] hover:bg-[#2e3544]"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<button class="p-2 text-[#94a3b8] hover:bg-[#2e3544]"><span class="material-symbols-outlined" data-icon="terminal">terminal</span></button>
+<button class="p-2 text-[#94a3b8] hover:bg-[#2e3544]"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span></button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SIDE NAV BAR -->
+<aside class="bg-[#151b2a] flex flex-col h-screen py-4 docked left-0 h-full w-64 rounded-none border-r-0 shrink-0">
+<div class="px-6 mb-8">
+<div class="text-[#d2bbff] font-bold font-mono text-sm">MISSION_CTRL</div>
+<div class="text-[#00ff88] text-[10px] tracking-[0.3em] font-mono">NVIS_ACTIVE</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 bg-[#19202e] text-[#00ff88] border-l-4 border-[#00ff88] font-mono text-[10px] tracking-widest uppercase" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="dashboard">dashboard</span> DASHBOARD
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#94a3b8] opacity-70 hover:bg-[#232a39] hover:opacity-100 font-mono text-[10px] tracking-widest uppercase transition-all duration-100" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="memory">memory</span> MODELS
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#94a3b8] opacity-70 hover:bg-[#232a39] hover:opacity-100 font-mono text-[10px] tracking-widest uppercase transition-all duration-100" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span> PROMPTS
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#94a3b8] opacity-70 hover:bg-[#232a39] hover:opacity-100 font-mono text-[10px] tracking-widest uppercase transition-all duration-100" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="list_alt">list_alt</span> LOGS
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-[#94a3b8] opacity-70 hover:bg-[#232a39] hover:opacity-100 font-mono text-[10px] tracking-widest uppercase transition-all duration-100" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings_input_component">settings_input_component</span> SYSTEM
+                </a>
+</nav>
+<div class="mt-auto px-6 py-4">
+<div class="flex items-center gap-3 p-3 bg-surface-container-low border border-outline-variant/20">
+<div class="w-8 h-8 bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="person">person</span>
+</div>
+<div>
+<div class="text-[10px] font-bold font-mono text-on-surface">OP_DELTA_9</div>
+<div class="text-[8px] font-mono text-secondary-fixed-dim">LEVEL 4 CLEARANCE</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT CANVAS -->
+<main class="flex-1 overflow-hidden flex flex-row">
+<!-- LEFT COLUMN: INPUT -->
+<section class="w-[40%] border-r border-outline-variant/10 bg-surface p-6 overflow-y-auto">
+<div class="space-y-6">
+<div>
+<label class="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#94a3b8] mb-2">System_Prompt.cfg</label>
+<textarea class="w-full bg-[#070e1c] border border-outline-variant/30 font-mono text-sm p-4 h-48 focus:ring-1 focus:ring-primary outline-none text-[#dce2f6] resize-none" placeholder="Enter system instructions here..."></textarea>
+</div>
+<div>
+<label class="block font-mono text-[10px] tracking-[0.2em] uppercase text-[#94a3b8] mb-2">User_Message.input</label>
+<textarea class="w-full bg-[#070e1c] border border-outline-variant/30 font-mono text-sm p-4 h-32 focus:ring-1 focus:ring-primary outline-none text-[#dce2f6] resize-none" placeholder="Enter test query..."></textarea>
+</div>
+<div>
+<div class="flex justify-between items-end mb-3">
+<label class="font-mono text-[10px] tracking-[0.2em] uppercase text-[#94a3b8]">Model_Registry</label>
+<div class="flex gap-2">
+<button class="text-[9px] font-mono text-primary-fixed-dim hover:underline px-2 py-1 bg-surface-container-high transition-colors">ALL_LOCAL</button>
+<button class="text-[9px] font-mono text-primary-fixed-dim hover:underline px-2 py-1 bg-surface-container-high transition-colors">ALL_API</button>
+</div>
+</div>
+<div class="bg-[#070e1c] border border-outline-variant/30 h-64 overflow-y-auto">
+<!-- Model List -->
+<div class="divide-y divide-outline-variant/10">
+<div class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer group">
+<input checked="" class="form-checkbox bg-transparent border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="ml-3 font-mono text-sm text-on-surface">qwen3:8b</span>
+<span class="ml-auto font-mono text-[10px] text-[#94a3b8] opacity-60 group-hover:opacity-100">(8B, local)</span>
+</div>
+<div class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer group">
+<input checked="" class="form-checkbox bg-transparent border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="ml-3 font-mono text-sm text-on-surface">llama3.2:1b</span>
+<span class="ml-auto font-mono text-[10px] text-[#94a3b8] opacity-60 group-hover:opacity-100">(1B, local)</span>
+</div>
+<div class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer group">
+<input checked="" class="form-checkbox bg-transparent border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="ml-3 font-mono text-sm text-on-surface">phi-4:mini</span>
+<span class="ml-auto font-mono text-[10px] text-[#94a3b8] opacity-60 group-hover:opacity-100">(3B, local)</span>
+</div>
+<div class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer group">
+<input class="form-checkbox bg-transparent border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="ml-3 font-mono text-sm text-on-surface">deepseek-v3</span>
+<span class="ml-auto font-mono text-[10px] text-[#94a3b8] opacity-60 group-hover:opacity-100">(671B, API)</span>
+</div>
+<div class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer group">
+<input class="form-checkbox bg-transparent border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="ml-3 font-mono text-sm text-on-surface">gpt-4o-mini</span>
+<span class="ml-auto font-mono text-[10px] text-[#94a3b8] opacity-60 group-hover:opacity-100">(Cloud, API)</span>
+</div>
+<div class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer group">
+<input class="form-checkbox bg-transparent border-outline text-primary-container focus:ring-0" type="checkbox"/>
+<span class="ml-3 font-mono text-sm text-on-surface">mistral-large</span>
+<span class="ml-auto font-mono text-[10px] text-[#94a3b8] opacity-60 group-hover:opacity-100">(123B, local)</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-3">
+<label class="font-mono text-[10px] tracking-[0.2em] uppercase text-[#94a3b8]">EVAL_THRESHOLD</label>
+<span class="font-mono text-sm text-secondary-fixed">0.85</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest appearance-none cursor-pointer accent-primary-container" max="1.0" min="0.5" step="0.01" type="range" value="0.85"/>
+<div class="flex justify-between mt-1 text-[8px] font-mono text-[#4a4455]">
+<span>MIN: 0.50</span>
+<span>MAX: 1.00</span>
+</div>
+</div>
+<button class="w-full bg-[#7c3aed] hover:bg-primary-fixed-dim text-white font-bold font-headline py-4 flex items-center justify-center gap-3 transition-all duration-100 active:scale-[0.98]">
+<span class="material-symbols-outlined">play_arrow</span>
+                        INITIATE_EVALUATION_SEQUENCE
+                    </button>
+</div>
+</section>
+<!-- RIGHT COLUMN: RESULTS -->
+<section class="flex-1 bg-surface-container-low flex flex-col overflow-hidden">
+<!-- Progress Header -->
+<div class="p-6 pb-2 border-b border-outline-variant/10">
+<div class="flex justify-between items-center mb-2">
+<div class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface">EXECUTION_QUEUE</div>
+<div class="font-mono text-[10px] text-secondary-fixed-dim">Testing model 3 of 7... (42%)</div>
+</div>
+<div class="w-full h-1.5 bg-[#070e1c]">
+<div class="bg-[#00ff88] h-full" style="width: 42%;"></div>
+</div>
+</div>
+<!-- Recommended Banner -->
+<div class="mx-6 mt-4 p-4 bg-[#19202e] border border-primary-container/40 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-1 bg-primary-container">
+<span class="material-symbols-outlined text-[12px] text-white" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex-shrink-0 w-12 h-12 bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">verified</span>
+</div>
+<div>
+<div class="font-mono text-[10px] text-primary-container tracking-widest uppercase">TOP_RANKED_CANDIDATE</div>
+<div class="font-headline font-bold text-lg text-primary-fixed">RECOMMENDED: qwen3:8b</div>
+<div class="font-mono text-xs text-on-surface-variant mt-1">
+<span class="text-secondary-fixed">87% Accuracy</span> | 2.3s Latency | Efficient local execution
+                            </div>
+</div>
+</div>
+</div>
+<!-- Results Table -->
+<div class="flex-1 overflow-auto p-6">
+<table class="w-full border-collapse font-mono text-[11px]">
+<thead>
+<tr class="text-[#94a3b8] text-left uppercase tracking-widest border-b border-outline-variant/20">
+<th class="py-3 px-2 font-medium">Rank</th>
+<th class="py-3 px-2 font-medium">Model_Identifier</th>
+<th class="py-3 px-2 font-medium">Size</th>
+<th class="py-3 px-2 font-medium">Src</th>
+<th class="py-3 px-2 font-medium">Acc %</th>
+<th class="py-3 px-2 font-medium">JSON %</th>
+<th class="py-3 px-2 font-medium">LAT</th>
+<th class="py-3 px-2 font-medium text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="bg-surface-container-high/30 hover:bg-surface-container-high transition-colors">
+<td class="py-4 px-2 text-[#7c3aed] font-bold">#01</td>
+<td class="py-4 px-2 font-bold text-on-surface">qwen3:8b</td>
+<td class="py-4 px-2">8B</td>
+<td class="py-4 px-2 text-[#94a3b8]">LOCAL</td>
+<td class="py-4 px-2 text-[#00ff88]">87.2%</td>
+<td class="py-4 px-2">100%</td>
+<td class="py-4 px-2">2.3s</td>
+<td class="py-4 px-2 text-right">
+<span class="bg-primary-container/20 text-primary-fixed px-2 py-0.5 border border-primary-container/30">RECOMMENDED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="py-4 px-2 text-[#94a3b8]">#02</td>
+<td class="py-4 px-2 font-bold text-on-surface">deepseek-v3</td>
+<td class="py-4 px-2">671B</td>
+<td class="py-4 px-2 text-[#94a3b8]">API</td>
+<td class="py-4 px-2 text-[#00ff88]">85.4%</td>
+<td class="py-4 px-2">98%</td>
+<td class="py-4 px-2">1.8s</td>
+<td class="py-4 px-2 text-right">
+<span class="bg-secondary-container/10 text-[#00ff88] px-2 py-0.5 border border-secondary-container/20">PASS</span>
+</td>
+</tr>
+<tr class="bg-surface-container-high/30 hover:bg-surface-container-high transition-colors">
+<td class="py-4 px-2 text-[#94a3b8]">#03</td>
+<td class="py-4 px-2 font-bold text-on-surface">mistral-large</td>
+<td class="py-4 px-2">123B</td>
+<td class="py-4 px-2 text-[#94a3b8]">LOCAL</td>
+<td class="py-4 px-2 text-[#00ff88]">82.1%</td>
+<td class="py-4 px-2">100%</td>
+<td class="py-4 px-2">6.4s</td>
+<td class="py-4 px-2 text-right">
+<span class="bg-surface-container-highest text-[#94a3b8] px-2 py-0.5 border border-outline-variant/30">PASS</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="py-4 px-2 text-[#94a3b8]">#04</td>
+<td class="py-4 px-2 font-bold text-on-surface">phi-4:mini</td>
+<td class="py-4 px-2">3B</td>
+<td class="py-4 px-2 text-[#94a3b8]">LOCAL</td>
+<td class="py-4 px-2 text-[#ff4444]">74.5%</td>
+<td class="py-4 px-2">85%</td>
+<td class="py-4 px-2">0.9s</td>
+<td class="py-4 px-2 text-right">
+<span class="bg-error-container/20 text-[#ff4444] px-2 py-0.5 border border-error-container/30">FAIL</span>
+</td>
+</tr>
+<tr class="bg-surface-container-high/30 hover:bg-surface-container-high transition-colors opacity-50">
+<td class="py-4 px-2 text-[#4a4455]">#05</td>
+<td class="py-4 px-2 font-bold text-on-surface">llama3.2:1b</td>
+<td class="py-4 px-2">1B</td>
+<td class="py-4 px-2 text-[#4a4455]">LOCAL</td>
+<td class="py-4 px-2 text-[#ff4444]">61.0%</td>
+<td class="py-4 px-2">40%</td>
+<td class="py-4 px-2">0.4s</td>
+<td class="py-4 px-2 text-right">
+<span class="bg-error-container/20 text-[#ff4444] px-2 py-0.5 border border-error-container/30">FAIL</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Cost Comparison Expandable (Collapsed) -->
+<div class="mt-auto border-t border-outline-variant/10">
+<button class="w-full flex items-center justify-between px-6 py-4 bg-surface-container hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm" data-icon="payments">payments</span>
+<span class="font-mono text-[10px] tracking-widest uppercase text-[#94a3b8]">Cost_Analysis.log</span>
+</div>
+<span class="material-symbols-outlined text-sm transition-transform group-hover:translate-y-0.5" data-icon="expand_more">expand_more</span>
+</button>
+<!-- Content hidden when collapsed -->
+<div class="hidden">
+<div class="p-6 bg-[#070e1c] font-mono text-[10px] text-[#94a3b8]">
+<p>Loading market rates...</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Status Bar Footer -->
+<footer class="bg-surface-container-lowest h-6 border-t border-outline-variant/10 flex items-center justify-between px-4 font-mono text-[9px] uppercase tracking-tighter">
+<div class="flex gap-4">
+<span class="text-secondary-fixed flex items-center gap-1"><span class="w-1.5 h-1.5 bg-secondary-fixed"></span> SYSTEM_ONLINE</span>
+<span class="text-[#94a3b8]">GPU_TEMP: 64°C</span>
+<span class="text-[#94a3b8]">VRAM: 14.2GB / 24.0GB</span>
+</div>
+<div class="flex gap-4">
+<span class="text-[#94a3b8]">ID: T-400-EVAL</span>
+<span class="text-primary-fixed-dim">UTC: 2023-10-27 14:32:01</span>
+</div>
+</footer>
+</body></html>

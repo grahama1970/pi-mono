@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cc6vrQSVMII",
+    "language": "en",
+    "took_ms": 8996,
+    "method": null,
+    "title": "DEF CON 33 -BitUnlocker: Leverage Windows Recovery to Extract BitLocker Secrets - Leviev, Ben Simon",
+    "channel": "DEFCONConference",
+    "upload_date": "20251103",
+    "duration_sec": 2306,
+    "description": "In Windows, the cornerstone of data protection is BitLocker, a Full Volume Encryption technology designed to secure sensitive data on disk. This ensures that even if an adversary gains physical access to the device, the data remains secure and inaccessible.\n\nOne of the critical aspects of any data protection feature is its ability to support recovery operations failure cases. To support BitLocker recovery, design changes were applied in the Windows Recovery Environment (WinRE). This led us to a pivotal question: did these changes introduce new attack surfaces impacting BitLocker?\n\nIn this talk, we will share our journey of researching a fascinating and mysterious component: WinRE. Our exploration begins with an overview of the WinRE architecture, followed by a retrospective analysis of the attack surfaces exposed with the introduction of BitLocker. We will then discuss our methodology for effectively researching and exploiting these exposed attack surfaces. Our presentation will reveal how we identified multiple 0-day vulnerabilities and developed fully functional exploits, enabling us to bypass BitLocker and extract all protected data in several different ways.\n\nFinally, we will share the insights Microsoft gained from this research and explain our approach to hardening WinRE, which in turn strengthens BitLocker.",
+    "view_count": 11519
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cc6vrQSVMII: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

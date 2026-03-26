@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EtGhHCr3VLE",
+    "language": "en",
+    "took_ms": 8993,
+    "method": null,
+    "title": "DEF CON 33 - Metal-as-a-Disservice: Exploiting Legacy Flaws in Cutting Edge Clouds - Bill Demirkapi",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2776,
+    "description": "Bare metal cloud providers are rapidly gaining popularity among organizations deploying high-performance machine learning workloads. While the promise of dedicated hardware and enhanced security may appear attractive, a closer look revealed that these environments are vulnerable to decades-old attacks that are sure to trigger nostalgia.\n\nThis talk investigates the hidden risks posed by the \"bare metal\" trend, illustrating how weaknesses in firmware, hardware, and the network can lead to catastrophic multi-tenant compromise. We'll walk through real-world case examples demonstrating how attackers can leverage these vulnerabilities including hijacking provisioning processes, installing persistent firmware implants, intercepting sensitive network data, and compromising secure machine learning workflows.\n\nAttendees will gain insight into the unique attack surfaces of bare metal environments, understand why seemingly outdated techniques remain highly effective, and learn how major cloud providers mitigate these threats. Expect technical demonstrations, practical advice on evaluating providers, and recommendations for protecting your organization's critical infrastructure.",
+    "view_count": 737
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EtGhHCr3VLE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

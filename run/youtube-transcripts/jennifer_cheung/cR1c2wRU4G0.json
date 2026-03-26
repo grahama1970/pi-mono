@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cR1c2wRU4G0",
+    "language": "en",
+    "took_ms": 8748,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Juneau - Strategic Trust and Deception in the Internet of Things",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 1201,
+    "description": "Game Theory is the study of choices and strategies made by rational actors, called \"\"players,\"\" during times of conflict or competition. It has been used throughout history to map human conflict. Statisticians use game theory to model war, biology, and even football. In this talk, we will model interactions between IoT devices based on strategic trust; how agents decide to trust each other.\nThe talk will provide an overview of game-theoretic modeling and its application to the IoT landscape. The landscape facilitates deception; players must decide whether or not to trust other agents in the network, and agents may have misaligned incentives. There is a trade-off between information gained and short-term security. This talk will build a framework for predictive and strategic trust where players make decisions based on the incentives of their \"\"opponents.\"\" This talk will not look at network topology or protocols but will instead look at information exchange and strategy.",
+    "view_count": 420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cR1c2wRU4G0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

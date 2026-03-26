@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4olq5NZFs4o",
+    "language": "en",
+    "took_ms": 10146,
+    "method": null,
+    "title": "US Japan Cooperation in a World of Information Uncertainty",
+    "channel": "Hudson Institute",
+    "upload_date": "20250321",
+    "duration_sec": 3287,
+    "description": "As democracies with open media ecosystems, the United States and Japan face the constant challenge of information uncertainty. Bad actors, including those associated with nation-states, constantly seek to undermine the two nations’ civil societies by spreading disinformation on social media, as well as traditional media and other outlets.\n\nJoin Hudson for an expert discussion on how the US and Japan approach the threat of information uncertainty and foreign influence.\n\nLearn more at: https://www.hudson.org/events/us-japan-cooperation-world-information-uncertainty",
+    "view_count": 539
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4olq5NZFs4o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U79pZ3JyrG4",
+    "language": "en",
+    "took_ms": 8541,
+    "method": null,
+    "title": "Machine Learning With and Without the Hype",
+    "channel": "S4 Events",
+    "upload_date": "20170221",
+    "duration_sec": 1887,
+    "description": "This was listed as one of the favorite S4x17 sessions by many attendees. Kathryn Hume of Fast Forward Labs provides an introduction into what machine learning is and three of the basic techniques used in machine learning. It is not ICS specific, but she does give some ideas as to how this could be applied to ICS. \n\nIt's entertaining and informative.",
+    "view_count": 1210
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U79pZ3JyrG4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

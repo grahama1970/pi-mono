@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ovY5K3Io6dw",
+    "language": "en",
+    "took_ms": 8841,
+    "method": null,
+    "title": "Cisco Cyber Vision: Cybersecurity for the Industrial Internet",
+    "channel": "S4 Events",
+    "upload_date": "20200508",
+    "duration_sec": 1394,
+    "description": "With Cisco's recent acquisition of Sentryo, many were interested to hear Marc Blackmer of Cisco on the S4x20 Sponsor Stage. He went over the new Cyber Vision solution that incorporates the Sentryo solution into Cisco's network products.\n\nMost importantly he makes the point (prediction) that collecting monitoring data via span ports is expensive and at best an interim solution.\n\nThe last four minutes show an example integration of Cyber Vision with the Cisco ISE offering.",
+    "view_count": 1505
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ovY5K3Io6dw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

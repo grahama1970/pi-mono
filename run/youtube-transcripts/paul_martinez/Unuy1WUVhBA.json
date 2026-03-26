@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Unuy1WUVhBA",
+    "language": "en",
+    "took_ms": 8486,
+    "method": null,
+    "title": "Dale Peterson On the Sunspec Alliance Webinar",
+    "channel": "S4 Events",
+    "upload_date": "20230920",
+    "duration_sec": 3675,
+    "description": "I was recently interviewed by Jay Johnson of Sandia and Tom Tansy of the Sunspec Alliance as part of their distributed energy resources (DER) Sunspec webinar series. We covered a lot of issues and I was not shy in throwing out some analysis and opinions. \n\n- First 5 minutes are information on S4x24 tickets\n\nThen we go into the Sunspec Webinar:\n- How DER will deal with the complex, large number of users and stakeholders PKI environment.\n- The Sunspec device security specification and the benefits of a limited, key set of security controls.\n- What is the role of government regulation to solve DER security issues?\n- The potential power of the utility companies to levy requirements and be a choke point for access.\n- The Patch Act, FDA and DER.\n- shift left and product liability due to security flaws\n- and more",
+    "view_count": 162
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Unuy1WUVhBA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m3t7XrCGvuY",
+    "language": "en",
+    "took_ms": 8287,
+    "method": null,
+    "title": "Delivering Democracy in India",
+    "channel": "Hudson Institute",
+    "upload_date": "20190213",
+    "duration_sec": 9470,
+    "description": "On February 13, Hudson Institute and the Embassy of India hosted a day-long conference of scholars, diplomats, members of Indian parliament, and think tank leaders to discuss India’s democratic, economic, and societal achievements. They also analyzed the challenges that lie ahead, and opportunities for the world’s largest democracy.\r\n\r\nOver the last few decades India has successfully remained a democracy with strong political institutions, civilian supremacy over its military, and an overall vibrant economy and society. India has achieved this within a multi-religious, multi-ethnic society all while combatting the influences of regional adversaries. The conference convened expert panels to discuss governance, society, the economy, and how these forces interact in India. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1780
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m3t7XrCGvuY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

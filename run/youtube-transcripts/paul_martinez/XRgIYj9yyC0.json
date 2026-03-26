@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XRgIYj9yyC0",
+    "language": "en",
+    "took_ms": 10084,
+    "method": null,
+    "title": "Navigating The S4x26 Welcome Party",
+    "channel": "S4 Events",
+    "upload_date": "20260217",
+    "duration_sec": 386,
+    "description": "The S4x26 Welcome Party is at the Fillmore Miami Beach, the art deco theater where S4 was held from 2016 - 2022. This video will show you where everything is including the casino, karaoke bar, cigar patio, lego station, magician food trucks, bars (including a no alcohol bar), and more.",
+    "view_count": 279
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XRgIYj9yyC0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

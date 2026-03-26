@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H7KfmNNkXiY",
+    "language": "en",
+    "took_ms": 9354,
+    "method": null,
+    "title": "DEF CON Safe Mode AI Village - Nahid Farhady - Spectrum Framework for ML based Threat Monitoring",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1434,
+    "description": "",
+    "view_count": 1348
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H7KfmNNkXiY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

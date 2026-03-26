@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dPd3ZKHwjVQ",
+    "language": "en",
+    "took_ms": 8793,
+    "method": null,
+    "title": "The Financial Crisis in Europe",
+    "channel": "Hudson Institute",
+    "upload_date": "20100527",
+    "duration_sec": 398,
+    "description": "Hudson Senior Fellow Irwin Stelzer was interviewed by colleague and Senior Fellow Diana Furchtgott-Roth on the financial crisis in Europe.",
+    "view_count": 535
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dPd3ZKHwjVQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

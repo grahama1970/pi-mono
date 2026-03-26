@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ujWtj9VoB6w",
+    "language": "en",
+    "took_ms": 7778,
+    "method": null,
+    "title": "Maintaining a Transatlantic Consensus on Antitrust and IP Licensing",
+    "channel": "Hudson Institute",
+    "upload_date": "20210317",
+    "duration_sec": 3542,
+    "description": "Join Hudson Institute Senior Fellow Urška Petrovčič and expert panelists David Kappos, Jonathan Barnett, Dina Kallay, and Stefanie Mielert for a discussion on the future of antitrust and intellectual property (IP) rights.\n\nIn the United States and in the European Union, the courts have provided much-needed guidance regarding the interface of antitrust and patent rights—recognizing the need for a balanced approach that protects the interests of all market participants, including technology users and innovators. Public agencies on both sides of the Atlantic have adopted a similar path. These achievements are particularly timely, considering the accelerated deployment of the 5G standard across different industries. Please join our expert panel for a discussion on these developments and their implications for the future.",
+    "view_count": 477
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ujWtj9VoB6w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

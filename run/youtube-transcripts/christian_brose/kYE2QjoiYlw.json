@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kYE2QjoiYlw",
+    "language": "en",
+    "took_ms": 7592,
+    "method": null,
+    "title": "Preventing the Next Supply Chain Disruption",
+    "channel": "Hudson Institute",
+    "upload_date": "20211115",
+    "duration_sec": 2816,
+    "description": "Please join Hudson Institute Senior Fellows Bryan Clark and Dan Patt, Lieutenant General Duane A. Gamble, Interos CEO Jennifer Bisceglie, and AT&T Director of Logistics and Global Supply Chain Dennis Hodgkins for a discussion on the challenges facing commercial and military supply chains and strategies to improve resilience. The current pandemic-related disruptions to the delivery of a range of products has highlighted the fragility of global supply chains that were optimized through years of uninterrupted shipping and just-in-time ordering. Yet even after production processes stabilize, fragility will remain in many supply chains that commercial enterprises and military services depend on to sustain the U.S. economy and national security.\n\nOur panel of experts will discuss how the Pentagon and the private sector are dealing with the current crisis and what can be done to prevent future disruptions. Please join us for this timely discussion.",
+    "view_count": 1117
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kYE2QjoiYlw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

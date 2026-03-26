@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Qf7oNWKGL2I",
+    "language": "en",
+    "took_ms": 8522,
+    "method": null,
+    "title": "DEF CON 33 - Crossing the Line: Advanced Techniques to Breach the OT DMZ - Christopher Nourrie",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1041,
+    "description": "As industrial environments become increasingly interconnected, the OT DMZ stands as a critical yet vulnerable boundary between enterprise IT networks and operational technology. In this talk, we expose the offensive strategies adversaries use to penetrate the OT DMZ and pivot into sensitive control system networks. Drawing from real-world red team operations and threat intelligence, we’ll explore how misconfigured remote access solutions, poorly segmented architectures, and legacy services create exploitable pathways into industrial environments. Attendees will gain insight into tradecraft used to move from enterprise footholds into OT networks, including techniques for identifying and abusing jump hosts, proxy services, Citrix gateways, and RDP relays. We’ll demonstrate practical TTPs for lateral movement, credential access, and evasion within the DMZ layer—highlighting how assumptions about segmentation often fall short in practice. Finally, we’ll discuss defensive takeaways to help asset owners detect and mitigate these threats before they escalate. This presentation is aimed at offensive security professionals, defenders, and industrial security leaders seeking to understand how the OT perimeter is being targeted—and how to better protect it.",
+    "view_count": 265
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Qf7oNWKGL2I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

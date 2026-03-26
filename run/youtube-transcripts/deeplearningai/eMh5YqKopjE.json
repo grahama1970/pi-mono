@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eMh5YqKopjE",
+    "language": "en",
+    "took_ms": 9163,
+    "method": null,
+    "title": "deeplearning.ai's Heroes of Deep Learning: Dawn Song",
+    "channel": "DeepLearningAI",
+    "upload_date": "20180928",
+    "duration_sec": 2246,
+    "description": "Dawn Song is well-known for her research on the intersection of deep learning and security. Aside from her research, Song is also a Professor in the Department of Electrical Engineering and Computer Science at UC Berkeley and CEO of Oasis Labs, a blockchain startup that is creating a privacy-first cloud computing platform no blockchain. She has received several awards for her work including the MacArthur Fellowship, the Guggenheim Fellowship, and Best Paper awards from top conferences.\n\nAndrew sits down with Song to chat about her unconventional career path and her current research projects.\n\nHere’s what you’ll learn in the interview:\n\n00:34: How Song first got started in deep learning and security\n4:00: How Song self-designed a reading program structured around representational learning\n13:22: How computer security can help deep learning\n17:03: Song’s research on how to build resilient machine learning systems\n21:55 How a “consistency check” approach can defend against attacks\n25:31: Song’s work in AI and data privacy\n27:49: How deep learning can help computer security\n30:16: How Song’s startup, Oasis Labs, is creating privacy-preserving smart contracts\n34:42: Song’s advice for learners breaking into a new field\n\n\nWant to build your own career in deep learning? Get started by taking the Deep Learning Specialization.",
+    "view_count": 12418
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eMh5YqKopjE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

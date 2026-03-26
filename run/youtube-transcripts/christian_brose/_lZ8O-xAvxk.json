@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_lZ8O-xAvxk",
+    "language": "en",
+    "took_ms": 8840,
+    "method": null,
+    "title": "Kleptocratic Regimes and National Security: A Pervasive Threat and How It Can be Neutralized (1)",
+    "channel": "Hudson Institute",
+    "upload_date": "20171115",
+    "duration_sec": 582,
+    "description": "Introduction with Charles Davidson and Louise Shelley",
+    "view_count": 185
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _lZ8O-xAvxk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DocU7Wck5tU",
+    "language": "en",
+    "took_ms": 9282,
+    "method": null,
+    "title": "5. Safety and Protection with Bryan Singer",
+    "channel": "S4 Events",
+    "upload_date": "20201113",
+    "duration_sec": 2116,
+    "description": "Bryan Singer starts with the quote \"when good systems go bad\" ... this is when safety or protection systems prevent a catastrophe. It is a key lesson for understanding risk.\n\nApologies for not having the video of Bryan, but you have his voice and the presentation on the screen 100% of the time. This is an awesome presentation from someone who has seen and been hands on in 100's of plants.\n\nQuestions to consider and discuss:\n\n1) Why don't you see SIS (Safety Instrumented Systems) in a large percentage of plants for safety?\n\n2) Why would you not want to integrate your safety and control system together?\n\n3) What is the difference between fail energized (open) and fail closed? Which would result in a larger consequence?",
+    "view_count": 1082
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DocU7Wck5tU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

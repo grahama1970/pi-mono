@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MtxU8Dxu6tA",
+    "language": "en",
+    "took_ms": 9050,
+    "method": null,
+    "title": "The Arab Spring: One Year On",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 4886,
+    "description": "Please join Hudson Institute's Center for Religious Freedom for an analysis of the potential short- and long-term implications and consequences of the Arab Spring. Panelists will focus on the political ascendancy of Islamist organizations, the impact on religious minorities of the region, and the movement within its broader geopolitical and historical context. The discussion will feature Walter Russell Mead, James Clarke Chace Professor of Foreign Affairs and Humanities at Bard College and Edito",
+    "view_count": 98
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MtxU8Dxu6tA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

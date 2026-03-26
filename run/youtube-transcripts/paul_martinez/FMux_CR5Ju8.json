@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FMux_CR5Ju8",
+    "language": "en",
+    "took_ms": 7799,
+    "method": null,
+    "title": "Attacks From The 4G/5G Core",
+    "channel": "S4 Events",
+    "upload_date": "20221114",
+    "duration_sec": 1587,
+    "description": "Charles Perine (a Digital Bond alum now with Trend Micro) looks at how an attacker could interfere with a 4G or 5G campus networks used for ICS and/or IIoT. This includes the APNs that the carriers have been heavily promoting for cost savings use in industrial networks and 5G where an asset owner is responsible for everything.\n\nCharles goes over the lab they set up, the attack scenarios, and what worked and didn't work.",
+    "view_count": 1388
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FMux_CR5Ju8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

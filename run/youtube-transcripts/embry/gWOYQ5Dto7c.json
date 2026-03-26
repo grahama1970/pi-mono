@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gWOYQ5Dto7c",
+    "language": "en",
+    "took_ms": 9905,
+    "method": null,
+    "title": "Watch SpaceX launch the FIRST commercial spacewalk, Polaris Dawn!!!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240910",
+    "duration_sec": 10929,
+    "description": "*ALL PROCEEDS OF THIS STREAM GO TO SAINT JUDE CHILDREN'S RESEARCH HOSPITAL*\n\nThe Polaris Dawn mission, is launching on Spacex's Falcon 9 NET September 10th, 2024 at 3:38 a.m. Eastern [7:38 UTC], from Kennedy Space Center's LC-39A. It aims to achieve several firsts, including the highest altitude reached by humans since the Apollo missions, conducting the first private spacewalk, and testing new technologies like intersatellite laser communications with Starlink. This mission, led by Jared Isaacman, not only pushes the boundaries of space exploration but also includes significant scientific research, focusing on health impacts in space, all while raising funds for St. Jude Children's Research Hospital.\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 620581
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gWOYQ5Dto7c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

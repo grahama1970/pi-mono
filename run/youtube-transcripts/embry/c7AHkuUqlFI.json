@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "c7AHkuUqlFI",
+    "language": "en",
+    "took_ms": 9077,
+    "method": null,
+    "title": "What is expansion ratio? #shorts",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20210702",
+    "duration_sec": 55,
+    "description": "What's the expansion ratio of a rocket engine? Expansion ratio is the ratio between the area of the throat and the area of the nozzle exit. A nozzle’s job is to convert high pressure into high speed exhaust gas, the faster the engine throws propellant out the back, the better. \n\nWant to learn more? Watch my in-depth video on aerospike engines, we go real deep into it! https://youtu.be/D4SaofKCYwo\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 695581
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] c7AHkuUqlFI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

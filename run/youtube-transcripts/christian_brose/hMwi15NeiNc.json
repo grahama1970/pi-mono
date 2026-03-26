@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hMwi15NeiNc",
+    "language": "en",
+    "took_ms": 9718,
+    "method": null,
+    "title": "Seth Cropsey on Iran's threat to close off the Strait of Hormuz for CTV",
+    "channel": "Hudson Institute",
+    "upload_date": "20120105",
+    "duration_sec": 182,
+    "description": "Hudson Senior Fellow Seth Cropsey joined CTV to discuss Iran's threat to close off the Strait of Hormuz on January 5, 2012.",
+    "view_count": 451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hMwi15NeiNc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

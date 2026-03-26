@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kItqWJHN_dI",
+    "language": "en",
+    "took_ms": 9053,
+    "method": null,
+    "title": "DEF CON 33 - Gateways to Chaos - How We Proved Modems Are a Ticking Time Bomb - Chiao-Lin  Yu",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2383,
+    "description": "Imagine your home modem as a loaded gun aimed at global security. Our research exposes critical vulnerabilities in ISP-supplied modems—ADSL, fiber, cable, 5G—that inherently threaten power grids, water systems, and ATMs. Over 35 severe flaws have been identified, rooted in outdated IoT SDKs, affecting millions globally. These issues allow attackers to manipulate essential services without direct hijacking.\n\nDespite the severity of these vulnerabilities, manufacturers and ISPs consistently refuse to address them, leaving these devices as perpetual threats. We provide essential tools for detection and defense against such negligence.\n\nIn this session, you'll learn how to identify these inherent weaknesses that compromise infrastructures through device flaws. Gain practical skills in vulnerability hunting and crafting defenses, while navigating the landscape of responsible disclosure amidst industry inertia.\n\nJoin us to confront a crisis long ignored. When hackers exploit these systemic failures, it's not just personal data at risk—it's the stability of our world's crucial infrastructure.",
+    "view_count": 21371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kItqWJHN_dI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

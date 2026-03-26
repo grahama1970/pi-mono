@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oR-LRsYWm7Y",
+    "language": "en",
+    "took_ms": 9789,
+    "method": null,
+    "title": "Ukraine: Crisis for Central Europe and the Transatlantic All",
+    "channel": "Hudson Institute",
+    "upload_date": "20140313",
+    "duration_sec": 4740,
+    "description": "The Ukraine crisis has the potential to create financial instability, an economic slowdown, clashes between states and alliances, and civil disturbances within countries. As the 100th anniversary of the start of the First World War approaches, we cannot treat these risks as trivial.\r\n\r\nThe dangers Ukraine poses for international security, crisis management, and geopolitical balance particularly concern the relations among the Russian Federation, the European Union, and the United States. But the",
+    "view_count": 100
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oR-LRsYWm7Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bP3nowVzx8A",
+    "language": "en",
+    "took_ms": 7835,
+    "method": null,
+    "title": "Build Event-Driven Agentic Document Workflows in this new free course!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250305",
+    "duration_sec": 104,
+    "description": "Learn more: https://bit.ly/4h5cu3Y\n\nLearn to build Event-Driven Agentic Document Workflows, in this new course, built in partnership with LlamaIndex, and taught by Laurie Voss, VP of Developer Relations.\n\nManually processing complex documents can be time-consuming, and error-prone. But what if an AI agent could automate it for you? Agentic document workflows are agent-based applications that you can use to automate an end-to-end document processing workflow. This course teaches you how to build an agentic document workflow, using an event-driven architecture, a design pattern that allows the agent to perform its tasks asynchronously and in parallel.\n\nYou'll design an event-driven agentic workflow that fills out a PDF form based on information from a source document. The agent will use RAG to retrieve relevant data from the source document, parse the form to identify the required fields, convert the blank spaces into questions, and send those questions to the RAG system. You'll collaborate with the agent using a human-in-the-loop feedback approach through text and with your voice.\n\n\nIn detail, you’ll: \n\n- Understand the basic concepts of agentic document workflow, which consists of RAG, agents, and event-driven workflows.\n- Build a series of LlamaIndex’s workflows that increase in complexity and involve branching, looping logic, and concurrent executions.\n- Set up the agent’s RAG capability by parsing the source document, loading the extracted information into a vector store, and building a query engine on top of the store.\n- Implement workflow steps that enable the agent to parse the form to be filled, turn the parsed information into simple questions, and use the questions to query the RAG pipeline.\n- Incorporate human-in-the-loop into the workflow and ask the agent to re-answer when necessary to produce more accurate form responses.\n- Add multimodal capability to the agent, allowing it to process spoken feedback.\n\nBy the end of this course, you'll have built an event-driven agentic workflow that fills out a document and responds to human feedback for more accurate form completion.\n\nEnoll now: https://bit.ly/4h5cu3Y",
+    "view_count": 4393
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bP3nowVzx8A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

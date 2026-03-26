@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LBgamAFrd_g",
+    "language": "en",
+    "took_ms": 7966,
+    "method": null,
+    "title": "Live Hosting Blue Origin New Shepard Launch Abort Test",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180718",
+    "duration_sec": 4672,
+    "description": "Blue Origin will be launching their 9th mission for their New Shepard sub-orbital launcher. They will be testing out their escape motor at a high altitude, which might make for a very interesting mission!\n\nFollow and Like my upcoming new series on Facebook Watch with Space.com \"Spacing Out!\" - https://www.facebook.com/SpacingOutEverydayAstronaut/\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 59913
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LBgamAFrd_g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

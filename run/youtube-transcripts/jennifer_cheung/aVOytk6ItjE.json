@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aVOytk6ItjE",
+    "language": "en",
+    "took_ms": 8682,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Mariam Elgabry - Internet of Ingestible Things Security by Design",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 791,
+    "description": "In this talk I will share the outcomes of the very first Internet-of-Ingestible-Things workshop that brings cybersecurity experts and medical device regulatory bodies together to think about cyber-biosecurity at design stage of medical devices and to inform policy by delivering a set of principles for Security by Design.",
+    "view_count": 820
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aVOytk6ItjE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

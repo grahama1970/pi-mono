@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kh6lczeGP3U",
+    "language": "en",
+    "took_ms": 9216,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Harshad Sathaye -  GPS Spoofing 101",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1365,
+    "description": "With the advent of autonomous cyber-physical systems such as self-driving cars and unmanned aerial vehicles, the use of Global Positioning System (GPS) for positioning and navigation has become ubiquitous. In recent years we have seen a lot of GPS \"incidents\" which involve either denial of services or spoofing to mislead the receiver. This workshop will include the basics of GPS spoofing with a hands-on exercise and a discussion of state-of-the-art spoofing mitigation techniques",
+    "view_count": 1413
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kh6lczeGP3U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

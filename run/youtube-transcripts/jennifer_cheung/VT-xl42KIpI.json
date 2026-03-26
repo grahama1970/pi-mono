@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VT-xl42KIpI",
+    "language": "en",
+    "took_ms": 8591,
+    "method": null,
+    "title": "DEF CON 33 - They deployed Health AI on us: We’re bringing the rights & red teams  - Andrea Downing",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1579,
+    "description": "AI is rapidly reshaping healthcare—from diagnostics to mental health chatbots to surveillance inside EHRs—often without patient consent or clear oversight. The Patient AI Rights Initiative (https://lightcollective.org/patient-ai-rights/) lays out the first patient-authored ethical framework for Health AI. Now it’s time to test it like any other system: for failure, bias, and exploitability.\n\nWe’ll introduce the 7 Patient AI Rights and challenge participants to stress test them through the lens of security research. Working in small groups, you'll choose a Right and explore how it could break down in the real world.\n\nTogether, we’ll co-create early prototypes for a “Red Teaming Toolkit for Health AI” to evaluate Health AI systems based on the priorities of the people most impacted by them: patients.\n\nThis session is ideal for patient activists, engineers, bioethicists, and anyone interested in building accountable, rights-respecting AI systems from the outside in.",
+    "view_count": 350
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VT-xl42KIpI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

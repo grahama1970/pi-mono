@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TE-j_sZxzT0",
+    "language": "en",
+    "took_ms": 9125,
+    "method": null,
+    "title": "Using NTIA’s VEX To Tame The Vulnerability Tsunami",
+    "channel": "S4 Events",
+    "upload_date": "20230220",
+    "duration_sec": 1855,
+    "description": "Eric Byres of aDolus dives into the reason for Vulnerability Exploitability Exchange (VEX) and how he thinks it will help deal with the huge amount of vulnerabilities that asset owners will become aware of. Aware of because they have been there for a long time.\n\nHe shows what a VEX document is and the workflow on how it is used. Finally ~16:30 Solar Turbines shows how they are using VEX. And they leave about 8 minutes for Q&A at the end.",
+    "view_count": 371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TE-j_sZxzT0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YFpAotN4Chw",
+    "language": "en",
+    "took_ms": 8162,
+    "method": null,
+    "title": "Copyright Protection in the Digital Age",
+    "channel": "Hudson Institute",
+    "upload_date": "20210924",
+    "duration_sec": 3684,
+    "description": "Join Hudson Institute Legal Fellow Devlin Hartline and expert panelists Steven Tepp, Michael D. Smith, and Vance Ikezoye for a discussion on the use of filtering and site blocking to address online copyright infringement.\n\nThe digital age has brought new challenges for copyright owners in the United States and abroad. While consumers have more legal choices than ever to enjoy copyrighted content online, copyright owners have struggled to protect their rights given the inadequate legal mechanisms available to them. History shows that copyright law evolves in the face of new technologies, and this panel will consider how the use of filtering to capture infringements in real time and site blocking to close off pirate websites can be deployed to combat copyright infringement in the digital age. The panelists will take a deep dive into the law and policy behind the issues, discussing recent legal developments, assessing the empirical data, and surveying the technological solutions.",
+    "view_count": 911
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YFpAotN4Chw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

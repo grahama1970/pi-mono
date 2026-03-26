@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kMgXtuJdP3c",
+    "language": "en",
+    "took_ms": 7722,
+    "method": null,
+    "title": "DEF CON 30 - Daniel Jensen - Hunting Bugs in the Tropics",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2602,
+    "description": "Aruba Networks makes networking products for the enterprise. I make enterprise products run arbitrary code.\n\nOver the past couple of years, I've been hunting for vulnerabilities in some of Aruba's on-premise networking products and have had a bountiful harvest. A curated (read: patched) selection of these will be presented for your enjoyment. Pre-auth vulnerabilities and interesting bug chains abound, as well as a few unexpected attack surfaces and a frequently overlooked bug class.\n\nThis talk will explore some of the vulnerabilities I've found in various products in the Aruba range, and include details of their exploitation. I'll elaborate on how I found these bugs, detailing my workflow for breaking open virtual appliances and searching for vulnerabilities in them.",
+    "view_count": 1337
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kMgXtuJdP3c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

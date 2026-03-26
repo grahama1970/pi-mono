@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZMquwo-GC3U",
+    "language": "en",
+    "took_ms": 8813,
+    "method": null,
+    "title": "Innovating Telemedicine: A Discussion with FCC Commissioner Brendan Carr",
+    "channel": "Hudson Institute",
+    "upload_date": "20180731",
+    "duration_sec": 2901,
+    "description": "The Hon. Brendan Carr is a commissioner of the Federal Communications Commission.  He has been a leading voice on the rule of law at the FCC.  Together with Sen. Roger Wicker (R-MS), Commissioner Carr recently proposed a new $100 million Connected Care Pilot Program to support telehealth for low-income Americans, especially veterans and those living in rural areas.\n\nOn July 31, Commissioner Carr and Harold Furchtgott-Roth, Hudson senior fellow and director of the Center for the Economics of the Internet, discussed Connected Care and other communications issues facing the United States.",
+    "view_count": 187
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZMquwo-GC3U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

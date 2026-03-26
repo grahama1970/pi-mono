@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wEiYOuBmBvU",
+    "language": "en",
+    "took_ms": 6207,
+    "method": null,
+    "title": "Animalism",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20250220",
+    "duration_sec": 686,
+    "description": "Join the Nobodies Collective to support this project as a producer (your name in the film’s credits!) and gain access to tons of exclusive resources: videos, documents, tutorials, and much more.\n👉 Be part of it here: \nhttps://www.patreon.com/c/NobodyandTheComputer\n\n🐾 Discover How I Made This AI-Generated Film! 🎬\nIn this book, I share the full creative process, starting from the original idea, concept development, and screenplay to the AI tools used for generating images, videos, sound, and music. Plus, you'll get access to the prompts I used for Midjourney and Kling.ai.\n📖 Get it here: \nhttps://www.patreon.com/posts/animalism-ai-122718150\n\n00:00 Chimpanzees go wild\n02:15 Koalas call the cops\n03:20 Police dogs\n05:06 Poco Loco Pizzeria\n05:51 Yogui the cat\n06:11 Dogs and pigs\n07:49 Koalas, dogs, and piglets\n08:22 Dogs watching pink elephants\n09:01 The End\n\n\n\n\n\n\nPhilosophically, animalism is the idea that humans are fundamentally animals, a theory in personal identity that contrasts with mind-body dualism and John Locke’s psychological criterion. Thinkers like Eric T. Olson, Peter van Inwagen, Paul Snowdon, and David Hershenov have explored this perspective.\nOn a social level, animalism also refers to a movement that considers non-human animals to be morally and ethically significant, challenging the way we view our relationship with nature.",
+    "view_count": 5583
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "\nCould not retrieve a transcript for the video https://www.youtube.com/watch?v=wEiYOuBmBvU! This is most likely caused by:\n\nYouTube is blocking requests from your IP. This usually is due to one of the following reasons:\n- You have done too many requests and your IP has been blocked by YouTube\n- You are doing requests from an IP belonging to a cloud provider (like AWS, Google Cloud Platform, Azure, etc.). Unfortunately, most IPs from cloud providers are blocked by YouTube.\n\nThere are two things you can do to work around this:\n1. Use proxies to hide your IP address, as explained in the \"Working around IP bans\" section of the README (https://github.com/jdepoix/youtube-transcript-api?tab=readme-ov-file#working-around-ip-bans-requestblocked-or-ipblocked-exception).\n2. (NOT RECOMMENDED) If you authenticate your requests using cookies, you will be able to continue doing requests for a while. However, YouTube will eventually permanently ban the account that you have used to authenticate with! So only do this if you don't mind your account being banned!\n\nIf you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!"
+  ]
+}

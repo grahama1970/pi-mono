@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lZhyHpaCtmU",
+    "language": "en",
+    "took_ms": 7813,
+    "method": null,
+    "title": "What's The Sandboxx Dispatch?",
+    "channel": "Sandboxx",
+    "upload_date": "20200602",
+    "duration_sec": 52,
+    "description": "One of the hardest parts of basic training is disconnecting from home and things you care about. With the Dispatch, you can send your Recruit or Trainee weekly content that will entertain and inform them about what’s going on in the world outside of basic training. Curated by the Sandboxx editorial team, we provide unique weekly content delivered to them using the same next-day delivery system as our Letters product. You can pick what type of content to send to your service member.\n\nThe “On Duty“ newsletter features a variety of military news and educational reading geared toward a successful military career.\n\nThe “Off Duty“ newsletter features current event topics and entertainment.\n\nOrder the Dispatch for your recruit at basic training here:\nhttps://sbxx.us/3emrhr0",
+    "view_count": 1812
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lZhyHpaCtmU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

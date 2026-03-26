@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4w44NpnFGBw",
+    "language": "en",
+    "took_ms": 8926,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Gui Michel - Breakdown of the FAA Privacy ICAO Address Program",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1172,
+    "description": "The FAA launched the Privacy ICAO Address (PIA) program in January 2020 to address privacy concerns in General Aviation in the United States. This talk will present an analysis on the privacy performance of this program in its current state and our predictions for the future. We will demonstrate that it is possible to identify aircraft despite being enrolled in the program, using ADS-B data from crowdsourced networks. The privacy loss of participating aircraft over time is quantified through a purpose-built privacy simulator, showing that tracking is possible, even with a much greater participation in the program in the future. To address these issues, we will present two solutions that could significantly improve the privacy of the PIA program going forward.",
+    "view_count": 313
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4w44NpnFGBw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y9cIiL-2IWc",
+    "language": "en",
+    "took_ms": 8753,
+    "method": null,
+    "title": "DEF CON 30 - Kenneth Geers - Computer Hacks in the Russia-Ukraine War",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1254,
+    "description": "The Russia-Ukraine war has seen a lot of computer hacking, on both sides, by nations, haxor collectives, and random citizens, to steal, deny, alter, destroy, and amplify information. Satellite comms have gone down. Railway traffic has been stymied. Doxing is a weapon. Fake personas and false flags are expected. Every major platform has had issues with confidentiality, integrity, and availability. Hacked social media and TV have been a hall of mirrors and PSYOP. Russian comms are unreliable, so Ukrainian nets have become honeypots. Hackers have been shot in the kneecaps. Talking heads have called for a RUNET shutdown. The Ukrainian government has appealed for hacker volunteers – just send your expertise, experience, and a reference. The Great Powers are hacking from afar, while defending their own critical infrastructure, including nuclear command-and-control. Ukraine has many hacker allies, while Russian hackers are fleeing their country in record numbers. Some lessons so far: connectivity is stronger than we thought, info ops are stealing the day, drones are the future, and it is always time for the next hack.",
+    "view_count": 54119
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y9cIiL-2IWc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

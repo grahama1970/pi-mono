@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TLmNpBNuDtk",
+    "language": "en",
+    "took_ms": 8813,
+    "method": null,
+    "title": "ICS Random Walk with Dale Peterson",
+    "channel": "S4 Events",
+    "upload_date": "20201119",
+    "duration_sec": 3020,
+    "description": "I'll have Marty Edwards on to talk about Chris Krebs firing and DHS, and then spend most of the hour answering your OT and ICS security questions.",
+    "view_count": 174
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TLmNpBNuDtk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

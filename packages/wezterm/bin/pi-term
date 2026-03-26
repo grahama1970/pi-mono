@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# pi-term — Launch WezTerm with Pi Term config.
+# Ensures the Embry OS Lua config is loaded and Pi agent integration is active.
+set -euo pipefail
+
+# Find wezterm-gui binary
+if command -v wezterm-gui &>/dev/null; then
+    WEZTERM_GUI="wezterm-gui"
+elif command -v wezterm &>/dev/null; then
+    WEZTERM_GUI="wezterm"
+else
+    echo "Error: wezterm not found in PATH" >&2
+    echo "Install WezTerm: https://wezfurlong.org/wezterm/installation" >&2
+    exit 1
+fi
+
+# Pass through all arguments to wezterm
+exec "$WEZTERM_GUI" "$@"

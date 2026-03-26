@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UkgMVkj1kdM",
+    "language": "en",
+    "took_ms": 8820,
+    "method": null,
+    "title": "AI Dev 25 | Krishna Sridhar: Shifting Paradigms—The Move of AI's Center of Gravity to Edge Devices",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1184,
+    "description": "AI is undergoing a major shift—from cloud-based processing to on-device intelligence. In this talk, Krishna Sridhar, Vice President of Engineering at Qualcomm Technologies, explores what this transformation means for developers, products, and users.\n\nDrawing from Qualcomm’s deep expertise in R&D and its work on Snapdragon platforms and the Qualcomm AI Hub, Krishna highlights how edge AI enables lower latency, enhanced privacy, and greater efficiency—opening new possibilities for mobile, automotive, compute, and IoT applications.\n\nThis session dives into the technical, practical, and strategic considerations of deploying AI closer to the user—and what it takes to build performant, scalable AI at the edge.\n\nA must-watch for anyone working at the intersection of AI and embedded systems.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 1489
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UkgMVkj1kdM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

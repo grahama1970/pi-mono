@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MS582wba46E",
+    "language": "en",
+    "took_ms": 7949,
+    "method": null,
+    "title": "DEF CON 32  - Exploiting Bluetooth from your car to the bank account$$ - Yso & Martin Strohmeier",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1226,
+    "description": "Over the past decade, infotainment systems experienced a growth in functionality, broader adoption and central incorporation into the vehicle architecture. Due to the ever-growing role of wireless protocols such as Bluetooth and a known lack of patches alongside the difficulty of patch installation, this poses a new attack surface and a genuine threat to the users. At the same time, the tools and methodologies required for testing are scattered across the Internet, absent and need a rigorous setup.\n\nIn this talk, we share a comprehensive framework BlueToolkit to test and replay Bluetooth Classic vulnerabilities. We provide practical information and tips. Additionally, we release new exploits and a privilege escalation attack vector.\n\nWe show how we used the toolkit to find 64 new vulnerabilities in 22 modern cars and the Garmin Flight Stream flight management system used in several aircraft types.\n\nOur work equips Bluetooth hackers with necessary information on novel implementation-specific vulnerabilities that could be used to steal information from target cars, establish MitM position or escalate privileges to hijack victims’ accounts stealthily.\n\nWe believe our research will be beneficial in finding new vulnerabilities and making Bluetooth research more accessible and reproducible.",
+    "view_count": 878
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MS582wba46E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

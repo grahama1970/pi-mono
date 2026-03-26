@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wPNj_YmI7eg",
+    "language": "en",
+    "took_ms": 7811,
+    "method": null,
+    "title": "The Iran Nuclear Showdown: What’s Next?",
+    "channel": "Hudson Institute",
+    "upload_date": "20211005",
+    "duration_sec": 3048,
+    "description": "As Iran continues its quest to develop nuclear weapons and clashes with the International Atomic Energy Agency, what should we expect next in the showdown between the United States and the Islamic Republic? Join Hudson Institute Adjunct Fellow Josh Block and nuclear weapons experts David Albright and Olli Heinonen for a discussion on prospects for further advances in Iran’s illicit nuclear program, the policy steps the United States should take in response, and what a revived JCPOA or a new nuclear deal should aim to achieve.",
+    "view_count": 2028
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wPNj_YmI7eg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

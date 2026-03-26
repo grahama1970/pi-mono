@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jKVVQjZM7Nk",
+    "language": "en",
+    "took_ms": 8977,
+    "method": null,
+    "title": "Extreme Visibility - Claroty S4x19 Sponsor Session",
+    "channel": "S4 Events",
+    "upload_date": "20190201",
+    "duration_sec": 1484,
+    "description": "Patrick McBride of Claroty took the Sponsor Stage to present: Extreme Visibility for Better Threat Detection and Reduced TCO. He began with an overview on the company and its product and then presented two case studies:\n\n10:00 OT Vulnerability and Patch Management\n14:25 OT Threat Detection, Triage & Remediation",
+    "view_count": 1862
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jKVVQjZM7Nk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

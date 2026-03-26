@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "app": "UX Lab — Brandon Bailey CMMC/Compliance Review",
+  "base_url": "http://localhost:3002",
+  "persona": "brandon-bailey",
+  "reference_product": {
+    "name": "SPARTA Navigator & Countermeasure Mapper",
+    "urls": [
+      "https://sparta.aerospace.org/resources/user-guide",
+      "https://sparta.aerospace.org/resources/working-with"
+    ],
+    "reference_docs": "fixtures/sparta-reference/",
+    "reference_screenshots": [
+      "fixtures/sparta-reference/5c6f219d885443e2-20260313223733.png",
+      "fixtures/sparta-reference/c757f9fd24b60a28-20260313223735.png"
+    ],
+    "description": "The Aerospace Corporation's official SPARTA threat matrix tools. Our ThreatMap is a direct evolution: the original is manually constructed with no automated data ingestion. Ours ingests F-36 project data automatically and shows coverage gaps against real evidence, not just what countermeasures exist in the catalog.",
+    "how_threat_matrix_is_normally_built": [
+      "1. User opens SPARTA Navigator, clicks 'Create New Layer'",
+      "2. User MANUALLY selects applicable tactics and techniques from the 9-column matrix (Reconnaissance → Impact)",
+      "3. Each technique cell can be clicked to reveal associated countermeasures and NIST controls",
+      "4. User switches to Countermeasure Mapper to select which countermeasures they implement",
+      "5. Mapper shows coverage spectrum: techniques turn GREEN when covered, remain RED when uncovered",
+      "6. User cross-references to NIST SP 800-53r5 / ISO 27001 controls via Control Mapper",
+      "7. Risk is scored per technique using NRS 5x5 matrix (Impact 1-5 × Likelihood 1-5 = score 1-25)",
+      "8. NRS displayed as (H|M|L) — High/Medium/Low system criticality variants",
+      "9. Risk tiers: Low=Green (1-10), Medium=Yellow (11-19), High=Red (20-25)",
+      "10. Countermeasures prioritized by Tier: T1=foundational, T2=complex/costly, T3=cutting-edge/niche",
+      "11. Coverage gaps exported to Excel with countermeasure mappings for remediation tracking",
+      "12. The entire process is MANUAL — no automated data ingestion, no evidence evaluation, no live posture"
+    ],
+    "key_differences": [
+      "Original: manual mapping of all 85+ techniques. Ours: automated F-36 data ingestion via /extract-entities + /ingest-sparta",
+      "Original: shows what countermeasures EXIST in the catalog. Ours: shows which ones F-36 ACTUALLY HAS evidence for",
+      "Original: coverage spectrum bars (red-to-green continuous). Ours: Full/Partial/None/Unknown discrete status per technique",
+      "Original: NRS 5x5 risk scoring (1-25, H/M/L criticality). Ours: IntegrityCard NOMINAL/DEGRADED/CRITICAL based on actual data",
+      "Original: static export to JSON/Excel/PNG. Ours: live interactive graph with inspector panel + what-if analysis",
+      "Original: no formal verification. Ours: /lean4-prove composition for proof obligations on graph assertions"
+    ],
+    "sparta_conventions_to_match": [
+      "9 tactic columns (Reconnaissance, Resource Development, Initial Access, Execution, Persistence, Defense Evasion, Lateral Movement, Exfiltration, Impact)",
+      "Technique cells with drill-down to countermeasures — same navigation path as SPARTA Navigator",
+      "Coverage visualization — at minimum as clear as SPARTA's red/green spectrum bars",
+      "Framework cross-references: NIST SP 800-53r5, ISO 27001, D3FEND, CWE, NASA BPG",
+      "Countermeasure tiers (T1=foundational, T2=complex, T3=cutting-edge) labeled or indicated",
+      "NRS risk scoring or equivalent severity indicator per technique",
+      "Purple/dark theme consistent with SPARTA's own dark purple UI (see reference screenshots)"
+    ]
+  },
+  "review_dimensions": [
+    "Compare against original SPARTA Navigator: does our grid match the 9-tactic column layout?",
+    "Coverage indicators (Full/Partial/None/Unknown) must be at least as clear as SPARTA's spectrum bars",
+    "Drill path: technique → countermeasure → NIST control must work (same as original SPARTA)",
+    "Status indicators must use NVIS colors with WCAG AA contrast",
+    "SPARTA technique counters must distinguish ATT&CK vs NIST vs D3FEND framework badges",
+    "Automated F-36 data must be visually distinct from manual SPARTA catalog mapping",
+    "Tactic headers must support scan-then-drill navigation pattern",
+    "Focus states required on all interactive elements (keyboard accessibility)",
+    "Audit trail: every technique must show its compliance mapping",
+    "Countermeasure tiers (1/2/3) should be labeled or indicated"
+  ],
+  "surfaces": [
+    {
+      "name": "threat-map-compliance",
+      "path": "/?component=threat-map",
+      "wait_ready": "[data-testid='threat-map']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "threat-map-full",
+          "selector": "[data-testid='threat-map']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full ThreatMap grid — tactic columns, technique cells, coverage indicators",
+              "expected": "ATT&CK Navigator-style grid. 9 tactic columns. Each technique cell shows: technique ID, name, coverage status (Full=green, Partial=amber, None=red, Unknown=dim). Status colors must meet WCAG AA contrast against dark background. Framework badges (SPARTA purple, ATT&CK red, NIST blue) visible per technique."
+            }
+          ]
+        },
+        {
+          "name": "threat-map-status-indicators",
+          "selector": "[data-testid='threat-map']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Coverage status indicators — Brandon checks for clear Full/Partial/None/Unknown differentiation",
+              "expected": "Four distinct status states visible: Full (bright green #00ff88 glow dot), Partial (amber #ffaa00), None (red #ff4444), Unknown (dim gray). Each must be distinguishable at a glance. No colorblind-hostile green/red without secondary indicator (icon, pattern, or text).",
+              "assert_selector": "[data-testid='threat-map'] [data-coverage]",
+              "assert_count": {"selector": "[data-testid='threat-map'] [data-coverage]", "min": 1}
+            }
+          ]
+        },
+        {
+          "name": "technique-cell-detail",
+          "selector": "[data-testid='threat-map']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-testid='threat-map'] [data-technique]:first-of-type",
+              "description": "Click first technique cell — should show detail panel with compliance mapping",
+              "screenshot_after": true,
+              "wait_ms": 500,
+              "expected": "Technique detail appears showing: technique ID, full name, tactic membership, framework badges, issue count. For CMMC compliance: must show which controls map to this technique."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "control-table-compliance",
+      "path": "/?component=control-table",
+      "wait_ready": "[data-testid='control-table']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "control-table-full",
+          "selector": "[data-testid='control-table']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full ControlTable — sortable columns, framework badges, issue indicators",
+              "expected": "Sortable table with columns: ID, Framework, Name, Issues, Relations. Framework badges use correct colors (SPARTA=#7c3aed, ATT&CK=#ff4444, D3FEND=#00ff88, NIST=#4a9eff, CWE=#ffaa00). Issue count > 0 shows red indicator. Column headers clickable for sort."
+            }
+          ]
+        },
+        {
+          "name": "control-table-filter",
+          "selector": "[data-testid='control-table']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Framework filter buttons — Brandon checks all 5 frameworks are filterable",
+              "expected": "Filter bar above table with framework buttons: ALL, SPARTA, ATT&CK, D3FEND, NIST, CWE. Active filter highlighted. Text search input visible.",
+              "assert_selector": "[data-testid='control-table'] input[type='text']"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "integrity-card-compliance",
+      "path": "/?component=integrity-card",
+      "wait_ready": "[data-testid='integrity-card']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "integrity-status",
+          "selector": "[data-testid='integrity-card']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Graph integrity card — NOMINAL/DEGRADED/CRITICAL with coverage percentage",
+              "expected": "Status indicator: NOMINAL (green), DEGRADED (amber), or CRITICAL (red). Coverage percentage displayed prominently. Issue count shown. For CMMC: this maps to overall posture assessment — must be unambiguous."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "composed-explorer-compliance",
+      "path": "/?component=composed-explorer",
+      "wait_ready": "[data-testid='composed-explorer']",
+      "wait_ready_timeout_ms": 15000,
+      "elements": [
+        {
+          "name": "full-explorer",
+          "selector": "[data-testid='composed-explorer']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "3-pane Composed Explorer — Brandon checks information density and compliance workflow",
+              "expected": "3-pane layout: Threat Overview (30% left), Evidence Hub (35% center), Query & Synthesis (35% right). ThoughtTrace pipeline bar at top. Each pane has section header with colored pill. All components render with real or sample data. No empty states in composed view."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TACTICAL_ARCHITECT_V3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #131313;
+            color: #e5e2e1;
+            margin: 0;
+            overflow: hidden;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+        }
+        .glass-panel {
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .pulse-gradient {
+            background: linear-gradient(135deg, #7c3aed 0%, #5a00c6 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#131313",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "secondary-container": "#523787",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "tertiary-fixed-dim": "#00e479",
+                        "primary": "#d2bbff",
+                        "secondary": "#d2bbff",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-container": "#c3a6ff",
+                        "primary-container": "#7c3aed",
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-fixed": "#00210c",
+                        "surface": "#131313",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-secondary-fixed-variant": "#523787",
+                        "outline": "#958da1",
+                        "surface-bright": "#393939",
+                        "on-primary-fixed": "#25005a",
+                        "tertiary": "#00e479",
+                        "surface-container-highest": "#353534",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed": "#eaddff",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-surface": "#e5e2e1",
+                        "surface-dim": "#131313",
+                        "on-primary-container": "#ede0ff",
+                        "on-primary": "#3f008e",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary": "#3b1e6f",
+                        "on-tertiary-container": "#84ffa8",
+                        "surface-variant": "#353534",
+                        "on-tertiary": "#003919",
+                        "on-secondary-fixed": "#25005a",
+                        "tertiary-container": "#00773c",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "surface-tint": "#d2bbff",
+                        "outline-variant": "#4a4455",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#732ee4",
+                        "tertiary-fixed": "#60ff99",
+                        "secondary-fixed": "#eaddff",
+                        "surface-container": "#201f1f"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 h-14 bg-[#131313]/80 backdrop-blur-xl flex justify-between items-center px-6 border-b border-[#ffffff10]">
+<div class="flex items-center gap-8">
+<h1 class="font-headline font-black text-primary tracking-tighter text-lg uppercase">TACTICAL_ARCHITECT_V3</h1>
+<nav class="hidden md:flex gap-6">
+<a class="mono text-[10px] uppercase tracking-widest text-tertiary border-b border-tertiary pb-1" href="#">Draft</a>
+<a class="mono text-[10px] uppercase tracking-widest text-[#888888] hover:text-white transition-all" href="#">Simulate</a>
+<a class="mono text-[10px] uppercase tracking-widest text-[#888888] hover:text-white transition-all" href="#">Deploy</a>
+<a class="mono text-[10px] uppercase tracking-widest text-[#888888] hover:text-white transition-all" href="#">Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-lowest px-3 py-1">
+<span class="material-symbols-outlined text-[16px] text-outline mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 mono text-[10px] w-48 text-on-surface uppercase tracking-tighter" placeholder="QUERY_ARCHIVE..." type="text"/>
+</div>
+<div class="flex gap-4 text-outline">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings_input_component</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+</div>
+<div class="h-8 w-8 bg-surface-container-high border border-outline-variant flex items-center justify-center">
+<img alt="Operator Profile" data-alt="High-contrast stylized profile icon representing a technical architecture operator in a minimalist HUD style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQOXBsLkEWsukMpXzphibfwmKRCOSt2j-4gie5tOm_W8KdoT_ZUQCIGtSpHZ05a0lD-bPm4DYQM5__XoNAW3NUigQUR04O0-RPaq77IYNB6WMyCaBMaYlSsH_wmVRpAEchJLOlavMD8vJXuhybWyOsRykBNfl-Kx0vCUFkGJSQDr0QpDqAlNFIjubNJ7WP84WRwIW7jS8BYSsyXo6ZC5x0EjH_pnnLuKMSW1W0VenlfCAVwc_JbncEZL464_mpkE9FW-20sOegxAI"/>
+</div>
+</div>
+</header>
+<!-- Main Layout Container -->
+<main class="flex h-screen pt-14">
+<!-- Left Sidebar (Project & Version Navigation) -->
+<aside class="w-64 flex flex-col h-full bg-[#131313] border-r border-[#ffffff15] flex-shrink-0">
+<div class="p-6">
+<div class="mb-2">
+<span class="mono text-[10px] text-primary/50 uppercase tracking-widest">ARCHITECTURES</span>
+<h2 class="font-headline font-bold text-primary tracking-tight text-sm">Precision Drafting</h2>
+</div>
+<nav class="mt-6 flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 text-primary bg-primary/10 border-l-2 border-primary transition-colors duration-150">
+<span class="material-symbols-outlined text-sm">account_tree</span>
+<span class="font-headline text-sm font-bold tracking-tight">QuerySpec Pipeline</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#888888] hover:bg-[#2a2a2a] hover:text-primary transition-colors duration-150 group">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="font-headline text-sm tracking-tight">SPARTA Recall</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#888888] hover:bg-[#2a2a2a] hover:text-primary transition-colors duration-150 group">
+<span class="material-symbols-outlined text-sm">folder_special</span>
+<span class="font-headline text-sm tracking-tight">Evidence Case</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#888888] hover:bg-[#2a2a2a] hover:text-primary transition-colors duration-150 group">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span class="font-headline text-sm tracking-tight">Episodic Archiver</span>
+</div>
+</nav>
+<button class="w-full mt-6 pulse-gradient text-on-primary-container text-[10px] font-bold py-3 uppercase tracking-widest flex items-center justify-center gap-2 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-sm">add</span>
+                    NEW ARCHITECTURE
+                </button>
+</div>
+<!-- Version History (Footer of SideNav) -->
+<div class="mt-auto p-6 bg-surface-container-lowest border-t border-[#ffffff10]">
+<span class="mono text-[10px] text-[#555555] uppercase tracking-widest mb-4 block">ACTIVE_VERSIONS</span>
+<div class="flex flex-col gap-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-sm">deployed_code</span>
+<div>
+<div class="mono text-[11px] text-on-surface">v3 CURRENT</div>
+<div class="mono text-[9px] text-[#555555]">2023-10-24 14:22:01</div>
+</div>
+</div>
+<div class="flex items-start gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-[#888888] text-sm">history</span>
+<div>
+<div class="mono text-[11px] text-[#888888]">v2 STABLE</div>
+<div class="mono text-[9px] text-[#555555]">2023-10-22 09:15:44</div>
+</div>
+</div>
+<div class="flex items-start gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-[#888888] text-sm">update</span>
+<div>
+<div class="mono text-[11px] text-[#888888]">v1 DEPRECATED</div>
+<div class="mono text-[9px] text-[#555555]">2023-10-18 16:05:12</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center Canvas -->
+<section class="flex-grow bg-[#0e0e0e] relative overflow-hidden flex flex-col items-center justify-center p-12 gap-12">
+<!-- Technical Grid Background Decor -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#d2bbff 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+<!-- Document Shape: WALKTHROUGH.md -->
+<div class="w-full max-w-2xl bg-surface-container-low border-l-4 border-primary shadow-2xl flex flex-col h-[320px]">
+<div class="bg-surface-container px-4 py-2 flex justify-between items-center border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">description</span>
+<span class="mono text-[11px] uppercase tracking-tighter">WALKTHROUGH.md</span>
+</div>
+<div class="flex gap-2">
+<div class="w-2 h-2 bg-primary/30"></div>
+<div class="w-2 h-2 bg-primary/10"></div>
+</div>
+</div>
+<div class="p-6 overflow-y-auto custom-scrollbar flex-grow">
+<h3 class="font-headline font-bold text-lg mb-4 text-on-surface">System Initialization Guide</h3>
+<p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Connecting to the SFT Model backbone for advanced trajectory planning. Ensure training configuration aligns with episodic memory constraints.</p>
+<div class="bg-background p-4 mb-4 border-l border-primary/40">
+<div class="mono text-[10px] text-primary/60 mb-2 uppercase">Training_Config_JSON</div>
+<code class="mono text-xs text-tertiary">
+                            {<br/>
+                              "model": "SFT-ARCH-V4",<br/>
+                              "precision": "bf16",<br/>
+                              "learning_rate": 2.5e-5<br/>
+                            }
+                        </code>
+</div>
+<ul class="space-y-2 mb-4">
+<li class="flex items-start gap-2 text-xs text-on-surface-variant">
+<span class="text-primary font-bold">01.</span> Verify model weights integrity
+                        </li>
+<li class="flex items-start gap-2 text-xs text-on-surface-variant">
+<span class="text-primary font-bold">02.</span> Initialize latent buffer swap
+                        </li>
+</ul>
+</div>
+<div class="px-4 py-2 bg-surface-container-high flex justify-between">
+<span class="mono text-[9px] text-[#555555]">WORDS: 1,402</span>
+<span class="mono text-[9px] text-primary">CONNECTED_TO: SFT_MODEL_BONE</span>
+</div>
+</div>
+<!-- Linking Component: The Extraction Node Indicator -->
+<div class="flex flex-col items-center -my-6 z-10">
+<div class="w-px h-12 bg-gradient-to-b from-primary to-tertiary"></div>
+<div class="px-3 py-1 bg-tertiary text-on-tertiary mono text-[10px] font-bold">EXTRACTION_NODE_O1</div>
+<div class="w-px h-12 bg-gradient-to-b from-tertiary to-primary"></div>
+</div>
+<!-- Document Shape: SKILL.md -->
+<div class="w-full max-w-2xl bg-surface-container-low border-l-4 border-tertiary shadow-2xl flex flex-col h-[320px]">
+<div class="bg-surface-container px-4 py-2 flex justify-between items-center border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-sm">terminal</span>
+<span class="mono text-[11px] uppercase tracking-tighter">SKILL.md</span>
+</div>
+<span class="mono text-[10px] text-tertiary/60">PIPELINE: ACTIVE</span>
+</div>
+<div class="p-6 overflow-y-auto custom-scrollbar flex-grow">
+<h3 class="font-headline font-bold text-lg mb-4 text-on-surface">Skill Extraction Pipeline</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-surface-container-highest p-3 border border-[#ffffff10]">
+<div class="mono text-[9px] text-tertiary uppercase mb-1">Status</div>
+<div class="font-headline font-bold text-sm">OPTIMIZED</div>
+</div>
+<div class="bg-surface-container-highest p-3 border border-[#ffffff10]">
+<div class="mono text-[9px] text-tertiary uppercase mb-1">Steps</div>
+<div class="font-headline font-bold text-sm">10-STEP SEQUENCE</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 p-3 bg-background border border-outline-variant/10">
+<div class="mono text-xs font-bold text-tertiary">S1</div>
+<p class="text-[11px] leading-tight text-on-surface-variant">Contextual noise reduction via Fourier Transform layering.</p>
+</div>
+<div class="flex gap-4 p-3 bg-background border border-outline-variant/10">
+<div class="mono text-xs font-bold text-tertiary">S2</div>
+<p class="text-[11px] leading-tight text-on-surface-variant">Heuristic weight assignment for semantic clusters.</p>
+</div>
+<div class="flex gap-4 p-3 bg-background border border-outline-variant/10">
+<div class="mono text-xs font-bold text-tertiary">S3</div>
+<p class="text-[11px] leading-tight text-on-surface-variant">Topological mapping of expertise gradients across the model.</p>
+</div>
+</div>
+</div>
+<div class="px-4 py-2 bg-surface-container-high flex justify-between">
+<span class="mono text-[9px] text-[#555555]">LOC: EXT_V2_NODE</span>
+<span class="mono text-[9px] text-tertiary">LATENCY: 12ms</span>
+</div>
+</div>
+<!-- Corner HUD Labels -->
+<div class="absolute top-4 left-4 mono text-[10px] text-primary/40 flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary pulse"></span>
+                COORDINATE_SYSTEM: [42.11, -12.44]
+            </div>
+<div class="absolute bottom-4 right-4 mono text-[10px] text-tertiary/40">
+                SYSTEM_LOAD: 24.8% // MEM_FREE: 64GB
+            </div>
+</section>
+<!-- Right Sidebar (Component Specs) -->
+<aside class="w-72 h-full bg-[#0e0e0e] border-l border-[#ffffff15] flex flex-col z-40">
+<div class="p-6">
+<div class="mb-6">
+<span class="mono text-[10px] text-tertiary/50 uppercase tracking-widest">COMPONENT SPECS</span>
+<h2 class="font-headline font-bold text-tertiary tracking-tight text-sm">Live Metadata</h2>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 text-tertiary font-bold hover:bg-[#1a1a1a] transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">layers</span>
+<span class="mono text-[11px]">Structure</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#555555] hover:bg-[#1a1a1a] hover:text-tertiary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">settings_ethernet</span>
+<span class="mono text-[11px]">Interfaces</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#555555] hover:bg-[#1a1a1a] hover:text-tertiary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">hub</span>
+<span class="mono text-[11px]">Dependencies</span>
+</div>
+</nav>
+<div class="mt-8 space-y-4">
+<div class="bg-surface-container-high p-4 border-l-2 border-primary/30">
+<div class="mono text-[9px] text-primary/60 uppercase mb-2">Selected_Node</div>
+<div class="mono text-xs font-bold text-on-surface">SFT_MODEL_BONE</div>
+<div class="mt-3 flex justify-between items-center">
+<span class="mono text-[9px] text-[#888888]">TRAFFIC:</span>
+<span class="mono text-[9px] text-tertiary">NOMINAL</span>
+</div>
+<div class="w-full h-1 bg-background mt-2">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+<div class="bg-surface-container-high p-4 border-l-2 border-tertiary/30">
+<div class="mono text-[9px] text-tertiary/60 uppercase mb-2">Output_Buffer</div>
+<div class="mono text-xs font-bold text-on-surface">EXT_V2_NODE</div>
+<div class="mt-3 grid grid-cols-2 gap-2">
+<div>
+<div class="mono text-[8px] text-[#555555]">ENTROPY</div>
+<div class="mono text-[10px] text-on-surface">0.42</div>
+</div>
+<div>
+<div class="mono text-[8px] text-[#555555]">DENSITY</div>
+<div class="mono text-[10px] text-on-surface">0.98</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-4 flex flex-col gap-2">
+<img alt="System Graph Visualization" class="w-full h-24 object-cover opacity-40" data-alt="A dark tactical UI graph with neon green and purple data lines representing system traffic and node connectivity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXO8QyU3VRE_iBcXXaCJ487qvjc1I4GIcTAE_9uF0Z4NKEbMRLT_o5v4eCa1IuGJX4Gkty8pxSDe6hUI6Ubnlv7gMTUTkgPO8RmLkgFSjzFcqC0Oo9wzOMGf0gERVKS4-s6R5FPsOCjysymosHzb6mkaVlPEGteLJCiduKjHPH8ZR0xn1HTq9OzuQ_KXozAS1EXm2zZDb6xCU4k-sNmp0NOPd4eclXn20ygGb6kP20F5-2nusudwAFrWs2VL0iAGf5U6G-HRDeijw"/>
+<div class="flex justify-between px-2">
+<span class="mono text-[8px] text-[#444]">NODE_COUNT: 14</span>
+<span class="mono text-[8px] text-[#444]">UPTIME: 99.9%</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- Floating HUD Elements -->
+<div class="fixed bottom-6 left-[280px] z-50 pointer-events-none">
+<div class="flex gap-4">
+<div class="glass-panel px-4 py-2 border border-[#ffffff08] flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="mono text-[10px] tracking-widest text-on-surface uppercase">System Status: Active</span>
+</div>
+</div>
+</div>
+</body></html>

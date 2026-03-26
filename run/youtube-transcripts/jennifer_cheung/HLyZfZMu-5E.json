@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HLyZfZMu-5E",
+    "language": "en",
+    "took_ms": 8991,
+    "method": null,
+    "title": "DEF CON 30 - Tristan Miller - Reversing the Original Xbox Live Protocols",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2985,
+    "description": "Xbox Live for original Xbox systems launched on November 15, 2002 and was subsequently discontinued on April 15, 2010. The first half of this talk will be an infromation dense overview of the gritty details of how the underlying protocols work and intermixing a retrospective of two decades of how the industry has approached IOT and network security. The second half of the talk will use that base to discuss the architecture of drop in replacement server infrastructure, how the speaker approaches the ethics of third party support for non-updatable abandoned networked devices, and culminating in a demo.",
+    "view_count": 4642
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HLyZfZMu-5E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

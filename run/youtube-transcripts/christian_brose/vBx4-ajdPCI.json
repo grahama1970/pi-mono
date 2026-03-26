@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vBx4-ajdPCI",
+    "language": "en",
+    "took_ms": 8053,
+    "method": null,
+    "title": "AoD | Technology and the Operational Art of War (feat. Bryan Clark & Dan Patt)",
+    "channel": "Hudson Institute",
+    "upload_date": "20231004",
+    "duration_sec": 2096,
+    "description": "Hudson Senior Fellow's Bryan Clark and Dan Patt join host Marshall Kosloff to introduce the Center for Defense Concepts and Technology and explain how defense innovation, tactics and strategies must adapt to keep America's great power adversaries guessing.\n\nArsenal of Democracy is a weekly podcast produced by Hudson Institute and hosted by Marshall Kosloff. Subscribe for the latest episodes and content.\n\nApple Podcasts: https://podcasts.apple.com/us/podcast/arsenal-of-democracy/id1701812241\nSpotify: https://open.spotify.com/show/2DvzfhSJPvZeXrEAFKG3jG",
+    "view_count": 1036
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vBx4-ajdPCI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

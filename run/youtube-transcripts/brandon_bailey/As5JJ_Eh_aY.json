@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "As5JJ_Eh_aY",
+    "language": "en",
+    "took_ms": 9334,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - David Sopas, Paulo Silva - API inSecurity TOP 10",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2174,
+    "description": "Do you speak API? Surely you do, even if you don't notice them in your world wide web everyday use. APIs are proved to be beneficial for business, but with great power comes great responsibility and some of them have serious problems. Last year we put a lot of effort to build and release the OWASP API Security Top 10 project. Then, we decided to go wild and have some fun. Now we will present our findings, from OWASP API Security Top 10 to lots of fun and profit.\n\nJoin us to learn common API pitfalls: how to find and abuse them. It won't hurt. Unless your data is in there...",
+    "view_count": 687
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] As5JJ_Eh_aY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

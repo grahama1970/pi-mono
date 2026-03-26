@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "23Jr-kMkiQc",
+    "language": "en",
+    "took_ms": 8779,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - ch33r10 - Indicators Of Emulation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2164,
+    "description": "Cyber threat intelligence, in the past, has primarily focused on extracting, preparing, and analyzing indicators of compromise for digital forensics and incident response, the security operations center, and other teams. This talk proposes that cyber threat intelligence analysts extract indicators of emulation and include them in their threat reports for red team operations, adversary emulation, and purple team exercises. Learn how to extract Indicators of Emulation in Windows-based malware for high-value adversary emulation and purple team exercises based upon org specific data.",
+    "view_count": 319
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 23Jr-kMkiQc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

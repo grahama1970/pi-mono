@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q6IEPOYbvxk",
+    "language": "en",
+    "took_ms": 9228,
+    "method": null,
+    "title": "4. Security Requirements & Acceptance Testing with Mark Heard",
+    "channel": "S4 Events",
+    "upload_date": "20201214",
+    "duration_sec": 2633,
+    "description": "Mark Heard had decades of experience, with Eastman in the chemical sector, creating security requirements and then determining if they were met or not in acceptance testing. This experience really shows through when he talks about ‘ Cultural’ Security requirements and many ICS being ‘co-managed’ by the asset owner and vendor, and what is the ‘worst day’ for the plant? \n\nLots of good stories and rants in this one including. “You want to test the things that are most important to you”, not test everything. “Vendors do things for money.” A lot of sites “run them until they rust”. \n\nThe Q&A at the end is great.",
+    "view_count": 389
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q6IEPOYbvxk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

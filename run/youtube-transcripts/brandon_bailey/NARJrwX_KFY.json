@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NARJrwX_KFY",
+    "language": "en",
+    "took_ms": 9267,
+    "method": null,
+    "title": "DEF CON 29 - Babak Javadi, Nick Draffen, Eric Bettse, Anze Jensterle - The PACS man Comes For Us All",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2409,
+    "description": "It's 2021. You’re still here! You’re vaccinated! You should be happy and carefree! And yet…the PACS-man still haunts us all. Why should this be? Don’t we have newer, better tech with more bits of encryption and fewer wires? Haven’t the professional sentinels we’ve entrusted with our physical security software-defined ALL THE THINGS and made them better?\n\nNay, these are but fruits of the poisonous physical security tree! Come, fellow hackers and weary travelers, visit with the ghosts of access control and learn of the lies they’ve laid before us!\n\nCome see how false guardians have used BLE slight-of-hand to increase complexity and cost while reducing security and ask that they be paid a tithing for the privilege! Witness young software-defined gladiators do battle in an arena they did not prepare for and falter!\n\nBehold as our friendly ghosts of access control forge never-before seen tools to help slay false security prophets!",
+    "view_count": 5017
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NARJrwX_KFY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

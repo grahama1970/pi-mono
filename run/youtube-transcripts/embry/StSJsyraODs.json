@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "StSJsyraODs",
+    "language": "en",
+    "took_ms": 10032,
+    "method": null,
+    "title": "Watch SpaceX say goodbye to a Block 5 booster (Amos-17 mission)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190807",
+    "duration_sec": 4653,
+    "description": "SpaceX will be launching the AMOS-17 satellite for Spacecom on a Falcon 9 rocket. The Falcon 9 will be lifting off from Launch Complex 40 (LC-40) at the Cape Canaveral Air Force Station (CCAFS) in Florida. This booster, B1047, is flying for the third time. It previously boosted the Telstar 19 VANTAGE and Es’hail-2 satellites to orbit. The booster will not be recovered and will be expended on this mission. GO Ms Tree and GO Navigator left Port Canaveral, indicating a recovery of the fairings is going to be attempted.\n\nWant more info? Check out our Prelaunch Preview! https://everydayastronaut.com/prelaunch-preview-spacex-amos-17/\n\n--------------------------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 151401
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] StSJsyraODs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

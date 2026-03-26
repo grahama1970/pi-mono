@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wPXSG7U3Ukw",
+    "language": "en",
+    "took_ms": 8882,
+    "method": null,
+    "title": "The True Story Of America's Flying Saucer",
+    "channel": "Sandboxx",
+    "upload_date": "20210505",
+    "duration_sec": 721,
+    "description": "It's not surprising, then, that in the 1950s, the United States and its ally Canada sought to develop a flying saucer: One that could fly at extraordinary speeds and altitudes, hover over battlefields and dominate the skies for decades to come. The culmination of those efforts was known as the Avro Canada VZ-9 Avrocar.\n\n\nRead More Here 👉 https://sbxx.us/3eiYzdx",
+    "view_count": 32876
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wPXSG7U3Ukw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

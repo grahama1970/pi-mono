@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "06CZrbjy9qM",
+    "language": "en",
+    "took_ms": 9056,
+    "method": null,
+    "title": "DEF CON 33 - Third Party Access Granted : Postmortem on Student Privacy - Sharlene Toney",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2165,
+    "description": "Sharlene Toney has been a business analyst on a cross-functional, Agile development team in Enterprise Student Systems at Indiana University since 2013. Her path into IT has been anything but traditional, and she has been known to point out that when she started her undergraduate degree in 1994, she didn't even know what email was. After a B.S. in Education and a Master of Social Work degree, she spent time in non-profit management and collegiate academic advising before signing on as a subject matter expert in academic advising with IU University Informational Technology Services. With a growing interest in the cybersecurity landscape, she returned to school to complete an M.S. in Cybersecurity Risk Management and will finish in May ’26. After 18 years working in the field of higher education, she has focused on learning more about the value of student data, student data pipelines, consent, and privacy. She has not completely said goodbye to her social work roots. Recently, she began training to volunteer with Operation Safe Escape where, with other safety and security professionals, she will work to assist survivors of domestic violence, stalking, and harassment to help them find safety and freedom.",
+    "view_count": 225
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 06CZrbjy9qM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

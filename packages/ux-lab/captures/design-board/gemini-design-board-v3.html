@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMBRY OS Design Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #141414;
+      color: #e2e8f0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #111111;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sidebar-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidebar-header .brand {
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: #7c3aed;
+      text-transform: uppercase;
+    }
+    .sidebar-header .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .project-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .project-item.selected {
+      border-left: 2px solid #7c3aed;
+      background-color: rgba(124, 58, 237, 0.08);
+    }
+    .project-item .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .project-item .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #64748b;
+    }
+    .project-item .name {
+      font-size: 13px;
+      color: #e2e8f0;
+    }
+    .new-project-btn {
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 4px;
+      font-size: 11px;
+      color: #e2e8f0;
+      text-align: center;
+      cursor: pointer;
+    }
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .tab-bar {
+      height: 40px;
+      background-color: #141414;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 24px;
+    }
+    .tab {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+    }
+    .tab.active {
+      color: #e2e8f0;
+      border-bottom: 2px solid #7c3aed;
+    }
+    .canvas-container {
+      flex: 1;
+      background-color: #141414;
+      position: relative;
+      overflow: hidden;
+    }
+    .canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2000px;
+      height: 2000px;
+      background: repeating-linear-gradient(#1a1a1a 0 1px, transparent 1px 100%),
+                  repeating-linear-gradient(90deg, #1a1a1a 0 1px, transparent 1px 100%);
+      background-size: 20px 20px;
+    }
+    .mockup {
+      position: absolute;
+      border: 1px solid rgba(33, 150, 243, 0.15);
+      background-color: rgba(33, 150, 243, 0.08);
+      border-radius: 4px;
+    }
+    .mockup.selected {
+      border: 2px solid #7c3aed;
+      box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+    }
+    .mockup-label {
+      position: absolute;
+      top: 100%;
+      margin-top: 4px;
+      font-size: 11px;
+      color: #e2e8f0;
+    }
+    .mockup-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #64748b;
+    }
+    .sticky-note {
+      position: absolute;
+      width: 160px;
+      height: 60px;
+      background-color: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 10px;
+      color: #e2e8f0;
+    }
+    .zoom-controls {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background-color: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 6px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .zoom-controls .text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #e2e8f0;
+    }
+    .minimap {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      width: 120px;
+      height: 80px;
+      background-color: #0b1220;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+    }
+    .right-panel {
+      width: 280px;
+      background-color: #111111;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .right-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .right-panel-header .title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+    .right-panel-header .collapse {
+      font-size: 10px;
+      color: #64748b;
+      cursor: pointer;
+    }
+    .mockup-info .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+    .mockup-info .metadata {
+      font-size: 11px;
+      color: #64748b;
+    }
+    .annotations {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .annotation {
+      padding-left: 8px;
+      border-left: 2px solid #4a9eff;
+      font-size: 10px;
+      color: #e2e8f0;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .actions button {
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .actions .send {
+      background-color: #7c3aed;
+      color: #e2e8f0;
+    }
+    .actions .copy {
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      color: #e2e8f0;
+    }
+    .actions .approve {
+      background-color: #00ff88;
+      color: #141414;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">EMBRY OS</div>
+      <div class="title">Design Board</div>
+    </div>
+    <div class="project-list">
+      <div class="project-item selected">
+        <div class="dot" style="background-color: #00ff88;"></div>
+        <div class="badge">R3</div>
+        <div class="name">Binary Explorer</div>
+      </div>
+      <div class="project-item">
+        <div class="dot" style="background-color: #ffaa00;"></div>
+        <div class="badge">R1</div>
+        <div class="name">Music Lab</div>
+      </div>
+      <div class="project-item">
+        <div class="dot" style="background-color: #4a9eff;"></div>
+        <div class="badge">R2</div>
+        <div class="name">SPARTA Explorer</div>
+      </div>
+      <div class="project-item">
+        <div class="dot" style="background-color: #ffaa00;"></div>
+        <div class="badge">R1</div>
+        <div class="name">Learn Datalake</div>
+      </div>
+    </div>
+    <div class="new-project-btn">New Project</div>
+  </div>
+  <div class="main-area">
+    <div class="tab-bar">
+      <div class="tab active">Mockups</div>
+      <div class="tab">Inspirations</div>
+      <div class="tab">Tokens</div>
+      <div class="tab">Rationale</div>
+    </div>
+    <div class="canvas-container">
+      <div class="canvas">
+        <div class="mockup" style="top: 60px; left: 80px; width: 400px; height: 250px;">
+          <div class="mockup-label">Graph Layout v1</div>
+          <div class="mockup-meta">R1 · gemini · 2d ago</div>
+        </div>
+        <div class="mockup selected" style="top: 200px; left: 520px; width: 500px; height: 300px;">
+          <div class="mockup-label">Chat Panel v2</div>
+          <div class="mockup-meta">R2 · stitch · 1d ago</div>
+        </div>
+        <div class="mockup" style="top: 450px; left: 300px; width: 600px; height: 350px;">
+          <div class="mockup-label">Full Composite</div>
+          <div class="mockup-meta">R3 · manual · today</div>
+        </div>
+        <div class="sticky-note" style="top: 40px; left: 350px;">Steve: Try force-directed layout</div>
+        <div class="sticky-note" style="top: 180px; left: 800px;">Nico: Text too small at 11px body</div>
+      </div>
+      <div class="zoom-controls">
+        <button>−</button>
+        <div class="text">100%</div>
+        <button>+</button>
+      </div>
+      <div class="minimap"></div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="right-panel-header">
+      <div class="title">DETAILS</div>
+      <div class="collapse">Collapse</div>
+    </div>
+    <div class="mockup-info">
+      <div class="name">Chat Panel v2</div>
+      <div class="metadata">1920 × 1080</div>
+      <div class="metadata">Round 2</div>
+      <div class="metadata">Source: stitch</div>
+      <div class="metadata">2026-03-20</div>
+    </div>
+    <div class="annotations">
+      <div class="annotation">Steve: Reduce panel to 35% width — breathing room for long LLM responses</div>
+      <div class="annotation">Nico: Filter pills wrap fine at 1280px, verified in headless Chrome</div>
+    </div>
+    <div class="actions">
+      <button class="send">Send to Gemini</button>
+      <button class="copy">Copy HTML</button>
+      <button class="approve">Approve</button>
+    </div>
+  </div>
+</body>
+</html>

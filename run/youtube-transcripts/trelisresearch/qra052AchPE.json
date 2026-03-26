@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qra052AchPE",
+    "language": "en",
+    "took_ms": 8637,
+    "method": null,
+    "title": "Train an LLM from Scratch with Karpathy's Nanochat",
+    "channel": "Trelis Research",
+    "upload_date": "20251202",
+    "duration_sec": 1745,
+    "description": "Github Repo: https://github.com/TrelisResearch/nanochat\nOne-click Runpod Template: https://console.runpod.io/deploy?template=ikas3s2cii&ref=jmfkcdio\nOriginal Karpathy Repo: https://github.com/karpathy/nanochat\nWandb logs: https://wandb.ai/trelis/nanochat\nModel repo: https://huggingface.co/Trelis/nanochat\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nLearn more about Trelis ADVANCED-fine-tuning repo: https://trelis.com/advanced-fine-tuning\n\n💡 Done-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Train an LLM from scratch with $100 (Nanochat by Karpathy)\n1:44 One-click Runpod Template: https://console.runpod.io/deploy?template=ikas3s2cii&ref=jmfkcdio\n4:46 Running speedrun.sh script with wandb\n7:55 Tokenizer Training (Byte Pair Encoding, BPE)\n10:52 Pretraining on 10B tokens of fine-web edu\n15:15 Pre-training evaluation and Mid-training on Smoltalk+\n17:33 Instructions on pushing and pulling checkpoints to / from HuggingFace Hub\n18:49 Instructions for running the chat interface / UI\n21:15 Post-training on benchmark training/aux splits\n23:11 Demo of running the chat interface \n25:29 Pushing the model, optimizer, report and tokenizer to hub\n28:20 Resources: Model and Repo",
+    "view_count": 5562
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qra052AchPE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

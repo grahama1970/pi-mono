@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dBxzye7iDP0",
+    "language": "en",
+    "took_ms": 9944,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Pia Zaragoza, Joel Isaac -HC Innovation with People of All Abilities",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 1880,
+    "description": "The World Bank reported in their 2020 Disability Inclusion report that there are one billion people or 15% of the world’s population that experience some form of disability. During this presentation, Joel Isaac and Pia Zaragoza will go over key concepts around disability inclusion, universal design and accessibility to spark ideas around healthcare innovation amongst the disability, medical manufacturers, regulators, cyber research, citizen science, and biohacker communities.",
+    "view_count": 852
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dBxzye7iDP0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

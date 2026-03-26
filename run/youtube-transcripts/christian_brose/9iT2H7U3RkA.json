@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9iT2H7U3RkA",
+    "language": "en",
+    "took_ms": 8956,
+    "method": null,
+    "title": "Fits and Starts: Reactionary Biodefense 2",
+    "channel": "Hudson Institute",
+    "upload_date": "20181009",
+    "duration_sec": 4839,
+    "description": "Blue Ribbon Panel on Biodefense\n\nPanel 1: Dealing with Anthrax\n\n- Scott R. Lillibridge, MD\n- Douglas L. Anders, PhD\n- Andrew C. Cannons, PhD",
+    "view_count": 402
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9iT2H7U3RkA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

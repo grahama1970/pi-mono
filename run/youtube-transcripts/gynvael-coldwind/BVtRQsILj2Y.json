@@ -1,0 +1,1364 @@
+{
+  "meta": {
+    "video_id": "BVtRQsILj2Y",
+    "language": "en",
+    "took_ms": 101227,
+    "method": "whisper-local",
+    "title": "What fascinates me in Hacking - Gynvael Coldwind - SINFO 26",
+    "channel": "GynvaelEN"
+  },
+  "transcript": [
+    {
+      "text": "Okay, welcome everyone. Can you hear me? I guess you can't hear me because I can hear myself, but usually means you can hear me as well.",
+      "start": 14.93,
+      "duration": 7.0
+    },
+    {
+      "text": "Anyway, I will be presenting about basically what fascinates me in hacking. I usually do technical, like, deeply technical talks.",
+      "start": 21.93,
+      "duration": 11.0
+    },
+    {
+      "text": "And I was asked to make one which isn't super technical, which means it is technical, my apologies. So let's see how it goes.",
+      "start": 32.93,
+      "duration": 9.0
+    },
+    {
+      "text": "About me, I'm, well, a YouTuber, I guess I have two channels about hacking, mostly live streaming.",
+      "start": 41.93,
+      "duration": 8.0
+    },
+    {
+      "text": "I did offer a book called To Understand Programming. It's not yet available in English, it should be available this year.",
+      "start": 49.93,
+      "duration": 6.0
+    },
+    {
+      "text": "I also call for a book about reverse engineering, and I'm one of the creators and excaptain of Dragon Sector. Dragon Sector is a CTF team. Who here knows what a CTF team is?",
+      "start": 55.93,
+      "duration": 14.0
+    },
+    {
+      "text": "Okay, that means I still have to explain. So CTF or capture the flag is actually a type of hacking competitions, and there are teams who actually participate in these hacking competitions, and Dragon Sector is our team.",
+      "start": 69.93,
+      "duration": 15.0
+    },
+    {
+      "text": "And our team in last season, because there are seasons, was actually number one in the world, so I'm quite happy with that.",
+      "start": 84.93,
+      "duration": 7.0
+    },
+    {
+      "text": "I'm also the tech leader and manager at Google, at a security team. And yeah, the obvious things at the bottom.",
+      "start": 91.93,
+      "duration": 9.0
+    },
+    {
+      "text": "All opinions expressed during this presentation are mine alone, and they are not opinions of my barber, or like my accountant, nor my employer, so please keep that in mind.",
+      "start": 100.93,
+      "duration": 12.0
+    },
+    {
+      "text": "Basically, I will answer the question of this question, then I will give you some examples about what I actually mean, and then I will share a bunch of random tips related to security.",
+      "start": 112.93,
+      "duration": 16.0
+    },
+    {
+      "text": "Since I don't really know who my audience is, I have a quick survey. Who here is a programmer, or okay, who here actually wrote a program at least once in their life?",
+      "start": 128.93,
+      "duration": 14.0
+    },
+    {
+      "text": "Who here does not own a computer? Okay, perfect. Should be fine.",
+      "start": 142.93,
+      "duration": 7.0
+    },
+    {
+      "text": "So let's start with a definition of hacking, because it turns out that hacking can mean different things to different folks, and there are actually multiple definitions which are being used, so first a hacker in terms of programming can be somebody who writes hacky code.",
+      "start": 149.93,
+      "duration": 16.0
+    },
+    {
+      "text": "And this is one of the original definitions, and what is hacky code? Well, hacky code is code which shows that somebody knows what they are doing, but is not really readable.",
+      "start": 165.93,
+      "duration": 12.0
+    },
+    {
+      "text": "For example, let's assume we want to convert a number like this into binary system. We want to print out the binary representation.",
+      "start": 177.93,
+      "duration": 9.0
+    },
+    {
+      "text": "Yeah, some of you might be thinking like, okay, it starts with binary, this is going to be good. Yeah, it's only going to get better.",
+      "start": 186.93,
+      "duration": 7.0
+    },
+    {
+      "text": "So one way to actually do this conversion is to write code like this. Actually, the thing on the right there is exactly what the code does, so for every bit, select just that one bit, and output either one or a zero depending on the value of the bit.",
+      "start": 193.93,
+      "duration": 17.0
+    },
+    {
+      "text": "That's easy. Who here can actually read this code and tell me what it does without looking at the manuals? Perfect. Now, this is normal code. It's not great, but it's readable. This is hacky code. This code does exactly the same thing as the code previously.",
+      "start": 210.93,
+      "duration": 16.0
+    },
+    {
+      "text": "Who here can tell me what does this code exactly do? Perfect. When I'm going to leave this as an exercise for you, but it actually does exactly the same thing. And this is hacky code.",
+      "start": 226.93,
+      "duration": 11.0
+    },
+    {
+      "text": "Now, actually, if you look on GitHub, for example, for something like this is a hack or maybe a temporary hack, you can get quite a lot of results for that temporary hacks are eternal, so you can find a lot of books in the code.",
+      "start": 237.93,
+      "duration": 15.0
+    },
+    {
+      "text": "Now, another definition of a hacker is a person who delights in having an intimate understanding of the internal workings of a system, computers and computer networks in particular.",
+      "start": 252.93,
+      "duration": 13.0
+    },
+    {
+      "text": "And this is the definition taken from internet users, glossary, or rfc1392. And I really like this definition. When there is another definition, more related to security, a hacker can be a computer security professional, or can be someone who seeks to breach defenses and exploit weaknesses in a computer system or a network, which is more what we usually hear about hackers in the media, we think about this type of hacker and the sources for the definitions are at the bottom.",
+      "start": 265.93,
+      "duration": 29.0
+    },
+    {
+      "text": "Now, there is also another definition, which I guess most of folks who are not really into ITR familiar with, this is a person who illegally breaks into computer networks and system for malicious purposes.",
+      "start": 295.93,
+      "duration": 12.0
+    },
+    {
+      "text": "And, well, this from my perspective is an incorrect usage, but it is being used in the wild. For example, there was this one article which, well, the journal is actually got a little confused about what a hacker means and thought that Linus Torvalds, who created Linux operating system, is the evil kind of hacker and then he started doing good, but actually, well, we know that Linus did mostly programming and didn't do hacking.",
+      "start": 307.93,
+      "duration": 28.0
+    },
+    {
+      "text": "So, apart from that, in Poland, we had an interview with one of the ministers of defense and the ministers said something like this, I would not say that we are hiring hackers, we are hiring amazing specialists, please do not call them hackers.",
+      "start": 335.93,
+      "duration": 16.0
+    },
+    {
+      "text": "And, again, this is usage of incorrect definition and this got a response from the hacker spaces, from the local hacking communities in a form of an open letter explaining to the minister that, yeah, you actually shouldn't use hackers in that way, because, yeah, hacker, hacking doesn't need to be illegal.",
+      "start": 351.93,
+      "duration": 20.0
+    },
+    {
+      "text": "And, there's also another definition which I learned while making the slides, it's one who operates a taxi cab, who knew that, I didn't know that, but okay, it's actually in the dictionary.",
+      "start": 371.93,
+      "duration": 10.0
+    },
+    {
+      "text": "So, yeah, when, please listen, but during this presentation, if I'm going to speak about hacking or hackers, I'm going to mean a person who relies on having intimate understanding blah, blah, blah, and a computer security professional.",
+      "start": 381.93,
+      "duration": 15.0
+    },
+    {
+      "text": "Actually, my understanding is that you need to be this person in order to be a good hacker, like good security hacker, because in the end, the devil is always in the details.",
+      "start": 396.93,
+      "duration": 11.0
+    },
+    {
+      "text": "So, you need to have great understanding of a system to be able to, well, exploit it and attack it and also defend it.",
+      "start": 407.93,
+      "duration": 10.0
+    },
+    {
+      "text": "Now, what are the details? Well, the details are basically, you know, the small tidbits of information, which are commonly just mere curiosities, like an interesting thing, but what's about it.",
+      "start": 418.93,
+      "duration": 11.0
+    },
+    {
+      "text": "And usually without context, they're like, yeah, well, that's interesting, but may.",
+      "start": 429.93,
+      "duration": 5.0
+    },
+    {
+      "text": "However, if they fall into place, the little details suddenly completes a larger pixel, a larger puzzle, when it turns out that due to really small things, you can actually hack some systems or like a small detail makes a system vulnerable in the first place.",
+      "start": 434.93,
+      "duration": 19.0
+    },
+    {
+      "text": "And the details are basically what keeps me in hacking. And I've been professionally doing something around security for, I don't know, like, 15 years before take and programming way longer than that.",
+      "start": 453.93,
+      "duration": 12.0
+    },
+    {
+      "text": "So, yeah, and this is what keeps you with. Basically, the details are what makes it interesting. And at some point, you know a lot of small little details and every new detail that comes on, when they come really, really rarely at that point.",
+      "start": 465.93,
+      "duration": 16.0
+    },
+    {
+      "text": "You are really happy to meet them. Now, basically, in the rest of this presentation, I'm going to show you some examples, or what do I mean when I'm saying details.",
+      "start": 481.93,
+      "duration": 11.0
+    },
+    {
+      "text": "Okay, so let's start with a game. Anyone knows this game? Perfect. Anyone place your computer games at all? That's good.",
+      "start": 492.93,
+      "duration": 12.0
+    },
+    {
+      "text": "Okay, so this is Bomberman or Dyna Blaster. It's a really old game. And I guess you might have seen newer versions of it since it's still being, well, the new versions are still coming out.",
+      "start": 504.93,
+      "duration": 11.0
+    },
+    {
+      "text": "And the way it works, you basically have these two players, the black one and the white one. And this is by the way a deathmatch mode. This is like a player versus player.",
+      "start": 515.93,
+      "duration": 9.0
+    },
+    {
+      "text": "And then most of this map is made by indestructible stones, but very with bricky walls here. And these are actually distractable. You can destroy them.",
+      "start": 524.93,
+      "duration": 10.0
+    },
+    {
+      "text": "And you basically, I'm going to switch to this less nice looking graphics because I could actually, you know, make slides with it.",
+      "start": 534.93,
+      "duration": 9.0
+    },
+    {
+      "text": "So a player can destroy the bricks by setting a bomb. A player can set a bomb and then the player needs to run away and then the bomb explodes vertically and horizontally after a couple of seconds, usually after three seconds.",
+      "start": 543.93,
+      "duration": 13.0
+    },
+    {
+      "text": "Now, an explosion causes the bricks to disappear. And if the player would be near that explosion, the player dies as well.",
+      "start": 556.93,
+      "duration": 10.0
+    },
+    {
+      "text": "So the player also cannot walk through bombs. So if a player sets a bomb and goes into a dead end, yeah, that's how you lose a game and that's how usually beginners lose the game.",
+      "start": 566.93,
+      "duration": 12.0
+    },
+    {
+      "text": "So to win, you actually have to be the last player standing, last player to be alive. And then you have to survive five more seconds, which isn't easy if you do something like this. You put a bomb and yeah.",
+      "start": 578.93,
+      "duration": 13.0
+    },
+    {
+      "text": "So if that happens, you do not win. You actually draw the game. It's a tie. And if both players die, that's a tie or if the round timer actually comes down to zero and is the end of the round, that's another tie.",
+      "start": 592.93,
+      "duration": 15.0
+    },
+    {
+      "text": "After, after it's a tie by way, the round is restarted, which is I guess quite important. So how to draw, how to draw in a sense that how to run out of time where basically you destroy all the walls.",
+      "start": 607.93,
+      "duration": 12.0
+    },
+    {
+      "text": "And then one player doesn't want to go next to the other player because was kind of dangerous and they might die by accident. So you just like try to keep to your side of a map and that's about it.",
+      "start": 619.93,
+      "duration": 13.0
+    },
+    {
+      "text": "So here's actually a question for you because everything I told you, you can derive from that kind of cheesy solution to how to win a draw round.",
+      "start": 633.93,
+      "duration": 14.0
+    },
+    {
+      "text": "So basically the round is over and then you can easily win the next round. And here are the important details, which I already said.",
+      "start": 647.93,
+      "duration": 7.0
+    },
+    {
+      "text": "First, you two in, you must survive five seconds as the last player standing. And the second thing is when the round time is over, the round is restarted.",
+      "start": 654.93,
+      "duration": 10.0
+    },
+    {
+      "text": "Does anyone know how to easily win the next round? Okay, I probably wouldn't know either, but because I worked out this bug the other way around.",
+      "start": 664.93,
+      "duration": 9.0
+    },
+    {
+      "text": "So let's think about the problem as a programmer. If we would be creating this game, right, we need to keep a state of the game at any given time.",
+      "start": 673.93,
+      "duration": 11.0
+    },
+    {
+      "text": "And the state is usually the player location. Where is the player located? Then the bomb location and the timer on the bomb. When was this bomb set? When will it explode?",
+      "start": 684.93,
+      "duration": 11.0
+    },
+    {
+      "text": "Then the distractable locations as in where are the bricks, brick walls? Then the monster position, I'm actually ignoring the monster where they are not important in this case.",
+      "start": 695.93,
+      "duration": 10.0
+    },
+    {
+      "text": "And also the player power up status as in how many bombs can you set? What is the range of the bombs? That's also not important here.",
+      "start": 705.93,
+      "duration": 9.0
+    },
+    {
+      "text": "Now, if this happens and the other player actually wins the round, we need to restart the map, reset the map again. And to do this as a programmer, we need to do several actions.",
+      "start": 714.93,
+      "duration": 13.0
+    },
+    {
+      "text": "Well, we obviously need to reset the player position and make this player alive again. Then we need to reset the map, like actually make the distractable walls placed in different positions.",
+      "start": 727.93,
+      "duration": 11.0
+    },
+    {
+      "text": "And then we actually at this point as a programmer might go and start testing. Because this probably is enough already. So we play around, maybe we play two rounds.",
+      "start": 738.93,
+      "duration": 11.0
+    },
+    {
+      "text": "The other guy is not moving, so we just destroy some walls and go over, kill the player, and done. We finished testing. If we are playing the second round,",
+      "start": 749.93,
+      "duration": 13.0
+    },
+    {
+      "text": "we will notice that the range of the bombs was not reset and maybe the number of bombs we can set are not also reset because we didn't reset the power up status.",
+      "start": 762.93,
+      "duration": 11.0
+    },
+    {
+      "text": "So we also add resetting the power up status to the actions taken when resetting the round. Now, we test again everything works. We put the game in the box and ship it.",
+      "start": 773.93,
+      "duration": 14.0
+    },
+    {
+      "text": "What have we missed? Exactly. So we forgot to reset the bomb position and the timers. Now, how did the programmer miss this? Well, actually the programmer missed it because if we go back, I did say that when the last player is standing, when there are five seconds, this is how long they need to survive.",
+      "start": 787.93,
+      "duration": 34.17
+    },
+    {
+      "text": "During the five seconds, all and every bomb will explode. So if the programmer just tested it this way, then no bombs were on the screen after the final five seconds. And this is guaranteed, basically. However, if we get to a draw situation, that's not the case.",
+      "start": 822.1,
+      "duration": 21.0
+    },
+    {
+      "text": "Here's basically a pro tip and this is a really good pro tip if you're looking for vulnerabilities and applications. Put yourself in the shoes of a programmer or something. Think about what would they do? What would they do if they would be tired, sleepy, or just want to go home? Would they make any short cuts, maybe not implement some checks? This is usually what happens.",
+      "start": 843.1,
+      "duration": 21.0
+    },
+    {
+      "text": "So, okay, how do we abuse what we already established? When the round timer is like this, around two seconds, we basically play a place of bomb or five and the spawn point of the other opponent.",
+      "start": 864.1,
+      "duration": 13.0
+    },
+    {
+      "text": "The other opponent might be a little confused why we are doing it. I mean, the round is over anyway. So we put down the controller. We take a sip of a drink and the opponent is basically looking like, yeah, we have another round to play. We just drew. You didn't win.",
+      "start": 877.1,
+      "duration": 15.0
+    },
+    {
+      "text": "And you're like, Anakin, it's over. I have the high ground. Because as soon as the round restarts, this is what happens. Yeah, so the player might be a little confused, might be a little angry. And actually, this usually works a couple of times before the other player figures out what you are abusing with mechanic.",
+      "start": 892.1,
+      "duration": 20.0
+    },
+    {
+      "text": "Yes, the first time they were like, oh, this looks like a bag. Why did random bombs, randomly spawn here? And the players do not tie to the event of you actually placing the bombs there. So, yeah, basically just a tip.",
+      "start": 912.1,
+      "duration": 12.0
+    },
+    {
+      "text": "So another tip is, security isn't really about the code. About what is in the code. It's commonly about what is missing from the code. What is in the code is important because what might point out what are the problems with the code.",
+      "start": 924.1,
+      "duration": 13.0
+    },
+    {
+      "text": "But if something is missing from the code, that is what you need to look for. Okay, example number two, the sound of keyboard, whoever used the keyboard, just kidding.",
+      "start": 937.1,
+      "duration": 10.0
+    },
+    {
+      "text": "So let's take this example. If someone recorded with a camera pointed at your hands at your keyboard when you are typing in the password, can they derive from the recording the password which you typed?",
+      "start": 947.1,
+      "duration": 14.0
+    },
+    {
+      "text": "Obviously, yes. Well, you know, just go frame by frame and see who pressed which key and what's it, right? What if we had only audio?",
+      "start": 961.1,
+      "duration": 9.0
+    },
+    {
+      "text": "Without video, just audio. Can it still be derived? So, I'm going to actually digress a little. I'm going to a side story. The side story is about mumble. Do you know mumble? What's mumble?",
+      "start": 970.1,
+      "duration": 11.0
+    },
+    {
+      "text": "Mumble is basically like, well, it's a voice communication, like team speak, or like Skype, but without video. And there was a challenge related to mumble on one of the CTF security CTF competitions back in 2013.",
+      "start": 981.1,
+      "duration": 15.0
+    },
+    {
+      "text": "And this was by the way one of the most hated tasks ever. I think only two teams including hours sold it. And it was a really easy task as well.",
+      "start": 996.1,
+      "duration": 8.0
+    },
+    {
+      "text": "So what you got, you got basically a pickup, which is a network dump of packets of communication, like somebody found someone else with mumble and you got network dump of the communication.",
+      "start": 1004.1,
+      "duration": 14.0
+    },
+    {
+      "text": "So it's easy, right? You just somehow play it back, you hear what they said, and that's it. Well, the problem is that mumble is actually encrypted. All the audio is encrypted.",
+      "start": 1018.1,
+      "duration": 11.0
+    },
+    {
+      "text": "And it doesn't really even matter in this case how is it encrypted, but it's encrypted well.",
+      "start": 1029.1,
+      "duration": 8.0
+    },
+    {
+      "text": "So the problem is we do not have the decryption keys and the only thing in the pickup were only the UDP packets of audio communication itself, no control channel, nothing.",
+      "start": 1037.1,
+      "duration": 10.0
+    },
+    {
+      "text": "So basically what we had was an op-pack blob of data. You probably know that blob is actually technical term. It means binary large object.",
+      "start": 1047.1,
+      "duration": 11.0
+    },
+    {
+      "text": "It's probably a background info. Anyway, so what we tried, well, we are at top CTF team. Maybe we weren't back then. But we did try a lot of stuff. We tried to look for a bug in mumble code. Mumble is actually open source in the network code.",
+      "start": 1058.1,
+      "duration": 15.0
+    },
+    {
+      "text": "Maybe there are some bytes leaking over state and we can somehow get the key from that. When we checked how the crypto is used, because sometimes the crypto is just used incorrectly.",
+      "start": 1073.1,
+      "duration": 10.0
+    },
+    {
+      "text": "And if it's used incorrectly, you can sometimes break it. Then we also looked for the weakness in the algorithm and the scheme and the crypto scheme that was used.",
+      "start": 1083.1,
+      "duration": 9.0
+    },
+    {
+      "text": "And we found this on Wikipedia. Niels Ferguson pointed out that if you get 280 terabytes of data, then you can do something. Our file was like one megabyte. Not even close.",
+      "start": 1092.1,
+      "duration": 12.0
+    },
+    {
+      "text": "Okay, so we checked if there are parts of memory that are leaking into packets again. Then we tried looking if maybe the random number generator is insecure in some way.",
+      "start": 1104.1,
+      "duration": 10.0
+    },
+    {
+      "text": "Nothing. So a problem. If you get to a dead end with a problem, you know that is solvable. Restart from the beginning. I usually create a new directory, download the task again and start thinking again back from the drawing board.",
+      "start": 1114.1,
+      "duration": 15.0
+    },
+    {
+      "text": "From a blank piece of paper. And so we looked again for a new relevant box in mumble and we started checking each individual packet in the pickup if every byte is accounted for it was.",
+      "start": 1129.1,
+      "duration": 17.0
+    },
+    {
+      "text": "So our result results nada. So another problem. If you get to a dead end with a problem, then take a short break.",
+      "start": 1146.1,
+      "duration": 9.0
+    },
+    {
+      "text": "Because your brain will still be thinking about it and you might just get an idea. And I actually got an idea and the idea was another tip, which is sometimes think about how the problem must be constructed from the other side to make it still solvable.",
+      "start": 1155.1,
+      "duration": 16.0
+    },
+    {
+      "text": "And as soon as I thought about this, this paper came into my mind. I actually tried to read a lot of security papers. And this is about uncovering spoken phrases and encrypted voice over IP conversations.",
+      "start": 1171.1,
+      "duration": 14.0
+    },
+    {
+      "text": "So we had a really good paper. We don't need to go into details, but another pro tip, read the papers. Now, the problem of when with my thinking was that we didn't really have a blob. We didn't really have a file. We had a pickup, which is, well, a database, if you will, of packets of network packets.",
+      "start": 1185.1,
+      "duration": 20.0
+    },
+    {
+      "text": "We had packets, individual packets, and the packets size might differ. You know the size of the packets. You also know when the packet was being transferred, when was it sent, or when was it received, depending on where the tab was actually placed.",
+      "start": 1205.1,
+      "duration": 16.0
+    },
+    {
+      "text": "So you have more information than just a blob of data. So actually, the interesting thing about audio communication is that if there is silence on like nobody speaking, then no packets are being sent.",
+      "start": 1221.1,
+      "duration": 16.0
+    },
+    {
+      "text": "If folks are speaking to each other, then actually suddenly the packets are being sent and they're quite large because they need to transfer the data.",
+      "start": 1237.1,
+      "duration": 10.0
+    },
+    {
+      "text": "So you would look at that task and you would look at the exact thing, which I told you, which is basically a chart of how many bytes were sent per second. Then you would get this. And this, if you look here, it's actually like short packet, short packet, short packet, long packet.",
+      "start": 1247.1,
+      "duration": 18.0
+    },
+    {
+      "text": "Short packet, short packet, short packet, short packet. That's more scope. Obviously, right? So if you start the coding and do it with more scope, and again, we do not care about what is in the packets, we just care about this.",
+      "start": 1265.1,
+      "duration": 12.0
+    },
+    {
+      "text": "So we start the coding race and we get VBR, MyA, and I'm going to leave the rest of that as your exercise, basically. VBR being a variable bit rate, by the way.",
+      "start": 1277.1,
+      "duration": 14.27
+    },
+    {
+      "text": "And yeah, and this was basically the flag and we're one of the two teams which solved it, which I'm quite happy about. But let's go to the main topic, a keyboard.",
+      "start": 1291.37,
+      "duration": 8.0
+    },
+    {
+      "text": "Now, think about the timing information which was in those packets.",
+      "start": 1299.37,
+      "duration": 6.0
+    },
+    {
+      "text": "We know if we have an audio recording of somebody tapping in something on the keyboard, we actually know exactly when the key was pressed.",
+      "start": 1305.37,
+      "duration": 7.0
+    },
+    {
+      "text": "We have actually microsecond precision. Well, maybe not one microsecond, but 22 microseconds, but it was a really good precision.",
+      "start": 1312.37,
+      "duration": 8.0
+    },
+    {
+      "text": "Having such good precision, and if you have to have fact that when you type on the keyboard, your hands move. That's surprising, right?",
+      "start": 1320.37,
+      "duration": 8.0
+    },
+    {
+      "text": "I mean, when I type, I don't think about my hands moving, they just do it on their own.",
+      "start": 1328.37,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, there is one important thing here is that moving a hand, a finger from one button to the hour takes time.",
+      "start": 1332.37,
+      "duration": 8.0
+    },
+    {
+      "text": "And it actually is, there's probably a coloration between how far is one button from the other button which you need to press.",
+      "start": 1340.37,
+      "duration": 9.0
+    },
+    {
+      "text": "Of course, folks are typing with, you know, have more different keyboard sizes, have like longer fingers, shorter fingers.",
+      "start": 1349.37,
+      "duration": 9.0
+    },
+    {
+      "text": "They might type with one finger, they might type with five fingers per hand.",
+      "start": 1358.37,
+      "duration": 5.0
+    },
+    {
+      "text": "Also, depending on the mood, for example, if somebody is wrong on the internet, I type like this.",
+      "start": 1363.37,
+      "duration": 5.0
+    },
+    {
+      "text": "And when the sample sizes, how many samples you actually have, it also means a lot.",
+      "start": 1368.37,
+      "duration": 5.0
+    },
+    {
+      "text": "But if you have this data, you can determine by the timing information what was actually being typed on the keyboard, even if you just have the timing information.",
+      "start": 1373.37,
+      "duration": 9.0
+    },
+    {
+      "text": "And this was proven, for example, in this paper, timing analysis of keystrokes and timing attacks on SSH.",
+      "start": 1382.37,
+      "duration": 5.0
+    },
+    {
+      "text": "A really great paper, they had basically only the network traffic of an SSH which is encrypted connection again.",
+      "start": 1387.37,
+      "duration": 7.0
+    },
+    {
+      "text": "And that was enough to derive what was typed on the keyboard by the user, by the victim.",
+      "start": 1394.37,
+      "duration": 8.0
+    },
+    {
+      "text": "But that's not the only thing.",
+      "start": 1402.37,
+      "duration": 3.0
+    },
+    {
+      "text": "So I guess a lot of you are wondering, like, if we have audio recording, what about the audio?",
+      "start": 1405.37,
+      "duration": 5.0
+    },
+    {
+      "text": "Like, not just timing, but the audio itself.",
+      "start": 1410.37,
+      "duration": 2.0
+    },
+    {
+      "text": "And it turns out that actually each key does sound different.",
+      "start": 1412.37,
+      "duration": 3.0
+    },
+    {
+      "text": "So it's not really like a music keyboard, but they are differences.",
+      "start": 1415.37,
+      "duration": 4.0
+    },
+    {
+      "text": "For example, like, just type space and then type any letter and you will just hear that there is a difference in how they sound.",
+      "start": 1419.37,
+      "duration": 8.0
+    },
+    {
+      "text": "There's a little difference for us. There's a big difference for machine learning, obviously.",
+      "start": 1427.37,
+      "duration": 4.0
+    },
+    {
+      "text": "So there was another paper and actually quite a lot of papers about keyboard acoustic and emanations which, based on the audio recorded, can actually, and the model, of course, of the keyboard, you can get what was typed in.",
+      "start": 1431.37,
+      "duration": 13.0
+    },
+    {
+      "text": "Just because each key sounds different and you can add on top of that, like, the language model and a couple of, like, the timing and a couple of different things.",
+      "start": 1444.37,
+      "duration": 9.0
+    },
+    {
+      "text": "Then there was another paper. These are papers by were from 2003, 2004 for keyboard acoustic emanations revisited.",
+      "start": 1453.37,
+      "duration": 8.0
+    },
+    {
+      "text": "And then in 2010, people actually started writing master thesis about this type of stuff.",
+      "start": 1461.37,
+      "duration": 6.0
+    },
+    {
+      "text": "And this is, by the way, how Keystroke looks on a graph with, I guess, the key being pressed down here and released at the end of that chart.",
+      "start": 1467.37,
+      "duration": 11.0
+    },
+    {
+      "text": "But that was not the only problem with the keyboard.",
+      "start": 1478.37,
+      "duration": 3.0
+    },
+    {
+      "text": "Actually, if you have a computer and you plug it into the wall socket and you actually have a PS2 keyboard and somebody else on the same power lines,",
+      "start": 1481.37,
+      "duration": 10.0
+    },
+    {
+      "text": "it connects some oscilloscope or other logic analyzer, well, actually, not logic and viscous, just an analyzer.",
+      "start": 1491.37,
+      "duration": 8.0
+    },
+    {
+      "text": "They can filter out the noise and get the keystrokes as well.",
+      "start": 1499.37,
+      "duration": 4.0
+    },
+    {
+      "text": "Okay, but I'm writing PS2 keyboard. Who here has a PS2 keyboard?",
+      "start": 1503.37,
+      "duration": 6.0
+    },
+    {
+      "text": "Okay, who here has a laptop? When bad news, you have PS2 keyboards.",
+      "start": 1509.37,
+      "duration": 6.0
+    },
+    {
+      "text": "Because actually most modern laptops do have, they don't use USB for that connection by use PS2.",
+      "start": 1515.37,
+      "duration": 6.0
+    },
+    {
+      "text": "Why PS2 and not USB? I mean, why does this attack, does not work on USB?",
+      "start": 1521.37,
+      "duration": 6.0
+    },
+    {
+      "text": "Because USB uses differential connections, which basically means there should be no noise.",
+      "start": 1527.37,
+      "duration": 5.0
+    },
+    {
+      "text": "But, yeah, and PS2, that's not the case.",
+      "start": 1532.37,
+      "duration": 2.0
+    },
+    {
+      "text": "So, yeah, again, there was a research conducted paper release, sniffing key, strokes with lasers.",
+      "start": 1534.37,
+      "duration": 6.0
+    },
+    {
+      "text": "Lasers are actually about different part of the research, but voltometers is what I'm talking about.",
+      "start": 1540.37,
+      "duration": 6.0
+    },
+    {
+      "text": "But think actually about ATMs. When you enter your pin, like somebody in the building on the other side of the street can actually listen on your pin.",
+      "start": 1546.37,
+      "duration": 9.0
+    },
+    {
+      "text": "And this was actually also proved, but in different research.",
+      "start": 1555.37,
+      "duration": 5.0
+    },
+    {
+      "text": "And there is also Tempest stuff. If you have a tinfoil head, this is the moment where you put it on.",
+      "start": 1560.37,
+      "duration": 5.0
+    },
+    {
+      "text": "Tempest basically, well, maybe not Tempest, but each device might emit some radio waves on different lengths, but at night.",
+      "start": 1565.37,
+      "duration": 13.0
+    },
+    {
+      "text": "And actually, there is also research done, and I know it works actually, but a keyboard, if you have like a measuring equipment with a proper antenna nearby, you can actually also derive what keys are being pressed.",
+      "start": 1578.37,
+      "duration": 14.0
+    },
+    {
+      "text": "And again, there are papers about it, for example, this one. So, do look into it, this is something that interests you.",
+      "start": 1592.37,
+      "duration": 7.0
+    },
+    {
+      "text": "So, yeah, basically, as far as keyboard side tunnel goes, then there are quite a lot of them.",
+      "start": 1599.37,
+      "duration": 5.0
+    },
+    {
+      "text": "There is, like, the key press timing, the key sounds different than the power line noise and the electromagnetic emission.",
+      "start": 1604.37,
+      "duration": 7.0
+    },
+    {
+      "text": "Quick question. Does anyone know what kind of a keyboard connector is this?",
+      "start": 1611.37,
+      "duration": 6.0
+    },
+    {
+      "text": "Okay? It might be, but I'm looking for the name.",
+      "start": 1617.37,
+      "duration": 12.36
+    },
+    {
+      "text": "Okay. It's actually called Axis Bus. And Axis Bus is something that was between PS2 and USB, but it never gained market.",
+      "start": 1629.73,
+      "duration": 9.0
+    },
+    {
+      "text": "It's actually, if your electronics is I2Square, sorry, I2SquareC is the protocol which is being used here.",
+      "start": 1638.73,
+      "duration": 8.0
+    },
+    {
+      "text": "Okay. Does anyone know how much time do I have? Nobody knows.",
+      "start": 1646.73,
+      "duration": 5.0
+    },
+    {
+      "text": "Oh, I have a lot of time. So, because I have a lot of size, but I'll just keep going, tell me when, when I should stop it.",
+      "start": 1651.73,
+      "duration": 7.0
+    },
+    {
+      "text": "Encryption and compression. Who here knows what, okay, everyone.",
+      "start": 1658.73,
+      "duration": 5.0
+    },
+    {
+      "text": "So, if you recall this part from mumble, mumble. If something is properly encrypted, we cannot see the plaintext, we can see the packet sizes and the timing.",
+      "start": 1663.73,
+      "duration": 12.0
+    },
+    {
+      "text": "And, yeah, this is the important part to have in mind when reading the rest.",
+      "start": 1675.73,
+      "duration": 6.0
+    },
+    {
+      "text": "Now, let's talk about compression. Compression is easy, but you actually need to first compress something at when encrypted because it doesn't work the other way around.",
+      "start": 1681.73,
+      "duration": 9.0
+    },
+    {
+      "text": "So, if we would like to compress the string using, for example, run length and coding, which is probably the weakest compression scheme for this, but it sometimes works.",
+      "start": 1690.73,
+      "duration": 9.0
+    },
+    {
+      "text": "Then, yeah, it works by, you know, if we have three A's, then we just write three A's.",
+      "start": 1699.73,
+      "duration": 5.0
+    },
+    {
+      "text": "And when we decompress it, we see three, and then we repeat the next character, but number of times.",
+      "start": 1704.73,
+      "duration": 6.0
+    },
+    {
+      "text": "And then when we, so this is the plaintext, we compress it, and we encrypt it, and we have no idea what is there anymore because it's crumbled, right?",
+      "start": 1710.73,
+      "duration": 8.0
+    },
+    {
+      "text": "That's the idea behind encryption, but we have, and the attacker also do not have an idea what is there.",
+      "start": 1718.73,
+      "duration": 6.0
+    },
+    {
+      "text": "Now, it wouldn't work the other way around because if we have this and we encrypt it first, so we scramble it basically.",
+      "start": 1724.73,
+      "duration": 7.0
+    },
+    {
+      "text": "Then, the scrambled part does not compress at all because the idea is for it to have really high entropy, and since it has high entropy, it doesn't compress.",
+      "start": 1731.73,
+      "duration": 10.0
+    },
+    {
+      "text": "So, yeah, that means we have to first compress and then encrypt.",
+      "start": 1741.73,
+      "duration": 5.0
+    },
+    {
+      "text": "There are also, of course, different types of compression, for example, dictionary compression.",
+      "start": 1746.73,
+      "duration": 4.0
+    },
+    {
+      "text": "Basically, if we have a sentence, I'm sorry, I couldn't figure an example, a good example. This is all I came with, so my apologies.",
+      "start": 1750.73,
+      "duration": 7.0
+    },
+    {
+      "text": "Anyway, it will have to do. Basically, we create a dictionary, in this case, this is the uncompressed, and this is the yellow part is the compressed dictionary.",
+      "start": 1757.73,
+      "duration": 11.0
+    },
+    {
+      "text": "So, x means red, y means green, z means I like.",
+      "start": 1768.73,
+      "duration": 5.0
+    },
+    {
+      "text": "So, x means red, and green are colors, and so on. This is pretty easy compression, where we try to deduplicate words and substitute the words with something shorter.",
+      "start": 1773.73,
+      "duration": 12.0
+    },
+    {
+      "text": "For example, one letter here, or some special markings.",
+      "start": 1785.73,
+      "duration": 4.0
+    },
+    {
+      "text": "Yeah, the compression isn't great here, but I guess you can see the point.",
+      "start": 1789.73,
+      "duration": 5.0
+    },
+    {
+      "text": "So, what you can do is also you can create the dictionary on the fly, don't attach it, but create it on the fly.",
+      "start": 1794.73,
+      "duration": 6.0
+    },
+    {
+      "text": "For example, after the first iteration of a word red, you can say, next time this word comes up, I will use the letter x.",
+      "start": 1800.73,
+      "duration": 8.0
+    },
+    {
+      "text": "So, next time when it comes up here, right, you just, yeah, you just use x instead of red.",
+      "start": 1808.73,
+      "duration": 7.0
+    },
+    {
+      "text": "And this is much better, and this is actually much closer to how real compression works.",
+      "start": 1815.73,
+      "duration": 6.0
+    },
+    {
+      "text": "In modern internet, can compression sabotage encryption? Obviously, yes, otherwise I wouldn't be presenting this.",
+      "start": 1821.73,
+      "duration": 7.0
+    },
+    {
+      "text": "Let's talk about the typical scenario of an attack, because some attacks work only in a certain scenario.",
+      "start": 1828.73,
+      "duration": 8.0
+    },
+    {
+      "text": "In this scenario, we have a user. This is the victim. Hello.",
+      "start": 1836.73,
+      "duration": 3.0
+    },
+    {
+      "text": "And the user has a web browser running, and the user is actually logged into the bank website.",
+      "start": 1839.73,
+      "duration": 6.0
+    },
+    {
+      "text": "The connection is encrypted and compressed, and somebody, an attacker, is actually eavesdropping on it.",
+      "start": 1845.73,
+      "duration": 7.0
+    },
+    {
+      "text": "And that is encrypted. The attacker has no idea what is in the packets, but the attacker actually knows the size of the packet, and the size here is what is important.",
+      "start": 1852.73,
+      "duration": 13.0
+    },
+    {
+      "text": "Now, the attacker also owns an evil website, which is a website with pictures of funny cats, which is the usual thing you use in examples for fishing, I guess.",
+      "start": 1865.73,
+      "duration": 9.0
+    },
+    {
+      "text": "And the user, for some reason, is invited to go to that website and enjoy themselves laughing at the funny pictures of cats.",
+      "start": 1874.73,
+      "duration": 8.0
+    },
+    {
+      "text": "Now, yeah, the user is authenticated to the bank site using a session cookie.",
+      "start": 1882.73,
+      "duration": 7.0
+    },
+    {
+      "text": "A session cookie is basically some random looking string. It should actually be random, which is known to both sites.",
+      "start": 1889.73,
+      "duration": 7.0
+    },
+    {
+      "text": "And the user, instead of giving each time login and password, can just give this random looking phrase to the server, and the server uses it to authenticate the user.",
+      "start": 1896.73,
+      "duration": 13.0
+    },
+    {
+      "text": "So this is an example of a request packet for a website. It's not real HTTP. This is simplified HTTP. HTTP is pretty similar, actually, to this.",
+      "start": 1909.73,
+      "duration": 9.0
+    },
+    {
+      "text": "Give me my account.html, my session cookie is and the session cookie, and this is what we're going to be discussing later on.",
+      "start": 1918.73,
+      "duration": 7.0
+    },
+    {
+      "text": "So a typical attack scenario for the Fred model I'm discussing is like this. The user browser says, hey, evil website, give me funny.",
+      "start": 1925.73,
+      "duration": 9.0
+    },
+    {
+      "text": "Then the evil website applies sure, but the funny image is located at bank website slash cat.jpeg.",
+      "start": 1934.73,
+      "duration": 8.0
+    },
+    {
+      "text": "So the user browser is now confused and goes to the bank website and says, hey, bank website, give me cat.jpeg.",
+      "start": 1942.73,
+      "duration": 7.0
+    },
+    {
+      "text": "My session cookie is because, well, again, the browser is authorized and the browser needs to attach the session cookie and will attach automatically the session cookie.",
+      "start": 1949.73,
+      "duration": 9.0
+    },
+    {
+      "text": "The bank website is like, what are you talking about? I don't have that. The user cannot see the funny cat, but what's important here is that the attacker can actually see the size of a packet which is being sent out.",
+      "start": 1958.73,
+      "duration": 14.0
+    },
+    {
+      "text": "Now, the attacker's final goal is to get this session cookie. How do we do that being able to do what has just been shown here?",
+      "start": 1972.73,
+      "duration": 12.0
+    },
+    {
+      "text": "Well, let's again chat about compression and encryption. I'm totally going to ignore the encryption part.",
+      "start": 1984.73,
+      "duration": 6.0
+    },
+    {
+      "text": "Let's assume there's a third step under the stage here which shows that this is been encrypted. Just remember what it is.",
+      "start": 1990.73,
+      "duration": 7.0
+    },
+    {
+      "text": "So this is the request. This is the request. This one. And it's like, give me cat.jpeg. My session cookie is this. What's 58 characters if you do dictionary compression on this?",
+      "start": 1997.73,
+      "duration": 12.79
+    },
+    {
+      "text": "It's 58 characters because there are no repeatings. Nothing repeats, so you cannot compress it. However, the attacker can add random stuff at the name of that cat.jpeg, for example, my session cookie is A.",
+      "start": 2010.52,
+      "duration": 16.0
+    },
+    {
+      "text": "This is when the header starts getting redundant to what is there and the compression kicks in.",
+      "start": 2026.52,
+      "duration": 8.0
+    },
+    {
+      "text": "As you can see, 82 characters here were compressed to 62 characters here. Then I marked the A letter in yellow because this is what the attacker starts to cycling, starts to change.",
+      "start": 2034.52,
+      "duration": 14.0
+    },
+    {
+      "text": "When the attacker puts B, but that doesn't really do anything. See? Actually, fast forward to you, nothing. But V is actually here, so the compression algorithm will detect, oh, I can actually make the duplicate phrase a little bit larger, which means that suddenly if the attacker hits the correct letter, V in this case, then the number of characters changes to 61.",
+      "start": 2048.52,
+      "duration": 26.0
+    },
+    {
+      "text": "This is observable by the attacker, so the attacker already knows the first letter of the cookie, and then the attacker can add another letter and can actually start cycling by the letters again, starting with A, and then finally, the attacker hits N, and so on and so forth with all the other letters and characters. At the end, the attacker actually gets everything.",
+      "start": 2074.52,
+      "duration": 22.0
+    },
+    {
+      "text": "This works thanks to the fact that the attacker was being able to just observe the size and influence the plain text, which is being sent here, and thanks to compression for actually that duplicating and changing the packet size in a controlled way.",
+      "start": 2096.52,
+      "duration": 20.0
+    },
+    {
+      "text": "This was obviously described. This is a paper from 2002, I think, compression and information leakage of plain text, and it was actually implemented for some schemes and HTTPS by Vista folks, and it was dubbed the crime attack.",
+      "start": 2116.52,
+      "duration": 19.0
+    },
+    {
+      "text": "Vista presentation is actually about it, and I really recommend looking at it, checking it out, because it's quite amazing. So, crypto is hard. It's actually really hard. Do not ever implement your own cryptography and roll out your own cryptography in your company in production.",
+      "start": 2135.52,
+      "duration": 19.0
+    },
+    {
+      "text": "You can do it for research, do it for research, totally, but never implement and roll it out for your company because this is what will happen basically.",
+      "start": 2154.52,
+      "duration": 10.0
+    },
+    {
+      "text": "Unless you really know what you're doing, but in that case you probably have a PhD in crypto, and you are going for conferences and saying exactly Vista folks.",
+      "start": 2164.52,
+      "duration": 10.0
+    },
+    {
+      "text": "Now, a summary for this part, basically applied crypto is fun, and it's all about the tiny details in the end.",
+      "start": 2174.52,
+      "duration": 10.0
+    },
+    {
+      "text": "Okay, another example about illegal hacking. So, if you are interested in security and hacking, do know the law. Okay, which law? I mean, we live in the global world right now.",
+      "start": 2184.52,
+      "duration": 17.0
+    },
+    {
+      "text": "So, that means that a user from country A can use a service in country B owned by the company from country C, and that account, their account was accessed by a person from country D. So, which jurisdiction is actually at play here? Well, at any case, do know the local law.",
+      "start": 2201.52,
+      "duration": 18.0
+    },
+    {
+      "text": "And it's actually like, you know, it's pretty normal, I guess, in every job that you do know, and have to know how the law is about your job, right?",
+      "start": 2219.52,
+      "duration": 12.0
+    },
+    {
+      "text": "And yeah, reading legal papers is actually very similar to reading formal protocol documentation. This is something I've learned during the year. So, if you can read the one part, like read the formal protocol documentation.",
+      "start": 2231.52,
+      "duration": 13.0
+    },
+    {
+      "text": "You can read the law acts legal acts. Now, for this story, the story I'm actually going to tell you about the hacking law in Poland in 2007, basically the law has something like this.",
+      "start": 2244.52,
+      "duration": 12.0
+    },
+    {
+      "text": "If you get on authorized access to information by breaking an electronic or other type of protection, you can go to jail. Congratulations, and this is quite easy to understand, right?",
+      "start": 2256.52,
+      "duration": 11.0
+    },
+    {
+      "text": "Now, there was a case of a person who actually hacked some websites. Well, they didn't really hack the access accounts, which were they were not authorized to access.",
+      "start": 2267.52,
+      "duration": 14.0
+    },
+    {
+      "text": "And, well, I guess everyone knows how a login form looks like, you enter the user, enter the password, and then magic happens. Let's talk about the magic.",
+      "start": 2281.52,
+      "duration": 8.0
+    },
+    {
+      "text": "There are a couple of ways to authenticate you. One is you click the button, and then on the server side, the server side asks the database for a record that matches the provided username, your username.",
+      "start": 2289.52,
+      "duration": 14.0
+    },
+    {
+      "text": "And then, wherever any records are returned, if the database says no, there is no username like that, then, well, you get access tonight, obviously, but otherwise, you check does the password match, the password which we have in the database doesn't match the provided one.",
+      "start": 2303.52,
+      "duration": 16.0
+    },
+    {
+      "text": "I'm saying password here, but obviously, the password in the database should be salted, hashed, and probably also encrypted address, and maybe not even addressed.",
+      "start": 2319.52,
+      "duration": 10.0
+    },
+    {
+      "text": "But let's assume I'm talking only about the hash password. Everything is okay here with a password, being, well, how it's sort. If the password doesn't match access tonight, if the password matches access granted, this is one way to do it.",
+      "start": 2329.52,
+      "duration": 12.0
+    },
+    {
+      "text": "The other way to do it is basically you ask the database for all the records that match the provided username and password, which basically means that the database will do the filtering for you.",
+      "start": 2341.52,
+      "duration": 11.0
+    },
+    {
+      "text": "And if any records at all were returned, that means that the records, the one record had too much both the username and the password, therefore, if any records were returned, access granted, otherwise, access denied.",
+      "start": 2352.52,
+      "duration": 14.0
+    },
+    {
+      "text": "Now, a little bit of history, probably everyone is now used to SQL databases, but before SQL databases, there was, like, this old type of databases, where you basically had to run an API with, for example, give me all records from a certain table, and you'd get all the records, but it actually downloaded kind of slowly because everything was slow then.",
+      "start": 2366.52,
+      "duration": 23.0
+    },
+    {
+      "text": "And then it downloaded, and then you did filtering on it, and then, well, you did processing, checking the password matches, and then the end you said, okay, the password matches, that's fine.",
+      "start": 2389.52,
+      "duration": 10.0
+    },
+    {
+      "text": "Now, actually, currently, what we are used to, we are basically used to saying to the database, telling the database, hey, filter stuff, filter the records for us, and give us only the filter record because that will download faster.",
+      "start": 2399.52,
+      "duration": 15.0
+    },
+    {
+      "text": "And SQL was the specialized query language, which is a text, basically, language, which was created for that purpose, to basically tell the database what we need.",
+      "start": 2414.52,
+      "duration": 11.0
+    },
+    {
+      "text": "And currently, it would look like this, application would say, yes, select everything from the table users, where the user named matches, Thomas, and the password matches this password.",
+      "start": 2425.52,
+      "duration": 11.0
+    },
+    {
+      "text": "And then the database would start filtering and looking through the records, and would finally pick this one record which matches, and return it to the application, which would be way faster.",
+      "start": 2436.52,
+      "duration": 11.0
+    },
+    {
+      "text": "And we are processing, we got the record, and since we got the record, then we know that access was granted.",
+      "start": 2447.52,
+      "duration": 6.0
+    },
+    {
+      "text": "Now, be very, very careful, and this is something that you heard on the last presentation as well, when dealing with user-controlled data, that is, well, put inside any non-trivial query language.",
+      "start": 2454.52,
+      "duration": 17.0
+    },
+    {
+      "text": "So, who knows here what SQL injection is? Perfect. For folks who don't know, this is the query which I showed you, and this is user-controlled, this is exactly what the user put here.",
+      "start": 2471.52,
+      "duration": 13.0
+    },
+    {
+      "text": "Now, if actually somebody starts putting here something which resembles the syntax of SQL, and it isn't properly escaped, isn't properly sanitized, then this is what starts to happen.",
+      "start": 2484.52,
+      "duration": 13.0
+    },
+    {
+      "text": "You put, as your user name is like single quote, or one equals one, and then to dashes, two dashes are by very common verse of a line out, then you get this.",
+      "start": 2497.52,
+      "duration": 10.0
+    },
+    {
+      "text": "And this actually changes the logic of the query to give me all the records with empty user name, or records where one is equal to one.",
+      "start": 2507.52,
+      "duration": 10.0
+    },
+    {
+      "text": "Well, one is usually equal to one, therefore it will just return all the records from the database.",
+      "start": 2517.52,
+      "duration": 5.0
+    },
+    {
+      "text": "So, if we look again at this scheme, and here we actually put a user name which successfully does a SQL injection, we change the logic to ask the database for, yeah, all the records, and where any records return, yeah, all of them, because one matched one in every record, so access is granted.",
+      "start": 2522.52,
+      "duration": 20.0
+    },
+    {
+      "text": "And this is basically what happened in the cases of the story I'm telling is basically that the person was able to get access to multiple accounts just by logging in with, or, and this is a pretty common attack by way.",
+      "start": 2543.52,
+      "duration": 13.0
+    },
+    {
+      "text": "So, yeah, the story went like this, the person actually reported it to the company, and which is a good thing to do, always do that, and offered them to fix it.",
+      "start": 2556.52,
+      "duration": 10.0
+    },
+    {
+      "text": "Never basically offer to fix something for money, because when the companies tend to lower up, I mean, if you send somebody a vulnerability reward, just do it from your good heart.",
+      "start": 2567.52,
+      "duration": 12.0
+    },
+    {
+      "text": "Yeah, the company invited the person to sign the contract, and the NDA for the fix, and the person signed the NDA end, when the police walks into the room, and arrest them.",
+      "start": 2579.52,
+      "duration": 12.0
+    },
+    {
+      "text": "But, again, about the hacking law in Poland at that time, if you get unauthorized access to information by breaking an electronic or other type of protection, then you can go to jail.",
+      "start": 2591.52,
+      "duration": 11.0
+    },
+    {
+      "text": "Now, who can point out in this scenario, where is the protection? Yeah, this is a trick question, there is no protection there.",
+      "start": 2602.52,
+      "duration": 9.76
+    },
+    {
+      "text": "And this is also what, yeah, no protection.",
+      "start": 2612.28,
+      "duration": 4.0
+    },
+    {
+      "text": "This is also what the judge said, but the hacker was basically cleared of all charges, because they did not break any protection, because there was no protection but him.",
+      "start": 2616.28,
+      "duration": 11.0
+    },
+    {
+      "text": "So, this is a detail, not technical detail of this case, but actually detail in the law, which I find quite interesting.",
+      "start": 2627.28,
+      "duration": 7.0
+    },
+    {
+      "text": "Actually, the hacking law changed a couple of times in Poland after that, and currently, I'm actually really happy to say the law in Poland is really good.",
+      "start": 2634.28,
+      "duration": 9.0
+    },
+    {
+      "text": "It says that if you find the vulnerability and you report it immediately, then everything is good. You will not be sued, you will not be dragged to jail, but it's actually pretty good.",
+      "start": 2643.28,
+      "duration": 10.0
+    },
+    {
+      "text": "Okay, summary. Yeah, in the end, it's about the details, and yeah, there are a lot of details in large computer systems.",
+      "start": 2653.28,
+      "duration": 11.0
+    },
+    {
+      "text": "And I guess that's it. Are there any easy questions? Do we have time for easy questions? I don't know if we have time for questions.",
+      "start": 2664.28,
+      "duration": 16.81
+    },
+    {
+      "text": "We have time for questions. Are there any easy questions? There is one easy question here.",
+      "start": 2681.09,
+      "duration": 7.4
+    },
+    {
+      "text": "So hi, great talk, congratulations. So, do you have any references or books or something that anyone that wants to start hacking to do? Do you have any good collection of things? Thank you.",
+      "start": 2688.49,
+      "duration": 18.57
+    },
+    {
+      "text": "It's a good question. One of the time asked a lot about, and my answer is always security is a pretty large area.",
+      "start": 2707.06,
+      "duration": 9.0
+    },
+    {
+      "text": "There are some sites that are script-overs, for NSX, network security, system security, vulnerability research, global research, web security, mobile security, and so on.",
+      "start": 2716.06,
+      "duration": 9.0
+    },
+    {
+      "text": "The answer depends on what are you interested in. If you do not know what you're interested in, play some CTFs, because on CTFs, you have usually tests from different brands of security, let's say like that.",
+      "start": 2725.06,
+      "duration": 12.0
+    },
+    {
+      "text": "And you can learn something, you can also say, but, oh, I actually really liked this category, and I totally dislike this category.",
+      "start": 2737.06,
+      "duration": 7.0
+    },
+    {
+      "text": "For example, I really like Web Security level, but for crypto, I usually pass it to other folks.",
+      "start": 2744.06,
+      "duration": 5.0
+    },
+    {
+      "text": "And when you know that, then actually CTFs, if you read a lot of write-ups for how a CTF challenge was supposed to be solved,",
+      "start": 2749.06,
+      "duration": 10.0
+    },
+    {
+      "text": "that gives you quite a lot of information on what is possible and a lot of traces is what to read about.",
+      "start": 2760.06,
+      "duration": 6.0
+    },
+    {
+      "text": "So I would do that, about one single book, which has everything.",
+      "start": 2766.06,
+      "duration": 5.0
+    },
+    {
+      "text": "Well, I guess art of security assessment comes to my mind, but it's a book like that, and I'm told that it actually scares people.",
+      "start": 2771.06,
+      "duration": 8.0
+    },
+    {
+      "text": "So I'm not sure about that.",
+      "start": 2779.06,
+      "duration": 2.0
+    },
+    {
+      "text": "Then go to YouTube, watch Life Overflow.",
+      "start": 2781.06,
+      "duration": 3.0
+    },
+    {
+      "text": "That guy creates amazing videos about hacking and security, and they're really easy to understand.",
+      "start": 2784.06,
+      "duration": 8.0
+    },
+    {
+      "text": "Just go and watch this channel.",
+      "start": 2792.06,
+      "duration": 3.0
+    },
+    {
+      "text": "You can actually also watch Ginnbell's YouTube videos. They're also great.",
+      "start": 2795.06,
+      "duration": 6.0
+    },
+    {
+      "text": "Yeah, but go to Life Overflow.",
+      "start": 2801.06,
+      "duration": 3.25
+    },
+    {
+      "text": "Okay, any other questions? This one was hard, by the way.",
+      "start": 2804.31,
+      "duration": 5.0
+    },
+    {
+      "text": "Any other questions? No?",
+      "start": 2809.31,
+      "duration": 2.0
+    },
+    {
+      "text": "Okay, thank you.",
+      "start": 2811.31,
+      "duration": 2.0
+    }
+  ],
+  "full_text": "Okay, welcome everyone. Can you hear me? I guess you can't hear me because I can hear myself, but usually means you can hear me as well.  Anyway, I will be presenting about basically what fascinates me in hacking. I usually do technical, like, deeply technical talks.  And I was asked to make one which isn't super technical, which means it is technical, my apologies. So let's see how it goes.  About me, I'm, well, a YouTuber, I guess I have two channels about hacking, mostly live streaming.  I did offer a book called To Understand Programming. It's not yet available in English, it should be available this year.  I also call for a book about reverse engineering, and I'm one of the creators and excaptain of Dragon Sector. Dragon Sector is a CTF team. Who here knows what a CTF team is?  Okay, that means I still have to explain. So CTF or capture the flag is actually a type of hacking competitions, and there are teams who actually participate in these hacking competitions, and Dragon Sector is our team.  And our team in last season, because there are seasons, was actually number one in the world, so I'm quite happy with that.  I'm also the tech leader and manager at Google, at a security team. And yeah, the obvious things at the bottom.  All opinions expressed during this presentation are mine alone, and they are not opinions of my barber, or like my accountant, nor my employer, so please keep that in mind.  Basically, I will answer the question of this question, then I will give you some examples about what I actually mean, and then I will share a bunch of random tips related to security.  Since I don't really know who my audience is, I have a quick survey. Who here is a programmer, or okay, who here actually wrote a program at least once in their life?  Who here does not own a computer? Okay, perfect. Should be fine.  So let's start with a definition of hacking, because it turns out that hacking can mean different things to different folks, and there are actually multiple definitions which are being used, so first a hacker in terms of programming can be somebody who writes hacky code.  And this is one of the original definitions, and what is hacky code? Well, hacky code is code which shows that somebody knows what they are doing, but is not really readable.  For example, let's assume we want to convert a number like this into binary system. We want to print out the binary representation.  Yeah, some of you might be thinking like, okay, it starts with binary, this is going to be good. Yeah, it's only going to get better.  So one way to actually do this conversion is to write code like this. Actually, the thing on the right there is exactly what the code does, so for every bit, select just that one bit, and output either one or a zero depending on the value of the bit.  That's easy. Who here can actually read this code and tell me what it does without looking at the manuals? Perfect. Now, this is normal code. It's not great, but it's readable. This is hacky code. This code does exactly the same thing as the code previously.  Who here can tell me what does this code exactly do? Perfect. When I'm going to leave this as an exercise for you, but it actually does exactly the same thing. And this is hacky code.  Now, actually, if you look on GitHub, for example, for something like this is a hack or maybe a temporary hack, you can get quite a lot of results for that temporary hacks are eternal, so you can find a lot of books in the code.  Now, another definition of a hacker is a person who delights in having an intimate understanding of the internal workings of a system, computers and computer networks in particular.  And this is the definition taken from internet users, glossary, or rfc1392. And I really like this definition. When there is another definition, more related to security, a hacker can be a computer security professional, or can be someone who seeks to breach defenses and exploit weaknesses in a computer system or a network, which is more what we usually hear about hackers in the media, we think about this type of hacker and the sources for the definitions are at the bottom.  Now, there is also another definition, which I guess most of folks who are not really into ITR familiar with, this is a person who illegally breaks into computer networks and system for malicious purposes.  And, well, this from my perspective is an incorrect usage, but it is being used in the wild. For example, there was this one article which, well, the journal is actually got a little confused about what a hacker means and thought that Linus Torvalds, who created Linux operating system, is the evil kind of hacker and then he started doing good, but actually, well, we know that Linus did mostly programming and didn't do hacking.  So, apart from that, in Poland, we had an interview with one of the ministers of defense and the ministers said something like this, I would not say that we are hiring hackers, we are hiring amazing specialists, please do not call them hackers.  And, again, this is usage of incorrect definition and this got a response from the hacker spaces, from the local hacking communities in a form of an open letter explaining to the minister that, yeah, you actually shouldn't use hackers in that way, because, yeah, hacker, hacking doesn't need to be illegal.  And, there's also another definition which I learned while making the slides, it's one who operates a taxi cab, who knew that, I didn't know that, but okay, it's actually in the dictionary.  So, yeah, when, please listen, but during this presentation, if I'm going to speak about hacking or hackers, I'm going to mean a person who relies on having intimate understanding blah, blah, blah, and a computer security professional.  Actually, my understanding is that you need to be this person in order to be a good hacker, like good security hacker, because in the end, the devil is always in the details.  So, you need to have great understanding of a system to be able to, well, exploit it and attack it and also defend it.  Now, what are the details? Well, the details are basically, you know, the small tidbits of information, which are commonly just mere curiosities, like an interesting thing, but what's about it.  And usually without context, they're like, yeah, well, that's interesting, but may.  However, if they fall into place, the little details suddenly completes a larger pixel, a larger puzzle, when it turns out that due to really small things, you can actually hack some systems or like a small detail makes a system vulnerable in the first place.  And the details are basically what keeps me in hacking. And I've been professionally doing something around security for, I don't know, like, 15 years before take and programming way longer than that.  So, yeah, and this is what keeps you with. Basically, the details are what makes it interesting. And at some point, you know a lot of small little details and every new detail that comes on, when they come really, really rarely at that point.  You are really happy to meet them. Now, basically, in the rest of this presentation, I'm going to show you some examples, or what do I mean when I'm saying details.  Okay, so let's start with a game. Anyone knows this game? Perfect. Anyone place your computer games at all? That's good.  Okay, so this is Bomberman or Dyna Blaster. It's a really old game. And I guess you might have seen newer versions of it since it's still being, well, the new versions are still coming out.  And the way it works, you basically have these two players, the black one and the white one. And this is by the way a deathmatch mode. This is like a player versus player.  And then most of this map is made by indestructible stones, but very with bricky walls here. And these are actually distractable. You can destroy them.  And you basically, I'm going to switch to this less nice looking graphics because I could actually, you know, make slides with it.  So a player can destroy the bricks by setting a bomb. A player can set a bomb and then the player needs to run away and then the bomb explodes vertically and horizontally after a couple of seconds, usually after three seconds.  Now, an explosion causes the bricks to disappear. And if the player would be near that explosion, the player dies as well.  So the player also cannot walk through bombs. So if a player sets a bomb and goes into a dead end, yeah, that's how you lose a game and that's how usually beginners lose the game.  So to win, you actually have to be the last player standing, last player to be alive. And then you have to survive five more seconds, which isn't easy if you do something like this. You put a bomb and yeah.  So if that happens, you do not win. You actually draw the game. It's a tie. And if both players die, that's a tie or if the round timer actually comes down to zero and is the end of the round, that's another tie.  After, after it's a tie by way, the round is restarted, which is I guess quite important. So how to draw, how to draw in a sense that how to run out of time where basically you destroy all the walls.  And then one player doesn't want to go next to the other player because was kind of dangerous and they might die by accident. So you just like try to keep to your side of a map and that's about it.  So here's actually a question for you because everything I told you, you can derive from that kind of cheesy solution to how to win a draw round.  So basically the round is over and then you can easily win the next round. And here are the important details, which I already said.  First, you two in, you must survive five seconds as the last player standing. And the second thing is when the round time is over, the round is restarted.  Does anyone know how to easily win the next round? Okay, I probably wouldn't know either, but because I worked out this bug the other way around.  So let's think about the problem as a programmer. If we would be creating this game, right, we need to keep a state of the game at any given time.  And the state is usually the player location. Where is the player located? Then the bomb location and the timer on the bomb. When was this bomb set? When will it explode?  Then the distractable locations as in where are the bricks, brick walls? Then the monster position, I'm actually ignoring the monster where they are not important in this case.  And also the player power up status as in how many bombs can you set? What is the range of the bombs? That's also not important here.  Now, if this happens and the other player actually wins the round, we need to restart the map, reset the map again. And to do this as a programmer, we need to do several actions.  Well, we obviously need to reset the player position and make this player alive again. Then we need to reset the map, like actually make the distractable walls placed in different positions.  And then we actually at this point as a programmer might go and start testing. Because this probably is enough already. So we play around, maybe we play two rounds.  The other guy is not moving, so we just destroy some walls and go over, kill the player, and done. We finished testing. If we are playing the second round,  we will notice that the range of the bombs was not reset and maybe the number of bombs we can set are not also reset because we didn't reset the power up status.  So we also add resetting the power up status to the actions taken when resetting the round. Now, we test again everything works. We put the game in the box and ship it.  What have we missed? Exactly. So we forgot to reset the bomb position and the timers. Now, how did the programmer miss this? Well, actually the programmer missed it because if we go back, I did say that when the last player is standing, when there are five seconds, this is how long they need to survive.  During the five seconds, all and every bomb will explode. So if the programmer just tested it this way, then no bombs were on the screen after the final five seconds. And this is guaranteed, basically. However, if we get to a draw situation, that's not the case.  Here's basically a pro tip and this is a really good pro tip if you're looking for vulnerabilities and applications. Put yourself in the shoes of a programmer or something. Think about what would they do? What would they do if they would be tired, sleepy, or just want to go home? Would they make any short cuts, maybe not implement some checks? This is usually what happens.  So, okay, how do we abuse what we already established? When the round timer is like this, around two seconds, we basically play a place of bomb or five and the spawn point of the other opponent.  The other opponent might be a little confused why we are doing it. I mean, the round is over anyway. So we put down the controller. We take a sip of a drink and the opponent is basically looking like, yeah, we have another round to play. We just drew. You didn't win.  And you're like, Anakin, it's over. I have the high ground. Because as soon as the round restarts, this is what happens. Yeah, so the player might be a little confused, might be a little angry. And actually, this usually works a couple of times before the other player figures out what you are abusing with mechanic.  Yes, the first time they were like, oh, this looks like a bag. Why did random bombs, randomly spawn here? And the players do not tie to the event of you actually placing the bombs there. So, yeah, basically just a tip.  So another tip is, security isn't really about the code. About what is in the code. It's commonly about what is missing from the code. What is in the code is important because what might point out what are the problems with the code.  But if something is missing from the code, that is what you need to look for. Okay, example number two, the sound of keyboard, whoever used the keyboard, just kidding.  So let's take this example. If someone recorded with a camera pointed at your hands at your keyboard when you are typing in the password, can they derive from the recording the password which you typed?  Obviously, yes. Well, you know, just go frame by frame and see who pressed which key and what's it, right? What if we had only audio?  Without video, just audio. Can it still be derived? So, I'm going to actually digress a little. I'm going to a side story. The side story is about mumble. Do you know mumble? What's mumble?  Mumble is basically like, well, it's a voice communication, like team speak, or like Skype, but without video. And there was a challenge related to mumble on one of the CTF security CTF competitions back in 2013.  And this was by the way one of the most hated tasks ever. I think only two teams including hours sold it. And it was a really easy task as well.  So what you got, you got basically a pickup, which is a network dump of packets of communication, like somebody found someone else with mumble and you got network dump of the communication.  So it's easy, right? You just somehow play it back, you hear what they said, and that's it. Well, the problem is that mumble is actually encrypted. All the audio is encrypted.  And it doesn't really even matter in this case how is it encrypted, but it's encrypted well.  So the problem is we do not have the decryption keys and the only thing in the pickup were only the UDP packets of audio communication itself, no control channel, nothing.  So basically what we had was an op-pack blob of data. You probably know that blob is actually technical term. It means binary large object.  It's probably a background info. Anyway, so what we tried, well, we are at top CTF team. Maybe we weren't back then. But we did try a lot of stuff. We tried to look for a bug in mumble code. Mumble is actually open source in the network code.  Maybe there are some bytes leaking over state and we can somehow get the key from that. When we checked how the crypto is used, because sometimes the crypto is just used incorrectly.  And if it's used incorrectly, you can sometimes break it. Then we also looked for the weakness in the algorithm and the scheme and the crypto scheme that was used.  And we found this on Wikipedia. Niels Ferguson pointed out that if you get 280 terabytes of data, then you can do something. Our file was like one megabyte. Not even close.  Okay, so we checked if there are parts of memory that are leaking into packets again. Then we tried looking if maybe the random number generator is insecure in some way.  Nothing. So a problem. If you get to a dead end with a problem, you know that is solvable. Restart from the beginning. I usually create a new directory, download the task again and start thinking again back from the drawing board.  From a blank piece of paper. And so we looked again for a new relevant box in mumble and we started checking each individual packet in the pickup if every byte is accounted for it was.  So our result results nada. So another problem. If you get to a dead end with a problem, then take a short break.  Because your brain will still be thinking about it and you might just get an idea. And I actually got an idea and the idea was another tip, which is sometimes think about how the problem must be constructed from the other side to make it still solvable.  And as soon as I thought about this, this paper came into my mind. I actually tried to read a lot of security papers. And this is about uncovering spoken phrases and encrypted voice over IP conversations.  So we had a really good paper. We don't need to go into details, but another pro tip, read the papers. Now, the problem of when with my thinking was that we didn't really have a blob. We didn't really have a file. We had a pickup, which is, well, a database, if you will, of packets of network packets.  We had packets, individual packets, and the packets size might differ. You know the size of the packets. You also know when the packet was being transferred, when was it sent, or when was it received, depending on where the tab was actually placed.  So you have more information than just a blob of data. So actually, the interesting thing about audio communication is that if there is silence on like nobody speaking, then no packets are being sent.  If folks are speaking to each other, then actually suddenly the packets are being sent and they're quite large because they need to transfer the data.  So you would look at that task and you would look at the exact thing, which I told you, which is basically a chart of how many bytes were sent per second. Then you would get this. And this, if you look here, it's actually like short packet, short packet, short packet, long packet.  Short packet, short packet, short packet, short packet. That's more scope. Obviously, right? So if you start the coding and do it with more scope, and again, we do not care about what is in the packets, we just care about this.  So we start the coding race and we get VBR, MyA, and I'm going to leave the rest of that as your exercise, basically. VBR being a variable bit rate, by the way.  And yeah, and this was basically the flag and we're one of the two teams which solved it, which I'm quite happy about. But let's go to the main topic, a keyboard.  Now, think about the timing information which was in those packets.  We know if we have an audio recording of somebody tapping in something on the keyboard, we actually know exactly when the key was pressed.  We have actually microsecond precision. Well, maybe not one microsecond, but 22 microseconds, but it was a really good precision.  Having such good precision, and if you have to have fact that when you type on the keyboard, your hands move. That's surprising, right?  I mean, when I type, I don't think about my hands moving, they just do it on their own.  Now, there is one important thing here is that moving a hand, a finger from one button to the hour takes time.  And it actually is, there's probably a coloration between how far is one button from the other button which you need to press.  Of course, folks are typing with, you know, have more different keyboard sizes, have like longer fingers, shorter fingers.  They might type with one finger, they might type with five fingers per hand.  Also, depending on the mood, for example, if somebody is wrong on the internet, I type like this.  And when the sample sizes, how many samples you actually have, it also means a lot.  But if you have this data, you can determine by the timing information what was actually being typed on the keyboard, even if you just have the timing information.  And this was proven, for example, in this paper, timing analysis of keystrokes and timing attacks on SSH.  A really great paper, they had basically only the network traffic of an SSH which is encrypted connection again.  And that was enough to derive what was typed on the keyboard by the user, by the victim.  But that's not the only thing.  So I guess a lot of you are wondering, like, if we have audio recording, what about the audio?  Like, not just timing, but the audio itself.  And it turns out that actually each key does sound different.  So it's not really like a music keyboard, but they are differences.  For example, like, just type space and then type any letter and you will just hear that there is a difference in how they sound.  There's a little difference for us. There's a big difference for machine learning, obviously.  So there was another paper and actually quite a lot of papers about keyboard acoustic and emanations which, based on the audio recorded, can actually, and the model, of course, of the keyboard, you can get what was typed in.  Just because each key sounds different and you can add on top of that, like, the language model and a couple of, like, the timing and a couple of different things.  Then there was another paper. These are papers by were from 2003, 2004 for keyboard acoustic emanations revisited.  And then in 2010, people actually started writing master thesis about this type of stuff.  And this is, by the way, how Keystroke looks on a graph with, I guess, the key being pressed down here and released at the end of that chart.  But that was not the only problem with the keyboard.  Actually, if you have a computer and you plug it into the wall socket and you actually have a PS2 keyboard and somebody else on the same power lines,  it connects some oscilloscope or other logic analyzer, well, actually, not logic and viscous, just an analyzer.  They can filter out the noise and get the keystrokes as well.  Okay, but I'm writing PS2 keyboard. Who here has a PS2 keyboard?  Okay, who here has a laptop? When bad news, you have PS2 keyboards.  Because actually most modern laptops do have, they don't use USB for that connection by use PS2.  Why PS2 and not USB? I mean, why does this attack, does not work on USB?  Because USB uses differential connections, which basically means there should be no noise.  But, yeah, and PS2, that's not the case.  So, yeah, again, there was a research conducted paper release, sniffing key, strokes with lasers.  Lasers are actually about different part of the research, but voltometers is what I'm talking about.  But think actually about ATMs. When you enter your pin, like somebody in the building on the other side of the street can actually listen on your pin.  And this was actually also proved, but in different research.  And there is also Tempest stuff. If you have a tinfoil head, this is the moment where you put it on.  Tempest basically, well, maybe not Tempest, but each device might emit some radio waves on different lengths, but at night.  And actually, there is also research done, and I know it works actually, but a keyboard, if you have like a measuring equipment with a proper antenna nearby, you can actually also derive what keys are being pressed.  And again, there are papers about it, for example, this one. So, do look into it, this is something that interests you.  So, yeah, basically, as far as keyboard side tunnel goes, then there are quite a lot of them.  There is, like, the key press timing, the key sounds different than the power line noise and the electromagnetic emission.  Quick question. Does anyone know what kind of a keyboard connector is this?  Okay? It might be, but I'm looking for the name.  Okay. It's actually called Axis Bus. And Axis Bus is something that was between PS2 and USB, but it never gained market.  It's actually, if your electronics is I2Square, sorry, I2SquareC is the protocol which is being used here.  Okay. Does anyone know how much time do I have? Nobody knows.  Oh, I have a lot of time. So, because I have a lot of size, but I'll just keep going, tell me when, when I should stop it.  Encryption and compression. Who here knows what, okay, everyone.  So, if you recall this part from mumble, mumble. If something is properly encrypted, we cannot see the plaintext, we can see the packet sizes and the timing.  And, yeah, this is the important part to have in mind when reading the rest.  Now, let's talk about compression. Compression is easy, but you actually need to first compress something at when encrypted because it doesn't work the other way around.  So, if we would like to compress the string using, for example, run length and coding, which is probably the weakest compression scheme for this, but it sometimes works.  Then, yeah, it works by, you know, if we have three A's, then we just write three A's.  And when we decompress it, we see three, and then we repeat the next character, but number of times.  And then when we, so this is the plaintext, we compress it, and we encrypt it, and we have no idea what is there anymore because it's crumbled, right?  That's the idea behind encryption, but we have, and the attacker also do not have an idea what is there.  Now, it wouldn't work the other way around because if we have this and we encrypt it first, so we scramble it basically.  Then, the scrambled part does not compress at all because the idea is for it to have really high entropy, and since it has high entropy, it doesn't compress.  So, yeah, that means we have to first compress and then encrypt.  There are also, of course, different types of compression, for example, dictionary compression.  Basically, if we have a sentence, I'm sorry, I couldn't figure an example, a good example. This is all I came with, so my apologies.  Anyway, it will have to do. Basically, we create a dictionary, in this case, this is the uncompressed, and this is the yellow part is the compressed dictionary.  So, x means red, y means green, z means I like.  So, x means red, and green are colors, and so on. This is pretty easy compression, where we try to deduplicate words and substitute the words with something shorter.  For example, one letter here, or some special markings.  Yeah, the compression isn't great here, but I guess you can see the point.  So, what you can do is also you can create the dictionary on the fly, don't attach it, but create it on the fly.  For example, after the first iteration of a word red, you can say, next time this word comes up, I will use the letter x.  So, next time when it comes up here, right, you just, yeah, you just use x instead of red.  And this is much better, and this is actually much closer to how real compression works.  In modern internet, can compression sabotage encryption? Obviously, yes, otherwise I wouldn't be presenting this.  Let's talk about the typical scenario of an attack, because some attacks work only in a certain scenario.  In this scenario, we have a user. This is the victim. Hello.  And the user has a web browser running, and the user is actually logged into the bank website.  The connection is encrypted and compressed, and somebody, an attacker, is actually eavesdropping on it.  And that is encrypted. The attacker has no idea what is in the packets, but the attacker actually knows the size of the packet, and the size here is what is important.  Now, the attacker also owns an evil website, which is a website with pictures of funny cats, which is the usual thing you use in examples for fishing, I guess.  And the user, for some reason, is invited to go to that website and enjoy themselves laughing at the funny pictures of cats.  Now, yeah, the user is authenticated to the bank site using a session cookie.  A session cookie is basically some random looking string. It should actually be random, which is known to both sites.  And the user, instead of giving each time login and password, can just give this random looking phrase to the server, and the server uses it to authenticate the user.  So this is an example of a request packet for a website. It's not real HTTP. This is simplified HTTP. HTTP is pretty similar, actually, to this.  Give me my account.html, my session cookie is and the session cookie, and this is what we're going to be discussing later on.  So a typical attack scenario for the Fred model I'm discussing is like this. The user browser says, hey, evil website, give me funny.  Then the evil website applies sure, but the funny image is located at bank website slash cat.jpeg.  So the user browser is now confused and goes to the bank website and says, hey, bank website, give me cat.jpeg.  My session cookie is because, well, again, the browser is authorized and the browser needs to attach the session cookie and will attach automatically the session cookie.  The bank website is like, what are you talking about? I don't have that. The user cannot see the funny cat, but what's important here is that the attacker can actually see the size of a packet which is being sent out.  Now, the attacker's final goal is to get this session cookie. How do we do that being able to do what has just been shown here?  Well, let's again chat about compression and encryption. I'm totally going to ignore the encryption part.  Let's assume there's a third step under the stage here which shows that this is been encrypted. Just remember what it is.  So this is the request. This is the request. This one. And it's like, give me cat.jpeg. My session cookie is this. What's 58 characters if you do dictionary compression on this?  It's 58 characters because there are no repeatings. Nothing repeats, so you cannot compress it. However, the attacker can add random stuff at the name of that cat.jpeg, for example, my session cookie is A.  This is when the header starts getting redundant to what is there and the compression kicks in.  As you can see, 82 characters here were compressed to 62 characters here. Then I marked the A letter in yellow because this is what the attacker starts to cycling, starts to change.  When the attacker puts B, but that doesn't really do anything. See? Actually, fast forward to you, nothing. But V is actually here, so the compression algorithm will detect, oh, I can actually make the duplicate phrase a little bit larger, which means that suddenly if the attacker hits the correct letter, V in this case, then the number of characters changes to 61.  This is observable by the attacker, so the attacker already knows the first letter of the cookie, and then the attacker can add another letter and can actually start cycling by the letters again, starting with A, and then finally, the attacker hits N, and so on and so forth with all the other letters and characters. At the end, the attacker actually gets everything.  This works thanks to the fact that the attacker was being able to just observe the size and influence the plain text, which is being sent here, and thanks to compression for actually that duplicating and changing the packet size in a controlled way.  This was obviously described. This is a paper from 2002, I think, compression and information leakage of plain text, and it was actually implemented for some schemes and HTTPS by Vista folks, and it was dubbed the crime attack.  Vista presentation is actually about it, and I really recommend looking at it, checking it out, because it's quite amazing. So, crypto is hard. It's actually really hard. Do not ever implement your own cryptography and roll out your own cryptography in your company in production.  You can do it for research, do it for research, totally, but never implement and roll it out for your company because this is what will happen basically.  Unless you really know what you're doing, but in that case you probably have a PhD in crypto, and you are going for conferences and saying exactly Vista folks.  Now, a summary for this part, basically applied crypto is fun, and it's all about the tiny details in the end.  Okay, another example about illegal hacking. So, if you are interested in security and hacking, do know the law. Okay, which law? I mean, we live in the global world right now.  So, that means that a user from country A can use a service in country B owned by the company from country C, and that account, their account was accessed by a person from country D. So, which jurisdiction is actually at play here? Well, at any case, do know the local law.  And it's actually like, you know, it's pretty normal, I guess, in every job that you do know, and have to know how the law is about your job, right?  And yeah, reading legal papers is actually very similar to reading formal protocol documentation. This is something I've learned during the year. So, if you can read the one part, like read the formal protocol documentation.  You can read the law acts legal acts. Now, for this story, the story I'm actually going to tell you about the hacking law in Poland in 2007, basically the law has something like this.  If you get on authorized access to information by breaking an electronic or other type of protection, you can go to jail. Congratulations, and this is quite easy to understand, right?  Now, there was a case of a person who actually hacked some websites. Well, they didn't really hack the access accounts, which were they were not authorized to access.  And, well, I guess everyone knows how a login form looks like, you enter the user, enter the password, and then magic happens. Let's talk about the magic.  There are a couple of ways to authenticate you. One is you click the button, and then on the server side, the server side asks the database for a record that matches the provided username, your username.  And then, wherever any records are returned, if the database says no, there is no username like that, then, well, you get access tonight, obviously, but otherwise, you check does the password match, the password which we have in the database doesn't match the provided one.  I'm saying password here, but obviously, the password in the database should be salted, hashed, and probably also encrypted address, and maybe not even addressed.  But let's assume I'm talking only about the hash password. Everything is okay here with a password, being, well, how it's sort. If the password doesn't match access tonight, if the password matches access granted, this is one way to do it.  The other way to do it is basically you ask the database for all the records that match the provided username and password, which basically means that the database will do the filtering for you.  And if any records at all were returned, that means that the records, the one record had too much both the username and the password, therefore, if any records were returned, access granted, otherwise, access denied.  Now, a little bit of history, probably everyone is now used to SQL databases, but before SQL databases, there was, like, this old type of databases, where you basically had to run an API with, for example, give me all records from a certain table, and you'd get all the records, but it actually downloaded kind of slowly because everything was slow then.  And then it downloaded, and then you did filtering on it, and then, well, you did processing, checking the password matches, and then the end you said, okay, the password matches, that's fine.  Now, actually, currently, what we are used to, we are basically used to saying to the database, telling the database, hey, filter stuff, filter the records for us, and give us only the filter record because that will download faster.  And SQL was the specialized query language, which is a text, basically, language, which was created for that purpose, to basically tell the database what we need.  And currently, it would look like this, application would say, yes, select everything from the table users, where the user named matches, Thomas, and the password matches this password.  And then the database would start filtering and looking through the records, and would finally pick this one record which matches, and return it to the application, which would be way faster.  And we are processing, we got the record, and since we got the record, then we know that access was granted.  Now, be very, very careful, and this is something that you heard on the last presentation as well, when dealing with user-controlled data, that is, well, put inside any non-trivial query language.  So, who knows here what SQL injection is? Perfect. For folks who don't know, this is the query which I showed you, and this is user-controlled, this is exactly what the user put here.  Now, if actually somebody starts putting here something which resembles the syntax of SQL, and it isn't properly escaped, isn't properly sanitized, then this is what starts to happen.  You put, as your user name is like single quote, or one equals one, and then to dashes, two dashes are by very common verse of a line out, then you get this.  And this actually changes the logic of the query to give me all the records with empty user name, or records where one is equal to one.  Well, one is usually equal to one, therefore it will just return all the records from the database.  So, if we look again at this scheme, and here we actually put a user name which successfully does a SQL injection, we change the logic to ask the database for, yeah, all the records, and where any records return, yeah, all of them, because one matched one in every record, so access is granted.  And this is basically what happened in the cases of the story I'm telling is basically that the person was able to get access to multiple accounts just by logging in with, or, and this is a pretty common attack by way.  So, yeah, the story went like this, the person actually reported it to the company, and which is a good thing to do, always do that, and offered them to fix it.  Never basically offer to fix something for money, because when the companies tend to lower up, I mean, if you send somebody a vulnerability reward, just do it from your good heart.  Yeah, the company invited the person to sign the contract, and the NDA for the fix, and the person signed the NDA end, when the police walks into the room, and arrest them.  But, again, about the hacking law in Poland at that time, if you get unauthorized access to information by breaking an electronic or other type of protection, then you can go to jail.  Now, who can point out in this scenario, where is the protection? Yeah, this is a trick question, there is no protection there.  And this is also what, yeah, no protection.  This is also what the judge said, but the hacker was basically cleared of all charges, because they did not break any protection, because there was no protection but him.  So, this is a detail, not technical detail of this case, but actually detail in the law, which I find quite interesting.  Actually, the hacking law changed a couple of times in Poland after that, and currently, I'm actually really happy to say the law in Poland is really good.  It says that if you find the vulnerability and you report it immediately, then everything is good. You will not be sued, you will not be dragged to jail, but it's actually pretty good.  Okay, summary. Yeah, in the end, it's about the details, and yeah, there are a lot of details in large computer systems.  And I guess that's it. Are there any easy questions? Do we have time for easy questions? I don't know if we have time for questions.  We have time for questions. Are there any easy questions? There is one easy question here.  So hi, great talk, congratulations. So, do you have any references or books or something that anyone that wants to start hacking to do? Do you have any good collection of things? Thank you.  It's a good question. One of the time asked a lot about, and my answer is always security is a pretty large area.  There are some sites that are script-overs, for NSX, network security, system security, vulnerability research, global research, web security, mobile security, and so on.  The answer depends on what are you interested in. If you do not know what you're interested in, play some CTFs, because on CTFs, you have usually tests from different brands of security, let's say like that.  And you can learn something, you can also say, but, oh, I actually really liked this category, and I totally dislike this category.  For example, I really like Web Security level, but for crypto, I usually pass it to other folks.  And when you know that, then actually CTFs, if you read a lot of write-ups for how a CTF challenge was supposed to be solved,  that gives you quite a lot of information on what is possible and a lot of traces is what to read about.  So I would do that, about one single book, which has everything.  Well, I guess art of security assessment comes to my mind, but it's a book like that, and I'm told that it actually scares people.  So I'm not sure about that.  Then go to YouTube, watch Life Overflow.  That guy creates amazing videos about hacking and security, and they're really easy to understand.  Just go and watch this channel.  You can actually also watch Ginnbell's YouTube videos. They're also great.  Yeah, but go to Life Overflow.  Okay, any other questions? This one was hard, by the way.  Any other questions? No?  Okay, thank you.",
+  "errors": []
+}

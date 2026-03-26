@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fhRyLHQvcQM",
+    "language": "en",
+    "took_ms": 8147,
+    "method": null,
+    "title": "The Geopolitics of America's Shale Revolution: Middle East Panel: Brenda Shaffer and Nikos Tsafos",
+    "channel": "Hudson Institute",
+    "upload_date": "20160323",
+    "duration_sec": 2415,
+    "description": "This conference examines how U.S. oil and natural gas exports reshaped the balance of global energy power, and features a Middle East panel with Brenda Shaffer and Nikos Tsafos.",
+    "view_count": 1362
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fhRyLHQvcQM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "99Ugm92xW2E",
+    "language": "en",
+    "took_ms": 8404,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Allie Mellen - Trust but Verify Maintaining Democracy",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2148,
+    "description": "In this session, we’ll discuss how Russia has influenced worldwide elections using cyberwarfare and how countries have fought back. We’ll understand the natural asymmetry between how countries are able to respond, and how they have changed their approach since 2016.",
+    "view_count": 1253
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 99Ugm92xW2E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "a50dS8ysp7c",
+    "language": "en",
+    "took_ms": 8819,
+    "method": null,
+    "title": "Turmoil in the Persian Gulf—Are Iran and Saudi Arabia Poised for More Conflict?",
+    "channel": "Hudson Institute",
+    "upload_date": "20160115",
+    "duration_sec": 5555,
+    "description": "Hudson Institute hosts a panel on the burgeoning conflict between Iran and Saudi Arabia with Ali Alfoneh, Michael Doran, Phillip Smyth, and Lee Smith.",
+    "view_count": 4233
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] a50dS8ysp7c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

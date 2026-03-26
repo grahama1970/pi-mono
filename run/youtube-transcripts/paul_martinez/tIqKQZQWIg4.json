@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tIqKQZQWIg4",
+    "language": "en",
+    "took_ms": 8204,
+    "method": null,
+    "title": "Digital Forensics and Incident Response (DFIR) for ICS Embedded Devices",
+    "channel": "S4 Events",
+    "upload_date": "20171016",
+    "duration_sec": 2246,
+    "description": "Chris Sistrunk of Mandiant shows tools and tips on the very new field of DFIR for PLC's, RTU's and other embedded devices. \n\nThe first 15 minutes are a good primer on DFIR as it applies to embedded devices. Then he gets into the dirty detail:\n\n16:20 Shows how you use console and logs to access GE D20MX info for forensics.\n\n23:05 Introduces a new open source forensics tool for the D20MX that reads/writes memory, compare systems image, and allows you to extract what was in memory (although it will take 5 days for a full memory dump over a serial cable).\n\n26:00 Some forensics on the SEL-3530 RTAC",
+    "view_count": 998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tIqKQZQWIg4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

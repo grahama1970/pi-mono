@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ew-i6IcTr9A",
+    "language": "en",
+    "took_ms": 8366,
+    "method": null,
+    "title": "The View from Riyadh",
+    "channel": "Hudson Institute",
+    "upload_date": "20250416",
+    "duration_sec": 4075,
+    "description": "Join Senior Fellow Michael Doran, director of Hudson’s Center for Peace and Security in the Middle East, for an event with Bernard Haykel, a new Hudson senior fellow and a leading authority on Saudi Arabia’s political, societal, and religious landscape.\n\nThey will discuss Crown Prince Mohammed bin Salman’s vision for the kingdom, including his ambitious social and economic reforms. The event will also address the evolving geopolitical landscape of the Gulf region, the persistent challenge Iran poses, and China’s growing strategic presence in the Middle East.\n\nLearn more at: https://www.hudson.org/events/view-riyadh",
+    "view_count": 9209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ew-i6IcTr9A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

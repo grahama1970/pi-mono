@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "myKs04lfuy8",
+    "language": "en",
+    "took_ms": 7603,
+    "method": null,
+    "title": "DEF CON 30 - Lennert Wouters - A Black-Box Security Evaluation of SpaceX Starlink User Terminal",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2148,
+    "description": "This presentation covers the first black-box hardware security evaluation of the SpaceX Starlink User Terminal (UT). The UT uses a custom quad-core Cortex-A53 System-on-Chip that implements verified boot based on the ARM trusted firmware (TF-A) project. The early stage TF-A bootloaders, and in particular the immutable ROM bootloader include custom fault injection countermeasures. Despite the black-box nature of our evaluation we were able to bypass signature verification during execution of the ROM bootloader using voltage fault injection.\n\nUsing a modified second stage bootloader we could extract the ROM bootloader and eFuse memory. Our analysis demonstrates that the fault model used during countermeasure development does not hold in practice. Our voltage fault injection attack was first performed in a laboratory setting and later implemented as a custom printed circuit board or 'modchip'. The presented attack results in an unfixable compromise of the Starlink UT and allows us to execute arbitrary code.\n\nObtaining root access on the Starlink UT is a prerequisite to freely explore the Starlink network and the underlying communication interfaces. \nThis presentation will cover an initial exploration of the Starlink network. Other researchers should be able to build on our work to further explore the Starlink ecosystem.",
+    "view_count": 31190
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] myKs04lfuy8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

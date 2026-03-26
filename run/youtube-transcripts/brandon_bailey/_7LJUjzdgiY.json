@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_7LJUjzdgiY",
+    "language": "en",
+    "took_ms": 9574,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Marc Smeets - Exploiting Blue Team OPSEC Failures with RedELK",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 2741,
+    "description": "Blue teams and CERTs are increasingly better equipped and better trained. At the same time offensive infrastructures are increasingly diverse in components and growing in size. This makes it a lot harder for red teams to keep oversight but also a lot easier for blue teams to react on the traces that red teams leave behind. However, do blue teams really know what traces _they_ leave behind when doing their investigation and analyses? RedELK was created and open sourced to help red teams with these two goals: 1) make it easy to have operational oversight, 2) abuse blue team OPSEC failures. Come to this talk to learn about blue team detection and how RedELK can help you.",
+    "view_count": 2009
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _7LJUjzdgiY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

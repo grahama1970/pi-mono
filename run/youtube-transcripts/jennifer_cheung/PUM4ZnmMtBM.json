@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PUM4ZnmMtBM",
+    "language": "en",
+    "took_ms": 8443,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - John Ellis, Julia Atkinson - Attract, Develop, & Retain ICS Workforce",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 767,
+    "description": "Gaps in the industrial cybersecurity workforce leave critical infrastructure assets vulnerable to attack. In a 2020 ICS2 report, 64% of companies reported a significant or slight shortage of cybersecurity professionals. At the same time, 56% of companies reported that their organization is extremely or moderately at risk due to the cyber workforce shortage. A National Initiative for Cybersecurity Education (NICE) report found that industry-wide there was only one qualified worker to fill every 10 cybersecurity jobs in 2020. To protect the cyber-physical systems that form the lifeblood of the economy, something needs to be done to develop the ICS/OT cybersecurity workforce pipeline. This session will present models to attract, develop, and retain talent in industrial cybersecurity.",
+    "view_count": 359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PUM4ZnmMtBM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

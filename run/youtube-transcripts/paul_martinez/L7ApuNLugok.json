@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L7ApuNLugok",
+    "language": "en",
+    "took_ms": 8745,
+    "method": null,
+    "title": "S4x16 Interview With Marty Edwards On DHS Metrics",
+    "channel": "S4 Events",
+    "upload_date": "20221031",
+    "duration_sec": 71,
+    "description": "",
+    "view_count": 84
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L7ApuNLugok: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

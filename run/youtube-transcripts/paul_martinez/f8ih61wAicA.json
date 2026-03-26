@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f8ih61wAicA",
+    "language": "en",
+    "took_ms": 8764,
+    "method": null,
+    "title": "S4x19 Closing Panel with Rob Lee, Dale Peterson and Zach Tudor",
+    "channel": "S4 Events",
+    "upload_date": "20190805",
+    "duration_sec": 1960,
+    "description": "Always a hit at S4, Dale Peterson talks with Rob Lee and Zach Tudor about the state of ICS Cybersecurity. \n\nWhat aren't we talking about? Where are we making good progress? Are we gaining ground or losing ground in defending ICS? Speed? Does .gov help? Most important of the 5 NIST CSF functions at this time? And much more.",
+    "view_count": 250
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f8ih61wAicA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

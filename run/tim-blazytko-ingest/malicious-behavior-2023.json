@@ -1,0 +1,3219 @@
+Tier 1: Trying direct youtube-transcript-api...
+{
+  "meta": {
+    "video_id": "uhMP8wXw0Tk",
+    "language": "en",
+    "took_ms": 1258,
+    "method": "direct",
+    "title": "Unveiling Malicious Behavior in Unknown Binaries By Tim Blazytko (2023)",
+    "channel": "Swiss Cyber Storm",
+    "upload_date": "20231115",
+    "duration_sec": 1856,
+    "description": "visit https://2023.swisscyberstorm.com/schedule/ & https://www.swisscyberstorm.com for more information\n\n_The following summary was machine generated from the YouTube transcript and then reviewed by human eyes. If you spot any errors, please comment below._\n\n## Summary\n*Presenter:* Tim Blazytko  \n*Title:* Unveiling Malicious Behavior in Unknown Binaries  \n*Category:* SCS2023  \n*Subcategory:* Regular  \n*Video:* https://www.youtube.com/watch?v=uhMP8wXw0Tk\n*Length:* 30:57  \n*Content:* Tim Blazytko discusses methods for identifying malicious behavior in unknown binaries. He explores both basic and advanced techniques for reverse engineering and analysis, emphasizing the importance of signature checks, suspicious strings, API functions, entropy analysis, and heuristics like state machines and frequently called functions. Blazytko also demonstrates practical tools and plugins to aid in binary analysis.\n\n## Keywords:\n- Reverse engineering\n- Binary analysis\n- Malicious behavior\n- Heuristics\n- API functions\n\n## Ideas\n- Using signature checks and suspicious strings to identify potential malware in binaries.\n- Analyzing API functions and entropy to gain insights into binary behavior.\n- Employing heuristics like state machines and frequently called functions to guide deeper analysis.\n- Utilizing tools like Binary Ninja for effective binary disassembly and decompilation.\n- Implementing plugins to automate the detection of specific cryptographic algorithms and obfuscation techniques.\n\n## Quotes\n- Binaries from unknown sources cannot be trusted.\n- Common analysis techniques provide first insights like first indicators.\n- The main takeaways are that binaries from unknown sources cannot be trusted.\n\n## Facts\n- High entropy in a binary indicates packed or encrypted code.\n- Functions like `WriteProcessMemory` are strong indicators of malicious behavior.\n- RC4 cryptographic algorithm, although insecure, is frequently used in malware.\n\n## Resources\n- *Binary Ninja (Tool):* A disassembler and decompiler used for binary analysis, helpful in visualizing and analyzing binaries.\n- *Jara (Tool):* Utilized for applying signature checks to detect well-known malware patterns in binaries.\n\n## Recommendations\n- Always perform manual analysis to confirm initial indicators from automated tools.\n- Use heuristics to guide the analysis process, especially when dealing with large amounts of code.\n- Employ tools and plugins to enhance the efficiency and accuracy of binary analysis.",
+    "view_count": 630
+  },
+  "transcript": [
+    {
+      "text": "so now let's get back to the work let's",
+      "start": 0.44,
+      "duration": 4.52
+    },
+    {
+      "text": "get back to interesting content I have",
+      "start": 3.199,
+      "duration": 4.32
+    },
+    {
+      "text": "good news and I have bad news as",
+      "start": 4.96,
+      "duration": 5.08
+    },
+    {
+      "text": "always",
+      "start": 7.519,
+      "duration": 5.24
+    },
+    {
+      "text": "um the the good news",
+      "start": 10.04,
+      "duration": 6.76
+    },
+    {
+      "text": "is um we have a fantastic speaker",
+      "start": 12.759,
+      "duration": 7.241
+    },
+    {
+      "text": "fantastic topic um oh and the bad news",
+      "start": 16.8,
+      "duration": 4.2
+    },
+    {
+      "text": "you see",
+      "start": 20.0,
+      "duration": 4.199
+    },
+    {
+      "text": "already the bad news is that Tim BL",
+      "start": 21.0,
+      "duration": 5.519
+    },
+    {
+      "text": "seedco is not with us because he fell",
+      "start": 24.199,
+      "duration": 4.281
+    },
+    {
+      "text": "sick but he is healthy enough to give",
+      "start": 26.519,
+      "duration": 3.92
+    },
+    {
+      "text": "the presentation I think that is worth",
+      "start": 28.48,
+      "duration": 6.2
+    },
+    {
+      "text": "an Applause already so",
+      "start": 30.439,
+      "duration": 7.64
+    },
+    {
+      "text": "Tim thank you guys can you hear me yes",
+      "start": 34.68,
+      "duration": 6.12
+    },
+    {
+      "text": "we hear you well before you start give",
+      "start": 38.079,
+      "duration": 5.64
+    },
+    {
+      "text": "me give me a give me a second all right",
+      "start": 40.8,
+      "duration": 4.56
+    },
+    {
+      "text": "so um now you got the the goodness and",
+      "start": 43.719,
+      "duration": 3.32
+    },
+    {
+      "text": "the bad new so the good news is given",
+      "start": 45.36,
+      "duration": 3.839
+    },
+    {
+      "text": "that we had the explain hack in",
+      "start": 47.039,
+      "duration": 3.881
+    },
+    {
+      "text": "Switzerland I don't know Tim have you",
+      "start": 49.199,
+      "duration": 3.961
+    },
+    {
+      "text": "heard about explain I guess not",
+      "start": 50.92,
+      "duration": 5.0
+    },
+    {
+      "text": "right uh I read about that but I don't",
+      "start": 53.16,
+      "duration": 4.6
+    },
+    {
+      "text": "know really much okay good good that",
+      "start": 55.92,
+      "duration": 3.36
+    },
+    {
+      "text": "that's that's fine essentially what",
+      "start": 57.76,
+      "duration": 3.599
+    },
+    {
+      "text": "explained was is a supply chain attack",
+      "start": 59.28,
+      "duration": 3.919
+    },
+    {
+      "text": "right so somebody was disrupting the",
+      "start": 61.359,
+      "duration": 3.561
+    },
+    {
+      "text": "supply chain and of course you can do",
+      "start": 63.199,
+      "duration": 3.721
+    },
+    {
+      "text": "this with open source components in the",
+      "start": 64.92,
+      "duration": 4.64
+    },
+    {
+      "text": "supply chain which well at least in",
+      "start": 66.92,
+      "duration": 5.8
+    },
+    {
+      "text": "theory you can look at for binaries in",
+      "start": 69.56,
+      "duration": 5.0
+    },
+    {
+      "text": "the supply chain it's much much harder",
+      "start": 72.72,
+      "duration": 3.52
+    },
+    {
+      "text": "and this is why the good news is that we",
+      "start": 74.56,
+      "duration": 4.44
+    },
+    {
+      "text": "have Tim as an expert to look into",
+      "start": 76.24,
+      "duration": 6.0
+    },
+    {
+      "text": "vulnerabilities of binaries and I think",
+      "start": 79.0,
+      "duration": 6.159
+    },
+    {
+      "text": "Tim you're the founder of uh a company",
+      "start": 82.24,
+      "duration": 5.68
+    },
+    {
+      "text": "that deals with exactly this topic",
+      "start": 85.159,
+      "duration": 5.521
+    },
+    {
+      "text": "right um yes so basically I'm the found",
+      "start": 87.92,
+      "duration": 5.32
+    },
+    {
+      "text": "of mof where we build embedded Security",
+      "start": 90.68,
+      "duration": 5.0
+    },
+    {
+      "text": "Solutions for embedded devices yeah all",
+      "start": 93.24,
+      "duration": 4.96
+    },
+    {
+      "text": "right good so then I would say the stage",
+      "start": 95.68,
+      "duration": 5.04
+    },
+    {
+      "text": "is yours at least teams Microsoft teams",
+      "start": 98.2,
+      "duration": 5.72
+    },
+    {
+      "text": "is yours thank you so much for joining",
+      "start": 100.72,
+      "duration": 5.079
+    },
+    {
+      "text": "nevertheless thanks a lot for the",
+      "start": 103.92,
+      "duration": 4.32
+    },
+    {
+      "text": "invitation and I'm really sorry I can't",
+      "start": 105.799,
+      "duration": 5.481
+    },
+    {
+      "text": "be here I just go to I go I just went",
+      "start": 108.24,
+      "duration": 5.68
+    },
+    {
+      "text": "sick last week and which makes travel",
+      "start": 111.28,
+      "duration": 4.879
+    },
+    {
+      "text": "currently not really possible um but",
+      "start": 113.92,
+      "duration": 4.76
+    },
+    {
+      "text": "yeah still great to give the talk here",
+      "start": 116.159,
+      "duration": 4.88
+    },
+    {
+      "text": "so today we talk",
+      "start": 118.68,
+      "duration": 6.359
+    },
+    {
+      "text": "about um if we have given a binary how",
+      "start": 121.039,
+      "duration": 7.801
+    },
+    {
+      "text": "we can identify or extract potential",
+      "start": 125.039,
+      "duration": 6.081
+    },
+    {
+      "text": "malicious behavior in these",
+      "start": 128.84,
+      "duration": 5.64
+    },
+    {
+      "text": "binaries so I'm a reverse engineer since",
+      "start": 131.12,
+      "duration": 7.04
+    },
+    {
+      "text": "15 years and I also co-founded a company",
+      "start": 134.48,
+      "duration": 5.92
+    },
+    {
+      "text": "with some other guys in bohome and",
+      "start": 138.16,
+      "duration": 3.88
+    },
+    {
+      "text": "Netherlands so in Germany and",
+      "start": 140.4,
+      "duration": 3.919
+    },
+    {
+      "text": "Netherlands where we designed software",
+      "start": 142.04,
+      "duration": 4.76
+    },
+    {
+      "text": "protection schemes for better devices",
+      "start": 144.319,
+      "duration": 4.841
+    },
+    {
+      "text": "and I'm also a trainer for code the",
+      "start": 146.8,
+      "duration": 4.4
+    },
+    {
+      "text": "ofation and reverse engineering",
+      "start": 149.16,
+      "duration": 5.88
+    },
+    {
+      "text": "techniques and today we talk about a",
+      "start": 151.2,
+      "duration": 6.6
+    },
+    {
+      "text": "scenario which happens nearly on a daily",
+      "start": 155.04,
+      "duration": 7.0
+    },
+    {
+      "text": "basis where we have an unknown binary",
+      "start": 157.8,
+      "duration": 6.2
+    },
+    {
+      "text": "and what we don't know is this",
+      "start": 162.04,
+      "duration": 4.559
+    },
+    {
+      "text": "trustworthy can we trusted it should be",
+      "start": 164.0,
+      "duration": 7.08
+    },
+    {
+      "text": "trust it or does it contain potentially",
+      "start": 166.599,
+      "duration": 7.321
+    },
+    {
+      "text": "malicious code or malicious",
+      "start": 171.08,
+      "duration": 6.28
+    },
+    {
+      "text": "indications and today we from a reverse",
+      "start": 173.92,
+      "duration": 6.039
+    },
+    {
+      "text": "engineering or analyst perspective we",
+      "start": 177.36,
+      "duration": 5.239
+    },
+    {
+      "text": "talk about some basic and some more",
+      "start": 179.959,
+      "duration": 6.161
+    },
+    {
+      "text": "advanced strategies how we can cover uh",
+      "start": 182.599,
+      "duration": 6.481
+    },
+    {
+      "text": "or how we could um tackle this",
+      "start": 186.12,
+      "duration": 7.08
+    },
+    {
+      "text": "problem so the first thing is we start",
+      "start": 189.08,
+      "duration": 7.519
+    },
+    {
+      "text": "with some unknown binary so let's say we",
+      "start": 193.2,
+      "duration": 6.08
+    },
+    {
+      "text": "don't know where it comes from maybe a s",
+      "start": 196.599,
+      "duration": 5.161
+    },
+    {
+      "text": "frst to us a customer gave us this",
+      "start": 199.28,
+      "duration": 5.16
+    },
+    {
+      "text": "binary we downloaded it on the Internet",
+      "start": 201.76,
+      "duration": 5.399
+    },
+    {
+      "text": "or we bought this commercially and we",
+      "start": 204.44,
+      "duration": 4.64
+    },
+    {
+      "text": "just want to know are there potential",
+      "start": 207.159,
+      "duration": 4.8
+    },
+    {
+      "text": "back doors inside or does",
+      "start": 209.08,
+      "duration": 8.0
+    },
+    {
+      "text": "the software contain any features which",
+      "start": 211.959,
+      "duration": 8.84
+    },
+    {
+      "text": "it shouldn't contain so B basically what",
+      "start": 217.08,
+      "duration": 7.6
+    },
+    {
+      "text": "is malicious content malicious is like",
+      "start": 220.799,
+      "duration": 6.44
+    },
+    {
+      "text": "there's something additionally inside",
+      "start": 224.68,
+      "duration": 5.279
+    },
+    {
+      "text": "like a feature you don't expect it to be",
+      "start": 227.239,
+      "duration": 6.84
+    },
+    {
+      "text": "inside let's say if you are having um a",
+      "start": 229.959,
+      "duration": 7.0
+    },
+    {
+      "text": "normal program and it encrypts all your",
+      "start": 234.079,
+      "duration": 4.961
+    },
+    {
+      "text": "files and sends it somewhere without",
+      "start": 236.959,
+      "duration": 3.28
+    },
+    {
+      "text": "your knowledge",
+      "start": 239.04,
+      "duration": 3.759
+    },
+    {
+      "text": "this can be considered as malicious if",
+      "start": 240.239,
+      "duration": 5.321
+    },
+    {
+      "text": "something um records your key strokes",
+      "start": 242.799,
+      "duration": 5.681
+    },
+    {
+      "text": "your key um if you don't expected to be",
+      "start": 245.56,
+      "duration": 5.8
+    },
+    {
+      "text": "to be this is malicious so depending on",
+      "start": 248.48,
+      "duration": 5.88
+    },
+    {
+      "text": "the context malicious might mean the",
+      "start": 251.36,
+      "duration": 5.64
+    },
+    {
+      "text": "additional features inside that you",
+      "start": 254.36,
+      "duration": 7.159
+    },
+    {
+      "text": "don't expect to be the mix inside so",
+      "start": 257.0,
+      "duration": 9.479
+    },
+    {
+      "text": "given a binary where to start so we have",
+      "start": 261.519,
+      "duration": 9.281
+    },
+    {
+      "text": "some very common approaches which",
+      "start": 266.479,
+      "duration": 7.16
+    },
+    {
+      "text": "at least are easy to perform and provide",
+      "start": 270.8,
+      "duration": 6.16
+    },
+    {
+      "text": "some good indicators about if the binary",
+      "start": 273.639,
+      "duration": 7.161
+    },
+    {
+      "text": "contains some Behavior or not so the",
+      "start": 276.96,
+      "duration": 6.519
+    },
+    {
+      "text": "first one is signature checks a",
+      "start": 280.8,
+      "duration": 5.76
+    },
+    {
+      "text": "signature can be understood as a",
+      "start": 283.479,
+      "duration": 7.28
+    },
+    {
+      "text": "database of well-known crafted code",
+      "start": 286.56,
+      "duration": 7.24
+    },
+    {
+      "text": "patterns and these code patterns might",
+      "start": 290.759,
+      "duration": 6.601
+    },
+    {
+      "text": "be known because we already have some",
+      "start": 293.8,
+      "duration": 6.399
+    },
+    {
+      "text": "signatures of existing malware or of",
+      "start": 297.36,
+      "duration": 6.119
+    },
+    {
+      "text": "existing marware features and by",
+      "start": 300.199,
+      "duration": 7.801
+    },
+    {
+      "text": "providing um a a database of patterns",
+      "start": 303.479,
+      "duration": 7.681
+    },
+    {
+      "text": "like this rules. jar on top of here we",
+      "start": 308.0,
+      "duration": 5.84
+    },
+    {
+      "text": "can then for instance take a tool like",
+      "start": 311.16,
+      "duration": 6.52
+    },
+    {
+      "text": "Jara apply the rules and then please",
+      "start": 313.84,
+      "duration": 6.44
+    },
+    {
+      "text": "apply these rules to the unknown binary",
+      "start": 317.68,
+      "duration": 5.88
+    },
+    {
+      "text": "and list everything you find and then it",
+      "start": 320.28,
+      "duration": 6.44
+    },
+    {
+      "text": "mind might find something like hey",
+      "start": 323.56,
+      "duration": 5.28
+    },
+    {
+      "text": "there's some screenshot functionality",
+      "start": 326.72,
+      "duration": 3.72
+    },
+    {
+      "text": "inside",
+      "start": 328.84,
+      "duration": 5.44
+    },
+    {
+      "text": "binary okay is this a screenshot or",
+      "start": 330.44,
+      "duration": 6.36
+    },
+    {
+      "text": "not screenshot functionality inside the",
+      "start": 334.28,
+      "duration": 4.8
+    },
+    {
+      "text": "binary or not depends on the context if",
+      "start": 336.8,
+      "duration": 4.64
+    },
+    {
+      "text": "this is if this is expected Behavior or",
+      "start": 339.08,
+      "duration": 5.28
+    },
+    {
+      "text": "not but at least you can see oh there's",
+      "start": 341.44,
+      "duration": 6.319
+    },
+    {
+      "text": "some screens screenshot Behavior inside",
+      "start": 344.36,
+      "duration": 6.8
+    },
+    {
+      "text": "so there's a feature of potential screen",
+      "start": 347.759,
+      "duration": 6.88
+    },
+    {
+      "text": "capturing another example might be oh",
+      "start": 351.16,
+      "duration": 5.72
+    },
+    {
+      "text": "there are some cryptographic constants",
+      "start": 354.639,
+      "duration": 6.201
+    },
+    {
+      "text": "like shaan or some encoding like CSC",
+      "start": 356.88,
+      "duration": 6.92
+    },
+    {
+      "text": "32bit so maybe there are cryptographic",
+      "start": 360.84,
+      "duration": 4.199
+    },
+    {
+      "text": "algorithms",
+      "start": 363.8,
+      "duration": 5.0
+    },
+    {
+      "text": "inside or you could also learn like this",
+      "start": 365.039,
+      "duration": 6.961
+    },
+    {
+      "text": "is packed so it's basically there's a",
+      "start": 368.8,
+      "duration": 6.32
+    },
+    {
+      "text": "Code part or code sections which might",
+      "start": 372.0,
+      "duration": 6.36
+    },
+    {
+      "text": "be encrypted or packed in a specific",
+      "start": 375.12,
+      "duration": 7.88
+    },
+    {
+      "text": "way so however besides the signatures",
+      "start": 378.36,
+      "duration": 8.0
+    },
+    {
+      "text": "you can also dig into dig a bit onto",
+      "start": 383.0,
+      "duration": 5.479
+    },
+    {
+      "text": "your own and look for instance for",
+      "start": 386.36,
+      "duration": 4.48
+    },
+    {
+      "text": "suspicious string",
+      "start": 388.479,
+      "duration": 5.081
+    },
+    {
+      "text": "so if you for instance check just the",
+      "start": 390.84,
+      "duration": 5.359
+    },
+    {
+      "text": "strings in the binary you might see",
+      "start": 393.56,
+      "duration": 5.12
+    },
+    {
+      "text": "something like that this is in one",
+      "start": 396.199,
+      "duration": 6.241
+    },
+    {
+      "text": "example of a Chinese Mya sample where",
+      "start": 398.68,
+      "duration": 7.359
+    },
+    {
+      "text": "where we can see like wait there's some",
+      "start": 402.44,
+      "duration": 7.12
+    },
+    {
+      "text": "some deback information left like X plug",
+      "start": 406.039,
+      "duration": 7.6
+    },
+    {
+      "text": "key logger CPP or screen.",
+      "start": 409.56,
+      "duration": 7.0
+    },
+    {
+      "text": "cppp if you see something like that this",
+      "start": 413.639,
+      "duration": 6.24
+    },
+    {
+      "text": "at least looks suspicious so it might",
+      "start": 416.56,
+      "duration": 6.28
+    },
+    {
+      "text": "indicate to be a program file like",
+      "start": 419.879,
+      "duration": 6.16
+    },
+    {
+      "text": "source code of some key logging",
+      "start": 422.84,
+      "duration": 6.72
+    },
+    {
+      "text": "functionality or some screen capturing",
+      "start": 426.039,
+      "duration": 6.641
+    },
+    {
+      "text": "functionality it might open also a shell",
+      "start": 429.56,
+      "duration": 6.359
+    },
+    {
+      "text": "or tet session who knows but at least",
+      "start": 432.68,
+      "duration": 6.0
+    },
+    {
+      "text": "finding something inside a binary might",
+      "start": 435.919,
+      "duration": 4.361
+    },
+    {
+      "text": "be",
+      "start": 438.68,
+      "duration": 4.4
+    },
+    {
+      "text": "suspicious so there are also some other",
+      "start": 440.28,
+      "duration": 7.759
+    },
+    {
+      "text": "strings like HTTP or post which indicate",
+      "start": 443.08,
+      "duration": 7.28
+    },
+    {
+      "text": "some Network Behavior",
+      "start": 448.039,
+      "duration": 6.041
+    },
+    {
+      "text": "the binary seems to or might indicate",
+      "start": 450.36,
+      "duration": 6.6
+    },
+    {
+      "text": "that it might open an HTTP request or",
+      "start": 454.08,
+      "duration": 6.119
+    },
+    {
+      "text": "send something and here we see parts of",
+      "start": 456.96,
+      "duration": 6.4
+    },
+    {
+      "text": "an URL on website like slash update with",
+      "start": 460.199,
+      "duration": 6.241
+    },
+    {
+      "text": "some parameters so by just looking at",
+      "start": 463.36,
+      "duration": 6.2
+    },
+    {
+      "text": "the strings we might learn that it might",
+      "start": 466.44,
+      "duration": 6.479
+    },
+    {
+      "text": "indicate something like webbased",
+      "start": 469.56,
+      "duration": 6.52
+    },
+    {
+      "text": "Behavior so network",
+      "start": 472.919,
+      "duration": 5.481
+    },
+    {
+      "text": "communication and then there's one last",
+      "start": 476.08,
+      "duration": 4.36
+    },
+    {
+      "text": "thing we can take a look at and these",
+      "start": 478.4,
+      "duration": 5.239
+    },
+    {
+      "text": "are the API functions so basically the",
+      "start": 480.44,
+      "duration": 6.159
+    },
+    {
+      "text": "functions which are used from the",
+      "start": 483.639,
+      "duration": 4.921
+    },
+    {
+      "text": "operating system which are provided by",
+      "start": 486.599,
+      "duration": 4.6
+    },
+    {
+      "text": "the operating system to perform specific",
+      "start": 488.56,
+      "duration": 6.0
+    },
+    {
+      "text": "actions like capturing key strokes or",
+      "start": 491.199,
+      "duration": 6.12
+    },
+    {
+      "text": "like opening window or just sending",
+      "start": 494.56,
+      "duration": 5.72
+    },
+    {
+      "text": "something over the network so these are",
+      "start": 497.319,
+      "duration": 5.801
+    },
+    {
+      "text": "usually realized using API",
+      "start": 500.28,
+      "duration": 5.8
+    },
+    {
+      "text": "functions and here for instance we can",
+      "start": 503.12,
+      "duration": 6.24
+    },
+    {
+      "text": "see that there are two libraries",
+      "start": 506.08,
+      "duration": 8.319
+    },
+    {
+      "text": "imported user 32 and colel 32 and in",
+      "start": 509.36,
+      "duration": 6.88
+    },
+    {
+      "text": "these libraries there are specific",
+      "start": 514.399,
+      "duration": 4.601
+    },
+    {
+      "text": "functions important",
+      "start": 516.24,
+      "duration": 6.279
+    },
+    {
+      "text": "imported so for instance like get key",
+      "start": 519.0,
+      "duration": 7.04
+    },
+    {
+      "text": "state or get aen key State these are",
+      "start": 522.519,
+      "duration": 6.121
+    },
+    {
+      "text": "Library functions which are totally",
+      "start": 526.04,
+      "duration": 6.479
+    },
+    {
+      "text": "valid on its own but they are also used",
+      "start": 528.64,
+      "duration": 6.96
+    },
+    {
+      "text": "quite often to implement key logging",
+      "start": 532.519,
+      "duration": 5.081
+    },
+    {
+      "text": "functionality so depending on the",
+      "start": 535.6,
+      "duration": 4.359
+    },
+    {
+      "text": "context if you see something like that",
+      "start": 537.6,
+      "duration": 4.6
+    },
+    {
+      "text": "so it might be something to get",
+      "start": 539.959,
+      "duration": 4.921
+    },
+    {
+      "text": "suspicious but it might also be",
+      "start": 542.2,
+      "duration": 5.48
+    },
+    {
+      "text": "okay if you see something like that",
+      "start": 544.88,
+      "duration": 5.519
+    },
+    {
+      "text": "where you think like find first file",
+      "start": 547.68,
+      "duration": 5.88
+    },
+    {
+      "text": "find next file you basically have some",
+      "start": 550.399,
+      "duration": 5.241
+    },
+    {
+      "text": "the directory traversal or some file",
+      "start": 553.56,
+      "duration": 5.08
+    },
+    {
+      "text": "system access and you also see like",
+      "start": 555.64,
+      "duration": 6.36
+    },
+    {
+      "text": "write file or create file remove file",
+      "start": 558.64,
+      "duration": 5.48
+    },
+    {
+      "text": "you can create files remove files and so",
+      "start": 562.0,
+      "duration": 5.6
+    },
+    {
+      "text": "on so again depending on the context",
+      "start": 564.12,
+      "duration": 5.52
+    },
+    {
+      "text": "this might be totally um",
+      "start": 567.6,
+      "duration": 5.0
+    },
+    {
+      "text": "valid it might also be",
+      "start": 569.64,
+      "duration": 5.56
+    },
+    {
+      "text": "suspicious however if we see something",
+      "start": 572.6,
+      "duration": 5.44
+    },
+    {
+      "text": "like right process memory this is",
+      "start": 575.2,
+      "duration": 5.44
+    },
+    {
+      "text": "something where really everything gets",
+      "start": 578.04,
+      "duration": 5.2
+    },
+    {
+      "text": "suspicious because this means that we",
+      "start": 580.64,
+      "duration": 7.4
+    },
+    {
+      "text": "write some data into another process and",
+      "start": 583.24,
+      "duration": 7.279
+    },
+    {
+      "text": "something like that is like in nine from",
+      "start": 588.04,
+      "duration": 5.4
+    },
+    {
+      "text": "10 cases malicious behavior because we",
+      "start": 590.519,
+      "duration": 6.601
+    },
+    {
+      "text": "try to inject malicious code into other",
+      "start": 593.44,
+      "duration": 7.959
+    },
+    {
+      "text": "processes so but as say with just some",
+      "start": 597.12,
+      "duration": 6.64
+    },
+    {
+      "text": "basic things we can learn about the",
+      "start": 601.399,
+      "duration": 5.68
+    },
+    {
+      "text": "strings we can learn about the API calls",
+      "start": 603.76,
+      "duration": 6.12
+    },
+    {
+      "text": "we can learn about State signatures and",
+      "start": 607.079,
+      "duration": 4.921
+    },
+    {
+      "text": "these already give us often a good",
+      "start": 609.88,
+      "duration": 4.639
+    },
+    {
+      "text": "overview about potential things which",
+      "start": 612.0,
+      "duration": 4.24
+    },
+    {
+      "text": "might go on in the",
+      "start": 614.519,
+      "duration": 4.88
+    },
+    {
+      "text": "binary there's also one simple analysis",
+      "start": 616.24,
+      "duration": 5.64
+    },
+    {
+      "text": "one can do which is called entropy",
+      "start": 619.399,
+      "duration": 5.761
+    },
+    {
+      "text": "analysis entropy is a mathematical",
+      "start": 621.88,
+      "duration": 6.32
+    },
+    {
+      "text": "computation or algorithm which um tells",
+      "start": 625.16,
+      "duration": 5.96
+    },
+    {
+      "text": "you how much Randomness is in a specific",
+      "start": 628.2,
+      "duration": 7.92
+    },
+    {
+      "text": "blob of data and the higher the entropy",
+      "start": 631.12,
+      "duration": 7.64
+    },
+    {
+      "text": "the higher the more likely or the more",
+      "start": 636.12,
+      "duration": 4.44
+    },
+    {
+      "text": "likely it looks like random",
+      "start": 638.76,
+      "duration": 4.879
+    },
+    {
+      "text": "code and this is something which can",
+      "start": 640.56,
+      "duration": 6.04
+    },
+    {
+      "text": "usually uh which is often used in a",
+      "start": 643.639,
+      "duration": 5.721
+    },
+    {
+      "text": "malare analysis to check if there are",
+      "start": 646.6,
+      "duration": 4.96
+    },
+    {
+      "text": "specific code sections which are",
+      "start": 649.36,
+      "duration": 6.279
+    },
+    {
+      "text": "encrypted or packed so what you see here",
+      "start": 651.56,
+      "duration": 7.64
+    },
+    {
+      "text": "is an entropy plot of the bite positions",
+      "start": 655.639,
+      "duration": 5.841
+    },
+    {
+      "text": "like these are all the bites of the of",
+      "start": 659.2,
+      "duration": 5.079
+    },
+    {
+      "text": "the binary sample and this is the",
+      "start": 661.48,
+      "duration": 5.88
+    },
+    {
+      "text": "entropy and the highest entropy is a",
+      "start": 664.279,
+      "duration": 7.081
+    },
+    {
+      "text": "value of eight and here you see um a",
+      "start": 667.36,
+      "duration": 6.4
+    },
+    {
+      "text": "entropy distribution of a normal",
+      "start": 671.36,
+      "duration": 5.4
+    },
+    {
+      "text": "unobfuscated unpacked file where you see",
+      "start": 673.76,
+      "duration": 6.12
+    },
+    {
+      "text": "that most of the entropy is between five",
+      "start": 676.76,
+      "duration": 5.6
+    },
+    {
+      "text": "and six which indicates there's some",
+      "start": 679.88,
+      "duration": 5.519
+    },
+    {
+      "text": "sort of Randomness but still enough",
+      "start": 682.36,
+      "duration": 6.68
+    },
+    {
+      "text": "enough things uh enough structured data",
+      "start": 685.399,
+      "duration": 7.481
+    },
+    {
+      "text": "to be not totally random and you see",
+      "start": 689.04,
+      "duration": 5.88
+    },
+    {
+      "text": "there are also larger Parts um which",
+      "start": 692.88,
+      "duration": 5.519
+    },
+    {
+      "text": "have different entropy values so this is",
+      "start": 694.92,
+      "duration": 4.76
+    },
+    {
+      "text": "basically something which can be",
+      "start": 698.399,
+      "duration": 4.361
+    },
+    {
+      "text": "considered as low entropy and this is",
+      "start": 699.68,
+      "duration": 6.399
+    },
+    {
+      "text": "unpacked um however if you see something",
+      "start": 702.76,
+      "duration": 6.8
+    },
+    {
+      "text": "like that where most of the parts of the",
+      "start": 706.079,
+      "duration": 6.521
+    },
+    {
+      "text": "binary have a very high entropy like",
+      "start": 709.56,
+      "duration": 6.48
+    },
+    {
+      "text": "close to eight this is something which",
+      "start": 712.6,
+      "duration": 6.359
+    },
+    {
+      "text": "tells us oh there's a lot of Random",
+      "start": 716.04,
+      "duration": 5.96
+    },
+    {
+      "text": "looking data or the lot of data which",
+      "start": 718.959,
+      "duration": 5.601
+    },
+    {
+      "text": "isn't well structured this is a good",
+      "start": 722.0,
+      "duration": 5.279
+    },
+    {
+      "text": "indicator for that there's packed or",
+      "start": 724.56,
+      "duration": 4.079
+    },
+    {
+      "text": "encrypted",
+      "start": 727.279,
+      "duration": 4.721
+    },
+    {
+      "text": "code so in other words High entropy",
+      "start": 728.639,
+      "duration": 5.44
+    },
+    {
+      "text": "means packed",
+      "start": 732.0,
+      "duration": 7.24
+    },
+    {
+      "text": "code so to do a small recap we talked",
+      "start": 734.079,
+      "duration": 8.481
+    },
+    {
+      "text": "about some basic methods to detect",
+      "start": 739.24,
+      "duration": 5.44
+    },
+    {
+      "text": "malicious behavior and binaries by",
+      "start": 742.56,
+      "duration": 4.36
+    },
+    {
+      "text": "looking at some signatures by looking at",
+      "start": 744.68,
+      "duration": 5.159
+    },
+    {
+      "text": "the strings the API function in the",
+      "start": 746.92,
+      "duration": 5.719
+    },
+    {
+      "text": "entropy and I would likely I would just",
+      "start": 749.839,
+      "duration": 4.041
+    },
+    {
+      "text": "would like to take one minute to",
+      "start": 752.639,
+      "duration": 5.041
+    },
+    {
+      "text": "visualize that so I have a tool here",
+      "start": 753.88,
+      "duration": 6.199
+    },
+    {
+      "text": "which is called binary ninja this is in",
+      "start": 757.68,
+      "duration": 5.0
+    },
+    {
+      "text": "disassembler and decompiler so basically",
+      "start": 760.079,
+      "duration": 5.681
+    },
+    {
+      "text": "this is a binary analysis framework and",
+      "start": 762.68,
+      "duration": 6.08
+    },
+    {
+      "text": "in binary ninja I can for instance this",
+      "start": 765.76,
+      "duration": 6.12
+    },
+    {
+      "text": "is just one example I can have something",
+      "start": 768.76,
+      "duration": 5.759
+    },
+    {
+      "text": "which is called triage summary where I",
+      "start": 771.88,
+      "duration": 5.56
+    },
+    {
+      "text": "see on top of here there I have an",
+      "start": 774.519,
+      "duration": 6.641
+    },
+    {
+      "text": "entropy plot and here we can see this is",
+      "start": 777.44,
+      "duration": 6.12
+    },
+    {
+      "text": "all of the same color more or less so",
+      "start": 781.16,
+      "duration": 5.4
+    },
+    {
+      "text": "this is uh not not",
+      "start": 783.56,
+      "duration": 6.16
+    },
+    {
+      "text": "encrypted down here I see all the",
+      "start": 786.56,
+      "duration": 6.079
+    },
+    {
+      "text": "libraries which are imported like kernel",
+      "start": 789.72,
+      "duration": 8.239
+    },
+    {
+      "text": "32 user 32 and so on here in this window",
+      "start": 792.639,
+      "duration": 7.921
+    },
+    {
+      "text": "I see some Library functions which are",
+      "start": 797.959,
+      "duration": 6.201
+    },
+    {
+      "text": "imported so for instance like Rec create",
+      "start": 800.56,
+      "duration": 6.24
+    },
+    {
+      "text": "key this tells me that there are some",
+      "start": 804.16,
+      "duration": 5.359
+    },
+    {
+      "text": "functionality to modify the Reg registry",
+      "start": 806.8,
+      "duration": 3.599
+    },
+    {
+      "text": "in",
+      "start": 809.519,
+      "duration": 4.601
+    },
+    {
+      "text": "Windows there are some right files and",
+      "start": 810.399,
+      "duration": 5.201
+    },
+    {
+      "text": "some",
+      "start": 814.12,
+      "duration": 6.0
+    },
+    {
+      "text": "um exit process but also pass command",
+      "start": 815.6,
+      "duration": 7.72
+    },
+    {
+      "text": "command light arguments",
+      "start": 820.12,
+      "duration": 6.519
+    },
+    {
+      "text": "um and some other things so basically by",
+      "start": 823.32,
+      "duration": 5.4
+    },
+    {
+      "text": "looking at the API calls I can still",
+      "start": 826.639,
+      "duration": 5.161
+    },
+    {
+      "text": "learn a lot and then I Al I have also a",
+      "start": 828.72,
+      "duration": 6.84
+    },
+    {
+      "text": "strings window and in this case I don't",
+      "start": 831.8,
+      "duration": 4.8
+    },
+    {
+      "text": "see any",
+      "start": 835.56,
+      "duration": 4.0
+    },
+    {
+      "text": "strings and seeing not seeing any",
+      "start": 836.6,
+      "duration": 5.039
+    },
+    {
+      "text": "strings in the string window is",
+      "start": 839.56,
+      "duration": 4.719
+    },
+    {
+      "text": "suspicious this seems to be there seems",
+      "start": 841.639,
+      "duration": 5.64
+    },
+    {
+      "text": "to be some method in the code which",
+      "start": 844.279,
+      "duration": 6.441
+    },
+    {
+      "text": "hides the stin so also not seeing",
+      "start": 847.279,
+      "duration": 6.321
+    },
+    {
+      "text": "anything in this case is an indicator",
+      "start": 850.72,
+      "duration": 4.72
+    },
+    {
+      "text": "that things don't be have as I expect",
+      "start": 853.6,
+      "duration": 3.12
+    },
+    {
+      "text": "them to",
+      "start": 855.44,
+      "duration": 6.28
+    },
+    {
+      "text": "be okay so these are some basic things",
+      "start": 856.72,
+      "duration": 5.919
+    },
+    {
+      "text": "we can",
+      "start": 861.72,
+      "duration": 4.359
+    },
+    {
+      "text": "do looking for static signatures strings",
+      "start": 862.639,
+      "duration": 7.361
+    },
+    {
+      "text": "API functions and entropy however",
+      "start": 866.079,
+      "duration": 6.56
+    },
+    {
+      "text": "sometimes we need to dive deeper we need",
+      "start": 870.0,
+      "duration": 4.959
+    },
+    {
+      "text": "to perform more time with a specific",
+      "start": 872.639,
+      "duration": 6.2
+    },
+    {
+      "text": "sample or we need to manually reverse",
+      "start": 874.959,
+      "duration": 6.961
+    },
+    {
+      "text": "engineer it to check what's really",
+      "start": 878.839,
+      "duration": 6.92
+    },
+    {
+      "text": "inside so the things before this gave us",
+      "start": 881.92,
+      "duration": 6.88
+    },
+    {
+      "text": "good indicators which might be inside",
+      "start": 885.759,
+      "duration": 5.88
+    },
+    {
+      "text": "however sometimes we need to we we we",
+      "start": 888.8,
+      "duration": 5.599
+    },
+    {
+      "text": "want to further verify that or confirm",
+      "start": 891.639,
+      "duration": 6.041
+    },
+    {
+      "text": "that and then we do manual reverse",
+      "start": 894.399,
+      "duration": 6.721
+    },
+    {
+      "text": "engineering however RSE engineering we",
+      "start": 897.68,
+      "duration": 6.079
+    },
+    {
+      "text": "sometimes have many thousands of",
+      "start": 901.12,
+      "duration": 4.48
+    },
+    {
+      "text": "functions of code locations we can look",
+      "start": 903.759,
+      "duration": 5.32
+    },
+    {
+      "text": "at so the question is how can we speed",
+      "start": 905.6,
+      "duration": 5.76
+    },
+    {
+      "text": "this up how can",
+      "start": 909.079,
+      "duration": 5.56
+    },
+    {
+      "text": "we how can we guide or how what can we",
+      "start": 911.36,
+      "duration": 6.599
+    },
+    {
+      "text": "use to guide our analysis process and",
+      "start": 914.639,
+      "duration": 6.2
+    },
+    {
+      "text": "this is something where some Holistics",
+      "start": 917.959,
+      "duration": 6.641
+    },
+    {
+      "text": "came into the game so for instance one",
+      "start": 920.839,
+      "duration": 6.761
+    },
+    {
+      "text": "fistic is the identification of State",
+      "start": 924.6,
+      "duration": 6.2
+    },
+    {
+      "text": "missions a state machine is typically a",
+      "start": 927.6,
+      "duration": 5.56
+    },
+    {
+      "text": "code construct which has the following",
+      "start": 930.8,
+      "duration": 6.479
+    },
+    {
+      "text": "form where we have a large loop where a",
+      "start": 933.16,
+      "duration": 7.4
+    },
+    {
+      "text": "lot of different states so-called basic",
+      "start": 937.279,
+      "duration": 7.521
+    },
+    {
+      "text": "blocks here are executed in this Loop",
+      "start": 940.56,
+      "duration": 7.079
+    },
+    {
+      "text": "and um then after all go back you can",
+      "start": 944.8,
+      "duration": 4.959
+    },
+    {
+      "text": "think about it as this is State one",
+      "start": 947.639,
+      "duration": 5.161
+    },
+    {
+      "text": "state two St state three and depending",
+      "start": 949.759,
+      "duration": 6.76
+    },
+    {
+      "text": "on some external Behavior like on a",
+      "start": 952.8,
+      "duration": 6.76
+    },
+    {
+      "text": "network process that we",
+      "start": 956.519,
+      "duration": 6.0
+    },
+    {
+      "text": "that we receive via Network we dispatch",
+      "start": 959.56,
+      "duration": 5.759
+    },
+    {
+      "text": "commands and go to this one to this one",
+      "start": 962.519,
+      "duration": 6.641
+    },
+    {
+      "text": "or to this one so in other words this is",
+      "start": 965.319,
+      "duration": 6.681
+    },
+    {
+      "text": "a loop-based dispatching routine which",
+      "start": 969.16,
+      "duration": 5.4
+    },
+    {
+      "text": "is qu quite common in complex",
+      "start": 972.0,
+      "duration": 6.6
+    },
+    {
+      "text": "code and in malware these kind of",
+      "start": 974.56,
+      "duration": 7.199
+    },
+    {
+      "text": "functionalities often pinpoint like netw",
+      "start": 978.6,
+      "duration": 5.88
+    },
+    {
+      "text": "protocol usage but also command and",
+      "start": 981.759,
+      "duration": 5.841
+    },
+    {
+      "text": "control server communication and so on",
+      "start": 984.48,
+      "duration": 5.799
+    },
+    {
+      "text": "so if you want to identify State",
+      "start": 987.6,
+      "duration": 6.0
+    },
+    {
+      "text": "machines like that using a hortic which",
+      "start": 990.279,
+      "duration": 6.12
+    },
+    {
+      "text": "pinpoints the graph layout of functions",
+      "start": 993.6,
+      "duration": 5.2
+    },
+    {
+      "text": "in this way is a really good way to",
+      "start": 996.399,
+      "duration": 4.0
+    },
+    {
+      "text": "proceed like",
+      "start": 998.8,
+      "duration": 4.159
+    },
+    {
+      "text": "that then there's another",
+      "start": 1000.399,
+      "duration": 5.081
+    },
+    {
+      "text": "aristic which is called frequently",
+      "start": 1002.959,
+      "duration": 6.281
+    },
+    {
+      "text": "called functions the idea is if a",
+      "start": 1005.48,
+      "duration": 7.32
+    },
+    {
+      "text": "function like zerox dead beef is called",
+      "start": 1009.24,
+      "duration": 6.719
+    },
+    {
+      "text": "a lot of by lots of different other code",
+      "start": 1012.8,
+      "duration": 7.0
+    },
+    {
+      "text": "locations it must be somewhat important",
+      "start": 1015.959,
+      "duration": 6.201
+    },
+    {
+      "text": "so and interesting or important",
+      "start": 1019.8,
+      "duration": 5.96
+    },
+    {
+      "text": "functions to look at might um be",
+      "start": 1022.16,
+      "duration": 6.159
+    },
+    {
+      "text": "interesting because you learn a lot",
+      "start": 1025.76,
+      "duration": 5.439
+    },
+    {
+      "text": "about the context how the code is",
+      "start": 1028.319,
+      "duration": 6.64
+    },
+    {
+      "text": "used so for instance if we do this on",
+      "start": 1031.199,
+      "duration": 6.12
+    },
+    {
+      "text": "some mware sample on some embedded mware",
+      "start": 1034.959,
+      "duration": 6.921
+    },
+    {
+      "text": "sample which uses um like the x or dos",
+      "start": 1037.319,
+      "duration": 8.081
+    },
+    {
+      "text": "trojen um this one has the most called",
+      "start": 1041.88,
+      "duration": 6.319
+    },
+    {
+      "text": "functions like three main copy string",
+      "start": 1045.4,
+      "duration": 6.32
+    },
+    {
+      "text": "Lang and so on you can see all of these",
+      "start": 1048.199,
+      "duration": 7.641
+    },
+    {
+      "text": "functions um are API functions like free",
+      "start": 1051.72,
+      "duration": 7.68
+    },
+    {
+      "text": "some memory copy some data compute the",
+      "start": 1055.84,
+      "duration": 6.28
+    },
+    {
+      "text": "length of a string com initialize some",
+      "start": 1059.4,
+      "duration": 5.04
+    },
+    {
+      "text": "memory so these are very often",
+      "start": 1062.12,
+      "duration": 3.799
+    },
+    {
+      "text": "frequently called functions from",
+      "start": 1064.44,
+      "duration": 5.239
+    },
+    {
+      "text": "userland code however in this scenario",
+      "start": 1065.919,
+      "duration": 5.601
+    },
+    {
+      "text": "we didn't really know what these",
+      "start": 1069.679,
+      "duration": 4.441
+    },
+    {
+      "text": "functions are and by looking that they",
+      "start": 1071.52,
+      "duration": 6.48
+    },
+    {
+      "text": "are just called very often and um we can",
+      "start": 1074.12,
+      "duration": 7.24
+    },
+    {
+      "text": "identify ify that these must be Library",
+      "start": 1078.0,
+      "duration": 6.4
+    },
+    {
+      "text": "functions and therefore we can add more",
+      "start": 1081.36,
+      "duration": 4.48
+    },
+    {
+      "text": "context to",
+      "start": 1084.4,
+      "duration": 5.96
+    },
+    {
+      "text": "that another example is the pl X Mar",
+      "start": 1085.84,
+      "duration": 8.0
+    },
+    {
+      "text": "family where we have the most called",
+      "start": 1090.36,
+      "duration": 7.76
+    },
+    {
+      "text": "functions are cc2 32bit and L Library",
+      "start": 1093.84,
+      "duration": 8.92
+    },
+    {
+      "text": "are in this case um remember when we",
+      "start": 1098.12,
+      "duration": 6.36
+    },
+    {
+      "text": "some minutes ago when we looked in the",
+      "start": 1102.76,
+      "duration": 4.48
+    },
+    {
+      "text": "Imports of a file sometimes you have",
+      "start": 1104.48,
+      "duration": 5.76
+    },
+    {
+      "text": "mware which hi the Imports if a file",
+      "start": 1107.24,
+      "duration": 5.52
+    },
+    {
+      "text": "doesn't have any Imports it's also kind",
+      "start": 1110.24,
+      "duration": 5.64
+    },
+    {
+      "text": "of suspicious and in this m sample this",
+      "start": 1112.76,
+      "duration": 5.919
+    },
+    {
+      "text": "mare sample didn't have any Imports",
+      "start": 1115.88,
+      "duration": 6.12
+    },
+    {
+      "text": "however these two functions here were",
+      "start": 1118.679,
+      "duration": 7.161
+    },
+    {
+      "text": "used this is basically a some scheme",
+      "start": 1122.0,
+      "duration": 6.4
+    },
+    {
+      "text": "called hash based import hiding they",
+      "start": 1125.84,
+      "duration": 6.24
+    },
+    {
+      "text": "were used to compute hash stoms and then",
+      "start": 1128.4,
+      "duration": 6.6
+    },
+    {
+      "text": "check which files can be imported which",
+      "start": 1132.08,
+      "duration": 6.599
+    },
+    {
+      "text": "match the hash and this way um the",
+      "start": 1135.0,
+      "duration": 5.72
+    },
+    {
+      "text": "frequently called functional hristic",
+      "start": 1138.679,
+      "duration": 5.041
+    },
+    {
+      "text": "allows us to identify some important",
+      "start": 1140.72,
+      "duration": 5.28
+    },
+    {
+      "text": "behavior of the malware which is used",
+      "start": 1143.72,
+      "duration": 5.24
+    },
+    {
+      "text": "for some very integral process namely",
+      "start": 1146.0,
+      "duration": 6.159
+    },
+    {
+      "text": "the importing of imports",
+      "start": 1148.96,
+      "duration": 8.0
+    },
+    {
+      "text": "here so going a step further X or de",
+      "start": 1152.159,
+      "duration": 7.76
+    },
+    {
+      "text": "coruption Loops so what you see in",
+      "start": 1156.96,
+      "duration": 6.44
+    },
+    {
+      "text": "malware very often is that you have a",
+      "start": 1159.919,
+      "duration": 6.401
+    },
+    {
+      "text": "simple Loop which performs an EXO",
+      "start": 1163.4,
+      "duration": 5.759
+    },
+    {
+      "text": "operation on some light area",
+      "start": 1166.32,
+      "duration": 7.0
+    },
+    {
+      "text": "with a fixed constant like in this case",
+      "start": 1169.159,
+      "duration": 8.361
+    },
+    {
+      "text": "0xde so with a constant like that well",
+      "start": 1173.32,
+      "duration": 6.68
+    },
+    {
+      "text": "this is not a secure cryptographic",
+      "start": 1177.52,
+      "duration": 5.639
+    },
+    {
+      "text": "scheme this is just something this is",
+      "start": 1180.0,
+      "duration": 6.28
+    },
+    {
+      "text": "the simplest form of encrypting some",
+      "start": 1183.159,
+      "duration": 7.081
+    },
+    {
+      "text": "data that I can think of and something",
+      "start": 1186.28,
+      "duration": 6.08
+    },
+    {
+      "text": "like that if you find something like",
+      "start": 1190.24,
+      "duration": 4.96
+    },
+    {
+      "text": "that and code it's most mely related to",
+      "start": 1192.36,
+      "duration": 5.24
+    },
+    {
+      "text": "some malicious behavior because Normal",
+      "start": 1195.2,
+      "duration": 5.2
+    },
+    {
+      "text": "code normally doesn't do that so in",
+      "start": 1197.6,
+      "duration": 6.04
+    },
+    {
+      "text": "other words if you start looking for",
+      "start": 1200.4,
+      "duration": 4.519
+    },
+    {
+      "text": "exos",
+      "start": 1203.64,
+      "duration": 4.72
+    },
+    {
+      "text": "operations which which use a constant",
+      "start": 1204.919,
+      "duration": 6.921
+    },
+    {
+      "text": "and are computed within a loop then this",
+      "start": 1208.36,
+      "duration": 6.439
+    },
+    {
+      "text": "is something which might be indicate",
+      "start": 1211.84,
+      "duration": 5.88
+    },
+    {
+      "text": "that malware does something malicious of",
+      "start": 1214.799,
+      "duration": 5.88
+    },
+    {
+      "text": "course it's just the existence of that",
+      "start": 1217.72,
+      "duration": 6.28
+    },
+    {
+      "text": "doesn't mean anything but it is at least",
+      "start": 1220.679,
+      "duration": 6.48
+    },
+    {
+      "text": "an indicator to look further if anything",
+      "start": 1224.0,
+      "duration": 6.919
+    },
+    {
+      "text": "else goes on so these kind of Loops are",
+      "start": 1227.159,
+      "duration": 5.721
+    },
+    {
+      "text": "often used for string decryption",
+      "start": 1230.919,
+      "duration": 5.481
+    },
+    {
+      "text": "routines in mware but also for to um to",
+      "start": 1232.88,
+      "duration": 5.24
+    },
+    {
+      "text": "unpack",
+      "start": 1236.4,
+      "duration": 6.44
+    },
+    {
+      "text": "code and then one final holistic the rc4",
+      "start": 1238.12,
+      "duration": 7.439
+    },
+    {
+      "text": "crypto algorithm the rc4 crypto",
+      "start": 1242.84,
+      "duration": 5.959
+    },
+    {
+      "text": "algorithm is an algorithm which is",
+      "start": 1245.559,
+      "duration": 6.36
+    },
+    {
+      "text": "basically totally unsecure and broken so",
+      "start": 1248.799,
+      "duration": 5.721
+    },
+    {
+      "text": "no normal application like no",
+      "start": 1251.919,
+      "duration": 4.921
+    },
+    {
+      "text": "non-malicious application would ever use",
+      "start": 1254.52,
+      "duration": 4.279
+    },
+    {
+      "text": "that in practice today",
+      "start": 1256.84,
+      "duration": 4.0
+    },
+    {
+      "text": "however because it is so easy to",
+      "start": 1258.799,
+      "duration": 4.401
+    },
+    {
+      "text": "implement it is very very common in",
+      "start": 1260.84,
+      "duration": 5.4
+    },
+    {
+      "text": "malware or in other words it is the most",
+      "start": 1263.2,
+      "duration": 5.359
+    },
+    {
+      "text": "widely used cryptographic algorithm that",
+      "start": 1266.24,
+      "duration": 4.799
+    },
+    {
+      "text": "can be found in malware so in other",
+      "start": 1268.559,
+      "duration": 4.881
+    },
+    {
+      "text": "words if you can identify",
+      "start": 1271.039,
+      "duration": 5.12
+    },
+    {
+      "text": "rc4 you have a good",
+      "start": 1273.44,
+      "duration": 7.52
+    },
+    {
+      "text": "indication that um that this malware",
+      "start": 1276.159,
+      "duration": 6.441
+    },
+    {
+      "text": "might be worth a closer",
+      "start": 1280.96,
+      "duration": 5.0
+    },
+    {
+      "text": "look so question is how to identify",
+      "start": 1282.6,
+      "duration": 6.319
+    },
+    {
+      "text": "mware uh don't get overwhelm that",
+      "start": 1285.96,
+      "duration": 6.48
+    },
+    {
+      "text": "basically we have rc4 has two functions",
+      "start": 1288.919,
+      "duration": 7.36
+    },
+    {
+      "text": "the Kea the keying algorithm and the",
+      "start": 1292.44,
+      "duration": 5.68
+    },
+    {
+      "text": "actual rc4",
+      "start": 1296.279,
+      "duration": 6.161
+    },
+    {
+      "text": "ention so two algorithms however the",
+      "start": 1298.12,
+      "duration": 7.039
+    },
+    {
+      "text": "especially one algorithm is very easy to",
+      "start": 1302.44,
+      "duration": 5.96
+    },
+    {
+      "text": "pinpoint it basically contains two for",
+      "start": 1305.159,
+      "duration": 6.481
+    },
+    {
+      "text": "Loops like this one and this one and",
+      "start": 1308.4,
+      "duration": 5.639
+    },
+    {
+      "text": "always use a constant",
+      "start": 1311.64,
+      "duration": 5.84
+    },
+    {
+      "text": "256 so the maximum bite value so in",
+      "start": 1314.039,
+      "duration": 4.601
+    },
+    {
+      "text": "other words",
+      "start": 1317.48,
+      "duration": 3.16
+    },
+    {
+      "text": "if you look for",
+      "start": 1318.64,
+      "duration": 5.68
+    },
+    {
+      "text": "functions which have two loops and use a",
+      "start": 1320.64,
+      "duration": 4.88
+    },
+    {
+      "text": "constant",
+      "start": 1324.32,
+      "duration": 4.32
+    },
+    {
+      "text": "256 we have at loast at least a good",
+      "start": 1325.52,
+      "duration": 8.36
+    },
+    {
+      "text": "holistic to pinpoint potential I4",
+      "start": 1328.64,
+      "duration": 7.76
+    },
+    {
+      "text": "implementations and these kind of things",
+      "start": 1333.88,
+      "duration": 4.52
+    },
+    {
+      "text": "are often used for string decryption",
+      "start": 1336.4,
+      "duration": 4.72
+    },
+    {
+      "text": "routines in malware but also for domain",
+      "start": 1338.4,
+      "duration": 4.879
+    },
+    {
+      "text": "generation algorithms basically",
+      "start": 1341.12,
+      "duration": 4.439
+    },
+    {
+      "text": "algorithms which compute the next domain",
+      "start": 1343.279,
+      "duration": 4.121
+    },
+    {
+      "text": "which will be contacted like the CNC",
+      "start": 1345.559,
+      "duration": 3.881
+    },
+    {
+      "text": "server and and so",
+      "start": 1347.4,
+      "duration": 4.6
+    },
+    {
+      "text": "on so to",
+      "start": 1349.44,
+      "duration": 6.96
+    },
+    {
+      "text": "recap um in the first part we took a",
+      "start": 1352.0,
+      "duration": 7.76
+    },
+    {
+      "text": "look at some basic and some basic things",
+      "start": 1356.4,
+      "duration": 7.24
+    },
+    {
+      "text": "like looking at strings looking at",
+      "start": 1359.76,
+      "duration": 7.159
+    },
+    {
+      "text": "um um looking at Pi functions looking at",
+      "start": 1363.64,
+      "duration": 6.039
+    },
+    {
+      "text": "the enthropy and in the second part we",
+      "start": 1366.919,
+      "duration": 6.401
+    },
+    {
+      "text": "talked about some more guidance like if",
+      "start": 1369.679,
+      "duration": 6.24
+    },
+    {
+      "text": "we have to get our hands dirty and dive",
+      "start": 1373.32,
+      "duration": 4.76
+    },
+    {
+      "text": "into deeper into the binary we can can",
+      "start": 1375.919,
+      "duration": 4.961
+    },
+    {
+      "text": "use htics which help us to identify",
+      "start": 1378.08,
+      "duration": 5.88
+    },
+    {
+      "text": "potentially is interesting applications",
+      "start": 1380.88,
+      "duration": 6.24
+    },
+    {
+      "text": "spe specific to malware like complex",
+      "start": 1383.96,
+      "duration": 5.4
+    },
+    {
+      "text": "State machines ex or decryption",
+      "start": 1387.12,
+      "duration": 5.96
+    },
+    {
+      "text": "functions rc4 implementations and so",
+      "start": 1389.36,
+      "duration": 6.679
+    },
+    {
+      "text": "on so to",
+      "start": 1393.08,
+      "duration": 6.199
+    },
+    {
+      "text": "conclude um the main takeaways are that",
+      "start": 1396.039,
+      "duration": 6.081
+    },
+    {
+      "text": "binaries from unknown sources cannot be",
+      "start": 1399.279,
+      "duration": 5.721
+    },
+    {
+      "text": "trusted well this is no rocket science",
+      "start": 1402.12,
+      "duration": 6.039
+    },
+    {
+      "text": "but it's always good to repeat that so",
+      "start": 1405.0,
+      "duration": 5.72
+    },
+    {
+      "text": "common an analysis techniques provide",
+      "start": 1408.159,
+      "duration": 5.0
+    },
+    {
+      "text": "first insights like first",
+      "start": 1410.72,
+      "duration": 4.68
+    },
+    {
+      "text": "indicators however if you want to get",
+      "start": 1413.159,
+      "duration": 5.0
+    },
+    {
+      "text": "sure it's always good to have a closer",
+      "start": 1415.4,
+      "duration": 6.08
+    },
+    {
+      "text": "look do some manual analysis to confirm",
+      "start": 1418.159,
+      "duration": 4.441
+    },
+    {
+      "text": "the initial",
+      "start": 1421.48,
+      "duration": 4.559
+    },
+    {
+      "text": "indicators and for the last step so",
+      "start": 1422.6,
+      "duration": 7.52
+    },
+    {
+      "text": "htics can guide analysis effort a",
+      "start": 1426.039,
+      "duration": 9.361
+    },
+    {
+      "text": "lot um for many of the Holistics I I um",
+      "start": 1430.12,
+      "duration": 8.24
+    },
+    {
+      "text": "demonstrated I wrote a plugin by ninja",
+      "start": 1435.4,
+      "duration": 5.36
+    },
+    {
+      "text": "plugin which implements these kind of",
+      "start": 1438.36,
+      "duration": 5.64
+    },
+    {
+      "text": "things um if you should own the software",
+      "start": 1440.76,
+      "duration": 6.0
+    },
+    {
+      "text": "you can easily identify it uh you can",
+      "start": 1444.0,
+      "duration": 4.919
+    },
+    {
+      "text": "EAS easily install it with a plugin",
+      "start": 1446.76,
+      "duration": 4.68
+    },
+    {
+      "text": "manager and I would like to give a very",
+      "start": 1448.919,
+      "duration": 3.601
+    },
+    {
+      "text": "short",
+      "start": 1451.44,
+      "duration": 3.76
+    },
+    {
+      "text": "demonstration so",
+      "start": 1452.52,
+      "duration": 6.44
+    },
+    {
+      "text": "basically I'm in this binary and I I",
+      "start": 1455.2,
+      "duration": 6.52
+    },
+    {
+      "text": "have lot of hundreds of functions",
+      "start": 1458.96,
+      "duration": 5.8
+    },
+    {
+      "text": "here or let me take another one I have",
+      "start": 1461.72,
+      "duration": 5.52
+    },
+    {
+      "text": "another binary and I also have a lot of",
+      "start": 1464.76,
+      "duration": 3.88
+    },
+    {
+      "text": "functions here",
+      "start": 1467.24,
+      "duration": 4.159
+    },
+    {
+      "text": "and I don't know is there something",
+      "start": 1468.64,
+      "duration": 6.2
+    },
+    {
+      "text": "which might look like rc4 what I can do",
+      "start": 1471.399,
+      "duration": 6.52
+    },
+    {
+      "text": "is top of here this will be my output",
+      "start": 1474.84,
+      "duration": 8.4
+    },
+    {
+      "text": "window I just query the plugin like look",
+      "start": 1477.919,
+      "duration": 7.76
+    },
+    {
+      "text": "for potential rc4",
+      "start": 1483.24,
+      "duration": 5.28
+    },
+    {
+      "text": "implementations then it prints some",
+      "start": 1485.679,
+      "duration": 5.921
+    },
+    {
+      "text": "functions and one of them tells me this",
+      "start": 1488.52,
+      "duration": 6.48
+    },
+    {
+      "text": "might be case a if I take a look at this",
+      "start": 1491.6,
+      "duration": 8.16
+    },
+    {
+      "text": "function then I see it has two Loops one",
+      "start": 1495.0,
+      "duration": 6.76
+    },
+    {
+      "text": "loop on top of",
+      "start": 1499.76,
+      "duration": 7.84
+    },
+    {
+      "text": "here one Loop here and I see the",
+      "start": 1501.76,
+      "duration": 7.84
+    },
+    {
+      "text": "constant",
+      "start": 1507.6,
+      "duration": 5.0
+    },
+    {
+      "text": "0x00 which which is the hexa decimal",
+      "start": 1509.6,
+      "duration": 5.0
+    },
+    {
+      "text": "encoding for",
+      "start": 1512.6,
+      "duration": 6.84
+    },
+    {
+      "text": "256 in other words in this case the um",
+      "start": 1514.6,
+      "duration": 7.84
+    },
+    {
+      "text": "the Plugin or theistic looked for",
+      "start": 1519.44,
+      "duration": 6.76
+    },
+    {
+      "text": "functions which have two loops",
+      "start": 1522.44,
+      "duration": 8.119
+    },
+    {
+      "text": "and also use the constant 100 we also",
+      "start": 1526.2,
+      "duration": 7.44
+    },
+    {
+      "text": "see that we found another",
+      "start": 1530.559,
+      "duration": 3.081
+    },
+    {
+      "text": "function which also has two loops and",
+      "start": 1534.84,
+      "duration": 7.04
+    },
+    {
+      "text": "uses the constant 100 somewhere so this",
+      "start": 1538.559,
+      "duration": 5.48
+    },
+    {
+      "text": "one is of course a false",
+      "start": 1541.88,
+      "duration": 5.44
+    },
+    {
+      "text": "positive however this one is not a false",
+      "start": 1544.039,
+      "duration": 6.801
+    },
+    {
+      "text": "positive so and in this way the",
+      "start": 1547.32,
+      "duration": 6.92
+    },
+    {
+      "text": "Holistics of course are not always are",
+      "start": 1550.84,
+      "duration": 5.959
+    },
+    {
+      "text": "not always useful are not always right",
+      "start": 1554.24,
+      "duration": 5.76
+    },
+    {
+      "text": "but they give me me just three functions",
+      "start": 1556.799,
+      "duration": 7.401
+    },
+    {
+      "text": "to analyze which say this might be rc4",
+      "start": 1560.0,
+      "duration": 6.279
+    },
+    {
+      "text": "and just by looking at the function then",
+      "start": 1564.2,
+      "duration": 4.76
+    },
+    {
+      "text": "I can start deeper and deeper look the",
+      "start": 1566.279,
+      "duration": 4.321
+    },
+    {
+      "text": "context how it is used and stuff like",
+      "start": 1568.96,
+      "duration": 4.36
+    },
+    {
+      "text": "that to identify oh yeah this is really",
+      "start": 1570.6,
+      "duration": 5.24
+    },
+    {
+      "text": "rc4 and with something like that",
+      "start": 1573.32,
+      "duration": 6.12
+    },
+    {
+      "text": "theistic helped pinpointing um",
+      "start": 1575.84,
+      "duration": 6.439
+    },
+    {
+      "text": "interesting Behavior which is often used",
+      "start": 1579.44,
+      "duration": 4.959
+    },
+    {
+      "text": "in a malicious",
+      "start": 1582.279,
+      "duration": 4.961
+    },
+    {
+      "text": "context so thank you a lot thank you a",
+      "start": 1584.399,
+      "duration": 5.921
+    },
+    {
+      "text": "lot for your interest so to do a small",
+      "start": 1587.24,
+      "duration": 5.36
+    },
+    {
+      "text": "recap we talked about common approaches",
+      "start": 1590.32,
+      "duration": 4.88
+    },
+    {
+      "text": "to identify mous behavior and unknown",
+      "start": 1592.6,
+      "duration": 5.92
+    },
+    {
+      "text": "binaries then we thought that manual",
+      "start": 1595.2,
+      "duration": 5.56
+    },
+    {
+      "text": "reverse engineering to dive deeper is",
+      "start": 1598.52,
+      "duration": 5.48
+    },
+    {
+      "text": "always a good thing and that hysics can",
+      "start": 1600.76,
+      "duration": 6.12
+    },
+    {
+      "text": "guide manual approaches um if you want",
+      "start": 1604.0,
+      "duration": 6.2
+    },
+    {
+      "text": "to play around with that um feel free to",
+      "start": 1606.88,
+      "duration": 5.96
+    },
+    {
+      "text": "check it out on your own otherwise",
+      "start": 1610.2,
+      "duration": 4.8
+    },
+    {
+      "text": "thanks a lot and I'm open for questions",
+      "start": 1612.84,
+      "duration": 5.199
+    },
+    {
+      "text": "now if we have time for that thank you",
+      "start": 1615.0,
+      "duration": 6.2
+    },
+    {
+      "text": "Tim warm",
+      "start": 1618.039,
+      "duration": 3.161
+    },
+    {
+      "text": "Applause we we do have time for",
+      "start": 1622.919,
+      "duration": 3.281
+    },
+    {
+      "text": "questions and I guess there will be",
+      "start": 1625.0,
+      "duration": 4.399
+    },
+    {
+      "text": "questions who would like to",
+      "start": 1626.2,
+      "duration": 5.92
+    },
+    {
+      "text": "start when you're in we have a",
+      "start": 1629.399,
+      "duration": 6.201
+    },
+    {
+      "text": "microphone hold on a second",
+      "start": 1632.12,
+      "duration": 3.48
+    },
+    {
+      "text": "second thank you very much for this",
+      "start": 1635.919,
+      "duration": 6.24
+    },
+    {
+      "text": "interesting um presentation you showed",
+      "start": 1638.279,
+      "duration": 8.0
+    },
+    {
+      "text": "very um sophisticated ways to find",
+      "start": 1642.159,
+      "duration": 6.081
+    },
+    {
+      "text": "identify interest",
+      "start": 1646.279,
+      "duration": 6.361
+    },
+    {
+      "text": "routines to dig in Could you um",
+      "start": 1648.24,
+      "duration": 7.48
+    },
+    {
+      "text": "elaborate a little bit what how can you",
+      "start": 1652.64,
+      "duration": 6.08
+    },
+    {
+      "text": "use this information this Dynamic",
+      "start": 1655.72,
+      "duration": 5.439
+    },
+    {
+      "text": "instrumentation to analyze what's",
+      "start": 1658.72,
+      "duration": 4.36
+    },
+    {
+      "text": "actually done in the code and what would",
+      "start": 1661.159,
+      "duration": 3.281
+    },
+    {
+      "text": "you",
+      "start": 1663.08,
+      "duration": 4.92
+    },
+    {
+      "text": "use um well analyzing what's actually",
+      "start": 1664.44,
+      "duration": 5.88
+    },
+    {
+      "text": "done is always a bit harder this",
+      "start": 1668.0,
+      "duration": 4.48
+    },
+    {
+      "text": "requires some more understanding so",
+      "start": 1670.32,
+      "duration": 4.239
+    },
+    {
+      "text": "basically for instance let me say in",
+      "start": 1672.48,
+      "duration": 5.679
+    },
+    {
+      "text": "this case I identified this function",
+      "start": 1674.559,
+      "duration": 6.0
+    },
+    {
+      "text": "that this is potentially interesting now",
+      "start": 1678.159,
+      "duration": 4.441
+    },
+    {
+      "text": "I would start reverse engineering I",
+      "start": 1680.559,
+      "duration": 4.761
+    },
+    {
+      "text": "probably would start with looking at the",
+      "start": 1682.6,
+      "duration": 5.16
+    },
+    {
+      "text": "de compiler output like on a high level",
+      "start": 1685.32,
+      "duration": 5.239
+    },
+    {
+      "text": "on a c like approximation level to",
+      "start": 1687.76,
+      "duration": 6.0
+    },
+    {
+      "text": "analyze what might this code compute so",
+      "start": 1690.559,
+      "duration": 5.041
+    },
+    {
+      "text": "to get a better understanding what this",
+      "start": 1693.76,
+      "duration": 4.84
+    },
+    {
+      "text": "does and then give it a name like this",
+      "start": 1695.6,
+      "duration": 6.959
+    },
+    {
+      "text": "might be rc4 KSA and then analyze the",
+      "start": 1698.6,
+      "duration": 6.079
+    },
+    {
+      "text": "context in which this is called and so",
+      "start": 1702.559,
+      "duration": 5.36
+    },
+    {
+      "text": "on so this is a very deep process which",
+      "start": 1704.679,
+      "duration": 5.84
+    },
+    {
+      "text": "takes a lot of time but this is the way",
+      "start": 1707.919,
+      "duration": 5.961
+    },
+    {
+      "text": "I would I usually approach it um",
+      "start": 1710.519,
+      "duration": 6.361
+    },
+    {
+      "text": "basically use htics to identify",
+      "start": 1713.88,
+      "duration": 5.48
+    },
+    {
+      "text": "potentially interesting code constructs",
+      "start": 1716.88,
+      "duration": 4.72
+    },
+    {
+      "text": "and then start analyzing them to check",
+      "start": 1719.36,
+      "duration": 3.36
+    },
+    {
+      "text": "what they",
+      "start": 1721.6,
+      "duration": 4.559
+    },
+    {
+      "text": "do and if you you are asking you were",
+      "start": 1722.72,
+      "duration": 5.72
+    },
+    {
+      "text": "you will mention Dynamic scenarios well",
+      "start": 1726.159,
+      "duration": 4.88
+    },
+    {
+      "text": "if you have Dynamic information like you",
+      "start": 1728.44,
+      "duration": 4.92
+    },
+    {
+      "text": "have an instruction Trace where you know",
+      "start": 1731.039,
+      "duration": 5.441
+    },
+    {
+      "text": "which code is already executed or not it",
+      "start": 1733.36,
+      "duration": 5.439
+    },
+    {
+      "text": "always provides additional information",
+      "start": 1736.48,
+      "duration": 4.079
+    },
+    {
+      "text": "because then for instance we can only",
+      "start": 1738.799,
+      "duration": 3.36
+    },
+    {
+      "text": "have a look at the code locations which",
+      "start": 1740.559,
+      "duration": 4.561
+    },
+    {
+      "text": "are really executed or we can also dump",
+      "start": 1742.159,
+      "duration": 5.52
+    },
+    {
+      "text": "some register values and provide them",
+      "start": 1745.12,
+      "duration": 5.559
+    },
+    {
+      "text": "into our static analyzer um to get more",
+      "start": 1747.679,
+      "duration": 6.281
+    },
+    {
+      "text": "context information and stuff like",
+      "start": 1750.679,
+      "duration": 5.88
+    },
+    {
+      "text": "that thank you thanks",
+      "start": 1753.96,
+      "duration": 6.439
+    },
+    {
+      "text": "Tim have a followup one Tim assume for a",
+      "start": 1756.559,
+      "duration": 6.6
+    },
+    {
+      "text": "second that we are all evil hackers in",
+      "start": 1760.399,
+      "duration": 5.64
+    },
+    {
+      "text": "this room and your task is not to teach",
+      "start": 1763.159,
+      "duration": 6.321
+    },
+    {
+      "text": "us how to detect the binary but to avoid",
+      "start": 1766.039,
+      "duration": 6.161
+    },
+    {
+      "text": "to evade the the detection what uh",
+      "start": 1769.48,
+      "duration": 4.6
+    },
+    {
+      "text": "number one tip would you give us what",
+      "start": 1772.2,
+      "duration": 3.28
+    },
+    {
+      "text": "what what",
+      "start": 1774.08,
+      "duration": 3.68
+    },
+    {
+      "text": "hint if if we are about to write a",
+      "start": 1775.48,
+      "duration": 4.039
+    },
+    {
+      "text": "binary a malicious",
+      "start": 1777.76,
+      "duration": 4.48
+    },
+    {
+      "text": "binary well there's a lot there's a lot",
+      "start": 1779.519,
+      "duration": 5.64
+    },
+    {
+      "text": "of things so to keep it short well you",
+      "start": 1782.24,
+      "duration": 6.039
+    },
+    {
+      "text": "can always hide things like you can",
+      "start": 1785.159,
+      "duration": 5.601
+    },
+    {
+      "text": "apply upstation you can peack code and",
+      "start": 1788.279,
+      "duration": 4.601
+    },
+    {
+      "text": "stuff like that then you don't see the",
+      "start": 1790.76,
+      "duration": 5.039
+    },
+    {
+      "text": "obvious ones and add you add basically",
+      "start": 1792.88,
+      "duration": 4.6
+    },
+    {
+      "text": "different layers of obious and",
+      "start": 1795.799,
+      "duration": 4.281
+    },
+    {
+      "text": "encryption to make analysis as hard as",
+      "start": 1797.48,
+      "duration": 5.559
+    },
+    {
+      "text": "possible this prevents manual analysis",
+      "start": 1800.08,
+      "duration": 6.12
+    },
+    {
+      "text": "or at least it makes it a lot of harder",
+      "start": 1803.039,
+      "duration": 6.321
+    },
+    {
+      "text": "on the other hand um if you don't have",
+      "start": 1806.2,
+      "duration": 4.68
+    },
+    {
+      "text": "any interesting strings if you don't",
+      "start": 1809.36,
+      "duration": 3.72
+    },
+    {
+      "text": "have any Imports this also looks",
+      "start": 1810.88,
+      "duration": 6.399
+    },
+    {
+      "text": "suspicious so what most AP mware does is",
+      "start": 1813.08,
+      "duration": 7.64
+    },
+    {
+      "text": "it tries to look as normal code as as",
+      "start": 1817.279,
+      "duration": 5.801
+    },
+    {
+      "text": "much as normal code as possible however",
+      "start": 1820.72,
+      "duration": 5.439
+    },
+    {
+      "text": "Ys of userland or mass mware tries to",
+      "start": 1823.08,
+      "duration": 5.16
+    },
+    {
+      "text": "protect themselves using methods like",
+      "start": 1826.159,
+      "duration": 4.52
+    },
+    {
+      "text": "that okay so it's it's again an arms",
+      "start": 1828.24,
+      "duration": 4.88
+    },
+    {
+      "text": "race and um so we have to invite you",
+      "start": 1830.679,
+      "duration": 3.761
+    },
+    {
+      "text": "again in three years to see where we",
+      "start": 1833.12,
+      "duration": 3.32
+    },
+    {
+      "text": "stand thank you so much Tim for this",
+      "start": 1834.44,
+      "duration": 2.959
+    },
+    {
+      "text": "interesting",
+      "start": 1836.44,
+      "duration": 5.239
+    },
+    {
+      "text": "talk thank you I do have I I do have",
+      "start": 1837.399,
+      "duration": 5.64
+    },
+    {
+      "text": "chocolate for you but you know chocolate",
+      "start": 1841.679,
+      "duration": 3.561
+    },
+    {
+      "text": "is unhealthy and as you're sick um it's",
+      "start": 1843.039,
+      "duration": 4.081
+    },
+    {
+      "text": "not a good idea we'll send it to you so",
+      "start": 1845.24,
+      "duration": 3.08
+    },
+    {
+      "text": "it will be there in two weeks and then",
+      "start": 1847.12,
+      "duration": 3.76
+    },
+    {
+      "text": "you can enjoy it all right okay thanks a",
+      "start": 1848.32,
+      "duration": 5.239
+    },
+    {
+      "text": "lot all right enjoy the com again thanks",
+      "start": 1850.88,
+      "duration": 7.08
+    },
+    {
+      "text": "Tim byebye bye",
+      "start": 1853.559,
+      "duration": 4.401
+    }
+  ],
+  "full_text": "so now let's get back to the work let's get back to interesting content I have good news and I have bad news as always um the the good news is um we have a fantastic speaker fantastic topic um oh and the bad news you see already the bad news is that Tim BL seedco is not with us because he fell sick but he is healthy enough to give the presentation I think that is worth an Applause already so Tim thank you guys can you hear me yes we hear you well before you start give me give me a give me a second all right so um now you got the the goodness and the bad new so the good news is given that we had the explain hack in Switzerland I don't know Tim have you heard about explain I guess not right uh I read about that but I don't know really much okay good good that that's that's fine essentially what explained was is a supply chain attack right so somebody was disrupting the supply chain and of course you can do this with open source components in the supply chain which well at least in theory you can look at for binaries in the supply chain it's much much harder and this is why the good news is that we have Tim as an expert to look into vulnerabilities of binaries and I think Tim you're the founder of uh a company that deals with exactly this topic right um yes so basically I'm the found of mof where we build embedded Security Solutions for embedded devices yeah all right good so then I would say the stage is yours at least teams Microsoft teams is yours thank you so much for joining nevertheless thanks a lot for the invitation and I'm really sorry I can't be here I just go to I go I just went sick last week and which makes travel currently not really possible um but yeah still great to give the talk here so today we talk about um if we have given a binary how we can identify or extract potential malicious behavior in these binaries so I'm a reverse engineer since 15 years and I also co-founded a company with some other guys in bohome and Netherlands so in Germany and Netherlands where we designed software protection schemes for better devices and I'm also a trainer for code the ofation and reverse engineering techniques and today we talk about a scenario which happens nearly on a daily basis where we have an unknown binary and what we don't know is this trustworthy can we trusted it should be trust it or does it contain potentially malicious code or malicious indications and today we from a reverse engineering or analyst perspective we talk about some basic and some more advanced strategies how we can cover uh or how we could um tackle this problem so the first thing is we start with some unknown binary so let's say we don't know where it comes from maybe a s frst to us a customer gave us this binary we downloaded it on the Internet or we bought this commercially and we just want to know are there potential back doors inside or does the software contain any features which it shouldn't contain so B basically what is malicious content malicious is like there's something additionally inside like a feature you don't expect it to be inside let's say if you are having um a normal program and it encrypts all your files and sends it somewhere without your knowledge this can be considered as malicious if something um records your key strokes your key um if you don't expected to be to be this is malicious so depending on the context malicious might mean the additional features inside that you don't expect to be the mix inside so given a binary where to start so we have some very common approaches which at least are easy to perform and provide some good indicators about if the binary contains some Behavior or not so the first one is signature checks a signature can be understood as a database of well-known crafted code patterns and these code patterns might be known because we already have some signatures of existing malware or of existing marware features and by providing um a a database of patterns like this rules. jar on top of here we can then for instance take a tool like Jara apply the rules and then please apply these rules to the unknown binary and list everything you find and then it mind might find something like hey there's some screenshot functionality inside binary okay is this a screenshot or not screenshot functionality inside the binary or not depends on the context if this is if this is expected Behavior or not but at least you can see oh there's some screens screenshot Behavior inside so there's a feature of potential screen capturing another example might be oh there are some cryptographic constants like shaan or some encoding like CSC 32bit so maybe there are cryptographic algorithms inside or you could also learn like this is packed so it's basically there's a Code part or code sections which might be encrypted or packed in a specific way so however besides the signatures you can also dig into dig a bit onto your own and look for instance for suspicious string so if you for instance check just the strings in the binary you might see something like that this is in one example of a Chinese Mya sample where where we can see like wait there's some some deback information left like X plug key logger CPP or screen. cppp if you see something like that this at least looks suspicious so it might indicate to be a program file like source code of some key logging functionality or some screen capturing functionality it might open also a shell or tet session who knows but at least finding something inside a binary might be suspicious so there are also some other strings like HTTP or post which indicate some Network Behavior the binary seems to or might indicate that it might open an HTTP request or send something and here we see parts of an URL on website like slash update with some parameters so by just looking at the strings we might learn that it might indicate something like webbased Behavior so network communication and then there's one last thing we can take a look at and these are the API functions so basically the functions which are used from the operating system which are provided by the operating system to perform specific actions like capturing key strokes or like opening window or just sending something over the network so these are usually realized using API functions and here for instance we can see that there are two libraries imported user 32 and colel 32 and in these libraries there are specific functions important imported so for instance like get key state or get aen key State these are Library functions which are totally valid on its own but they are also used quite often to implement key logging functionality so depending on the context if you see something like that so it might be something to get suspicious but it might also be okay if you see something like that where you think like find first file find next file you basically have some the directory traversal or some file system access and you also see like write file or create file remove file you can create files remove files and so on so again depending on the context this might be totally um valid it might also be suspicious however if we see something like right process memory this is something where really everything gets suspicious because this means that we write some data into another process and something like that is like in nine from 10 cases malicious behavior because we try to inject malicious code into other processes so but as say with just some basic things we can learn about the strings we can learn about the API calls we can learn about State signatures and these already give us often a good overview about potential things which might go on in the binary there's also one simple analysis one can do which is called entropy analysis entropy is a mathematical computation or algorithm which um tells you how much Randomness is in a specific blob of data and the higher the entropy the higher the more likely or the more likely it looks like random code and this is something which can usually uh which is often used in a malare analysis to check if there are specific code sections which are encrypted or packed so what you see here is an entropy plot of the bite positions like these are all the bites of the of the binary sample and this is the entropy and the highest entropy is a value of eight and here you see um a entropy distribution of a normal unobfuscated unpacked file where you see that most of the entropy is between five and six which indicates there's some sort of Randomness but still enough enough things uh enough structured data to be not totally random and you see there are also larger Parts um which have different entropy values so this is basically something which can be considered as low entropy and this is unpacked um however if you see something like that where most of the parts of the binary have a very high entropy like close to eight this is something which tells us oh there's a lot of Random looking data or the lot of data which isn't well structured this is a good indicator for that there's packed or encrypted code so in other words High entropy means packed code so to do a small recap we talked about some basic methods to detect malicious behavior and binaries by looking at some signatures by looking at the strings the API function in the entropy and I would likely I would just would like to take one minute to visualize that so I have a tool here which is called binary ninja this is in disassembler and decompiler so basically this is a binary analysis framework and in binary ninja I can for instance this is just one example I can have something which is called triage summary where I see on top of here there I have an entropy plot and here we can see this is all of the same color more or less so this is uh not not encrypted down here I see all the libraries which are imported like kernel 32 user 32 and so on here in this window I see some Library functions which are imported so for instance like Rec create key this tells me that there are some functionality to modify the Reg registry in Windows there are some right files and some um exit process but also pass command command light arguments um and some other things so basically by looking at the API calls I can still learn a lot and then I Al I have also a strings window and in this case I don't see any strings and seeing not seeing any strings in the string window is suspicious this seems to be there seems to be some method in the code which hides the stin so also not seeing anything in this case is an indicator that things don't be have as I expect them to be okay so these are some basic things we can do looking for static signatures strings API functions and entropy however sometimes we need to dive deeper we need to perform more time with a specific sample or we need to manually reverse engineer it to check what's really inside so the things before this gave us good indicators which might be inside however sometimes we need to we we we want to further verify that or confirm that and then we do manual reverse engineering however RSE engineering we sometimes have many thousands of functions of code locations we can look at so the question is how can we speed this up how can we how can we guide or how what can we use to guide our analysis process and this is something where some Holistics came into the game so for instance one fistic is the identification of State missions a state machine is typically a code construct which has the following form where we have a large loop where a lot of different states so-called basic blocks here are executed in this Loop and um then after all go back you can think about it as this is State one state two St state three and depending on some external Behavior like on a network process that we that we receive via Network we dispatch commands and go to this one to this one or to this one so in other words this is a loop-based dispatching routine which is qu quite common in complex code and in malware these kind of functionalities often pinpoint like netw protocol usage but also command and control server communication and so on so if you want to identify State machines like that using a hortic which pinpoints the graph layout of functions in this way is a really good way to proceed like that then there's another aristic which is called frequently called functions the idea is if a function like zerox dead beef is called a lot of by lots of different other code locations it must be somewhat important so and interesting or important functions to look at might um be interesting because you learn a lot about the context how the code is used so for instance if we do this on some mware sample on some embedded mware sample which uses um like the x or dos trojen um this one has the most called functions like three main copy string Lang and so on you can see all of these functions um are API functions like free some memory copy some data compute the length of a string com initialize some memory so these are very often frequently called functions from userland code however in this scenario we didn't really know what these functions are and by looking that they are just called very often and um we can identify ify that these must be Library functions and therefore we can add more context to that another example is the pl X Mar family where we have the most called functions are cc2 32bit and L Library are in this case um remember when we some minutes ago when we looked in the Imports of a file sometimes you have mware which hi the Imports if a file doesn't have any Imports it's also kind of suspicious and in this m sample this mare sample didn't have any Imports however these two functions here were used this is basically a some scheme called hash based import hiding they were used to compute hash stoms and then check which files can be imported which match the hash and this way um the frequently called functional hristic allows us to identify some important behavior of the malware which is used for some very integral process namely the importing of imports here so going a step further X or de coruption Loops so what you see in malware very often is that you have a simple Loop which performs an EXO operation on some light area with a fixed constant like in this case 0xde so with a constant like that well this is not a secure cryptographic scheme this is just something this is the simplest form of encrypting some data that I can think of and something like that if you find something like that and code it's most mely related to some malicious behavior because Normal code normally doesn't do that so in other words if you start looking for exos operations which which use a constant and are computed within a loop then this is something which might be indicate that malware does something malicious of course it's just the existence of that doesn't mean anything but it is at least an indicator to look further if anything else goes on so these kind of Loops are often used for string decryption routines in mware but also for to um to unpack code and then one final holistic the rc4 crypto algorithm the rc4 crypto algorithm is an algorithm which is basically totally unsecure and broken so no normal application like no non-malicious application would ever use that in practice today however because it is so easy to implement it is very very common in malware or in other words it is the most widely used cryptographic algorithm that can be found in malware so in other words if you can identify rc4 you have a good indication that um that this malware might be worth a closer look so question is how to identify mware uh don't get overwhelm that basically we have rc4 has two functions the Kea the keying algorithm and the actual rc4 ention so two algorithms however the especially one algorithm is very easy to pinpoint it basically contains two for Loops like this one and this one and always use a constant 256 so the maximum bite value so in other words if you look for functions which have two loops and use a constant 256 we have at loast at least a good holistic to pinpoint potential I4 implementations and these kind of things are often used for string decryption routines in malware but also for domain generation algorithms basically algorithms which compute the next domain which will be contacted like the CNC server and and so on so to recap um in the first part we took a look at some basic and some basic things like looking at strings looking at um um looking at Pi functions looking at the enthropy and in the second part we talked about some more guidance like if we have to get our hands dirty and dive into deeper into the binary we can can use htics which help us to identify potentially is interesting applications spe specific to malware like complex State machines ex or decryption functions rc4 implementations and so on so to conclude um the main takeaways are that binaries from unknown sources cannot be trusted well this is no rocket science but it's always good to repeat that so common an analysis techniques provide first insights like first indicators however if you want to get sure it's always good to have a closer look do some manual analysis to confirm the initial indicators and for the last step so htics can guide analysis effort a lot um for many of the Holistics I I um demonstrated I wrote a plugin by ninja plugin which implements these kind of things um if you should own the software you can easily identify it uh you can EAS easily install it with a plugin manager and I would like to give a very short demonstration so basically I'm in this binary and I I have lot of hundreds of functions here or let me take another one I have another binary and I also have a lot of functions here and I don't know is there something which might look like rc4 what I can do is top of here this will be my output window I just query the plugin like look for potential rc4 implementations then it prints some functions and one of them tells me this might be case a if I take a look at this function then I see it has two Loops one loop on top of here one Loop here and I see the constant 0x00 which which is the hexa decimal encoding for 256 in other words in this case the um the Plugin or theistic looked for functions which have two loops and also use the constant 100 we also see that we found another function which also has two loops and uses the constant 100 somewhere so this one is of course a false positive however this one is not a false positive so and in this way the Holistics of course are not always are not always useful are not always right but they give me me just three functions to analyze which say this might be rc4 and just by looking at the function then I can start deeper and deeper look the context how it is used and stuff like that to identify oh yeah this is really rc4 and with something like that theistic helped pinpointing um interesting Behavior which is often used in a malicious context so thank you a lot thank you a lot for your interest so to do a small recap we talked about common approaches to identify mous behavior and unknown binaries then we thought that manual reverse engineering to dive deeper is always a good thing and that hysics can guide manual approaches um if you want to play around with that um feel free to check it out on your own otherwise thanks a lot and I'm open for questions now if we have time for that thank you Tim warm Applause we we do have time for questions and I guess there will be questions who would like to start when you're in we have a microphone hold on a second second thank you very much for this interesting um presentation you showed very um sophisticated ways to find identify interest routines to dig in Could you um elaborate a little bit what how can you use this information this Dynamic instrumentation to analyze what's actually done in the code and what would you use um well analyzing what's actually done is always a bit harder this requires some more understanding so basically for instance let me say in this case I identified this function that this is potentially interesting now I would start reverse engineering I probably would start with looking at the de compiler output like on a high level on a c like approximation level to analyze what might this code compute so to get a better understanding what this does and then give it a name like this might be rc4 KSA and then analyze the context in which this is called and so on so this is a very deep process which takes a lot of time but this is the way I would I usually approach it um basically use htics to identify potentially interesting code constructs and then start analyzing them to check what they do and if you you are asking you were you will mention Dynamic scenarios well if you have Dynamic information like you have an instruction Trace where you know which code is already executed or not it always provides additional information because then for instance we can only have a look at the code locations which are really executed or we can also dump some register values and provide them into our static analyzer um to get more context information and stuff like that thank you thanks Tim have a followup one Tim assume for a second that we are all evil hackers in this room and your task is not to teach us how to detect the binary but to avoid to evade the the detection what uh number one tip would you give us what what what hint if if we are about to write a binary a malicious binary well there's a lot there's a lot of things so to keep it short well you can always hide things like you can apply upstation you can peack code and stuff like that then you don't see the obvious ones and add you add basically different layers of obious and encryption to make analysis as hard as possible this prevents manual analysis or at least it makes it a lot of harder on the other hand um if you don't have any interesting strings if you don't have any Imports this also looks suspicious so what most AP mware does is it tries to look as normal code as as much as normal code as possible however Ys of userland or mass mware tries to protect themselves using methods like that okay so it's it's again an arms race and um so we have to invite you again in three years to see where we stand thank you so much Tim for this interesting talk thank you I do have I I do have chocolate for you but you know chocolate is unhealthy and as you're sick um it's not a good idea we'll send it to you so it will be there in two weeks and then you can enjoy it all right okay thanks a lot all right enjoy the com again thanks Tim byebye bye",
+  "errors": []
+}

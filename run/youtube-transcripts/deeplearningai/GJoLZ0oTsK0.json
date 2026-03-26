@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GJoLZ0oTsK0",
+    "language": "en",
+    "took_ms": 9806,
+    "method": null,
+    "title": "Build your first app with AI. No coding background required",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260107",
+    "duration_sec": 64,
+    "description": "Many people have ideas for apps they wish existed, but still assume building them requires learning to code, installing tools, or waiting for someone else to make them real.\n\nToday, we’re launching Build with Andrew, a course designed to change that starting point.\n\nIn this course, Andrew Ng shows how to take an idea, describe it clearly in words, and use AI tools to turn it into a working web application—right away. No coding background is required. If you can explain what you want an app to do, you can build one.\n\nYou’ll begin by creating a simple interactive app that runs in your browser and can be shared with others. From there, you’ll learn how to improve it by refining your instructions and seeing how clearer prompts lead to more useful results. \n\nBy the end, you’ll have a reusable template you can adapt for real tasks like drafting emails, generating reports, or automating everyday work.\n\nAlong the way, you’ll learn how to:\n\n- Turn ideas into working web apps using AI tools\n- Improve results by writing clearer, more structured instructions\n- Iterate confidently when outputs aren’t quite right\n- Reuse the same approach to build new tools for different needs\n\nIf you’re already comfortable with AI or coding, you may recognize how powerful this shift is. And you might know people who don’t yet realize they can build things themselves, like your friends, parents, coworkers, or roommates who have ideas but think “building apps is too hard.” \n\nThis course is for them. Feel free to share it!\n\nBuild with Andrew is now available. Start learning here: https://bit.ly/4qsa0S8",
+    "view_count": 222513
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GJoLZ0oTsK0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

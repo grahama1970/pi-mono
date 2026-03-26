@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u5QtuuMNYFo",
+    "language": "en",
+    "took_ms": 8238,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Forrest Fuqua -  What College Kids Always Get Wrong",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2964,
+    "description": "I’ve done a few years at NECCDC (Collegiate Cyber Defense Competition) Red team and teams make the same mistakes over and over again with the approach of trying to harden a system that is so far compromised that it's better if they could just reinstall everything.\n\nThis talk I will detail things that have worked and not worked over the last three years that everyone seems to miss and grounds the fact that the simpler the attack. the overall better you will have in endpoints responding home. Managing rapid response to teams who are actively dealing with your malware and other tidbits.",
+    "view_count": 1225
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u5QtuuMNYFo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

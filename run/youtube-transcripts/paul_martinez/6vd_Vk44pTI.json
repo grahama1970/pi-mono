@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6vd_Vk44pTI",
+    "language": "en",
+    "took_ms": 8497,
+    "method": null,
+    "title": "Legal Realities of US Government OT Cybersecurity Regulation ... Lessons Learned From NERC CIP",
+    "channel": "S4 Events",
+    "upload_date": "20240603",
+    "duration_sec": 1888,
+    "description": "OT & ICS security regulation is coming for many critical infrastructure sectors in the US. What should you do to prepare? \n\nMost worry about the implications for the security program, and this is wise. What's underappreciated is that if something is identified the situation moves into the legal field and regulatory law. Security people aren't typically prepared to deal with this.\n\nWe've asked Shari Gribbin, a lawyer with vast experience in NERC CIP and other regulatory law to help the OT & ICS security community understand what they need to know to deal with regulators.",
+    "view_count": 517
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6vd_Vk44pTI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

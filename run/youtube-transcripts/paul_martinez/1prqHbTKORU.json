@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1prqHbTKORU",
+    "language": "en",
+    "took_ms": 9058,
+    "method": null,
+    "title": "Binary Code Analysis for IEC 62443-4-1 SVV-3",
+    "channel": "S4 Events",
+    "upload_date": "20241202",
+    "duration_sec": 1523,
+    "description": "The IEC 62443-4-1 standard mandates vulnerability testing for its third Security Verification and Validation (SVV-3) requirement. A sub-requirement targets binary executable files, including firmware with four types of problem to identify: known vulnerabilities, vulnerable third-party libraries, security rule violations and compiler settings.\n\nUnfortunately, IEC 62443-4-1 does not offer supplemental guidance on how to do this beyond explicitly recommending experts be involved.\n\nHugo and the team Hitachi Energy Research faced this issue and created a methodology using fully open-source tools in two parts to help both developers and cybersecurity professionals to perform binary code analysis on their products. \n\nThe first, aimed at developers and operators, catches low-hanging fruits, and provides enough context to help without the need for cybersecurity knowledge.\n\nThe second, aimed at cybersecurity professionals, builds on the first version while enabling power-user features and customization to cover more use-cases and allow them to create their own analysis.\n\nAdditionally, Hugo presents the challenges that binary code analysis is still facing and potential research directions including support for custom file formats and proprietary components.",
+    "view_count": 857
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1prqHbTKORU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

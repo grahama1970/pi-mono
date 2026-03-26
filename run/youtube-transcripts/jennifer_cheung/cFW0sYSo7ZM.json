@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cFW0sYSo7ZM",
+    "language": "en",
+    "took_ms": 9036,
+    "method": null,
+    "title": "DEF CON 32 - From getting JTAG on the iPhone 15 to hacking Apple's USB-C Controller - Stacksmashing",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2214,
+    "description": "With the iPhone 15 & iPhone 15 Pro Apple switched their iPhone to USB-C - and introduced a new proprietary USB-C controller: The ACE3.\n\nBut the ACE3 does more than just handle USB power delivery: It's a full microcontroller running a full USB stack connected to some of the internal busses of the device, and we even managed to access JTAG on the iPhone 15 through it. It also provides access to UART, the internal SPMI bus, etc. Previous variants of the ACE, namely the ACE2 found in MacBooks, could easily be dumped and analyzed using SWD - and even be persistently backdoored through a software vulnerability we found.\n\nOn the ACE3 however, Apple upped their game: Firmware updates are personalized, debug interfaces seem to be disabled, and the external flash is validated and does not contain all the firmware. However using a combination of reverse-engineering, RF side-channel analysis and electro-magnetic fault-injection it was possible to gain code-execution on the ACE3 - allowing dumping of the ROM, and analysis of the functionality.\n\nThis talk will show how to use a combination of hardware, firmware, reverse-engineering, side-channel analysis and fault-injection to gain code-execution on a completely custom chip, enabling further security research on an under-explored but security relevant part of Apple devices.",
+    "view_count": 547505
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cFW0sYSo7ZM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

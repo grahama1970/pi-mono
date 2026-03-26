@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "01oeaBb85Xc",
+    "language": "en",
+    "took_ms": 7873,
+    "method": null,
+    "title": "DEF CON 30 - Sam Bent - Tor - Darknet Opsec By a Veteran Darknet Vendor",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2909,
+    "description": "The hacking subculture's closest relative is that of the Darknet. Both have knowledgeable people, many of whom are highly proficient with technology and wish to remain somewhat anonymous. They are both composed of a vast amount of introverts and abide by the same first rule: “Don’t get caught.\" Both tend to love Sun Tzu quotes as well. What happens when the hacker mentality discussed in the Hackers Manifesto is applied to things such as OpSec on the Darknet?\n\nOver the past decade, there have been many DEF CON talks that have discussed Tor and the Darknet. None have ever come from a Darknet vendor. The approach was more academic, as opposed to economical. Having a background in IT, Infosec, and hacking, the goal is to present a unique perspective from a hacker’s point of view, as we look at how the hacker mentality applied functions in various hostile environments such as a Darknet Vendor, staff member of multiple Darknet Markets, and co-found of Dread, who then later would be a federal prisoner. Shortly after, he talks about how he was able to get himself out of federal prison 3 years early.\n\nAll of which was possible through the reconnaissance of various systems and methodologies. From the anticipated linguistical analysis that the feds were making of posts on Darknet forums to how to write a motion to a federal judge from a prison cell in order to make him understand what it was like there, we will take a journey through a variety of interesting places and times from a tour guide with unparalleled experience and access.\n\nBy focusing less on the basics of Tor and more on how insiders operate within it, we will uncover what it takes to navigate this ever-evolving landscape with clever OpSec. In addition to seeing what happens if you get caught. All through the perspective of the hacker spirit that refuses to submit.",
+    "view_count": 504939
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 01oeaBb85Xc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

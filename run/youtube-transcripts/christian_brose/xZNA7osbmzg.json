@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xZNA7osbmzg",
+    "language": "en",
+    "took_ms": 8799,
+    "method": null,
+    "title": "The Kill Chain: A Book Discussion with Christian Brose",
+    "channel": "Hudson Institute",
+    "upload_date": "20200519",
+    "duration_sec": 2387,
+    "description": "Join Hudson Institute for a conversation with former Senate Armed Services Staff Director Christian Brose on his new book The Kill Chain: Defending America in the Future of High-Tech Warfare.",
+    "view_count": 4597
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xZNA7osbmzg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400">
+<title>Music Lab - Song Library Dashboard R4</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #141414;
+    color: #e0e0e0;
+    font-family: system-ui, -apple-system, sans-serif;
+    width: 1400px;
+    height: 900px;
+    overflow: hidden;
+  }
+
+  /* Top Bar */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #2a2a2a;
+    background: #1a1a1a;
+    height: 48px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-title { font-size: 16px; font-weight: 700; color: #00ff88; letter-spacing: 1.5px; }
+  .topbar-subtitle { font-size: 12px; color: #666; }
+  .topbar-stats { display: flex; gap: 20px; }
+  .stat { font-size: 12px; color: #888; }
+  .stat b { color: #e0e0e0; font-size: 13px; }
+  .stat.green b { color: #00ff88; }
+  .stat.blue b { color: #4a9eff; }
+  .stat.amber b { color: #ffaa00; }
+
+  /* Main Layout */
+  .main { display: flex; height: calc(900px - 48px); }
+
+  /* Sidebar */
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+    border-right: 1px solid #2a2a2a;
+    background: #1a1a1a;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+  }
+  .sidebar-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .filter-list { list-style: none; }
+  .filter-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #aaa;
+  }
+  .filter-list li:hover { background: #222; }
+  .filter-list li.active { background: #222; color: #e0e0e0; }
+  .filter-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .filter-count { margin-left: auto; color: #555; font-size: 11px; }
+
+  .activity-item {
+    font-size: 11px;
+    color: #777;
+    padding: 3px 0;
+    border-bottom: 1px solid #1f1f1f;
+    line-height: 1.4;
+  }
+  .activity-item .act-title { color: #ccc; }
+  .activity-item .act-time { color: #555; font-size: 10px; }
+
+  .tag-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-chip {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid #2a2a2a;
+    color: #888;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .tag-chip:hover { border-color: #7c3aed; color: #bbb; }
+
+  .btn-new-song {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    background: transparent;
+    color: #555;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s;
+  }
+  .btn-new-song:hover { border-color: #7c3aed; color: #888; }
+  .btn-new-song-note { font-size: 9px; color: #444; text-align: center; margin-top: 4px; }
+
+  /* Content Area */
+  .content {
+    flex: 1;
+    padding: 16px 20px;
+    overflow-y: auto;
+  }
+
+  /* Card Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  /* Song Card */
+  .card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    height: 180px;
+    transition: border-color 0.15s;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .card:hover { border-color: #3a3a3a; }
+
+  .card-art {
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #222;
+  }
+
+  .card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e0e0e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-source {
+    font-size: 11px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .badge {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-converging { background: rgba(74,158,255,0.15); color: #4a9eff; }
+  .badge-composing { background: rgba(255,170,0,0.15); color: #ffaa00; }
+  .badge-ready { background: rgba(0,255,136,0.15); color: #00ff88; }
+  .badge-archived { background: rgba(100,100,100,0.15); color: #666; }
+  .badge-draft { border: 1px solid #333; color: #555; background: transparent; }
+
+  .delta {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .delta-green { color: #00ff88; }
+  .delta-amber { color: #ffaa00; }
+  .delta-red { color: #ff4444; }
+
+  .card-tags {
+    display: flex;
+    gap: 4px;
+    margin-top: auto;
+    flex-wrap: nowrap;
+  }
+  .card-tag {
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    border: 1px solid #2a2a2a;
+    color: #777;
+    white-space: nowrap;
+  }
+  .card-tag-overflow {
+    font-size: 9px;
+    color: #555;
+    padding: 1px 4px;
+  }
+
+  .card-time {
+    font-size: 10px;
+    color: #444;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">MUSIC LAB</span>
+    <span class="topbar-subtitle">Horus Creative Workbench</span>
+  </div>
+  <div class="topbar-stats">
+    <div class="stat"><b>42</b> songs</div>
+    <div class="stat amber"><b>0.21</b> avg delta</div>
+    <div class="stat green"><b>7</b> ready</div>
+    <div class="stat blue"><b>3</b> converging</div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-section-title">Status</div>
+      <ul class="filter-list">
+        <li class="active">
+          <span class="filter-dot" style="background:#e0e0e0"></span>
+          All <span class="filter-count">42</span>
+        </li>
+        <li>
+          <span class="filter-dot" style="background:#ffaa00"></span>
+          Composing <span class="filter-count">8</span>
+        </li>
+        <li>
+          <span class="filter-dot" style="background:#4a9eff"></span>
+          Converging <span class="filter-count">3</span>
+        </li>
+        <li>
+          <span class="filter-dot" style="background:#00ff88"></span>
+          Ready <span class="filter-count">7</span>
+        </li>
+        <li>
+          <span class="filter-dot" style="background:#555"></span>
+          Archived <span class="filter-count">22</span>
+        </li>
+        <li>
+          <span class="filter-dot" style="background:#ff4444"></span>
+          Rejected <span class="filter-count">2</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Recent Activity</div>
+      <div class="activity-item">
+        <span class="act-title">Whisperheads</span> R4 gen<br>
+        <span class="act-time">12m ago</span>
+      </div>
+      <div class="activity-item">
+        <span class="act-title">Vessel</span> delta dropped 0.31 &rarr; 0.24<br>
+        <span class="act-time">1h ago</span>
+      </div>
+      <div class="activity-item">
+        <span class="act-title">Black Axiom</span> marked READY<br>
+        <span class="act-time">3h ago</span>
+      </div>
+      <div class="activity-item">
+        <span class="act-title">Ember Logic</span> MIR review failed<br>
+        <span class="act-time">5h ago</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Taxonomy</div>
+      <div class="tag-chips">
+        <span class="tag-chip">melancholy</span>
+        <span class="tag-chip">defiant</span>
+        <span class="tag-chip">ethereal</span>
+        <span class="tag-chip">nocturnal</span>
+        <span class="tag-chip">industrial</span>
+        <span class="tag-chip">sacred</span>
+        <span class="tag-chip">cinematic</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto">
+      <button class="btn-new-song">+ New Song</button>
+      <div class="btn-new-song-note">Horus proposes from lore</div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="card-grid">
+
+      <!-- 1. Whisperheads -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/whisperheads.png" alt="Whisperheads">
+        <div class="card-info">
+          <div class="card-title">Whisperheads</div>
+          <div class="card-source">from The Signal Archive</div>
+          <div class="card-meta">
+            <span class="badge badge-converging">Converging</span>
+            <span class="delta delta-green">0.18</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">melancholy</span>
+            <span class="card-tag">electronic</span>
+          </div>
+          <div class="card-time">12m ago &middot; R4</div>
+        </div>
+      </div>
+
+      <!-- 2. Cathedral of Circuits -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/cathedral-of-circuits.png" alt="Cathedral of Circuits">
+        <div class="card-info">
+          <div class="card-title">Cathedral of Circuits</div>
+          <div class="card-source">from Horus Vol. III</div>
+          <div class="card-meta">
+            <span class="badge badge-composing">Composing</span>
+            <span class="delta delta-red">0.42</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">sacred</span>
+            <span class="card-tag">industrial</span>
+          </div>
+          <div class="card-time">2h ago &middot; R2</div>
+        </div>
+      </div>
+
+      <!-- 3. Midnight Protocol -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/midnight-protocol.png" alt="Midnight Protocol">
+        <div class="card-info">
+          <div class="card-title">Midnight Protocol</div>
+          <div class="card-source">from Black Mirror Arc</div>
+          <div class="card-meta">
+            <span class="badge badge-ready">Ready</span>
+            <span class="delta delta-green">0.12</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">nocturnal</span>
+            <span class="card-tag">tension</span>
+          </div>
+          <div class="card-time">6h ago &middot; R5</div>
+        </div>
+      </div>
+
+      <!-- 4. Black Axiom -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/black-axiom.png" alt="Black Axiom">
+        <div class="card-info">
+          <div class="card-title">Black Axiom</div>
+          <div class="card-source">from Horus Vol. II</div>
+          <div class="card-meta">
+            <span class="badge badge-ready">Ready</span>
+            <span class="delta delta-green">0.09</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">defiant</span>
+            <span class="card-tag">industrial</span>
+          </div>
+          <div class="card-time">3h ago &middot; R6</div>
+        </div>
+      </div>
+
+      <!-- 5. Vessel -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/vessel.png" alt="Vessel">
+        <div class="card-info">
+          <div class="card-title">Vessel</div>
+          <div class="card-source">from Persona: Margaret</div>
+          <div class="card-meta">
+            <span class="badge badge-converging">Converging</span>
+            <span class="delta delta-amber">0.24</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">ethereal</span>
+            <span class="card-tag">ambient</span>
+          </div>
+          <div class="card-time">1h ago &middot; R3</div>
+        </div>
+      </div>
+
+      <!-- 6. Ember Logic -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/cathedral-of-circuits.png" alt="Ember Logic">
+        <div class="card-info">
+          <div class="card-title">Ember Logic</div>
+          <div class="card-source">from DARPA Dream</div>
+          <div class="card-meta">
+            <span class="badge badge-composing">Composing</span>
+            <span class="delta delta-red">0.51</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">cinematic</span>
+            <span class="card-tag">tension</span>
+          </div>
+          <div class="card-time">5h ago &middot; R1</div>
+        </div>
+      </div>
+
+      <!-- 7. Hollow Crown -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/black-axiom.png" alt="Hollow Crown">
+        <div class="card-info">
+          <div class="card-title">Hollow Crown</div>
+          <div class="card-source">from Horus Vol. I</div>
+          <div class="card-meta">
+            <span class="badge badge-archived">Archived</span>
+            <span class="delta delta-green">0.08</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">melancholy</span>
+            <span class="card-tag">orchestral</span>
+          </div>
+          <div class="card-time">2d ago &middot; R7</div>
+        </div>
+      </div>
+
+      <!-- 8. Phosphor Gate -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/midnight-protocol.png" alt="Phosphor Gate">
+        <div class="card-info">
+          <div class="card-title">Phosphor Gate</div>
+          <div class="card-source">from The Signal Arc.</div>
+          <div class="card-meta">
+            <span class="badge badge-ready">Ready</span>
+            <span class="delta delta-green">0.11</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">electronic</span>
+            <span class="card-tag">ethereal</span>
+          </div>
+          <div class="card-time">8h ago &middot; R4</div>
+        </div>
+      </div>
+
+      <!-- 9. Recursion Hymn -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/whisperheads.png" alt="Recursion Hymn">
+        <div class="card-info">
+          <div class="card-title">Recursion Hymn</div>
+          <div class="card-source">from Persona: Brandon</div>
+          <div class="card-meta">
+            <span class="badge badge-composing">Composing</span>
+            <span class="delta delta-amber">0.38</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">sacred</span>
+            <span class="card-tag">electronic</span>
+          </div>
+          <div class="card-time">4h ago &middot; R2</div>
+        </div>
+      </div>
+
+      <!-- 10. Tidal Constant -->
+      <div class="card">
+        <img class="card-art" src="file:///home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/music-lab-workbench/album-art/vessel.png" alt="Tidal Constant">
+        <div class="card-info">
+          <div class="card-title">Tidal Constant</div>
+          <div class="card-source">from Horus Vol. III</div>
+          <div class="card-meta">
+            <span class="badge badge-converging">Converging</span>
+            <span class="delta delta-amber">0.20</span>
+          </div>
+          <div class="card-tags">
+            <span class="card-tag">ambient</span>
+            <span class="card-tag">nocturnal</span>
+          </div>
+          <div class="card-time">1h ago &middot; R3</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

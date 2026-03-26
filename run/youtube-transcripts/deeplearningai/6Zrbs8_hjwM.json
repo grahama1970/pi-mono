@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6Zrbs8_hjwM",
+    "language": "en",
+    "took_ms": 7647,
+    "method": null,
+    "title": "AI Dev 25 x NYC | David Loker: Context Engineering for AI Code Reviews w/ MCP & Open source Tooling",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251203",
+    "duration_sec": 1849,
+    "description": "David Loker, Director of AI at CodeRabbit, discussed context engineering. As AI-generated code becomes commonplace, the bottleneck in developer productivity has shifted from code generation to code review. \n\nCodeRabbit addresses this with a context-engineered AI code review platform that fuses data from multiple sources—AST-based dependency graphs, MCP, 40+ open-source linters, repository history, coding agent guidelines, and custom rules—with advanced LLM reasoning. \n\nThis AI Dev 25 x NYC session demonstrated how CodeRabbit orchestrates these context signals into precise LLM prompts, powering agent-to-agent reviews across the CLI, IDE, and pull requests. Attendees left with a blueprint for building context-rich AI review systems that integrate multi-source data and carefully engineered prompts to detect hard-to-find bugs like race conditions, architectural flaws, missing tests, and concurrency bugs that go beyond simple linting.\n\n------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 629
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6Zrbs8_hjwM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

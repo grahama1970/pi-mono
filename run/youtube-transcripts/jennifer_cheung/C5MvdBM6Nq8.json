@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C5MvdBM6Nq8",
+    "language": "en",
+    "took_ms": 8146,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Tyler Boykin -  50 Shades of Sudo Abuse",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3466,
+    "description": "Privilege escalation often includes abusing pre-existing features on a system. This talk gives a quick overview of sudo, sudoers, and ways of leveraging misconfigurations to increase access. Included in this talk, are vectors that range from common low-hanging fruit to downright crafty.",
+    "view_count": 1077
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C5MvdBM6Nq8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

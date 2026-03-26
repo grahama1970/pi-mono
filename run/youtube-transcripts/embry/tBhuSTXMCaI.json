@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tBhuSTXMCaI",
+    "language": "en",
+    "took_ms": 9420,
+    "method": null,
+    "title": "Falcon Heavy 360 Degree from 3 miles away!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180209",
+    "duration_sec": 634,
+    "description": "3.17 miles (5k away) from Falcon Heavy at NASA's Kennedy Space Center Press Site. Shot using an InstaPro360 in 8K.\n\nI'm the guy standing in the orange space suit live-streaming the event. Check out the potato quality video here - https://youtu.be/xoI7sFyAirY\n\nWhy am I wearing a space suit? Check this out - https://youtu.be/B3s7BjU6sDg\n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/",
+    "view_count": 66279
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tBhuSTXMCaI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

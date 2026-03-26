@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L6DUCqIQ4qA",
+    "language": "en",
+    "took_ms": 8701,
+    "method": null,
+    "title": "S4x24 Interview With Stewart Baker: Legal Issues on Software Liability & SEC Case Against Solarwinds",
+    "channel": "S4 Events",
+    "upload_date": "20240617",
+    "duration_sec": 1851,
+    "description": "Stewart Baker is one of the preeminent lawyers on topics of cyber law with an impressive career in and out of government. Stewart also hosts the Cyberlaw podcast.\n\nThe Biden administration is contending that vendors should be held liable for security deficiencies in their products. \n\nAssuming this is turned into law and/or executive orders, what does it mean? What can we learn from other liability law to inform us what would be required for a vendor to be held liable for a security issue? How would the judgment / damages be determined. \n\nWe also spend time on the SEC charges against SolarWinds in this interview.",
+    "view_count": 246
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L6DUCqIQ4qA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

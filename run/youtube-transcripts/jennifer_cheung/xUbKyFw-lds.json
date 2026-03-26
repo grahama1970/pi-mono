@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xUbKyFw-lds",
+    "language": "en",
+    "took_ms": 9191,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Michael Wylie - Enumerating Cloud File Storage Gems",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3168,
+    "description": "Organizational data is rapidly moving to the cloud, but it's not always intentional. The shift from on-premise data storage to the cloud constitutes a significant challenge and risk to the modern enterprise. The use of cloud file storage applications is on the rise for both consumer and business systems, which results in interesting data and metadata siting on endpoints. In this talk, we'll examine the large footprints of popular cloud file storage applications such as OneDrive and Box - learning what information can be enumerated from each cloud file storage solution. In some scenarios, data can be carved out from cache, restoring sensitive documents no longer on an endpoint.",
+    "view_count": 695
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xUbKyFw-lds: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

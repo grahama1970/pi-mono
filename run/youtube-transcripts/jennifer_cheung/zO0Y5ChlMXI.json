@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zO0Y5ChlMXI",
+    "language": "en",
+    "took_ms": 9184,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Peter Kacherginsky - COSTA Coinbase Secure Trait Analyzer",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 1515,
+    "description": "The year 2021 has been filled with exchange hacks, blockchain attacks and vulnerabilities, scams, and new cryptocurrency malware. In this updated talk you will catch up on the more notable events, discuss how they fit in the overall blockchain security threat space, and observe trends such as new NFT hacks, cross-chain DeFi vulnerabilities, supply chain attacks, and others. We will also explore how the blockchain security industry can grow and make the field more secure.",
+    "view_count": 855
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zO0Y5ChlMXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

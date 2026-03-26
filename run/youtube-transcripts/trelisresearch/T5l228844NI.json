@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T5l228844NI",
+    "language": "en",
+    "took_ms": 8926,
+    "method": null,
+    "title": "Tiny Llama",
+    "channel": "Trelis Research",
+    "upload_date": "20230928",
+    "duration_sec": 797,
+    "description": "*Google Colab Notebook* https://tinyurl.com/4w6w3cb2\n\n*Jupyter Tiny Llama*\n- Chat with TinyLlama (and other Llamas)\n- Save and re-upload chats\n- Purchase here: https://buy.stripe.com/28ocNyf4pci78EMbJ9\n\n*Video Links*\nTinyLlama on Github: https://github.com/jzhang38/TinyLlama\nTinyLlama on HuggingFace: https://huggingface.co/PY007/TinyLlama-1.1B-Chat-v0.1\nTinyLlama Live Training: https://tinyurl.com/2vasff9w\nChinchilla Paper: https://arxiv.org/abs/2203.15556\nJupyter Lab Install Guide: https://github.com/TrelisResearch/install-guides\n\nChapters:\n0:00 TinyLlama: A 1.1B Llama 2 model\n0:40 The story of TinyLlama\n2:25 What is Chinchilla optimal?\n5:17 Training TinyLlama\n6:33 Run TinyLlama in Google Colab\n9:05 Jupyter Tiny Llama\n12:36 Recap of TinyLlama's capabilities",
+    "view_count": 4334
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T5l228844NI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rADsW7_TCo0",
+    "language": "en",
+    "took_ms": 7771,
+    "method": null,
+    "title": "DEF CON Safe Mode Monero Village - Michael Schloh von Bennewitz  - Badge Clinic",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3405,
+    "description": "With the help of a close range circuit camera, Michael illustrates the circuits of several recent conference hardware devices, including prototype models. Devices in circulation and on display include: DC28 Intervillage Badge DC27 Rising Badge 35C3 Blockchain DC26/BCOS Badge HCPP19 Badge HCPP18 Badge This is not a speech presentation, rather it is an easy office hours with show and tell to invite questions and answers about low power electronic devices. Visit the Badge Clinic on any day of Defcon in the Monero Village channel.",
+    "view_count": 223
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rADsW7_TCo0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

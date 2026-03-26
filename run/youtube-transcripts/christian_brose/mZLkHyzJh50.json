@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mZLkHyzJh50",
+    "language": "en",
+    "took_ms": 9058,
+    "method": null,
+    "title": "The Health Care Excise Tax: Panel Highlights",
+    "channel": "Hudson Institute",
+    "upload_date": "20150612",
+    "duration_sec": 235,
+    "description": "Highlights of Bill Samuel, Paul N. Van de Water, Tevi Troy and Paul Howard's discussion on the implications of the excise tax for employer health plans in both the public and private sectors, as well as its impact on labor unions.",
+    "view_count": 261
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mZLkHyzJh50: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

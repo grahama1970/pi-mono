@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qvT3NyaycoA",
+    "language": "en",
+    "took_ms": 8888,
+    "method": null,
+    "title": "Why Computer Vision is a Hard Problem (TensorFlow in Practice)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200129",
+    "duration_sec": 40,
+    "description": "It’s easy for humans to tell the difference between a shirt and shoes, but not so easy for a computer. Andrew and Laurence explain why in Course 1 of our TensorFlow in Practice Specialization, available for $49 or to audit for free!\n\nTake the TensorFlow in Practice Specialization: http://bit.ly/38LojcE\nCheck out all our courses: deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai/",
+    "view_count": 11037
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qvT3NyaycoA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

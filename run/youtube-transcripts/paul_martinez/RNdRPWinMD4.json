@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RNdRPWinMD4",
+    "language": "en",
+    "took_ms": 8567,
+    "method": null,
+    "title": "ICS Detection Challenge: Phase 2 Detection",
+    "channel": "S4 Events",
+    "upload_date": "20180507",
+    "duration_sec": 1604,
+    "description": "Claroty, Gravwell, Nozomi and Security Matters competed in the ICS Detection Challenge at S4x18. This was a test of specialized ICS products that do detection purely through passive analysis of captured packets.\n\nIn this session the results from the Detection Phase of the Challenge are revealed followed by an interview with the winner Claroty. \n\nA more detailed analysis of the Challenge is available at https://dale-peterson.com/category/detect/",
+    "view_count": 716
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RNdRPWinMD4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

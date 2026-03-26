@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iS0XJVyxA3M",
+    "language": "en",
+    "took_ms": 8513,
+    "method": null,
+    "title": "DEF CON 33 - Infecting the Boot to Own the Kernel - Alejandro Vazquez, Maria San Jose",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2368,
+    "description": "Bootkits and Rootkits represent some of the most complex and stealthy forms of malware, capable of achieving full system control before and after the OS is loaded. While often discussed in theory, their actual construction, interaction, and execution flow remain mostly hidden from public view. This talk sheds light on how these implants are built and how their components interact across boot stages and kernel space.\n\nWe'll explore the internals of a fully functional UEFI Bootkit and Kernel-mode Rootkit, examining their modular design, runtime interactions, and the mechanisms used to hook critical parts of the Windows boot chain. Attendees will see how these implants operate across pre-boot and post-boot phases, including early internet connectivity from firmware, dynamic payload delivery, runtime service hooking, deep kernel control, and advanced capabilities like hiding files, processes, and network activity, blocking traffic, capturing keystrokes, and maintaining command and control directly from kernel space.\n\nEverything shown on stage will be yours to explore: a complete Bootkit and Rootkit framework, fully customizable and ready to simulate real threats, test defenses, or build something even stealthier.",
+    "view_count": 1226
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iS0XJVyxA3M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

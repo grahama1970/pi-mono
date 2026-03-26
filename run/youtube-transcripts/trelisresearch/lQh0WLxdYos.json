@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lQh0WLxdYos",
+    "language": "en",
+    "took_ms": 8746,
+    "method": null,
+    "title": "Data Preparation Tips and Tricks",
+    "channel": "Trelis Research",
+    "upload_date": "20240531",
+    "duration_sec": 3576,
+    "description": "TIMESTAMPS\n0:00 Welcome\n3:00 Fine-web\n12:14 Clustering and balancing data - Meta Paper\n16:45 Clustering analysis in Colab\n29:30 How to prepare chat / Q&A datasets synthetically\n37:00 Q&A\n37:20 Handling labeled data for fine-tuning\n40:10 Setting a chat template for a tokenizer without one\n42:00 Considerations on novel data and hallucinations\n45:00 Issues with tokenizer and chat template not aligning\n47:00 Using mixed-language datasets and their impact on training\n49:00 Recommendations for models suitable for text classification\n50:40 Extracting structured data from PDFs and tables\n52:10 Multi-GPU training considerations\n53:00 Using the LLM to VEC method for embeddings\n53:40 Rag pipeline suggestions\n\nIn this video I run through considerations in building datasets:\n1. Importance of filtering and deduplication - e.g. FineWeb: https://github.com/huggingface/datatrove/blob/main/examples/fineweb.py\n2. Importance of balancing concepts/meaning - Meta paper on hierarchical k-means filtering: https://arxiv.org/pdf/2405.15613\n3. I give a demo of balancing a dataset (OpenAssist - https://huggingface.co/datasets/Trelis/openassistant-llama-style)\n\n➡️ More Resources and Support at Trelis.com/About\n\nNotebook link: https://colab.research.google.com/drive/1yZVqTYCghHAyFtIPakopvWHQ8oN369u-?usp=sharing",
+    "view_count": 1423
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lQh0WLxdYos: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WDPOk0GxxEo",
+    "language": "en",
+    "took_ms": 8972,
+    "method": null,
+    "title": "DEF CON 33 - Hacking the Nautical Rules of the Road   Turn Left for Global Pwnage - Amp & Data",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1540,
+    "description": "As part of their training and certifications, most professional mariners memorize the ‘nautical rules of the road’. The International Regulations for Preventing Collisions at Sea (COLREGs), form the foundation of maritime safety by establishing predictable behaviors and shared responsibilities between vessels. This a system with built-in protection and fall-back plans, tried and tested over a long history. But for hackers or cyber defenders—who might not know starboard from Starbucks— understanding these norms may mean the difference between big effect or no effect. Our talk focuses on one memorable guideline that ship drivers often fall back on: Don’t Turn To Port (unless you’re absolutely sure it’s safe). There is plenty of good research out there about how cyber-physical systems such as rudder angle controllers can be manipulated on manned and unmanned systems. There is good writing on the threats unique to maritime choke points. But agnostic to the location, why would cyber manipulation of a rudder to induce a port turn be worse than a starboard one? Our talk will touch briefly on how the rules influence legal liability for collisions at sea, and conclude with encouragement for people to learn the rules of the road and further their own journey in understanding the maritime profession.",
+    "view_count": 324
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WDPOk0GxxEo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

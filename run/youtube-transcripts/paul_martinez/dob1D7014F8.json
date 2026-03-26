@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dob1D7014F8",
+    "language": "en",
+    "took_ms": 9454,
+    "method": null,
+    "title": "S4x22 Call For Presentations",
+    "channel": "S4 Events",
+    "upload_date": "20210601",
+    "duration_sec": 1022,
+    "description": "Want to increase your chances of getting on the S4x22 Stage next 25-27 Jan 2022? Then watch this video. \nIf you are in a hurry go straight to the tips:\n\n05:19 Tips to increase your chances of your session getting accepted\n\n08:46 Tips on what is unlikely to get accepted",
+    "view_count": 168
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dob1D7014F8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

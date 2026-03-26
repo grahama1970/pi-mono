@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oDNI_oEWiZ4",
+    "language": "en",
+    "took_ms": 8863,
+    "method": null,
+    "title": "Decline and Revival of Higher Education",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 4841,
+    "description": "The past half century has been a period of dramatic change for higher education. As the classroom emphasis has moved away from a focus on classical liberal values toward relativism and ideological extremism, hope remains for a revival of traditional values. Hudson Institute President Herbert London, founder of New York University’s Gallatin School of Individualized Study, has written two noteworthy new books on higher education. Diary of a Dean (Hamilton Books) is a memoir of London’s years at N",
+    "view_count": 76
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oDNI_oEWiZ4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

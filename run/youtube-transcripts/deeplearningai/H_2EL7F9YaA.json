@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H_2EL7F9YaA",
+    "language": "en",
+    "took_ms": 8360,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Aditya Dave, John Pepino: Productionizing AI Capabilities in Finance",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251202",
+    "duration_sec": 1579,
+    "description": "Aditya Dave, Vice President of BlackRock, and John Pepino, Senior Software Engineer at BlackRock, discussed how AI solutions can streamline internal workflows at BlackRock, such as automated compliance checks or portfolio rebalancing.\n\nAt AI Dev 25 x NYC, they discussed why the financial services industry is at an inflection point where AI is a present-day necessity, used by banks, insurers, and asset managers to improve efficiency and client experience. \n\n----------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai",
+    "view_count": 668
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H_2EL7F9YaA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

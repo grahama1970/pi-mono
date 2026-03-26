@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E8puAkalMRQ",
+    "language": "en",
+    "took_ms": 8945,
+    "method": null,
+    "title": "DEF CON 30 - Hadrien Barral - Emoji Shellcoding: 🛠️, 🧌, and 🤯",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2609,
+    "description": "Shellcodes are short executable stubs that are used in various attack scenarios, whenever code execution is possible. After quickly recalling what a shellcode is and why designing shellcodes under constraints is an art, we'll study a new constraint for which (to the best of our knowledge) no such shellcode was previously known: emoji shellcoding. We'll tackle this problem by introducing a new and more generic approach to shellcoding under constraints. Brace yourselves, you'll see some black magic weaponizing these cute little emojis 🥰 into merciless exploits 👿.",
+    "view_count": 3727
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E8puAkalMRQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

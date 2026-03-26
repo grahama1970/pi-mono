@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Foc4kUd0k7M",
+    "language": "en",
+    "took_ms": 7506,
+    "method": null,
+    "title": "New course: Functions, Tools and Agents with LangChain",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231025",
+    "duration_sec": 125,
+    "description": "Enroll today: https://bit.ly/3QEhuTn\n\nOur latest course, Functions, Tools, and Agents with LangChain, will help you stay ahead in the rapidly evolving race of large language models (LLMs), with assistance from our instructor, LangChain CEO Harrison Chase.\n\nIn this course, you'll dive deep into the most recent advancements of LLMs as a developer tool. These include OpenAI’s function capability and LangChain Expression Language (LCEL), a powerful syntax to create chains with composition. You’ll also get hands-on experience in building a conversational agent that demonstrates all your new abilities. \n\nAfter completing this course, you'll have the skills to:\n\n-Generate structured output, including function calls, with LLMs;\n-Use LCEL to create LLM-based applications;\n-Apply function generation to tasks such as tagging and data extraction;\n-Understand tool selection and routing using LangChain tools and LLM function generation – and much more.\n\nThis is an intermediate course: Basic Python knowledge and a familiarity with writing prompts for LLMs is recommended.\n\nStart building and improving your LLM applications today. \n\nLearn more: https://bit.ly/3QEhuTn",
+    "view_count": 5714
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Foc4kUd0k7M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

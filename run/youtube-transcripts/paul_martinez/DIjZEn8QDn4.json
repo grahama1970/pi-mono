@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DIjZEn8QDn4",
+    "language": "en",
+    "took_ms": 8825,
+    "method": null,
+    "title": "Risk, Utility & The Public Good (Cyber Insurance for ICS)",
+    "channel": "S4 Events",
+    "upload_date": "20190206",
+    "duration_sec": 1784,
+    "description": "Eireann Leverett, who first brought up the Internet connected ICS at S4x12 and cyber insurance for ICS at S4x15, came back to the S4x19 Main Stage to present Risk, Utility & the Public Good.\n\nThis presentation plays off a book he recently co-authored, Solving Cyber Risk. Eireann shows how the insurance industry looks at the issue of writing policies for risks with limited data. And he shows how cyber insurance policies can be and are being written for potential ICS losses.",
+    "view_count": 503
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DIjZEn8QDn4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

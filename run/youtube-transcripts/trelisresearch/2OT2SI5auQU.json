@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2OT2SI5auQU",
+    "language": "en",
+    "took_ms": 9387,
+    "method": null,
+    "title": "Monetize your AI Models and Datasets",
+    "channel": "Trelis Research",
+    "upload_date": "20231127",
+    "duration_sec": 475,
+    "description": "Try it out at https://mart.Trelis.com\n\nChapters:\n0:00 How to monetise your AI models and datasets\n0:47 How to paywall access to models and datasets\n1:22 Automating repo access and sales with Trelis Mart\n6:14 Getting listed on Trelis Mart\n7:23 Summary and Pricing",
+    "view_count": 1326
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2OT2SI5auQU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

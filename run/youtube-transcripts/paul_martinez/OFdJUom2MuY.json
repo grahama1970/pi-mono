@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OFdJUom2MuY",
+    "language": "en",
+    "took_ms": 9059,
+    "method": null,
+    "title": "Rating Deployed OT Firewalls’ Effectiveness",
+    "channel": "S4 Events",
+    "upload_date": "20250630",
+    "duration_sec": 1687,
+    "description": "An asset owner has many 100s of firewalls separating OT from IT. How does the asset owner measure the effectiveness of each firewall's ruleset and configuration? Jim tells you how they did this at Magna.\n\nThis will let you know where the OT security team should focus their firewall / OT perimeter security efforts. This automated effort also makes it easy to identify on an ongoing and frequent basis when firewall changes have introduced significant risk.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 684
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OFdJUom2MuY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

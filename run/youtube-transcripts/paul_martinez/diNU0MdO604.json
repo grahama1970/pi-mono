@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "diNU0MdO604",
+    "language": "en",
+    "took_ms": 8803,
+    "method": null,
+    "title": "OnRamp: Dealing With Ransomware On IT",
+    "channel": "S4 Events",
+    "upload_date": "20250409",
+    "duration_sec": 1429,
+    "description": "Over two-thirds of the cyber incident caused outages in Operations have come from attacks that never penetrated OT systems or networks. If a cyber incident on IT could result in an unacceptable impact on OT, then you have work to do.\n\nJustin Pascale's session will help you determine the impact on IT on your OT and Operations, and it will help you devise a plan to reduce that impact to an acceptable level.\n\nThe OnRamp is S4's 101-Level Training Course. Check out the OnRamp playlist on the S4 Events Youtube Channel. This year's 5 sessions update the OnRamp training with topics that have become more important the last two years.",
+    "view_count": 305
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] diNU0MdO604: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

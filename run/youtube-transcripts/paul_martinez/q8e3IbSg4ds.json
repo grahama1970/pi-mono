@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q8e3IbSg4ds",
+    "language": "en",
+    "took_ms": 7819,
+    "method": null,
+    "title": "Bayshore Networks' CEO Kevin Senator",
+    "channel": "S4 Events",
+    "upload_date": "20210210",
+    "duration_sec": 3481,
+    "description": "The ICS security product vendors tend to focus on a product segment, firewall, data-diode, detection, ..., Bayshore Networks is unique in that they have the closest thing to a full line of ICS security products. This is being grown further with their recent acquisition of GE's OpShield technology.\n\nDale Peterson talks with CEO Kevin Senator about the strategy, individual product segments, and why GE and Bayshore did this detail. \n\nIt is admittedly a bit commercial as Kevin touts the company, products and strategy. Dale asks some tough questions, and Kevin gives some candid answers.",
+    "view_count": 232
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q8e3IbSg4ds: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

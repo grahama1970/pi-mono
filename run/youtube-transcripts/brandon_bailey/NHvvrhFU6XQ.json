@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NHvvrhFU6XQ",
+    "language": "en",
+    "took_ms": 7654,
+    "method": null,
+    "title": "DEF CON 33 - Moonlight Defender : Purple Teaming in Space! - Ben Hawkins",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1250,
+    "description": "The Moonlight Defender purple team exercise series provides a low-cost, modular, and scalable exercise framework for realistic space-cyber training—even in environments with restricted access, limited visibility, and contested information flows.\n\nDesigned and run by The Aerospace Corporation, MITRE, and AFRL, these exercises integrate purple teaming methodologies, enabling offensive and defensive cyber operators to refine their Tactics, Techniques, and Procedures (TTPs) in a high-fidelity, live-fire setting.\n\nMoonlight Defender 1 (MD1) leveraged the Moonlighter satellite and Aerospace’s Dark Sky cyber range to train operators in adversarial emulation, space asset defense, and real-world cyber ops under extreme constraints. Building on this, Moonlight Defender 2 (MD2) introduced virtual satellite simulators, ICS/OT systems, and enterprise environments, pushing the limits of how we access and test cyber defenses in space-based systems.\n\nThese exercises broke down traditional silos and operationalized space hacking, proving that security through obscurity fails in space just as it does on Earth. Attendees will get a behind-the-scenes look at real-world space-cyber exercises, from attack chain development to defense strategy refinement, all within the context of operating under limited access and denied environments. Expect insights into methodologies, tools, lessons learned, and how the hacker community can shape the future of space-cyber operations.",
+    "view_count": 207
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NHvvrhFU6XQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

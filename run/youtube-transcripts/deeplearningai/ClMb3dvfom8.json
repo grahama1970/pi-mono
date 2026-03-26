@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ClMb3dvfom8",
+    "language": "en",
+    "took_ms": 9223,
+    "method": null,
+    "title": "Ask Me Anything about Natural Language Processing (NLP)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20211103",
+    "duration_sec": 3998,
+    "description": "Event Agenda:\n-20 mins: Why you should enroll in the NLP Specialization and what's new! Presentations by Younes Bensouda Mourri, the course instructor, and Lewis Tunstall, an MLE at Hugging Face\n- 40 mins: Q&A on Discourse: \n\nHow to participate in Q&A:\n- Join our community on Discourse to post questions to our speakers and discuss with others.\n- After logging in, go to the Ask Me Anything category (https://community.deeplearning.ai/c/nlp/ask-me-anything/223) and post your questions or upvote others. \n- If you are new to Discourse, click here (https://community.deeplearning.ai/invites/YFxwpcbfXN) to sign up first\n- To participate, simply ask a question by creating a topic, upvote others', or reply to posts!\n\nThis event is in celebration of our NLP Specialization getting updated on October 27. The NLP specialization will be refreshed to include new and improved content and labs. In course 4, “Natural Language Processing with Attention Models,” we’ve also partnered with Hugging Face to create lectures and labs to give you even more hands-on experience with Transformer model applications.\n\nWhether you’ve already completed the Specialization or are interested in starting now, check it out at https://www.coursera.org/specializations/natural-language-processing?utm_source=deeplearning-ai&utm_medium=institutions&utm_campaign=20211008-nlp-2-eventbrite-page-NLP-refresh  there’s something for everyone!",
+    "view_count": 6345
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ClMb3dvfom8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

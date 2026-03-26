@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "13o-MQtANpo",
+    "language": "en",
+    "took_ms": 9061,
+    "method": null,
+    "title": "DEF CON 32 - The Risk and Reward of Distributed Industrial Control - Joe Slowik",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1595,
+    "description": "Economic efficiency and increasing automation mean that many industrial assets are remotely monitored and controlled. While some assets, such as oil production platforms, remain manned in isolated conditions, the ecosystem of renewable energy and distributed energy resources (DERs), pipelines, and other assets are increasingly unmanned with control extending over common information links. While this has been a boon for cost, it has also resulted in a radical extension of attack surface for cyber operations.\n\nIn this discussion, we will explore the nature of distributed industrial asset operation and the opportunities this presents for adversaries to infiltrate and potentially disrupt critical infrastructure operations. To make this point, we will review examples of adversary activity, from the 2022 ViaSat incident through historical pipeline intrusions (NOT Colonial!), showing how adversaries intentionally or inadvertently prey on brittle communication links for industrial disruption. We will conclude with a discussion of how these risks can be mitigated in a way that is sensible and economical, because wind farm operators won't lay their own dedicated fiber anytime soon.",
+    "view_count": 357
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 13o-MQtANpo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

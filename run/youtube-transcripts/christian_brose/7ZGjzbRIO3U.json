@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7ZGjzbRIO3U",
+    "language": "en",
+    "took_ms": 8393,
+    "method": null,
+    "title": "About Hudson Institute",
+    "channel": "Hudson Institute",
+    "upload_date": "20241017",
+    "duration_sec": 252,
+    "description": "Hudson Institute is a research organization promoting American leadership for a secure, free, and prosperous future. Founded in 1961 by strategist Herman Kahn, Hudson challenges conventional thinking and helps manage strategic transitions through interdisciplinary studies in defense, international relations, economics, energy, technology, culture, and law.\n\nHudson seeks to guide policymakers and global leaders in government and business through a robust program of publications, conferences, policy briefings, and recommendations.\n\nLearn more: https://www.hudson.org/",
+    "view_count": 3481
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7ZGjzbRIO3U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

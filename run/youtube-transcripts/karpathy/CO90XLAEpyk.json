@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CO90XLAEpyk",
+    "language": "en",
+    "took_ms": 2683,
+    "method": null,
+    "title": "Byl jsem mladistvým intelektuálem v 5 sekundách",
+    "channel": "karpathy",
+    "upload_date": "20080610",
+    "duration_sec": 7,
+    "description": "mladistvý intelektuál v 5 sekundách",
+    "view_count": 3247
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CO90XLAEpyk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ffUzMu7uUFU",
+    "language": "en",
+    "took_ms": 7832,
+    "method": null,
+    "title": "A Conversation with Israeli Prime Minister Benjamin Netanyahu",
+    "channel": "Hudson Institute",
+    "upload_date": "20201203",
+    "duration_sec": 1941,
+    "description": "Israeli Prime Minister Benjamin Netanyahu sat down with Hudson Senior Fellow Michael Doran to discuss the dramatic improvement in Israel’s relationship with the Arab world, the sources of Israel’s rising power, and the major factors shaping the prime minister’s strategic vision.",
+    "view_count": 10012
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ffUzMu7uUFU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

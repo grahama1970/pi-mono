@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YvqWlZK_fks",
+    "language": "en",
+    "took_ms": 7997,
+    "method": null,
+    "title": "DEF CON 32 - 3DU  Homo ex Machina - Lacey Harbour",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1423,
+    "description": "The future of healthcare is precise, personalized, and involves point of care with a wide variety of applications. Each application has its own unique set of challenges that change based on risk and the stakeholders’ perspective. Foreseeing these challenges, in 2021 FDA issued the discussion paper 3D Printing Medical Devices at the Point of Care to expound upon pertinent challenges and request stakeholder feedback. Within this paper, the concept of the 3D Printing medical device production system (MDPS) as a medical device was presented. In this session, we will investigate the concept of the MDPS from the perspective of different stakeholders, the necessity of AI to make this in-hospital MDPS POC solution a reality, and the unique relationship the MDM and HDO must have to support the MDPS.",
+    "view_count": 231
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YvqWlZK_fks: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

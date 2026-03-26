@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GOoqEVhvNw8",
+    "language": "en",
+    "took_ms": 9737,
+    "method": null,
+    "title": "DEF CON 31 - Demystifying (& Bypassing) macOS's Background Task Management - Patrick Wardle",
+    "channel": "DEFCONConference",
+    "upload_date": "20230828",
+    "duration_sec": 2830,
+    "description": "To retain a foothold on an infected system, most Mac malware will persist; installing itself in a manner that ensures it will be automatically (re)launched each time the infected system is rebooted. \n\nIn macOS Ventura, Apple's rearchitected core persistence mechanisms and added a new security mechanism that alerts the user any time an item is persisted. As the former is both undocumented and implemented in a proprietary manner this poses a problem for existing security and forensics tools (that aim to heuristically detect malware via unauthorized persistence events). On the other hand, the latter is problematic to malware authors, who obviously want their malicious creations to persist without an alert being shown to the user. \n\nIn this talk, we'll indiscriminately provide solutions for all! First, we'll dive into the internals of macOS's Background Task Management (BTM) which, as we'll see, contains a central (albeit proprietary) repository of persistent items. Armed with this information, we'll release open-source code capable of programmatically enumerating all persistent items from BTM, ensuring security and forensics tools regain compatibility. We'll also highlight design weaknesses that malicious code could trivially employ to sidestep the new security features of BTM, such that persistence may still be silently achieved.",
+    "view_count": 22954
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GOoqEVhvNw8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

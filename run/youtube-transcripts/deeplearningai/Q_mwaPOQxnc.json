@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Q_mwaPOQxnc",
+    "language": "en",
+    "took_ms": 8665,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Panel: Building Trustworthy AI through Governance, Literacy, and Community",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1210,
+    "description": "As AI systems move from lab to production, engineers face a new challenge: how to innovate fast while building responsibly. \n\nIn this conversation, Miriam Vogel (President & CEO, EqualAI) and Andrew Ng (Founder, DeepLearning.AI) discussed how high-level AI governance principles can translate into actionable practices for developers. \n\nThey explored what \"trust by design\" means in code, how to balance rapid deployment with responsible data management, and where emerging tools and research are making AI governance more automated. \n\nModerated by Nicholas Thompson (CEO, The Atlantic), this panel offers a practical roadmap for technical teams seeking to build AI systems that are both powerful and principled.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 640
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Q_mwaPOQxnc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

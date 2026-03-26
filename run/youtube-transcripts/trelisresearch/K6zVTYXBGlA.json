@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K6zVTYXBGlA",
+    "language": "en",
+    "took_ms": 9266,
+    "method": null,
+    "title": "Powering Gigawatt Data Centers",
+    "channel": "Trelis Research",
+    "upload_date": "20240919",
+    "duration_sec": 2380,
+    "description": "➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Tool: GigawattDatacenter.com (since closed down, see Trelis.com for consulting inquiries).\n- GitHub Repo: https://github.com/TrelisResearch/gigawatt-datacenter\n- Austin Vernon's Blog: https://austinvernon.site/blog/datacenterpv.html\n- Slides: https://docs.google.com/presentation/d/1acAQDQROO_Q8iQT83vt4zH75jx4PPQXO511R7olnCFw/edit?usp=sharing\n\nTIMESTAMPS:\n0:00 Options for Powering a Gigawatt Datacenter (Wind, Solar, Gas)\n0:29 Video Overview\n2:05 Technology Shortlist\n3:26 Datacenter Demand Curves\n5:15 Modelling Gas Power Plants\n7:10 Financing Assumptions / Weight Cost of Capital\n7:45 Gas Turbine Cost Analysis\n9:37 Modelling Solar Power + Batteries\n16:15 Solar + Batteries + Gas\n22.24 Modelling Wind Power + Batteries\n25:39 Wind + Batteries + Gas\n28:52 Solar + Wind + Batteries + Gas\n34:30 Summary, Implications and Path Ahead\n39:12 Resources",
+    "view_count": 772
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K6zVTYXBGlA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARCH_EDITOR_V1 | Tactical Precision</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed": "#00210c",
+              "on-secondary-container": "#c3a6ff",
+              "secondary": "#d2bbff",
+              "surface-tint": "#d2bbff",
+              "surface-dim": "#131313",
+              "on-secondary-fixed": "#25005a",
+              "outline-variant": "#4a4455",
+              "on-secondary": "#3b1e6f",
+              "on-surface": "#e5e2e1",
+              "primary-container": "#7c3aed",
+              "tertiary-fixed-dim": "#00e479",
+              "tertiary-container": "#00773c",
+              "surface-bright": "#393939",
+              "on-primary-fixed": "#25005a",
+              "inverse-surface": "#e5e2e1",
+              "on-primary": "#3f008e",
+              "error": "#ffb4ab",
+              "secondary-fixed": "#eaddff",
+              "surface-variant": "#353534",
+              "surface-container-low": "#1c1b1b",
+              "on-tertiary-container": "#84ffa8",
+              "on-tertiary": "#003919",
+              "tertiary-fixed": "#60ff99",
+              "primary-fixed-dim": "#d2bbff",
+              "surface": "#131313",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container": "#201f1f",
+              "on-primary-fixed-variant": "#5a00c6",
+              "secondary-fixed-dim": "#d2bbff",
+              "primary": "#d2bbff",
+              "tertiary": "#00e479",
+              "surface-container-highest": "#353534",
+              "background": "#131313",
+              "inverse-primary": "#732ee4",
+              "primary-fixed": "#eaddff",
+              "on-error-container": "#ffdad6",
+              "error-container": "#93000a",
+              "on-surface-variant": "#ccc3d8",
+              "on-background": "#e5e2e1",
+              "surface-container-high": "#2a2a2a",
+              "on-secondary-fixed-variant": "#523787",
+              "secondary-container": "#523787",
+              "inverse-on-surface": "#313030",
+              "outline": "#958da1",
+              "on-tertiary-fixed-variant": "#005228",
+              "on-primary-container": "#ede0ff",
+              "on-error": "#690005"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Space Grotesk"],
+              "label": ["JetBrains Mono"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      .canvas-grid {
+        background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+        background-size: 32px 32px;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.1); }
+      }
+      .animate-pulse-slow { animation: pulse-dot 2s infinite ease-in-out; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body overflow-hidden selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 h-14 flex justify-between items-center px-6 bg-[#131313] border-b border-[#2a2a2a]/30">
+<div class="flex items-center gap-8">
+<div class="text-xl font-bold tracking-tighter text-[#d2bbff] font-mono">ARCH_EDITOR_V1</div>
+<div class="flex gap-6 items-center">
+<span class="text-xs font-mono text-gray-500 tracking-widest">PROJECT_ALPHA // QUERYSPEC PIPELINE</span>
+<div class="h-4 w-[1px] bg-[#2a2a2a]"></div>
+<button class="text-[#00e479] font-mono underline underline-offset-4 text-xs tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">visibility</span> LIVE_RENDER
+                </button>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-[#0e0e0e] border border-[#2a2a2a]/50">
+<div class="w-2 h-2 rounded-full bg-[#00e479] animate-pulse-slow"></div>
+<span class="text-[10px] font-mono text-[#00e479] tracking-widest">AGENT_STATUS: ACTIVE</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-gray-500 hover:text-[#d2bbff] transition-colors material-symbols-outlined">settings</button>
+<button class="text-gray-500 hover:text-[#d2bbff] transition-colors material-symbols-outlined">account_tree</button>
+<button class="text-gray-500 hover:text-[#d2bbff] transition-colors material-symbols-outlined">notifications</button>
+<div class="w-8 h-8 bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Operator Profile" class="w-full h-full object-cover" data-alt="minimalist stylized vector avatar of a technical operator with dark glasses and tactical gear on a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTEZJ8ctR7JduoXVrqUIX4EIOSPS6VHvpNIFjYKYr9-_A17ZvNqWH8Z1__UC3eE2Rm4Ksils95jZiwxGUe-JBl81bYhPew0pKvew7xI2LxaZXHCrjQZXO9AEsGtjQFt67DFccnAGJGjx1NgtVIMwr4XOK0F3pggcUAy1GA9vZLtukThgOIMwGbQzEclBE71TZyhuFdeElNKW3lPRgRtLe_cHooDVPWEacfD-bpEZdHK_7-rKOpmLv0x404vgyIBOZsuPap2UvfRvQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Left) -->
+<nav class="fixed left-0 top-0 h-full w-64 bg-[#0e0e0e] border-r border-[#2a2a2a]/20 z-40 flex flex-col pt-14">
+<div class="p-6 border-b border-[#2a2a2a]/20">
+<div class="text-[11px] font-mono uppercase tracking-widest text-gray-500 mb-4">ARCHITECTURES</div>
+<ul class="space-y-1">
+<li class="flex items-center gap-3 p-2 bg-[#131313] text-[#00e479] border-l-2 border-[#00e479] cursor-pointer">
+<span class="material-symbols-outlined text-sm">architecture</span>
+<span class="text-[11px] font-mono uppercase tracking-widest">QUERYSPEC PIPELINE</span>
+</li>
+<li class="flex items-center gap-3 p-2 text-gray-600 hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">architecture</span>
+<span class="text-[11px] font-mono uppercase tracking-widest">SPARTA RECALL</span>
+</li>
+<li class="flex items-center gap-3 p-2 text-gray-600 hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">architecture</span>
+<span class="text-[11px] font-mono uppercase tracking-widest">EVIDENCE CASE</span>
+</li>
+<li class="flex items-center gap-3 p-2 text-gray-600 hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">architecture</span>
+<span class="text-[11px] font-mono uppercase tracking-widest">EPISODIC ARCHIVER</span>
+</li>
+</ul>
+</div>
+<div class="p-6 border-b border-[#2a2a2a]/20">
+<div class="text-[11px] font-mono uppercase tracking-widest text-gray-500 mb-4">VERSIONS</div>
+<ul class="space-y-1">
+<li class="flex items-center justify-between p-2 text-[#7c3aed] bg-[#7c3aed]/5 cursor-pointer">
+<span class="text-[11px] font-mono">v3.0.4 (CURRENT)</span>
+<span class="material-symbols-outlined text-xs">history</span>
+</li>
+<li class="flex items-center justify-between p-2 text-gray-600 hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="text-[11px] font-mono">v2.1.0</span>
+<span class="material-symbols-outlined text-xs">history</span>
+</li>
+<li class="flex items-center justify-between p-2 text-gray-600 hover:bg-[#2a2a2a] transition-all cursor-pointer">
+<span class="text-[11px] font-mono">v1.0.0</span>
+<span class="material-symbols-outlined text-xs">history</span>
+</li>
+</ul>
+</div>
+<div class="mt-auto p-6 space-y-4">
+<button class="w-full py-2 bg-[#7c3aed] text-white text-[11px] font-mono tracking-widest hover:brightness-110 transition-all uppercase">
+                NEW_VERSION
+            </button>
+<div class="flex gap-4 border-t border-[#2a2a2a]/20 pt-4">
+<button class="flex items-center gap-2 text-gray-600 hover:text-white transition-all text-[10px] font-mono tracking-widest">
+<span class="material-symbols-outlined text-sm">terminal</span> LOGS
+                </button>
+<button class="flex items-center gap-2 text-gray-600 hover:text-white transition-all text-[10px] font-mono tracking-widest">
+<span class="material-symbols-outlined text-sm">code</span> TERMINAL
+                </button>
+</div>
+</div>
+</nav>
+<!-- Center Canvas Area -->
+<main class="ml-64 mr-80 pt-14 h-screen flex flex-col bg-background relative overflow-hidden">
+<!-- Excalidraw-style Top Toolbar -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex gap-1 p-1 bg-[#201f1f] border border-[#353534] shadow-2xl">
+<button class="p-2 hover:bg-[#2a2a2a] text-gray-400 material-symbols-outlined">rectangle</button>
+<button class="p-2 hover:bg-[#2a2a2a] text-gray-400 material-symbols-outlined">circle</button>
+<button class="p-2 hover:bg-[#2a2a2a] text-[#7c3aed] material-symbols-outlined">arrow_forward</button>
+<button class="p-2 hover:bg-[#2a2a2a] text-gray-400 material-symbols-outlined">edit</button>
+<button class="p-2 hover:bg-[#2a2a2a] text-gray-400 material-symbols-outlined">text_fields</button>
+<button class="p-2 hover:bg-[#2a2a2a] text-gray-400 material-symbols-outlined">image</button>
+</div>
+<!-- Canvas -->
+<div class="flex-1 canvas-grid relative overflow-auto p-12">
+<!-- Node: INGEST_SVC -->
+<div class="absolute top-32 left-32 w-48 h-24 bg-[#1c1b1b] border-2 border-[#7c3aed] p-4 flex flex-col justify-center items-center gap-2 group cursor-move">
+<span class="text-[10px] font-mono tracking-widest text-[#7c3aed]">INGEST_SVC</span>
+<div class="absolute bottom-1 right-1 flex gap-1">
+<span class="material-symbols-outlined text-[14px] text-gray-500" style="font-variation-settings: 'FILL' 1;">attachment</span>
+</div>
+</div>
+<!-- Arrow -->
+<svg class="absolute top-44 left-80 w-32 h-2 overflow-visible pointer-events-none">
+<line stroke="#7c3aed" stroke-width="2" x1="0" x2="120" y1="0" y2="0"></line>
+<polygon fill="#7c3aed" points="120,-4 128,0 120,4"></polygon>
+</svg>
+<!-- Node: PROCESSING_ENGINE -->
+<div class="absolute top-32 left-[440px] w-56 h-32 bg-[#1c1b1b] border-2 border-[#d2bbff] p-4 flex flex-col justify-center items-center gap-2 group cursor-move">
+<span class="text-[10px] font-mono tracking-widest text-[#d2bbff]">PROCESSING_ENGINE</span>
+<span class="text-[8px] font-mono text-gray-500 uppercase">Status: 0x4F_STREAM</span>
+</div>
+<!-- Arrow Down -->
+<svg class="absolute top-64 left-[552px] w-2 h-32 overflow-visible pointer-events-none">
+<line stroke="#d2bbff" stroke-width="2" x1="0" x2="0" y1="0" y2="120"></line>
+<polygon fill="#d2bbff" points="-4,120 0,128 4,120"></polygon>
+</svg>
+<!-- Node: V2.0 AI-EDIT -->
+<div class="absolute top-[400px] left-[440px] w-56 h-24 bg-[#131313] border-2 border-dashed border-[#00e479] p-4 flex flex-col justify-center items-center gap-2 group cursor-move">
+<span class="text-[10px] font-mono tracking-widest text-[#00e479]">V2.0 AI-EDIT</span>
+<div class="absolute bottom-1 right-1 flex gap-1">
+<span class="material-symbols-outlined text-[14px] text-[#00e479]" style="font-variation-settings: 'FILL' 1;">attachment</span>
+</div>
+</div>
+<!-- Documentation Components -->
+<div class="absolute top-20 right-20 w-40 h-52 bg-[#0e0e0e]/80 backdrop-blur-md border border-[#2a2a2a] p-4 transform rotate-1">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-xs text-[#7c3aed]">description</span>
+<span class="text-[9px] font-mono tracking-tighter">WALKTHROUGH.md</span>
+</div>
+<div class="space-y-2">
+<div class="h-[1px] w-full bg-gray-800"></div>
+<div class="h-[1px] w-3/4 bg-gray-800"></div>
+<div class="h-[1px] w-full bg-gray-800"></div>
+<div class="h-[1px] w-1/2 bg-gray-800"></div>
+</div>
+</div>
+<div class="absolute top-48 right-32 w-36 h-44 bg-[#0e0e0e]/80 backdrop-blur-md border border-[#2a2a2a] p-4 transform -rotate-2">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-xs text-[#00e479]">terminal</span>
+<span class="text-[9px] font-mono tracking-tighter">SKILL.md</span>
+</div>
+<div class="space-y-2 opacity-50">
+<div class="h-[1px] w-full bg-[#00e479]"></div>
+<div class="h-[1px] w-2/3 bg-[#00e479]"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Bar -->
+<footer class="h-12 bg-[#131313] border-t border-[#2a2a2a]/30 px-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="text-[9px] font-mono text-gray-500 tracking-widest">COORDS: 0x4F2A_Z9</span>
+<div class="w-[1px] h-4 bg-[#2a2a2a]"></div>
+<span class="text-[9px] font-mono text-gray-500 tracking-widest">MEM_USAGE: 42%</span>
+</div>
+<button class="bg-[#2a2a2a] text-on-surface px-4 py-1 flex items-center gap-2 hover:bg-[#7c3aed] transition-colors group">
+<span class="material-symbols-outlined text-sm group-hover:text-white">save</span>
+<span class="text-[11px] font-mono tracking-widest">SAVE TO MEMORY</span>
+</button>
+</footer>
+</main>
+<!-- SideNavBar (Right) - Inspector -->
+<aside class="fixed right-0 top-0 h-full w-80 bg-[#131313] border-l border-[#2a2a2a]/50 z-40 flex flex-col pt-14">
+<div class="p-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold text-gray-400 font-mono">ELEMENT_DETAILS</span>
+<span class="text-[10px] font-mono text-gray-600">ID: 0x4F2A</span>
+</div>
+<div class="flex items-center gap-4 mb-8">
+<div class="w-10 h-10 bg-[#0e0e0e] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#d2bbff]">settings_input_component</span>
+</div>
+<div>
+<div class="text-[11px] font-mono text-white">INGEST_SVC</div>
+<div class="text-[9px] font-mono text-gray-500">TYPE: DATA_GATEWAY</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-[#2a2a2a] mb-6">
+<button class="flex-1 pb-2 text-[10px] font-mono text-gray-500 hover:text-white transition-opacity">PROPERTIES</button>
+<button class="flex-1 pb-2 text-[10px] font-mono text-gray-500 hover:text-white transition-opacity">CONNECTIONS</button>
+<button class="flex-1 pb-2 text-[10px] font-mono text-[#7c3aed] border-b-2 border-[#7c3aed] brightness-125">ATTACHMENTS</button>
+</div>
+<!-- ATTACHMENTS Tab Content -->
+<div class="space-y-4">
+<div class="space-y-1">
+<!-- File 1 -->
+<div class="group flex items-center justify-between p-3 bg-[#0e0e0e] hover:bg-[#201f1f] transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#7c3aed] text-lg">description</span>
+<div class="flex flex-col">
+<span class="text-[11px] font-mono text-on-surface">WALKTHROUGH.md</span>
+<span class="text-[9px] font-mono text-gray-600 uppercase">2.4 KB</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-xs text-gray-700 opacity-0 group-hover:opacity-100">close</span>
+</div>
+<!-- File 2 -->
+<div class="group flex items-center justify-between p-3 bg-[#0e0e0e] hover:bg-[#201f1f] transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#00e479] text-lg">terminal</span>
+<div class="flex flex-col">
+<span class="text-[11px] font-mono text-on-surface">sft_queryspec_v3.py</span>
+<span class="text-[9px] font-mono text-gray-600 uppercase">14.8 KB</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-xs text-gray-700 opacity-0 group-hover:opacity-100">close</span>
+</div>
+<!-- File 3 -->
+<div class="group flex items-center justify-between p-3 bg-[#0e0e0e] hover:bg-[#201f1f] transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">data_object</span>
+<div class="flex flex-col">
+<span class="text-[11px] font-mono text-on-surface">eval_results.json</span>
+<span class="text-[9px] font-mono text-gray-600 uppercase">1.2 MB</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-xs text-gray-700 opacity-0 group-hover:opacity-100">close</span>
+</div>
+</div>
+<!-- Dropzone Area -->
+<div class="mt-8 border-2 border-dashed border-[#2a2a2a] p-8 flex flex-col items-center justify-center gap-3 hover:border-[#7c3aed]/50 transition-colors group cursor-pointer">
+<span class="material-symbols-outlined text-gray-600 group-hover:text-[#7c3aed]">upload_file</span>
+<div class="text-center">
+<div class="text-[10px] font-mono text-gray-500 tracking-widest uppercase">DRAG &amp; DROP TO ATTACH</div>
+<div class="text-[9px] font-mono text-gray-700 mt-1">MAX SIZE: 50MB</div>
+</div>
+</div>
+<button class="w-full py-2 bg-transparent border border-[#7c3aed] text-[#7c3aed] text-[10px] font-mono tracking-widest hover:bg-[#7c3aed] hover:text-white transition-all uppercase flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    ATTACH NEW DOCUMENT
+                </button>
+</div>
+</div>
+<!-- Contextual HUD Footer for Sidebar -->
+<div class="mt-auto p-4 bg-[#0e0e0e]">
+<div class="flex justify-between items-center opacity-40">
+<span class="text-[8px] font-mono tracking-tighter">LATENCY: 12ms</span>
+<span class="text-[8px] font-mono tracking-tighter">PARSER: V3_OPT</span>
+</div>
+</div>
+</aside>
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6fPUzKlZDfA",
+    "language": "en",
+    "took_ms": 10084,
+    "method": null,
+    "title": "DEF CON 33 - Cryptocurrency Opening Keynote - Michael Schloh MsvB, Chad Calease & Param D Pithadia",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1528,
+    "description": "Join your fellow hackers managing the Cryptocurrency areas of Defcon, and get a sneak peak of what each workshop teaches as well as an overview of the showcases and programs happening in our Defcon Community, Contest, and Vendor areas. Chad and Param will report on cryptocurrency trends and perspectives from their distinguished positions in industry and academy. We will announce the teams competing in the Cryptocurrency Cyber Challenge, and give an overview of what's available in the vending area. Meet the organizers of years of cryptocurrency content at Defcon and bring your questions to the Community Stage!",
+    "view_count": 371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6fPUzKlZDfA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

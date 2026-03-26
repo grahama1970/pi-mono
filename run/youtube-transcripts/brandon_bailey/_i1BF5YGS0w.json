@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_i1BF5YGS0w",
+    "language": "en",
+    "took_ms": 7684,
+    "method": null,
+    "title": "DEF CON 30 - Cory Doctorow, Christian Dameff, Jeff Tully - Why Patients Should  Hack Med Tech",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2614,
+    "description": "What do Apple, John Deere and Wahl Shavers have in common with med-tech companies? They all insist that if you were able to mod their stuff, you would kill yourself and/or someone else... and they've all demonstrated, time and again, that they are unfit to have the final say over how the tools you depend on should work.\n\nAs right to repair and other interoperability movements gain prominence, med-tech wants us to think that it's too life-or-death for modding. We think that med-tech is too life-or-death NOT to to be open, accountable and configurable by the people who depend on it. Hear two hacker doctors and a tech activist talk about who's on the right side of history and how the people on the wrong side of history are trying to turn you into a walking inkjet printer, locked into an app store.",
+    "view_count": 1422
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _i1BF5YGS0w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

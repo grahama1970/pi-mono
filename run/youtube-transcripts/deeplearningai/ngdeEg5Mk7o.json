@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ngdeEg5Mk7o",
+    "language": "en",
+    "took_ms": 9625,
+    "method": null,
+    "title": "Learn to use OpenAI’s o1 model for advanced reasoning tasks in this new course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241218",
+    "duration_sec": 187,
+    "description": "Enroll for free: https://bit.ly/3Dju1qW\n\nLearn how to use OpenAI’s o1 model to tackle advanced reasoning tasks like coding, planning, and image understanding in Reasoning with o1, a free course made in collaboration with OpenAI, and taught by Colin Jarvis, its Head of AI Solutions.\n\nYou’ll explore:\n\nWhen and how to use the o1 model for tasks requiring advanced reasoning.\nEffective prompting strategies, including meta-prompting, to optimize results.\nPractical applications like coding, vision tasks, and building workflows that balance intelligence and cost.\n\nLearn how o1’s unique features, such as chain-of-thought prompting and test-time compute, enable it to reason through complex problems by breaking them into manageable steps. With hands-on examples and guidance, this course equips you to build applications that rely on abstract and complex reasoning.\n\nLearn more: https://bit.ly/3Dju1qW",
+    "view_count": 12470
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ngdeEg5Mk7o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

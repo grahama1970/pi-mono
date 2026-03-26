@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "coqS0W2AApA",
+    "language": "en",
+    "took_ms": 8088,
+    "method": null,
+    "title": "Validate Your AI Idea in 48 Hours",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260217",
+    "duration_sec": 60,
+    "description": "You don’t need weeks to test an AI idea. Use the 48-hour rule: pick one user, one job, build the smallest loop, and watch real users try it. By day two, you’ll have validation or a reason to pivot. In AI, speed of learning beats perfection.",
+    "view_count": 7482
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] coqS0W2AApA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

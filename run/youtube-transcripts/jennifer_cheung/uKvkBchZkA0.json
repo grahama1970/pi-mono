@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uKvkBchZkA0",
+    "language": "en",
+    "took_ms": 7919,
+    "method": null,
+    "title": "DEF CON 32 - Autos, alcohol, blood, sweat, & creative reversing obfuscated Car Modding tool - Atlas",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2452,
+    "description": "reversing can feel uber powerful... like you hold God's honest truth within your hands... most humans don't understand what you can see and comprehend.\n\nuntil someone tries to hide the truth from you... limit your knowledge... keep you from your glorious purpose!\n\nobfuscated code can be a real downer.\n\nthis talk focuses on the story of how i took on an interesting obfuscated target (an automotive modder's tool with ability to flash firmware and tweak engines), in fun and exciting ways.\n\nwe'll discuss several problems with obfuscated code, an approach i took (and tooling), playing in the guts of machine code, and customizations to binary analysis tools that came out of the journey...\n\nthere will be much hex, disassembly, green on black, total carnage.\n\nyou will walk away with powerful ideas and new tools to help you in your pursuit of truth. you will be entertained, enriched, educated, and hopefully inspired. instead of thinking that \"atlas is smart\" my goal is you feeling, and being, more powerful.\n\ncome with Vivisect installed to follow along!",
+    "view_count": 825
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uKvkBchZkA0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

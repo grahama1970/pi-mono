@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Zx0G6znf_qQ",
+    "language": "en",
+    "took_ms": 7657,
+    "method": null,
+    "title": "DEF CON 33 - Bio Cryptography is the Game Genie in a post quantum dystopia - James Utley, PhD",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1175,
+    "description": "Defcon 32 we discussed how to transfect DNA using a lighter in the privacy of your home, Defcon 33 we want to bring the next phase which is BioCypher. BioCypher is a tool that will help with plasmid design to embed cryptographic messages. As quantum computing threatens traditional encryption, it’s time to ditch silicon and embrace self-assembling biomolecular firewalls. DNA Origami Cryptography (DOC) uses viral scaffolds to create nanometer-scale encryption keys over 700 bits long—strong enough to give Shor’s algorithm an existential crisis. Beyond brute-force resistance, DOC enables protein-binding steganography and multi-part message integrity, allowing encrypted communication through braille-like molecular folds. Whether securing classified data or encoding musical notes into microscopic strands, DOC offers a biological alternative to post-quantum doom. In this talk, we’ll explore how molecular self-assembly is turning DNA into the hacker-proof cipher of the future, now introducing Biocypher! The rough demo awaits for all to use the tool and think about a bio-crypto-future!",
+    "view_count": 140
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Zx0G6znf_qQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

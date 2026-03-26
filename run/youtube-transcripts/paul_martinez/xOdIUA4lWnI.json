@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xOdIUA4lWnI",
+    "language": "en",
+    "took_ms": 8810,
+    "method": null,
+    "title": "S4x22 Interview With CISA Director Jen Easterly",
+    "channel": "S4 Events",
+    "upload_date": "20220427",
+    "duration_sec": 1982,
+    "description": "S4 Founder Dale Peterson interviews CISA Director Jen Easterly on the S4x22 Main Stage, 20 April 2022.\n\nStart - What are CISA's major goals in ICS Security for 2022/23 and how will they measure progress? Jen goes over people, process and partnerships goals, and highlights the hiring they are doing in the ICS security area. Also, Jen announces the new JCDC ICS.\n\n17:38 When will the Shields Up come down? Since Shields Up is mostly basic cyber hygiene will there be a Shields Way Up?\n\n23:30 Does Jen believe regulation is required to secure private industry owned critical infrastructure?\n\nAnd of course a lot of other things came up in the course of this half hour interview.",
+    "view_count": 2367
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xOdIUA4lWnI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

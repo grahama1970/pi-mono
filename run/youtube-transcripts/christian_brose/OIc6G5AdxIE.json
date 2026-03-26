@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OIc6G5AdxIE",
+    "language": "en",
+    "took_ms": 2816,
+    "method": null,
+    "title": "Irwin Stelzer on the American Economy",
+    "channel": "Hudson Institute",
+    "upload_date": "20110929",
+    "duration_sec": 205,
+    "description": "Hudson Senior Fellow and Director of the Center for Economic Policy Studies Irwin Stelzer discusses the current state of the American economy and what can be done to further growth.",
+    "view_count": 74
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OIc6G5AdxIE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TcIaZ9LW1WE",
+    "language": "en",
+    "took_ms": 8981,
+    "method": null,
+    "title": "DEF CON 30 - Adam Zabrocki, Alex Tereshkin - Exploitation in the era of Formal Verification",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2508,
+    "description": "For decades, software vulnerabilities have remained an unsolvable security problem regardless of years of investment in various mitigations, hardening and fuzzing strategies. In the last years there have been moves to formal methods as a path toward better security. Verification and formal methods can produce rigorous arguments about the absence of the entire classes of security bugs, and are a powerful tool to build highly secure software.\n\nAdaCore/SPARK is a formally defined programming language intended for the development of high integrity software used in systems where predictable and highly reliable operation is crucial. The formal, unambiguous, definition of SPARK allows a variety of static analysis techniques to be applied, including information flow analysis, proof of absence of run-time exceptions, proof of termination, proof of functional correctness, and proof of safety and security properties.\n\nIn this talk we will dive-into AdaCore/SPARK, cover the blind spots and limitations, and show real-world vulnerabilities which we met during my work and which are still possible in the formally proven software. We will also show an exploit targeting one of the previously described vulnerabilities.",
+    "view_count": 5604
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TcIaZ9LW1WE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

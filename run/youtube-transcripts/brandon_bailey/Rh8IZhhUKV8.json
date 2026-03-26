@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Rh8IZhhUKV8",
+    "language": "en",
+    "took_ms": 9056,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Harshit Agrawal - Defending IoT in the Future of High Tech Warfare",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 3145,
+    "description": "The increase of cyberattacks using IoT devices has exposed the vulnerabilities in the infrastructures that make up the IoT and have shown how small devices can affect networks and services functioning. This talk presents a review of the vulnerabilities that bear the IoT and assessing the experiences in implementing RF attacks targeting the Internet of Things and analyses various facets of the IoT centricity of future military operations based on the IoT concept, IoT-led future shaping of the things, challenges, and developmental trajectories of major powers.",
+    "view_count": 790
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Rh8IZhhUKV8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

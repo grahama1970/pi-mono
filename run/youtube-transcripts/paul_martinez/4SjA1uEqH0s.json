@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4SjA1uEqH0s",
+    "language": "en",
+    "took_ms": 7906,
+    "method": null,
+    "title": "Using BOMs to Threat Model A System",
+    "channel": "S4 Events",
+    "upload_date": "20230413",
+    "duration_sec": 1166,
+    "description": "Tony Turner describes how you can use various Bills of Materials (BOMs) to create a threat model for a system. He uses the CycloneDX Object Model throughout the session. SaaSBOM's are the most useful BOM for threat model generation, but HBOM, SBOM, Logic BOM (and the coming ML BOM) also can play a role. Tony introduces the concept of BOM-Link to consider these BOMs as a whole.",
+    "view_count": 870
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4SjA1uEqH0s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

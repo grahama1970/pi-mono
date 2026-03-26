@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "t1be1rQ3QsM",
+    "language": "en",
+    "took_ms": 8914,
+    "method": null,
+    "title": "DEF CON 31 Policy - How Can We Encourage More Hackers to Wngage with Policy Makers - Stephens, Kranz",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1023,
+    "description": "For decades, the US has led the way when it comes to involving hackers with policy making. From l0pht appearing before the US Congress in 1998, to the first Policy@DEFCON sessions, DEF CON has shown how hackers and feds can work together to improve the legal landscape for all of us. As Europe tackles big technology issues like privacy, reigning in Big Tech, and encouraging startups and innovation, there is a danger that hackers will be left out of contributing. What lessons can we learn from the different groups in the US who have come together to get hackers involved in policy making?",
+    "view_count": 418
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] t1be1rQ3QsM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

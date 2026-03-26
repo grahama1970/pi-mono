@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i8_qL6y7CLg",
+    "language": "en",
+    "took_ms": 7895,
+    "method": null,
+    "title": "Full Fine tuning with Fewer GPUs - Galore, Optimizer Tricks, Adafactor",
+    "channel": "Trelis Research",
+    "upload_date": "20240917",
+    "duration_sec": 3822,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-fine-tuning\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/18zooX23ltF5P5CRN8-zuMOJc6htu8fdjJfRRC1wcymQ/edit?usp=sharing\n- Original GaLore repo: https://github.com/jiaweizzhao/GaLore\n- GaLore with Subspace Descent: https://github.com/kyleliang919/Online-Subspace-Descent\n\nTIMESTAMPS:\n0:00 LLM Full fine-tuning with lower VRAM\n0:37 Video Overview\n4:02 Understanding Optimisers\n6:17 Stochastic Gradient Descent (SGD)\n7:53 AdamW Optimizer and VRAM requirements\n9:31 AdamW 8-bit optimizer\n11:03 Adafactor optimiser and memory requirements\n14:28 GaLore - reducing gradient and optimizer VRAM\n19:10 LoRA versus GaLoRe\n19:49 Better and Faster GaLoRe via Subspace Descent\n22:59 Layerwise gradient updates\n26:17 Training Scripts\n27:10 How gradient checkpointing works to reduce memory\n40:30 AdamW Performance\n41:14 AdamW 8bit Performance\n42:45 Adafactor with manual learning rate and schedule\n44:10 Adafactor with default/auto learning rate\n45:47 Galore AdamW\n50:22 Galore AdamW with Subspace descent\n52:25 Using AdamW8bit and Adafactor with GaLoRe\n53:14 Notebook demo of layerwise gradient updates\n55:28 Running with LoRa\n58:36 Inferencing and Pushing Models to Hub\n1:00:00 Single GPU Recommendations\n1:25:00 Multi-GPU Recommendations\n1:03:25 Resources",
+    "view_count": 2715
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i8_qL6y7CLg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

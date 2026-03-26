@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TjPwihLEPMk",
+    "language": "en",
+    "took_ms": 8659,
+    "method": null,
+    "title": "How US Maritime Industries Can Help Deter China",
+    "channel": "Hudson Institute",
+    "upload_date": "20250304",
+    "duration_sec": 2238,
+    "description": "China’s commercial maritime dominance is unprecedented in modern history. Its shipbuilding industry is more than 200 times larger than that of the United States. Last year, it won three-quarters of the world’s shipbuilding orders and delivered three ships to the Chinese navy for each ship American shipbuilders completed for the US Navy. China’s commercial fleet is about 10 times larger than that of the US, and China has ownership interests in more than 100 ports outside of China, including at every maritime chokepoint. This maritime dominance gives China extraordinary power to manipulate vital supply chains.\n\nJennifer Carpenter, president of the American Waterways Operators and the American Maritime Partnership, will join Senior Fellow Michael Roberts to discuss how America’s maritime industry can help counter China’s shipping and shipbuilding dominance.",
+    "view_count": 1805
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TjPwihLEPMk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

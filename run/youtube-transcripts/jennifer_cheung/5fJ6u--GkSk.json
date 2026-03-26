@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5fJ6u--GkSk",
+    "language": "en",
+    "took_ms": 7419,
+    "method": null,
+    "title": "DEF CON 33 - Securing Agentic AI Systems and Multi-Agent Workflows - Andra Lezza, Jeremiah Edwards",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2026,
+    "description": "AI systems are evolving from copilots to autonomous, multi-agent architectures, expanding the attack surface across tool execution, persistent memory, and inter-agent communication. This hands-on session extends copilot security methods to agentic ecosystems, covering threat modeling for multi-agent pipelines, supply-chain defenses, safeguarding sensitive workflows, and prompt injection at scale. Through real-world case studies—independent and integrated assistant deployments—you’ll learn to implement policy-as-code guardrails, fine-grained access controls, and red-team strategies for agent behavior. Whether you’re securing or penetrating AI workflows, you’ll leave equipped with actionable patterns to defend and harden end-to-end autonomous systems without stifling innovation.",
+    "view_count": 2811
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5fJ6u--GkSk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

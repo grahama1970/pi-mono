@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZS0GLXr2YLQ",
+    "language": "en",
+    "took_ms": 9116,
+    "method": null,
+    "title": "One click GPU Setup for Fine tuning",
+    "channel": "Trelis Research",
+    "upload_date": "20250813",
+    "duration_sec": 87,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-fine-tuning\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Fine-tuning Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1yTWgo8t0IvAa67gDalJRLoQkDzPKc0TN6Z_pK4wSm-4/edit?usp=sharing\n- BASIC one-click template (affiliate link): https://console.runpod.io/deploy?template=qpuoks4ull&ref=jmfkcdio\n- ADVANCED one-click template (affiliate link) (cloned repo requires access to trelis.com/ADVANCED-fine-tuning: https://console.runpod.io/deploy?template=9f9n6z0axy&ref=jmfkcdio\n\nTIMESTAMPS:\n00:00 Introduction to Efficient GPU Setup for Fine Tuning\n00:14 Choosing Between Google Colab and Run Pod\n02:41 Setting Up a Basic Template on Run Pod\n04:55 Connecting via SSH and Terminal\n12:12 Advanced Template Setup and Customisation\n17:16 Conclusion and Additional Resources",
+    "view_count": 1398
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZS0GLXr2YLQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zSBf2CMKlBk",
+    "language": "en",
+    "took_ms": 7959,
+    "method": null,
+    "title": "DEF CON 33 - 7 Vulns in 7 Days - Breaking Bloatware Faster Than It’s Built - Leon 'leonjza' Jacobs",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2396,
+    "description": "Bloatware. We all hate it, and most of us are good at avoiding it. But some vendor tools – especially those managing critical drivers – can be useful when the Windows Update versions aren’t good enough for performance-critical computing.\n\nWhat started as a routine driver update took a sharp turn when I confirmed a reboot modal… from my browser. Wait, my browser shouldn’t be able to do that!? To my disappointment (and maybe some surprise), it turned out to be arbitrary code execution – right from the browser. This kicked off a week-long deep dive, uncovering seven CVEs in seven days across several prominent vendors, all exploiting a common pattern: privileged services managing software on Windows with little regard for security.\n\nIn this talk, I’ll walk through the journey of discovery and exploitation of several vulnerabilities that lead to LPE/RCE. I'll cover everything from the initial attack surface discovery, reverse engineering and finally exploitation of several vulnerabilities. By the end, participants will probably be uninstalling similar software mid-session. While the exploitation journey is fun and impactful, this isn’t the kind of “access everywhere” anyone wants. It’s 2025 – we have everything we need to do better.",
+    "view_count": 19550
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zSBf2CMKlBk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

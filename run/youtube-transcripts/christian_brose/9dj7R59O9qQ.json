@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9dj7R59O9qQ",
+    "language": "en",
+    "took_ms": 7720,
+    "method": null,
+    "title": "The Future of India-U.S. Defense Collaboration",
+    "channel": "Hudson Institute",
+    "upload_date": "20151216",
+    "duration_sec": 5601,
+    "description": "Hudson Institute and Federation of Indian Chambers of Commerce and Industry host an event on the future of India- U.S. defense collaboration. Panelists included Aparna Pande, Doug Feith, Subodh Rajendra Babu, Jayant Patil, Col.  H.S. Shankar, and Michael Pillsbury. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 2936
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9dj7R59O9qQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

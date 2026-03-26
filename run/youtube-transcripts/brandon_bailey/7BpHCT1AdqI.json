@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7BpHCT1AdqI",
+    "language": "en",
+    "took_ms": 9111,
+    "method": null,
+    "title": "DEF CON Safe Mode Biohacking Village - Nina Alli  - Keynote",
+    "channel": "DEFCONConference",
+    "upload_date": "20200818",
+    "duration_sec": 5347,
+    "description": "Nina Alli, Executive Director of the Biohacking Village, interviews folks in the biomedical and health industry for their insight and thoughts on where healthcare is and calls to action. They were not informed of the questions, these are real reactions and real talk.\n\nInterviewees:\nVee Schmitt: Patient, Hacker\nYusuf Henriques: Army Veteran, Entrepreneur\nJosh O'Connor: Recording Producer, Future Social Worker\nCannibal: Hacker, Maker\nDevabhaktuni Srikrishna: Data Scientist\nNajla Lindsay: DFIR Scientist, BHV Speaker Ops\nNate DeNicola, MD: Telehealth, Physician",
+    "view_count": 812
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7BpHCT1AdqI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GbCgyY1laDU",
+    "language": "en",
+    "took_ms": 8554,
+    "method": null,
+    "title": "ARC Prize: A Guide to DSL, LLM-Guided & Test-time Training Approaches",
+    "channel": "Trelis Research",
+    "upload_date": "20250430",
+    "duration_sec": 7320,
+    "description": "📜Open source repo access at https://github.com/TrelisResearch/minimal-arc\n\n💡 Apply for OR sponsor the Trelis ARC AGI Team:\nhttps://trelis.com/arc-agi-2/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- ARC Prize Task: https://arcprize.org/play?task=e3721c99\n- 2024 ARC Winners on MLST: https://www.youtube.com/watch?v=mTX_sAq--zY\n- Greenblatt approach: https://redwoodresearch.substack.com/p/getting-50-sota-on-arc-agi-with-gpt\n\nTIMESTAMPS:\n0:00 What is ARC AGI?\n1:00 Solving ARC Manually\n3:59 Broad approaches to solving ARC AGI\n8:04 Simple DSL Approach (Domain Specific Language)\n12:33 Simple LLM Guided Program Approach\n16:04 Simple Neural Net Approach (with beam and depth-first search)\n28:24 Overview of ARC training and evaluation data and preparation\n33:44 Detailed DSL Approach (Domain Specific Language)\n48:47 LLM Guided Search (in detail)\n1:09:00 Test time training approach, with depth-first search\n2:00:00 Apply for the Trelis ARC AGI 2 team",
+    "view_count": 3739
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GbCgyY1laDU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

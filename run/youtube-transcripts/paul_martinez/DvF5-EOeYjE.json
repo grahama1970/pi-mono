@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DvF5-EOeYjE",
+    "language": "en",
+    "took_ms": 8946,
+    "method": null,
+    "title": "Staffing for Mission, Not Just Headcount",
+    "channel": "S4 Events",
+    "upload_date": "20251117",
+    "duration_sec": 139,
+    "description": "From the S4x25 stage, Daniel Swann made the case for something too many overlook.\n\nVeterans, reservists, and guardsmen bring more than technical skills to a SoC. They bring pressure-tested judgment, mission focus, and the kind of persistence you can’t teach.\n\nIf you want people who care as much as you do, start there.",
+    "view_count": 185
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DvF5-EOeYjE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

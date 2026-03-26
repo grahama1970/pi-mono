@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VJ8aqReB118",
+    "language": "en",
+    "took_ms": 8827,
+    "method": null,
+    "title": "DEF CON 29 - Dimitry 'Op Nomad' Snezhkov - Racketeer Toolkit: Prototyping Controlled Ransomware Ops",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1238,
+    "description": "Offensive testing in organizations has shown a tremendous value for simulating controlled attacks. While cyber extortion may be one of the main high ROI end goals for the attacker, surprisingly few tools exist to simulate ransomware operations.\n\nRacketeer is one such tool. It is an offensive agent coupled with a C2 base, built to help teams to prototype and exercise a tightly controlled ransomware campaign.\n\nWe walk through the design considerations and implementation of a ransomware implant which emulates logical steps taken to manage connectivity and asset encryption and decryption capabilities. We showcase flexible and actionable ways to prototype components of fully remote ransomware operation including key and data management, as well as data communication that is used in ransomware campaigns.\n\nRacketeer is equipped with practical safeguards for lights out operations, and can address the goals of keeping strict control of data and key management in its deployment, including target containment policy, safe credential management, and implementing operational security in simulated operations.\n\nRacketeer can help gain better optics into IoCs, and is helpful in providing detailed logs that can be used to study the behavior and execution artifacts of a ransomware agent.",
+    "view_count": 1444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VJ8aqReB118: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

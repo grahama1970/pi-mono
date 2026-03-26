@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7EcznH0-of8",
+    "language": "en",
+    "took_ms": 9488,
+    "method": null,
+    "title": "Deep Dive into LLM Evaluation with Weights & Biases",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230815",
+    "duration_sec": 3551,
+    "description": "In the dynamic world of Large Language Models (LLMs), we've unlocked the power to build smart systems from our data. Just like any other piece of automation software, it's essential we take the time to assess these LLM systems. In this webinar, we're going to dive into how we can effectively evaluate these systems, with a particular focus on Retrieval Augmented Generation (RAG) systems.\r\n\r\nWe'll start by discussing the 'eye-balling' technique and why Weight & Biases Prompts stands out as the first great tool in this area. Then, we'll move on to supervised evaluation, highlighting why it's worth considering and pointing out some limitations.\r\n\r\nTo wrap things up, we'll look at how LLMs can be used to evaluate themselves - from generating their own evaluation datasets, to using standard metrics like SQuAD or BLUE, and even evaluating retrieval systems.\r\n\r\nOn top of all that, we'll also touch on how W&B Sweeps, an excellent tool for hyperparameter optimization, can be utilized to find the ideal balance to maximize accuracy and minimize costs. The session will end with a Q&A with the presenters.\r\n\r\nThis workshop is based off the foundational learnings of DeepLearning.AI’s course on Evaluating & Debugging Generative AI built in collaboration with the Weights & Biases team. Everything covered in the workshop is presented as continued education from the course.\r\n\r\nEvent Agenda\r\n40-minute Workshop\r\n10-minute Q&A: Answering questions from the audience.\r\n\r\n​​About the Speakers:\r\nMorgan McGuire - Growth Director at Weights & Biases \r\nMorgan leads the Growth ML team and is a ML Engineer at Weights & Biases. He has a background in NLP and previously worked at Facebook on the Safety team where he helped classify and flag potentially high-severity content for removal.\r\n\r\nAyush Thakur - Machine Learning Engineer at Weights & Biases \r\nAyush is a MLE at Weights and Biases and Google Developer Expert in Machine Learning (TensorFlow). He is interested in everything computer vision and representation learning. For the past 7 months he’s been working with LLMs and have covered RLHF and how and what of building LLM-based systems.\r\n\r\nCarey Phelps -Founding Product Manager at Weights & Biases\r\nCarey is the founding Product Manager at Weights & Biases. She studied computer science at Stanford and went on to found Carta Healthcare before joining Weights & Biases.",
+    "view_count": 20296
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7EcznH0-of8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

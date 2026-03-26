@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lNnxb5mnwyk",
+    "language": "en",
+    "took_ms": 13270,
+    "method": null,
+    "title": "DEF CON 29 Payment Village - Meadow Ellis - Automated Tear Machines",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 2436,
+    "description": "Short, yet packed with information talk about why ATMs are bad, why they are a literal magnet for criminals, what types of attacks do actually happen and why it is so bloody hard to do any kind of research on them, unless you are  a criminal. I won't bore you with stuff you can read on Wikipedia but rather give you an overview of terms, parts and crazy things people do to either get the money out of you or out of an ATM itself. And, what can you do to try and protect yourself and what to do when you see something 'that doesn't look right'. Don't tear off the magstripe from your card, though.",
+    "view_count": 1451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lNnxb5mnwyk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

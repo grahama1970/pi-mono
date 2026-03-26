@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3rxwiooC9Cw",
+    "language": "en",
+    "took_ms": 10639,
+    "method": null,
+    "title": "Defense Procurement for the 21st Century",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6419,
+    "description": "Critics claim that the defense procurement process is inefficient: it often places too much emphasis on the lowest cost and hampers innovation in the defense sector. In the current budget climate, with significant calls for defense budget reductions, reforming defense spending may be counterproductive.  Should short-term cost savings drive defense reform or should defense policy reformers seek a broader overhaul that might incorporate effectiveness standards for equipment and new technologies, i",
+    "view_count": 275
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3rxwiooC9Cw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tQRE9U1q2mk",
+    "language": "en",
+    "took_ms": 8700,
+    "method": null,
+    "title": "DEF CON 33 - Referral Beware, Your Rewards Are Mine  - Whit @un1tycyb3r Taylor",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1472,
+    "description": "Referral Rewards Programs. Functionality that most probably view as boring and not worth the time looking at while hunting for bugs on a program. After a deep dive into the implementation of this functionality across dozens of programs, I found them to be hiding some very interesting bugs. My research uncovered various types of business logic flaws, race conditions, and even how the implementations created various client-side gadgets such as cookie-injection and client-side path traversal which could then be used as a part of a client-side chain. This research uncovered vulnerabilities in multiple large bug bounty programs.",
+    "view_count": 265
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tQRE9U1q2mk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

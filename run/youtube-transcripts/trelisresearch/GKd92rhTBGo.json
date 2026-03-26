@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GKd92rhTBGo",
+    "language": "en",
+    "took_ms": 8748,
+    "method": null,
+    "title": "Double Inference Speed with AWQ Quantization",
+    "channel": "Trelis Research",
+    "upload_date": "20230926",
+    "duration_sec": 1369,
+    "description": "*Runpod Affiliate Link* https://tinyurl.com/yjxbdc9w\n*One Click Runpod Template* https://runpod.io/gsc?template=6e9yxszwne&ref=jmfkcdio\n\n*Private GitHub Repo Access* https://buy.stripe.com/9AQ28UcWh4PF1ckeV9\n- Detailed API/server setup instructions.\n- Guides for RunPod and EC2/Ubuntu instances.\n- Inference recipes, including long context length.\n- Forum for questions/support.\n\n*Underlying tools/links:*\n- Colab notebook: https://tinyurl.com/bde69se7\n- AWQ paper: https://arxiv.org/pdf/2306.00978.pdf\n- GPTQ paper: https://arxiv.org/pdf/2210.17323.pdf\n- llm-awq on GitHub: https://github.com/mit-han-lab/llm-awq\n- text-generation-inference: https://github.com/huggingface/text-generation-inference\n- chat-ui: https://github.com/huggingface/chat-ui\n- The Bloke's models: https://huggingface.co/TheBloke/Llama-2-7b-Chat-AWQ\n\n0:00 Increase inference speed and accuracy with AWQ\n0:35 Deploy a Llama 2 70B server and API with AWQ\n4:52 How to set up chat-ui for Llama 2\n6:49 How to run AWQ in Google Colab\n8:50 How does AWQ quantization work?\n9:29 How does quantization work for language models?\n16:13 How does GPTQ work?\n21:52 Pro tips",
+    "view_count": 3308
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GKd92rhTBGo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

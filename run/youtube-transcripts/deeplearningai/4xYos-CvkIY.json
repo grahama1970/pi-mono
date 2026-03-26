@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4xYos-CvkIY",
+    "language": "en",
+    "took_ms": 9199,
+    "method": null,
+    "title": "New course with Microsoft: How Business Thinkers Can Start Building AI Plugins With Semantic Kernel",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230830",
+    "duration_sec": 161,
+    "description": "Enroll now: https://bit.ly/3sy3Iba \n\nThe short course \"How Business Thinkers Can Start Building AI Plugins With Semantic Kernel,\" instructed by John Maeda, VP of Design and AI at Microsoft, is available now! \n\nGet ready to explore the innovative potential of Microsoft's Software Design Kit (SDK) called Semantic Kernel. This toolkit empowers users from diverse professional backgrounds to harness the capabilities of LLMs for their applications. \n\nWith Semantic Kernel, you'll blend traditional programming languages like C# and Python with cutting-edge AI prompts, prompt templating, chaining, and planning capabilities.\n\nUpon course completion, you will learn to:\n\n- Craft \"semantic functions\" to succinctly summarize text\n- Chaining semantic functions for enhanced impact\n- Use Design Thinking to empathize with customers and solve their challenges\n- Build an AI planner that integrates plug-ins to create advanced logic-based plans\n\nThis course aims to equip business leaders with LLM skills and get developers and engineers well-versed in successful business strategies, to achieve seamless collaboration and better outcomes across the board.\n\nLearn more: https://bit.ly/3sy3Iba",
+    "view_count": 8326
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4xYos-CvkIY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

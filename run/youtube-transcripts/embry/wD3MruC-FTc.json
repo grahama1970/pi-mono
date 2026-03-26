@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wD3MruC-FTc",
+    "language": "en",
+    "took_ms": 9185,
+    "method": null,
+    "title": "How does ULA's Vulcan rocket compare to the competition?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240110",
+    "duration_sec": 1180,
+    "description": "Come to the Astro Awards! - January 13th / 14th, in Austin TX, remaining tickets are 25% off!!! - http://astroawards2024.com\n\nHow does the Vulcan rocket compare to its predecessors, the rockets it’s replacing, the Atlas V and the Delta IV Heavy, and maybe more importantly, how does it compare to its biggest competitor, SpaceX’s Falcon 9 and Falcon Heavy?\n\n00:00 - Intro\n01:38 - Dimensions\n02:08 - 1st Stage Engines\n05:02 - Upper Stage Engines\n06:34 - Payload Capacity\n09:33 - Payload Volume\n10:03 - Price\n13:35 - Summary\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 361131
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wD3MruC-FTc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

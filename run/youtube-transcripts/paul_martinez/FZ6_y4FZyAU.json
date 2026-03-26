@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FZ6_y4FZyAU",
+    "language": "en",
+    "took_ms": 8525,
+    "method": null,
+    "title": "S4x19 Cabana Sessions",
+    "channel": "S4 Events",
+    "upload_date": "20191022",
+    "duration_sec": 567,
+    "description": "Dale Peterson takes a walk around the S4x19 Cabana Sessions. You can see how this environment is quite different than tabletops in a hotel ballroom. Sun, palm trees, pool and ocean. Boat races, golf, and live graffiti art. And the bonus dunk take footage at the end.",
+    "view_count": 161
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FZ6_y4FZyAU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

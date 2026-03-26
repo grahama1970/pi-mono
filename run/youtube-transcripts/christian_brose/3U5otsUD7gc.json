@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3U5otsUD7gc",
+    "language": "en",
+    "took_ms": 8919,
+    "method": null,
+    "title": "The UN Resolution on the Comprehensive Nuclear Test Ban Treaty",
+    "channel": "Hudson Institute",
+    "upload_date": "20160920",
+    "duration_sec": 3689,
+    "description": "Sen. Jon Kyl, Hon. Stephen Rademaker, and Rebeccah Heinrichs discuss the Comprehensive Nuclear Test Ban Treaty and President Obama's UN resolution.",
+    "view_count": 400
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3U5otsUD7gc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

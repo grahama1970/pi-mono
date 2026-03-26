@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mmczfDgng5w",
+    "language": "en",
+    "took_ms": 9045,
+    "method": null,
+    "title": "Ethanol, Methanol, and China's Transportation Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20151118",
+    "duration_sec": 3805,
+    "description": "Hudson Institute conference on China's growing energy needs and U.S.-China energy cooperation featuring policy experts from both China and the U.S. This panel, Ethanol, Methanol and China’s Transportation Future featured Jerry J. Fletcher, Gal Luft, and Yossie Hollander.",
+    "view_count": 585
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mmczfDgng5w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

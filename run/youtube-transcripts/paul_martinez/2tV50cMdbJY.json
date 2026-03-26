@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2tV50cMdbJY",
+    "language": "en",
+    "took_ms": 8571,
+    "method": null,
+    "title": "Cyber Nationalism: Dilemmas of Offense and Defense Playing Out in Critical Networks",
+    "channel": "S4 Events",
+    "upload_date": "20170307",
+    "duration_sec": 1512,
+    "description": "Ben Buchanan has a new book out called The Cybersecurity Dilemma (he did a book signing at S4x17 after this talk). In this video he covers 3 main propositions:\n\n1) Nations need to intrude into networks in advance of conflict for successful offensive operations\n\n2) Intrusions into adversaries networks and 3rd party networks are necessary to improve a nation's defense\n\n3) Suffering an intrusion into a network is deeply concerning ... a threat you are worried about.\n\nIf you believe these three the cybersecurity dilemma is easy to see. A nation does not know if an intrusion into their network is a precursor to an offensive action or an effort to improve their defense. And the original motivation and purpose can change.",
+    "view_count": 452
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2tV50cMdbJY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

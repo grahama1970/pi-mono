@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cr-SVbHIsEU",
+    "language": "en",
+    "took_ms": 8509,
+    "method": null,
+    "title": "Connecting Development with Diplomacy: Ambassador Karen Pierce on the U.K.'s New Approach to Aid",
+    "channel": "Hudson Institute",
+    "upload_date": "20200720",
+    "duration_sec": 1788,
+    "description": "Join Hudson Institute for a conversation with United Kingdom Ambassador to the United States Dame Karen Pierce DCMG on how the global pandemic is shaping a new approach to the country’s development assistance and the opportunities it could create for cooperation with the United States.",
+    "view_count": 549
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cr-SVbHIsEU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

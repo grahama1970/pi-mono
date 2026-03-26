@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OaNjJ6VqwKM",
+    "language": "en",
+    "took_ms": 8949,
+    "method": null,
+    "title": "Russia's Presidential Elections: Putinism 2.0 or Better?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6885,
+    "description": "The Russian presidential election scheduled for March 4 poses yet another challenge for the legitimacy of the Putin system. The Kremlin is still recovering from last December's fraud-ridden parliamentary elections that triggered unprecedented protests in major Russian cities. Even if Putin wins reelection, he will face serious obstacles simply resuming the policies he pursued as president from 2000-2008. But are he and his regime capable of moving beyond Putinism? Please join Hudson Institute fo",
+    "view_count": 128
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OaNjJ6VqwKM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

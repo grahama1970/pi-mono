@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Hemrn7zsaEI",
+    "language": "en",
+    "took_ms": 9291,
+    "method": null,
+    "title": "How to Serve a Text to Speech Model with vLLM",
+    "channel": "Trelis Research",
+    "upload_date": "20250625",
+    "duration_sec": 44,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-audio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Fine-tuning Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- one-click-llms repo: https://github.com/TrelisResearch/one-click-llms\n\nTIMESTAMPS:\n0:00 Serving Orpheus Text-to-Speech model with continuous batching\n0:44 Setup Demo with a one-click template from Runpod \n4:12 Running inference on a fine-tuned model (poor quality, maybe don’t use fp8, and tune more)\n5:25 Inference on the default orpheus model, “tara”\n7:37 How vLLM works with Orpheus and how to decode audio tokens\n12:38 Conclusion and Resources",
+    "view_count": 2478
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Hemrn7zsaEI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

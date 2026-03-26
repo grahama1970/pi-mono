@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "waNAJQ7t6JY",
+    "language": "en",
+    "took_ms": 8808,
+    "method": null,
+    "title": "The Postal Service's Dilemma",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 4138,
+    "description": "The U.S. Postal Service has been a fixture of American life since the founding of our Nation.  The old U.S. Post Office was reorganized in 1970 as a government-sponsored enterprise (GSE), meant to be run like a business, free of political patronage and micromanaging.  Yet, the enterprise faced significant restraints imposed by the 1970 law and further impediments to economical operation by legislation enacted in 2006. These limits on the Postal Service's ability to perform were easily overcome f",
+    "view_count": 30
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] waNAJQ7t6JY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

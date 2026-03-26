@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A2tQo4t4ibo",
+    "language": "en",
+    "took_ms": 7900,
+    "method": null,
+    "title": "S4x19 ICS Detection Challenge Results",
+    "channel": "S4 Events",
+    "upload_date": "20190131",
+    "duration_sec": 3588,
+    "description": "A real world test of product's ability to create an ICS asset inventory and detect and analyze attacks on ICS via passive monitoring. 130GB packet captures from a real ICS, anonymized and then a very complex attack scenario is inserted. In the end only Dragos and Kaspersky stepped up to the Challenge. \n\nWe gave them 10 minutes to put together a video showing how they detected and analyzed the attack using their products.\n\n10:40 The Attack Scenario\n17:40 Kaspersky's Video Analysis of the Attack and an analysis of how they did\n32:20 Drago's Video Analysis of the Attack and an analysis of how they did\n\nDale Peterson led the effort to capture the traffic and inventory. Ron Brash led the effort to create, insert and score the attack.",
+    "view_count": 1673
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A2tQo4t4ibo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sdiHfVhPso4",
+    "language": "en",
+    "took_ms": 7802,
+    "method": null,
+    "title": "DEF CON 31 - Visual Studio Code is Why I Have Workspace Trust Issues - Chauchefoin, Gerste",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2305,
+    "description": "Developers are threat actors' targets of choice because of their access to business-critical services. After compromising a single developer, they could push code changes or obtain sensitive information. For instance, a recent campaign attributed to North Korea set up social network profiles to social engineer and infect prominent figures of the developer community with malicious Visual Studio projects and browser exploits. At the same time, modern development tools offer increasingly advanced features and deep integration with ecosystems, sometimes at the cost of basic security measures. Code editors tried to counterbalance it by introducing new lines of defense (e.g., \"Workspace Trust\"), leading to a cat-and-mouse game to restrict access while keeping most features available by default. In this talk, we present the state of the art of Visual Studio Code's security. We go in-depth into its attack surface, how its extensions work, and the technical details of two vulnerabilities we found in Visual Studio Code. These findings, CVE-2021-43891 and CVE-2022-30129, led to a $30.000 bounty with an unexpected twist. We also present 1-days discovered by other researchers to develop the audience's intuition. These concepts apply to most IDEs of the market so everybody will now think twice before opening third-party code!",
+    "view_count": 3635
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sdiHfVhPso4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

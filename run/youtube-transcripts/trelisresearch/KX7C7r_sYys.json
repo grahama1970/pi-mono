@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KX7C7r_sYys",
+    "language": "en",
+    "took_ms": 8800,
+    "method": null,
+    "title": "Evaluating an ACT Model for the SO 101 Robot",
+    "channel": "Trelis Research",
+    "upload_date": "20250717",
+    "duration_sec": 65,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-robotics\n\n🗝️ Get Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis’ Private Discord\n3. Early access to Trelis videos via Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- ACT Paper: https://arxiv.org/abs/2304.13705\n- LeRobot Library: https://github.com/huggingface/lerobot\n\nTIMESTAMPS:\n00:00 Introduction to Training the SO-101 Robot with ACT\n00:21 Overview of the Video Series\n01:16 Scripts and Repo Access: Trelis.com/ADVANCED-robotics\n01:57 Cloning and Installing LeRobot Libraries\n06:07 Connecting and Configuring the Robots\n08:53 Calibrating the Motors and Arms\n12:33 Teleoperation Setup\n18:04 PID Controller Calibration \n27:10 Recording and Managing Data\n39:05 Training the ACT Model\n44:33 Style settings and KL Weight (ADVANCED)\n49:06 Running Training on a Mac (or cpu)\n50:54 Setting Up Validation and Output Directories\n53:44 Running Training on Mac and Handling Issues\n55:31 Monitoring Training Progress\n57:25 Calculating Training S teps and Epochs\n58:28 Analyzing Training and Validation Loss\n01:04:02 Setting Up Training on GPU\n01:08:19 Connecting to Remote Host and Cloning Repo\n01:12:48 Running Training on CUDA\n01:14:48 Handling Issues Running on CUDA\n01:23:28  Inspecting Results after Running on CUDA\n01:27:04 Evaluating Model Performance\n01:28:37 Replay and Evaluation of Training Examples\n01:35:21 Challenges with Generalization and Data Requirements\n01:36:28 Using Image Augmentations and Jitter\n01:37:08 Deciding Number of Rollout Steps\n01:40:06 Ensembling Predictions for Smoother Trajectories\n01:43:43 Conclusion and Next Steps",
+    "view_count": 929
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KX7C7r_sYys: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

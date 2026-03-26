@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zNOcQihGPOE",
+    "language": "en",
+    "took_ms": 8430,
+    "method": null,
+    "title": "Adversary Emulation in OT Environments",
+    "channel": "S4 Events",
+    "upload_date": "20230320",
+    "duration_sec": 1711,
+    "description": "About 5 years ago OGE Energy Corp started down the Adversary Emulation in OT path. Ian Anderson talks about the trail, lessons learned and what they are looking to in the future, specifically shifting to OT emulation at the 7 minute mark. At 14:15 Ian shifts to attacks / emulations that impact operations on OT. \n\nThe major benefits is it helps to answer the question: are we secure? And it has substantial training benefits. \n\nA lot of Q&A at the end.",
+    "view_count": 839
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zNOcQihGPOE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

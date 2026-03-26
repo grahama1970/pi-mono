@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BbnCubwiYk0",
+    "language": "en",
+    "took_ms": 8912,
+    "method": null,
+    "title": "(Previously) LIVE Hosting SpaceX CRS-13 Launch",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20171215",
+    "duration_sec": 9325,
+    "description": "SpaceX will be launching a reused Dragon Capsule heading to the International Space Station on top of a reused Falcon 9 booster for a historic set of firsts. This is the first time NASA as a customer will be using a previously flown booster from SpaceX and this is also the first launch from SLC-40, the launch pad that was destroyed during an anomaly on the pad, September 1, 2016.  The first stage booster will be landing back at LZ-1 at Cape Canaveral Air Force Station. SpaceX is also reusing the Dragon Capsule from this mission which first flew way back in 2015 for mission CRS-6. The payload weighs a mere 2182 kg's. \n\nLaunch time is 10:35 Eastern local time, Friday December 15th (15:35 UTC)\n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/",
+    "view_count": 19447
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BbnCubwiYk0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

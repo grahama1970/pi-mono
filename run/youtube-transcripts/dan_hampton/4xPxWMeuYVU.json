@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4xPxWMeuYVU",
+    "language": "en",
+    "took_ms": 9081,
+    "method": null,
+    "title": "How many stealth aircraft are flying today?",
+    "channel": "Sandboxx",
+    "upload_date": "20230306",
+    "duration_sec": 57,
+    "description": "We tend to talk about stealth aircraft individually, but there's real value in looking at volume. Today, there are more F-35s flying than all of the rest of the world's stealth aircraft COMBINED. \n\n#shorts #airpower #f35 #j20 #su57 #f22 #b2spirit #stealth #stealthfighter #stealthbomber",
+    "view_count": 186617
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4xPxWMeuYVU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

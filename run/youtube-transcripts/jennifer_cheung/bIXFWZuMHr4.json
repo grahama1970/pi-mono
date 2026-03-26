@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bIXFWZuMHr4",
+    "language": "en",
+    "took_ms": 7938,
+    "method": null,
+    "title": "DEF CON 30 BiC Village -  Alexis Hancock - The Man in the Middle",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1797,
+    "description": "The Trans-Atlantic Slave Trade was a dark, cruel time in the history of much of the Americas. The horrors of slavery still cast their shadow through systemic racism today. One of the biggest obstacles enslaved Africans faced when trying to organize and fight was the fact that they were closely watched, along with being separated, abused, and tortured. They often spoke different languages from each other, with different cultures, and beliefs. Organizing under these conditions seemed impossible. Yet even under these conditions including overbearing surveillance, they developed a way to fight back.The continued fight today is an evolution of that history established from dealing with censorship and authoritarian surveillance. This talk walks through the technology and the tools used to fight back and re-establish connection within the community.",
+    "view_count": 4550
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bIXFWZuMHr4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

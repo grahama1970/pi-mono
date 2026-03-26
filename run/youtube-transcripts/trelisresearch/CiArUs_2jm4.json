@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CiArUs_2jm4",
+    "language": "en",
+    "took_ms": 9325,
+    "method": null,
+    "title": "How to Build and Publish an MCP Server - A Detailed Guide",
+    "channel": "Trelis Research",
+    "upload_date": "20250408",
+    "duration_sec": 3343,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- MCP Servers: https://github.com/modelcontextprotocol/servers\n- PyPi MCP: https://pypi.org/project/mcp/#running-the-standalone-mcp-development-tools\n- NPM MCP: https://www.npmjs.com/package/@modelcontextprotocol/sdk\n\nTIMESTAMPS:\n0:00 How to create and deploy an MCP server?\n0:35 Buy the scripts at trelis.com/ADVANCED-inference\n1:18 Repo overview\n2:29 Build and deploy a javascript server to npm\n12:05 Adjustments for a Typescript MCP server\n12:50 Build and deploy a python server to PyPI\n29:57 Advanced Python and JS / TS MCP Services\n31:26 Python Document Converter MCP\n45:02 How to edit a typescript MCP server and re-publish it to npm\n54:50 Why building MCP services is tricky",
+    "view_count": 7226
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CiArUs_2jm4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

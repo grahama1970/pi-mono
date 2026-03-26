@@ -1,0 +1,29 @@
+[
+  {
+    "id": "CRIT-R2-01",
+    "component": "MusicLabDashboard",
+    "subComponent": "LyricsEditor",
+    "severity": "MEDIUM",
+    "title": "Lyrics Pane Not Synced to Timeline",
+    "finding": "The R2 mockup successfully added a playhead to the Piano Roll and Waveform, but the Lyrics pane remains disconnected from this shared timeline. The active word highlight is static and there is no indication of how the lyrics would scroll or sync with the playhead's position. This breaks the 'shared timeline' paradigm for a third of the primary panes.",
+    "recommendation": "The Lyrics pane must also respect the shared timeline. Show a visual indication of progress. For example, as the playhead moves, the lyrics content should auto-scroll to keep the currently sung line/word in view. The active word highlight should correspond to the playhead's position, not be a static class."
+  },
+  {
+    "id": "CRIT-R2-02",
+    "component": "MusicLabDashboard",
+    "subComponent": "Playhead",
+    "severity": "LOW",
+    "title": "Confusing Color for Playhead",
+    "finding": "The playhead uses the NVIS red color (`--nvis-red`). In the EMBRY design system, this color is semantically tied to 'failed' or 'danger' states, as seen in the convergence status indicator. Using it for a neutral UI element like a playhead creates semantic confusion.",
+    "recommendation": "Change the playhead color to a more neutral or functional color. A good candidate would be the primary accent color (`--accent`) or a bright, neutral white (`--text-white`) to ensure visibility without implying a 'danger' state."
+  },
+  {
+    "id": "CRIT-R2-03",
+    "component": "MusicLabDashboard",
+    "subComponent": "Root",
+    "severity": "INFORMATIONAL",
+    "title": "Previous Issues Addressed",
+    "finding": "The major layout issues from Round 1 (CRIT-R1-01, CRIT-R1-04) have been successfully resolved by moving to a fluid, flexbox-based structure. The implied timeline (CRIT-R1-02) and round selector (CRIT-R1-03) have also been addressed. The core structure is now sound.",
+    "recommendation": "No action needed. This is to acknowledge the successful remediation of prior issues."
+  }
+]

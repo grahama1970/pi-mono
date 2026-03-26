@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SFHPIHCWLXw",
+    "language": "en",
+    "took_ms": 8116,
+    "method": null,
+    "title": "Hannah Thoburn on the latest in Ukraine",
+    "channel": "Hudson Institute",
+    "upload_date": "20151130",
+    "duration_sec": 355,
+    "description": "Hannah Thoburn on what isn't being talked about.",
+    "view_count": 180
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SFHPIHCWLXw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

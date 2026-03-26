@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F35WoTC2dko",
+    "language": "en",
+    "took_ms": 8879,
+    "method": null,
+    "title": "50 Years After the 1965 War: What Has Changed in India-Pakistan Relations?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150910",
+    "duration_sec": 6527,
+    "description": "Stephen Cohen, Shuja Nawaz, and Col. John Gill (Ret.) join Amb. Husain Haqqani to discuss the roots  and legacy of the 1965 India-Pakistan War.",
+    "view_count": 95572
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F35WoTC2dko: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

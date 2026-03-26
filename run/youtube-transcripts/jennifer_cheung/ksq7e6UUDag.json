@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ksq7e6UUDag",
+    "language": "en",
+    "took_ms": 9332,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Ray Doyle - Weaponized XSS Moving Beyond Alert",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2321,
+    "description": "",
+    "view_count": 2391
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ksq7e6UUDag: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WJ6jbqdaRyA",
+    "language": "en",
+    "took_ms": 9201,
+    "method": null,
+    "title": "Pakistan in Crisis Once Again",
+    "channel": "Hudson Institute",
+    "upload_date": "20231010",
+    "duration_sec": 2740,
+    "description": "Pakistan is mired in a multidimensional crisis with political, social, economic, and security implications. General elections are scheduled for late January 2024, extending the caretaker government’s term by three months. The influential Pakistani security establishment appears more in control today than it has been in recent years.\n\nInflation remains at an all-time high, and Pakistan’s economic growth has slowed as the agricultural and manufacturing sectors contract. The country’s domestic weakness is reflected in its foreign relations. Terrorist attacks by Tehreek-e-Taliban Pakistan (TTP) from safe havens in Taliban-controlled Afghanistan remain a challenge for Pakistan. \n\nJoin Ambassador Husain Haqqani, senior fellow and director of Hudson’s South and Central Asia Program, for a conversation on this and more with Amber Rahim Shamsi, Asfandiyar Mir, and Uzair Younus.",
+    "view_count": 18347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WJ6jbqdaRyA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

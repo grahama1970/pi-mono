@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ywCCWI9isCw",
+    "language": "en",
+    "took_ms": 8313,
+    "method": null,
+    "title": "Keeping Planes and iPhone Traffic in the Air at the Same Tim",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 3749,
+    "description": "Please join Senior Fellow and Director fo the Center for the Economics of the Internet, Harold Furchtgott-Roth, for a fireside chat with renowned economics and public policy expert Gregory L. Rosston.  This talk is about federal spectrum, which is needed in the private sector, and how to enable this spectrum to reach the private sector. Gregory L. Rosston is Deputy Director of the Stanford Institute for Economic Policy Research and Deputy Director of the Public Policy Program at Stanford Univers",
+    "view_count": 40
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ywCCWI9isCw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

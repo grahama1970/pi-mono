@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uOR508ZN2qY",
+    "language": "en",
+    "took_ms": 9093,
+    "method": null,
+    "title": "DEF CON Safe Mode Payment Village - Steven Murdoch - Making Sense of EMV Card Data",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2272,
+    "description": "EMV (sometimes known as Chip and PIN) is the worldwide standard for smart card payments. It was designed to allow credit and debit cards issued by any bank work to make a payment through any terminal, even across international borders and despite chip cards being extremely limited in the computation they can perform. In this talk I’ll discuss how EMV achieves this difficult task, through the use of the TLV (Tag-Length-Value) data format. I will demonstrate how to decode TLV data found on real EMV chip cards, and what significance this data has in the wider payment ecosystem. Finally I’ll discuss how the use of TLV, despite its advantages, has contributed to the creation of security vulnerabilities in Chip and PIN.",
+    "view_count": 2949
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uOR508ZN2qY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

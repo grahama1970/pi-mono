@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Nnwa_45AQbs",
+    "language": "en",
+    "took_ms": 19647,
+    "method": null,
+    "title": "DEF CON 31 XRVillage  - Fireside Chat - Brittan Heller",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2955,
+    "description": "Explore emerging technology, hardware and experiences in the XR Village Playground. Meet and learn from technologists, futurists, and artists in the XR (VR / AR) space. Sponsored by BadVR and in collaboration with ICS Village, Red Team Village, Adversary Village and Policy Village.",
+    "view_count": 550
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Nnwa_45AQbs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0Zn5nj0NZVo",
+    "language": "en",
+    "took_ms": 7939,
+    "method": null,
+    "title": "DEF CON 32 - RFID 101 - Ege Feyzioglu & Andrew M",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1256,
+    "description": "You know the sound of beep... Click when using a badge to enter a door to a building, but how does this work and how can you hack it? This talk will explain the basics of what’s inside the readers and the badges, and how they communicate wirelessly. You will learn about the common tools available (Proxmark, Flipper, Keysy), how to get one and how to use it. We’ll talk about techniques to clone badges, and brute force systems to get access you never had in the first place.",
+    "view_count": 1998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0Zn5nj0NZVo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

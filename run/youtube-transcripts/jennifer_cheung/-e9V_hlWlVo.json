@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-e9V_hlWlVo",
+    "language": "en",
+    "took_ms": 8798,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - Meshtastic Command & Control - Eric Escobar",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2351,
+    "description": "This presentation will detail the design and implementation of a Meshtastic-based command and control infrastructure. By leveraging the Meshtastic network for out-of-band communications, operators can achieve secure, decentralized monitoring and management of Linux hosts in hard-to-reach environments. Whether supporting a remote dropbox deployment or a distant ham shack, this solution enables encrypted shell access and configuration changes using a low-cost ($25) LoRa radio over extended ranges. Although not intended for high-bandwidth tasks, it provides an efficient platform for debugging, troubleshooting, and command execution in constrained network conditions. Furthermore, by utilizing the existing Meshtastic mesh, users can often avoid the complexity of building a dedicated network.",
+    "view_count": 2043
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -e9V_hlWlVo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

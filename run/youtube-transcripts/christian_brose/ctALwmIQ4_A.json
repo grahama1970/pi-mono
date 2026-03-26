@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ctALwmIQ4_A",
+    "language": "en",
+    "took_ms": 8708,
+    "method": null,
+    "title": "MaK Ep.17: Afghanistan, Part 1: Marshall Billingslea on the Taliban’s Illicit Financial Networks",
+    "channel": "Hudson Institute",
+    "upload_date": "20210819",
+    "duration_sec": 1638,
+    "description": "Amid the chaotic US withdrawal from Afghanistan, former US Assistant Secretary for Terrorist Financing Marshall Billingslea joins Nate Sibley to discuss how the Taliban funded its 20-year campaign, what kind of economy it will oversee, and what the US and its allies should do to keep its malign activities in check.\n\nSubscribe: \n\nApple podcasts: https://podcasts.apple.com/us/podcast/making-a-killing/id1551344782\nSpotify: https://open.spotify.com/show/0LksXZHMcTGwMk1eV1BsLu",
+    "view_count": 1289
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ctALwmIQ4_A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HNGz5zz6mMI",
+    "language": "en",
+    "took_ms": 8550,
+    "method": null,
+    "title": "Ambassador Youssef Amrani on the US-Morocco Relationship",
+    "channel": "Hudson Institute",
+    "upload_date": "20251201",
+    "duration_sec": 2361,
+    "description": "Hudson’s Michael Doran will host Youssef Amrani, Morocco’s ambassador to the United States, to discuss Morocco’s emerging Atlantic strategy, its role as a stabilizing force in Africa, and the geopolitical opportunities reshaping the US-Morocco partnership. The discussion will examine how Morocco’s leadership is increasingly central to addressing regional security challenges, including Iran’s growing activities across North and West Africa and the expanding threat of terrorism in the Sahel.",
+    "view_count": 5559
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HNGz5zz6mMI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

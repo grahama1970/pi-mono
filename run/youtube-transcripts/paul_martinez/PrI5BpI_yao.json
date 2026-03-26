@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PrI5BpI_yao",
+    "language": "en",
+    "took_ms": 8690,
+    "method": null,
+    "title": "Jason Christopher on SANS ICS418 - ICS Security Essentials For Managers",
+    "channel": "S4 Events",
+    "upload_date": "20220608",
+    "duration_sec": 2415,
+    "description": "Dale talks with Jason Christopher, a SANS Certified Instructor, who along with Dean Parsons created the new course SANS ICS418: ICS Security Essentials For Managers.\n\nThey cover a lot of ground including:\n\n- What manager this course was designed for?\n- Why does a course for managers need a VM and course labs\n- The significant portion of the course addressing metrics. Why, what kind, for whom?\n- Does it address consequence reduction, working with engineers\n- What sort of team building and management advice is included\n- How is the course given? Live? Online?",
+    "view_count": 596
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PrI5BpI_yao: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qTg9rpsrEoY",
+    "language": "en",
+    "took_ms": 9343,
+    "method": null,
+    "title": "“History of the Future”: A Symposium Celebrating Max Singer",
+    "channel": "Hudson Institute",
+    "upload_date": "20210526",
+    "duration_sec": 14776,
+    "description": "Join Hudson Institute as we celebrate the life of Max Singer, the co-founder, second president, and longtime fellow of Hudson Institute who passed away in January 2020 at the age of 88. Hudson will celebrate the life and work of this distinguished futurologist and student of international affairs by revisiting his bold and incisive magnum opus, “History of the Future,” which according to Singer “contains everything I have learned over my long life of observation and study.” Published in 2011, the book is even more relevant today, in the wake of the massive technological, cultural, social, and political changes of the last decade. A panel of Singer’s close friends and esteemed colleagues will engage critically with central aspects of his thought, and his eldest son, Saul Singer, will offer a response. Please join Hudson for this celebration of Max Singer’s intellectual legacy.",
+    "view_count": 510
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qTg9rpsrEoY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

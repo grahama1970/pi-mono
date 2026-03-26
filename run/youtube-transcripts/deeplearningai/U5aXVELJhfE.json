@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U5aXVELJhfE",
+    "language": "en",
+    "took_ms": 8479,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Alex Ker: How Open source Models Actually Run AI Coding at Scale",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251202",
+    "duration_sec": 1491,
+    "description": "Alex Ker, Growth Software Engineer at Baseten shared how 10x engineers are saving time and money with frontier open-source coding models. \n\nThese models now match their closed-source rivals on benchmarks, but are faster and more specialized on agentic tasks. In this talk, we'll uncover the design decisions behind Qwen3Coder and Kimi K2 and show practical ways to use them in your dev workflow with OpenRouter, Cline, and OpenCode.\n\nAttendees learned how these models support production-scale inference and how to build their own performant AI apps for coding and beyond.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 1300
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U5aXVELJhfE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

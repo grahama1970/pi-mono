@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HRC4P2k1mBg",
+    "language": "en",
+    "took_ms": 9751,
+    "method": null,
+    "title": "How to Fix the People and Skills Problem in Securing Building Automation Systems",
+    "channel": "S4 Events",
+    "upload_date": "20190304",
+    "duration_sec": 1514,
+    "description": "Why are Building Automation Skills in such an insecure state, and more importantly what will it take to change that? James Houston identifies the challenge in getting people with the right skills involved.\n\nHe looks at the job titles, training, salary and other factors in play today. He cites the need to upgrade the team to include more mechanical and network engineers, and to pay for these upgrades by shedding duplicative monitoring services.",
+    "view_count": 185
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HRC4P2k1mBg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

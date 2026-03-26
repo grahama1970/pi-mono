@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pyel1lhkUHg",
+    "language": "en",
+    "took_ms": 9131,
+    "method": null,
+    "title": "Calculating OT Cyber Risk With Ilan Barda of Radiflow",
+    "channel": "S4 Events",
+    "upload_date": "20211013",
+    "duration_sec": 2423,
+    "description": "This episode dives deep into the risk score methodology of Radiflow's Ciara product. It attempts to use interview, asset inventory, and simulation to identify a risk score for a zone or site. It also then uses simulation to determine what security controls would most improve the risk score / reduce risk. Obviously this is a detailed talk on a specific vendor approach. If that sort of thing bothers you, this episode might not be for you.\n\nWe also talk about whether the visibility / detection product segment will be separate from the OT cyber risk product, and we end with a discussion of how a company the size of Radiflow  competes with the Claroty/Dragos/Nozomi of the world that have raised $100M+.",
+    "view_count": 939
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pyel1lhkUHg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

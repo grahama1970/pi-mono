@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AXN3sTAr9R4",
+    "language": "en",
+    "took_ms": 8497,
+    "method": null,
+    "title": "DEF CON 33 - Safeguarding the Industrial Frontier   OT SOC & Incident Response - Adam Robbie",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1206,
+    "description": "As the digital and physical worlds converge, Operational Technology (OT) environments face unprecedented cyber threats, demanding a specialized approach to security. This panel will delve into the critical realm of OT Security Operations Centers (SOCs) and incident response, exploring how organizations can effectively detect, respond to, and recover from cyberattacks targeting industrial control systems. We'll discuss the unique challenges of securing OT, best practices for building resilient SOC capabilities, and strategies for navigating complex incident response scenarios to ensure operational continuity and safety in our increasingly interconnected industrial landscape.",
+    "view_count": 122
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AXN3sTAr9R4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

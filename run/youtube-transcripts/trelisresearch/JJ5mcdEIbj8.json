@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JJ5mcdEIbj8",
+    "language": "en",
+    "took_ms": 7823,
+    "method": null,
+    "title": "Prepare Fine-tuning Datasets with Open Source LLMs",
+    "channel": "Trelis Research",
+    "upload_date": "20230925",
+    "duration_sec": 922,
+    "description": "➡️ Get Life-time Access to the ADVANCED-fine-tuning Repo (incl. Data Prep Scripts): https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Trelis Runpod Affiliate Link (supports the channel): https://runpod.io?ref=jmfkcdio\n\nChapters:\n0:00 Preparing data for fine-tuning\n0:37 Video overview\n1:04 Accessing the GitHub Repo w/ data preparation scripts\n2:42 Q&A Dataset preparation using Llama 2 70B and chat-ui\n7:29 How to set up a Llama 2 API for 70B\n8:45 Using a Llama 2 API to prepare a Q&A dataset for fine-tuning\n12:22 Pro tips for preparing fine-tuning datasets",
+    "view_count": 34123
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JJ5mcdEIbj8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

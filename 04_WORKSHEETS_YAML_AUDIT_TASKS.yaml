@@ -1,0 +1,89 @@
+title: "Audit worksheets.yaml against live SPARTA dataset"
+description: |
+  worksheets.yaml is the ontology definition for SPARTA data ingestion but hasn't
+  been updated in months. ISO description gap was discovered 2026-03-25 — likely
+  more gaps exist. Full audit against live ArangoDB state.
+created: 2026-03-25
+runner: pi
+backend: claude
+mode: sequential
+
+context:
+  config_file: /home/graham/workspace/experiments/sparta/config/worksheets.yaml
+  spreadsheet: /home/graham/workspace/experiments/sparta/data/source/SPARTA-Data.xlsx
+  collection: sparta_controls
+  daemon_socket: /run/user/1000/embry/memory.sock
+
+tasks:
+  - id: T1
+    title: "Framework count audit"
+    description: |
+      For each framework declared in worksheets.yaml, compare the declared row_count
+      against actual document count in sparta_controls (via /list with source_framework filter).
+      Flag mismatches > 10%.
+    skill: /memory
+    done_when: "Table showing declared vs actual counts for all frameworks"
+
+  - id: T2
+    title: "Relationship column audit"
+    description: |
+      For each worksheet, check which relationship columns are declared in worksheets.yaml
+      vs which cross-reference columns actually exist in the spreadsheet. Flag undeclared
+      columns that are being dumped into the description field (like ISO was).
+    skill: /extractor
+    done_when: "List of undeclared relationship columns per worksheet"
+
+  - id: T3
+    title: "Description quality audit"
+    description: |
+      For each framework, sample 20 controls and classify description quality:
+      - REAL: actual prose description of the control
+      - CROSS_REF_ONLY: description contains only cross-reference IDs (like ISO was)
+      - PLACEHOLDER: matches 'This control requires QRA generation' pattern
+      - EMPTY: no description or < 10 chars
+      - INFERRED: starts with [INFERRED]
+      Flag any framework with > 20% non-REAL descriptions.
+    skill: /memory
+    done_when: "Per-framework description quality percentages"
+
+  - id: T4
+    title: "Spreadsheet vs config column audit"
+    description: |
+      Read actual column headers from each worksheet in SPARTA-Data.xlsx.
+      Compare against columns declared in worksheets.yaml.
+      Flag any spreadsheet columns not represented in the config (missing data).
+    skill: /extractor
+    done_when: "List of undeclared spreadsheet columns per worksheet"
+
+  - id: T5
+    title: "New worksheet detection"
+    description: |
+      List all worksheet/sheet names in SPARTA-Data.xlsx.
+      Compare against worksheets declared in worksheets.yaml.
+      Flag any sheets present in the spreadsheet but missing from config.
+    skill: /extractor
+    done_when: "List of undeclared worksheets (if any)"
+
+  - id: T6
+    title: "Field coverage audit"
+    description: |
+      For each framework, check which fields are populated vs empty in ArangoDB:
+      control_id, name, description, control_type, parent_id, domain, scope,
+      weaknesses, mind, nrs_score, status.
+      Flag frameworks with > 50% null/empty on important fields.
+    skill: /memory
+    done_when: "Per-framework field coverage matrix"
+
+  - id: T7
+    title: "Apply fixes and update worksheets.yaml"
+    description: |
+      Based on T1-T6 findings:
+      - Add missing relationship declarations
+      - Update row_counts to match reality
+      - Add description_source/description_preserve for frameworks with no prose
+      - Declare missing columns
+      - Add new worksheets if found
+      Do NOT modify the SPARTA pipeline code — config only.
+    skill: /plan
+    depends_on: [T1, T2, T3, T4, T5, T6]
+    done_when: "worksheets.yaml updated with all fixes, git diff shows changes"

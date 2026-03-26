@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oaH9bccGnz0",
+    "language": "en",
+    "took_ms": 7746,
+    "method": null,
+    "title": "DIU’s Vision for Replicator with Aditi Kumar",
+    "channel": "Hudson Institute",
+    "upload_date": "20240124",
+    "duration_sec": 1862,
+    "description": "Top Four Takeaways:\n \n1. Defense Innovation Unit (DIU) 3.0 focuses on synchronizing warfighter needs with \ncommercial capabilities, catalyzing the innovation ecosystem, and delivering results at \nspeed and scale. This builds on DIU 1.0 (building bridges to Silicon Valley) and DIU 2.0 \n(demonstrating the ability to access commercial tech through new contracting \napproaches).\n\n2. Replicator is an initiative focused on rapidly innovating and fielding new capabilities, \npulling them years earlier than normal timelines would. The first Replicator initiative is \nfocused on all-domain attritable autonomous systems, with the goal of fielding thousands \nof systems within 18 to 24 months.\n\n3. DIU is focused on embedding personnel with combatant commands to deeply understand \ntheir technology needs and ensure DIU’s projects align with top priorities. For example, \nDIU hosted a workshop focused on Ukraine’s urgent drone needs and potential \ncommercial solutions.\n\n4. DIU is working to coordinate the Defense Innovation Community of Entities—various \nDepartment of Defense innovation organizations—to understand common concerns, \nincrease collaboration, and present shared recommendations for senior leaders to support.\nThis will help catalyze the broader defense innovation ecosystem.\n\nLearn more: https://www.hudson.org/events/solving-operational-problems-todays-technology-launching-apex-conference-series",
+    "view_count": 6485
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oaH9bccGnz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

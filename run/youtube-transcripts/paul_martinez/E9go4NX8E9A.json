@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E9go4NX8E9A",
+    "language": "en",
+    "took_ms": 8838,
+    "method": null,
+    "title": "How We Used Dynamic Edge Segmentation To Secure Our Hyperconnected Factory",
+    "channel": "S4 Events",
+    "upload_date": "20250716",
+    "duration_sec": 1844,
+    "description": "Pharmaceutical giant GSK's hyperconnected manufacturing environment was rapidly expanding. Traditional segmentation methods proved inadequate, leading to the development and deployment of a Dynamic Edge Segmentation (DES) solution. \n\nMark describes what DES is and how it differs from traditional network segmentation, and then describe his experience and lessons learned with this technology and solution. \n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 160
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E9go4NX8E9A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

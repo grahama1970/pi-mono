@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CgfcRZnbiB8",
+    "language": "en",
+    "took_ms": 7978,
+    "method": null,
+    "title": "Sustaining the Undersea Advantage: Disrupting Anti-Submarine Warfare Using Autonomous Systems",
+    "channel": "Hudson Institute",
+    "upload_date": "20201019",
+    "duration_sec": 5780,
+    "description": "Join us for a discussion on the future of anti-submarine warfare, and how autonomous systems could enable new concepts for defeating enemy submarines that are more effective, sustainable, and scalable. Director of Hudson’s Center for Defense Concepts and Technology Bryan Clark, Director of Hudson’s Center for American Seapower Seth Cropsey, and Fellow Timothy A. Walton will present the results of their study, Sustaining the Undersea Advantage. The presentation will be followed by a panel discussion with Admiral Jonathan W. Greenert (ret.), 30th US Chief of Naval Operations, Admiral James F. Foggo (ret.), former commander of US Naval Forces, Europe, and Dr. Curt von Braun, Technical Director for Naval Power at Raytheon Technologies.",
+    "view_count": 2440
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CgfcRZnbiB8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

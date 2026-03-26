@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rbcA_fDPl48",
+    "language": "en",
+    "took_ms": 9192,
+    "method": null,
+    "title": "Sandboxx Letter Example",
+    "channel": "Sandboxx",
+    "upload_date": "20180221",
+    "duration_sec": 42,
+    "description": "Have you ever wondered what it looks like when your recruit in basic training receives a Sandboxx Letter? Co-Founder & CEO, Sam Meek, shows you exactly what Sandboxx Letters looks like.\n\nLearn more about How Sandboxx Works:\nhttps://link.sandboxx.us/how-does-sandboxx-work\n\nDownload Sandboxx:\nhttps://link.sandboxx.us/k4sKgsv4oS",
+    "view_count": 27803
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rbcA_fDPl48: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6D29iw3B2nM",
+    "language": "en",
+    "took_ms": 7926,
+    "method": null,
+    "title": "DEF CON 33 - Kill Chain Reloaded: Abuse legacy paths fr stealth persistence - A Hernando, B Martinez",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2585,
+    "description": "Throughout our Red Team operations, we've focused our research on advancing techniques to gain direct access to physical memory and achieve execution with the highest privileges (Kernel-mode). This talk presents the current state of the art in stealthy post-exploitation, sharing innovative approaches and refined methodologies developed over recent years. Topics include: bypassing modern EDR solutions via physical memory access primitives, physical access techniques and advanced post-exploitation techniques in Windows systems. We will demonstrate how low-level access vectors often overlooked can enable persistent, undetectable control over targeted systems. The session is tailored for cybersecurity professionals interested in cutting-edge Red Team tactics and emerging hardware/software threats. Practical demos will be included, along with tools and methodologies applicable across multiple scenarios. This is a deeply technical talk, showcasing real world tradecraft and threat modeling beyond traditional offensive security.",
+    "view_count": 705
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6D29iw3B2nM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

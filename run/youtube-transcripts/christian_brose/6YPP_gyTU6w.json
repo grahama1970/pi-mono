@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6YPP_gyTU6w",
+    "language": "en",
+    "took_ms": 8905,
+    "method": null,
+    "title": "The Arms Control Landscape",
+    "channel": "Hudson Institute",
+    "upload_date": "20190529",
+    "duration_sec": 6029,
+    "description": "Hudson Institute hosted the Director of the Defense Intelligence Agency Lieutenant General Robert P. Ashley, Jr., for a discussion on Russian and Chinese nuclear weapons. Lt. Gen. Ashley provided keynote remarks and engaged in a discussion with Hudson Senior Fellow Rebeccah Heinrichs. This was followed by a panel of senior government officials who discussed the global landscape for arms control.",
+    "view_count": 4196
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6YPP_gyTU6w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nDXS19Dpa0A",
+    "language": "en",
+    "took_ms": 7809,
+    "method": null,
+    "title": "DEF CON Safe Mode Biohacking Village  -  Panel -  How Independent  Researchers work with MDMs",
+    "channel": "DEFCONConference",
+    "upload_date": "20200818",
+    "duration_sec": 4570,
+    "description": "Hear some of the top Security Researchers share their trials and tribulations with Medical Device Manufacturers.\n\nTopics will include:\nHow they have succeeded in their interactions with larger organizations and what they are working on next.\nThe success stories and failures of working with Medical Device Manufacturers.\nHow working with diverse backgrounds and being open to researchers has helped one company mature its cybersecurity program.\nWhat is a proactive security approach and how can it help anticipate failure?\nHow can we tackle the legacy device problem?\nExplore new ways the community can bring innovative solutions to Medical Device Security.",
+    "view_count": 264
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nDXS19Dpa0A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

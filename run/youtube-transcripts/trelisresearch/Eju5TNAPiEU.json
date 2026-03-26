@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Eju5TNAPiEU",
+    "language": "en",
+    "took_ms": 13964,
+    "method": null,
+    "title": "Voice Cloning with Sesame CSM-1B",
+    "channel": "Trelis Research",
+    "upload_date": "20250325",
+    "duration_sec": 21,
+    "description": "Full video: https://youtu.be/vfe8KIm1ubw by @TrelisResearch",
+    "view_count": 1024
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Eju5TNAPiEU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

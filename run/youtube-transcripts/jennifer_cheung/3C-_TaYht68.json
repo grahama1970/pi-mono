@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3C-_TaYht68",
+    "language": "en",
+    "took_ms": 7979,
+    "method": null,
+    "title": "DEF CON 33 - RF Village  - Small Packet of Bits That Can Save or Destabilize a City - Manuel Rabid",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2798,
+    "description": "\"In the 1960s, the United States launched a radio-based weather information system broadcasting over the VHF band, known as Weather Radio.\n\nOver time, Weather Radio expanded to cover the entire US and incorporated digital information through the SAME (Specific Area Message Encoding) protocol, allowing receivers to filter alerts by location and type, among other features.\n\nEventually, both Weather Radio and the SAME protocol were adopted by countries like Canada and Mexico for their own public alerting systems.\n\nIn Mexico, this solution was integrated into the Mexican Seismic Alert System (SASMEX), which over 30 million people in central Mexico rely on to prepare for the region’s frequent earthquakes.\n\nWhile new alerting technologies have emerged, this system still broadcasts messages to millions of receivers across North America. But how reliable are the systems responsible for warning entire cities when they need to seek safety?\n\nIn this talk, we will explore the history and design of Weather Radio and the SAME protocol. We’ll examine how messages are transmitted and encoded through this technology, and how it was adapted in Mexico for SASMEX.\n\nI will also share my personal experience building compatible receivers: from early curiosity-driven experiments to developing a receiver as part of my undergraduate thesis.\n\nWe’ll analyze how the simplicity, a key strength of these systems, also introduces certain risks, and how these kinds of trade-offs arise when balancing accessibility, interoperability, and security in the design of any system.\n\nIn particular, we’ll explore a concerning aspect: how, with the right equipment, it is surprisingly easy for anyone to generate these alert signals, taking advantage of the open nature of the broadcasts and the lack of mechanisms to verify the origin of received messages.\n\nBeyond the technical exploration, this talk is also a personal story of my multi-year journey into this topic, with the goal of inspiring others with what I consider to be the core of hacking: the curiosity to deeply understand how systems work, explore their boundaries, and share that knowledge.\"",
+    "view_count": 988
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3C-_TaYht68: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Grb1qIYnsi8",
+    "language": "en",
+    "took_ms": 8524,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Gary Qi: TRAE: Redefining Coding Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 1808,
+    "description": "Gary Qi, Developer Operation Manager at ByteDance, showcased TRAE, an AI IDE from ByteDance, which is redefining coding agents by exploring innovative ways for humans and AI to collaborate. \n\nDuring AI Dev 25, Gary explained why TRAE's unique TRAE SOLO transforms how developers create software, offering a fundamentally different development experience. Trusted by millions of active developers worldwide, TRAE continues to push the boundaries of AI-powered development. We will share our product vision, what makes TRAE unique, and the roadmap for the future of coding agents.\n\n----------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 572
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Grb1qIYnsi8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DsYt0QOwsGs",
+    "language": "en",
+    "took_ms": 9472,
+    "method": null,
+    "title": "Roads to a Free Syria: Naser Khader",
+    "channel": "Hudson Institute",
+    "upload_date": "20120917",
+    "duration_sec": 171,
+    "description": "Naser Khader, Adjunct Fellow at Hudson Institute, examines how the West should view the situation in Syria and how it can be solved.",
+    "view_count": 1013
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DsYt0QOwsGs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

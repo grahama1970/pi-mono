@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0r_trFFPVYc",
+    "language": "en",
+    "took_ms": 9350,
+    "method": null,
+    "title": "DEF CON 33 - Locked Down, Not Locked Out: How I Escaped Yr Secure Operator Workstation - Aaron Boyd",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1475,
+    "description": "Organizations across industries rely on \"locked down\" operator workstations to protect critical systems, but how secure are they really? As a penetration tester, I’ve put these defenses to the test across multiple verticals, using only the tools and permissions available to a standard operator account and on that local machine. Time and time again, despite variations in vendor solutions and industry-specific constraints, I found common weaknesses that allowed me to break out, escalate privileges, and compromise the system—often without triggering alerts.\n\nThis talk dives into the recurring security flaws that make these workstations vulnerable, from misconfigurations and weak application controls to a commonly overlooked \"living off the land\" technique. I’ll walk through real-world breakout scenarios, demonstrating how attackers exploit these weaknesses. But it’s not just about breaking out—I'll also cover practical, vendor-agnostic defenses to harden operator workstations against these attacks. Whether you’re a defender, engineer, or just curious, you’ll leave with a better understanding of the risks and how to make the attackers job that much harder.",
+    "view_count": 229
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0r_trFFPVYc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

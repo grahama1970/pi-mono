@@ -1,0 +1,8 @@
+[
+  {
+    "severity": "INFO",
+    "category": "Layout",
+    "description": "The legend is now split into two columns to fit the available space. This is functional, but for a future iteration, a single-column vertical layout might be slightly cleaner if space can be optimized elsewhere.",
+    "suggestion": "No change required for convergence. Consider exploring a more compact legend layout in a future component library refinement pass."
+  }
+]

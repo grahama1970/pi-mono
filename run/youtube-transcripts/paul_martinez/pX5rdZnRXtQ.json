@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pX5rdZnRXtQ",
+    "language": "en",
+    "took_ms": 7753,
+    "method": null,
+    "title": "STIX and Your Security Controls",
+    "channel": "S4 Events",
+    "upload_date": "20171024",
+    "duration_sec": 2363,
+    "description": "It begins with a STIX (Structured Threat and Information Expression) overview.\n\nThen the session gets into STIX Replay Project whose goal is to have:\n\n1. the ability to programmatically read STIX files\n2. parse and replay the associated observables\n3. validate security controls and system resiliency\n\nThey use DNP3 as the sample protocol, have released code, and are looking for additional contributions.",
+    "view_count": 3409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pX5rdZnRXtQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

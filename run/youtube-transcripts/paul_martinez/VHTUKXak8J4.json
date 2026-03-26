@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VHTUKXak8J4",
+    "language": "en",
+    "took_ms": 7899,
+    "method": null,
+    "title": "Proactive OT Cyber Maintenance Practices",
+    "channel": "S4 Events",
+    "upload_date": "20220707",
+    "duration_sec": 1941,
+    "description": "Marty Edwards on S4x22 Stage 3 makes the case for being proactive with your OT cyber maintenance. All too often the OT maintenance strategy is run to fail. He describes passive and active ways to gather information to help make those proactive OT cyber maintenance decisions.\n\nTenable was a S4x22 Partner and this was from their takeover of Stage 3 on the second day of the event.",
+    "view_count": 729
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VHTUKXak8J4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

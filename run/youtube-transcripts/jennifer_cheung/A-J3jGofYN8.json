@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A-J3jGofYN8",
+    "language": "en",
+    "took_ms": 7755,
+    "method": null,
+    "title": "DEF CON 32 - Tough Adversary  Don’t Blame Sun Tzu - Gregory Carpenter, DrPH",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1365,
+    "description": "Years ago, when I started working at the NSA, I said to myself, now I can see what’s really happening and what needs to be done to address our adversaries and put an end to cybercrime. Well, I was sure wrong. I worked in a few different offices and participated in hundreds of operations, only to find frustration time and time again. What happened? What was it that we just couldn’t put our finger on? Yes, we were successful in addressing criminal activity. Yes, we could successfully negotiate the contested cyberspace domain. But adversarial activity kept popping up on our radar. It was Whack-A-Mole 2.0.\n\nWas it the technologies we used? No, we had state-of-the-art capabilities. Was there a lack of technical training amongst operators? No, again, taxpayers coughed up plenty, and they got their money’s worth. I concluded that it was strategy; it was philosophy. Sure, we had all the technical capabilities in the world, but we were using everything wrong.\n\nI was in the Information Warfare Support Center. We were supposed to know what to do and how to do it! So, I started studying not only traditional but contemporary philosophy as well. I gained access to curricula in China, Russia, and the USA. This presentation informs the attendees of the adversarial philosophy taught in the military academies in China and Russia, which is taken from their curricula and papers published in various journals and practice today.",
+    "view_count": 658
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A-J3jGofYN8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

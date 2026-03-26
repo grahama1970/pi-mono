@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SM1XSxP6W78",
+    "language": "en",
+    "took_ms": 8657,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - Meshtastic Under the Microscope From Chirps to Chat - Allan Riordan Ball",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1721,
+    "description": "Meshtastic has exploded in popularity as the go-to off-grid, multi-mile, low-power LoRa mesh for hikers, hackers, and preppers, though most users never peek beneath its phone app. This talk rips the protocol open from the radio chirp visible in inspectrum all the way to lines in Wireshark, showing exactly how every byte travels from a solar-powered node on a mountaintop to your screen.\n\nUsing an SDR, a GNU Radio flowgraph, and a sprinkle of Python, we peel back each layer: how the radio forms its chirps, how the mesh hops frames across nodes, and what exactly is tucked inside the Protobuf envelope and its AES-256-sealed core.\n\nThe exploration does not end with passive listening. Short, standalone snippets demonstrate how to craft and transmit valid frames, proving that a few lines of code are enough to speak Meshtastic. No mobile app or heavyweight firmware required.\n\nAttendees will leave with a repeatable SDR and GNU Radio workflow for decoding any Meshtastic channel, copy-ready Python examples for both receiving and sending traffic, and a clear mental model of the entire stack from physical layer to application payloads. Whether you are RF-curious with a forty-dollar RTL-SDR dongle or a seasoned signals wrangler hunting for a new playground, this talk equips you to see and speak the language of Meshtastic",
+    "view_count": 7397
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SM1XSxP6W78: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

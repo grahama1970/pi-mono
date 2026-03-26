@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A5BBND_KZqs",
+    "language": "en",
+    "took_ms": 9776,
+    "method": null,
+    "title": "Make Your Own Decisions #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250522",
+    "duration_sec": 40,
+    "description": "OT security doesn’t need consensus. It needs leaders willing to do the hard work, make the tough calls, and own their risk decisions.",
+    "view_count": 1059
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A5BBND_KZqs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3OmyVJDjTr4",
+    "language": "en",
+    "took_ms": 8956,
+    "method": null,
+    "title": "DEF CON 30 - Bill Graydon -  Defeating Moving Elements in High Security Keys",
+    "channel": "DEFCONConference",
+    "upload_date": "20221014",
+    "duration_sec": 2745,
+    "description": "A recent trend in high security locks is to add a moving element to the key: this prevents casting, 3D printing and many other forms of unauthorised duplication. Pioneered by the Mul-T-Lock Interactive locks, we see the technique used in recent Mul-T-Lock iterations, the Abloy Protec 2 and most recently, the Medeco M4, which is only rolling out to customers now. \n\nWe have identified a major vulnerability in this technology, and have developed a number of techniques to unlock these locks using a key made from a solid piece of material, which defeats all of the benefits of an interactive key. I’ll demonstrate how it can be applied to Mul-T-Lock Interactive, Mul-T-Lock MT5+ and the Medeco M4, allowing keys to be duplicated by casting, 3D printing and more. I’ll also cover other techniques to defeat moving elements in a key, such as printing a compliant mechanism and printing a captive element directly. With this talk, we’re also releasing a web application for anyone to generate 3D printable files based on this exploit.\n\nFinally, I’ll also discuss the responsible disclosure process, and working with the lock manufacturers to patch the vulnerability and mitigate the risk.",
+    "view_count": 36572
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3OmyVJDjTr4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

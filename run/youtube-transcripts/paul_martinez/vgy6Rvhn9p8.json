@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vgy6Rvhn9p8",
+    "language": "en",
+    "took_ms": 8543,
+    "method": null,
+    "title": "OT Security Pro vs. Apprentice #shorts",
+    "channel": "S4 Events",
+    "upload_date": "20250703",
+    "duration_sec": 41,
+    "description": "",
+    "view_count": 1141
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vgy6Rvhn9p8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IowWTOFoeLw",
+    "language": "en",
+    "took_ms": 8617,
+    "method": null,
+    "title": "The F-117 was NOT a stealth fighter",
+    "channel": "Sandboxx",
+    "upload_date": "20230209",
+    "duration_sec": 38,
+    "description": "The F-117 Nighthawk was the world's first operational stealth aircraft, but despite people calling it the stealth \"fighter,\" it was never actually a fighter at all.\n#f117 #stealth #stealthfighter #airpower #shorts #lockheed #nighthawks",
+    "view_count": 50151
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IowWTOFoeLw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

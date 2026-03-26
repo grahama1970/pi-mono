@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "njKG7hvqOok",
+    "language": "en",
+    "took_ms": 8941,
+    "method": null,
+    "title": "New course with Lamini and Meta: Improving Accuracy of LLM Applications",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240814",
+    "duration_sec": 199,
+    "description": "Enroll now: https://bit.ly/3yEasaS\n\nImproving Accuracy of LLM Applications was made in collaboration with Lamini and Meta and taught by Lamini’s CEO and co-founder Sharon Zhou, and Meta’s Senior Director of Partner Engineering, Amit Sangani.\n \nDevelopers often face challenges with inconsistent outcomes when working with LLM applications. This course provides a structured approach to improve the accuracy and reliability of your LLM solutions.\n\nUsing Llama’s family of open-source models, you'll build an SQL agent, integrate performance evaluation metrics, and apply prompt engineering and self-reflection to enhance model behavior. Finally, you will fine-tune the model with techniques like LoRA and memory tuning that embeds facts in model weights to reduce hallucinations. \n\nIn detail, you will:\n\n- Build a text to SQL agent and simulate situations where it hallucinates to begin the evaluation process.\n- Build an evaluation framework to systematically measure performance, including criteria for good evaluations, best practices, and how to develop an evaluation score.\n- Learn how instruction fine-tuning enhances pre-trained LLMs to follow instructions, and how memory fine-tuning embeds facts to reduce hallucinations. \n- Break fine-tuning myths and see how Performance-Efficient Fine-tuning (PEFT) techniques like Low-Rank Adaptation (LoRA) reduce training time by 100x and Mixture of Memory Experts (MoME) reduces it even further. \n- Go through an iterative process of generating training data and fine-tuning, learning practical tips such as adding examples, generating variations, and filtering generated data to increase model accuracy.\n\nStart improving the accuracy of LLM applications today! \n\nLearn more: https://bit.ly/3yEasaS",
+    "view_count": 3802
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] njKG7hvqOok: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

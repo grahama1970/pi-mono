@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Jl-CU6G4Ofc",
+    "language": "en",
+    "took_ms": 9345,
+    "method": null,
+    "title": "DEF CON 29 - Rotem Bar - Abusing SAST tools When scanners do more than just scanning",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2723,
+    "description": "When we write code, we often run many scanners for different purposes on our code - from linters, to testing, security scanning, secret scanning, and more.\n\nScanning the code occurs on developers' machines and in CI/CD pipelines, which assumes the code is untrusted and unverified and based on this assumption scanners shouldn't have the ability to dynamically run code.\n\nOur research focuses on the many static analyzers out there if this is really the case. Many of the scanners allow different ways of interaction - From requesting external resources, overriding the configuration and to remote code execution as part of the process.This talk will be technical and show examples of well-known scanning tools and how we created code that attacks them.\n\nTLDR -\nWhen integrating and using new tools in our CI systems and especially when running on unverified code, Which tools can we trust and how can we scan safe untrusted code in a secure way?\n\nREFERENCES:\nhttps://github.com/jonase/kibit/issues/235 - Issue I raised in the past in one of the tools\n\nHiroki Suezawa in a thread in cloud security forum talked about exploiting terraform plan https://cloudsecurityforum.slack.com/archives/CNJKBFXMH/p1584035704035800\n\nThis reference was released after I've started my research but nevertheless a good resource and has interesting perspectives and I will reference it: https://alex.kaskaso.li/post/terraform-plan-rce",
+    "view_count": 3078
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Jl-CU6G4Ofc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

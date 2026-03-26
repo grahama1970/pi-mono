@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wTgNP1LSVVI",
+    "language": "en",
+    "took_ms": 9534,
+    "method": null,
+    "title": "New course by Andrew Ng: AI Python for Beginners",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240807",
+    "duration_sec": 221,
+    "description": "Learn more: https://bit.ly/3WuCdKL\n\nAI Python for Beginners is designed to help you leverage the power of Python programming, even if your goal isn’t to become a software developer or AI engineer. This four-part course that teaches you to code practical AI applications from day one, even if you’ve never programmed before. You’ll learn with support from an AI chatbot that can help you get immediate feedback, quickly fix bugs, and keep you on track while learning new skills. You’ll gain a foundational understanding of Python while building AI-powered tools like custom recipe generators, smart to-do lists, and vacation planners, and learn essential programming concepts such as variables, functions, loops, and data structures. \n\nBy the end of this course series, you’ll be able to write Python scripts that interact with large language models, automate tasks, analyze your own data, and even create simple AI agents – skills that are increasingly valuable across industries from tech and finance to healthcare and creative fields.\n\nExperience a new kind of learning with the AI chatbot integration. This intelligent assistant helps you write, test, and debug code, providing instant feedback and personalized guidance, making sure you’re never coding alone. With the rise of AI tools, the effort and time required to learn heplful coding skills has significantly decreased, making it more accessible and beneficial for everyone.\n\nLearn more: https://bit.ly/3WuCdKL",
+    "view_count": 37906
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wTgNP1LSVVI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

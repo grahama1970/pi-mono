@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nIuCj99vDgU",
+    "language": "en",
+    "took_ms": 8924,
+    "method": null,
+    "title": "ICS Village Running the S4x23 ICS Capture The Flag Competition",
+    "channel": "S4 Events",
+    "upload_date": "20230118",
+    "duration_sec": 1963,
+    "description": "Tom VanNorman and Don Weber join Dale to describe the ICS Capture The Flag competition they will be running at S4x23, Feb 13 - 16 in Miami South Beach.",
+    "view_count": 392
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nIuCj99vDgU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

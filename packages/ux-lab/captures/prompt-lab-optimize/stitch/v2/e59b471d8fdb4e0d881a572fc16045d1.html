@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#2e3544",
+                        "on-secondary-fixed-variant": "#005228",
+                        "surface": "#0c1321",
+                        "inverse-on-surface": "#2a3040",
+                        "surface-bright": "#323949",
+                        "inverse-primary": "#732ee4",
+                        "on-secondary-fixed": "#00210c",
+                        "on-tertiary-fixed-variant": "#930012",
+                        "primary": "#d2bbff",
+                        "primary-fixed-dim": "#d2bbff",
+                        "surface-dim": "#0c1321",
+                        "tertiary-fixed": "#ffdad7",
+                        "secondary-fixed-dim": "#00e479",
+                        "on-tertiary-container": "#ffdedb",
+                        "on-background": "#dce2f6",
+                        "tertiary-fixed-dim": "#ffb3ad",
+                        "on-primary-fixed": "#25005a",
+                        "on-secondary-container": "#007239",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-primary-container": "#ede0ff",
+                        "secondary-fixed": "#60ff99",
+                        "on-surface": "#dce2f6",
+                        "inverse-surface": "#dce2f6",
+                        "tertiary": "#ffb3ad",
+                        "surface-container-lowest": "#070e1c",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-tertiary": "#680009",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#ca1a25",
+                        "surface-container-high": "#232a39",
+                        "outline-variant": "#4a4455",
+                        "primary-fixed": "#eaddff",
+                        "on-tertiary-fixed": "#410004",
+                        "primary-container": "#7c3aed",
+                        "surface-container": "#19202e",
+                        "secondary-container": "#34ff8d",
+                        "on-secondary": "#003919",
+                        "secondary": "#f5fff3",
+                        "error": "#ffb4ab",
+                        "outline": "#958da1",
+                        "surface-container-low": "#151b2a",
+                        "surface-tint": "#d2bbff",
+                        "surface-container-highest": "#2e3544",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "background": "#0c1321",
+                        "on-primary": "#3f008e"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #4a4455; }
+        .no-shadow { box-shadow: none !important; }
+        .step-timing { transition-timing-function: steps(4, end); }
+        .noise-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col relative">
+<div class="fixed inset-0 noise-overlay"></div>
+<!-- TopNavBar -->
+<nav class="bg-[#0c1321] text-[#d2bbff] font-['Space_Grotesk'] tracking-tight border-b border-[#4a4455]/20 flex justify-between items-center w-full px-4 h-14 z-50">
+<div class="text-xl font-bold tracking-tighter text-[#d2bbff]">PROMPT_LAB</div>
+<div class="hidden md:flex items-center gap-6 h-full">
+<a class="text-[#d2bbff] border-b-2 border-[#7c3aed] h-full flex items-center px-2" href="#">OPTIMIZER</a>
+<a class="text-[#dce2f6]/60 hover:bg-[#232a39] hover:text-[#d2bbff] transition-colors duration-50 h-full flex items-center px-2" href="#">HISTORY</a>
+<a class="text-[#dce2f6]/60 hover:bg-[#232a39] hover:text-[#d2bbff] transition-colors duration-50 h-full flex items-center px-2" href="#">DEPLOYMENTS</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">help</span>
+<div class="w-8 h-8 bg-surface-container-high border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow flex overflow-hidden">
+<!-- LEFT PANE: SYSTEM_PROMPT -->
+<section class="w-[30%] bg-surface-container-low border-r border-outline-variant flex flex-col">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center bg-surface-container">
+<h2 class="font-headline font-bold text-xs tracking-widest uppercase text-on-surface-variant">SYSTEM_PROMPT</h2>
+<span class="text-[10px] font-mono text-outline">v4.2.0_STABLE</span>
+</div>
+<div class="flex-grow p-4">
+<div class="relative group">
+<div class="absolute -left-2 top-0 bottom-0 w-[2px] bg-primary-container"></div>
+<textarea class="w-full bg-[#141414] border border-outline-variant font-mono text-sm p-4 text-on-surface focus:ring-0 focus:border-primary resize-none placeholder-outline-variant leading-relaxed" rows="8" spellcheck="false">You are a specialized cybersecurity taxonomy classifier. Your goal is to map incoming incident reports to MITRE ATT&amp;CK techniques, NIST 800-53 controls, and D3FEND countermeasures. 
+
+Return only valid JSON format with high precision mappings.
+Required keys: "mitre_id", "nist_control", "d3fend_id", "confidence_score".</textarea>
+</div>
+<div class="mt-4 flex flex-col gap-2">
+<div class="text-[10px] font-mono text-outline-variant uppercase">Prompt Stats</div>
+<div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
+<div class="bg-surface-container-high p-2 flex justify-between">
+<span>TOKENS:</span>
+<span class="text-primary">284</span>
+</div>
+<div class="bg-surface-container-high p-2 flex justify-between">
+<span>TEMP:</span>
+<span class="text-primary">0.1</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- MIDDLE PANE: TEST_CASES -->
+<section class="w-[30%] bg-surface flex flex-col">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h2 class="font-headline font-bold text-xs tracking-widest uppercase text-on-surface-variant">TEST_CASES</h2>
+<div class="flex gap-2">
+<button class="px-2 py-1 text-[10px] border border-outline-variant hover:bg-surface-container-high flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[14px]">add</span> CASE
+                    </button>
+<button class="px-2 py-1 text-[10px] border border-outline-variant hover:bg-surface-container-high flex items-center gap-1 font-mono">
+<span class="material-symbols-outlined text-[14px]">upload_file</span> IMPORT
+                    </button>
+</div>
+</div>
+<div class="flex-grow overflow-y-auto">
+<!-- Case 01 -->
+<div class="border-b border-outline-variant p-3 hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-mono text-primary bg-primary-container/20 px-1">ID: T1547.001</span>
+<span class="material-symbols-outlined text-outline-variant text-sm opacity-0 group-hover:opacity-100">drag_indicator</span>
+</div>
+<p class="text-[12px] font-mono mb-2 line-clamp-2 text-on-surface-variant">Persistence via Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder...</p>
+<div class="bg-surface-container-high p-2 font-mono text-[10px] text-secondary-fixed-dim">
+                        { "mitre": "T1547.001", "action": "persist" }
+                    </div>
+</div>
+<!-- Case 02 -->
+<div class="border-b border-outline-variant p-3 hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-mono text-primary bg-primary-container/20 px-1">ID: SI-2 NIST 800-53</span>
+<span class="material-symbols-outlined text-outline-variant text-sm opacity-0 group-hover:opacity-100">drag_indicator</span>
+</div>
+<p class="text-[12px] font-mono mb-2 line-clamp-2 text-on-surface-variant">The organization identifies, reports, and corrects system flaws; tests software/firmware updates...</p>
+<div class="bg-surface-container-high p-2 font-mono text-[10px] text-secondary-fixed-dim">
+                        { "control": "SI-2", "domain": "FLAW_REMEDIATION" }
+                    </div>
+</div>
+<!-- Case 03 -->
+<div class="border-b border-outline-variant p-3 hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-mono text-primary bg-primary-container/20 px-1">ID: d3f:NetworkIsolation</span>
+<span class="material-symbols-outlined text-outline-variant text-sm opacity-0 group-hover:opacity-100">drag_indicator</span>
+</div>
+<p class="text-[12px] font-mono mb-2 line-clamp-2 text-on-surface-variant">Network isolation through VLAN segmentation or microsegmentation to prevent lateral movement...</p>
+<div class="bg-surface-container-high p-2 font-mono text-[10px] text-secondary-fixed-dim">
+                        { "d3f": "NetworkIsolation", "category": "Isolate" }
+                    </div>
+</div>
+</div>
+<!-- Footer Toolbar -->
+<div class="p-4 border-t border-outline-variant bg-surface-container-low flex flex-col gap-3">
+<div class="flex gap-2">
+<select class="flex-grow bg-[#141414] border border-outline-variant text-[11px] font-mono p-2 focus:ring-1 focus:ring-primary outline-none appearance-none">
+<option>MODEL: CLAUDE-3.5-SONNET</option>
+<option>MODEL: GPT-4O-MINI</option>
+<option>MODEL: LLAMA-3.1-70B</option>
+</select>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 font-headline font-bold text-xs tracking-tighter hover:brightness-110 active:scale-95 transition-all">
+                        OPTIMIZE_SEQUENCE
+                    </button>
+</div>
+</div>
+</section>
+<!-- RIGHT PANE: OPTIMIZATION_RESULTS -->
+<section class="w-[40%] bg-surface-container-low flex flex-col overflow-hidden">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center bg-surface-container">
+<h2 class="font-headline font-bold text-xs tracking-widest uppercase text-on-surface-variant">OPTIMIZATION_RESULTS</h2>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-secondary-fixed-dim"></div>
+<span class="text-[10px] font-mono">F1: 0.94</span>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-error"></div>
+<span class="text-[10px] font-mono">ERR: 1</span>
+</div>
+</div>
+</div>
+<div class="flex-grow overflow-y-auto">
+<!-- Results Table -->
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high text-[10px] font-mono sticky top-0 border-b border-outline-variant">
+<tr>
+<th class="p-3 font-medium">CASE_ID</th>
+<th class="p-3 font-medium">EXPECTED</th>
+<th class="p-3 font-medium">ACTUAL</th>
+<th class="p-3 font-medium">SCORE</th>
+<th class="p-3 font-medium">STATUS</th>
+</tr>
+</thead>
+<tbody class="text-[11px] font-mono">
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-highest transition-colors">
+<td class="p-3 text-on-surface-variant">T1547.001</td>
+<td class="p-3">T1547</td>
+<td class="p-3">T1547.001</td>
+<td class="p-3">1.0</td>
+<td class="p-3"><span class="text-secondary-fixed-dim">PASS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-highest transition-colors">
+<td class="p-3 text-on-surface-variant">SI-2</td>
+<td class="p-3">NIST:SI-2</td>
+<td class="p-3">NIST:SI-2</td>
+<td class="p-3">1.0</td>
+<td class="p-3"><span class="text-secondary-fixed-dim">PASS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 bg-error-container/10">
+<td class="p-3 text-on-surface-variant">D3F:ISO</td>
+<td class="p-3">NetworkIsolation</td>
+<td class="p-3">FirewallRule</td>
+<td class="p-3">0.4</td>
+<td class="p-3"><span class="text-error">FAIL</span></td>
+</tr>
+</tbody>
+</table>
+<!-- Unified Diff Style block -->
+<div class="p-4">
+<div class="text-[10px] font-mono text-outline-variant mb-2 uppercase">Proposed Optimization (Unified Diff)</div>
+<div class="bg-[#141414] border border-outline-variant p-4 font-mono text-[11px] leading-relaxed">
+<div class="text-on-surface-variant">--- system_prompt_v4.2.0</div>
+<div class="text-on-surface-variant">+++ system_prompt_v4.2.1_OPTIMIZED</div>
+<div class="text-error bg-error/10">- Return only valid JSON format with high precision mappings.</div>
+<div class="text-secondary-fixed-dim bg-secondary-fixed-dim/10">+ Return only valid JSON. Ensure 'mitre_id' uses sub-technique notation (e.g., T1234.001).</div>
+<div class="text-secondary-fixed-dim bg-secondary-fixed-dim/10">+ For D3FEND, prioritize Network Isolation over Policy-based rules when VLANs are mentioned.</div>
+<div class="text-on-surface-variant">  Required keys: "mitre_id", "nist_control", "d3fend_id", "confidence_score".</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 border-t border-outline-variant bg-surface flex justify-end gap-3">
+<button class="px-6 py-2 border border-outline-variant font-mono text-xs hover:bg-surface-container-high transition-colors">
+                    REJECT_DIFF
+                </button>
+<button class="px-6 py-2 bg-secondary-container text-on-secondary-container font-headline font-bold text-xs tracking-tighter hover:brightness-110 transition-all">
+                    APPROVE_CHANGES
+                </button>
+</div>
+</section>
+</main>
+<!-- Bottom Status Bar (Diagnostic Style) -->
+<footer class="h-6 bg-surface-container-highest border-t border-outline-variant px-3 flex items-center justify-between text-[10px] font-mono text-outline select-none">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim"></span> ENGINE_READY</span>
+<span>LATENCY: 420ms</span>
+</div>
+<div class="flex items-center gap-4">
+<span>UTF-8</span>
+<span>JSON_SCHEMA: v2.1</span>
+<span class="text-primary">Ln 1, Col 1</span>
+</div>
+</footer>
+</body></html>

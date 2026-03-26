@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_BZGtifh_gw",
+    "language": "en",
+    "took_ms": 8894,
+    "method": null,
+    "title": "FastAPI for Machine Learning: Live coding an ML web application.",
+    "channel": "DeepLearningAI",
+    "upload_date": "20221215",
+    "duration_sec": 3606,
+    "description": "Welcome! Join us for a live workshop where you can follow along with the creator of FastAPI  Sebastián Ramírez to build your very own AI image generation web application!  He will outline the core components of the FastAPI web framework, and his application will leverage the newly-released Stable Diffusion text-to-image deep learning model.\n\nWe will be taking questions during the event. Please submit your question or upvote others' here:\nhttps://app.sli.do/event/cgvyaL8y7m12zZLb1c6sP8\n\nSpeakers\nSebastián Ramírez, Creator of FastAPI, Senior Staff Software Engineer at Forethought\nhttps://www.linkedin.com/in/tiangolo/\n\nDr. Greg Loughnane, Head of Product & Curriculum at FourthBrain\nhttps://www.linkedin.com/in/gregloughnane/\n\nLet us know how we're doing? We will be giving out discount codes for a selected number of people who fill out the survey:\nhttps://forms.gle/LzhBLhXJe4VTdNwe7\n\nLooking to connect with your peer learners, share projects, and swap advice? Join our AI community: \nhttps://community.deeplearning.ai/invites/ddzDLVa2jv\n\nTo learn more about us and signup for future events:\nDeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 54085
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _BZGtifh_gw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

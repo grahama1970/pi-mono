@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gGHLVB4LprY",
+    "language": "en",
+    "took_ms": 10019,
+    "method": null,
+    "title": "Practical ICS Security: Lessons Learned from 12,000 Deployments",
+    "channel": "S4 Events",
+    "upload_date": "20170417",
+    "duration_sec": 2175,
+    "description": "Learn how to determine what is the best equipment for securing your ICS. It is more about truly understanding your people, business processes, and control requirements than a specific technology or vendor.\n\nYehonaten Kfir of Radiflow spoke at the S4x17 Sponsor Stage about how they help ICS asset owners work through identifying precisely what type of technical solution will meet their most important requirements. The approach is product and vendor neutral, and it will help asset owners drive the process rather than relying on product vendors.",
+    "view_count": 375
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gGHLVB4LprY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

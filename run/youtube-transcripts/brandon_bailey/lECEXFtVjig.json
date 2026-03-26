@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lECEXFtVjig",
+    "language": "en",
+    "took_ms": 7673,
+    "method": null,
+    "title": "DEF CON 30 - ColdwaterQ - Backdooring Pickles: A decade only made things worse",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1170,
+    "description": "Eleven years ago, \"Sour Pickles\" was presented by Marco Slaviero. Python docs already said pickles were insecure at that time. But since then, machine learning frameworks started saving models in pickled formats as well. So, I will show how simple it is to add a backdoor into any pickled object using machine learning models as an example. As well as an example of how to securely save a model to prevent malicious code from being injected into it.",
+    "view_count": 1371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lECEXFtVjig: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4ySBKrwWhcg",
+    "language": "en",
+    "took_ms": 7819,
+    "method": null,
+    "title": "Book Interview - Countering Cyber Sabotage: Introducing CCE",
+    "channel": "S4 Events",
+    "upload_date": "20210203",
+    "duration_sec": 3944,
+    "description": "Dale Peterson interviews authors Andrew Bochman and Sarah Freemen of Idaho National Laboratory (INL) about their just published book Countering Cyber Sabotage - Introducing Consequence-driven, Cyber-informed Engineering (CCE).\n\nThe CCE methodology has been discussed by the INL team for over two years to great interest in the ICS security community. Now there is a book that describes it in some of the detail the industry was craving.\n\nDale begins with a 3-minute review and then dives into the interview. They start their discussion with who the book was for, their hopes for readers who finish the book, the stats on CCE, CCE training and certification and more on the program INL is rolling out. \n\nThen the discussion shifts to a detailed Q&A on the four phases of CCE. If you have any interest in determining what should be done next in reducing ICS risk, then this is a must watch episode.",
+    "view_count": 714
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4ySBKrwWhcg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

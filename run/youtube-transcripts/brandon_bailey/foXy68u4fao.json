@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "foXy68u4fao",
+    "language": "en",
+    "took_ms": 8964,
+    "method": null,
+    "title": "DEF CON Safe Mode - Mickey Shkatov and Jesse Michael - Bytes In Disguise   Q&A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1791,
+    "description": "Question and answer session for Mickey Shkatov and Jesse Michael - Bytes In Disguise   Q&A",
+    "view_count": 280
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] foXy68u4fao: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

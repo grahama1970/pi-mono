@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X0livrQ3wBM",
+    "language": "en",
+    "took_ms": 10060,
+    "method": null,
+    "title": "U.S. Sanctions on Russia: Evaluating Impacts and Costs",
+    "channel": "Hudson Institute",
+    "upload_date": "20170330",
+    "duration_sec": 4887,
+    "description": "HE Anders Fogh Rasmussen, Sandy Vershbow, Paula Dobriansky, and Peter Rough discuss Russian sanctions under the Trump administration",
+    "view_count": 1141
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X0livrQ3wBM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

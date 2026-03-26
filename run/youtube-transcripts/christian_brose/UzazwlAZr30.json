@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UzazwlAZr30",
+    "language": "en",
+    "took_ms": 8735,
+    "method": null,
+    "title": "The Trump Navy: Getting to 350 Ships",
+    "channel": "Hudson Institute",
+    "upload_date": "20170301",
+    "duration_sec": 4480,
+    "description": "Hon. Janine Davidson, Bryan Clark, Seth Cropsey, and Bryan McGrath discuss President Trump's Navy and the challenge of getting to 350 ships.",
+    "view_count": 6291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UzazwlAZr30: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

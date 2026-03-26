@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QzulmoOg2JE",
+    "language": "en",
+    "took_ms": 9196,
+    "method": null,
+    "title": "Learning Rate Decay (C2W2L09)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 404,
+    "description": "Take the Deep Learning Specialization: http://bit.ly/2Tx69W7\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 81318
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QzulmoOg2JE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

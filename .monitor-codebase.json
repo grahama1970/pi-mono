@@ -1,0 +1,26 @@
+{
+  "project": "pi-mono",
+  "include_dirs": [
+    "packages/coding-agent/src",
+    "packages/ai/src",
+    "packages/tui/src",
+    "packages/web-ui/src",
+    "packages/pods/src",
+    "scripts"
+  ],
+  "exclude_dirs": [
+    ".pi",
+    "node_modules",
+    "dist",
+    "models",
+    ".git",
+    ".claude",
+    ".codex",
+    ".agent",
+    ".antigravity",
+    "dreams",
+    "tests",
+    "docs"
+  ],
+  "timeout": 3600
+}

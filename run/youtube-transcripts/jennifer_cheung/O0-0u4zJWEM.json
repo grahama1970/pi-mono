@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O0-0u4zJWEM",
+    "language": "en",
+    "took_ms": 9170,
+    "method": null,
+    "title": "DEF CON 33 - Planting C4: Cross Compatible External C2 for Your Implants - Scott Taylor",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 982,
+    "description": "Let’s face it — traditional HTTP C2 is burning out. Between aging domains, TLS cert management, sandbox fingerprinting, and blue teams getting smarter at categorizing traffic and infrastructure, your “custom C2” feels less covert and more like a liability. Red teams and threat actors alike are shifting toward living off legitimate services — AWS, GitHub, Box, Notion, whatever blends in — but building solutions that are custom to a single C2 framework? Let’s stop doing that. Let’s share the fun!\n\nC4 (Cross-Compatible Command & Control) is here to change that. It’s a modular toolkit of WASM-powered plugins that makes external C2 easy to implement, regardless of your implant's language or target OS. Whether you’re writing in C, Rust, Go, Python, C#, or something else entirely, C4 plugins can be loaded directly into your implant and run on Windows, macOS, or Linux.\n\nBut the real game-changer? C4 provides a single, centralized collection of numerous fully-documented, operationally-ready external C2 modules — not just proof-of-concepts, but production-level integrations with trusted sites that fly under the radar. No more hunting through GitHub repos, hand-rolling fragile API calls, or hacking together glue code for every new environment.\n\nStop reinventing external C2 and start planting some C4 in your implants!",
+    "view_count": 185
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O0-0u4zJWEM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

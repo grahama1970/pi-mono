@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W_vQ5s1bB30",
+    "language": "en",
+    "took_ms": 7594,
+    "method": null,
+    "title": "DEF CON 31 Car Hacking Village - Automotive USB Fuzzing - Euntae Jang, Donghyon Jeong, Jonghyuk Song",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2252,
+    "description": "Recently, automotive industry is performing USB fuzzing in an inefficient way for automobiles. Usually, fuzzing is performed by commercial media fuzzers, but the fuzzers are not directly connected to the vehicle during fuzzing. So, it requires much manual efforts of testers.\n\nIn this talk, we propose efficient way to perform USB fuzzing to actual vehicles. We describe how to perform USB fuzzing to kernel area fuzzing as well as media fuzzing by directly connecting the fuzzer and the car with a USB cable. By this method, we found real-world vulnerabilities in Volkswagen Jetta, Renault Zoe, GM Chevrolet Equinox, and AGL.",
+    "view_count": 8884
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W_vQ5s1bB30: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

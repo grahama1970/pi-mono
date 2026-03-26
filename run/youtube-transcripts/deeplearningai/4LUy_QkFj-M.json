@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4LUy_QkFj-M",
+    "language": "en",
+    "took_ms": 9137,
+    "method": null,
+    "title": "Immigration + AI Talent",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260130",
+    "duration_sec": 41,
+    "description": "Andrew Ng on why welcoming immigrants has been essential to building strong AI communities, and why attracting global talent still matters for the future of AI.\n\nThese are the conversations we continue at AI Dev.\n\nJoin us at AI Dev 26 × San Francisco, April 28–29. Tickets available: https://bit.ly/4aiyfNp",
+    "view_count": 176580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4LUy_QkFj-M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9E1e3ZW3-pw",
+    "language": "en",
+    "took_ms": 9071,
+    "method": null,
+    "title": "New course with LangChain! Long-Term Agentic Memory with LangGraph",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250314",
+    "duration_sec": 127,
+    "description": "Learn more: https://bit.ly/4kKKTYJ\n\nAI agents are becoming more capable—but without memory, they forget past interactions. In our latest short course built in collaboration with LangChain, Long-Term Agentic Memory with LangGraph, you’ll learn how to build AI agents that store, retrieve, and update memory using LangMem.\n\nTaught by Harrison Chase, Co-Founder & CEO of LangChain, this course walks you through developing a personal email assistant that intelligently manages messages using semantic, episodic, and procedural memory.\n\n- Understand how memory enhances AI agents – Explore the three types of memory (semantic, episodic, and procedural) and how they enable agents to store facts, recall past experiences, and follow evolving instructions.\n- Build an AI-powered email assistant – Create an agent that can automatically route, respond to, or schedule emails, adapting its behavior based on past interactions.\n- Implement long-term memory with LangMem – Learn how to store and retrieve important details from memory, ensuring your AI agent gets smarter over time instead of starting from scratch.\n\nStart building memory-enhanced AI agents today.\n\nEnroll now: https://bit.ly/4kKKTYJ",
+    "view_count": 5476
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9E1e3ZW3-pw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

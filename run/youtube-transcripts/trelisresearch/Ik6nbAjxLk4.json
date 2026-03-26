@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ik6nbAjxLk4",
+    "language": "en",
+    "took_ms": 9361,
+    "method": null,
+    "title": "Fine tune Gemma 3, Qwen3, Llama 4, Phi 4 and Mistral Small with Unsloth and Transformers",
+    "channel": "Trelis Research",
+    "upload_date": "20250508",
+    "duration_sec": 4872,
+    "description": "📜Get repo access at https://Trelis.com/ADVANCED-fine-tuning\n\n🗝️ Get Trelis Multi-Repo Bundle (https://Trelis.com/multi-repo-bundle)\n- Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n- Support via Github Issues & Trelis’ Private Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Done-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- slides: https://docs.google.com/presentation/d/1kawm0xme-IJVmZpeWtWxAVg8d4OqkGnqeOq0opCHq6k/edit?usp=sharing\n- unsloth GitHub: https://github.com/unslothai/unsloth\n\nTIMESTAMPS:\n0:00 Fine-tune Gemma Llama Qwen Phi Mistral\n0:27 Video Overview\n1:35 When to do fine-tuning?\n3:22 How to prepare a fine-tuning dataset?\n6:24 Choosing unsloth versus transformers\n11:07 How to run fast evaluations with vLLM\n12:33 What model to fine-tune?\n14:27 General fine-tuning tips\n16:04 Fine-tuning notebooks and setup: trelis.com/advanced-fine-tuning\n19:11 Running fast evaluations with vLLM in a jupyter notebook\n37:56 Fine-tuning with Unsloth\n1:09:02 Fine-tuning with transformers\n1:20:24 Conclusion",
+    "view_count": 23074
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ik6nbAjxLk4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

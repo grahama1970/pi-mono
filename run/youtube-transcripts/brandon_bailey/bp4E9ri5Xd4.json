@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bp4E9ri5Xd4",
+    "language": "en",
+    "took_ms": 7689,
+    "method": null,
+    "title": "DEF CON 33 - China's Health Sector Ambitions and Info Needs - Amelia Shapiro",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1508,
+    "description": "Amelia is an intelligence analyst at Margin Research where she specializing in combining science and technology and regional expertise. Before working at Margin, Amelia worked at a DC-based research shop. Amelia graduated from Brown University with the Albert A. Bennett Prize for Exceptional Accomplishment in the Mathematics Concentration as well as honors in the security studies concentration.",
+    "view_count": 224
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bp4E9ri5Xd4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

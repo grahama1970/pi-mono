@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V4gmRuYPtLA",
+    "language": "en",
+    "took_ms": 9083,
+    "method": null,
+    "title": "How Convolutions Work (TensorFlow in Practice)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200205",
+    "duration_sec": 42,
+    "description": "Convolutions are the backbone of image analysis deep learning models. How do they work? Instructor Laurence Moroney explains in Course 1 of the our TensorFlow in Practice Specialization.\n\nTake the TensorFlow in Practice Specialization: http://bit.ly/2RXnIPQ\nCheck out all our courses: deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai/",
+    "view_count": 2995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V4gmRuYPtLA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

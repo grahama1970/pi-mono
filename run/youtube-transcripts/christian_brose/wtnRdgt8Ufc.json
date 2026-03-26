@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wtnRdgt8Ufc",
+    "language": "en",
+    "took_ms": 8621,
+    "method": null,
+    "title": "Counterbalance Podcast | Taiwan 101 (feat. Peter Rough)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240208",
+    "duration_sec": 2547,
+    "description": "This week, host Michael Doran is joined by co-host Peter Rough, senior fellow and director of the Center for Europe and Eurasia at Hudson Institute. Peter offers an overview of his recent visit to Taiwan and discusses with Mike his thoughts on Beijing's increasing economic and military pressure on Taipei. The duo also talks about the current state of Taiwanese domestic politics and how it affects U.S. foreign policy.",
+    "view_count": 2105
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wtnRdgt8Ufc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

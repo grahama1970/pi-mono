@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n5fOByJbzAI",
+    "language": "en",
+    "took_ms": 7886,
+    "method": null,
+    "title": "Google v. Oracle: Decoding the Oral Argument in the Supreme Court",
+    "channel": "Hudson Institute",
+    "upload_date": "20201028",
+    "duration_sec": 2773,
+    "description": "Join Hudson Institute for a discussion on Google v. Oracle, a blockbuster copyright case between two giants in the tech industry that has spanned a decade of litigation. On October 7, 2020, the Supreme Court heard an oral argument in the case. Hudson Institute Senior Fellow Adam Mossoff will moderate a conversation with industry experts Steven Tepp and Tim Wilson to assess the state of the case after the oral argument.",
+    "view_count": 795
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n5fOByJbzAI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

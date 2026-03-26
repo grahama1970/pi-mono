@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0b1220; color: #e2e8f0; font-family: 'Inter', -apple-system, sans-serif; font-size: 13px; line-height: 1.5; }
+.container { display: flex; height: 100vh; }
+
+.sidebar { width: 280px; border-right: 1px solid rgba(255,255,255,0.13); display: flex; flex-direction: column; flex-shrink: 0; }
+.sidebar-header { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.13); }
+.sidebar-header h2 { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(124,58,237,0.4); background: rgba(124,58,237,0.08); font-size: 9px; font-weight: 600; color: #7c3aed; }
+.dot-pulse { width: 6px; height: 6px; border-radius: 50%; background: #7c3aed; box-shadow: 0 0 6px #7c3aed; }
+.label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #334155; }
+.chip { font-size: 10px; padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.13); color: #64748b; }
+.chip.on { border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.08); color: #7c3aed; font-weight: 600; }
+
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.toolbar { padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.13); display: flex; align-items: center; gap: 8px; }
+.spacer { flex: 1; }
+.btn { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.13); background: transparent; color: #64748b; }
+.btn.active { color: #7c3aed; border-color: rgba(124,58,237,0.3); }
+.btn.go { border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.06); color: #00ff88; font-weight: 700; }
+
+/* Independent lanes — each scrolls separately */
+.lanes { flex: 1; display: flex; overflow: hidden; }
+.lane { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.lane + .lane { border-left: 3px solid rgba(124,58,237,0.3); }
+.lane-head { padding: 10px 14px; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.lane-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.lane-title { font-size: 12px; font-weight: 700; }
+.lane-sub { font-size: 9px; color: #334155; }
+.lane-status { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 4px; }
+.lane-body { flex: 1; overflow-y: auto; padding: 12px; }
+
+/* Round within a lane */
+.rnd { margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; }
+.rnd-head { padding: 8px 12px; background: rgba(124,58,237,0.04); border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 8px; }
+.rnd-n { width: 22px; height: 22px; border-radius: 11px; background: rgba(124,58,237,0.12); border: 2px solid #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #7c3aed; flex-shrink: 0; }
+.rnd-f1 { margin-left: auto; font-size: 12px; font-weight: 700; }
+
+/* Prompt */
+.prompt { margin: 6px 8px; padding: 6px 8px; background: rgba(124,58,237,0.04); border-left: 3px solid #7c3aed; border-radius: 3px; font-family: monospace; font-size: 9px; line-height: 1.5; color: #64748b; white-space: pre-wrap; max-height: 140px; overflow: auto; }
+.prompt-lbl { font-size: 8px; font-weight: 700; color: #7c3aed; padding: 4px 10px 0; }
+.da { color: #00ff88; background: rgba(0,255,136,0.05); }
+.dr { color: #ff4444; background: rgba(255,68,68,0.05); text-decoration: line-through; }
+
+/* Compact eval table */
+table { width: 100%; border-collapse: collapse; margin: 4px 0; }
+th { font-size: 8px; font-weight: 700; text-transform: uppercase; color: #334155; padding: 4px 8px; text-align: left; }
+td { font-size: 9px; padding: 4px 8px; border-top: 1px solid rgba(255,255,255,0.04); color: #64748b; }
+.cn { color: #e2e8f0; font-weight: 500; }
+.tg { display: inline-block; padding: 1px 4px; border-radius: 2px; font-size: 8px; margin-right: 1px; }
+.tg.c { background: rgba(124,58,237,0.12); color: #7c3aed; }
+.tg.t { background: rgba(74,158,255,0.12); color: #4a9eff; }
+.tg.x { background: rgba(255,68,68,0.12); color: #ff4444; }
+.f { font-weight: 700; }
+.fg { color: #00ff88; }
+.fr { color: #ff4444; }
+.fy { color: #ffaa00; }
+
+/* Failure / rewrite boxes */
+.box { margin: 6px 8px; padding: 6px 8px; border-radius: 4px; font-size: 9px; line-height: 1.5; }
+.box.fail { background: rgba(255,68,68,0.04); border: 1px solid rgba(255,68,68,0.1); }
+.box.fix { background: rgba(255,170,0,0.04); border: 1px solid rgba(255,170,0,0.1); }
+.box h5 { font-size: 9px; font-weight: 700; margin-bottom: 2px; }
+.box h5.fh { color: #ff4444; }
+.box h5.rh { color: #ffaa00; }
+.box p { color: #64748b; }
+.hl { color: #ff4444; font-weight: 600; }
+
+/* Done banner */
+.done { margin: 8px; padding: 10px 14px; border-radius: 6px; text-align: center; }
+.done.pass { border: 2px solid #00ff88; background: rgba(0,255,136,0.04); }
+.done.cont { border: 1px dashed #ffaa00; background: rgba(255,170,0,0.02); }
+.done h4 { font-size: 12px; font-weight: 700; }
+.done p { font-size: 9px; color: #64748b; margin-top: 2px; }
+
+/* Ground truth (shared, shown above lanes) */
+.gt { padding: 6px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 9px; color: #334155; background: rgba(255,255,255,0.01); flex-shrink: 0; }
+
+/* Final verdict */
+.verdict { padding: 16px 20px; border-top: 2px solid rgba(0,255,136,0.3); text-align: center; flex-shrink: 0; background: rgba(0,255,136,0.02); }
+.verdict h3 { font-size: 14px; font-weight: 700; color: #00ff88; }
+.verdict .info { font-size: 10px; color: #64748b; margin-top: 4px; }
+.verdict .btns { margin-top: 10px; display: flex; gap: 8px; justify-content: center; }
+.ba { padding: 6px 24px; border-radius: 4px; border: 1px solid #00ff88; background: rgba(0,255,136,0.1); color: #00ff88; font-weight: 700; font-size: 11px; }
+.br { padding: 6px 24px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.13); background: transparent; color: #64748b; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Prompt Lab <span style="flex:1"></span><span class="badge"><span class="dot-pulse"></span>OPTIMIZING</span></h2>
+      <div style="font-size:10px;color:#7c3aed;margin-top:4px;">DeepSeek converged (2 rounds). qwen2.5:7b on round 4...</div>
+    </div>
+    <div style="padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.13);">
+      <div class="label" style="margin-bottom:6px;">Models (2 selected)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;">
+        <span class="chip on">text (DeepSeek-V3)</span>
+        <span class="chip on">qwen2.5:7b</span>
+        <span class="chip">text-gemini</span>
+      </div>
+    </div>
+    <div style="flex:1;overflow:auto;padding:8px 16px;">
+      <div class="label" style="margin-bottom:6px;">Prompts</div>
+      <div style="padding:4px 8px;border-radius:4px;background:rgba(124,58,237,0.08);display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:#00ff88;box-shadow:0 0 3px #00ff88;"></span>
+        <span style="font-size:10px;flex:1;">taxonomy_v1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="toolbar">
+      <span style="font-size:13px;font-weight:600;">taxonomy_v1</span>
+      <span class="spacer"></span>
+      <button class="btn">Editor</button>
+      <button class="btn">History</button>
+      <button class="btn active">Optimize</button>
+      <button class="btn go">Optimize Prompt</button>
+    </div>
+
+    <!-- Ground truth + user prompts — shared, shown once -->
+    <div style="border-bottom:1px solid rgba(255,255,255,0.08); flex-shrink:0;">
+      <div style="padding:8px 14px;">
+        <div style="font-size:10px; font-weight:700; color:#e2e8f0; margin-bottom:8px;">Test Prompts — 3 user messages we'll send to the model</div>
+
+        <table style="width:100%; border-collapse:collapse;">
+          <thead><tr>
+            <th style="font-size:8px; font-weight:700; text-transform:uppercase; color:#4a9eff; padding:5px 8px; text-align:left; width:55%;">User Message (sent to model)</th>
+            <th style="font-size:8px; font-weight:700; text-transform:uppercase; color:#7c3aed; padding:5px 8px; text-align:left;">Correct Answer</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-top:1px solid rgba(255,255,255,0.06);">
+              <td style="padding:6px 8px; vertical-align:top;">
+                <div style="padding:5px 8px; background:rgba(74,158,255,0.04); border-left:3px solid #4a9eff; border-radius:3px; font-family:monospace; font-size:9px; color:#64748b; line-height:1.5;">Control: Registry Run Keys / Startup Folder<br>Description: Adversaries may achieve persistence by adding a program to a startup folder or referencing it with a Registry run key.</div>
+              </td>
+              <td style="padding:6px 8px; vertical-align:top; font-size:10px;">
+                <span class="tg c">Corruption</span> <span class="tg t">Persist</span>
+              </td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.06);">
+              <td style="padding:6px 8px; vertical-align:top;">
+                <div style="padding:5px 8px; background:rgba(74,158,255,0.04); border-left:3px solid #4a9eff; border-radius:3px; font-family:monospace; font-size:9px; color:#64748b; line-height:1.5;">Control: Flaw Remediation<br>Description: The organization identifies, reports, and corrects information system flaws.</div>
+              </td>
+              <td style="padding:6px 8px; vertical-align:top; font-size:10px;">
+                <span class="tg c">Resilience</span> <span class="tg c">Fragility</span> <span class="tg t">Harden</span>
+              </td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.06);">
+              <td style="padding:6px 8px; vertical-align:top;">
+                <div style="padding:5px 8px; background:rgba(74,158,255,0.04); border-left:3px solid #4a9eff; border-radius:3px; font-family:monospace; font-size:9px; color:#64748b; line-height:1.5;">Control: Network Isolation<br>Description: Configuring a network to deny connections based on source or destination IP address ranges.</div>
+              </td>
+              <td style="padding:6px 8px; vertical-align:top; font-size:10px;">
+                <span class="tg c">Resilience</span> <span class="tg t">Isolate</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Independent lanes -->
+    <div class="lanes">
+      <!-- ════ DeepSeek lane — converges in 2 rounds ════ -->
+      <div class="lane">
+        <div class="lane-head">
+          <span class="lane-dot" style="background:#00ff88;box-shadow:0 0 4px #00ff88;"></span>
+          <select style="font-size:12px;font-weight:700;color:#e2e8f0;background:#0b1220;border:1px solid rgba(124,58,237,0.3);border-radius:4px;padding:3px 8px;cursor:pointer;outline:none;">
+            <option selected>DeepSeek-V3</option>
+            <option>text-gemini</option>
+            <option>qwen2.5:7b</option>
+            <option>qwen2.5:14b</option>
+          </select>
+          <span class="lane-status" style="background:rgba(0,255,136,0.1);color:#00ff88;">CONVERGED — 2 rounds</span>
+        </div>
+        <div class="lane-body">
+          <!-- Round 1 -->
+          <div class="rnd">
+            <div class="rnd-head"><div class="rnd-n">1</div><span style="font-size:10px;font-weight:600;">Base prompt</span><span class="rnd-f1 fr">0.619</span></div>
+            <div class="prompt-lbl">SYSTEM PROMPT (base)</div>
+            <div class="prompt">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags...
+Return ONLY valid JSON: {"conceptual": [...], "tactical": [...]}
+
+Valid conceptual: Precision, Resilience, Fragility,
+  Corruption: Persistence, backdoor, modification
+  Loyalty, Stealth
+
+Valid tactical: Model, Harden, Detect, Isolate,
+  Restore, Evade, Exploit, Persist</div>
+            <div style="padding:4px 8px;"><table>
+              <thead><tr><th>Case</th><th>Predicted</th><th>F1</th></tr></thead>
+              <tbody>
+                <tr><td class="cn">Registry Run Keys</td><td><span class="tg c">Corruption</span><span class="tg x">Persistence</span><span class="tg t">Persist</span></td><td class="f fy">0.333</td></tr>
+                <tr><td class="cn">Flaw Remediation</td><td><span class="tg c">Resilience</span><span class="tg c">Fragility</span><span class="tg t">Harden</span></td><td class="f fg">0.857</td></tr>
+                <tr><td class="cn">Network Isolation</td><td><span class="tg c">Resilience</span><span class="tg t">Isolate</span></td><td class="f fy">0.667</td></tr>
+              </tbody>
+            </table></div>
+            <div class="box fail"><h5 class="fh">Failures</h5><p><span class="hl">"Persistence"</span> hallucinated 1/3. Descriptor confused with tag.</p></div>
+            <div class="box fix"><h5 class="rh">Agent rewrites</h5><p>Add disambiguation: "Persistence is NOT a tag — use Persist"</p></div>
+          </div>
+
+          <!-- Round 2 — PASS -->
+          <div class="rnd">
+            <div class="rnd-head"><div class="rnd-n">2</div><span style="font-size:10px;font-weight:600;">v2 prompt</span><span class="rnd-f1 fg">0.929</span></div>
+            <div class="prompt-lbl">SYSTEM PROMPT v2 (diff)</div>
+            <div class="prompt"><span class="da">IMPORTANT: "Persistence" is NOT a tag.
+Use "Persist" for persistence techniques.</span>
+
+Valid conceptual: Precision, Resilience, Fragility,
+<span class="da">  Corruption: Backdoor, modification</span>
+<span class="dr">  Corruption: Persistence, backdoor, modification</span>
+  Loyalty, Stealth</div>
+            <div style="padding:4px 8px;"><table>
+              <thead><tr><th>Case</th><th>Predicted</th><th>F1</th></tr></thead>
+              <tbody>
+                <tr><td class="cn">Registry Run Keys</td><td><span class="tg c">Corruption</span><span class="tg t">Persist</span></td><td class="f fg">1.000</td></tr>
+                <tr><td class="cn">Flaw Remediation</td><td><span class="tg c">Resilience</span><span class="tg c">Fragility</span><span class="tg t">Harden</span></td><td class="f fg">0.857</td></tr>
+                <tr><td class="cn">Network Isolation</td><td><span class="tg c">Resilience</span><span class="tg t">Isolate</span></td><td class="f fg">0.929</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="done pass"><h4 style="color:#00ff88;">PASS — F1 0.929</h4><p>Converged in 2 rounds. Prompt saved as taxonomy_v1.deepseek-v3.txt</p></div>
+        </div>
+      </div>
+
+      <!-- ════ qwen2.5:7b lane — needs 4 rounds ════ -->
+      <div class="lane">
+        <div class="lane-head">
+          <span class="lane-dot" style="background:#ffaa00;box-shadow:0 0 4px #ffaa00;"></span>
+          <select style="font-size:12px;font-weight:700;color:#e2e8f0;background:#0b1220;border:1px solid rgba(124,58,237,0.3);border-radius:4px;padding:3px 8px;cursor:pointer;outline:none;">
+            <option>DeepSeek-V3</option>
+            <option>text-gemini</option>
+            <option selected>qwen2.5:7b</option>
+            <option>qwen2.5:14b</option>
+          </select>
+          <span class="lane-sub">(local Ollama)</span>
+          <span class="lane-status" style="background:rgba(255,170,0,0.1);color:#ffaa00;">ROUND 4 of 5</span>
+        </div>
+        <div class="lane-body">
+          <!-- Round 1 -->
+          <div class="rnd">
+            <div class="rnd-head"><div class="rnd-n">1</div><span style="font-size:10px;font-weight:600;">Base prompt</span><span class="rnd-f1 fr">0.595</span></div>
+            <div class="prompt-lbl">SYSTEM PROMPT (same base)</div>
+            <div class="prompt" style="max-height:50px;color:#334155;font-style:italic;">Same base prompt as DeepSeek (no variant yet)</div>
+            <div style="padding:4px 8px;"><table>
+              <thead><tr><th>Case</th><th>Predicted</th><th>F1</th></tr></thead>
+              <tbody>
+                <tr><td class="cn">Registry Run Keys</td><td><span class="tg c">Corruption</span><span class="tg x">Persistence</span></td><td class="f fr">0.333</td></tr>
+                <tr><td class="cn">Flaw Remediation</td><td><span class="tg c">Resilience</span><span class="tg c">Fragility</span><span class="tg t">Harden</span></td><td class="f fg">0.857</td></tr>
+                <tr><td class="cn">Network Isolation</td><td><span class="tg c">Resilience</span><span class="tg t">Isolate</span></td><td class="f fy">0.595</td></tr>
+              </tbody>
+            </table></div>
+            <div class="box fail"><h5 class="fh">Failures</h5><p><span class="hl">"Persistence"</span> hallucinated. Also missed "Persist" tactical tag entirely on case 1.</p></div>
+            <div class="box fix"><h5 class="rh">Agent rewrites</h5><p>Strict rules: enumerate ALL valid tags. Add INVALID tag list. Require both conceptual + tactical in every response.</p></div>
+          </div>
+
+          <!-- Round 2 -->
+          <div class="rnd">
+            <div class="rnd-head"><div class="rnd-n">2</div><span style="font-size:10px;font-weight:600;">v2 prompt</span><span class="rnd-f1 fy">0.762</span></div>
+            <div class="prompt-lbl">SYSTEM PROMPT v2 — qwen variant</div>
+            <div class="prompt"><span class="da">RULES (STRICT):
+1. Use ONLY exact tag names below
+2. NEVER use descriptor words as tags
+3. ALWAYS include 1+ conceptual AND 1+ tactical
+INVALID TAGS: Persistence, Defense, Attack</span>
+
+<span class="da">VALID CONCEPTUAL (ONLY THESE 6):
+Precision, Resilience, Fragility,
+Corruption, Loyalty, Stealth</span></div>
+            <div style="padding:4px 8px;"><table>
+              <thead><tr><th>Case</th><th>Predicted</th><th>F1</th></tr></thead>
+              <tbody>
+                <tr><td class="cn">Registry Run Keys</td><td><span class="tg c">Corruption</span><span class="tg t">Persist</span></td><td class="f fg">1.000</td></tr>
+                <tr><td class="cn">Flaw Remediation</td><td><span class="tg c">Resilience</span><span class="tg t">Harden</span></td><td class="f fy">0.667</td></tr>
+                <tr><td class="cn">Network Isolation</td><td><span class="tg c">Resilience</span><span class="tg t">Isolate</span></td><td class="f fy">0.667</td></tr>
+              </tbody>
+            </table></div>
+            <div class="box fail"><h5 class="fh">Failures</h5><p>Missing second conceptual tag on Flaw Remediation (expected Fragility).</p></div>
+            <div class="box fix"><h5 class="rh">Agent rewrites</h5><p>Add: "Controls about fixing vulnerabilities should include BOTH Resilience AND Fragility"</p></div>
+          </div>
+
+          <!-- Round 3 -->
+          <div class="rnd">
+            <div class="rnd-head"><div class="rnd-n">3</div><span style="font-size:10px;font-weight:600;">v3 prompt</span><span class="rnd-f1 fy">0.810</span></div>
+            <div class="prompt-lbl">SYSTEM PROMPT v3 — qwen variant (diff)</div>
+            <div class="prompt"><span class="da">HINTS:
+- Fixing/patching vulnerabilities → Resilience + Fragility
+- Blocking network traffic → Resilience + Isolate
+- Backdoor/implant → Corruption + Persist</span></div>
+            <div style="padding:4px 8px;"><table>
+              <thead><tr><th>Case</th><th>Predicted</th><th>F1</th></tr></thead>
+              <tbody>
+                <tr><td class="cn">Registry Run Keys</td><td><span class="tg c">Corruption</span><span class="tg t">Persist</span></td><td class="f fg">1.000</td></tr>
+                <tr><td class="cn">Flaw Remediation</td><td><span class="tg c">Resilience</span><span class="tg c">Fragility</span><span class="tg t">Harden</span></td><td class="f fg">0.857</td></tr>
+                <tr><td class="cn">Network Isolation</td><td><span class="tg c">Resilience</span></td><td class="f fy">0.571</td></tr>
+              </tbody>
+            </table></div>
+            <div class="box fail"><h5 class="fh">Failures</h5><p>Network Isolation: missing tactical tag "Isolate".</p></div>
+            <div class="box fix"><h5 class="rh">Agent rewrites</h5><p>Strengthen: "Network segmentation/isolation ALWAYS maps to Isolate tactical tag"</p></div>
+          </div>
+
+          <!-- Round 4 -->
+          <div class="rnd">
+            <div class="rnd-head"><div class="rnd-n">4</div><span style="font-size:10px;font-weight:600;">v4 prompt</span><span class="rnd-f1 fg">0.881</span></div>
+            <div class="prompt-lbl">SYSTEM PROMPT v4 — qwen variant (diff)</div>
+            <div class="prompt"><span class="da">- Network segmentation/isolation → Isolate
+- Quarantine/containment → Isolate</span></div>
+            <div style="padding:4px 8px;"><table>
+              <thead><tr><th>Case</th><th>Predicted</th><th>F1</th></tr></thead>
+              <tbody>
+                <tr><td class="cn">Registry Run Keys</td><td><span class="tg c">Corruption</span><span class="tg t">Persist</span></td><td class="f fg">1.000</td></tr>
+                <tr><td class="cn">Flaw Remediation</td><td><span class="tg c">Resilience</span><span class="tg c">Fragility</span><span class="tg t">Harden</span></td><td class="f fg">0.857</td></tr>
+                <tr><td class="cn">Network Isolation</td><td><span class="tg c">Resilience</span><span class="tg t">Isolate</span></td><td class="f fg">0.786</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="done pass"><h4 style="color:#00ff88;">PASS — F1 0.881</h4><p>Converged in 4 rounds. Needed explicit hints for the 7B model. Saved as taxonomy_v1.qwen2.5-7b.txt</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verdict with final system prompts -->
+    <div style="padding:16px 20px; border-top:2px solid rgba(0,255,136,0.3); flex-shrink:0; background:rgba(0,255,136,0.02);">
+      <div style="text-align:center; margin-bottom:16px;">
+        <h3 style="font-size:14px; font-weight:700; color:#00ff88; margin:0;">OPTIMIZATION COMPLETE</h3>
+        <div style="font-size:10px; color:#64748b; margin-top:4px;">
+          <span style="color:#00ff88;font-weight:600;">DeepSeek-V3: F1 0.929 (2 rounds)</span> &nbsp;|&nbsp;
+          <span style="color:#00ff88;font-weight:600;">qwen2.5:7b: F1 0.881 (4 rounds)</span>
+        </div>
+      </div>
+
+      <!-- Final system prompts — the deliverable -->
+      <div style="display:flex; gap:12px; margin-bottom:16px;">
+        <!-- DeepSeek final prompt -->
+        <div style="flex:1; border:1px solid rgba(0,255,136,0.2); border-radius:6px; overflow:hidden;">
+          <div style="padding:6px 10px; background:rgba(0,255,136,0.06); font-size:10px; font-weight:700; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.15);">
+            Final System Prompt — DeepSeek-V3 <span style="font-weight:400; color:#64748b; margin-left:8px;">taxonomy_v1.deepseek-v3.txt</span>
+          </div>
+          <div style="padding:8px 10px; font-family:monospace; font-size:9px; color:#64748b; line-height:1.5; white-space:pre-wrap; max-height:180px; overflow:auto;">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+
+Return ONLY valid JSON:
+{"conceptual": ["tag1", "tag2"], "tactical": ["tag1"], "confidence": 0.8}
+
+<span style="color:#00ff88;">IMPORTANT: Use ONLY exact tag names below.
+"Persistence" is NOT a tag — use "Persist".</span>
+
+Valid conceptual (ONLY THESE 6): Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical (ONLY THESE 8): Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+Choose tags that best describe the PRIMARY purpose. Be precise, not exhaustive.</div>
+        </div>
+
+        <!-- qwen final prompt -->
+        <div style="flex:1; border:1px solid rgba(0,255,136,0.2); border-radius:6px; overflow:hidden;">
+          <div style="padding:6px 10px; background:rgba(0,255,136,0.06); font-size:10px; font-weight:700; color:#00ff88; border-bottom:1px solid rgba(0,255,136,0.15);">
+            Final System Prompt — qwen2.5:7b <span style="font-weight:400; color:#64748b; margin-left:8px;">taxonomy_v1.qwen2.5-7b.txt</span>
+          </div>
+          <div style="padding:8px 10px; font-family:monospace; font-size:9px; color:#64748b; line-height:1.5; white-space:pre-wrap; max-height:180px; overflow:auto;">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags.
+
+Return ONLY valid JSON:
+{"conceptual": ["tag1"], "tactical": ["tag1"], "confidence": 0.8}
+
+<span style="color:#00ff88;">RULES (STRICT):
+1. Use ONLY exact tag names from the lists below
+2. NEVER use descriptor words as tags
+3. ALWAYS include at least 1 conceptual AND 1 tactical
+4. INVALID tags: Persistence, Defense, Attack, Security
+
+VALID CONCEPTUAL (ONLY THESE 6):
+  Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+
+VALID TACTICAL (ONLY THESE 8):
+  Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+
+HINTS:
+- Fixing/patching vulnerabilities → Resilience + Fragility + Harden
+- Network segmentation/isolation → Resilience + Isolate
+- Backdoor/implant techniques → Corruption + Persist
+- Reconnaissance/scanning → Precision + Model</span></div>
+        </div>
+      </div>
+
+      <!-- Final results table — proof the prompts work -->
+      <div style="margin-bottom:16px; border:1px solid rgba(255,255,255,0.08); border-radius:6px; overflow:hidden;">
+        <div style="padding:8px 12px; background:rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.06); font-size:10px; font-weight:700; color:#e2e8f0;">
+          Final Results — each system prompt tested on all 3 user messages (one-shot, no corrections)
+        </div>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead><tr>
+            <th style="font-size:8px; font-weight:700; text-transform:uppercase; color:#4a9eff; padding:6px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.06); width:40%;">User Message Sent</th>
+            <th style="font-size:8px; font-weight:700; text-transform:uppercase; color:#334155; padding:6px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.06);">Correct</th>
+            <th style="font-size:8px; font-weight:700; text-transform:uppercase; color:#00ff88; padding:6px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.06);">DeepSeek-V3 (v2)</th>
+            <th style="font-size:8px; font-weight:700; text-transform:uppercase; color:#00ff88; padding:6px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.06);">qwen2.5:7b (v4)</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:6px 10px; vertical-align:top;">
+                <div style="padding:4px 6px; background:rgba(74,158,255,0.04); border-left:2px solid #4a9eff; border-radius:2px; font-family:monospace; font-size:8px; color:#64748b; line-height:1.4;">Control: Registry Run Keys / Startup Folder<br>Description: Adversaries may achieve persistence by adding a program to a startup folder or referencing it with a Registry run key.</div>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#334155;">{"conceptual":["Corruption"],<br>"tactical":["Persist"]}</code>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#64748b;">{"conceptual":["Corruption"],<br>"tactical":["Persist"],<br>"confidence":0.95}</code>
+                <div style="margin-top:3px;"><span class="f fg">F1 1.000</span></div>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#64748b;">{"conceptual":["Corruption"],<br>"tactical":["Persist"],<br>"confidence":0.9}</code>
+                <div style="margin-top:3px;"><span class="f fg">F1 1.000</span></div>
+              </td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:6px 10px; vertical-align:top;">
+                <div style="padding:4px 6px; background:rgba(74,158,255,0.04); border-left:2px solid #4a9eff; border-radius:2px; font-family:monospace; font-size:8px; color:#64748b; line-height:1.4;">Control: Flaw Remediation<br>Description: The organization identifies, reports, and corrects information system flaws.</div>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#334155;">{"conceptual":["Resilience",<br>"Fragility"],<br>"tactical":["Harden"]}</code>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#64748b;">{"conceptual":["Resilience",<br>"Fragility"],<br>"tactical":["Harden"],<br>"confidence":0.9}</code>
+                <div style="margin-top:3px;"><span class="f fg">F1 0.857</span></div>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#64748b;">{"conceptual":["Resilience",<br>"Fragility"],<br>"tactical":["Harden"],<br>"confidence":0.85}</code>
+                <div style="margin-top:3px;"><span class="f fg">F1 0.857</span></div>
+              </td>
+            </tr>
+            <tr style="border-top:1px solid rgba(255,255,255,0.04);">
+              <td style="padding:6px 10px; vertical-align:top;">
+                <div style="padding:4px 6px; background:rgba(74,158,255,0.04); border-left:2px solid #4a9eff; border-radius:2px; font-family:monospace; font-size:8px; color:#64748b; line-height:1.4;">Control: Network Isolation<br>Description: Configuring a network to deny connections based on source or destination IP address ranges.</div>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#334155;">{"conceptual":["Resilience"],<br>"tactical":["Isolate"]}</code>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#64748b;">{"conceptual":["Resilience"],<br>"tactical":["Isolate"],<br>"confidence":0.92}</code>
+                <div style="margin-top:3px;"><span class="f fg">F1 0.929</span></div>
+              </td>
+              <td style="padding:6px 10px; vertical-align:top;">
+                <code style="font-size:8px; color:#64748b;">{"conceptual":["Resilience"],<br>"tactical":["Isolate"],<br>"confidence":0.8}</code>
+                <div style="margin-top:3px;"><span class="f fy">F1 0.786</span></div>
+              </td>
+            </tr>
+            <tr style="border-top:2px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);">
+              <td style="font-size:10px; padding:8px 10px; font-weight:700; color:#e2e8f0;" colspan="2">AVERAGE F1</td>
+              <td style="font-size:12px; padding:8px 10px; font-weight:700; color:#00ff88;">0.929 PASS</td>
+              <td style="font-size:12px; padding:8px 10px; font-weight:700; color:#00ff88;">0.881 PASS</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="text-align:center;">
+        <div style="font-size:10px; color:#334155; margin-bottom:12px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
+          Both prompts produce correct output in a single LLM call across all 3 test messages. DeepSeek needed a 2-line fix. qwen2.5:7b needed 4 rounds of strict rules and hints.
+        </div>
+        <div style="display:flex; gap:8px; justify-content:center;">
+          <button class="ba">Approve &amp; Save Both</button>
+          <button class="br">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

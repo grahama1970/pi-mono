@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jj84a2dKrxw",
+    "language": "en",
+    "took_ms": 9278,
+    "method": null,
+    "title": "How Should the U.S. Roll Back and Defeat the Islamic State?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150319",
+    "duration_sec": 5372,
+    "description": "Hudson Institute hosted a panel of experts who witnessed the 2007 surge up close and will assess both the nature of the current Sunni insurgency and the options going forward. Hudson Institute Senior Fellow Lee Smith  moderated a panel featuring Michael Doran, Kimberly Kagan, Michael Pregent, and Joel Rayburn. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 878
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jj84a2dKrxw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

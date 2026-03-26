@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cxrwpij2MSQ",
+    "language": "en",
+    "took_ms": 8824,
+    "method": null,
+    "title": "DEF CON 32 - SBOMs the Hard Way  Hacking Bob the Minion - Larry Pesce",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1254,
+    "description": "This presentation delves into the intricate process of generating a Software Bill of Materials (SBOM) for the Bob the Minions WiFi router by Davolink—a device whose firmware isn't publicly available. Traditional SBOM creation methods rely on readily accessible firmware, but Davolink's restricted release policies necessitated an unconventional approach. This talk covers the step-by-step journey of hardware disassembly, firmware extraction via SPI flash and JTAG/SWD interfaces, and the tools and techniques employed. Finally, we'll demonstrate how the recovered firmware is used to generate a comprehensive SBOM, highlighting any security vulnerabilities discovered and reported to the vendor. This session aims to provide attendees with practical insights into overcoming SBOM generation challenges in the IoT domain through hands-on hardware hacking, and leveraging the firmware and SBOMs for vulnerability discovery, as well as security improvement.",
+    "view_count": 1018
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cxrwpij2MSQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

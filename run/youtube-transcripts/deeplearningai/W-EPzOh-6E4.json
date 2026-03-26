@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W-EPzOh-6E4",
+    "language": "en",
+    "took_ms": 9147,
+    "method": null,
+    "title": "Generative Adversarial Networks (GANs) Specialization",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260225",
+    "duration_sec": 322,
+    "description": "Learn more: https://www.deeplearning.ai/courses/generative-adversarial-networks-gans-specialization/\n\nThe DeepLearning.AI Generative Adversarial Networks (GANs) Specialization provides an exciting introduction to image generation with GANs, charting a path from foundational concepts to advanced techniques through an easy-to-understand approach. It also covers social implications, including bias in ML and the ways to detect it, privacy preservation, and more.\n\nBuild a comprehensive knowledge base and gain hands-on experience in GANs. Train your own model using PyTorch, use it to create images, and evaluate a variety of advanced GANs.\n\nWhat you will learn\n\n- Understand GAN components, build basic GANs using PyTorch and advanced DCGANs using convolutional layers, control your GAN and build conditional GAN\n- Compare generative models, use FID method to assess GAN fidelity and diversity, learn to detect bias in GAN, and implement StyleGAN techniques\n- Use GANs for data augmentation and privacy preservation, survey GANs applications, and examine and build Pix2Pix and CycleGAN for image translation\n\nEnroll now: https://www.deeplearning.ai/courses/generative-adversarial-networks-gans-specialization/",
+    "view_count": 1968
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W-EPzOh-6E4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pKGC5bUFYuY",
+    "language": "en",
+    "took_ms": 9041,
+    "method": null,
+    "title": "Interview with Dave Whitehead, CEO of SEL",
+    "channel": "S4 Events",
+    "upload_date": "20210818",
+    "duration_sec": 2696,
+    "description": "Dave Whitehead, CEO of SEL, joins Dale on this episode. They discuss a wide variety of topics including:\n\n- Early memories of working with Ed Schweitzer as a young engineer, being a CEO with the legend still there, and what SEL when Ed Schweitzer decides to slow down.\n\n- SEL Security Products profitability today and in the future.\n\n- Dealing with customers who don't want to secure their systems.\n\n- SEL's high level of vertical integration including a new plant to manufacture PCB's and its impact on supply chain security.\n\n- Dave and Dale's initial meeting over a vulnerability disclosure and how SEL deals with vulnerabilities today (direct disclosure to customers, not via a CERT).\n\n- Are SEL customers updating their software/firmware when security issues are found?\n\n- How does SEL decide what older products to add security features, such as signed firmware verified on the device, to?",
+    "view_count": 592
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pKGC5bUFYuY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

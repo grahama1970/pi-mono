@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "De5Fr1B7D6o",
+    "language": "en",
+    "took_ms": 9663,
+    "method": null,
+    "title": "Problems & Solutions In Deploying SDN In OT",
+    "channel": "S4 Events",
+    "upload_date": "20230525",
+    "duration_sec": 2600,
+    "description": "Software Defined Networking (SDN) has been used for years in the cloud and enterprise networks, and it is now making its way into OT. Jeff Smith is a pioneer in deploying SDN in OT, and like many pioneers he suffered some early challenges had to work his way through them. In this session, he goes over some of the problems to avoid and keys to succeed in your SDN deployment in OT.\n\nAlong the way Jeff describes what a SDN is and the benefits of SDN. \n\nThere are 13 minutes of Q&A at the end. It's an issue many early adopters are interested in.",
+    "view_count": 1260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] De5Fr1B7D6o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

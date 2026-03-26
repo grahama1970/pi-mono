@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EFWdIIlJHwY",
+    "language": "en",
+    "took_ms": 8504,
+    "method": null,
+    "title": "Israel’s Economy after One Year of War",
+    "channel": "Hudson Institute",
+    "upload_date": "20241011",
+    "duration_sec": 2680,
+    "description": "Join Hudson’s Michael Doran for a discussion with Noach Hacker, the Israeli minister of economic affairs to the United States, on Israel’s economy since October 7, the status of the US-Israel relationship, and the challenges ahead.",
+    "view_count": 3160
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EFWdIIlJHwY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

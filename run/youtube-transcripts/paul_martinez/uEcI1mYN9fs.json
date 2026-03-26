@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uEcI1mYN9fs",
+    "language": "en",
+    "took_ms": 8315,
+    "method": null,
+    "title": "ICS Detection Challenge: Phase 1 Asset Identification and Inventory",
+    "channel": "S4 Events",
+    "upload_date": "20180222",
+    "duration_sec": 2223,
+    "description": "Claroty, Gravwell, Nozomi and Security Matters competed in the ICS Detection Challenge at S4x18. This was a test of specialized ICS products that do detection purely through passive analysis of captured packets.\n\nIn this session Eric Byres, John Cusimano and Dale Peterson discuss the Asset Identification and Inventory portion of the contest. Claroty narrowly one this phase, but each of the competitors did well in an aspect of the competition.\n\nA more detailed analysis is available at https://dale-peterson.com/category/detect/",
+    "view_count": 1483
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uEcI1mYN9fs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

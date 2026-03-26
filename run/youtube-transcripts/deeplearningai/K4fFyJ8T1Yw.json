@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K4fFyJ8T1Yw",
+    "language": "en",
+    "took_ms": 7544,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Ori Goshen: Reliability Is the Bottleneck for Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1702,
+    "description": "AI agents that are doing actual, significant work in enterprises are about as prolific as self-driving cars. Is there something fundamental we're missing when thinking about agents? Or maybe we're expecting too much of them? \n\nAI21's co-CEO and founder Ori Goshen took an in-depth look into why it's so darn hard to build serious agents today and what might make it less hard to build them tomorrow.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 336
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K4fFyJ8T1Yw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

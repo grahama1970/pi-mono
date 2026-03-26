@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xYUKJ1fE9Dg",
+    "language": "en",
+    "took_ms": 9015,
+    "method": null,
+    "title": "A tour of SpaceX’s spacesuit!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180824",
+    "duration_sec": 206,
+    "description": "SpaceX let us get up close and personal with their new spacesuit and I give you a mini tour of all the details! There's a lot more footage to come from our time at SpaceX HQ so stay tuned! \n\nMore pictures and the article here - https://everydayastronaut.com/up-close-and-personal-with-spacexs-space-suit/\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nShow your support, get a chance to win flown hardware and join our  exclusive discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut",
+    "view_count": 302738
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xYUKJ1fE9Dg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

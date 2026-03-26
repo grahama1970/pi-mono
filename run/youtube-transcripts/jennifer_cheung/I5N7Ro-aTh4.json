@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I5N7Ro-aTh4",
+    "language": "en",
+    "took_ms": 7951,
+    "method": null,
+    "title": "DEF CON 33 - Dark Capabilities - When Tech Companies Become Threat Actors - Greg Conti, Tom Cross",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2313,
+    "description": "Cyberpunk authors, like Neal Stephenson in Snow Crash, have long envisioned a world run by ruthless mega-corporations, with more power than governments, engaging in threat activity. We now live in such a world. Tech companies wield immense, often invisible power, far beyond what they admit to users. We’ve caught glimpses:\n\n• A cloud provider scanning customer data for offensive content\r • A rideshare app tracking users after the ride ends\r • A robotic vacuum that builds maps of your home\r • A respected security company bricking systems across the globe… accidentally\n\nThese aren’t theoretical. They’re the tip of the iceberg. The real capabilities, the ones no one talks about, are far more dangerous.\n\nGovernments know it. That’s why some ban certain apps and hardware.\r Threat actors know it. That’s why they break in.\r The question is: do you know what’s really possible?\n\nThis talk explores the dark potential of modern tech platforms, the things they’re structurally able to do, whether or not they intend to. We’ll walk through scenarios where companies might be tempted to go offensive, where insiders (or outsiders) could gain and weaponize access, and how these powers could be misused at scale.\n\nBecause in security, it’s never about what a system claims to do.\r It’s about what it can do.",
+    "view_count": 632
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I5N7Ro-aTh4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

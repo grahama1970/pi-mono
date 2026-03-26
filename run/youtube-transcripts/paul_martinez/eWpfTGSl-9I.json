@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eWpfTGSl-9I",
+    "language": "en",
+    "took_ms": 7970,
+    "method": null,
+    "title": "Claroty: OT Security - Enter The CISO",
+    "channel": "S4 Events",
+    "upload_date": "20200501",
+    "duration_sec": 1746,
+    "description": "Dave Weinstein of Claroty had experience as the CISO of the State of New Jersey prior to joining Claroty. He describes the challenges the CISO has dealing with this new thing to them called OT. \n\nHe then talks about the Claroty company, products and services, and how they help CISO's meet those challenges on the S4x20 Sponsor Stage.",
+    "view_count": 1812
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eWpfTGSl-9I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

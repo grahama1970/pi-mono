@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NmZYSUqIPBY",
+    "language": "en",
+    "took_ms": 8801,
+    "method": null,
+    "title": "Assessing The Cyber Readiness Of A State (Florida)",
+    "channel": "S4 Events",
+    "upload_date": "20250602",
+    "duration_sec": 1629,
+    "description": "The Florida Center for Cybersecurity was tasked with assessing the cyber readiness of the critical infrastructure in America’s third most populated state made up of over 21 million residents spread across 53,633 square miles. \n\nThis session provides an update on the nationally aligned multi-assessment platform, findings from the assessment, and data-driven recommendations for improving cyber-readiness. \n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 242
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NmZYSUqIPBY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

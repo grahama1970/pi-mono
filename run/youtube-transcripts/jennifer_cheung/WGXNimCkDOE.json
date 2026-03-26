@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WGXNimCkDOE",
+    "language": "en",
+    "took_ms": 8151,
+    "method": null,
+    "title": "DEF CON 32 - Changing Global Threat Landscape - Rob Joyce, The Dark Tangent",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2640,
+    "description": "Rob Joyce, former NSA and White House cyber official, will engage with Dark Tangent to analyze the evolving state of global cyber threats. Their discussion will explore the impact and potential of artificial intelligence, assessing how AI is reshaping the cybersecurity landscape and what it means for the future of global security.",
+    "view_count": 392
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WGXNimCkDOE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rURD78O-P0o",
+    "language": "en",
+    "took_ms": 7713,
+    "method": null,
+    "title": "DEF CON 31 - All information looks like noise until you break the code - Pekoske, Lyngaas, Easterly",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2328,
+    "description": "Just like there's more than one way to peel a banana, there’s more than one way to protect a computer network from being pwned. Cyber threats against America’s pipelines, railroads and aviation system are increasing, and the Transportation Security Administration – with support from the White House, the Cybersecurity and Infrastructure Security Agency and Congress – is hacking traditional cybersecurity policy to improve resiliency for the growing connected transportation sector. How? TSA isn’t telling regulated parties exactly the ways they should secure their own systems. Instead, the agency is asking them to produce and provide plans for ensuring they protect their critical assets.\n\nAmerica’s adversaries are sophisticated, and TSA needs help from the hacking community to think creatively about future attacks, to identify new vulnerabilities, and to provide innovative new ways of measuring success. This talk will tell you what TSA is seeing, gives you a chance to offer us advice, and to learn specific ways in which you can contribute to new projects. Because always in motion the future is.",
+    "view_count": 1697
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rURD78O-P0o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

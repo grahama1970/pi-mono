@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4uNPqAyCyZY",
+    "language": "en",
+    "took_ms": 9119,
+    "method": null,
+    "title": "AI Dev 25 | Paige Bailey: A Beginner's Guide to Multimodal AI with Gemini 2 Veo 2 and Imagen 3",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1885,
+    "description": "In this hands-on workshop at AI Dev 25, Paige Bailey, AI Developer Relations Lead at Google DeepMind, introduces developers to the powerful multimodal capabilities of Gemini 2.0, Veo 2, and Imagen 3, all accessible through AI Studio.\n\nThis session walks through how to:\n\n– Use Gemini 2.0 APIs for a variety of tasks\n– Generate video content with Veo 2\n– Create high-quality images using Imagen 3\n– Get started with Gemini 2.0’s live multimodal streaming API\n\nWhether you're new to AI or looking to expand your toolkit, this session offers a practical entry point into building with cutting-edge multimodal tools.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 1454
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4uNPqAyCyZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-wGzSnhQKPM",
+    "language": "en",
+    "took_ms": 8795,
+    "method": null,
+    "title": "RAG - but with Verified Citations!",
+    "channel": "Trelis Research",
+    "upload_date": "20240731",
+    "duration_sec": 2010,
+    "description": "➡️ ADVANCED-inference Repo (incl. inference scripts in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Trelis Endpoints (alpha release): https://endpoints.Trelis.com\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nCredit Rohan Sharma for help building Trelis Endpoints as part of the Trelis Internships program (find out more at Trelis.com).\n\nTIMESTAMPS:\n0:00 Verifying your RAG citations\n0:35 Video Overview\n1:31 Demo using ChatGPT\n9:51 RAG Citation verification with BM25 and cosine similarity\n30:58 Trelis Endpoints App Demo - one-click document RAG",
+    "view_count": 4437
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -wGzSnhQKPM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

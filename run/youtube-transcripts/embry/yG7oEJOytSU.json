@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yG7oEJOytSU",
+    "language": "en",
+    "took_ms": 9422,
+    "method": null,
+    "title": "LIVE Hosting - NASA GOES-S Rocket Launch (ULA Atlas V)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180301",
+    "duration_sec": 6268,
+    "description": "Today ULA (United Launch Alliance) is launching their mighty Atlas V rocket in the 541 configuration (5 meter fairing, 4 solid rocket boosters, 1 engine centaur upper stage) to deliver the GOES-S satellite for the NOAA/NASA. \n\nThis is launching from Cape Canaveral Air Force Base at ULA's Space Launch Complex 41. Lift off is scheduled for 5:02 PM Eastern (2202 UTC) Thursday, March 1st, 2018.\n\nThe 5,211 KG (11,488 pound) GOES-S Satellite is manufactured by Lockheed Martin and will be heading out to a geostationary orbit around 35,000 km's or 22,000 miles in altitude, covering the western United States and Pacific ocean. It will look also help track typhoons, wildfires and fog. \n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 49231
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yG7oEJOytSU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

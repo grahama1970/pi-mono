@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "app": "UX Lab — Nico Bailon Extraction QA Review",
+  "base_url": "http://localhost:3002",
+  "persona": "nico-bailon",
+  "reference_product": {
+    "name": "/learn-datalake Quarantine & Quality Viewer",
+    "description": "Nico reviews quarantined PDFs, spot-checks extraction quality (sections, tables, figures), and ensures data fidelity before content enters the datalake. The viewer surfaces extraction cascade decisions and lets Nico approve, reject, or re-extract documents.",
+    "key_differences": [
+      "Original extractor pipeline: batch CLI, no visual review. This: interactive quarantine queue with side-by-side rendered page vs extracted text",
+      "Original quality check: Margaret runs /extractor-quality-check reports. This: Nico drills into individual PDFs with section trees, table previews, figure bboxes",
+      "Original cascade: opaque shadow JSONL files. This: visual histogram of confidence distributions per decision point with escalation drill-down"
+    ]
+  },
+  "review_dimensions": [
+    "Quarantine queue must be navigable with j/k keyboard shortcuts — Nico reviews 50+ PDFs per session",
+    "Section tree must render from build_flat_sections() output with correct hierarchy indentation",
+    "Side-by-side PDF page render vs extracted text must be pixel-aligned for visual comparison",
+    "Score badges must use Nico's thresholds: green >= 0.82, amber >= 0.70, red >= 0.60, gray below",
+    "Cascade confidence histogram must show accept/reject/escalate dispositions clearly",
+    "All text must use JetBrains Mono 13px for data, Inter 14px for labels — no system fonts",
+    "NVIS dark theme only — no light mode, no decorative animations, functional transitions <= 200ms",
+    "Encoding issues (Unicode ligatures, special characters) must render correctly in section content",
+    "Table previews must show actual extracted rows, not just metadata",
+    "Figure bounding boxes must overlay on the rendered page to verify spatial accuracy"
+  ],
+  "surfaces": [
+    {
+      "name": "quarantine-view",
+      "path": "/?component=quarantine-view",
+      "wait_ready": "[data-testid='quarantine-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "quarantine-queue",
+          "selector": "[data-testid='quarantine-queue']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Quarantine queue list — Nico's primary view, sorted by score ascending (worst first)",
+              "expected": "List of quarantined PDFs with: filename, score badge (color-coded by threshold), page count, extraction strategy, timestamp. j/k navigation indicators visible. Queue count in header."
+            }
+          ]
+        },
+        {
+          "name": "quarantine-detail",
+          "selector": "[data-testid='quarantine-detail']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "PDF detail view — section tree left, rendered page right, extracted content below",
+              "expected": "Three-region layout: section tree with indented hierarchy, PDF page render at 150dpi with block/table/figure overlays, assembled content with paragraph text. Action buttons: approve (a), reject (r), re-extract (x), split (s), merge (m)."
+            }
+          ]
+        },
+        {
+          "name": "quarantine-side-by-side",
+          "selector": "[data-testid='quarantine-compare']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Side-by-side comparison — rendered PDF page vs extracted text",
+              "expected": "Left: rendered page with bounding box overlays. Right: extracted text blocks with matching highlights. Clicking a block on either side highlights its counterpart. Score and confidence shown per block."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cascade-view",
+      "path": "/?component=cascade-view",
+      "wait_ready": "[data-testid='cascade-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "cascade-histogram",
+          "selector": "[data-testid='cascade-histogram']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Confidence distribution histogram — bins colored by disposition",
+              "expected": "Histogram with 5 bins (0.0-0.2 through 0.8-1.0). Bars colored: green for accept range (>0.85), red for reject range (<0.15), amber for escalate (middle). Dashed threshold lines at 0.85 and 0.15. Decision point tabs: header-verdict, pdf-profile, pdf-strategy."
+            }
+          ]
+        },
+        {
+          "name": "cascade-escalations",
+          "selector": "[data-testid='cascade-escalations']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Recent escalations table — Nico checks why items were escalated",
+              "expected": "Table with columns: File, Confidence, Rust Guess, Features. File paths in accent blue. Confidence in amber monospace. Rust Guess as green/red badge. Features as inline tags (caps_ratio, numbering_type, etc). Rows navigable with j/k, Enter drills to QuarantineView."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "quality-view",
+      "path": "/?component=quality-view",
+      "wait_ready": "[data-testid='quality-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "quality-trends",
+          "selector": "[data-testid='quality-trends']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Quality trend sparklines — extraction accuracy over time by category",
+              "expected": "Sparkline charts showing: text parity %, table accuracy %, figure detection rate, section hierarchy accuracy. Per-category breakdown (arxiv, defense, nist, engineering). Time axis: last 30 days. Current values as large numbers with trend arrows."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "corpus-view",
+      "path": "/?component=corpus-view",
+      "wait_ready": "[data-testid='corpus-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "corpus-coverage",
+          "selector": "[data-testid='corpus-coverage']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Corpus coverage matrix — which categories have sufficient test coverage",
+              "expected": "Grid showing categories (arxiv, defense, nasa, nist, engineering, industry, adversarial) vs metrics (text parity, tables, figures, sections). Cells colored by coverage: green >= 90%, amber >= 80%, red < 80%. Total PDF count per category shown."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "supervisor-view",
+      "path": "/?component=supervisor-view",
+      "wait_ready": "[data-testid='supervisor-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "supervisor-health",
+          "selector": "[data-testid='supervisor-health']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Operational health dashboard — daemon status, queue depth, processing rate",
+              "expected": "Status cards for: extract-pdf daemon (up/down), queue depth (pending PDFs), processing rate (PDFs/hour), error rate (last 24h), shadow log size. Each card with NVIS status indicator (green=nominal, amber=warning, red=critical)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "providers-view",
+      "path": "/?component=providers-view",
+      "wait_ready": "[data-testid='providers-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "providers-breakdown",
+          "selector": "[data-testid='providers-breakdown']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "File-type breakdown — which extraction strategies handle which document types",
+              "expected": "Table or treemap showing: file types (PDF, scanned PDF, tagged PDF, encrypted PDF) × extraction strategies (native, OCR, hybrid). Count and success rate per combination. Strategy distribution pie/bar chart."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "requirements-view",
+      "path": "/?component=requirements-view",
+      "wait_ready": "[data-testid='requirements-view']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "requirements-controls",
+          "selector": "[data-testid='requirements-controls']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Extracted compliance controls — framework references found in PDFs",
+              "expected": "Table of extracted control references: Control ID, Framework (NIST/SPARTA/ATT&CK badge), Source PDF, Page, Confidence. Sortable columns. Filter by framework. Click-through to source PDF page."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

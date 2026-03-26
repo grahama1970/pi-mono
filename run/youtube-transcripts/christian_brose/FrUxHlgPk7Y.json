@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FrUxHlgPk7Y",
+    "language": "en",
+    "took_ms": 8948,
+    "method": null,
+    "title": "Nina Shea on Christians in the Middle East for CBN",
+    "channel": "Hudson Institute",
+    "upload_date": "20110314",
+    "duration_sec": 188,
+    "description": "Hudson Senior Fellow and Director of the Center for Religious Freedom Nina Shea was interviewed by CBN about Christians in the Middle East on March 11, 2011.",
+    "view_count": 523
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FrUxHlgPk7Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

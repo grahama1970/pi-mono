@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Lvg1wI8mYNI",
+    "language": "en",
+    "took_ms": 9393,
+    "method": null,
+    "title": "S4 in 91 Seconds",
+    "channel": "S4 Events",
+    "upload_date": "20210126",
+    "duration_sec": 91,
+    "description": "See how S4 is different than every other ICS security event. We can't wait to get back there for S4x23.",
+    "view_count": 2799
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Lvg1wI8mYNI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2UMBWyOk75M",
+    "language": "en",
+    "took_ms": 8191,
+    "method": null,
+    "title": "Enroll in our new course: Building and Evaluating Data Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250924",
+    "duration_sec": 200,
+    "description": "Learn more: https://bit.ly/4my1oaz\n\nLearn how to build and evaluate a data agent in “Building and Evaluating Data Agents,” a course created in collaboration with Snowflake, and taught by Anupam Datta, AI Research Lead, and Josha Reini, Developer Advocate at Snowflake.\n\nYou'll design a data agent that connects to data sources (databases, files) and performs web searches to respond to users' queries. The agent will consist of sub-agents, each specialized in connecting to a particular data source, and other sub-agents that summarize or visualize the results. To answer a particular query, the agent will use a planner that identifies which sub-agents to call and in what order.\n\nYou'll add observability to the agent's workflow and evaluate the quality of its output. Using an LLM-as-a-judge approach, you'll assess whether the final answer is relevant to the user's query and grounded in the collected data. You'll also evaluate the process by determining whether the agent's goal, plan, and actions (GPA) are all aligned.  \n\nFinally, you’ll apply inline evaluations to evaluate the agent’s performance during runtime. At every retrieval step, you’ll evaluate if the collected data is relevant to the user’s query. The agent will use this evaluation score to decide if it needs to adjust its plan.\n\nWhat you’ll do, in detail: \n\n- Understand what data agents are and how they can be trustworthy when their goal, plan, and actions are properly aligned.\n- Build a data agent that plans, performs web searches, and visualizes or summarizes the results, using a multi-agent workflow implemented in LangGraph. \n- Expand the agent’s capabilities by adding a Cortex sub-agent that retrieves information from structured and unstructured data stored in Snowflake. \n- Add tracing to the agent’s workflow to log the steps it takes to answer a query.\n- Evaluate the context relevance of the retrieved results, the groundedness of the final answer, and its relevance to the user’s query.\n- Measure the alignment of the agent’s goal, plan, and actions (GPA) by computing metrics such as plan quality, plan adherence, logical consistency, and execution efficiency. \n- Improve the agent’s performance by adding inline evaluations and updating the agent’s prompt.\n\nBy the end, you’ll know how to build, trace, and evaluate a multi-agent workflow that plans tasks, pulls context from structured and unstructured data, performs web search, and summarizes or visualizes the final results.\n\nEnroll now: https://bit.ly/4my1oaz",
+    "view_count": 3904
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2UMBWyOk75M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

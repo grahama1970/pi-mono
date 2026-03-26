@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZalNVkpZoUw",
+    "language": "en",
+    "took_ms": 8557,
+    "method": null,
+    "title": "Serve Multiple LoRA Adapters on a Single GPU",
+    "channel": "Trelis Research",
+    "upload_date": "20241216",
+    "duration_sec": 3422,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ FineTuneHost.com Waiting List: This has now been closed and the hosted service has been discontinued. Fill out a consulting inquiry on Trelis.com for support.\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Other Products from Trelis: https://Trelis.com/\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1KDyawYmtzV9zEh2L3_xq0sE_Mecyz-G_CEffkR4ZmRA/edit?usp=sharing\n- BASIC-inference repo: https://github.com/trelisresearch/basic-inference\n- vLLM LoRA docs: https://docs.vllm.ai/en/latest/usage/lora.html\n- LoRA X: https://github.com/predibase/lorax\n\nTIMESTAMPS:\n00:00 - Introduction to serving multiple models on GPU\n00:15 - Overview of using LoRA adapters as clip-ons\n00:53 - Video structure overview\n01:08 - Theory of LoRA for inference\n02:09 - Explanation of LoRA (Low Rank Adapters)\n04:00 - Benefits of using LoRA for training\n05:10 - Practical implementation of LoRA loading\n06:20 - GPU VRAM and model loading explanation\n08:51 - Managing adapter downloads and storage\n10:30 - Basic LoRaX Implementation\n14:40 - Setting up the environment\n19:20 - Running inference with LoRaX\n23:40 - Setting up SSH connection for Runpod\n29:17 - Advanced vLLM Implementation\n34:40 - Building the proxy server\n39:40 - Redis implementation for adapter management\n44:20 - Starting the server\n48:40 - Testing the service\n52:54 - FineTuneHost.com service demonstration\n56:17 - Conclusion and resource overview",
+    "view_count": 2481
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZalNVkpZoUw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

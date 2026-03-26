@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MANDmOQWkwk",
+    "language": "en",
+    "took_ms": 7484,
+    "method": null,
+    "title": "An Interview with Eddie Habibi",
+    "channel": "S4 Events",
+    "upload_date": "20210127",
+    "duration_sec": 3183,
+    "description": "In this Unsolicited Response episode Dale Peterson talks with Eddie Habibi about his 3 decade journey in starting and building PAS. \n\nEddie Habibi started PAS in his house back in 1993, grew it into a $40M revenue company and one of the leaders in ICS asset management, with a focus on security aspects, and alarm management. Recently PAS was acquired by Hexagon.",
+    "view_count": 651
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MANDmOQWkwk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

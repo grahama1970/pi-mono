@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gIdDL38XR1w",
+    "language": "en",
+    "took_ms": 8979,
+    "method": null,
+    "title": "Christopher Sands on New Vehicle Emission Standards for CTV",
+    "channel": "Hudson Institute",
+    "upload_date": "20100402",
+    "duration_sec": 489,
+    "description": "Hudson Senior Fellow Christopher Sands joined CTV on April 1st to discuss new vehicle emission standards in the United States and Canada.",
+    "view_count": 156
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gIdDL38XR1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gBJUDQzNXUc",
+    "language": "en",
+    "took_ms": 7807,
+    "method": null,
+    "title": "PKI: An Aviation Case Study",
+    "channel": "S4 Events",
+    "upload_date": "20200715",
+    "duration_sec": 1730,
+    "description": "Key management is an often ignored, major challenge to authentication and encryption in ICS. Ron Brash of Verve tackles it head on in this Stage 2: Technical Deep Dive Session at S4x20. Ron uses the \"e-enabled aircraft\" as an example, a big flying OT site that connects to a number of OT sites on the ground.\n\nHe begins by talking about how equipment, and it's software, is brought in and authenticated in the airplane, and aviation in general. Then Ron explains the challenges with a public key infrastructure, PKI, that must support multiple parties with different relationships, and how the aviation industry deals with them.\n\nThroughout the presentation Ron talks about how these problems and solutions map to a refinery or more general OT / process control environment.",
+    "view_count": 575
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gBJUDQzNXUc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

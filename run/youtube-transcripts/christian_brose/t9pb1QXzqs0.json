@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "t9pb1QXzqs0",
+    "language": "en",
+    "took_ms": 9159,
+    "method": null,
+    "title": "The Impact of Data Caps and Other Forms of Usage-Based Pricing for Broadband Access",
+    "channel": "Hudson Institute",
+    "upload_date": "20130124",
+    "duration_sec": 4377,
+    "description": "Usage-based pricing has rapidly become one of the most controversial topics in Internet policy. Many broadband providers have been migrating from all-you-can-eat, flat-rate pricing to a variety of consumption-based pricing models. This trend has been most prominent in the wireless broadband sector, where monthly data limits were an almost inevitable solution to the surge in data demand unleashed by the smartphone and tablet revolution. Some fixed broadband providers have adopted much larger data caps for residential broadband use as well.\n \nWhile regulators have generally approved this shift, some consumer groups have viewed the change with skepticism, fearing that usage-based pricing will usher in an era of higher prices, deteriorating service, and increasingly anticompetitive conduct. They are concerned that data caps serve as anticompetitive tools with which broadband providers can protect their legacy cable affiliates from upstarts such as Netflix and Hulu. They also fear that firms will use capacity constraints to create artificial scarcity and pad profits while avoiding necessary network upgrades.\n \nProfessor Daniel Lyons will evaluate the public policy implications for usage-based pricing strategies.\nProfessor Lyons is an assistant professor at Boston College Law School. He specializes in the areas of property, telecommunications and administrative law. Before joining the faculty, Professor Lyons practiced energy, telecommunications, and administrative law at the firm of Munger, Tolles and Olson in Los Angeles. He also clerked for the Judge Cynthia Holcomb Hall of the Ninth Circuit Court of Appeals.\n \nHudson Senior Fellow Harold Furchtgott-Roth will facilitate the discussion.",
+    "view_count": 541
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] t9pb1QXzqs0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

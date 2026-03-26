@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TeWaIqkCTnM",
+    "language": "en",
+    "took_ms": 9422,
+    "method": null,
+    "title": "New Adventures in Legacy System Modernization",
+    "channel": "S4 Events",
+    "upload_date": "20230327",
+    "duration_sec": 1777,
+    "description": "Marianne Bellotti literally wrote the book on the do's and don'ts of upgrading or replacing legacy systems, Kill It With Fire. We have a few legacy systems in the OT world. This video is her S4x23 keynote on the topic.\n\nShe starts with a truism that is rarely heard: \"legacy tech is successful tech\". And then moves into modernization myths.\n\nMarianne spends most of the 30 minutes on what works and doesn't work in modernization efforts. It will resonate with those in Ops and OT who have faced or are facing a legacy system that needs modernization.",
+    "view_count": 3066
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TeWaIqkCTnM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XiVq4M8c4Ko",
+    "language": "en",
+    "took_ms": 7620,
+    "method": null,
+    "title": "A Conversation with Former Deputy Secretary of State Antony Blinken",
+    "channel": "Hudson Institute",
+    "upload_date": "20200709",
+    "duration_sec": 3353,
+    "description": "Join Hudson Institute for a conversation with former Deputy Secretary of State and Deputy National Security Advisor Antony Blinken on U.S. foreign policy and America’s role in the world. Mr. Blinken will offer his perspective on global challenges the United States faces and the trajectory of the Democratic Party’s foreign policy. Hudson Institute Distinguished Fellow Walter Russell Mead will moderate the event.",
+    "view_count": 17091
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XiVq4M8c4Ko: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

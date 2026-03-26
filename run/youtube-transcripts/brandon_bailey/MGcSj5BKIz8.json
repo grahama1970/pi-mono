@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MGcSj5BKIz8",
+    "language": "en",
+    "took_ms": 8648,
+    "method": null,
+    "title": "DEF CON 30 - Perimeter Breached! Hacking an access control system - Sam Quinn Steve Povolny",
+    "channel": "DEFCONConference",
+    "upload_date": "20220825",
+    "duration_sec": 150,
+    "description": "Hacking an access control system.",
+    "view_count": 8423
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MGcSj5BKIz8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

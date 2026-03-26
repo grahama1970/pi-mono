@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TZwvv8YRGHo",
+    "language": "en",
+    "took_ms": 9362,
+    "method": null,
+    "title": "AI Dev 25 | Amit Sangani: Unlock the Power of Open Source with Llama",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1723,
+    "description": "In this session, Amit Sangani, Director of Partner Engineering at Meta, explores how open-source AI—specifically the Llama ecosystem—is enabling developers to innovate faster, reduce costs, and build responsibly.\n\nFrom Llama models and the Llama Stack to tools that support trust and safety, this talk breaks down the growing set of resources available to developers and organizations working at the edge of AI product development.\n\nAmit also shares why open-source collaboration is not just a philosophy, but a practical strategy for scaling AI applications in an evolving tech landscape.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 847
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TZwvv8YRGHo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

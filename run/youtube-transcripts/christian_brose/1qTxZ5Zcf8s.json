@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1qTxZ5Zcf8s",
+    "language": "en",
+    "took_ms": 8314,
+    "method": null,
+    "title": "Can Argentina Survive Cristina? When Sovereigns Violate the",
+    "channel": "Hudson Institute",
+    "upload_date": "20140923",
+    "duration_sec": 3772,
+    "description": "President Kirchner’s actions could hold grave consequences for Argentina and the rule of law. What happens when a democratically elected leader of a G-20 nation arguably defies national law, U.S. courts, and international treaties by refusing to pay her country’s bills? On September 23rd, Hudson Institute will host two expert panels to analyze the implications of this second default and discuss whether Argentina can survive such policy decisions. - Captured Live on Ustream at http://www.ustream.",
+    "view_count": 209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1qTxZ5Zcf8s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

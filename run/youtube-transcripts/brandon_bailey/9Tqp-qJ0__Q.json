@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9Tqp-qJ0__Q",
+    "language": "en",
+    "took_ms": 8715,
+    "method": null,
+    "title": "DEF CON 31 - The Hackers, The Lawyers, And The Defense Fund - Geiger, Opsahl, McCain, Croc",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2616,
+    "description": "The hacker community has long conducted important security research that skates the edge of legality. This has led to charges and lawsuits, bogus and serious alike, against hackers. In this panel, we’ll hear from a hacker that faced legal challenges, we’ll describe what legal counseling for hackers looks like in practice, and we’ll discuss a new resource for the hacker community: the Security Research Legal Defense Fund.\n\nLegal issues can arise for good faith hackers because computer or software owners want to prevent security research or vulnerability disclosure. Security researchers have rights and defenses against legal claims, but don’t always have access to representation or resources to defend themselves. EFF provides free legal counseling, ideally in advance of security researchers conducting their work so they can steer clear of problematic activity or at least mitigate the risk of legal threats. In litigation, EFF tries to find cases that will advance legal rights for the entire community, but many individuals will need representation even when their particular cases will not have a broader impact. In those cases, EFF endeavors to refer people to cooperating counsel, which can be difficult if funds are not available.\n\nWhat is it like, as a hacker, to face legal threats? What are the common ways hackers encounter legal threats? When that happens, what should hackers do? What is it really like to provide legal representation to hackers? Are there areas of the world with greater or lesser access to legal rights and representation? What resources can hackers leverage to protect themselves, their rights, and others in the community? Join us and find out!",
+    "view_count": 995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9Tqp-qJ0__Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

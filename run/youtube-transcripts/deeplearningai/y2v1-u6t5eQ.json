@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y2v1-u6t5eQ",
+    "language": "en",
+    "took_ms": 8486,
+    "method": null,
+    "title": "How to pick AI projects (AI For Everyone)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200210",
+    "duration_sec": 40,
+    "description": "You can find automation opportunities everywhere if you know how to look for them.\n\nTake AI For Everyone: http://bit.ly/3bwXtYj \nCheck out all our courses: deeplearning.ai \nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch \n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_ \nFacebook: https://www.facebook.com/deeplearningHQ/ \nLinkedin: https://www.linkedin.com/company/deeplearningai/",
+    "view_count": 8646
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y2v1-u6t5eQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

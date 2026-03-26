@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "td1seSZUh88",
+    "language": "en",
+    "took_ms": 9553,
+    "method": null,
+    "title": "2011 Herman Kahn Award Dinner Highlights",
+    "channel": "Hudson Institute",
+    "upload_date": "20111117",
+    "duration_sec": 409,
+    "description": "Hudson Institute was founded fifty years ago by the legendary futurist Herman Kahn (1922--1983) with the mission of thinking about the future in bold and unconventional ways. The Institute's Herman Kahn Award honors creative and visionary leaders who embody Kahn's dedication to strong American national security, a guarded optimism about the future, and an appreciation of the role of technology as a driver of global economic progress.\r\n\r\nThis year, Hudson Institute honored Arizona Senator Jon Kyl, who is currently serving his third term in the United States Senate, with its prestigious Herman Kahn Award.\r\n\r\nHudson Institute also paid tribute and expressed its deep gratitude to the brave men and women of America's armed forces, who serve our nation with honor, dignity, and respect.\r\n\r\nSenator John McCain also joined us to make remarks in tribute to his colleague from Arizona and our veteran guests.",
+    "view_count": 410
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] td1seSZUh88: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

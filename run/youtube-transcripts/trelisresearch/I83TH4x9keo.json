@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I83TH4x9keo",
+    "language": "en",
+    "took_ms": 8771,
+    "method": null,
+    "title": "Long Context Summarization",
+    "channel": "Trelis Research",
+    "upload_date": "20231211",
+    "duration_sec": 1920,
+    "description": "Scripts: https://trelis.com/advanced-fine-tuning-scripts/\n\nModels:\n16k: https://huggingface.co/Trelis/Mistral-7B-Instruct-v0.1-Summarize-16k\n64k: https://huggingface.co/Trelis/Mistral-7B-Instruct-v0.1-Summarize-64k\n\nDatasets:\nhttps://huggingface.co/datasets/big_patent\nhttps://huggingface.co/datasets/Trelis/big_patent_60k_characters\n\nChapters:\n0:00 Fine-tuning for long context and summarisation\n0:20 Video overview\n1:16 Trick One: Increase rope_theta\n2:48 Trick Two: Train norm and embed\n4:52 Trick Three: Train on prompt + response\n7:15 Long context and summarisation dataset\n9:14 Fine-tuning script walk through\n15:48 Prompt setup for summarisation\n18:07 Raw Mistral 16k summarisation performance\n19:18 Effect of increasing rope theta\n21:40 Effect of training on summarization\n23:55 64k context summarisation performance vs Yi 6B\n29:57 Passkey retrieval performance of Mistral 64k\n31:18 Resources",
+    "view_count": 2055
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I83TH4x9keo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UuL_WG7_XYE",
+    "language": "en",
+    "took_ms": 8654,
+    "method": null,
+    "title": "Watch the last Delta II rocket ever fly for NASA's ICESAT2!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180915",
+    "duration_sec": 6533,
+    "description": "United Launch Alliance will be launching the ICESat 2 satellite for NASA aboard a Delta 2 rocket from SLC-2W at the Vandenberg Air Force Base. IceSat 2 will be deployed to a low Earth polar orbit at an altitude of 500 KM (310 miles) and at a 92 degree inclination.\n\nThe satellite was manufactured by Northrup Grumman Innovation Systems (NGIS). It only has a single instrument, the Advanced Topographic Laser Altimeter System (ATLAS), which was designed and built by the NASA Goddard Space Flight Center who will also be managing the mission.\n\nRead more about it here! - https://everydayastronaut.com/prelaunch-preview-united-launch-alliance-icesat-2/\n\nCheck out my new podcast!!!! - https://ourludicrousfuture.com\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nThinking about ordering a Tesla? Get free unlimited supercharging!! http://ts.la/tim19804\n\nAlready order a Model 3 and waiting for delivery? You can use my referral code too (talk to your advisor) tim19804 :)",
+    "view_count": 57049
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UuL_WG7_XYE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

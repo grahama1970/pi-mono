@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "c2gK8Zp6dv8",
+    "language": "en",
+    "took_ms": 7937,
+    "method": null,
+    "title": "A 2nd Monitoring Network at Level 0/1",
+    "channel": "S4 Events",
+    "upload_date": "20190527",
+    "duration_sec": 1755,
+    "description": "ICS security legend Joe Weiss sets foot on the S4 stage for the first time. Joe and Amir Samoiloff make the case that monitoring network traffic to detect ICS cyber incidents is insufficient. They contend that data directly from the sensors, before it has been processed by the PLC / Level 1 device or converted from serial to Ethernet, will miss important information.\n\nThey close the presentation with some case studies that support their case.",
+    "view_count": 1218
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] c2gK8Zp6dv8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

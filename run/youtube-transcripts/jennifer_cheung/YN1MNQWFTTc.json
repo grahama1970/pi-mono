@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YN1MNQWFTTc",
+    "language": "en",
+    "took_ms": 8393,
+    "method": null,
+    "title": "DEF CON 30 - Contests Closing Ceremonies and Awards",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3529,
+    "description": "We present the mighty contest winners with their prizes!",
+    "view_count": 1387
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YN1MNQWFTTc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tKyvkU69Ers",
+    "language": "en",
+    "took_ms": 8618,
+    "method": null,
+    "title": "AI Dev 25 | Bilge Yücel: Building and Deploying Agentic Workflows with Haystack",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1742,
+    "description": "Building an AI agent is exciting—but taking it from prototype to production requires more than just an LLM. In this talk, Bilge Yücel, Developer Relations Engineer at deepset, walks through how to design, build, and deploy agentic pipelines using the open-source Haystack framework.\n\nBilge covers how to:\n– Structure agent workflows with modular, scalable components\n– Integrate tool-calling for real-world functionality\n– Use deepset Studio to visualize, test, and refine your pipeline before deploying\n\nWhether you're experimenting or preparing to launch agentic systems at scale, this session offers practical strategies to help you build confidently—with performance and adaptability in mind.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 3104
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tKyvkU69Ers: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

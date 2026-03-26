@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s_YqtMhTr4k",
+    "language": "en",
+    "took_ms": 8693,
+    "method": null,
+    "title": "DEF CON 31 Packet Hacking Village - WINE Pairing with Malware - Jared Stroud",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1932,
+    "description": "The growing popularity of playing AAA Windows video games on Linux has increased the compatibility of tools such as WINE and Proton. These same platforms that enable the latest games to run also can be used to execute the latest Malware. This talk will walk through configuring an environment to rapidly collect IoCs from unknown samples without having to use expensive sandboxes. Learn how to leverage your favorite UNIX tools to awk, grep, and pipe your way to extracting valuable forensic evidence without submitting your samples to $VENDOR. More on the offensive side? Come see how to shorten the feedback loop from idea generation, to testing and finally deployment!",
+    "view_count": 938
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s_YqtMhTr4k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

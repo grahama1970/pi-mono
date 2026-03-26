@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WDs9c_F8GiQ",
+    "language": "en",
+    "took_ms": 7687,
+    "method": null,
+    "title": "Make The Big Decisions With Cyber Decision Diagrams",
+    "channel": "S4 Events",
+    "upload_date": "20250609",
+    "duration_sec": 1604,
+    "description": "Our big cybersecurity decisions are poorly informed. The fundamental, conceptual decisions such as: \n\n- Which functionality you actually need\n- Which technology or protocols you’re going to use\n- How your system and network architecture will look like\n- How users will interact with your systems.\n\nCybersecurity Decision Diagrams have been designed to fill that information gap and lead to better decisions. Sarah describes the three diagrams that can be layered on top of each other to make all existing system assumptions, required functionality, and human interactions visible. Thereby leading to more informed and better decisions.\n\nIt's an efficient approach for engineers to pour their knowledge into the diagrams. The diagrams can then be used for decision-making by engineers or cyber people and for communicating decisions to management and authorities once they’ve been made.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 1122
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WDs9c_F8GiQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

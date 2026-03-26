@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rjW2Dehmd1k",
+    "language": "en",
+    "took_ms": 9009,
+    "method": null,
+    "title": "The Fate of Lebanon and the Future of the Middle East",
+    "channel": "Hudson Institute",
+    "upload_date": "20150224",
+    "duration_sec": 5456,
+    "description": "Hudson Institute hosted a panel discussion on Rafik Hariri’s legacy and the future of Lebanon and beyond. Hudson Senior Fellows Lee Smith and Michael Doran joined Tony Badran of the Foundation for Defense of Democracies and Hussain Abdul Hussain, Washington bureau chief for al-Rai (Kuwait) to discuss how Lebanon’s fate may shape the region for years to come.",
+    "view_count": 1628
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rjW2Dehmd1k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

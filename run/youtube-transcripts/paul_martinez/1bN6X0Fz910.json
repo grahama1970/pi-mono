@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1bN6X0Fz910",
+    "language": "en",
+    "took_ms": 8016,
+    "method": null,
+    "title": "Top Mindset Changes To Create The Future",
+    "channel": "S4 Events",
+    "upload_date": "20220516",
+    "duration_sec": 1628,
+    "description": "Ron Fabela of SynSaber focuses on the myths and stories in the ICS security industry that are hurting progress. Why these stories were created, how they no longer serve us well, and how to slay them and move forward.",
+    "view_count": 524
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1bN6X0Fz910: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

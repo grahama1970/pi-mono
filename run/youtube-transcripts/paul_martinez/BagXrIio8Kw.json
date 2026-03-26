@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BagXrIio8Kw",
+    "language": "en",
+    "took_ms": 8515,
+    "method": null,
+    "title": "Strategies And Lessons Learned From Internal Network Security Monitoring At Scale",
+    "channel": "S4 Events",
+    "upload_date": "20250413",
+    "duration_sec": 1623,
+    "description": "The bulk electric sector is preparing for NERC CIP 015-1, which requires internal network security monitoring (INSM) for OT networks. Dominion Energy is a large utility that is tackling this INSM requirement.\n\nWes describes Dominion's approach and lessons learned throughout the design, planning, implementation and support of this project across power generation and 100s of substations. Both the monitoring infrastructure and the process to deal with the monitored system data scale an already challenging task.\n\nWhile this project was driven by an electric sector regulatory requirement, the adoption of INSM technologies is applicable to all sectors as their OT security program matures.",
+    "view_count": 502
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BagXrIio8Kw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

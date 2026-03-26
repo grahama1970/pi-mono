@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_gBwmN325GU",
+    "language": "en",
+    "took_ms": 8982,
+    "method": null,
+    "title": "DEF CON 30 - Jose Pico, Fernando Perera - Wireless Keystroke Injection via Bluetooth Low Energy",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2226,
+    "description": "We present a Microsoft Windows vulnerability that allows a remote attacker to impersonate a Bluetooth Low Energy (BLE) keyboard and perform Wireless Key Injection (WKI) on its behalf. It can occur after a legitimate BLE keyboard automatically closes its connection because of inactivity. In that situation, an attacker can impersonate it and wirelessly send keys. \nIn this talk we will demonstrate the attack live and we will explain the theoretical basis behind it and the process that led us to discover the vulnerability. We will also release the tool that allows to reproduce the attack and we will detail how to use it.",
+    "view_count": 2994
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _gBwmN325GU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

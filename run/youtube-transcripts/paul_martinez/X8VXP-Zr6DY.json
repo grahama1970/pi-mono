@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X8VXP-Zr6DY",
+    "language": "en",
+    "took_ms": 8987,
+    "method": null,
+    "title": "Dale Peterson Interviewed By Bosch CyberCompare",
+    "channel": "S4 Events",
+    "upload_date": "20210624",
+    "duration_sec": 3031,
+    "description": "The tables are turned in this week's Unsolicited Response episode. Dr. Jannis Stemmann and Simeon Mussler of Bosch CyberCompare interviewed me (audio only) for a long form German interview/article. \n\nThe interview starts at 4:38, and the intro gives a S4x22 CFP Update and describes the Basic Sponsor application process. #icssecurity #otsecurity",
+    "view_count": 141
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X8VXP-Zr6DY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

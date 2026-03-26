@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-3ehROEVXmw",
+    "language": "en",
+    "took_ms": 8344,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village - Swissninja  - The OSTRWERK Initiative",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 2768,
+    "description": "OSTWERK stands for Open Source Tactical Wireless Emergency Radio Kit, an all-in-one customizable solution for building ham radio kits. This will be a a 30 minute talk and Q&A about the initiative, my sample kit, and what I hope to accomplish (website features, sponsorships for kits for schools, etc). Feel free to ask any questions!",
+    "view_count": 868
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -3ehROEVXmw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

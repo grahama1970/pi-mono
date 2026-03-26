@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z1UoJRvqVaE",
+    "language": "en",
+    "took_ms": 2887,
+    "method": null,
+    "title": "Parsons: How To Make Your Next ICS Security Project Successful",
+    "channel": "S4 Events",
+    "upload_date": "20170215",
+    "duration_sec": 1898,
+    "description": "The Parsons Sponsor Stage session at S4x17 focused on how an asset owner can run a successful ICS cyber security project. For example at 22:30 they discuss why a Master Service Agreement makes sense and gives sample task orders on the MSA.\n\nParsons is an Engineering Procurement and Construction (EPC) company, so they have seen projects of all types and have first hand experience on how asset owners have the best chance of making them successful.",
+    "view_count": 193
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z1UoJRvqVaE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

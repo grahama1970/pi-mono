@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uXRxbdD21ds",
+    "language": "en",
+    "took_ms": 9225,
+    "method": null,
+    "title": "Watch The FIRST EVER Human Polar Mission",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20250401",
+    "duration_sec": 4281,
+    "description": "[TIME SUBJECT TO CHANGE] \n\nThis is an incredibly unique and incredible mission, the first mission to ever fly humans on a polar orbit!!! Fram-2 is targeting liftoff on Monday, March 31, 2025 at 8:20 PM PDT (03:20 UTC on April 1) from Launch Complex 39A at Kennedy Space Center in Florida. SpaceX's Falcon 9 will carry a private crew of four on a 3 to 5 day mission before splashing down in the Pacific Ocean.\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 181630
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uXRxbdD21ds: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

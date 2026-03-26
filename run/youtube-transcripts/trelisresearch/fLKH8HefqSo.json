@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fLKH8HefqSo",
+    "language": "en",
+    "took_ms": 8359,
+    "method": null,
+    "title": "Analyse Github Repos with Gitingest MCP",
+    "channel": "Trelis Research",
+    "upload_date": "20250611",
+    "duration_sec": 1117,
+    "description": "📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nRepos:\ngitingest MCP: https://github.com/TrelisResearch/trelis-gitingest-mcp\ngitingest: https://github.com/cyclotruc/gitingest\n\nSlides: https://docs.google.com/presentation/d/1F_FHGBfuAXD3TySL31DqlOGHMgiVeFGqJ367b1oWwJ4/edit?usp=sharing\n\nRecommended videos:\nUsing MCP: https://youtu.be/C1jlEg8AyyM?si\nBuild MCP Servers: https://youtu.be/CiArUs_2jm4\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nTIMESTAMPS:\n0:00 Gitingest MCP - an MCP server to read GitHub repos\n0:33 Video Overview\n1:31 gitingest-mcp repo overview: fetching repo summary, folder structure and content\n2:39 Using trelis-gitingest-mcp with Claude Desktop\n6:35 Using trelis-gitingest-mcp with Windsurf or Cursor\n9:28 How to easily load MCP config files. See Trelis.com/ADVANCED-inference\n11:42 Understanding gitingest-mcp using MCP inspector\n14:31 MCP Resources and Prompts! Hardly anyone uses these, but they can be useful!\n15:52 ADVANCED tips: Tool argument descriptions, nested directories and private repos. \n18:12 Conclusion",
+    "view_count": 2506
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fLKH8HefqSo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

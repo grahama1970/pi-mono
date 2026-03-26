@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "deRRR5B1hwI",
+    "language": "en",
+    "took_ms": 9997,
+    "method": null,
+    "title": "DEF CON 29 - Cory Doctorow - Privacy Without Monopoly",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1749,
+    "description": "Governments around the world (US, UK, EU) are planning to force interoperability on the biggest tech platforms. Companies like Facebook say that this is a privacy disaster because it would hurt their ability to keep us safe from privacy invasions. Yeah, I know. But even if you DO think Facebook has our best interests at heart, monopoly is a deeply stupid way protect privacy. I will present \"Privacy Without Monopoly,\" a major EFF white paper I co-authored with Bennett Cyphers, which sets out a framework for understanding how privacy and interop aren't just compatible - they rely on one another!\n\nhttps://www.eff.org/wp/interoperability-and-privacy",
+    "view_count": 4007
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] deRRR5B1hwI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WDl1w9HXJUA",
+    "language": "en",
+    "took_ms": 7892,
+    "method": null,
+    "title": "SBOM & CycloneDX with Steve Springett",
+    "channel": "S4 Events",
+    "upload_date": "20230823",
+    "duration_sec": 3690,
+    "description": "Steve Springett is the Chair of the OWASP CycloneDX Core Working Group. CycloneDX is one of the two main machine readable formats that SBOMs are being created in, although CycloneDX can capture all sorts of BOMs.\n\nIn this episode we assume listeners know what a SBOM is and why it might be desired by a vendor and asset owner. The beginning of the show we cover some basics of CycloneDX\n\nIf you know the basics, skip to 14:24 where we get into the details\n\nStatistics on who is generating and using CycloneDX SBOMs, and the impact of governement regulations on the use.\n\n- Steve's view of the NTIA Minimum Elements for SBOM v. CycloneDX elements.\n\n- How CycloneDX tries to capture the completeness of and confidence in the SBOM.\n\n- The naming problem. CPE, CVE, NVD, SWID, PURL and more. Steve describes the problem and what he thinks is the way forward.\n\n- Vulnerabilities ... and why Steve thinks VEX is a missed opportunity.\n\n- Outdated component analysis (this could be very useful in a procurement decision)\n\nand more",
+    "view_count": 449
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WDl1w9HXJUA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

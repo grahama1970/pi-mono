@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k5_cdHytojc",
+    "language": "en",
+    "took_ms": 7553,
+    "method": null,
+    "title": "An Emerging G2? Prospects for Transatlantic Tech Cooperation",
+    "channel": "Hudson Institute",
+    "upload_date": "20210929",
+    "duration_sec": 3564,
+    "description": "On Wednesday, the U.S. and EU will meet at the cabinet-ministerial level to inaugurate the Trade and Technological Council (TTC), the outcome of U.S. President Joe Biden’s recent summit with European Commission President Ursula von der Leyen. What does this herald for transatlantic cooperation on technology? Join Hudson Institute’s Peter Rough for a discussion on this important issue with Hudson Senior Fellows Nadia Schadlow and Tom Duesterberg and head of Technology and Global Affairs at the German Council on Foreign Relations, Tyson Barker.",
+    "view_count": 545
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k5_cdHytojc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

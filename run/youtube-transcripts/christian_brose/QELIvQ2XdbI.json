@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QELIvQ2XdbI",
+    "language": "en",
+    "took_ms": 8917,
+    "method": null,
+    "title": "Making Military Cloud a Success: Critical Next Steps for DoD’s IT Strategy",
+    "channel": "Hudson Institute",
+    "upload_date": "20190404",
+    "duration_sec": 5114,
+    "description": "Hudson Institute’s Task Force on Federal IT Procurement, with sponsorship from Oracle and Microsoft, hosted a discussion on next steps and alternative models the U.S. Department of Defense should consider to make its ambitious cloud strategy a reality. Hudson Senior Fellow William Schneider discussed these topics and more with Hudson Senior Fellow Dr. Arthur Herman and Dr. Fred Schneider, Cornell University professor and founding chairman of the National Academies Forum on Cyber Resilience. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 529
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QELIvQ2XdbI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

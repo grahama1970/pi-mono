@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "h8E6w3vVzWo",
+    "language": "en",
+    "took_ms": 7973,
+    "method": null,
+    "title": "DEF CON 32 - Exposing Attacks Hiding in the Sheer Noise of False Positives - E Tahoun, L Hamida",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3323,
+    "description": "In the complex landscape of modern cybersecurity, identifying coordinated attacks within massive volumes of security data is a formidable challenge. Security professionals often grapple with distinguishing these attacks from numerous false positives and isolated incidents. This talk will illuminate how data science can be harnessed to transform tons of heterogeneous events, logs, and alerts into a bunch of clusters, a few kill chains, and fewer actionable insights, with open-source models, and security knowledge encoding. Join us on a journey to enhance security operations efficacy and efficiency! No data science expertise is required!",
+    "view_count": 480
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] h8E6w3vVzWo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

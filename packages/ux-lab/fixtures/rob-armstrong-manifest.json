@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "app": "UX Lab — Rob Armstrong Formal Verification Review",
+  "base_url": "http://localhost:3002",
+  "persona": "rob-armstrong",
+  "review_dimensions": [
+    "Lemma nodes must distinguish proved vs sorry (axiom) vs tainted (transitively contaminated)",
+    "Proof obligation context must be visible — what is the system trying to prove?",
+    "Formal representation (Lean4 code) must be accessible per lemma",
+    "Trust boundaries: edges crossing from proved to sorry/tainted must be visually distinct",
+    "Sorry contamination BFS: forward DAG traversal from sorry nodes marks descendants",
+    "Inspector panel what-if analysis must show cascade propagation (BROKEN/HOLDS)",
+    "GSN (Goal Structuring Notation) alignment for assurance case visualization"
+  ],
+  "surfaces": [
+    {
+      "name": "lemma-graph-verification",
+      "path": "/?component=lemma-graph",
+      "wait_ready": "[data-testid='lemma-graph']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "lemma-graph-full",
+          "selector": "[data-testid='lemma-graph']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full LemmaGraph — Rob checks node trust status, edge validation, and proof context",
+              "expected": "Force-directed SVG graph. Nodes colored by framework (SPARTA=#7c3aed, ATT&CK=#ff4444, D3FEND=#00ff88, NIST=#4a9eff, CWE=#ffaa00). Validated edges solid green, unvalidated edges dashed red. Stats bar: N LEMMAS, N EDGES, N% AVG CONFIDENCE. Node labels readable against dark background."
+            }
+          ]
+        },
+        {
+          "name": "lemma-graph-edges",
+          "selector": "[data-testid='lemma-graph']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Edge validation status — Rob checks validated vs unvalidated edge contrast",
+              "expected": "Validated edges: solid line, green or high-contrast color, visible against #0b1220 background. Unvalidated edges: dashed line, red or amber, clearly distinct from validated. Edge method labels (subsumes, countered_by, mitigated_by) visible on hover or always shown. Minimum contrast 4.5:1 WCAG AA.",
+              "assert_selector": "[data-testid='lemma-graph'] line, [data-testid='lemma-graph'] path"
+            }
+          ]
+        },
+        {
+          "name": "lemma-node-click",
+          "selector": "[data-testid='lemma-graph']",
+          "interactions": [
+            {
+              "action": "click",
+              "target": "[data-testid='lemma-graph'] circle:first-of-type",
+              "description": "Click a lemma node — should open inspector or show formal details",
+              "screenshot_after": true,
+              "wait_ms": 500,
+              "expected": "Node click triggers inspector panel or detail view. For Rob: must show the lemma's formal representation, proof status (proved/sorry/tainted), connected edges with cascade direction. Ideally exposes Lean4 theorem statement."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inspector-panel-verification",
+      "path": "/?component=inspector-panel",
+      "wait_ready": "[data-testid='inspector-panel']",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "inspector-parameters",
+          "selector": "[data-testid='inspector-panel']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Inspector panel — typed parameter editor with what-if analysis",
+              "expected": "Panel shows: selected node identity (ID, framework, name), parameter editor with typed controls (bool toggle, float slider, enum dropdown), 'What If?' trigger button. Rob checks: parameter types must match Lean4 predicate signatures. Controls must be meaningful for formal verification (not generic UX sliders)."
+            }
+          ]
+        },
+        {
+          "name": "inspector-what-if",
+          "selector": "[data-testid='inspector-panel']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "What-if cascade results — BROKEN/HOLDS status per affected chain",
+              "expected": "After what-if trigger: cascade results panel showing affected chains. Each chain: BROKEN (red) or HOLDS (green) status with chain path visualization. Summary: N total, N broken, N held. Rob checks: cascade logic must reflect real predicate evaluation, not cosmetic status."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "composed-explorer-verification",
+      "path": "/?component=composed-explorer",
+      "wait_ready": "[data-testid='composed-explorer']",
+      "wait_ready_timeout_ms": 15000,
+      "elements": [
+        {
+          "name": "explorer-evidence-hub",
+          "selector": "[data-testid='composed-explorer']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Evidence Hub pane — Rob checks LemmaGraph + ControlTable composition in context",
+              "expected": "Center pane (35% width) shows ControlTable above and LemmaGraph below. Rob: the graph must work IN CONTEXT with the table — selecting a control in the table should highlight related nodes in the graph. Cross-component data flow is the formal verification value proposition."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

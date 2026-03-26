@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AIILR27LoSg",
+    "language": "en",
+    "took_ms": 8425,
+    "method": null,
+    "title": "New course with AWS: Serverless LLM apps with Amazon Bedrock",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240214",
+    "duration_sec": 191,
+    "description": "Enroll now: https://bit.ly/42rqWxv\n\nIn this course, you’ll learn how to deploy a large language model-based application into production using a serverless architecture, which enables you to deploy your applications without the need to manage and scale the infrastructure they run on.\n\nAs a hands-on exercise, you'll learn to summarize audio files by pairing an LLM with an automatic speech recognition (ASR) model. You’ll build an event-driven system that automatically detects incoming customer inquiries, transcribes them with ASR and summarizes them with an LLM, using Amazon Bedrock. While we'll use the Amazon Titan model in the course, you can choose from many different models on the platform.\n\nAfter finishing the course, you'll be able to:\n\n- Prompt an LLM and customize its responses using Amazon Bedrock. \n- Convert audio recordings into written transcripts with Amazon Transcribe, and summarize these transcripts using an LLM.\n- Enable logging for all the calls you make to LLMs to help you maintain security, audit, and compliance standards.\n- Deploy this audio summarizer as an event-driven serverless workflow using AWS Lambda.\n\nThe course is taught by Mike Chambers, co-instructor of the popular Coursera course, “Generative AI with Large Language Models.”\n\nLearn more: https://bit.ly/42rqWxv",
+    "view_count": 4795
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AIILR27LoSg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

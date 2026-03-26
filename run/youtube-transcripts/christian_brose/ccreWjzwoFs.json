@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ccreWjzwoFs",
+    "language": "en",
+    "took_ms": 9938,
+    "method": null,
+    "title": "Osawatomie: Then and Now",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 3840,
+    "description": "Why did President Obama choose to link his political fate to the Osawatomie tradition? How did his speech, in form and content, stack up against the Rooseveltian original? What can we learn about the enduring themes of American politics from this comparison? Six prominent scholars and writers — all knowledgeable about the Progressive Era as well as the contemporary political scene — discussed this question on Thursday, December 22nd.",
+    "view_count": 58
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ccreWjzwoFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

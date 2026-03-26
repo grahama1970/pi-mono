@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RP8DnEp4_rY",
+    "language": "en",
+    "took_ms": 8783,
+    "method": null,
+    "title": "A Challenging Crossroad: Media and Politics in Iran",
+    "channel": "Hudson Institute",
+    "upload_date": "20180529",
+    "duration_sec": 4946,
+    "description": "Hudson Institute in cooperation with the Broadcasting Board of Governors (BBG) held a discussion on current trends and insights on Iran and the information battlefield at the intersection of foreign policy, media and technology.",
+    "view_count": 1014
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RP8DnEp4_rY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

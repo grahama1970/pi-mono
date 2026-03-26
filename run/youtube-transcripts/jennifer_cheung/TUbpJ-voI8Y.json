@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TUbpJ-voI8Y",
+    "language": "en",
+    "took_ms": 8531,
+    "method": null,
+    "title": "DEF CON 32  - Fireside Chat - The Dark Tangent and DNSA Anne Neuberger",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2483,
+    "description": "This fireside chat will feature an in depth conversation between DNSA Neuberger and Dark Tangent on a variety of cybersecurity and emerging technology topics such as artificial intelligence and quantum computing. DNSA Neuberger has served in a variety of senior intelligence and cybersecurity roles within the National Security Agency, including Director of NSA’s cybersecurity organization and Deputy Director of NSA’s intelligence operations. She has also held multiple positions at the Department of Defense and the private sector, and now leads development of the Biden Administration’s policies on cybersecurity and emerging technologies from the White House. She and DT will delve into the latest and most pressing issues in these domains that concern the White House and how hackers can influence tech-related discussions to improve policy and operational outcomes.",
+    "view_count": 580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TUbpJ-voI8Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

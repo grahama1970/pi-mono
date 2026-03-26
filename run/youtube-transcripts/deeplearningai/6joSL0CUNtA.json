@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6joSL0CUNtA",
+    "language": "en",
+    "took_ms": 8111,
+    "method": null,
+    "title": "Heroes of Deep Learning: Yann LeCun and Ruslan Salakhutdinov on Getting Started",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200224",
+    "duration_sec": 104,
+    "description": "\"A machine capable of learning? That sounds wonderful.\" Learn how heroes of deep learning Yann LeCun and Ruslan Salakhutdinov first became interested in AI.\n\nTake the Deep Learning Specialization: http://bit.ly/3c7dHau\nCheck out all our courses: deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: deeplearning.ai/thebatch\n\nFollow us:\nTwitter: twitter.com/deeplearningai_\nFacebook: facebook.com/deeplearningHQ/\nLinkedin: linkedin.com/company/deeplearningai",
+    "view_count": 4973
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6joSL0CUNtA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6yJtO0zEbrA",
+    "language": "en",
+    "took_ms": 9065,
+    "method": null,
+    "title": "Secret Soviet Rocket Plane - RP-318 (Today-ish in Spaceflight History)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180301",
+    "duration_sec": 3939,
+    "description": "Join me as I teach Jacob EQ all about this wacky Soviet Rocket Plane that existed in the 1930's! \n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 17233
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6yJtO0zEbrA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

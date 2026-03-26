@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "funhZgM8uIk",
+    "language": "en",
+    "took_ms": 8542,
+    "method": null,
+    "title": "New Course: Knowledge Graphs for AI Agent API Discovery",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250910",
+    "duration_sec": 175,
+    "description": "Learn more: https://bit.ly/3IfEp5R\n\nLearn how to help AI agents find and execute the right APIs in the right order using a knowledge graph in “Knowledge Graphs for AI Agent API Discovery”, taught by Pavithra G K (Head of Business Knowledge Graphs) and Lars Heling (Senior Knowledge Engineer) at SAP Business AI.\n\nLarge companies may have thousands of APIs, which makes it hard for agents to figure out which APIs to use and in what sequence. This course brings raw API specifications into a knowledge graph and extends it with process data so an agent knows when, and in which order, each API should be called.\n\nYou’ll implement API discovery that starts with semantic retrieval to reduce the API selection space, then adds APIs connected by business-process edges. The result is a small, relevant subset of APIs that includes the information about the process sequence the agent should follow.\n\nFinally, you’ll build an agent with a discovery tool, a GET data tool, and a POST data tool. The agent retrieves API metadata (properties, navigations, process information) and executes tasks in the right sequence according to the business process.\n\nIn detail, you’ll:\n\n- Understand what knowledge graphs are and how they enable better API discovery and execution in AI applications.\n- Construct your first knowledge graph from API services and endpoints and visualize it. \n- Extend the knowledge graph with business process data, so APIs are connected via the process and their dependencies.\n- Learn how knowledge graphs can be used for API discovery for AI agents; perform semantic retrieval, and then add business-process edges to get all the required APIs and their order.\n- Build an agent that uses the knowledge graph to discover and execute APIs following the right process order.\n\nBy the end of this course, you’ll have constructed a knowledge graph from API specifications and business process information and built an agent that can take business actions by discovering the right APIs and executing them in the right order.\n\nEnroll now: https://bit.ly/3IfEp5R",
+    "view_count": 4777
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] funhZgM8uIk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

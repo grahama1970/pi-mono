@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nRob7JKEZQw",
+    "language": "en",
+    "took_ms": 7781,
+    "method": null,
+    "title": "IT'S HAPPENING!!! #ASTROAWARDS2024",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20231207",
+    "duration_sec": 60,
+    "description": "http://astroawards2024.com\n\nThe Everyday Astronaut team is so excited to host our first in-person event and awards show in Austin, TX on January 13-14, 2024! Our mission: to honor and celebrate the revolutionary humans behind the hardware and missions by inviting them to accept an award IN REAL LIFE! We're merging the space industry with everyday people for the ultimate party and celebration of human achievement.\n\nVisit http://astroawards2024.com to get more details and to get tickets!",
+    "view_count": 67882
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nRob7JKEZQw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

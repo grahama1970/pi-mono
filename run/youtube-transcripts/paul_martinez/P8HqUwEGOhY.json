@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P8HqUwEGOhY",
+    "language": "en",
+    "took_ms": 7396,
+    "method": null,
+    "title": "State Of NERC CIP, European Update, and OT Security Community",
+    "channel": "S4 Events",
+    "upload_date": "20240424",
+    "duration_sec": 2806,
+    "description": "Patrick Miller has OT cybersecurity experience as an asset owner, PacificCorp. As a regulator and one of the first NERC CIP auditors with WECC. As a community organizer creating and leading EnergySec and the BeerISAC. And as an entrepreneur creating and leading a number of consulting practices. He is currently the Founder of Ampyx Cyber.\n\nIn this episode Patrick and Dale discuss:\n- Why Patrick changed the company name and selected Talinn as the location for the new European office.\n- The major differences in approaches to OT cybersecurity and risk management between Europe and the US. (more than just regulatory differences)\n- What has the EU learned or improved on regulation from NERC CIP.\n- What is the current state of NERC CIP regulatory risk? Are the regulated entities understanding and meeting the standards’ requirements?\n- The challenge of slow NERC CIP modifications, eg virtualization and cloud.\n- Bad standard & good regulator v. good standard & bad regulator.\n- Should water follow the NERC CIP model as recommended by AWWA?\n- How Patrick is dealing with AI.\n\nLinks\n- Ampyx Cyber: https://ampyxcyber.com\n- Patrick’s Critical Assets Podcast: https://amperesec.com/podcast\n- Subscribe to Dale’s ICS Security Friday News & Notes: https://friday.dale-peterson.com/signup\n- Advertise on Unsolicited Response: https://dale-peterson.com/advertising/",
+    "view_count": 570
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P8HqUwEGOhY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

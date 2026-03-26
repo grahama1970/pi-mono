@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zLbaLACOuFs",
+    "language": "en",
+    "took_ms": 9329,
+    "method": null,
+    "title": "On the Road to the Incentive Auction",
+    "channel": "Hudson Institute",
+    "upload_date": "20150629",
+    "duration_sec": 3359,
+    "description": "Howard Symons and Harold Furchtgott-Roth discuss the status of the FCC's spectrum incentive auction.",
+    "view_count": 93
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zLbaLACOuFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XE91m2QkdpU",
+    "language": "en",
+    "took_ms": 8772,
+    "method": null,
+    "title": "Identifying Malware In Factory Program Files",
+    "channel": "S4 Events",
+    "upload_date": "20250709",
+    "duration_sec": 1350,
+    "description": "Classic AV/EDR has not yet been effective at identifying OT malware in factory program files. Mars presents a novel multimodel AI approach to do the detection in this session.\n\nThe data to train the model came from large scale, real world factories over a year long period. Mars goes over the approach and how it led to capture over 10 OT malware variants in the 50,000+ factory program files analyzed.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 398
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XE91m2QkdpU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

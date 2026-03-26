@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u1ahrMhq9LQ",
+    "language": "en",
+    "took_ms": 8172,
+    "method": null,
+    "title": "China's Road Through Pakistan",
+    "channel": "Hudson Institute",
+    "upload_date": "20151118",
+    "duration_sec": 4447,
+    "description": "A conversation on China-Pakistan relations in the era of the New Silk  Road with Aparna Pande, Charles Horner, Lianchao Han, and Eric Brown",
+    "view_count": 66524
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u1ahrMhq9LQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

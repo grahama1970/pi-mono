@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D_wPMLhXC1w",
+    "language": "en",
+    "took_ms": 8243,
+    "method": null,
+    "title": "DEF CON 30 - A Policy Fireside Chat with Jay Healey",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2650,
+    "description": "In this fireside chat, Jason Healey (w0nk) will talk about the earliest days of information security and hacking, back in 1970s, where we’ve come since, and the future role of security researchers and hackers. This year is not just the 30th DEF CON but the 50th anniversary of the first realizations that hackers (red teams) will almost always succeed. Jason will reflect on the lessons for information security and hacking and explore if we have any chance of getting blue better than red. Unless we make substantial changes, our kids will be coming to DEF CON 60 without much left of a global, resilient Internet.",
+    "view_count": 233
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D_wPMLhXC1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

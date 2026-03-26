@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "auoEA8ZD8YA",
+    "language": "en",
+    "took_ms": 12396,
+    "method": null,
+    "title": "DEF CON 33 - Take all my money – penetrating ATMs - Fredrik Sandstom",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1445,
+    "description": "In this presentation we will discuss real-world examples of cybersecurity issues with ATMs. Ever wondered what it takes to make an ATM spew out cash? You’ll hear some war stories from Fredriks career when penetration testing ATMs, which includes the technical aspects of ATM hacking like tools but also troubles that can arise when trying to set up an ATM test.",
+    "view_count": 4747
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] auoEA8ZD8YA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

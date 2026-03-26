@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JPCKg_3XLP8",
+    "language": "en",
+    "took_ms": 8622,
+    "method": null,
+    "title": "DEF CON 33 - Cloned Vishing : A case study  - Katherine Rackliffe",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1134,
+    "description": "We ran a research study at Brigham Young University where we tested a novel phishing technique where AI voice cloning is used to imitate specific people. This talk will discuss the results of the study and potential safeguards to prevent these phishing scams.",
+    "view_count": 164
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JPCKg_3XLP8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

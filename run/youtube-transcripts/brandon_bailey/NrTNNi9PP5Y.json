@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NrTNNi9PP5Y",
+    "language": "en",
+    "took_ms": 9066,
+    "method": null,
+    "title": "DEF CON 33  - Can't Stop the ROP: Automating Universal ASLR Bypasses - Bramwell Brizendine",
+    "channel": "DEFCONConference",
+    "upload_date": "20260218",
+    "duration_sec": 2565,
+    "description": "High-entropy ASLR was supposed to make bypasses of ASLR on Windows virtually impossible - until now! This talk will debut nine novel bypasses of the strongest form of ASLR on Windows, which makes attacks such as brute-forcing totally infeasible. This talk showcases how mostly simple, easy-to-find ROP gadgets can be used to construct highly reliable, universal ASLR bypasses to key Windows system DLLs, allowing ROP gadgets from those DLLs to be used freely in exploits! The end result? The attack surface is greatly expanded, making it possible to do more attacks on binaries previously constrained by limited gadgets. What may have been impossible before due to insufficient ROP gadgets, now is quite possible! While this talk focuses primarily on ASLR bypass for x64, we will also briefly touch upon similar attacks for x86. As part of this talk, for the first time ever, I am also releasing and open-sourcing a new mini-tool that will generate complete, x64 ROP chains for each of these bypasses! We will see this ASLR bypass attack in action with demo. We conclude with recommendations to help remediate the problem. This talk is an in-depth technical deep dive into Windows internals and the design of this technique, but it will also be presented in an accessible way to beginners.",
+    "view_count": 1694
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NrTNNi9PP5Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

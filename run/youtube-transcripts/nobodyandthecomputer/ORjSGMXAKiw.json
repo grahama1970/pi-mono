@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ORjSGMXAKiw",
+    "language": "en",
+    "took_ms": 9553,
+    "method": null,
+    "title": "Vibe Coding the Weirdest Synth Ever Made (AI VODER)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20251029",
+    "duration_sec": 490,
+    "description": "I built a modern replica of The Voder — the first talking machine ever created (1939).\nNo samples, no autotune... just buzz, hiss, and code.\n\nSupport by joining The Nobody Collective here: \nhttps://www.patreon.com/NobodyandTheComputer\nYou’ll also get access to tutorials, behind-the-scenes info, code, prompts, and much more.\n\nall the links with prompts,  Claude Artifacts and Custon GPT for UI design:\nhttps://www.patreon.com/posts/voder-ai-replica-142357337\n\n#AIVoder #VoderReplica #NobodyAndTheComputer #GenerativeAI #AIMusic #VoiceSynth #SoundDesign #AIExperiment #AnthropicClaude #ChatGPT #AICinema #CreativeCoding #VintageTech #SpeechSynthesis #VibeCoding #Electronica #BellLabs #AIVoice #MachineLearning #RetroFuture",
+    "view_count": 3737
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ORjSGMXAKiw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

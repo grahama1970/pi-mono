@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ChGx_wK7VaE",
+    "language": "en",
+    "took_ms": 8828,
+    "method": null,
+    "title": "Practical Data Science on AWS: Generative AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230223",
+    "duration_sec": 3786,
+    "description": "Welcome! Join us for a live workshop where you can follow along with AWS instructors Antje and Chris as they share about Practical Data Science on AWS: Generative AI.\n\nWe will be taking questions during the event. Please submit your question or upvote others' here:\nhttps://app.sli.do/event/mERNmkT3dGskssVEhsLCkK\n\nSpeakers\nAntje Barth, Principal Developer Advocate, AI/ML at AWS\nhttps://www.linkedin.com/in/antje-barth/\n\nChris Fregly, Principal Engineer, AI/ML at AWS\nhttps://www.linkedin.com/in/cfregly/\n\nDr. Greg Loughnane, Head of Product & Curriculum at FourthBrain\nhttps://www.linkedin.com/in/gregloughnane/\n\nLet us know how we're doing? We will be giving out discount codes for a selected number of people who fill out the survey:\nhttps://forms.gle/SvQigaNuZcqvKkg16\n\nWant to learn more about Practical Data Science? Check out our course and start learning today! https://bit.ly/41jDlm9\n\nLooking to connect with your peer learners, share projects, and swap advice? Join our AI community: \nhttps://community.deeplearning.ai/invites/VVGtXQuWNR\n\nTo learn more about us and signup for future events:\nhttps://www.deeplearning.ai/events/",
+    "view_count": 21955
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ChGx_wK7VaE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

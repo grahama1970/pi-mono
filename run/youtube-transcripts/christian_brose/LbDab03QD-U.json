@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LbDab03QD-U",
+    "language": "en",
+    "took_ms": 10135,
+    "method": null,
+    "title": "Victory Over the Islamic State and U.S. Withdrawal From Syria",
+    "channel": "Hudson Institute",
+    "upload_date": "20190301",
+    "duration_sec": 6239,
+    "description": "In light of President Trump’s recent announcement to maintain a small military presence in Syria, Hudson Institute hosted a discussion on the consequences of the U.S.’s troop drawdown decision. Panelists included Jomana Qaddour, a Syrian-American analyst and doctoral candidate at Georgetown University Law Center focusing on the Syrian constitution; Bassam Ishak, U.S. Representative for the Syrian Democratic Council; and Hudson Institute Senior Fellows Michael Doran and Jonas Parello-Plesner.\r\n\r\nPresident Trump has proclaimed military victory over the Islamic State in Syria and announced a military drawdown of U.S. troops. However, the military defeat of the Islamic State will not be the end of the challenges facing Syria. While not a full withdrawal, this drawdown raises concerns regarding post-U.S. regional power politics, reconstruction, and accountability for the survivors in the region. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1098
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LbDab03QD-U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

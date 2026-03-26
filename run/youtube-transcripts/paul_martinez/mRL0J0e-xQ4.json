@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mRL0J0e-xQ4",
+    "language": "en",
+    "took_ms": 8925,
+    "method": null,
+    "title": "International Rules on Targeting of Critical Infrastructure with Cyber Operations",
+    "channel": "S4 Events",
+    "upload_date": "20210331",
+    "duration_sec": 3012,
+    "description": "Maggie Morganti joined Dale Peterson on the show to discuss how International Humanitarian Law (IHL), which almost all countries subscribe to, would treat cyber attacks on critical infrastructure. \n\n- The terms distinction and proportionality (the latter is very important and is on the proportion of civilian to military damage) and how they affect what is permissible under IHL\n- How sabotage like Stuxnet or Triton is treated by IHL, and the concept of behind enemy lines\n- Does IHL mean anything when the most capable players do not agree or exhibit restrictions?\n- And a lot more\n\nThis is a hard issue and important topic, and Maggie’s master’s thesis is the basis of the discussion.\n\nLinks\n- Preparation and Persistence Paper https://dale-peterson.com/2019/06/23/naivete-redux-preparation-persistence-is-required-to-attack-ics/\n- Video of Dale's comparison of cyber conflict situation to pre World War I cult of the offensive https://youtu.be/t5F93NIDePQ",
+    "view_count": 310
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mRL0J0e-xQ4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

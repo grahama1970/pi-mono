@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_KFqmJ2DW5E",
+    "language": "en",
+    "took_ms": 8972,
+    "method": null,
+    "title": "A Physicist and Biologist Go Out To Lunch ...",
+    "channel": "S4 Events",
+    "upload_date": "20231016",
+    "duration_sec": 84,
+    "description": "It's not the start of a joke. It's an example of a path to exploration in Andrea Jones-Rooey's S4x23 keynote.",
+    "view_count": 375
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _KFqmJ2DW5E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

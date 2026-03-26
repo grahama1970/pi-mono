@@ -1,0 +1,557 @@
+## Classifier Lab — Comprehensive Test Manifest
+## End-to-end pipeline test: Research → Data → Train → Benchmark → Evaluate → Promote
+## Agent drives via headless CDP (ws://localhost:9222) — NO mouse hijack
+## Task: Document table structure classification (lattice/stream/borderless)
+## Dataset: HuggingFace (PubTables-1M or TableBank)
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 0: SETUP & AGENT CONTROL
+# ═══════════════════════════════════════════════════════════════════
+
+- id: setup_launch_headless_chrome
+  element: "headless Chrome process"
+  action: "google-chrome --headless --remote-debugging-port=9222 --disable-gpu --no-sandbox"
+  expected: "Chrome listening on ws://localhost:9222, no visible browser window"
+  status: UNTESTED
+
+- id: setup_navigate_classifier_lab
+  element: "CDP: Page.navigate"
+  action: "navigate to http://localhost:3001/#classifier-lab"
+  expected: "Classifier Lab view renders with left pane showing 6 projects, Train tab active by default"
+  status: UNTESTED
+
+- id: setup_activate_agent_control
+  element: "POST /api/agent-control/activate"
+  action: "curl -X POST http://localhost:3001/api/agent-control/activate -H 'Content-Type: application/json' -d '{\"project\":\"classifier-lab\"}'"
+  expected: "Response: {active: true}. AgentControl button in header shows green pulse glow."
+  status: UNTESTED
+
+- id: setup_heartbeat_loop
+  element: "POST /api/agent-control/heartbeat"
+  action: "Start background loop: POST heartbeat every 5s with {project: 'classifier-lab'}"
+  expected: "Agent remains active (no 10s timeout). Green glow persists."
+  status: UNTESTED
+
+- id: setup_verify_hf_token
+  element: "environment"
+  action: "echo $HF_TOKEN | head -c 5"
+  expected: "Returns 'hf_kM' — token is set"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 1: RESEARCH TAB — /dogpile for SOTA + find dataset
+# ═══════════════════════════════════════════════════════════════════
+
+- id: research_click_tab
+  element: "RESEARCH tab button"
+  action: "CDP: click button with text 'RESEARCH'"
+  expected: "Research tab active (purple underline). Main area shows rendered markdown."
+  status: UNTESTED
+
+- id: research_dogpile_sota
+  element: "skill: /dogpile"
+  action: |
+    cd .pi/skills/dogpile && ./run.sh "best vision classifiers for PDF table structure detection 2025 2026 lattice stream borderless PubTables TableBank ConvNeXt EfficientNet"
+  expected: |
+    Dogpile report with:
+    - At least 3 backbone recommendations (ConvNeXt, EfficientNet, FastViT, DiT)
+    - arXiv paper references
+    - Expected F1 ranges
+    - Latency estimates
+  status: UNTESTED
+
+- id: research_dogpile_dataset
+  element: "skill: /dogpile"
+  action: |
+    cd .pi/skills/dogpile && ./run.sh "HuggingFace dataset table structure classification lattice stream borderless PDF document images training data"
+  expected: |
+    Report identifies at least one HuggingFace dataset:
+    - microsoft/table-transformer or bsmock/pubtables-1m or similar
+    - Reports number of classes and approximate sample counts
+    - Confirms >= 200 samples per class available
+  status: UNTESTED
+
+- id: research_github_search
+  element: "skill: /github-search"
+  action: |
+    cd .pi/skills/github-search && ./run.sh "table structure classification dataset lattice stream borderless"
+  expected: "Found relevant repositories with table classification datasets or pretrained models"
+  status: UNTESTED
+
+- id: research_hf_download
+  element: "huggingface_hub CLI"
+  action: |
+    HF_TOKEN=$HF_TOKEN python3 -c "
+    from huggingface_hub import snapshot_download
+    import os
+    snapshot_download(
+        repo_id='bsmock/pubtables-1m',
+        repo_type='dataset',
+        local_dir='/mnt/storage12tb/media/agents/shared/classifier-lab/data/pubtables-1m',
+        token=os.environ.get('HF_TOKEN'),
+        max_workers=4,
+        allow_patterns=['*.jpg', '*.png', '*.json', '*.csv', '*.txt']
+    )
+    "
+  expected: |
+    Dataset downloaded to /mnt/storage12tb/media/agents/shared/classifier-lab/data/pubtables-1m
+    - Contains image files organized by class
+    - At least 3 classes identifiable
+    - Total size < 50GB (we're on 12TB drive, not NVMe)
+  status: UNTESTED
+
+- id: research_verify_dataset_structure
+  element: "filesystem"
+  action: "find /mnt/storage12tb/media/agents/shared/classifier-lab/data/pubtables-1m -type f | head -20 && find ... -type d | head -10"
+  expected: |
+    Directory structure visible with either:
+    - Class subdirs (lattice/, stream/, borderless/) containing images, OR
+    - JSONL/CSV with image_path + label columns
+    - At least 600 total images (200 per class minimum)
+  status: UNTESTED
+
+- id: research_update_tab_content
+  element: "WebSocket: agent-bus"
+  action: "Send {type: 'narrate', payload: {message: 'Research complete. Found 3 backbones and PubTables-1M dataset.'}}"
+  expected: "Research tab updates with dogpile report content. Narration text appears in UI."
+  status: UNTESTED
+
+- id: research_screenshot
+  element: "CDP: Page.captureScreenshot"
+  action: "screenshot to captures/classifier-lab/e2e-test/01-research.png"
+  expected: "Screenshot shows Research tab with markdown report, left pane with projects, AGENT button green"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 2: DATA TAB — Validate dataset meets quality gates
+# ═══════════════════════════════════════════════════════════════════
+
+- id: data_click_tab
+  element: "DATA tab button"
+  action: "CDP: click button with text 'DATA'"
+  expected: "Data tab active. Shows dataset summary cards, class distribution, validation gate."
+  status: UNTESTED
+
+- id: data_count_classes
+  element: "script"
+  action: |
+    python3 -c "
+    from pathlib import Path
+    data_dir = Path('/mnt/storage12tb/media/agents/shared/classifier-lab/data/pubtables-1m')
+    for d in sorted(data_dir.iterdir()):
+        if d.is_dir():
+            count = len(list(d.glob('*.png')) + list(d.glob('*.jpg')))
+            print(f'{d.name}: {count} images')
+    "
+  expected: |
+    Output like:
+      lattice: 412 images
+      stream: 289 images
+      borderless: 146 images
+    At least 3 classes. Note if any class < 200 (triggers FAILED gate).
+  status: UNTESTED
+
+- id: data_check_gate
+  element: "Validation gate card in Data tab"
+  action: "CDP: visual check"
+  expected: |
+    If all classes >= 200: green VALIDATION PASSED card with ShieldCheck icon
+    If any class < 200: red VALIDATION FAILED card with AlertTriangle + AUGMENT DATASET button
+  status: UNTESTED
+
+- id: data_class_distribution_bars
+  element: "Class distribution bar chart"
+  action: "CDP: visual check"
+  expected: "Horizontal bars for each class, proportional to sample count, correct NVIS colors"
+  status: UNTESTED
+
+- id: data_screenshot
+  element: "CDP: Page.captureScreenshot"
+  action: "screenshot to captures/classifier-lab/e2e-test/02-data.png"
+  expected: "Screenshot shows Data tab with real dataset stats, class bars, gate status"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 3: TRAIN TAB — Run backbone comparison (the leaderboard)
+# ═══════════════════════════════════════════════════════════════════
+
+- id: train_click_tab
+  element: "TRAIN tab button"
+  action: "CDP: click button with text 'TRAIN'"
+  expected: "Train tab active. Shows leaderboard (may be empty initially)."
+  status: UNTESTED
+
+- id: train_select_gpu
+  element: "GPU picker cards"
+  action: "CDP: click 'LOCAL A5000' card"
+  expected: "Local A5000 card highlighted with green border. Price shows FREE."
+  status: UNTESTED
+
+- id: train_start_benchmark
+  element: "classifier-lab CLI"
+  action: |
+    cd .pi/skills/classifier-lab && ./run.sh benchmark \
+      --data-dir /mnt/storage12tb/media/agents/shared/classifier-lab/data/pubtables-1m \
+      --backbones "convnextv2_nano.fcmae_ft_in22k_in1k,efficientnet_b0,fastvit_sa12.apple_in1k" \
+      --epochs 5 \
+      --output-json /tmp/classifier-lab-e2e-benchmark.json \
+      --store-memory \
+      --require-memory-store
+  expected: |
+    Training starts for 3 backbones sequentially.
+    Output JSON written to /tmp/classifier-lab-e2e-benchmark.json.
+    Status: "ok". selected_backbone is not null.
+  timeout: 3600
+  status: UNTESTED
+
+- id: train_monitor_tb_1
+  element: "classifier-lab CLI: tb-summary"
+  action: "cd .pi/skills/classifier-lab && ./run.sh tb-summary --json"
+  expected: |
+    JSON output with runs, each showing:
+    - train/loss with latest, min, max values
+    - _convergence: "converging" or "insufficient_data" (not "diverging")
+  delay_after: 120
+  status: UNTESTED
+
+- id: train_monitor_tb_2
+  element: "classifier-lab CLI: tb-summary"
+  action: "cd .pi/skills/classifier-lab && ./run.sh tb-summary --json"
+  expected: "Loss decreasing from monitor_tb_1. Convergence: converging."
+  delay_after: 120
+  status: UNTESTED
+
+- id: train_monitor_tb_3
+  element: "classifier-lab CLI: tb-summary"
+  action: "cd .pi/skills/classifier-lab && ./run.sh tb-summary --json"
+  expected: "Loss continues decreasing or plateaued. NOT diverging."
+  delay_after: 120
+  status: UNTESTED
+
+- id: train_check_status
+  element: "classifier-lab CLI: status"
+  action: "cd .pi/skills/classifier-lab && ./run.sh status --json"
+  expected: |
+    JSON with:
+    - running: [] (empty if all done) or active PIDs
+    - completed: [{pid, output, macro_f1, accuracy, backbone}] with real values
+  status: UNTESTED
+
+- id: train_read_results
+  element: "output JSON"
+  action: "cat /tmp/classifier-lab-e2e-benchmark.json | python3 -m json.tool"
+  expected: |
+    Valid JSON with:
+    - status: "ok"
+    - selected_backbone: one of the 3 candidates
+    - selected_metrics.macro_f1: > 0.0 (any positive value on real data)
+    - results: array of 3 entries, each with macro_f1, accuracy, wilson_score_lower
+    - memory_store.status: "ok"
+  status: UNTESTED
+
+- id: train_send_leaderboard_to_bus
+  element: "WebSocket: agent-bus"
+  action: "Send training-update message with rows from benchmark results"
+  expected: "Leaderboard table in Train tab updates with real F1/accuracy/latency values"
+  status: UNTESTED
+
+- id: train_screenshot
+  element: "CDP: Page.captureScreenshot"
+  action: "screenshot to captures/classifier-lab/e2e-test/03-train.png"
+  expected: "Train tab shows populated leaderboard with real metrics, PASS/FAIL badges, GPU picker"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 4: BENCHMARK TAB — Verify comparison grid
+# ═══════════════════════════════════════════════════════════════════
+
+- id: benchmark_click_tab
+  element: "BENCHMARK tab button"
+  action: "CDP: click button with text 'BENCHMARK'"
+  expected: "Benchmark tab active. Comparison grid with 3 backbone rows."
+  status: UNTESTED
+
+- id: benchmark_verify_grid
+  element: "Backbone comparison table"
+  action: "CDP: visual check"
+  expected: |
+    Table with columns: BACKBONE, MACRO F1, ACCURACY, WILSON CI, LAT p50, LAT p95, PARAMS, TRAIN TIME
+    3 rows sorted by F1 descending.
+    Winner row has green left border and ★ prefix.
+    Best values in each column highlighted green.
+  status: UNTESTED
+
+- id: benchmark_parallel_coords
+  element: "Parallel coordinates SVG"
+  action: "CDP: visual check"
+  expected: "SVG chart with 5 axes (LR, Batch, Dropout, Weight Decay, Val F1) and 3 colored lines"
+  status: UNTESTED
+
+- id: benchmark_screenshot
+  element: "CDP: Page.captureScreenshot"
+  action: "screenshot to captures/classifier-lab/e2e-test/04-benchmark.png"
+  expected: "Benchmark tab with populated grid and parallel coordinates chart"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 5: EVALUATE TAB — Confusion matrix + holdout gate
+# ═══════════════════════════════════════════════════════════════════
+
+- id: evaluate_click_tab
+  element: "EVALUATE tab button"
+  action: "CDP: click button with text 'EVALUATE'"
+  expected: "Evaluate tab active. Confusion matrix, per-class metrics, holdout gate."
+  status: UNTESTED
+
+- id: evaluate_run_eval
+  element: "classifier-lab CLI: evaluate"
+  action: |
+    cd .pi/skills/classifier-lab && ./run.sh evaluate \
+      --model /mnt/storage12tb/media/agents/shared/classifier-lab/models/{{winner}} \
+      --data-dir /mnt/storage12tb/media/agents/shared/classifier-lab/data/pubtables-1m \
+      --output-json /tmp/classifier-lab-e2e-eval.json
+  expected: |
+    Evaluation JSON with:
+    - confusion_matrix: NxN array
+    - per_class: array of {name, precision, recall, f1, support}
+    - macro_f1: float > 0
+    - holdout_gate: "PASSED" or "FAILED" (relative to 0.90 threshold)
+  status: UNTESTED
+
+- id: evaluate_confusion_matrix
+  element: "Confusion matrix heatmap in Evaluate tab"
+  action: "CDP: visual check"
+  expected: |
+    NxN grid where:
+    - Diagonal cells are green (correct predictions, high values)
+    - Off-diagonal cells are red/amber (misclassifications, low values)
+    - All values in monospace font
+  status: UNTESTED
+
+- id: evaluate_per_class_table
+  element: "Per-class metrics table"
+  action: "CDP: visual check"
+  expected: "Table with Class, Precision, Recall, F1, Support columns. Values in monospace."
+  status: UNTESTED
+
+- id: evaluate_holdout_gate
+  element: "Holdout gate badge"
+  action: "CDP: visual check"
+  expected: |
+    If F1 >= 0.90: green badge "HOLDOUT PASSED — F1 X.XX ≥ 0.90" with ShieldCheck icon
+    If F1 < 0.90: red badge "HOLDOUT FAILED — F1 X.XX < 0.90"
+  status: UNTESTED
+
+- id: evaluate_shadow_gauge
+  element: "Shadow agreement gauge"
+  action: "CDP: visual check"
+  expected: "Gradient bar with percentage, threshold markers at 70/80/90%, zone labels"
+  status: UNTESTED
+
+- id: evaluate_screenshot
+  element: "CDP: Page.captureScreenshot"
+  action: "screenshot to captures/classifier-lab/e2e-test/05-evaluate.png"
+  expected: "Evaluate tab with confusion matrix, per-class table, holdout badge, shadow gauge"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 6: PROMOTE TAB — Export and deploy
+# ═══════════════════════════════════════════════════════════════════
+
+- id: promote_click_tab
+  element: "PROMOTE tab button"
+  action: "CDP: click button with text 'PROMOTE'"
+  expected: "Promote tab active. Winner card, export options, deployment target."
+  status: UNTESTED
+  condition: "evaluate_holdout_gate == PASSED"
+
+- id: promote_winner_card
+  element: "Winner card"
+  action: "CDP: visual check"
+  expected: "Card showing winner backbone name, F1, accuracy, latency in green with ShieldCheck icon"
+  status: UNTESTED
+
+- id: promote_export_model
+  element: "classifier-lab CLI: export"
+  action: |
+    cd .pi/skills/classifier-lab && ./run.sh export \
+      --model /mnt/storage12tb/media/agents/shared/classifier-lab/models/{{winner}} \
+      --format onnx
+  expected: "ONNX file created. File size > 0 bytes."
+  status: UNTESTED
+
+- id: promote_export_checkboxes
+  element: "Export artifact checkboxes"
+  action: "CDP: verify PyTorch, ONNX, TorchScript checkboxes visible and checked by default"
+  expected: "3 checkboxes all checked"
+  status: UNTESTED
+
+- id: promote_deployment_radios
+  element: "Deployment target radio buttons"
+  action: "CDP: verify Production Registry selected by default"
+  expected: "3 radio buttons: Production Registry (selected), Staging, Extended Shadow Mode"
+  status: UNTESTED
+
+- id: promote_button
+  element: "PROMOTE TO PRODUCTION button"
+  action: "CDP: visual check (do NOT click — just verify it exists)"
+  expected: "Green glowing RunButton with text 'PROMOTE TO PRODUCTION'"
+  status: UNTESTED
+
+- id: promote_screenshot
+  element: "CDP: Page.captureScreenshot"
+  action: "screenshot to captures/classifier-lab/e2e-test/06-promote.png"
+  expected: "Promote tab with winner card, export options, deployment target, green PROMOTE button"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# PHASE 7: AGENT CONTROL TEARDOWN
+# ═══════════════════════════════════════════════════════════════════
+
+- id: teardown_deactivate_agent
+  element: "POST /api/agent-control/deactivate"
+  action: "curl -X POST http://localhost:3001/api/agent-control/deactivate -H 'Content-Type: application/json' -d '{\"project\":\"classifier-lab\"}'"
+  expected: "Response: {active: false}. AgentControl button dims (no green glow)."
+  status: UNTESTED
+
+- id: teardown_stop_heartbeat
+  element: "heartbeat loop"
+  action: "Kill background heartbeat process"
+  expected: "No more heartbeat requests. Agent control times out after 10s."
+  status: UNTESTED
+
+- id: teardown_close_chrome
+  element: "headless Chrome"
+  action: "kill chrome PID"
+  expected: "Chrome process terminated. Port 9222 freed."
+  status: UNTESTED
+
+- id: teardown_store_to_memory
+  element: "skill: /memory learn"
+  action: |
+    memory-agent learn --problem "classifier-lab e2e test: table structure classification" \
+      --solution "Tested full pipeline Research→Data→Train→Benchmark→Evaluate→Promote. Winner: {{winner}}, F1: {{f1}}. Dataset: pubtables-1m from HuggingFace." \
+      --tags "classifier-lab,e2e-test,table-structure"
+  expected: "Lesson stored to ArangoDB memory. Key returned."
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# LEFT PANE INTERACTIONS
+# ═══════════════════════════════════════════════════════════════════
+
+- id: leftpane_collapse
+  element: "PanelLeftClose icon in CLASSIFIER LAB header"
+  action: "CDP: click"
+  expected: "Left pane collapses to 32px. Only expand icon visible."
+  status: UNTESTED
+
+- id: leftpane_expand
+  element: "PanelLeftOpen icon (when collapsed)"
+  action: "CDP: click"
+  expected: "Left pane expands to 260px. Full project list visible."
+  status: UNTESTED
+
+- id: leftpane_search
+  element: "input[placeholder='Filter...']"
+  action: "CDP: type 'intent'"
+  expected: "Project list filters to show only intent-clf"
+  status: UNTESTED
+
+- id: leftpane_select_project
+  element: "table-clf item in left pane"
+  action: "CDP: click"
+  expected: "table-clf highlighted with purple left border. Main area loads its pipeline data."
+  status: UNTESTED
+
+- id: leftpane_f1_colors
+  element: "F1 score display per project"
+  action: "CDP: visual check"
+  expected: |
+    intent-clf: 0.94 in green (>= 0.90)
+    table-clf: 0.88 in dim (0.80-0.90)
+    negation-clf: 0.71 in red (< 0.80)
+    taxonomy-router: 0.91 in green
+    coref-clf: TRAINING in amber
+    rel-extractor: — in muted
+  status: UNTESTED
+
+- id: leftpane_new_classifier_button
+  element: "+ NEW CLASSIFIER button"
+  action: "CDP: click"
+  expected: "Opens new classifier creation flow (modal or tab change)"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# TAB NAVIGATION
+# ═══════════════════════════════════════════════════════════════════
+
+- id: tabs_underline_active
+  element: "Active tab indicator"
+  action: "CDP: visual check each tab"
+  expected: "Active tab has 2px purple (#7c3aed) bottom border. Inactive tabs have transparent border."
+  status: UNTESTED
+
+- id: tabs_all_render
+  element: "All 6 tabs"
+  action: "CDP: click each tab sequentially"
+  expected: |
+    Each tab renders without error:
+    - Research: markdown content
+    - Data: summary cards + distribution bars
+    - Train: leaderboard table + GPU picker
+    - Benchmark: comparison grid + parallel coords
+    - Evaluate: confusion matrix + metrics + gate
+    - Promote: winner card + export + deploy
+  status: UNTESTED
+
+- id: tabs_agent_control_persists
+  element: "AgentControl button"
+  action: "CDP: check visibility across tab switches"
+  expected: "AGENT button visible in header on all 6 tabs. Green glow persists."
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# API ENDPOINTS (classifier-lab specific)
+# ═══════════════════════════════════════════════════════════════════
+
+- id: api_projects_list
+  element: "GET /api/projects/classifier-lab/projects"
+  action: "curl http://localhost:3001/api/projects/classifier-lab/projects"
+  expected: "JSON array of classifier projects (or 404 — endpoint may not exist yet)"
+  status: UNTESTED
+
+- id: api_tb_summary
+  element: "GET /api/projects/classifier-lab/tb-summary"
+  action: "curl http://localhost:3001/api/projects/classifier-lab/tb-summary"
+  expected: "JSON with TensorBoard metrics (or 404 — endpoint may not exist yet)"
+  status: UNTESTED
+
+- id: api_agent_control_status
+  element: "GET /api/agent-control/status?project=classifier-lab"
+  action: "curl http://localhost:3001/api/agent-control/status?project=classifier-lab"
+  expected: "JSON: {active: true/false, paused: true/false}"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# KNOWN GAPS (to be wired)
+# ═══════════════════════════════════════════════════════════════════
+
+- id: gap_real_api_endpoints
+  description: "server/index.ts has no classifier-lab-specific endpoints yet. Data/Train/Benchmark tabs use mock data."
+  severity: HIGH
+  action_needed: "Add /api/projects/classifier-lab/* endpoints that proxy to classifier-lab/run.sh"
+
+- id: gap_live_tb_streaming
+  description: "TensorBoard metrics don't stream to the UX via WebSocket during training"
+  severity: MEDIUM
+  action_needed: "Agent should poll tb-summary and send updates via agent-bus"
+
+- id: gap_dataset_download_ui
+  description: "No UI for downloading datasets from HuggingFace — must use CLI"
+  severity: LOW
+  action_needed: "Future: add HF dataset browser to Data tab"
+
+- id: gap_runpod_live_pricing
+  description: "GPU picker shows hardcoded prices/availability, not live RunPod API data"
+  severity: MEDIUM
+  action_needed: "Wire /ops-runpod to fetch live GPU availability"

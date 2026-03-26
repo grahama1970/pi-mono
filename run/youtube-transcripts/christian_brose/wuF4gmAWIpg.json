@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wuF4gmAWIpg",
+    "language": "en",
+    "took_ms": 8974,
+    "method": null,
+    "title": "What is Social Justice Philanthropy?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6676,
+    "description": "\"Social justice grantmakers aim to go one step beyond teaching a man to fish, to borrow an old saying. They ask why so few people in this man's community can afford to own a fishing pole; why the county incinerator is being sited in his neighbourhood, befouling his pond rather than that of his wealthier townsmen; and why he's being taught to fish when he's more likely to earn a living wage as an accountant or engineer.\" So wrote Albert Ruesga, President and CEO of the Greater New Orleans Foundat",
+    "view_count": 312
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wuF4gmAWIpg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

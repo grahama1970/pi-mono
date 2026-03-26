@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eOWO4JWEB68",
+    "language": "en",
+    "took_ms": 7563,
+    "method": null,
+    "title": "The Case For Vertical Specific (Rail) OT Security Training Materials",
+    "channel": "S4 Events",
+    "upload_date": "20250804",
+    "duration_sec": 1453,
+    "description": "Can OT security training be cross sector following a standard like IEC 62443? Or is it more effective if it's sector specific. Jesus makes the case that it should be sector specific and more aligned with engineering. He uses rail systems OT security training as the example.\n\nHe shared insights from a new 125-hour course, which was specifically designed for rail industry professionals. The course, sponsored by the Spanish Ministry of Transportation, was delivered in a hybrid format and centered around Technical Specification 50701 for rail cybersecurity (TS-50701), incorporating innovative educational techniques.\n\nStudent and rail industry sector feedback was shared.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 188
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eOWO4JWEB68: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

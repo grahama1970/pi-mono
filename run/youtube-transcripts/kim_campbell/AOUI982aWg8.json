@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AOUI982aWg8",
+    "language": "en",
+    "took_ms": 8749,
+    "method": null,
+    "title": "Parris Island Pugil Sticks",
+    "channel": "Sandboxx",
+    "upload_date": "20170105",
+    "duration_sec": 60,
+    "description": "Download the Sandboxx app free: https://lynm.app.link/yts\n\nGet more from Sandboxx:\nhttps://www.facebook.com/sandboxxapp/ \nhttps://twitter.com/sandboxx\nhttps://www.instagram.com/sandboxxapp/\nhttps://www.pinterest.com/sandboxxapp/\nhttp://www.sandboxx.us/\n\nSandboxx builds technology and content for our military and veteran communities. We enable members of the armed forces and their families to stay better connected throughout their military journey.",
+    "view_count": 4548
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AOUI982aWg8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

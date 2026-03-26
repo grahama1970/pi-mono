@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "flBcYzsx3Jg",
+    "language": "en",
+    "took_ms": 8979,
+    "method": null,
+    "title": "What it's like inside rocket engines! Viking 2 and Vulcain 1!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230516",
+    "duration_sec": 1561,
+    "description": "Join me as I take a look at two rocket engines that I knew little about, the Ariane 5's Vulcain 1 engine and the Ariane 1's Viking 2 engines at the Space Expo Center outside of ESA's Estec in The Netherlands. \n\n00:00 - Intro\n00:50 - Vulcain 1 Engine\n12:25 - Viking 2 Engine / Combustion Chamber\n15:00 - Turbine / Stator\n16:15 - Gas Generator\n19:10 - Injector\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 184696
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] flBcYzsx3Jg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

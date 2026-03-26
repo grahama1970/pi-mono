@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MYfeNyZIzBE",
+    "language": "en",
+    "took_ms": 13174,
+    "method": null,
+    "title": "DEF CON 31 - Using SIM Tunneling to Travel at Light Speed -  Adrian Dabrowski, Gabriel Gegenhuber",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2691,
+    "description": "Cellular networks form large complex compounds for roaming purposes. Thus, geographically-spread testbeds for masurements and rapid exploit verification are needed to do justice to the technology's unique structure and global scope. Additionally, such measurements suffer from a combinatorial explosion of operators, mobile plans, and services. To cope with these challenges, we are releasing an open-source framework that geographically decouples the SIM (subscription) from the cellular modem by selectively connecting both remotely. This allows testing any subscriber with any operator at any modem location within seconds without moving parts. The resulting measurement and testbed platform \"MobileAtlas\" offers a scalable, controlled experimentation environment. It is fully open-sourced and allows other researchers to contribute locations, SIM cards, and measurement scripts.\n\nUsing the above framework, our international experiments in commercial networks revealed exploitable inconsistencies in traffic metering, leading to multiple data \"phreaking\" opportunities (\"free-ride\"). We also expose problematic IPv6 firewall configurations, hidden SIM card communication to the home network, and fingerprint dial progress tones to track victims across different roaming networks and countries with voice calls.",
+    "view_count": 26601
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MYfeNyZIzBE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

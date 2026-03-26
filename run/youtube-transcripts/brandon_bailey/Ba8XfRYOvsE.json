@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ba8XfRYOvsE",
+    "language": "en",
+    "took_ms": 7884,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village  - Kürşat Akıncı, Mert Can Coşkuner -Android Malware Adventures",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1337,
+    "description": "Android malware is evolving every day and they are everywhere, even in Google Play Store. Malware developers have found ways to bypass Google's Bouncer as well as antivirus solutions and many alternative techniques to operate like Windows malware do. Using benign looking application working as a dropper is just one of them. This talk is about android malware on Google Play Store and targeting Turkey. The talk will cover;\nTechniques to Analyze Samples: Unencrypted samples are often used to retrieve personal informations to sell and do not have obfuscation. Encrypted samples however are used for much sophisticated tasks like stealing banking information. They decrypt themselves by getting the key from a twitter account who owned by the malware developer and operate by communicating with the C&C. Also, most banking samples are using techniques like screen injection and dependency injection which is mostly used by android application developers.\nBypassing Anti-* Techniques: To be able to dynamically analyze the sample, defeating anti-* techniques are often needed. We will introduce some (known) Frida scripts to be able to defeat common anti-* checks malware uses.\nExtracting IoCs: Extracting twitter account as well as C&C from encrypted samples are often critical to perform threat intelligence over samples. Extracting IoCs while assets are still active was crucial for our research since we are also aiming to takeover C&Cs. We will introduce (known) automatization technique to extract twitter account, decryption key and C&C address.\n4. Extract Stolen Information from C&Cs:\nIn order to extract information from C&C, one should act swiftly. The speed of extraction process is critical since the actors change C&Cs often. We will give a detailed walkthrough about how we approach C&Cs as a target and extract the informations.\nThe samples and informations in the talk is the product of our researches over many bankbot samples as well as other Turkish malware developer actors' samples.",
+    "view_count": 958
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ba8XfRYOvsE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

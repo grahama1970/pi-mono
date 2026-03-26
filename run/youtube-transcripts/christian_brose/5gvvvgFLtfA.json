@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5gvvvgFLtfA",
+    "language": "en",
+    "took_ms": 9782,
+    "method": null,
+    "title": "Congressional Testimony: Nuclear Negotiations with Iran - What Do America's Allies Think?",
+    "channel": "Hudson Institute",
+    "upload_date": "20141204",
+    "duration_sec": 374,
+    "description": "Michael Doran’s testimony before the U.S. Senate Committee on Foreign Relations regarding nuclear negotiations with Iran and the perceptions of America’s Middle Eastern allies.",
+    "view_count": 250
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5gvvvgFLtfA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WZJJgkftzOs",
+    "language": "en",
+    "took_ms": 8818,
+    "method": null,
+    "title": "DEF CON 32 - Whose Slide Is It Anyway",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3150,
+    "description": "Another rousing engagement with the game show that's sweeping the nation  - Whose Slide is it Anyway!",
+    "view_count": 2528
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WZJJgkftzOs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

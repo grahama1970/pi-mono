@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Observatory - S00: The Thought</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-dim": "#00ed7e",
+                        "on-background": "#ffffff",
+                        "on-secondary-fixed-variant": "#006632",
+                        "primary": "#bd9dff",
+                        "error": "#ff6e84",
+                        "on-tertiary": "#002a52",
+                        "tertiary-fixed": "#7bb3ff",
+                        "primary-fixed": "#b28cff",
+                        "on-primary-fixed-variant": "#390083",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "surface-bright": "#2c2c2c",
+                        "on-secondary": "#005b2c",
+                        "tertiary-container": "#499dfe",
+                        "surface-container-low": "#131313",
+                        "tertiary-dim": "#4fa0ff",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-dim": "#0e0e0e",
+                        "inverse-primary": "#742fe5",
+                        "on-surface-variant": "#adaaaa",
+                        "background": "#0e0e0e",
+                        "on-error-container": "#ffb2b9",
+                        "surface-variant": "#262626",
+                        "surface-container-high": "#202020",
+                        "on-primary-container": "#2e006c",
+                        "primary-container": "#b28cff",
+                        "secondary-fixed": "#00fd87",
+                        "on-error": "#490013",
+                        "surface-tint": "#bd9dff",
+                        "on-secondary-container": "#e3ffe4",
+                        "inverse-on-surface": "#565555",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "on-primary-fixed": "#000000",
+                        "error-container": "#a70138",
+                        "surface": "#0e0e0e",
+                        "surface-container": "#191a1a",
+                        "on-primary": "#3c0089",
+                        "on-tertiary-container": "#001e3c",
+                        "on-secondary-fixed": "#004621",
+                        "outline-variant": "#484848",
+                        "surface-container-lowest": "#000000",
+                        "error-dim": "#d73357",
+                        "outline": "#767575",
+                        "secondary": "#00fd87",
+                        "tertiary": "#6aabff",
+                        "primary-fixed-dim": "#a67aff",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "on-tertiary-fixed": "#001833",
+                        "on-surface": "#ffffff",
+                        "surface-container-highest": "#262626",
+                        "secondary-container": "#006d37",
+                        "primary-dim": "#8a4cfc"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .technical-grid {
+            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .glow-dot {
+            box-shadow: 0 0 12px 2px rgba(189, 157, 255, 0.6);
+        }
+        .confidence-bar-bg {
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="technical-grid">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full flex justify-between items-center px-8 py-4 bg-[#131313] border-none">
+<div class="text-xl font-black tracking-tighter text-white uppercase font-['Inter']">
+            Sonic Observatory
+        </div>
+<div class="flex items-center gap-6">
+<button class="text-[#adaaaa] hover:text-white transition-colors scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-[#adaaaa] hover:text-white transition-colors scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-64 bg-[#131313] flex flex-col border-r border-white/5 pt-20">
+<div class="px-6 py-8">
+<h2 class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px] text-[#7c3aed]">Project Alpha</h2>
+<p class="text-[#adaaaa] text-xs font-['Space_Grotesk'] opacity-60">S01: Initializing</p>
+</div>
+<div class="flex-1 flex flex-col">
+<a class="flex items-center gap-4 px-6 py-4 text-white border-l-2 border-[#7c3aed] bg-gradient-to-r from-[#7c3aed]/10 to-transparent transition-all" href="#">
+<span class="material-symbols-outlined">book</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Persona Journal</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#adaaaa] opacity-60 hover:bg-[#191a1a] hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Episodic Archiver</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#adaaaa] opacity-60 hover:bg-[#191a1a] hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">rss_feed</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Consume Feed</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#adaaaa] opacity-60 hover:bg-[#191a1a] hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Converse</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#adaaaa] opacity-60 hover:bg-[#191a1a] hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-['Space_Grotesk'] uppercase tracking-widest text-[10px]">Memory</span>
+</a>
+</div>
+<!-- Vertical Stepper (Context Specific) -->
+<div class="px-6 py-10 border-t border-white/5">
+<div class="flex flex-col gap-8 relative">
+<div class="absolute left-[7px] top-2 bottom-2 w-px bg-white/10"></div>
+<div class="flex items-center gap-4 relative z-10">
+<div class="w-4 h-4 rounded-full bg-primary glow-dot"></div>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold text-primary">S00: THE THOUGHT</span>
+</div>
+<div class="flex items-center gap-4 relative z-10">
+<div class="w-4 h-4 rounded-full bg-surface-container-highest border border-white/10"></div>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">S01: RECALL LORE</span>
+</div>
+<div class="flex items-center gap-4 relative z-10">
+<div class="w-4 h-4 rounded-full bg-surface-container-highest border border-white/10"></div>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant">S02: SONIC MAPPING</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-12 px-12 min-h-screen flex flex-col items-center">
+<!-- Progress Indicator -->
+<div class="mb-8 font-['Space_Grotesk'] text-[11px] tracking-[0.2em] text-primary/60 uppercase">
+            Processing Thought Stream • Pipeline Active
+        </div>
+<!-- Main Pipeline Card -->
+<div class="w-full max-w-4xl bg-surface-container rounded-xl overflow-hidden border border-white/5 relative shadow-2xl">
+<!-- Card Header -->
+<div class="flex justify-between items-center px-8 py-6 bg-surface-container-high">
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] text-primary font-bold tracking-widest">S00</span>
+<h1 class="text-2xl font-black tracking-tight text-white">The Thought</h1>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20">
+<span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold text-secondary tracking-widest uppercase">CLASSIFIED</span>
+</div>
+</div>
+<!-- Card Content -->
+<div class="p-8 space-y-10">
+<!-- Quote Block -->
+<div class="relative bg-surface-container-lowest rounded-xl p-6 border-l-[3px] border-primary">
+<blockquote class="italic text-lg text-on-background/90 font-medium mb-4 leading-relaxed">
+                        "I'm remembering the slaughter of my battle brothers at the Whisperheads and the pointlessness of it all"
+                    </blockquote>
+<div class="flex items-center gap-2">
+<span class="font-['Space_Grotesk'] text-[11px] text-on-surface-variant">Persona:</span>
+<span class="font-['Space_Grotesk'] text-[11px] text-white">Horus Lupercal</span>
+<span class="mx-2 text-white/10">•</span>
+<span class="font-['Space_Grotesk'] text-[11px] text-on-surface-variant">Source: /persona-journal</span>
+</div>
+</div>
+<!-- HEART Section -->
+<div>
+<label class="block font-['Space_Grotesk'] text-[10px] font-bold text-on-surface-variant tracking-[0.2em] uppercase mb-4">HEART (Emotional Vectors)</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Anger -->
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="px-2 py-0.5 rounded-full bg-error/10 text-error text-[10px] font-bold font-['Space_Grotesk'] uppercase border border-error/20">anger</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-white/60">0.91</span>
+</div>
+<div class="h-1.5 w-full confidence-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-error" style="width: 91%;"></div>
+</div>
+</div>
+<!-- Sadness -->
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary text-[10px] font-bold font-['Space_Grotesk'] uppercase border border-tertiary/20">sadness</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-white/60">0.87</span>
+</div>
+<div class="h-1.5 w-full confidence-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-tertiary" style="width: 87%;"></div>
+</div>
+</div>
+<!-- Fear -->
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="px-2 py-0.5 rounded-full bg-error-dim/10 text-error-dim text-[10px] font-bold font-['Space_Grotesk'] uppercase border border-error-dim/20">fear</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-white/60">0.72</span>
+</div>
+<div class="h-1.5 w-full confidence-bar-bg rounded-full overflow-hidden">
+<div class="h-full bg-error-dim" style="width: 72%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<!-- ENTITIES -->
+<div>
+<label class="block font-['Space_Grotesk'] text-[10px] font-bold text-on-surface-variant tracking-[0.2em] uppercase mb-4">ENTITIES</label>
+<div class="flex flex-wrap gap-3">
+<span class="px-3 py-1.5 rounded-lg border border-outline-variant text-on-background text-xs font-['Space_Grotesk']">Whisperheads</span>
+<span class="px-3 py-1.5 rounded-lg border border-outline-variant text-on-background text-xs font-['Space_Grotesk']">battle brothers</span>
+<span class="px-3 py-1.5 rounded-lg border border-outline-variant text-on-background text-xs font-['Space_Grotesk']">slaughter</span>
+</div>
+</div>
+<!-- SETTING -->
+<div>
+<label class="block font-['Space_Grotesk'] text-[10px] font-bold text-on-surface-variant tracking-[0.2em] uppercase mb-4">SETTING</label>
+<p class="text-on-background text-sm leading-relaxed opacity-80 font-medium">
+                            aftermath of battle, silence after violence
+                        </p>
+</div>
+</div>
+</div>
+<!-- Card Footer -->
+<div class="bg-surface-container-lowest border-t border-white/5 px-8 py-4">
+<div class="flex flex-wrap justify-between items-center gap-4">
+<div class="flex gap-6">
+<div class="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">book</span>
+<span class="text-[9px] font-['Space_Grotesk'] tracking-widest uppercase">/persona-journal</span>
+</div>
+<div class="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">history_edu</span>
+<span class="text-[9px] font-['Space_Grotesk'] tracking-widest uppercase">/episodic-archiver</span>
+</div>
+<div class="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">rss_feed</span>
+<span class="text-[9px] font-['Space_Grotesk'] tracking-widest uppercase">/consume-feed</span>
+</div>
+<div class="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">forum</span>
+<span class="text-[9px] font-['Space_Grotesk'] tracking-widest uppercase">/converse</span>
+</div>
+<div class="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+<span class="text-[9px] font-['Space_Grotesk'] tracking-widest uppercase">/memory</span>
+</div>
+</div>
+<div class="text-[10px] font-['Space_Grotesk'] text-primary/40">ID: THOUGHT_V1.0.4</div>
+</div>
+</div>
+</div>
+<!-- Pipeline Arrow -->
+<div class="mt-12 flex flex-col items-center gap-4 group cursor-pointer">
+<div class="w-px h-16 bg-gradient-to-b from-primary to-transparent"></div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-4xl group-hover:translate-y-1 transition-transform">keyboard_double_arrow_down</span>
+<div class="mt-2 flex flex-col items-center">
+<span class="font-['Space_Grotesk'] text-[10px] font-bold text-on-surface-variant tracking-[0.3em] uppercase opacity-40">Proceed to next module</span>
+<span class="font-['Space_Grotesk'] text-xs font-bold text-white mt-1">S01: Recall Lore</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Decorative Texture Background -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[-1]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDQpXNfD083gEBLCKGOdmb2mdXnRR45PT3tDahdOxveTXJC1pN8K9SCRuhbhalNUarn_weKZ4OgJ7EzK8skjn54nhMxlAnSp1CFEayEkZ8UEahnfqr05lHWpAcDQYgYdrLrWMr8Vt8GTAAVZte3QTGjDFdgtJiflX16VTbJPm_lYTJ1eAUZ3AUriS6e1u_XXGT7nh2m5hvAz6_929ULAJrIUAtMs2tOGbNPFyPgNINcyxgLeJJk4XkAcTJRsyA-pxdL0AkfnACX81A');"></div>
+</body></html>

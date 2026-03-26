@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y9xf422Mn64",
+    "language": "en",
+    "took_ms": 8591,
+    "method": null,
+    "title": "History of the Future: The Shape of the World to Come Is Vis",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6339,
+    "description": "Human character has always been shaped by struggles against poverty, tyranny, and war. Hudson Institute co-founder and Senior Fellow Max Singer's new book, History of the Future: The Shape of the World to Come Is Visible Today (Lexington Books), argues that poverty, tyranny, and war will be largely eliminated in the future. Without the struggles that have plagued humanity throughout history, Singer says we will have to find new ways to shape character. In this work which continues the research i",
+    "view_count": 136
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y9xf422Mn64: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

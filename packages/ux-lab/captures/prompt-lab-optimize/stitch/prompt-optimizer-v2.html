@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline-progress {
+            height: 1px;
+            width: 100%;
+            background: #00e479;
+            box-shadow: 0 0 8px #00e479;
+        }
+        /* Hide scrollbar for technical density */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-surface": "#dce2f6",
+                        "tertiary": "#00e479",
+                        "on-tertiary": "#003919",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#ccc3d8",
+                        "surface-container-lowest": "#070e1c",
+                        "tertiary-container": "#00773c",
+                        "on-surface": "#dce2f6",
+                        "outline-variant": "#4a4455",
+                        "surface-container-high": "#232a39",
+                        "primary-container": "#7c3aed",
+                        "surface-container": "#19202e",
+                        "error": "#ffb4ab",
+                        "secondary": "#a4c9ff",
+                        "on-secondary": "#00315d",
+                        "secondary-container": "#3b93f3",
+                        "primary-fixed": "#eaddff",
+                        "on-tertiary-fixed": "#00210c",
+                        "surface-container-low": "#151b2a",
+                        "background": "#0c1321",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#2e3544",
+                        "surface-tint": "#d2bbff",
+                        "on-primary": "#3f008e",
+                        "outline": "#958da1",
+                        "surface": "#0c1321",
+                        "surface-variant": "#2e3544",
+                        "on-secondary-fixed-variant": "#004884",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "inverse-on-surface": "#2a3040",
+                        "inverse-primary": "#732ee4",
+                        "surface-bright": "#323949",
+                        "on-secondary-fixed": "#001c39",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "tertiary-fixed": "#60ff99",
+                        "on-tertiary-container": "#84ffa8",
+                        "on-primary-fixed": "#25005a",
+                        "tertiary-fixed-dim": "#00e479",
+                        "on-background": "#dce2f6",
+                        "primary": "#d2bbff",
+                        "primary-fixed-dim": "#d2bbff",
+                        "surface-dim": "#0c1321",
+                        "on-primary-container": "#ede0ff",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-secondary-container": "#002a52"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0", "lg": "0", "xl": "0", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary/30">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-6 h-14 bg-[#0c1321] border-b border-[#4a4455]/20 font-['Space_Grotesk'] tracking-tight sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="text-lg font-bold tracking-tighter text-[#7c3aed]">PROMPT_LAB_OPT</div>
+<div class="hidden md:flex items-center gap-1 bg-surface-container-high px-3 py-1 border-b border-primary/40">
+<span class="material-symbols-outlined text-sm text-primary">terminal</span>
+<span class="text-xs uppercase tracking-widest font-bold">prompt-lab optimize — taxonomy_v1</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 h-8 bg-surface-container text-[#d2bbff]/60 hover:bg-[#2e3544] transition-colors cursor-crosshair active:opacity-80">
+<span class="material-symbols-outlined text-[18px]">security</span>
+<span class="text-[10px] font-bold tracking-widest uppercase">Sec-Enclave: Active</span>
+</div>
+<span class="material-symbols-outlined text-[#d2bbff]/60 hover:bg-[#2e3544] p-2 transition-colors cursor-crosshair">terminal</span>
+<span class="material-symbols-outlined text-[#d2bbff]/60 hover:bg-[#2e3544] p-2 transition-colors cursor-crosshair">settings</span>
+<div class="w-8 h-8 bg-primary-container flex items-center justify-center">
+<img alt="Operator" class="w-full h-full object-cover" data-alt="Operator profile avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABOGDI1z1uGr3NRshKmlekFG0MSp__FbAraTVBk8NjH3QSdhAnQP2gh3wx85Z_VIrDg31311DSdqxOcLM_OPxdvF-J5_JWSNCH2PgXQf4eIeCckBQpc2FVrl5iH-6VXgf8pacAuvbQlqhEqZT4TVQV-s4Iwrl3re9-jgLga7hhj78v8v8uMyi1v95SX6x36sBDeJexzInDNvuk3HKIZkXH3Aknlrq8oJfoG7OZtunZ0Ga-QUJeBIe3b3e_nB73DYcCTCuFOEqyCCY"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-3.5rem)] overflow-hidden">
+<!-- Side Navigation Bar -->
+<nav class="hidden md:flex flex-col w-64 bg-[#151b2a] border-r border-[#4a4455]/20 h-auto fixed left-0 top-14 bottom-0 z-40">
+<div class="p-6">
+<div class="text-[#7c3aed] font-black font-['Space_Grotesk'] uppercase text-xs tracking-widest mb-1">TACTICAL_OBSERVER</div>
+<div class="text-[#d2bbff]/40 font-['Space_Grotesk'] text-[10px] tracking-widest uppercase">v1.0.4-stable</div>
+</div>
+<div class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#7c3aed] bg-[#19202e] border-l-2 border-[#7c3aed] font-['Space_Grotesk'] uppercase text-xs tracking-widest transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm">tune</span>
+<span>Optimizer</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#d2bbff]/50 hover:bg-[#19202e] hover:text-[#d2bbff] font-['Space_Grotesk'] uppercase text-xs tracking-widest transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm">analytics</span>
+<span>Benchmarks</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#d2bbff]/50 hover:bg-[#19202e] hover:text-[#d2bbff] font-['Space_Grotesk'] uppercase text-xs tracking-widest transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm">history</span>
+<span>History</span>
+</a>
+</div>
+<div class="p-4 bg-surface-container-lowest/50 m-4 border-t border-outline-variant/10">
+<button class="w-full py-3 bg-primary-container hover:brightness-110 text-on-primary-container font-black uppercase text-[10px] tracking-widest transition-all">
+                    INITIATE_OPTIMIZATION
+                </button>
+</div>
+<div class="p-4 border-t border-[#4a4455]/20">
+<div class="flex items-center gap-3 px-4 py-2 text-[#d2bbff]/50 hover:text-[#d2bbff] font-['Space_Grotesk'] uppercase text-[10px] tracking-widest cursor-pointer">
+<span class="material-symbols-outlined text-sm">list_alt</span>
+<span>System Logs</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-[#d2bbff]/50 hover:text-[#d2bbff] font-['Space_Grotesk'] uppercase text-[10px] tracking-widest cursor-pointer">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span>Documentation</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 flex flex-col md:flex-row overflow-hidden bg-surface">
+<!-- Left Pane: Editor -->
+<section class="flex-1 border-r border-outline-variant/20 flex flex-col overflow-y-auto min-h-screen md:min-h-0">
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">System Prompt Editor</h2>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-0.5 bg-surface-container-highest text-[9px] font-bold text-secondary uppercase tracking-tighter border-l border-secondary">v1.2.0-delta</span>
+</div>
+</div>
+<div class="p-6 space-y-6 flex-1">
+<div class="space-y-2">
+<label class="text-[10px] font-black uppercase tracking-widest text-primary/70">Instructional Context</label>
+<div class="relative group">
+<textarea class="w-full h-48 bg-surface-container p-4 font-mono text-sm border-0 focus:ring-1 focus:ring-primary text-primary-fixed resize-none" placeholder="Enter system instructions...">You are a cybersecurity taxonomy classifier. Your task is to analyze incident descriptions and map them to the unified impact framework. 
+
+Use precise terminology and prioritize structural vulnerability indicators over high-level symptoms.</textarea>
+<div class="absolute bottom-2 right-2 flex gap-2">
+<span class="text-[10px] font-bold text-outline uppercase">Lines: 4</span>
+<span class="text-[10px] font-bold text-outline uppercase">Tokens: 42</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-outline-variant/10 pb-1">
+<label class="text-[10px] font-black uppercase tracking-widest text-primary/70">Test Matrix</label>
+<button class="text-[10px] font-bold text-secondary hover:underline">+ New Case</button>
+</div>
+<div class="space-y-2">
+<!-- Test Case 1 -->
+<div class="group bg-surface-container-low hover:bg-surface-container p-3 flex flex-col gap-2 transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-outline">TC-01</span>
+<div class="flex gap-1">
+<div class="h-4 w-1 bg-tertiary"></div>
+<span class="text-[9px] font-bold uppercase tracking-widest text-tertiary">Corruption+Persist</span>
+</div>
+</div>
+<div class="text-[11px] font-mono text-on-surface/80">T1547.001 Registry Run Keys / Startup Folder</div>
+</div>
+<!-- Test Case 2 -->
+<div class="group bg-surface-container-low hover:bg-surface-container p-3 flex flex-col gap-2 transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-outline">TC-02</span>
+<div class="flex gap-1">
+<div class="h-4 w-1 bg-tertiary"></div>
+<span class="text-[9px] font-bold uppercase tracking-widest text-tertiary">Resilience+Fragility+Harden</span>
+</div>
+</div>
+<div class="text-[11px] font-mono text-on-surface/80">SI-2 Flaw Remediation via automated patching</div>
+</div>
+<!-- Test Case 3 -->
+<div class="group bg-surface-container-low hover:bg-surface-container p-3 flex flex-col gap-2 transition-colors">
+<div class="flex justify-between items-start">
+<span class="text-[10px] font-bold text-outline">TC-03</span>
+<div class="flex gap-1">
+<div class="h-4 w-1 bg-tertiary"></div>
+<span class="text-[9px] font-bold uppercase tracking-widest text-tertiary">Resilience+Isolate</span>
+</div>
+</div>
+<div class="text-[11px] font-mono text-on-surface/80">d3f:NetworkIsolation Network Isolation for segment E-4</div>
+</div>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] font-black uppercase tracking-widest text-primary/70">Model Orchestration</label>
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-highest border-l-2 border-secondary text-[10px] font-bold">
+<span class="material-symbols-outlined text-xs">memory</span>
+                                DeepSeek-V3
+                                <span class="material-symbols-outlined text-xs cursor-pointer hover:text-error">close</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-highest border-l-2 border-secondary text-[10px] font-bold">
+<span class="material-symbols-outlined text-xs">memory</span>
+                                qwen2.5:7b
+                                <span class="material-symbols-outlined text-xs cursor-pointer hover:text-error">close</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-highest border-l-2 border-primary/40 text-[10px] font-bold opacity-60">
+<span class="material-symbols-outlined text-xs">cloud</span>
+                                text-gemini
+                                <span class="material-symbols-outlined text-xs cursor-pointer hover:text-error">close</span>
+</div>
+<button class="px-3 py-1.5 border border-outline-variant/30 hover:border-primary/50 text-[10px] font-bold uppercase transition-colors">+</button>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/20 bg-surface-container-low mt-auto">
+<button class="w-full py-4 bg-tertiary hover:bg-tertiary/90 text-on-tertiary font-black uppercase tracking-[0.25em] flex items-center justify-center gap-3 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">bolt</span>
+                        OPTIMIZE INFERENCE
+                    </button>
+</div>
+</section>
+<!-- Right Pane: Comparison & Details -->
+<section class="flex-[1.4] flex flex-col overflow-y-auto">
+<!-- Comparison Header -->
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-low flex justify-between items-center sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Comparative Telemetry</h2>
+<div class="flex items-center gap-2">
+<span class="text-[9px] font-bold bg-secondary/10 text-secondary px-2">3 MODELS</span>
+<span class="text-[9px] font-bold bg-tertiary/10 text-tertiary px-2">STABLE</span>
+</div>
+</div>
+<span class="text-[10px] font-mono text-outline uppercase">Refresh: 2s ago</span>
+</div>
+<!-- Comparison Table -->
+<div class="p-0 overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest text-[10px] font-black uppercase tracking-widest text-outline text-left border-b border-outline-variant/20">
+<th class="p-4">Model Identifier</th>
+<th class="p-4 text-center">F1 Score</th>
+<th class="p-4 text-center">Status</th>
+<th class="p-4 text-center">Epochs</th>
+<th class="p-4">Signals</th>
+</tr>
+</thead>
+<tbody class="text-[11px]">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container/50 transition-colors">
+<td class="p-4 flex items-center gap-3">
+<div class="w-6 h-6 bg-primary flex items-center justify-center font-bold text-[10px]">DS</div>
+<span class="font-bold">DeepSeek-V3</span>
+</td>
+<td class="p-4 text-center font-mono font-bold text-tertiary text-lg">0.929</td>
+<td class="p-4 text-center">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 font-bold uppercase tracking-tighter">PASS</span>
+</td>
+<td class="p-4 text-center font-mono">2 rounds</td>
+<td class="p-4">
+<span class="px-2 py-0.5 bg-primary-container text-white text-[9px] font-black tracking-widest uppercase">BEST</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container/50 transition-colors">
+<td class="p-4 flex items-center gap-3">
+<div class="w-6 h-6 bg-secondary flex items-center justify-center font-bold text-[10px]">QW</div>
+<span class="font-bold">qwen2.5:7b</span>
+</td>
+<td class="p-4 text-center font-mono font-bold text-on-surface text-lg">0.881</td>
+<td class="p-4 text-center">
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary border border-tertiary/20 font-bold uppercase tracking-tighter">PASS</span>
+</td>
+<td class="p-4 text-center font-mono">4 rounds</td>
+<td class="p-4">-</td>
+</tr>
+<tr class="bg-surface-container/30 relative">
+<td class="p-0 h-1" colspan="5">
+<div class="scanline-progress"></div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 bg-surface-container/20">
+<td class="p-4 flex items-center gap-3">
+<div class="w-6 h-6 bg-outline-variant flex items-center justify-center font-bold text-[10px]">GE</div>
+<span class="font-bold opacity-50">text-gemini</span>
+</td>
+<td class="p-4 text-center font-mono font-bold opacity-50">-</td>
+<td class="p-4 text-center">
+<span class="flex items-center justify-center gap-2 text-secondary animate-pulse text-[10px] font-bold uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">sync</span>
+                                        Running...
+                                    </span>
+</td>
+<td class="p-4 text-center font-mono opacity-50">-</td>
+<td class="p-4">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Details Section -->
+<div class="p-6 space-y-8 bg-surface-container-lowest/50 flex-1">
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<h3 class="text-[10px] font-black uppercase tracking-widest text-primary">Converged Prompt Variant</h3>
+<div class="h-[1px] flex-1 bg-outline-variant/20"></div>
+</div>
+<div class="bg-surface-container p-6 font-mono text-[11px] leading-relaxed border border-outline-variant/20 relative">
+<div class="absolute top-0 right-0 p-2 opacity-30">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+</div>
+<span class="text-tertiary-fixed font-bold tracking-widest uppercase text-[9px] mb-2 block">// GENERATED OPTIMAL SHARD</span>
+<p class="text-on-surface/90">
+                                Classify incident &lt;INPUT&gt; into taxonomy_v1. Parameters: <br/>
+                                - <span class="text-secondary">@structural_impact</span>: evaluate persistent state changes.<br/>
+                                - <span class="text-secondary">@resilience_score</span>: invert failure points if recovery exists.<br/>
+                                - <span class="text-secondary">@taxonomy_map</span>: [Corruption, Persistence, Resilience, Isolation, Fragility].<br/><br/>
+                                OUTPUT: JSON valid format only. Zero-shot reasoning enabled.
+                            </p>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+<div class="space-y-3">
+<h4 class="text-[9px] font-black uppercase tracking-[0.2em] text-outline">Response Shard: TC-01</h4>
+<div class="bg-surface-container-high p-4 text-[10px] font-mono overflow-x-auto border-l-2 border-primary-container">
+<pre class="text-primary-fixed">{
+  "verdict": "CRITICAL",
+  "tags": ["Corruption", "Persist"],
+  "confidence": 0.984,
+  "vector": [1, 0, 1, 0, 0]
+}</pre>
+</div>
+</div>
+<div class="space-y-3">
+<h4 class="text-[9px] font-black uppercase tracking-[0.2em] text-outline">Response Shard: TC-02</h4>
+<div class="bg-surface-container-high p-4 text-[10px] font-mono overflow-x-auto border-l-2 border-primary-container">
+<pre class="text-primary-fixed">{
+  "verdict": "MODERATE",
+  "tags": ["Resilience", "Fragility", "Harden"],
+  "confidence": 0.912,
+  "vector": [0, 1, 1, 0, 1]
+}</pre>
+</div>
+</div>
+</div>
+</div>
+<!-- Final Actions -->
+<div class="p-6 bg-surface-container flex justify-end gap-3 sticky bottom-0 border-t border-outline-variant/30 backdrop-blur-md">
+<button class="px-8 py-3 bg-surface-container-highest border border-outline-variant text-[11px] font-bold uppercase tracking-widest hover:bg-error/10 hover:border-error/30 hover:text-error transition-all active:scale-[0.98]">
+                        REJECT VARIANT
+                    </button>
+<button class="px-10 py-3 bg-primary-container text-on-primary-container text-[11px] font-bold uppercase tracking-[0.2em] shadow-[0_4px_20px_rgba(124,58,237,0.3)] hover:brightness-110 transition-all active:scale-[0.98]">
+                        APPROVE &amp; SAVE ALL
+                    </button>
+</div>
+</section>
+</main></div>
+<!-- Mobile Bottom Navigation Fallback -->
+<footer class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-container border-t border-outline-variant/20 flex items-center justify-around z-50">
+<div class="flex flex-col items-center gap-1 text-[#7c3aed]">
+<span class="material-symbols-outlined">tune</span>
+<span class="text-[8px] font-bold uppercase tracking-widest">Optimizer</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-[#d2bbff]/60">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[8px] font-bold uppercase tracking-widest">Analytics</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-[#d2bbff]/60">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[8px] font-bold uppercase tracking-widest">History</span>
+</div>
+</footer>
+</body></html>

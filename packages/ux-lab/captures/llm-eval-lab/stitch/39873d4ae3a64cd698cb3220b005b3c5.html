@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TERMINAL_VELOCITY_DB | ORCHESTRATOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#2e3544",
+                        "on-surface": "#dce2f6",
+                        "tertiary-fixed": "#ffdbca",
+                        "primary": "#00e479",
+                        "inverse-primary": "#006d37",
+                        "surface-container": "#19202e",
+                        "surface": "#0c1321",
+                        "on-primary-fixed": "#00210c",
+                        "surface-container-highest": "#2e3544",
+                        "on-tertiary-container": "#4a1c00",
+                        "on-primary-fixed-variant": "#005228",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "outline": "#8c909f",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#070e1c",
+                        "surface-container-high": "#232a39",
+                        "background": "#0c1321",
+                        "on-background": "#dce2f6",
+                        "on-primary": "#003919",
+                        "primary-fixed": "#60ff99",
+                        "on-secondary-fixed": "#25005a",
+                        "inverse-on-surface": "#2a3040",
+                        "secondary-container": "#6001d1",
+                        "on-secondary": "#3f008e",
+                        "tertiary": "#ffb690",
+                        "on-secondary-fixed-variant": "#5a00c6",
+                        "surface-bright": "#323949",
+                        "surface-container-low": "#151b2a",
+                        "surface-dim": "#0c1321",
+                        "tertiary-container": "#ec6a06",
+                        "on-surface-variant": "#c2c6d6",
+                        "on-primary-container": "#003115",
+                        "surface-tint": "#00e479",
+                        "on-tertiary-fixed": "#341100",
+                        "secondary-fixed": "#eaddff",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#783200",
+                        "on-secondary-container": "#c9aeff",
+                        "primary-container": "#00a657",
+                        "primary-fixed-dim": "#00e479",
+                        "on-tertiary": "#552100",
+                        "inverse-surface": "#dce2f6",
+                        "secondary": "#d2bbff",
+                        "outline-variant": "#424754",
+                        "on-error": "#690005"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["JetBrains Mono"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+        .no-radius { border-radius: 0 !important; }
+        .letter-spacing-sm { letter-spacing: 0.05rem; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary h-screen overflow-hidden flex">
+<!-- SIDEBAR (SideNavBar Component from JSON) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col items-center py-4 bg-[#151b2a] w-20 border-r-0 z-50">
+<div class="mb-8">
+<span class="text-xl font-black tracking-tighter text-[#00e479] font-headline">ORCHESTRATOR</span>
+<div class="text-[8px] text-center opacity-50 uppercase font-bold letter-spacing-sm">v1.0.4-stable</div>
+</div>
+<nav class="flex flex-col gap-2 w-full">
+<button class="flex flex-col items-center py-3 w-full transition-colors duration-100 ease-linear bg-[#232a39] text-[#00e479] border-l-4 border-[#00e479]">
+<span class="material-symbols-outlined mb-1">terminal</span>
+<span class="text-[10px] font-bold font-label letter-spacing-sm uppercase">PROMPT</span>
+</button>
+<button class="flex flex-col items-center py-3 w-full transition-colors duration-100 ease-linear text-[#dce2f6] opacity-50 hover:bg-[#2e3544] hover:opacity-100">
+<span class="material-symbols-outlined mb-1">analytics</span>
+<span class="text-[10px] font-bold font-label letter-spacing-sm uppercase">EVALS</span>
+</button>
+<button class="flex flex-col items-center py-3 w-full transition-colors duration-100 ease-linear text-[#dce2f6] opacity-50 hover:bg-[#2e3544] hover:opacity-100">
+<span class="material-symbols-outlined mb-1">layers</span>
+<span class="text-[10px] font-bold font-label letter-spacing-sm uppercase">MODELS</span>
+</button>
+<button class="flex flex-col items-center py-3 w-full transition-colors duration-100 ease-linear text-[#dce2f6] opacity-50 hover:bg-[#2e3544] hover:opacity-100">
+<span class="material-symbols-outlined mb-1">list_alt</span>
+<span class="text-[10px] font-bold font-label letter-spacing-sm uppercase">LOGS</span>
+</button>
+<button class="flex flex-col items-center py-3 w-full transition-colors duration-100 ease-linear text-[#dce2f6] opacity-50 hover:bg-[#2e3544] hover:opacity-100">
+<span class="material-symbols-outlined mb-1">settings</span>
+<span class="text-[10px] font-bold font-label letter-spacing-sm uppercase">CONFIG</span>
+</button>
+</nav>
+<div class="mt-auto">
+<div class="w-10 h-10 bg-surface-container-highest flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-secondary">account_circle</span>
+</div>
+</div>
+</aside>
+<main class="ml-20 flex flex-col w-full h-screen">
+<!-- HEADER (TopAppBar Component from JSON) -->
+<header class="flex justify-between items-center px-6 w-full h-12 bg-[#0c1321] z-40">
+<div class="flex items-center gap-6">
+<span class="font-mono font-bold text-[#00e479] tracking-widest uppercase">TERMINAL_VELOCITY_DB</span>
+<div class="flex gap-4 items-center h-full">
+<span class="text-[#00e479] font-label font-bold text-xs letter-spacing-sm cursor-pointer">SESSION_01</span>
+<span class="text-[#d2bbff] font-label font-bold text-xs letter-spacing-sm cursor-pointer hover:text-[#00e479] opacity-50">SESSION_02</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center">
+<input class="bg-surface-container-low border-b-2 border-outline-variant focus:border-primary text-xs font-body px-3 py-1 outline-none w-48 text-on-surface" placeholder="QUERY_LOGS..." type="text"/>
+<span class="material-symbols-outlined absolute right-2 text-xs opacity-50">search</span>
+</div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">help_outline</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-1 text-xs font-bold font-label letter-spacing-sm uppercase flex items-center gap-2">
+                    DEPLOY <span class="material-symbols-outlined text-sm">rocket_launch</span>
+</button>
+</div>
+</header>
+<!-- DASHBOARD GRID -->
+<div class="flex flex-1 overflow-hidden p-3 gap-3">
+<!-- LEFT COLUMN: CONFIGURATION (35%) -->
+<section class="w-[35%] flex flex-col gap-3 h-full overflow-y-auto pr-1">
+<!-- System Prompt -->
+<div class="bg-surface-container-low p-4 border-l-2 border-primary">
+<label class="block text-[10px] font-bold font-label letter-spacing-sm text-secondary uppercase mb-2">SYSTEM_PROMPT</label>
+<textarea class="w-full h-24 bg-[#070e1c] border border-outline-variant/30 text-xs font-body p-3 text-on-surface resize-none focus:border-primary outline-none" spellcheck="false">You are a security analysis agent. Parse the following log trace and determine if there is an indicator of compromise (IOC). Return your analysis in valid JSON format only.</textarea>
+</div>
+<!-- Test Cases -->
+<div class="bg-surface-container-low p-4 flex-1 flex flex-col overflow-hidden">
+<div class="flex justify-between items-end mb-3">
+<label class="text-[10px] font-bold font-label letter-spacing-sm text-secondary uppercase">TEST_CASES</label>
+<select class="bg-[#070e1c] text-[10px] font-label font-bold border-0 text-primary uppercase letter-spacing-sm py-0 pl-1 pr-6 cursor-pointer">
+<option>taxonomy.json (8 cases)</option>
+<option>brute_force.json (12 cases)</option>
+</select>
+</div>
+<div class="flex-1 overflow-y-auto space-y-1">
+<!-- Case Row -->
+<div class="bg-[#070e1c] p-2 hover:bg-surface-container-high cursor-pointer transition-colors group">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-primary font-bold">T1547.001</span>
+<div class="flex gap-1">
+<span class="bg-primary/10 text-primary text-[8px] px-1 font-bold">CORRUPTION</span>
+<span class="bg-secondary/10 text-secondary text-[8px] px-1 font-bold">PERSIST</span>
+</div>
+</div>
+<p class="text-[10px] text-on-surface-variant line-clamp-2 leading-tight">Analyze PID 4492 executing 'reg.exe add HKCU\Software\Microsoft\Windows\CurrentVersion\Run'...</p>
+</div>
+<div class="bg-[#19202e] p-2 hover:bg-surface-container-high cursor-pointer transition-colors group">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-primary font-bold">T1059.003</span>
+<div class="flex gap-1">
+<span class="bg-primary/10 text-primary text-[8px] px-1 font-bold">EXECUTION</span>
+</div>
+</div>
+<p class="text-[10px] text-on-surface-variant line-clamp-2 leading-tight">Identify command line parameters for powershell.exe -enc JABzAD0ATgBlAHcALQBPAGIAagBlAGMAdAA...</p>
+</div>
+<div class="bg-[#070e1c] p-2 hover:bg-surface-container-high cursor-pointer transition-colors group">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-primary font-bold">T1003.001</span>
+<div class="flex gap-1">
+<span class="bg-error/10 text-error text-[8px] px-1 font-bold">LSASS_DUMP</span>
+</div>
+</div>
+<p class="text-[10px] text-on-surface-variant line-clamp-2 leading-tight">Process lsass.exe accessed by unknown caller 'mimikatz.exe' with full memory access rights...</p>
+</div>
+<div class="bg-[#19202e] p-2 hover:bg-surface-container-high cursor-pointer transition-colors group">
+<div class="flex justify-between mb-1">
+<span class="text-[10px] text-primary font-bold">T1021.001</span>
+<div class="flex gap-1">
+<span class="bg-primary/10 text-primary text-[8px] px-1 font-bold">LATERAL_MOV</span>
+</div>
+</div>
+<p class="text-[10px] text-on-surface-variant line-clamp-2 leading-tight">RDP connection established from 10.0.0.5 to 10.0.0.12 using local admin credentials...</p>
+</div>
+</div>
+</div>
+<!-- Model Selection Matrix -->
+<div class="bg-surface-container-low p-4">
+<div class="flex justify-between items-center mb-3">
+<label class="text-[10px] font-bold font-label letter-spacing-sm text-secondary uppercase">MODEL_MATRIX (4/12)</label>
+<div class="flex gap-2">
+<button class="text-[8px] font-bold font-label text-on-surface-variant hover:text-primary uppercase letter-spacing-sm underline decoration-outline-variant">ALL</button>
+<button class="text-[8px] font-bold font-label text-on-surface-variant hover:text-primary uppercase letter-spacing-sm underline decoration-outline-variant">LOCAL</button>
+<button class="text-[8px] font-bold font-label text-on-surface-variant hover:text-primary uppercase letter-spacing-sm underline decoration-outline-variant">API</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-[10px] border-collapse">
+<thead>
+<tr class="text-on-surface-variant text-left border-b border-outline-variant/20">
+<th class="py-1 w-6"></th>
+<th class="py-1 font-bold">MODEL</th>
+<th class="py-1 font-bold">SIZE</th>
+<th class="py-1 font-bold">PROV</th>
+<th class="py-1 font-bold text-right">CAPS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr>
+<td class="py-2"><input checked="" class="bg-surface border-outline-variant text-primary focus:ring-0 w-3 h-3" type="checkbox"/></td>
+<td class="font-bold py-2">qwen3:1.7b</td>
+<td class="py-2 opacity-60">1.7B</td>
+<td class="py-2"><span class="bg-surface-container-highest px-1">LOCAL</span></td>
+<td class="py-2 text-right text-secondary">JSON</td>
+</tr>
+<tr>
+<td class="py-2"><input checked="" class="bg-surface border-outline-variant text-primary focus:ring-0 w-3 h-3" type="checkbox"/></td>
+<td class="font-bold py-2">qwen2.5-coder:7b</td>
+<td class="py-2 opacity-60">7B</td>
+<td class="py-2"><span class="bg-surface-container-highest px-1">LOCAL</span></td>
+<td class="py-2 text-right text-secondary">CODE</td>
+</tr>
+<tr>
+<td class="py-2"><input checked="" class="bg-surface border-outline-variant text-primary focus:ring-0 w-3 h-3" type="checkbox"/></td>
+<td class="font-bold py-2">qwen3:8b</td>
+<td class="py-2 opacity-60">8B</td>
+<td class="py-2"><span class="bg-surface-container-highest px-1">LOCAL</span></td>
+<td class="py-2 text-right text-secondary">CHAT</td>
+</tr>
+<tr>
+<td class="py-2"><input checked="" class="bg-surface border-outline-variant text-primary focus:ring-0 w-3 h-3" type="checkbox"/></td>
+<td class="font-bold py-2">deepseek</td>
+<td class="py-2 opacity-60">671B</td>
+<td class="py-2"><span class="bg-secondary-container/20 text-secondary-fixed px-1">CHUTES</span></td>
+<td class="py-2 text-right text-secondary">RSN</td>
+</tr>
+</tbody>
+</table>
+</div>
+<button class="w-full border border-dashed border-outline-variant/40 mt-3 py-1 text-[9px] font-bold text-on-surface-variant hover:border-primary hover:text-primary uppercase tracking-widest transition-colors">
+                        + ADD_MODEL_DEFINITION
+                    </button>
+</div>
+<!-- Controls & Run -->
+<div class="mt-auto space-y-3 pt-2">
+<div class="flex items-center gap-4">
+<label class="text-[10px] font-bold font-label letter-spacing-sm text-secondary uppercase whitespace-nowrap">THRESHOLD [80%]</label>
+<div class="flex-1 h-[2px] bg-outline-variant relative">
+<div class="absolute top-1/2 left-0 w-[80%] h-full bg-primary -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-[80%] w-3 h-3 bg-primary border-2 border-surface -translate-y-1/2 -translate-x-1/2 cursor-pointer"></div>
+</div>
+</div>
+<button class="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white py-3 font-bold font-label letter-spacing-sm uppercase flex items-center justify-center gap-3 shadow-lg shadow-secondary-container/20">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+                        RUN_EVALUATION
+                    </button>
+</div>
+</section>
+<!-- RIGHT COLUMN: RESULTS MATRIX (65%) -->
+<section class="w-[65%] flex flex-col gap-3 h-full">
+<!-- Active Progress -->
+<div class="bg-surface-container-low p-4">
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 bg-primary animate-pulse"></div>
+<span class="text-xs font-bold text-on-surface tracking-tight uppercase">TESTING qwen3:8b (3/7)...</span>
+</div>
+<span class="text-xs font-bold font-mono text-primary">43%</span>
+</div>
+<div class="w-full h-1 bg-[#070e1c]">
+<div class="h-full bg-primary" style="width: 43%;"></div>
+</div>
+</div>
+<!-- Matrix Table -->
+<div class="bg-surface-container-low flex-1 overflow-auto border border-outline-variant/10">
+<table class="w-full text-left border-collapse table-fixed">
+<thead class="sticky top-0 bg-surface-container-high z-10 shadow-sm">
+<tr>
+<th class="p-3 w-48 border-r border-outline-variant/10 text-[10px] font-bold font-label letter-spacing-sm text-on-surface-variant uppercase">TEST_CASE</th>
+<th class="p-3 border-r border-outline-variant/10">
+<div class="text-[10px] font-bold font-label text-primary">qwen3:1.7b</div>
+<div class="text-[9px] opacity-60 font-mono">ACC: 87.5%</div>
+<span class="bg-primary/10 text-primary text-[8px] px-1 font-bold">RECOMMENDED</span>
+</th>
+<th class="p-3 border-r border-outline-variant/10">
+<div class="text-[10px] font-bold font-label text-on-surface">qwen2.5:7b</div>
+<div class="text-[9px] opacity-60 font-mono">ACC: 75.0%</div>
+<span class="bg-error/10 text-error text-[8px] px-1 font-bold">FAIL</span>
+</th>
+<th class="p-3">
+<div class="text-[10px] font-bold font-label text-on-surface">deepseek-rsn</div>
+<div class="text-[9px] opacity-60 font-mono">ACC: 100%</div>
+<span class="bg-primary/10 text-primary text-[8px] px-1 font-bold">PASS</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-[10px]">
+<tr class="hover:bg-surface-container-highest transition-colors">
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="font-bold text-secondary mb-1">T1547.001</div>
+<div class="opacity-40 line-clamp-3">Analyze registry key additions for persistence...</div>
+</td>
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="flex items-center gap-1 mb-1">
+<span class="bg-primary text-on-primary text-[8px] px-1 font-bold">PASS</span>
+<span class="text-[9px] opacity-50">12ms</span>
+</div>
+<div class="font-mono text-on-surface-variant line-clamp-3">{"ioc": true, "type": "persistence", "score": 0.92}</div>
+</td>
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="flex items-center gap-1 mb-1 text-error">
+<span class="bg-error text-on-error text-[8px] px-1 font-bold">FAIL</span>
+<span class="text-[9px] opacity-50">48ms</span>
+</div>
+<div class="font-mono text-on-surface-variant line-clamp-3">The user is trying to add a registry key which might be...</div>
+</td>
+<td class="p-3 align-top">
+<div class="flex items-center gap-1 mb-1 text-primary">
+<span class="bg-primary text-on-primary text-[8px] px-1 font-bold">PASS</span>
+<span class="text-[9px] opacity-50">1420ms</span>
+</div>
+<div class="font-mono text-on-surface-variant line-clamp-3">{"analysis": "T1547.001 detected via HKCU Run key mod", "threat": "HIGH"}</div>
+</td>
+</tr>
+<tr class="bg-surface-container-low/50 hover:bg-surface-container-highest transition-colors">
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="font-bold text-secondary mb-1">T1059.003</div>
+<div class="opacity-40 line-clamp-3">Decoding base64 encoded powershell payloads...</div>
+</td>
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="flex items-center gap-1 mb-1 text-primary">
+<span class="bg-primary text-on-primary text-[8px] px-1 font-bold">PASS</span>
+<span class="text-[9px] opacity-50">8ms</span>
+</div>
+<div class="font-mono text-on-surface-variant line-clamp-3">{"decoded": "New-Object Net.WebClient", "action": "download"}</div>
+</td>
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="flex items-center gap-1 mb-1 text-primary">
+<span class="bg-primary text-on-primary text-[8px] px-1 font-bold">PASS</span>
+<span class="text-[9px] opacity-50">52ms</span>
+</div>
+<div class="font-mono text-on-surface-variant line-clamp-3">I have decoded the payload: Net.WebClient is used to...</div>
+</td>
+<td class="p-3 align-top">
+<div class="flex items-center gap-1 mb-1 text-primary">
+<span class="bg-primary text-on-primary text-[8px] px-1 font-bold">PASS</span>
+<span class="text-[9px] opacity-50">840ms</span>
+</div>
+<div class="font-mono text-on-surface-variant line-clamp-3">{"obfuscation": "base64", "intent": "C2_DOWNLOAD", "payload": "Net.WebClient"}</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors opacity-50">
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<div class="font-bold text-secondary mb-1">T1003.001</div>
+<div class="opacity-40 line-clamp-3">Memory scraping via mimikatz...</div>
+</td>
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<span class="text-[9px] italic">PENDING...</span>
+</td>
+<td class="p-3 border-r border-outline-variant/10 align-top">
+<span class="text-[9px] italic">PENDING...</span>
+</td>
+<td class="p-3 align-top">
+<span class="text-[9px] italic">PENDING...</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Ranked Summary -->
+<div class="bg-surface-container-low p-4">
+<label class="text-[10px] font-bold font-label letter-spacing-sm text-secondary uppercase block mb-3">RANKED_PERFORMANCE_SUMMARY</label>
+<div class="space-y-1">
+<!-- Rank Row 1 -->
+<div class="flex items-center justify-between text-[10px] bg-surface-container-high/50 p-2 border-l-2 border-primary">
+<div class="flex items-center gap-4">
+<span class="font-bold w-4">01</span>
+<span class="font-bold text-primary">deepseek-rsn</span>
+<span class="opacity-50 uppercase text-[8px]">Chutes API</span>
+</div>
+<div class="flex gap-8 font-mono">
+<div>ACC: <span class="text-primary font-bold">100.0%</span></div>
+<div>LATENCY: <span class="text-tertiary">954ms</span></div>
+<div class="text-primary font-bold">STABLE</div>
+</div>
+</div>
+<!-- Rank Row 2 -->
+<div class="flex items-center justify-between text-[10px] bg-surface-container-high/20 p-2 border-l-2 border-primary/40">
+<div class="flex items-center gap-4">
+<span class="font-bold w-4">02</span>
+<span class="font-bold text-on-surface">qwen3:1.7b</span>
+<span class="opacity-50 uppercase text-[8px]">Local</span>
+</div>
+<div class="flex gap-8 font-mono">
+<div>ACC: <span class="text-primary font-bold">87.5%</span></div>
+<div>LATENCY: <span class="text-primary">12ms</span></div>
+<div class="text-primary font-bold">STABLE</div>
+</div>
+</div>
+<!-- Rank Row 3 -->
+<div class="flex items-center justify-between text-[10px] bg-surface-container-high/20 p-2 border-l-2 border-error/40">
+<div class="flex items-center gap-4">
+<span class="font-bold w-4">03</span>
+<span class="font-bold text-on-surface">qwen2.5:7b</span>
+<span class="opacity-50 uppercase text-[8px]">Local</span>
+</div>
+<div class="flex gap-8 font-mono">
+<div>ACC: <span class="text-error font-bold">75.0%</span></div>
+<div>LATENCY: <span class="text-primary">50ms</span></div>
+<div class="text-error font-bold">DEGRADED</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- FLOATING STATUS (FAB Replacement for System State) -->
+<div class="fixed bottom-4 right-4 flex items-center gap-2 bg-surface-container-highest px-3 py-1.5 border border-outline-variant/30 shadow-2xl z-50">
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-ping"></div>
+<span class="text-[9px] font-bold font-mono tracking-tighter">GPU_TEMP: 62°C | MEM_UTIL: 14.2GB/24GB</span>
+</div>
+</body></html>

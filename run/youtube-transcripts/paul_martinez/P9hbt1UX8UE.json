@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P9hbt1UX8UE",
+    "language": "en",
+    "took_ms": 9035,
+    "method": null,
+    "title": "Down The Rabbit Hole: Insights From ICS Vulnerability Assessments and Threat Research",
+    "channel": "S4 Events",
+    "upload_date": "20170208",
+    "duration_sec": 1813,
+    "description": "Phil Neray and David Atch of CyberX session on the Sponsor Stage at S4x17. David goes into detail on four different ICS vulnerabilities or threats they have encountered in the last year.\n\n6:00 Radiation Botnet ... similar but less famous than Mirai\n9:00 Killdisk Malware ... including new variant\n15:00 Connexium Industrial Firewall vuln ... bypass the IT/OT security perimeter\n17:00 New PLC Vulns ... encoded firmware, graph technique\n\nThe PLC vulns at 17:00 was particularly interesting because they had to get past the encoding, and David discusses how they did that. David also touches on their teams use of graph algorithms to identify the probability of vulnerable code. The idea is the graph algorithms automate the reverse engineering process and allows them to put the valuable reverse engineer human resource on likely vulnerable and high value points in the code.",
+    "view_count": 445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P9hbt1UX8UE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Observatory - S05: ANNOTATE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-secondary-fixed-variant": "#006632",
+                "tertiary-container": "#499dfe",
+                "surface-container-lowest": "#000000",
+                "surface-tint": "#bd9dff",
+                "surface-container-high": "#202020",
+                "on-secondary-container": "#e3ffe4",
+                "on-primary": "#3c0089",
+                "secondary-container": "#006d37",
+                "surface-bright": "#2c2c2c",
+                "tertiary-fixed-dim": "#5da5ff",
+                "on-background": "#ffffff",
+                "outline-variant": "#484848",
+                "background": "#0e0e0e",
+                "tertiary-fixed": "#7bb3ff",
+                "on-secondary": "#005b2c",
+                "secondary": "#00fd87",
+                "primary-fixed-dim": "#a67aff",
+                "inverse-primary": "#742fe5",
+                "outline": "#767575",
+                "error-dim": "#d73357",
+                "inverse-surface": "#fcf9f8",
+                "secondary-dim": "#00ed7e",
+                "surface-container": "#191a1a",
+                "on-primary-container": "#2e006c",
+                "on-error": "#490013",
+                "error-container": "#a70138",
+                "on-tertiary-fixed": "#001833",
+                "primary-container": "#b28cff",
+                "surface-container-highest": "#262626",
+                "on-tertiary-container": "#001e3c",
+                "secondary-fixed-dim": "#00ed7e",
+                "on-surface": "#ffffff",
+                "surface-variant": "#262626",
+                "surface-dim": "#0e0e0e",
+                "primary": "#bd9dff",
+                "on-tertiary-fixed-variant": "#003a6d",
+                "inverse-on-surface": "#565555",
+                "on-surface-variant": "#adaaaa",
+                "surface": "#0e0e0e",
+                "primary-fixed": "#b28cff",
+                "error": "#ff6e84",
+                "primary-dim": "#8a4cfc",
+                "tertiary-dim": "#4fa0ff",
+                "surface-container-low": "#131313",
+                "tertiary": "#6aabff",
+                "on-primary-fixed": "#000000",
+                "secondary-fixed": "#00fd87",
+                "on-tertiary": "#002a52",
+                "on-error-container": "#ffb2b9",
+                "on-secondary-fixed": "#004621",
+                "on-primary-fixed-variant": "#390083"
+              },
+              fontFamily: {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #bd9dff;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 h-16 bg-[#131313] border-b border-white/5 flex justify-between items-center px-8">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-white hover:text-violet-400 transition-colors cursor-pointer">SONIC OBSERVATORY</span>
+<div class="hidden md:flex gap-6 items-center">
+<span class="font-label tracking-tight text-sm uppercase font-bold text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">DASHBOARD</span>
+<span class="font-label tracking-tight text-sm uppercase font-bold text-violet-400 border-b-2 border-violet-500 pb-1 cursor-pointer">WORKSPACE</span>
+<span class="font-label tracking-tight text-sm uppercase font-bold text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">ARCHIVE</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest px-4 py-1.5 flex items-center gap-3 rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">search</span>
+<input class="bg-transparent border-none text-xs font-label tracking-widest focus:ring-0 w-48 text-on-surface p-0" placeholder="QUERY SIGNAL..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-2">settings</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-2">account_circle</button>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-[#0e0e0e] border-r border-white/5 flex flex-col py-6">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 p-3 bg-surface-container rounded-lg border border-outline-variant/10">
+<div class="w-10 h-10 rounded-md bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<div class="font-label text-xs uppercase tracking-widest font-medium text-white">OPERATOR_01</div>
+<div class="font-label text-[10px] uppercase tracking-widest text-secondary">PHASE_03_ACTIVE</div>
+</div>
+</div>
+</div>
+<nav class="flex flex-col space-y-1">
+<!-- Completed States -->
+<a class="text-neutral-500 hover:text-neutral-300 py-3 px-6 flex items-center gap-3 transition-colors font-label text-xs uppercase tracking-widest font-medium hover:bg-[#191a1a]" href="#">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                S00: INITIATE
+            </a>
+<a class="text-neutral-500 hover:text-neutral-300 py-3 px-6 flex items-center gap-3 transition-colors font-label text-xs uppercase tracking-widest font-medium hover:bg-[#191a1a]" href="#">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                S01: SEGMENT
+            </a>
+<a class="text-neutral-500 hover:text-neutral-300 py-3 px-6 flex items-center gap-3 transition-colors font-label text-xs uppercase tracking-widest font-medium hover:bg-[#191a1a]" href="#">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                S02: ANNOTATE
+            </a>
+<a class="text-neutral-500 hover:text-neutral-300 py-3 px-6 flex items-center gap-3 transition-colors font-label text-xs uppercase tracking-widest font-medium hover:bg-[#191a1a]" href="#">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                S03: STRESS
+            </a>
+<a class="text-neutral-500 hover:text-neutral-300 py-3 px-6 flex items-center gap-3 transition-colors font-label text-xs uppercase tracking-widest font-medium hover:bg-[#191a1a]" href="#">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                S04: TIMING
+            </a>
+<!-- Active State -->
+<a class="bg-[#191a1a] text-[#00fd87] border-l-4 border-[#00fd87] py-3 px-6 flex items-center gap-3 font-label text-xs uppercase tracking-widest font-medium" href="#">
+<span class="material-symbols-outlined text-sm">ios_share</span>
+                S05: EXPORT
+            </a>
+</nav>
+<div class="mt-auto px-6">
+<button class="w-full bg-surface-container-highest border border-secondary/30 text-secondary py-3 rounded-md font-label text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-secondary hover:text-on-secondary transition-all">
+                SYNC TO PIPELINE
+            </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 mt-16 p-12 min-h-[calc(100vh-64px)] bg-surface">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+<div class="space-y-2">
+<div class="flex items-center gap-4">
+<span class="font-label text-primary text-xl font-bold tracking-tighter">S05</span>
+<h1 class="text-4xl font-black text-white tracking-tight">Annotate Lyrics</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label text-on-surface-variant text-sm tracking-widest">42 SYLLABLES DETECTED</span>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/20 border border-secondary/20">
+<span class="material-symbols-outlined text-[14px] text-secondary">check_circle</span>
+<span class="font-label text-[10px] font-bold text-secondary tracking-widest uppercase">✓ DONE</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="bg-surface-container-low p-4 rounded-xl border border-white/5 flex items-center gap-6">
+<div>
+<div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">PROBABILITY</div>
+<div class="text-xl font-bold font-label text-white">99.8%</div>
+</div>
+<div class="w-px h-8 bg-outline-variant/20"></div>
+<div>
+<div class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">DRIFT</div>
+<div class="text-xl font-bold font-label text-white">-0.02ms</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Lyrics Strips -->
+<div class="space-y-16">
+<!-- Phrase 1 -->
+<section class="space-y-6">
+<div class="flex items-center gap-4 px-2">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(189,157,255,0.6)]"></span>
+<h3 class="font-label text-[10px] tracking-[0.3em] text-on-surface-variant uppercase">PHRASE_01 // TIME_00:04.25</h3>
+</div>
+<div class="flex flex-wrap gap-2 overflow-x-auto pb-4 scroll-smooth">
+<!-- Syllable: The -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] hover:bg-surface-container transition-colors group">
+<span class="text-on-surface-variant font-bold text-lg">The</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">1.00</span>
+<span class="font-label text-[9px] text-neutral-600">+0.50</span>
+</div>
+</div>
+<!-- Syllable: sta (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative overflow-hidden group">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">sta</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">1.25</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: tic -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">tic</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">1.50</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: hums (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">hums</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">1.75</span>
+<span class="font-label text-[9px] text-neutral-600">+0.75</span>
+</div>
+</div>
+<!-- Syllable: be -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">be</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">2.50</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: neath (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">neath</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">2.75</span>
+<span class="font-label text-[9px] text-neutral-600">+0.50</span>
+</div>
+</div>
+<!-- Syllable: the -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">the</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">3.25</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: skin (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">skin</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">3.50</span>
+<span class="font-label text-[9px] text-neutral-600">+0.50</span>
+</div>
+</div>
+<!-- Syllable: to -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">to</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">4.00</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: night (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">night</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">4.25</span>
+<span class="font-label text-[9px] text-neutral-600">+1.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Phrase 2 -->
+<section class="space-y-6">
+<div class="flex items-center gap-4 px-2">
+<span class="w-2 h-2 rounded-full bg-primary/40"></span>
+<h3 class="font-label text-[10px] tracking-[0.3em] text-on-surface-variant uppercase">PHRASE_02 // TIME_00:08.50</h3>
+</div>
+<div class="flex flex-wrap gap-2 overflow-x-auto pb-4 scroll-smooth">
+<!-- Syllable: Whis (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">Whis</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">5.00</span>
+<span class="font-label text-[9px] text-neutral-600">+0.50</span>
+</div>
+</div>
+<!-- Syllable: per -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">per</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">5.50</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: heads (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">heads</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">5.75</span>
+<span class="font-label text-[9px] text-neutral-600">+0.75</span>
+</div>
+</div>
+<!-- Syllable: we -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">we</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">6.50</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: car (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">car</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">6.75</span>
+<span class="font-label text-[9px] text-neutral-600">+0.50</span>
+</div>
+</div>
+<!-- Syllable: ry -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">ry</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">7.25</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: the -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">the</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">7.50</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: fre (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">fre</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">7.75</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: quen -->
+<div class="flex-none w-20 bg-surface-container-low border border-outline-variant/10 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px]">
+<span class="text-on-surface-variant font-bold text-lg">quen</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">8.00</span>
+<span class="font-label text-[9px] text-neutral-600">+0.25</span>
+</div>
+</div>
+<!-- Syllable: cy (Stressed) -->
+<div class="flex-none w-20 bg-surface-container border border-primary/20 rounded-lg p-3 flex flex-col items-center justify-between min-h-[110px] relative">
+<div class="absolute inset-x-0 bottom-0 h-0.5 bg-primary"></div>
+<span class="text-white font-bold text-lg">cy</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-label text-[9px] text-on-surface-variant tracking-tighter">8.25</span>
+<span class="font-label text-[9px] text-neutral-600">+1.25</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Waveform Visualization Footer -->
+<footer class="mt-24 p-6 bg-surface-container-low rounded-2xl border border-white/5 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-white hover:text-primary transition-colors">play_arrow</button>
+<span class="font-label text-xs tracking-widest text-on-surface-variant">00:04.25 / 00:32.00</span>
+</div>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-container-highest rounded-md font-label text-[9px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/20">GRID: 1/16</div>
+<div class="px-3 py-1 bg-surface-container-highest rounded-md font-label text-[9px] text-on-surface-variant uppercase tracking-widest border border-outline-variant/20">BPM: 128</div>
+</div>
+</div>
+<div class="h-16 flex items-center gap-[2px]">
+<!-- Abstract Waveform Generator -->
+<div class="flex-1 h-4 bg-primary/20 rounded-full"></div>
+<div class="flex-1 h-8 bg-primary/30 rounded-full"></div>
+<div class="flex-1 h-12 bg-primary/40 rounded-full"></div>
+<div class="flex-1 h-6 bg-primary/30 rounded-full"></div>
+<div class="flex-1 h-14 bg-primary/60 rounded-full"></div>
+<div class="flex-1 h-10 bg-primary/40 rounded-full"></div>
+<div class="flex-1 h-16 bg-primary/80 rounded-full shadow-[0_0_15px_rgba(189,157,255,0.4)]"></div>
+<div class="flex-1 h-12 bg-primary/40 rounded-full"></div>
+<div class="flex-1 h-8 bg-primary/30 rounded-full"></div>
+<div class="flex-1 h-6 bg-primary/20 rounded-full"></div>
+<div class="flex-1 h-4 bg-primary/10 rounded-full"></div>
+<div class="flex-1 h-10 bg-primary/30 rounded-full"></div>
+<div class="flex-1 h-14 bg-primary/50 rounded-full"></div>
+<div class="flex-1 h-12 bg-primary/40 rounded-full"></div>
+<div class="flex-1 h-8 bg-primary/30 rounded-full"></div>
+<div class="flex-1 h-10 bg-primary/40 rounded-full"></div>
+<div class="flex-1 h-14 bg-primary/60 rounded-full"></div>
+<div class="flex-1 h-6 bg-primary/30 rounded-full"></div>
+<div class="flex-1 h-4 bg-primary/20 rounded-full"></div>
+<div class="flex-1 h-2 bg-primary/10 rounded-full"></div>
+</div>
+</footer>
+</main>
+<!-- Visual Polish Overlay -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-[0.03] mix-blend-overlay">
+<img class="w-full h-full object-cover" data-alt="Subtle noise and grain texture overlay for technical feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoj0w2iaz5yEuEcD-sYh2RSrz4hc15D5vjZwoijsOFsSkItVz1P8Bf5-pGXbwJ8fH6DXh5JP0xpdO0_3VsOFeyoT3QbWp1J-p6QUZbizkGlPpyz3ZhkCRyY4ImIl4zdU3Wn0snQFSFgAfiImIinL6lx9zVSL9Fh3cw7ENC7rtzzmS5hg4v2zHZy54WMZIr3hvH0YBRROq3PDgASSW49L9wfVy2gESixsMloda69gSsNqdbrp5PWCY7vn3EMe3b2r_5j5V_WuyiV8Y"/>
+</div>
+</body></html>

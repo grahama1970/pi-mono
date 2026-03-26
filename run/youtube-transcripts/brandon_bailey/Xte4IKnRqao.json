@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Xte4IKnRqao",
+    "language": "en",
+    "took_ms": 7817,
+    "method": null,
+    "title": "DEF CON 30 - Eran Segal - The COW  Container On Windows  Who Escaped the Silo",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2310,
+    "description": "Virtualization and containers are the foundations of cloud services. Containers should be isolated from the real host’s settings to ensure the security of the host.\n\nIn this talk we’ll answer these questions: “Are Windows process-isolated containers really isolated?” and “What can an attacker achieve by breaking the isolation?”\n\nBefore we jump into the vulnerabilities, we’ll explain how Windows isolates the container’s processes, filesystem and how the host prevents the container from executing syscalls which can impact the host.\n\nSpecifically, we’ll focus on the isolation implementation of Ntoskrnl using server silos and job objects.\n\nWe’ll compare Windows containers to Linux containers and describe the differences between their security architectural designs.\n\nWe’ll follow the scenario of an attacker-crafted container running with low privileges. We'll show in multiple ways how to gain privilege escalation inside the container to NT/System. After gaining NT/System permissions, we'll talk about how we escaped the isolation of the container and easily achieved a dump of the entire host’s kernel memory from within the container. If the host is configured with a kernel debugger, we can even dump the host’s Admin credentials. \n\nWe’ll finish by demonstrating how an attacker-crafted container with low privileges can read UEFI settings and then set them. Using this technique an attacker can communicate between containers and cause a permanent Denial-of-Service (DoS) to a host with default settings, through the UEFI interface.",
+    "view_count": 923
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Xte4IKnRqao: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

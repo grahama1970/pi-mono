@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Sd1PMgc-n8Q",
+    "language": "en",
+    "took_ms": 9958,
+    "method": null,
+    "title": "A Discussion with Israeli Minister of Justice Ayelet Shaked",
+    "channel": "Hudson Institute",
+    "upload_date": "20170510",
+    "duration_sec": 2258,
+    "description": "On May 10, Hudson Institute hosted a special discussion with MK Ayelet Shaked, Israel’s Minister of Justice. Minister Shaked has served as Israel’s Minister of Justice in the Netanyahu government since May of 2015. A graduate of Tel Aviv University with degrees in computer science and electrical engineering, she spent the early part of her career working in Israel’s rapidly growing high-tech sector before entering government.\n\nMinister Shaked joined Hudson Institute President & CEO Ken Weinstein for an engaging conversation covering the U.S.-Israel relationship since the inauguration of President Trump, current events in Israel and the Middle East, Israel as a “Start-Up Nation,” the role of technology in the future of the Israeli economy, and more.",
+    "view_count": 27952
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Sd1PMgc-n8Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

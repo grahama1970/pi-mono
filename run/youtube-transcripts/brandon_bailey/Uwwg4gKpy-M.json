@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Uwwg4gKpy-M",
+    "language": "en",
+    "took_ms": 8222,
+    "method": null,
+    "title": "DEF CON 30 - Gal Zror - Hacking ISPs with Point-to-Pwn Protocol over Ethernet (PPPoE)",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2359,
+    "description": "Hello, my name is BWL-X8620, and I'm a SOHO router. For many years my fellow SOHO routers and I were victims of endless abuse by hackers. Default credentials, command injections, file uploading - you name it. And it is all just because we're WAN-facing devices. Just because our ISP leaves our web server internet-facing makes hackers think it's okay to attack and make us zombies. But today, I say NO MORE! \n\nIn this talk, I will show that if a web client can attack a web server, then an ISP client can attack the ISP servers!\n\nI will reveal a hidden attack surface and vulnerabilities in popular network equipment used by ISPs worldwide to connect end-users to the internet. \nBRAS devices are not that different from us SOHO routers. No one is infallible. But, BRAS devices can support up to 256,000 subscribers, and exploiting them can cause a ruckus. Code executing can lead to a total ISP compromise, mass client DNS poisoning, end-points RCE, and more!\n\nThis talk will present a high severity logical DOS vulnerability in a telecommunications vendor implementation of PPPoE and a critical RCE vulnerability in PPP. That means we, the SOHO routers, can attack and execute code on the ISP's that connect us to the internet!\n\nToday we are fighting back!",
+    "view_count": 39661
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Uwwg4gKpy-M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

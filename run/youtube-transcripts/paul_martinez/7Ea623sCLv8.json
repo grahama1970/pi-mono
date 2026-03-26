@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7Ea623sCLv8",
+    "language": "en",
+    "took_ms": 8937,
+    "method": null,
+    "title": "Will OT Visibility and Detection GUI's Be Converged",
+    "channel": "S4 Events",
+    "upload_date": "20210915",
+    "duration_sec": 76,
+    "description": "",
+    "view_count": 112
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7Ea623sCLv8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

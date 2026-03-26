@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1GH4wQtJb4k",
+    "language": "en",
+    "took_ms": 8528,
+    "method": null,
+    "title": "Marine Corps Boot Camp Bayonet Assault Course",
+    "channel": "Sandboxx",
+    "upload_date": "20211123",
+    "duration_sec": 39,
+    "description": "Recruits conduct the Bayonet Assault Course at Marine Corps Recruit Depot Parris Island, S.C. Bayonet techniques are taught throughout recruit training as part of the Marine Corps Martial Arts Program, the techniques that are taught to educate recruits on hand to hand combat. \n\n(U.S. Marine Corps video by Lance Cpl. Godfrey Ampong)",
+    "view_count": 16305
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1GH4wQtJb4k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

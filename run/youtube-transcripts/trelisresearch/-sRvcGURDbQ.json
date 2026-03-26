@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-sRvcGURDbQ",
+    "language": "en",
+    "took_ms": 9079,
+    "method": null,
+    "title": "Memory Management in LLMs and Agents",
+    "channel": "Trelis Research",
+    "upload_date": "20250227",
+    "duration_sec": 2926,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠 Build & Deploy Faster\nFine-tuning, Inference, Audio, Evals, and Vision Tools: https://trelis.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\n📸 Thumbnail Tutorial\nSee How It’s Made: https://youtu.be/ThKYjTdkyP8\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1hHq7zxgI3Nsj-xGRDOBn7XZwUHDN-xTDR-rakFHUjtE/edit?usp=sharing\n- MemGPT paper: https://arxiv.org/abs/2310.08560\n\nTIMESTAMPS:\n00:00 Introduction to Memory in LLMs and Agents\n00:44 Why Add Memory to LLMs?\n01:52 Types of Memory: Read-Only vs Read-Write\n02:41 Memory Architecture and Design Choices\n04:09 Local Memory and Token Allocation\n05:49 Managing Conversation History\n09:44 Pagination and Database Setup\n11:51 Implementing Memory in Practice\n15:56 Building and Running the Memory Chatbot\n25:42 Advanced Search Algorithms\n26:32 Implementing Pagination\n27:03 Design Choices for Memory Management\n27:45 Example Walkthrough\n28:29 Handling Conversation Turns\n29:10 Token Management and Statistics\n29:56 Memory Retrieval Process\n32:19 Building the Chatbot Application\n32:31 Key Features and Build Notes\n33:50 Future Improvements and Enhancements\n34:11 Client Interface and Local Memory Management\n38:20 Response Handling and System Message Management\n41:24 Chatbot Code Overview\n44:49 Memory Management Functions\n47:54 Final Thoughts and Future Directions",
+    "view_count": 5527
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -sRvcGURDbQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

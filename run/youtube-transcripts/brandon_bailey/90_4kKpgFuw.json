@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "90_4kKpgFuw",
+    "language": "en",
+    "took_ms": 7783,
+    "method": null,
+    "title": "DEF CON China Party 2021 - Whispers Among the Stars - James Pavur",
+    "channel": "DEFCONConference",
+    "upload_date": "20210408",
+    "duration_sec": 1790,
+    "description": "Space is changing. More than 15,000 satellites are expected in orbit by 2030, the majority for internet communications. This updated briefing from DEF CON 28 shows how an attacker, using $300 of widely available home television equipment, can intercept deeply sensitive data transmitted by satellite services belonging to some of the world's largest organizations. \n\nIn this talk, we will touch on a series of case studies looking at intercepted satellite internet traffic from three domains: air, land, and sea. From oil tankers to wind farms, we'll see how satellite eavesdropping attacks can threaten the privacy and security of critical systems and how, under certain conditions, attackers can abuse their eavesdropping position to even hijack and alter traffic.\n\nThe talk concludes by presenting open-source tools we have developed to help researchers interested in working on these problems: including a proof-of-concept exploit which has been made publicly available in the months following DEF CON 28. We'll also touch on the work we've done to help mitigate these vulnerabilities, namely an open-source secure satellite communications research testbed and proxy. Finally, we will talk about new research directions that may be of interest to others looking to make contributions on satellite communications security.\n\nWhile this talk includes technical components, it assumes no prior background in satellite communications or cryptography.",
+    "view_count": 4395
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 90_4kKpgFuw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

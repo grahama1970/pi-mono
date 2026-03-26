@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_5rDpbX0gnc",
+    "language": "en",
+    "took_ms": 8458,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Panel - Students Performing ICS Security Assessments",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1448,
+    "description": "Dennis Skarr; Christopher Von Reybyton; Alexander Vigovskiy\n\nEverett Community College (EvCC) recently launched a 5 credit class titled “Assessing and Securing Control Systems” utilizing custom-developed ICS trainers by GRIMM. Performing a mock assessment on the nation’s first 10 foot ICS wall at a community college, students completed their capstone exercise for the EvCC’s first class dedicated to ICS security. This presentation has multiple students sharing their experiences related to why they chose this class, what they gained, and their career goals after the competition.",
+    "view_count": 207
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _5rDpbX0gnc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

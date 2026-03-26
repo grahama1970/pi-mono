@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oOlzRikyNr4",
+    "language": "en",
+    "took_ms": 8167,
+    "method": null,
+    "title": "The Nonprofit Sector and Advocacy: Challenges Ahead",
+    "channel": "Hudson Institute",
+    "upload_date": "20121220",
+    "duration_sec": 6958,
+    "description": "A discussion about nonprofit priorities in policy debates, with a focus on a recent report from Independent Sector,  Beyond the Cause: The Art and Science of Advocacy. The first part of that report discussed practices that promote success in advocacy by nonprofits and their coalitions and was well received, but the second part engendered controversy.  It addressed 6 policy issues affecting nonprofit operations, including the charitable deduction, and recommended that significant resources be ded",
+    "view_count": 105
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oOlzRikyNr4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

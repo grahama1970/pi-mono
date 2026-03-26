@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k8-G6oCHNHM",
+    "language": "en",
+    "took_ms": 9796,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Phillip Wylie -  Inside the Mind of a Threat Actor",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2306,
+    "description": "Red team is a commonly misunderstood offensive security discipline. Red team has been used as a general term for all areas of offensive security just as blue team for defensive security. True red teaming goes Beyond Pentesting and into more adversarial emulation. While there are overlapping skills, there are differences that will be discussed as Phillip shares his experience of going from a pentester to a red teamer. In this talk, you will learn about the different areas that make up red team operations, common tools, and the path to becoming a red teamer. In this presentation, you will learn about resources helpful for a path into red teaming.",
+    "view_count": 643
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k8-G6oCHNHM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

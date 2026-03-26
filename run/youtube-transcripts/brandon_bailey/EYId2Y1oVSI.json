@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EYId2Y1oVSI",
+    "language": "en",
+    "took_ms": 8820,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Understanding Space Through a Cybersecurity Lens",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 10643,
+    "description": "Description:\nThis exciting, fast-paced course delivers the \"big picture\" of space missions from cradle to grave. Understanding Space is the ideal course for technical or non-technical professionals new to the space industry or who need a refresher on the fundamentals.\n\nLearning outcomes will be:\n- Gain Core Space Knowledge\n- Comprehend space mission Capabilities, Trade-offs and Limitations\n- Apply Space Concepts to real-world problems\n- Analyze Typical Space Problems\n- Synthesize concepts to Design a Space Mission\n- Evaluate basic technical and programmatic space issues\n\nThis will be a half-day course instead of the normal 2-day course.",
+    "view_count": 820
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EYId2Y1oVSI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

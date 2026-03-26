@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_b0b_PI2jhI",
+    "language": "en",
+    "took_ms": 9603,
+    "method": null,
+    "title": "Revitalizing Nuclear Security in an Era of Uncertainty",
+    "channel": "Hudson Institute",
+    "upload_date": "20190129",
+    "duration_sec": 6041,
+    "description": "On January 29, Hudson Institute hosted a panel of experts to discuss the new report, __Revitalizing Nuclear Security in an Era of Uncertainty__, released by the Managing the Atom project at Harvard Kennedy School’s Belfer Center for Science and International Affairs. The report evaluates the extent to which countries and international institutions are making progress in reducing the risk of nuclear terrorism. \r\n\r\nInternational efforts to prevent nuclear terrorism have entered a new era. The global community continues to make progress to improve security for nuclear weapons and the materials needed to make them. However, momentum is slowing at a time when there is greater uncertainty about national and international commitment to these efforts. If improvements to nuclear security do not keep pace with evolving threats, the risk of nuclear terrorism is likely to grow.\r\n\r\nHudson Institute would like to thank the John D. and Catherine T. MacArthur Foundation for supporting our nuclear nonproliferation and security dialogues. Please follow our MacArthur Foundation work \"here()\":https://againstnuclearterror.wordpress.com/. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1008
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _b0b_PI2jhI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

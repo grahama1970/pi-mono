@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PK5HJiaTTgw",
+    "language": "en",
+    "took_ms": 9673,
+    "method": null,
+    "title": "Roads to a Free Syria: Hillel Fradkin",
+    "channel": "Hudson Institute",
+    "upload_date": "20120917",
+    "duration_sec": 174,
+    "description": "Hudson Institute Senior Fellow Hillel Fradkin comments on the use of R2P (responsibility to protect) in Syria and compares with the situation in Libya. He discusses whether there should be a Syrian intervention and what this would require.",
+    "view_count": 80
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PK5HJiaTTgw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

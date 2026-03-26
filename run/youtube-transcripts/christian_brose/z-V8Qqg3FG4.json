@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z-V8Qqg3FG4",
+    "language": "en",
+    "took_ms": 9212,
+    "method": null,
+    "title": "Hudson Institute Honors Neal & Linden Blue with 2021 Herman Kahn Award",
+    "channel": "Hudson Institute",
+    "upload_date": "20211022",
+    "duration_sec": 363,
+    "description": "On October 19, 2021, Hudson Institute honored Hudson Trustee Linden Blue and Neal Blue with the 2021 Herman Kahn Award, in recognition of their contributions in furthering the Institute’s mission of promoting policies for a secure, free, and prosperous future. As the visionary leaders of General Atomics and throughout their lives, Neal and Linden Blue have embodied Hudson founder Herman Kahn’s vision of applying American ingenuity to tackle our greatest challenges.",
+    "view_count": 850
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z-V8Qqg3FG4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

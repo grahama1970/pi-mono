@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PsfM_ZDgffU",
+    "language": "en",
+    "took_ms": 8202,
+    "method": null,
+    "title": "DEF CON 33 - RF Village -  You might be a Wardriver if - MrBill, CoD_Segfault",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 857,
+    "description": "A collection of images and quips that are related to the topic of being a wardriver. Images are SFW and culled from social media and other sources within the community. \nPresentation heavily relies on MrBill's rapier wit and CoD_Segfault's unmatched technical abilities to provide a narration of this curated collection",
+    "view_count": 1329
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PsfM_ZDgffU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

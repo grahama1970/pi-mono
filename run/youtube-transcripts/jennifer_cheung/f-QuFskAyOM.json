@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f-QuFskAyOM",
+    "language": "en",
+    "took_ms": 7933,
+    "method": null,
+    "title": "DEF CON 33  Voting Village - Risk Limiting Audits: What They Are and Aren't - Philip Stark",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 3484,
+    "description": "Risk-limiting audits (RLAs) limit the \"risk\" of certifying that the wrong candidates won. There are RLA methods for almost every type of political election in the US, including plurality, multiwinner plurality, supermajority, and instant-runoff voting. The latest RLA methods make it practical to audit every contest in every election, even in large jurisdictions with hundreds of contests. RLAs can \"tie a bow around\" a well-run election that uses trustworthy, organized methods to record and store votes. They cannot magically make a poorly run election trustworthy any more than fastening your seatbelt after an accident will prevent injury. Applying RLA procedures to an untrustworthy vote record is \"security theater\" that does not limit the risk of certifying the wrong winners.",
+    "view_count": 2213
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f-QuFskAyOM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

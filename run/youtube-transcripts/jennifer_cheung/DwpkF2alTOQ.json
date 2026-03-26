@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DwpkF2alTOQ",
+    "language": "en",
+    "took_ms": 10341,
+    "method": null,
+    "title": "DEF CON 29 -  Policy Panel - HACKERS INTO THE UN Cyber Discussions on War and Peace - LIVE",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 2976,
+    "description": "As if 2020 and 2021 were not bad enough, the Covid-19 pandemic seemed to have been accompanied by a new rash of bad cyber- attacks on major platforms like Solarwinds and Microsoft, infrastructures worldwide subverted in ransomware campaigns, and even the very organizations researching and fighting the pandemic have been hit.\n\nMeanwhile, the hard work of cyber diplomacy continues, with talks on war and peace in the United Nations reaching a new stage as two working groups presented their final report and a third one is in the process of being born. Mostly the topics are on establishing norms on cyber behavior, rules of the road of what states can do in cyberspace.  But where are the hackers in all this? The Internet is famously not run by intergovernmental organizations, so the companies, civil society groups and others should somehow be involved – and one of the UN processes did in fact make a small step in that direction. But the staid ways of pin-striped cyber are hard to change. What is the best way for the community to engage?",
+    "view_count": 719
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DwpkF2alTOQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

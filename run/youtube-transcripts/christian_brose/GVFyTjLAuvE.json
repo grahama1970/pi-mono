@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GVFyTjLAuvE",
+    "language": "en",
+    "took_ms": 8489,
+    "method": null,
+    "title": "Supreme Court Weighs Liability of ISPs for Subscribers’ Copyright Infringement",
+    "channel": "Hudson Institute",
+    "upload_date": "20251215",
+    "duration_sec": 3573,
+    "description": "The United States Supreme Court recently heard oral arguments in Cox Communications v. Sony Music Entertainment, a copyright case examining the thorny issue of whether and when an internet service provider (ISP) like Cox can be indirectly liable for the direct infringements committed by its subscribers. The copyright owners—Sony Music, joined by several other record labels and music publishers—argue that Cox should be held contributorily liable for continuing to provide internet access after receiving notices that particular subscribers are infringing protected works over peer-to-peer filesharing networks. On the side of ISPs, Cox—supported by the US Department of Justice—argues that its continued provision of internet access, even to known infringers, is not culpable conduct under the Copyright Act.\n\nThe lower courts have sided with Sony Music, finding that Cox’s knowing failure to terminate allegedly infringing subscribers opens it up to liability for indirect copyright infringement. But the oral argument at the Supreme Court suggests that these decisions are now vulnerable to modification or even outright rejection. No matter what the Supreme Court decides, this case will have significant repercussions in the online copyright world for many years to come.\n\nHudson Institute’s Devlin Hartline will host copyright law experts Zvi Rosen, Ben Sheffner, and Jake Tracer for a discussion on what the Supreme Court may decide and why it matters for the creative industries.",
+    "view_count": 240
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GVFyTjLAuvE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

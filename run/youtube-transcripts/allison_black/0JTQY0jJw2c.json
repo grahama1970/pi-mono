@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0JTQY0jJw2c",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "Marine Corps Boot Camp Battalion Commanders' Inspection",
+    "channel": "Sandboxx",
+    "upload_date": "20211123",
+    "duration_sec": 98,
+    "description": "U.S. Marine Corps 1st Sgt. Latisha Franklin with Alpha Company, 1st Battalion, Recruit Training Regiment explains the Battalion Commander's Inspection, at Marine Corps Recruit Depot Parris Island, S.C., \n\nThe Battalion Commander's Inspection gauged the new Marines confidence and bearing by testing their ability to conduct themselves under pressure. \n\n(U.S. Marine Corps motion imagery by Lance Cpl. Devon A. Burton/Released)",
+    "view_count": 13045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0JTQY0jJw2c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

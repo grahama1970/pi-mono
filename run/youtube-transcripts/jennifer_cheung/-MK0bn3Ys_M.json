@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-MK0bn3Ys_M",
+    "language": "en",
+    "took_ms": 7980,
+    "method": null,
+    "title": "DEF CON 29 - Ian Vitek - Central Bank Digital Currency, Threats and Vulnerabilities",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 3217,
+    "description": "What are the threats and vulnerabilities of a retail central bank digital currency (CBDC)? The central bank of Sweden has built a prototype of a retail CBDC system and I will run through the procurement requirements and design and point out where a two-tier CBDC need protection against attacks. The prototype is built on Corda Token SDK and I have during tests found reliable ways to exploit weaknesses in the design. The presentation will focus on the vulnerabilities that can crash the service that handles the tokens and permanently lock tokens rendering tokens and digital wallets useless. The presentation will also go into detail how tokens are validated and how information from all earlier transactions is needed for this. With D3.js and HTML5 I will visualize the token history (backchain) and describe how this can be a problem with GDPR and the Swedish bank secrecy regulation.\n\nThe presentation will end with a summary of identified threats and weaknesses of a two-tier retail central bank digital currency prototype and how to handle them. The goal of the presentation is to give the attendees insight of the security implications, challenges depending on the design and where an attack can be carried out and everything that cannot be missed when designing a CBDC.\n\nREFERENCES:\nhttps://www.ingwb.com/media/3024436/solutions-for-the-corda-security-and-privacy-trade-off_-whitepaper.pdf\nhttps://d3js.org/",
+    "view_count": 1663
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -MK0bn3Ys_M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

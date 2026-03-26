@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-Wn6byLOmIc",
+    "language": "en",
+    "took_ms": 7634,
+    "method": null,
+    "title": "NATO Public Forum: President Yoon on the Connection between the Indo-Pacific and Euro-Atlantic",
+    "channel": "Hudson Institute",
+    "upload_date": "20240712",
+    "duration_sec": 1184,
+    "description": "Secretary General Stoltenberg and other North Atlantic Treaty Organization leaders have made common cause with partners like South Korea in the Indo-Pacific region as  those countries condemn Russia’s aggression against Ukraine. \n\nHudson Japan Chair Ken Weinstein sat down with a South Korean President Yoon Suk Yeol to talk about why the war in Ukraine matters to Indo-Pacific and global security.",
+    "view_count": 554
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -Wn6byLOmIc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

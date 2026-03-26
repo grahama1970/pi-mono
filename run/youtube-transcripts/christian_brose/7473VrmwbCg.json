@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7473VrmwbCg",
+    "language": "en",
+    "took_ms": 8660,
+    "method": null,
+    "title": "Acclaimed Iranian-American Author Shares Insights on the Immigrant Experience",
+    "channel": "Hudson Institute",
+    "upload_date": "20210316",
+    "duration_sec": 3424,
+    "description": "Join Hudson Institute Senior Fellow Thomas Duesterberg for a conversation with Iranian dissident immigrant Roya Hakakian on her new book “A Beginners Guide to America: for the Immigrant and the Curious.” The book provides insights into the immigrant experience from the perspective of a political refugee from revolutionary Iran, and an examination of how immigrants contribute to American culture and civic life.",
+    "view_count": 664
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7473VrmwbCg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

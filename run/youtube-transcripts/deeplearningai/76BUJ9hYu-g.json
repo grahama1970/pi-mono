@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "76BUJ9hYu-g",
+    "language": "en",
+    "took_ms": 7461,
+    "method": null,
+    "title": "New short course: Building AI Browser Agents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250416",
+    "duration_sec": 126,
+    "description": "Learn more: https://bit.ly/4jzZchG\n\nIntroducing Building AI Browser Agents, a free, short course made in collaboration with AGI Inc, and taught by Div Garg and Naman Garg, its co-founders. \n\nAutonomous web agents are a fast-growing area in AI—capable of logging into websites, navigating pages, and even placing online orders. But building reliable agents is challenging. They can misread fields, get stuck in loops, or take the wrong action at the wrong time.\n\nIn this course, you’ll learn how to develop agents that interact with real websites and optimize their behavior using the AgentQ framework—a system that combines Monte Carlo Tree Search (MCTS), self-critique, and Direct Preference Optimization (DPO) to help agents improve through self-correction.\n\nWhat you’ll gain:\n\n- How web agents reason and act: Understand how agents process visual and structural data to interact with real websites.\n- How to build and test browser agents: Create agents that scrape, summarize, fill forms, and carry out multi-step workflows.\n- How AgentQ improves reliability: Use Monte Carlo Tree Search (MCTS), self-critique, and Direct Preference Optimization (DPO) to help agents self-correct.\n- Where agent-based systems are headed: Explore current limitations and the key trends shaping the future of autonomous agents.\n\nBy the end, you’ll be equipped to build reliable web agents and understand the mechanisms behind their decision-making.\n\nEnroll now: https://bit.ly/4jzZchG",
+    "view_count": 6993
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 76BUJ9hYu-g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

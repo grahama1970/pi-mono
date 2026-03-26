@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yWpDXP3gqLw",
+    "language": "en",
+    "took_ms": 8539,
+    "method": null,
+    "title": "American Foundations: Roles and Contributions",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6823,
+    "description": "American Foundations: Roles and Contributions, edited by David Hammack and Helmut Anheier, is one of the most authoritative collections of scholarly essays examining the past and future of American philanthropic institutions to be published in the past several decades. The essayists conclude that foundations are entering a new era characterized by goals and activities far more modest than those to which they had become accustomed.Hammack and Anheier state that, “At the beginning of the new mille",
+    "view_count": 36
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yWpDXP3gqLw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LmZwa7RFQs0",
+    "language": "en",
+    "took_ms": 8753,
+    "method": null,
+    "title": "Watch the second to last Delta IV medium launch EVER!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190316",
+    "duration_sec": 9741,
+    "description": "Want to know more? Check out our prelaunch preview that will tell you everything you need to know! - https://everydayastronaut.com/prelaunch-preview-wgs-10/\n\nUnited Launch Alliance (ULA) will be launching the tenth Wideband Global SATCOM (WGS-10) for the US Department of Defense. The WGS system provides global broadband connectivity for the U.S. military and its allies. Boeing is the prime contractor for the WGS satellites. WGS-10 is the fourth Block II follow-on satellite. Built on the 702 platform, it has 10 Ka-band and 9 X-band transponders, providing transmission rates of 6 Gbps or 11 Gbps when utilizing its digital channelizer. One X-band transponder is a full Earth, the other 18 transponders utilize phased array technology allowing the beams to be steered and shaped.  \n\n------------------------------\n\nShow your support by becoming a Patreon - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 182288
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LmZwa7RFQs0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e2aqwUphpfY",
+    "language": "en",
+    "took_ms": 9352,
+    "method": null,
+    "title": "3 Things You Didn't Know About The F-35 Joint Strike Fighter",
+    "channel": "Sandboxx",
+    "upload_date": "20210322",
+    "duration_sec": 404,
+    "description": "The F-35 is one stealthy fighter, but that's not all that makes it special. Here are 3 things you didn't know about the F-35 Joint Strike Fighter.",
+    "view_count": 32309
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e2aqwUphpfY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

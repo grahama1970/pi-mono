@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ux0wbPXywzs",
+    "language": "en",
+    "took_ms": 10287,
+    "method": null,
+    "title": "The Cyber Informed Safety System",
+    "channel": "S4 Events",
+    "upload_date": "20241008",
+    "duration_sec": 1628,
+    "description": "Cyber Informed Engineering is a buzzphrase in 2023/2024. What about Cyber Informed Safety Systems.\n\nSafety systems are predominantly based on principles such as states, voting (with veto such as 1oo2) and moderate over-reaction. When alarms occur (\"causes\") they take immediate actions (\"effects\") and invoke shutdowns (PSD, ESD).\n\nLooking into the the technological evolution of cybersecurity, process-optimization and other fields, what should we expect for the future of safety-systems when it comes to predictions, machine learning, anomaly-detection? When will the safety-system be able to have cybersecurity-states as inputs and shutdowns as effects? Will this be the future system we can call the Cyberesecurity-informed Safety System?",
+    "view_count": 370
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ux0wbPXywzs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

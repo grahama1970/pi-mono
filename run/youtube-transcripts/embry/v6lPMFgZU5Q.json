@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "v6lPMFgZU5Q",
+    "language": "en",
+    "took_ms": 8889,
+    "method": null,
+    "title": "Why won’t Starship have an abort system? Should it?!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20191216",
+    "duration_sec": 2924,
+    "description": "Time stamps:\n\n00:00 - Intro\n3:05 - How abort systems work\n5:25 - Space Shuttle Safety Margins\n10:40 - What Made the Space Shuttle so Dangerous?\n16:00 - How Starship Will Differ from the Space Shuttle\n21:00 - Engine Reliability\n30:25 - Starship Abort Options\n34:30 - Do Abort Systems Actually Make a Rocket Safer?\n38:55 - How to Improve Rocket Safety Without an Abort System\n41:50 - Are Launch Abort Systems Necessary for Human Spaceflight\n\nArticle version - https://everydayastronaut.com/starship-abort\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThanks to my Moon Walkers for helping produce each and every video! - Aaron Davis, ArcTechInc, Blake Jacobs, Daniel Kim, Jared smith, Jethro, Joe Leva, John Malkin, Larry D Lysinger, Mac Malkawi, Max Haot, neurostream, NSS North Houston Space Society, Ole Mathias, Aarseth Heggem, Tomdmay, TTTA\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 2876298
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] v6lPMFgZU5Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

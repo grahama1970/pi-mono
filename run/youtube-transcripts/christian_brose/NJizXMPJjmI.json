@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NJizXMPJjmI",
+    "language": "en",
+    "took_ms": 8811,
+    "method": null,
+    "title": "Counterbalance Ep. 2: Alana Newhouse, Everything is Broken",
+    "channel": "Hudson Institute",
+    "upload_date": "20210310",
+    "duration_sec": 3308,
+    "description": "Alana Newhouse, the founder and editor of Tablet magazine, explains to Mike and Marshall how conformists with approved viewpoints came to dominate American culture.\n\nRead Alana's piece in Tablet: https://www.tabletmag.com/sections/news/articles/everything-is-broken. \n\nSubscribe: https://podcasts.apple.com/us/podcast/counterbalance/id1553960915",
+    "view_count": 810
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NJizXMPJjmI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

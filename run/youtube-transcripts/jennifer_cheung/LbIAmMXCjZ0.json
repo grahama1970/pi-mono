@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LbIAmMXCjZ0",
+    "language": "en",
+    "took_ms": 9424,
+    "method": null,
+    "title": "DEF CON 33 - Fingerprinting Maritime NMEA2000 Networks - Constantine Macris TheDini & Anissa Elias",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1533,
+    "description": "Maritime vessel controls and operational technology (OT) systems are getting more complex and interconnected. With industry trends aiming to reduce crew, automate tasks, and improve efficiency, these networks are expanding in scale, intricacy, and criticality for vessel operation and maintenance. The standard controller area network (CAN) bus for maritime vessel networks, developed by the National Marine Electronics Association (NMEA), known as NMEA2000. NMEA2000 is an application layer network protocol built on the ISO11783 standard and compatible with automotive SAEJ1939, it uses unique message identifiers known as Parameter Group Number, to define the data within each communication frame. Despite its widespread use, NMEA2000 remains a relatively unexplored domain, particularly in understanding normal versus abnormal network behavior, due to the unavailability of open-source datasets. To address this gap, we constructed a NMEA2000 system consisting of five nodes: GPS/Radar, Wind Speed/Direction sensor, and Multifunction Display. Using this setup, we collected datasets to analyze system behavior and developed deterministic fingerprints for each sensor, establishing a baseline of the normal operating system. We subject the system to controlled attacks to evaluate the accuracy and effectiveness of the fingerprints. This work represents a foundational step towards enhancing security and reliability in maritime OT systems.",
+    "view_count": 165
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LbIAmMXCjZ0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S_Ly_eXY65k",
+    "language": "en",
+    "took_ms": 7647,
+    "method": null,
+    "title": "DEF CON 33 - State of Open Source in the Federal Government - Jordan Kasper",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2221,
+    "description": "Jordan Kasper started programming in 1993 and has developed systems on platforms ranging from IBM mainframes to TI calculators and everything in between. His professional experience ranges from startups and digital agencies, to Fortune 100 companies and government institutions. During his time in government he worked for the Departments of Defense and Homeland Security where he helped to reform struggling IT programs, advocate for modern technology and practices, and advise on policies and strategies ranging from open source software to data standards. Outside of work Jordan is an open source maintainer, community organizer, and board game enthusiast.",
+    "view_count": 419
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S_Ly_eXY65k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qYwZoW_dDtw",
+    "language": "en",
+    "took_ms": 8857,
+    "method": null,
+    "title": "DEF CON 33 Video Team - Andra Lezza on Being a DC Speaker",
+    "channel": "DEFCONConference",
+    "upload_date": "20250819",
+    "duration_sec": 223,
+    "description": "Helvetigoth interviews Andra Lezza about speaking at DEF CON",
+    "view_count": 1167
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qYwZoW_dDtw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

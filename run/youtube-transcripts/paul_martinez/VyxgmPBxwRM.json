@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VyxgmPBxwRM",
+    "language": "en",
+    "took_ms": 9419,
+    "method": null,
+    "title": "1. Cyber / Physical Attacks with Jason Larsen",
+    "channel": "S4 Events",
+    "upload_date": "20201207",
+    "duration_sec": 2489,
+    "description": "Let's get the Highway kicked off with this much watch video.\n\nJason Larsen graciously pinch hit for Marina Krotofil who was unable to make the trip to teach Cyber Physical attack and defense. (I really appreciate that top talent in ICS security are so willing to share and teach their expertise.)\n\n“You’ve just hacked into the control system and have full control of everything. Now what?” He breaks an attack into the Cyber Payload and the Physics Payload. And then provides some examples of Physics Payloads. “Something is going to break, but we don’t always know what is going to break.”\n\nAfter explaining Cyber Physical, Jason outlines the phases of a Cyber Physical attack and defender opportunities at each stage.",
+    "view_count": 1887
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VyxgmPBxwRM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

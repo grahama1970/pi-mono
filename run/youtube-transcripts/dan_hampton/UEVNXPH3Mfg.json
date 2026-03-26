@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UEVNXPH3Mfg",
+    "language": "en",
+    "took_ms": 9215,
+    "method": null,
+    "title": "Joining the Navy - Sandboxx Interview",
+    "channel": "Sandboxx",
+    "upload_date": "20151113",
+    "duration_sec": 1109,
+    "description": "Our CEO Sam Meek talks to Kevin,a Navy Sailor whose about to start boot camp. They discuss why he joined the Navy, tips on studying for the ASVAB as well as his aspirations for the future.\nKevin also discusses his preparation for boot camp, the importance of his support network and  his tips for success within the Navy.\n\n*We apologise for the connection quality*\n\nIf you or a loved one are joining the Navy, make it easier to stay connected at every step of the journey with the Sandboxx app:  https://link.sandboxx.us/youtube",
+    "view_count": 261
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UEVNXPH3Mfg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

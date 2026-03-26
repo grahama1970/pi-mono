@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yhqClQIvFx0",
+    "language": "en",
+    "took_ms": 8321,
+    "method": null,
+    "title": "Counterbalance | The Origins of Hudson, and Abe's Transformation of Japan (feat. Ken Weinstein)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240118",
+    "duration_sec": 2965,
+    "description": "Peter Rough talks this week with Ken Weinstein, Hudson’s Japan Chair and former president and CEO of Hudson. Peter and Ken talk about Hudson’s founding and the instrumental role Herman Kahn, Max Singer, and Wally Stern played in making it what it is today. The two also delve into the role Shinzo Abe played in transforming Japan’s foreign and security policy.",
+    "view_count": 685
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yhqClQIvFx0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

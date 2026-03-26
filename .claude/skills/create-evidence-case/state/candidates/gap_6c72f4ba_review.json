@@ -1,0 +1,38 @@
+{
+  "title": "Gap Review: 6c72f4ba",
+  "context": "Evidence case returned INCONCLUSIVE. Review whether this is a real corpus gap.\n\n**Question:** Test gap question\n\n**Technique Analysis:** No bridge found\n\n**Clarify Output:** {\n  \"related\": [],\n  \"unrelated\": [\n    \"FPGA\",\n    \"CMMC\"\n  ]\n}",
+  "questions": [
+    {
+      "id": "gap_type",
+      "text": "Is this a real corpus gap or a false gap?",
+      "type": "select",
+      "options": [
+        "real_gap",
+        "false_gap",
+        "partial_coverage",
+        "out_of_scope"
+      ],
+      "recommendation": "real_gap",
+      "reason": "Technique bridge failed \u2014 entities don't share a technique."
+    },
+    {
+      "id": "research_action",
+      "text": "What action should be taken?",
+      "type": "select",
+      "options": [
+        "dogpile_research",
+        "adjust_thresholds",
+        "manual_qra",
+        "ignore"
+      ],
+      "recommendation": "dogpile_research",
+      "reason": "Use /dogpile Tier 3 research to find external evidence."
+    },
+    {
+      "id": "notes",
+      "text": "Additional context or notes:",
+      "type": "text",
+      "required": false
+    }
+  ]
+}

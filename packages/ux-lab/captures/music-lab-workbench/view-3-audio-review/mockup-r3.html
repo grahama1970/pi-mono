@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Audio Review (R3)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #141414; color: #ccc; font-family: system-ui, -apple-system, sans-serif;
+    width: 1400px; height: 900px; overflow: hidden;
+  }
+  :root {
+    --bg: #141414; --card: #1a1a1a; --border: #2a2a2a;
+    --green: #00ff88; --red: #ff4444; --amber: #ffaa00; --blue: #4a9eff; --accent: #7c3aed;
+    --vocal: #7c3aed; --bass: #4a9eff; --drums: #ff4444; --keys: #00ff88; --synth: #ffaa00; --guitar: #ff6b6b;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex; align-items: center; padding: 10px 20px; border-bottom: 1px solid var(--border); height: 48px; gap: 14px;
+  }
+  .back-arrow { color: #888; cursor: pointer; font-size: 16px; text-decoration: none; }
+  .topbar-title { font-size: 15px; font-weight: 600; color: #fff; }
+  .topbar-divider { color: #333; }
+  .topbar-view { font-size: 13px; color: var(--amber); font-weight: 500; }
+  .topbar-meta { font-size: 12px; color: #888; margin-left: auto; }
+  .topbar-delta { font-size: 12px; color: var(--green); font-weight: 600; }
+
+  /* Main layout: 2 columns */
+  .layout { display: flex; height: calc(900px - 48px); }
+  .col-left { width: 55%; border-right: 1px solid var(--border); padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+  .col-left::-webkit-scrollbar { width: 4px; }
+  .col-left::-webkit-scrollbar-thumb { background: #333; }
+  .col-right { width: 45%; padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+  .col-right::-webkit-scrollbar { width: 4px; }
+  .col-right::-webkit-scrollbar-thumb { background: #333; }
+
+  .panel-title { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+  .panel-sub { font-size: 10px; color: #666; }
+
+  /* A/B Toggle */
+  .ab-toggle { display: flex; gap: 0; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .ab-pill {
+    padding: 8px 20px; font-size: 12px; color: #888; cursor: pointer;
+    border-bottom: 2px solid transparent; flex: 1; text-align: center;
+  }
+  .ab-pill.active { color: var(--green); border-bottom-color: var(--green); background: rgba(0,255,136,0.04); }
+
+  /* Waveform */
+  .waveform-container {
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 12px;
+  }
+  .waveform-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .play-btn {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--green); border: none;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: #000; font-size: 14px; font-weight: bold; flex-shrink: 0;
+  }
+  .time-display { font-size: 12px; color: #aaa; font-variant-numeric: tabular-nums; }
+  .waveform-canvas {
+    width: 100%; height: 120px; background: #111; border-radius: 4px; position: relative; overflow: hidden;
+  }
+  /* Simulated waveform bars */
+  .waveform-bars { display: flex; align-items: center; height: 100%; gap: 1px; padding: 0 4px; }
+  .wf-bar { flex: 1; background: var(--amber); border-radius: 1px; opacity: 0.8; min-width: 1px; }
+  .wf-bar.played { opacity: 1; }
+  .wf-bar.unplayed { opacity: 0.35; }
+  .playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #fff; left: 38%; z-index: 2; }
+  .waveform-times { display: flex; justify-content: space-between; font-size: 9px; color: #555; margin-top: 4px; }
+
+  /* Chord timeline */
+  .chord-timeline {
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px;
+  }
+  .chord-bar { display: flex; gap: 2px; height: 24px; border-radius: 3px; overflow: hidden; }
+  .chord-block {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; color: #000; border-radius: 2px;
+  }
+  .beat-markers { display: flex; justify-content: space-between; font-size: 8px; color: #444; margin-top: 4px; }
+
+  /* Convergence chart */
+  .convergence-chart {
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 12px;
+  }
+  .chart-area { width: 100%; height: 160px; position: relative; background: #111; border-radius: 4px; padding: 8px; }
+  .chart-grid-line {
+    position: absolute; left: 40px; right: 8px; height: 1px; background: #222;
+  }
+  .chart-label { position: absolute; left: 4px; font-size: 9px; color: #555; }
+  .threshold-line {
+    position: absolute; left: 40px; right: 8px; height: 1px;
+    border-top: 1px dashed var(--red); opacity: 0.5;
+  }
+  .threshold-label { position: absolute; right: 10px; font-size: 8px; color: var(--red); opacity: 0.7; }
+  .chart-legend { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 9px; color: #888; }
+  .legend-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* SVG lines for chart */
+  .chart-svg { position: absolute; top: 8px; left: 40px; right: 8px; bottom: 8px; }
+
+  /* MIR badges */
+  .mir-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .mir-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 4px;
+    padding: 8px; text-align: center;
+  }
+  .mir-val { font-size: 16px; font-weight: 700; color: #fff; }
+  .mir-label { font-size: 9px; color: #666; margin-top: 2px; }
+
+  /* Stem mixer */
+  .stem-row {
+    display: flex; align-items: center; gap: 8px; padding: 6px 0;
+    border-bottom: 1px solid #222;
+  }
+  .stem-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .stem-name { font-size: 11px; color: #ccc; width: 50px; }
+  .stem-slider-track { flex: 1; height: 4px; background: #222; border-radius: 2px; position: relative; }
+  .stem-slider-fill { height: 100%; border-radius: 2px; position: absolute; top: 0; left: 0; }
+  .stem-slider-thumb {
+    width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid #333;
+    position: absolute; top: -3px;
+  }
+  .stem-db { font-size: 10px; color: #888; width: 36px; text-align: right; font-variant-numeric: tabular-nums; }
+  .stem-mute {
+    width: 20px; height: 20px; border-radius: 3px; border: 1px solid var(--border);
+    background: var(--card); color: #666; font-size: 9px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .stem-mute.muted { background: var(--red); color: #000; border-color: var(--red); }
+
+  /* Voice model cards */
+  .voice-grid { display: flex; gap: 8px; }
+  .voice-card {
+    flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px; cursor: pointer;
+  }
+  .voice-card.active { border-color: var(--green); box-shadow: 0 0 8px rgba(0,255,136,0.1); }
+  .voice-name { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .voice-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .voice-tag { font-size: 9px; padding: 2px 5px; background: #222; border-radius: 3px; color: #888; }
+  .voice-card.active .voice-tag { color: var(--green); background: rgba(0,255,136,0.08); }
+
+  /* Action buttons */
+  .action-bar { display: flex; gap: 10px; margin-top: auto; padding-top: 10px; }
+  .action-btn {
+    padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1px solid; flex: 1; text-align: center;
+  }
+  .action-btn.reject { background: transparent; border-color: var(--red); color: var(--red); }
+  .action-btn.approve { background: var(--green); border-color: var(--green); color: #000; }
+  .action-btn.rerun { background: transparent; border-color: var(--border); color: #888; }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <a class="back-arrow">&larr;</a>
+  <span class="topbar-title">Whisperheads</span>
+  <span class="topbar-divider">/</span>
+  <span class="topbar-view">Audio Review</span>
+  <span class="topbar-meta">Round 4 of 5</span>
+  <span class="topbar-divider">&middot;</span>
+  <span class="topbar-delta">delta 0.18</span>
+</div>
+
+<div class="layout">
+  <!-- Left Column: Audio Content -->
+  <div class="col-left">
+
+    <!-- A/B Toggle -->
+    <div>
+      <div class="panel-title">Compare Rounds</div>
+      <div class="ab-toggle">
+        <div class="ab-pill active">Round 4 (current)</div>
+        <div class="ab-pill">Round 3 (previous)</div>
+      </div>
+    </div>
+
+    <!-- Waveform -->
+    <div class="waveform-container">
+      <div class="waveform-controls">
+        <button class="play-btn">&#9654;</button>
+        <span class="time-display">1:24 / 3:42</span>
+        <span style="margin-left:auto;font-size:10px;color:#666;">WAV 44.1kHz &middot; 16bit</span>
+      </div>
+      <div class="waveform-canvas">
+        <div class="waveform-bars">
+          <!-- Generate ~140 bars with varying heights to simulate waveform -->
+          <div class="wf-bar played" style="height:18%"></div><div class="wf-bar played" style="height:24%"></div>
+          <div class="wf-bar played" style="height:32%"></div><div class="wf-bar played" style="height:28%"></div>
+          <div class="wf-bar played" style="height:42%"></div><div class="wf-bar played" style="height:55%"></div>
+          <div class="wf-bar played" style="height:48%"></div><div class="wf-bar played" style="height:38%"></div>
+          <div class="wf-bar played" style="height:52%"></div><div class="wf-bar played" style="height:65%"></div>
+          <div class="wf-bar played" style="height:72%"></div><div class="wf-bar played" style="height:58%"></div>
+          <div class="wf-bar played" style="height:45%"></div><div class="wf-bar played" style="height:62%"></div>
+          <div class="wf-bar played" style="height:75%"></div><div class="wf-bar played" style="height:82%"></div>
+          <div class="wf-bar played" style="height:68%"></div><div class="wf-bar played" style="height:55%"></div>
+          <div class="wf-bar played" style="height:72%"></div><div class="wf-bar played" style="height:85%"></div>
+          <div class="wf-bar played" style="height:78%"></div><div class="wf-bar played" style="height:62%"></div>
+          <div class="wf-bar played" style="height:55%"></div><div class="wf-bar played" style="height:68%"></div>
+          <div class="wf-bar played" style="height:75%"></div><div class="wf-bar played" style="height:82%"></div>
+          <div class="wf-bar played" style="height:88%"></div><div class="wf-bar played" style="height:78%"></div>
+          <div class="wf-bar played" style="height:65%"></div><div class="wf-bar played" style="height:72%"></div>
+          <div class="wf-bar played" style="height:80%"></div><div class="wf-bar played" style="height:92%"></div>
+          <div class="wf-bar played" style="height:85%"></div><div class="wf-bar played" style="height:75%"></div>
+          <div class="wf-bar played" style="height:68%"></div><div class="wf-bar played" style="height:78%"></div>
+          <div class="wf-bar played" style="height:88%"></div><div class="wf-bar played" style="height:82%"></div>
+          <div class="wf-bar played" style="height:72%"></div><div class="wf-bar played" style="height:65%"></div>
+          <div class="wf-bar played" style="height:75%"></div><div class="wf-bar played" style="height:85%"></div>
+          <div class="wf-bar played" style="height:92%"></div><div class="wf-bar played" style="height:88%"></div>
+          <div class="wf-bar played" style="height:78%"></div><div class="wf-bar played" style="height:70%"></div>
+          <div class="wf-bar played" style="height:80%"></div><div class="wf-bar played" style="height:90%"></div>
+          <div class="wf-bar played" style="height:95%"></div><div class="wf-bar played" style="height:88%"></div>
+          <div class="wf-bar played" style="height:82%"></div><div class="wf-bar played" style="height:75%"></div>
+          <div class="wf-bar played" style="height:85%"></div><div class="wf-bar played" style="height:90%"></div>
+          <!-- Playhead position ~38% -->
+          <div class="wf-bar unplayed" style="height:78%"></div><div class="wf-bar unplayed" style="height:72%"></div>
+          <div class="wf-bar unplayed" style="height:65%"></div><div class="wf-bar unplayed" style="height:58%"></div>
+          <div class="wf-bar unplayed" style="height:52%"></div><div class="wf-bar unplayed" style="height:62%"></div>
+          <div class="wf-bar unplayed" style="height:72%"></div><div class="wf-bar unplayed" style="height:80%"></div>
+          <div class="wf-bar unplayed" style="height:88%"></div><div class="wf-bar unplayed" style="height:95%"></div>
+          <div class="wf-bar unplayed" style="height:98%"></div><div class="wf-bar unplayed" style="height:92%"></div>
+          <div class="wf-bar unplayed" style="height:85%"></div><div class="wf-bar unplayed" style="height:78%"></div>
+          <div class="wf-bar unplayed" style="height:88%"></div><div class="wf-bar unplayed" style="height:95%"></div>
+          <div class="wf-bar unplayed" style="height:90%"></div><div class="wf-bar unplayed" style="height:82%"></div>
+          <div class="wf-bar unplayed" style="height:75%"></div><div class="wf-bar unplayed" style="height:68%"></div>
+          <div class="wf-bar unplayed" style="height:78%"></div><div class="wf-bar unplayed" style="height:85%"></div>
+          <div class="wf-bar unplayed" style="height:92%"></div><div class="wf-bar unplayed" style="height:88%"></div>
+          <div class="wf-bar unplayed" style="height:80%"></div><div class="wf-bar unplayed" style="height:72%"></div>
+          <div class="wf-bar unplayed" style="height:65%"></div><div class="wf-bar unplayed" style="height:75%"></div>
+          <div class="wf-bar unplayed" style="height:82%"></div><div class="wf-bar unplayed" style="height:88%"></div>
+          <div class="wf-bar unplayed" style="height:78%"></div><div class="wf-bar unplayed" style="height:68%"></div>
+          <div class="wf-bar unplayed" style="height:60%"></div><div class="wf-bar unplayed" style="height:72%"></div>
+          <div class="wf-bar unplayed" style="height:80%"></div><div class="wf-bar unplayed" style="height:75%"></div>
+          <div class="wf-bar unplayed" style="height:65%"></div><div class="wf-bar unplayed" style="height:55%"></div>
+          <div class="wf-bar unplayed" style="height:48%"></div><div class="wf-bar unplayed" style="height:58%"></div>
+          <div class="wf-bar unplayed" style="height:65%"></div><div class="wf-bar unplayed" style="height:72%"></div>
+          <div class="wf-bar unplayed" style="height:62%"></div><div class="wf-bar unplayed" style="height:52%"></div>
+          <div class="wf-bar unplayed" style="height:45%"></div><div class="wf-bar unplayed" style="height:38%"></div>
+          <div class="wf-bar unplayed" style="height:42%"></div><div class="wf-bar unplayed" style="height:48%"></div>
+          <div class="wf-bar unplayed" style="height:55%"></div><div class="wf-bar unplayed" style="height:45%"></div>
+          <div class="wf-bar unplayed" style="height:35%"></div><div class="wf-bar unplayed" style="height:28%"></div>
+          <div class="wf-bar unplayed" style="height:22%"></div><div class="wf-bar unplayed" style="height:18%"></div>
+        </div>
+        <div class="playhead"></div>
+      </div>
+      <div class="waveform-times">
+        <span>0:00</span><span>0:55</span><span>1:50</span><span>2:45</span><span>3:42</span>
+      </div>
+    </div>
+
+    <!-- Chord Timeline -->
+    <div class="chord-timeline">
+      <div class="panel-title" style="margin-bottom:6px;">Chord Progression</div>
+      <div class="chord-bar">
+        <div class="chord-block" style="background:var(--blue);flex:2;">Am</div>
+        <div class="chord-block" style="background:var(--green);flex:2;">G</div>
+        <div class="chord-block" style="background:var(--amber);flex:2;">C</div>
+        <div class="chord-block" style="background:var(--accent);color:#fff;flex:2;">F</div>
+        <div class="chord-block" style="background:var(--amber);flex:2;">C</div>
+        <div class="chord-block" style="background:var(--accent);color:#fff;flex:2;">F</div>
+        <div class="chord-block" style="background:var(--blue);flex:2;">Am</div>
+        <div class="chord-block" style="background:var(--green);flex:2;">G</div>
+        <div class="chord-block" style="background:var(--blue);flex:1;">Am</div>
+        <div class="chord-block" style="background:var(--green);flex:1;">G</div>
+        <div class="chord-block" style="background:var(--amber);flex:1;">C</div>
+        <div class="chord-block" style="background:var(--accent);color:#fff;flex:1;">F</div>
+      </div>
+      <div class="beat-markers">
+        <span>V1</span><span>|</span><span>Chorus</span><span>|</span><span>V2</span><span>|</span><span>C</span><span>|</span><span>Br</span><span>|</span><span>C</span>
+      </div>
+    </div>
+
+    <!-- Convergence Chart -->
+    <div class="convergence-chart">
+      <div class="panel-title">Convergence Trajectory</div>
+      <div class="chart-area">
+        <!-- Y-axis labels -->
+        <span class="chart-label" style="top:4px;">0.8</span>
+        <span class="chart-label" style="top:36px;">0.6</span>
+        <span class="chart-label" style="top:68px;">0.4</span>
+        <span class="chart-label" style="top:100px;">0.2</span>
+        <span class="chart-label" style="bottom:4px;">0.0</span>
+        <!-- Grid lines -->
+        <div class="chart-grid-line" style="top:12px;"></div>
+        <div class="chart-grid-line" style="top:44px;"></div>
+        <div class="chart-grid-line" style="top:76px;"></div>
+        <div class="chart-grid-line" style="top:108px;"></div>
+        <div class="chart-grid-line" style="bottom:12px;"></div>
+        <!-- Threshold -->
+        <div class="threshold-line" style="top:100px;"></div>
+        <span class="threshold-label" style="top:92px;">threshold 0.3</span>
+        <!-- X-axis labels -->
+        <span style="position:absolute;bottom:-2px;left:40px;font-size:9px;color:#555;">R1</span>
+        <span style="position:absolute;bottom:-2px;left:calc(40px + 28%);font-size:9px;color:#555;">R2</span>
+        <span style="position:absolute;bottom:-2px;left:calc(40px + 56%);font-size:9px;color:#555;">R3</span>
+        <span style="position:absolute;bottom:-2px;left:calc(40px + 84%);font-size:9px;color:#555;">R4</span>
+
+        <!-- SVG convergence lines -->
+        <svg class="chart-svg" viewBox="0 0 400 140" preserveAspectRatio="none" style="width:calc(100% - 48px);height:calc(100% - 16px);">
+          <!-- Tempo (blue) -->
+          <polyline points="0,35 133,52 266,78 400,105" fill="none" stroke="#4a9eff" stroke-width="2" opacity="0.8"/>
+          <!-- Key (green) -->
+          <polyline points="0,44 133,70 266,96 400,118" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.8"/>
+          <!-- Chords (amber) -->
+          <polyline points="0,18 133,44 266,65 400,85" fill="none" stroke="#ffaa00" stroke-width="2" opacity="0.8"/>
+          <!-- Dynamics (purple) -->
+          <polyline points="0,9 133,35 266,57 400,82" fill="none" stroke="#7c3aed" stroke-width="2" opacity="0.8"/>
+          <!-- Timing (red) -->
+          <polyline points="0,26 133,48 266,70 400,95" fill="none" stroke="#ff4444" stroke-width="2" opacity="0.8"/>
+          <!-- Data points -->
+          <circle cx="0" cy="35" r="3" fill="#4a9eff"/><circle cx="133" cy="52" r="3" fill="#4a9eff"/>
+          <circle cx="266" cy="78" r="3" fill="#4a9eff"/><circle cx="400" cy="105" r="3" fill="#4a9eff"/>
+          <circle cx="0" cy="18" r="3" fill="#ffaa00"/><circle cx="133" cy="44" r="3" fill="#ffaa00"/>
+          <circle cx="266" cy="65" r="3" fill="#ffaa00"/><circle cx="400" cy="85" r="3" fill="#ffaa00"/>
+          <circle cx="0" cy="9" r="3" fill="#7c3aed"/><circle cx="133" cy="35" r="3" fill="#7c3aed"/>
+          <circle cx="266" cy="57" r="3" fill="#7c3aed"/><circle cx="400" cy="82" r="3" fill="#7c3aed"/>
+        </svg>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--blue);"></div>Tempo</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--green);"></div>Key</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--amber);"></div>Chords</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent);"></div>Dynamics</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--red);"></div>Timing</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Column: Controls -->
+  <div class="col-right">
+
+    <!-- MIR Analysis -->
+    <div>
+      <div class="panel-title">MIR Analysis</div>
+      <div class="mir-grid">
+        <div class="mir-card">
+          <div class="mir-val" style="color:var(--blue);">92</div>
+          <div class="mir-label">BPM</div>
+        </div>
+        <div class="mir-card">
+          <div class="mir-val" style="color:var(--green);">Am</div>
+          <div class="mir-label">Key</div>
+        </div>
+        <div class="mir-card">
+          <div class="mir-val" style="color:var(--amber);">-14</div>
+          <div class="mir-label">LUFS</div>
+        </div>
+        <div class="mir-card">
+          <div class="mir-val">3:42</div>
+          <div class="mir-label">Duration</div>
+        </div>
+        <div class="mir-card">
+          <div class="mir-val" style="color:var(--accent);">0.72</div>
+          <div class="mir-label">Energy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stem Mixer -->
+    <div>
+      <div class="panel-title">Stem Mixer</div>
+      <!-- Vocals -->
+      <div class="stem-row">
+        <div class="stem-dot" style="background:var(--vocal);"></div>
+        <div class="stem-name">Vocals</div>
+        <div class="stem-slider-track">
+          <div class="stem-slider-fill" style="width:78%;background:var(--vocal);opacity:0.4;border-radius:2px;"></div>
+          <div class="stem-slider-thumb" style="left:calc(78% - 5px);"></div>
+        </div>
+        <div class="stem-db">-2.4 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+      <!-- Bass -->
+      <div class="stem-row">
+        <div class="stem-dot" style="background:var(--bass);"></div>
+        <div class="stem-name">Bass</div>
+        <div class="stem-slider-track">
+          <div class="stem-slider-fill" style="width:65%;background:var(--bass);opacity:0.4;border-radius:2px;"></div>
+          <div class="stem-slider-thumb" style="left:calc(65% - 5px);"></div>
+        </div>
+        <div class="stem-db">-4.8 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+      <!-- Drums -->
+      <div class="stem-row">
+        <div class="stem-dot" style="background:var(--drums);opacity:0.4;"></div>
+        <div class="stem-name" style="color:#666;text-decoration:line-through;">Drums</div>
+        <div class="stem-slider-track">
+          <div class="stem-slider-fill" style="width:0%;background:var(--drums);opacity:0.4;border-radius:2px;"></div>
+          <div class="stem-slider-thumb" style="left:0;"></div>
+        </div>
+        <div class="stem-db" style="color:#555;">-inf dB</div>
+        <div class="stem-mute muted">M</div>
+      </div>
+      <!-- Keys -->
+      <div class="stem-row">
+        <div class="stem-dot" style="background:var(--keys);"></div>
+        <div class="stem-name">Keys</div>
+        <div class="stem-slider-track">
+          <div class="stem-slider-fill" style="width:55%;background:var(--keys);opacity:0.4;border-radius:2px;"></div>
+          <div class="stem-slider-thumb" style="left:calc(55% - 5px);"></div>
+        </div>
+        <div class="stem-db">-6.2 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+      <!-- Synth -->
+      <div class="stem-row">
+        <div class="stem-dot" style="background:var(--synth);"></div>
+        <div class="stem-name">Synth</div>
+        <div class="stem-slider-track">
+          <div class="stem-slider-fill" style="width:70%;background:var(--synth);opacity:0.4;border-radius:2px;"></div>
+          <div class="stem-slider-thumb" style="left:calc(70% - 5px);"></div>
+        </div>
+        <div class="stem-db">-3.6 dB</div>
+        <div class="stem-mute">M</div>
+      </div>
+    </div>
+
+    <!-- Voice Model -->
+    <div>
+      <div class="panel-title">Voice Model</div>
+      <div class="voice-grid">
+        <div class="voice-card active">
+          <div class="voice-name">Horus Warm</div>
+          <div class="voice-tags">
+            <span class="voice-tag">baritone</span>
+            <span class="voice-tag">smooth</span>
+          </div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-name">Horus Edge</div>
+          <div class="voice-tags">
+            <span class="voice-tag">grit</span>
+            <span class="voice-tag">mid-range</span>
+          </div>
+        </div>
+        <div class="voice-card">
+          <div class="voice-name">Horus Whisper</div>
+          <div class="voice-tags">
+            <span class="voice-tag">breathy</span>
+            <span class="voice-tag">intimate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-bar">
+      <button class="action-btn reject">Reject</button>
+      <button class="action-btn approve">Approve &amp; Archive</button>
+      <button class="action-btn rerun">Run Again</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

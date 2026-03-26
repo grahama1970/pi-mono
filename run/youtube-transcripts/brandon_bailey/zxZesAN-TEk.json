@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zxZesAN-TEk",
+    "language": "en",
+    "took_ms": 7806,
+    "method": null,
+    "title": "DEF CON 31 - Getting a Migraine - Unique SIP Bypass on MacOS  - Or, Pearse, Bohra",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2560,
+    "description": "System Integrity Protection (SIP) is a macOS technology that limits the capabilities of the root user, most notably - it maintains the integrity of the operating system by preventing loading of untrusted kernel extensions and protecting sensitive filesystem locations.\n\nIn this talk we will uncover a method to bypass SIP and create undeletable malware that can later load arbitrary kernel extensions. We will explain our methodology, detail our exploitation strategy and the reverse engineering involved. Lastly, we will explain how to look for similar SIP bypasses and outline a generic detection strategy for Blue Teams.",
+    "view_count": 1837
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zxZesAN-TEk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

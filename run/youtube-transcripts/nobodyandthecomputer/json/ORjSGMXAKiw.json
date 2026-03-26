@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ORjSGMXAKiw",
+    "language": "en",
+    "took_ms": 6091,
+    "method": null,
+    "title": "Vibe Coding the Weirdest Synth Ever Made (AI VODER)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20251029",
+    "duration_sec": 490,
+    "description": "I built a modern replica of The Voder — the first talking machine ever created (1939).\nNo samples, no autotune... just buzz, hiss, and code.\n\nSupport by joining The Nobody Collective here: \nhttps://www.patreon.com/NobodyandTheComputer\nYou’ll also get access to tutorials, behind-the-scenes info, code, prompts, and much more.\n\nall the links with prompts,  Claude Artifacts and Custon GPT for UI design:\nhttps://www.patreon.com/posts/voder-ai-replica-142357337\n\n#AIVoder #VoderReplica #NobodyAndTheComputer #GenerativeAI #AIMusic #VoiceSynth #SoundDesign #AIExperiment #AnthropicClaude #ChatGPT #AICinema #CreativeCoding #VintageTech #SpeechSynthesis #VibeCoding #Electronica #BellLabs #AIVoice #MachineLearning #RetroFuture",
+    "view_count": 3739
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "\nCould not retrieve a transcript for the video https://www.youtube.com/watch?v=ORjSGMXAKiw! This is most likely caused by:\n\nYouTube is blocking requests from your IP. This usually is due to one of the following reasons:\n- You have done too many requests and your IP has been blocked by YouTube\n- You are doing requests from an IP belonging to a cloud provider (like AWS, Google Cloud Platform, Azure, etc.). Unfortunately, most IPs from cloud providers are blocked by YouTube.\n\nThere are two things you can do to work around this:\n1. Use proxies to hide your IP address, as explained in the \"Working around IP bans\" section of the README (https://github.com/jdepoix/youtube-transcript-api?tab=readme-ov-file#working-around-ip-bans-requestblocked-or-ipblocked-exception).\n2. (NOT RECOMMENDED) If you authenticate your requests using cookies, you will be able to continue doing requests for a while. However, YouTube will eventually permanently ban the account that you have used to authenticate with! So only do this if you don't mind your account being banned!\n\nIf you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!"
+  ]
+}

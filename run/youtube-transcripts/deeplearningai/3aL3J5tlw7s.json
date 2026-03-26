@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3aL3J5tlw7s",
+    "language": "en",
+    "took_ms": 7853,
+    "method": null,
+    "title": "DeepLearning.AI Learner Community Event ft. Neelesh Kamkolkar",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201029",
+    "duration_sec": 2510,
+    "description": "deeplearning.ai presents virtual mini-event series for our Learner Community of those taking the AI for Medicine specialization!\n\n#MeetYourMentor: Mentors sharing their personal experiences of breaking into AI\n#DeepDive: A deep dive into a specific area that the guest speaker is working on\nand more!\n\nThis event will be at 10am PDT on June 16th featuring Neelesh Kamkolkar, an AI/ML product leader who has helped build scalable, high performance platforms at various enterprise companies.\n \nNeelesh will share real world lessons from operationalizing ML models in production in a health care environment. His team has built many models ground up and deployed them in operational settings across a 16 hospital chain in US and to the entire population of Singapore via their Health Ministry. He will walk through challenges across model lifecycle, use of technology platforms, and collaborating across different functional team members in a modern AI/ML team.\n\n \nEnroll in the AI For Medicine Specialization here:  https://bit.ly/2UBOUEO\nCheck out all our courses: https://bit.ly/39yz95P",
+    "view_count": 484
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3aL3J5tlw7s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

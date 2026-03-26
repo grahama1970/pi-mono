@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "N72-fAI5V9k",
+    "language": "en",
+    "took_ms": 9231,
+    "method": null,
+    "title": "Make your AI agents production-ready with Nvidia’s NeMo Toolkit",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251217",
+    "duration_sec": 122,
+    "description": "Learn more: https://bit.ly/48XQSVk\n\nMany teams can build an impressive agent demo, but struggle to turn it into a system that’s observable, measurable, and reliable in production.\n\nOur new short course, Nvidia’s NeMo Agent Toolkit: Making Agents Reliable, shows you how to harden your agentic workflows using Nvidia’s open-source NeMo Agent Toolkit (NAT). Taught by Brian McBrayer, Solutions Architect in Generative AI at Nvidia.\n\nIn this course, you’ll learn to:\n\n- Add observability with OpenTelemetry and Phoenix tracing to inspect agent reasoning and tool selection.\n- Run systematic evaluations to catch bugs, measure improvements, and support CI/CD.\n- Deploy with production features like authentication, caching, and rate limiting.\n- Orchestrate multi-agent workflows that combine NAT agents with LangGraph, CrewAI, or custom Python agents.\n- Build configuration-driven workflows (via YAML) and serve them as HTTP/WebSocket APIs or NAT UI.\n\nYou’ll apply these skills by building a climate data analysis agent, then scaling it into a multi-agent workflow with professional-grade deployment.\n\nEnroll now: https://bit.ly/48XQSVk",
+    "view_count": 4381
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] N72-fAI5V9k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

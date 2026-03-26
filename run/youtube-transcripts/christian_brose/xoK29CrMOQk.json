@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xoK29CrMOQk",
+    "language": "en",
+    "took_ms": 8706,
+    "method": null,
+    "title": "Health Care: A Two-Decade Blunder",
+    "channel": "Hudson Institute",
+    "upload_date": "20100311",
+    "duration_sec": 237,
+    "description": "Hudson Senior Visiting Fellow Tevi Troy discusses the politics and history of the health care debate.",
+    "view_count": 78
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xoK29CrMOQk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

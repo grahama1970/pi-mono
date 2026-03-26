@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ix-3VjH-XtU",
+    "language": "en",
+    "took_ms": 9260,
+    "method": null,
+    "title": "AoD Podcast | Africa and the Economic Struggle of Great Power Politics (feat. James Barnett)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240619",
+    "duration_sec": 1906,
+    "description": "Hudson Institute Non-resident Fellow, Jake Barnett, joins the show from Nigeria to paint the picture of Africa's current economic and political landscape. France, the US, Russia, China and Saudi Arabia are all planted on the continent by way of direct foreign direct investment, humanitarian aid, or military support and peacekeeping. Barnett gives his outlook as to how the West is perceived regionally, and whether Chinese and Russian initiatives on the continent will have long-lasting impact or not.",
+    "view_count": 583
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ix-3VjH-XtU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

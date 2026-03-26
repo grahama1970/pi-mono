@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vmqJviN5nks",
+    "language": "en",
+    "took_ms": 8635,
+    "method": null,
+    "title": "The 5G Wireless Future and the Role of the Federal Government",
+    "channel": "Hudson Institute",
+    "upload_date": "20161216",
+    "duration_sec": 6953,
+    "description": "Lawrence Strickling joins Harold Furchtgott-Roth, Fred Campbell, Paige Atkins and Jon Wilkins to discuss 5G wireless broadband and spectrum management - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 839
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vmqJviN5nks: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

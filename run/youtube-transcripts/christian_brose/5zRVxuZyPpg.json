@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5zRVxuZyPpg",
+    "language": "en",
+    "took_ms": 9103,
+    "method": null,
+    "title": "When Deterrence Fails: The Iranian Proxy Threat in the Middle East",
+    "channel": "Hudson Institute",
+    "upload_date": "20240305",
+    "duration_sec": 1423,
+    "description": "A month after an Iranian suicide drone killed three brave American soldiers at their post in Jordan, Iran-backed militants continue to spread chaos in the Middle East. Houthi rebels use Iranian-made weapons to attack shipping vessels in the Red Sea, disrupting up to one-fifth of the world’s cargo trade. American troops in the region have faced nearly 170 attacks from the Houthis and other Iran-backed groups since October 2023. \n\nPlease join Representative Rich McCormick (GA-6), a retired Marine Corps commander, and Media Fellow Jeremy Hunt for a conversation on how to reestablish deterrence in the Middle East and protect American troops abroad.",
+    "view_count": 1142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5zRVxuZyPpg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JPOXC09QSz0",
+    "language": "en",
+    "took_ms": 8770,
+    "method": null,
+    "title": "Burning Down Cities",
+    "channel": "S4 Events",
+    "upload_date": "20250227",
+    "duration_sec": 1666,
+    "description": "This is a deep dive into how an attacker would accomplish something like burning down a politician's house at night or causing a catastrophic failure of a manufacturing line using the future hyperconnected grid. During the presentation we lay out theoretical, but realistic, attacks that go so far as burning down cities via attacks on the grid.\n\nScenarios includes the full chain of the attacks based on a hypothetical software package and operating environment that is realistic for the current utility space (but does not disclose actual vulnerabilities in the real software due to the lack of patching practice in this space).",
+    "view_count": 875
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JPOXC09QSz0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

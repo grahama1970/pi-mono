@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ldsK81hGs_Q",
+    "language": "en",
+    "took_ms": 8992,
+    "method": null,
+    "title": "DEF CON 32 - The wild and wonderful world of early Microprocessors w/a focus on 6502 - Michael Brown",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3209,
+    "description": "This presentation will be a combination of history lesson, technical introduction, and some demonstration. The target audience are those who may never had a chance to experience early microcomputers but want to get an introduction to the world of “retro computing.\n\nToday everyone's laptop or smartphone either run an Intel, AMD, or ARM processor. And most probably can't tell you exactly what they have or know any details of them. It’s all a black box to most. But back in the 70s and 80s, computer hobbyists & hackers knew they had a Z80, 6502, 6809, 68000 or other processor, and often knew the details and could and did program them in assembly. But while the industry has moved past the Apple II, Atari 400/800/XL/XE, Commodore 64 et al, there are still many who continue to use and enjoy these computers. Even to build and create new and exciting items for them as well as brand new systems using this old tech.\n\nIn this presentation, we will delve into microprocessor history of the 8-bit and early 16-bit systems, with a particular focus on the MOS 6502, one of the most popular microprocessors. We will touch a little on the systems that used the 6502, and take a quick look into how to program the 6502, even showing a couple of 6502-based systems. Importantly for many, we will delve into some of the resources available for those wishing to enter this world also.",
+    "view_count": 524
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ldsK81hGs_Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

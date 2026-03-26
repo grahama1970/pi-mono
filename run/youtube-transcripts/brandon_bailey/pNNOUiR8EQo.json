@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pNNOUiR8EQo",
+    "language": "en",
+    "took_ms": 8155,
+    "method": null,
+    "title": "DEF CON 30  - Sharon Brizinov - Evil PLC Attacks - Weaponizing PLCs",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1342,
+    "description": "These days, Programmable Logic Controllers (PLC) in an industrial network are a critical attack target, with more exploits being identified every day. But what if the PLC wasn’t the prey, but the predator? This presentation demonstrates a novel TTP called the \"Evil PLC Attack\", where a PLC is weaponized in a way that when an engineer is trying to configure or troubleshoot it, the engineer’s machine gets compromised.\n\nWe will describe how engineers diagnose PLC issues, write code, and transfer bytecode to PLCs for execution with industrial processes in any number of critical sectors, including electric, water and wastewater, heavy industry, and automotive manufacturing. Then we will describe how we conceptualized, developed, and implemented different techniques to weaponize a PLC in order to achieve code execution on an engineer’s machine. \n\nThe research resulted in working PoCs against ICS market leaders which fixed all the reported vulnerabilities and remediated the attack vector. Such vendors include Rockwell Automation, Schneider Electric, GE, B&R, Xinje, OVARRO and more.",
+    "view_count": 25358
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pNNOUiR8EQo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

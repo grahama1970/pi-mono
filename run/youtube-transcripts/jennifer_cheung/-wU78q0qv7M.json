@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-wU78q0qv7M",
+    "language": "en",
+    "took_ms": 9172,
+    "method": null,
+    "title": "DEF CON 30 - Bill Woodcock - Internet’s role in sanctions enforcement  -Russia/Ukraine & the future",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2768,
+    "description": "As Russia invaded Ukraine in February of this year, the Ukrainian government sent requests to ICANN and RIPE to have Russia removed from the Internet. Those requests were refused, but engendered a lively debate on the role of Internet operators and the Internet governance system in sanctioning bad actors, on the Internet and in the world. This talk will introduce how governmental and intergovernmental sanctions are defined and enacted, and discuss the Internet community’s reaction to past attempts to engage the Internet in sanctions enforcement, the current conflict, and what the Internet community is doing in this area to prepare for future conflicts.",
+    "view_count": 1425
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -wU78q0qv7M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

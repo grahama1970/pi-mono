@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Zda7yMbbW7s",
+    "language": "en",
+    "took_ms": 7790,
+    "method": null,
+    "title": "DEF CON 31 - Backdoor in the Core - Altering Intel x86 Instruction Set at Runtime -  Krog, Skovsende",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2202,
+    "description": "In this work, we present the novel results of our research on Intel CPU microcode. Building upon prior research on Intel Goldmont CPUs, we have reverse-engineered the implementations of complex x86 instructions, leading to the discovery of hidden microcode which serves to prevent the persistence of any changes made. Using this knowledge, we were able to patch those discovered sections, allowing us to make persistent microcode changes from userspace on Linux. We have developed and improved microcode tracing tools, giving us deeper insight into Intel Atom microcode than was previously possible, by allowing more dynamic analysis of the ROM.\n\nAlong with this presentation, we provide a C library for making microcode changes and documentation on the reverse-engineered microcode.\n\nWe show that vendor updates to the microcode, which cannot be verified by the user, impose a security risk by demonstrating how a Linux system can be compromised through a backdoor within a CPU core's microcode.",
+    "view_count": 10863
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Zda7yMbbW7s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

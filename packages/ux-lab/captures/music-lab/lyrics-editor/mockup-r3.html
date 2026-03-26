@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LyricsEditor Mockup R3 (Convergence Candidate)</title>
+    <style>
+        :root {
+            --bg-deep: #0b1220;
+            --card: #1a1a1a;
+            --nvis-green: #00ff88;
+            --accent: #7c3aed;
+            --text-white: #e2e8f0;
+            --text-dim: #64748b;
+            --border-color: rgba(255, 255, 255, 0.13);
+            --border-radius: 12px;
+            --grid-line-color: rgba(255, 255, 255, 0.07);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .editor-wrapper {
+            width: 640px;
+            height: 500px;
+            background-color: var(--card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            font-size: 1.25rem; font-weight: 600; padding-bottom: 8px; flex-shrink: 0;
+        }
+
+        .timeline-container {
+            overflow-x: auto;
+            flex-grow: 1;
+        }
+
+        .timeline-header {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 16px;
+            padding-right: 8px; /* To align with phrase row padding */
+        }
+        
+        .ruler-wrapper {
+            position: sticky;
+            top: 0;
+            background-color: var(--card);
+            z-index: 2;
+            padding-bottom: 4px;
+        }
+
+        .beat-ruler {
+            display: grid;
+            /* 8 bars * 4 beats/bar = 32 columns */
+            grid-template-columns: repeat(32, 1fr);
+            min-width: 800px; /* Example width for 8 bars */
+            border-left: 1px solid var(--border-color);
+        }
+
+        .beat-marker {
+            font-size: 0.75rem; color: var(--text-dim); text-align: left; padding-left: 4px;
+            border-left: 1px solid var(--grid-line-color); position: relative;
+        }
+        .beat-marker.bar-start { color: var(--text-white); font-weight: 500; }
+        .beat-marker.bar-start::before {
+            content: ''; position: absolute; left: 0; top: -4px;
+            width: 1px; height: 8px; background-color: var(--text-dim);
+        }
+
+        .phrase-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            align-items: center; gap: 16px; padding: 16px 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .phrase-meta { display: flex; flex-direction: column; gap: 8px; }
+        
+        .phrase-text-display {
+            color: var(--text-dim); font-size: 0.9rem;
+        }
+
+        .emotion-dropdown, .direction-dropdown {
+            background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color);
+            color: var(--text-dim); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;
+            -webkit-appearance: none; appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5%207.5L10%2012.5L15%207.5%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat; background-position: right 6px center; background-size: 16px;
+        }
+
+        .syllable-timeline {
+            position: relative; height: 60px;
+            min-width: 800px; /* Match beat ruler */
+            background-image: linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
+            /* 8 bars * 4 subdivisions/beat = 32 main lines */
+            background-size: calc(100% / 32) 100%;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .syllable {
+            position: absolute; top: 50%; transform: translateY(-50%); display: flex;
+            align-items: center; gap: 6px; cursor: grab; background-color: #2c2c38;
+            border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 6px; white-space: nowrap;
+            transition: border-color 0.2s;
+        }
+        .syllable:hover { border-color: var(--accent); }
+        .syllable:active { cursor: grabbing; border-color: var(--nvis-green); z-index: 10; }
+        
+        /* Beat placement: 32 units per 8 beats = 4 units per beat */
+        /* E.g. beat 1.0 -> 0% */
+        /* E.g. beat 3.5 -> (2.5 * 4) * (100/32) = 31.25% */
+        .syllable[data-beat="1"] { left: 0%; }
+        .syllable[data-beat="1.5"] { left: 6.25%; }
+        .syllable[data-beat="2"] { left: 12.5%; }
+        .syllable[data-beat="2.25"]{ left: 15.625%; }
+        .syllable[data-beat="3"] { left: 25%; }
+        .syllable[data-beat="3.5"] { left: 31.25%; }
+        .syllable[data-beat="5.0"] { left: 50%; }
+
+        .syllable-text-label { padding: 2px; border-radius: 2px; font-size: 1rem; font-weight: 500; }
+        .syllable-text-label:hover { background: rgba(255,255,255,0.1); cursor: text; }
+
+        .dynamics {
+            font-size: 0.8rem; padding: 2px 4px; border-radius: 4px;
+            color: var(--bg-deep); cursor: pointer; user-select: none;
+            transition: transform 0.1s;
+        }
+        .dynamics:hover { transform: scale(1.1); }
+        .dynamics-pp { background-color: #6a8dff; font-weight: 400; }
+        .dynamics-p  { background-color: #4a9eff; font-weight: 500; }
+        .dynamics-mp { background-color: #98e8a2; font-weight: 600; }
+        .dynamics-mf { background-color: #f2d977; font-weight: 700; }
+        .dynamics-f  { background-color: #ffaa00; font-weight: 800; }
+        .dynamics-ff { background-color: #ff4444; font-weight: 900; }
+
+        .direction-tag {
+            position: absolute; top: -12px; left: 4px; color: var(--accent);
+            font-size: 0.7rem; font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-wrapper">
+        <h2 class="section-header">Verse 1</h2>
+        <div class="timeline-container">
+            <div class="ruler-wrapper">
+                 <div class="timeline-header">
+                    <div></div> <!-- Spacer -->
+                    <div class="beat-ruler">
+                        <div class="beat-marker bar-start">1</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">2</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">3</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">4</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">5</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">6</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">7</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                        <div class="beat-marker bar-start">8</div><div class="beat-marker"></div><div class="beat-marker"></div><div class="beat-marker"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phrase-row">
+                <div class="phrase-meta">
+                    <div class="phrase-text-display">whispers in the static</div>
+                    <select class="emotion-dropdown">
+                        <option selected>Sadness</option>
+                        <option>Joy</option>
+                    </select>
+                </div>
+                <div class="syllable-timeline">
+                    <div class="syllable" data-beat="1">
+                        <select class="direction-dropdown" style="position: absolute; top: -20px; left: 0; width: 80px;">
+                            <option selected>whisper</option><option>spoken</option>
+                        </select>
+                        <span class="syllable-text-label" title="Double-click to edit">whis-</span>
+                        <span class="dynamics dynamics-mp" title="Click to cycle dynamics">mp</span>
+                    </div>
+                    <div class="syllable" data-beat="1.5">
+                        <span class="syllable-text-label" title="Double-click to edit">pers</span>
+                        <span class="dynamics dynamics-mp" title="Click to cycle dynamics">mp</span>
+                    </div>
+                     <div class="syllable" data-beat="2">
+                        <span class="syllable-text-label" title="Double-click to edit">in</span>
+                        <span class="dynamics dynamics-p" title="Click to cycle dynamics">p</span>
+                    </div>
+                    <div class="syllable" data-beat="2.25">
+                        <span class="syllable-text-label" title="Double-click to edit">the</span>
+                        <span class="dynamics dynamics-p" title="Click to cycle dynamics">p</span>
+                    </div>
+                    <div class="syllable" data-beat="3">
+                        <span class="syllable-text-label" title="Double-click to edit">sta-</span>
+                        <span class="dynamics dynamics-mf" title="Click to cycle dynamics">mf</span>
+                    </div>
+                    <div class="syllable" data-beat="3.5">
+                        <span class="syllable-text-label" title="Double-click to edit">tic</span>
+                        <span class="dynamics dynamics-mp" title="Click to cycle dynamics">mp</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phrase-row">
+                <div class="phrase-meta">
+                     <div class="phrase-text-display">a ghost in the machine</div>
+                    <select class="emotion-dropdown"><option>Neutral</option></select>
+                </div>
+                <div class="syllable-timeline">
+                     <div class="syllable" data-beat="5.0">
+                        <span class="syllable-text-label" title="Double-click to edit">a ghost...</span>
+                        <span class="dynamics dynamics-p" title="Click to cycle dynamics">p</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

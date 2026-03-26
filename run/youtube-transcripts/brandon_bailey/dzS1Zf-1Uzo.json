@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dzS1Zf-1Uzo",
+    "language": "en",
+    "took_ms": 8330,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Petro and Cecil - You're Doing IoT RNG",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 2404,
+    "description": "Think of a random number between '0' and infinity. Was your number '0'? Seriously? Crap. Well unfortunately, the hardware random number generators (RNG) used by your favorite IoT devices to create encryption keys may not work much better than you when it comes to randomness.\n\nIn this talk, we'll delve into murky design specs, opaque software libraries, and lots of empirical results. We wrote code for many popular IoT SoC platforms to extract gigabytes of data from their hardware RNGs and analyze them. What we found was a systemic minefield of vulnerabilities in almost every platform that could undermine IoT security. Something needs to change in how the Internet of Things does RNG.\n\nThe vulnerabilities are widespread and the attacks are practical. RNG is bad out there - \"IoT Crypto-pocalypse\" bad.",
+    "view_count": 704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dzS1Zf-1Uzo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

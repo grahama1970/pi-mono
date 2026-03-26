@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OMgm0Ynvv3A",
+    "language": "en",
+    "took_ms": 8801,
+    "method": null,
+    "title": "Cyber Norms and Cyber Escalation with Jason Healey",
+    "channel": "S4 Events",
+    "upload_date": "20210707",
+    "duration_sec": 1888,
+    "description": "A recent article by Jay Healey and Robert Jervis, The Escalation Inversion and Other Oddities of Situational Cyber Stability, breaks down four mechanisms in which cyber activities could be used and result in a stabilizing or destablizing.\n\nDale talks with Jay about the article, escalation due to cyber, and the current state and future of cyber norms.\n\nSubscribe to Dale's ICS Security Friday News & Notes email at https://friday.dale-peterson.com/signup/",
+    "view_count": 239
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OMgm0Ynvv3A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

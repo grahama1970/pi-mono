@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S-B4LlkjN7c",
+    "language": "en",
+    "took_ms": 8812,
+    "method": null,
+    "title": "DEF CON 32 - Video Team - Cory Doctorow",
+    "channel": "DEFCONConference",
+    "upload_date": "20240813",
+    "duration_sec": 395,
+    "description": "A few minutes with the prolific and inspirational Cory Doctorow.",
+    "view_count": 2694
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S-B4LlkjN7c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

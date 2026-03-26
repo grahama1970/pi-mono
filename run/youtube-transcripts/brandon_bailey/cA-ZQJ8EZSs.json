@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cA-ZQJ8EZSs",
+    "language": "en",
+    "took_ms": 7956,
+    "method": null,
+    "title": "DEF CON 33 - Journey to the center of PSTN - I became a phone company. You should too - Enzo Damato",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2662,
+    "description": "Whether you access the phone network over your cell phone, an SIP trunk, or via an old-school POTS line, the PSTN is an essential part of your day-to-day life and is a longstanding interest of the hacker community. Despite this interest, the regulatory and technical structures underlying this network are poorly understood, deliberately opaque, and dominated by large corporations.\n\nThis talk will demystify the network, starting with a brief overview of the history of the PSTN, followed by a deep dive into the inner functioning of the network. After this, the session will detail the regulatory structures that govern the network, and the technologies it employs. Next, the talk will continue with a practical guide detailing how anyone can form a full local exchange carrier to provide service to their community, covering the entire formation process through first-hand experience: regulatory approval, building interconnect with the PSTN, voice network design, and most importantly, user security and privacy.\n\nWith this knowledge in hand, the talk will briefly cover a range of exploits in the network, detailing how STIR/SHAKEN can be trivially bypassed, numbers can be hijacked, and how telecom fraud is monetized. The talk will conclude with a discussion of the future of the PSTN, and potential future issues.",
+    "view_count": 27406
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cA-ZQJ8EZSs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

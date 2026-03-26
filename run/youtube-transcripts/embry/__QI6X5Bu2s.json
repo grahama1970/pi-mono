@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "__QI6X5Bu2s",
+    "language": "en",
+    "took_ms": 8161,
+    "method": null,
+    "title": "S1 E6: This Week in Spaceflight History - STS-60 landed!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170209",
+    "duration_sec": 1082,
+    "description": "Have you ever wondered how the Space Shuttle landed? Well on this week in spaceflight history the Space Shuttle Discovery landed at Kennedy Space Center ending mission STS-60. This took place on February 11th, 1994 after an 8 day research mission. One of my favorite facts about this mission is it was former NASA administrator Charles Bolden’s last flight in space. \n\nTune in LIVE ever Wednesday at 9:00 Central (3:00 UTC) to join the action at http://twitch.tv/everydayastronaut\n\nMake sure and check out the Orbital Mechanics Podcast each week to get the run down on the mission!",
+    "view_count": 2118
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] __QI6X5Bu2s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

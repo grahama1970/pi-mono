@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "How8I7WrTNQ",
+    "language": "en",
+    "took_ms": 9295,
+    "method": null,
+    "title": "Tevi Troy on Fox and Friends Discussing Current Events",
+    "channel": "Hudson Institute",
+    "upload_date": "20110216",
+    "duration_sec": 356,
+    "description": "Hudson Senior Fellow Tevi Troy participated on a panel for Fox and Friends on February 16. Topics included the Muslim Brotherhood in Egypt and President Obama's budget.",
+    "view_count": 251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] How8I7WrTNQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

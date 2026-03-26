@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HpKuejKBXxs",
+    "language": "en",
+    "took_ms": 7591,
+    "method": null,
+    "title": "America is boosting production on stealth cruise missiles",
+    "channel": "Sandboxx",
+    "upload_date": "20260224",
+    "duration_sec": 179,
+    "description": "America is seriously ramping up production on its JASSM-ER and LRASM stealth cruise missiles #defense #tech #military #miltok #usmilitary",
+    "view_count": 269876
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HpKuejKBXxs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

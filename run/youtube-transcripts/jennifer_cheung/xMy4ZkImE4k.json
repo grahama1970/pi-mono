@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xMy4ZkImE4k",
+    "language": "en",
+    "took_ms": 8546,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Madhu Akula -  Kubernetes Goat   Kubernetes Security Learning",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 1393,
+    "description": "Kubernetes Goat is \"vulnerable by design\" Kubernetes Cluster environment to practice and learn about Kubernetes Security. In this session, Madhu Akula will present how to get started with Kubernetes Goat by exploring different vulnerabilities in Kubernetes Cluster and Containerized environments. Also, he demonstrates the real-world vulnerabilities and maps the Kubernetes Goat scenarios with them. We will see the complete documentation and instruction to practice Kubernetes Security for performing security assessments. As a defender you will see how we can learn these attacks, misconfigurations to understand and improve your cloud native infrastructure security posture.",
+    "view_count": 827
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xMy4ZkImE4k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "71x8EMrB0Gc",
+    "language": "en",
+    "took_ms": 9376,
+    "method": null,
+    "title": "Chat Fine tuning",
+    "channel": "Trelis Research",
+    "upload_date": "20231007",
+    "duration_sec": 1184,
+    "description": "*ADVANCED Fine-tuning Repository Access*\n1. Unsupervised + Supervised Fine-tuning Notebooks\n2. Q&A Dataset Preparation + Cleaning Scripts\n3. Scripts to create and use Embeddings\n4. Quantization Scripts\nLearn more at: https://trelis.com/advanced-fine-tuning-scripts/\n\n*Chat fine-tuning Script*\nBuy Access Here: https://buy.stripe.com/5kAaFq4pLbe3bQYcNf\n\n*Resources:*\n- Presentation Slides: https://tinyurl.com/4dxty3n8\n- Runpod Affiliate Link: (supports Trelis) https://tinyurl.com/yjxbdc9w\n- Llama 2 instruction fine-tuning dataset: https://huggingface.co/datasets/Trelis/openassistant-llama-style\n\nRelevant Videos:\n- Tiny Llama (run a GGUF model on your laptop): https://www.youtube.com/watch?v=T5l228844NI\n\n0:00 LLM instruction fine-tuning\n0:07 Why do instruction fine-tuning?\n1:10 Understanding special tokens and stop tokens\n4:20 Instruction fine-tuning format\n5:51 Guanaco instruction fine-tuning\n6:05 Llama 2 prompt format\n6:55 chatml prompt format\n9:16 Instruction fine-tuning datasets\n11:36 Fine-tuning a model for chat (in Jupyter lab)\n16:00 Chat fine-tuning results\n17:41 Pro tips",
+    "view_count": 4059
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 71x8EMrB0Gc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

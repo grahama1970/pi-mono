@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U25QGB0YGGI",
+    "language": "en",
+    "took_ms": 8185,
+    "method": null,
+    "title": "New Coverage or OT SBOM Market & Women In ICS Security Day at S4x22",
+    "channel": "S4 Events",
+    "upload_date": "20210915",
+    "duration_sec": 940,
+    "description": "A shorter solosode episode where Dale announces coverage of the emerging OT SBOM space. And in the second half he announces Women In ICS Security Wednesday at S4x22. There is a special social event to help build and support that community, plus free ticket for the sessions, Cabana sessions and the social event for all women who want to come to S4x22 for the day.",
+    "view_count": 191
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U25QGB0YGGI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9to68PN5rRU",
+    "language": "en",
+    "took_ms": 8587,
+    "method": null,
+    "title": "DEF CON 33 -  Decision Making in Adversarial Automation  - Bobby Kuzma, Michael Odell",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1614,
+    "description": "In an era where AI systems oscillate between mimicking human-like randomness and executing precise, predatory strategies, understanding decision-making in adversarial automation is critical. This talk explores the tension between \"stochastic parrots\"; generative models that produce probabilistic outputs, and \"deterministic predators,\" systems designed to behave in a predictable pattern in adversarial settings. We will delve into the mechanics of decision-making under uncertainty, examining how these systems navigate competitive environments, from game-playing AIs to cybersecurity defenses. Attendees will gain insights into the algorithms driving these dynamics, and where the technology is heading. We will be releasing tooling around our deterministic TTP selection engine.",
+    "view_count": 216
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9to68PN5rRU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

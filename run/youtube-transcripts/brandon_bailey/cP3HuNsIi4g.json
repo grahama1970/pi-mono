@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cP3HuNsIi4g",
+    "language": "en",
+    "took_ms": 7901,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - Tod Beardsley -  A Deep Dive on Vulnerability Disclosure",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 1626,
+    "description": "The norms and practices of vulnerability disclosure among voting machine manufacturers and election infrastructure providers have radically changed since the first Voting Machine Hacking Village of DEFCON 25. In just a few short years, private companies in the election services sector have matured from recalcitrant, close-lipped antagonists to active and willing participants in coordinated vulnerability disclosure (CVD) with published vulnerability disclosure programs (VDPs). And yet, truly unbelievable claims about voting security have risen to the fore, and as a result, the public imagination around how cybersecurity works and what are realistic threats to election integrity seems more fanciful than ever. In this short presentation, we will explore how CVD works for voting machines and other election systems, provide guidance on how well-meaning, virtuous hackers can best interface with this niche but crucial industry, and how we can all do our part to bring some reason and rigor to the practice of information security when it comes to one of our most important institutions.",
+    "view_count": 625
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cP3HuNsIi4g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

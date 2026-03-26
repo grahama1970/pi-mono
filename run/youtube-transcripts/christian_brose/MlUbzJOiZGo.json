@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MlUbzJOiZGo",
+    "language": "en",
+    "took_ms": 10141,
+    "method": null,
+    "title": "Melanie Kirkpatrick on North Korea for PBS",
+    "channel": "Hudson Institute",
+    "upload_date": "20120110",
+    "duration_sec": 496,
+    "description": "Hudson Senior Fellow Melanie Kirkpatrick participated in a segment about the conditions in North Korea on PBS. Will human and religious rights in North Korea improve after the death of Kim Jong Il or are they destined to remain the same under the leadership of his son?",
+    "view_count": 723
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MlUbzJOiZGo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UbT1KRxq9GQ",
+    "language": "en",
+    "took_ms": 8848,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Kyle Benac - Android Application Exploitation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3637,
+    "description": "Android applications are treasure chests of potential bugs waiting to be discovered. Having a structured, streamlined approach greatly improves your efficiency and assessment accuracy. This talk will go over methods used to identify the type of mobile framework to better assess possible attack vectors. Examples will be provided to demonstrate how to exploit those vectors.",
+    "view_count": 1689
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UbT1KRxq9GQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

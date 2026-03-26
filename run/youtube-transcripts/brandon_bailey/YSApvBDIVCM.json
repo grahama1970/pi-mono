@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YSApvBDIVCM",
+    "language": "en",
+    "took_ms": 7937,
+    "method": null,
+    "title": "DEF CON Safe Mode Car Hacking Village - Derrick - All Aboard the CAN Bus or Motorcycle",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 1748,
+    "description": "Follow me as my passion for motorcycles, goes head first into my passion for computers, and I build tools and software to reverse engineer my motorcycle's CAN system. Python scripts, microcontrollers, pulse width modulation, some potentiometers, and a bit of what I like to call “Ruthless Engineering”, has helped me finally reach the pinnacle of CAN bus packet reversing. We’ll cover some engine simulation, execute some packet capture session analysis, and put it all back together again, for the development of an aftermarket gauge cluster.",
+    "view_count": 1087
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YSApvBDIVCM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

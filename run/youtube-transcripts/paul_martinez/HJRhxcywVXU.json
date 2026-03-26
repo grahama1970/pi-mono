@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HJRhxcywVXU",
+    "language": "en",
+    "took_ms": 8136,
+    "method": null,
+    "title": "Rogue Firmware Upload in PLC's and Other Field Devices",
+    "channel": "S4 Events",
+    "upload_date": "20170813",
+    "duration_sec": 2916,
+    "description": "This is a classic from S4x09 (January 2009) where Daniel Peck, whose was with Digital Bond at the time, shows how the lack of authentication allows firmware and logic to be loaded onto two different example PLC's.\n\nIt predates the discovery of Stuxnet in 2010. It discusses the ease in developing worms that spread from PLC to PLC. It was far ahead of its time, and treated mostly as interesting, but not important at the time. Much has changed.",
+    "view_count": 200
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HJRhxcywVXU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

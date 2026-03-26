@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RkIz4VcsEdo",
+    "language": "en",
+    "took_ms": 8746,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - Open Source Cellular Test Beds for the EFF Rayhunter - Ron Broberg",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1586,
+    "description": "Rayhunter is an open source tool published by the Electronic Freedom Foundation which uses an Orbic RC400L mobile hotspot to detect potentially malicious cellular network data that may indicate a Stingray attack. In this presentation, we review the use of open sourced software cellular base stations such Open Air Interface 5G (OAI), srsRAN_4G, OpenBTS, and Yates GSM to create cellular test beds to robustly test the Rayhunter device and develop new detection capabilities.",
+    "view_count": 2018
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RkIz4VcsEdo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

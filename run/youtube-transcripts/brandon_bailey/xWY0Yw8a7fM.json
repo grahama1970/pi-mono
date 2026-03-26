@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xWY0Yw8a7fM",
+    "language": "en",
+    "took_ms": 9192,
+    "method": null,
+    "title": "DEF CON 30 - Chris Inglis, Kim Zetter - A Policy Fireside Chat with the National Cyber Director",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2657,
+    "description": "A Policy Fireside Chat with the National Cyber Director Chris Inglis, moderated by Kim Zetter.",
+    "view_count": 897
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xWY0Yw8a7fM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

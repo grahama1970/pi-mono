@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ojbc_6_8JjA",
+    "language": "en",
+    "took_ms": 9178,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Dabao Wong -   Understanding  Unlimited Approval in Ethereum",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 2980,
+    "description": "With the prosperous development of the DeFi ecosystem, trading tokens in decentralized applications (DApps) has become more and more frequent. ERC20 tokens, as one of the most popular token types, vastly circulate in the crypto market and obtain great value. Ideally, to trade ERC20 tokens in DApps, users first invoke the method approve() to permit DApps or other users to transfer the expected amount of tokens based on the ERC20 standard. In reality, many DApps request unlimited approvals from users to improve user experience. Unfortunately, this design caused a considerable loss on both users or even DApps themself. For example, the design flaw of smart contracts might cause the permission leak of approved tokens (Bancor). Moreover, some malicious platforms even trick users into approving tokens so that they can easily steal users’ approved asserts (Unicat). In this paper, we carefully elaborate on the unlimited approval problem with five real-world incidents. We then conduct two types of measurements. As a result, 21 platforms require unlimited approval in their service. However, only 3 (out of 15) wallets and no (out of 27) platforms reveal sufficient information and provide the modification feature for users. Moreover, we discover that over half of the approval transactions belong to unlimited approval.",
+    "view_count": 1761
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ojbc_6_8JjA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

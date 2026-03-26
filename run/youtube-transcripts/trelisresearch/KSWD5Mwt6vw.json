@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KSWD5Mwt6vw",
+    "language": "en",
+    "took_ms": 9336,
+    "method": null,
+    "title": "Nvidia RTX 5090 vs 4090, Project Digits & GB NVLink 72 at CES 2025",
+    "channel": "Trelis Research",
+    "upload_date": "20250110",
+    "duration_sec": 739,
+    "description": "➡️ Trelis Tools: https://trelis.com/\n➡️ AI Consulting: https://forms.gle/2VXzrBzpvm1BmG6e7\n➡️ Slides: https://docs.google.com/presentation/d/1qhfxURAJFP81HCmefyELq33KFmnBW5bEyMklc5s6Ww0/edit?usp=sharing\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://trelis.substack.com\n➡️ Other Resources and Products from Trelis: https://Trelis.com/\n\nVIDEO Links:\n- Slides (and all links): https://docs.google.com/presentation/d/1wX6B85HP1V03zvGN844uaux-iuhw61qDFlyhDn78X9E/edit#slide=id.g313e5fb48d9_0_255\n- Clipped Video: https://youtu.be/fjO9GPh_vJI\n\nTIMESTAMPS:\n00:00:00 - Introduction to Grace Blackwell NVLink 72 with 72 GPUs and 144 dies\n00:00:28 - Details on memory configuration: 576 chips, 14 terabytes total\n00:00:39 - Discussion of model sizes and Llama comparison\n00:00:55 - B200 GPU specifications: 18 tops, 180GB memory\n00:01:13 - Comparison with previous Hopper generation\n00:01:37 - Discussion of 4-bit vs 8-bit operations\n00:02:20 - NVIDIA's strategy regarding FP8 training and FP4 inference\n00:02:43 - Analysis of O1 and O3 techniques impact\n00:03:55 - Transition to RTX 50 series discussion\n00:04:19 - Revenue comparison: Gaming vs Data Center\n00:04:50 - RTX 50 series specifications revealed\n00:06:27 - Pricing comparison with 4090 series\n00:07:36 - Discussion of bandwidth limitations in inference\n00:08:20 - Transformer integration in RTX graphics processing\n00:09:06 - Introduction to Project Digits\n00:09:39 - Project Digits specifications: 4TB storage, 128GB VRAM\n00:10:46 - Memory bandwidth considerations for Project Digits\n00:11:19 - Technical analysis of memory modules\n00:12:13 - Conclusion of news update",
+    "view_count": 1495
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KSWD5Mwt6vw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

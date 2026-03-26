@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VGmbOlXyRhc",
+    "language": "en",
+    "took_ms": 8635,
+    "method": null,
+    "title": "Brazil´s Elections and Their Impact on Democracy in Brazil",
+    "channel": "Hudson Institute",
+    "upload_date": "20181030",
+    "duration_sec": 7264,
+    "description": "On October 29, Hudson Institute hosted a panel to discuss the results of the October 28 elections in Brazil. In particular, panelists considered the two presidential candidates: Jair Bolsonaro, a right-wing populist with the nickname “Trump of the Tropics,” who won the election; and Fernando Haddad, who represented the left-wing Workers’ Party. The discussion also considered how this election factors into the current wave of populism in Latin American politics and other parts of the world.",
+    "view_count": 641
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VGmbOlXyRhc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

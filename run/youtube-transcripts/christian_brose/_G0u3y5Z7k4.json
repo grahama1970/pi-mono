@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_G0u3y5Z7k4",
+    "language": "en",
+    "took_ms": 9144,
+    "method": null,
+    "title": "Kim Jong Un and the Northeast Asian Arms Race",
+    "channel": "Hudson Institute",
+    "upload_date": "20210917",
+    "duration_sec": 3729,
+    "description": "Join Hudson Institute Asia-Pacific Security Chair Patrick Cronin, Hudson Senior Fellow Alex Wong, and expert panelists Ankit Panda and Jean Lee, for a discussion on North Korea’s expanding missile arsenal and arms competition in Northeast Asia.\n\nHaving developed a comprehensive set of ballistic missile capabilities, North Korea recently tested a long-range cruise missile that is apparently capable of delivering a nuclear warhead to South Korea and Japan. As a result of both the North Korean and Chinese weapons programs, South Korea and Japan have each sought to develop more robust deterrent and defense forces. Understanding Kim Jong Un’s goals with this latest test is crucial to thinking through the security and diplomatic implications of the current state of arms competition in the region. Please join Hudson Institute for this timely discussion.",
+    "view_count": 797
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _G0u3y5Z7k4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

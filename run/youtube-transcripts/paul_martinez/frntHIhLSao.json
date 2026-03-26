@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "frntHIhLSao",
+    "language": "en",
+    "took_ms": 8093,
+    "method": null,
+    "title": "The Purdue Model in a Private LTE & 5G World",
+    "channel": "S4 Events",
+    "upload_date": "20230529",
+    "duration_sec": 1400,
+    "description": "Abdullah Yousif of pulp and paper company Georgia-Pacific shares the details of the challenges and lessons learned in deploying a high performance and secure private LTE & 5G system for their OT / mobile vehicle environment. Abdullah highlights how this new network mapped to the Purdue Reference Model.",
+    "view_count": 821
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] frntHIhLSao: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

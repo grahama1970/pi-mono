@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ne4_dr0OdUo",
+    "language": "en",
+    "took_ms": 9263,
+    "method": null,
+    "title": "DEF CON Safe Mode  - Feng Xiao - Discovering Hidden Properties to Attack NodeJS Ecosystem   Q&A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1886,
+    "description": "Question and Answer Session for Feng Xiao - Discovering Hidden Properties to Attack Node JS Ecosystem",
+    "view_count": 327
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ne4_dr0OdUo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

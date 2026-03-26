@@ -1,0 +1,2848 @@
+{
+  "version": 2,
+  "baseUrl": "http://localhost:5173",
+  "category": "persona-reviews",
+  "persona": "gynvael-coldwind",
+  "tests": [
+    {
+      "id": "gc_first_01",
+      "group": "first-impressions",
+      "label": "Gynvael Coldwind: Initial load and layout assessment",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "initial-load",
+          "review_criteria": "As a low-level systems programmer: Does the initial load communicate this is a serious binary analysis tool? Is the layout efficient for someone who will spend hours inspecting binaries? Does the information density match what you'd expect from IDA Pro or Ghidra's initial state?"
+        }
+      ]
+    },
+    {
+      "id": "gc_first_02",
+      "group": "first-impressions",
+      "label": "Gynvael Coldwind: Information hierarchy clarity",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "info-hierarchy",
+          "review_criteria": "As someone who reads binary formats byte-by-byte: Is the information hierarchy correct? Are the most important elements (binary name, architecture, entry point) immediately visible? Is there a clear path from overview to detail? Would you know where to find section headers, symbol tables, and import tables?"
+        }
+      ]
+    },
+    {
+      "id": "gc_first_03",
+      "group": "first-impressions",
+      "label": "Gynvael Coldwind: Professional tooling feel",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "professional-feel",
+          "review_criteria": "As a Google security engineer who uses professional RE tools daily: Does this feel like a tool you'd add to your workflow alongside Ghidra, radare2, or Binary Ninja? What's missing that would make it professional-grade? Is the dark theme appropriate for long analysis sessions?"
+        }
+      ]
+    },
+    {
+      "id": "gc_first_04",
+      "group": "first-impressions",
+      "label": "Gynvael Coldwind: Dark theme and contrast for binary data",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "dark-theme-contrast",
+          "review_criteria": "As someone who stares at hex dumps and assembly for hours: Is the contrast ratio sufficient for monospaced data? Can you distinguish between different data types (addresses, opcodes, operands) by color? Is the dark theme true-dark or does it have distracting gray tones? Are syntax highlighting colors distinguishable?"
+        }
+      ]
+    },
+    {
+      "id": "gc_first_05",
+      "group": "first-impressions",
+      "label": "Gynvael Coldwind: Panel layout and resizability",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "panel-layout",
+          "review_criteria": "As a low-level programmer who needs multiple views simultaneously: Can panels be resized? Is the graph-detail-chat split sensible for binary analysis? Would you want a different default ratio? Can you maximize one panel while keeping others accessible? Is there wasted screen real estate?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_01",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Schema field display and types",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "schema-fields",
+          "review_criteria": "As someone who parses binary formats: Are schema fields displayed with proper type annotations (uint32_t, char*, struct pointer)? Are field sizes shown in bytes? Is there endianness indication? Can you see the raw offset of each field within the structure? Are bitfields represented correctly?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_02",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Struct visualization and memory layout",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "struct-visualization",
+          "review_criteria": "As someone who mentally maps structs in memory: Is there a visual representation of struct layout showing padding, alignment, and total size? Can you see how fields are packed? Is there any indication of compiler-specific padding rules? Would you be able to reconstruct the C struct definition from this view?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_03",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Field ordering and alignment display",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "field-ordering",
+          "review_criteria": "As a reverse engineer who cares about struct layout: Does the table view show fields in their actual memory order (not alphabetical)? Are offsets displayed? Can you sort by offset to reconstruct the binary layout? Is there any indication of which fields are at which file offsets vs virtual addresses?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_04",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Nested structure navigation",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Tree') || b.title?.includes('tree')) { b.click(); return 'tree'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "nested-structures",
+          "review_criteria": "As someone who traces through nested data structures in debuggers: Can you drill into nested structs from the tree view? Is the parent-child relationship clear? Can you see the full path from root to any nested field? Is there a breadcrumb or path indicator showing your current depth in the structure hierarchy?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_05",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Union and variant type handling",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "union-types",
+          "review_criteria": "As a C/C++ programmer who deals with unions and tagged variants: How does the tool represent union types where multiple interpretations overlap the same memory region? Can you see alternative type interpretations for the same bytes? Is there support for discriminated unions where a tag field determines the active variant?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_06",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Pointer and reference tracking",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 2) { nodes[2].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "pointer-tracking",
+          "review_criteria": "As someone who traces pointer chains in memory: Can you follow pointer references from one structure to another? Are pointer targets resolved and displayed? Can you see the full dereference chain? Is there visual indication of whether a pointer target is in .text, .data, .bss, or heap?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_07",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Array and buffer display",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "array-display",
+          "review_criteria": "As someone who inspects buffer contents: How are arrays and buffers represented? Can you see element count, element size, and total buffer size? Is there a hex dump view for raw buffer contents? Can you switch between hex, decimal, ASCII, and Unicode interpretations of the same data?"
+        }
+      ]
+    },
+    {
+      "id": "gc_data_08",
+      "group": "data-structures",
+      "label": "Gynvael Coldwind: Endianness and encoding indicators",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 1) { nodes[1].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "endianness-encoding",
+          "review_criteria": "As someone who has debugged endianness bugs for years: Is the binary's endianness clearly indicated (LE/BE)? When viewing multi-byte values, is the byte order shown? Can you toggle between host-order and file-order display? Are string encodings (UTF-8, UTF-16LE, ASCII, EBCDIC) identified and labeled?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_01",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Node type differentiation",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "node-types",
+          "review_criteria": "As someone who analyzes program structure graphs: Are different node types (functions, data structures, namespaces, imports) visually distinct? Can you tell at a glance what category a node belongs to? Is the color/shape coding consistent and learnable? Does the legend (if any) cover all node types?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_02",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Edge type and relationship clarity",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "edge-types",
+          "review_criteria": "As someone who traces call graphs and data flow: Are edge types (calls, references, contains, imports) visually distinct? Can you read the relationship direction? Are edges labeled or do you need to hover? In a dense graph, can you still follow individual edges? Is there edge bundling for high-connectivity nodes?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_03",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Graph navigation fluidity",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 1) { nodes[1].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked second node'; } return 'only one node'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "navigation-fluidity",
+          "review_criteria": "As someone who navigates complex dependency graphs: Is clicking between nodes fluid and responsive? Does the detail panel update instantly? Is there visual feedback during transitions? Can you quickly move through a chain of connected nodes without losing your place? Is there a back/forward navigation history?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_04",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Zoom and pan behavior",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const svg = document.querySelector('svg'); if (svg) { svg.dispatchEvent(new WheelEvent('wheel', { deltaY: -100, bubbles: true })); return 'zoomed'; } return 'no svg'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "zoom-pan",
+          "review_criteria": "As someone who works with large call graphs: Is zoom smooth and centered on the cursor? Can you pan freely? Is there a minimap or overview for orientation in large graphs? Can you zoom to fit all nodes? Is the zoom level indicated anywhere? Does mouse wheel zoom feel natural (not inverted)?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_05",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Graph filtering capabilities",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "graph-filtering",
+          "review_criteria": "As someone who needs to isolate specific subsystems in a binary: Can you filter the graph by node type, namespace, or relationship type? Can you hide irrelevant nodes to focus on a specific call chain? Is there a way to show only nodes matching a pattern (like all functions starting with 'handle_')? Can you save and restore filter presets?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_06",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Graph clustering and grouping",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "graph-clustering",
+          "review_criteria": "As someone who analyzes modular binaries: Does the graph cluster related nodes by namespace or module? Are clusters visually bounded? Can you collapse a cluster to reduce visual complexity? Is the clustering algorithm appropriate for binary analysis (not just generic force-directed layout)? Would you want manual clustering control?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_07",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Minimap and orientation aids",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "minimap-orientation",
+          "review_criteria": "As someone who gets lost in large call graphs: Is there a minimap showing your current viewport in the overall graph? Can you click the minimap to jump to a region? Is there a 'zoom to fit' button? Are there breadcrumbs showing how you navigated to the current view? Can you bookmark interesting positions in the graph?"
+        }
+      ]
+    },
+    {
+      "id": "gc_graph_08",
+      "group": "graph-exploration",
+      "label": "Gynvael Coldwind: Layout algorithm quality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); for (const n of nodes) { n.dispatchEvent(new MouseEvent('click', { bubbles: true })); break; } return nodes.length + ' nodes visible'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "layout-algorithm",
+          "review_criteria": "As someone who reads CFGs and call graphs daily: Is the layout algorithm appropriate for binary analysis graphs? Are call hierarchies laid out top-to-bottom? Are edge crossings minimized? Does the layout respect node groupings? Would you prefer a different algorithm (hierarchical, radial, orthogonal) for this type of data?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_01",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Assembly code quality and accuracy",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "asm-quality",
+          "review_criteria": "As someone who reads x86/ARM assembly daily: Is the assembly syntax correct (Intel vs AT&T, consistent)? Are operand sizes explicit? Are addresses properly formatted as hex? Are symbolic names resolved for known library calls? Is the instruction encoding (opcode bytes) shown alongside mnemonics? Are branch targets visually connected?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_02",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Decompiled C readability",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const tabs = document.querySelectorAll('button, [role=tab]'); for (const t of tabs) { if (t.textContent?.includes('C') && !t.textContent?.includes('Code')) { t.click(); return 'C tab'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "c-decompiled",
+          "review_criteria": "As someone who evaluates decompiler output: Is the decompiled C idiomatic? Are variable names meaningful or just var_1, var_2? Are types properly recovered? Are control flow structures (if/else, switch, loops) correctly reconstructed? Is the decompilation quality comparable to Hex-Rays or Ghidra's decompiler? Can you annotate/rename variables?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_03",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Python pseudocode accuracy",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const tabs = document.querySelectorAll('button, [role=tab]'); for (const t of tabs) { if (t.textContent?.includes('Python')) { t.click(); return 'Python tab'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "python-pseudocode",
+          "review_criteria": "As a polyglot programmer who uses Python for RE scripting: Does the Python pseudocode accurately represent the binary's logic? Are ctypes-style struct definitions used appropriately? Is the pseudocode runnable or is it clearly marked as approximate? Would this help you write an exploit or parser for the binary's protocol?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_04",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Syntax highlighting quality",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "syntax-highlighting",
+          "review_criteria": "As someone who reads code in specialized editors: Is the syntax highlighting correct for each language tab (ASM, C, Python)? Are keywords, registers, immediates, strings, and comments properly colored? Is the color scheme consistent across tabs? Are there any highlighting errors (wrong token classification)? Is the monospace font appropriate?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_05",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Line numbers and address display",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "line-numbers",
+          "review_criteria": "As someone who references specific addresses in writeups: Are line numbers displayed? For ASM, are virtual addresses shown instead of/alongside line numbers? Can you click an address to copy it? Is there a go-to-address feature? Are cross-reference addresses clickable to jump to the target? Is the address format consistent (0x prefix, proper width)?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_06",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Copy functionality for code",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "code-copy",
+          "review_criteria": "As someone who pastes code into scripts and writeups: Can you select and copy code cleanly (without line numbers or UI artifacts)? Is there a copy-all button? Does copying preserve formatting? Can you select a range of lines? Would the copied output be paste-ready for a blog post or exploit script?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_07",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Diff view between representations",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "diff-view",
+          "review_criteria": "As someone who patches and compares binaries: Is there a way to diff two functions or two versions of decompiled code? Can you compare ASM and C side-by-side? Is there bindiff-like functionality for comparing similar functions? Would this support patch analysis workflows where you need to see what changed between binary versions?"
+        }
+      ]
+    },
+    {
+      "id": "gc_code_08",
+      "group": "code-view",
+      "label": "Gynvael Coldwind: Encoding and charset display in code",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.title === 'Code / Source view') { b.click(); return 'switched to code'; } } return 'button not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Code') || b.textContent?.includes('</>')) { b.click(); return 'code'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "encoding-display",
+          "review_criteria": "As someone who deals with string encoding bugs: Are string literals in the code view shown with their encoding (UTF-8, UTF-16, ASCII)? Are non-printable characters escaped properly (\\x00, \\n, etc.)? Can you see the raw hex bytes alongside the string interpretation? Are wide strings (wchar_t) handled correctly? Is there a strings extraction view?"
+        }
+      ]
+    },
+    {
+      "id": "gc_detail_01",
+      "group": "node-detail",
+      "label": "Gynvael Coldwind: Detail panel content completeness",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "detail-completeness",
+          "review_criteria": "As a thorough analyst who needs every byte documented: Does the detail panel show all available metadata for the selected node? Is there a raw JSON/data view? Are field types, sizes, and offsets shown? Is anything hidden that should be front-and-center? Would you need to switch to another tool to get information that's missing here?"
+        }
+      ]
+    },
+    {
+      "id": "gc_detail_02",
+      "group": "node-detail",
+      "label": "Gynvael Coldwind: Metadata and attributes display",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "metadata-display",
+          "review_criteria": "As someone who tracks binary metadata meticulously: Are attributes like file offset, virtual address, size, permissions, and section membership displayed? Are compiler artifacts (build info, RTTI, debug info) surfaced? Is there a way to see raw bytes at the node's offset? Are timestamps and hashes shown for forensic relevance?"
+        }
+      ]
+    },
+    {
+      "id": "gc_detail_03",
+      "group": "node-detail",
+      "label": "Gynvael Coldwind: Taxonomy tag display on nodes",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 2) { nodes[2].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "taxonomy-tags",
+          "review_criteria": "As someone who maps vulnerabilities to CWE and ATT&CK: Are taxonomy tags (CWE, ATT&CK, D3FEND) displayed on or near relevant nodes? Are the tags clickable for more info? Is the mapping between binary features and taxonomy entries sensible? Can you filter the graph to show only nodes with specific CWE tags?"
+        }
+      ]
+    },
+    {
+      "id": "gc_detail_04",
+      "group": "node-detail",
+      "label": "Gynvael Coldwind: Source pattern recognition display",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "source-patterns",
+          "review_criteria": "As someone who recognizes common binary patterns: Does the tool identify and label common patterns (vtable, exception handler, PLT/GOT entry, string table, relocation)? Are these patterns highlighted in the detail view? Can you see the confidence level of pattern recognition? Are false positives clearly marked as uncertain?"
+        }
+      ]
+    },
+    {
+      "id": "gc_detail_05",
+      "group": "node-detail",
+      "label": "Gynvael Coldwind: Field listing in detail panel",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 1) { nodes[1].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'insufficient nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "field-listing",
+          "review_criteria": "As someone who needs to see every field of a structure: Are all fields listed with their types, offsets, and values? Can you expand complex fields to see sub-fields? Is there a search within the field list? Are calculated values (like flags decoded to named constants) shown alongside raw values? Can you edit/annotate field names?"
+        }
+      ]
+    },
+    {
+      "id": "gc_detail_06",
+      "group": "node-detail",
+      "label": "Gynvael Coldwind: State information display",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "state-display",
+          "review_criteria": "As someone who traces state machines in protocols: Is the node's analysis state shown (analyzed, partial, unknown)? Can you see which analysis passes have been applied? Is there a confidence indicator for LLM-generated annotations? Are there timestamps showing when each analysis was performed? Can you re-trigger analysis?"
+        }
+      ]
+    },
+    {
+      "id": "gc_search_01",
+      "group": "search-and-filter",
+      "label": "Gynvael Coldwind: Search responsiveness and accuracy",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const inputs = document.querySelectorAll('input[type=text], input[type=search], input:not([type])'); for (const i of inputs) { if (i.placeholder?.toLowerCase().includes('search') || i.placeholder?.toLowerCase().includes('filter')) { i.focus(); i.value = 'init'; i.dispatchEvent(new Event('input', { bubbles: true })); return 'searched'; } } return 'no search input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "search-responsiveness",
+          "review_criteria": "As someone who searches for specific functions and addresses: Is the search instant or does it lag? Does it search across node names, addresses, and content? Can you search by hex pattern or regex? Are results ranked by relevance? Is the current search term visible and easy to modify? Does search highlight matches in the graph?"
+        }
+      ]
+    },
+    {
+      "id": "gc_search_02",
+      "group": "search-and-filter",
+      "label": "Gynvael Coldwind: Result highlighting in graph",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const inputs = document.querySelectorAll('input[type=text], input[type=search], input:not([type])'); for (const i of inputs) { if (i.placeholder?.toLowerCase().includes('search') || i.placeholder?.toLowerCase().includes('filter')) { i.focus(); i.value = 'droid'; i.dispatchEvent(new Event('input', { bubbles: true })); return 'searched droid'; } } return 'no search input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "result-highlighting",
+          "review_criteria": "As someone who needs to spot search results in a complex graph: Are matching nodes highlighted in the graph? Are non-matching nodes dimmed? Can you cycle through results (next/prev)? Does the graph auto-zoom to show all results? Is the highlighting clear enough to spot in a dense graph? Are matching edges also highlighted?"
+        }
+      ]
+    },
+    {
+      "id": "gc_search_03",
+      "group": "search-and-filter",
+      "label": "Gynvael Coldwind: Filter combinations",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "filter-combinations",
+          "review_criteria": "As someone who needs precise queries: Can you combine multiple filters (type AND namespace AND pattern)? Is there a query language or is it purely GUI-based? Can you save complex filter expressions? Does the filter update the graph in real-time? Is there an indicator showing how many nodes match vs total? Would you want a SQL-like query interface?"
+        }
+      ]
+    },
+    {
+      "id": "gc_search_04",
+      "group": "search-and-filter",
+      "label": "Gynvael Coldwind: Empty state and no-results handling",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const inputs = document.querySelectorAll('input[type=text], input[type=search], input:not([type])'); for (const i of inputs) { if (i.placeholder?.toLowerCase().includes('search') || i.placeholder?.toLowerCase().includes('filter')) { i.focus(); i.value = 'xyznonexistent123'; i.dispatchEvent(new Event('input', { bubbles: true })); return 'searched nonsense'; } } return 'no search input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "empty-state",
+          "review_criteria": "As someone who expects precise feedback: When a search returns no results, is the message helpful? Does it suggest alternatives (fuzzy match, different field)? Is it clear that zero results means no matches vs an error? Can you easily clear the search and return to the full view? Is there a search history?"
+        }
+      ]
+    },
+    {
+      "id": "gc_search_05",
+      "group": "search-and-filter",
+      "label": "Gynvael Coldwind: Clear filters and reset view",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const inputs = document.querySelectorAll('input[type=text], input[type=search], input:not([type])'); for (const i of inputs) { if (i.placeholder?.toLowerCase().includes('search') || i.placeholder?.toLowerCase().includes('filter')) { i.focus(); i.value = 'test'; i.dispatchEvent(new Event('input', { bubbles: true })); return 'filtered'; } } return 'no search input'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Clear') || b.textContent?.includes('Reset') || b.title?.includes('clear')) { b.click(); return 'cleared'; } } const inputs = document.querySelectorAll('input'); for (const i of inputs) { if (i.value) { i.value = ''; i.dispatchEvent(new Event('input', { bubbles: true })); return 'manually cleared'; } } return 'no clear button'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "clear-filters",
+          "review_criteria": "As someone who switches between focused and broad views: Is there an obvious way to clear all filters at once? Does the graph fully restore after clearing? Is there a keyboard shortcut (Esc?) to reset the view? Does clearing filters also reset zoom/pan to the default? Is the transition smooth or jarring?"
+        }
+      ]
+    },
+    {
+      "id": "gc_ctx_01",
+      "group": "context-menu",
+      "label": "Gynvael Coldwind: Right-click context menu options",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 200, clientY: 200 })); return 'right-clicked'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "context-menu",
+          "review_criteria": "As someone who relies on right-click menus in IDA and Ghidra: Does right-clicking a node show useful options (rename, annotate, show xrefs, copy address, expand neighbors)? Are the menu items relevant to binary analysis? Is the menu organized logically? Are there keyboard shortcuts shown next to menu items? Is the custom context menu used instead of the browser default?"
+        }
+      ]
+    },
+    {
+      "id": "gc_ctx_02",
+      "group": "context-menu",
+      "label": "Gynvael Coldwind: Graph node context actions",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('dblclick', { bubbles: true })); return 'double-clicked'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "graph-context-actions",
+          "review_criteria": "As someone who expects power-user interactions: What happens on double-click \u2014 does it expand the node, zoom in, or open detail? Is the behavior consistent and predictable? Can you multi-select nodes for batch operations? Is there a way to pin nodes so they don't move during layout recalculation? Can you group selected nodes?"
+        }
+      ]
+    },
+    {
+      "id": "gc_ctx_03",
+      "group": "context-menu",
+      "label": "Gynvael Coldwind: Keyboard shortcuts",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { document.dispatchEvent(new KeyboardEvent('keydown', { key: '?', bubbles: true })); return 'pressed ?'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "keyboard-shortcuts",
+          "review_criteria": "As a power user who avoids the mouse: Are keyboard shortcuts available for common operations (search, navigate, switch views, zoom)? Is there a shortcut reference (? key)? Are shortcuts consistent with common RE tool conventions (G for goto, N for rename, X for xrefs)? Can you navigate the entire tool without touching the mouse?"
+        }
+      ]
+    },
+    {
+      "id": "gc_ctx_04",
+      "group": "context-menu",
+      "label": "Gynvael Coldwind: Rename and annotate workflow",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'selected node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "rename-annotate",
+          "review_criteria": "As someone who renames hundreds of functions during analysis: Can you rename nodes? Is the rename workflow fast (single-click or hotkey)? Can you add comments/annotations to nodes? Are annotations persisted across sessions? Can you undo a rename? Is there a way to bulk-rename based on patterns? Is the rename reflected everywhere (graph, detail, code)?"
+        }
+      ]
+    },
+    {
+      "id": "gc_xref_01",
+      "group": "cross-references",
+      "label": "Gynvael Coldwind: Dependency tracing through graph",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "dependency-tracing",
+          "review_criteria": "As someone who traces dependencies to understand attack surfaces: Can you trace all callers and callees of a selected function? Is the call depth configurable? Can you see the full dependency chain from entry point to a specific function? Are indirect calls (via function pointers, vtables) represented? Can you highlight a specific call path?"
+        }
+      ]
+    },
+    {
+      "id": "gc_xref_02",
+      "group": "cross-references",
+      "label": "Gynvael Coldwind: Call chain visualization",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "call-chains",
+          "review_criteria": "As someone who follows call chains during vulnerability analysis: When you click a function, can you see its full call chain? Are recursive calls indicated? Can you see the call frequency or weight? Is there a way to trace the shortest path between two functions? Are library calls distinguished from internal calls?"
+        }
+      ]
+    },
+    {
+      "id": "gc_xref_03",
+      "group": "cross-references",
+      "label": "Gynvael Coldwind: Relationship visualization clarity",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "relationship-viz",
+          "review_criteria": "As someone who needs clear relationship maps: Are different relationship types (contains, calls, references, imports) visually distinct? Can you filter to show only one relationship type? Is the direction of relationships clear (arrows, color coding)? In a dense graph, can you still read individual relationships? Is there an adjacency matrix view?"
+        }
+      ]
+    },
+    {
+      "id": "gc_xref_04",
+      "group": "cross-references",
+      "label": "Gynvael Coldwind: Bidirectional navigation between references",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked first'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 1) { nodes[1].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked second'; } return 'not enough nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1500
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "bidirectional-nav",
+          "review_criteria": "As someone who navigates call graphs in both directions: Can you easily go from a callee back to its caller? Is there a back button or navigation history? Can you see both incoming and outgoing references simultaneously? Is the xref list clickable to jump to the referenced node? Does navigation preserve your analysis context (selected node, scroll position)?"
+        }
+      ]
+    },
+    {
+      "id": "gc_state_01",
+      "group": "state-machines",
+      "label": "Gynvael Coldwind: State machine ring visualization",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "state-machine-ring",
+          "review_criteria": "As someone who reverse engineers protocol state machines: Is there a dedicated state machine visualization? Are states shown as nodes in a ring or directed graph? Are transitions labeled with the triggering event/condition? Can you trace a path through the state machine? Is the initial state clearly marked? Are error/terminal states visually distinct?"
+        }
+      ]
+    },
+    {
+      "id": "gc_state_02",
+      "group": "state-machines",
+      "label": "Gynvael Coldwind: State transition analysis",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked node'; } return 'no nodes'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "state-transitions",
+          "review_criteria": "As someone who fuzzes protocol state machines: Can you see all valid transitions from a given state? Are transition guards/conditions shown? Can you identify unreachable states? Is there a way to simulate stepping through the state machine? Can you export the state machine for use in a fuzzer? Are self-transitions (loops) visible?"
+        }
+      ]
+    },
+    {
+      "id": "gc_state_03",
+      "group": "state-machines",
+      "label": "Gynvael Coldwind: Protocol flow analysis",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "protocol-flows",
+          "review_criteria": "As someone who reverse engineers network protocols: Can you visualize message flows between components? Are request-response pairs linked? Can you see the sequence of operations for a protocol handshake? Is there a way to identify the protocol parsing functions from the graph? Can you trace data flow from network input to processing function?"
+        }
+      ]
+    },
+    {
+      "id": "gc_state_04",
+      "group": "state-machines",
+      "label": "Gynvael Coldwind: State coverage indicators",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "state-coverage",
+          "review_criteria": "As someone who cares about analysis completeness: Is there an indication of how much of the binary has been analyzed? Are unvisited or under-analyzed regions highlighted? Can you see coverage metrics (functions analyzed, edges explored, states visited)? Is there a progress indicator for ongoing analysis? Can you identify analysis blind spots?"
+        }
+      ]
+    },
+    {
+      "id": "gc_perf_01",
+      "group": "performance",
+      "label": "Gynvael Coldwind: Large graph rendering performance",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const nodes = document.querySelectorAll('circle, [data-node-id]'); return 'node count: ' + nodes.length; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 1000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "large-graph-perf",
+          "review_criteria": "As someone who analyzes binaries with thousands of functions: How does the graph perform with the current number of nodes? Is there any lag when clicking, panning, or zooming? Would you trust this to handle 500+ nodes without WebGL/Canvas? Is there a virtualization strategy visible (lazy loading, level-of-detail)? What's the upper bound before it becomes unusable?"
+        }
+      ]
+    },
+    {
+      "id": "gc_perf_02",
+      "group": "performance",
+      "label": "Gynvael Coldwind: Scroll and interaction performance",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Table') || b.title?.includes('table')) { b.click(); return 'table'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "scroll-performance",
+          "review_criteria": "As someone who scrolls through thousands of symbols: Is table scrolling smooth? Is there virtual scrolling for large lists? Does sorting cause a visible delay? Can you handle a binary with 10,000+ symbols without the table becoming unresponsive? Is there pagination or infinite scroll? Are fixed headers maintained during scroll?"
+        }
+      ]
+    },
+    {
+      "id": "gc_perf_03",
+      "group": "performance",
+      "label": "Gynvael Coldwind: Memory usage indicators",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "memory-usage",
+          "review_criteria": "As someone who monitors resource usage during analysis: Is there any indication of how much data is loaded? Are there node/edge counts displayed? Is there a way to see the API response times or data transfer sizes? Would you want a status bar showing loaded entities, pending queries, and cache state? Is the progressive loading strategy visible to the user?"
+        }
+      ]
+    },
+    {
+      "id": "gc_chat_01",
+      "group": "chat-analysis",
+      "label": "Gynvael Coldwind: Chat response quality for RE queries",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "chat-re-quality",
+          "review_criteria": "As a security researcher who would ask technical RE questions: Is the chat interface positioned to answer questions about the binary? Can you see suggested queries that are relevant to binary analysis? Does the chat area feel like a first-class analysis tool (as per the design philosophy) or an afterthought? Would you use natural language to query the binary?"
+        }
+      ]
+    },
+    {
+      "id": "gc_chat_02",
+      "group": "chat-analysis",
+      "label": "Gynvael Coldwind: Entity extraction from binary context",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "entity-extraction",
+          "review_criteria": "As someone who expects the tool to understand binary entities: Does the chat understand function names, addresses, and binary-specific terminology? Can it resolve references like 'the main function' or 'the authentication handler'? Does it understand context from the currently selected node? Would entity extraction enable powerful queries like 'show all callers of this function'?"
+        }
+      ]
+    },
+    {
+      "id": "gc_chat_03",
+      "group": "chat-analysis",
+      "label": "Gynvael Coldwind: Query understanding for binary analysis",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "query-understanding",
+          "review_criteria": "As someone who would ask 'what syscalls does this binary make?' or 'show me the crypto functions': Does the chat interface suggest the kinds of queries it can handle? Is there a way to see the query was understood correctly (QuerySpec visualization)? Can the chat manipulate the graph view based on your query? Is the query language natural or does it require specific syntax?"
+        }
+      ]
+    },
+    {
+      "id": "gc_chat_04",
+      "group": "chat-analysis",
+      "label": "Gynvael Coldwind: Conversation context persistence",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "conversation-context",
+          "review_criteria": "As someone who builds up analysis context over time: Does the chat maintain conversation history? Can you reference earlier findings ('that function we looked at earlier')? Is the chat session tied to the binary being analyzed? Can you save and resume analysis sessions? Is there a way to export the conversation as an analysis report?"
+        }
+      ]
+    },
+    {
+      "id": "gc_chat_05",
+      "group": "chat-analysis",
+      "label": "Gynvael Coldwind: Thumbs feedback mechanism",
+      "steps": [
+        {
+          "action": "navigate",
+          "url": "http://localhost:5173/#binary-explorer"
+        },
+        {
+          "action": "wait",
+          "ms": 2000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btn = document.querySelector('[data-testid=\"tab-final-site\"]'); if (btn) { btn.click(); return 'clicked'; } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 5000
+        },
+        {
+          "action": "evaluate",
+          "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent?.includes('Seed Namespaces')) { b.click(); return 'seeded'; } } return 'not found'; })()"
+        },
+        {
+          "action": "wait",
+          "ms": 3000
+        },
+        {
+          "action": "persona_review",
+          "persona": "gynvael-coldwind",
+          "persona_scope": "gynvael-coldwind",
+          "name": "thumbs-feedback",
+          "review_criteria": "As someone who wants the tool to learn from corrections: Is there a visible feedback mechanism (thumbs up/down) on chat responses? Does the tool adapt based on feedback? Can you correct misidentified entities or wrong analysis? Is the feedback loop transparent (do you know how your feedback is used)? Would you trust the correction steering to improve over time?"
+        }
+      ]
+    }
+  ]
+}

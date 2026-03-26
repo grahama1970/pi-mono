@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kzeKtqxk3cM",
+    "language": "en",
+    "took_ms": 9599,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - David Hunt - Prelude Operator",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1776,
+    "description": "Prelude Operator is the new kid to the adversary emulation block party. Built by the same people who designed and built the MITRE Caldera framework, Operator is a free and largely open-source desktop platform that aims to make adversary emulation accessible to smaller organizations.\n\nThe app includes a library of RATs (agents) which can deploy into the field and supports a modular architecture of plugins and network protocols, including hundreds of TTPs mapped to ATT&CK. In this tool demonstration, we will highlight the key features of Operator and empower people to walk away with a developer-first adversary emulation desktop platform that is end-to-end free & open-source.",
+    "view_count": 1205
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kzeKtqxk3cM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

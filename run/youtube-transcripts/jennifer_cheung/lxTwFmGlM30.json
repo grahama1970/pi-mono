@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lxTwFmGlM30",
+    "language": "en",
+    "took_ms": 8683,
+    "method": null,
+    "title": "DEF CON 29 Blockchain Village - Anto Joseph - Flash Loans Demystified",
+    "channel": "DEFCONConference",
+    "upload_date": "20210907",
+    "duration_sec": 2362,
+    "description": "Flash Loans are the first unsecured loan option in DeFi! They have been used for arbitrage, flash liquidation, collateral swaps and infamously  Flash loan attacks. We explore the concepts behind flash loans, how they are used today and root cause of these attacks with plenty of demos throughout the talk. We also discuss strategies to protect against pump and arbitrage and oracle manipulation attacks.",
+    "view_count": 2157
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lxTwFmGlM30: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Bo29lFciVfc",
+    "language": "en",
+    "took_ms": 8866,
+    "method": null,
+    "title": "Modbus Secure Update from S4x18",
+    "channel": "S4 Events",
+    "upload_date": "20180725",
+    "duration_sec": 1227,
+    "description": "David Smith of Schneider Electric gives an update on the status of Modbus Secure. This takes one of the first and most widely deployed ICS protocols and wraps it in TLS 1.2 to add security.\n\nX.509 certificates are used to provide identity authentication, and importantly it includes a user role. And Schneider Electric has a simple CA product they are selling.\n\nDavid goes over the Modbus Secure interoperability testing from May 2017, including performance information, lessons learned and future improvements.\n\nAnd a skeptical Andrew Ginter asks many questions.",
+    "view_count": 364
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Bo29lFciVfc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

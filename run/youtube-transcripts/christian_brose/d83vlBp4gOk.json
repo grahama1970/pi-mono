@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "d83vlBp4gOk",
+    "language": "en",
+    "took_ms": 7865,
+    "method": null,
+    "title": "Race and Racism in America: Are We Now A Color Blind Society",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 7138,
+    "description": "A year ago, the W.K. Kellogg Foundation announced its \"America Healing\" initiative, a five-year, $75 million program of grants focusing \"on bringing healing to divided communities and bridging racial gaps in the areas of education, health, juvenile justice, economic success, the media, and other areas.\" Writing in NCRP's Responsive Philanthropy, Dr. Gail Christopher, Kellogg's vice president for program strategy, noted that the initiative reflects a belief that \"our racialized social and op",
+    "view_count": 2517
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] d83vlBp4gOk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

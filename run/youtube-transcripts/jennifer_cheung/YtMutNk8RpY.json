@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YtMutNk8RpY",
+    "language": "en",
+    "took_ms": 8638,
+    "method": null,
+    "title": "DEF CON 32 - Offensive Security Testing  Safeguarding the Final Frontier - Andrzej Olchawa",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 841,
+    "description": "Every space mission is underpinned by critical software that spacecraft operators utilize to monitor and command their assets. The Mission Control System serves as the primary interface with a spacecraft, marking it as a crucial component of the ground segment. For decades, these systems were operated exclusively within the confines of mission control rooms, accessible only to a select group of individuals through a limited number of computer workstations. This paradigm has recently shifted, with numerous space organizations enabling their personnel to manage space assets remotely, including from the comfort of their homes. This increased accessibility has rendered space-related systems susceptible to the same security vulnerabilities that affect our daily-use software.\n\nDespite the adoption of newer technology stacks in many mission control systems—either through upgrades or complete replacements—the consideration of security requirements has often been deferred to the final stages of development or overlooked entirely. This negligence presents a significant risk, exposing the space sector to potential exploitation by malicious entities. Like in other technology domains, merely expanding strategies to incorporate security measures, instituting security policies, and integrating new security requirements are positive but insufficient. Despite being developed and tested by extensive teams and presumably adhering to best practices, we have observed firsthand how contemporary mission control systems remain prone to elementary security flaws.\n\nThe most effective strategy to equip space systems with a robust defense against malicious actors involves integrating offensive security testing throughout their development lifecycle.\n\nIn this presentation, we share the results of the security research we have recently conducted on the more established, open-source Mission Control Systems: NASA OpenMCT and YaMCS. We present the details of the vulnerabilities we have discovered in those two systems, and their potential impact on a space mission when they are chained together into one exploit. We conclude by presenting with the audience the lessons learned from those security assessments.",
+    "view_count": 2285
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YtMutNk8RpY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

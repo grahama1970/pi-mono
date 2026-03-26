@@ -1,0 +1,485 @@
+/**
+ * InvestigationJournal — records every user interaction as a timestamped step.
+ *
+ * Timeline view with replay, delete, inline notes, and markdown export.
+ * Rendered as a collapsible panel in the right pane of BinaryExplorerView.
+ */
+
+import { useState, useCallback, useRef, useEffect } from "react";
+import {
+	MousePointerClick,
+	Expand,
+	MessageSquare,
+	Eye,
+	LayoutGrid,
+	Trash2,
+	ChevronDown,
+	ChevronRight,
+	Play,
+	StickyNote,
+	Download,
+	X,
+	Eraser,
+} from "lucide-react";
+import { EMBRY, panel, label, heading } from "./EmbryStyle";
+
+/* ────────────────────────── Types ────────────────────────── */
+
+export type StepActionType =
+	| "node_click"
+	| "expand"
+	| "chat"
+	| "perspective_change"
+	| "layout_change"
+	| "scene_clear";
+
+export interface Step {
+	/** ISO-8601 timestamp */
+	timestamp: string;
+	/** Discriminated action type */
+	action: StepActionType;
+	/** Human-readable description of the step */
+	description: string;
+	/** Optional user annotation */
+	note?: string;
+	/** Serialised scene snapshot for replay (opaque to this component) */
+	snapshot?: unknown;
+}
+
+export interface InvestigationJournalProps {
+	steps: Step[];
+	onReplay: (stepIndex: number) => void;
+	onDelete: (stepIndex: number) => void;
+	onAddNote: (stepIndex: number, note: string) => void;
+}
+
+/* ────────────────────────── Icon map ────────────────────────── */
+
+const ACTION_META: Record<
+	StepActionType,
+	{ icon: typeof MousePointerClick; color: string; label: string }
+> = {
+	node_click: { icon: MousePointerClick, color: EMBRY.blue, label: "Click" },
+	expand: { icon: Expand, color: EMBRY.green, label: "Expand" },
+	chat: { icon: MessageSquare, color: EMBRY.accent, label: "Chat" },
+	perspective_change: { icon: Eye, color: EMBRY.amber, label: "Perspective" },
+	layout_change: { icon: LayoutGrid, color: EMBRY.white, label: "Layout" },
+	scene_clear: { icon: Eraser, color: EMBRY.red, label: "Clear" },
+};
+
+/* ────────────────────────── Helpers ────────────────────────── */
+
+function formatTime(iso: string): string {
+	try {
+		const d = new Date(iso);
+		return d.toLocaleTimeString([], {
+			hour: "2-digit",
+			minute: "2-digit",
+			second: "2-digit",
+		});
+	} catch {
+		return iso;
+	}
+}
+
+function exportMarkdown(steps: Step[]): string {
+	const lines: string[] = [
+		"# Investigation Journal",
+		"",
+		`Exported: ${new Date().toISOString()}`,
+		"",
+		"| # | Time | Action | Description | Note |",
+		"|---|------|--------|-------------|------|",
+	];
+	steps.forEach((s, i) => {
+		const meta = ACTION_META[s.action];
+		const note = s.note ? s.note.replace(/\|/g, "\\|") : "";
+		const desc = s.description.replace(/\|/g, "\\|");
+		lines.push(
+			`| ${i + 1} | ${formatTime(s.timestamp)} | ${meta.label} | ${desc} | ${note} |`,
+		);
+	});
+	return lines.join("\n");
+}
+
+function downloadBlob(content: string, filename: string) {
+	const blob = new Blob([content], { type: "text/markdown" });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = filename;
+	a.click();
+	URL.revokeObjectURL(url);
+}
+
+/* ────────────────────────── Styles ────────────────────────── */
+
+const MONO = "JetBrains Mono, Consolas, monospace";
+
+const styles = {
+	wrapper: {
+		...panel,
+		display: "flex",
+		flexDirection: "column" as const,
+		gap: 8,
+		maxHeight: 480,
+		overflow: "hidden",
+	},
+	header: {
+		display: "flex",
+		alignItems: "center" as const,
+		justifyContent: "space-between" as const,
+		cursor: "pointer",
+		userSelect: "none" as const,
+	},
+	headerLeft: {
+		display: "flex",
+		alignItems: "center" as const,
+		gap: 6,
+	},
+	toolbar: {
+		display: "flex",
+		alignItems: "center" as const,
+		gap: 4,
+	},
+	iconBtn: {
+		background: "none",
+		border: "none",
+		cursor: "pointer",
+		padding: 4,
+		borderRadius: 4,
+		color: EMBRY.dim,
+		display: "flex",
+		alignItems: "center" as const,
+		justifyContent: "center" as const,
+	} satisfies React.CSSProperties,
+	timeline: {
+		flex: 1,
+		overflowY: "auto" as const,
+		display: "flex",
+		flexDirection: "column" as const,
+		gap: 2,
+		paddingRight: 4,
+	},
+	stepRow: {
+		display: "flex",
+		alignItems: "flex-start" as const,
+		gap: 8,
+		padding: "6px 8px",
+		borderRadius: 8,
+		border: `1px solid transparent`,
+		transition: "background 0.15s, border-color 0.15s",
+		cursor: "default",
+	} satisfies React.CSSProperties,
+	stepRowHover: {
+		backgroundColor: "rgba(255,255,255,0.04)",
+		borderColor: EMBRY.border,
+	},
+	railDot: (color: string) =>
+		({
+			width: 10,
+			height: 10,
+			borderRadius: "50%",
+			backgroundColor: color,
+			boxShadow: `0 0 6px ${color}66`,
+			flexShrink: 0,
+			marginTop: 3,
+		}) satisfies React.CSSProperties,
+	stepBody: {
+		flex: 1,
+		minWidth: 0,
+	},
+	stepMeta: {
+		display: "flex",
+		alignItems: "center" as const,
+		gap: 6,
+		marginBottom: 2,
+	},
+	timestamp: {
+		fontFamily: MONO,
+		fontSize: 10,
+		color: EMBRY.dim,
+		flexShrink: 0,
+	},
+	actionLabel: {
+		...label,
+		fontSize: 9,
+		margin: 0,
+	},
+	description: {
+		fontSize: 12,
+		color: EMBRY.white,
+		lineHeight: 1.4,
+		wordBreak: "break-word" as const,
+	},
+	note: {
+		fontSize: 11,
+		color: EMBRY.amber,
+		fontStyle: "italic" as const,
+		marginTop: 2,
+	},
+	noteInput: {
+		width: "100%",
+		fontSize: 11,
+		fontFamily: MONO,
+		padding: "3px 6px",
+		borderRadius: 4,
+		border: `1px solid ${EMBRY.border}`,
+		backgroundColor: EMBRY.bgDeep,
+		color: EMBRY.white,
+		outline: "none",
+		marginTop: 4,
+	} satisfies React.CSSProperties,
+	actions: {
+		display: "flex",
+		alignItems: "center" as const,
+		gap: 2,
+		flexShrink: 0,
+		marginLeft: 4,
+	},
+	empty: {
+		fontSize: 12,
+		color: EMBRY.muted,
+		textAlign: "center" as const,
+		padding: 24,
+	},
+	badge: {
+		fontFamily: MONO,
+		fontSize: 10,
+		color: EMBRY.dim,
+		backgroundColor: "rgba(255,255,255,0.06)",
+		borderRadius: 6,
+		padding: "1px 6px",
+		marginLeft: 6,
+	},
+};
+
+/* ────────────────────────── Component ────────────────────────── */
+
+export function InvestigationJournal({
+	steps,
+	onReplay,
+	onDelete,
+	onAddNote,
+}: InvestigationJournalProps) {
+	const [collapsed, setCollapsed] = useState(false);
+	const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+	const [editingIdx, setEditingIdx] = useState<number | null>(null);
+	const [noteText, setNoteText] = useState("");
+	const inputRef = useRef<HTMLInputElement>(null);
+	const timelineRef = useRef<HTMLDivElement>(null);
+
+	/* Auto-scroll to latest step */
+	useEffect(() => {
+		if (timelineRef.current && steps.length > 0) {
+			timelineRef.current.scrollTop = timelineRef.current.scrollHeight;
+		}
+	}, [steps.length]);
+
+	/* Focus input when editing starts */
+	useEffect(() => {
+		if (editingIdx !== null) {
+			inputRef.current?.focus();
+		}
+	}, [editingIdx]);
+
+	const handleStartNote = useCallback(
+		(idx: number) => {
+			setEditingIdx(idx);
+			setNoteText(steps[idx]?.note ?? "");
+		},
+		[steps],
+	);
+
+	const handleSaveNote = useCallback(() => {
+		if (editingIdx !== null) {
+			onAddNote(editingIdx, noteText.trim());
+			setEditingIdx(null);
+			setNoteText("");
+		}
+	}, [editingIdx, noteText, onAddNote]);
+
+	const handleCancelNote = useCallback(() => {
+		setEditingIdx(null);
+		setNoteText("");
+	}, []);
+
+	const handleExport = useCallback(() => {
+		const md = exportMarkdown(steps);
+		const ts = new Date().toISOString().slice(0, 10);
+		downloadBlob(md, `investigation-journal-${ts}.md`);
+	}, [steps]);
+
+	const Chevron = collapsed ? ChevronRight : ChevronDown;
+
+	return (
+		<div style={styles.wrapper}>
+			{/* ── Header ── */}
+			<div
+				style={styles.header}
+				onClick={() => setCollapsed((c) => !c)}
+				role="button"
+				tabIndex={0}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") setCollapsed((c) => !c);
+				}}
+			>
+				<div style={styles.headerLeft}>
+					<Chevron size={14} color={EMBRY.dim} />
+					<span style={heading}>Investigation Journal</span>
+					<span style={styles.badge}>{steps.length}</span>
+				</div>
+
+				{!collapsed && (
+					<div
+						style={styles.toolbar}
+						onClick={(e) => e.stopPropagation()}
+						role="toolbar"
+					>
+						<button
+							style={styles.iconBtn}
+							title="Export as Markdown"
+							onClick={handleExport}
+							disabled={steps.length === 0}
+						>
+							<Download size={13} />
+						</button>
+					</div>
+				)}
+			</div>
+
+			{/* ── Timeline ── */}
+			{!collapsed && (
+				<div style={styles.timeline} ref={timelineRef}>
+					{steps.length === 0 && (
+						<div style={styles.empty}>
+							No steps recorded yet. Interact with the graph to begin.
+						</div>
+					)}
+
+					{steps.map((step, idx) => {
+						const meta = ACTION_META[step.action];
+						const Icon = meta.icon;
+						const isHovered = hoveredIdx === idx;
+						const isEditing = editingIdx === idx;
+
+						return (
+							<div
+								key={`${step.timestamp}-${idx}`}
+								style={{
+									...styles.stepRow,
+									...(isHovered ? styles.stepRowHover : {}),
+								}}
+								onMouseEnter={() => setHoveredIdx(idx)}
+								onMouseLeave={() => setHoveredIdx(null)}
+							>
+								{/* Rail dot */}
+								<div style={styles.railDot(meta.color)} />
+
+								{/* Body */}
+								<div style={styles.stepBody}>
+									<div style={styles.stepMeta}>
+										<Icon size={11} color={meta.color} />
+										<span
+											style={{
+												...styles.actionLabel,
+												color: meta.color,
+											}}
+										>
+											{meta.label}
+										</span>
+										<span style={styles.timestamp}>
+											{formatTime(step.timestamp)}
+										</span>
+									</div>
+									<div style={styles.description}>
+										{step.description}
+									</div>
+
+									{/* Note display */}
+									{step.note && !isEditing && (
+										<div style={styles.note}>{step.note}</div>
+									)}
+
+									{/* Note input */}
+									{isEditing && (
+										<div
+											style={{
+												display: "flex",
+												gap: 4,
+												alignItems: "center",
+											}}
+										>
+											<input
+												ref={inputRef}
+												style={styles.noteInput}
+												value={noteText}
+												onChange={(e) =>
+													setNoteText(e.target.value)
+												}
+												onKeyDown={(e) => {
+													if (e.key === "Enter")
+														handleSaveNote();
+													if (e.key === "Escape")
+														handleCancelNote();
+												}}
+												placeholder="Add a note..."
+											/>
+											<button
+												style={styles.iconBtn}
+												onClick={handleCancelNote}
+												title="Cancel"
+											>
+												<X size={12} />
+											</button>
+										</div>
+									)}
+								</div>
+
+								{/* Actions (visible on hover) */}
+								{isHovered && !isEditing && (
+									<div style={styles.actions}>
+										<button
+											style={styles.iconBtn}
+											title="Replay to this step"
+											onClick={() => onReplay(idx)}
+										>
+											<Play
+												size={12}
+												color={EMBRY.green}
+											/>
+										</button>
+										<button
+											style={styles.iconBtn}
+											title="Add note"
+											onClick={() =>
+												handleStartNote(idx)
+											}
+										>
+											<StickyNote
+												size={12}
+												color={EMBRY.amber}
+											/>
+										</button>
+										<button
+											style={styles.iconBtn}
+											title="Delete step"
+											onClick={() => onDelete(idx)}
+										>
+											<Trash2
+												size={12}
+												color={EMBRY.red}
+											/>
+										</button>
+									</div>
+								)}
+							</div>
+						);
+					})}
+				</div>
+			)}
+		</div>
+	);
+}
+
+export default InvestigationJournal;

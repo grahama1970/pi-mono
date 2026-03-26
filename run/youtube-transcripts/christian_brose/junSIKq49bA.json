@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "junSIKq49bA",
+    "language": "en",
+    "took_ms": 8307,
+    "method": null,
+    "title": "NATO Public Forum: The Military Scene-Setter",
+    "channel": "Hudson Institute",
+    "upload_date": "20240712",
+    "duration_sec": 807,
+    "description": "As Russia’s military strength threatens to overrun Ukraine and strike North Atlantic Treaty Organization territory, Supreme Allied Commander Europe Christopher G. Cavoli is tasked with bolstering European nations’ defense capabilities. \n\nHudson Senior Fellow Peter Rough joined General Cavoli to discuss the future of defense in Europe at the 2024 NATO Public Forum.",
+    "view_count": 705
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] junSIKq49bA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lW2x00oDgto",
+    "language": "en",
+    "took_ms": 9046,
+    "method": null,
+    "title": "I Created a Business App With One Prompt | Softr AI App Generator",
+    "channel": "Dan Kieft",
+    "upload_date": "20231012",
+    "duration_sec": 490,
+    "description": "I Created a Business App With One Prompt | Softr AI App Generator\nTry out Softr AI: https://bit.ly/Softr-AI\n\nSoftr has taken a giant step forward by enabling businesses to build fully functional applications with nothing more than a simple prompt.\n\nWith the power of AI, your business can now effortlessly convert manual workflows into web applications, complete with a backend database and a frontend interface for data management and business logic, all without extensive coding or technical expertise.",
+    "view_count": 2447
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lW2x00oDgto: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

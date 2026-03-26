@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_iAffzWxexA",
+    "language": "en",
+    "took_ms": 9715,
+    "method": null,
+    "title": "DEF CON 31 - War Stories -  Finding Foes and Yourself with Latency Trilateration - Lorenzo Cococcia",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 1243,
+    "description": "Since the dawn of time, humans have been driven to discover new ways of determining their location, and the location of potential threats. In the realm of cyber threat intelligence, the ability to geolocate servers, for instance the one a C2 is running on, is crucial.\n\nAs a research in its early stages, this speech will delve into the exciting world of offensive geolocation. By leveraging inviolable physical laws, we can measure the time it takes for a signal to travel from an adversary to multiple network sensors, and use this information to accurately calculate their position. This technique is known as latency trilateration has never been used before in the cyber realm, and has significant implications for threat intelligence, sandbox evasion, and even malware self-geolocation. I will also discuss potential limitations and challenges of this approach, as well as its broader implications and potential future developments in this emerging field.",
+    "view_count": 2586
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _iAffzWxexA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

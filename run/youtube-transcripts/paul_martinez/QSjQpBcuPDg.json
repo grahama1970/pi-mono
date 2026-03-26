@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QSjQpBcuPDg",
+    "language": "en",
+    "took_ms": 7890,
+    "method": null,
+    "title": "Hardcore Windows Hardening",
+    "channel": "S4 Events",
+    "upload_date": "20180202",
+    "duration_sec": 1972,
+    "description": "The team from OSIsoft gave this very practical presentation on the S4x18 Sponsor Stage, but after seeing it we should have put it on Stage 2. Asset owners and vendors should watch this.\n\nIt is how OSIsoft would optimally configure the OS that PI System components would be installed on. They also talk about the good, the bad and the ugly issues with the latest Windows security controls. \n\nGithub resources at: https://gist.github.com/hpaul-osi/d1d4dd80e2627c94aac9b7e55a5ec799\n\nThe session includes:\n\n- the highlighted the benefits of Server Core\n- what to disable after install\n- proper use and security of PowerShell\n- configuration as code ... Desired State Configuration\n- AppLocker and Device Guard\n- Windows Service Hardening (with a good example)\n- User Access Control (UAC)\n- Strong cipher suites (disable weak protocols)\n- Using Windows Integrated Security\n- Group Managed Service Accounts\n- Use of SYSMON \n\nThis is a lot of content covered quickly, but well.",
+    "view_count": 3127
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QSjQpBcuPDg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

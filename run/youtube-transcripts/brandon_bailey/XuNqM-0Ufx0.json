@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XuNqM-0Ufx0",
+    "language": "en",
+    "took_ms": 9670,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Mark Loveless - A Short History and An Example Attack",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1790,
+    "description": "Advanced Persistent Threat. Where did this term come from? What does it really mean? Exactly how can you determine that it is a \"nation state\" as opposed to a run-of-the-mill attack? All of this will be explained in detail. As an example, I will use an actual attempt against my home system, with a review of collected data to illustrate the whole APT thing.\n\nThere are differences in how APT actors approach things, and this will be discussed from the perspective of someone who attacked plenty of systems in their youth - me. We'll talk about how APT differs from Red Teaming and Penetration Testing, and if you are trying to simulate it you need to throw the rulebook out of the window to do it right.",
+    "view_count": 2381
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XuNqM-0Ufx0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

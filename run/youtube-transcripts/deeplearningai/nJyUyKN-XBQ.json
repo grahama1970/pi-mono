@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nJyUyKN-XBQ",
+    "language": "en",
+    "took_ms": 8880,
+    "method": null,
+    "title": "Derivatives With Computation Graphs (C1W2L08)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 874,
+    "description": "Take the Deep Learning Specialization: http://bit.ly/2TuCcGp\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 118828
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nJyUyKN-XBQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,403 @@
+{
+  "round": 10,
+  "avgScore": 5.533333333333333,
+  "reviewCount": 15,
+  "perPersona": [
+    {
+      "persona": "tim-blazytko",
+      "avg": 5.2,
+      "count": 5
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "avg": 5.4,
+      "count": 5
+    },
+    {
+      "persona": "liveoverflow",
+      "avg": 6,
+      "count": 5
+    }
+  ],
+  "criticisms": [
+    {
+      "category": "other",
+      "count": 26,
+      "examples": [
+        "No visible graph edges or nodes currently rendered — critical for data flow analysis; “No nodes in scene” message indicates the tool is not actively visualizing relationships.",
+        "Integrate with dynamic analysis backend (e.g., via QEMU or Frida) to visualize runtime taint propagation alongside static graph — enabling hybrid analysis workflows.",
+        "No indication of auto-save or named scene persistence — losing graph state after a crash or refresh would be catastrophic in multi-hour analysis.",
+        "“6/334 in scene” counter implies scene filtering, but no UI for saving, naming, or restoring scenes — undermines reproducibility and collaboration.",
+        "Real-time feature stats (334 features, 755 edges) and namespace breakdowns provide immediate analytical context — valuable for triaging binaries at scale.",
+        "Lacks exportable analysis scripts or “recipes” — prevents automation, collaboration, or integration into CI/CD or agentic workflows.",
+        "No branching or hypothesis sandboxing — forces linear exploration, which stifles iterative or adversarial analysis.",
+        "Real-time feature extraction (namespaces, state machines, RPCs) enables rapid triage of binary behavior.",
+        "Add a “Session Recorder” that logs every click, filter, and query into an exportable YAML/JSON script — enabling replay, sharing, and agentic training.",
+        "Introduce “Analysis Branches” — let users fork their current graph state to test alternate hypotheses without losing prior context.",
+        "No visible edge labels or directional indicators — forces reliance on hover (not shown in screenshot), which breaks flow during dense analysis.",
+        "Metadata panel at bottom gives high-level stats (features, edges, namespaces) — good for quick triage and context setting.",
+        "Add optional edge labels and implement edge bundling for nodes with >5 connections — prevents visual overload and maintains readability in complex binaries like “droid” with 755 edges.",
+        "No visible decompiled C code at all — this is a graph/exploration tool, not a decompiler. The evaluation criteria (idiomatic C, variable names, control flow) are fundamentally unmet because there’s no decompilation output to assess.",
+        "No visible low-level pattern labeling (vtable, PLT/GOT, exception handlers, relocation entries) — critical for traditional RE workflows, especially in ELF binaries.",
+        "Confidence metrics are visible (e.g., “conf: 97%”) which helps prioritize analysis and reduces blind trust in automated labeling.",
+        "False positives or uncertain matches aren’t visually flagged or qualified beyond the confidence percentage — lacks “uncertain” or “tentative” visual indicators.",
+        "No visible keyboard shortcut (e.g., Esc) to reset view — forces mouse interaction, breaking flow during deep RE sessions.",
+        "Visual indicators (T0/T1/T2, confidence %, ELF tag) provide quick triage context — helpful for prioritizing analysis during CTF or research.",
+        "Icons (green dot = rpc, orange = event, etc.) are not self-explanatory; no legend visible in viewport.",
+        "No explanation of D3FEND/ATT&CK mappings or why “334 features” matters — meaningless without domain context.",
+        "“6/334 in scene” is cryptic — what’s the “scene”? Why 6? No guidance on how to expand or filter meaningfully.",
+        "No explicit mapping of validation logic to CWEs or vulnerability classes — you can’t tell if a function is a “CWE-120: Buffer Copy without Checking Size” just by looking at the graph.",
+        "Feature metrics (T0/T1/T2, confidence %, ELF stats) provide quick context on binary complexity and potential attack surface — useful for triaging.",
+        "Add a “Validation Layer” toggle that overlays nodes/functions mapped to common input validation patterns (e.g., strlen, memcmp, bounds checks) and links them to CWE IDs.",
+        "Metadata summary (features, namespaces, edges) gives quick context about binary complexity — helpful for triage."
+      ]
+    },
+    {
+      "category": "schema-detail",
+      "count": 19,
+      "examples": [
+        "Implement edge type color-coding and dynamic label scaling with hover tooltips — essential for distinguishing call, data, and control flow in complex binaries.",
+        "Static feature graph ≠ dynamic analysis: The graph represents structural or semantic features, not runtime data flow — cannot replace taint analysis tools like Triton, Angr, or QEMU+Pin.",
+        "No visible struct layout visualization — no field offsets, padding bytes, alignment markers, or byte-level packing representation.",
+        "Lacks compiler-specific annotations (e.g., __attribute__((packed)), #pragma pack, or ABI-specific padding rules) critical for reconstructing accurate C structs.",
+        "Graph-based view is abstract and disconnected from memory layout — you cannot derive struct definitions from node connections alone.",
+        "Add a “Struct Viewer” pane that renders structs as memory layouts with field names, offsets, sizes, padding bytes (marked explicitly), and alignment boundaries — similar to Ghidra’s Data Type Manager or IDA’s struct editor.",
+        "Overlay compiler directives or ABI assumptions (e.g., “x86_64 System V ABI”, “gcc -m32”) as metadata tags on structs to aid reconstruction fidelity.",
+        "Edge types are not visually distinct — no color, thickness, or arrow style differentiation between calls, references, imports, etc. This is critical for tracing data/control flow.",
+        "Introduce color-coded, directional arrows for edge types (e.g., green for calls, blue for imports, dashed for references) — essential for rapid pattern recognition in call graphs.",
+        "Lacks any interactive renaming, type annotation, or control flow graph reconstruction — essential for professional RE workflows.",
+        "The “TOP FEATURES BY CONNECTIONS” section is cryptic and doesn’t map to actual code constructs — more like a feature heatmap than actionable reverse engineering data.",
+        "Add variable/type renaming capability directly on the graph nodes, with persistence to the underlying decompilation engine — this would bridge the gap between visualization and actual code reconstruction.",
+        "“SOURCE PATTERNS (0 available)” indicates no source-level correlation — useless for teaching how high-level constructs translate to machine code.",
+        "Interface resembles a graph explorer, not a reverse engineering or educational tool — lacks step-through, breakpoints, or instruction-level tracing.",
+        "Add a split-pane view: left = source (C/Python), right = corresponding disassembly, with line-to-instruction highlighting and cross-navigation.",
+        "The “Ask about this binary…” field lacks autocomplete, examples, or syntax hints, which could help users rephrase failed queries.",
+        "The “Ask about this binary…” input field is clearly labeled and positioned, encouraging exploration without overwhelming the user.",
+        "The visual feedback (“6/334 in scene”) and metadata (features, namespaces, schemas) give immediate context, reducing beginner confusion about scope.",
+        "Implement a “Beginner Mode” toggle that surfaces syntax tips and example questions directly under the input field to scaffold learning."
+      ]
+    },
+    {
+      "category": "onboarding",
+      "count": 7,
+      "examples": [
+        "Add a persistent “Connection Status” badge (green/red) in the header with tooltip showing last API ping time and error code if failed.",
+        "Namespace names like `droid.*` or `daemon.*` are vague without context — a beginner won’t know if these are threads, modules, or privilege domains without clicking.",
+        "Add hover tooltips or mini-previews for each namespace (e.g., “daemon.* — 59 functions, handles system services, 3 RPC endpoints”) to reduce cognitive load.",
+        "Auto-expand the most relevant namespace (e.g., `droid.*`) on load with a guided “first step” arrow or tooltip: “Start here to explore core logic.”",
+        "Assumes deep insider knowledge: “namespace”, “state machine”, “rpc”, “cli command” — no tooltips or glossary for beginners.",
+        "Add a “Beginner Mode” toggle that surfaces tooltips on hover, explains icons, and translates jargon (e.g., “namespace = logical grouping of functions/variables”).",
+        "No visible error state or fallback message is shown if a query fails — we don’t know if the system says “I don’t know” or “Try asking about X” — which is critical for beginner resilience."
+      ]
+    },
+    {
+      "category": "graph-layout",
+      "count": 5,
+      "examples": [
+        "No visible “Load Scene” or “Scene Manager” UI — critical for RE workflows where analysts jump between binaries, zoom states, and filter configurations.",
+        "Add a “Scenes” tab in the top toolbar with “Save Scene As…”, “Load Scene”, and “Auto-Save Toggle” — ensure state (zoom, selection, filters) is preserved.",
+        "Unclear whether “CLEAR” resets zoom/pan — if it doesn’t, users must manually recenter, which is inefficient and error-prone.",
+        "Add keyboard shortcut “Esc” to reset filters + zoom/pan to default — critical for RE muscle memory.",
+        "Animate graph reset with smooth fade/zoom-out to origin — provides visual feedback and reduces disorientation after clearing filters."
+      ]
+    },
+    {
+      "category": "empty-canvas",
+      "count": 4,
+      "examples": [
+        "No visible network status indicator or error state — if backend fails, user is left with an empty graph and no explanation.",
+        "Edge rendering criteria (arrowheads, labels, hover tooltips, type differentiation) cannot be evaluated because the graph is empty — violates core RE tool expectations.",
+        "Auto-load and visualize the top 5 most connected features on first load — don’t leave the user staring at an empty graph; reduce friction for exploratory analysis.",
+        "The central graph is empty until interaction — this creates a “blank canvas” effect that’s intimidating and doesn’t scaffold learning."
+      ]
+    },
+    {
+      "category": "disassembly",
+      "count": 4,
+      "examples": [
+        "Integrate a real-time decompiler pane (like Ghidra’s or Hex-Rays) alongside the graph view, allowing side-by-side analysis of control flow and semantic graph.",
+        "Integration with source pattern browsing (ASM / decompiled C / Python pseudocode) is a strong signal that it’s designed for deep-dive RE, not just surface scanning.",
+        "No visible disassembly view, no assembly code, no Python-to-ASM mapping — completely missing the core educational value for teaching compiler behavior.",
+        "Integrate a “Compiler Explorer mode” toggle that lets users see how different optimizations affect the generated ASM — directly comparing to godbolt.org for educational purposes."
+      ]
+    },
+    {
+      "category": "error-states",
+      "count": 3,
+      "examples": [
+        "No retry button or reconnect mechanism visible — forces manual refresh or re-ingestion, breaking workflow continuity.",
+        "Introduce a “Retry Graph Load” button next to “CLEAR” in the viewport toolbar — enables recovery without restarting the session.",
+        "No custom source/sink definition: Analysts cannot annotate or inject taint sources (e.g., network socket, file read) or sinks (e.g., execve, write to disk) to trace specific flows."
+      ]
+    },
+    {
+      "category": "selection-feedback",
+      "count": 3,
+      "examples": [
+        "Auto-load the selected binary’s graph on selection (e.g., “droid”) instead of requiring manual “Load Sample Graph” — eliminate friction for immediate analysis.",
+        "Add a “Low-Level Patterns” toggle or panel that auto-detects and highlights vtables, PLT/GOT, .eh_frame, and relocations with color-coded certainty (e.g., green = high, yellow = medium, red = uncertain).",
+        "Auto-highlight “sink” functions (e.g., memcpy, system, execve) and trace back to their “source” (user input, network, file) with red/green paths indicating validation success/failure — this would make it obvious where validation is missing."
+      ]
+    },
+    {
+      "category": "navigation",
+      "count": 2,
+      "examples": [
+        "No explicit data flow or taint tracking: Edges lack semantic labels for data transformation (e.g., “encrypted → decrypted”, “user_input → buffer_write”). No source/sink annotations or propagation paths visible.",
+        "No visual indicators for “validation failure paths” vs “success paths” — a key requirement for exploit development or fuzzing target identification."
+      ]
+    },
+    {
+      "category": "undo-redo",
+      "count": 2,
+      "examples": [
+        "Integrate scene history (like browser tabs) with thumbnail previews — let analysts switch between “droid: auth flow”, “daemon: exploit surface”, etc., without losing context.",
+        "No visible audit trail or replayable step history — critical for reproducibility and peer review in professional RE."
+      ]
+    },
+    {
+      "category": "context-menu",
+      "count": 1,
+      "examples": [
+        "Add “Taint Mode” toggle that overlays data flow edges with transformation labels and allows users to define custom sources/sinks via right-click context menu."
+      ]
+    },
+    {
+      "category": "loading-indicator",
+      "count": 1,
+      "examples": [
+        "No visual hierarchy or preview of contents within namespaces — you must click to discover what’s inside, breaking the “progression” flow."
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_first_05",
+      "score": 7,
+      "weaknesses": [
+        "No visible network status indicator or error state — if backend fails, user is left with an empty graph and no explanation.",
+        "No retry button or reconnect mechanism visible — forces manual refresh or re-ingestion, breaking workflow continuity."
+      ],
+      "suggestions": [
+        "Add a persistent “Connection Status” badge (green/red) in the header with tooltip showing last API ping time and error code if failed.",
+        "Introduce a “Retry Graph Load” button next to “CLEAR” in the viewport toolbar — enables recovery without restarting the session."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clean, dark-themed UI with logical spatial hierarchy — reduces cognitive load during deep analysis.  \n- Real-time feature breakdown (namespaces, state machines, RPCs) provides immediate context for binary behavior.  \n- Suggested queries panel acts as an “onboarding assistant” for new analysts — lowers entry barrier for complex binary exploration.\n\n4. Weaknesses  \n- No visible network status indicator or error state — if backend fails, user is left with an empty graph and no explanation.  \n- No retry button or reconnect mechanism visible — forces manual refresh or re-ingestion, breaking workflow continuity.  \n- “6/334 in scene” suggests partial loading, but no progress bar or failure reason — ambiguous whether it’s slow, stuck, or broken.\n\n5. What you would change  \n- Add a persistent “Connection Status” badge (green/red) in the header with tooltip showing last API ping time and error code if failed.  \n- Introduce a “Retry Graph Load” button next to “CLEAR” in the viewport toolbar — enables recovery without restarting the session."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_graph_02",
+      "score": 4,
+      "weaknesses": [
+        "No visible graph edges or nodes currently rendered — critical for data flow analysis; “No nodes in scene” message indicates the tool is not actively visualizing relationships.",
+        "Edge rendering criteria (arrowheads, labels, hover tooltips, type differentiation) cannot be evaluated because the graph is empty — violates core RE tool expectations."
+      ],
+      "suggestions": [
+        "Auto-load the selected binary’s graph on selection (e.g., “droid”) instead of requiring manual “Load Sample Graph” — eliminate friction for immediate analysis.",
+        "Implement edge type color-coding and dynamic label scaling with hover tooltips — essential for distinguishing call, data, and control flow in complex binaries."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n**Strengths**  \n- Clean, dark-themed UI with logical panel separation (left sidebar for binaries, center for graph, right for analysis queries) — reduces cognitive load during deep analysis.  \n- Quick-action buttons (“Load Sample Graph”, “View Vulnerability Map”) provide immediate entry points for exploratory analysis — useful for triaging unknown binaries.  \n- Metadata summary at bottom (features, edges, namespaces) gives quantitative context — helpful for assessing binary complexity before diving in.\n\n**Weaknesses**  \n- No visible graph edges or nodes currently rendered — critical for data flow analysis; “No nodes in scene” message indicates the tool is not actively visualizing relationships.  \n- Edge rendering criteria (arrowheads, labels, hover tooltips, type differentiation) cannot be evaluated because the graph is empty — violates core RE tool expectations.  \n- No indication of edge bundling or zoom-dependent label scaling — suggests the tool may not handle dense graphs well, which is common in real-world binaries.\n\n**What you would change**  \n- Auto-load the selected binary’s graph on selection (e.g., “droid”) instead of requiring manual “Load Sample Graph” — eliminate friction for immediate analysis.  \n- Implement edge type color-coding and dynamic label scaling with hover tooltips — essential for distinguishing call, data, and control flow in complex binaries."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_persp_02",
+      "score": 5,
+      "weaknesses": [
+        "No explicit data flow or taint tracking: Edges lack semantic labels for data transformation (e.g., “encrypted → decrypted”, “user_input → buffer_write”). No source/sink annotations or propagation paths visible.",
+        "Static feature graph ≠ dynamic analysis: The graph represents structural or semantic features, not runtime data flow — cannot replace taint analysis tools like Triton, Angr, or QEMU+Pin.",
+        "No custom source/sink definition: Analysts cannot annotate or inject taint sources (e.g., network socket, file read) or sinks (e.g., execve, write to disk) to trace specific flows."
+      ],
+      "suggestions": [
+        "Add “Taint Mode” toggle that overlays data flow edges with transformation labels and allows users to define custom sources/sinks via right-click context menu.",
+        "Integrate with dynamic analysis backend (e.g., via QEMU or Frida) to visualize runtime taint propagation alongside static graph — enabling hybrid analysis workflows."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n**Strengths**  \n- Rich metadata visualization: The interface surfaces namespaces, state machines, CLI commands, and schema with clear counts and confidence metrics — useful for high-level binary triage.  \n- Interactive graph navigation: Click/double-click/scroll controls enable exploratory analysis, which supports hypothesis-driven reverse engineering.  \n- Suggested queries panel: Context-aware prompts (e.g., “Trace the B:Connection state machine”) reduce cognitive load and guide analysts toward meaningful paths.\n\n**Weaknesses**  \n- No explicit data flow or taint tracking: Edges lack semantic labels for data transformation (e.g., “encrypted → decrypted”, “user_input → buffer_write”). No source/sink annotations or propagation paths visible.  \n- Static feature graph ≠ dynamic analysis: The graph represents structural or semantic features, not runtime data flow — cannot replace taint analysis tools like Triton, Angr, or QEMU+Pin.  \n- No custom source/sink definition: Analysts cannot annotate or inject taint sources (e.g., network socket, file read) or sinks (e.g., execve, write to disk) to trace specific flows.\n\n**What you would change**  \n- Add “Taint Mode” toggle that overlays data flow edges with transformation labels and allows users to define custom sources/sinks via right-click context menu.  \n- Integrate with dynamic analysis backend (e.g., via QEMU or Frida) to visualize runtime taint propagation alongside static graph — enabling hybrid analysis workflows."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_scene_02",
+      "score": 5,
+      "weaknesses": [
+        "No visible “Load Scene” or “Scene Manager” UI — critical for RE workflows where analysts jump between binaries, zoom states, and filter configurations.",
+        "No indication of auto-save or named scene persistence — losing graph state after a crash or refresh would be catastrophic in multi-hour analysis.",
+        "“6/334 in scene” counter implies scene filtering, but no UI for saving, naming, or restoring scenes — undermines reproducibility and collaboration."
+      ],
+      "suggestions": [
+        "Real-time feature stats (334 features, 755 edges) and namespace breakdowns provide immediate analytical context — valuable for triaging binaries at scale.",
+        "Add a “Scenes” tab in the top toolbar with “Save Scene As…”, “Load Scene”, and “Auto-Save Toggle” — ensure state (zoom, selection, filters) is preserved.",
+        "Integrate scene history (like browser tabs) with thumbnail previews — let analysts switch between “droid: auth flow”, “daemon: exploit surface”, etc., without losing context."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10  \n\n**Strengths**  \n- Clean, dark-themed UI with logical panel separation (left sidebar for binaries, center for graph, right for analysis queries) — reduces cognitive load during long RE sessions.  \n- “Suggested Queries” panel offers contextual, agentic guidance (e.g., “How does request_permission connect to kill_worker_session?”) — useful for rapid hypothesis generation.  \n- Real-time feature stats (334 features, 755 edges) and namespace breakdowns provide immediate analytical context — valuable for triaging binaries at scale.  \n\n**Weaknesses**  \n- No visible “Load Scene” or “Scene Manager” UI — critical for RE workflows where analysts jump between binaries, zoom states, and filter configurations.  \n- No indication of auto-save or named scene persistence — losing graph state after a crash or refresh would be catastrophic in multi-hour analysis.  \n- “6/334 in scene” counter implies scene filtering, but no UI for saving, naming, or restoring scenes — undermines reproducibility and collaboration.  \n\n**What I would change**  \n- Add a “Scenes” tab in the top toolbar with “Save Scene As…”, “Load Scene”, and “Auto-Save Toggle” — ensure state (zoom, selection, filters) is preserved.  \n- Integrate scene history (like browser tabs) with thumbnail previews — let analysts switch between “droid: auth flow”, “daemon: exploit surface”, etc., without losing context."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_journal_02",
+      "score": 5,
+      "weaknesses": [
+        "No visible audit trail or replayable step history — critical for reproducibility and peer review in professional RE.",
+        "Lacks exportable analysis scripts or “recipes” — prevents automation, collaboration, or integration into CI/CD or agentic workflows.",
+        "No branching or hypothesis sandboxing — forces linear exploration, which stifles iterative or adversarial analysis."
+      ],
+      "suggestions": [
+        "Real-time feature extraction (namespaces, state machines, RPCs) enables rapid triage of binary behavior.",
+        "Add a “Session Recorder” that logs every click, filter, and query into an exportable YAML/JSON script — enabling replay, sharing, and agentic training.",
+        "Introduce “Analysis Branches” — let users fork their current graph state to test alternate hypotheses without losing prior context."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10  \n\n**Strengths**  \n- Clean, modern UI with clear visual hierarchy — reduces cognitive load during complex binary exploration.  \n- Integrated “Suggested Queries” panel provides guided analysis paths, lowering entry barrier for junior analysts.  \n- Real-time feature extraction (namespaces, state machines, RPCs) enables rapid triage of binary behavior.  \n\n**Weaknesses**  \n- No visible audit trail or replayable step history — critical for reproducibility and peer review in professional RE.  \n- Lacks exportable analysis scripts or “recipes” — prevents automation, collaboration, or integration into CI/CD or agentic workflows.  \n- No branching or hypothesis sandboxing — forces linear exploration, which stifles iterative or adversarial analysis.  \n\n**What I would change**  \n- Add a “Session Recorder” that logs every click, filter, and query into an exportable YAML/JSON script — enabling replay, sharing, and agentic training.  \n- Introduce “Analysis Branches” — let users fork their current graph state to test alternate hypotheses without losing prior context."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_data_02",
+      "score": 4,
+      "weaknesses": [
+        "No visible struct layout visualization — no field offsets, padding bytes, alignment markers, or byte-level packing representation.",
+        "Lacks compiler-specific annotations (e.g., __attribute__((packed)), #pragma pack, or ABI-specific padding rules) critical for reconstructing accurate C structs.",
+        "Graph-based view is abstract and disconnected from memory layout — you cannot derive struct definitions from node connections alone."
+      ],
+      "suggestions": [
+        "Add a “Struct Viewer” pane that renders structs as memory layouts with field names, offsets, sizes, padding bytes (marked explicitly), and alignment boundaries — similar to Ghidra’s Data Type Manager or IDA’s struct editor.",
+        "Overlay compiler directives or ABI assumptions (e.g., “x86_64 System V ABI”, “gcc -m32”) as metadata tags on structs to aid reconstruction fidelity."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n3. Strengths  \n- The interface provides high-level metadata (e.g., 334 features, 755 edges, namespace breakdowns) useful for rapid triage and feature mapping.  \n- Integration of Treesitter + analyze-elf suggests semantic parsing of ELF internals — potentially useful for reconstructing function boundaries or symbol tables.  \n- Suggested queries (e.g., “What does request_permission do?”) hint at intent to support behavioral analysis, which is valuable for dynamic RE workflows.\n\n4. Weaknesses  \n- No visible struct layout visualization — no field offsets, padding bytes, alignment markers, or byte-level packing representation.  \n- Lacks compiler-specific annotations (e.g., __attribute__((packed)), #pragma pack, or ABI-specific padding rules) critical for reconstructing accurate C structs.  \n- Graph-based view is abstract and disconnected from memory layout — you cannot derive struct definitions from node connections alone.\n\n5. What you would change  \n- Add a “Struct Viewer” pane that renders structs as memory layouts with field names, offsets, sizes, padding bytes (marked explicitly), and alignment boundaries — similar to Ghidra’s Data Type Manager or IDA’s struct editor.  \n- Overlay compiler directives or ABI assumptions (e.g., “x86_64 System V ABI”, “gcc -m32”) as metadata tags on structs to aid reconstruction fidelity."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_graph_02",
+      "score": 5,
+      "weaknesses": [
+        "Edge types are not visually distinct — no color, thickness, or arrow style differentiation between calls, references, imports, etc. This is critical for tracing data/control flow.",
+        "No visible edge labels or directional indicators — forces reliance on hover (not shown in screenshot), which breaks flow during dense analysis."
+      ],
+      "suggestions": [
+        "Metadata panel at bottom gives high-level stats (features, edges, namespaces) — good for quick triage and context setting.",
+        "Introduce color-coded, directional arrows for edge types (e.g., green for calls, blue for imports, dashed for references) — essential for rapid pattern recognition in call graphs.",
+        "Add optional edge labels and implement edge bundling for nodes with >5 connections — prevents visual overload and maintains readability in complex binaries like “droid” with 755 edges."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n3. Strengths  \n- Clear legend for node types (rpc, event, schema, state machine, cli command, namespace) — helps with semantic understanding at a glance.  \n- Suggested queries panel provides guided exploration for complex binaries — useful for newcomers or when diving into unfamiliar codebases.  \n- Metadata panel at bottom gives high-level stats (features, edges, namespaces) — good for quick triage and context setting.\n\n4. Weaknesses  \n- Edge types are not visually distinct — no color, thickness, or arrow style differentiation between calls, references, imports, etc. This is critical for tracing data/control flow.  \n- No visible edge labels or directional indicators — forces reliance on hover (not shown in screenshot), which breaks flow during dense analysis.  \n- Graph canvas is empty or sparse in screenshot — suggests poor rendering or lack of auto-layout for high-connectivity nodes; no evidence of edge bundling or clustering to reduce visual clutter.\n\n5. What you would change  \n- Introduce color-coded, directional arrows for edge types (e.g., green for calls, blue for imports, dashed for references) — essential for rapid pattern recognition in call graphs.  \n- Add optional edge labels and implement edge bundling for nodes with >5 connections — prevents visual overload and maintains readability in complex binaries like “droid” with 755 edges."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_code_02",
+      "score": 4,
+      "weaknesses": [
+        "No visible decompiled C code at all — this is a graph/exploration tool, not a decompiler. The evaluation criteria (idiomatic C, variable names, control flow) are fundamentally unmet because there’s no decompilation output to assess.",
+        "Lacks any interactive renaming, type annotation, or control flow graph reconstruction — essential for professional RE workflows.",
+        "The “TOP FEATURES BY CONNECTIONS” section is cryptic and doesn’t map to actual code constructs — more like a feature heatmap than actionable reverse engineering data."
+      ],
+      "suggestions": [
+        "Integrate a real-time decompiler pane (like Ghidra’s or Hex-Rays) alongside the graph view, allowing side-by-side analysis of control flow and semantic graph.",
+        "Add variable/type renaming capability directly on the graph nodes, with persistence to the underlying decompilation engine — this would bridge the gap between visualization and actual code reconstruction."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10  \n\n3. Strengths  \n- The interface provides high-level semantic grouping (namespaces, state machines, RPCs) which is useful for rapid triage of binary behavior.  \n- Integration of Treesitter + analyze-elf suggests structured parsing of ELF internals — a solid foundation for deeper analysis.  \n- Suggested queries (e.g., “How does request_permission connect to kill_worker_session?”) indicate intent to support behavioral reasoning, not just static structure.\n\n4. Weaknesses  \n- No visible decompiled C code at all — this is a graph/exploration tool, not a decompiler. The evaluation criteria (idiomatic C, variable names, control flow) are fundamentally unmet because there’s no decompilation output to assess.  \n- Lacks any interactive renaming, type annotation, or control flow graph reconstruction — essential for professional RE workflows.  \n- The “TOP FEATURES BY CONNECTIONS” section is cryptic and doesn’t map to actual code constructs — more like a feature heatmap than actionable reverse engineering data.\n\n5. What you would change  \n- Integrate a real-time decompiler pane (like Ghidra’s or Hex-Rays) alongside the graph view, allowing side-by-side analysis of control flow and semantic graph.  \n- Add variable/type renaming capability directly on the graph nodes, with persistence to the underlying decompilation engine — this would bridge the gap between visualization and actual code reconstruction."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_detail_04",
+      "score": 7,
+      "weaknesses": [
+        "No visible low-level pattern labeling (vtable, PLT/GOT, exception handlers, relocation entries) — critical for traditional RE workflows, especially in ELF binaries."
+      ],
+      "suggestions": [
+        "Confidence metrics are visible (e.g., “conf: 97%”) which helps prioritize analysis and reduces blind trust in automated labeling.",
+        "Integration with source pattern browsing (ASM / decompiled C / Python pseudocode) is a strong signal that it’s designed for deep-dive RE, not just surface scanning.",
+        "False positives or uncertain matches aren’t visually flagged or qualified beyond the confidence percentage — lacks “uncertain” or “tentative” visual indicators.",
+        "Add a “Low-Level Patterns” toggle or panel that auto-detects and highlights vtables, PLT/GOT, .eh_frame, and relocations with color-coded certainty (e.g., green = high, yellow = medium, red = uncertain).",
+        "Auto-load and visualize the top 5 most connected features on first load — don’t leave the user staring at an empty graph; reduce friction for exploratory analysis."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths:\n- The tool surfaces high-level semantic features (e.g., “state machine”, “cli command”, “schema”) which suggest it’s using symbolic or behavioral analysis — useful for rapid triage.\n- Confidence metrics are visible (e.g., “conf: 97%”) which helps prioritize analysis and reduces blind trust in automated labeling.\n- Integration with source pattern browsing (ASM / decompiled C / Python pseudocode) is a strong signal that it’s designed for deep-dive RE, not just surface scanning.\n\n4. Weaknesses:\n- No visible low-level pattern labeling (vtable, PLT/GOT, exception handlers, relocation entries) — critical for traditional RE workflows, especially in ELF binaries.\n- The “No nodes in scene” state suggests the tool is not auto-populating or highlighting common binary structures unless manually triggered — poor UX for exploratory analysis.\n- False positives or uncertain matches aren’t visually flagged or qualified beyond the confidence percentage — lacks “uncertain” or “tentative” visual indicators.\n\n5. What you would change:\n- Add a “Low-Level Patterns” toggle or panel that auto-detects and highlights vtables, PLT/GOT, .eh_frame, and relocations with color-coded certainty (e.g., green = high, yellow = medium, red = uncertain).\n- Auto-load and visualize the top 5 most connected features on first load — don’t leave the user staring at an empty graph; reduce friction for exploratory analysis."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_search_05",
+      "score": 7,
+      "weaknesses": [
+        "No visible keyboard shortcut (e.g., Esc) to reset view — forces mouse interaction, breaking flow during deep RE sessions.",
+        "Unclear whether “CLEAR” resets zoom/pan — if it doesn’t, users must manually recenter, which is inefficient and error-prone."
+      ],
+      "suggestions": [
+        "Add keyboard shortcut “Esc” to reset filters + zoom/pan to default — critical for RE muscle memory.",
+        "Animate graph reset with smooth fade/zoom-out to origin — provides visual feedback and reduces disorientation after clearing filters."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clear visual hierarchy with “CLEAR” button prominently placed near node count — reduces cognitive load when resetting filters.  \n- Contextual legend (rpc, event, schema, etc.) and feature stats (T0, T1, conf%) provide immediate analytical context — useful for rapid triage during RE.  \n- “+ INGEST BINARY” and project sidebar offer quick navigation and onboarding — good for iterative analysis workflows.\n\n4. Weaknesses  \n- No visible keyboard shortcut (e.g., Esc) to reset view — forces mouse interaction, breaking flow during deep RE sessions.  \n- Unclear whether “CLEAR” resets zoom/pan — if it doesn’t, users must manually recenter, which is inefficient and error-prone.  \n- Transition behavior (smooth vs. jarring) is not observable from static screenshot, but lack of animation cues suggests potential jank — poor UX for dynamic graph tools.\n\n5. What you would change  \n- Add keyboard shortcut “Esc” to reset filters + zoom/pan to default — critical for RE muscle memory.  \n- Animate graph reset with smooth fade/zoom-out to origin — provides visual feedback and reduces disorientation after clearing filters."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_prog_02",
+      "score": 7,
+      "weaknesses": [
+        "Namespace names like `droid.*` or `daemon.*` are vague without context — a beginner won’t know if these are threads, modules, or privilege domains without clicking.",
+        "No visual hierarchy or preview of contents within namespaces — you must click to discover what’s inside, breaking the “progression” flow.",
+        "The central graph is empty until interaction — this creates a “blank canvas” effect that’s intimidating and doesn’t scaffold learning."
+      ],
+      "suggestions": [
+        "Visual indicators (T0/T1/T2, confidence %, ELF tag) provide quick triage context — helpful for prioritizing analysis during CTF or research.",
+        "Add hover tooltips or mini-previews for each namespace (e.g., “daemon.* — 59 functions, handles system services, 3 RPC endpoints”) to reduce cognitive load.",
+        "Auto-expand the most relevant namespace (e.g., `droid.*`) on load with a guided “first step” arrow or tooltip: “Start here to explore core logic.”"
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- The namespace grouping (e.g., `daemon.*`, `droid.*`, `tunnel.*`) suggests intentional architectural separation — useful for teaching modularity in binaries.  \n- Suggested queries on the right panel are pedagogically strong; they guide exploration with real-world attack surface questions (e.g., “What is the attack surface of daemon.* namespace?”).  \n- Visual indicators (T0/T1/T2, confidence %, ELF tag) provide quick triage context — helpful for prioritizing analysis during CTF or research.\n\n4. Weaknesses  \n- Namespace names like `droid.*` or `daemon.*` are vague without context — a beginner won’t know if these are threads, modules, or privilege domains without clicking.  \n- No visual hierarchy or preview of contents within namespaces — you must click to discover what’s inside, breaking the “progression” flow.  \n- The central graph is empty until interaction — this creates a “blank canvas” effect that’s intimidating and doesn’t scaffold learning.\n\n5. What you would change  \n- Add hover tooltips or mini-previews for each namespace (e.g., “daemon.* — 59 functions, handles system services, 3 RPC endpoints”) to reduce cognitive load.  \n- Auto-expand the most relevant namespace (e.g., `droid.*`) on load with a guided “first step” arrow or tooltip: “Start here to explore core logic.”"
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_learn_04",
+      "score": 4,
+      "weaknesses": [
+        "Assumes deep insider knowledge: “namespace”, “state machine”, “rpc”, “cli command” — no tooltips or glossary for beginners.",
+        "Icons (green dot = rpc, orange = event, etc.) are not self-explanatory; no legend visible in viewport.",
+        "No explanation of D3FEND/ATT&CK mappings or why “334 features” matters — meaningless without domain context.",
+        "“6/334 in scene” is cryptic — what’s the “scene”? Why 6? No guidance on how to expand or filter meaningfully."
+      ],
+      "suggestions": [
+        "Add a “Beginner Mode” toggle that surfaces tooltips on hover, explains icons, and translates jargon (e.g., “namespace = logical grouping of functions/variables”)."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n3. Strengths  \n- Clean, dark-themed UI with logical panel separation (left nav, center graph, right analysis) — visually appealing for power users.  \n- Real-time feature extraction stats (T0/T1/T2, confidence %) provide immediate quantitative feedback on binary complexity.  \n- Suggested queries in the ANALYSIS panel are contextually relevant and could guide exploration — good for onboarding if explained.\n\n4. Weaknesses  \n- Assumes deep insider knowledge: “namespace”, “state machine”, “rpc”, “cli command” — no tooltips or glossary for beginners.  \n- Icons (green dot = rpc, orange = event, etc.) are not self-explanatory; no legend visible in viewport.  \n- No explanation of D3FEND/ATT&CK mappings or why “334 features” matters — meaningless without domain context.  \n- “6/334 in scene” is cryptic — what’s the “scene”? Why 6? No guidance on how to expand or filter meaningfully.\n\n5. What you would change  \n- Add a “Beginner Mode” toggle that surfaces tooltips on hover, explains icons, and translates jargon (e.g., “namespace = logical grouping of functions/variables”).  \n- Replace “Suggested Queries” with “Guided Tours” — e.g., “Start here: Trace the B:Connection state machine → see how it links to mcp_auth_required” — with step-by-step walkthroughs."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_vuln_04",
+      "score": 7,
+      "weaknesses": [
+        "No explicit mapping of validation logic to CWEs or vulnerability classes — you can’t tell if a function is a “CWE-120: Buffer Copy without Checking Size” just by looking at the graph."
+      ],
+      "suggestions": [
+        "Feature metrics (T0/T1/T2, confidence %, ELF stats) provide quick context on binary complexity and potential attack surface — useful for triaging.",
+        "No visual indicators for “validation failure paths” vs “success paths” — a key requirement for exploit development or fuzzing target identification.",
+        "Add a “Validation Layer” toggle that overlays nodes/functions mapped to common input validation patterns (e.g., strlen, memcmp, bounds checks) and links them to CWE IDs.",
+        "Auto-highlight “sink” functions (e.g., memcpy, system, execve) and trace back to their “source” (user input, network, file) with red/green paths indicating validation success/failure — this would make it obvious where validation is missing."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- The interface visually separates namespaces, state machines, and CLI commands — useful for tracing control flow and identifying entry points where validation might occur.  \n- Suggested queries (e.g., “What is the attack surface of daemon.* namespace?”) guide users toward security-relevant questions, helping beginners focus on critical areas.  \n- Feature metrics (T0/T1/T2, confidence %, ELF stats) provide quick context on binary complexity and potential attack surface — useful for triaging.\n\n4. Weaknesses  \n- No explicit mapping of validation logic to CWEs or vulnerability classes — you can’t tell if a function is a “CWE-120: Buffer Copy without Checking Size” just by looking at the graph.  \n- The graph view is currently empty (6/334 nodes in scene) — this suggests poor default filtering or lack of auto-highlighting for security-critical paths (e.g., input handlers, syscalls, strcmp/strcpy).  \n- No visual indicators for “validation failure paths” vs “success paths” — a key requirement for exploit development or fuzzing target identification.\n\n5. What you would change  \n- Add a “Validation Layer” toggle that overlays nodes/functions mapped to common input validation patterns (e.g., strlen, memcmp, bounds checks) and links them to CWE IDs.  \n- Auto-highlight “sink” functions (e.g., memcpy, system, execve) and trace back to their “source” (user input, network, file) with red/green paths indicating validation success/failure — this would make it obvious where validation is missing."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_code_04",
+      "score": 4,
+      "weaknesses": [
+        "No visible disassembly view, no assembly code, no Python-to-ASM mapping — completely missing the core educational value for teaching compiler behavior.",
+        "“SOURCE PATTERNS (0 available)” indicates no source-level correlation — useless for teaching how high-level constructs translate to machine code.",
+        "Interface resembles a graph explorer, not a reverse engineering or educational tool — lacks step-through, breakpoints, or instruction-level tracing."
+      ],
+      "suggestions": [
+        "Metadata summary (features, namespaces, edges) gives quick context about binary complexity — helpful for triage.",
+        "Add a split-pane view: left = source (C/Python), right = corresponding disassembly, with line-to-instruction highlighting and cross-navigation.",
+        "Integrate a “Compiler Explorer mode” toggle that lets users see how different optimizations affect the generated ASM — directly comparing to godbolt.org for educational purposes."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10  \n\n3. Strengths  \n- Clean, dark-themed UI with clear project navigation and binary ingestion workflow — good for onboarding new analysts.  \n- Suggested queries in the ANALYSIS panel offer guided exploration, which is pedagogically useful for beginners.  \n- Metadata summary (features, namespaces, edges) gives quick context about binary complexity — helpful for triage.  \n\n4. Weaknesses  \n- No visible disassembly view, no assembly code, no Python-to-ASM mapping — completely missing the core educational value for teaching compiler behavior.  \n- “SOURCE PATTERNS (0 available)” indicates no source-level correlation — useless for teaching how high-level constructs translate to machine code.  \n- Interface resembles a graph explorer, not a reverse engineering or educational tool — lacks step-through, breakpoints, or instruction-level tracing.  \n\n5. What you would change  \n- Add a split-pane view: left = source (C/Python), right = corresponding disassembly, with line-to-instruction highlighting and cross-navigation.  \n- Integrate a “Compiler Explorer mode” toggle that lets users see how different optimizations affect the generated ASM — directly comparing to godbolt.org for educational purposes."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_chat_04",
+      "score": 8,
+      "weaknesses": [
+        "No visible error state or fallback message is shown if a query fails — we don’t know if the system says “I don’t know” or “Try asking about X” — which is critical for beginner resilience.",
+        "The “Ask about this binary…” field lacks autocomplete, examples, or syntax hints, which could help users rephrase failed queries."
+      ],
+      "suggestions": [
+        "The “Ask about this binary…” input field is clearly labeled and positioned, encouraging exploration without overwhelming the user.",
+        "The visual feedback (“6/334 in scene”) and metadata (features, namespaces, schemas) give immediate context, reducing beginner confusion about scope.",
+        "Implement a “Beginner Mode” toggle that surfaces syntax tips and example questions directly under the input field to scaffold learning."
+      ],
+      "fullText": "1. PASS  \n2. Score: 8/10\n\n3. Strengths  \n- The interface provides “Suggested Queries” that are contextually relevant to the binary (e.g., “How do daemon.* namespace and droid.* namespace interact?”), which gently guides beginners toward productive questions.  \n- The “Ask about this binary…” input field is clearly labeled and positioned, encouraging exploration without overwhelming the user.  \n- The visual feedback (“6/334 in scene”) and metadata (features, namespaces, schemas) give immediate context, reducing beginner confusion about scope.\n\n4. Weaknesses  \n- No visible error state or fallback message is shown if a query fails — we don’t know if the system says “I don’t know” or “Try asking about X” — which is critical for beginner resilience.  \n- The “Ask about this binary…” field lacks autocomplete, examples, or syntax hints, which could help users rephrase failed queries.  \n- No “Try again with…” or “Did you mean…” suggestions appear after a failed query — a missed opportunity to reduce frustration.\n\n5. What you would change  \n- Add a dynamic “Query Assistant” that appears after a failed question, offering 2–3 rephrased versions or related suggested queries (e.g., “Try: ‘What functions call request_permission?’”).  \n- Implement a “Beginner Mode” toggle that surfaces syntax tips and example questions directly under the input field to scaffold learning."
+    }
+  ],
+  "timestamp": "2026-03-25T22:35:44.396Z"
+}

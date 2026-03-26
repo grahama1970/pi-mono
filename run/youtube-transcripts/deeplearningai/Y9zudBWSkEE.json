@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y9zudBWSkEE",
+    "language": "en",
+    "took_ms": 8291,
+    "method": null,
+    "title": "New course with Hugging Face: Open Source Models with Hugging Face",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240304",
+    "duration_sec": 186,
+    "description": "Enroll now: https://bit.ly/4bXatW8\n\nIntroducing a new short course made in collaboration with @HuggingFace: Open Source Models with Hugging Face.\n\nIn this course, you’ll learn how to find and filter open source models on Hugging Face Hub to perform text, audio, image, and multimodal tasks using the Hugging Face transformers library. You’ll also learn to easily share your AI apps with a user-friendly interface or via API and run them on the cloud using Gradio and Hugging Face Spaces.\n\nWhat you’ll do in this course:\n\n- Use the transformers library to turn a small language model into a chatbot capable of multi-turn conversations to answer follow-up questions.\n- Translate between languages, summarize documents, and measure the similarity between two pieces of text, which can be used for search and retrieval.\n- Convert audio to text with Automatic Speech Recognition (ASR), and convert text to audio using Text to Speech (TTS).\n- Perform zero-shot audio classification, to classify audio without fine-tuning the model.\n- Generate an audio narration describing an image by combining object detection and text-to-speech models.  \n- Identify objects or regions in an image by prompting a zero-shot image segmentation model with points to identify the object that you want to select.\n\nThe course will provide you with the building blocks that you can combine into a pipeline to build your AI-enabled applications! \n\nLearn more: https://bit.ly/4bXatW8",
+    "view_count": 6393
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y9zudBWSkEE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

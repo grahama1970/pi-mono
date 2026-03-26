@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "J7QWd9aUEbk",
+    "language": "en",
+    "took_ms": 8473,
+    "method": null,
+    "title": "America's Future Natural Gas Economy: Keynote Remarks by Gov. George Allen",
+    "channel": "Hudson Institute",
+    "upload_date": "20160408",
+    "duration_sec": 2137,
+    "description": "Gov. George Allen discusses the impact of shale natural gas on the American economy",
+    "view_count": 302
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] J7QWd9aUEbk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

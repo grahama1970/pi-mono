@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QU1ZR0c5x6A",
+    "language": "en",
+    "took_ms": 8956,
+    "method": null,
+    "title": "ICS ATT&CK Framework: Adversary Tactics and Techniques",
+    "channel": "S4 Events",
+    "upload_date": "20190415",
+    "duration_sec": 1523,
+    "description": "MITRE's ATT&CK (Adversary Tactics & Techniques) Matrix and Framework for Enterprise is being extended to cover ICS. Otis Alexander of MITRE presents these extensions on the S4x19 Main Stage.\n\nATT&CK for ICS covers levels 0 - 2 in the Purdue Model. It then connects to the Enterprise ATT&CK matrix for the higher levels. It's a work in progress and feedback is welcome.\n\nOtis gives some examples of how the envision it being used.",
+    "view_count": 3045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QU1ZR0c5x6A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

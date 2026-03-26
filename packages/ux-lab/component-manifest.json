@@ -1,0 +1,356 @@
+{
+  "$schema": "component-manifest/v1",
+  "description": "Agent-readable manifest of all SPARTA Explorer components. Read this FIRST before editing any component.",
+  "updated": "2026-03-13",
+  "tokens": {
+    "file": "src/components/sparta/common/EmbryStyle.ts",
+    "system": "NVIS MIL-STD-3009",
+    "backgrounds": {
+      "bg": "#141414",
+      "bgCard": "#1a1a1a",
+      "bgPanel": "#111111",
+      "bgDeep": "#0b1220",
+      "bgHeader": "#0f172a"
+    },
+    "borders": {
+      "border": "rgba(255, 255, 255, 0.13)",
+      "borderHover": "rgba(255, 255, 255, 0.25)"
+    },
+    "status": {
+      "green": "#00ff88",
+      "red": "#ff4444",
+      "amber": "#ffaa00",
+      "blue": "#4a9eff"
+    },
+    "text": {
+      "white": "#e2e8f0",
+      "dim": "#64748b",
+      "muted": "#334155"
+    },
+    "frameworks": {
+      "SPARTA": "#7c3aed",
+      "ATT&CK": "#ff4444",
+      "D3FEND": "#00ff88",
+      "NIST": "#4a9eff",
+      "CWE": "#ffaa00"
+    },
+    "shared_styles": ["card", "panel", "label", "heading", "body", "glowDot()", "fwBadge()"],
+    "rules": [
+      "NEVER use raw hex colors — always reference EMBRY.* tokens",
+      "NEVER use raw font sizes — use label (10px), heading (14px), body (13px) presets",
+      "All borders use EMBRY.border, never custom rgba values",
+      "Card surfaces use card preset, darker wells use panel preset",
+      "Framework-specific colors MUST come from EMBRY.fw[framework]",
+      "Status colors follow NVIS: green=nominal, red=critical, amber=warning, blue=info"
+    ]
+  },
+  "components": [
+    {
+      "id": "threat-map",
+      "name": "ThreatMap",
+      "file": "src/components/sparta/threat-map/ThreatMap.tsx",
+      "lines": 152,
+      "description": "ATT&CK Navigator-style grid: tactics as columns, techniques as cells with coverage indicators",
+      "props": {
+        "tactics": "string[] — tactic names for column headers",
+        "techniques": "ThreatTechnique[] — technique objects with id, name, tactic, coverage, issueCount, frameworks",
+        "onSelect": "(technique: ThreatTechnique) => void — optional click handler"
+      },
+      "token_usage": ["card", "heading", "label", "glowDot", "fwBadge", "EMBRY.bg*", "EMBRY.border", "EMBRY.green/red/amber/dim"],
+      "data_source": "ArangoDB: sparta_techniques collection, grouped by tactic",
+      "variations": ["full (all 9 tactics)", "recon-only (filtered to Reconnaissance)"],
+      "test_status": "none",
+      "composition": "Used in Composed Explorer pane 1 (Threat Overview, 30% width)"
+    },
+    {
+      "id": "control-table",
+      "name": "ControlTable",
+      "file": "src/components/sparta/tables/ControlTable.tsx",
+      "lines": 182,
+      "description": "Sortable, filterable table of security controls with framework badges and issue indicators",
+      "props": {
+        "controls": "ControlRow[] — control objects with id, framework, name, tactic, urlCount, relCount, knowledgeChunks, issueCount",
+        "onSelect": "(control: ControlRow) => void — optional row click handler"
+      },
+      "features": ["column sorting (id, framework, name, issueCount, relCount)", "text search", "framework filter buttons"],
+      "token_usage": ["card", "heading", "label", "glowDot", "fwBadge", "EMBRY.bgDeep", "EMBRY.border", "EMBRY.red/green"],
+      "data_source": "ArangoDB: sparta_controls collection",
+      "variations": ["all (12 controls)", "issues-only (filtered to issueCount > 0)"],
+      "test_status": "none",
+      "composition": "Used in Composed Explorer pane 2 (Evidence Hub, 35% width)"
+    },
+    {
+      "id": "chat-well",
+      "name": "ChatWell",
+      "file": "src/components/sparta/query/ChatWell.tsx",
+      "lines": 190,
+      "description": "Natural language + AQL query interface with mode toggle and message history",
+      "props": {
+        "messages": "ChatMessage[] — message objects with id, role, content, type (natural|aql), timestamp, resultCount",
+        "onSend": "(query: string, type: 'natural' | 'aql') => void — optional send handler"
+      },
+      "features": ["English/AQL mode toggle", "Enter to send", "role-colored message borders", "monospace for AQL"],
+      "token_usage": ["card", "heading", "label", "EMBRY.blue", "EMBRY.green", "EMBRY.bgDeep", "EMBRY.border"],
+      "data_source": "ArangoDB: queries via /api/memory/* proxy (natural language → AQL translation)",
+      "variations": ["with-history (4 sample messages)", "empty (placeholder prompt)"],
+      "test_status": "none",
+      "composition": "Used in Composed Explorer pane 3 (Query & Synthesis, 35% width)"
+    },
+    {
+      "id": "lemma-graph",
+      "name": "LemmaGraph",
+      "file": "src/components/sparta/lemma-graph/LemmaGraph.tsx",
+      "lines": 196,
+      "description": "SVG knowledge graph showing cross-framework relationships with validation status",
+      "props": {
+        "nodes": "GraphNode[] — node objects with id, label, framework, size",
+        "edges": "GraphEdge[] — edge objects with source, target, method, validated",
+        "onNodeClick": "(node: GraphNode) => void — optional node click handler"
+      },
+      "features": ["circular layout (static)", "framework-colored nodes", "validated/unvalidated edge styles", "edge method labels", "stats bar"],
+      "token_usage": ["card", "heading", "label", "glowDot", "EMBRY.fw[*]", "EMBRY.green/red/dim", "EMBRY.bgDeep"],
+      "data_source": "ArangoDB: sparta_relationships collection (edges between controls)",
+      "variations": ["full (10 nodes, 10 edges)", "validated-only (filtered to validated edges)"],
+      "test_status": "none",
+      "layout": "D3 force-directed simulation with drag, collision, charge repulsion",
+      "composition": "Used in Composed Explorer pane 2 (Evidence Hub, below ControlTable)"
+    },
+    {
+      "id": "integrity-card",
+      "name": "IntegrityCard",
+      "file": "src/components/sparta/integrity/IntegrityCard.tsx",
+      "lines": 87,
+      "description": "Graph integrity status card: NOMINAL/DEGRADED/CRITICAL with coverage % and issue count",
+      "props": {
+        "status": "IntegrityStatus — 'NOMINAL' | 'DEGRADED' | 'CRITICAL'",
+        "coveragePercent": "number — percentage of healthy edges",
+        "coverageLabel": "string — label for coverage metric",
+        "issueCount": "number — total issues detected"
+      },
+      "token_usage": ["card", "heading", "label", "EMBRY.green/amber/red", "EMBRY.white", "EMBRY.border"],
+      "data_source": "ArangoDB: /sparta/validate/relationship-integrity endpoint",
+      "variations": ["nominal", "degraded", "critical"],
+      "test_status": "none",
+      "composition": "Used in Composed Explorer pane 3 (Query & Synthesis, above ChatWell)"
+    },
+    {
+      "id": "control-detail",
+      "name": "ControlDetail",
+      "file": "src/components/sparta/detail/ControlDetail.tsx",
+      "lines": 155,
+      "description": "Drill-down panel for a single control: metadata grid, weaknesses, related controls with framework badges",
+      "props": {
+        "control": "ControlDetailData — id, framework, name, description, controlType, domain, parentId, scope, weaknesses, relatedControls",
+        "onClose": "() => void — optional close handler"
+      },
+      "token_usage": ["card", "heading", "label", "body", "fwBadge", "glowDot", "EMBRY.fw[*]", "EMBRY.bgDeep", "EMBRY.border"],
+      "data_source": "ArangoDB: single control document + graph traversal for relationships",
+      "variations": ["with-relations", "minimal"],
+      "test_status": "none",
+      "composition": "Replaces ControlTable in Composed Explorer pane 2 when a control is selected"
+    },
+    {
+      "id": "inspector-panel",
+      "name": "InspectorPanel",
+      "file": "src/components/sparta/inspector/InspectorPanel.tsx",
+      "lines": 270,
+      "description": "LemmaGraph node inspector: typed parameter editor (bool toggle, float slider, enum dropdown) + what-if cascade analysis via /lean4-prove",
+      "props": {
+        "node": "GraphNode — selected node from LemmaGraph",
+        "edges": "GraphEdge[] — all graph edges (filtered to connected)",
+        "onClose": "() => void — close panel",
+        "onWhatIf": "(controlId, param, value) => Promise<WhatIfResponse> — triggers /lean4-prove what-if"
+      },
+      "features": ["typed parameter controls (bool/float/enum)", "what-if trigger button", "cascade result visualization with BROKEN/HOLDS status"],
+      "token_usage": ["card", "heading", "label", "body", "fwBadge", "glowDot", "EMBRY.accent", "EMBRY.bgDeep"],
+      "data_source": "ArangoDB: control metadata + /lean4-prove what-if JSON output",
+      "variations": ["with-edges", "with-results", "no-params"],
+      "test_status": "none",
+      "composition": "Appears below LemmaGraph in pane 2 (Evidence Hub) when a node is clicked"
+    },
+    {
+      "id": "status-pill",
+      "name": "StatusPill",
+      "folder": "src/components/unified-lab/components/",
+      "file": "src/components/unified-lab/components/StatusPill.tsx",
+      "lines": 62,
+      "description": "Shared status badge with 7 variants (green/amber/red/blue/purple/neutral/flash). The ONE standard for all badges, tags, and counts across Unified Lab tabs.",
+      "props": {
+        "variant": "'green' | 'amber' | 'red' | 'blue' | 'purple' | 'neutral'",
+        "flash": "boolean — optional pulse animation for in-progress states",
+        "children": "ReactNode — pill label text"
+      },
+      "token_usage": ["EMBRY.green", "EMBRY.amber", "EMBRY.red", "EMBRY.blue", "EMBRY.accent (purple)", "EMBRY.dim (neutral)"],
+      "data_sources": [],
+      "used_by": ["ClassificationTab", "RegressionTab", "CascadeTab", "ModelHealthTab"],
+      "variations": ["all-variants", "flash"],
+      "test_status": "none"
+    },
+    {
+      "id": "classification-tab",
+      "name": "ClassificationTab",
+      "folder": "src/components/unified-lab/tabs/",
+      "file": "src/components/unified-lab/tabs/ClassificationTab.tsx",
+      "lines": 210,
+      "description": "Live classifier training supervision: recharts training curve (F1/Loss), per-class recall bar chart, promotion table with StatusPill badges and clickable rows. Stop Training button sends WS command.",
+      "props": {},
+      "token_usage": ["EMBRY.green", "EMBRY.red", "EMBRY.blue", "EMBRY.amber", "card", "heading", "label"],
+      "data_sources": ["useWebSocket (ws://localhost:3003) — epoch_update messages"],
+      "used_by": ["UnifiedLab"],
+      "variations": ["live"],
+      "test_status": "none",
+      "source_mockup": "tab_classification_r7.html"
+    },
+    {
+      "id": "regression-tab",
+      "name": "RegressionTab",
+      "folder": "src/components/unified-lab/tabs/",
+      "file": "src/components/unified-lab/tabs/RegressionTab.tsx",
+      "lines": 220,
+      "description": "Regressor model supervision: model table with staleness StatusPill badges, inline SVG residual scatter plot, hover-reveal Re-evaluate action, summary stat cards.",
+      "props": {},
+      "token_usage": ["EMBRY.green", "EMBRY.red", "EMBRY.amber", "EMBRY.blue", "EMBRY.dim", "card", "heading", "label"],
+      "data_sources": ["useLabStore (static mock data, future: useLabStore aggregated)"],
+      "used_by": ["UnifiedLab"],
+      "variations": ["default"],
+      "test_status": "none",
+      "source_mockup": "tab_regression_r7.html"
+    },
+    {
+      "id": "cascade-tab",
+      "name": "CascadeTab",
+      "folder": "src/components/unified-lab/tabs/",
+      "file": "src/components/unified-lab/tabs/CascadeTab.tsx",
+      "lines": 90,
+      "description": "Wave 0.5 Coming Soon placeholder. Lock SVG icon, prerequisite checklist, StatusPill (blue: Track Wave 0.5), what's-coming feature list.",
+      "props": {},
+      "token_usage": ["EMBRY.blue", "EMBRY.green", "EMBRY.dim", "card", "heading", "label"],
+      "data_sources": [],
+      "used_by": ["UnifiedLab"],
+      "variations": ["placeholder"],
+      "test_status": "none",
+      "source_mockup": "tab_cascade_r7.html"
+    },
+    {
+      "id": "model-health-tab",
+      "name": "ModelHealthTab",
+      "folder": "src/components/unified-lab/tabs/",
+      "file": "src/components/unified-lab/tabs/ModelHealthTab.tsx",
+      "lines": 250,
+      "description": "Cross-lab model health registry using @tanstack/react-table for sortable/filterable columns. Summary stat cards (total/healthy/failing/stale). Hover reveals View in Lab link. Supports lab type filter dropdown.",
+      "props": {},
+      "token_usage": ["EMBRY.green", "EMBRY.red", "EMBRY.amber", "EMBRY.blue", "EMBRY.accent", "EMBRY.dim", "card", "heading", "label"],
+      "data_sources": ["useLabStore (static mock, future: aggregated model registry API)"],
+      "used_by": ["UnifiedLab"],
+      "variations": ["default"],
+      "test_status": "none",
+      "source_mockup": "tab_model_health_r7.html"
+    }
+  ],
+  "compositions": [
+    {
+      "id": "composed-explorer",
+      "name": "Explorer Layout",
+      "description": "3-pane waterfall layout matching evidence-case-viewer pattern",
+      "file": "src/components/gallery/ComponentGallery.tsx (registry entry)",
+      "pattern": {
+        "top_bar": "ThoughtTrace pipeline: Ingest → Resolve → Map → Verify → Score with glow dots",
+        "pane_1": { "label": "Threat Overview", "width": "30%", "bg": "#141414", "components": ["ThreatMap"] },
+        "pane_2": { "label": "Evidence Hub", "width": "35%", "bg": "#111111", "components": ["ControlTable", "LemmaGraph"] },
+        "pane_3": { "label": "Query & Synthesis", "width": "35%", "bg": "#0c0c0c", "components": ["IntegrityCard", "ChatWell"] }
+      },
+      "section_headers": "Colored pill (5x16px, rounded) + 11px font-black uppercase tracking-[0.2em] text-slate-400",
+      "variations": ["3-column (5 tactics)", "threat-map-focus (all 9 tactics, taller)", "live (real ArangoDB data via useSpartaData hook)"]
+    }
+  ],
+  "data_hooks": [
+    {
+      "id": "use-sparta-data",
+      "name": "useSpartaData",
+      "file": "src/hooks/useSpartaData.ts",
+      "description": "React hook fetching real SPARTA data from memory daemon via Express proxy",
+      "endpoints": ["/sparta/validate/collection-sample", "/sparta/validate/relationship-integrity"],
+      "returns": "controls, tactics, techniques, graphNodes, graphEdges, integrity, loading, error, refresh"
+    }
+  ],
+  "lean4_integration": {
+    "description": "Inspector panel composes with /lean4-prove for what-if cascade propagation analysis",
+    "skill": "lean4-prove",
+    "command": "python qra_consistency.py what-if --control {control_id} --param {param} --value {value} --dry-run --output-format json",
+    "predicates": ["subsumes", "countered_by", "mitigated_by", "exploits", "maps_to"],
+    "parameter_types": ["bool", "float", "enum"],
+    "output_format": {
+      "control": "string — control ID modified",
+      "parameter": "string — parameter name changed",
+      "new_value": "any — new parameter value",
+      "affected_chains": "array — chains with status BROKEN/HOLDS/DRY_RUN",
+      "summary": "object — { total, broken, held }"
+    }
+  },
+  "planned_components": [
+    {
+      "id": "qra-detail",
+      "name": "QRADetail",
+      "description": "Individual Question/Response/Answer triple view with source evidence",
+      "data_source": "ArangoDB: QRA documents linked to controls",
+      "pane": "Detail view within pane 2 or 3"
+    },
+    {
+      "id": "dimension-card",
+      "name": "DimensionCard",
+      "description": "Taxonomy bridge visualization showing Precision/Resilience/Fragility/Corruption/Loyalty/Stealth scores",
+      "data_source": "ArangoDB: taxonomy tags on controls and relationships",
+      "pane": "Widget in pane 3 (Query & Synthesis)"
+    }
+  ],
+  "gallery": {
+    "file": "src/components/gallery/ComponentGallery.tsx",
+    "lines": 434,
+    "sample_data": "src/components/gallery/sampleData.ts",
+    "structure": "Folder tree sidebar (search + collapsible folders) → Main preview (toolbar + variation tabs + canvas)"
+  },
+  "server": {
+    "file": "server/index.ts",
+    "port": 3001,
+    "endpoints": {
+      "GET /api/health": "Health check with uptime",
+      "ALL /api/memory/*": "Proxy to embry-memory daemon via Unix socket at /run/user/1000/embry/memory.sock"
+    }
+  },
+  "dev": {
+    "vite_port": 3002,
+    "start": "cd packages/ux-lab && npm run dev",
+    "typecheck": "npx tsc --noEmit"
+  },
+  "roadmap": {
+    "from_pi_design_deck": [
+      {
+        "pattern": "SSE push from server",
+        "why": "When components connect to real ArangoDB data, the server needs to push query results to the browser without polling. Add GET /api/events SSE endpoint.",
+        "priority": "when connecting real data"
+      },
+      {
+        "pattern": "Structured JSON commands",
+        "why": "Agent needs to tell the server 'run this AQL and show results in ChatWell' — not just proxy raw HTTP. Add POST /api/command with { command, args } contract.",
+        "priority": "when connecting real data"
+      },
+      {
+        "pattern": "Generate-more loop",
+        "why": "Human says 'show me more variations' → agent generates them on demand. Maps to component variation generation.",
+        "priority": "nice-to-have"
+      }
+    ],
+    "from_dogpile_research": [
+      {
+        "pattern": "Vitest Browser Mode visual regression",
+        "why": "Agent captures screenshots after changes, compares against baselines. Catches unintended regressions.",
+        "priority": "after core components are stable"
+      },
+      {
+        "pattern": "Token enforcement lint",
+        "why": "Automated check that no component uses raw hex/px — all values via EMBRY.* tokens.",
+        "priority": "before adding more components"
+      }
+    ]
+  }
+}

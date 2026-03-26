@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cli_mNEZTds",
+    "language": "en",
+    "took_ms": 8702,
+    "method": null,
+    "title": "A Discussion with former FCC Chairman Reed Hundt",
+    "channel": "Hudson Institute",
+    "upload_date": "20121129",
+    "duration_sec": 4885,
+    "description": "Reed Hundt, former Chairman of the Federal Communications Commission, is coauthor with Blair Levin of a new book,The Politics of Abundance: How Technology Can Fix the Budget, Revive the American Dream, and Establish Obama's Legacy (Odyssey Editions, 2012).\r\r \r\rHundt will discuss his new book and his views on policies that affect the future of technology.\r\r \r\rFrom 1993-1997, Reed Hundt was Chairman of the FCC. Previously he was a partner at Latham & Watkins. Hundt is currently the CEO of the",
+    "view_count": 115
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cli_mNEZTds: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

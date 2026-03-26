@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8tg8z-Fi0MU",
+    "language": "en",
+    "took_ms": 10100,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Tanveer Mittal, Utkarsh Lamba: Building with the Claude Agent SDK",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1897,
+    "description": "This session, led by Tanveer Mittal and Utkarsh Lamba, members of Technical Staff at Anthropic, explored best practices for building AI agents that elicit the full breadth of intelligence available from Claude models. \n\nThey covered the core model capabilities that enable long-horizon agentic task completion, the latest Claude developer platform features, and the new Claude Agent SDK that makes it even easier for developers to build powerful agents that leverage the same infrastructure as the Anthropic's own products. \n\nAttendees left with practical guidance for designing agents that can scale to the complexities of real-world use cases.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 1048
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8tg8z-Fi0MU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

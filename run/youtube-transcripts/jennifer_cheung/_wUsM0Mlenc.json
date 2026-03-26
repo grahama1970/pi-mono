@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_wUsM0Mlenc",
+    "language": "en",
+    "took_ms": 8890,
+    "method": null,
+    "title": "DEF CON 32 - Reverse engineering and hacking Ecovacs robots - Dennis Giese, Braelynn Hacker",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2500,
+    "description": "Were you ever wondering why a vacuum robot or a smart air purifier needs multiple cameras and microphones? How secure are these devices? Can the devices be used to potentially spy on you?\n\nFor the past 5 years we have been presenting ways to hack and root vacuum robots at various events like the c3 or the DEFCON. In all these cases it covered vacuum robots by Roborock, Dreame, Xiaomi and some smaller companies. However, did we ever take a look at other vendors and maybe some new interesting device classes? In this talk we do exactly that, and will take a deep dive into Ecovacs robots! Ecovacs is the current market leader for smart home robots and recently expanded in other areas of home robotics.\n\nYou will be surprised how many worrisome things we found: broken crypto, missing TLS certificate verification, honor-system based ACLs, lots of RCEs, broken factory resets and unauthorized live camera access.\n\nWe will discuss our and other researchers experience with reporting bugs to the company and why one cannot trust third party certification agencies. In regard to trust, we will also address why you need to be careful with the choice of your spouse or flatmates.\n\nCome with us on a journey of having fun hacking interesting devices while exploring bad oversights, real problems and the ignorance of the manufacturer. Learn what ways there are to root these devices and to use them in a privacy-preserving way.",
+    "view_count": 11043
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _wUsM0Mlenc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

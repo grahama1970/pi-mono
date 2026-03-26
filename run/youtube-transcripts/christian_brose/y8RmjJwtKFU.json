@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y8RmjJwtKFU",
+    "language": "en",
+    "took_ms": 9059,
+    "method": null,
+    "title": "No Escape: A Book Event Highlighting the Long Arm of the Chinese State",
+    "channel": "Hudson Institute",
+    "upload_date": "20220926",
+    "duration_sec": 3735,
+    "description": "Please join Hudson Institute for a discussion with Hudson Senior Fellow Nury Turkel on the topics of his recently released book, No Escape: The True Story of China’s Genocide of the Uyghurs. The title aptly illustrates the repression happening in China and how no one can escape the long arm of the Chinese Communist regime. The conversation will evaluate the national security concerns amplified by China’s rapidly evolving, technologically enabled surveillance state, and it will cover the necessary and evolving foreign policy response to the Uyghur genocide from the United States and allied democracies. Susan Crabtree of RealClearPolitics will moderate the conversation, and a book signing and reception will follow.",
+    "view_count": 1411
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y8RmjJwtKFU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

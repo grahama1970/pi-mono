@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gv356LI6tb0",
+    "language": "en",
+    "took_ms": 7722,
+    "method": null,
+    "title": "The Witch Doctor vs  The Engineer",
+    "channel": "S4 Events",
+    "upload_date": "20160628",
+    "duration_sec": 2882,
+    "description": "Darren Highfill from S4x12 looks at ICS and IT security standards and determines if they are based on security guru's and tribal knowledge or true Security Engineering. The conclusion is that much ICS security consulting is more similar to a Witch Doctor rather than an Engineer.\n\nHe goes over the engineering and scientific discipline and then discusses how ASAP-SG has added use cases, failure mode analysis and state diagrams over time in an effort to meet the engineering discipline that so many SCADA and DCS engineers should demand.",
+    "view_count": 289
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gv356LI6tb0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

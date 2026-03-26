@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mbCWplL8-ng",
+    "language": "en",
+    "took_ms": 9183,
+    "method": null,
+    "title": "Industroyer2 with Robert Lipovsky of ESET",
+    "channel": "S4 Events",
+    "upload_date": "20220505",
+    "duration_sec": 1963,
+    "description": "This was a last minute addition to S4x22 as it was disclosed only the week before. Robert Lipovsky was part of the team at ESET that did the discovery and analysis.\n\n0 - 12:30   Intro and background of Industroyer\n12:30   Industroyer2 discovery, deployment details, functionality and deep dive into technical details\n21:50  Sandworm's efforts in Ukraine\n\nAnd two questions at the end.",
+    "view_count": 1514
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mbCWplL8-ng: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

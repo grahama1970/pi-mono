@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EqEXTGot2xs",
+    "language": "en",
+    "took_ms": 8523,
+    "method": null,
+    "title": "New Course: AI Agents in LangGraph",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240605",
+    "duration_sec": 209,
+    "description": "Enroll now: https://bit.ly/4e4FxUQ\n\nLangChain, a popular open source framework for building LLM applications, recently introduced LangGraph. This extension allows developers to create highly controllable agents.\n\nIn this course you will learn  to build an agent from scratch using Python and an LLM, and then you will rebuild it using LangGraph, learning about  its components and how to combine them to build flow-based applications.\n\nAdditionally, you will learn about agentic search, which returns multiple answers in an agent-friendly format, enhancing the agent's built-in knowledge. This course will show you how to use agentic search in your applications.\n\nIn detail:\n\n- Build an agent from scratch, and understand the division of tasks between the LLM and the code around the LLM.\n- Implement the agent you built using LangGraph.\n- Learn how agentic search retrieves multiple answers in a predictable format, unlike traditional search engines that return links.\n- Implement persistence in agents, enabling state management across multiple threads, conversation switching, and the ability to reload previous states.\n- Incorporate human-in-the-loop into agent systems.\n- Develop an agent for essay writing, replicating the workflow of a researcher working on this task.\n\nStart building more controllable agents using LangGraph! \n\nLearn more: https://bit.ly/4e4FxUQ",
+    "view_count": 22791
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EqEXTGot2xs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

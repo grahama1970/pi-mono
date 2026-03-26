@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BNmJ3qBP9GE",
+    "language": "en",
+    "took_ms": 8025,
+    "method": null,
+    "title": "DEF CON 33 - AppleStorm - Unmasking the Privacy Risks of Apple Intelligence - Yoav Magid",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2302,
+    "description": "Apple Intelligence, Apple’s newest AI product, is designed to enhance productivity with AI while maintaining Apple's focus on user experience and privacy, often highlighting its use of localized models as a key advantage. But how well do these assurances hold up under scrutiny? While Apple emphasizes privacy as a core principle, my findings challenge some of these claims, illustrating the importance of scrutinizing AI-driven assistants before widespread adoption.\n\nIn this talk, we take a closer look at the data flows within Apple Intelligence, examining how it interacts with user data and the potential security and privacy risks that come with it. Using traffic analysis and OS inspection techniques, we explore what information is accessed, how it moves through the system, and where it gets transmitted. Our findings challenge common security assumptions of Apple, revealing unexpected behaviors and data leaks. From encrypted traffic to data leakage concerns, this presentation will provide practical insights for users and security professionals alike.",
+    "view_count": 1937
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BNmJ3qBP9GE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

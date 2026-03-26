@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KBwen4d8ONg",
+    "language": "en",
+    "took_ms": 10808,
+    "method": null,
+    "title": "Top 20 Secure PLC Coding Practices",
+    "channel": "S4 Events",
+    "upload_date": "20210616",
+    "duration_sec": 2953,
+    "description": "It began with Jake Brodsky's S4x20 session on tips and tricks he had learned in his long career with a water utility to improve the resiliency, maintenance and security of a PLC and the underlying physical process. Today, it results in the release of Version 1.0 of the Top 20 Secure PLC Coding Practices, see at https://plc-security.com, with one of the least restrictive licenses for use, distribution and modification you will ever see.\n\nTwo of the project leaders, Sarah Fluchs and Vivek Ponnada, joined Dale on the show to discuss the list and how it can be used.",
+    "view_count": 1536
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KBwen4d8ONg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

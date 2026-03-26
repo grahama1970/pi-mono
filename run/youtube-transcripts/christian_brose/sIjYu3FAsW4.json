@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sIjYu3FAsW4",
+    "language": "en",
+    "took_ms": 7986,
+    "method": null,
+    "title": "The Future of U.S.-Afghanistan Relations: A View from Afghanistan",
+    "channel": "Hudson Institute",
+    "upload_date": "20190315",
+    "duration_sec": 4489,
+    "description": "Hudson Institute’s South and Central Asia Program hosted a conversation on the future of Afghanistan and U.S.-Afghan relations. Afghanistan’s National Security Advisor Ambassador Hamdullah Mohib and former Interior Minister of Afghanistan Amrullah Saleh gave remarks followed by a discussion moderated by Hudson Senior Fellow Ambassador Husain Haqqani.\n\nAlmost two years since President Trump announced his Afghanistan and South Asia strategy and 18 years since the American-led international forces went into Afghanistan to eliminate Al-Qaeda’s sanctuary provided by the brutal Taliban regime, the U.S. now embarks on a peace process that includes the Afghan Taliban. However, given the untrustworthiness of the Taliban and the decades of civil war, instability, and an unending terrorist insurgency in Afghanistan, many spectators remain concerned about the future security of the country.",
+    "view_count": 12507
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sIjYu3FAsW4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

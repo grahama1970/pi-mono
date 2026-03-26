@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TdNpYigsejs",
+    "language": "en",
+    "took_ms": 8700,
+    "method": null,
+    "title": "A Conversation with Ahmad Massoud on the Future of Afghanistan",
+    "channel": "Hudson Institute",
+    "upload_date": "20221207",
+    "duration_sec": 2674,
+    "description": "Since the Taliban’s return to power last year, only one credible and non-extremist group has been willing to take up arms in opposition: the National Resistance Front (NRF) of Afghanistan, led by Ahmad Massoud. Based in the Panjshir Province and operating in a dozen Afghan provinces, the NRF has been fighting against the Taliban against all odds and without any international support. While the US does not have many good policy options in Afghanistan because of the Biden administration’s actions, the US and international community need to consider how to support the NRF at this perilous time. Please join the Hudson Institute as it welcomes Ahmad Massoud to discuss the NRF and the future of Afghanistan.",
+    "view_count": 14537
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TdNpYigsejs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

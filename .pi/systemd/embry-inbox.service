@@ -1,0 +1,26 @@
+[Unit]
+Description=Embry OS Agent-Inbox Dispatcher Daemon
+After=embry-session.target
+PartOf=embry-session.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h/workspace/experiments/pi-mono/.pi/skills/agent-inbox
+ExecStart=%h/.local/bin/uv run python dispatcher.py start --foreground
+EnvironmentFile=-%h/workspace/experiments/pi-mono/.env
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+Environment=AGENT_INBOX_DIR=%h/.agent-inbox
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+Restart=on-failure
+RestartSec=5
+ProtectSystem=strict
+PrivateTmp=yes
+NoNewPrivileges=true
+ProtectHome=read-only
+ReadWritePaths=%h/.agent-inbox %h/.pi %h/.local %h/.cache/uv
+RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=embry-session.target

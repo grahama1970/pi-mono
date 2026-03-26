@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sBHCKuwjtwk",
+    "language": "en",
+    "took_ms": 7832,
+    "method": null,
+    "title": "DEF CON Safe Mode Packet Hacking Village - Catherine Ullman - Dumpster Fires 6 Things About IR",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 2471,
+    "description": "Threats surround us like a ring of burning fire. Unfortunately, incident response doesn't come naturally to an operational mindset where the focus tends to be on reactive problem solving. As a volunteer firefighter for over twenty years, investigatorchic has learned a lot about what is and isnt effective. There are surprising parallels between fighting real-life fires and the fire-fighting that passes for today's incident response. For example, striking a balance between swift response and patient reflection is often the difference between life and death, in a very literal sense for the firefighter and a figurative sense for the security professional. It's also all too easy to get tunnel vision and focus on the wrong areas, costing precious time. The security world is full of dumpster fires these days, so join this session to learn from a good firefighter what makes a good security person.",
+    "view_count": 1074
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sBHCKuwjtwk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Mp9N_mLlvh4",
+    "language": "en",
+    "took_ms": 7835,
+    "method": null,
+    "title": "Creating an American 5G Advantage",
+    "channel": "Hudson Institute",
+    "upload_date": "20201113",
+    "duration_sec": 5233,
+    "description": "The event will start with an overview of DoD’s efforts to introduce 5G into the US military by Dr. Joseph Evans, Principal Director for 5G in the Office of the Director of Defense Research and Engineering (Modernization). Bryan Clark, Director of the Hudson Institute Center for Defense Concepts and Technology, will then present the results of the study he recently completed with Adjunct Fellow Dr. Dan Patt, Weaponizing the 5G Value Chain.\n\nThe event will close with a panel discussion of what will be needed to establish a robust US 5G telecommunications industry moderated by Hudson Institute Senior Fellow Dr. Tom Duesterberg and including Cheryl Davis, Senior Director for Strategic Initiatives at Oracle; Chris Boyer, Vice President of Security & Technology Policy at AT&T; and Steve Papa, Founder, CEO, and Chairman of Parallel Wireless.",
+    "view_count": 1237
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Mp9N_mLlvh4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

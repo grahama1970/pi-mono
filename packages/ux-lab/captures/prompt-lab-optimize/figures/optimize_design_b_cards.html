@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Prompt Optimization Dashboard</title>
+<style>
+:root{
+  --bg:#0b1220; --bg2:#1a202c; --bg3:#2d3748; --bg4:#4a5568;
+  --text:#e2e8f0; --text2:#a0aec0;
+  --accent:#7c3aed; --green:#00ff88; --red:#ff4444; --blue:#4a9eff;
+}
+html,body{
+  m:0; p:0; h:100%; ov:h;
+  ff:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  fs:10px; c:var(--text); bg:var(--bg);
+}
+.dash{
+  d:f; h:100vh; ov:h;
+}
+.l{
+  f:0 0 320px; p:1em; bg:var(--bg2); ov:auto;
+}
+.r{
+  f:1; d:f; fx-d:c; p:1em; ov:auto;
+}
+h2,h3{m:0 0 .8em; fs:1.2em;}
+h3{fs:1.1em;}
+textarea{
+  w:100%; h:8em; bg:var(--bg3); c:var(--text);
+  b:1px sd var(--accent); br:4px; p:.5em;
+  fs:10px; ff:monospace; rz:v;
+}
+.tc{mt:1em;}
+.tci{
+  bg:var(--bg3); p:.7em; br:4px; mb:.5em; fs:9px;
+  d:f; fx-w:w; ai:c;
+}
+.tci span{c:var(--blue); ff:monospace; f:1;}
+.tag{
+  d:ib; bg:var(--accent); c:var(--text);
+  p:.2em .5em; br:12px; fs:8px; mr:.3em; mb:.3em;
+}
+.mod{
+  d:ib; bg:var(--blue); c:var(--text);
+  p:.2em .5em; br:12px; fs:8px; mr:.3em; mb:.3em;
+}
+.f1{c:var(--green); ff:monospace; ml:auto; mr:.5em;}
+.b{
+  d:ib; p:.2em .5em; br:4px; fs:8px; fw:b;
+  c:var(--bg);
+}
+.b.p{bg:var(--green);}
+.b.f{bg:var(--red);}
+.opt-btn{
+  w:100%; p:.7em; bg:var(--accent); c:var(--text);
+  b:none; br:4px; mt:1em; cr:p; fs:11px; fw:b;
+}
+.scs{d:f; g:1em; mb:1em;}
+.sc{
+  f:1; bg:var(--bg3); p:1em; br:8px;
+  b:1px sd var(--bg3); cr:p; ta:c;
+  tr:all .2s ease;
+}
+.sc.sel{b-c:var(--green);}
+.sc:hover{b-c:var(--accent);}
+.mn{fs:11px; fw:b; mb:.5em;}
+.f1b{fs:2em; fw:b; c:var(--green);}
+.rnds{fs:9px; c:var(--text2);}
+.run-spin{
+  d:ib; w:1em; h:1em; br:50%; b:2px sd var(--blue); b-t-c:transparent;
+  an:spin .8s li inf; ml:.5em; v-a:m;
+}
+@keyframes spin{to{tr:rotate(360deg);}}
+.dp-c{f:1; ov:auto;}
+.dp{
+  d:none; bg:var(--bg3); p:1em; br:8px; h:100%;
+}
+.dp.act{d:b;}
+table{
+  w:100%; b-c:var(--bg4); b-s:c; mb:1em; fs:9px;
+}
+th,td{p:.5em; ta:l; b:1px sd var(--bg4);}
+th{bg:var(--bg4); fw:b;}
+pre{
+  bg:var(--bg4); p:1em; br:4px; b:1px sd var(--accent);
+  ov:auto; fs:9px; ff:monospace; c:var(--accent);
+}
+details{mt:1em; bg:var(--bg4); p:.5em; br:4px;}
+summary{cr:p; fw:b; fs:10px;}
+details p{mt:.5em; fs:8px; ff:monospace;}
+.acts{d:f; jc:fe; g:1em; mt:1em;}
+.btn{
+  p:.7em 1.5em; br:4px; b:none; cr:p; fs:11px; fw:b;
+}
+.btn.app{bg:var(--green); c:var(--bg);}
+.btn.rej{bg:var(--bg4); c:var(--text);}
+</style>
+</head>
+<body>
+<div class="dash">
+  <div class="l">
+    <h2>System Prompt</h2>
+    <textarea rows="8">You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags. IMPORTANT: Use ONLY exact tag names. Valid conceptual: Precision,Resilience,Fragility,Corruption,Loyalty,Stealth. Valid tactical: Model,Harden,Detect,Isolate,Restore,Evade,Exploit,Persist</textarea>
+
+    <h2>Test Cases</h2>
+    <div class="tc">
+      <div class="tci">
+        <span>T1547.001 Registry Run Keys</span>
+        <div class="tag">Corruption</div>
+        <div class="tag">Persist</div>
+        <div class="mod">confidence:0.95</div>
+        <div class="f1">F1=1.000</div>
+        <div class="b p">PASS</div>
+      </div>
+      <div class="tci">
+        <span>SI-2 Flaw Remediation</span>
+        <div class="tag">Resilience</div>
+        <div class="tag">Fragility</div>
+        <div class="tag">Harden</div>
+        <div class="mod">confidence:0.9</div>
+        <div class="f1">F1=0.857</div>
+        <div class="b p">PASS</div>
+      </div>
+      <div class="tci">
+        <span>d3f:NetworkIsolation</span>
+        <div class="tag">Resilience</div>
+        <div class="tag">Isolate</div>
+        <div class="mod">confidence:0.92</div>
+        <div class="f1">F1=0.929</div>
+        <div class="b p">PASS</div>
+      </div>
+    </div>
+    <button class="opt-btn">Optimize</button>
+  </div>
+
+  <div class="r">
+    <div class="scs">
+      <div class="sc sel" data-model="deepseek">
+        <div class="mn">DeepSeek-V3</div>
+        <div class="f1b">0.929</div>
+        <div class="rnds">2 rounds</div>
+        <div class="b p">BEST</div>
+      </div>
+      <div class="sc" data-model="qwen">
+        <div class="mn">qwen2.5:7b</div>
+        <div class="f1b">0.881</div>
+        <div class="rnds">4 rounds</div>
+        <div class="b p">PASS</div>
+      </div>
+      <div class="sc" data-model="gemini">
+        <div class="mn">text-gemini <span class="run-spin"></span></div>
+        <div class="f1b">...</div>
+        <div class="rnds">1 round</div>
+        <div class="b f">RUNNING</div>
+      </div>
+    </div>
+
+    <div class="dp-c">
+      <div class="dp act" id="dp-deepseek">
+        <h2>DeepSeek-V3 Results</h2>
+        <table>
+          <thead>
+            <tr><th>Test Case</th><th>Response</th><th>F1</th><th>Badge</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>T1547.001 Registry Run Keys</td>
+              <td>{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.95}</td>
+              <td>1.000</td>
+              <td><div class="b p">PASS</div></td>
+            </tr>
+            <tr>
+              <td>SI-2 Flaw Remediation</td>
+              <td>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</td>
+              <td>0.857</td>
+              <td><div class="b p">PASS</div></td>
+            </tr>
+            <tr>
+              <td>d3f:NetworkIsolation</td>
+              <td>{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.92}</td>
+              <td>0.929</td>
+              <td><div class="b p">PASS</div></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Converged Prompt</h3>
+        <pre>You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags. IMPORTANT: Use ONLY exact tag names. Valid conceptual: Precision,Resilience,Fragility,Corruption,Loyalty,Stealth. Valid tactical: Model,Harden,Detect,Isolate,Restore,Evade,Exploit,Persist</pre>
+
+        <details>
+          <summary>Iteration Log (2 rounds)</summary>
+          <p>[2023-10-26 10:01:23] Round 1: Initial prompt, F1=0.850</p>
+          <p>[2023-10-26 10:05:45] Round 2: Prompt refined (added "IMPORTANT: Use ONLY exact tag names"), F1=0.929</p>
+        </details>
+      </div>
+
+      <div class="dp" id="dp-qwen">
+        <h2>qwen2.5:7b Results</h2>
+        <table>
+          <thead>
+            <tr><th>Test Case</th><th>Response</th><th>F1</th><th>Badge</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>T1547.001 Registry Run Keys</td>
+              <td>{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.88}</td>
+              <td>0.950</td>
+              <td><div class="b p">PASS</div></td>
+            </tr>
+            <tr>
+              <td>SI-2 Flaw Remediation</td>
+              <td>{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.85}</td>
+              <td>0.800</td>
+              <td><div class="b p">PASS</div></td>
+            </tr>
+            <tr>
+              <td>d3f:NetworkIsolation</td>
+              <td>{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.89}</td>
+              <td>0.893</td>
+              <td><div class="b p">PASS</div></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Converged Prompt</h3>
+        <pre>You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags. Use ONLY exact tag names. Valid conceptual: Precision,Resilience,Fragility,Corruption,Loyalty,Stealth. Valid tactical: Model,Harden,Detect,Isolate,Restore,Evade,Exploit,Persist</pre>
+
+        <details>
+          <summary>Iteration Log (4 rounds)</summary>
+          <p>[2023-10-26 09:30:10] Round 1: Initial prompt, F1=0.750</p>
+          <p>[2023-10-26 09:35:20] Round 2: Prompt refined (added valid tags), F1=0.810</p>
+          <p>[2023-10-26 09:40:30] Round 3: Prompt refined (clarified "exact tag names"), F1=0.860</p>
+          <p>[2023-10-26 09:45:40] Round 4: Minor prompt tweak, F1=0.881</p>
+        </details>
+      </div>
+
+      <div class="dp" id="dp-gemini">
+        <h2>text-gemini Results (Running)</h2>
+        <p>Results are being computed. Please wait...</p>
+        <pre>You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags. Valid conceptual: Precision,Resilience,Fragility,Corruption,Loyalty,Stealth. Valid tactical: Model,Harden,Detect,Isolate,Restore,Evade,Exploit,Persist</pre>
+        <details>
+          <summary>Iteration Log (1 round)</summary>
+          <p>[2023-10-26 11:00:00] Round 1: Initial prompt, F1=...</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="acts">
+      <button class="btn app">Approve & Save All</button>
+      <button class="btn rej">Reject</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const summaryCards = document.querySelectorAll('.sc');
+const detailPanels = document.querySelectorAll('.dp');
+
+summaryCards.forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelector('.sc.sel').classList.remove('sel');
+    card.classList.add('sel');
+
+    document.querySelector('.dp.act').classList.remove('act');
+    const model = card.dataset.model;
+    document.getElementById(`dp-${model}`).classList.add('act');
+  });
+});
+</script>
+</body>
+</html>

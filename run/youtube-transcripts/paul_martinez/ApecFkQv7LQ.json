@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ApecFkQv7LQ",
+    "language": "en",
+    "took_ms": 7774,
+    "method": null,
+    "title": "Lessons Learned From A Major ICS Detection Deployment",
+    "channel": "S4 Events",
+    "upload_date": "20180625",
+    "duration_sec": 2529,
+    "description": "This was ProtectWise's Sponsor Session at S4x18, and they provide a close look at a large deployment of their protect to detect cyber incidents and anomalies. The presentation goes into detail on the asset owner goals, the pilot, rolling it out to a larger set of sites, and the key learnings for asset owners from this project.\n\nThey break down some specific examples and then show some screen shots of their product at 38:00.",
+    "view_count": 406
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ApecFkQv7LQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tAKcNZNxy5g",
+    "language": "en",
+    "took_ms": 8503,
+    "method": null,
+    "title": "DEF CON 33 - Data Duplication Village - Fungible Threats - Mauro Edritch, Nelson Colon",
+    "channel": "DEFCONConference",
+    "upload_date": "20251021",
+    "duration_sec": 1923,
+    "description": "Distributed data replication systems are more than just tools for redundancy—they’re fertile ground for creative abuse. In this 2025 DDV trlk, Mauro and Nelson explore how technologies like NFTs, IPFS, Codex, and Cloudflare R2 can become resilient C2 infrastructures, payload delivery systems, and phishing hosting that challenge takedown efforts.\n\nThis is an update on more Fungible Threats and exploring how distributed data replication systems can be used for malicious purposes. They demonstrate how technologies like Codex, When FS, IPFS, and Cloudflare R2 buckets can store and distribute C2 commands, payloads, and even phishing campaigns such as templates or client-side drainers.",
+    "view_count": 2139
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tAKcNZNxy5g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

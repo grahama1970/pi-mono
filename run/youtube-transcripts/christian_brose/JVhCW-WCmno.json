@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JVhCW-WCmno",
+    "language": "en",
+    "took_ms": 9130,
+    "method": null,
+    "title": "India and China after the Doklam Standoff",
+    "channel": "Hudson Institute",
+    "upload_date": "20171116",
+    "duration_sec": 4750,
+    "description": "This summer, China’s attempt to extend a road through the Doklam plateau, a disputed area near the borders of China, India, and Bhutan, led to an eight-week-long standoff between two of the most powerful countries in Asia. Despite $70 billion trade ties, China and India continue to view each other as adversaries. Numerous incursions and military standoffs have occurred across their 2,500 mile-long shared border. The deepening India-U.S. relationship is a source of concern in Beijing, while New Delhi and Washington are increasingly wary of close Sino-Pakistan ties, especially the China Pakistan Economic Corridor (CPEC).\n\nOn November 16, Hudson Institute’s South and Central Asia Program hosted a discussion on India-China relations with Dr. Manoj Joshi, a distinguished fellow with the Observer Research Foundation in New Delhi, and Dr. Aparna Pande, a research fellow and director of Hudson Institute's Initiative on the Future of India and South Asia.",
+    "view_count": 31704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JVhCW-WCmno: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W-3s416kjm8",
+    "language": "en",
+    "took_ms": 7730,
+    "method": null,
+    "title": "Virtual Event | American Energy Security: A Conversation with Senator Dan Sullivan",
+    "channel": "Hudson Institute",
+    "upload_date": "20220929",
+    "duration_sec": 1764,
+    "description": "Today’s geopolitical events and the corresponding fragility of world energy markets are a stark reminder of the need for a coherent US energy security strategy. Crises in Europe and Asia have highlighted worldwide dependencies on fossil fuel supplies from anti-democratic nations, as well as America’s emerging dependence on China for the raw materials and manufactured products necessary for renewable products.\n\nPlease join Senator Dan Sullivan and Hudson Institute Senior Fellow Brigham McCown as they discuss the need for a clear and concise national energy policy that ensures an accessible, affordable, and reliable supply of domestic energy for the nation. Senator Sullivan previously served as a White House aide and director on the National Security Council staff during the George W. Bush administration; and as assistant secretary of state for economic, energy, and business affairs before serving as Alaska DNR commissioner and Alaska attorney general.",
+    "view_count": 616
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W-3s416kjm8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

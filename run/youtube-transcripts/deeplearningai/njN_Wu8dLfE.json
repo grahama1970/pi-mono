@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "njN_Wu8dLfE",
+    "language": "en",
+    "took_ms": 7689,
+    "method": null,
+    "title": "Turbocharge Your RAG Applications with Powerful RAG Analytics",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240222",
+    "duration_sec": 3637,
+    "description": "RAG (Retrieval-Augmented Generation) has emerged as a leading approach in developing generative AI applications. However, building error-free RAG systems comes with significant challenges, including maintaining chunk and document quality, refining prompts, and addressing output hallucinations.\r\n\r\nIn this session, we'll distill our learnings from conversations with hundreds of AI teams utilizing RAG. Our focus will include:\r\n\r\n- Overcoming the 5 major roadblocks in RAG application development\r\n- Effective strategies for mitigating these 5 challenges\r\n- Introducing 4 robust evaluation metrics to identify and rectify issues in your RAG system\r\n- How to build production-ready RAG-powered applications 10x faster\r\n\r\n\r\nAbout DeepLearning.AI:\r\n\r\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community. Take your generative AI skills to the next level with short courses help you learn new skills, tools, and concepts efficiently.\r\n\r\nAbout Galileo:\r\n\r\nGalileo is a GenAI Evaluation and Observability solution that helps enterprise teams bring production-ready applications to market faster. Galileo instantly integrates into any AI environment and enhances critical workflows with collaborative tools and research-backed evaluation metrics. Today, Galileo is trusted by AI builders from cutting-edge startups to Fortune 500 companies.\r\n\r\nVikram Chatterji Co-Founder and CEO\r\nhttps://www.linkedin.com/in/vikram-chatterji/ \r\n\r\nAtindriyo Sanyal Co-Founder and CTO\r\nhttps://www.linkedin.com/in/atinsanyal/",
+    "view_count": 15584
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] njN_Wu8dLfE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

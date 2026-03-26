@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AftsVYTLQZg",
+    "language": "en",
+    "took_ms": 8727,
+    "method": null,
+    "title": "Mike Pence Receives 2017 Herman Kahn Award (with Introduction by Rupert Murdoch)",
+    "channel": "Hudson Institute",
+    "upload_date": "20171129",
+    "duration_sec": 1505,
+    "description": "2015 Herman Kahn Award recipient Rupert Murdoch introduces 2017 Herman Kahn Award recipient, Vice President Mike Pence.\n\nA friend of Hudson Institute over many years, Vice President Pence has steadfastly dedicated himself to the betterment of our country. As a member of Congress, governor, and now as vice president, he has been a proponent of American global leadership, and a fervent defender of free markets. In short, he is a champion of the ideals we have promoted since the visionary Herman Kahn founded Hudson Institute in 1961.\n\nVice President Pence joins a distinguished group of exceptional leaders honored by Hudson, including Ronald Reagan, Shinzō Abe, Henry Kissinger, Joseph Lieberman, David Petraeus, George Shultz, Rupert Murdoch, and most recently, Benjamin Netanyahu. We are beyond pleased to honor Vice President Pence.",
+    "view_count": 620
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AftsVYTLQZg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

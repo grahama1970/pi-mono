@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LdiawBeYOCc",
+    "language": "en",
+    "took_ms": 8865,
+    "method": null,
+    "title": "DEF CON 33 - Cyber Volunteering&Community Defense 1 yr in - DC Franklin - S Powazek, J Braun, A Ogee",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2731,
+    "description": "One year after launch, the DEF CON Franklin returns to the Mainstage with partners from the Cyber Resilience Corps with updates on their mission to empower local communities through cyber volunteering and grassroots defense. We'll share key lessons learned from running on-the-ground volunteering programs and future plans for scaling civic cyber defense by joining forces. From helping small towns respond to ransomware to building rapid-response volunteer teams, this talk will highlight how hackers and technologists are stepping up to protect the public good—one community at a time.",
+    "view_count": 197
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LdiawBeYOCc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

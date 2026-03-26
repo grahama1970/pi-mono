@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K1BqRg2VUXc",
+    "language": "en",
+    "took_ms": 7869,
+    "method": null,
+    "title": "Witness of Boko Haram's Religious Cleansing in Northern Nigeria",
+    "channel": "Hudson Institute",
+    "upload_date": "20131114",
+    "duration_sec": 5073,
+    "description": "Boko Haram—a Hausa phrase meaning \"Western education is forbidden\"—is a militant Islamic insurgency whose stated aim is the establishment, by force, of a strict, sharia-law theocracy in Nigeria. Christians have always been a particular target of Boko Haram violence; in the past year alone, its attacks have killed some 900 Nigerian Christians, and bombed, torched, or otherwise destroyed scores of Christian churches, villages, and homes. But the group has become famous for equally murder",
+    "view_count": 5893
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K1BqRg2VUXc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

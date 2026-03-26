@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "88X1aU_Rhsg",
+    "language": "en",
+    "took_ms": 2770,
+    "method": null,
+    "title": "Immigration After Executive Action: A Symposium on Reform",
+    "channel": "Hudson Institute",
+    "upload_date": "20141211",
+    "duration_sec": 9997,
+    "description": "Hudson Institute’s John Fonte joined Michael Barone of the American Enterprise Institute, Mark Krikorian of the Center for Immigration Studies, Andrew C. McCarthy of the National Review Institute, Alex Nowrasteh of Cato Institute, and George F. Will of the Washington Post to discuss the many facets of immigration reform. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 88X1aU_Rhsg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

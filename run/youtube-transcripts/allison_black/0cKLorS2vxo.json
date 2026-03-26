@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0cKLorS2vxo",
+    "language": "en",
+    "took_ms": 8646,
+    "method": null,
+    "title": "Air Force - Micro Air Vehicles",
+    "channel": "Sandboxx",
+    "upload_date": "20161004",
+    "duration_sec": 92,
+    "description": "The Air Force has typically been known for it's large aircraft. However they have been doing intensive research and developed Air Vehicles that can be as small the size of a thumbnail. \nThese are the future of intelligence gathering and are much harder to detect, combining sensors and cameras and have been mimicked on real birds. Advances are happening constantly to improve these vehicles beyond what we think is possible.\n\nAre you or a loved one about to become the future of the Air Force?\n\nStay connected at every step of the Air Force journey as well as getting training advice every week with the Sandboxx app: https://link.sandboxx.us/youtube",
+    "view_count": 591
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0cKLorS2vxo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

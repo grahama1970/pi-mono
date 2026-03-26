@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline-variant": "#484848",
+                        "secondary": "#00fd87",
+                        "primary": "#bd9dff",
+                        "on-tertiary-fixed": "#001833",
+                        "surface-container-low": "#131313",
+                        "primary-fixed": "#b28cff",
+                        "on-tertiary-container": "#001e3c",
+                        "tertiary": "#6aabff",
+                        "on-primary": "#3c0089",
+                        "surface-container-lowest": "#000000",
+                        "surface": "#0e0e0e",
+                        "on-secondary": "#005b2c",
+                        "inverse-primary": "#742fe5",
+                        "surface-variant": "#262626",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "error-dim": "#d73357",
+                        "on-primary-container": "#2e006c",
+                        "inverse-surface": "#fcf9f8",
+                        "primary-dim": "#8a4cfc",
+                        "inverse-on-surface": "#565555",
+                        "tertiary-container": "#499dfe",
+                        "surface-container-high": "#202020",
+                        "on-background": "#ffffff",
+                        "on-error": "#490013",
+                        "error": "#ff6e84",
+                        "secondary-fixed": "#00fd87",
+                        "on-secondary-fixed-variant": "#006632",
+                        "surface-container-highest": "#262626",
+                        "on-surface-variant": "#adaaaa",
+                        "tertiary-fixed": "#7bb3ff",
+                        "surface-dim": "#0e0e0e",
+                        "on-error-container": "#ffb2b9",
+                        "background": "#0e0e0e",
+                        "surface-tint": "#bd9dff",
+                        "surface-container": "#191a1a",
+                        "on-primary-fixed-variant": "#390083",
+                        "on-primary-fixed": "#000000",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "on-secondary-container": "#e3ffe4",
+                        "secondary-container": "#006d37",
+                        "error-container": "#a70138",
+                        "primary-container": "#b28cff",
+                        "outline": "#767575",
+                        "on-tertiary": "#002a52",
+                        "surface-bright": "#2c2c2c",
+                        "secondary-dim": "#00ed7e",
+                        "primary-fixed-dim": "#a67aff",
+                        "on-surface": "#ffffff",
+                        "on-secondary-fixed": "#004621",
+                        "tertiary-dim": "#4fa0ff",
+                        "on-tertiary-fixed-variant": "#003a6d"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #bd9dff;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 h-16 bg-[#0e0e0e] flex justify-between items-center px-8 w-full max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-[#7c3aed] dark:text-[#bd9dff] uppercase tracking-tighter">Sonic Observatory</span>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex gap-6">
+<a class="text-[#bd9dff] font-bold border-b-2 border-[#7c3aed] transition-colors duration-200" href="#">Workspace</a>
+<a class="text-[#adaaaa] font-medium hover:text-[#bd9dff] transition-colors duration-200" href="#">Library</a>
+<a class="text-[#adaaaa] font-medium hover:text-[#bd9dff] transition-colors duration-200" href="#">Analytics</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#adaaaa] hover:text-[#bd9dff] active:scale-95 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-[#adaaaa] hover:text-[#bd9dff] active:scale-95 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-[#191a1a] bg-[#131313] flex flex-col py-6 space-y-1">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">biotech</span>
+</div>
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">Lab Operator</p>
+<p class="font-bold text-sm tracking-tight">Production Pipeline</p>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300 hover:translate-x-1">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S00: The Thought</span>
+</div>
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300 hover:translate-x-1">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S01: Recall Lore</span>
+</div>
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300 hover:translate-x-1">
+<span class="material-symbols-outlined">library_music</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S02: Find Reference Songs</span>
+</div>
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300 hover:translate-x-1">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S03: Learn From Music</span>
+</div>
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300 hover:translate-x-1">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S04: Write + Converge</span>
+</div>
+<div class="text-[#00fd87] bg-[#191a1a] border-l-4 border-[#7c3aed] flex items-center px-4 py-3 gap-3 transition-all duration-300">
+<span class="material-symbols-outlined">sticky_note_2</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S05: Annotate Lyrics</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-[#191a1a] pt-4">
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">System Status</span>
+</div>
+<div class="text-[#adaaaa] flex items-center px-4 py-3 gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-all duration-300">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">Help</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 flex-1 overflow-y-auto bg-surface p-12 custom-scrollbar">
+<!-- Header Section -->
+<div class="flex items-center justify-between mb-12">
+<div class="flex items-baseline gap-4">
+<span class="font-['Space_Grotesk'] font-bold text-primary tracking-widest text-xl">S05</span>
+<h1 class="text-4xl font-black tracking-tight font-headline">Annotate Lyrics</h1>
+<span class="text-on-surface-variant font-['Space_Grotesk'] text-sm ml-4">42 syllables</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs font-bold text-secondary tracking-widest">✓ DONE</span>
+</div>
+</div>
+<div class="space-y-12">
+<!-- Phrase 1 -->
+<section>
+<div class="flex items-center gap-4 mb-4">
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant border-l-2 border-primary pl-2 uppercase tracking-widest">Phrase 01</span>
+<div class="h-px flex-1 bg-outline-variant/20"></div>
+</div>
+<div class="bg-[#111111] p-8 rounded-xl border border-outline-variant/10 shadow-2xl">
+<div class="flex flex-wrap gap-3 overflow-x-auto pb-4 custom-scrollbar">
+<!-- Syllable Cards -->
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">The</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">1.00</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">sta-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">1.25</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.50</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">tic</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">1.75</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">hums</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">2.00</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.75</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">be-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">2.75</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">neath</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">3.00</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.50</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">the</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">3.50</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">skin</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">3.75</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.75</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">to-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">4.50</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">night</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">4.75</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+1.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Phrase 2 -->
+<section>
+<div class="flex items-center gap-4 mb-4">
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant border-l-2 border-primary pl-2 uppercase tracking-widest">Phrase 02</span>
+<div class="h-px flex-1 bg-outline-variant/20"></div>
+</div>
+<div class="bg-[#111111] p-8 rounded-xl border border-outline-variant/10 shadow-2xl">
+<div class="flex flex-wrap gap-3 overflow-x-auto pb-4 custom-scrollbar">
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">Whis-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">5.75</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.50</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">per-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">6.25</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">heads</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">6.50</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.75</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">we</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">7.25</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">car-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">7.50</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.50</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">ry</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">8.00</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">the</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">8.25</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+0.25</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">fre-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">8.50</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.50</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2 border-b-2 border-[#7c3aed]">
+<span class="font-bold text-lg">quen-</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">9.00</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-primary">+0.50</span>
+</div>
+<div class="flex-shrink-0 w-24 bg-surface-container-highest p-4 rounded flex flex-col items-center gap-2">
+<span class="text-on-surface-variant text-lg">cy</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-60">9.50</span>
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant opacity-30">+1.50</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Metadata Overlay Area (Bento Component) -->
+<div class="grid grid-cols-3 gap-6 mt-12">
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/5">
+<p class="font-['Space_Grotesk'] text-[10px] text-primary uppercase tracking-widest mb-4">Annotation Progress</p>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-black">100</span>
+<span class="text-on-surface-variant mb-1">%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mt-4 overflow-hidden rounded-full">
+<div class="bg-secondary h-full w-full"></div>
+</div>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/5">
+<p class="font-['Space_Grotesk'] text-[10px] text-primary uppercase tracking-widest mb-4">Total Duration</p>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-black">12.5</span>
+<span class="text-on-surface-variant mb-1">sec</span>
+</div>
+<div class="flex gap-1 mt-4">
+<div class="h-1 flex-1 bg-secondary"></div>
+<div class="h-1 flex-1 bg-secondary"></div>
+<div class="h-1 flex-1 bg-secondary"></div>
+<div class="h-1 flex-1 bg-outline-variant/30"></div>
+</div>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/5 flex flex-col justify-between">
+<div>
+<p class="font-['Space_Grotesk'] text-[10px] text-primary uppercase tracking-widest mb-4">Export Status</p>
+<p class="text-sm text-on-surface-variant">Ready for engine integration.</p>
+</div>
+<button class="w-full mt-4 bg-primary text-on-primary py-2 rounded font-bold text-xs uppercase tracking-widest hover:bg-primary-dim transition-colors">
+                        Deploy Map
+                    </button>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating Playback Controls -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 px-8 py-4 bg-surface-variant/80 backdrop-blur-xl border border-outline-variant/20 rounded-full shadow-2xl z-50">
+<button class="text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined">skip_previous</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center bg-primary text-on-primary rounded-full hover:scale-105 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined">skip_next</span>
+</button>
+<div class="w-px h-6 bg-outline-variant/30"></div>
+<div class="flex flex-col">
+<span class="font-['Space_Grotesk'] text-[10px] text-on-surface-variant leading-none uppercase tracking-tighter">Current Beat</span>
+<span class="font-bold text-sm tracking-widest">08.25</span>
+</div>
+</div>
+</body></html>

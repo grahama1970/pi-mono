@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fqFKbDib8CY",
+    "language": "en",
+    "took_ms": 7572,
+    "method": null,
+    "title": "DEF CON 32  - Manufacturing Lessons Learned, Lessons Taught - Tim Chase",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1427,
+    "description": "Manufacturing continues to be a top targeted sector by cyber threat actors, especially by ransomware. Dragos 2023 Year In Review showed that 70% of all ransomware victims were manufacturers. The Global Resilience Federation Ransomware Report shows very similar figures. There are some specific elements that make manufacturing a particularly attractive target for ransomware such as the lack of network security and segmentation, IT compromise that often leads to operational disruption (even if there is not OT network intrusion), manufacturing having tight margins, a lack of a compliance regime, and organizational size all contributing. Manufacturing continues to be a top targeted sector by cyber threat actors, especially by ransomware. Dragos 2023 Year In Review showed that 70% of all ransomware victims were manufacturers. The Global Resilience Federation Ransomware Report shows very similar figures. There are some specific elements that make manufacturing a particularly attractive target for ransomware such as the lack of network security and segmentation, IT compromise that often leads to operational disruption (even if there is not OT network intrusion), manufacturing having tight margins, a lack of a compliance regime, and organizational size all contributing.\n\nWhile manufacturing as a whole lags many other critical infrastructure sectors in aspects of cyber security there is a category that manufacturing has consistently led other industry verticals in, automation and device connectivity in the operational technology domain. Manufacturer’s OT network environments increasingly are set up as a network or hyper connected IIoT devices, where all data goes to the cloud and often comes back from the cloud to offer changes, and all participants have access into the OT network domain allowing manufacturing to push the boundaries of what products are technically possible, what production efficiencies are possible, and how OT environments can scale as never before.\n\nThis has obviously come with downside risks that manufacturers are only now beginning to grapple with and to make meaningful changes to better protect their networks and the gains they have made. Their growing pains can serve as roadmap of what to do and what not to do as many other OT intensive industry verticals are moving very quickly into similar use cases.",
+    "view_count": 249
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fqFKbDib8CY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

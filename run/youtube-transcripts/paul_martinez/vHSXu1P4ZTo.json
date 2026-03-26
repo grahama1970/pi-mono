@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vHSXu1P4ZTo",
+    "language": "en",
+    "took_ms": 8261,
+    "method": null,
+    "title": "What Secure By Design Aspects Should You Prioritize?",
+    "channel": "S4 Events",
+    "upload_date": "20250514",
+    "duration_sec": 1136,
+    "description": "Buzzword Bingo: Secure By Design. It's seen in top 10 lists and 200 page documents, and layered on top of this are Cyber Informed Engineering recommendations. In a perfect world, everyone would do every good practice. The more practical question is what should you do first, second, third to make your product or ICS more Secure By Design?\n\nMatthew Rogers has been a key player in the CISA Secure By Design program. This session is not a beginner tutorial on what Secure By Design is and why it's important. It's for the practioner who wants to start and needs to what to work on in what order.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 342
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vHSXu1P4ZTo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

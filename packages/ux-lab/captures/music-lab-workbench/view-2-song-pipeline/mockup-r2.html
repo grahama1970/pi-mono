@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Song Pipeline</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1400px; height: 900px; overflow: hidden;
+    background: #141414; color: #e0e0e0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  /* TOP HEADER */
+  .header {
+    height: 52px; display: flex; align-items: center; gap: 14px;
+    padding: 0 20px; border-bottom: 1px solid #2a2a2a; background: #1a1a1a;
+  }
+  .back-btn {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid #333; border-radius: 6px; color: #888; cursor: pointer; font-size: 14px;
+  }
+  .back-btn:hover { border-color: #555; color: #ccc; }
+  .song-title { font-size: 18px; font-weight: 700; }
+  .song-badge {
+    padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    background: rgba(74,158,255,0.15); color: #4a9eff;
+  }
+  .header-right { margin-left: auto; font-size: 11px; color: #555; }
+
+  /* SUBWAY MAP */
+  .subway {
+    height: 90px; display: flex; align-items: center; justify-content: center;
+    padding: 0 40px; border-bottom: 1px solid #2a2a2a; position: relative;
+    background: #181818;
+  }
+  .subway-track {
+    display: flex; align-items: center; gap: 0; position: relative;
+  }
+  .subway-node {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; position: relative; z-index: 2;
+  }
+  .subway-dot {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid #333;
+    background: #1a1a1a; transition: all 0.2s;
+  }
+  .subway-dot.completed { border-color: #00ff88; background: #00ff88; }
+  .subway-dot.active {
+    border-color: #00ff88; background: #00ff88;
+    box-shadow: 0 0 12px rgba(0,255,136,0.5), 0 0 24px rgba(0,255,136,0.2);
+  }
+  .subway-dot.future { border-color: #333; background: #1a1a1a; }
+  .subway-label { font-size: 10px; color: #555; white-space: nowrap; }
+  .subway-label.completed { color: #888; }
+  .subway-label.active { color: #00ff88; font-weight: 600; }
+  .subway-line {
+    width: 100px; height: 2px; background: #333; flex-shrink: 0; z-index: 1;
+  }
+  .subway-line.completed { background: #00ff88; }
+  .subway-line.active { background: linear-gradient(90deg, #00ff88, #333); }
+
+  /* GENERATION NODE SPARKLINE */
+  .subway-sparkline {
+    position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 20px;
+  }
+  .sparkline-label {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    font-size: 8px; color: #555; white-space: nowrap;
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    display: flex; height: calc(900px - 52px - 90px - 44px); /* header + subway + reasoning */
+  }
+
+  /* LEFT: LYRICS EDITOR */
+  .lyrics-panel {
+    flex: 0 0 60%; border-right: 1px solid #2a2a2a; display: flex; flex-direction: column;
+  }
+  .panel-header {
+    height: 36px; display: flex; align-items: center; padding: 0 16px;
+    font-size: 12px; font-weight: 600; color: #888; border-bottom: 1px solid #222;
+    gap: 8px;
+  }
+  .panel-header .editable-tag {
+    font-size: 9px; padding: 1px 6px; border-radius: 8px;
+    background: rgba(124,58,237,0.15); color: #7c3aed;
+  }
+  .lyrics-body {
+    flex: 1; overflow-y: auto; padding: 12px 0;
+  }
+  .lyric-section {
+    padding: 0 16px; margin-bottom: 12px;
+  }
+  .lyric-section-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #555; margin-bottom: 6px;
+  }
+  .lyric-line {
+    display: flex; align-items: stretch; gap: 0; margin-bottom: 1px;
+    font-size: 13px; line-height: 1.7;
+  }
+  .lyric-emotion {
+    width: 3px; border-radius: 2px; margin-right: 10px; flex-shrink: 0;
+  }
+  .lyric-text { color: #ccc; }
+  .lyric-annotation {
+    margin-left: auto; font-size: 9px; color: #555; padding-left: 12px;
+    white-space: nowrap; align-self: center;
+  }
+
+  /* RIGHT PANELS */
+  .right-panels {
+    flex: 0 0 40%; display: flex; flex-direction: column;
+  }
+  .spec-panel {
+    flex: 0 0 45%; border-bottom: 1px solid #2a2a2a; overflow-y: auto;
+  }
+  .ref-panel {
+    flex: 1; overflow-y: auto;
+  }
+
+  .spec-body { padding: 12px 16px; }
+  .spec-row {
+    display: flex; gap: 12px; margin-bottom: 8px;
+  }
+  .spec-card {
+    flex: 1; background: #222; border-radius: 6px; padding: 8px 10px;
+  }
+  .spec-label { font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; }
+  .spec-value { font-size: 16px; font-weight: 700; margin-top: 2px; }
+
+  .section-list { margin-top: 8px; }
+  .section-row {
+    display: flex; align-items: center; padding: 4px 0; font-size: 11px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .section-name { width: 70px; color: #888; font-weight: 600; }
+  .section-chords { flex: 1; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: #aaa; }
+  .section-bars { color: #555; font-size: 10px; margin-left: 8px; }
+
+  /* REFERENCE TRACKS */
+  .ref-body { padding: 12px 16px; }
+  .ref-card {
+    display: flex; gap: 10px; padding: 8px; background: #1a1a1a;
+    border: 1px solid #222; border-radius: 6px; margin-bottom: 6px;
+    align-items: center;
+  }
+  .ref-art {
+    width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0;
+  }
+  .ref-info { flex: 1; min-width: 0; }
+  .ref-title { font-size: 12px; font-weight: 600; }
+  .ref-artist { font-size: 10px; color: #666; }
+  .ref-why {
+    font-size: 9px; padding: 1px 6px; border-radius: 8px;
+    background: #222; color: #888; white-space: nowrap;
+  }
+
+  /* AGENT REASONING */
+  .reasoning {
+    height: 44px; border-top: 1px solid #2a2a2a; background: #181818;
+    display: flex; align-items: center; padding: 0 16px; gap: 12px;
+    cursor: pointer;
+  }
+  .reasoning-toggle {
+    font-size: 10px; color: #555; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; flex-shrink: 0;
+  }
+  .reasoning-toggle svg { vertical-align: middle; margin-right: 4px; }
+  .reasoning-entries {
+    display: flex; gap: 20px; flex: 1; overflow: hidden;
+  }
+  .reasoning-entry {
+    font-size: 11px; font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #444; white-space: nowrap;
+  }
+  .reasoning-entry .ts { color: #333; margin-right: 6px; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="back-btn">&larr;</div>
+  <span class="song-title">Whisperheads</span>
+  <span class="song-badge">CONVERGING</span>
+  <span style="font-size:11px; color:#555; margin-left:8px;">from The Signal Archive</span>
+  <span class="header-right">Round 4 of 5 &middot; delta 0.18</span>
+</div>
+
+<!-- SUBWAY MAP -->
+<div class="subway">
+  <div class="subway-track">
+    <!-- Inception -->
+    <div class="subway-node">
+      <div class="subway-dot completed"></div>
+      <span class="subway-label completed">Inception</span>
+    </div>
+    <div class="subway-line completed"></div>
+    <!-- Research -->
+    <div class="subway-node">
+      <div class="subway-dot completed"></div>
+      <span class="subway-label completed">Research</span>
+    </div>
+    <div class="subway-line completed"></div>
+    <!-- Composition (ACTIVE) -->
+    <div class="subway-node">
+      <div class="subway-dot active"></div>
+      <span class="subway-label active">Composition</span>
+    </div>
+    <div class="subway-line active"></div>
+    <!-- Generation -->
+    <div class="subway-node" style="position:relative">
+      <div class="sparkline-label">4 rounds: 0.42 &rarr; 0.18</div>
+      <canvas class="subway-sparkline" id="sparkline" width="60" height="20"></canvas>
+      <div class="subway-dot future"></div>
+      <span class="subway-label">Generation</span>
+    </div>
+    <div class="subway-line"></div>
+    <!-- Post-Prod -->
+    <div class="subway-node">
+      <div class="subway-dot future"></div>
+      <span class="subway-label">Post-Prod</span>
+    </div>
+    <div class="subway-line"></div>
+    <!-- Review -->
+    <div class="subway-node">
+      <div class="subway-dot future"></div>
+      <span class="subway-label">Review</span>
+    </div>
+    <div class="subway-line"></div>
+    <!-- Archive -->
+    <div class="subway-node">
+      <div class="subway-dot future"></div>
+      <span class="subway-label">Archive</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+  <!-- LYRICS EDITOR -->
+  <div class="lyrics-panel">
+    <div class="panel-header">
+      Annotated Lyrics <span class="editable-tag">editable</span>
+      <span style="margin-left:auto; font-size:10px; color:#444;">annotated-lyrics.json</span>
+    </div>
+    <div class="lyrics-body">
+      <div class="lyric-section">
+        <div class="lyric-section-label">Verse 1</div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#7c3aed"></div>
+          <span class="lyric-text">Static on the wire, a frequency I know</span>
+          <span class="lyric-annotation">haunting, pp</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#7c3aed"></div>
+          <span class="lyric-text">Tangled in the signal, nowhere left to go</span>
+          <span class="lyric-annotation">resigned, pp</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#4a9eff"></div>
+          <span class="lyric-text">Whisperheads are calling through the noise</span>
+          <span class="lyric-annotation">building, mp</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#4a9eff"></div>
+          <span class="lyric-text">Phantom voices trading hollow toys</span>
+          <span class="lyric-annotation">eerie, mp</span>
+        </div>
+      </div>
+      <div class="lyric-section">
+        <div class="lyric-section-label">Pre-Chorus</div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#ffaa00"></div>
+          <span class="lyric-text">Can you hear the pattern breaking?</span>
+          <span class="lyric-annotation">tension, mf</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#ffaa00"></div>
+          <span class="lyric-text">Every silent moment aching</span>
+          <span class="lyric-annotation">yearning, mf</span>
+        </div>
+      </div>
+      <div class="lyric-section">
+        <div class="lyric-section-label">Chorus</div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#00ff88"></div>
+          <span class="lyric-text">We are the whisperheads, we live between the lines</span>
+          <span class="lyric-annotation">anthemic, f</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#00ff88"></div>
+          <span class="lyric-text">Echoing through empty halls and broken signs</span>
+          <span class="lyric-annotation">soaring, f</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#00ff88"></div>
+          <span class="lyric-text">Lost inside the frequency, found inside the sound</span>
+          <span class="lyric-annotation">release, ff</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#4a9eff"></div>
+          <span class="lyric-text">Whisperheads will never touch the ground</span>
+          <span class="lyric-annotation">defiant, mf</span>
+        </div>
+      </div>
+      <div class="lyric-section">
+        <div class="lyric-section-label">Verse 2</div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#7c3aed"></div>
+          <span class="lyric-text">Circuits in the cathedral, prayers in the code</span>
+          <span class="lyric-annotation">reverent, pp</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#7c3aed"></div>
+          <span class="lyric-text">Every byte a heartbeat on a forgotten road</span>
+          <span class="lyric-annotation">melancholy, pp</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#ffaa00"></div>
+          <span class="lyric-text">Data streams like rivers running underground</span>
+          <span class="lyric-annotation">flowing, mp</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#ffaa00"></div>
+          <span class="lyric-text">Searching for the signal in the lost and found</span>
+          <span class="lyric-annotation">seeking, mp</span>
+        </div>
+      </div>
+      <div class="lyric-section">
+        <div class="lyric-section-label">Bridge</div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#ff4444"></div>
+          <span class="lyric-text">Break the loop (break the loop)</span>
+          <span class="lyric-annotation">urgent, ff</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#ff4444"></div>
+          <span class="lyric-text">Tear the frequency apart</span>
+          <span class="lyric-annotation">explosive, ff</span>
+        </div>
+        <div class="lyric-line">
+          <div class="lyric-emotion" style="background:#7c3aed"></div>
+          <span class="lyric-text">In the silence after... we restart</span>
+          <span class="lyric-annotation">catharsis, pp</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANELS -->
+  <div class="right-panels">
+    <div class="spec-panel">
+      <div class="panel-header">Piano Roll Spec
+        <span style="margin-left:auto; font-size:10px; color:#444;">piano-roll-spec.json</span>
+      </div>
+      <div class="spec-body">
+        <div class="spec-row">
+          <div class="spec-card">
+            <div class="spec-label">BPM</div>
+            <div class="spec-value">92</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Key</div>
+            <div class="spec-value">Am</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Time Sig</div>
+            <div class="spec-value">4/4</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Duration</div>
+            <div class="spec-value">3:42</div>
+          </div>
+        </div>
+        <div class="section-list">
+          <div class="section-row">
+            <span class="section-name">Intro</span>
+            <span class="section-chords">| Am &nbsp;| Em &nbsp;| Am &nbsp;| Em &nbsp;|</span>
+            <span class="section-bars">4 bars</span>
+          </div>
+          <div class="section-row">
+            <span class="section-name">Verse</span>
+            <span class="section-chords">| Am &nbsp;| G &nbsp; | C &nbsp; | F &nbsp; |</span>
+            <span class="section-bars">8 bars</span>
+          </div>
+          <div class="section-row">
+            <span class="section-name">Pre-Ch.</span>
+            <span class="section-chords">| Dm &nbsp;| Am &nbsp;| G &nbsp; | G &nbsp; |</span>
+            <span class="section-bars">4 bars</span>
+          </div>
+          <div class="section-row">
+            <span class="section-name">Chorus</span>
+            <span class="section-chords">| C &nbsp; | G &nbsp; | Am &nbsp;| F &nbsp; |</span>
+            <span class="section-bars">8 bars</span>
+          </div>
+          <div class="section-row">
+            <span class="section-name">Bridge</span>
+            <span class="section-chords">| Dm &nbsp;| Em &nbsp;| F &nbsp; | G &nbsp; |</span>
+            <span class="section-bars">4 bars</span>
+          </div>
+          <div class="section-row">
+            <span class="section-name">Outro</span>
+            <span class="section-chords">| Am &nbsp;| &mdash; &nbsp;| &mdash; &nbsp;| &mdash; &nbsp;|</span>
+            <span class="section-bars">4 bars</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ref-panel">
+      <div class="panel-header">Reference Tracks
+        <span style="margin-left:auto; font-size:10px; color:#444;">via /dogpile</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-card">
+          <div class="ref-art" style="background:linear-gradient(135deg,#444,#222)"></div>
+          <div class="ref-info">
+            <div class="ref-title">Somebody That I Used to Know</div>
+            <div class="ref-artist">Gotye ft. Kimbra</div>
+          </div>
+          <span class="ref-why">haunting loop</span>
+        </div>
+        <div class="ref-card">
+          <div class="ref-art" style="background:linear-gradient(135deg,#2a2a5a,#1a1a3a)"></div>
+          <div class="ref-info">
+            <div class="ref-title">Everything In Its Right Place</div>
+            <div class="ref-artist">Radiohead</div>
+          </div>
+          <span class="ref-why">texture &amp; space</span>
+        </div>
+        <div class="ref-card">
+          <div class="ref-art" style="background:linear-gradient(135deg,#3a2a2a,#1a1a1a)"></div>
+          <div class="ref-info">
+            <div class="ref-title">Midnight City</div>
+            <div class="ref-artist">M83</div>
+          </div>
+          <span class="ref-why">synth anthem</span>
+        </div>
+        <div class="ref-card">
+          <div class="ref-art" style="background:linear-gradient(135deg,#2a3a2a,#1a2a1a)"></div>
+          <div class="ref-info">
+            <div class="ref-title">Teardrop</div>
+            <div class="ref-artist">Massive Attack</div>
+          </div>
+          <span class="ref-why">vocal fragility</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AGENT REASONING -->
+<div class="reasoning">
+  <span class="reasoning-toggle">
+    <svg width="8" height="8" viewBox="0 0 8 8"><polygon points="2,0 8,4 2,8" fill="#555"/></svg>
+    Agent Reasoning
+  </span>
+  <div class="reasoning-entries">
+    <span class="reasoning-entry"><span class="ts">03:12:04</span>/memory recall "melancholy electronic signal" &rarr; 3 seeds, chose highest-valence</span>
+    <span class="reasoning-entry"><span class="ts">03:12:18</span>/create-story generated brief: "ghost frequencies in abandoned networks"</span>
+    <span class="reasoning-entry"><span class="ts">03:14:02</span>/dogpile found 12 refs, filtered to 4 by BPM range [85-100] &amp; key compatibility</span>
+    <span class="reasoning-entry"><span class="ts">03:15:31</span>Composition spec: Am chosen over Em (stronger emotional arc for bridge)</span>
+  </div>
+</div>
+
+<script>
+// Sparkline for generation node
+const canvas = document.getElementById('sparkline');
+const ctx = canvas.getContext('2d');
+const data = [0.42, 0.31, 0.22, 0.18];
+const w = 60, h = 20;
+const maxD = 0.5;
+ctx.strokeStyle = '#4a9eff';
+ctx.lineWidth = 1.5;
+ctx.beginPath();
+data.forEach((d, i) => {
+  const x = (i / (data.length - 1)) * (w - 4) + 2;
+  const y = h - (d / maxD) * (h - 4) - 2;
+  if (i === 0) ctx.moveTo(x, y);
+  else ctx.lineTo(x, y);
+});
+ctx.stroke();
+// dots
+data.forEach((d, i) => {
+  const x = (i / (data.length - 1)) * (w - 4) + 2;
+  const y = h - (d / maxD) * (h - 4) - 2;
+  ctx.fillStyle = i === data.length - 1 ? '#00ff88' : '#4a9eff';
+  ctx.beginPath();
+  ctx.arc(x, y, 2, 0, Math.PI * 2);
+  ctx.fill();
+});
+</script>
+</body>
+</html>

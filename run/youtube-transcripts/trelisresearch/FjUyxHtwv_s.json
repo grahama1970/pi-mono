@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FjUyxHtwv_s",
+    "language": "en",
+    "took_ms": 10408,
+    "method": null,
+    "title": "Jean-François Puget et les Navy Seals de Nvidia",
+    "channel": "Trelis Research",
+    "upload_date": "20251210",
+    "duration_sec": 531,
+    "description": "Part 2 - Technical Interview (English): https://youtu.be/gjgizK7veRw\n\nTrelis ARC AGI Playlist: https://youtube.com/playlist?list=PLWG1mVtuzdxfg1NJ1v0mEgCZkH4oyPjHl&si=0hdvIK6A25xHpHbX\n\n🤝 NOW HIRING on Contract: Voice Model Developer: \nApply here: https://forms.gle/5H1kgv8aQH9AXufB9\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n00:00 Personne ne s’intéressait au machine learning quand j’ai fini mon PhD\n3:28 Qui a eu l’idée pour l’équipe Kaggle de Nvidia?\n4:37 Les Navy SEALs du machine learning\n5:02 Pourquoi OpenAI n’a-t-elle pas d’équipe Kaggle?\n6:19 Est-ce que Jensen Huang a demandé ce que les idées de NVARC impliquaient pour le business de Nvidia?",
+    "view_count": 229
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FjUyxHtwv_s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PPvOMS5OydY",
+    "language": "en",
+    "took_ms": 9674,
+    "method": null,
+    "title": "Indian Foreign Policy in the 21st Century: Challenges and Op",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 1853,
+    "description": "Just as the second half of the 20th century was characterized by America's Atlantic partnership, the India-U.S. relationship will be a defining feature of the 21st century. From the 1990s, succeeding Indian and American administrations have emphasized the multi-dimensional nature of the relationship and especially its strategic aspect. With a rapidly growing economy, military modernization, and a prominent geo-strategic location, India can play a key role not only in its neighborhood but also gl",
+    "view_count": 2321
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PPvOMS5OydY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,8 @@
+pyproject.toml
+agents_registry/__init__.py
+agents_registry/cli.py
+agents_registry.egg-info/PKG-INFO
+agents_registry.egg-info/SOURCES.txt
+agents_registry.egg-info/dependency_links.txt
+agents_registry.egg-info/requires.txt
+agents_registry.egg-info/top_level.txt

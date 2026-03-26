@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zJkKRitcScg",
+    "language": "en",
+    "took_ms": 10058,
+    "method": null,
+    "title": "The Syrian Crisis: American Interests and Moral Considerations",
+    "channel": "Hudson Institute",
+    "upload_date": "20170310",
+    "duration_sec": 4730,
+    "description": "Michael Doran, Nina Shea, Rebeccah Heinrichs and Marc LiVecche on U.S. interests, options and moral considerations for addressing the Syrian civil war",
+    "view_count": 1428
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zJkKRitcScg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

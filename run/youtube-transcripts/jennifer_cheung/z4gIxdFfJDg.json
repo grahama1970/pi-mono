@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z4gIxdFfJDg",
+    "language": "en",
+    "took_ms": 9971,
+    "method": null,
+    "title": "DEF CON 29 - Christopher Wade - Breaking Secure Bootloaders",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2458,
+    "description": "Bootloaders often use signature verification mechanisms in order to protect a device from executing malicious software. This talk aims to outline actionable weaknesses in modern bootloaders which allow attackers to deploy unsigned code, despite these protection mechanisms.\n\nIn the first phase of this talk, we will discuss exploitation of the bootloaders in modern Android smartphones, demonstrating weaknesses which allow for bypassing bootloader unlocking restrictions, decryption of protected user data, and deployment of malicious software to devices using full disk encryption.\n\nIn the second phase, we will discuss bootloader weaknesses in the secondary hardware used by smartphones. Using an embedded RF chip as a target, we will demonstrate reverse engineering techniques which identified weaknesses in the signature verification mechanisms of the firmware update protocols used by the bootloader, allowing for deployment of custom firmware to the chip.\n\nREFERENCES:\nTravis Goodspeed - Great Ideas in Reversing the Tytera MD380: https://nullcon.net/website/archives/ppt/goa-16/Great-Ideas-in-Reversing-the-Tytera-MD380-by-Travis-Goodspeed.pdf\nRoee Hay - fastboot oem vuln: Android Bootloader Vulnerabilities in Vendor Customizations: https://www.usenix.org/system/files/conference/woot17/woot17-paper-hay.pdf",
+    "view_count": 5147
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z4gIxdFfJDg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

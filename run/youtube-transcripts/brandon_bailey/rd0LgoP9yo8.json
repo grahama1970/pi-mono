@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rd0LgoP9yo8",
+    "language": "en",
+    "took_ms": 9130,
+    "method": null,
+    "title": "DEF CON 29 BIC Village - Nico Smith - 40 Cores and A CPU",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 2011,
+    "description": "The talk 40 Cores and a CPU will speak to the importance of participating in the cybersecurity field at every level for Black Technologists. I will demonstrate the benefits and struggles that can be both met and overcome through owning physical infrastructure and providing services to the community, with this question in mind: “If the goal is to own and secure your data, wouldn’t be easier if you owned the IP’s and the Bare Metal Infrastructure that supports it?” While the scale will always be dwarfed by larger companies that are Cloud Service Providers, the capabilities to grow and develop at a grassroots level, future engineers, and cybersecurity professionals of color is much easier, which in turn prepares better candidates for larger enterprises. This talk should start the discussion, is it possible for the black community to own spaces of the internet from the BareMetal to the code on the front-end server? And what economic impact would that have, or would it become a security issue, a new cyber target ?",
+    "view_count": 872
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rd0LgoP9yo8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

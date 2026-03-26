@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8U3z1Qa7oQU",
+    "language": "en",
+    "took_ms": 9722,
+    "method": null,
+    "title": "Tevi Troy on 2012 Presidential Candidates for CNN",
+    "channel": "Hudson Institute",
+    "upload_date": "20110819",
+    "duration_sec": 433,
+    "description": "Hudson Senior Fellow Tevi Troy joined CNN on August 19 to discuss the candidates seeking the 2012 Republican nomination for President.",
+    "view_count": 244
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8U3z1Qa7oQU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

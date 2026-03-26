@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lLTMLrWmKSI",
+    "language": "en",
+    "took_ms": 7586,
+    "method": null,
+    "title": "Hudson Institute Remembers - 20 Year Anniversary of 9/11",
+    "channel": "Hudson Institute",
+    "upload_date": "20210910",
+    "duration_sec": 80,
+    "description": "Hudson Institute flag installation remembering the 20-year anniversary of the attacks on Sept. 11, 2001.",
+    "view_count": 379
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lLTMLrWmKSI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

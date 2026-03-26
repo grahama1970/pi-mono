@@ -1,0 +1,973 @@
+{
+  "meta": {
+    "video_id": "R7ux94LaNMk",
+    "language": "en",
+    "took_ms": 1333,
+    "method": "direct",
+    "title": "Consistent Character Voices Using ONLY Text Prompts (Kling 3, Veo, Grok, WAN)",
+    "channel": "AI Video School",
+    "upload_date": "20260212",
+    "duration_sec": 476,
+    "description": "Creating consistent character voices in AI video is one of the trickiest parts of AI filmmaking. In this tutorial, I break down a simple 5-part voice prompting formula (Age, Gender, Timbre, Tone, and Pacing) that helps you get more consistent voices directly in your AI video generations, no extra tools required. === The cut and paste prompt is below! ===\nI tested this method across Veo 3.1, Kling 3, LTX Pro, WAN 2.6, and Grok (which is free!) using a 3-character scene set aboard a space mining ship. I'll show you the results from each model and share which ones gave the best and most consistent output.\nThis isn't a perfect solution — but it's a \"close enough\" method you can use right now just by adding a few things to your prompt. \n\n🎬 AI Video School\nhttps://aivideoschool.xyz/ai-video-school/consistent-ai-voices-text-prompts/\n\n🛠️ AI TOOLS (some links are affiliate links — they help support the channel)\n1️⃣ Kling AI: https://klingaiaffiliate.pxf.io/jeBGnM (Kling 3 is genuinely amazing)\n2️⃣ Leonardo AI: https://leonardoai.pxf.io/POPYzQ (I used this for Veo and LTX)\n3️⃣ Grok: https://grok.com/imagine (free! as of 2/12)\n4️⃣ WAN: https://create.wan.video/ \n\n🗣️ Watch my other AI voice video about using ElevenLabs for cinematic AI movies:\nhttps://youtu.be/fDk3wPhr_Ko\nElevenLabs: https://try.elevenlabs.io/lcol016s31sw   \n\n📬 Sign up for my newsletter and get my free AI Video Prompt Sidekick for ChatGPT + updates on AI filmmaking courses\nhttps://aivideoschool.substack.com/ \n\n🍿 AI Movies and How I Made Them\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RzcTWyiaBqQ-zSGE-U0FsAg \n\n🎓 AI Video Tutorials, Comparisons, Workflows\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RwGHkhWM7SB6-FFycNdagTF \n\nGive this to your favorite AI assistant and ask it to write voice prompts:\n======\nVoice Prompt Formula for Consistent AI Voices\nTo create consistent character voices across multiple shots, use this format:\nHe/She says in the voice of a [AGE] [GENDER], [TIMBRE], [TONE], [PACING]: \"dialogue\"\nThe Five Essential Elements\n1. AGE - Approximate age range\n    - Examples: young, middle-aged, elderly, teenage, mature\n2. GENDER - Voice register\n    - Examples: man, woman, boy, girl\n3. TIMBRE - The physical quality of the voice\n    - Examples: deep gentle voice, warm measured voice, sharp clear voice, bright voice, gravelly voice, smooth voice\n4. TONE - The emotional quality or attitude\n    - Examples: gentle tone, clinical tone, matter-of-fact tone, urgent whisper, concerned tone, confident tone\n5. PACING - How fast or slow they speak\n    - Examples: slow thoughtful pacing, deliberate pacing, moderate pacing, faster pacing, measured pacing\nPro Tips:\n- Keep AGE, GENDER, and TIMBRE the same across all shots for each character (this is their \"voice signature\")\n- Vary TONE and PACING based on emotion (angry = faster, sad = slower, etc.)\n======\n\n00:00 The problem with inconsistent AI character voices\n01:23 How does this text prompt method for consistent voices work?\n02:13 Can you include accents in text to voice prompts?\n02:51 What are the elements of a good AI voice prompt?\n03:25 Results: Veo 3.1\n04:19 Results: WAN 2.6\n05:08 Results: LTX 2 Pro\n06:02 Results: Grok\n06:48 Results: Kling 3\n07:34 One more thing\n\n#kling3 #klingai #veo3 #grok #wanai #ltx #cinematicai #aifilmmaking #consistentcharacter #aivoice #aivoices",
+    "view_count": 16779
+  },
+  "transcript": [
+    {
+      "text": "One of the hardest parts of AI film",
+      "start": 0.24,
+      "duration": 4.72
+    },
+    {
+      "text": "making is voice consistency. It sounds",
+      "start": 2.24,
+      "duration": 4.4
+    },
+    {
+      "text": "pretty bad when a character talks like",
+      "start": 4.96,
+      "duration": 2.399
+    },
+    {
+      "text": "this.",
+      "start": 6.64,
+      "duration": 2.32
+    },
+    {
+      "text": ">> No one can know about this. It's too",
+      "start": 7.359,
+      "duration": 2.721
+    },
+    {
+      "text": "dangerous.",
+      "start": 8.96,
+      "duration": 3.44
+    },
+    {
+      "text": ">> And then a few seconds later like this.",
+      "start": 10.08,
+      "duration": 3.679
+    },
+    {
+      "text": ">> I don't have the equipment to do a",
+      "start": 12.4,
+      "duration": 2.72
+    },
+    {
+      "text": "proper autopsy.",
+      "start": 13.759,
+      "duration": 3.761
+    },
+    {
+      "text": ">> That vocal mismatch takes the audience",
+      "start": 15.12,
+      "duration": 4.48
+    },
+    {
+      "text": "out of the scene and they remember",
+      "start": 17.52,
+      "duration": 4.96
+    },
+    {
+      "text": "they're watching an AI movie. While the",
+      "start": 19.6,
+      "duration": 4.72
+    },
+    {
+      "text": "best results often require using",
+      "start": 22.48,
+      "duration": 4.24
+    },
+    {
+      "text": "multiple tools and additional editing,",
+      "start": 24.32,
+      "duration": 4.0
+    },
+    {
+      "text": "sometimes you're okay with a method",
+      "start": 26.72,
+      "duration": 4.0
+    },
+    {
+      "text": "that's close enough and can be done at",
+      "start": 28.32,
+      "duration": 4.88
+    },
+    {
+      "text": "the same time as generating your video.",
+      "start": 30.72,
+      "duration": 5.359
+    },
+    {
+      "text": ">> Close enough.",
+      "start": 33.2,
+      "duration": 4.8
+    },
+    {
+      "text": ">> How would someone smuggle poison on this",
+      "start": 36.079,
+      "duration": 3.921
+    },
+    {
+      "text": "ship? I wouldn't say that too loud right",
+      "start": 38.0,
+      "duration": 4.32
+    },
+    {
+      "text": "now if I were you. It means no one on",
+      "start": 40.0,
+      "duration": 4.079
+    },
+    {
+      "text": "this ship is safe until we figure out",
+      "start": 42.32,
+      "duration": 4.239
+    },
+    {
+      "text": "who killed Mike.",
+      "start": 44.079,
+      "duration": 4.96
+    },
+    {
+      "text": ">> Close enough. So, to be clear, this",
+      "start": 46.559,
+      "duration": 4.641
+    },
+    {
+      "text": "method does not result in perfect",
+      "start": 49.039,
+      "duration": 4.721
+    },
+    {
+      "text": "results every time, but it should help",
+      "start": 51.2,
+      "duration": 5.6
+    },
+    {
+      "text": "you get more consistent voices simply by",
+      "start": 53.76,
+      "duration": 5.52
+    },
+    {
+      "text": "adding a few things to your prompt. I've",
+      "start": 56.8,
+      "duration": 4.559
+    },
+    {
+      "text": "tested this across a bunch of video",
+      "start": 59.28,
+      "duration": 5.839
+    },
+    {
+      "text": "generators, including VO3.1, Cling 3,",
+      "start": 61.359,
+      "duration": 7.76
+    },
+    {
+      "text": "LTX Pro, WAN2.6, and even Grock, which",
+      "start": 65.119,
+      "duration": 5.921
+    },
+    {
+      "text": "is free. Those are the ones that I've",
+      "start": 69.119,
+      "duration": 4.641
+    },
+    {
+      "text": "used that allow native audio, and I'll",
+      "start": 71.04,
+      "duration": 4.399
+    },
+    {
+      "text": "show you those results in a minute.",
+      "start": 73.76,
+      "duration": 3.44
+    },
+    {
+      "text": "We're going to try this out using a",
+      "start": 75.439,
+      "duration": 4.0
+    },
+    {
+      "text": "scene where three characters are talking",
+      "start": 77.2,
+      "duration": 5.2
+    },
+    {
+      "text": "and we'll hear each of them speak twice.",
+      "start": 79.439,
+      "duration": 5.521
+    },
+    {
+      "text": "So, how does this work? Well, AI is a",
+      "start": 82.4,
+      "duration": 4.32
+    },
+    {
+      "text": "prediction engine. So, if you simply",
+      "start": 84.96,
+      "duration": 5.04
+    },
+    {
+      "text": "write, she says, the model has a lot of",
+      "start": 86.72,
+      "duration": 6.0
+    },
+    {
+      "text": "room to be creative with what she sounds",
+      "start": 90.0,
+      "duration": 4.24
+    },
+    {
+      "text": "like. We're going to narrow that down",
+      "start": 92.72,
+      "duration": 4.48
+    },
+    {
+      "text": "and give AI less room to be creative so",
+      "start": 94.24,
+      "duration": 5.199
+    },
+    {
+      "text": "we can be more consistent. There are",
+      "start": 97.2,
+      "duration": 5.76
+    },
+    {
+      "text": "five things you can add. age, gender,",
+      "start": 99.439,
+      "duration": 6.881
+    },
+    {
+      "text": "timber, tone, and pacing. The first",
+      "start": 102.96,
+      "duration": 5.6
+    },
+    {
+      "text": "three are like your character's voice",
+      "start": 106.32,
+      "duration": 4.24
+    },
+    {
+      "text": "signature. The second two are the",
+      "start": 108.56,
+      "duration": 4.4
+    },
+    {
+      "text": "character's performance. You want to",
+      "start": 110.56,
+      "duration": 5.36
+    },
+    {
+      "text": "keep age, gender, and timber the same",
+      "start": 112.96,
+      "duration": 5.6
+    },
+    {
+      "text": "across all shots. Then you can vary the",
+      "start": 115.92,
+      "duration": 5.68
+    },
+    {
+      "text": "tone and pacing based on the delivery",
+      "start": 118.56,
+      "duration": 5.28
+    },
+    {
+      "text": "you want the character to have.",
+      "start": 121.6,
+      "duration": 5.28
+    },
+    {
+      "text": ">> I knew it.",
+      "start": 123.84,
+      "duration": 4.479
+    },
+    {
+      "text": "What do you think it was? Some kind of",
+      "start": 126.88,
+      "duration": 4.4
+    },
+    {
+      "text": "poison? I have plenty of things in my",
+      "start": 128.319,
+      "duration": 5.361
+    },
+    {
+      "text": "shop that could be used for poison.",
+      "start": 131.28,
+      "duration": 4.72
+    },
+    {
+      "text": ">> So, what about accents? I tried using",
+      "start": 133.68,
+      "duration": 4.32
+    },
+    {
+      "text": "accents and they didn't work as",
+      "start": 136.0,
+      "duration": 3.76
+    },
+    {
+      "text": "consistently as some of these other",
+      "start": 138.0,
+      "duration": 4.64
+    },
+    {
+      "text": "elements. The exception to accents is",
+      "start": 139.76,
+      "duration": 6.0
+    },
+    {
+      "text": "cling three. Cling 3 understands accents",
+      "start": 142.64,
+      "duration": 4.319
+    },
+    {
+      "text": "very well.",
+      "start": 145.76,
+      "duration": 3.68
+    },
+    {
+      "text": ">> I can speak in cling Spanish accent with",
+      "start": 146.959,
+      "duration": 4.881
+    },
+    {
+      "text": "words like respiratory, cerebral,",
+      "start": 149.44,
+      "duration": 4.64
+    },
+    {
+      "text": "arterial, and emergency. Now, with a",
+      "start": 151.84,
+      "duration": 3.92
+    },
+    {
+      "text": "cockney accent, listen to hospital,",
+      "start": 154.08,
+      "duration": 3.68
+    },
+    {
+      "text": "heart, heart attack. Hold still. Have a",
+      "start": 155.76,
+      "duration": 4.0
+    },
+    {
+      "text": "look. The H disappear and the T's turn a",
+      "start": 157.76,
+      "duration": 3.68
+    },
+    {
+      "text": "glottle stops in it. Cling nails the",
+      "start": 159.76,
+      "duration": 3.52
+    },
+    {
+      "text": "Brooklyn accent. Listen to third nurse",
+      "start": 161.44,
+      "duration": 2.96
+    },
+    {
+      "text": "first words. It sounds like I'm from",
+      "start": 163.28,
+      "duration": 4.84
+    },
+    {
+      "text": "Bensonhurst, not Mumbai.",
+      "start": 164.4,
+      "duration": 3.72
+    },
+    {
+      "text": ">> You can cut and paste this line and put",
+      "start": 172.08,
+      "duration": 4.08
+    },
+    {
+      "text": "it in your favorite AI assistant and",
+      "start": 174.239,
+      "duration": 4.161
+    },
+    {
+      "text": "then describe the voice or upload an",
+      "start": 176.16,
+      "duration": 4.24
+    },
+    {
+      "text": "image of the character and ask for a",
+      "start": 178.4,
+      "duration": 4.0
+    },
+    {
+      "text": "voice prompt. And then you just iterate",
+      "start": 180.4,
+      "duration": 3.839
+    },
+    {
+      "text": "and refine the prompt until you find one",
+      "start": 182.4,
+      "duration": 3.36
+    },
+    {
+      "text": "that you like. It's actually pretty",
+      "start": 184.239,
+      "duration": 4.961
+    },
+    {
+      "text": "easy. So, does it work? Mostly. Uh, I'm",
+      "start": 185.76,
+      "duration": 5.119
+    },
+    {
+      "text": "going to show you the results. For my",
+      "start": 189.2,
+      "duration": 4.48
+    },
+    {
+      "text": "money, Cling 3 is the best. Um, if",
+      "start": 190.879,
+      "duration": 5.041
+    },
+    {
+      "text": "you're strapped for cash, Grock is",
+      "start": 193.68,
+      "duration": 4.16
+    },
+    {
+      "text": "currently free, and I think the results",
+      "start": 195.92,
+      "duration": 3.84
+    },
+    {
+      "text": "hold up to the others. Let's try to use",
+      "start": 197.84,
+      "duration": 4.08
+    },
+    {
+      "text": "Grock for something good and not just",
+      "start": 199.76,
+      "duration": 3.6
+    },
+    {
+      "text": "all of the stuff the headlines have been",
+      "start": 201.92,
+      "duration": 2.959
+    },
+    {
+      "text": "about. All right, leave a comment if",
+      "start": 203.36,
+      "duration": 3.12
+    },
+    {
+      "text": "there's one that you like the best or if",
+      "start": 204.879,
+      "duration": 5.801
+    },
+    {
+      "text": "you found a similar technique.",
+      "start": 206.48,
+      "duration": 4.2
+    },
+    {
+      "text": ">> So, what's with all the secrecy? What",
+      "start": 212.239,
+      "duration": 4.64
+    },
+    {
+      "text": "did you want to tell us?",
+      "start": 214.319,
+      "duration": 4.081
+    },
+    {
+      "text": "I don't have the equipment to do a",
+      "start": 216.879,
+      "duration": 4.321
+    },
+    {
+      "text": "proper autopsy, but",
+      "start": 218.4,
+      "duration": 5.759
+    },
+    {
+      "text": "he didn't die of natural causes.",
+      "start": 221.2,
+      "duration": 6.0
+    },
+    {
+      "text": ">> I knew it.",
+      "start": 224.159,
+      "duration": 4.481
+    },
+    {
+      "text": "What do you think it was? Some kind of",
+      "start": 227.2,
+      "duration": 3.84
+    },
+    {
+      "text": "poison?",
+      "start": 228.64,
+      "duration": 4.72
+    },
+    {
+      "text": ">> How would someone smuggle poison on this",
+      "start": 231.04,
+      "duration": 4.64
+    },
+    {
+      "text": "ship?",
+      "start": 233.36,
+      "duration": 4.48
+    },
+    {
+      "text": ">> I have plenty of things in my shop that",
+      "start": 235.68,
+      "duration": 5.199
+    },
+    {
+      "text": "could be used for poison.",
+      "start": 237.84,
+      "duration": 4.72
+    },
+    {
+      "text": ">> I wouldn't say that too loud right now",
+      "start": 240.879,
+      "duration": 4.08
+    },
+    {
+      "text": "if I were you.",
+      "start": 242.56,
+      "duration": 4.72
+    },
+    {
+      "text": "No one can know about this. It's too",
+      "start": 244.959,
+      "duration": 5.253
+    },
+    {
+      "text": "dangerous.",
+      "start": 247.28,
+      "duration": 3.28
+    },
+    {
+      "text": "[music]",
+      "start": 250.212,
+      "duration": 2.587
+    },
+    {
+      "text": ">> You know what this means?",
+      "start": 250.56,
+      "duration": 4.239
+    },
+    {
+      "text": ">> It means no one on this ship is safe",
+      "start": 252.799,
+      "duration": 5.928
+    },
+    {
+      "text": "until we figure out who killed Mike.",
+      "start": 254.799,
+      "duration": 5.948
+    },
+    {
+      "text": "[sighs]",
+      "start": 258.727,
+      "duration": 2.02
+    },
+    {
+      "text": ">> So, what's with all the secrecy?",
+      "start": 263.68,
+      "duration": 4.16
+    },
+    {
+      "text": ">> What did you want to tell us?",
+      "start": 266.56,
+      "duration": 2.72
+    },
+    {
+      "text": ">> I don't have the equipment to do a",
+      "start": 267.84,
+      "duration": 4.0
+    },
+    {
+      "text": "proper autopsy, but he didn't die of",
+      "start": 269.28,
+      "duration": 5.68
+    },
+    {
+      "text": "natural causes. I knew it.",
+      "start": 271.84,
+      "duration": 4.88
+    },
+    {
+      "text": "What do you think it was? Some kind of",
+      "start": 274.96,
+      "duration": 3.12
+    },
+    {
+      "text": "poison?",
+      "start": 276.72,
+      "duration": 3.44
+    },
+    {
+      "text": ">> How would someone smuggle poison on this",
+      "start": 278.08,
+      "duration": 4.8
+    },
+    {
+      "text": "ship?",
+      "start": 280.16,
+      "duration": 5.36
+    },
+    {
+      "text": ">> I have plenty of things in my shop that",
+      "start": 282.88,
+      "duration": 5.84
+    },
+    {
+      "text": "could be used for poison.",
+      "start": 285.52,
+      "duration": 4.8
+    },
+    {
+      "text": ">> I wouldn't say that too loud right now",
+      "start": 288.72,
+      "duration": 3.84
+    },
+    {
+      "text": "if I were you.",
+      "start": 290.32,
+      "duration": 5.28
+    },
+    {
+      "text": "No one can know about this. It's too",
+      "start": 292.56,
+      "duration": 6.04
+    },
+    {
+      "text": "dangerous.",
+      "start": 295.6,
+      "duration": 3.0
+    },
+    {
+      "text": "You know what this means?",
+      "start": 299.12,
+      "duration": 3.359
+    },
+    {
+      "text": "[sighs and gasps]",
+      "start": 301.958,
+      "duration": 2.762
+    },
+    {
+      "text": "It means no one on this ship is safe",
+      "start": 302.479,
+      "duration": 7.56
+    },
+    {
+      "text": "until we figure out who killed Mike.",
+      "start": 304.72,
+      "duration": 5.319
+    },
+    {
+      "text": ">> So, what's with all the secrecy? What",
+      "start": 313.199,
+      "duration": 5.121
+    },
+    {
+      "text": "did you want to tell us?",
+      "start": 314.88,
+      "duration": 4.96
+    },
+    {
+      "text": ">> I don't have the equipment to do a",
+      "start": 318.32,
+      "duration": 3.68
+    },
+    {
+      "text": "proper autopsy, but he didn't die of",
+      "start": 319.84,
+      "duration": 4.24
+    },
+    {
+      "text": "natural causes.",
+      "start": 322.0,
+      "duration": 4.96
+    },
+    {
+      "text": ">> I knew it. What do you think it was?",
+      "start": 324.08,
+      "duration": 6.52
+    },
+    {
+      "text": "Some kind of poison?",
+      "start": 326.96,
+      "duration": 3.64
+    },
+    {
+      "text": "How would someone smuggle poison on this",
+      "start": 331.759,
+      "duration": 5.481
+    },
+    {
+      "text": "ship?",
+      "start": 334.24,
+      "duration": 3.0
+    },
+    {
+      "text": ">> I have plenty of things in my shop that",
+      "start": 338.16,
+      "duration": 5.96
+    },
+    {
+      "text": "could be used for poison.",
+      "start": 340.24,
+      "duration": 3.88
+    },
+    {
+      "text": ">> I wouldn't say that too loud right now",
+      "start": 345.52,
+      "duration": 4.32
+    },
+    {
+      "text": "if I were you.",
+      "start": 347.36,
+      "duration": 4.08
+    },
+    {
+      "text": ">> No one can know about this. It's too",
+      "start": 349.84,
+      "duration": 3.28
+    },
+    {
+      "text": "dangerous.",
+      "start": 351.44,
+      "duration": 5.4
+    },
+    {
+      "text": "You know what this means?",
+      "start": 353.12,
+      "duration": 3.72
+    },
+    {
+      "text": "It means no one on this ship is safe",
+      "start": 356.88,
+      "duration": 6.039
+    },
+    {
+      "text": "until we figure out who killed Mike.",
+      "start": 358.56,
+      "duration": 4.359
+    },
+    {
+      "text": ">> So, what's with all the secrecy? What",
+      "start": 366.4,
+      "duration": 4.079
+    },
+    {
+      "text": "did you want to tell us?",
+      "start": 369.039,
+      "duration": 2.961
+    },
+    {
+      "text": ">> I don't have the equipment to do a",
+      "start": 370.479,
+      "duration": 4.0
+    },
+    {
+      "text": "proper autopsy, but he didn't die of",
+      "start": 372.0,
+      "duration": 4.56
+    },
+    {
+      "text": "natural causes.",
+      "start": 374.479,
+      "duration": 4.56
+    },
+    {
+      "text": ">> I knew it. What do you think it was?",
+      "start": 376.56,
+      "duration": 4.72
+    },
+    {
+      "text": "Some kind of poison?",
+      "start": 379.039,
+      "duration": 4.241
+    },
+    {
+      "text": ">> How would someone smuggle poison on this",
+      "start": 381.28,
+      "duration": 3.68
+    },
+    {
+      "text": "ship?",
+      "start": 383.28,
+      "duration": 3.84
+    },
+    {
+      "text": "I have plenty of things in my shop that",
+      "start": 384.96,
+      "duration": 5.84
+    },
+    {
+      "text": "could be used for poison.",
+      "start": 387.12,
+      "duration": 5.919
+    },
+    {
+      "text": ">> I wouldn't say that too loud right now",
+      "start": 390.8,
+      "duration": 5.76
+    },
+    {
+      "text": "if I were you.",
+      "start": 393.039,
+      "duration": 5.761
+    },
+    {
+      "text": "No one can know about this. It's too",
+      "start": 396.56,
+      "duration": 6.72
+    },
+    {
+      "text": "dangerous. You know what this means?",
+      "start": 398.8,
+      "duration": 6.959
+    },
+    {
+      "text": "It means no one on this ship is safe",
+      "start": 403.28,
+      "duration": 6.84
+    },
+    {
+      "text": "until we figure out who killed Mike.",
+      "start": 405.759,
+      "duration": 4.361
+    },
+    {
+      "text": "So, what's with all the secrecy?",
+      "start": 411.759,
+      "duration": 5.041
+    },
+    {
+      "text": "What did you want to tell us?",
+      "start": 415.12,
+      "duration": 3.12
+    },
+    {
+      "text": ">> I don't have the equipment to do a",
+      "start": 416.8,
+      "duration": 3.519
+    },
+    {
+      "text": "proper autopsy, but he didn't die of",
+      "start": 418.24,
+      "duration": 3.519
+    },
+    {
+      "text": "natural causes.",
+      "start": 420.319,
+      "duration": 4.241
+    },
+    {
+      "text": ">> I knew it.",
+      "start": 421.759,
+      "duration": 4.321
+    },
+    {
+      "text": "What do you think it was? Some kind of",
+      "start": 424.56,
+      "duration": 4.479
+    },
+    {
+      "text": "poison?",
+      "start": 426.08,
+      "duration": 4.88
+    },
+    {
+      "text": "How would someone smuggle poison on this",
+      "start": 429.039,
+      "duration": 2.72
+    },
+    {
+      "text": "ship?",
+      "start": 430.96,
+      "duration": 3.359
+    },
+    {
+      "text": ">> I have plenty of things in my shop that",
+      "start": 431.759,
+      "duration": 6.601
+    },
+    {
+      "text": "could be used for poison.",
+      "start": 434.319,
+      "duration": 4.041
+    },
+    {
+      "text": "I wouldn't say that too loud right now",
+      "start": 438.4,
+      "duration": 4.4
+    },
+    {
+      "text": "if I were you. No one can know about",
+      "start": 439.919,
+      "duration": 6.081
+    },
+    {
+      "text": "this. It's too dangerous. You know what",
+      "start": 442.8,
+      "duration": 6.44
+    },
+    {
+      "text": "this means?",
+      "start": 446.0,
+      "duration": 3.24
+    },
+    {
+      "text": "It means no one on this ship is safe",
+      "start": 450.56,
+      "duration": 6.12
+    },
+    {
+      "text": "until we figure out who killed Mike.",
+      "start": 452.319,
+      "duration": 4.361
+    },
+    {
+      "text": ">> Okay, go generate some consistent",
+      "start": 457.28,
+      "duration": 4.0
+    },
+    {
+      "text": "voices. And don't forget to subscribe to",
+      "start": 458.96,
+      "duration": 5.44
+    },
+    {
+      "text": "AI Video School. I mean it. And check",
+      "start": 461.28,
+      "duration": 6.72
+    },
+    {
+      "text": "out his other stuff in the description.",
+      "start": 464.4,
+      "duration": 4.96
+    },
+    {
+      "text": "All right, that is a wrap for the",
+      "start": 468.0,
+      "duration": 4.479
+    },
+    {
+      "text": "interview. About time. I'm starved.",
+      "start": 469.36,
+      "duration": 6.959
+    },
+    {
+      "text": ">> I could eat a whole cow.",
+      "start": 472.479,
+      "duration": 3.84
+    }
+  ],
+  "full_text": "One of the hardest parts of AI film making is voice consistency. It sounds pretty bad when a character talks like this. >> No one can know about this. It's too dangerous. >> And then a few seconds later like this. >> I don't have the equipment to do a proper autopsy. >> That vocal mismatch takes the audience out of the scene and they remember they're watching an AI movie. While the best results often require using multiple tools and additional editing, sometimes you're okay with a method that's close enough and can be done at the same time as generating your video. >> Close enough. >> How would someone smuggle poison on this ship? I wouldn't say that too loud right now if I were you. It means no one on this ship is safe until we figure out who killed Mike. >> Close enough. So, to be clear, this method does not result in perfect results every time, but it should help you get more consistent voices simply by adding a few things to your prompt. I've tested this across a bunch of video generators, including VO3.1, Cling 3, LTX Pro, WAN2.6, and even Grock, which is free. Those are the ones that I've used that allow native audio, and I'll show you those results in a minute. We're going to try this out using a scene where three characters are talking and we'll hear each of them speak twice. So, how does this work? Well, AI is a prediction engine. So, if you simply write, she says, the model has a lot of room to be creative with what she sounds like. We're going to narrow that down and give AI less room to be creative so we can be more consistent. There are five things you can add. age, gender, timber, tone, and pacing. The first three are like your character's voice signature. The second two are the character's performance. You want to keep age, gender, and timber the same across all shots. Then you can vary the tone and pacing based on the delivery you want the character to have. >> I knew it. What do you think it was? Some kind of poison? I have plenty of things in my shop that could be used for poison. >> So, what about accents? I tried using accents and they didn't work as consistently as some of these other elements. The exception to accents is cling three. Cling 3 understands accents very well. >> I can speak in cling Spanish accent with words like respiratory, cerebral, arterial, and emergency. Now, with a cockney accent, listen to hospital, heart, heart attack. Hold still. Have a look. The H disappear and the T's turn a glottle stops in it. Cling nails the Brooklyn accent. Listen to third nurse first words. It sounds like I'm from Bensonhurst, not Mumbai. >> You can cut and paste this line and put it in your favorite AI assistant and then describe the voice or upload an image of the character and ask for a voice prompt. And then you just iterate and refine the prompt until you find one that you like. It's actually pretty easy. So, does it work? Mostly. Uh, I'm going to show you the results. For my money, Cling 3 is the best. Um, if you're strapped for cash, Grock is currently free, and I think the results hold up to the others. Let's try to use Grock for something good and not just all of the stuff the headlines have been about. All right, leave a comment if there's one that you like the best or if you found a similar technique. >> So, what's with all the secrecy? What did you want to tell us? I don't have the equipment to do a proper autopsy, but he didn't die of natural causes. >> I knew it. What do you think it was? Some kind of poison? >> How would someone smuggle poison on this ship? >> I have plenty of things in my shop that could be used for poison. >> I wouldn't say that too loud right now if I were you. No one can know about this. It's too dangerous. [music] >> You know what this means? >> It means no one on this ship is safe until we figure out who killed Mike. [sighs] >> So, what's with all the secrecy? >> What did you want to tell us? >> I don't have the equipment to do a proper autopsy, but he didn't die of natural causes. I knew it. What do you think it was? Some kind of poison? >> How would someone smuggle poison on this ship? >> I have plenty of things in my shop that could be used for poison. >> I wouldn't say that too loud right now if I were you. No one can know about this. It's too dangerous. You know what this means? [sighs and gasps] It means no one on this ship is safe until we figure out who killed Mike. >> So, what's with all the secrecy? What did you want to tell us? >> I don't have the equipment to do a proper autopsy, but he didn't die of natural causes. >> I knew it. What do you think it was? Some kind of poison? How would someone smuggle poison on this ship? >> I have plenty of things in my shop that could be used for poison. >> I wouldn't say that too loud right now if I were you. >> No one can know about this. It's too dangerous. You know what this means? It means no one on this ship is safe until we figure out who killed Mike. >> So, what's with all the secrecy? What did you want to tell us? >> I don't have the equipment to do a proper autopsy, but he didn't die of natural causes. >> I knew it. What do you think it was? Some kind of poison? >> How would someone smuggle poison on this ship? I have plenty of things in my shop that could be used for poison. >> I wouldn't say that too loud right now if I were you. No one can know about this. It's too dangerous. You know what this means? It means no one on this ship is safe until we figure out who killed Mike. So, what's with all the secrecy? What did you want to tell us? >> I don't have the equipment to do a proper autopsy, but he didn't die of natural causes. >> I knew it. What do you think it was? Some kind of poison? How would someone smuggle poison on this ship? >> I have plenty of things in my shop that could be used for poison. I wouldn't say that too loud right now if I were you. No one can know about this. It's too dangerous. You know what this means? It means no one on this ship is safe until we figure out who killed Mike. >> Okay, go generate some consistent voices. And don't forget to subscribe to AI Video School. I mean it. And check out his other stuff in the description. All right, that is a wrap for the interview. About time. I'm starved. >> I could eat a whole cow.",
+  "errors": []
+}

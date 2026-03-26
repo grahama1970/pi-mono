@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bfE3WMscjOo",
+    "language": "en",
+    "took_ms": 8367,
+    "method": null,
+    "title": "The Impact of Mobile Connectivity and Big Data on the Network Economy",
+    "channel": "Hudson Institute",
+    "upload_date": "20150204",
+    "duration_sec": 3677,
+    "description": "Two major drivers have transformed the network economy: mobile connectivity and big data. Digital communication technology has connected markets, allowing instant and continuous access to information for all participants.What is the economic or business model underlying the digital communication industry? Does this increased connectivity lead to more cooperation or more competition in the network economy? Using ideas drawn from psychology, sociology, politics and economics, Professor Swati Bhatt of Princeton University argues that connectivity and big data stimulate cooperation rather than competition in the network economy.",
+    "view_count": 873
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bfE3WMscjOo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

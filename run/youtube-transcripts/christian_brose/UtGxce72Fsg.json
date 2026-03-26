@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UtGxce72Fsg",
+    "language": "en",
+    "took_ms": 8216,
+    "method": null,
+    "title": "Meaningful Tax Reform: Is a \"Main Street\"-Focused Alternative the Best Path Forward?",
+    "channel": "Hudson Institute",
+    "upload_date": "20160331",
+    "duration_sec": 5085,
+    "description": "Jeffrey H. Anderson, Kyle Pomerleau, Alan Viard, Eric Toder, and Henry Olsen discuss The Main Street Tax Plan and the best strategy for tax reform.",
+    "view_count": 215
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UtGxce72Fsg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

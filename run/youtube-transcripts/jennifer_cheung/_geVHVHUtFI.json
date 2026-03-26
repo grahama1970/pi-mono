@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_geVHVHUtFI",
+    "language": "en",
+    "took_ms": 9352,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Stefan Stephenson-Moe -  Detecting Attackers  with State Estimation",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1638,
+    "description": "As OT technologies like PLCs and RTU become smarter and more capable of running standard operating systems, the concern of malware infecting OT technologies has become more of a realistic threat. In cases like Stuxnet where the attacker wishes to cause damage to a system while keeping the user unaware it must do so by modifying sensor data that would alert the user to a change in the system. State estimation is a technique used in the Power Industry to detect when sensors are providing garbage data. In this talk I plan to explain how state estimation works and how it can be applied as a technique for detecting an attacker attempting to manipulate sensor data for nefarious purposes.",
+    "view_count": 436
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _geVHVHUtFI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

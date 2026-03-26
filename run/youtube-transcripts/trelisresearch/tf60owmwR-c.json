@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tf60owmwR-c",
+    "language": "en",
+    "took_ms": 8254,
+    "method": null,
+    "title": "Distillation of Transformer Models",
+    "channel": "Trelis Research",
+    "upload_date": "20240925",
+    "duration_sec": 4838,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-fine-tuning\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nWith credit to Rohan Sharma for work on these scripts on a Trelis Internship: https://trelis.com/internships/. Find Rohan on GitHub: https://github.com/rs545837/\n\nThanks also to Elie Bakouch of HuggingFace for guidance on using SmolLM corpus: https://huggingface.co/eliebak\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1dQf2CuvmbIpo5Ir35n1vB5CIXP5Zair2qXfGVM8KGDg/edit?usp=sharing\n- Minitron Distillation Paper: https://d1qx31qr3h6wln.cloudfront.net/publications/minitron_tech_report_3_0.pdf\n- Distil-Whisper Paper: https://arxiv.org/pdf/2311.00430\n- SmolLM Corpus: https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus\n- Trelis SmolLM 2% split: https://huggingface.co/datasets/Trelis/smollm-corpus-2percent\n- WebInstruct: https://huggingface.co/datasets/TIGER-Lab/WebInstructSub\n\nTIMESTAMPS:\n0:00 AI model distillation (Whisper, Flux, Minitron, gpt-4o-mini?)\n0:46 Video Overview - Distillation Tutorial and Code Walk-through\n2:00 Distillation Examples (Diffusion - Flux Schnell / Dev, Transcription - Distil-Whisper, LLMs - Nvidia Minitron)\n6:51 How distillation works\n7:22 Student model initialization\n8:36 Layer / depth pruning \n11:52 Width pruning\n15:25 Pre-training versus distillation\n18:40 Cross-entropy loss vs KL-divergence\n22:41 Instruction fine-tuning\n23:28 Distilling SmolLM 135M to a 99M model\n24:43 Code walk-through setup.\n26:49 Pruning Notebook\n28:56 Layer Pruning\n31:41 Width Pruning\n35:01 Why pruning works?\n36:17 Distillation Script - Multi-GPU Setup\n39:36 Distillation Script Walk-through\n54:05 Distillation Configuration File Walk-through\n56:32 Distillation Startup and Performance Monitoring with tensorboard\n1:03:01 Instruction fine-tuning and dataset selection\n1:09:02 Instruction FT Startup and Performance Monitoring with tensorboard\n1:12:40 Running inference to evaluate distillation performance\n1:12:54 Teacher model performance (base SmolLM 135M)\n1:13:53 SmolLM Instruct model performance\n1:14:15 Raw pruned model performance (layer pruned) 99M\n1:14:38 Width + Layer pruning performance (raw) 99M\n1:15:18 Distilled model performance (before instruction tuning) 99M\n1:15:57 Instruction tuning performance evaluation\n1:16:21 SmolLM 135M Instruct performance\n1:17:17 Instruction tuned distilled model performance (99M model)\n1:18:33 Final Tips (best pruning approach, learning rate, batch size and model size effects)\n1:20:21 Video Resources",
+    "view_count": 5704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tf60owmwR-c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

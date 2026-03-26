@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fdt8LfaZlT8",
+    "language": "en",
+    "took_ms": 10286,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Scott Hurrey: Scaling Enterprise AI with MCP and A2A",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1658,
+    "description": "Box has evolved enterprise AI integration from custom API code to standardized protocols that eliminate complexity at scale. This session by Scott Hurrey, Director of Developer Relations at Box, demonstrated how Box's Model Context Protocol (MCP) simplifies AI-to-tool connections and how the Agent-to-Agent Protocol (A2A) enables modular, multi-agent systems through a live invoice processing demo. \n\nAttendees saw real code comparisons and learned architectural patterns for building scalable, maintainable AI applications on enterprise content.\n\nExplore our course with Box on this topic: https://www.deeplearning.ai/short-courses/build-ai-apps-with-mcp-server-working-with-box-files/\n\n-----------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 455
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fdt8LfaZlT8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

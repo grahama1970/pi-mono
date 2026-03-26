@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "J1liEq2R_rE",
+    "language": "en",
+    "took_ms": 2994,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Atul & Harshal - Tenacity An Adversary Emulation Tool for Persistence",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1753,
+    "description": "Persistence consists of techniques that adversaries use to maintain their foothold on systems across restarts. Techniques used for persistence include any access, action, or configuration changes that allow attackers retain access on systems. Persistence is one of the more sought-after techniques of an attacker. Every 3 techniques out of top 10 usedby Adversaries belong to Persistence. We leveraged data from MITRE ATT&CK and open source cyber threat intelligence to understand how adversary achieves persistence. We created Tenacity, a light-weight adversary emulation tool that emulates over 30+ persistence techniques using 100+ procedures employed by attackers in the wild. Using this tool the organizations and individuals can quickly validate the risk posture and exposure of their business as well as the performance of the existing security solutions.",
+    "view_count": 471
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] J1liEq2R_rE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

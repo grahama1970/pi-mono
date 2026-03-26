@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iPXuw8SJfFI",
+    "language": "en",
+    "took_ms": 9351,
+    "method": null,
+    "title": "Watch NASA land the Perseverance Rover on Mars!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20210218",
+    "duration_sec": 10253,
+    "description": "NASA will be attempting to land the #Perseverance Mars Rover and Ingenuity Helicopter on the surface of Mars! This is the biggest and most sophisticated rover anyone has ever landed on the surface of Mars.\n\nAfter a 7-month long journey spanning 497 million km, Perseverance will land at Jezero Crater. It's a sibling to Curiosity, featuring a large drill and a soil caching system, upgraded wheels and cameras, and even an experiment that will make oxygen on the surface of Mars!\n\nWant to know more about this mission? Check out our article explaining everything you need to know about the #Mars2020 Mission [Perseverance and Ingenuity]!\n\nhttps://everydayastronaut.com/perseverance-vs-curiosity/\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 1545675
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iPXuw8SJfFI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

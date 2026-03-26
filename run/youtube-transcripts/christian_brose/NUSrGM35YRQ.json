@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NUSrGM35YRQ",
+    "language": "en",
+    "took_ms": 8316,
+    "method": null,
+    "title": "Maintaining a Free and Open Indo-Pacific as Tensions Simmer",
+    "channel": "Hudson Institute",
+    "upload_date": "20200617",
+    "duration_sec": 4380,
+    "description": "Join Hudson Institute for a conversation on the growing tensions in East and South Asia that pose a stark threat to the United States and Japan’s shared goal of a free and open Indo-Pacific. Hudson Institute Asia-Pacific Security Chair Patrick M. Cronin will moderate the discussion.",
+    "view_count": 4474
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NUSrGM35YRQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

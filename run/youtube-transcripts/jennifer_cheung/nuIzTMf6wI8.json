@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nuIzTMf6wI8",
+    "language": "en",
+    "took_ms": 7810,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Workshop - Simulated Satellite Communications on Raspberry Pi",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 979,
+    "description": "Users will need to purchase own equiptment before the workshop/challenge is run. (users will attempt to see simulated altitude, battery level, telemetry data from the mock satellite. It will be awesome because, we will expose participants new to the convergence of space and cybersecurity a crawl/beginner experience to gain their interest. It's designed as a workshop. The Convergence of Space & Cybersecurity Innovation.\n\nThe goal of this workshop would be to construct a “CubeSat Simulator Lite https://github.com/alanbjohnston/CubeSatSim/wiki” specifically https://github.com/alanbjohnston/Cub...Simulator-Lite.\n\nWe would run through the installation of the software via a screensharing method. We’d show participants how to setup a Raspberry Pi, set up the device, install the necessary packages, attach a necessary antenna, and view the transmitted data using a software defined radio.",
+    "view_count": 1782
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nuIzTMf6wI8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

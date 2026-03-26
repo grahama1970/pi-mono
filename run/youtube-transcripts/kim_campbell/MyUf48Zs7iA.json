@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MyUf48Zs7iA",
+    "language": "en",
+    "took_ms": 8769,
+    "method": null,
+    "title": "The scariest sentence in American DEFENSE",
+    "channel": "Sandboxx",
+    "upload_date": "20260220",
+    "duration_sec": 56,
+    "description": "An alarming note from Alex Hollings' trip to NORAD and NORTHCOM",
+    "view_count": 35691
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MyUf48Zs7iA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

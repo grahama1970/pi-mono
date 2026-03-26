@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m1IKW99vOl8",
+    "language": "en",
+    "took_ms": 10593,
+    "method": null,
+    "title": "Optimals | AI Short Film",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20250827",
+    "duration_sec": 1200,
+    "description": "Support by joining The Nobody Collective here: \nhttps://www.patreon.com/NobodyandTheComputer\nYou’ll also get access to tutorials, behind-the-scenes info, code, prompts, and much more.\n\n🎧 Listen to the full version of “Non capisco cos’è l’amore” here: \nhttps://www.patreon.com/posts/listen-to-full-137551045\n\ncontact: \nnobodyandthecomputer@gmail.com\n\nThe script, the idea, the editing, and the montage of this short film are human. But everything you see and hear was generated 100% with GenAI.\nTools used here: \n#openai #sora #google #veo3 #midjourney #elevenlabs #klingai #pika #runway #suno #comfyui  #11labs \n\n\n#nobodyandthecomputer \n#aicinema\n#aifilm",
+    "view_count": 5687
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m1IKW99vOl8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

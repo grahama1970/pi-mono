@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4uZdDaOiO3Y",
+    "language": "en",
+    "took_ms": 8540,
+    "method": null,
+    "title": "Summarise Really Long Documents with AI",
+    "channel": "Trelis Research",
+    "upload_date": "20230622",
+    "duration_sec": 226,
+    "description": "Summarise Me allows you to summarise documents up to 60,000 words. The approach is enabled by Anthropic's Claude large language model that can take in really large text inputs.\n\nUnlike most summarisers, which are only capable of summarising portions of the text (using an embedding search), Summarise-Me actually reads the full document and provides a summary of the key points.\n\nTry it out at Summarise-Me.com",
+    "view_count": 653
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4uZdDaOiO3Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

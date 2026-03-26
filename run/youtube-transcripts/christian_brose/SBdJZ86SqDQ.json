@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SBdJZ86SqDQ",
+    "language": "en",
+    "took_ms": 8986,
+    "method": null,
+    "title": "The U.S. GMD System Can Shoot Down a North Korean ICBM",
+    "channel": "Hudson Institute",
+    "upload_date": "20170128",
+    "duration_sec": 83,
+    "description": "Hudson Institute Fellow Rebeccah Heinrichs on the capabilities of the Ground-based Midcourse Defense (GMD) system.",
+    "view_count": 7316
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SBdJZ86SqDQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p_ZqtmWXeSU",
+    "language": "en",
+    "took_ms": 8246,
+    "method": null,
+    "title": "Confronting the Cyber Threat from Russia and China",
+    "channel": "Hudson Institute",
+    "upload_date": "20150603",
+    "duration_sec": 5619,
+    "description": "Congressman Mike Rogers and Arthur Herman discuss the cybersecurity threat posed by Russia and China. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute with the Ustream Mobile App",
+    "view_count": 546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p_ZqtmWXeSU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

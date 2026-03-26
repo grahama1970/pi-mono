@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nxpWxyr5xTY",
+    "language": "en",
+    "took_ms": 7597,
+    "method": null,
+    "title": "OnRamp Online: ICS in the Cloud",
+    "channel": "S4 Events",
+    "upload_date": "20190724",
+    "duration_sec": 220,
+    "description": "3 minutes of highlights from Bryan Owen's ICS in the Cloud session at the OnRamp this January. The way he split use cases into open and closed loop resonated with the audience.",
+    "view_count": 340
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nxpWxyr5xTY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mCzoQjTCQmU",
+    "language": "en",
+    "took_ms": 8869,
+    "method": null,
+    "title": "A Discussion on Innovation Policy and Patents",
+    "channel": "Hudson Institute",
+    "upload_date": "20210617",
+    "duration_sec": 3584,
+    "description": "Hudson Institute Forum for Intellectual Property Chair Adam Mossoff will host an expert panel on the importance of reliable and effective patents as drivers of innovation and economic growth. The Honorable Andrei Iancu, former Director of the U.S. Patent & Trademark Office, will moderate a discussion between Don Rosenberg, General Counsel at Qualcomm, Inc., and Robert DeBerardine, Chief Intellectual Property Counsel at Johnson & Johnson, on questions including the role of patents in creating new products and services and the impact of intellectual property waivers on innovation and economic growth. Please join this distinguished panel for this important and timely conversation.",
+    "view_count": 457
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mCzoQjTCQmU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

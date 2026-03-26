@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HgUnv_c6gOM",
+    "language": "en",
+    "took_ms": 8973,
+    "method": null,
+    "title": "LLM Evals - Part 1: Evaluating Performance",
+    "channel": "Trelis Research",
+    "upload_date": "20241230",
+    "duration_sec": 2063,
+    "description": "➡️ Get access to the ADVANCED-Evals Repo (incl. future additions): https://trelis.com/ADVANCED-evals/\n➡️ https://docs.google.com/presentation/d/1ruyztp5WTEOjyAuNJ1BmZfJ2F9SOaK7qAcGXgr8NxQg/edit?usp=sharing\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Explore Developer Tools/Scripts: https://Trelis.com/\n➡️ Trelis Newsletter: https://trelis.substack.com\n➡️ Collaborate with Trelis: https://Trelis.com/developer-collaborations\n➡️ Consulting: https://Trelis.com/\n\nTIMESTAMPS:\n00:00 Introduction to LLM Evaluation\n03:21 Understanding Evaluation Pipelines\n09:56 Building a Demo Application\n15:21 Creating Evaluation Datasets\n23:52 Practical Evaluation Task / Question Development\n27:40 Running and Analyzing Evaluations\n30:24 Comparing LLM Model Performance using Evals\n34:09 Conclusion and Next Steps",
+    "view_count": 4006
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HgUnv_c6gOM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,5114 @@
+Tier 1: Trying direct youtube-transcript-api...
+{
+  "meta": {
+    "video_id": "jdFTziF_wco",
+    "language": "en",
+    "took_ms": 1275,
+    "method": "direct",
+    "title": "Webinar: Reverse Engineering – How Attackers Uncover Secrets in Binaries",
+    "channel": "emproof",
+    "upload_date": "20241017",
+    "duration_sec": 3388,
+    "description": "Speaker: Tim Blazytko, https://www.youtube.com/@mr_phrazer9158\nCode and samples: https://github.com/emproof-com/webinars/tree/main/2024-10-reverse_engineering\nSlides: https://github.com/emproof-com/webinars/blob/main/2024-10-reverse_engineering/slides.pdf\n\nAbstract:\nIn our webinar “Reverse Engineering: How Attackers Uncover Secrets in Binaries” we will introduce the foundational concepts of reverse engineering from an attacker’s perspective. Reverse engineering is a crucial technique used by attackers to understand and manipulate software, turning low-level code into meaningful information. Participants will learn how reverse engineering is applied to extract secrets from binaries, pirate software, and identify bugs.\n\nThe webinar will cover the following topics:\n\n* Introduction to Reverse Engineering: What it is and why it’s a powerful tool for attackers.\n\n* Motivation and Use Cases: Exploring reasons behind reverse engineering, such as secret extraction, piracy concerns, and bug discovery.\n\n* From Binary to High-Level Code: A step-by-step guide from machine code to human-readable code.\n\n* Key Tools for Reverse Engineering: An overview of disassemblers and decompilers, with a focus on Ghidra.\n\n* Live Demonstration: A practical showcase of reverse engineering in action, with a focus on learning how to interpret code and extract hidden information.\n\nDesigned for a partially technical audience with some programming experience but no prior knowledge of low-level languages, this session will provide insights into how attackers approach binary software. By understanding these techniques, attendees can develop a deeper awareness of the threats posed by reverse engineering and learn how to protect their systems.\n\nThe webinar is aimed at raising awareness of the risks associated with reverse engineering and equipping attendees with practical knowledge they can use to analyze and defend against such attacks.",
+    "view_count": 1024
+  },
+  "transcript": [
+    {
+      "text": "so hello guys um I'm Tim and Welcome to",
+      "start": 3.159,
+      "duration": 7.6
+    },
+    {
+      "text": "our first webinar today on reverse",
+      "start": 7.04,
+      "duration": 6.28
+    },
+    {
+      "text": "engineering how attackers uncover",
+      "start": 10.759,
+      "duration": 3.681
+    },
+    {
+      "text": "secrets in",
+      "start": 13.32,
+      "duration": 5.52
+    },
+    {
+      "text": "binaries um this is the first um webinar",
+      "start": 14.44,
+      "duration": 6.52
+    },
+    {
+      "text": "in a row that we want to do over the",
+      "start": 18.84,
+      "duration": 5.48
+    },
+    {
+      "text": "next weeks or months and um today it's",
+      "start": 20.96,
+      "duration": 5.04
+    },
+    {
+      "text": "the first time also we do it we are",
+      "start": 24.32,
+      "duration": 5.08
+    },
+    {
+      "text": "LinkedIn so maybe we change it somewhere",
+      "start": 26.0,
+      "duration": 5.96
+    },
+    {
+      "text": "in the future we'll try it out so it's",
+      "start": 29.4,
+      "duration": 5.999
+    },
+    {
+      "text": "this new playground for us so but now",
+      "start": 31.96,
+      "duration": 6.8
+    },
+    {
+      "text": "let's start and see how it goes so um a",
+      "start": 35.399,
+      "duration": 7.441
+    },
+    {
+      "text": "few words about me I'm Tim I'm the chief",
+      "start": 38.76,
+      "duration": 6.2
+    },
+    {
+      "text": "scientist and head of engineering and",
+      "start": 42.84,
+      "duration": 4.96
+    },
+    {
+      "text": "one of the co-founders of mof a company",
+      "start": 44.96,
+      "duration": 5.68
+    },
+    {
+      "text": "based in Germany and Netherlands where",
+      "start": 47.8,
+      "duration": 6.48
+    },
+    {
+      "text": "we do where we protect um embedded",
+      "start": 50.64,
+      "duration": 5.759
+    },
+    {
+      "text": "firmware with against reverse",
+      "start": 54.28,
+      "duration": 5.72
+    },
+    {
+      "text": "engineering and general cyber attacks so",
+      "start": 56.399,
+      "duration": 5.68
+    },
+    {
+      "text": "we basically focus on advancing bettered",
+      "start": 60.0,
+      "duration": 5.519
+    },
+    {
+      "text": "Security Solutions um on my own I have a",
+      "start": 62.079,
+      "duration": 6.961
+    },
+    {
+      "text": "PhD in binary reverse engineering and",
+      "start": 65.519,
+      "duration": 5.161
+    },
+    {
+      "text": "besides I also give training and",
+      "start": 69.04,
+      "duration": 4.36
+    },
+    {
+      "text": "lectures at industry conferences at",
+      "start": 70.68,
+      "duration": 7.28
+    },
+    {
+      "text": "universities today we talk about three",
+      "start": 73.4,
+      "duration": 8.359
+    },
+    {
+      "text": "things first about what is reverse",
+      "start": 77.96,
+      "duration": 7.6
+    },
+    {
+      "text": "engineering and how um and why can this",
+      "start": 81.759,
+      "duration": 6.04
+    },
+    {
+      "text": "be considered a threat so like what are",
+      "start": 85.56,
+      "duration": 4.84
+    },
+    {
+      "text": "motivations behind reverse engineering",
+      "start": 87.799,
+      "duration": 5.081
+    },
+    {
+      "text": "from a legal and not so legal",
+      "start": 90.4,
+      "duration": 5.8
+    },
+    {
+      "text": "perspective and then what um how can we",
+      "start": 92.88,
+      "duration": 5.84
+    },
+    {
+      "text": "do actually do reverse engineering to",
+      "start": 96.2,
+      "duration": 4.959
+    },
+    {
+      "text": "extract some secrets in binaries for",
+      "start": 98.72,
+      "duration": 4.439
+    },
+    {
+      "text": "that we will do a practical",
+      "start": 101.159,
+      "duration": 5.361
+    },
+    {
+      "text": "demonstration and um look into how to",
+      "start": 103.159,
+      "duration": 6.92
+    },
+    {
+      "text": "use gidra and other tools to learn about",
+      "start": 106.52,
+      "duration": 5.879
+    },
+    {
+      "text": "to learn about a bit about the internals",
+      "start": 110.079,
+      "duration": 4.68
+    },
+    {
+      "text": "of a program and to really extract",
+      "start": 112.399,
+      "duration": 5.601
+    },
+    {
+      "text": "secrets and also and also how to patch a",
+      "start": 114.759,
+      "duration": 5.761
+    },
+    {
+      "text": "binary such that we can",
+      "start": 118.0,
+      "duration": 7.36
+    },
+    {
+      "text": "modify the program behavior um so let's",
+      "start": 120.52,
+      "duration": 7.959
+    },
+    {
+      "text": "start so first what is reverse",
+      "start": 125.36,
+      "duration": 5.56
+    },
+    {
+      "text": "engineering reverse engineering",
+      "start": 128.479,
+      "duration": 5.321
+    },
+    {
+      "text": "basically is the extraction of",
+      "start": 130.92,
+      "duration": 6.36
+    },
+    {
+      "text": "information from a binary program let's",
+      "start": 133.8,
+      "duration": 6.32
+    },
+    {
+      "text": "say we have given a binary blob which",
+      "start": 137.28,
+      "duration": 5.56
+    },
+    {
+      "text": "just a piece of data that we don't know",
+      "start": 140.12,
+      "duration": 3.839
+    },
+    {
+      "text": "anything",
+      "start": 142.84,
+      "duration": 5.08
+    },
+    {
+      "text": "about so like an executable file like a",
+      "start": 143.959,
+      "duration": 8.0
+    },
+    {
+      "text": "piece of malware or the Explorer or some",
+      "start": 147.92,
+      "duration": 7.2
+    },
+    {
+      "text": "embedded firmware and we want to know",
+      "start": 151.959,
+      "duration": 6.681
+    },
+    {
+      "text": "what it does and our goal in",
+      "start": 155.12,
+      "duration": 5.8
+    },
+    {
+      "text": "understanding what it does can be",
+      "start": 158.64,
+      "duration": 5.16
+    },
+    {
+      "text": "manifold for instance we want to know if",
+      "start": 160.92,
+      "duration": 6.28
+    },
+    {
+      "text": "we can trust it or not maybe it",
+      "start": 163.8,
+      "duration": 5.159
+    },
+    {
+      "text": "implements some malicious",
+      "start": 167.2,
+      "duration": 5.64
+    },
+    {
+      "text": "behavior maybe we want to ensure that it",
+      "start": 168.959,
+      "duration": 6.56
+    },
+    {
+      "text": "does that that it does what say that it",
+      "start": 172.84,
+      "duration": 6.24
+    },
+    {
+      "text": "does but also from an teeka perspective",
+      "start": 175.519,
+      "duration": 6.761
+    },
+    {
+      "text": "maybe we are interested in learning",
+      "start": 179.08,
+      "duration": 5.96
+    },
+    {
+      "text": "about its internal workings with a goal",
+      "start": 182.28,
+      "duration": 5.36
+    },
+    {
+      "text": "to find bucks in it that we can",
+      "start": 185.04,
+      "duration": 7.479
+    },
+    {
+      "text": "exploited for instance or in the um area",
+      "start": 187.64,
+      "duration": 8.28
+    },
+    {
+      "text": "of Industry Espionage on competitors",
+      "start": 192.519,
+      "duration": 6.601
+    },
+    {
+      "text": "maybe we are interested in looking into",
+      "start": 195.92,
+      "duration": 6.319
+    },
+    {
+      "text": "what does our competitor do how does he",
+      "start": 199.12,
+      "duration": 6.199
+    },
+    {
+      "text": "or she do it so that that we can learn",
+      "start": 202.239,
+      "duration": 5.801
+    },
+    {
+      "text": "about the internals their secret source",
+      "start": 205.319,
+      "duration": 5.961
+    },
+    {
+      "text": "and maybe reimplement that or just uh",
+      "start": 208.04,
+      "duration": 6.0
+    },
+    {
+      "text": "dump the firmware modify a few bits and",
+      "start": 211.28,
+      "duration": 4.76
+    },
+    {
+      "text": "put it in another Hardware device or",
+      "start": 214.04,
+      "duration": 4.52
+    },
+    {
+      "text": "something like that from a customer",
+      "start": 216.04,
+      "duration": 5.08
+    },
+    {
+      "text": "point of view there's also the tech",
+      "start": 218.56,
+      "duration": 5.879
+    },
+    {
+      "text": "Vector of piracy or feature unlocking",
+      "start": 221.12,
+      "duration": 6.199
+    },
+    {
+      "text": "like um you have a piece of software",
+      "start": 224.439,
+      "duration": 5.52
+    },
+    {
+      "text": "that is limited in scope but the",
+      "start": 227.319,
+      "duration": 6.521
+    },
+    {
+      "text": "software itself in theory supports more",
+      "start": 229.959,
+      "duration": 6.881
+    },
+    {
+      "text": "functionality and you as a user as a end",
+      "start": 233.84,
+      "duration": 6.52
+    },
+    {
+      "text": "user want to unlock that then you can um",
+      "start": 236.84,
+      "duration": 7.16
+    },
+    {
+      "text": "analyze the code check how the how the",
+      "start": 240.36,
+      "duration": 6.04
+    },
+    {
+      "text": "limitation is realized and maybe unlock",
+      "start": 244.0,
+      "duration": 4.92
+    },
+    {
+      "text": "it by modifying parts of the",
+      "start": 246.4,
+      "duration": 7.119
+    },
+    {
+      "text": "binary either way um many in many of",
+      "start": 248.92,
+      "duration": 7.2
+    },
+    {
+      "text": "these reasons the one of the interest is",
+      "start": 253.519,
+      "duration": 5.161
+    },
+    {
+      "text": "always fin Financial",
+      "start": 256.12,
+      "duration": 6.2
+    },
+    {
+      "text": "game so in today we will focus on some",
+      "start": 258.68,
+      "duration": 6.12
+    },
+    {
+      "text": "one sub aspect of reverse engineering",
+      "start": 262.32,
+      "duration": 4.48
+    },
+    {
+      "text": "with a goal to get a very short",
+      "start": 264.8,
+      "duration": 3.959
+    },
+    {
+      "text": "introduction on what is reverse",
+      "start": 266.8,
+      "duration": 5.04
+    },
+    {
+      "text": "engineering what's the idea behind that",
+      "start": 268.759,
+      "duration": 6.641
+    },
+    {
+      "text": "how does it work what's a goal and then",
+      "start": 271.84,
+      "duration": 6.52
+    },
+    {
+      "text": "we look at it practically from the goal",
+      "start": 275.4,
+      "duration": 6.56
+    },
+    {
+      "text": "on how we can we extract and find and",
+      "start": 278.36,
+      "duration": 6.44
+    },
+    {
+      "text": "extract hardcoded secrets and binaries",
+      "start": 281.96,
+      "duration": 5.84
+    },
+    {
+      "text": "be it cryptographic Keys be it serial",
+      "start": 284.8,
+      "duration": 6.399
+    },
+    {
+      "text": "numbers be it hardcoded pass passwords",
+      "start": 287.8,
+      "duration": 5.6
+    },
+    {
+      "text": "and then in the second step we take a",
+      "start": 291.199,
+      "duration": 5.44
+    },
+    {
+      "text": "look and understanding uh understanding",
+      "start": 293.4,
+      "duration": 7.16
+    },
+    {
+      "text": "how code logic works and then um we will",
+      "start": 296.639,
+      "duration": 6.641
+    },
+    {
+      "text": "crack a binary to unlock some additional",
+      "start": 300.56,
+      "duration": 4.84
+    },
+    {
+      "text": "features that we normally would have to",
+      "start": 303.28,
+      "duration": 3.08
+    },
+    {
+      "text": "pay",
+      "start": 305.4,
+      "duration": 5.519
+    },
+    {
+      "text": "off so speaking of let's start and dig",
+      "start": 306.36,
+      "duration": 8.48
+    },
+    {
+      "text": "ond details let us start with a simple",
+      "start": 310.919,
+      "duration": 6.761
+    },
+    {
+      "text": "hello world program like if you take a",
+      "start": 314.84,
+      "duration": 7.52
+    },
+    {
+      "text": "look look at a hello world program it",
+      "start": 317.68,
+      "duration": 8.239
+    },
+    {
+      "text": "doesn't really do much",
+      "start": 322.36,
+      "duration": 3.559
+    },
+    {
+      "text": "magic so it basically just is a main",
+      "start": 326.72,
+      "duration": 7.64
+    },
+    {
+      "text": "function and it prints hello world and",
+      "start": 330.88,
+      "duration": 5.64
+    },
+    {
+      "text": "then just returns and this is the",
+      "start": 334.36,
+      "duration": 5.559
+    },
+    {
+      "text": "original source code and then this is",
+      "start": 336.52,
+      "duration": 6.6
+    },
+    {
+      "text": "not the way how it is provided to us so",
+      "start": 339.919,
+      "duration": 5.84
+    },
+    {
+      "text": "what a developer let's say a developer",
+      "start": 343.12,
+      "duration": 4.88
+    },
+    {
+      "text": "compiles that with something like that",
+      "start": 345.759,
+      "duration": 4.761
+    },
+    {
+      "text": "and has a binary this binary is an",
+      "start": 348.0,
+      "duration": 6.039
+    },
+    {
+      "text": "uploaded somewhere and we as end",
+      "start": 350.52,
+      "duration": 7.56
+    },
+    {
+      "text": "users get this hello world program so if",
+      "start": 354.039,
+      "duration": 6.961
+    },
+    {
+      "text": "we have it we have a file like that",
+      "start": 358.08,
+      "duration": 6.72
+    },
+    {
+      "text": "hello world and our goal is now to",
+      "start": 361.0,
+      "duration": 6.319
+    },
+    {
+      "text": "understand what is this hello world",
+      "start": 364.8,
+      "duration": 5.119
+    },
+    {
+      "text": "program how it is built how it is",
+      "start": 367.319,
+      "duration": 6.041
+    },
+    {
+      "text": "realized and especially what can it do",
+      "start": 369.919,
+      "duration": 6.881
+    },
+    {
+      "text": "one thing that we can do is first use",
+      "start": 373.36,
+      "duration": 6.559
+    },
+    {
+      "text": "the file command the file command",
+      "start": 376.8,
+      "duration": 6.32
+    },
+    {
+      "text": "basically checks the first bytes of the",
+      "start": 379.919,
+      "duration": 7.361
+    },
+    {
+      "text": "program to give us insights about um",
+      "start": 383.12,
+      "duration": 7.56
+    },
+    {
+      "text": "what kind of files it is it is a PDF",
+      "start": 387.28,
+      "duration": 7.199
+    },
+    {
+      "text": "file is is a bining executable file is",
+      "start": 390.68,
+      "duration": 6.959
+    },
+    {
+      "text": "this a doc file is this a zip file and",
+      "start": 394.479,
+      "duration": 7.72
+    },
+    {
+      "text": "what so on and so now we do file hello",
+      "start": 397.639,
+      "duration": 8.921
+    },
+    {
+      "text": "world and then we see some output that",
+      "start": 402.199,
+      "duration": 8.44
+    },
+    {
+      "text": "it tells us it's an eelf file",
+      "start": 406.56,
+      "duration": 6.88
+    },
+    {
+      "text": "64bit for the arm",
+      "start": 410.639,
+      "duration": 5.921
+    },
+    {
+      "text": "architecture so there are few words we",
+      "start": 413.44,
+      "duration": 7.68
+    },
+    {
+      "text": "have to think about first",
+      "start": 416.56,
+      "duration": 4.56
+    },
+    {
+      "text": "what is",
+      "start": 421.639,
+      "duration": 6.601
+    },
+    {
+      "text": "elf then second what is",
+      "start": 423.319,
+      "duration": 4.921
+    },
+    {
+      "text": "arm",
+      "start": 428.479,
+      "duration": 4.641
+    },
+    {
+      "text": "um and then there are some other things",
+      "start": 430.12,
+      "duration": 5.72
+    },
+    {
+      "text": "but let's deal with the first ones so",
+      "start": 433.12,
+      "duration": 7.639
+    },
+    {
+      "text": "elf elf basically tells us it's an",
+      "start": 435.84,
+      "duration": 10.039
+    },
+    {
+      "text": "executable executable for Linux based",
+      "start": 440.759,
+      "duration": 5.12
+    },
+    {
+      "text": "systems or Unix based systems so this is",
+      "start": 446.4,
+      "duration": 6.4
+    },
+    {
+      "text": "basically the file format which contains",
+      "start": 449.84,
+      "duration": 6.039
+    },
+    {
+      "text": "the code which contains data and other",
+      "start": 452.8,
+      "duration": 6.72
+    },
+    {
+      "text": "things that um are needed such that this",
+      "start": 455.879,
+      "duration": 6.32
+    },
+    {
+      "text": "application executes as it needs to",
+      "start": 459.52,
+      "duration": 5.76
+    },
+    {
+      "text": "execute and it can print them data and",
+      "start": 462.199,
+      "duration": 5.201
+    },
+    {
+      "text": "show us things and so",
+      "start": 465.28,
+      "duration": 7.879
+    },
+    {
+      "text": "on so and then um this is L another",
+      "start": 467.4,
+      "duration": 7.919
+    },
+    {
+      "text": "possibility would be that you see",
+      "start": 473.159,
+      "duration": 6.361
+    },
+    {
+      "text": "something like PE PE would be a portable",
+      "start": 475.319,
+      "duration": 5.801
+    },
+    {
+      "text": "execut",
+      "start": 479.52,
+      "duration": 4.32
+    },
+    {
+      "text": "table and this would be basically the",
+      "start": 481.12,
+      "duration": 5.84
+    },
+    {
+      "text": "analog version of an L file just for",
+      "start": 483.84,
+      "duration": 6.52
+    },
+    {
+      "text": "Windows based systems so this would be",
+      "start": 486.96,
+      "duration": 6.919
+    },
+    {
+      "text": "for Windows based systems and an L file",
+      "start": 490.36,
+      "duration": 6.44
+    },
+    {
+      "text": "would be for Linux based",
+      "start": 493.879,
+      "duration": 6.081
+    },
+    {
+      "text": "systems okay now we know we have an",
+      "start": 496.8,
+      "duration": 5.799
+    },
+    {
+      "text": "executable file format for",
+      "start": 499.96,
+      "duration": 6.079
+    },
+    {
+      "text": "Linux then it tells us it's arm",
+      "start": 502.599,
+      "duration": 5.681
+    },
+    {
+      "text": "64 what is arm",
+      "start": 506.039,
+      "duration": 5.56
+    },
+    {
+      "text": "64 what well we have something which is",
+      "start": 508.28,
+      "duration": 5.319
+    },
+    {
+      "text": "called a processor",
+      "start": 511.599,
+      "duration": 4.641
+    },
+    {
+      "text": "architecture a processor",
+      "start": 513.599,
+      "duration": 5.161
+    },
+    {
+      "text": "architecture this process processor",
+      "start": 516.24,
+      "duration": 7.08
+    },
+    {
+      "text": "architecture can be for instance Intel",
+      "start": 518.76,
+      "duration": 10.759
+    },
+    {
+      "text": "x86 or x86 64bit for instance then this",
+      "start": 523.32,
+      "duration": 9.0
+    },
+    {
+      "text": "is commonly used on desktops and",
+      "start": 529.519,
+      "duration": 5.641
+    },
+    {
+      "text": "servers then we have something which is",
+      "start": 532.32,
+      "duration": 7.88
+    },
+    {
+      "text": "called arm 64 arm 64 is often used on",
+      "start": 535.16,
+      "duration": 7.4
+    },
+    {
+      "text": "new Apple devices but also on",
+      "start": 540.2,
+      "duration": 4.28
+    },
+    {
+      "text": "smartphones and in general embedded",
+      "start": 542.56,
+      "duration": 4.16
+    },
+    {
+      "text": "devices so this is a processor",
+      "start": 544.48,
+      "duration": 4.799
+    },
+    {
+      "text": "architecture for the mobile embedded",
+      "start": 546.72,
+      "duration": 5.0
+    },
+    {
+      "text": "world and partially also for the desktop",
+      "start": 549.279,
+      "duration": 4.721
+    },
+    {
+      "text": "world then we could have other",
+      "start": 551.72,
+      "duration": 6.4
+    },
+    {
+      "text": "architectures like Risk 5 or power PC or",
+      "start": 554.0,
+      "duration": 7.12
+    },
+    {
+      "text": "mips and so on so we basically have",
+      "start": 558.12,
+      "duration": 5.6
+    },
+    {
+      "text": "different implementations in different",
+      "start": 561.12,
+      "duration": 7.12
+    },
+    {
+      "text": "architectures that um support um um that",
+      "start": 563.72,
+      "duration": 8.119
+    },
+    {
+      "text": "can realize or exec code and it is",
+      "start": 568.24,
+      "duration": 7.279
+    },
+    {
+      "text": "important that this high level code this",
+      "start": 571.839,
+      "duration": 7.601
+    },
+    {
+      "text": "C code if we compile it down it's",
+      "start": 575.519,
+      "duration": 6.681
+    },
+    {
+      "text": "compiled for one specific architecture",
+      "start": 579.44,
+      "duration": 5.079
+    },
+    {
+      "text": "such that it can only execute on a",
+      "start": 582.2,
+      "duration": 7.8
+    },
+    {
+      "text": "subset of um CPUs and in this case it is",
+      "start": 584.519,
+      "duration": 9.32
+    },
+    {
+      "text": "ex it is compiled for the arm 64bit",
+      "start": 590.0,
+      "duration": 6.44
+    },
+    {
+      "text": "architecture and now we have the arm",
+      "start": 593.839,
+      "duration": 5.56
+    },
+    {
+      "text": "64-bit architecture this can be",
+      "start": 596.44,
+      "duration": 5.24
+    },
+    {
+      "text": "considered as all the others as",
+      "start": 599.399,
+      "duration": 6.401
+    },
+    {
+      "text": "something which is called Isa Isa is an",
+      "start": 601.68,
+      "duration": 8.24
+    },
+    {
+      "text": "instruction set architecture basically",
+      "start": 605.8,
+      "duration": 6.719
+    },
+    {
+      "text": "it defines on the low",
+      "start": 609.92,
+      "duration": 7.08
+    },
+    {
+      "text": "level um what um how the CPU is",
+      "start": 612.519,
+      "duration": 6.201
+    },
+    {
+      "text": "organized for",
+      "start": 617.0,
+      "duration": 6.6
+    },
+    {
+      "text": "instance um it tells us that we have um",
+      "start": 618.72,
+      "duration": 7.04
+    },
+    {
+      "text": "registers something like registers to",
+      "start": 623.6,
+      "duration": 4.44
+    },
+    {
+      "text": "store",
+      "start": 625.76,
+      "duration": 4.84
+    },
+    {
+      "text": "values these can be on the high level",
+      "start": 628.04,
+      "duration": 4.479
+    },
+    {
+      "text": "programming language registers can be",
+      "start": 630.6,
+      "duration": 4.359
+    },
+    {
+      "text": "understood as a limited set of",
+      "start": 632.519,
+      "duration": 4.841
+    },
+    {
+      "text": "variables then we have",
+      "start": 634.959,
+      "duration": 6.761
+    },
+    {
+      "text": "instructions to perform arithmetic stuff",
+      "start": 637.36,
+      "duration": 6.68
+    },
+    {
+      "text": "like addition",
+      "start": 641.72,
+      "duration": 5.32
+    },
+    {
+      "text": "substraction",
+      "start": 644.04,
+      "duration": 3.0
+    },
+    {
+      "text": "multiplication and so",
+      "start": 647.44,
+      "duration": 7.839
+    },
+    {
+      "text": "on and then we have something which is",
+      "start": 649.88,
+      "duration": 7.16
+    },
+    {
+      "text": "called the instruction and architecture",
+      "start": 655.279,
+      "duration": 5.161
+    },
+    {
+      "text": "that basically defines",
+      "start": 657.04,
+      "duration": 6.4
+    },
+    {
+      "text": "what instructions are",
+      "start": 660.44,
+      "duration": 3.0
+    },
+    {
+      "text": "supported",
+      "start": 663.72,
+      "duration": 6.559
+    },
+    {
+      "text": "and and um how are they",
+      "start": 666.0,
+      "duration": 8.6
+    },
+    {
+      "text": "decoded so what does it mean well first",
+      "start": 670.279,
+      "duration": 8.201
+    },
+    {
+      "text": "let's go back to this hello VA file this",
+      "start": 674.6,
+      "duration": 8.359
+    },
+    {
+      "text": "hello VA file is a binary file if we",
+      "start": 678.48,
+      "duration": 7.359
+    },
+    {
+      "text": "take a look at its binary or hexa",
+      "start": 682.959,
+      "duration": 4.281
+    },
+    {
+      "text": "decimal",
+      "start": 685.839,
+      "duration": 3.921
+    },
+    {
+      "text": "representation like with the hex dump",
+      "start": 687.24,
+      "duration": 5.2
+    },
+    {
+      "text": "command and take a look at the hello",
+      "start": 689.76,
+      "duration": 7.879
+    },
+    {
+      "text": "world we see that it contains a lot of",
+      "start": 692.44,
+      "duration": 8.199
+    },
+    {
+      "text": "stuff this is just in hexad decimal",
+      "start": 697.639,
+      "duration": 5.401
+    },
+    {
+      "text": "which doesn't make much usage of us for",
+      "start": 700.639,
+      "duration": 7.44
+    },
+    {
+      "text": "us so parts of that parts of",
+      "start": 703.04,
+      "duration": 9.88
+    },
+    {
+      "text": "that is the machine code the machine",
+      "start": 708.079,
+      "duration": 6.681
+    },
+    {
+      "text": "code is",
+      "start": 712.92,
+      "duration": 4.32
+    },
+    {
+      "text": "basically um the",
+      "start": 714.76,
+      "duration": 4.84
+    },
+    {
+      "text": "binary basically contain contains",
+      "start": 717.24,
+      "duration": 5.56
+    },
+    {
+      "text": "besides others contains machine",
+      "start": 719.6,
+      "duration": 7.679
+    },
+    {
+      "text": "code and this machine code is the",
+      "start": 722.8,
+      "duration": 7.92
+    },
+    {
+      "text": "representation of this hello world code",
+      "start": 727.279,
+      "duration": 6.56
+    },
+    {
+      "text": "for this specific architecture this um",
+      "start": 730.72,
+      "duration": 6.4
+    },
+    {
+      "text": "64-bit architecture and the instruction",
+      "start": 733.839,
+      "duration": 7.721
+    },
+    {
+      "text": "set architecture basically gives or",
+      "start": 737.12,
+      "duration": 7.519
+    },
+    {
+      "text": "defines a format",
+      "start": 741.56,
+      "duration": 7.12
+    },
+    {
+      "text": "how these bytes or these sequences of",
+      "start": 744.639,
+      "duration": 5.121
+    },
+    {
+      "text": "bytes",
+      "start": 748.68,
+      "duration": 2.32
+    },
+    {
+      "text": "are",
+      "start": 749.76,
+      "duration": 3.48
+    },
+    {
+      "text": "decoded",
+      "start": 751.0,
+      "duration": 4.88
+    },
+    {
+      "text": "into um machine",
+      "start": 753.24,
+      "duration": 6.76
+    },
+    {
+      "text": "instructions so let's go back to the",
+      "start": 755.88,
+      "duration": 4.12
+    },
+    {
+      "text": "slides so here we have just assume a",
+      "start": 761.72,
+      "duration": 7.88
+    },
+    {
+      "text": "sequence of bytes and this represents",
+      "start": 766.519,
+      "duration": 6.041
+    },
+    {
+      "text": "code compiled for a specific instruction",
+      "start": 769.6,
+      "duration": 4.239
+    },
+    {
+      "text": "set",
+      "start": 772.56,
+      "duration": 4.48
+    },
+    {
+      "text": "architecture and now the instruction set",
+      "start": 773.839,
+      "duration": 6.36
+    },
+    {
+      "text": "architecture defines for inst",
+      "start": 777.04,
+      "duration": 5.56
+    },
+    {
+      "text": "how to read and interpret individual",
+      "start": 780.199,
+      "duration": 5.64
+    },
+    {
+      "text": "bites or bits like what's an addition",
+      "start": 782.6,
+      "duration": 5.599
+    },
+    {
+      "text": "what's a multiplication and so",
+      "start": 785.839,
+      "duration": 7.321
+    },
+    {
+      "text": "on we jally go bite by bite like let's",
+      "start": 788.199,
+      "duration": 7.281
+    },
+    {
+      "text": "assume we have the following decoding",
+      "start": 793.16,
+      "duration": 5.679
+    },
+    {
+      "text": "scheme that we have as first parameter",
+      "start": 795.48,
+      "duration": 6.52
+    },
+    {
+      "text": "the up code the up code is the operation",
+      "start": 798.839,
+      "duration": 5.401
+    },
+    {
+      "text": "code which basically tells us which",
+      "start": 802.0,
+      "duration": 5.88
+    },
+    {
+      "text": "operation to perform like an addition a",
+      "start": 804.24,
+      "duration": 7.159
+    },
+    {
+      "text": "multiplication or or whatever and then",
+      "start": 807.88,
+      "duration": 5.04
+    },
+    {
+      "text": "we have a",
+      "start": 811.399,
+      "duration": 5.601
+    },
+    {
+      "text": "register the register is as say one",
+      "start": 812.92,
+      "duration": 7.919
+    },
+    {
+      "text": "variable um one kind of high lowlevel",
+      "start": 817.0,
+      "duration": 6.639
+    },
+    {
+      "text": "variable on the CPU architecture and a",
+      "start": 820.839,
+      "duration": 5.321
+    },
+    {
+      "text": "constant can be just a constant which is",
+      "start": 823.639,
+      "duration": 4.32
+    },
+    {
+      "text": "used as part of the",
+      "start": 826.16,
+      "duration": 4.039
+    },
+    {
+      "text": "computations and if you have now a",
+      "start": 827.959,
+      "duration": 5.44
+    },
+    {
+      "text": "sequence like that we can for instance",
+      "start": 830.199,
+      "duration": 9.401
+    },
+    {
+      "text": "go and go bite by bite and say this Z",
+      "start": 833.399,
+      "duration": 10.761
+    },
+    {
+      "text": "a is decoded to an addition because",
+      "start": 839.6,
+      "duration": 6.32
+    },
+    {
+      "text": "somewhere in the instruction set",
+      "start": 844.16,
+      "duration": 4.16
+    },
+    {
+      "text": "architecture which is a large PDF",
+      "start": 845.92,
+      "duration": 5.4
+    },
+    {
+      "text": "describing how instructions are decoded",
+      "start": 848.32,
+      "duration": 4.24
+    },
+    {
+      "text": "it tells",
+      "start": 851.32,
+      "duration": 6.959
+    },
+    {
+      "text": "us uh 0a maps to an addition and then we",
+      "start": 852.56,
+      "duration": 9.24
+    },
+    {
+      "text": "have we decode the register like this",
+      "start": 858.279,
+      "duration": 8.441
+    },
+    {
+      "text": "one would be register one or this two",
+      "start": 861.8,
+      "duration": 8.159
+    },
+    {
+      "text": "would be register two for this",
+      "start": 866.72,
+      "duration": 5.64
+    },
+    {
+      "text": "multiplication and then finally the",
+      "start": 869.959,
+      "duration": 5.761
+    },
+    {
+      "text": "constant and the constant is then part",
+      "start": 872.36,
+      "duration": 7.0
+    },
+    {
+      "text": "of the operant like this one or this one",
+      "start": 875.72,
+      "duration": 7.679
+    },
+    {
+      "text": "and then we would have something which",
+      "start": 879.36,
+      "duration": 8.919
+    },
+    {
+      "text": "is called assembly code assembly code is",
+      "start": 883.399,
+      "duration": 9.12
+    },
+    {
+      "text": "basically the human readable",
+      "start": 888.279,
+      "duration": 4.24
+    },
+    {
+      "text": "form so now we basically have machine",
+      "start": 892.639,
+      "duration": 7.401
+    },
+    {
+      "text": "code and this one is decoded to assembly",
+      "start": 896.16,
+      "duration": 7.52
+    },
+    {
+      "text": "codee an assembly",
+      "start": 900.04,
+      "duration": 3.64
+    },
+    {
+      "text": "code is a human",
+      "start": 903.8,
+      "duration": 7.44
+    },
+    {
+      "text": "readable form of machine code and it",
+      "start": 907.6,
+      "duration": 7.32
+    },
+    {
+      "text": "tells us then something like at um like",
+      "start": 911.24,
+      "duration": 7.08
+    },
+    {
+      "text": "if we have at at",
+      "start": 914.92,
+      "duration": 8.039
+    },
+    {
+      "text": "a10x a a we can basically read that as",
+      "start": 918.32,
+      "duration": 6.72
+    },
+    {
+      "text": "R1 is",
+      "start": 922.959,
+      "duration": 8.0
+    },
+    {
+      "text": "used as R1 +0 xaa so basically this",
+      "start": 925.04,
+      "duration": 8.96
+    },
+    {
+      "text": "constant is added with this operant and",
+      "start": 930.959,
+      "duration": 5.68
+    },
+    {
+      "text": "the result is stored in this operant",
+      "start": 934.0,
+      "duration": 4.519
+    },
+    {
+      "text": "here in this",
+      "start": 936.639,
+      "duration": 5.88
+    },
+    {
+      "text": "register okay",
+      "start": 938.519,
+      "duration": 8.32
+    },
+    {
+      "text": "so basically if we come back to this um",
+      "start": 942.519,
+      "duration": 8.281
+    },
+    {
+      "text": "code we decoded that and now we",
+      "start": 946.839,
+      "duration": 6.761
+    },
+    {
+      "text": "basically have two instructions decoded",
+      "start": 950.8,
+      "duration": 5.76
+    },
+    {
+      "text": "this is what would happen lowlevel",
+      "start": 953.6,
+      "duration": 5.76
+    },
+    {
+      "text": "natively on the CPU",
+      "start": 956.56,
+      "duration": 7.199
+    },
+    {
+      "text": "and we are reverse Engineers we now",
+      "start": 959.36,
+      "duration": 9.479
+    },
+    {
+      "text": "basically want to start with a",
+      "start": 963.759,
+      "duration": 8.841
+    },
+    {
+      "text": "binary that we have here and that we",
+      "start": 968.839,
+      "duration": 7.8
+    },
+    {
+      "text": "then that we get code that we that we",
+      "start": 972.6,
+      "duration": 7.239
+    },
+    {
+      "text": "have this sequence of bites somewhere",
+      "start": 976.639,
+      "duration": 6.801
+    },
+    {
+      "text": "here and this is that represents code",
+      "start": 979.839,
+      "duration": 6.961
+    },
+    {
+      "text": "and we want now know how can we",
+      "start": 983.44,
+      "duration": 7.56
+    },
+    {
+      "text": "interpret the code how can we read it so",
+      "start": 986.8,
+      "duration": 6.56
+    },
+    {
+      "text": "in theory what we have to do is we have",
+      "start": 991.0,
+      "duration": 7.319
+    },
+    {
+      "text": "to somehow use a tool that decodes us",
+      "start": 993.36,
+      "duration": 8.599
+    },
+    {
+      "text": "this code here to a human readable",
+      "start": 998.319,
+      "duration": 5.52
+    },
+    {
+      "text": "representation form like to assembly",
+      "start": 1001.959,
+      "duration": 4.961
+    },
+    {
+      "text": "code and this tool is called",
+      "start": 1003.839,
+      "duration": 5.36
+    },
+    {
+      "text": "disassembler so we have a cool tool",
+      "start": 1006.92,
+      "duration": 3.039
+    },
+    {
+      "text": "called",
+      "start": 1009.199,
+      "duration": 3.281
+    },
+    {
+      "text": "disassembler which basically decodes",
+      "start": 1009.959,
+      "duration": 4.641
+    },
+    {
+      "text": "machine",
+      "start": 1012.48,
+      "duration": 5.12
+    },
+    {
+      "text": "code into assembly",
+      "start": 1014.6,
+      "duration": 5.719
+    },
+    {
+      "text": "code okay",
+      "start": 1017.6,
+      "duration": 4.799
+    },
+    {
+      "text": "so",
+      "start": 1020.319,
+      "duration": 7.561
+    },
+    {
+      "text": "basically if we have this code",
+      "start": 1022.399,
+      "duration": 8.52
+    },
+    {
+      "text": "here or here another blob where we have",
+      "start": 1027.88,
+      "duration": 7.12
+    },
+    {
+      "text": "machine code and then we put it into a",
+      "start": 1030.919,
+      "duration": 6.801
+    },
+    {
+      "text": "disassembler we end up with something",
+      "start": 1035.0,
+      "duration": 6.039
+    },
+    {
+      "text": "like that which is a human readable form",
+      "start": 1037.72,
+      "duration": 7.04
+    },
+    {
+      "text": "of machine code and in this term this is",
+      "start": 1041.039,
+      "duration": 8.88
+    },
+    {
+      "text": "assembly code and now if you are um if",
+      "start": 1044.76,
+      "duration": 7.4
+    },
+    {
+      "text": "you are more experienced in Reading",
+      "start": 1049.919,
+      "duration": 4.201
+    },
+    {
+      "text": "assembly writing assembly and stuff like",
+      "start": 1052.16,
+      "duration": 4.36
+    },
+    {
+      "text": "that you could start",
+      "start": 1054.12,
+      "duration": 5.0
+    },
+    {
+      "text": "analyzing that and understanding what",
+      "start": 1056.52,
+      "duration": 6.92
+    },
+    {
+      "text": "the code does however however this kind",
+      "start": 1059.12,
+      "duration": 7.24
+    },
+    {
+      "text": "of thing requires some expert knowledge",
+      "start": 1063.44,
+      "duration": 5.599
+    },
+    {
+      "text": "about you have to know assembly code you",
+      "start": 1066.36,
+      "duration": 5.48
+    },
+    {
+      "text": "have to um have the lowlevel",
+      "start": 1069.039,
+      "duration": 5.361
+    },
+    {
+      "text": "understanding and so on so this is not",
+      "start": 1071.84,
+      "duration": 5.8
+    },
+    {
+      "text": "beginner friendly however we can improve",
+      "start": 1074.4,
+      "duration": 5.88
+    },
+    {
+      "text": "upon that and Auto made it in a way that",
+      "start": 1077.64,
+      "duration": 5.8
+    },
+    {
+      "text": "it's still doable and feasible for",
+      "start": 1080.28,
+      "duration": 6.759
+    },
+    {
+      "text": "non-experts and that's by using another",
+      "start": 1083.44,
+      "duration": 7.359
+    },
+    {
+      "text": "tool which is called",
+      "start": 1087.039,
+      "duration": 3.76
+    },
+    {
+      "text": "decompiler a",
+      "start": 1091.0,
+      "duration": 6.0
+    },
+    {
+      "text": "decompiler basically tries to",
+      "start": 1092.799,
+      "duration": 7.961
+    },
+    {
+      "text": "reconstruct um high level",
+      "start": 1097.0,
+      "duration": 6.12
+    },
+    {
+      "text": "code from mchine",
+      "start": 1100.76,
+      "duration": 5.84
+    },
+    {
+      "text": "code so decompiler is basically a next",
+      "start": 1103.12,
+      "duration": 6.52
+    },
+    {
+      "text": "step it takes",
+      "start": 1106.6,
+      "duration": 7.16
+    },
+    {
+      "text": "something like that is input and tries",
+      "start": 1109.64,
+      "duration": 7.2
+    },
+    {
+      "text": "to reconstruct as much as possible high",
+      "start": 1113.76,
+      "duration": 7.64
+    },
+    {
+      "text": "level code as possible so for instance a",
+      "start": 1116.84,
+      "duration": 6.839
+    },
+    {
+      "text": "decompiler might go from something like",
+      "start": 1121.4,
+      "duration": 5.159
+    },
+    {
+      "text": "that to something like that where we can",
+      "start": 1123.679,
+      "duration": 5.561
+    },
+    {
+      "text": "see the function signature and its",
+      "start": 1126.559,
+      "duration": 5.681
+    },
+    {
+      "text": "function name with two parameters and",
+      "start": 1129.24,
+      "duration": 6.52
+    },
+    {
+      "text": "then we see that it returns something",
+      "start": 1132.24,
+      "duration": 5.799
+    },
+    {
+      "text": "and so parameters are added together and",
+      "start": 1135.76,
+      "duration": 5.799
+    },
+    {
+      "text": "multiplied by four and something like",
+      "start": 1138.039,
+      "duration": 7.12
+    },
+    {
+      "text": "that is at least more",
+      "start": 1141.559,
+      "duration": 8.641
+    },
+    {
+      "text": "readable um for um um for somebody who",
+      "start": 1145.159,
+      "duration": 6.361
+    },
+    {
+      "text": "doesn't have a reverse engineering",
+      "start": 1150.2,
+      "duration": 4.92
+    },
+    {
+      "text": "backout than this one and now let's",
+      "start": 1151.52,
+      "duration": 6.88
+    },
+    {
+      "text": "assume that you have a binary that you",
+      "start": 1155.12,
+      "duration": 5.2
+    },
+    {
+      "text": "want to analyze but you are a",
+      "start": 1158.4,
+      "duration": 5.32
+    },
+    {
+      "text": "non-reverse engineering expert so then",
+      "start": 1160.32,
+      "duration": 5.04
+    },
+    {
+      "text": "it's for sure that you don't want to",
+      "start": 1163.72,
+      "duration": 4.48
+    },
+    {
+      "text": "start here you instead want to have",
+      "start": 1165.36,
+      "duration": 5.6
+    },
+    {
+      "text": "something which shows you something like",
+      "start": 1168.2,
+      "duration": 7.0
+    },
+    {
+      "text": "that and this um this might not be the",
+      "start": 1170.96,
+      "duration": 8.079
+    },
+    {
+      "text": "this might not be perfect because maybe",
+      "start": 1175.2,
+      "duration": 7.0
+    },
+    {
+      "text": "um it's not perfect like the like plain",
+      "start": 1179.039,
+      "duration": 5.441
+    },
+    {
+      "text": "C code or something like that however",
+      "start": 1182.2,
+      "duration": 4.92
+    },
+    {
+      "text": "it's still a good enough approximation",
+      "start": 1184.48,
+      "duration": 5.48
+    },
+    {
+      "text": "that you can still take something from",
+      "start": 1187.12,
+      "duration": 4.76
+    },
+    {
+      "text": "that or learn something from that",
+      "start": 1189.96,
+      "duration": 5.599
+    },
+    {
+      "text": "without being stuck into all the details",
+      "start": 1191.88,
+      "duration": 6.88
+    },
+    {
+      "text": "of how to read that and the question",
+      "start": 1195.559,
+      "duration": 6.441
+    },
+    {
+      "text": "question is is there a tool or is there",
+      "start": 1198.76,
+      "duration": 6.44
+    },
+    {
+      "text": "something that can help you in doing",
+      "start": 1202.0,
+      "duration": 5.32
+    },
+    {
+      "text": "something like that and then the",
+      "start": 1205.2,
+      "duration": 5.839
+    },
+    {
+      "text": "question is yes so there is a tool an",
+      "start": 1207.32,
+      "duration": 6.839
+    },
+    {
+      "text": "open source tool called gidra gidra is",
+      "start": 1211.039,
+      "duration": 5.481
+    },
+    {
+      "text": "an open source rever reverse engineering",
+      "start": 1214.159,
+      "duration": 4.841
+    },
+    {
+      "text": "framework written in Java and has been",
+      "start": 1216.52,
+      "duration": 5.519
+    },
+    {
+      "text": "released by the NSA and it's freely",
+      "start": 1219.0,
+      "duration": 5.36
+    },
+    {
+      "text": "available so what you can",
+      "start": 1222.039,
+      "duration": 6.64
+    },
+    {
+      "text": "do is you can for instance just look for",
+      "start": 1224.36,
+      "duration": 8.199
+    },
+    {
+      "text": "or gidra download then you find it the",
+      "start": 1228.679,
+      "duration": 8.801
+    },
+    {
+      "text": "homepage here then you can go to the",
+      "start": 1232.559,
+      "duration": 8.561
+    },
+    {
+      "text": "GitHub they could download it and then",
+      "start": 1237.48,
+      "duration": 5.96
+    },
+    {
+      "text": "um you can just start it and it works on",
+      "start": 1241.12,
+      "duration": 4.84
+    },
+    {
+      "text": "Windows it works on Linux and ver me me",
+      "start": 1243.44,
+      "duration": 6.84
+    },
+    {
+      "text": "OS um I I already installed that so",
+      "start": 1245.96,
+      "duration": 7.92
+    },
+    {
+      "text": "let's start with opening gidra it's this",
+      "start": 1250.28,
+      "duration": 7.6
+    },
+    {
+      "text": "symbol here so the first thing if we",
+      "start": 1253.88,
+      "duration": 7.32
+    },
+    {
+      "text": "open gidra it's a bit a bit things to",
+      "start": 1257.88,
+      "duration": 7.159
+    },
+    {
+      "text": "click but it's um it's",
+      "start": 1261.2,
+      "duration": 8.12
+    },
+    {
+      "text": "doable so once I open",
+      "start": 1265.039,
+      "duration": 7.601
+    },
+    {
+      "text": "that it gives me a",
+      "start": 1269.32,
+      "duration": 5.44
+    },
+    {
+      "text": "window like this",
+      "start": 1272.64,
+      "duration": 5.8
+    },
+    {
+      "text": "one it says it has no active project",
+      "start": 1274.76,
+      "duration": 6.2
+    },
+    {
+      "text": "what I have first have to do is I have",
+      "start": 1278.44,
+      "duration": 5.56
+    },
+    {
+      "text": "to define a project for instance I go to",
+      "start": 1280.96,
+      "duration": 6.56
+    },
+    {
+      "text": "file new project it's a non-shared",
+      "start": 1284.0,
+      "duration": 5.52
+    },
+    {
+      "text": "project because I want to reverse",
+      "start": 1287.52,
+      "duration": 4.68
+    },
+    {
+      "text": "reverse engineer on my own I don't want",
+      "start": 1289.52,
+      "duration": 6.08
+    },
+    {
+      "text": "to uh contribute with others and so I",
+      "start": 1292.2,
+      "duration": 6.599
+    },
+    {
+      "text": "give it a name I just call it",
+      "start": 1295.6,
+      "duration": 5.199
+    },
+    {
+      "text": "webinar",
+      "start": 1298.799,
+      "duration": 6.801
+    },
+    {
+      "text": "reversing and then I finish and now I",
+      "start": 1300.799,
+      "duration": 9.36
+    },
+    {
+      "text": "can import a binary so I go to file",
+      "start": 1305.6,
+      "duration": 9.199
+    },
+    {
+      "text": "import file I would go to",
+      "start": 1310.159,
+      "duration": 7.961
+    },
+    {
+      "text": "webinars to the binary and take this",
+      "start": 1314.799,
+      "duration": 6.561
+    },
+    {
+      "text": "hello word example here and put it in",
+      "start": 1318.12,
+      "duration": 7.64
+    },
+    {
+      "text": "there and then it already tolds me it's",
+      "start": 1321.36,
+      "duration": 7.4
+    },
+    {
+      "text": "an executable inable file format so it's",
+      "start": 1325.76,
+      "duration": 4.96
+    },
+    {
+      "text": "eelf and it's",
+      "start": 1328.76,
+      "duration": 5.799
+    },
+    {
+      "text": "r64 r64 is basically another word for",
+      "start": 1330.72,
+      "duration": 6.76
+    },
+    {
+      "text": "arm 64 so I do",
+      "start": 1334.559,
+      "duration": 5.401
+    },
+    {
+      "text": "okay and then it gives me more",
+      "start": 1337.48,
+      "duration": 5.88
+    },
+    {
+      "text": "information I usually just ignore that",
+      "start": 1339.96,
+      "duration": 7.12
+    },
+    {
+      "text": "and then I double press enter here and",
+      "start": 1343.36,
+      "duration": 6.319
+    },
+    {
+      "text": "then it launches the analysis",
+      "start": 1347.08,
+      "duration": 6.599
+    },
+    {
+      "text": "tool it's just on another desktop so I",
+      "start": 1349.679,
+      "duration": 7.841
+    },
+    {
+      "text": "have to put it on here it tells me it",
+      "start": 1353.679,
+      "duration": 5.48
+    },
+    {
+      "text": "has not been analyzed if I want to",
+      "start": 1357.52,
+      "duration": 4.56
+    },
+    {
+      "text": "analyze it so I press yes then it just",
+      "start": 1359.159,
+      "duration": 5.241
+    },
+    {
+      "text": "shows me some things but I can ignore",
+      "start": 1362.08,
+      "duration": 5.599
+    },
+    {
+      "text": "that I can just press analyze and then I",
+      "start": 1364.4,
+      "duration": 7.36
+    },
+    {
+      "text": "get up with a window like that and",
+      "start": 1367.679,
+      "duration": 6.961
+    },
+    {
+      "text": "here this looks kind of",
+      "start": 1371.76,
+      "duration": 6.0
+    },
+    {
+      "text": "bloated but the most important thing for",
+      "start": 1374.64,
+      "duration": 6.44
+    },
+    {
+      "text": "us right now is the right side the right",
+      "start": 1377.76,
+      "duration": 8.84
+    },
+    {
+      "text": "side is the um decompiler output and",
+      "start": 1381.08,
+      "duration": 7.68
+    },
+    {
+      "text": "here in the middle we see the assembly",
+      "start": 1386.6,
+      "duration": 6.88
+    },
+    {
+      "text": "code so we see here this is the assembly",
+      "start": 1388.76,
+      "duration": 7.919
+    },
+    {
+      "text": "code and",
+      "start": 1393.48,
+      "duration": 6.64
+    },
+    {
+      "text": "um if I click somewhere here I see on",
+      "start": 1396.679,
+      "duration": 5.641
+    },
+    {
+      "text": "the right side the compiler",
+      "start": 1400.12,
+      "duration": 5.72
+    },
+    {
+      "text": "output and so let's click here and so",
+      "start": 1402.32,
+      "duration": 7.08
+    },
+    {
+      "text": "it's important this here is the assembly",
+      "start": 1405.84,
+      "duration": 6.28
+    },
+    {
+      "text": "code but if we take a look at the right",
+      "start": 1409.4,
+      "duration": 7.0
+    },
+    {
+      "text": "hand side we see the decomil output and",
+      "start": 1412.12,
+      "duration": 7.72
+    },
+    {
+      "text": "here we see that basically we have a",
+      "start": 1416.4,
+      "duration": 6.44
+    },
+    {
+      "text": "function which this this would be the",
+      "start": 1419.84,
+      "duration": 6.439
+    },
+    {
+      "text": "main function it doesn't have a ker name",
+      "start": 1422.84,
+      "duration": 6.28
+    },
+    {
+      "text": "because um the decompiler or the",
+      "start": 1426.279,
+      "duration": 5.361
+    },
+    {
+      "text": "disassembler doesn't know any of the",
+      "start": 1429.12,
+      "duration": 4.64
+    },
+    {
+      "text": "original function names because these",
+      "start": 1431.64,
+      "duration": 5.159
+    },
+    {
+      "text": "information are are lost during",
+      "start": 1433.76,
+      "duration": 6.56
+    },
+    {
+      "text": "compilation so we have now here a",
+      "start": 1436.799,
+      "duration": 6.561
+    },
+    {
+      "text": "function and we say that it basically",
+      "start": 1440.32,
+      "duration": 5.479
+    },
+    {
+      "text": "puts or puts which is another API",
+      "start": 1443.36,
+      "duration": 6.439
+    },
+    {
+      "text": "function for print F print hello W and",
+      "start": 1445.799,
+      "duration": 5.641
+    },
+    {
+      "text": "then we return",
+      "start": 1449.799,
+      "duration": 3.961
+    },
+    {
+      "text": "zero if we compare this with the",
+      "start": 1451.44,
+      "duration": 5.28
+    },
+    {
+      "text": "original code we see",
+      "start": 1453.76,
+      "duration": 6.84
+    },
+    {
+      "text": "here that we basically have the main",
+      "start": 1456.72,
+      "duration": 8.04
+    },
+    {
+      "text": "function that we have then a comment",
+      "start": 1460.6,
+      "duration": 6.559
+    },
+    {
+      "text": "then we have the print F hello world and",
+      "start": 1464.76,
+      "duration": 4.44
+    },
+    {
+      "text": "we return zero",
+      "start": 1467.159,
+      "duration": 3.76
+    },
+    {
+      "text": "and if we compile that with the",
+      "start": 1469.2,
+      "duration": 5.959
+    },
+    {
+      "text": "decompiler output here we can see that",
+      "start": 1470.919,
+      "duration": 7.601
+    },
+    {
+      "text": "we have just some function name this",
+      "start": 1475.159,
+      "duration": 5.961
+    },
+    {
+      "text": "function name indicates B is just uh",
+      "start": 1478.52,
+      "duration": 4.36
+    },
+    {
+      "text": "defined after the address where it",
+      "start": 1481.12,
+      "duration": 6.08
+    },
+    {
+      "text": "layouted in binary then we have the puts",
+      "start": 1482.88,
+      "duration": 7.12
+    },
+    {
+      "text": "or the print F to hello world and we",
+      "start": 1487.2,
+      "duration": 6.8
+    },
+    {
+      "text": "return zero so as we can see it's not",
+      "start": 1490.0,
+      "duration": 6.559
+    },
+    {
+      "text": "perfect like information like the",
+      "start": 1494.0,
+      "duration": 4.64
+    },
+    {
+      "text": "function name or the comment got l",
+      "start": 1496.559,
+      "duration": 4.881
+    },
+    {
+      "text": "during compilation but",
+      "start": 1498.64,
+      "duration": 6.919
+    },
+    {
+      "text": "still without knowing much about binary",
+      "start": 1501.44,
+      "duration": 6.719
+    },
+    {
+      "text": "analysis we are just able to put this",
+      "start": 1505.559,
+      "duration": 6.161
+    },
+    {
+      "text": "into gidra and if we find the function",
+      "start": 1508.159,
+      "duration": 6.601
+    },
+    {
+      "text": "here then we can get a high level",
+      "start": 1511.72,
+      "duration": 5.64
+    },
+    {
+      "text": "understanding about what the code",
+      "start": 1514.76,
+      "duration": 5.24
+    },
+    {
+      "text": "does and this is now",
+      "start": 1517.36,
+      "duration": 5.64
+    },
+    {
+      "text": "something um these are now the basics",
+      "start": 1520.0,
+      "duration": 7.799
+    },
+    {
+      "text": "and now we can build up on that and um",
+      "start": 1523.0,
+      "duration": 7.039
+    },
+    {
+      "text": "take a look look at a more complicated",
+      "start": 1527.799,
+      "duration": 4.961
+    },
+    {
+      "text": "example that actually is more related to",
+      "start": 1530.039,
+      "duration": 3.64
+    },
+    {
+      "text": "software",
+      "start": 1532.76,
+      "duration": 5.279
+    },
+    {
+      "text": "cracking so let's take a look",
+      "start": 1533.679,
+      "duration": 10.201
+    },
+    {
+      "text": "at another source file it's basically um",
+      "start": 1538.039,
+      "duration": 6.88
+    },
+    {
+      "text": "license",
+      "start": 1543.88,
+      "duration": 6.08
+    },
+    {
+      "text": "check so here we have a main function",
+      "start": 1544.919,
+      "duration": 9.281
+    },
+    {
+      "text": "and this main function reads in user",
+      "start": 1549.96,
+      "duration": 8.04
+    },
+    {
+      "text": "license and then it checks if the input",
+      "start": 1554.2,
+      "duration": 5.4
+    },
+    {
+      "text": "license",
+      "start": 1558.0,
+      "duration": 5.799
+    },
+    {
+      "text": "is valid or not if it's valid so",
+      "start": 1559.6,
+      "duration": 8.16
+    },
+    {
+      "text": "basically if the um user license is",
+      "start": 1563.799,
+      "duration": 6.681
+    },
+    {
+      "text": "valid then it returns",
+      "start": 1567.76,
+      "duration": 6.88
+    },
+    {
+      "text": "one and then it basically unlocks the",
+      "start": 1570.48,
+      "duration": 6.0
+    },
+    {
+      "text": "paid premium",
+      "start": 1574.64,
+      "duration": 5.84
+    },
+    {
+      "text": "feature otherwise it tells us it's an",
+      "start": 1576.48,
+      "duration": 6.64
+    },
+    {
+      "text": "invalid it's an invalid license access",
+      "start": 1580.48,
+      "duration": 3.4
+    },
+    {
+      "text": "is",
+      "start": 1583.12,
+      "duration": 3.279
+    },
+    {
+      "text": "denied so but of course we don't have",
+      "start": 1583.88,
+      "duration": 8.0
+    },
+    {
+      "text": "the source code so what we have is",
+      "start": 1586.399,
+      "duration": 8.961
+    },
+    {
+      "text": "only the file here license",
+      "start": 1591.88,
+      "duration": 7.279
+    },
+    {
+      "text": "check let's start again checking what",
+      "start": 1595.36,
+      "duration": 6.96
+    },
+    {
+      "text": "kind kind of file it is and then again",
+      "start": 1599.159,
+      "duration": 9.161
+    },
+    {
+      "text": "we see it's an L file 64bit for the arm",
+      "start": 1602.32,
+      "duration": 8.959
+    },
+    {
+      "text": "architecture so since this is the Linux",
+      "start": 1608.32,
+      "duration": 4.92
+    },
+    {
+      "text": "uh this this this terminal here as a",
+      "start": 1611.279,
+      "duration": 5.28
+    },
+    {
+      "text": "Linux terminal on um 64bit I can just",
+      "start": 1613.24,
+      "duration": 7.439
+    },
+    {
+      "text": "execute it so I can put in license check",
+      "start": 1616.559,
+      "duration": 9.521
+    },
+    {
+      "text": "and then it tells me please uh enter",
+      "start": 1620.679,
+      "duration": 7.961
+    },
+    {
+      "text": "license I just put in something and",
+      "start": 1626.08,
+      "duration": 6.4
+    },
+    {
+      "text": "press enter and then tells me invalid",
+      "start": 1628.64,
+      "duration": 6.279
+    },
+    {
+      "text": "license access",
+      "start": 1632.48,
+      "duration": 7.199
+    },
+    {
+      "text": "denight okay so there's currently no way",
+      "start": 1634.919,
+      "duration": 7.721
+    },
+    {
+      "text": "how we can unlock that we",
+      "start": 1639.679,
+      "duration": 5.201
+    },
+    {
+      "text": "have this",
+      "start": 1642.64,
+      "duration": 4.639
+    },
+    {
+      "text": "file we can put in something and it",
+      "start": 1644.88,
+      "duration": 4.799
+    },
+    {
+      "text": "tells us access the night the question",
+      "start": 1647.279,
+      "duration": 6.841
+    },
+    {
+      "text": "is now how would we unlock this file",
+      "start": 1649.679,
+      "duration": 6.761
+    },
+    {
+      "text": "here how can we learn the",
+      "start": 1654.12,
+      "duration": 5.08
+    },
+    {
+      "text": "secret if we take a look at the source",
+      "start": 1656.44,
+      "duration": 6.4
+    },
+    {
+      "text": "code again you will notice that the",
+      "start": 1659.2,
+      "duration": 7.28
+    },
+    {
+      "text": "correct license is hardcoded in the",
+      "start": 1662.84,
+      "duration": 8.079
+    },
+    {
+      "text": "binary it's like this ABC 1 2 3 XY Z and",
+      "start": 1666.48,
+      "duration": 9.199
+    },
+    {
+      "text": "so on so basically if we would input",
+      "start": 1670.919,
+      "duration": 7.561
+    },
+    {
+      "text": "into that",
+      "start": 1675.679,
+      "duration": 5.561
+    },
+    {
+      "text": "which we don't know but if we just would",
+      "start": 1678.48,
+      "duration": 6.439
+    },
+    {
+      "text": "put into that it tells us access",
+      "start": 1681.24,
+      "duration": 7.439
+    },
+    {
+      "text": "granted question is now how do we learn",
+      "start": 1684.919,
+      "duration": 7.281
+    },
+    {
+      "text": "about that and well there are multiple",
+      "start": 1688.679,
+      "duration": 8.641
+    },
+    {
+      "text": "ways to that let's start with the um",
+      "start": 1692.2,
+      "duration": 9.359
+    },
+    {
+      "text": "with the um easy way so since it's",
+      "start": 1697.32,
+      "duration": 8.12
+    },
+    {
+      "text": "hardcoded and I we in especially in the",
+      "start": 1701.559,
+      "duration": 5.96
+    },
+    {
+      "text": "embedded security area we see a lot of",
+      "start": 1705.44,
+      "duration": 3.959
+    },
+    {
+      "text": "things which get hardcoded like",
+      "start": 1707.519,
+      "duration": 5.0
+    },
+    {
+      "text": "cryptographic Keys hardcoded passwords",
+      "start": 1709.399,
+      "duration": 6.681
+    },
+    {
+      "text": "and so on and so on licenses so uh we",
+      "start": 1712.519,
+      "duration": 5.88
+    },
+    {
+      "text": "see in the beded world a lot of things",
+      "start": 1716.08,
+      "duration": 5.319
+    },
+    {
+      "text": "are hardcoded in binaries and these can",
+      "start": 1718.399,
+      "duration": 6.64
+    },
+    {
+      "text": "be similarly dumped as we do it now so",
+      "start": 1721.399,
+      "duration": 6.16
+    },
+    {
+      "text": "if we do the hex stump of the license",
+      "start": 1725.039,
+      "duration": 3.801
+    },
+    {
+      "text": "check",
+      "start": 1727.559,
+      "duration": 4.081
+    },
+    {
+      "text": "again basically looking at that at the",
+      "start": 1728.84,
+      "duration": 7.719
+    },
+    {
+      "text": "file in HEX editor we can see all the",
+      "start": 1731.64,
+      "duration": 8.519
+    },
+    {
+      "text": "code and it's key representation so",
+      "start": 1736.559,
+      "duration": 5.48
+    },
+    {
+      "text": "somewhere down here is a machine code",
+      "start": 1740.159,
+      "duration": 4.52
+    },
+    {
+      "text": "that's not interesting to us but if we",
+      "start": 1742.039,
+      "duration": 6.681
+    },
+    {
+      "text": "scroll up we see additional information",
+      "start": 1744.679,
+      "duration": 8.081
+    },
+    {
+      "text": "like GCC and some sections that are",
+      "start": 1748.72,
+      "duration": 7.679
+    },
+    {
+      "text": "related to the elf file but if we scroll",
+      "start": 1752.76,
+      "duration": 8.36
+    },
+    {
+      "text": "up and up we also see strings we see",
+      "start": 1756.399,
+      "duration": 7.76
+    },
+    {
+      "text": "like invalid license key access",
+      "start": 1761.12,
+      "duration": 5.279
+    },
+    {
+      "text": "denied this is just something that we",
+      "start": 1764.159,
+      "duration": 5.24
+    },
+    {
+      "text": "saw before it's as the program",
+      "start": 1766.399,
+      "duration": 5.88
+    },
+    {
+      "text": "output we see something like enter your",
+      "start": 1769.399,
+      "duration": 5.52
+    },
+    {
+      "text": "license key this is also something that",
+      "start": 1772.279,
+      "duration": 6.441
+    },
+    {
+      "text": "we saw before but we what we also see",
+      "start": 1774.919,
+      "duration": 10.681
+    },
+    {
+      "text": "is um this string ABC 1 2 3 XYZ so we",
+      "start": 1778.72,
+      "duration": 10.12
+    },
+    {
+      "text": "basically have the credential which is",
+      "start": 1785.6,
+      "duration": 5.76
+    },
+    {
+      "text": "needed to unlock the premium feature",
+      "start": 1788.84,
+      "duration": 4.64
+    },
+    {
+      "text": "hardcoded in the",
+      "start": 1791.36,
+      "duration": 5.52
+    },
+    {
+      "text": "binary and by just looking at the",
+      "start": 1793.48,
+      "duration": 5.079
+    },
+    {
+      "text": "strings here",
+      "start": 1796.88,
+      "duration": 4.84
+    },
+    {
+      "text": "we find it somewhere here there's also",
+      "start": 1798.559,
+      "duration": 5.561
+    },
+    {
+      "text": "another command we could use we could",
+      "start": 1801.72,
+      "duration": 5.76
+    },
+    {
+      "text": "just use the strings command to the",
+      "start": 1804.12,
+      "duration": 6.48
+    },
+    {
+      "text": "license check and then we get a l list",
+      "start": 1807.48,
+      "duration": 6.84
+    },
+    {
+      "text": "of all strings and then here we will",
+      "start": 1810.6,
+      "duration": 7.439
+    },
+    {
+      "text": "find that this one is one of them",
+      "start": 1814.32,
+      "duration": 7.4
+    },
+    {
+      "text": "so question is now how do we know that",
+      "start": 1818.039,
+      "duration": 8.401
+    },
+    {
+      "text": "this relates to that well we don't know",
+      "start": 1821.72,
+      "duration": 7.76
+    },
+    {
+      "text": "without that we just might notice that",
+      "start": 1826.44,
+      "duration": 5.32
+    },
+    {
+      "text": "these things are just nearby in the",
+      "start": 1829.48,
+      "duration": 5.96
+    },
+    {
+      "text": "binary and so maybe we can just try it",
+      "start": 1831.76,
+      "duration": 6.399
+    },
+    {
+      "text": "but based on that besides that we have",
+      "start": 1835.44,
+      "duration": 6.16
+    },
+    {
+      "text": "currently no other way to validate that",
+      "start": 1838.159,
+      "duration": 6.561
+    },
+    {
+      "text": "however let's go back to gidra",
+      "start": 1841.6,
+      "duration": 7.36
+    },
+    {
+      "text": "again now I open not the hello world",
+      "start": 1844.72,
+      "duration": 8.799
+    },
+    {
+      "text": "file instead I open this license check",
+      "start": 1848.96,
+      "duration": 8.679
+    },
+    {
+      "text": "file and then I do again import file the",
+      "start": 1853.519,
+      "duration": 7.841
+    },
+    {
+      "text": "license check okay",
+      "start": 1857.639,
+      "duration": 7.121
+    },
+    {
+      "text": "okay then I double click",
+      "start": 1861.36,
+      "duration": 7.48
+    },
+    {
+      "text": "here then I say yes analyze",
+      "start": 1864.76,
+      "duration": 6.759
+    },
+    {
+      "text": "analyze and then it does its",
+      "start": 1868.84,
+      "duration": 5.959
+    },
+    {
+      "text": "magic and now I",
+      "start": 1871.519,
+      "duration": 7.241
+    },
+    {
+      "text": "have the code here again but what I can",
+      "start": 1874.799,
+      "duration": 9.0
+    },
+    {
+      "text": "do is I can go to window and go",
+      "start": 1878.76,
+      "duration": 9.399
+    },
+    {
+      "text": "to Strings Define strings and then on",
+      "start": 1883.799,
+      "duration": 8.12
+    },
+    {
+      "text": "the right side here I get a list of all",
+      "start": 1888.159,
+      "duration": 6.961
+    },
+    {
+      "text": "the thingss in the binary again and then",
+      "start": 1891.919,
+      "duration": 5.681
+    },
+    {
+      "text": "for instance I can go to the access",
+      "start": 1895.12,
+      "duration": 5.0
+    },
+    {
+      "text": "granted because the access granted is",
+      "start": 1897.6,
+      "duration": 4.64
+    },
+    {
+      "text": "something that I want to",
+      "start": 1900.12,
+      "duration": 6.399
+    },
+    {
+      "text": "reach and now I see here somewhere in",
+      "start": 1902.24,
+      "duration": 6.36
+    },
+    {
+      "text": "the data section of the",
+      "start": 1906.519,
+      "duration": 5.88
+    },
+    {
+      "text": "binary that here I have the access",
+      "start": 1908.6,
+      "duration": 8.039
+    },
+    {
+      "text": "granted okay I I know the data but the",
+      "start": 1912.399,
+      "duration": 7.481
+    },
+    {
+      "text": "most interesting thing is is what code",
+      "start": 1916.639,
+      "duration": 7.4
+    },
+    {
+      "text": "parts do interact with the data and so I",
+      "start": 1919.88,
+      "duration": 7.44
+    },
+    {
+      "text": "can basically look here they are cross",
+      "start": 1924.039,
+      "duration": 5.841
+    },
+    {
+      "text": "referenced which code Parts interact",
+      "start": 1927.32,
+      "duration": 5.239
+    },
+    {
+      "text": "with the data and I click can click on",
+      "start": 1929.88,
+      "duration": 6.2
+    },
+    {
+      "text": "that and then I look in the decompiler",
+      "start": 1932.559,
+      "duration": 8.801
+    },
+    {
+      "text": "output again and now I",
+      "start": 1936.08,
+      "duration": 8.28
+    },
+    {
+      "text": "see",
+      "start": 1941.36,
+      "duration": 3.0
+    },
+    {
+      "text": "here we have something",
+      "start": 1945.12,
+      "duration": 4.72
+    },
+    {
+      "text": "like enter your license",
+      "start": 1949.96,
+      "duration": 9.92
+    },
+    {
+      "text": "key then we put in the license key here",
+      "start": 1952.88,
+      "duration": 9.919
+    },
+    {
+      "text": "then we perform a check with something",
+      "start": 1959.88,
+      "duration": 7.399
+    },
+    {
+      "text": "like that and then if this holds it",
+      "start": 1962.799,
+      "duration": 7.36
+    },
+    {
+      "text": "tells us access",
+      "start": 1967.279,
+      "duration": 6.041
+    },
+    {
+      "text": "granted the premium is now unlocked",
+      "start": 1970.159,
+      "duration": 8.201
+    },
+    {
+      "text": "otherwise invalid license access denied",
+      "start": 1973.32,
+      "duration": 11.079
+    },
+    {
+      "text": "okay so this seems to be related to",
+      "start": 1978.36,
+      "duration": 8.84
+    },
+    {
+      "text": "that so this does not really help us a",
+      "start": 1984.399,
+      "duration": 5.76
+    },
+    {
+      "text": "lot because what is",
+      "start": 1987.2,
+      "duration": 4.64
+    },
+    {
+      "text": "that",
+      "start": 1990.159,
+      "duration": 4.921
+    },
+    {
+      "text": "but um we at least can see the high",
+      "start": 1991.84,
+      "duration": 5.48
+    },
+    {
+      "text": "level",
+      "start": 1995.08,
+      "duration": 2.24
+    },
+    {
+      "text": "logic so what else can we do is we can",
+      "start": 1999.84,
+      "duration": 5.28
+    },
+    {
+      "text": "go back",
+      "start": 2003.6,
+      "duration": 6.559
+    },
+    {
+      "text": "to the defined strings and look",
+      "start": 2005.12,
+      "duration": 8.919
+    },
+    {
+      "text": "at um the string we just saw before this",
+      "start": 2010.159,
+      "duration": 4.681
+    },
+    {
+      "text": "one",
+      "start": 2014.039,
+      "duration": 4.281
+    },
+    {
+      "text": "here and see here we see that this is",
+      "start": 2014.84,
+      "duration": 7.04
+    },
+    {
+      "text": "also used this ABC one 2 3 that this is",
+      "start": 2018.32,
+      "duration": 7.12
+    },
+    {
+      "text": "also used somewhere in the binary so we",
+      "start": 2021.88,
+      "duration": 5.399
+    },
+    {
+      "text": "can click on",
+      "start": 2025.44,
+      "duration": 5.88
+    },
+    {
+      "text": "that and go to the decompile again and",
+      "start": 2027.279,
+      "duration": 7.12
+    },
+    {
+      "text": "we see oh this seems to be somehow",
+      "start": 2031.32,
+      "duration": 6.76
+    },
+    {
+      "text": "related here",
+      "start": 2034.399,
+      "duration": 3.681
+    },
+    {
+      "text": "we don't see it in the immedately in the",
+      "start": 2038.76,
+      "duration": 6.0
+    },
+    {
+      "text": "decompiler output but here we see that",
+      "start": 2040.279,
+      "duration": 9.88
+    },
+    {
+      "text": "this is the A and this is XY Z so we",
+      "start": 2044.76,
+      "duration": 8.839
+    },
+    {
+      "text": "might come at least without diving too",
+      "start": 2050.159,
+      "duration": 6.2
+    },
+    {
+      "text": "much into the details we might just at",
+      "start": 2053.599,
+      "duration": 5.24
+    },
+    {
+      "text": "least come to the idea that this might",
+      "start": 2056.359,
+      "duration": 6.56
+    },
+    {
+      "text": "be related and then that we um can take",
+      "start": 2058.839,
+      "duration": 6.32
+    },
+    {
+      "text": "a closer look and that we have to put it",
+      "start": 2062.919,
+      "duration": 5.121
+    },
+    {
+      "text": "into here especially",
+      "start": 2065.159,
+      "duration": 7.281
+    },
+    {
+      "text": "if we know that here we have um that",
+      "start": 2068.04,
+      "duration": 6.079
+    },
+    {
+      "text": "this looks like principal asking",
+      "start": 2072.44,
+      "duration": 6.52
+    },
+    {
+      "text": "characters like 41 42 43 if we take a",
+      "start": 2074.119,
+      "duration": 7.641
+    },
+    {
+      "text": "look at an asky",
+      "start": 2078.96,
+      "duration": 2.8
+    },
+    {
+      "text": "table let's take a look at an asky",
+      "start": 2086.359,
+      "duration": 4.32
+    },
+    {
+      "text": "table if we take a look at",
+      "start": 2095.32,
+      "duration": 7.16
+    },
+    {
+      "text": "0x for one for two for",
+      "start": 2098.76,
+      "duration": 8.68
+    },
+    {
+      "text": "three we see that this is a BC so we at",
+      "start": 2102.48,
+      "duration": 8.92
+    },
+    {
+      "text": "least learn that this seems to be",
+      "start": 2107.44,
+      "duration": 6.8
+    },
+    {
+      "text": "somehow related to that and then we can",
+      "start": 2111.4,
+      "duration": 6.64
+    },
+    {
+      "text": "come up with oh this might be the",
+      "start": 2114.24,
+      "duration": 5.32
+    },
+    {
+      "text": "case",
+      "start": 2118.04,
+      "duration": 5.6
+    },
+    {
+      "text": "okay what else we could do is we could",
+      "start": 2119.56,
+      "duration": 8.16
+    },
+    {
+      "text": "try another decompiler or another two",
+      "start": 2123.64,
+      "duration": 7.52
+    },
+    {
+      "text": "tool maybe it gives us more information",
+      "start": 2127.72,
+      "duration": 7.359
+    },
+    {
+      "text": "so gidra as said gidra is open source",
+      "start": 2131.16,
+      "duration": 8.32
+    },
+    {
+      "text": "and um provides um a lot of information",
+      "start": 2135.079,
+      "duration": 6.241
+    },
+    {
+      "text": "however there are other tools like",
+      "start": 2139.48,
+      "duration": 2.76
+    },
+    {
+      "text": "binary",
+      "start": 2141.32,
+      "duration": 5.48
+    },
+    {
+      "text": "ninja which are paid which also exists",
+      "start": 2142.24,
+      "duration": 7.119
+    },
+    {
+      "text": "in paid versions but there also exists a",
+      "start": 2146.8,
+      "duration": 5.4
+    },
+    {
+      "text": "free version or a cloud-based",
+      "start": 2149.359,
+      "duration": 6.72
+    },
+    {
+      "text": "version so and we can download this one",
+      "start": 2152.2,
+      "duration": 6.44
+    },
+    {
+      "text": "and also open the binary with that and",
+      "start": 2156.079,
+      "duration": 3.801
+    },
+    {
+      "text": "see what's going",
+      "start": 2158.64,
+      "duration": 5.24
+    },
+    {
+      "text": "on so let me just do",
+      "start": 2159.88,
+      "duration": 4.0
+    },
+    {
+      "text": "that I go to the webinars",
+      "start": 2165.24,
+      "duration": 7.839
+    },
+    {
+      "text": "folder I open the binary the license",
+      "start": 2168.359,
+      "duration": 8.48
+    },
+    {
+      "text": "check and there",
+      "start": 2173.079,
+      "duration": 7.721
+    },
+    {
+      "text": "again I have",
+      "start": 2176.839,
+      "duration": 5.48
+    },
+    {
+      "text": "now",
+      "start": 2180.8,
+      "duration": 4.6
+    },
+    {
+      "text": "here immediately the decompile output of",
+      "start": 2182.319,
+      "duration": 5.8
+    },
+    {
+      "text": "the main function and here",
+      "start": 2185.4,
+      "duration": 5.679
+    },
+    {
+      "text": "it tells me here at least I see that I",
+      "start": 2188.119,
+      "duration": 5.121
+    },
+    {
+      "text": "do some form of string",
+      "start": 2191.079,
+      "duration": 5.441
+    },
+    {
+      "text": "copy and then based on the string",
+      "start": 2193.24,
+      "duration": 9.44
+    },
+    {
+      "text": "copy I copy the ABC minus until the X so",
+      "start": 2196.52,
+      "duration": 8.36
+    },
+    {
+      "text": "at least this again seems somehow",
+      "start": 2202.68,
+      "duration": 4.8
+    },
+    {
+      "text": "related we see that the decompiler",
+      "start": 2204.88,
+      "duration": 5.719
+    },
+    {
+      "text": "output does not perfectly reconstruct it",
+      "start": 2207.48,
+      "duration": 5.96
+    },
+    {
+      "text": "but it still reconstruct the high level",
+      "start": 2210.599,
+      "duration": 5.281
+    },
+    {
+      "text": "structure quite well like enter your",
+      "start": 2213.44,
+      "duration": 7.36
+    },
+    {
+      "text": "license key then the n f then the checks",
+      "start": 2215.88,
+      "duration": 8.199
+    },
+    {
+      "text": "and the checks tell me access granted or",
+      "start": 2220.8,
+      "duration": 6.36
+    },
+    {
+      "text": "invalid license if I compare that with",
+      "start": 2224.079,
+      "duration": 6.081
+    },
+    {
+      "text": "the original one I can see here I have",
+      "start": 2227.16,
+      "duration": 5.32
+    },
+    {
+      "text": "the check license and then it unlocks",
+      "start": 2230.16,
+      "duration": 4.959
+    },
+    {
+      "text": "the features and the check license works",
+      "start": 2232.48,
+      "duration": 5.839
+    },
+    {
+      "text": "like that so probably due to compiler",
+      "start": 2235.119,
+      "duration": 5.401
+    },
+    {
+      "text": "optimizations this check license has",
+      "start": 2238.319,
+      "duration": 6.04
+    },
+    {
+      "text": "been inlined into the main",
+      "start": 2240.52,
+      "duration": 3.839
+    },
+    {
+      "text": "function okay given that",
+      "start": 2244.48,
+      "duration": 6.68
+    },
+    {
+      "text": "we now have a better understanding of",
+      "start": 2248.319,
+      "duration": 7.0
+    },
+    {
+      "text": "how we could approach that let us go and",
+      "start": 2251.16,
+      "duration": 7.0
+    },
+    {
+      "text": "and and basically extract an hardcoded",
+      "start": 2255.319,
+      "duration": 5.921
+    },
+    {
+      "text": "secret um to",
+      "start": 2258.16,
+      "duration": 7.199
+    },
+    {
+      "text": "um to um learn to unlock premium",
+      "start": 2261.24,
+      "duration": 7.56
+    },
+    {
+      "text": "features let us go one step further",
+      "start": 2265.359,
+      "duration": 7.48
+    },
+    {
+      "text": "without looking at the code so now we",
+      "start": 2268.8,
+      "duration": 5.6
+    },
+    {
+      "text": "have a small",
+      "start": 2272.839,
+      "duration": 5.361
+    },
+    {
+      "text": "game and let's first start again the",
+      "start": 2274.4,
+      "duration": 9.64
+    },
+    {
+      "text": "game it's again an elf Linux 64 bit so",
+      "start": 2278.2,
+      "duration": 8.2
+    },
+    {
+      "text": "we can execute",
+      "start": 2284.04,
+      "duration": 5.039
+    },
+    {
+      "text": "it let's execute",
+      "start": 2286.4,
+      "duration": 6.6
+    },
+    {
+      "text": "that and then it's basically tells us",
+      "start": 2289.079,
+      "duration": 8.76
+    },
+    {
+      "text": "enter your license key or type trial for",
+      "start": 2293.0,
+      "duration": 6.64
+    },
+    {
+      "text": "limited uh",
+      "start": 2297.839,
+      "duration": 5.081
+    },
+    {
+      "text": "trial I just do nothing I just put in",
+      "start": 2299.64,
+      "duration": 6.479
+    },
+    {
+      "text": "ABCD or whatever and it it tells me it's",
+      "start": 2302.92,
+      "duration": 7.399
+    },
+    {
+      "text": "an invalet license has denied okay let",
+      "start": 2306.119,
+      "duration": 6.72
+    },
+    {
+      "text": "me put in",
+      "start": 2310.319,
+      "duration": 5.841
+    },
+    {
+      "text": "trial and then it's oh it's a number",
+      "start": 2312.839,
+      "duration": 7.121
+    },
+    {
+      "text": "guessing game I have to guess a number",
+      "start": 2316.16,
+      "duration": 7.56
+    },
+    {
+      "text": "between one and 100 and I only have",
+      "start": 2319.96,
+      "duration": 6.04
+    },
+    {
+      "text": "three attempts in this trial number in",
+      "start": 2323.72,
+      "duration": 5.16
+    },
+    {
+      "text": "this trial version so I can put in let's",
+      "start": 2326.0,
+      "duration": 3.76
+    },
+    {
+      "text": "say",
+      "start": 2328.88,
+      "duration": 6.4
+    },
+    {
+      "text": "five two and seven and after the three",
+      "start": 2329.76,
+      "duration": 9.079
+    },
+    {
+      "text": "trials it tells me sorry I've used",
+      "start": 2335.28,
+      "duration": 7.039
+    },
+    {
+      "text": "everything so I didn't approach it",
+      "start": 2338.839,
+      "duration": 6.841
+    },
+    {
+      "text": "correctly okay so the question is here",
+      "start": 2342.319,
+      "duration": 8.081
+    },
+    {
+      "text": "again what would be a valid um what",
+      "start": 2345.68,
+      "duration": 9.159
+    },
+    {
+      "text": "would be a valid user valid serial that",
+      "start": 2350.4,
+      "duration": 6.8
+    },
+    {
+      "text": "allows me to bypass this",
+      "start": 2354.839,
+      "duration": 6.201
+    },
+    {
+      "text": "trial so to approach that again I can",
+      "start": 2357.2,
+      "duration": 5.44
+    },
+    {
+      "text": "just look at the",
+      "start": 2361.04,
+      "duration": 4.799
+    },
+    {
+      "text": "strings I can look at the strings and",
+      "start": 2362.64,
+      "duration": 5.32
+    },
+    {
+      "text": "then I scroll up a",
+      "start": 2365.839,
+      "duration": 5.641
+    },
+    {
+      "text": "bit and then here I find something like",
+      "start": 2367.96,
+      "duration": 5.92
+    },
+    {
+      "text": "trial mode you have three attempts then",
+      "start": 2371.48,
+      "duration": 5.119
+    },
+    {
+      "text": "full access granted and so on and I have",
+      "start": 2373.88,
+      "duration": 5.52
+    },
+    {
+      "text": "a string here which looks kind of",
+      "start": 2376.599,
+      "duration": 6.441
+    },
+    {
+      "text": "suspicious game unlock minus",
+      "start": 2379.4,
+      "duration": 7.28
+    },
+    {
+      "text": "2024 let's try",
+      "start": 2383.04,
+      "duration": 8.319
+    },
+    {
+      "text": "that so let's do here then let's do game",
+      "start": 2386.68,
+      "duration": 6.2
+    },
+    {
+      "text": "unlock",
+      "start": 2391.359,
+      "duration": 4.641
+    },
+    {
+      "text": "2024 and then it tells me full access",
+      "start": 2392.88,
+      "duration": 5.36
+    },
+    {
+      "text": "granted now I have an unlimited number",
+      "start": 2396.0,
+      "duration": 6.2
+    },
+    {
+      "text": "of attempts so I can put in whatever I",
+      "start": 2398.24,
+      "duration": 7.4
+    },
+    {
+      "text": "want here and after three trials it",
+      "start": 2402.2,
+      "duration": 9.96
+    },
+    {
+      "text": "still works so now based on just based",
+      "start": 2405.64,
+      "duration": 9.36
+    },
+    {
+      "text": "on interacting with the program and",
+      "start": 2412.16,
+      "duration": 3.959
+    },
+    {
+      "text": "looking at the",
+      "start": 2415.0,
+      "duration": 5.8
+    },
+    {
+      "text": "strings I found the valid license again",
+      "start": 2416.119,
+      "duration": 8.361
+    },
+    {
+      "text": "I could put in into gidra let's do that",
+      "start": 2420.8,
+      "duration": 6.68
+    },
+    {
+      "text": "again",
+      "start": 2424.48,
+      "duration": 3.0
+    },
+    {
+      "text": "like loading the game into",
+      "start": 2431.4,
+      "duration": 3.439
+    },
+    {
+      "text": "gidra then analyzing",
+      "start": 2435.599,
+      "duration": 4.041
+    },
+    {
+      "text": "it then we look at the defined",
+      "start": 2445.76,
+      "duration": 8.72
+    },
+    {
+      "text": "strings and then we see we look",
+      "start": 2449.68,
+      "duration": 9.32
+    },
+    {
+      "text": "for something which is our code uh",
+      "start": 2454.48,
+      "duration": 6.48
+    },
+    {
+      "text": "called Full Access",
+      "start": 2459.0,
+      "duration": 5.319
+    },
+    {
+      "text": "granted here we then see oh this is the",
+      "start": 2460.96,
+      "duration": 6.76
+    },
+    {
+      "text": "point we want to reach it's in the main",
+      "start": 2464.319,
+      "duration": 5.401
+    },
+    {
+      "text": "we check the decompiler",
+      "start": 2467.72,
+      "duration": 7.76
+    },
+    {
+      "text": "again and then we see quite similar from",
+      "start": 2469.72,
+      "duration": 9.0
+    },
+    {
+      "text": "before we have this print F",
+      "start": 2475.48,
+      "duration": 8.24
+    },
+    {
+      "text": "here then we read in the scanf then it",
+      "start": 2478.72,
+      "duration": 6.68
+    },
+    {
+      "text": "basically tells",
+      "start": 2483.72,
+      "duration": 5.32
+    },
+    {
+      "text": "me if it's correct it's full access",
+      "start": 2485.4,
+      "duration": 5.36
+    },
+    {
+      "text": "granted",
+      "start": 2489.04,
+      "duration": 3.68
+    },
+    {
+      "text": "otherwise it tells me you have an",
+      "start": 2490.76,
+      "duration": 4.12
+    },
+    {
+      "text": "unlimited number of attempts and it's",
+      "start": 2492.72,
+      "duration": 6.16
+    },
+    {
+      "text": "fine otherwise it's a trial mode okay",
+      "start": 2494.88,
+      "duration": 7.92
+    },
+    {
+      "text": "and here again if I take a look at the",
+      "start": 2498.88,
+      "duration": 6.92
+    },
+    {
+      "text": "code",
+      "start": 2502.8,
+      "duration": 3.0
+    },
+    {
+      "text": "somewhere like in the defined strings",
+      "start": 2510.599,
+      "duration": 4.801
+    },
+    {
+      "text": "there should also be this game unlock",
+      "start": 2513.2,
+      "duration": 4.6
+    },
+    {
+      "text": "here and I've check where the game",
+      "start": 2515.4,
+      "duration": 3.76
+    },
+    {
+      "text": "unlock is",
+      "start": 2517.8,
+      "duration": 5.44
+    },
+    {
+      "text": "used decompiler I basically see oh",
+      "start": 2519.16,
+      "duration": 6.0
+    },
+    {
+      "text": "there's a call to a function called",
+      "start": 2523.24,
+      "duration": 5.48
+    },
+    {
+      "text": "check license and here it's basically",
+      "start": 2525.16,
+      "duration": 7.24
+    },
+    {
+      "text": "just like a string compare with a",
+      "start": 2528.72,
+      "duration": 6.76
+    },
+    {
+      "text": "provided parameter and game unlock",
+      "start": 2532.4,
+      "duration": 8.64
+    },
+    {
+      "text": "2024 and if you take a look at the code",
+      "start": 2535.48,
+      "duration": 5.56
+    },
+    {
+      "text": "now we basically see that we have check",
+      "start": 2541.319,
+      "duration": 6.361
+    },
+    {
+      "text": "license which",
+      "start": 2545.88,
+      "duration": 5.36
+    },
+    {
+      "text": "takes in an input license and a correct",
+      "start": 2547.68,
+      "duration": 6.12
+    },
+    {
+      "text": "license which is hardcoded to game",
+      "start": 2551.24,
+      "duration": 4.319
+    },
+    {
+      "text": "unlock 20",
+      "start": 2553.8,
+      "duration": 5.24
+    },
+    {
+      "text": "24 it then tells",
+      "start": 2555.559,
+      "duration": 5.56
+    },
+    {
+      "text": "me",
+      "start": 2559.04,
+      "duration": 6.24
+    },
+    {
+      "text": "um it then tells me that it's based on",
+      "start": 2561.119,
+      "duration": 7.72
+    },
+    {
+      "text": "string compare one okay so that's",
+      "start": 2565.28,
+      "duration": 5.16
+    },
+    {
+      "text": "something I",
+      "start": 2568.839,
+      "duration": 4.841
+    },
+    {
+      "text": "reconstructed by looking at the code",
+      "start": 2570.44,
+      "duration": 4.04
+    },
+    {
+      "text": "with",
+      "start": 2573.68,
+      "duration": 4.439
+    },
+    {
+      "text": "gidra so now",
+      "start": 2574.48,
+      "duration": 9.839
+    },
+    {
+      "text": "let's recap if we took a look at the",
+      "start": 2578.119,
+      "duration": 10.281
+    },
+    {
+      "text": "slides so we",
+      "start": 2584.319,
+      "duration": 7.401
+    },
+    {
+      "text": "basically uh talked about finding",
+      "start": 2588.4,
+      "duration": 6.48
+    },
+    {
+      "text": "hardcoded secrets in binaries in this",
+      "start": 2591.72,
+      "duration": 5.72
+    },
+    {
+      "text": "case it was focused on serial numbers",
+      "start": 2594.88,
+      "duration": 4.479
+    },
+    {
+      "text": "but cryptographic keys and passwords",
+      "start": 2597.44,
+      "duration": 4.8
+    },
+    {
+      "text": "would work in a very similar way now",
+      "start": 2599.359,
+      "duration": 4.96
+    },
+    {
+      "text": "let's go to the second part the Second",
+      "start": 2602.24,
+      "duration": 6.04
+    },
+    {
+      "text": "Step how we can crack the software to",
+      "start": 2604.319,
+      "duration": 5.961
+    },
+    {
+      "text": "unlock premium",
+      "start": 2608.28,
+      "duration": 6.319
+    },
+    {
+      "text": "features for that our goal is to rewrite",
+      "start": 2610.28,
+      "duration": 8.839
+    },
+    {
+      "text": "so basically our goal is to",
+      "start": 2614.599,
+      "duration": 4.52
+    },
+    {
+      "text": "rewrite rewrite the software or to crack",
+      "start": 2619.48,
+      "duration": 9.76
+    },
+    {
+      "text": "the to crack the software software such",
+      "start": 2624.319,
+      "duration": 6.841
+    },
+    {
+      "text": "that",
+      "start": 2629.24,
+      "duration": 6.52
+    },
+    {
+      "text": "it accepts any",
+      "start": 2631.16,
+      "duration": 4.6
+    },
+    {
+      "text": "license this would be our",
+      "start": 2635.88,
+      "duration": 5.199
+    },
+    {
+      "text": "goal and",
+      "start": 2638.92,
+      "duration": 7.199
+    },
+    {
+      "text": "then um how the idea is basically we",
+      "start": 2641.079,
+      "duration": 7.561
+    },
+    {
+      "text": "rewrite the machine",
+      "start": 2646.119,
+      "duration": 6.881
+    },
+    {
+      "text": "code with other machine",
+      "start": 2648.64,
+      "duration": 8.0
+    },
+    {
+      "text": "code we basically we basically change",
+      "start": 2653.0,
+      "duration": 7.48
+    },
+    {
+      "text": "the change the control flow",
+      "start": 2656.64,
+      "duration": 7.16
+    },
+    {
+      "text": "logic if we take a look at the source",
+      "start": 2660.48,
+      "duration": 10.599
+    },
+    {
+      "text": "code we see that we have here if check",
+      "start": 2663.8,
+      "duration": 9.559
+    },
+    {
+      "text": "license",
+      "start": 2671.079,
+      "duration": 6.52
+    },
+    {
+      "text": "then we basically only then we apply",
+      "start": 2673.359,
+      "duration": 8.521
+    },
+    {
+      "text": "that otherwise that so now we would",
+      "start": 2677.599,
+      "duration": 6.48
+    },
+    {
+      "text": "basically want to get the rid of this if",
+      "start": 2681.88,
+      "duration": 5.88
+    },
+    {
+      "text": "and else and modify it in a way that we",
+      "start": 2684.079,
+      "duration": 8.48
+    },
+    {
+      "text": "do like if true and remove the check",
+      "start": 2687.76,
+      "duration": 9.599
+    },
+    {
+      "text": "license part then we just do the print f",
+      "start": 2692.559,
+      "duration": 6.961
+    },
+    {
+      "text": "something like that that we basically",
+      "start": 2697.359,
+      "duration": 4.561
+    },
+    {
+      "text": "remove the license part such that we",
+      "start": 2699.52,
+      "duration": 5.799
+    },
+    {
+      "text": "always access that this would be our",
+      "start": 2701.92,
+      "duration": 8.199
+    },
+    {
+      "text": "goal we can do this in gidra in gidra we",
+      "start": 2705.319,
+      "duration": 8.481
+    },
+    {
+      "text": "have the option for instance to patch",
+      "start": 2710.119,
+      "duration": 6.681
+    },
+    {
+      "text": "and instruction and modify that but this",
+      "start": 2713.8,
+      "duration": 6.96
+    },
+    {
+      "text": "requires a bit more lowlevel experience",
+      "start": 2716.8,
+      "duration": 7.519
+    },
+    {
+      "text": "with gidra to do it if we do it with B",
+      "start": 2720.76,
+      "duration": 7.12
+    },
+    {
+      "text": "ninja it's significantly more easy to",
+      "start": 2724.319,
+      "duration": 7.0
+    },
+    {
+      "text": "patch a binary so for instance we could",
+      "start": 2727.88,
+      "duration": 4.6
+    },
+    {
+      "text": "open the",
+      "start": 2731.319,
+      "duration": 6.841
+    },
+    {
+      "text": "game and here we see again this is",
+      "start": 2732.48,
+      "duration": 9.32
+    },
+    {
+      "text": "our goal this is basically our binary",
+      "start": 2738.16,
+      "duration": 5.24
+    },
+    {
+      "text": "this is the check where we validate the",
+      "start": 2741.8,
+      "duration": 5.48
+    },
+    {
+      "text": "license and then it prints full access",
+      "start": 2743.4,
+      "duration": 6.84
+    },
+    {
+      "text": "granted if we switch the view by",
+      "start": 2747.28,
+      "duration": 4.039
+    },
+    {
+      "text": "pressing",
+      "start": 2750.24,
+      "duration": 4.4
+    },
+    {
+      "text": "space we have something which is known",
+      "start": 2751.319,
+      "duration": 6.24
+    },
+    {
+      "text": "as control flow graph which basically",
+      "start": 2754.64,
+      "duration": 6.08
+    },
+    {
+      "text": "shows us the high level structure of the",
+      "start": 2757.559,
+      "duration": 5.401
+    },
+    {
+      "text": "function so like the program follow",
+      "start": 2760.72,
+      "duration": 6.52
+    },
+    {
+      "text": "logic if we have two edges outgoing it",
+      "start": 2762.96,
+      "duration": 7.04
+    },
+    {
+      "text": "tells us it's basically an if than else",
+      "start": 2767.24,
+      "duration": 6.44
+    },
+    {
+      "text": "like we can see here and so what we want",
+      "start": 2770.0,
+      "duration": 5.559
+    },
+    {
+      "text": "to do is",
+      "start": 2773.68,
+      "duration": 6.36
+    },
+    {
+      "text": "basically that we always",
+      "start": 2775.559,
+      "duration": 9.961
+    },
+    {
+      "text": "accept so what we could do is",
+      "start": 2780.04,
+      "duration": 5.48
+    },
+    {
+      "text": "basically um",
+      "start": 2785.559,
+      "duration": 7.481
+    },
+    {
+      "text": "press here after inputting the",
+      "start": 2787.96,
+      "duration": 5.08
+    },
+    {
+      "text": "serial um we could just press something",
+      "start": 2795.64,
+      "duration": 5.719
+    },
+    {
+      "text": "like",
+      "start": 2799.52,
+      "duration": 5.96
+    },
+    {
+      "text": "Patch always Branch if you then look the",
+      "start": 2801.359,
+      "duration": 6.72
+    },
+    {
+      "text": "decompiler",
+      "start": 2805.48,
+      "duration": 2.599
+    },
+    {
+      "text": "output we say we see that we will always",
+      "start": 2809.28,
+      "duration": 7.24
+    },
+    {
+      "text": "go to this state this is not we intended",
+      "start": 2814.16,
+      "duration": 3.919
+    },
+    {
+      "text": "for",
+      "start": 2816.52,
+      "duration": 6.36
+    },
+    {
+      "text": "so instead what we can do is we can do",
+      "start": 2818.079,
+      "duration": 7.601
+    },
+    {
+      "text": "something as never",
+      "start": 2822.88,
+      "duration": 2.8
+    },
+    {
+      "text": "Branch then it goes it checks mainly for",
+      "start": 2832.48,
+      "duration": 6.4
+    },
+    {
+      "text": "for the trial mode this is also not one",
+      "start": 2836.8,
+      "duration": 5.36
+    },
+    {
+      "text": "we intended so what we have to do is we",
+      "start": 2838.88,
+      "duration": 6.84
+    },
+    {
+      "text": "have to basically always always go here",
+      "start": 2842.16,
+      "duration": 7.32
+    },
+    {
+      "text": "and then never go here so what I could",
+      "start": 2845.72,
+      "duration": 6.92
+    },
+    {
+      "text": "do is I could just patch and then always",
+      "start": 2849.48,
+      "duration": 6.76
+    },
+    {
+      "text": "Branch that's we always go here and then",
+      "start": 2852.64,
+      "duration": 6.24
+    },
+    {
+      "text": "we want to always go to the ne to the",
+      "start": 2856.24,
+      "duration": 5.8
+    },
+    {
+      "text": "false case false means Red Branch so we",
+      "start": 2858.88,
+      "duration": 7.32
+    },
+    {
+      "text": "can put it here and then go to patch and",
+      "start": 2862.04,
+      "duration": 7.079
+    },
+    {
+      "text": "never branch and now if you take a look",
+      "start": 2866.2,
+      "duration": 5.8
+    },
+    {
+      "text": "at the decompiler output we see that it",
+      "start": 2869.119,
+      "duration": 4.601
+    },
+    {
+      "text": "just always",
+      "start": 2872.0,
+      "duration": 5.88
+    },
+    {
+      "text": "accepts and this is now",
+      "start": 2873.72,
+      "duration": 7.68
+    },
+    {
+      "text": "Rewritten the code and we have to apply",
+      "start": 2877.88,
+      "duration": 6.32
+    },
+    {
+      "text": "we have to patch it to the B binary so",
+      "start": 2881.4,
+      "duration": 7.32
+    },
+    {
+      "text": "we can to file save as file contents and",
+      "start": 2884.2,
+      "duration": 8.76
+    },
+    {
+      "text": "then we put it like game",
+      "start": 2888.72,
+      "duration": 9.44
+    },
+    {
+      "text": "patched and then we have a new file",
+      "start": 2892.96,
+      "duration": 5.2
+    },
+    {
+      "text": "here the file game patched if I make it",
+      "start": 2898.52,
+      "duration": 5.88
+    },
+    {
+      "text": "executable and execute",
+      "start": 2905.119,
+      "duration": 7.401
+    },
+    {
+      "text": "it I can now put in whatever I want and",
+      "start": 2908.359,
+      "duration": 6.841
+    },
+    {
+      "text": "it tells me full access granted you have",
+      "start": 2912.52,
+      "duration": 5.319
+    },
+    {
+      "text": "unlimited number of access and then I",
+      "start": 2915.2,
+      "duration": 6.6
+    },
+    {
+      "text": "can just put in here and it's fine so",
+      "start": 2917.839,
+      "duration": 6.681
+    },
+    {
+      "text": "this was the hard part where",
+      "start": 2921.8,
+      "duration": 7.44
+    },
+    {
+      "text": "I took a look at the code logic um tried",
+      "start": 2924.52,
+      "duration": 7.2
+    },
+    {
+      "text": "to understand it and then patched a few",
+      "start": 2929.24,
+      "duration": 7.68
+    },
+    {
+      "text": "branches such that um I can um",
+      "start": 2931.72,
+      "duration": 7.839
+    },
+    {
+      "text": "I can um patch out the check",
+      "start": 2936.92,
+      "duration": 5.76
+    },
+    {
+      "text": "forever however there's another thing I",
+      "start": 2939.559,
+      "duration": 3.921
+    },
+    {
+      "text": "could",
+      "start": 2942.68,
+      "duration": 4.8
+    },
+    {
+      "text": "patch so if I take a",
+      "start": 2943.48,
+      "duration": 8.48
+    },
+    {
+      "text": "look at how the code is",
+      "start": 2947.48,
+      "duration": 4.48
+    },
+    {
+      "text": "defined I see that the number of trial",
+      "start": 2952.48,
+      "duration": 7.0
+    },
+    {
+      "text": "uses is hardcoded to",
+      "start": 2956.28,
+      "duration": 8.6
+    },
+    {
+      "text": "three and nobody enforces me to leave it",
+      "start": 2959.48,
+      "duration": 9.119
+    },
+    {
+      "text": "to three I can change this arbitr par so",
+      "start": 2964.88,
+      "duration": 6.8
+    },
+    {
+      "text": "remember in the OR original binary right",
+      "start": 2968.599,
+      "duration": 6.48
+    },
+    {
+      "text": "now if I put in",
+      "start": 2971.68,
+      "duration": 6.96
+    },
+    {
+      "text": "trial I just have 1 two three and then",
+      "start": 2975.079,
+      "duration": 5.04
+    },
+    {
+      "text": "it",
+      "start": 2978.64,
+      "duration": 5.32
+    },
+    {
+      "text": "terminates so now my goal is to increase",
+      "start": 2980.119,
+      "duration": 7.68
+    },
+    {
+      "text": "the number there what I do is again I go",
+      "start": 2983.96,
+      "duration": 7.96
+    },
+    {
+      "text": "back to game and here I have a variable",
+      "start": 2987.799,
+      "duration": 7.121
+    },
+    {
+      "text": "trial users which is set to",
+      "start": 2991.92,
+      "duration": 5.48
+    },
+    {
+      "text": "three I can",
+      "start": 2994.92,
+      "duration": 7.32
+    },
+    {
+      "text": "switch to the hexad dator",
+      "start": 2997.4,
+      "duration": 4.84
+    },
+    {
+      "text": "view then I have this three",
+      "start": 3002.28,
+      "duration": 6.96
+    },
+    {
+      "text": "here and then I can just change this to",
+      "start": 3005.28,
+      "duration": 7.6
+    },
+    {
+      "text": "some arbitrary value let's put a seven",
+      "start": 3009.24,
+      "duration": 5.04
+    },
+    {
+      "text": "in",
+      "start": 3012.88,
+      "duration": 3.12
+    },
+    {
+      "text": "there",
+      "start": 3014.28,
+      "duration": 4.72
+    },
+    {
+      "text": "like",
+      "start": 3016.0,
+      "duration": 3.0
+    },
+    {
+      "text": "07 um this was this one let's go",
+      "start": 3019.24,
+      "duration": 8.52
+    },
+    {
+      "text": "07 now I patched it with seven",
+      "start": 3023.72,
+      "duration": 8.839
+    },
+    {
+      "text": "like if I now look at the",
+      "start": 3027.76,
+      "duration": 4.799
+    },
+    {
+      "text": "code I see the trial users is set to",
+      "start": 3037.88,
+      "duration": 8.4
+    },
+    {
+      "text": "seven if I patch it now like save as",
+      "start": 3041.359,
+      "duration": 9.72
+    },
+    {
+      "text": "save contents and I rename it to",
+      "start": 3046.28,
+      "duration": 4.799
+    },
+    {
+      "text": "game patched two",
+      "start": 3051.2,
+      "duration": 4.44
+    },
+    {
+      "text": "and I make it",
+      "start": 3056.839,
+      "duration": 3.121
+    },
+    {
+      "text": "executable and I",
+      "start": 3062.799,
+      "duration": 6.52
+    },
+    {
+      "text": "executed now if I put in",
+      "start": 3066.319,
+      "duration": 7.121
+    },
+    {
+      "text": "trial it tells me I have three attempts",
+      "start": 3069.319,
+      "duration": 6.721
+    },
+    {
+      "text": "because I didn't change the string but",
+      "start": 3073.44,
+      "duration": 6.159
+    },
+    {
+      "text": "if I put in now one two three numbers",
+      "start": 3076.04,
+      "duration": 5.48
+    },
+    {
+      "text": "you see it doesn't",
+      "start": 3079.599,
+      "duration": 7.841
+    },
+    {
+      "text": "terminate but five or four five six",
+      "start": 3081.52,
+      "duration": 9.799
+    },
+    {
+      "text": "and then it terminates so instead of",
+      "start": 3087.44,
+      "duration": 6.8
+    },
+    {
+      "text": "patching the control flow logic I was",
+      "start": 3091.319,
+      "duration": 5.441
+    },
+    {
+      "text": "able by looking at the",
+      "start": 3094.24,
+      "duration": 6.2
+    },
+    {
+      "text": "decompiler how the code",
+      "start": 3096.76,
+      "duration": 3.68
+    },
+    {
+      "text": "Works how the code works",
+      "start": 3101.0,
+      "duration": 5.0
+    },
+    {
+      "text": "like this one here and then I saw oh",
+      "start": 3108.04,
+      "duration": 5.96
+    },
+    {
+      "text": "this trial user seems to be hardcoded",
+      "start": 3111.359,
+      "duration": 5.681
+    },
+    {
+      "text": "and then I can just uh increase the",
+      "start": 3114.0,
+      "duration": 5.24
+    },
+    {
+      "text": "number here to some arbitrary",
+      "start": 3117.04,
+      "duration": 5.68
+    },
+    {
+      "text": "number in this way the same process",
+      "start": 3119.24,
+      "duration": 5.119
+    },
+    {
+      "text": "works",
+      "start": 3122.72,
+      "duration": 6.0
+    },
+    {
+      "text": "perfectly so to sum",
+      "start": 3124.359,
+      "duration": 4.361
+    },
+    {
+      "text": "up from an reverse engineering point of",
+      "start": 3130.24,
+      "duration": 6.96
+    },
+    {
+      "text": "view we can first if you want to bypass",
+      "start": 3133.04,
+      "duration": 7.039
+    },
+    {
+      "text": "like we discussed like extracting",
+      "start": 3137.2,
+      "duration": 5.639
+    },
+    {
+      "text": "Secrets especially for piracy and",
+      "start": 3140.079,
+      "duration": 3.681
+    },
+    {
+      "text": "feature",
+      "start": 3142.839,
+      "duration": 4.041
+    },
+    {
+      "text": "unlocking um we can look for or",
+      "start": 3143.76,
+      "duration": 5.2
+    },
+    {
+      "text": "hardcoded secrets in binaries like",
+      "start": 3146.88,
+      "duration": 4.56
+    },
+    {
+      "text": "cryptographic Keys serial numbers or",
+      "start": 3148.96,
+      "duration": 5.839
+    },
+    {
+      "text": "passwords and then extract them or",
+      "start": 3151.44,
+      "duration": 5.8
+    },
+    {
+      "text": "another way we can do is that we can",
+      "start": 3154.799,
+      "duration": 5.681
+    },
+    {
+      "text": "really crack the software to modify some",
+      "start": 3157.24,
+      "duration": 5.879
+    },
+    {
+      "text": "data or modify the control flow such",
+      "start": 3160.48,
+      "duration": 5.92
+    },
+    {
+      "text": "that we can unlock premium",
+      "start": 3163.119,
+      "duration": 3.281
+    },
+    {
+      "text": "features so if you want to do this on",
+      "start": 3166.799,
+      "duration": 5.121
+    },
+    {
+      "text": "your",
+      "start": 3170.839,
+      "duration": 4.96
+    },
+    {
+      "text": "own um so yeah well first so basically",
+      "start": 3171.92,
+      "duration": 6.04
+    },
+    {
+      "text": "we discussed how we can do reverse",
+      "start": 3175.799,
+      "duration": 4.04
+    },
+    {
+      "text": "engineering to extract secrets from",
+      "start": 3177.96,
+      "duration": 4.56
+    },
+    {
+      "text": "binaries there are powerful tools out",
+      "start": 3179.839,
+      "duration": 5.401
+    },
+    {
+      "text": "there like gidra which is freely",
+      "start": 3182.52,
+      "duration": 5.12
+    },
+    {
+      "text": "available in open source or binary ninja",
+      "start": 3185.24,
+      "duration": 5.96
+    },
+    {
+      "text": "or ID where free versions are available",
+      "start": 3187.64,
+      "duration": 7.12
+    },
+    {
+      "text": "so you can find them for the lowlevel",
+      "start": 3191.2,
+      "duration": 6.24
+    },
+    {
+      "text": "part you of course need some knowledge",
+      "start": 3194.76,
+      "duration": 5.24
+    },
+    {
+      "text": "but just to work with a decompiler it",
+      "start": 3197.44,
+      "duration": 6.24
+    },
+    {
+      "text": "gives you in many cases a lot of um",
+      "start": 3200.0,
+      "duration": 5.52
+    },
+    {
+      "text": "understanding of the code and helps you",
+      "start": 3203.68,
+      "duration": 4.48
+    },
+    {
+      "text": "in a lot of cases to without having a",
+      "start": 3205.52,
+      "duration": 6.48
+    },
+    {
+      "text": "deep knowledge so um and these are just",
+      "start": 3208.16,
+      "duration": 7.439
+    },
+    {
+      "text": "freely to download so if you want to try",
+      "start": 3212.0,
+      "duration": 6.44
+    },
+    {
+      "text": "it on yourself on your own you can visit",
+      "start": 3215.599,
+      "duration": 4.081
+    },
+    {
+      "text": "this",
+      "start": 3218.44,
+      "duration": 3.679
+    },
+    {
+      "text": "link then you will",
+      "start": 3219.68,
+      "duration": 6.679
+    },
+    {
+      "text": "find um improv webinar",
+      "start": 3222.119,
+      "duration": 4.24
+    },
+    {
+      "text": "page like um this one here there you'll",
+      "start": 3228.24,
+      "duration": 8.24
+    },
+    {
+      "text": "find um a list overview of our webinar",
+      "start": 3232.64,
+      "duration": 6.959
+    },
+    {
+      "text": "class which is the first one today you",
+      "start": 3236.48,
+      "duration": 5.28
+    },
+    {
+      "text": "will see the recording so this will be",
+      "start": 3239.599,
+      "duration": 4.321
+    },
+    {
+      "text": "uploaded in the next days on YouTube and",
+      "start": 3241.76,
+      "duration": 4.96
+    },
+    {
+      "text": "linked here but if you click on this",
+      "start": 3243.92,
+      "duration": 6.399
+    },
+    {
+      "text": "folder then you will find not only the",
+      "start": 3246.72,
+      "duration": 7.0
+    },
+    {
+      "text": "abstract from today but also the slides",
+      "start": 3250.319,
+      "duration": 7.601
+    },
+    {
+      "text": "from today and most importantly you will",
+      "start": 3253.72,
+      "duration": 7.399
+    },
+    {
+      "text": "find the source code of the samples and",
+      "start": 3257.92,
+      "duration": 5.84
+    },
+    {
+      "text": "um the binary executables compiled for",
+      "start": 3261.119,
+      "duration": 6.2
+    },
+    {
+      "text": "Linux 64bit um such that you can repeat",
+      "start": 3263.76,
+      "duration": 6.28
+    },
+    {
+      "text": "everything on your",
+      "start": 3267.319,
+      "duration": 8.8
+    },
+    {
+      "text": "own um so I hope this was um you learned",
+      "start": 3270.04,
+      "duration": 7.88
+    },
+    {
+      "text": "something and you found it",
+      "start": 3276.119,
+      "duration": 4.96
+    },
+    {
+      "text": "interesting if you have more questions",
+      "start": 3277.92,
+      "duration": 7.8
+    },
+    {
+      "text": "about that um just reach out if you want",
+      "start": 3281.079,
+      "duration": 7.961
+    },
+    {
+      "text": "to learn what you can do to protect",
+      "start": 3285.72,
+      "duration": 5.599
+    },
+    {
+      "text": "against reverse engineering like for",
+      "start": 3289.04,
+      "duration": 3.6
+    },
+    {
+      "text": "instance your embedded firmware or",
+      "start": 3291.319,
+      "duration": 3.321
+    },
+    {
+      "text": "something like that check out our",
+      "start": 3292.64,
+      "duration": 5.04
+    },
+    {
+      "text": "homepage and proove because we build",
+      "start": 3294.64,
+      "duration": 5.56
+    },
+    {
+      "text": "products um that prevent reverse",
+      "start": 3297.68,
+      "duration": 4.32
+    },
+    {
+      "text": "engineering or make reverse engineering",
+      "start": 3300.2,
+      "duration": 5.68
+    },
+    {
+      "text": "more infusible for attackers by adding",
+      "start": 3302.0,
+      "duration": 6.319
+    },
+    {
+      "text": "protection about against various attack",
+      "start": 3305.88,
+      "duration": 6.08
+    },
+    {
+      "text": "vectors there so yeah I hope you learned",
+      "start": 3308.319,
+      "duration": 5.881
+    },
+    {
+      "text": "something if you're interested trying it",
+      "start": 3311.96,
+      "duration": 4.72
+    },
+    {
+      "text": "on your own just do it everything is",
+      "start": 3314.2,
+      "duration": 4.76
+    },
+    {
+      "text": "freely available here if you want to",
+      "start": 3316.68,
+      "duration": 4.56
+    },
+    {
+      "text": "learn about how to protect against that",
+      "start": 3318.96,
+      "duration": 4.8
+    },
+    {
+      "text": "check out M proof",
+      "start": 3321.24,
+      "duration": 7.079
+    },
+    {
+      "text": "otherwise um thanks a lot",
+      "start": 3323.76,
+      "duration": 4.559
+    },
+    {
+      "text": "um the webinar yes the webinar will be",
+      "start": 3328.64,
+      "duration": 5.679
+    },
+    {
+      "text": "uploaded the sights will be uploaded I",
+      "start": 3332.359,
+      "duration": 5.161
+    },
+    {
+      "text": "will send it around in later today or",
+      "start": 3334.319,
+      "duration": 7.48
+    },
+    {
+      "text": "tomorrow and are there any additional",
+      "start": 3337.52,
+      "duration": 6.64
+    },
+    {
+      "text": "questions I just noticed I have a chat",
+      "start": 3341.799,
+      "duration": 6.401
+    },
+    {
+      "text": "here I didn't see the chat before",
+      "start": 3344.16,
+      "duration": 4.04
+    },
+    {
+      "text": "okay doesn't seem like any questions so",
+      "start": 3369.48,
+      "duration": 4.639
+    },
+    {
+      "text": "if you come up with questions afterward",
+      "start": 3371.96,
+      "duration": 3.76
+    },
+    {
+      "text": "just drop me a mail or something like",
+      "start": 3374.119,
+      "duration": 4.801
+    },
+    {
+      "text": "that I'm happy to answer and otherwise",
+      "start": 3375.72,
+      "duration": 4.96
+    },
+    {
+      "text": "thanks a lot for your interest and your",
+      "start": 3378.92,
+      "duration": 4.639
+    },
+    {
+      "text": "time and we will see each other somewh",
+      "start": 3380.68,
+      "duration": 4.919
+    },
+    {
+      "text": "somewhere on the world on the Internet",
+      "start": 3383.559,
+      "duration": 6.201
+    },
+    {
+      "text": "thanks a lot have a good day",
+      "start": 3385.599,
+      "duration": 4.161
+    }
+  ],
+  "full_text": "so hello guys um I'm Tim and Welcome to our first webinar today on reverse engineering how attackers uncover secrets in binaries um this is the first um webinar in a row that we want to do over the next weeks or months and um today it's the first time also we do it we are LinkedIn so maybe we change it somewhere in the future we'll try it out so it's this new playground for us so but now let's start and see how it goes so um a few words about me I'm Tim I'm the chief scientist and head of engineering and one of the co-founders of mof a company based in Germany and Netherlands where we do where we protect um embedded firmware with against reverse engineering and general cyber attacks so we basically focus on advancing bettered Security Solutions um on my own I have a PhD in binary reverse engineering and besides I also give training and lectures at industry conferences at universities today we talk about three things first about what is reverse engineering and how um and why can this be considered a threat so like what are motivations behind reverse engineering from a legal and not so legal perspective and then what um how can we do actually do reverse engineering to extract some secrets in binaries for that we will do a practical demonstration and um look into how to use gidra and other tools to learn about to learn about a bit about the internals of a program and to really extract secrets and also and also how to patch a binary such that we can modify the program behavior um so let's start so first what is reverse engineering reverse engineering basically is the extraction of information from a binary program let's say we have given a binary blob which just a piece of data that we don't know anything about so like an executable file like a piece of malware or the Explorer or some embedded firmware and we want to know what it does and our goal in understanding what it does can be manifold for instance we want to know if we can trust it or not maybe it implements some malicious behavior maybe we want to ensure that it does that that it does what say that it does but also from an teeka perspective maybe we are interested in learning about its internal workings with a goal to find bucks in it that we can exploited for instance or in the um area of Industry Espionage on competitors maybe we are interested in looking into what does our competitor do how does he or she do it so that that we can learn about the internals their secret source and maybe reimplement that or just uh dump the firmware modify a few bits and put it in another Hardware device or something like that from a customer point of view there's also the tech Vector of piracy or feature unlocking like um you have a piece of software that is limited in scope but the software itself in theory supports more functionality and you as a user as a end user want to unlock that then you can um analyze the code check how the how the limitation is realized and maybe unlock it by modifying parts of the binary either way um many in many of these reasons the one of the interest is always fin Financial game so in today we will focus on some one sub aspect of reverse engineering with a goal to get a very short introduction on what is reverse engineering what's the idea behind that how does it work what's a goal and then we look at it practically from the goal on how we can we extract and find and extract hardcoded secrets and binaries be it cryptographic Keys be it serial numbers be it hardcoded pass passwords and then in the second step we take a look and understanding uh understanding how code logic works and then um we will crack a binary to unlock some additional features that we normally would have to pay off so speaking of let's start and dig ond details let us start with a simple hello world program like if you take a look look at a hello world program it doesn't really do much magic so it basically just is a main function and it prints hello world and then just returns and this is the original source code and then this is not the way how it is provided to us so what a developer let's say a developer compiles that with something like that and has a binary this binary is an uploaded somewhere and we as end users get this hello world program so if we have it we have a file like that hello world and our goal is now to understand what is this hello world program how it is built how it is realized and especially what can it do one thing that we can do is first use the file command the file command basically checks the first bytes of the program to give us insights about um what kind of files it is it is a PDF file is is a bining executable file is this a doc file is this a zip file and what so on and so now we do file hello world and then we see some output that it tells us it's an eelf file 64bit for the arm architecture so there are few words we have to think about first what is elf then second what is arm um and then there are some other things but let's deal with the first ones so elf elf basically tells us it's an executable executable for Linux based systems or Unix based systems so this is basically the file format which contains the code which contains data and other things that um are needed such that this application executes as it needs to execute and it can print them data and show us things and so on so and then um this is L another possibility would be that you see something like PE PE would be a portable execut table and this would be basically the analog version of an L file just for Windows based systems so this would be for Windows based systems and an L file would be for Linux based systems okay now we know we have an executable file format for Linux then it tells us it's arm 64 what is arm 64 what well we have something which is called a processor architecture a processor architecture this process processor architecture can be for instance Intel x86 or x86 64bit for instance then this is commonly used on desktops and servers then we have something which is called arm 64 arm 64 is often used on new Apple devices but also on smartphones and in general embedded devices so this is a processor architecture for the mobile embedded world and partially also for the desktop world then we could have other architectures like Risk 5 or power PC or mips and so on so we basically have different implementations in different architectures that um support um um that can realize or exec code and it is important that this high level code this C code if we compile it down it's compiled for one specific architecture such that it can only execute on a subset of um CPUs and in this case it is ex it is compiled for the arm 64bit architecture and now we have the arm 64-bit architecture this can be considered as all the others as something which is called Isa Isa is an instruction set architecture basically it defines on the low level um what um how the CPU is organized for instance um it tells us that we have um registers something like registers to store values these can be on the high level programming language registers can be understood as a limited set of variables then we have instructions to perform arithmetic stuff like addition substraction multiplication and so on and then we have something which is called the instruction and architecture that basically defines what instructions are supported and and um how are they decoded so what does it mean well first let's go back to this hello VA file this hello VA file is a binary file if we take a look at its binary or hexa decimal representation like with the hex dump command and take a look at the hello world we see that it contains a lot of stuff this is just in hexad decimal which doesn't make much usage of us for us so parts of that parts of that is the machine code the machine code is basically um the binary basically contain contains besides others contains machine code and this machine code is the representation of this hello world code for this specific architecture this um 64-bit architecture and the instruction set architecture basically gives or defines a format how these bytes or these sequences of bytes are decoded into um machine instructions so let's go back to the slides so here we have just assume a sequence of bytes and this represents code compiled for a specific instruction set architecture and now the instruction set architecture defines for inst how to read and interpret individual bites or bits like what's an addition what's a multiplication and so on we jally go bite by bite like let's assume we have the following decoding scheme that we have as first parameter the up code the up code is the operation code which basically tells us which operation to perform like an addition a multiplication or or whatever and then we have a register the register is as say one variable um one kind of high lowlevel variable on the CPU architecture and a constant can be just a constant which is used as part of the computations and if you have now a sequence like that we can for instance go and go bite by bite and say this Z a is decoded to an addition because somewhere in the instruction set architecture which is a large PDF describing how instructions are decoded it tells us uh 0a maps to an addition and then we have we decode the register like this one would be register one or this two would be register two for this multiplication and then finally the constant and the constant is then part of the operant like this one or this one and then we would have something which is called assembly code assembly code is basically the human readable form so now we basically have machine code and this one is decoded to assembly codee an assembly code is a human readable form of machine code and it tells us then something like at um like if we have at at a10x a a we can basically read that as R1 is used as R1 +0 xaa so basically this constant is added with this operant and the result is stored in this operant here in this register okay so basically if we come back to this um code we decoded that and now we basically have two instructions decoded this is what would happen lowlevel natively on the CPU and we are reverse Engineers we now basically want to start with a binary that we have here and that we then that we get code that we that we have this sequence of bites somewhere here and this is that represents code and we want now know how can we interpret the code how can we read it so in theory what we have to do is we have to somehow use a tool that decodes us this code here to a human readable representation form like to assembly code and this tool is called disassembler so we have a cool tool called disassembler which basically decodes machine code into assembly code okay so basically if we have this code here or here another blob where we have machine code and then we put it into a disassembler we end up with something like that which is a human readable form of machine code and in this term this is assembly code and now if you are um if you are more experienced in Reading assembly writing assembly and stuff like that you could start analyzing that and understanding what the code does however however this kind of thing requires some expert knowledge about you have to know assembly code you have to um have the lowlevel understanding and so on so this is not beginner friendly however we can improve upon that and Auto made it in a way that it's still doable and feasible for non-experts and that's by using another tool which is called decompiler a decompiler basically tries to reconstruct um high level code from mchine code so decompiler is basically a next step it takes something like that is input and tries to reconstruct as much as possible high level code as possible so for instance a decompiler might go from something like that to something like that where we can see the function signature and its function name with two parameters and then we see that it returns something and so parameters are added together and multiplied by four and something like that is at least more readable um for um um for somebody who doesn't have a reverse engineering backout than this one and now let's assume that you have a binary that you want to analyze but you are a non-reverse engineering expert so then it's for sure that you don't want to start here you instead want to have something which shows you something like that and this um this might not be the this might not be perfect because maybe um it's not perfect like the like plain C code or something like that however it's still a good enough approximation that you can still take something from that or learn something from that without being stuck into all the details of how to read that and the question question is is there a tool or is there something that can help you in doing something like that and then the question is yes so there is a tool an open source tool called gidra gidra is an open source rever reverse engineering framework written in Java and has been released by the NSA and it's freely available so what you can do is you can for instance just look for or gidra download then you find it the homepage here then you can go to the GitHub they could download it and then um you can just start it and it works on Windows it works on Linux and ver me me OS um I I already installed that so let's start with opening gidra it's this symbol here so the first thing if we open gidra it's a bit a bit things to click but it's um it's doable so once I open that it gives me a window like this one it says it has no active project what I have first have to do is I have to define a project for instance I go to file new project it's a non-shared project because I want to reverse reverse engineer on my own I don't want to uh contribute with others and so I give it a name I just call it webinar reversing and then I finish and now I can import a binary so I go to file import file I would go to webinars to the binary and take this hello word example here and put it in there and then it already tolds me it's an executable inable file format so it's eelf and it's r64 r64 is basically another word for arm 64 so I do okay and then it gives me more information I usually just ignore that and then I double press enter here and then it launches the analysis tool it's just on another desktop so I have to put it on here it tells me it has not been analyzed if I want to analyze it so I press yes then it just shows me some things but I can ignore that I can just press analyze and then I get up with a window like that and here this looks kind of bloated but the most important thing for us right now is the right side the right side is the um decompiler output and here in the middle we see the assembly code so we see here this is the assembly code and um if I click somewhere here I see on the right side the compiler output and so let's click here and so it's important this here is the assembly code but if we take a look at the right hand side we see the decomil output and here we see that basically we have a function which this this would be the main function it doesn't have a ker name because um the decompiler or the disassembler doesn't know any of the original function names because these information are are lost during compilation so we have now here a function and we say that it basically puts or puts which is another API function for print F print hello W and then we return zero if we compare this with the original code we see here that we basically have the main function that we have then a comment then we have the print F hello world and we return zero and if we compile that with the decompiler output here we can see that we have just some function name this function name indicates B is just uh defined after the address where it layouted in binary then we have the puts or the print F to hello world and we return zero so as we can see it's not perfect like information like the function name or the comment got l during compilation but still without knowing much about binary analysis we are just able to put this into gidra and if we find the function here then we can get a high level understanding about what the code does and this is now something um these are now the basics and now we can build up on that and um take a look look at a more complicated example that actually is more related to software cracking so let's take a look at another source file it's basically um license check so here we have a main function and this main function reads in user license and then it checks if the input license is valid or not if it's valid so basically if the um user license is valid then it returns one and then it basically unlocks the paid premium feature otherwise it tells us it's an invalid it's an invalid license access is denied so but of course we don't have the source code so what we have is only the file here license check let's start again checking what kind kind of file it is and then again we see it's an L file 64bit for the arm architecture so since this is the Linux uh this this this terminal here as a Linux terminal on um 64bit I can just execute it so I can put in license check and then it tells me please uh enter license I just put in something and press enter and then tells me invalid license access denight okay so there's currently no way how we can unlock that we have this file we can put in something and it tells us access the night the question is now how would we unlock this file here how can we learn the secret if we take a look at the source code again you will notice that the correct license is hardcoded in the binary it's like this ABC 1 2 3 XY Z and so on so basically if we would input into that which we don't know but if we just would put into that it tells us access granted question is now how do we learn about that and well there are multiple ways to that let's start with the um with the um easy way so since it's hardcoded and I we in especially in the embedded security area we see a lot of things which get hardcoded like cryptographic Keys hardcoded passwords and so on and so on licenses so uh we see in the beded world a lot of things are hardcoded in binaries and these can be similarly dumped as we do it now so if we do the hex stump of the license check again basically looking at that at the file in HEX editor we can see all the code and it's key representation so somewhere down here is a machine code that's not interesting to us but if we scroll up we see additional information like GCC and some sections that are related to the elf file but if we scroll up and up we also see strings we see like invalid license key access denied this is just something that we saw before it's as the program output we see something like enter your license key this is also something that we saw before but we what we also see is um this string ABC 1 2 3 XYZ so we basically have the credential which is needed to unlock the premium feature hardcoded in the binary and by just looking at the strings here we find it somewhere here there's also another command we could use we could just use the strings command to the license check and then we get a l list of all strings and then here we will find that this one is one of them so question is now how do we know that this relates to that well we don't know without that we just might notice that these things are just nearby in the binary and so maybe we can just try it but based on that besides that we have currently no other way to validate that however let's go back to gidra again now I open not the hello world file instead I open this license check file and then I do again import file the license check okay okay then I double click here then I say yes analyze analyze and then it does its magic and now I have the code here again but what I can do is I can go to window and go to Strings Define strings and then on the right side here I get a list of all the thingss in the binary again and then for instance I can go to the access granted because the access granted is something that I want to reach and now I see here somewhere in the data section of the binary that here I have the access granted okay I I know the data but the most interesting thing is is what code parts do interact with the data and so I can basically look here they are cross referenced which code Parts interact with the data and I click can click on that and then I look in the decompiler output again and now I see here we have something like enter your license key then we put in the license key here then we perform a check with something like that and then if this holds it tells us access granted the premium is now unlocked otherwise invalid license access denied okay so this seems to be related to that so this does not really help us a lot because what is that but um we at least can see the high level logic so what else can we do is we can go back to the defined strings and look at um the string we just saw before this one here and see here we see that this is also used this ABC one 2 3 that this is also used somewhere in the binary so we can click on that and go to the decompile again and we see oh this seems to be somehow related here we don't see it in the immedately in the decompiler output but here we see that this is the A and this is XY Z so we might come at least without diving too much into the details we might just at least come to the idea that this might be related and then that we um can take a closer look and that we have to put it into here especially if we know that here we have um that this looks like principal asking characters like 41 42 43 if we take a look at an asky table let's take a look at an asky table if we take a look at 0x for one for two for three we see that this is a BC so we at least learn that this seems to be somehow related to that and then we can come up with oh this might be the case okay what else we could do is we could try another decompiler or another two tool maybe it gives us more information so gidra as said gidra is open source and um provides um a lot of information however there are other tools like binary ninja which are paid which also exists in paid versions but there also exists a free version or a cloud-based version so and we can download this one and also open the binary with that and see what's going on so let me just do that I go to the webinars folder I open the binary the license check and there again I have now here immediately the decompile output of the main function and here it tells me here at least I see that I do some form of string copy and then based on the string copy I copy the ABC minus until the X so at least this again seems somehow related we see that the decompiler output does not perfectly reconstruct it but it still reconstruct the high level structure quite well like enter your license key then the n f then the checks and the checks tell me access granted or invalid license if I compare that with the original one I can see here I have the check license and then it unlocks the features and the check license works like that so probably due to compiler optimizations this check license has been inlined into the main function okay given that we now have a better understanding of how we could approach that let us go and and and basically extract an hardcoded secret um to um to um learn to unlock premium features let us go one step further without looking at the code so now we have a small game and let's first start again the game it's again an elf Linux 64 bit so we can execute it let's execute that and then it's basically tells us enter your license key or type trial for limited uh trial I just do nothing I just put in ABCD or whatever and it it tells me it's an invalet license has denied okay let me put in trial and then it's oh it's a number guessing game I have to guess a number between one and 100 and I only have three attempts in this trial number in this trial version so I can put in let's say five two and seven and after the three trials it tells me sorry I've used everything so I didn't approach it correctly okay so the question is here again what would be a valid um what would be a valid user valid serial that allows me to bypass this trial so to approach that again I can just look at the strings I can look at the strings and then I scroll up a bit and then here I find something like trial mode you have three attempts then full access granted and so on and I have a string here which looks kind of suspicious game unlock minus 2024 let's try that so let's do here then let's do game unlock 2024 and then it tells me full access granted now I have an unlimited number of attempts so I can put in whatever I want here and after three trials it still works so now based on just based on interacting with the program and looking at the strings I found the valid license again I could put in into gidra let's do that again like loading the game into gidra then analyzing it then we look at the defined strings and then we see we look for something which is our code uh called Full Access granted here we then see oh this is the point we want to reach it's in the main we check the decompiler again and then we see quite similar from before we have this print F here then we read in the scanf then it basically tells me if it's correct it's full access granted otherwise it tells me you have an unlimited number of attempts and it's fine otherwise it's a trial mode okay and here again if I take a look at the code somewhere like in the defined strings there should also be this game unlock here and I've check where the game unlock is used decompiler I basically see oh there's a call to a function called check license and here it's basically just like a string compare with a provided parameter and game unlock 2024 and if you take a look at the code now we basically see that we have check license which takes in an input license and a correct license which is hardcoded to game unlock 20 24 it then tells me um it then tells me that it's based on string compare one okay so that's something I reconstructed by looking at the code with gidra so now let's recap if we took a look at the slides so we basically uh talked about finding hardcoded secrets in binaries in this case it was focused on serial numbers but cryptographic keys and passwords would work in a very similar way now let's go to the second part the Second Step how we can crack the software to unlock premium features for that our goal is to rewrite so basically our goal is to rewrite rewrite the software or to crack the to crack the software software such that it accepts any license this would be our goal and then um how the idea is basically we rewrite the machine code with other machine code we basically we basically change the change the control flow logic if we take a look at the source code we see that we have here if check license then we basically only then we apply that otherwise that so now we would basically want to get the rid of this if and else and modify it in a way that we do like if true and remove the check license part then we just do the print f something like that that we basically remove the license part such that we always access that this would be our goal we can do this in gidra in gidra we have the option for instance to patch and instruction and modify that but this requires a bit more lowlevel experience with gidra to do it if we do it with B ninja it's significantly more easy to patch a binary so for instance we could open the game and here we see again this is our goal this is basically our binary this is the check where we validate the license and then it prints full access granted if we switch the view by pressing space we have something which is known as control flow graph which basically shows us the high level structure of the function so like the program follow logic if we have two edges outgoing it tells us it's basically an if than else like we can see here and so what we want to do is basically that we always accept so what we could do is basically um press here after inputting the serial um we could just press something like Patch always Branch if you then look the decompiler output we say we see that we will always go to this state this is not we intended for so instead what we can do is we can do something as never Branch then it goes it checks mainly for for the trial mode this is also not one we intended so what we have to do is we have to basically always always go here and then never go here so what I could do is I could just patch and then always Branch that's we always go here and then we want to always go to the ne to the false case false means Red Branch so we can put it here and then go to patch and never branch and now if you take a look at the decompiler output we see that it just always accepts and this is now Rewritten the code and we have to apply we have to patch it to the B binary so we can to file save as file contents and then we put it like game patched and then we have a new file here the file game patched if I make it executable and execute it I can now put in whatever I want and it tells me full access granted you have unlimited number of access and then I can just put in here and it's fine so this was the hard part where I took a look at the code logic um tried to understand it and then patched a few branches such that um I can um I can um patch out the check forever however there's another thing I could patch so if I take a look at how the code is defined I see that the number of trial uses is hardcoded to three and nobody enforces me to leave it to three I can change this arbitr par so remember in the OR original binary right now if I put in trial I just have 1 two three and then it terminates so now my goal is to increase the number there what I do is again I go back to game and here I have a variable trial users which is set to three I can switch to the hexad dator view then I have this three here and then I can just change this to some arbitrary value let's put a seven in there like 07 um this was this one let's go 07 now I patched it with seven like if I now look at the code I see the trial users is set to seven if I patch it now like save as save contents and I rename it to game patched two and I make it executable and I executed now if I put in trial it tells me I have three attempts because I didn't change the string but if I put in now one two three numbers you see it doesn't terminate but five or four five six and then it terminates so instead of patching the control flow logic I was able by looking at the decompiler how the code Works how the code works like this one here and then I saw oh this trial user seems to be hardcoded and then I can just uh increase the number here to some arbitrary number in this way the same process works perfectly so to sum up from an reverse engineering point of view we can first if you want to bypass like we discussed like extracting Secrets especially for piracy and feature unlocking um we can look for or hardcoded secrets in binaries like cryptographic Keys serial numbers or passwords and then extract them or another way we can do is that we can really crack the software to modify some data or modify the control flow such that we can unlock premium features so if you want to do this on your own um so yeah well first so basically we discussed how we can do reverse engineering to extract secrets from binaries there are powerful tools out there like gidra which is freely available in open source or binary ninja or ID where free versions are available so you can find them for the lowlevel part you of course need some knowledge but just to work with a decompiler it gives you in many cases a lot of um understanding of the code and helps you in a lot of cases to without having a deep knowledge so um and these are just freely to download so if you want to try it on yourself on your own you can visit this link then you will find um improv webinar page like um this one here there you'll find um a list overview of our webinar class which is the first one today you will see the recording so this will be uploaded in the next days on YouTube and linked here but if you click on this folder then you will find not only the abstract from today but also the slides from today and most importantly you will find the source code of the samples and um the binary executables compiled for Linux 64bit um such that you can repeat everything on your own um so I hope this was um you learned something and you found it interesting if you have more questions about that um just reach out if you want to learn what you can do to protect against reverse engineering like for instance your embedded firmware or something like that check out our homepage and proove because we build products um that prevent reverse engineering or make reverse engineering more infusible for attackers by adding protection about against various attack vectors there so yeah I hope you learned something if you're interested trying it on your own just do it everything is freely available here if you want to learn about how to protect against that check out M proof otherwise um thanks a lot um the webinar yes the webinar will be uploaded the sights will be uploaded I will send it around in later today or tomorrow and are there any additional questions I just noticed I have a chat here I didn't see the chat before okay doesn't seem like any questions so if you come up with questions afterward just drop me a mail or something like that I'm happy to answer and otherwise thanks a lot for your interest and your time and we will see each other somewh somewhere on the world on the Internet thanks a lot have a good day",
+  "errors": []
+}

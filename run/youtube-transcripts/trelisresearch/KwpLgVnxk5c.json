@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KwpLgVnxk5c",
+    "language": "en",
+    "took_ms": 9997,
+    "method": null,
+    "title": "ADVANCED FINE TUNING SCRIPTS",
+    "channel": "Trelis Research",
+    "upload_date": "20231010",
+    "duration_sec": 300,
+    "description": "- Purchase access to the GitHub repo: https://buy.stripe.com/4gw00MbSdbe3dZ6fZs\n\nChapters:\n0:00 Thanks\n0:32 Advanced fine tuning repo overview\n0:48 Unsupervised fine-tuning\n1:22 Supervised fine-tuning\n2:40 Quantization\n3:08 Function-calling\n3:53 Embeddings\n4:40 Links",
+    "view_count": 2191
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KwpLgVnxk5c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

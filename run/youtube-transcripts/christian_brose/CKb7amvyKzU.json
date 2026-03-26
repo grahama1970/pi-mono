@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CKb7amvyKzU",
+    "language": "en",
+    "took_ms": 9159,
+    "method": null,
+    "title": "Event Highlights--America's National Security Strategy  and our Defense Budget with Senator Cornyn",
+    "channel": "Hudson Institute",
+    "upload_date": "20111117",
+    "duration_sec": 329,
+    "description": "November 9, 2011\n\nHudson Institute hosted an address by Senator John Cornyn (R-TX) on the importance of maintaining our defense budget to national security strategy. The Deficit Reduction \"Super Committee\" is expected to soon release recommendations on reducing the budget of the federal government. By cutting defense spending, we may be endangering our national security. Senator Cornyn will argue that the defense strategy should drive defense spending, not the other way around.\n\nSenator Cornyn currently sits on the Senate Finance, Judiciary, Armed Services, and Budget Committees. He was first elected to the Senate in 2002 and previously served in Texas as a District Judge, a member of the Texas Supreme Court, and as Texas Attorney General.\n\nHudson President & CEO Kenneth Weinstein introduced the Senator. A question and answer session, moderated by Amy Kauffman, Hudson Institute's Director of Congressional Relations, followed the Senator's remarks.",
+    "view_count": 156
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CKb7amvyKzU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

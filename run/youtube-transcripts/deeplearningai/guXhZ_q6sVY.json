@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "guXhZ_q6sVY",
+    "language": "en",
+    "took_ms": 8663,
+    "method": null,
+    "title": "Design, Develop, and Deploy Multi-Agent Systems with CrewAI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251111",
+    "duration_sec": 142,
+    "description": "Learn more: https://bit.ly/4ooiRUl\n\nIntroducing \"Design, Develop, and Deploy Multi-Agent Systems with CrewAI,\" taught by João Moura! \n\nAI agents leverage the power of Large Language Models (LLMs), but, as with all LLM-based tools, they struggle with reliability, coordination, and repeatability when deployed on complex workflows. AI agents build on these models to move from responding to prompts to acting autonomously, reasoning through tasks, and adapting to changing goals. Multi-agent systems extend this capability even further by distributing reasoning and responsibilities across specialized agents that can plan, collaborate, and improve together.\n\nWhile it’s never been faster to prototype a concept, many teams are still stuck at this prototype stage, where agents might run well at a small scale but fail under real-world conditions. In this course, you’ll bridge that gap by turning prototypes like an automated code reviewer, a meeting co-pilot, and a deep researcher into production-ready systems. You’ll use the CrewAI framework to apply methods that improve control, reliability, and scalability.\n\nAcross four modules, you’ll:\n\n- Build AI agents using core the building blocks of memory, tools (including MCP servers), guardrails, and execution hooks.\n- Design and orchestrate multi-agent workflows using Flows and complex coordination strategies. In hands-on labs, create and refine crews for projects such as a deep researcher and a meeting co-pilot.\n- Add observability and evaluation through traces, testing with LLM-as-a-Judge techniques, and training with human feedback to monitor agent decisions, debug issues, and continuously improve performance.\n- Deploy and monitor agents safely in production, integrating zoom-in and zoom-out observability metrics, versioning your configurations, and scaling reliably with production-grade practices.\n\nBy the end, you’ll know how to turn your agent ideas into scalable systems that are robust, observable, and ready for real-world use.\n\nEnroll now: https://bit.ly/4ooiRUl",
+    "view_count": 2623
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] guXhZ_q6sVY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gGa5v0m85dE",
+    "language": "en",
+    "took_ms": 9784,
+    "method": null,
+    "title": "Phoenix Contact - Large Scale Deployment of mGuard",
+    "channel": "S4 Events",
+    "upload_date": "20190405",
+    "duration_sec": 1239,
+    "description": "Tyler Burke, a Field Application Specialist with Phoenix Contact, briefly describes the company and product, and then dives into a large water client who deployed over 100 mGuard's. He talks about the challenges of managing these devices when they were initially deployed and how the mGuard Device Manager solved these problems when it was recently deployed.",
+    "view_count": 186
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gGa5v0m85dE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

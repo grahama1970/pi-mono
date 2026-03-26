@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I1RqhGGRmHY",
+    "language": "en",
+    "took_ms": 9480,
+    "method": null,
+    "title": "DEF CON 32 - Your AI Assistant has a Big Mouth:  A New Side Channel Attack - Yisroel Mirsky",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2398,
+    "description": "AI assistants like ChatGPT are changing how we interact with technology. But what if someone could read your confidential chats? Imagine awkwardly asking your AI about a strange rash, or to edit an email, only to have that conversation exposed to someone on the net. In this talk we'll unveil a novel side-channel vulnerability in popular AI assistants and demonstrate how it can be used to read encrypted messages sent from AI Assistants.\n\nBefore our disclosure, major players like OpenAI, Microsoft, Cloudflare, Quora, and Notion were at risk. We'll reveal the technical details of this exploit and show real-world examples of intercepted conversations. This talk isn't just about the problem – learn how to identify this vulnerability in other AI assistants as well! We'll dissect network traffic, discuss attack models, and explore the far-reaching consequences of this discovery.",
+    "view_count": 35713
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I1RqhGGRmHY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

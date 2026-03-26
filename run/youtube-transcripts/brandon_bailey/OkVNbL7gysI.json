@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OkVNbL7gysI",
+    "language": "en",
+    "took_ms": 9353,
+    "method": null,
+    "title": "DEF CON 32 -  How we built our REDACTED THING this year, 5n4ck3y, && AMA Badge Panel -  AND!XOR",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2450,
+    "description": "See talk title, kids these days dont read more than a sentence anyway. Seriously though, we get asked a lot of random custom electronics, hardware hacking, and badge questions, here's your chance to throw them at us while we drink a beer and pretend to know the right answer",
+    "view_count": 571
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OkVNbL7gysI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

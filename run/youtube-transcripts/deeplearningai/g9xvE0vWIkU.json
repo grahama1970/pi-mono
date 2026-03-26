@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g9xvE0vWIkU",
+    "language": "en",
+    "took_ms": 9052,
+    "method": null,
+    "title": "Data Scientist vs. Machine Learning Engineer",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210617",
+    "duration_sec": 3615,
+    "description": "DeepLearning.AI and FourthBrain invite you to join us at the live event focused on comparing Data Scientists vs. Machine Learning Engineers, including career progressions and career opportunities.\n\nThe speakers plan to discuss: \n- What are the main differences between the two roles?\n- What each role does in a typical workday?\n- What is the typical career progression of each role?\n- What are the skills required for each role?\n- What roadmap do you recommend for someone transitioning from DS to MLE?\n- How can a non CS or non engineering background person with no prior experience of the DS or ML start?\n- With the lines blurring between the roles of a Data Scientist and MLE,  what's the future trends of these two roles?\n\nSpeakers:\nAishwarya Srinivasan (https://www.linkedin.com/in/aishwarya-srinivasan/), AI & ML Innovation Leader, IBM\nKate Strachnyi (https://www.linkedin.com/in/kate-strachnyi-data/), Founder, DATAcated\nSteve Nouri (https://www.linkedin.com/in/stevenouri/), Official member and contributor, Forbes Tech Council\n\nTo learn more about DeepLearning.AI and sign up for future events: https://www.deeplearning.ai/events/\nTo learn more about how FourthBrain's program can help you transition into roles in MLE and MLOps: https://www.fourthbrain.ai/",
+    "view_count": 23617
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g9xvE0vWIkU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

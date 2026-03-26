@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1v8jOr3ju94",
+    "language": "en",
+    "took_ms": 8294,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village -Austin Marck - erpwnage Red Team Approach to Targeting SAP",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1433,
+    "description": "The crown jewels are ripe for the taking. ERP systems like SAP are being targeted more than ever and red teams need the tools to demonstrate these threats. We'll demonstrate the TTPs needed to emulate real threats with lateral movement techniques in, out, and between SAP systems.",
+    "view_count": 648
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1v8jOr3ju94: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

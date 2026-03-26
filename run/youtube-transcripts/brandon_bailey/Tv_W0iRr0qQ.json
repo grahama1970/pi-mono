@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Tv_W0iRr0qQ",
+    "language": "en",
+    "took_ms": 8261,
+    "method": null,
+    "title": "DEF CON 32 - Maturing Your Application Security Program - SheHacksPurple",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1699,
+    "description": "After working with over 400 companies on their application security programs the most common question I receive is “what’s next?”. They want to know how to mature their programs, and when they look at the maturity models available, they find them intimidating and so far beyond their current maturity level that they feel impossible. In this talk I will take you through 3 common AppSec program maturity levels I have encountered over the years, with practical and actionable next steps you could take immediately to improve your security posture.",
+    "view_count": 1044
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Tv_W0iRr0qQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

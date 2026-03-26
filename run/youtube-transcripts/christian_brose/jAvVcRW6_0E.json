@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jAvVcRW6_0E",
+    "language": "en",
+    "took_ms": 8103,
+    "method": null,
+    "title": "The Threat of Kleptocracy: States Bordering the Russian Federation",
+    "channel": "Hudson Institute",
+    "upload_date": "20161021",
+    "duration_sec": 10784,
+    "description": "Hudson Institute's Kleptocracy Initiative hosts a discussion of the threats posed by kleptocracy to states bordering the Russian Federation.",
+    "view_count": 544
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jAvVcRW6_0E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Yqj7Kyjznh4",
+    "language": "en",
+    "took_ms": 8498,
+    "method": null,
+    "title": "Data-centric AI: Real World Approaches",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210811",
+    "duration_sec": 5693,
+    "description": "How to participate in Q&A:\n\nJoin our community on Discourse to post questions to our speakers and discuss with others on Data-centric AI. \n\n- If you are new to our Discourse community, click here https://bit.ly/discourse-data-centric-ai\n- If you have already created an account on our Discourse community, go to https://community.deeplearning.ai/c/random-discussions/data-centric-ai/67  (You can also find the Data-centric AI subcategory page under General Discussions on the home page.)\n- You can ask a question by creating a topic, and you can also upvote others'. \n\nEvent agenda (*subject to change):\n10-min: Keynote speech: Andrew Ng\n15-min: Presentations from the panel speakers on their work and the real world approaches of data-centric AI\n45-min Panel discussion: \n20-min Q&A \n\nIn this event, Dr. Andrew Ng and his teams, as well as other industry leaders will be sharing their views as well as real-world use cases on how they have elevated data-centric approaches to improving the performance of machine learning models.\n\nThis event is a special collaboration between DeepLearning.AI, FourthBrain, Landing AI and AI Fund (all founded by Dr. Andrew Ng and/or backed by the AI Fund).\n\nTo learn more:\nData-centric AI competition (submission deadline: Sep 4, 2021): https://https-deeplearning-ai.github.io/data-centric-comp/\nAndrew Ng's speech on MLOps: From model-centric to data-centric AI: https://youtu.be/06-AZXmwHjo\nDeepLearning.AI: https://www.deeplearning.ai/\nFourthBrain: https://www.fourthbrain.ai/\nLanding AI: https://landing.ai/\nAI Fund: https://aifund.ai/",
+    "view_count": 41070
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Yqj7Kyjznh4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

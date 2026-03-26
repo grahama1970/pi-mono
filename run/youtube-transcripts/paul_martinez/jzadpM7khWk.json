@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jzadpM7khWk",
+    "language": "en",
+    "took_ms": 9000,
+    "method": null,
+    "title": "A Tale Of Two (Very Different) Secure ICS Architectures",
+    "channel": "S4 Events",
+    "upload_date": "20220705",
+    "duration_sec": 1567,
+    "description": "Alexandrine Torrents, on the S4x22 Main Stage, presents two very different ICS architectures (traditional power plants and distributed energy resources) that can and do exist in a single company.  Alexandrine then looks at the security requirements and architecture for each. They are very different.",
+    "view_count": 6075
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jzadpM7khWk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

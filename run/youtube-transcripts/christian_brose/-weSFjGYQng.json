@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-weSFjGYQng",
+    "language": "en",
+    "took_ms": 8123,
+    "method": null,
+    "title": "Douglas Feith on Oil Prices and Turmoil in Libya for Fox Business",
+    "channel": "Hudson Institute",
+    "upload_date": "20110330",
+    "duration_sec": 234,
+    "description": "Hudson Senior Fellow Douglas Feith joined Fox Business on March 25 to discuss the turmoil in Libya and what it may mean for oil prices worldwide.",
+    "view_count": 1236
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -weSFjGYQng: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

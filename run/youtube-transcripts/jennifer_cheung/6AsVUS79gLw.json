@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6AsVUS79gLw",
+    "language": "en",
+    "took_ms": 9716,
+    "method": null,
+    "title": "DEF CON 29 - Matthew Bryant - Hacking G Suite: The Power of Dark Apps Script Magic",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2631,
+    "description": "You’ve seen plenty of talks on exploiting, escalating, and exfiltrating the magical world of Google Cloud (GCP), but what about its buttoned-down sibling? This talk delves into the dark art of utilizing Apps Script to exploit G Suite (AKA Google Workspace).\n\nAs a studious sorcerer, you’ll discover how to pierce even the most fortified G Suite enterprises. You’ll learn to conjure Apps Script payloads to bypass powerful protective enchantments such as U2F, OAuth app allowlisting, and locked-down enterprise Chromebooks.\n\nOur incantations don’t stop at the perimeter, we will also discover novel spells to escalate our internal privileges and bring more G Suite accounts under our control. Once we’ve obtained the access we seek, we’ll learn various curses to persist ourselves whilst keeping a low profile so as to not risk an unwelcome exorcism.\n\nYou don’t need divination to see that this knowledge just might rival alchemy in value.\n\nREFERENCES:\nNo real academic references, this is all original research gleaned from real-world testing and reading documentation.",
+    "view_count": 7371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6AsVUS79gLw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

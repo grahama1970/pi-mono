@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lhcQgrhPcQk",
+    "language": "en",
+    "took_ms": 8752,
+    "method": null,
+    "title": "ICS Security - August Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20210902",
+    "duration_sec": 3657,
+    "description": "Matt Wyckhouse joins host Dale Peterson to discuss the top 3 stories in August and give their win, fail and prediction for the month. Your questions and comments will be included in the show.",
+    "view_count": 291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lhcQgrhPcQk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

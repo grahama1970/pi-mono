@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HlWMrTA0eEU",
+    "language": "en",
+    "took_ms": 7589,
+    "method": null,
+    "title": "Financing The Future of ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20230619",
+    "duration_sec": 1588,
+    "description": "Energy Impact Partners (EIP) has funded Dragos, Finite State and other ICS security related companies. Robert Terrin of EIP begins by giving the advice: Go Big!\n\nThis S4 session is aimed at those thinking about trying to raise money for their ICS security company or anyone who wants to understand venture capital better. Robert talks about how a VC stages risk using a 10 company portfolio. Reasons a VC will and won't invest in a ICS / OT security company.\n\nNote: It's interesting to post this in June, 3-months after Robert was on stage and as the ICS security vendors are going through a rough patch.",
+    "view_count": 263
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HlWMrTA0eEU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

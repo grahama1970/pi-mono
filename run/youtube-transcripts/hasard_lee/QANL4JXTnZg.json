@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QANL4JXTnZg",
+    "language": "en",
+    "took_ms": 7563,
+    "method": null,
+    "title": "Top Speed Story #shorts",
+    "channel": "Hasard Lee",
+    "upload_date": "20220904",
+    "duration_sec": 42,
+    "description": "Highlight from the airborne interview I conducted for the Defense Innovation Unit with @travislworden who was flying in an F-16\n\n#aviation #pilot #militaryaviation",
+    "view_count": 1005291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QANL4JXTnZg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

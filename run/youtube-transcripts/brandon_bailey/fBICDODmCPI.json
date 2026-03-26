@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fBICDODmCPI",
+    "language": "en",
+    "took_ms": 8622,
+    "method": null,
+    "title": "DEF CON 29  - Joseph Gabay - DoS Denial of Shopping  Analyzing and Exploiting Physical Shopping Cart",
+    "channel": "DEFCONConference",
+    "upload_date": "20210830",
+    "duration_sec": 1872,
+    "description": "Many supermarkets and shopping centers have implemented devices that “lock” their shopping carts if they’re taken outside of an approved boundary (e.g, a parking lot). This talk examines some of the technology that’s used to do this, as well as ways to capture and spoof the control signals to defeat these devices.\n\nWe will go over the anatomy of remotely lockable shopping cart wheels, their basic theory, and get into how they’re controlled. We’ll deconstruct some samples of the lock and unlock signals captured using a homemade antenna and a HackRF, and briefly discuss methods of rebroadcasting them – as well as the challenges inherent to this process.\n\nDISCLAIMER\nThis talk is the result of a personal project.\n\nAny views, opinions, or research presented in this talk are personal and belong solely to the presenter. They do not represent or reflect those of any person, institution, or organization that the presenter may or may not be associated with in a professional or personal capacity unless explicitly stated otherwise.",
+    "view_count": 25749
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fBICDODmCPI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1s3nm1TjyXM",
+    "language": "en",
+    "took_ms": 8850,
+    "method": null,
+    "title": "This Mindset Wins in the AI Era",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260303",
+    "duration_sec": 30,
+    "description": "AI isn't your competition. It's your leverage, if you know how to use it. The workers falling behind aren't losing to AI. They're losing to the people who figured out how to direct it. Are you the manager or the one getting outpaced?",
+    "view_count": 9209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1s3nm1TjyXM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

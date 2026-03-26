@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IkBslShH5to",
+    "language": "en",
+    "took_ms": 8872,
+    "method": null,
+    "title": "New course on MCP (Model Context Protocol) with Anthropic!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250514",
+    "duration_sec": 163,
+    "description": "Learn more: https://bit.ly/4jRNkYC\n\nIntroducing MCP: Build Rich-Context AI Apps with Anthropic, our latest course made in collaboration with Anthropic and taught by Elie Schoppik, a member of its technical staff. \n\nConnecting AI applications to external systems like GitHub, Google Docs, or local files often means writing one-off code for each integration, a process that’s time-consuming and hard to scale. The Model Context Protocol (MCP), developed by Anthropic, solves this by standardizing how LLMs interact with tools, data, and prompts.\n\nThis open protocol enables AI apps to access external resources through a consistent, reusable interface, with no custom logic required for each new connection.\n\nIn this course, you’ll learn how to build AI applications that plug into a growing ecosystem of MCP-compatible servers quickly and reliably.\n\nJoin this course and learn:\n\n- How MCP simplifies tool and data integration in LLM apps through a unified client-server protocol\n- How to build and test your own MCP server using FastMCP and MCP Inspector\n- How to adapt a Claude-powered chatbot into an MCP client that connects to both local and third-party servers\n- How to expose tools, resources, and prompt templates to your AI app, and use them effectively\n- How to connect your MCP server to applications like Claude Desktop and deploy it for remote access\n\nBy the end of the course, you’ll be able to build rich-context AI applications that can connect to a growing ecosystem of MCP servers, with minimal integration work.\n\nEnroll now: https://bit.ly/4jRNkYC",
+    "view_count": 11771
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IkBslShH5to: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A-RTThAvYAY",
+    "language": "en",
+    "took_ms": 8010,
+    "method": null,
+    "title": "How America almost put F-16s on aircraft carriers",
+    "channel": "Sandboxx",
+    "upload_date": "20211001",
+    "duration_sec": 789,
+    "description": "The F-16 Fighting Falcon has been the U.S. Air Force’s workhorse fighter for more than forty years, and at one point, it looked like a carrier-capable version would do the same for the U.S. Navy.\n\n📰  Articles Cited\nVought 1600: The plan to put the F-16 on America's carriers \n➡️ https://sbxx.us/3kVxHDy\n\n📱 Follow Sandboxx on social\nTwitter: https://twitter.com/sandboxxnews\nInstagram: https://instagram.com/sandboxxnews\nFacebook: https://facebook.com/sandboxxnews\n\n📱Follow Alex Hollings on social\nTwitter: https://twitter.com/AlexHollings52\nFacebook: https://www.facebook.com/AlexHollingsWriter",
+    "view_count": 119554
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A-RTThAvYAY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

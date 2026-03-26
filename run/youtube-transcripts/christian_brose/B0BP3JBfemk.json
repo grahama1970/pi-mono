@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B0BP3JBfemk",
+    "language": "en",
+    "took_ms": 7951,
+    "method": null,
+    "title": "The Role of CDAO in Supporting Joint Integration with Margaret Palmieri",
+    "channel": "Hudson Institute",
+    "upload_date": "20240124",
+    "duration_sec": 1896,
+    "description": "Top Four Takeaways:\n \n1. The mission of the Chief Digital and Artificial Intelligence Office (CDAO) is to \naccelerate the DoD’s adoption of data analytics and artificial intelligence. This requires \nmaking data accessible across the ecosystem to create solutions for DoD problems. \nCDAO is taking an experimentation-based approach to determine what works.\n\n2. To prioritize its efforts, the DoD has crafted a hierarchy of needs that starts with data \navailability but also considers the character and quality of data—all of which are \nfoundational steps for the application of analytics or AI algorithms. Data scientists play a \ncritical translation role between mission needs and data systems.\n\n3. CDAO strives to take a workflow lens on data analytics and AI, understanding today’s \noperational concepts and workflows, and using experimentation to explore new, data-\ninformed workflows.\n\n4. Autonomy, decision support, and generative AI have major potential for the DoD. \nAdapting to the learning curve from hardware and software to AI-centric systems is \ncritical.\n\nLearn more at: https://www.hudson.org/events/solving-operational-problems-todays-technology-launching-apex-conference-series",
+    "view_count": 6984
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B0BP3JBfemk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DTmyl8-D7lU",
+    "language": "en",
+    "took_ms": 7906,
+    "method": null,
+    "title": "New course with Anthropic: Building Towards Computer Use with Anthropic",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250122",
+    "duration_sec": 116,
+    "description": "Enroll for free: https://bit.ly/3WlFMUf\n\nBuilding Towards Computer Use with Anthropic introduces an innovative capability from Anthropic that enables models to interact with and navigate computer interfaces.\n\nTaught by Colt Steele, Anthropic’s Head of Curriculum, this course covers Anthropic's family of models and the building blocks that lead to the amazing new application - Computer Use. \n\nComputer Use utilizes the capabilities of the latest models including image reasoning and tool use to enable an LLM-based agent to use a computer. Like a human user, the model processes an image of the screen, analyzes it to understand what's going on, and navigates the computer by issuing mouse clicks and generating keyboard strokes to get things done.\n\nIn this course, you'll learn the features that lead up to computer use from working with the Anthropic’s API, to multimodal prompting, prompt caching, and tool use, ending in a demo that combines these features to build an AI assistant that uses a computer.\n\nIn detail, you’ll:\n\n- Learn Anthropic's approach to AI research, principles of AI safety, alignment, and interpretability while understanding the key differences between its models.\n- Make API requests to Claude, format messages for better responses, and control API parameters like system prompts, temperature, and max tokens for optimal responses.\n- Write multi-modal prompts that combine text and image content blocks and build with streaming responses.\n- Learn effective prompting techniques such as using prompt templates, structuring prompts in XML, and providing examples to get consistent high-quality responses.\n- Learn to implement prompt caching and see how it can reduce costs and latency.\n- Understand tool-use workflows and build a chatbot that can call different tools in response to users' queries.\n- See all these concepts come together in a demo that uses Anthropic Computer Use to achieve a task on a computer.\n\nStart utilizing Anthropic’s family of models to build towards Computer Use applications.\n\nLearn more: https://bit.ly/3WlFMUf",
+    "view_count": 5940
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DTmyl8-D7lU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

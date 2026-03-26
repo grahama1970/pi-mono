@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uFyk5UOyNqI",
+    "language": "en",
+    "took_ms": 8045,
+    "method": null,
+    "title": "DEF CON 32 - Inside the FBI’s Secret Encrypted Phone Company ‘Anom’ - Joseph Cox",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2363,
+    "description": "In 2018, a secure communications app called Anom started to gain popularity among organized criminals. Soon, top tier drug traffickers were using it all over the world. Because they thought their messages were secure, smugglers and hitmen coordinated high stakes crimes across the platform. But Anom had a secret: it was secretly run by the FBI.\n\nFor years Joseph Cox has investigated the inside story of Anom, speaking to people who coded the app, those who sold it, criminals who chatted across it, and the FBI agents who surreptitiously managed it. This new talk, building on details from his recent book DARK WIRE, will include never-before-published technical details on how the Anom network functioned, how the backdoor itself worked, and how Anom grew to such a size that the FBI started to lose control of its own creation.\n\nIt will also reflect on how police have entered a new phase of compromising entire encrypted phone networks, with little to no debate from the public, and provide critical insight on what really happens when authorities introduce a backdoor into a telecommunications product.",
+    "view_count": 1708069
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uFyk5UOyNqI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

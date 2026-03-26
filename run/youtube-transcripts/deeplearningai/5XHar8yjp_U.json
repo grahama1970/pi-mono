@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5XHar8yjp_U",
+    "language": "en",
+    "took_ms": 7790,
+    "method": null,
+    "title": "New course with Comet: Prompt Engineering for Vision Models",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240429",
+    "duration_sec": 257,
+    "description": "Enroll now: https://bit.ly/49YBjLb\n\nToday we’re releasing Prompt Engineering for Vision Models, a short course built in collaboration with Comet. \n\nPrompt engineering is also used in vision models, and depending on the model, prompts can be text, pixel coordinates, bounding boxes, or segmentation masks.\n\nLearn to prompt vision models like Meta's Segment Anything Model (SAM), a universal image segmentation model, OWL-ViT, a zero-shot object detection model, and Stable Diffusion 2.0, a widely used diffusion model, and use a fine-tuning technique called DreamBooth to tune a diffusion model to associate a text label with an object of your preference.\n\nYou’ll explore:\n\n- Image Generation: Prompt with text and by adjusting hyperparameters like strength, guidance scale, and number of inference steps. \n- Image Segmentation: Prompt with positive, negative, and bounding box coordinates.\n- Object detection: Prompt with text to produce a bounding box to isolate specific objects within images.\n- In-painting: Combine the above techniques to replace objects within an image with generated content.\n- Personalization with Fine-tuning: Use DreamBooth, a fine-tuning technique to generate custom images based on pictures that you provide.\n- Iterating and Experiment Tracking: Prompting and hyperparameter tuning are iterative processes, and experiment tracking can help to identify effective combinations. This course will use Comet, a library to track experiments and optimize visual prompt engineering workflows.\n\nGet started with prompting vision models today.\n\nLearn more: https://bit.ly/49YBjLb",
+    "view_count": 3142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5XHar8yjp_U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

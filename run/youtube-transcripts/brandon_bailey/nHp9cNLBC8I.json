@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nHp9cNLBC8I",
+    "language": "en",
+    "took_ms": 9052,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village - Don Hatfield - Build Automotive Gateways with Ease",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 2162,
+    "description": "Vehicle network architectures within modern vehicles have been transformed by the introduction of automotive gateways. These gateways enable seamless communication between different vehicle networks and are central to the success of modern architectures. In this presentation, we are going to cover some of the challenges that automotive engineers face when tasked with converting data between old and new network protocols. We’ll also detail how this process is made much easier.",
+    "view_count": 2457
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nHp9cNLBC8I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

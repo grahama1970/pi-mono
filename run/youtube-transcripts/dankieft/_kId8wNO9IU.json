@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_kId8wNO9IU",
+    "language": "en",
+    "took_ms": 8127,
+    "method": null,
+    "title": "How To Make YouTube Shorts with Canva | Canva AI Video Editor",
+    "channel": "Dan Kieft",
+    "upload_date": "20240207",
+    "duration_sec": 503,
+    "description": "How To Make YouTube Shorts with Canva AI\n\nIn this step by step tutorial I teach you How to make youtube shorts with Canva. With Canva magic studio you can create youtube shorts easily with AI. I will show you two different methods on how to edit faceless youtube shorts with ai and how to edit your own videos using canva ai magic studio.",
+    "view_count": 4492
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _kId8wNO9IU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

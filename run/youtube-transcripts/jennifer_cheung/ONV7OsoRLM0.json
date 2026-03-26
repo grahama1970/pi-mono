@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ONV7OsoRLM0",
+    "language": "en",
+    "took_ms": 8158,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Joshua Smailes - CPDLC Man in the Middle Attacks",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1466,
+    "description": "The Controller Pilot Data Link Communications (CPDLC) protocol replaces voice-based air traffic control with a text-based protocol. With no real security protections, this system is open to a wide range of message injection attacks. It has long been assumed that air traffic controllers and flight crew should be able to detect such attacks, but this is not always the case.",
+    "view_count": 629
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ONV7OsoRLM0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

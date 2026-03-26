@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_l9_lNUCjP4",
+    "language": "en",
+    "took_ms": 9949,
+    "method": null,
+    "title": "DEF CON 33 - Turning your Active Directory into the attacker’s C2 - Quentin Roland, Wilfried Bécard",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2585,
+    "description": "The implementation of Active Directory environments is, by essence, not unlike a command-and-control infrastructure allowing to centrally coordinate and control network assets. As an attacker, why not make it your own ?\n\nAs far as the C2 capabilities of Active Directory go, Group Policy Objects (GPOs) are a key functionality that can be leveraged by attackers for a surprisingly wide range of offensive actions. From enumeration, to persistence, to impactful privilege escalation in mature segmented environments, abusing GPOs amounts to abusing the C2 capabilities of Active Directory itself – a powerful attack primitive.\n\nAnd yet, GPOs received comparatively little attention by the pentesting and research community. GPOs exploitation knowledge and tooling is scarce, whether because implementation may seem kind of obscure, or since exploitation can be seen as risky. Concerns that well-equipped attackers may not have to worry about.\n\nThis presentation aims at demonstrating the full extent of possibilities offered by Group Policy Objects. It will dive deep into GPOs implementation, enumeration potential and advanced exploitation techniques introduced or implemented by the speakers these last few years. It will also be accompanied by the release of two enumeration and exploitation tools developed by the speakers.",
+    "view_count": 1745
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _l9_lNUCjP4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

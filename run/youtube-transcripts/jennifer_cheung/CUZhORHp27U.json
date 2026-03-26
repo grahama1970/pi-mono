@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CUZhORHp27U",
+    "language": "en",
+    "took_ms": 9065,
+    "method": null,
+    "title": "DEF CON 33 -  The Missing Link: Draytek’s New RCEs Complete the Chain - O. Gianatiempo & G. Aznarez",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1492,
+    "description": "Draytek routers are widely deployed edge devices trusted by thousands of organizations, and therefore remain a high-value target for attackers. Building on our prior DEFCON32 HHV presentation (https://www.youtube.com/watch?v=BiBMsw0N_mQ) on backdooring these devices, where we also exposed six vulnerabilities and released Draytek Arsenal (https://github.com/infobyte/draytek-arsenal), a toolkit to analyze Draytek firmware. We return with two new unauthenticated RCEs: CVE-2024-51138, a buffer overflow in STUN CGI handling, and CVE-2024-51139, an integer overflow in CGI parsing. When chained with our prior persistence techniques, these bugs enable a full device takeover and backdoor from the internet.\n\nThis talk provides an in-depth analysis of the new vulnerabilities and their exploitation strategies with demos and the full end-to-end exploitation chain. We’ll also explore their potential link to the mass Draytek reboot incidents of March 2025, suggesting that real-world exploitation of some of these vulnerabilities may already be underway. Attendees will gain insight into edge device exploitation, persistent compromise, and the importance of transparency and tooling in embedded security research.",
+    "view_count": 209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CUZhORHp27U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

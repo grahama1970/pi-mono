@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_j7E3l8UiKw",
+    "language": "en",
+    "took_ms": 8790,
+    "method": null,
+    "title": "Asset Inventory, Lawyers, and AI",
+    "channel": "S4 Events",
+    "upload_date": "20231115",
+    "duration_sec": 1656,
+    "description": "This week is a Dale Peterson solosode.\n\nUpdates and Announcements\n\nDale provides updates about S4x24 ticket sales and announces the Women In ICS Security program and sponsor package.\n\nMain Topics\n\n1. Asset Inventory in Cybersecurity: Dale challenges the common security mantra \"You can't protect what you don't know,\" using examples from both physical and cyber domains. He notes many of the comments on this week's article missed the main point, and he gives hints on the next two asset inventory articles.\n\n2. Legal and Regulatory Issues in Cybersecurity: Dale emphasizes the importance of domain expertise whether it be cybersecurity or the legal profession. He previews upcoming keynote interviews with legal experts and advises cybersecurity professionals against making legal analyses without proper expertise.\n\n3. Artificial Intelligence in Cybersecurity: Dale reveals that most AI submissions for S4 were broad and hand wavy. This isn't wrong, but most have heard this info by now. He then discusses the need for focusing on specific, real-world applications of AI and stresses the importance of measurable improvements in this age of experimentation.",
+    "view_count": 331
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _j7E3l8UiKw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

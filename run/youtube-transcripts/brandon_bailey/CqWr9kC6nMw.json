@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CqWr9kC6nMw",
+    "language": "en",
+    "took_ms": 8150,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Elazari Tarkhanyan and Cheruvu  -   Establishing IoT Trustworthiness",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 2779,
+    "description": "The Internet of Things (IoT) ecosystem holds tremendous promise to promote innovation and productivity, and societal benefits. Yet, with increased connectivity, concerns remain with the growing attack surface. While the DFECON community often focuses on the security aspects of these issues, the multidimensional nature of IoT devices and the combination of AI/ML solutions, sparked standardization activities focusing more generally on the concept of “IoT trustworthiness”. This talk will introduce the audience to the latest developments in the IoT Security Policy landscape, proposals for confidence/certifications mechanisms emerging globally, and key IoT Security baseline standards developments, while exploring the connection to the IoT trustworthiness concept across the IoT Supply Chain. We will describe a case study of IoT robustness and trustworthiness applied in context of AI and smart analytics, including the importance of characterizing the behavior of data.",
+    "view_count": 282
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CqWr9kC6nMw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

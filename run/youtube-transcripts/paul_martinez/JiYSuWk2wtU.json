@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JiYSuWk2wtU",
+    "language": "en",
+    "took_ms": 8708,
+    "method": null,
+    "title": "S4x18 Theme & Mini Keynote by Dale Peterson",
+    "channel": "S4 Events",
+    "upload_date": "20180122",
+    "duration_sec": 951,
+    "description": "The 15-minute talk that kicked off S4x18. A few minutes on the S4x18 stats and activities and then an introduction of the event's theme: TRY ! ?\n\nAfter 10+ years beginning in 2001, the ICS / SCADA security community has finally kicked the sad habit of not actually trying to develop and deploy secure systems. There is much work to do, but the community is developing secure PLC's, secure protocols, new classes of products and more.\n\nThe problem is we may be slipping into the same \"not trying\" attitude in other important areas. Attendees were asked to work as if the problems could be solved, for at least the 3 days at S4x18.\n\nThe ? is related to being open to new ideas and information that we bring to S4. This is not natural in a slow moving market, but again, we asked attendees to change for at least 3 days.",
+    "view_count": 2252
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JiYSuWk2wtU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

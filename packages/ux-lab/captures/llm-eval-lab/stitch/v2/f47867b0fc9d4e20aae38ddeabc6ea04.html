@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sovereign Console | LLM Eval Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@700;900&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container": "#19202e",
+                        "on-tertiary": "#402d00",
+                        "tertiary": "#f9bd22",
+                        "tertiary-fixed-dim": "#f9bd22",
+                        "tertiary-container": "#836100",
+                        "on-surface": "#dce2f6",
+                        "outline": "#958da1",
+                        "on-background": "#dce2f6",
+                        "primary": "#d2bbff",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "primary-container": "#7c3aed",
+                        "secondary": "#f5fff3",
+                        "on-secondary-fixed-variant": "#005228",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#2e3544",
+                        "outline-variant": "#4a4455",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#00e479",
+                        "secondary-fixed": "#60ff99",
+                        "on-error": "#690005",
+                        "surface": "#0c1321",
+                        "on-surface-variant": "#ccc3d8",
+                        "primary-fixed": "#eaddff",
+                        "on-secondary-fixed": "#00210c",
+                        "surface-variant": "#2e3544",
+                        "surface-tint": "#d2bbff",
+                        "on-primary-fixed": "#25005a",
+                        "surface-container-low": "#151b2a",
+                        "inverse-surface": "#dce2f6",
+                        "secondary-container": "#34ff8d",
+                        "on-primary-container": "#ede0ff",
+                        "on-primary": "#3f008e",
+                        "surface-container-lowest": "#070e1c",
+                        "background": "#0c1321",
+                        "on-secondary-container": "#007239",
+                        "on-tertiary-container": "#ffe2ab",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-tertiary-fixed": "#261a00",
+                        "inverse-primary": "#732ee4",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#ffdf9f",
+                        "surface-container-high": "#232a39",
+                        "surface-bright": "#323949",
+                        "on-secondary": "#003919",
+                        "inverse-on-surface": "#2a3040",
+                        "surface-dim": "#0c1321"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #070e1c; }
+        ::-webkit-scrollbar-thumb { background: #4a4455; }
+        .glass-panel { backdrop-filter: blur(12px); background: rgba(25, 32, 46, 0.8); }
+    </style>
+</head>
+<body class="bg-background text-on-surface overflow-hidden">
+<!-- TopAppBar from Shared Components -->
+<header class="flex justify-between items-center w-full px-6 h-12 bg-[#19202e] border-b border-[#4a4455]/15 fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-[#7c3aed] tracking-widest font-['Space_Grotesk'] uppercase">SOVEREIGN_CONSOLE</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold transition-colors duration-150 text-[#7c3aed] border-b-2 border-[#7c3aed] pb-1" href="#">Models</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold transition-colors duration-150 text-[#dce2f6]/60 hover:text-[#7c3aed]" href="#">Evals</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold transition-colors duration-150 text-[#dce2f6]/60 hover:text-[#7c3aed]" href="#">Datasets</a>
+<a class="font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold transition-colors duration-150 text-[#dce2f6]/60 hover:text-[#7c3aed]" href="#">Deploy</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-surface-container-lowest px-3 py-1 rounded">
+<span class="material-symbols-outlined text-xs text-outline mr-2">search</span>
+<input class="bg-transparent border-none text-xs focus:ring-0 w-48 text-on-surface placeholder-outline/50" placeholder="Search parameters..." type="text"/>
+</div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-all active:scale-95">terminal</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-all active:scale-95">settings</span>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-all active:scale-95">help_outline</span>
+</div>
+</div>
+</header>
+<!-- Main Dashboard Container -->
+<main class="flex h-screen pt-12 overflow-hidden">
+<!-- Left Pane: Configuration (25%) -->
+<section class="w-1/4 bg-surface-container border-r border-outline-variant/15 flex flex-col h-full overflow-y-auto">
+<div class="p-4 border-b border-outline-variant/10">
+<h2 class="font-headline text-xs font-bold tracking-widest uppercase text-outline">CONFIGURATION</h2>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<!-- Ground Truth Selector -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-outline uppercase tracking-wider">Ground Truth Selector</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant/30 text-xs p-2 rounded appearance-none focus:border-primary focus:ring-0 font-mono">
+<option>available_tests.json</option>
+<option>benchmarks_v2.json</option>
+<option>reasoning_core.json</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-sm pointer-events-none text-outline">expand_more</span>
+</div>
+</div>
+<!-- Threshold Slider -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="block text-[10px] font-bold text-outline uppercase tracking-wider">Threshold</label>
+<span class="font-mono text-primary font-bold text-sm">80%</span>
+</div>
+<input class="w-full h-1 bg-surface-container-lowest rounded-lg appearance-none cursor-pointer accent-primary" max="1.0" min="0.5" step="0.01" type="range" value="0.8"/>
+<div class="flex justify-between text-[8px] text-outline/50 font-mono">
+<span>0.50</span>
+<span>1.00</span>
+</div>
+</div>
+<!-- Model Filters -->
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-outline uppercase tracking-wider">Model Filters</label>
+<div class="grid grid-cols-3 bg-surface-container-lowest p-1 rounded">
+<button class="text-[10px] py-1 bg-surface-container-highest text-on-surface rounded font-bold uppercase">Local</button>
+<button class="text-[10px] py-1 text-outline hover:text-on-surface font-bold uppercase">API</button>
+<button class="text-[10px] py-1 text-outline hover:text-on-surface font-bold uppercase">All</button>
+</div>
+</div>
+<!-- System Prompt (Collapsed Style) -->
+<div class="space-y-2">
+<button class="flex items-center justify-between w-full group">
+<label class="text-[10px] font-bold text-outline uppercase tracking-wider group-hover:text-primary cursor-pointer transition-colors">System Prompt (Default)</label>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+</button>
+<div class="hidden">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/30 text-xs p-2 rounded h-24 focus:ring-0 font-mono text-outline/70" placeholder="Enter system instructions..."></textarea>
+</div>
+</div>
+<!-- Cost Estimation (Collapsed Style) -->
+<div class="space-y-2">
+<button class="flex items-center justify-between w-full group">
+<label class="text-[10px] font-bold text-outline uppercase tracking-wider group-hover:text-primary cursor-pointer transition-colors">Cost Estimation Section</label>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+</button>
+<div class="space-y-3 mt-2 bg-surface-container-lowest/50 p-3 rounded border border-outline-variant/10">
+<div class="space-y-1">
+<span class="text-[9px] text-outline block">Batch Size</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/20 text-xs px-2 py-1 rounded font-mono" type="text" value="90,000"/>
+</div>
+<div class="space-y-1">
+<span class="text-[9px] text-outline block">Avg. Tokens/Req</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/20 text-xs px-2 py-1 rounded font-mono" type="text" value="512"/>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="mt-4 space-y-3">
+<button class="w-full bg-gradient-to-br from-primary-container to-[#5a00c6] text-on-primary-container text-xs font-bold py-3 rounded-sm shadow-lg hover:brightness-110 active:scale-[0.98] transition-all uppercase tracking-widest">
+                        [Run Find-Minimum]
+                    </button>
+<button class="w-full border border-outline-variant/30 text-on-surface text-[10px] font-bold py-2 rounded-sm hover:bg-surface-container-highest active:scale-[0.98] transition-all uppercase tracking-widest">
+                        [Compare Models]
+                    </button>
+</div>
+</div>
+</section>
+<!-- Middle Pane: Model Registry (25%) -->
+<section class="w-1/4 bg-surface-container-low border-r border-outline-variant/15 flex flex-col h-full overflow-hidden">
+<div class="p-4 border-b border-outline-variant/10 flex justify-between items-center">
+<h2 class="font-headline text-xs font-bold tracking-widest uppercase text-outline">MODEL REGISTRY</h2>
+<span class="material-symbols-outlined text-sm text-outline">filter_list</span>
+</div>
+<div class="overflow-y-auto flex-grow">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-low z-10 shadow-sm">
+<tr class="text-[9px] text-outline uppercase font-bold bg-surface-container-lowest/30">
+<th class="px-4 py-2 border-b border-outline-variant/10">Alias</th>
+<th class="px-2 py-2 border-b border-outline-variant/10">Size</th>
+<th class="px-2 py-2 border-b border-outline-variant/10">JSON</th>
+<th class="px-4 py-2 border-b border-outline-variant/10">Caps</th>
+</tr>
+</thead>
+<tbody class="font-mono text-[10px]">
+<tr class="hover:bg-surface-container-highest/30 group transition-colors border-b border-outline-variant/5">
+<td class="px-4 py-3 text-on-surface font-medium">qwen3:1.7b</td>
+<td class="px-2 py-3 text-outline">1.7B</td>
+<td class="px-2 py-3 text-secondary-fixed-dim">Y</td>
+<td class="px-4 py-3"><span class="bg-surface-container-highest px-1 py-0.5 rounded text-[8px] text-outline">-</span></td>
+</tr>
+<tr class="bg-on-secondary-container/10 border-l-2 border-secondary-fixed-dim border-b border-outline-variant/5">
+<td class="px-4 py-3 text-secondary-fixed-dim font-bold">qwen2.5-coder:7b</td>
+<td class="px-2 py-3 text-secondary-fixed-dim">7B</td>
+<td class="px-2 py-3 text-secondary-fixed-dim font-bold">Y</td>
+<td class="px-4 py-3"><span class="bg-on-secondary-container/20 text-secondary-fixed-dim px-1.5 py-0.5 rounded text-[8px] font-bold uppercase">code</span></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors border-b border-outline-variant/5">
+<td class="px-4 py-3 text-on-surface">qwen3:8b</td>
+<td class="px-2 py-3 text-outline">8B</td>
+<td class="px-2 py-3 text-secondary-fixed-dim">Y</td>
+<td class="px-4 py-3 flex gap-1">
+<span class="bg-surface-container-highest px-1 py-0.5 rounded text-[8px] text-outline">reason</span>
+<span class="bg-surface-container-highest px-1 py-0.5 rounded text-[8px] text-outline">think</span>
+</td>
+</tr>
+<tr class="bg-error-container/10 border-l-2 border-error border-b border-outline-variant/5">
+<td class="px-4 py-3 text-error">llama3.2:1b</td>
+<td class="px-2 py-3 text-error/70">1B</td>
+<td class="px-2 py-3 text-error font-bold">N</td>
+<td class="px-4 py-3"><span class="text-error/50">fail</span></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors border-b border-outline-variant/5 opacity-60">
+<td class="px-4 py-3">mistral:v0.3</td>
+<td class="px-2 py-3">7B</td>
+<td class="px-2 py-3">-</td>
+<td class="px-4 py-3 text-[8px] italic">untested</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors border-b border-outline-variant/5">
+<td class="px-4 py-3 text-on-surface">phi-3.5:min</td>
+<td class="px-2 py-3 text-outline">3.8B</td>
+<td class="px-2 py-3 text-secondary-fixed-dim">Y</td>
+<td class="px-4 py-3"><span class="bg-surface-container-highest px-1 py-0.5 rounded text-[8px] text-outline">math</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Right Pane: Evaluation Results (50%) -->
+<section class="w-1/2 bg-surface-container-lowest flex flex-col h-full overflow-hidden">
+<!-- Status Header -->
+<div class="p-4 border-b border-outline-variant/15 bg-surface-container flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<h2 class="font-headline text-xs font-bold tracking-widest uppercase text-outline">EVALUATION RESULTS</h2>
+<span class="text-[10px] font-mono text-primary font-bold">3 of 7 Models Evaluated</span>
+</div>
+<div class="space-y-1.5">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-on-surface">Testing <span class="text-primary font-bold">qwen3:8b</span>...</span>
+<span class="text-outline">42%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[42%] shadow-[0_0_10px_rgba(210,187,255,0.4)]"></div>
+</div>
+</div>
+</div>
+<div class="flex-grow overflow-y-auto">
+<!-- Results Table -->
+<div class="p-0 border-b border-outline-variant/10">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container/50">
+<tr class="text-[9px] text-outline uppercase font-bold">
+<th class="px-4 py-3">Model</th>
+<th class="px-2 py-3">JSON%</th>
+<th class="px-2 py-3">Action%</th>
+<th class="px-2 py-3">Time</th>
+<th class="px-4 py-3 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-mono text-[10px]">
+<tr class="border-b border-outline-variant/5 bg-on-secondary-container/5">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-bold">qwen3:8b</span>
+<span class="bg-primary-container/20 text-primary px-1.5 py-0.5 rounded-[2px] text-[7px] font-bold tracking-tighter">RECOMMENDED</span>
+</div>
+</td>
+<td class="px-2 py-4 text-secondary-fixed-dim">98%</td>
+<td class="px-2 py-4 text-secondary-fixed-dim">87%</td>
+<td class="px-2 py-4 text-outline">12.4s</td>
+<td class="px-4 py-4 text-right"><span class="text-secondary-fixed-dim font-bold uppercase text-[9px]">PASS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/5">
+<td class="px-4 py-4 text-on-surface">qwen2.5-coder:7b</td>
+<td class="px-2 py-4 text-secondary-fixed-dim">92%</td>
+<td class="px-2 py-4 text-tertiary">74%</td>
+<td class="px-2 py-4 text-outline">8.1s</td>
+<td class="px-4 py-4 text-right"><span class="text-secondary-fixed-dim uppercase text-[9px]">PASS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/5 bg-error-container/5">
+<td class="px-4 py-4 text-error">llama3.2:1b</td>
+<td class="px-2 py-4 text-error">12%</td>
+<td class="px-2 py-4 text-error">04%</td>
+<td class="px-2 py-4 text-outline">1.2s</td>
+<td class="px-4 py-4 text-right"><span class="text-error font-bold uppercase text-[9px]">FAIL</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Cost Comparison -->
+<div class="p-6 space-y-4">
+<h3 class="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">payments</span>
+                        Economic Efficiency Comparison
+                    </h3>
+<div class="border border-outline-variant/15 rounded bg-surface-container-low overflow-hidden">
+<table class="w-full text-left font-mono text-[10px]">
+<thead class="bg-surface-container-highest/20">
+<tr class="text-[8px] text-outline uppercase border-b border-outline-variant/15">
+<th class="px-4 py-2">Provider</th>
+<th class="px-4 py-2">Model</th>
+<th class="px-4 py-2">In $/M</th>
+<th class="px-4 py-2">Out $/M</th>
+<th class="px-4 py-2 text-right">Est. Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/10 bg-on-secondary-container/10">
+<td class="px-4 py-3 text-secondary-fixed-dim">Ollama</td>
+<td class="px-4 py-3 text-on-surface">qwen3:8b</td>
+<td class="px-4 py-3">0.00</td>
+<td class="px-4 py-3">0.00</td>
+<td class="px-4 py-3 text-right text-secondary-fixed-dim font-bold">$0.00</td>
+</tr>
+<tr class="border-b border-outline-variant/5">
+<td class="px-4 py-3 text-outline">DeepInfra</td>
+<td class="px-4 py-3">llama-3-8b</td>
+<td class="px-4 py-3">0.08</td>
+<td class="px-4 py-3">0.08</td>
+<td class="px-4 py-3 text-right">$0.42</td>
+</tr>
+<tr>
+<td class="px-4 py-3 text-outline">Together</td>
+<td class="px-4 py-3">llama-3-8b</td>
+<td class="px-4 py-3">0.20</td>
+<td class="px-4 py-3">0.20</td>
+<td class="px-4 py-3 text-right">$1.02</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Judge Verdict / Side-by-side Output -->
+<div class="p-6 pt-0 space-y-4">
+<h3 class="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">gavel</span>
+                        Judge Verdict: Logic &amp; Output Diff
+                    </h3>
+<div class="grid grid-cols-2 gap-px bg-outline-variant/20 rounded overflow-hidden">
+<div class="bg-surface-container-low p-4 space-y-2">
+<div class="flex justify-between items-center border-b border-outline-variant/10 pb-2">
+<span class="text-[9px] font-bold text-primary font-mono">QWEN3:8B (REF)</span>
+<span class="material-symbols-outlined text-secondary-fixed-dim text-xs">check_circle</span>
+</div>
+<div class="font-mono text-[9px] leading-relaxed text-on-surface/80">
+<span class="text-outline/50"># Thinking process</span><br/>
+                                Step 1: Parse user intent from "Get the last 5 logs".<br/>
+                                Step 2: Validate against JSON schema strictness.<br/>
+<span class="text-secondary-fixed-dim">Verdict: Valid schema match found. Proceeding with function call 'logs.retrieve'.</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 space-y-2">
+<div class="flex justify-between items-center border-b border-outline-variant/10 pb-2">
+<span class="text-[9px] font-bold text-error font-mono">LLAMA3.2:1B</span>
+<span class="material-symbols-outlined text-error text-xs">cancel</span>
+</div>
+<div class="font-mono text-[9px] leading-relaxed text-on-surface/80">
+<span class="text-outline/50"># Thinking process</span><br/>
+                                Error: Input does not strictly follow tool-calling protocols.<br/>
+                                Fallback: "I can't help with that".<br/>
+<span class="text-error">Verdict: Failed to ground action in provided API definitions.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Winner Banner -->
+<footer class="mt-auto bg-primary-container p-4 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-primary-container animate-pulse">verified</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-black text-on-primary-container/80 tracking-widest uppercase">System Recommendation</span>
+<p class="text-xs font-bold text-on-primary-container uppercase">
+                            RECOMMENDED: qwen3:8b (8B, ollama) — 87% accuracy, $0.00/batch
+                        </p>
+</div>
+</div>
+<button class="bg-on-primary-container text-primary-container text-[10px] font-black px-4 py-2 rounded-sm shadow-xl active:scale-95 transition-all">
+                    DEPLOY STAGE-1
+                </button>
+</footer>
+</section>
+</main>
+<!-- Visual Overlays (Glass Tooltip Example) -->
+<div class="fixed bottom-6 right-6 p-3 glass-panel rounded-lg border border-outline-variant/30 flex items-center gap-3 shadow-2xl z-50 pointer-events-none">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim shadow-[0_0_8px_#00e479]"></div>
+<span class="text-[10px] font-mono font-bold tracking-tighter text-on-surface">SYSTEM_HEALTH: NOMINAL (99.2%)</span>
+</div>
+</body></html>

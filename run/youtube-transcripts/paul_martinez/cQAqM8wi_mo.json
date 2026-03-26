@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cQAqM8wi_mo",
+    "language": "en",
+    "took_ms": 7980,
+    "method": null,
+    "title": "Applying FAIR to OT",
+    "channel": "S4 Events",
+    "upload_date": "20240523",
+    "duration_sec": 1871,
+    "description": "Justin presents a real-world case study illustrating how the FAIR framework can be leveraged to measure and quantify OT security risk at the production facility level. Using the FAIR framework, Justin shows:\n\n1. A quantified valuation of your most critical production assets and threat scenarios most likely to impact those systems.\n2. The risk assessment results and how they would be presented to executives and leadership.\n3. The resulting prioritized list of action items and next steps, with the framework analysis of what remedial actions will reduce the most risk exposure by increasing resiliency based on the available resources.\n\nDale's note: The FAIR framework is still obscure in the OT and ICS security world. Good exposure for your consideration.",
+    "view_count": 777
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cQAqM8wi_mo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

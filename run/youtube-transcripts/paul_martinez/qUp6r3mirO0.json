@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qUp6r3mirO0",
+    "language": "en",
+    "took_ms": 8905,
+    "method": null,
+    "title": "Nozomi's SCADAguardian and Case Studies",
+    "channel": "S4 Events",
+    "upload_date": "20180216",
+    "duration_sec": 2171,
+    "description": "Nozomi's presentation on the S4x18 Sponsor Stage begins with some background on the company and SCADAGuardian product. They go over the anomaly detection and asset inventory features.\n\nThe highlight of this session are the case studies that begin at 7:00. They go over how detection would help with Industroyer/Crashoverride. They go over the phases of the attack and the detection that was available had the owner/operator been monitoring their network with SCADAguardian.\n\nThey then go into case studies with actual named owner/operators.",
+    "view_count": 1193
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qUp6r3mirO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

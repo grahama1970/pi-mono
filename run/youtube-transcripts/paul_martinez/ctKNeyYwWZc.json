@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ctKNeyYwWZc",
+    "language": "en",
+    "took_ms": 8350,
+    "method": null,
+    "title": "Interview with Puesh Kumar, Director of CESER",
+    "channel": "S4 Events",
+    "upload_date": "20230503",
+    "duration_sec": 1930,
+    "description": "Dale Peterson interview CESER Director Puesh Kumar on the S4x23 Main Stage. We discuss a number of CESER programs how they are measuring success, what has not worked, why they are doing some things industry is already doing and more.\n\n4:50 Where is the CESER CRISP program (detection and information sharing) today? Has it stopped or reduced the impact (outages and others) of cyber attacks on the electric sector? How will they measure the success of this program?\n\n10:00 What has CESER tried, thought it would work, and ended up failing? \n\n13:35 CESER's CyTRICS program is testing vendor equipment? Why, does GE and Hitachi need help? And the results have been trivial vulnerabilities that could be found in hours. Why is CESER spending millions on this?\n\n18:45 Cyber Informed Engineering (CIE) is it the same as Secure By Design? This is a long process, what will the early wins look like? Two years from now how will we know if we are succeeding? Maintaining a manual capability dominated the examples in the document, why hasn't this been highlighted in the program? How can we accelerate this?\n\n24:40 Clean Energy Cyber Accelerator is looking at solutions (OT detection and MFA remote access to OT) that are well established with vendor offerings and asset owner deployments. Why is CECA doing this and trying to accomplish?",
+    "view_count": 496
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ctKNeyYwWZc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

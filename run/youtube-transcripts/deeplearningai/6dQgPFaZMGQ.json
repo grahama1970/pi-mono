@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6dQgPFaZMGQ",
+    "language": "en",
+    "took_ms": 9149,
+    "method": null,
+    "title": "Practical Challenges Training with Medical Data (AI For Medicine)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20200407",
+    "duration_sec": 61,
+    "description": "The AI For Medicine Specialization will teach you to handle practical challenges when training models on medical data. Instructor Pranav Rajpurkar walks you through some key challenges. \n\nCourse 1 and 2 of the AI For Medicine Specialization will be available on Coursera on April 15. The third course will be available by the end of May.\n\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 5318
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6dQgPFaZMGQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

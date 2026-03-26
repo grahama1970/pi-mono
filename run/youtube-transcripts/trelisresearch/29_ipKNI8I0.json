@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "29_ipKNI8I0",
+    "language": "en",
+    "took_ms": 8270,
+    "method": null,
+    "title": "LiteLLM - One Unified API for for all LLMs",
+    "channel": "Trelis Research",
+    "upload_date": "20250113",
+    "duration_sec": 1057,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nKEY TRELIS LINKS:\n🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Join the Trelis Team: https://trelis.com/developer-collaborations/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n\nVIDEO LINKS:\n- LiteLLM Github: https://github.com/BerriAI/litellm\n\nTIMESTAMPS:\n00:00:00 - Introduction to using multiple APIs through a single endpoint\n00:00:16 - Explanation of how different APIs have different formats\n00:00:44 - Introduction to LiteLLM as open source solution\n00:01:18 - Overview of testing different use cases\n00:01:34 - Basic setup instructions for LiteLLM\n00:02:25 - Demo of basic API calls\n00:04:31 - Discussion of LiteLLM's business model\n00:04:54 - Testing long context with Berkshire transcript\n00:06:06 - Demonstration of streaming functionality\n00:06:33 - Testing tool calling capabilities\n00:07:44 - Testing o1 series models\n00:09:04 - Testing image input functionality\n00:10:38 - Introduction to custom endpoints\n00:11:50 - Setting up RunPod custom endpoint\n00:13:47 - Demonstration of local endpoint with LM Studio\n00:16:47 - Conclusion and recommendations\n00:17:16 - Comparison with alternatives like Langchain and DSPy\n00:17:31 - Reference to Advanced Inference Repo",
+    "view_count": 11569
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 29_ipKNI8I0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

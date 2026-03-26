@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e6dmGupBsJk",
+    "language": "en",
+    "took_ms": 8566,
+    "method": null,
+    "title": "DEF CON 33 - So you want to make a badge? Badge Creation 101 - Jeff Geisperger",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2032,
+    "description": "Jeff Geisperger is a security engineer with 15 years of experience specializing in hardware and device security. His work ranges from low-level firmware and embedded systems to the cloud services that power modern devices, with a focus on end-to-end security across the stack. Outside of his professional role, Jeff is active in the hardware hacking and badgelife communities. What began as a hobby collecting badges has grown into designing both indie and large-scale conference badges for thousands of attendees.",
+    "view_count": 1064
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e6dmGupBsJk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

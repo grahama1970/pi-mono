@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "b7WlUofPJpU",
+    "language": "en",
+    "took_ms": 8604,
+    "method": null,
+    "title": "DEF CON 32 - Practical Exploitation of DoS in Bug Bounty - Roni Lupin Carta",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1834,
+    "description": "The talk \"Practical Exploitation of DoS in Bug Bounty\" explains methods for identifying and exploiting Denial of Service (DoS) vulnerabilities in bug bounty programs. Starting with an overview of DoS attacks and their impact, we will highlight how these attacks disrupt services by overwhelming resources or exploiting flaws. The talk covers various DoS attack types, including N+1 errors, in-depth GraphQL crashing, and Cache Poisoning, with real-world examples demonstrating their effects.\n\nWe will then detail practical techniques for discovering DoS vulnerabilities. This includes automated scanning tools, manual testing methods, and understanding the target system's architecture.\n\nN+1 errors occur when an application makes redundant database queries, significantly impacting performance. Attackers can exploit this by triggering numerous unnecessary queries, causing severe slowdowns or crashes. GraphQL, a query language for APIs, can be vulnerable to complex queries that consume excessive resources, leading to server crashes. We will show how to craft such queries and the resulting impact. Cache Poisoning involves manipulating cached data to serve malicious or incorrect content, which can disrupt services or degrade performance. We will explore techniques to poison caches and demonstrate the potential consequences.\n\nAdditionally, the talk emphasizes the importance of responsibly reporting discovered vulnerabilities to bug bounty programs. Best practices are shared for effectively communicating findings and ensuring timely mitigation. Of course, there are some fails during this path, and those are going to be covered too.\n\nThe session wraps up by stressing the need for continuous learning and staying updated on the latest trends in DoS attack vectors and mitigation strategies",
+    "view_count": 7118
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] b7WlUofPJpU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

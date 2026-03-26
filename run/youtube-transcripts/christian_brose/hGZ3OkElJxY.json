@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hGZ3OkElJxY",
+    "language": "en",
+    "took_ms": 9806,
+    "method": null,
+    "title": "Improved Oil Security: An Imperative for U.S. Foreign Policy",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 5055,
+    "description": "Geopolitical tensions in the Middle East and rising demand for energy in emerging markets pushed global oil prices in 2011 to their highest annual average in history. Given the near-total dependence of the transportation system on oil, what policies can the United States implement to mitigate the high economic and national security costs of oil price volatility?  In the context of a global oil market increasingly defined by foreign actors and conflicts, what measures are capable of meaningfully",
+    "view_count": 120
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hGZ3OkElJxY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

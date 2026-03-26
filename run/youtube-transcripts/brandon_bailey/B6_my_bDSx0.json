@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B6_my_bDSx0",
+    "language": "en",
+    "took_ms": 9359,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - Layer 2 Liberation: Things Your AP Never Dreamed Of - Allan Riordan Ball",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1504,
+    "description": "What if you bypass SSIDs, association handshakes, IP, and every \"\"normal\"\" layer of Wi-Fi, and just sling raw 802.11 frames? With Scapy and two USB WiFi adapters, I'll demonstrate four bite-sized hacks that treat Wi-Fi as a blank RF pipe. No access point required.\n\nRaw 802.11 File Drop: A wink to the fruit company's file-beam trick. Hurl a PDF into the airwaves and catch it on a friend's laptop. No pairing or IP required.\n\nWalkie-talkie: Embed a PCM audio stream in raw broadcast frames. No association needed.\n\nMeshtastic-over-Wi-Fi: Repackage the popular LoRa mesh-chat protocol into 802.11 frames for hop-to-hop messaging at Wi-Fi speeds.\n\nWiFiFS: A FUSE filesystem mapping RF traffic to files. You can cat, cp, or grep packets as they fly by.\n\nEach script is short enough to skim while your espresso shot pulls, light on dependencies, and leaves ordinary clients blissfully unaware of the mischief on channel 6. You'll walk away with working code, a new mental model of 802.11 as raw clay, and plenty of inspiration to craft your own oddball protocols. No access points, just DIY frame-level fun.",
+    "view_count": 1025
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B6_my_bDSx0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "M0kevYIclXc",
+    "language": "en",
+    "took_ms": 7841,
+    "method": null,
+    "title": "DEF CON 31  DCGVR Village - JBO  -  The Curse Of The Ncurses",
+    "channel": "DEFCONConference",
+    "upload_date": "20240607",
+    "duration_sec": 2700,
+    "description": "Presentation from DEF CON 31 DCGVR Village",
+    "view_count": 1920
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] M0kevYIclXc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

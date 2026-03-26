@@ -1,0 +1,3343 @@
+{
+  "meta": {
+    "video_id": "cNSzjU6yqn4",
+    "language": "en",
+    "took_ms": 1758,
+    "method": "direct",
+    "title": "Align Audio and Text for Speech Recognition Model Training",
+    "channel": "Trelis Research",
+    "upload_date": "20260114",
+    "duration_sec": 1616,
+    "description": "Get repo access at Trelis.com/ADVANCED-audio\n\nGet Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis' Private Discord\n3. Early access to Trelis videos via Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nDone-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\nStarting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nGet Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Trelis Studio: https://studio.trelis.com\n- CTC Alignment: https://github.com/MahmoudAshraf97/ctc-forced-aligner\n\nTIMESTAMPS:\n0:00 Introduction to audio-text alignment for model training\n1:05 Demo of Audio Alignment interface with two models\n2:06 MMS-FA model and commercially-licensed CTC aligner alternative\n3:10 Word timestamps enable sentence detection for clean training chunks\n4:21 Multi-step alignment process: normalization, emissions, and character probabilities\n5:21 Viterbi process calculates most likely path for final alignment\n6:44 Trelis Studio data preparation workflow with audio upload\n7:45 Realignment process creates clean 20-30 second chunks with sentence boundaries\n8:46 Review of resulting dataset with clean chunks and word timestamps\n10:01 Fine-tuning Whisper without timestamps causes catastrophic forgetting\n12:07 Emissions are character probabilities generated per audio frame\n13:09 Wave2Vec models and text normalization process\n15:49 Torch Audio forced aligner non-commercial license restriction\n18:56 Viterbi method for mapping ground truth text to audio windows\n21:54 Emissions model training using unlabeled data approach\n23:34 Multiple valid sequences kept during alignment process\n25:36 Wave2Vec pre-training uses masked audio prediction\n26:36 Conclusion with repository reference at Trelis.com/advanced-audio",
+    "view_count": 854
+  },
+  "transcript": [
+    {
+      "text": "This is a video about aligning text and",
+      "start": 0.48,
+      "duration": 4.48
+    },
+    {
+      "text": "audio. It's relevant if you're training",
+      "start": 2.879,
+      "duration": 4.321
+    },
+    {
+      "text": "models such as texttospech models or",
+      "start": 4.96,
+      "duration": 4.96
+    },
+    {
+      "text": "speechtoext models, particularly if you",
+      "start": 7.2,
+      "duration": 4.399
+    },
+    {
+      "text": "want to have timestamps within",
+      "start": 9.92,
+      "duration": 3.52
+    },
+    {
+      "text": "transcripts you generate, for example,",
+      "start": 11.599,
+      "duration": 4.641
+    },
+    {
+      "text": "from whisper. It's also necessary for",
+      "start": 13.44,
+      "duration": 4.56
+    },
+    {
+      "text": "certain models that are token based like",
+      "start": 16.24,
+      "duration": 4.48
+    },
+    {
+      "text": "QTIs, texttospech, or speechtoext",
+      "start": 18.0,
+      "duration": 4.64
+    },
+    {
+      "text": "models. Last of all, if you're doing",
+      "start": 20.72,
+      "duration": 4.08
+    },
+    {
+      "text": "data preparation for training voice",
+      "start": 22.64,
+      "duration": 4.08
+    },
+    {
+      "text": "models, you often will want to chunk",
+      "start": 24.8,
+      "duration": 3.76
+    },
+    {
+      "text": "that data and you would like the chunks",
+      "start": 26.72,
+      "duration": 4.319
+    },
+    {
+      "text": "to respect sentence boundaries. Again,",
+      "start": 28.56,
+      "duration": 4.48
+    },
+    {
+      "text": "having timestamps, which means being",
+      "start": 31.039,
+      "duration": 3.921
+    },
+    {
+      "text": "able to align the audio and the text is",
+      "start": 33.04,
+      "duration": 4.24
+    },
+    {
+      "text": "important here if you want to do that.",
+      "start": 34.96,
+      "duration": 4.56
+    },
+    {
+      "text": "I'm going to show you a quick interface",
+      "start": 37.28,
+      "duration": 4.0
+    },
+    {
+      "text": "just to illustrate what I mean by",
+      "start": 39.52,
+      "duration": 4.24
+    },
+    {
+      "text": "alignment and some of the highle knobs",
+      "start": 41.28,
+      "duration": 4.16
+    },
+    {
+      "text": "you can turn and choices you might want",
+      "start": 43.76,
+      "duration": 4.0
+    },
+    {
+      "text": "to make when doing so. Then I'll show",
+      "start": 45.44,
+      "duration": 3.68
+    },
+    {
+      "text": "you how this integrates into a",
+      "start": 47.76,
+      "duration": 3.36
+    },
+    {
+      "text": "commercial application with Trellis",
+      "start": 49.12,
+      "duration": 4.16
+    },
+    {
+      "text": "Studio. And last of all, I'll cover a",
+      "start": 51.12,
+      "duration": 3.759
+    },
+    {
+      "text": "little bit of theory on how voice",
+      "start": 53.28,
+      "duration": 4.959
+    },
+    {
+      "text": "alignment works.",
+      "start": 54.879,
+      "duration": 6.0
+    },
+    {
+      "text": "Here is a quick demo that I have vibe",
+      "start": 58.239,
+      "duration": 4.64
+    },
+    {
+      "text": "coded called audio alignment. And it",
+      "start": 60.879,
+      "duration": 3.841
+    },
+    {
+      "text": "shows us how to align using two",
+      "start": 62.879,
+      "duration": 3.361
+    },
+    {
+      "text": "different models. It'll give you a feel",
+      "start": 64.72,
+      "duration": 3.92
+    },
+    {
+      "text": "for what alignment is and how it works.",
+      "start": 66.24,
+      "duration": 5.199
+    },
+    {
+      "text": "It's included in Trellis advanced",
+      "start": 68.64,
+      "duration": 4.64
+    },
+    {
+      "text": "transcription or advanced audio",
+      "start": 71.439,
+      "duration": 3.281
+    },
+    {
+      "text": "repository which you can find by going",
+      "start": 73.28,
+      "duration": 4.6
+    },
+    {
+      "text": "to trellles.com/advanced-",
+      "start": 74.72,
+      "duration": 3.16
+    },
+    {
+      "text": "audio.",
+      "start": 78.159,
+      "duration": 4.081
+    },
+    {
+      "text": "First thing I'll do here is just upload",
+      "start": 80.479,
+      "duration": 4.081
+    },
+    {
+      "text": "some voice. I've got a short recording.",
+      "start": 82.24,
+      "duration": 4.08
+    },
+    {
+      "text": "You can maybe listen to a short piece of",
+      "start": 84.56,
+      "duration": 6.16
+    },
+    {
+      "text": "it here. The Solar 10.7B is the fastest",
+      "start": 86.32,
+      "duration": 7.36
+    },
+    {
+      "text": "uh runner. Sorry, it's the",
+      "start": 90.72,
+      "duration": 6.56
+    },
+    {
+      "text": "it's uh this is me recording myself",
+      "start": 93.68,
+      "duration": 7.04
+    },
+    {
+      "text": "calling out some words in 2023, some LLM",
+      "start": 97.28,
+      "duration": 6.479
+    },
+    {
+      "text": "related words. And for convenience, I",
+      "start": 100.72,
+      "duration": 6.079
+    },
+    {
+      "text": "have connected up fireworks so we can",
+      "start": 103.759,
+      "duration": 5.841
+    },
+    {
+      "text": "quickly transcribe this. Okay, so I've",
+      "start": 106.799,
+      "duration": 4.801
+    },
+    {
+      "text": "transcribed the text here. Normally, I",
+      "start": 109.6,
+      "duration": 3.44
+    },
+    {
+      "text": "would make some corrections if I was",
+      "start": 111.6,
+      "duration": 4.159
+    },
+    {
+      "text": "going to train on this. Maybe I would",
+      "start": 113.04,
+      "duration": 4.719
+    },
+    {
+      "text": "put in some commas, for example, like",
+      "start": 115.759,
+      "duration": 3.841
+    },
+    {
+      "text": "this. I'm not going to be too worried",
+      "start": 117.759,
+      "duration": 3.521
+    },
+    {
+      "text": "because I mostly just want to align this",
+      "start": 119.6,
+      "duration": 3.76
+    },
+    {
+      "text": "with the audio. Now, there are two",
+      "start": 121.28,
+      "duration": 4.08
+    },
+    {
+      "text": "models that I have set up here. The",
+      "start": 123.36,
+      "duration": 5.039
+    },
+    {
+      "text": "first is MMS- FA. This is a default mod",
+      "start": 125.36,
+      "duration": 5.119
+    },
+    {
+      "text": "model from torch audio, although I",
+      "start": 128.399,
+      "duration": 4.081
+    },
+    {
+      "text": "understand it's going to be deprecated.",
+      "start": 130.479,
+      "duration": 4.321
+    },
+    {
+      "text": "And the second model is a commercially",
+      "start": 132.48,
+      "duration": 4.16
+    },
+    {
+      "text": "friend friendly model that's being run",
+      "start": 134.8,
+      "duration": 4.88
+    },
+    {
+      "text": "using the CTC aligner package. This one",
+      "start": 136.64,
+      "duration": 5.44
+    },
+    {
+      "text": "is uh openly licensed including for",
+      "start": 139.68,
+      "duration": 4.32
+    },
+    {
+      "text": "commercial use. So, I'll start off with",
+      "start": 142.08,
+      "duration": 4.799
+    },
+    {
+      "text": "the MMSFA and I'll click align. And in",
+      "start": 144.0,
+      "duration": 4.08
+    },
+    {
+      "text": "the background, the model is being",
+      "start": 146.879,
+      "duration": 3.201
+    },
+    {
+      "text": "loaded and the alignment is happening.",
+      "start": 148.08,
+      "duration": 4.159
+    },
+    {
+      "text": "So here's a sense. I'll just play it.",
+      "start": 150.08,
+      "duration": 4.159
+    },
+    {
+      "text": "And you can see that what we now have is",
+      "start": 152.239,
+      "duration": 4.08
+    },
+    {
+      "text": "the text is aligned with the audio. So",
+      "start": 154.239,
+      "duration": 2.801
+    },
+    {
+      "text": "let me play here.",
+      "start": 156.319,
+      "duration": 4.081
+    },
+    {
+      "text": ">> A strong it's a version of MRO 7B with",
+      "start": 157.04,
+      "duration": 6.4
+    },
+    {
+      "text": "extra layers. Claude 2.1 is the latest",
+      "start": 160.4,
+      "duration": 5.44
+    },
+    {
+      "text": "model from Enthropic.",
+      "start": 163.44,
+      "duration": 4.799
+    },
+    {
+      "text": "So you can see here we have uh the",
+      "start": 165.84,
+      "duration": 4.399
+    },
+    {
+      "text": "alignment of audio and text. And then we",
+      "start": 168.239,
+      "duration": 3.36
+    },
+    {
+      "text": "have a list of time stamps for the",
+      "start": 170.239,
+      "duration": 2.72
+    },
+    {
+      "text": "words. So we have the starting time",
+      "start": 171.599,
+      "duration": 3.441
+    },
+    {
+      "text": "stamp and the end. And given we have",
+      "start": 172.959,
+      "duration": 4.481
+    },
+    {
+      "text": "this, if we now do some form of sentence",
+      "start": 175.04,
+      "duration": 4.64
+    },
+    {
+      "text": "detection, say using full stops, we",
+      "start": 177.44,
+      "duration": 4.32
+    },
+    {
+      "text": "could detect uh sentences. If there were",
+      "start": 179.68,
+      "duration": 3.919
+    },
+    {
+      "text": "clean sentences, which there aren't cuz",
+      "start": 181.76,
+      "duration": 4.72
+    },
+    {
+      "text": "this is not necessarily clean text. But",
+      "start": 183.599,
+      "duration": 5.441
+    },
+    {
+      "text": "if we did have clean text, we would now",
+      "start": 186.48,
+      "duration": 4.88
+    },
+    {
+      "text": "also have word timestamps. And with the",
+      "start": 189.04,
+      "duration": 4.24
+    },
+    {
+      "text": "word timestamps and the sentence",
+      "start": 191.36,
+      "duration": 4.0
+    },
+    {
+      "text": "detection, we could create clean chunks",
+      "start": 193.28,
+      "duration": 3.84
+    },
+    {
+      "text": "that we can then use for training. And",
+      "start": 195.36,
+      "duration": 3.599
+    },
+    {
+      "text": "I'll show you an illustration of this a",
+      "start": 197.12,
+      "duration": 4.0
+    },
+    {
+      "text": "little bit later.",
+      "start": 198.959,
+      "duration": 4.321
+    },
+    {
+      "text": "Something to note, I can just run the uh",
+      "start": 201.12,
+      "duration": 4.72
+    },
+    {
+      "text": "commercially friendly one here as well.",
+      "start": 203.28,
+      "duration": 4.8
+    },
+    {
+      "text": "You'll notice the time it takes here to",
+      "start": 205.84,
+      "duration": 4.64
+    },
+    {
+      "text": "run the alignment. And you'll notice",
+      "start": 208.08,
+      "duration": 4.64
+    },
+    {
+      "text": "also that if I run it twice, it'll be",
+      "start": 210.48,
+      "duration": 5.28
+    },
+    {
+      "text": "faster because the second time we align,",
+      "start": 212.72,
+      "duration": 5.12
+    },
+    {
+      "text": "it has already cached the model on my",
+      "start": 215.76,
+      "duration": 4.16
+    },
+    {
+      "text": "Mac. This is all running locally and so",
+      "start": 217.84,
+      "duration": 4.479
+    },
+    {
+      "text": "it'll be faster. You can of course run",
+      "start": 219.92,
+      "duration": 5.28
+    },
+    {
+      "text": "these on GPUs as well.",
+      "start": 222.319,
+      "duration": 4.48
+    },
+    {
+      "text": "Something to appreciate is that",
+      "start": 225.2,
+      "duration": 3.2
+    },
+    {
+      "text": "alignment models, which I'll describe in",
+      "start": 226.799,
+      "duration": 4.481
+    },
+    {
+      "text": "more detail as to how they work, they",
+      "start": 228.4,
+      "duration": 6.24
+    },
+    {
+      "text": "operate on normalized text. This means",
+      "start": 231.28,
+      "duration": 5.76
+    },
+    {
+      "text": "without punctu punctuation and with all",
+      "start": 234.64,
+      "duration": 4.72
+    },
+    {
+      "text": "lowercase. So if you start with text",
+      "start": 237.04,
+      "duration": 4.08
+    },
+    {
+      "text": "that has capitalization and you want to",
+      "start": 239.36,
+      "duration": 3.68
+    },
+    {
+      "text": "keep that, you will need to first",
+      "start": 241.12,
+      "duration": 4.0
+    },
+    {
+      "text": "convert it to normalized text but",
+      "start": 243.04,
+      "duration": 4.24
+    },
+    {
+      "text": "maintain a mapping of the original to",
+      "start": 245.12,
+      "duration": 3.92
+    },
+    {
+      "text": "the normalized so that you can then",
+      "start": 247.28,
+      "duration": 4.239
+    },
+    {
+      "text": "reverse the mapping afterwards to get",
+      "start": 249.04,
+      "duration": 5.44
+    },
+    {
+      "text": "back to having uh punctuated capitalized",
+      "start": 251.519,
+      "duration": 4.881
+    },
+    {
+      "text": "text. So you'll see if I remove the",
+      "start": 254.48,
+      "duration": 4.4
+    },
+    {
+      "text": "preserve original text, this means that",
+      "start": 256.4,
+      "duration": 4.239
+    },
+    {
+      "text": "yes, I'll normalize, but I won't reverse",
+      "start": 258.88,
+      "duration": 4.0
+    },
+    {
+      "text": "the mapping. And now when I align, I'll",
+      "start": 260.639,
+      "duration": 4.081
+    },
+    {
+      "text": "have lost all of my punctuation. And",
+      "start": 262.88,
+      "duration": 4.56
+    },
+    {
+      "text": "you'll see here I even lose the 10.7B",
+      "start": 264.72,
+      "duration": 4.0
+    },
+    {
+      "text": "because it's just lost in the",
+      "start": 267.44,
+      "duration": 3.84
+    },
+    {
+      "text": "normalization. But when I do normalize",
+      "start": 268.72,
+      "duration": 4.64
+    },
+    {
+      "text": "and then back reverse the normalization,",
+      "start": 271.28,
+      "duration": 5.12
+    },
+    {
+      "text": "I keep all of the text and I get nice uh",
+      "start": 273.36,
+      "duration": 7.04
+    },
+    {
+      "text": "clean alignment just like this.",
+      "start": 276.4,
+      "duration": 5.28
+    },
+    {
+      "text": "Underneath the hood, when you run",
+      "start": 280.4,
+      "duration": 4.56
+    },
+    {
+      "text": "alignment, it's a multi-step process.",
+      "start": 281.68,
+      "duration": 5.04
+    },
+    {
+      "text": "You normalize the text. You take the",
+      "start": 284.96,
+      "duration": 4.799
+    },
+    {
+      "text": "normalized text. You set it aside. Then",
+      "start": 286.72,
+      "duration": 4.72
+    },
+    {
+      "text": "you take the audio and you put it",
+      "start": 289.759,
+      "duration": 3.521
+    },
+    {
+      "text": "through a model that will create",
+      "start": 291.44,
+      "duration": 3.6
+    },
+    {
+      "text": "emissions.",
+      "start": 293.28,
+      "duration": 4.16
+    },
+    {
+      "text": "What it's going to do is it's going to",
+      "start": 295.04,
+      "duration": 6.08
+    },
+    {
+      "text": "create a probability of each given",
+      "start": 297.44,
+      "duration": 6.16
+    },
+    {
+      "text": "character for every piece of the audio.",
+      "start": 301.12,
+      "duration": 4.639
+    },
+    {
+      "text": "So every window of the audio will",
+      "start": 303.6,
+      "duration": 3.84
+    },
+    {
+      "text": "predict with a certain probability",
+      "start": 305.759,
+      "duration": 4.72
+    },
+    {
+      "text": "either just a blank character or a",
+      "start": 307.44,
+      "duration": 5.28
+    },
+    {
+      "text": "character A B C D and it will give that",
+      "start": 310.479,
+      "duration": 4.56
+    },
+    {
+      "text": "a probability. This is called emissions.",
+      "start": 312.72,
+      "duration": 4.16
+    },
+    {
+      "text": "So you'll have an emission of",
+      "start": 315.039,
+      "duration": 3.361
+    },
+    {
+      "text": "probabilities of the different",
+      "start": 316.88,
+      "duration": 3.039
+    },
+    {
+      "text": "characters. That's typically how it",
+      "start": 318.4,
+      "duration": 4.079
+    },
+    {
+      "text": "works. Not tokens, but characters.",
+      "start": 319.919,
+      "duration": 4.481
+    },
+    {
+      "text": "Now that you have these probabilities at",
+      "start": 322.479,
+      "duration": 4.801
+    },
+    {
+      "text": "each time stamp of your audio, you will",
+      "start": 324.4,
+      "duration": 5.44
+    },
+    {
+      "text": "then be able to compare. Well, you'll be",
+      "start": 327.28,
+      "duration": 4.88
+    },
+    {
+      "text": "able to now put them through what's",
+      "start": 329.84,
+      "duration": 6.0
+    },
+    {
+      "text": "called a vertebrae process and you will",
+      "start": 332.16,
+      "duration": 6.24
+    },
+    {
+      "text": "calculate the most likely path. And that",
+      "start": 335.84,
+      "duration": 5.28
+    },
+    {
+      "text": "most likely path will give you a final",
+      "start": 338.4,
+      "duration": 4.72
+    },
+    {
+      "text": "estimate of well it'll give you your",
+      "start": 341.12,
+      "duration": 4.48
+    },
+    {
+      "text": "final call on what the aligned text is.",
+      "start": 343.12,
+      "duration": 3.76
+    },
+    {
+      "text": "If you didn't follow that, don't worry",
+      "start": 345.6,
+      "duration": 2.96
+    },
+    {
+      "text": "because I'll go through it in a bit more",
+      "start": 346.88,
+      "duration": 4.0
+    },
+    {
+      "text": "detail. But suffice to say, you take the",
+      "start": 348.56,
+      "duration": 4.479
+    },
+    {
+      "text": "audio, the audio will produce using a",
+      "start": 350.88,
+      "duration": 4.24
+    },
+    {
+      "text": "neural network. It will produce",
+      "start": 353.039,
+      "duration": 3.841
+    },
+    {
+      "text": "emissions which are probabilities of",
+      "start": 355.12,
+      "duration": 3.2
+    },
+    {
+      "text": "each character. And when you have the",
+      "start": 356.88,
+      "duration": 3.84
+    },
+    {
+      "text": "probability of each character or spaces",
+      "start": 358.32,
+      "duration": 5.28
+    },
+    {
+      "text": "for each position, you will then run",
+      "start": 360.72,
+      "duration": 6.4
+    },
+    {
+      "text": "those through uh a vertib process which",
+      "start": 363.6,
+      "duration": 5.039
+    },
+    {
+      "text": "is going to give you the most likely",
+      "start": 367.12,
+      "duration": 4.0
+    },
+    {
+      "text": "sequence. You won't just take the most",
+      "start": 368.639,
+      "duration": 4.241
+    },
+    {
+      "text": "likely character at every position",
+      "start": 371.12,
+      "duration": 3.359
+    },
+    {
+      "text": "because then they won't be consistent",
+      "start": 372.88,
+      "duration": 3.52
+    },
+    {
+      "text": "with each other. What you'll do is",
+      "start": 374.479,
+      "duration": 4.16
+    },
+    {
+      "text": "you'll find the most likely total path",
+      "start": 376.4,
+      "duration": 3.76
+    },
+    {
+      "text": "and that will give you your final",
+      "start": 378.639,
+      "duration": 4.881
+    },
+    {
+      "text": "alignment. Okay, so this is um how to",
+      "start": 380.16,
+      "duration": 5.92
+    },
+    {
+      "text": "align. I will go through the code just",
+      "start": 383.52,
+      "duration": 5.28
+    },
+    {
+      "text": "in a moment uh showing you how the",
+      "start": 386.08,
+      "duration": 4.16
+    },
+    {
+      "text": "different steps and also the specific",
+      "start": 388.8,
+      "duration": 3.679
+    },
+    {
+      "text": "models that are chosen. But yeah,",
+      "start": 390.24,
+      "duration": 3.679
+    },
+    {
+      "text": "suffice to say, I checked through a lot",
+      "start": 392.479,
+      "duration": 3.84
+    },
+    {
+      "text": "of models and unfortunately a lot of the",
+      "start": 393.919,
+      "duration": 4.241
+    },
+    {
+      "text": "default ones that are used are not",
+      "start": 396.319,
+      "duration": 3.761
+    },
+    {
+      "text": "permissively licensed. Uh, including",
+      "start": 398.16,
+      "duration": 3.92
+    },
+    {
+      "text": "this torch audio default, which I think",
+      "start": 400.08,
+      "duration": 4.32
+    },
+    {
+      "text": "is going to be deprecated.",
+      "start": 402.08,
+      "duration": 4.08
+    },
+    {
+      "text": "Now, as an example of where this is used",
+      "start": 404.4,
+      "duration": 5.6
+    },
+    {
+      "text": "in practice from Trellis Studio, I want",
+      "start": 406.16,
+      "duration": 5.84
+    },
+    {
+      "text": "to just show you data preparation. A",
+      "start": 410.0,
+      "duration": 3.52
+    },
+    {
+      "text": "very quick data preparation I'm going to",
+      "start": 412.0,
+      "duration": 4.16
+    },
+    {
+      "text": "do here. I'm going to upload uh some",
+      "start": 413.52,
+      "duration": 4.239
+    },
+    {
+      "text": "audio.",
+      "start": 416.16,
+      "duration": 4.4
+    },
+    {
+      "text": "I'm going to transcribe the audio.",
+      "start": 417.759,
+      "duration": 4.72
+    },
+    {
+      "text": "Again, this uses fireworks in the",
+      "start": 420.56,
+      "duration": 4.32
+    },
+    {
+      "text": "background. And now, typically, I would",
+      "start": 422.479,
+      "duration": 4.0
+    },
+    {
+      "text": "review the transcripts. I would maybe",
+      "start": 424.88,
+      "duration": 3.68
+    },
+    {
+      "text": "make some corrections uh to some of the",
+      "start": 426.479,
+      "duration": 4.72
+    },
+    {
+      "text": "words here. I won't worry about that too",
+      "start": 428.56,
+      "duration": 4.16
+    },
+    {
+      "text": "much. You can see that when I",
+      "start": 431.199,
+      "duration": 4.0
+    },
+    {
+      "text": "transcribe, I've got these 30-second",
+      "start": 432.72,
+      "duration": 4.08
+    },
+    {
+      "text": "chunks, but they're not neat chunks",
+      "start": 435.199,
+      "duration": 3.761
+    },
+    {
+      "text": "because they finish in the middle of a",
+      "start": 436.8,
+      "duration": 4.88
+    },
+    {
+      "text": "sentence here and here. So, what I'd",
+      "start": 438.96,
+      "duration": 4.56
+    },
+    {
+      "text": "really like to do is when my data is",
+      "start": 441.68,
+      "duration": 3.12
+    },
+    {
+      "text": "cleaned and corrected, I'd like to",
+      "start": 443.52,
+      "duration": 3.44
+    },
+    {
+      "text": "realign it so that I just have clean",
+      "start": 444.8,
+      "duration": 4.959
+    },
+    {
+      "text": "chunks of about 20 to 30 seconds that",
+      "start": 446.96,
+      "duration": 4.56
+    },
+    {
+      "text": "start and finish with clean sentence",
+      "start": 449.759,
+      "duration": 3.521
+    },
+    {
+      "text": "boundaries. Uh, cuz this is going to",
+      "start": 451.52,
+      "duration": 3.679
+    },
+    {
+      "text": "give me better data for when it comes to",
+      "start": 453.28,
+      "duration": 3.6
+    },
+    {
+      "text": "training.",
+      "start": 455.199,
+      "duration": 3.521
+    },
+    {
+      "text": "So, I'll go back to data prep here and",
+      "start": 456.88,
+      "duration": 4.08
+    },
+    {
+      "text": "I'm going to run data processing. And",
+      "start": 458.72,
+      "duration": 5.039
+    },
+    {
+      "text": "the data processing is doing what I",
+      "start": 460.96,
+      "duration": 5.6
+    },
+    {
+      "text": "showed already in this quick demo. It's",
+      "start": 463.759,
+      "duration": 5.681
+    },
+    {
+      "text": "aligning all of the audio. It's getting",
+      "start": 466.56,
+      "duration": 5.28
+    },
+    {
+      "text": "all of the timestamps and given the",
+      "start": 469.44,
+      "duration": 4.879
+    },
+    {
+      "text": "timestamps and looking at sentence",
+      "start": 471.84,
+      "duration": 4.96
+    },
+    {
+      "text": "boundaries with punctuation, we can then",
+      "start": 474.319,
+      "duration": 5.841
+    },
+    {
+      "text": "create 30 second 20 to 30 second chunks",
+      "start": 476.8,
+      "duration": 5.44
+    },
+    {
+      "text": "of audio that are going to be neatly",
+      "start": 480.16,
+      "duration": 5.439
+    },
+    {
+      "text": "prepared uh for running tra training.",
+      "start": 482.24,
+      "duration": 7.44
+    },
+    {
+      "text": "So here you can see we have um the",
+      "start": 485.599,
+      "duration": 6.72
+    },
+    {
+      "text": "chunking underway and the data set is",
+      "start": 489.68,
+      "duration": 4.48
+    },
+    {
+      "text": "created. Looks like there will be nine",
+      "start": 492.319,
+      "duration": 3.681
+    },
+    {
+      "text": "uh total chunks of about 20 to 30",
+      "start": 494.16,
+      "duration": 3.36
+    },
+    {
+      "text": "seconds.",
+      "start": 496.0,
+      "duration": 5.12
+    },
+    {
+      "text": "And we can even use this for training if",
+      "start": 497.52,
+      "duration": 6.16
+    },
+    {
+      "text": "we like or we can just view the data",
+      "start": 501.12,
+      "duration": 4.56
+    },
+    {
+      "text": "set. I'm going to give it a moment uh to",
+      "start": 503.68,
+      "duration": 4.56
+    },
+    {
+      "text": "show up. If I wanted to use for",
+      "start": 505.68,
+      "duration": 4.239
+    },
+    {
+      "text": "training, I would just copy in the",
+      "start": 508.24,
+      "duration": 4.96
+    },
+    {
+      "text": "training data set name. I could just",
+      "start": 509.919,
+      "duration": 5.841
+    },
+    {
+      "text": "omit if I've no validation set and then",
+      "start": 513.2,
+      "duration": 4.319
+    },
+    {
+      "text": "decide to train one of the Whisper",
+      "start": 515.76,
+      "duration": 3.44
+    },
+    {
+      "text": "models here and later deploy it with",
+      "start": 517.519,
+      "duration": 3.44
+    },
+    {
+      "text": "endpoints. But I don't want to get too",
+      "start": 519.2,
+      "duration": 3.279
+    },
+    {
+      "text": "distracted because I'm focused on",
+      "start": 520.959,
+      "duration": 4.0
+    },
+    {
+      "text": "alignment here.",
+      "start": 522.479,
+      "duration": 4.001
+    },
+    {
+      "text": "And we should have a look at the data",
+      "start": 524.959,
+      "duration": 3.521
+    },
+    {
+      "text": "set now. Yep. And you can see that",
+      "start": 526.48,
+      "duration": 4.16
+    },
+    {
+      "text": "there's now a series of chunks. There's",
+      "start": 528.48,
+      "duration": 6.0
+    },
+    {
+      "text": "also the word timestamps available here.",
+      "start": 530.64,
+      "duration": 6.4
+    },
+    {
+      "text": "And you can see hopefully each chunk is",
+      "start": 534.48,
+      "duration": 4.56
+    },
+    {
+      "text": "going to be clean and finishing at a",
+      "start": 537.04,
+      "duration": 5.2
+    },
+    {
+      "text": "neat sentence boundary because I've been",
+      "start": 539.04,
+      "duration": 5.68
+    },
+    {
+      "text": "able to just take the first 20 to 30",
+      "start": 542.24,
+      "duration": 4.0
+    },
+    {
+      "text": "seconds.",
+      "start": 544.72,
+      "duration": 4.559
+    },
+    {
+      "text": "And then yeah, you can see the same for",
+      "start": 546.24,
+      "duration": 6.159
+    },
+    {
+      "text": "other text uh such as here. Now, in",
+      "start": 549.279,
+      "duration": 5.441
+    },
+    {
+      "text": "certain cases, because I'm targeting",
+      "start": 552.399,
+      "duration": 4.88
+    },
+    {
+      "text": "between 20 and 30 seconds, if there is",
+      "start": 554.72,
+      "duration": 4.32
+    },
+    {
+      "text": "no sentence that ends between 20 and 30",
+      "start": 557.279,
+      "duration": 3.521
+    },
+    {
+      "text": "seconds, you can still get a",
+      "start": 559.04,
+      "duration": 4.479
+    },
+    {
+      "text": "discontinuous sentence like that. Uh but",
+      "start": 560.8,
+      "duration": 4.479
+    },
+    {
+      "text": "generally, we're going to be able to get",
+      "start": 563.519,
+      "duration": 4.721
+    },
+    {
+      "text": "these nice and consistent chunk lengths.",
+      "start": 565.279,
+      "duration": 5.361
+    },
+    {
+      "text": "And here, all I'm doing is creating neat",
+      "start": 568.24,
+      "duration": 4.32
+    },
+    {
+      "text": "sentence respecting chunks. But if",
+      "start": 570.64,
+      "duration": 3.92
+    },
+    {
+      "text": "you're training a model like QTI's",
+      "start": 572.56,
+      "duration": 3.92
+    },
+    {
+      "text": "speechto text model, you actually need",
+      "start": 574.56,
+      "duration": 3.52
+    },
+    {
+      "text": "timestamps. Or if you're training",
+      "start": 576.48,
+      "duration": 3.28
+    },
+    {
+      "text": "whisper with timestamps, which I hope to",
+      "start": 578.08,
+      "duration": 3.68
+    },
+    {
+      "text": "show later in another video, you need",
+      "start": 579.76,
+      "duration": 4.16
+    },
+    {
+      "text": "explicit time stamps for the words. And",
+      "start": 581.76,
+      "duration": 4.0
+    },
+    {
+      "text": "you need to actually inject timestamp",
+      "start": 583.92,
+      "duration": 3.76
+    },
+    {
+      "text": "tokens in the middle of these uh",
+      "start": 585.76,
+      "duration": 3.6
+    },
+    {
+      "text": "segments or at least at the start and",
+      "start": 587.68,
+      "duration": 3.68
+    },
+    {
+      "text": "the end so that the model learns how to",
+      "start": 589.36,
+      "duration": 4.24
+    },
+    {
+      "text": "time stamp. And so this is how models",
+      "start": 591.36,
+      "duration": 3.76
+    },
+    {
+      "text": "are trained to have a sense of time",
+      "start": 593.6,
+      "duration": 2.799
+    },
+    {
+      "text": "stamp. And you should know that whisper",
+      "start": 595.12,
+      "duration": 2.88
+    },
+    {
+      "text": "models actually are trained with",
+      "start": 596.399,
+      "duration": 5.201
+    },
+    {
+      "text": "timestamps within their data.",
+      "start": 598.0,
+      "duration": 5.519
+    },
+    {
+      "text": "And that is why you can decide to",
+      "start": 601.6,
+      "duration": 3.44
+    },
+    {
+      "text": "inference with or without time stamps",
+      "start": 603.519,
+      "duration": 3.44
+    },
+    {
+      "text": "when you use Whisper. Now, if you just",
+      "start": 605.04,
+      "duration": 3.6
+    },
+    {
+      "text": "fine-tune, it will often remember its",
+      "start": 606.959,
+      "duration": 3.761
+    },
+    {
+      "text": "ability to time stamp. So, you can often",
+      "start": 608.64,
+      "duration": 4.96
+    },
+    {
+      "text": "fine-tune without time stamp data. But",
+      "start": 610.72,
+      "duration": 5.04
+    },
+    {
+      "text": "if you're training a large amount and",
+      "start": 613.6,
+      "duration": 3.12
+    },
+    {
+      "text": "you're going to move the weight",
+      "start": 615.76,
+      "duration": 3.199
+    },
+    {
+      "text": "significantly, then probably you want to",
+      "start": 616.72,
+      "duration": 4.239
+    },
+    {
+      "text": "include timestamp data within your data",
+      "start": 618.959,
+      "duration": 4.481
+    },
+    {
+      "text": "set if you want to make sure the model",
+      "start": 620.959,
+      "duration": 5.761
+    },
+    {
+      "text": "doesn't do catastrophic forgetting.",
+      "start": 623.44,
+      "duration": 5.28
+    },
+    {
+      "text": "So, that's a quick illustration of why",
+      "start": 626.72,
+      "duration": 4.64
+    },
+    {
+      "text": "uh timestamping might be useful. I'm",
+      "start": 628.72,
+      "duration": 4.08
+    },
+    {
+      "text": "going to show you some code now for the",
+      "start": 631.36,
+      "duration": 3.52
+    },
+    {
+      "text": "alignment. This is back in the advanced",
+      "start": 632.8,
+      "duration": 4.719
+    },
+    {
+      "text": "transcription repo.",
+      "start": 634.88,
+      "duration": 6.959
+    },
+    {
+      "text": "And you can see here um if I go into the",
+      "start": 637.519,
+      "duration": 5.841
+    },
+    {
+      "text": "server code. Well, first of all, in the",
+      "start": 641.839,
+      "duration": 4.641
+    },
+    {
+      "text": "readme, if you want to run this server,",
+      "start": 643.36,
+      "duration": 5.919
+    },
+    {
+      "text": "uh you can easily do so just by doing uh",
+      "start": 646.48,
+      "duration": 5.68
+    },
+    {
+      "text": "let me see where my command is. Uh uv",
+      "start": 649.279,
+      "duration": 4.481
+    },
+    {
+      "text": "run.",
+      "start": 652.16,
+      "duration": 4.239
+    },
+    {
+      "text": "Uh it's just uvython server. py, which",
+      "start": 653.76,
+      "duration": 4.079
+    },
+    {
+      "text": "will start up this server here that I",
+      "start": 656.399,
+      "duration": 4.241
+    },
+    {
+      "text": "showed you the example of.",
+      "start": 657.839,
+      "duration": 5.12
+    },
+    {
+      "text": "And if we go to the code, it's easiest",
+      "start": 660.64,
+      "duration": 4.319
+    },
+    {
+      "text": "if I go to the align function, which",
+      "start": 662.959,
+      "duration": 4.56
+    },
+    {
+      "text": "I'll increase in size here. So this",
+      "start": 664.959,
+      "duration": 4.641
+    },
+    {
+      "text": "function here will simply align some",
+      "start": 667.519,
+      "duration": 4.081
+    },
+    {
+      "text": "audio and text. It will take in some",
+      "start": 669.6,
+      "duration": 4.479
+    },
+    {
+      "text": "audio. It will take in some text. True",
+      "start": 671.6,
+      "duration": 4.16
+    },
+    {
+      "text": "or false as to whether to prever",
+      "start": 674.079,
+      "duration": 4.32
+    },
+    {
+      "text": "preserve the original",
+      "start": 675.76,
+      "duration": 4.24
+    },
+    {
+      "text": "words, their punctuation and",
+      "start": 678.399,
+      "duration": 4.081
+    },
+    {
+      "text": "capitalization. A choice of aligner",
+      "start": 680.0,
+      "duration": 4.64
+    },
+    {
+      "text": "defaulting to MMSFA, the torch audio",
+      "start": 682.48,
+      "duration": 4.64
+    },
+    {
+      "text": "one. and then also language which is uh",
+      "start": 684.64,
+      "duration": 5.04
+    },
+    {
+      "text": "needed as an input to the CTC align",
+      "start": 687.12,
+      "duration": 4.48
+    },
+    {
+      "text": "library.",
+      "start": 689.68,
+      "duration": 3.92
+    },
+    {
+      "text": "So first of all we will read in the",
+      "start": 691.6,
+      "duration": 5.84
+    },
+    {
+      "text": "audio then we will take that audio and",
+      "start": 693.6,
+      "duration": 7.2
+    },
+    {
+      "text": "we will convert it to a tensor. And so",
+      "start": 697.44,
+      "duration": 5.2
+    },
+    {
+      "text": "here we just have an audio waveform and",
+      "start": 700.8,
+      "duration": 3.12
+    },
+    {
+      "text": "this is going to be passed into the",
+      "start": 702.64,
+      "duration": 2.72
+    },
+    {
+      "text": "alignment model which is a neural",
+      "start": 703.92,
+      "duration": 3.44
+    },
+    {
+      "text": "network.",
+      "start": 705.36,
+      "duration": 3.919
+    },
+    {
+      "text": "Now the neural network has got a finite",
+      "start": 707.36,
+      "duration": 3.599
+    },
+    {
+      "text": "length. So actually the audio will be",
+      "start": 709.279,
+      "duration": 4.481
+    },
+    {
+      "text": "chunked internally within uh the CTC",
+      "start": 710.959,
+      "duration": 4.161
+    },
+    {
+      "text": "library.",
+      "start": 713.76,
+      "duration": 3.6
+    },
+    {
+      "text": "And those chunks will all then generate",
+      "start": 715.12,
+      "duration": 4.56
+    },
+    {
+      "text": "emissions. Emissions again being the",
+      "start": 717.36,
+      "duration": 4.24
+    },
+    {
+      "text": "probability of each character. So we'll",
+      "start": 719.68,
+      "duration": 4.56
+    },
+    {
+      "text": "give for each uh audio seg each audio",
+      "start": 721.6,
+      "duration": 4.72
+    },
+    {
+      "text": "frame it will say what the probability",
+      "start": 724.24,
+      "duration": 6.08
+    },
+    {
+      "text": "of each character ABC is etc. So that's",
+      "start": 726.32,
+      "duration": 6.639
+    },
+    {
+      "text": "the that's the um the emissions",
+      "start": 730.32,
+      "duration": 4.88
+    },
+    {
+      "text": "generation.",
+      "start": 732.959,
+      "duration": 4.401
+    },
+    {
+      "text": "And to see that you would have to go",
+      "start": 735.2,
+      "duration": 4.16
+    },
+    {
+      "text": "into the align audio. We'll just look at",
+      "start": 737.36,
+      "duration": 5.2
+    },
+    {
+      "text": "the CTC one. So if I go to align audio,",
+      "start": 739.36,
+      "duration": 4.719
+    },
+    {
+      "text": "it takes in the waveform, the sample",
+      "start": 742.56,
+      "duration": 3.68
+    },
+    {
+      "text": "rate, the text, whether to preserve the",
+      "start": 744.079,
+      "duration": 5.44
+    },
+    {
+      "text": "original, and also the language.",
+      "start": 746.24,
+      "duration": 5.44
+    },
+    {
+      "text": "We're importing generate emissions. This",
+      "start": 749.519,
+      "duration": 4.961
+    },
+    {
+      "text": "is the function that runs the model,",
+      "start": 751.68,
+      "duration": 4.88
+    },
+    {
+      "text": "which can run on CUDA. And by the way,",
+      "start": 754.48,
+      "duration": 4.32
+    },
+    {
+      "text": "CTC aligner, that library, when it",
+      "start": 756.56,
+      "duration": 4.079
+    },
+    {
+      "text": "splits up your long waveform into",
+      "start": 758.8,
+      "duration": 3.92
+    },
+    {
+      "text": "chunks, I think it's up to 30 seconds,",
+      "start": 760.639,
+      "duration": 3.921
+    },
+    {
+      "text": "it will then run those as a batch to",
+      "start": 762.72,
+      "duration": 4.08
+    },
+    {
+      "text": "make better use of the GPU. So there is",
+      "start": 764.56,
+      "duration": 4.16
+    },
+    {
+      "text": "batching. when you make one request, it",
+      "start": 766.8,
+      "duration": 4.4
+    },
+    {
+      "text": "will actually batch uh multiple parts of",
+      "start": 768.72,
+      "duration": 4.0
+    },
+    {
+      "text": "that sequence and put them through at",
+      "start": 771.2,
+      "duration": 2.8
+    },
+    {
+      "text": "once so that you get back out the",
+      "start": 772.72,
+      "duration": 3.119
+    },
+    {
+      "text": "emissions for your whole long sequence",
+      "start": 774.0,
+      "duration": 5.959
+    },
+    {
+      "text": "but in uh in pieces",
+      "start": 775.839,
+      "duration": 4.12
+    },
+    {
+      "text": "once uh let's see. Yeah. So here you can",
+      "start": 780.72,
+      "duration": 4.32
+    },
+    {
+      "text": "see we're loading the model. We're",
+      "start": 783.519,
+      "duration": 3.921
+    },
+    {
+      "text": "loading a model for a given language.",
+      "start": 785.04,
+      "duration": 5.12
+    },
+    {
+      "text": "CTC supports multiple models. The models",
+      "start": 787.44,
+      "duration": 5.199
+    },
+    {
+      "text": "are all of the wave tovec type which is",
+      "start": 790.16,
+      "duration": 4.479
+    },
+    {
+      "text": "a Facebook model often fine tunes of the",
+      "start": 792.639,
+      "duration": 3.681
+    },
+    {
+      "text": "wavetovec. There are different fine",
+      "start": 794.639,
+      "duration": 2.961
+    },
+    {
+      "text": "tunes on hoging face for different",
+      "start": 796.32,
+      "duration": 2.88
+    },
+    {
+      "text": "languages. I'm using an English fine",
+      "start": 797.6,
+      "duration": 3.919
+    },
+    {
+      "text": "tune, a permissively licensed one. So",
+      "start": 799.2,
+      "duration": 5.68
+    },
+    {
+      "text": "here we're loading the CTC model.",
+      "start": 801.519,
+      "duration": 7.12
+    },
+    {
+      "text": "We've got the waveform and then we're",
+      "start": 804.88,
+      "duration": 6.88
+    },
+    {
+      "text": "going to normalize the text as I",
+      "start": 808.639,
+      "duration": 5.76
+    },
+    {
+      "text": "mentioned. So remove capitalization.",
+      "start": 811.76,
+      "duration": 5.12
+    },
+    {
+      "text": "We're also going to remove punctuation",
+      "start": 814.399,
+      "duration": 5.68
+    },
+    {
+      "text": "but save that mapping. And once we have",
+      "start": 816.88,
+      "duration": 5.28
+    },
+    {
+      "text": "the audio, we're going to pass that into",
+      "start": 820.079,
+      "duration": 4.801
+    },
+    {
+      "text": "the model right here and generate the",
+      "start": 822.16,
+      "duration": 4.799
+    },
+    {
+      "text": "emissions. And we'll get out the",
+      "start": 824.88,
+      "duration": 4.079
+    },
+    {
+      "text": "emissions and also the stride, which is",
+      "start": 826.959,
+      "duration": 3.841
+    },
+    {
+      "text": "the you can think of it like the the",
+      "start": 828.959,
+      "duration": 5.201
+    },
+    {
+      "text": "frames or the windows.",
+      "start": 830.8,
+      "duration": 6.159
+    },
+    {
+      "text": "And once we have those emissions,",
+      "start": 834.16,
+      "duration": 4.64
+    },
+    {
+      "text": "we're going to be able to combine them",
+      "start": 836.959,
+      "duration": 4.56
+    },
+    {
+      "text": "with the text in order to generate then",
+      "start": 838.8,
+      "duration": 5.68
+    },
+    {
+      "text": "the alignment. So the way that you can",
+      "start": 841.519,
+      "duration": 6.161
+    },
+    {
+      "text": "think of the alignment step which comes",
+      "start": 844.48,
+      "duration": 5.28
+    },
+    {
+      "text": "after calculating emissions is that you",
+      "start": 847.68,
+      "duration": 3.92
+    },
+    {
+      "text": "have some probabilities of characters",
+      "start": 849.76,
+      "duration": 3.759
+    },
+    {
+      "text": "all the way along your audio. You also",
+      "start": 851.6,
+      "duration": 4.0
+    },
+    {
+      "text": "have the ground truth text and so it's a",
+      "start": 853.519,
+      "duration": 3.521
+    },
+    {
+      "text": "matter of how do you spread out the",
+      "start": 855.6,
+      "duration": 4.239
+    },
+    {
+      "text": "ground truth text so it best matches the",
+      "start": 857.04,
+      "duration": 5.359
+    },
+    {
+      "text": "probabilities of the characters for the",
+      "start": 859.839,
+      "duration": 4.081
+    },
+    {
+      "text": "audio.",
+      "start": 862.399,
+      "duration": 3.761
+    },
+    {
+      "text": "So that's what's happening. Um when",
+      "start": 863.92,
+      "duration": 3.68
+    },
+    {
+      "text": "you're getting the alignments, you're",
+      "start": 866.16,
+      "duration": 3.2
+    },
+    {
+      "text": "feeding in the emissions and you're",
+      "start": 867.6,
+      "duration": 5.44
+    },
+    {
+      "text": "feeding in the pre-processed uh tokens.",
+      "start": 869.36,
+      "duration": 5.919
+    },
+    {
+      "text": "And by aligning the probability",
+      "start": 873.04,
+      "duration": 3.84
+    },
+    {
+      "text": "distribution or rather by aligning the",
+      "start": 875.279,
+      "duration": 4.0
+    },
+    {
+      "text": "text in a way that will give the most",
+      "start": 876.88,
+      "duration": 6.88
+    },
+    {
+      "text": "likely uh probability sequence, you are",
+      "start": 879.279,
+      "duration": 8.761
+    },
+    {
+      "text": "able to then get the alignment.",
+      "start": 883.76,
+      "duration": 4.28
+    },
+    {
+      "text": "Once you have the alignment, you can get",
+      "start": 888.079,
+      "duration": 3.841
+    },
+    {
+      "text": "the timing span for each of the words.",
+      "start": 889.76,
+      "duration": 4.8
+    },
+    {
+      "text": "You can get the word timestamps.",
+      "start": 891.92,
+      "duration": 4.479
+    },
+    {
+      "text": "You can then reverse the mapping and",
+      "start": 894.56,
+      "duration": 4.16
+    },
+    {
+      "text": "then you can send this all back uh to",
+      "start": 896.399,
+      "duration": 4.641
+    },
+    {
+      "text": "the LLM or sorry not to the LLM. You can",
+      "start": 898.72,
+      "duration": 4.0
+    },
+    {
+      "text": "all set send this all back and that is",
+      "start": 901.04,
+      "duration": 4.0
+    },
+    {
+      "text": "the alignment data that you need if",
+      "start": 902.72,
+      "duration": 4.16
+    },
+    {
+      "text": "you're going to prepare your data for",
+      "start": 905.04,
+      "duration": 5.039
+    },
+    {
+      "text": "doing some form of training for example.",
+      "start": 906.88,
+      "duration": 6.24
+    },
+    {
+      "text": "So that's a very quick uh sketch of how",
+      "start": 910.079,
+      "duration": 5.361
+    },
+    {
+      "text": "it works. I will just mention the models",
+      "start": 913.12,
+      "duration": 6.079
+    },
+    {
+      "text": "that are being used. Um the English",
+      "start": 915.44,
+      "duration": 6.32
+    },
+    {
+      "text": "model I'm using is Facebook wave tovecto",
+      "start": 919.199,
+      "duration": 5.281
+    },
+    {
+      "text": "base 960h.",
+      "start": 921.76,
+      "duration": 4.24
+    },
+    {
+      "text": "So I think that means it's fine-tuned on",
+      "start": 924.48,
+      "duration": 4.24
+    },
+    {
+      "text": "960 hours or something like that. Uh",
+      "start": 926.0,
+      "duration": 4.56
+    },
+    {
+      "text": "there are also Hindi and Arabic models.",
+      "start": 928.72,
+      "duration": 4.0
+    },
+    {
+      "text": "I haven't fully tested out but you would",
+      "start": 930.56,
+      "duration": 4.16
+    },
+    {
+      "text": "have to specify the language. Now I",
+      "start": 932.72,
+      "duration": 3.28
+    },
+    {
+      "text": "think even though it says English, it",
+      "start": 934.72,
+      "duration": 2.72
+    },
+    {
+      "text": "will work fairly well for quite a few",
+      "start": 936.0,
+      "duration": 3.199
+    },
+    {
+      "text": "languages. Certain ones that use",
+      "start": 937.44,
+      "duration": 3.68
+    },
+    {
+      "text": "certainly ones that use a similar um",
+      "start": 939.199,
+      "duration": 4.0
+    },
+    {
+      "text": "alphabet.",
+      "start": 941.12,
+      "duration": 5.04
+    },
+    {
+      "text": "And yeah, this is all done using uh",
+      "start": 943.199,
+      "duration": 6.88
+    },
+    {
+      "text": "Mammud Araf's CTC force aligner library.",
+      "start": 946.16,
+      "duration": 5.679
+    },
+    {
+      "text": "There's also torch audio which is a",
+      "start": 950.079,
+      "duration": 5.68
+    },
+    {
+      "text": "built-in force aligner and it has a",
+      "start": 951.839,
+      "duration": 6.321
+    },
+    {
+      "text": "non-commercial license. So just be aware",
+      "start": 955.759,
+      "duration": 6.08
+    },
+    {
+      "text": "of that whereas the the Facebook wave",
+      "start": 958.16,
+      "duration": 7.119
+    },
+    {
+      "text": "tove base 960h model is permissively",
+      "start": 961.839,
+      "duration": 6.44
+    },
+    {
+      "text": "licensed.",
+      "start": 965.279,
+      "duration": 3.0
+    },
+    {
+      "text": "Okay, so that is pretty much it on the",
+      "start": 968.32,
+      "duration": 5.6
+    },
+    {
+      "text": "demo and also the commercial demo. I'll",
+      "start": 972.0,
+      "duration": 4.079
+    },
+    {
+      "text": "just show you now very briefly some of",
+      "start": 973.92,
+      "duration": 3.76
+    },
+    {
+      "text": "the fundamentals on the theory of",
+      "start": 976.079,
+      "duration": 4.401
+    },
+    {
+      "text": "alignment. I'll just illustrate a few",
+      "start": 977.68,
+      "duration": 5.279
+    },
+    {
+      "text": "aspects here of how audio alignment",
+      "start": 980.48,
+      "duration": 4.479
+    },
+    {
+      "text": "works.",
+      "start": 982.959,
+      "duration": 4.56
+    },
+    {
+      "text": "So first thing I want to talk about is",
+      "start": 984.959,
+      "duration": 5.041
+    },
+    {
+      "text": "emissions",
+      "start": 987.519,
+      "duration": 5.68
+    },
+    {
+      "text": "emissions model",
+      "start": 990.0,
+      "duration": 4.639
+    },
+    {
+      "text": "and then the second thing I'll talk",
+      "start": 993.199,
+      "duration": 6.121
+    },
+    {
+      "text": "about is the alignment.",
+      "start": 994.639,
+      "duration": 4.681
+    },
+    {
+      "text": "Okay.",
+      "start": 1000.959,
+      "duration": 5.361
+    },
+    {
+      "text": "So the what you start off with is some",
+      "start": 1003.68,
+      "duration": 6.64
+    },
+    {
+      "text": "text. It might be for example the and",
+      "start": 1006.32,
+      "duration": 7.72
+    },
+    {
+      "text": "then we go through normalization.",
+      "start": 1010.32,
+      "duration": 3.72
+    },
+    {
+      "text": "And that's just going to render it to",
+      "start": 1015.44,
+      "duration": 5.28
+    },
+    {
+      "text": "something like this here. TH like this.",
+      "start": 1017.199,
+      "duration": 4.961
+    },
+    {
+      "text": "Then we'll have some kind of a model",
+      "start": 1020.72,
+      "duration": 4.16
+    },
+    {
+      "text": "which will be a neural network. So it's",
+      "start": 1022.16,
+      "duration": 7.36
+    },
+    {
+      "text": "just a neural net. And we will take",
+      "start": 1024.88,
+      "duration": 6.72
+    },
+    {
+      "text": "audio.",
+      "start": 1029.52,
+      "duration": 4.96
+    },
+    {
+      "text": "So we'll have some audio wave. Uh in",
+      "start": 1031.6,
+      "duration": 5.92
+    },
+    {
+      "text": "fact maybe what I'll do is just",
+      "start": 1034.48,
+      "duration": 5.76
+    },
+    {
+      "text": "disconnect this here. Uh so we'll have",
+      "start": 1037.52,
+      "duration": 4.72
+    },
+    {
+      "text": "some input audio. Let's say it looks",
+      "start": 1040.24,
+      "duration": 5.48
+    },
+    {
+      "text": "something like this.",
+      "start": 1042.24,
+      "duration": 3.48
+    },
+    {
+      "text": "It's not a great audio wave, but you get",
+      "start": 1046.0,
+      "duration": 4.08
+    },
+    {
+      "text": "the gist.",
+      "start": 1047.679,
+      "duration": 5.921
+    },
+    {
+      "text": "And the neural net here will output uh",
+      "start": 1050.08,
+      "duration": 8.4
+    },
+    {
+      "text": "some windows. So for every window,",
+      "start": 1053.6,
+      "duration": 6.4
+    },
+    {
+      "text": "well, first of all, it's going to have",
+      "start": 1058.48,
+      "duration": 5.24
+    },
+    {
+      "text": "some windows like this.",
+      "start": 1060.0,
+      "duration": 3.72
+    },
+    {
+      "text": "For each window, it's going to give some",
+      "start": 1065.6,
+      "duration": 4.4
+    },
+    {
+      "text": "probabilities of the different tokens.",
+      "start": 1067.44,
+      "duration": 4.56
+    },
+    {
+      "text": "So for example,",
+      "start": 1070.0,
+      "duration": 5.6
+    },
+    {
+      "text": "if I zoom in here for this first window,",
+      "start": 1072.0,
+      "duration": 6.48
+    },
+    {
+      "text": "it might say something like we have the",
+      "start": 1075.6,
+      "duration": 6.16
+    },
+    {
+      "text": "token t and that's going to be a",
+      "start": 1078.48,
+      "duration": 8.079
+    },
+    {
+      "text": "probability of uh let's say zero and",
+      "start": 1081.76,
+      "duration": 6.88
+    },
+    {
+      "text": "then we have a token well a character",
+      "start": 1086.559,
+      "duration": 4.561
+    },
+    {
+      "text": "space and that will be probability of",
+      "start": 1088.64,
+      "duration": 4.24
+    },
+    {
+      "text": "0.99",
+      "start": 1091.12,
+      "duration": 3.919
+    },
+    {
+      "text": "just for example and then on the next",
+      "start": 1092.88,
+      "duration": 4.159
+    },
+    {
+      "text": "window we might have t the probability",
+      "start": 1095.039,
+      "duration": 6.401
+    },
+    {
+      "text": "is 0.8 8 the probability of H is 0.2 and",
+      "start": 1097.039,
+      "duration": 7.361
+    },
+    {
+      "text": "then the next window we might have T the",
+      "start": 1101.44,
+      "duration": 5.84
+    },
+    {
+      "text": "probability is 0.2 the probability of a",
+      "start": 1104.4,
+      "duration": 7.6
+    },
+    {
+      "text": "space is 0.8 so this model at every",
+      "start": 1107.28,
+      "duration": 6.639
+    },
+    {
+      "text": "window is going to give a probability",
+      "start": 1112.0,
+      "duration": 4.32
+    },
+    {
+      "text": "for each of the possible",
+      "start": 1113.919,
+      "duration": 5.361
+    },
+    {
+      "text": "for each of the possible characters and",
+      "start": 1116.32,
+      "duration": 4.32
+    },
+    {
+      "text": "it's characters because we've got",
+      "start": 1119.28,
+      "duration": 4.32
+    },
+    {
+      "text": "normalized text coming in.",
+      "start": 1120.64,
+      "duration": 6.159
+    },
+    {
+      "text": "So now we we have this kind of map that",
+      "start": 1123.6,
+      "duration": 5.68
+    },
+    {
+      "text": "gives us the probabilities of each",
+      "start": 1126.799,
+      "duration": 5.281
+    },
+    {
+      "text": "character for each window. And what we",
+      "start": 1129.28,
+      "duration": 5.279
+    },
+    {
+      "text": "need to do is we need to take the ground",
+      "start": 1132.08,
+      "duration": 6.4
+    },
+    {
+      "text": "truth text which we know is thhe",
+      "start": 1134.559,
+      "duration": 5.761
+    },
+    {
+      "text": "and we basically need to figure out how",
+      "start": 1138.48,
+      "duration": 4.559
+    },
+    {
+      "text": "do we spread that amongst the windows",
+      "start": 1140.32,
+      "duration": 5.2
+    },
+    {
+      "text": "these windows here",
+      "start": 1143.039,
+      "duration": 5.041
+    },
+    {
+      "text": "so that it gives so that it best fits",
+      "start": 1145.52,
+      "duration": 5.92
+    },
+    {
+      "text": "the probability distribution.",
+      "start": 1148.08,
+      "duration": 5.92
+    },
+    {
+      "text": "And there's a way of doing this uh which",
+      "start": 1151.44,
+      "duration": 3.84
+    },
+    {
+      "text": "I've described more fully in the",
+      "start": 1154.0,
+      "duration": 3.52
+    },
+    {
+      "text": "advanced transcription repo but it's uh",
+      "start": 1155.28,
+      "duration": 5.279
+    },
+    {
+      "text": "I think I mispronounced it earlier",
+      "start": 1157.52,
+      "duration": 5.68
+    },
+    {
+      "text": "but it's a vurby method and what it does",
+      "start": 1160.559,
+      "duration": 4.48
+    },
+    {
+      "text": "is it basically steps forward through",
+      "start": 1163.2,
+      "duration": 5.44
+    },
+    {
+      "text": "the windows and considers what all of",
+      "start": 1165.039,
+      "duration": 6.88
+    },
+    {
+      "text": "the possible traces are. So for example",
+      "start": 1168.64,
+      "duration": 5.279
+    },
+    {
+      "text": "on the very first window the two",
+      "start": 1171.919,
+      "duration": 6.721
+    },
+    {
+      "text": "possibilities here are t and space. On",
+      "start": 1173.919,
+      "duration": 7.12
+    },
+    {
+      "text": "the second window, you've got T and H.",
+      "start": 1178.64,
+      "duration": 4.24
+    },
+    {
+      "text": "But the ways you can get to T and H are",
+      "start": 1181.039,
+      "duration": 3.681
+    },
+    {
+      "text": "either you could have TT. So in the",
+      "start": 1182.88,
+      "duration": 3.28
+    },
+    {
+      "text": "first window, you can have either T or",
+      "start": 1184.72,
+      "duration": 3.44
+    },
+    {
+      "text": "you can have space. In the second",
+      "start": 1186.16,
+      "duration": 4.56
+    },
+    {
+      "text": "window, you could have TT, you could",
+      "start": 1188.16,
+      "duration": 7.36
+    },
+    {
+      "text": "have space T, you could have space H.",
+      "start": 1190.72,
+      "duration": 8.48
+    },
+    {
+      "text": "Well, TH, and you could have space H.",
+      "start": 1195.52,
+      "duration": 6.08
+    },
+    {
+      "text": "There are all the four possibilities.",
+      "start": 1199.2,
+      "duration": 4.0
+    },
+    {
+      "text": "But we know already that the ground",
+      "start": 1201.6,
+      "duration": 3.76
+    },
+    {
+      "text": "truth is THE.",
+      "start": 1203.2,
+      "duration": 3.92
+    },
+    {
+      "text": "And because of that, we can already rule",
+      "start": 1205.36,
+      "duration": 3.92
+    },
+    {
+      "text": "out some of these. So this last one is",
+      "start": 1207.12,
+      "duration": 5.12
+    },
+    {
+      "text": "not possible because you can't have H",
+      "start": 1209.28,
+      "duration": 6.0
+    },
+    {
+      "text": "first. Also the TT is not possible",
+      "start": 1212.24,
+      "duration": 5.6
+    },
+    {
+      "text": "because you can't have two uh T's. So",
+      "start": 1215.28,
+      "duration": 4.639
+    },
+    {
+      "text": "the only possible ones we can consider",
+      "start": 1217.84,
+      "duration": 3.92
+    },
+    {
+      "text": "keeping with their probabilities are",
+      "start": 1219.919,
+      "duration": 4.081
+    },
+    {
+      "text": "these ones. So now we can go on to the",
+      "start": 1221.76,
+      "duration": 4.64
+    },
+    {
+      "text": "next window where we've t and space. And",
+      "start": 1224.0,
+      "duration": 5.76
+    },
+    {
+      "text": "in this case here we could have",
+      "start": 1226.4,
+      "duration": 6.56
+    },
+    {
+      "text": "underscore well just space TT. We could",
+      "start": 1229.76,
+      "duration": 7.6
+    },
+    {
+      "text": "have t HT. We could have",
+      "start": 1232.96,
+      "duration": 10.0
+    },
+    {
+      "text": "space t space and we can have t h space.",
+      "start": 1237.36,
+      "duration": 7.04
+    },
+    {
+      "text": "But again, we can rule out a lot of",
+      "start": 1242.96,
+      "duration": 5.36
+    },
+    {
+      "text": "these because they don't um respect the",
+      "start": 1244.4,
+      "duration": 6.48
+    },
+    {
+      "text": "actual outcome.",
+      "start": 1248.32,
+      "duration": 4.08
+    },
+    {
+      "text": "Uh so this one here is the only one",
+      "start": 1250.88,
+      "duration": 3.36
+    },
+    {
+      "text": "that's valid. And by the way, the space",
+      "start": 1252.4,
+      "duration": 4.96
+    },
+    {
+      "text": "is just it doesn't mean an actual space.",
+      "start": 1254.24,
+      "duration": 5.679
+    },
+    {
+      "text": "It means um just kind of a silence or",
+      "start": 1257.36,
+      "duration": 4.64
+    },
+    {
+      "text": "continuation. So actually this would be",
+      "start": 1259.919,
+      "duration": 3.681
+    },
+    {
+      "text": "considered a valid possibility to",
+      "start": 1262.0,
+      "duration": 3.6
+    },
+    {
+      "text": "continue because you have th and then",
+      "start": 1263.6,
+      "duration": 4.48
+    },
+    {
+      "text": "maybe the e will come in a later in a",
+      "start": 1265.6,
+      "duration": 4.64
+    },
+    {
+      "text": "later window here. So you can see by",
+      "start": 1268.08,
+      "duration": 5.12
+    },
+    {
+      "text": "moving from left to right and by ruling",
+      "start": 1270.24,
+      "duration": 5.679
+    },
+    {
+      "text": "out anything that's not possible you",
+      "start": 1273.2,
+      "duration": 5.2
+    },
+    {
+      "text": "will end up at the end with a number of",
+      "start": 1275.919,
+      "duration": 5.281
+    },
+    {
+      "text": "sequences that are remaining and you",
+      "start": 1278.4,
+      "duration": 4.639
+    },
+    {
+      "text": "will also end up with the probabilities",
+      "start": 1281.2,
+      "duration": 4.24
+    },
+    {
+      "text": "just by multiplying uh the probabilities",
+      "start": 1283.039,
+      "duration": 3.841
+    },
+    {
+      "text": "through the trees like this. So you",
+      "start": 1285.44,
+      "duration": 6.0
+    },
+    {
+      "text": "might have you know 0.2 2 0 1 0.3",
+      "start": 1286.88,
+      "duration": 6.96
+    },
+    {
+      "text": "and you will select uh the most likely",
+      "start": 1291.44,
+      "duration": 5.52
+    },
+    {
+      "text": "one. So this is how the alignment phase",
+      "start": 1293.84,
+      "duration": 4.8
+    },
+    {
+      "text": "works.",
+      "start": 1296.96,
+      "duration": 5.599
+    },
+    {
+      "text": "Now I'm getting into more uh academic",
+      "start": 1298.64,
+      "duration": 5.44
+    },
+    {
+      "text": "territory, but if you're interested in",
+      "start": 1302.559,
+      "duration": 3.36
+    },
+    {
+      "text": "how these models are trained, the",
+      "start": 1304.08,
+      "duration": 4.64
+    },
+    {
+      "text": "emissions model,",
+      "start": 1305.919,
+      "duration": 4.24
+    },
+    {
+      "text": "not the alignment model, this is",
+      "start": 1308.72,
+      "duration": 4.0
+    },
+    {
+      "text": "alignment what I'm talking about here.",
+      "start": 1310.159,
+      "duration": 3.681
+    },
+    {
+      "text": "But if you're interested in the",
+      "start": 1312.72,
+      "duration": 3.6
+    },
+    {
+      "text": "emissions model, and I spelled that with",
+      "start": 1313.84,
+      "duration": 4.64
+    },
+    {
+      "text": "two M's,",
+      "start": 1316.32,
+      "duration": 3.839
+    },
+    {
+      "text": "the way these are trained is actually on",
+      "start": 1318.48,
+      "duration": 3.12
+    },
+    {
+      "text": "unlabelled data, which is kind of",
+      "start": 1320.159,
+      "duration": 5.201
+    },
+    {
+      "text": "interesting. So you have a neural net,",
+      "start": 1321.6,
+      "duration": 6.959
+    },
+    {
+      "text": "and it takes in some audio.",
+      "start": 1325.36,
+      "duration": 7.52
+    },
+    {
+      "text": "So this is my audio representation here,",
+      "start": 1328.559,
+      "duration": 7.12
+    },
+    {
+      "text": "and it's going to spit out these uh",
+      "start": 1332.88,
+      "duration": 6.76
+    },
+    {
+      "text": "probabilities per window.",
+      "start": 1335.679,
+      "duration": 3.961
+    },
+    {
+      "text": "And the way that you train it is",
+      "start": 1340.64,
+      "duration": 5.2
+    },
+    {
+      "text": "you",
+      "start": 1344.32,
+      "duration": 7.239
+    },
+    {
+      "text": "will do it with unlabeled data.",
+      "start": 1345.84,
+      "duration": 5.719
+    },
+    {
+      "text": "And by unlabeled, I don't mean you you",
+      "start": 1353.44,
+      "duration": 3.92
+    },
+    {
+      "text": "don't have the text. You do have the",
+      "start": 1355.76,
+      "duration": 3.68
+    },
+    {
+      "text": "text. So you will have these",
+      "start": 1357.36,
+      "duration": 3.439
+    },
+    {
+      "text": "probabilities and you will have some",
+      "start": 1359.44,
+      "duration": 4.92
+    },
+    {
+      "text": "ground truth text",
+      "start": 1360.799,
+      "duration": 3.561
+    },
+    {
+      "text": "but the text will be will be unaligned.",
+      "start": 1366.159,
+      "duration": 6.281
+    },
+    {
+      "text": "So you'll have no timestamps.",
+      "start": 1368.64,
+      "duration": 3.8
+    },
+    {
+      "text": "So think of audio paired with ground",
+      "start": 1377.12,
+      "duration": 6.32
+    },
+    {
+      "text": "truth text that has no alignment.",
+      "start": 1379.6,
+      "duration": 7.04
+    },
+    {
+      "text": "And the way that you make this work is",
+      "start": 1383.44,
+      "duration": 5.44
+    },
+    {
+      "text": "the audio will output. It will output",
+      "start": 1386.64,
+      "duration": 5.519
+    },
+    {
+      "text": "again these kinds of uh probabilities",
+      "start": 1388.88,
+      "duration": 5.2
+    },
+    {
+      "text": "for each window.",
+      "start": 1392.159,
+      "duration": 5.601
+    },
+    {
+      "text": "And what you will do is you will keep.",
+      "start": 1394.08,
+      "duration": 5.839
+    },
+    {
+      "text": "So you will keep",
+      "start": 1397.76,
+      "duration": 4.56
+    },
+    {
+      "text": "any sequences",
+      "start": 1399.919,
+      "duration": 5.681
+    },
+    {
+      "text": "any sequences",
+      "start": 1402.32,
+      "duration": 6.479
+    },
+    {
+      "text": "that respect",
+      "start": 1405.6,
+      "duration": 7.24
+    },
+    {
+      "text": "the ground truth order",
+      "start": 1408.799,
+      "duration": 4.041
+    },
+    {
+      "text": "order.",
+      "start": 1415.28,
+      "duration": 3.0
+    },
+    {
+      "text": "So you may actually keep multiple",
+      "start": 1418.32,
+      "duration": 5.359
+    },
+    {
+      "text": "sequences. For example, if I have THE, I",
+      "start": 1420.08,
+      "duration": 7.04
+    },
+    {
+      "text": "might end up keeping space T space H",
+      "start": 1423.679,
+      "duration": 6.0
+    },
+    {
+      "text": "space E. I might also end up keeping",
+      "start": 1427.12,
+      "duration": 6.88
+    },
+    {
+      "text": "space H uh TH E. Uh I would also end up",
+      "start": 1429.679,
+      "duration": 7.841
+    },
+    {
+      "text": "keeping space space. These are all valid",
+      "start": 1434.0,
+      "duration": 5.84
+    },
+    {
+      "text": "sequences.",
+      "start": 1437.52,
+      "duration": 4.08
+    },
+    {
+      "text": "And by the way, I'm getting these just",
+      "start": 1439.84,
+      "duration": 3.68
+    },
+    {
+      "text": "by inspecting the emissions, by",
+      "start": 1441.6,
+      "duration": 4.24
+    },
+    {
+      "text": "inspecting the the output probabilities",
+      "start": 1443.52,
+      "duration": 5.44
+    },
+    {
+      "text": "for each character at each position. And",
+      "start": 1445.84,
+      "duration": 5.04
+    },
+    {
+      "text": "now it turns out, and this is maybe a",
+      "start": 1448.96,
+      "duration": 6.24
+    },
+    {
+      "text": "little surprising, if I just maximize",
+      "start": 1450.88,
+      "duration": 8.399
+    },
+    {
+      "text": "the sum of the probabilities",
+      "start": 1455.2,
+      "duration": 6.88
+    },
+    {
+      "text": "of these sequences,",
+      "start": 1459.279,
+      "duration": 4.801
+    },
+    {
+      "text": "if I just maximize the probabilities of",
+      "start": 1462.08,
+      "duration": 5.04
+    },
+    {
+      "text": "those specific sequences",
+      "start": 1464.08,
+      "duration": 4.8
+    },
+    {
+      "text": "and not the other ones that are invalid,",
+      "start": 1467.12,
+      "duration": 5.28
+    },
+    {
+      "text": "like say h would be invalid.",
+      "start": 1468.88,
+      "duration": 5.2
+    },
+    {
+      "text": "If I just maximize the ones that are",
+      "start": 1472.4,
+      "duration": 4.639
+    },
+    {
+      "text": "valid per the ground truth text order,",
+      "start": 1474.08,
+      "duration": 4.88
+    },
+    {
+      "text": "that actually gives a model that tends",
+      "start": 1477.039,
+      "duration": 4.401
+    },
+    {
+      "text": "to give very good alignments because",
+      "start": 1478.96,
+      "duration": 5.36
+    },
+    {
+      "text": "there often aren't that many valid",
+      "start": 1481.44,
+      "duration": 4.96
+    },
+    {
+      "text": "alignments the model will produce that",
+      "start": 1484.32,
+      "duration": 4.479
+    },
+    {
+      "text": "respect this order. So just by knowing",
+      "start": 1486.4,
+      "duration": 4.0
+    },
+    {
+      "text": "the correct order of the characters in",
+      "start": 1488.799,
+      "duration": 3.201
+    },
+    {
+      "text": "the ground truth text is actually enough",
+      "start": 1490.4,
+      "duration": 4.96
+    },
+    {
+      "text": "to be able to uh tune a base model. So",
+      "start": 1492.0,
+      "duration": 5.919
+    },
+    {
+      "text": "you take, as I said, a model that takes",
+      "start": 1495.36,
+      "duration": 6.319
+    },
+    {
+      "text": "in audio and gives out probabilities.",
+      "start": 1497.919,
+      "duration": 5.521
+    },
+    {
+      "text": "Well, you train it to do this. And this",
+      "start": 1501.679,
+      "duration": 2.961
+    },
+    {
+      "text": "is the loss function that you're going",
+      "start": 1503.44,
+      "duration": 3.599
+    },
+    {
+      "text": "to train it on in order for it to work.",
+      "start": 1504.64,
+      "duration": 3.919
+    },
+    {
+      "text": "Now, typically this is uh the",
+      "start": 1507.039,
+      "duration": 3.681
+    },
+    {
+      "text": "post-training. So you would post train a",
+      "start": 1508.559,
+      "duration": 4.48
+    },
+    {
+      "text": "model to do this. And in the",
+      "start": 1510.72,
+      "duration": 3.839
+    },
+    {
+      "text": "pre-training",
+      "start": 1513.039,
+      "duration": 3.921
+    },
+    {
+      "text": "what you're doing is you're taking a",
+      "start": 1514.559,
+      "duration": 4.72
+    },
+    {
+      "text": "model like wave tovec from from Facebook",
+      "start": 1516.96,
+      "duration": 5.68
+    },
+    {
+      "text": "which if I understand correctly it's um",
+      "start": 1519.279,
+      "duration": 5.52
+    },
+    {
+      "text": "it's trained through con contrastive and",
+      "start": 1522.64,
+      "duration": 5.68
+    },
+    {
+      "text": "also through masked loss. So for",
+      "start": 1524.799,
+      "duration": 6.401
+    },
+    {
+      "text": "example, they will take some audio in",
+      "start": 1528.32,
+      "duration": 4.64
+    },
+    {
+      "text": "the wild,",
+      "start": 1531.2,
+      "duration": 4.24
+    },
+    {
+      "text": "something like this,",
+      "start": 1532.96,
+      "duration": 5.04
+    },
+    {
+      "text": "and they may",
+      "start": 1535.44,
+      "duration": 4.719
+    },
+    {
+      "text": "feed in this to the model, and they will",
+      "start": 1538.0,
+      "duration": 4.799
+    },
+    {
+      "text": "get the model to then maybe predict part",
+      "start": 1540.159,
+      "duration": 5.601
+    },
+    {
+      "text": "of that wave. So you'll give it a full a",
+      "start": 1542.799,
+      "duration": 4.48
+    },
+    {
+      "text": "full signal, and you will get it to",
+      "start": 1545.76,
+      "duration": 3.919
+    },
+    {
+      "text": "predict the part here that has just been",
+      "start": 1547.279,
+      "duration": 5.52
+    },
+    {
+      "text": "masked out.",
+      "start": 1549.679,
+      "duration": 5.521
+    },
+    {
+      "text": "So it will try to model this and then",
+      "start": 1552.799,
+      "duration": 4.721
+    },
+    {
+      "text": "you'll do a reconstruction loss to grade",
+      "start": 1555.2,
+      "duration": 4.24
+    },
+    {
+      "text": "it on whether it was able to reproduce",
+      "start": 1557.52,
+      "duration": 4.56
+    },
+    {
+      "text": "this. And by training a model like this",
+      "start": 1559.44,
+      "duration": 7.119
+    },
+    {
+      "text": "you get something like uh wave to vec.",
+      "start": 1562.08,
+      "duration": 6.0
+    },
+    {
+      "text": "This is the base model that you would",
+      "start": 1566.559,
+      "duration": 4.081
+    },
+    {
+      "text": "pre-train and then you pass this to",
+      "start": 1568.08,
+      "duration": 4.719
+    },
+    {
+      "text": "post- trainining where you change the",
+      "start": 1570.64,
+      "duration": 3.919
+    },
+    {
+      "text": "outputs that it's given but it's able to",
+      "start": 1572.799,
+      "duration": 4.081
+    },
+    {
+      "text": "handle audio pretty well.",
+      "start": 1574.559,
+      "duration": 4.161
+    },
+    {
+      "text": "And now you train it to predict uh the",
+      "start": 1576.88,
+      "duration": 4.159
+    },
+    {
+      "text": "probabilities of the characters that you",
+      "start": 1578.72,
+      "duration": 6.559
+    },
+    {
+      "text": "need. So this is a a very rough guide",
+      "start": 1581.039,
+      "duration": 6.801
+    },
+    {
+      "text": "around audio alignment. I don't see it",
+      "start": 1585.279,
+      "duration": 4.081
+    },
+    {
+      "text": "talked about too much, but it's pretty",
+      "start": 1587.84,
+      "duration": 3.199
+    },
+    {
+      "text": "critical if you're going to align data",
+      "start": 1589.36,
+      "duration": 3.52
+    },
+    {
+      "text": "to get nice chunks. It's pretty critical",
+      "start": 1591.039,
+      "duration": 4.0
+    },
+    {
+      "text": "if you want to train tokenbased audio",
+      "start": 1592.88,
+      "duration": 4.08
+    },
+    {
+      "text": "models, something I'll hopefully cover",
+      "start": 1595.039,
+      "duration": 4.801
+    },
+    {
+      "text": "fairly soon. And that rounds up this",
+      "start": 1596.96,
+      "duration": 4.48
+    },
+    {
+      "text": "video on alignment. You can find all the",
+      "start": 1599.84,
+      "duration": 3.439
+    },
+    {
+      "text": "materials, the explanations, and also",
+      "start": 1601.44,
+      "duration": 4.719
+    },
+    {
+      "text": "the scripts for doing the alignment in",
+      "start": 1603.279,
+      "duration": 4.481
+    },
+    {
+      "text": "the repo in the description,",
+      "start": 1606.159,
+      "duration": 4.081
+    },
+    {
+      "text": "trous.com/advanced-audio.",
+      "start": 1607.76,
+      "duration": 4.32
+    },
+    {
+      "text": "And if you have any questions, as usual,",
+      "start": 1610.24,
+      "duration": 4.0
+    },
+    {
+      "text": "let me know below in the description or",
+      "start": 1612.08,
+      "duration": 5.599
+    },
+    {
+      "text": "in the comments, rather. Cheers.",
+      "start": 1614.24,
+      "duration": 3.439
+    }
+  ],
+  "full_text": "This is a video about aligning text and audio. It's relevant if you're training models such as texttospech models or speechtoext models, particularly if you want to have timestamps within transcripts you generate, for example, from whisper. It's also necessary for certain models that are token based like QTIs, texttospech, or speechtoext models. Last of all, if you're doing data preparation for training voice models, you often will want to chunk that data and you would like the chunks to respect sentence boundaries. Again, having timestamps, which means being able to align the audio and the text is important here if you want to do that. I'm going to show you a quick interface just to illustrate what I mean by alignment and some of the highle knobs you can turn and choices you might want to make when doing so. Then I'll show you how this integrates into a commercial application with Trellis Studio. And last of all, I'll cover a little bit of theory on how voice alignment works. Here is a quick demo that I have vibe coded called audio alignment. And it shows us how to align using two different models. It'll give you a feel for what alignment is and how it works. It's included in Trellis advanced transcription or advanced audio repository which you can find by going to trellles.com/advanced- audio. First thing I'll do here is just upload some voice. I've got a short recording. You can maybe listen to a short piece of it here. The Solar 10.7B is the fastest uh runner. Sorry, it's the it's uh this is me recording myself calling out some words in 2023, some LLM related words. And for convenience, I have connected up fireworks so we can quickly transcribe this. Okay, so I've transcribed the text here. Normally, I would make some corrections if I was going to train on this. Maybe I would put in some commas, for example, like this. I'm not going to be too worried because I mostly just want to align this with the audio. Now, there are two models that I have set up here. The first is MMS- FA. This is a default mod model from torch audio, although I understand it's going to be deprecated. And the second model is a commercially friend friendly model that's being run using the CTC aligner package. This one is uh openly licensed including for commercial use. So, I'll start off with the MMSFA and I'll click align. And in the background, the model is being loaded and the alignment is happening. So here's a sense. I'll just play it. And you can see that what we now have is the text is aligned with the audio. So let me play here. >> A strong it's a version of MRO 7B with extra layers. Claude 2.1 is the latest model from Enthropic. So you can see here we have uh the alignment of audio and text. And then we have a list of time stamps for the words. So we have the starting time stamp and the end. And given we have this, if we now do some form of sentence detection, say using full stops, we could detect uh sentences. If there were clean sentences, which there aren't cuz this is not necessarily clean text. But if we did have clean text, we would now also have word timestamps. And with the word timestamps and the sentence detection, we could create clean chunks that we can then use for training. And I'll show you an illustration of this a little bit later. Something to note, I can just run the uh commercially friendly one here as well. You'll notice the time it takes here to run the alignment. And you'll notice also that if I run it twice, it'll be faster because the second time we align, it has already cached the model on my Mac. This is all running locally and so it'll be faster. You can of course run these on GPUs as well. Something to appreciate is that alignment models, which I'll describe in more detail as to how they work, they operate on normalized text. This means without punctu punctuation and with all lowercase. So if you start with text that has capitalization and you want to keep that, you will need to first convert it to normalized text but maintain a mapping of the original to the normalized so that you can then reverse the mapping afterwards to get back to having uh punctuated capitalized text. So you'll see if I remove the preserve original text, this means that yes, I'll normalize, but I won't reverse the mapping. And now when I align, I'll have lost all of my punctuation. And you'll see here I even lose the 10.7B because it's just lost in the normalization. But when I do normalize and then back reverse the normalization, I keep all of the text and I get nice uh clean alignment just like this. Underneath the hood, when you run alignment, it's a multi-step process. You normalize the text. You take the normalized text. You set it aside. Then you take the audio and you put it through a model that will create emissions. What it's going to do is it's going to create a probability of each given character for every piece of the audio. So every window of the audio will predict with a certain probability either just a blank character or a character A B C D and it will give that a probability. This is called emissions. So you'll have an emission of probabilities of the different characters. That's typically how it works. Not tokens, but characters. Now that you have these probabilities at each time stamp of your audio, you will then be able to compare. Well, you'll be able to now put them through what's called a vertebrae process and you will calculate the most likely path. And that most likely path will give you a final estimate of well it'll give you your final call on what the aligned text is. If you didn't follow that, don't worry because I'll go through it in a bit more detail. But suffice to say, you take the audio, the audio will produce using a neural network. It will produce emissions which are probabilities of each character. And when you have the probability of each character or spaces for each position, you will then run those through uh a vertib process which is going to give you the most likely sequence. You won't just take the most likely character at every position because then they won't be consistent with each other. What you'll do is you'll find the most likely total path and that will give you your final alignment. Okay, so this is um how to align. I will go through the code just in a moment uh showing you how the different steps and also the specific models that are chosen. But yeah, suffice to say, I checked through a lot of models and unfortunately a lot of the default ones that are used are not permissively licensed. Uh, including this torch audio default, which I think is going to be deprecated. Now, as an example of where this is used in practice from Trellis Studio, I want to just show you data preparation. A very quick data preparation I'm going to do here. I'm going to upload uh some audio. I'm going to transcribe the audio. Again, this uses fireworks in the background. And now, typically, I would review the transcripts. I would maybe make some corrections uh to some of the words here. I won't worry about that too much. You can see that when I transcribe, I've got these 30-second chunks, but they're not neat chunks because they finish in the middle of a sentence here and here. So, what I'd really like to do is when my data is cleaned and corrected, I'd like to realign it so that I just have clean chunks of about 20 to 30 seconds that start and finish with clean sentence boundaries. Uh, cuz this is going to give me better data for when it comes to training. So, I'll go back to data prep here and I'm going to run data processing. And the data processing is doing what I showed already in this quick demo. It's aligning all of the audio. It's getting all of the timestamps and given the timestamps and looking at sentence boundaries with punctuation, we can then create 30 second 20 to 30 second chunks of audio that are going to be neatly prepared uh for running tra training. So here you can see we have um the chunking underway and the data set is created. Looks like there will be nine uh total chunks of about 20 to 30 seconds. And we can even use this for training if we like or we can just view the data set. I'm going to give it a moment uh to show up. If I wanted to use for training, I would just copy in the training data set name. I could just omit if I've no validation set and then decide to train one of the Whisper models here and later deploy it with endpoints. But I don't want to get too distracted because I'm focused on alignment here. And we should have a look at the data set now. Yep. And you can see that there's now a series of chunks. There's also the word timestamps available here. And you can see hopefully each chunk is going to be clean and finishing at a neat sentence boundary because I've been able to just take the first 20 to 30 seconds. And then yeah, you can see the same for other text uh such as here. Now, in certain cases, because I'm targeting between 20 and 30 seconds, if there is no sentence that ends between 20 and 30 seconds, you can still get a discontinuous sentence like that. Uh but generally, we're going to be able to get these nice and consistent chunk lengths. And here, all I'm doing is creating neat sentence respecting chunks. But if you're training a model like QTI's speechto text model, you actually need timestamps. Or if you're training whisper with timestamps, which I hope to show later in another video, you need explicit time stamps for the words. And you need to actually inject timestamp tokens in the middle of these uh segments or at least at the start and the end so that the model learns how to time stamp. And so this is how models are trained to have a sense of time stamp. And you should know that whisper models actually are trained with timestamps within their data. And that is why you can decide to inference with or without time stamps when you use Whisper. Now, if you just fine-tune, it will often remember its ability to time stamp. So, you can often fine-tune without time stamp data. But if you're training a large amount and you're going to move the weight significantly, then probably you want to include timestamp data within your data set if you want to make sure the model doesn't do catastrophic forgetting. So, that's a quick illustration of why uh timestamping might be useful. I'm going to show you some code now for the alignment. This is back in the advanced transcription repo. And you can see here um if I go into the server code. Well, first of all, in the readme, if you want to run this server, uh you can easily do so just by doing uh let me see where my command is. Uh uv run. Uh it's just uvython server. py, which will start up this server here that I showed you the example of. And if we go to the code, it's easiest if I go to the align function, which I'll increase in size here. So this function here will simply align some audio and text. It will take in some audio. It will take in some text. True or false as to whether to prever preserve the original words, their punctuation and capitalization. A choice of aligner defaulting to MMSFA, the torch audio one. and then also language which is uh needed as an input to the CTC align library. So first of all we will read in the audio then we will take that audio and we will convert it to a tensor. And so here we just have an audio waveform and this is going to be passed into the alignment model which is a neural network. Now the neural network has got a finite length. So actually the audio will be chunked internally within uh the CTC library. And those chunks will all then generate emissions. Emissions again being the probability of each character. So we'll give for each uh audio seg each audio frame it will say what the probability of each character ABC is etc. So that's the that's the um the emissions generation. And to see that you would have to go into the align audio. We'll just look at the CTC one. So if I go to align audio, it takes in the waveform, the sample rate, the text, whether to preserve the original, and also the language. We're importing generate emissions. This is the function that runs the model, which can run on CUDA. And by the way, CTC aligner, that library, when it splits up your long waveform into chunks, I think it's up to 30 seconds, it will then run those as a batch to make better use of the GPU. So there is batching. when you make one request, it will actually batch uh multiple parts of that sequence and put them through at once so that you get back out the emissions for your whole long sequence but in uh in pieces once uh let's see. Yeah. So here you can see we're loading the model. We're loading a model for a given language. CTC supports multiple models. The models are all of the wave tovec type which is a Facebook model often fine tunes of the wavetovec. There are different fine tunes on hoging face for different languages. I'm using an English fine tune, a permissively licensed one. So here we're loading the CTC model. We've got the waveform and then we're going to normalize the text as I mentioned. So remove capitalization. We're also going to remove punctuation but save that mapping. And once we have the audio, we're going to pass that into the model right here and generate the emissions. And we'll get out the emissions and also the stride, which is the you can think of it like the the frames or the windows. And once we have those emissions, we're going to be able to combine them with the text in order to generate then the alignment. So the way that you can think of the alignment step which comes after calculating emissions is that you have some probabilities of characters all the way along your audio. You also have the ground truth text and so it's a matter of how do you spread out the ground truth text so it best matches the probabilities of the characters for the audio. So that's what's happening. Um when you're getting the alignments, you're feeding in the emissions and you're feeding in the pre-processed uh tokens. And by aligning the probability distribution or rather by aligning the text in a way that will give the most likely uh probability sequence, you are able to then get the alignment. Once you have the alignment, you can get the timing span for each of the words. You can get the word timestamps. You can then reverse the mapping and then you can send this all back uh to the LLM or sorry not to the LLM. You can all set send this all back and that is the alignment data that you need if you're going to prepare your data for doing some form of training for example. So that's a very quick uh sketch of how it works. I will just mention the models that are being used. Um the English model I'm using is Facebook wave tovecto base 960h. So I think that means it's fine-tuned on 960 hours or something like that. Uh there are also Hindi and Arabic models. I haven't fully tested out but you would have to specify the language. Now I think even though it says English, it will work fairly well for quite a few languages. Certain ones that use certainly ones that use a similar um alphabet. And yeah, this is all done using uh Mammud Araf's CTC force aligner library. There's also torch audio which is a built-in force aligner and it has a non-commercial license. So just be aware of that whereas the the Facebook wave tove base 960h model is permissively licensed. Okay, so that is pretty much it on the demo and also the commercial demo. I'll just show you now very briefly some of the fundamentals on the theory of alignment. I'll just illustrate a few aspects here of how audio alignment works. So first thing I want to talk about is emissions emissions model and then the second thing I'll talk about is the alignment. Okay. So the what you start off with is some text. It might be for example the and then we go through normalization. And that's just going to render it to something like this here. TH like this. Then we'll have some kind of a model which will be a neural network. So it's just a neural net. And we will take audio. So we'll have some audio wave. Uh in fact maybe what I'll do is just disconnect this here. Uh so we'll have some input audio. Let's say it looks something like this. It's not a great audio wave, but you get the gist. And the neural net here will output uh some windows. So for every window, well, first of all, it's going to have some windows like this. For each window, it's going to give some probabilities of the different tokens. So for example, if I zoom in here for this first window, it might say something like we have the token t and that's going to be a probability of uh let's say zero and then we have a token well a character space and that will be probability of 0.99 just for example and then on the next window we might have t the probability is 0.8 8 the probability of H is 0.2 and then the next window we might have T the probability is 0.2 the probability of a space is 0.8 so this model at every window is going to give a probability for each of the possible for each of the possible characters and it's characters because we've got normalized text coming in. So now we we have this kind of map that gives us the probabilities of each character for each window. And what we need to do is we need to take the ground truth text which we know is thhe and we basically need to figure out how do we spread that amongst the windows these windows here so that it gives so that it best fits the probability distribution. And there's a way of doing this uh which I've described more fully in the advanced transcription repo but it's uh I think I mispronounced it earlier but it's a vurby method and what it does is it basically steps forward through the windows and considers what all of the possible traces are. So for example on the very first window the two possibilities here are t and space. On the second window, you've got T and H. But the ways you can get to T and H are either you could have TT. So in the first window, you can have either T or you can have space. In the second window, you could have TT, you could have space T, you could have space H. Well, TH, and you could have space H. There are all the four possibilities. But we know already that the ground truth is THE. And because of that, we can already rule out some of these. So this last one is not possible because you can't have H first. Also the TT is not possible because you can't have two uh T's. So the only possible ones we can consider keeping with their probabilities are these ones. So now we can go on to the next window where we've t and space. And in this case here we could have underscore well just space TT. We could have t HT. We could have space t space and we can have t h space. But again, we can rule out a lot of these because they don't um respect the actual outcome. Uh so this one here is the only one that's valid. And by the way, the space is just it doesn't mean an actual space. It means um just kind of a silence or continuation. So actually this would be considered a valid possibility to continue because you have th and then maybe the e will come in a later in a later window here. So you can see by moving from left to right and by ruling out anything that's not possible you will end up at the end with a number of sequences that are remaining and you will also end up with the probabilities just by multiplying uh the probabilities through the trees like this. So you might have you know 0.2 2 0 1 0.3 and you will select uh the most likely one. So this is how the alignment phase works. Now I'm getting into more uh academic territory, but if you're interested in how these models are trained, the emissions model, not the alignment model, this is alignment what I'm talking about here. But if you're interested in the emissions model, and I spelled that with two M's, the way these are trained is actually on unlabelled data, which is kind of interesting. So you have a neural net, and it takes in some audio. So this is my audio representation here, and it's going to spit out these uh probabilities per window. And the way that you train it is you will do it with unlabeled data. And by unlabeled, I don't mean you you don't have the text. You do have the text. So you will have these probabilities and you will have some ground truth text but the text will be will be unaligned. So you'll have no timestamps. So think of audio paired with ground truth text that has no alignment. And the way that you make this work is the audio will output. It will output again these kinds of uh probabilities for each window. And what you will do is you will keep. So you will keep any sequences any sequences that respect the ground truth order order. So you may actually keep multiple sequences. For example, if I have THE, I might end up keeping space T space H space E. I might also end up keeping space H uh TH E. Uh I would also end up keeping space space. These are all valid sequences. And by the way, I'm getting these just by inspecting the emissions, by inspecting the the output probabilities for each character at each position. And now it turns out, and this is maybe a little surprising, if I just maximize the sum of the probabilities of these sequences, if I just maximize the probabilities of those specific sequences and not the other ones that are invalid, like say h would be invalid. If I just maximize the ones that are valid per the ground truth text order, that actually gives a model that tends to give very good alignments because there often aren't that many valid alignments the model will produce that respect this order. So just by knowing the correct order of the characters in the ground truth text is actually enough to be able to uh tune a base model. So you take, as I said, a model that takes in audio and gives out probabilities. Well, you train it to do this. And this is the loss function that you're going to train it on in order for it to work. Now, typically this is uh the post-training. So you would post train a model to do this. And in the pre-training what you're doing is you're taking a model like wave tovec from from Facebook which if I understand correctly it's um it's trained through con contrastive and also through masked loss. So for example, they will take some audio in the wild, something like this, and they may feed in this to the model, and they will get the model to then maybe predict part of that wave. So you'll give it a full a full signal, and you will get it to predict the part here that has just been masked out. So it will try to model this and then you'll do a reconstruction loss to grade it on whether it was able to reproduce this. And by training a model like this you get something like uh wave to vec. This is the base model that you would pre-train and then you pass this to post- trainining where you change the outputs that it's given but it's able to handle audio pretty well. And now you train it to predict uh the probabilities of the characters that you need. So this is a a very rough guide around audio alignment. I don't see it talked about too much, but it's pretty critical if you're going to align data to get nice chunks. It's pretty critical if you want to train tokenbased audio models, something I'll hopefully cover fairly soon. And that rounds up this video on alignment. You can find all the materials, the explanations, and also the scripts for doing the alignment in the repo in the description, trous.com/advanced-audio. And if you have any questions, as usual, let me know below in the description or in the comments, rather. Cheers.",
+  "errors": []
+}

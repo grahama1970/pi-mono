@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#0b1220",
+                        "border-pane": "#1e293b",
+                        "primary": "#d2bbff",
+                        "on-surface": "#dce2f6",
+                        "on-surface-variant": "#ccc3d8",
+                        "outline": "#4a4455",
+                        "success": "#00e479",
+                        "error": "#ffb4ab",
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0b1220; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; }
+        .noise-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+        }
+        textarea, select, button { border-radius: 0 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-mono selection:bg-primary/30 min-h-screen flex flex-col relative overflow-hidden">
+<div class="fixed inset-0 noise-overlay"></div>
+<!-- Main Content Area: Three Panes -->
+<main class="flex-grow flex overflow-hidden">
+<!-- LEFT PANE: SYSTEM_PROMPT (~30%) -->
+<section class="w-[30%] border-r border-border-pane flex flex-col">
+<div class="p-3 border-b border-border-pane bg-surface/50 flex justify-between items-center">
+<h2 class="text-xs font-bold tracking-widest uppercase text-primary">SYSTEM_PROMPT</h2>
+<span class="text-[10px] text-outline">v4.2.1_STABLE</span>
+</div>
+<div class="p-4 flex-grow">
+<textarea class="w-full h-[200px] bg-black/20 border border-border-pane font-mono text-xs p-4 text-on-surface focus:ring-1 focus:ring-primary focus:border-primary outline-none resize-none leading-relaxed" spellcheck="false">You are a specialized cybersecurity taxonomy classifier. Your goal is to map incoming incident reports to MITRE ATT&amp;CK techniques, NIST 800-53 controls, and D3FEND countermeasures.
+
+Return only valid JSON format with high precision mappings.
+Required keys: "mitre_id", "nist_control", "d3fend_id", "confidence_score".
+
+Current focus: sub-technique accuracy and isolation-based defense prioritization.</textarea>
+</div>
+</section>
+<!-- MIDDLE PANE: TEST_CASES (~30%) -->
+<section class="w-[30%] border-r border-border-pane flex flex-col">
+<div class="p-3 border-b border-border-pane bg-surface/50 flex justify-between items-center">
+<h2 class="text-xs font-bold tracking-widest uppercase text-primary">TEST_CASES</h2>
+</div>
+<div class="flex-grow overflow-y-auto p-4 space-y-4">
+<!-- Case 01 -->
+<div class="border border-border-pane p-3 bg-white/5">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] text-primary">ID: T1547.001</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-relaxed">Persistence via Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder. The adversary modified the 'Run' registry key to ensure a malicious binary executes upon user login.</p>
+</div>
+<!-- Case 02 -->
+<div class="border border-border-pane p-3 bg-white/5">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] text-primary">ID: SI-2</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-relaxed">The organization identifies, reports, and corrects system flaws; tests software/firmware updates for effectiveness and potential side effects before installation. All remediation must occur within 30 days of discovery.</p>
+</div>
+<!-- Case 03 -->
+<div class="border border-border-pane p-3 bg-white/5">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] text-primary">ID: d3f:NetworkIsolation</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-relaxed">Network isolation through logical separation of network segments. This prevents lateral movement by restricting communication between different security zones or VLANs.</p>
+</div>
+<!-- Add/Import Buttons -->
+<div class="flex gap-2 pt-2">
+<button class="flex-1 py-2 text-[10px] border border-border-pane hover:bg-white/5 transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">add</span> ADD_CASE
+                    </button>
+<button class="flex-1 py-2 text-[10px] border border-border-pane hover:bg-white/5 transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">upload_file</span> IMPORT
+                    </button>
+</div>
+</div>
+<!-- Bottom Controls -->
+<div class="p-4 border-t border-border-pane bg-black/10 flex flex-col gap-2">
+<select class="w-full bg-surface border border-border-pane text-[10px] p-2 outline-none focus:ring-1 focus:ring-primary">
+<option>MODEL: DEEPSEEK-V3</option>
+<option>MODEL: GPT-4O</option>
+<option>MODEL: CLAUDE-3.5-SONNET</option>
+<option>MODEL: LLAMA-3.1-405B</option>
+</select>
+<button class="w-full bg-primary text-surface py-2 font-bold text-xs tracking-tight hover:brightness-110 active:scale-[0.98] transition-all">
+                    OPTIMIZE_PROMPT
+                </button>
+</div>
+</section>
+<!-- RIGHT PANE: OPTIMIZATION_RESULTS (~40%) -->
+<section class="w-[40%] flex flex-col overflow-hidden">
+<div class="p-3 border-b border-border-pane bg-surface/50 flex justify-between items-center">
+<h2 class="text-xs font-bold tracking-widest uppercase text-primary">RESULTS &amp; DIFF</h2>
+<div class="flex items-center gap-3">
+<span class="text-[10px]">F1: <span class="text-success">0.94</span></span>
+<span class="text-[10px]">ERRORS: <span class="text-error">1</span></span>
+</div>
+</div>
+<div class="flex-grow overflow-y-auto">
+<!-- Results Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-white/5 text-[9px] uppercase border-b border-border-pane">
+<tr>
+<th class="p-2 font-medium">CASE</th>
+<th class="p-2 font-medium">PROMPT</th>
+<th class="p-2 font-medium">EXPECTED</th>
+<th class="p-2 font-medium">ACTUAL</th>
+<th class="p-2 font-medium text-center">STAT</th>
+</tr>
+</thead>
+<tbody class="text-[10px]">
+<tr class="border-b border-border-pane/30 hover:bg-white/5">
+<td class="p-2 text-primary">T1547.001</td>
+<td class="p-2 text-outline truncate max-w-[80px]">Persistence via...</td>
+<td class="p-2">T1547.001</td>
+<td class="p-2">T1547.001</td>
+<td class="p-2 text-center text-success"><span class="material-symbols-outlined">check_circle</span></td>
+</tr>
+<tr class="border-b border-border-pane/30 hover:bg-white/5">
+<td class="p-2 text-primary">SI-2</td>
+<td class="p-2 text-outline truncate max-w-[80px]">Flaw Remediation...</td>
+<td class="p-2">SI-2</td>
+<td class="p-2">SI-2</td>
+<td class="p-2 text-center text-success"><span class="material-symbols-outlined">check_circle</span></td>
+</tr>
+<tr class="border-b border-border-pane/30 bg-error/5">
+<td class="p-2 text-primary">D3F:ISO</td>
+<td class="p-2 text-outline truncate max-w-[80px]">Network isolation...</td>
+<td class="p-2">Isolate</td>
+<td class="p-2">Filter</td>
+<td class="p-2 text-center text-error"><span class="material-symbols-outlined">cancel</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Unified Diff block -->
+<div class="p-4">
+<div class="text-[9px] text-outline mb-2 uppercase tracking-widest">PROPOSED_OPTIMIZATION (DIFF)</div>
+<div class="bg-black/30 border border-border-pane p-3 text-[10px] leading-relaxed">
+<div class="text-on-surface-variant">--- system_prompt_v4.2.1</div>
+<div class="text-on-surface-variant">+++ system_prompt_v4.2.2_OPTIMIZED</div>
+<div class="text-error bg-error/10">- Return only valid JSON format with high precision mappings.</div>
+<div class="text-success bg-success/10">+ Return only valid JSON. Ensure 'mitre_id' uses sub-technique notation (e.g., T1234.001).</div>
+<div class="text-success bg-success/10">+ For D3FEND, prioritize Network Isolation over Policy-based rules when VLANs are mentioned.</div>
+<div class="text-on-surface-variant">  Required keys: "mitre_id", "nist_control", "d3fend_id", "confidence_score".</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-4 border-t border-border-pane bg-black/10 flex justify-end gap-2">
+<button class="px-4 py-2 border border-border-pane text-[10px] hover:bg-white/5 transition-colors text-outline">
+                    REJECT
+                </button>
+<button class="px-4 py-2 bg-success text-surface font-bold text-[10px] tracking-tight hover:brightness-110 transition-all">
+                    APPROVE AND SAVE
+                </button>
+</div>
+</section>
+</main>
+<!-- Bottom Status Bar -->
+<footer class="h-6 bg-border-pane border-t border-border-pane px-3 flex items-center justify-between text-[9px] text-outline select-none">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-success"></span> ENGINE_READY</span>
+<span>LATENCY: 124ms</span>
+</div>
+<div class="flex items-center gap-4">
+<span>SCHEMA: v2.1</span>
+<span class="text-primary">JetBrains Mono | UTF-8</span>
+</div>
+</footer>
+</body></html>

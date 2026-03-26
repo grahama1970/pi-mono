@@ -1,0 +1,17 @@
+{
+  "skill": "train-convo-steering:nightly-20260305",
+  "completed": 72,
+  "total": 96,
+  "description": "Convo Steering: nightly-20260305",
+  "current_item": "",
+  "progress_pct": 75.0,
+  "elapsed_seconds": 0.0,
+  "eta_seconds": 0.0,
+  "throughput_per_sec": 17395.73,
+  "stats": {
+    "success": 72,
+    "failed": 0
+  },
+  "last_updated": "2026-03-05 03:00:44",
+  "status": "completed"
+}

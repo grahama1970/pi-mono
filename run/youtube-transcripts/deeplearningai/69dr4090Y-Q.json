@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "69dr4090Y-Q",
+    "language": "en",
+    "took_ms": 8843,
+    "method": null,
+    "title": "Pie & AI: TensorFlow Specialization Launch @ Google HQ",
+    "channel": "DeepLearningAI",
+    "upload_date": "20190731",
+    "duration_sec": 2454,
+    "description": "To celebrate the launch of the final course in the deeplearning.ai TensorFlow Specialization, we hosted our third Pie & AI meetup at Google's headquarters in Sunnyvale! Andrew was joined by TensorFlow Specialization instructor Laurence Moroney, TensorFlow Program Manager Alina Shinkarsky, and 175 Bay Area deep learners.\n\nHere are the topics Andrew, Laurence, and Alina covered:\n\nFireside chat:\n\n0:04: The state of AI now and in 20 years\n5:20: How to address the shortage of AI professionals\n10:19: Andrew and Laurence's favorite parts about creating the deeplearning.ai TensorFlow Specialization\n14:25: Why the TensorFlow Specialization focuses on Keras\n16:02: How someone completely new to AI can break into the field\n19:22: Recent advancements in AI that Andrew and Laurence are excited about\n\nAudience Q&A:\n\n22:08: RNNs vs. attention models\n22:58: What it takes for a small startup to be successful in AI (Editor's note: Unfortunately the video feed quality was reduced for the rest of the video. We apologize for the inconvenience.)\n24:37: Knowledge graphs and whether it will bring AI applications to the next level \n29:15: How federated learning and differential privacy will emerge in the future\n32:37: The skills a successful AI practitioner should develop\n37:58: Working in academia vs. industry \n\n\nWant to build applications with real-world data in TensorFlow? Enroll in the deeplearning.ai TensorFlow Specialization!",
+    "view_count": 6211
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 69dr4090Y-Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

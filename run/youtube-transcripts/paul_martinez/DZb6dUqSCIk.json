@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DZb6dUqSCIk",
+    "language": "en",
+    "took_ms": 9341,
+    "method": null,
+    "title": "Dale Peterson Interviews Dave Lewis",
+    "channel": "S4 Events",
+    "upload_date": "20220606",
+    "duration_sec": 1859,
+    "description": "Dave Lewis talks with CISO’s every week as a Global Advisory CISO for Cisco. He also has experience being responsible for securing OT while working for asset owners in the electric and manufacturing sectors. \n\nIn this S4x22 Main Stage interview, Dale and Dave focus on how to have effective OT communications to and from the CISO. How should Ops and OT work with the CISO and how the CISO should keep executive management informed.",
+    "view_count": 251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DZb6dUqSCIk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

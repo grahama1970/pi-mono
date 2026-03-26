@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WyHPyWrvAts",
+    "language": "en",
+    "took_ms": 8509,
+    "method": null,
+    "title": "AI X Real World",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210609",
+    "duration_sec": 3817,
+    "description": "Join us for a live virtual event on June 9 where speakers from Omdena will be giving us a walkthrough of AI  case studies in real life. This event is co-hosted by DeepLearning.AI and Omdena. \n\nTo participate in Q&A and post questions for speakers, go to https://app.sli.do/event/ujx9nf9u\n\nCase Study 1: AI for Energy: Transitioning Toward a Sustainable Energy System\nPresented by: Mahzad Khoshlessan, Product Owner/Project Manager, Omdena\nTalking Points:\n-Data Gathering\n-Challenges faced in the project\n-How the problem was approached and tackled\n-Various ML techniques tested with their results\n\nCase Study 2: Understanding the Causes and Effects of Student Debt through Machine Learning\nPresented by: Galina Naydenova, Lead Machine Learning Engineer, Omdena\nStudent loan planning app: http://omdenashapingedutest.herokuapp.com/\nTalking Points: \n-Use of data from government/official sources\n-The diversity of output\n-Building a storyline that brings the datapoints together\n-Going beyond the analysis by proposing actions on different levels",
+    "view_count": 3135
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WyHPyWrvAts: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

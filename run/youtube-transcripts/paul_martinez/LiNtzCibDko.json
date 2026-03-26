@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LiNtzCibDko",
+    "language": "en",
+    "took_ms": 8527,
+    "method": null,
+    "title": "Critical Penetration: Finding The Disaster Built Into The Plant",
+    "channel": "S4 Events",
+    "upload_date": "20160616",
+    "duration_sec": 1447,
+    "description": "A great 22 minute presentation by Ralph Langner at S4x16. He provides some very specific examples of a cyber / physical attack on nuclear power plants. For example, a cyber attack on all of the feedwater systems.\n\nWhat is the key to this type of attack? Studying the design plans, particularly around the last line of defense ... the safety systems. Safety systems have not considered malicious cyber attacks, which makes much of the analysis and protection ineffective. He shows how the safety analysis is faulty in the feedwater system example.\n\nRalph then goes through a three step process that both an attacker and defender should use.",
+    "view_count": 2212
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LiNtzCibDko: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

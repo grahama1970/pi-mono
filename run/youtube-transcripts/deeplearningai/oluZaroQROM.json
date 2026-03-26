@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oluZaroQROM",
+    "language": "en",
+    "took_ms": 9796,
+    "method": null,
+    "title": "Enroll in \"Building AI Applications with Haystack,\" our new short course!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240821",
+    "duration_sec": 212,
+    "description": "Enroll now: https://bit.ly/4cvGBPJ\n\nWe’re excited to introduce Building AI Applications with Haystack, a short course made in collaboration with Haystack.\n\nHaystack is a framework that simplifies the process of creating LLM applications, and in this course, taught by Tuana Çelik, Developer Relations Lead at Haystack, you will learn how to use this framework to build applications that are flexible, extendible, and maintainable, even as the technology stack changes, user needs arise, and new features are added.\n\nUsing a framework can provide common features out of the box that significantly speeds up the development process. Haystack offers robust and flexible architecture and framework for building AI applications. It manages complexity and helps you focus more on developing your application at a higher level of abstraction.\n\nThroughout the course, you will develop several projects, including a RAG app, a news summarization app, a chat agent with function calling, and a self-reflecting agent with loops.\n\nIn detail, you will: \n\n- Learn about the core abstractions and unique building blocks of the Haystack framework and see how these elements can be combined for various AI use cases.\n- Build a RAG pipeline by using Haystack components, pipelines, and document stores.\n- Create custom components in your pipeline by building a Hacker News summarizer that extends your app’s ability to access APIs.\n- Use conditional routing to create a branching pipeline with a fall back to web-search when the LLM does not have the context needed to fully respond to the user's query.\n- Build a self-reflecting agent for named entity recognition with a Haystack pipeline that is able to loop using an output validator custom component.\n- Create a chat agent using OpenAI's function-calling capabilities which allow you to provide Haystack pipelines as tools to the LLM, enhancing that agent's capabilities.\n\nStart building exciting LLM applications and optimizing your development workflow using Haystack.\n\nLearn more: https://bit.ly/4cvGBPJ",
+    "view_count": 4749
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oluZaroQROM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

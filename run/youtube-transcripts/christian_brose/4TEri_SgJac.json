@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4TEri_SgJac",
+    "language": "en",
+    "took_ms": 8866,
+    "method": null,
+    "title": "Securing Cyberspace: Hardening America’s Software against Foreign Digital Sabotage",
+    "channel": "Hudson Institute",
+    "upload_date": "20230214",
+    "duration_sec": 3440,
+    "description": "Software is increasingly central to every sector of the American economy, and as the war in Ukraine makes clear, computer algorithms often mean the difference between victory and defeat for a modern military. The US government recently began restoring its competitive position in computer hardware with the CHIPs and Science Act and with export controls on chipmaking technology to China. The software supply chain requires similar attention if the US military and economy are to harvest the benefits of software-defined capabilities.\n\nPlease join Hudson Senior Fellow Bryan Clark for a discussion with Representative Tony Gonzales, Conquest Cyber Chief Software Officer Jason Weiss, and Peraton Director of Navy Missions Cliff Bean about the challenges and opportunities in new approaches to strengthening and securing the nation’s software supply chains.",
+    "view_count": 1028
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4TEri_SgJac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eFIA8R2uqK0",
+    "language": "en",
+    "took_ms": 7909,
+    "method": null,
+    "title": "Shiny Object Syndrome ... Is OT Anomaly Detection Worth It?",
+    "channel": "S4 Events",
+    "upload_date": "20200406",
+    "duration_sec": 1401,
+    "description": "Rebekah Mohr of Accenture begins by talking about her experience in the early days of anomaly detection in OT. When she didn't select it, or even want it, and one day it generated so much traffic that it caused an outage resulting in a $1M+ loss. And then it was unplugged.\n\nIn this session she asks and answers three important questions:\n\n1. How much risk does anomaly detection actually reduce?\n\n2. How much does it cost to get those risk reduction benefits? (this is in real numbers, not hand waving)\n\n3. Is this cost worth the benefits? (Rebekah spends some time analyzing this using bow-tie analysis, and considers other areas to spend this money)\n\nHave we once again fallen into the shiny object syndrome?",
+    "view_count": 2773
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eFIA8R2uqK0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AYrHjZub3ew",
+    "language": "en",
+    "took_ms": 8937,
+    "method": null,
+    "title": "ISIS in Iraq: The Dangers of an Unfocused Baghdad and a Disinterested White House",
+    "channel": "Hudson Institute",
+    "upload_date": "20160817",
+    "duration_sec": 5181,
+    "description": "Michael Pregent, Ambassador Feisal al-Istrabadi, Ret. Col. Richard Welch, and Dr. Denise Natali assess current U.S. policy toward ISIS in Iraq. (More complete video of event)",
+    "view_count": 1587
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AYrHjZub3ew: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

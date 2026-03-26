@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zlIXuzBtNow",
+    "language": "en",
+    "took_ms": 10608,
+    "method": null,
+    "title": "Darren Highfill: Unsolicited Response",
+    "channel": "S4 Events",
+    "upload_date": "20180105",
+    "duration_sec": 326,
+    "description": "We encourage passionate disagreement and promotion of new, maybe slightly crazy concepts at S4 through Unsolicited Responses. Attendees can submit their idea for a 5 minute talk, with or without slides, at the event. Some are serious; some are funny.\n\nNormally we don't release the Unsolicited Response videos, but we wanted to show those who haven't attended S4 an example. With his permission, this Unsolicited Response from Darren Highfill is related to an answer Eric and I gave at our SCADA Apologist/SCADA Realist argument the day before (at 25:56 in http://www.digitalbond.com/blog/2014/01/28/s4x14-video-byrespeterson-scada-apologist-or-scada-realist/).\n\nOf course I don't have to agree with Darren. I still believe my answer that a start-up/small company will not lead the change to rid us of insecure by design in ICS, but I'd add that the progress is not being impeded or delayed by a lack of technical solution. The challenge of addressing security in high availability, low bandwidth, low power environments has been solved in numerous other fields. We just need to take proven security algorithms, protocols and techniques into the ICS space. It is a matter of will, not technology.\n\nI would add the example of Jim Bidzos at RSA to Darren's example of Ed Schweitzer. Jim was mostly a solo act in the early RSA years. It took Jim, with an assist of Rivest, Shamir and Adleman, years to explain public key and convince large vendors it was not voodoo, but like Ed, Jim did it. So I agree wholeheartedly that a small, startup with an innovative and incredible solution can succeed in even changing a stodgy ICS community. Just disagree with Darren that it will be the path to addressing getting rid of insecure by design features and protocols.",
+    "view_count": 193
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zlIXuzBtNow: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

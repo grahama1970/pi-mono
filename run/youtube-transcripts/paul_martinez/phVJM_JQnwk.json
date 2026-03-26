@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "phVJM_JQnwk",
+    "language": "en",
+    "took_ms": 7718,
+    "method": null,
+    "title": "TRITON: Ralph Langner & Zach Tudor Thoughts at the S4x18 Closing Panel",
+    "channel": "S4 Events",
+    "upload_date": "20180129",
+    "duration_sec": 911,
+    "description": "15-minutes discussion on the S4x18 Closing Panel on TRITON. \n\n- Kudos for Schneider Electric on their analysis and disclosure, especially vis-a-vis Siemens/Stuxnet\n\n- Are they really that talented? Do they really have unlimited resources and skills? They failed and failure on a safety or protection system could have dire consequences. A highly skilled attacker would make sure their solution worked as designed before launching it at a safety or protection system.\n\n- Why  didn't the asset owner protect the engineering workstation? Application whitelisting? \n\n- We still don't know how the attacker got in?\n\n- It will be easy for the asset owner to know what the attacker was trying to do by identifying what safety controller that was attacked was designed to do. They typically have a very limited purpose.",
+    "view_count": 1108
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] phVJM_JQnwk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

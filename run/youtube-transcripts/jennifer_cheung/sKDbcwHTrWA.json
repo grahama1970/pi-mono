@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sKDbcwHTrWA",
+    "language": "en",
+    "took_ms": 8581,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Mazin Ahmed - Hacking Zoom a Hackers Journey into Zoom Sec",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 3171,
+    "description": "Zoom is a popular digital video conferencing company. Zoom has become one of the most valuable companies in the world during the pandemic, with millions of users and hundreds of millions of monthly participants globally.\nI have done a security research experiment in spare time to test Zoom and to find security risks and vulnerabilities on Zoom. The experiment resulted in interesting findings along with interesting vectors I identified within the journey.\nIn this talk, I will be showcasing my findings and the results of my experiment. I will also discuss some of the challenges in the conducted responsible disclosure",
+    "view_count": 1027
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sKDbcwHTrWA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

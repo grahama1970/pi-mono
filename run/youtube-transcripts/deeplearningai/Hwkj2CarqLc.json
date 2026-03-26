@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Hwkj2CarqLc",
+    "language": "en",
+    "took_ms": 8787,
+    "method": null,
+    "title": "My Haircut is so Simple, It's AI-Ready 🤷‍♂️",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260215",
+    "duration_sec": 32,
+    "description": "Andrew Ng shares why his haircut might be the only one a robot could actually pull off. A fun look at the lighter side of AI capabilities (and limitations!).\n\nAt AI Dev, we bring together people building, learning, and contributing to real AI systems—and having a little fun along the way.\n\nWe’ll continue these conversations at AI Dev 26 × San Francisco, April 28–29.\n\nTickets available: https://ai-dev.deeplearning.ai/",
+    "view_count": 49679
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Hwkj2CarqLc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

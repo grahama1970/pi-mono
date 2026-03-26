@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-QRr_8pvOiY",
+    "language": "en",
+    "took_ms": 8819,
+    "method": null,
+    "title": "DEF CON 30 -  Asaf Gilboa, Ron Ben-Yitzhak -  Abusing Windows Error Reporting to Dump LSASS",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1622,
+    "description": "This presentation will show a new method of dumping LSASS that bypasses current EDR defenses without using a vulnerability but by abusing a built-in mechanism in the Windows environment which is the WER (Windows Error Reporting) service.\n\nWER is a built-in system in Windows designed to gather information about software crashes. One of its main features is producing a memory dump of crashing user-mode processes for further analysis.\n\nWe will present in detail and demo a new attack vector for dumping LSASS, which we dubbed LSASS Shtinkering, by manually reporting an exception to WER on the LSASS process without crashing it. The technique can also be used to dump the memory of any other process of interest on the system.\n\nThis attack can bypass defenses that wrongfully assume that a memory dump generated from the WER service is always a benign or non-attacker triggered activity.\n\nThe talk will take the audience through the steps and approach of how we reverse-engineered the WER dumping process, the challenges we found along the way, as well as how we have managed to solve them.",
+    "view_count": 2307
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -QRr_8pvOiY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

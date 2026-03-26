@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8v0RxRs-0PI",
+    "language": "en",
+    "took_ms": 8715,
+    "method": null,
+    "title": "Heavy Vehicle & Me   Kate Vajda and Ben Gardiner Name Fixed",
+    "channel": "S4 Events",
+    "upload_date": "20230706",
+    "duration_sec": 1712,
+    "description": "Ben Gardiner and Kate Vajda on the S4 Main Stage begin with the importance of trucking to multiple sectors and consumers. They then discuss the similarities and differences between ICS and the trucking industry and how this affects the approach to addressing cyber risk in trucking. Note: heavy vehicles are also key to mining, construction and other sectors beyond over the road trucking to deliver goods.\n\nSome facts:\n- there are at least two and sometimes three serial industrial protocols on a heavy vehicle (and they are discussed, along with replay, spoofing, DoS attacks on these)\n- segmentation between modules, initially for performance and now morphing to security as well\n- Electronic Logging Devices (ELDs) ... potentially for forensics in the future\n- \"There is a lot of confidential information flowing over a vehicle's network.\"\n\nFunny line: \"SBOMs are magical\".",
+    "view_count": 316
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8v0RxRs-0PI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H343JRrncfc",
+    "language": "en",
+    "took_ms": 9704,
+    "method": null,
+    "title": "Heroes of NLP: Chris Manning",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201014",
+    "duration_sec": 2792,
+    "description": "Heroes of NLP is a video interview series featuring Andrew Ng, the founder of DeepLearning.AI, in conversation with thought leaders in NLP. Watch Andrew lead an enlightening discourse around how these industry and academic experts started in AI, their previous and current research projects, how their understanding of AI has changed through the decades, and what advice they can provide for learners of NLP. \n\nLooking to build a career in NLP? Enroll in the DeepLearning.AI NLP Specialization: https://bit.ly/33BaG0b\n\nComment below with links if you recognize any of the papers referenced in this interview!\n\nThis is an interview featuring Andrew Ng and Chris Manning, professor of Computer Science and Linguistics at Stanford University.\n\n00:58 - 05:39 Your journey getting started in AI \n05:42 - 07:22 Transformer \n07:23 - 19:36 Neural machine translation\n19:40 - 23:48 The paper on linear attention\n23:48 - 27:08 GloVe\n27:08 - 37:33 Thoughts on the trends of bigger and bigger NLP models, GPT-3 and whether the scale is a path to AGI\n37:34 - 41:38  What makes a good researcher and how does a student become creative\n41:53 - 45:20 Advice for someone looking to build a career in AI/NLP",
+    "view_count": 18119
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H343JRrncfc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

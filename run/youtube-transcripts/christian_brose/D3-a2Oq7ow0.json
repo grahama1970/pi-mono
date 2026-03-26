@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D3-a2Oq7ow0",
+    "language": "en",
+    "took_ms": 7866,
+    "method": null,
+    "title": "The FCC: Past and Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20130531",
+    "duration_sec": 4146,
+    "description": "Former Commissioner and new Hudson Visiting Fellow Robert McDowell's tenure at the Federal Communications Commission (FCC) was marked by his effort to forge bipartisan consensus in adopting communication policies to promote economic expansion, investment, innovation, competition, and consumer choice. \r\n\r\nPrior to joining the FCC, McDowell was Senior Vice President for the Competitive Telecommunications Association and served as the Executive Vice President and General Counsel of America's Carrie",
+    "view_count": 81
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D3-a2Oq7ow0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

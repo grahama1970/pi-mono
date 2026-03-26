@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DJZSpZ9hfNA",
+    "language": "en",
+    "took_ms": 7465,
+    "method": null,
+    "title": "ICS Botnetage",
+    "channel": "S4 Events",
+    "upload_date": "20170320",
+    "duration_sec": 2055,
+    "description": "Erik Schweigert of Belden and Sean McBride of FireEye covered a lot in this session:\n\n- Timeline and key dates on scanning the Internet for ICS devices\n- Mirai and other IoT botnets\n- Motivations and techniques to use a botnet to specifically attack an ICS\n- How Mirai could easily be modified to attack ICS given existing published code\n- How Tofino and other ICS protocol aware security devices can stop those attacks\n\nHighly recommend you take a look at the chart and explanation at 21:55. Sean has attack characteristics on the y axis and uses on the x axis, and the chart shows where certain attack characteristics offer the best benefit to an attack goal.",
+    "view_count": 267
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DJZSpZ9hfNA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

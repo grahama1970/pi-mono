@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9_fJv_weLU0",
+    "language": "en",
+    "took_ms": 8333,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Carlos Polop - New Generation of PEAS",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1825,
+    "description": "Local privilege escalation techniques are far beyond checking the Windows/Kernel version, looking for unquoted service paths or checking SUID binaries. Moreover, a local privilege escalation could make a huge difference when trying to comprise a domain. Several tools have been created to find possible privilege escalation paths, but most of the tools for Red Team and Pentesting just check for a few possible ways, so pentesters need to use several tools and do some manual recon to check for everything.\n\nPEASS is a compilation of a bash script for Linux/MacOS/*nix and a .Net project and a batch script for Windows that I have created some time ago which aims to check and highlight every possible privescpath so professionals don’t need to execute several different tools for this purpose and can very easily find vulnerabilities.\n\nDuring this talk I would like to present PEASS-ng. The architecture of these scripts has evolved and improved so much that I would like to present how they work at the moment and how the difficulty to collaborate with the project has been reduced significantly. Moreover, I would also like to present the 2 new PEAS that haven't been present anywhere yet: BotPEAS and WebPEAS (the latest one will be released the day of the talk). During the talk I will also present my local privilege escalation resources (https://book.hacktricks.xyz/linux-unix/privilege-escalation , https://book.hacktricks.xyz/windows/windows-local-privilege-escalation) so the attended will be able to continue learning about the topic after the talk.",
+    "view_count": 23263
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9_fJv_weLU0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

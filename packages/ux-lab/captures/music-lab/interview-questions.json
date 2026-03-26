@@ -1,0 +1,230 @@
+{
+  "title": "Music Lab Creative Workbench",
+  "context": "The Music Lab UI is an agent transparency window -- the agent does the creative work, you watch and steer. We need to nail down the workflow before any design work.",
+  "questions": [
+    {
+      "id": "entry_flow",
+      "header": "Entry Flow",
+      "text": "How does a new song start? What triggers the creative process?",
+      "options": [
+        {
+          "label": "Horus remembers lore and proposes a song",
+          "description": "Agent recalls from /memory, finds a story thread, and says 'I want to write about X'"
+        },
+        {
+          "label": "Graham gives a prompt or theme",
+          "description": "You say 'write something about whisperheads' or 'something dark in D minor'"
+        },
+        {
+          "label": "Music discovery triggers it",
+          "description": "/consume-music finds a reference track that sparks an idea, agent proposes building on it"
+        },
+        {
+          "label": "All of the above, depends on mood",
+          "description": "Any of these can kick it off -- the UI handles all entry points"
+        }
+      ],
+      "multi_select": false
+    },
+    {
+      "id": "story_first",
+      "header": "Story First",
+      "text": "You said the flow starts with /memory recall and /create-story for lyrics. How much story context do you want to see before lyrics appear?",
+      "options": [
+        {
+          "label": "Full story brief (lore + emotional arc + references)",
+          "description": "Agent shows the complete creative brief: what memory triggered this, the emotional journey, reference tracks"
+        },
+        {
+          "label": "Just the lyrics with a short rationale",
+          "description": "Skip the story -- show the lyrics and a 2-sentence 'why I wrote this'"
+        },
+        {
+          "label": "Collapsible story, lyrics prominent",
+          "description": "Lyrics are the main thing, but the story/lore brief is expandable for when you want to dig in"
+        }
+      ],
+      "multi_select": false
+    },
+    {
+      "id": "steering_model",
+      "header": "Steering",
+      "text": "When the agent is working (generating, iterating, analyzing), how do you want to steer it?",
+      "options": [
+        {
+          "label": "Chat panel -- type course corrections",
+          "description": "A chat well where you can say 'darker vocals' or 'the bass is too busy' while the agent works"
+        },
+        {
+          "label": "Approve/reject gates at key milestones",
+          "description": "Agent pauses at lyrics-done, music-generated, voice-applied and waits for thumbs up/down"
+        },
+        {
+          "label": "Both -- chat for nudges, gates for major decisions",
+          "description": "Chat is always available, but the agent also stops at critical points for explicit approval"
+        },
+        {
+          "label": "Mostly autonomous -- just show me the final result",
+          "description": "Let the agent run the full pipeline and present the finished track. Review at the end."
+        }
+      ],
+      "multi_select": false
+    },
+    {
+      "id": "audio_feedback",
+      "header": "Audio",
+      "text": "How do you give feedback on generated audio? What does the playback experience look like?",
+      "options": [
+        {
+          "label": "Inline waveform player with A/B comparison",
+          "description": "Play current vs previous round side by side, scrub to specific parts, annotate timestamps"
+        },
+        {
+          "label": "Simple play/pause with text feedback",
+          "description": "Listen, then type 'the chorus needs more energy' in the chat"
+        },
+        {
+          "label": "MIR analysis overlay on the waveform",
+          "description": "Show BPM, key, energy, spectral features -- the agent's analysis visible on the audio"
+        },
+        {
+          "label": "Per-stem playback with solo/mute",
+          "description": "Hear individual stems (vocals, bass, drums, keys) and mute/solo to identify issues"
+        }
+      ],
+      "multi_select": true
+    },
+    {
+      "id": "transparency_depth",
+      "header": "Transparency",
+      "text": "What should the transparency window show while the agent works? How deep do you want to see?",
+      "options": [
+        {
+          "label": "High-level pipeline stages (memory -> story -> lyrics -> music -> voice)",
+          "description": "Just which stage we're in, with a progress indicator and the current output"
+        },
+        {
+          "label": "Skill chain execution trace",
+          "description": "Show every /skill call, its input/output, timing. Like watching a terminal but prettier."
+        },
+        {
+          "label": "Agent reasoning + decisions",
+          "description": "Why the agent chose this reference track, why it picked this voice, what /taxonomy tags drove the emotion"
+        },
+        {
+          "label": "All of the above, layered",
+          "description": "Pipeline overview at top, expandable into skill trace, expandable into reasoning. Progressive disclosure."
+        }
+      ],
+      "multi_select": false
+    },
+    {
+      "id": "reference_music",
+      "header": "References",
+      "text": "The agent uses /consume-music and /discover-music to find reference tracks. How should these appear in the UI?",
+      "options": [
+        {
+          "label": "Side panel with YouTube embeds",
+          "description": "Playable reference tracks in a sidebar, tagged with why they're relevant (heart taxonomy match)"
+        },
+        {
+          "label": "Inline cards in the pipeline view",
+          "description": "When the agent finds a reference, it appears as a card in the timeline: 'Found this because sadness+trust'"
+        },
+        {
+          "label": "Just links in the chat",
+          "description": "Agent says 'I found this track that matches the mood' with a link"
+        }
+      ],
+      "multi_select": false
+    },
+    {
+      "id": "voice_selection",
+      "header": "Voice",
+      "text": "For /learn-voice and /learn-artist -- how do you want to pick and preview voices?",
+      "options": [
+        {
+          "label": "Voice gallery with audio samples",
+          "description": "Grid of trained RVC models, each with a 5-second sample. Click to preview, select for the song."
+        },
+        {
+          "label": "Agent recommends, you approve",
+          "description": "Agent picks the voice based on /taxonomy heart tags and shows why. You approve or pick different."
+        },
+        {
+          "label": "A/B voice comparison on the same lyrics",
+          "description": "Agent renders the same line in 2-3 voices, you pick which fits the song's emotion"
+        }
+      ],
+      "multi_select": true
+    },
+    {
+      "id": "iteration_visibility",
+      "header": "Iterations",
+      "text": "The convergence loop iterates (generate -> analyze -> fix -> repeat). How should rounds be shown?",
+      "options": [
+        {
+          "label": "Timeline/carousel of rounds",
+          "description": "Scroll through R1, R2, R3... with diff highlights showing what changed"
+        },
+        {
+          "label": "Just the latest + a delta summary",
+          "description": "Show current output with a badge: 'R3 -- fixed BPM drift, improved vocal clarity'"
+        },
+        {
+          "label": "Convergence chart (score over rounds)",
+          "description": "Graph showing quality scores improving across rounds, with the current score highlighted"
+        }
+      ],
+      "multi_select": true
+    },
+    {
+      "id": "done_definition",
+      "header": "Done",
+      "text": "What does 'done' mean for a song? When does the agent stop iterating?",
+      "options": [
+        {
+          "label": "You say it's done (explicit approval)",
+          "description": "Agent presents final output, you click 'Ship it' or 'Keep going'"
+        },
+        {
+          "label": "Convergence threshold met",
+          "description": "MIR analysis hits target quality scores (BPM accuracy, key consistency, vocal clarity). Auto-done."
+        },
+        {
+          "label": "Both -- converge to threshold, then get human sign-off",
+          "description": "Agent iterates until metrics pass, then presents for your final listen and approval"
+        },
+        {
+          "label": "Never done -- songs live in the library and can be revisited",
+          "description": "Everything is a draft. You can reopen any song and say 'make the bridge darker'"
+        }
+      ],
+      "multi_select": false
+    },
+    {
+      "id": "layout_mental_model",
+      "header": "Layout",
+      "text": "What's your mental model for the overall layout? Think about what you'd see when you open Music Lab.",
+      "options": [
+        {
+          "label": "Single-pane focus: one song, full screen",
+          "description": "Immersive view of the current song's pipeline. Like a recording studio -- one session at a time."
+        },
+        {
+          "label": "Library + detail split",
+          "description": "Left: song library (all projects). Right: selected song's pipeline view. Like an email client."
+        },
+        {
+          "label": "Dashboard overview with drill-down",
+          "description": "Grid of active songs with status badges. Click one to enter its pipeline view."
+        },
+        {
+          "label": "Terminal-inspired with panels",
+          "description": "Agent output streaming in the main pane, control panels on sides. Like watching tmux with better UX."
+        }
+      ],
+      "multi_select": false
+    }
+  ]
+}

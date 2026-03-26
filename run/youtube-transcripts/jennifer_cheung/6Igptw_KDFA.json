@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6Igptw_KDFA",
+    "language": "en",
+    "took_ms": 7498,
+    "method": null,
+    "title": "DEF CON 31 Policy - Cyber Policy Adrift - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3094,
+    "description": "The global economy is afloat. It is cheap and fast, and vulnerable. Everyone relies upon it but there is no single entity responsible for it. Whether it be reliance on dated legacy systems, rampant prioritization of innovation over security, under-funded infrastructure, or unclear security principles and enforcement mechanisms, the maritime ecosystem is becoming increasingly insecure - making the world’s seas and ports a target for pirates, hackers, and states. And we know it....that’s the good news.\n\nThe panel will discuss challenges to developing actionable maritime cyber policy, the technical realities behind maritime cybersecurity, review existing US and international programs, and discuss how the global ecosystem could harmonize these policies to push the maritime ecosystem towards a more secure state. There will also be time for questions and broader discussion/audience engagement.",
+    "view_count": 451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6Igptw_KDFA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

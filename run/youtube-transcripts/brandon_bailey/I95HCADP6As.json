@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I95HCADP6As",
+    "language": "en",
+    "took_ms": 7739,
+    "method": null,
+    "title": "DEF CON Safe Mode Demo Labs - Tamoaki Tani - malconfscan with cuckoo",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1171,
+    "description": "\"MalConfScan with Cuckoo\" is a tool for automatically extracting known Windows and Linux malware's configuration data.\nMalConfScan with Cuckoo works as a plug-in for Cuckoo Sandbox. Cuckoo Sandbox is a leading open-source automated malware analysis system. You can automatically dump malware configuration data by installing this plug-in on Cuckoo. This is a unique feature compared to other commercial Sandbox products. It supports over 30+ Windows and Linux malware families to extract the configuration data. Also, it can be used for the memory forensics tool for Windows/Linux OS as a Volatility plug-in. It helps to detect known/unknown malware and extract configuration data from memory images.",
+    "view_count": 309
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I95HCADP6As: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

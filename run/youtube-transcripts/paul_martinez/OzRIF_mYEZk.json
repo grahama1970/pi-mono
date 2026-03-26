@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OzRIF_mYEZk",
+    "language": "en",
+    "took_ms": 8949,
+    "method": null,
+    "title": "Tuning ICS Security Alerts: An Alarm Management Approach",
+    "channel": "S4 Events",
+    "upload_date": "20200520",
+    "duration_sec": 2371,
+    "description": "There has been a lot of work, standards, such as ISA 18.2, and experience in managing ICS alarms. Chris Sistrunk of Mandiant looks at how that work and experience can be used to deal with the deluge of security alarms and events. The nuisance alarm problem is very similar to the nuisance security alert problem, and so are the solutions. Understanding the translation in language between these two related approaches can also help with buy in from different teams.",
+    "view_count": 513
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OzRIF_mYEZk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

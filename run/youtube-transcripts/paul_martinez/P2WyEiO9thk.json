@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P2WyEiO9thk",
+    "language": "en",
+    "took_ms": 9862,
+    "method": null,
+    "title": "S4x23 Interview with Gene Spafford",
+    "channel": "S4 Events",
+    "upload_date": "20230410",
+    "duration_sec": 1839,
+    "description": "Dale Peterson interviews cybersecurity legend Gene Spafford on the S4x23 Main Stage. Some of what they cover is:\n- how to deal with securing legacy systems\n- the incredibly productive 3 years of firsts including host IDS, network IDS, honeypot, network vulnerability scanner, and more. What led to this amazing production?\n- The upcoming 25th year of CERIAS\n- His new book Cybersecurity Myths and Misconceptions ... Avoiding the Hazards and Pitfalls that Derail Us and digging into some of those myths (Cyber Offense is Easier than Defense, Sharing More Threat Intel Will Make Things Better, Everyone Should Solve A Given Cybersecurity Problem In The Same Way)",
+    "view_count": 913
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P2WyEiO9thk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CvMVJjPcusI",
+    "language": "en",
+    "took_ms": 8048,
+    "method": null,
+    "title": "DEF CON 33 - Fighting a Digital Blockade: View from Taiwan - Herming Chiueh, Jason Vogt, Frank Smith",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2313,
+    "description": "Taiwan stands on the frontlines of digital warfare under the sea. This high-profile panel, led by the Deputy Minister of Digital Affairs of Taiwan will feature a gripping discussion on the silent battles waged beneath the sea. From sabotage of undersea infrastructure to the geopolitics of cyber-resilience, panelists will recall the threats and Taiwan's efforts to defend. Don’t miss this rare opportunity to explore the technical and political dimensions of the new global dynamic -- the digital blockade.",
+    "view_count": 313
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CvMVJjPcusI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

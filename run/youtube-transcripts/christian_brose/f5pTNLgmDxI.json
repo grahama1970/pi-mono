@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f5pTNLgmDxI",
+    "language": "en",
+    "took_ms": 7626,
+    "method": null,
+    "title": "The Future of America’s Defense Industrial Base",
+    "channel": "Hudson Institute",
+    "upload_date": "20210618",
+    "duration_sec": 3162,
+    "description": "Join Hudson Institute Senior Fellows Bryan Clark and Arthur Herman and guests the Honorable Ellen Lord and Dr. Jeffrey Nadaner for a discussion on the erosion of the U.S. defense industrial base and opportunities to restore America’s ability to innovate and manufacture systems vital to national security.\n\nThe United States has experienced dramatic deindustrialization over the past four decades, with serious consequences for the defense industrial base. As globalization shifted much of America’s manufacturing overseas, the capacity to produce ships, airplanes, and the hardware needed for sensors, networks, weapons, and critical infrastructure declined dramatically. Today, the supply chains U.S. armed forces depend on are brittle, and some of the essential components in U.S. military capabilities are produced in China—a key problem given the increasingly adversarial relationship between America and the PRC. A new report by the Honorable Ellen Lord and Dr. Jeffrey Nadaner proposes a strategy for the U.S. and its allies to expand their defense and commercial industrial capacity. Join Hudson Institute for this timely discussion.",
+    "view_count": 1618
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f5pTNLgmDxI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

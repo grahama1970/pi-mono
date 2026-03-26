@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HK9GjGKqt8A",
+    "language": "en",
+    "took_ms": 7638,
+    "method": null,
+    "title": "Behind the Scenes Photoshop - Cone of Shame No More",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170225",
+    "duration_sec": 2517,
+    "description": "My cat just got back from surgery and she arrived home with a cone of shame. I decided we should make her fit it more, so I figured we'd photoshop her cone to look more like an space suit helmet! A nice and easy photoshop but a fun one!\n\nMake sure and see the final image on Instagram @EverydayAstronaut\n\nTune in live every Thursday at 1:00 p.m. central (19 UTC) at http://twitch.tv/everydayastronaut",
+    "view_count": 1285
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HK9GjGKqt8A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

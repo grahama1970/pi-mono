@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "z5xiI1ns-us",
+    "language": "en",
+    "took_ms": 8693,
+    "method": null,
+    "title": "Nozomi Networks: Lessons Learned After 1,000 Installations",
+    "channel": "S4 Events",
+    "upload_date": "20190323",
+    "duration_sec": 1497,
+    "description": "The Nozomi Sponsor Stage session from S4x19. First 10 minutes are on the company and offerings. 10:25 starts a description of common findings / security issues in the initial days after install. Good questions in the Q&A that starts at 19:20.",
+    "view_count": 5126
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] z5xiI1ns-us: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

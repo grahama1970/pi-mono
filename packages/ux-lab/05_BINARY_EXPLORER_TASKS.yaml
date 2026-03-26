@@ -1,0 +1,249 @@
+version: 1
+kind: orchestrate-plan
+
+metadata:
+  title: "Binary Explorer: LemmaGraph fork for /analyze-elf"
+  goal: "Make compiled binaries understandable to anyone via interactive graph exploration + LLM chat, backed by ArangoDB"
+  plan_type: hybrid
+  created: "2026-03-19"
+  primary_persona:
+    name: "Graham Anderson"
+    role: "Developer trying to understand droid's mission/SSE system without source code"
+    source: ".pi/agents/graham-anderson/AGENTS.md"
+
+execution:
+  max_concurrency: 2
+
+capability_overlap:
+  - "/memory recall: no prior binary explorer work"
+  - "LemmaGraph.tsx (793 lines): FORK — proven D3 force graph, ArangoDB backend, inspector panel, multi-hop traversal"
+  - "useSpartaData.ts: FORK — data hook via ux-lab proxy → memory daemon Unix socket"
+  - "ux-lab server/index.ts: USE — proxy to /run/user/1000/embry/memory.sock already forwards /api/memory/*"
+  - "/memory /upsert endpoint: USE — stores documents. Needs binary_features + binary_feature_edges added to _WRITABLE_COLLECTIONS"
+  - "/memory /recall endpoint: USE — semantic search with graph traversal"
+  - "/memory /list endpoint: USE — paginated browse with filters"
+  - "/scillm: USE — LLM explanations per category (6-8 calls, NOT per-symbol)"
+  - "/analyze-elf: EXTEND — already extracts features + calls /memory learn. Needs structured graph storage"
+
+questions_blockers:
+  - "None — all data paths verified. Memory daemon is on Unix socket, ux-lab proxy already forwards."
+
+lanes:
+  - id: "0"
+    label: "Wave 0: ArangoDB schema + data pipeline (memory project)"
+  - id: "1"
+    label: "Wave 1: React component fork (ux-lab project)"
+  - id: "2"
+    label: "Wave 2: Integration + LLM explanations"
+
+tasks:
+  # ═══ WAVE 0: Data pipeline (ALL changes in /home/graham/workspace/experiments/memory/) ═══
+
+  - id: "1"
+    title: "Add binary_features + binary_feature_edges collections to memory daemon"
+    lane: "0"
+    runner: "local"
+    backend: ""
+    mode: ""
+    depends_on: []
+    implementation:
+      - "In /home/graham/workspace/experiments/memory/src/graph_memory/service/app/_core.py:"
+      - "  Add 'binary_features', 'binary_feature_edges' to _WRITABLE_COLLECTIONS"
+      - "In /home/graham/workspace/experiments/memory/src/graph_memory/setup_schema.py:"
+      - "  Add binary_features (document collection) with fields: _key, binary_name, node_type (rpc|event|schema|state_machine|cli_command|namespace), name, namespace, cluster, label, description, extraction_tier (T0|T1|T2), confidence, fields (array), source_pattern"
+      - "  Add binary_feature_edges (edge collection) with fields: _from, _to, edge_type (payload|emits|triggers|follows|contains), method, validated, shared_field"
+      - "  Add ArangoSearch view for binary_features"
+      - "  Create indexes on binary_name, node_type, namespace, cluster"
+    command: |
+      cd /home/graham/workspace/experiments/memory && \
+      uv run python -c "from graph_memory.setup_schema import ensure_schema; ensure_schema()" && \
+      curl -s --unix-socket /run/user/1000/embry/memory.sock http://localhost/upsert -X POST \
+        -H 'Content-Type: application/json' \
+        -d '{"collection":"binary_features","documents":[{"_key":"test-ping","binary_name":"test","node_type":"cli_command","name":"ping","label":"Test"}]}' | python3 -c "import sys,json; d=json.load(sys.stdin); assert d.get('inserted',0)>=1, f'Upsert failed: {d}'; print('OK: upsert works')"
+    definition_of_done:
+      command: "curl -s --unix-socket /run/user/1000/embry/memory.sock http://localhost/upsert -X POST -H 'Content-Type: application/json' -d '{\"collection\":\"binary_features\",\"documents\":[{\"_key\":\"smoke\",\"binary_name\":\"smoke\",\"node_type\":\"rpc\",\"name\":\"test\"}]}' | python3 -c \"import sys,json; print(json.load(sys.stdin))\""
+      assertion: "Returns {inserted: 1} or {updated: 1} — collection is writable"
+
+  - id: "2"
+    title: "Add store_graph() to analyze-elf — persist extracted features to ArangoDB"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["1"]
+    implementation:
+      - "Create /home/graham/workspace/experiments/pi-mono/.pi/skills/analyze-elf/graph_store.py (~100 lines)"
+      - "Uses httpx to POST to memory daemon Unix socket (NOT TCP, NOT import graph_memory)"
+      - "MEMORY_SOCK = '/run/user/1000/embry/memory.sock'"
+      - "transport = httpx.HTTPTransport(uds=MEMORY_SOCK)"
+      - "client = httpx.Client(transport=transport, base_url='http://localhost')"
+      - ""
+      - "store_graph(binary_name, analysis, inventory) does:"
+      - "  1. Create NAMESPACE nodes (droid, daemon, tunnel, mcp, mission, terminal) — these are the 'forest' view"
+      - "  2. Create RPC METHOD nodes (_key='{binary}:{method}', node_type='rpc', cluster by namespace prefix)"
+      - "  3. Create EVENT nodes (_key='{binary}:{event}', node_type='event', cluster by prefix)"
+      - "  4. Create SCHEMA nodes (_key='{binary}:{schema_name}', node_type='schema', fields=field_list)"
+      - "  5. Create STATE_MACHINE nodes (_key='{binary}:{enum_name}', node_type='state_machine')"
+      - "  6. Create CLI_COMMAND nodes (_key='{binary}:{cmd}', node_type='cli_command')"
+      - "  7. Create EDGES via binary_feature_edges:"
+      - "     - namespace 'contains' method (method prefix → namespace)"
+      - "     - method 'payload' schema (inferred from shared field names like automationId, sessionId, terminalId)"
+      - "     - method 'emits' event (LLM-inferred in task 5, or heuristic: same prefix)"
+      - "     - event 'triggers' state_machine (same prefix match)"
+      - "  8. POST /upsert for documents, POST /upsert for edges"
+      - ""
+      - "Add --store flag to analyze_elf.py features command"
+      - "When --store: call store_graph() after extraction, before walkthrough generation"
+    tests:
+      - "cd .pi/skills/analyze-elf && uv run python analyze_elf.py features /home/graham/.local/bin/droid --store --offline 2>&1 | grep -c 'Stored'"
+    definition_of_done:
+      command: "curl -s --unix-socket /run/user/1000/embry/memory.sock http://localhost/list -X POST -H 'Content-Type: application/json' -d '{\"collection\":\"binary_features\",\"limit\":5,\"filters\":{\"binary_name\":\"droid\"}}' | python3 -c \"import sys,json; d=json.load(sys.stdin); print(f\\\"total={d['total']}\\\"); assert d['total']>10\""
+      assertion: "binary_features has >10 droid nodes (namespaces + methods + events + schemas)"
+
+  # ═══ WAVE 1: React component (ux-lab project) ═══
+
+  - id: "3"
+    title: "Fork useSpartaData.ts → useBinaryData.ts"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["1"]
+    implementation:
+      - "Copy packages/ux-lab/src/hooks/useSpartaData.ts → useBinaryData.ts"
+      - "Replace SpartaControl interface with BinaryFeature:"
+      - "  { _key, binary_name, node_type, name, namespace, cluster, label, description, extraction_tier, confidence, fields }"
+      - "Replace SpartaRelationship with BinaryEdge:"
+      - "  { _from, _to, edge_type, method, validated, shared_field }"
+      - "useBinaryData(binaryName) hook:"
+      - "  1. POST /api/memory/list {collection:'binary_features', filters:{binary_name}, limit:500}"
+      - "  2. POST /api/memory/list {collection:'binary_feature_edges', filters:{binary_name}, limit:1000}"
+      - "  3. Transform to GraphNode[] and GraphEdge[] compatible with LemmaGraph interfaces"
+      - "  4. DEFAULT VIEW: only show nodes where node_type='namespace' OR node_type='state_machine' OR node_type='cli_command' (~15 nodes)"
+      - "  5. expandCluster(namespace) → adds that namespace's children to visible set"
+    tests:
+      - "grep -c 'useBinaryData' packages/ux-lab/src/hooks/useBinaryData.ts"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit src/hooks/useBinaryData.ts 2>&1 | tail -1"
+      assertion: "No TypeScript errors"
+
+  - id: "4"
+    title: "Fork LemmaGraph.tsx → BinaryGraph.tsx with progressive disclosure"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["3"]
+    implementation:
+      - "Copy packages/ux-lab/src/components/sparta/lemma-graph/LemmaGraph.tsx"
+      - "→ packages/ux-lab/src/components/binary-explorer/BinaryGraph.tsx"
+      - ""
+      - "Key changes from LemmaGraph:"
+      - "  1. SWAP framework filter → cluster filter (droid, daemon, MCP, mission, terminal)"
+      - "  2. SWAP proofStatus → extraction_tier (T0 deterministic=green, T1 AST=blue, T2 LLM=amber)"
+      - "  3. SWAP confidence arc → same concept, extraction confidence 0-1"
+      - "  4. Node shapes by node_type:"
+      - "     - rpc: circle r=8 (same as lemma)"
+      - "     - event: circle r=5 (smaller)"
+      - "     - schema: rect 14x14 rx=3 (square-ish)"
+      - "     - state_machine: circle r=12 with double ring"
+      - "     - namespace: circle r=18 (large, these are the forest-level nodes)"
+      - "     - cli_command: circle r=10 with terminal icon"
+      - "  5. PROGRESSIVE DISCLOSURE:"
+      - "     - Default: only namespace + state_machine + cli_command nodes visible (~15)"
+      - "     - Double-click namespace → expand to show its children (methods/events)"
+      - "     - Double-click again → collapse back"
+      - "     - Edges between visible nodes only"
+      - "  6. Edge styles by edge_type:"
+      - "     - contains: thin dashed gray (structural)"
+      - "     - payload: solid cyan (data flow)"
+      - "     - emits: solid amber arrow (event emission)"
+      - "     - triggers: solid green arrow (state transition)"
+      - "  7. KEEP: all D3 force sim params, zoom/pan, drag, tooltip, hover highlight"
+      - "  8. KEEP: onNodeClick callback for inspector/detail panel integration"
+      - "  9. REMOVE: sorry/taint BFS (not relevant), proof status animations"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit src/components/binary-explorer/BinaryGraph.tsx 2>&1 | tail -3"
+    definition_of_done:
+      command: "cd packages/ux-lab && npx tsc --noEmit 2>&1 | grep -c error || echo 0"
+      assertion: "0 TypeScript errors"
+
+  - id: "5"
+    title: "Add BinaryGraph to ux-lab gallery with droid data"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["2", "4"]
+    implementation:
+      - "Add 'BINARY EXPLORER' section to ComponentGallery.tsx sidebar"
+      - "Add BinaryExplorerView that:"
+      - "  1. Uses useBinaryData('droid') to fetch from ArangoDB"
+      - "  2. Renders BinaryGraph with default forest view"
+      - "  3. Right panel: BinaryInspector (simple fork of InspectorPanel)"
+      - "     - Shows: node name, LLM description, connections list, extraction evidence"
+      - "     - Connections are clickable (select that node in graph)"
+      - "  4. No chat pane yet (Wave 2)"
+      - "Verify: npm run dev → open http://localhost:3002 → BINARY EXPLORER → see graph with ~15 nodes"
+    tests:
+      - "cd packages/ux-lab && npm run build 2>&1 | tail -3"
+    definition_of_done:
+      command: "curl -s http://localhost:3002 | grep -c 'BINARY EXPLORER'"
+      assertion: "Gallery page contains BINARY EXPLORER section"
+
+  # ═══ WAVE 2: LLM explanations + chat ═══
+
+  - id: "6"
+    title: "LLM explanation pass — annotate binary features via /scillm"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["2"]
+    implementation:
+      - "Create /home/graham/workspace/experiments/pi-mono/.pi/skills/analyze-elf/explain.py (~120 lines)"
+      - "Uses httpx to call /scillm (localhost:4001) for LLM explanations"
+      - "NOT per-symbol — per CATEGORY:"
+      - "  1. One call for CLI commands overview (all 7 → 2-3 sentence explanation)"
+      - "  2. One call for RPC architecture (all 82 methods grouped by namespace → explain the split)"
+      - "  3. One call per state machine (6 calls → explain what each FSM represents, filter noise)"
+      - "  4. One call for event taxonomy (all 59 → explain the mission/worker lifecycle)"
+      - "  5. One call for schema summaries (all 9 → what each one handles)"
+      - "  = 11 total scillm calls"
+      - ""
+      - "Each explanation is stored as a 'description' field on the corresponding binary_features document"
+      - "via POST /upsert to memory daemon Unix socket"
+      - ""
+      - "Add --explain flag to analyze_elf.py features command"
+      - "When --explain: run explanation pass after --store, update documents with descriptions"
+    tests:
+      - "cd .pi/skills/analyze-elf && uv run python analyze_elf.py features /home/graham/.local/bin/droid --store --explain --offline 2>&1 | grep -c 'Explained'"
+    definition_of_done:
+      command: "curl -s --unix-socket /run/user/1000/embry/memory.sock http://localhost/list -X POST -H 'Content-Type: application/json' -d '{\"collection\":\"binary_features\",\"limit\":3,\"filters\":{\"binary_name\":\"droid\",\"node_type\":\"namespace\"}}' | python3 -c \"import sys,json; docs=json.load(sys.stdin)['documents']; assert any(d.get('description') for d in docs), 'No descriptions found'; print('OK: descriptions present')\""
+      assertion: "Namespace nodes have LLM-generated description fields"
+
+  - id: "7"
+    title: "Chat pane — ask questions about the binary grounded in ArangoDB data"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["5", "6"]
+    implementation:
+      - "Add BinaryChat.tsx component to packages/ux-lab/src/components/binary-explorer/"
+      - "Simple chat UI (reuse ChatWell pattern if it exists, otherwise minimal)"
+      - "On send:"
+      - "  1. POST /api/memory/recall {q: user_question, collections: ['binary_features'], k: 10}"
+      - "  2. Build context from recalled nodes + their descriptions + their edges"
+      - "  3. POST to /scillm with context + question → get answer"
+      - "  4. Display answer with evidence links (clickable node names → select in graph)"
+      - ""
+      - "Context-aware: if a node is selected in the graph, prepend its data to the context"
+      - "so questions are naturally about the selected node"
+      - ""
+      - "Wire into BinaryExplorerView as right pane (graph 65% | inspector 20% | chat 15%)"
+    tests:
+      - "cd packages/ux-lab && npx tsc --noEmit src/components/binary-explorer/BinaryChat.tsx 2>&1 | tail -3"
+    definition_of_done:
+      command: "cd packages/ux-lab && npm run build 2>&1 | tail -1"
+      assertion: "Build succeeds with chat component included"

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "weNfDJ9Sugk",
+    "language": "en",
+    "took_ms": 9350,
+    "method": null,
+    "title": "Is China Headed for an Economic Crisis?",
+    "channel": "Hudson Institute",
+    "upload_date": "20220110",
+    "duration_sec": 3603,
+    "description": "Join Hudson Institute Senior Fellows Thomas J. Duesterberg and Nadia Schadlow for a discussion with China Beige Book CEO Leland Miller on China’s economic slowdown and implications for the country’s political stability. The panelists will review Dr. Duesterberg’s recent report, Economic Cracks in the Great Wall of China: Is China’s Current Economic Model Sustainable, and offer further analysis on whether China’s leadership can manage a stable transition to a slower growth mode.\n\nRead the Report: https://www.hudson.org/research/17443-economic-cracks-in-the-great-wall-of-china-is-china-s-current-economic-model-sustainable",
+    "view_count": 137273
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] weNfDJ9Sugk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,417 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Binary Explorer v4 — droid · 3-Pane</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0e0e0e;--card:#171717;--panel:#131313;--inset:#0a0a0a;--accent:#7c3aed;--passed:#00ff88;--failed:#ff4444;--warn:#ffaa00;--running:#4a9eff;--cyan:#22d3ee;--text:#e2e8f0;--dim:#64748b;--muted:#334155;--border:rgba(255,255,255,0.07);--radius:8px;--font:Inter,system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono',Consolas,monospace;--note:#fbbf24}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.6;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+::selection{background:var(--accent);color:white}
+
+/* ── Topbar ── */
+.topbar{display:flex;align-items:center;gap:12px;padding:8px 16px;background:#090909;border-bottom:1px solid var(--border);flex-shrink:0;z-index:100}
+.topbar .logo{font-size:9px;font-weight:800;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase}
+.topbar h1{font-size:14px;font-weight:800;letter-spacing:-0.02em}
+.topbar .sep{color:var(--muted)}
+.topbar .sub{font-size:11px;color:var(--dim)}
+.topbar .sp{flex:1}
+.pill{font-size:8px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:0.04em;border:1px solid}
+.pill-rt{background:rgba(124,58,237,0.1);color:var(--accent);border-color:rgba(124,58,237,0.25)}
+.pill-ct{background:rgba(34,211,238,0.08);color:var(--cyan);border-color:rgba(34,211,238,0.2)}
+
+/* ── 3-Pane Layout ── */
+.panes{display:flex;flex:1;overflow:hidden}
+
+/* ── LEFT: Graph Pane ── */
+.pane-graph{flex:0 0 58%;border-right:1px solid var(--border);display:flex;flex-direction:column;position:relative}
+.graph-toolbar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--panel)}
+.graph-toolbar input{flex:1;background:var(--inset);border:1px solid var(--border);border-radius:5px;padding:5px 10px;color:var(--text);font-size:11px;font-family:var(--font);outline:none}
+.graph-toolbar input:focus{border-color:var(--accent)}
+.graph-toolbar input::placeholder{color:var(--muted)}
+.filter-pill{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;font-family:var(--font)}
+.filter-pill:hover{border-color:var(--text);color:var(--text)}
+.filter-pill.on{background:rgba(124,58,237,0.1);border-color:rgba(124,58,237,0.3);color:var(--accent)}
+.graph-canvas{flex:1;position:relative;overflow:hidden;background:var(--inset)}
+
+/* Graph nodes */
+.gn{position:absolute;border-radius:50%;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;z-index:5}
+.gn:hover{transform:scale(1.4);z-index:20;box-shadow:0 0 16px rgba(124,58,237,0.4)}
+.gn.selected{transform:scale(1.5);box-shadow:0 0 20px rgba(124,58,237,0.5);z-index:25}
+.gn .tip{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);font-size:8px;font-family:var(--mono);color:var(--dim);white-space:nowrap;opacity:0;transition:opacity 0.15s;pointer-events:none}
+.gn:hover .tip,.gn.selected .tip{opacity:1;color:var(--text)}
+.gn-schema{border-radius:4px!important}
+
+/* Cluster labels */
+.cluster-label{position:absolute;font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.08);pointer-events:none;z-index:1}
+.cluster-bg{position:absolute;border-radius:50%;opacity:0.04;pointer-events:none}
+
+/* Graph legend */
+.graph-legend{position:absolute;bottom:10px;left:10px;display:flex;gap:6px;z-index:10}
+.gl{display:flex;align-items:center;gap:4px;font-size:8px;color:var(--dim);background:rgba(0,0,0,0.6);padding:2px 7px;border-radius:3px;backdrop-filter:blur(8px)}
+.gl .d{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.graph-stats{position:absolute;top:10px;right:10px;font-size:9px;color:var(--muted);background:rgba(0,0,0,0.5);padding:4px 8px;border-radius:4px;font-family:var(--mono);z-index:10}
+
+/* ── MIDDLE: Detail Pane ── */
+.pane-detail{flex:0 0 27%;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--panel)}
+.detail-header{padding:12px 14px;border-bottom:1px solid var(--border)}
+.detail-header .label{font-size:8px;font-weight:700;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
+.detail-header .name{font-size:16px;font-weight:800;letter-spacing:-0.02em}
+.detail-header .kind{font-size:10px;color:var(--dim);margin-top:2px}
+.detail-scroll{flex:1;overflow-y:auto;padding:0}
+
+/* Detail sections */
+.dsec{padding:12px 14px;border-bottom:1px solid var(--border)}
+.dsec-title{font-size:9px;font-weight:700;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.dsec-title .badge{font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(124,58,237,0.1);color:var(--accent)}
+
+/* Explanation block */
+.explanation{font-size:12px;line-height:1.8;color:var(--text)}
+.explanation strong{color:var(--cyan)}
+.explanation code{background:var(--inset);padding:1px 4px;border-radius:3px;font-size:10px;color:var(--cyan);font-family:var(--mono)}
+
+/* Relationship chips */
+.rel-group{margin-bottom:10px}
+.rel-group-title{font-size:8px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em}
+.rel-chips{display:flex;flex-wrap:wrap;gap:3px}
+.rel-chip{font-size:9px;font-family:var(--mono);padding:3px 7px;border-radius:4px;background:var(--inset);border:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all 0.12s}
+.rel-chip:hover{border-color:var(--cyan);color:var(--cyan)}
+.rel-chip .arrow{font-size:7px;margin:0 2px;color:var(--muted)}
+
+/* Collapsible raw data */
+.raw-toggle{font-size:9px;font-weight:700;color:var(--muted);cursor:pointer;padding:6px 0;display:flex;align-items:center;gap:4px}
+.raw-toggle:hover{color:var(--dim)}
+.raw-toggle .chevron{transition:transform 0.15s;font-size:10px}
+.raw-toggle.open .chevron{transform:rotate(90deg)}
+.raw-data{display:none;padding:8px;background:var(--inset);border-radius:6px;font-size:9px;font-family:var(--mono);color:var(--dim);line-height:1.6;max-height:200px;overflow-y:auto;border:1px solid var(--border)}
+.raw-data.visible{display:block}
+.raw-field{padding:1px 0}
+.raw-field .fname{color:var(--cyan)}
+
+/* Evidence footer */
+.evidence{font-size:9px;color:var(--muted);padding:8px 14px;border-top:1px solid var(--border);background:var(--inset);font-family:var(--mono);line-height:1.6}
+.evidence code{color:var(--dim)}
+
+/* Empty state */
+.empty-state{padding:40px 20px;text-align:center;color:var(--muted)}
+.empty-state .icon{font-size:32px;margin-bottom:8px;opacity:0.3}
+.empty-state .msg{font-size:12px}
+.empty-state .hint{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* ── RIGHT: Chat Pane ── */
+.pane-chat{flex:0 0 15%;display:flex;flex-direction:column;background:var(--bg);min-width:200px}
+.chat-header{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.chat-header .dot{width:6px;height:6px;border-radius:50%;background:var(--passed);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.chat-header .title{font-size:11px;font-weight:700;flex:1}
+.chat-header .ctx{font-size:8px;color:var(--dim);font-family:var(--mono)}
+.chat-scroll{flex:1;overflow-y:auto;padding:10px}
+.chat-scroll::-webkit-scrollbar{width:4px}
+.chat-scroll::-webkit-scrollbar-thumb{background:var(--muted);border-radius:2px}
+
+/* Chat messages */
+.cm{margin-bottom:8px;max-width:95%}
+.cm-sys{font-size:9px;color:var(--muted);padding:6px 8px;background:var(--panel);border-radius:6px;border:1px solid var(--border);text-align:center}
+.cm-user{margin-left:auto;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.2);border-radius:8px 8px 2px 8px;padding:7px 10px;font-size:11px}
+.cm-bot{background:var(--card);border:1px solid var(--border);border-radius:8px 8px 8px 2px;padding:8px 10px;font-size:11px;line-height:1.7}
+.cm-bot code{background:var(--inset);padding:1px 4px;border-radius:3px;font-size:10px;color:var(--cyan);font-family:var(--mono)}
+.cm-bot .ev{font-size:9px;color:var(--muted);margin-top:6px;padding-top:4px;border-top:1px solid var(--border);font-style:italic}
+
+/* Chat input */
+.chat-input-area{padding:8px;border-top:1px solid var(--border)}
+.chat-input-row{display:flex;gap:4px}
+.chat-input-row textarea{flex:1;background:var(--inset);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:10px;font-family:var(--font);resize:none;outline:none;height:34px}
+.chat-input-row textarea:focus{border-color:var(--accent)}
+.chat-input-row textarea::placeholder{color:var(--muted)}
+.chat-send{width:34px;height:34px;border-radius:6px;background:var(--accent);border:none;color:white;font-size:13px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.chat-send:hover{background:#6d28d9}
+.chat-ctx-hint{font-size:8px;color:var(--muted);padding:4px 2px 0;display:flex;align-items:center;gap:3px}
+.chat-ctx-hint .sel{color:var(--cyan);font-family:var(--mono)}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.12)}
+</style></head><body>
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <span class="logo">Embry OS</span>
+  <h1>Binary Explorer</h1>
+  <span class="sep">/</span>
+  <span class="sub">droid</span>
+  <span class="sp"></span>
+  <span class="pill pill-rt">Bun SEA</span>
+  <span class="pill pill-ct">82 RPC · 59 Events · 6 FSM · 9 Schemas</span>
+</div>
+
+<!-- ══ 3-PANE LAYOUT ══ -->
+<div class="panes">
+
+<!-- ═══ LEFT: GRAPH ═══ -->
+<div class="pane-graph">
+  <div class="graph-toolbar">
+    <input type="text" placeholder="Search nodes... (e.g. terminal, mission, mcp)" />
+    <button class="filter-pill on">All</button>
+    <button class="filter-pill">RPC</button>
+    <button class="filter-pill">Events</button>
+    <button class="filter-pill">Schemas</button>
+    <button class="filter-pill">States</button>
+  </div>
+  <div class="graph-canvas">
+    <!-- Cluster backgrounds -->
+    <div class="cluster-bg" style="width:240px;height:240px;background:var(--accent);left:40px;top:30px"></div>
+    <div class="cluster-bg" style="width:280px;height:260px;background:var(--cyan);left:300px;top:10px"></div>
+    <div class="cluster-bg" style="width:180px;height:170px;background:var(--running);right:60px;top:50px"></div>
+    <div class="cluster-bg" style="width:190px;height:180px;background:var(--warn);left:160px;bottom:30px"></div>
+    <div class="cluster-bg" style="width:140px;height:140px;background:var(--passed);right:40px;bottom:40px"></div>
+
+    <!-- Cluster labels -->
+    <div class="cluster-label" style="left:100px;top:45px">SESSION</div>
+    <div class="cluster-label" style="left:370px;top:25px">DAEMON</div>
+    <div class="cluster-label" style="right:100px;top:65px">MCP</div>
+    <div class="cluster-label" style="left:200px;bottom:50px">MISSION</div>
+    <div class="cluster-label" style="right:70px;bottom:55px">TERMINAL</div>
+
+    <!-- ── droid.* session cluster ── -->
+    <div class="gn" style="width:14px;height:14px;background:var(--accent);left:90px;top:90px" onclick="selectNode(this,'rpc','droid.initialize_session')"><span class="tip">droid.initialize_session</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--accent);left:70px;top:130px" onclick="selectNode(this,'rpc','droid.add_user_message')"><span class="tip">droid.add_user_message</span></div>
+    <div class="gn" style="width:12px;height:12px;background:var(--accent);left:130px;top:150px" onclick="selectNode(this,'rpc','droid.session_notification')"><span class="tip">droid.session_notification</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--accent);left:60px;top:175px" onclick="selectNode(this,'rpc','droid.request_permission')"><span class="tip">droid.request_permission</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--accent);left:150px;top:110px" onclick="selectNode(this,'rpc','droid.ask_user')"><span class="tip">droid.ask_user</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--accent);left:180px;top:170px" onclick="selectNode(this,'rpc','droid.update_session_settings')"><span class="tip">droid.update_session_settings</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--accent);left:110px;top:200px" onclick="selectNode(this,'rpc','droid.list_skills')"><span class="tip">droid.list_skills</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--accent);left:200px;top:130px" onclick="selectNode(this,'rpc','droid.interrupt_session')"><span class="tip">droid.interrupt_session</span></div>
+
+    <!-- Session settings schema -->
+    <div class="gn gn-schema" style="width:12px;height:12px;background:var(--accent);opacity:0.7;left:220px;top:190px" onclick="selectNode(this,'schema','by0')"><span class="tip">schema:by0 (settings)</span></div>
+
+    <!-- ── daemon.* cluster ── -->
+    <div class="gn selected" style="width:14px;height:14px;background:var(--cyan);left:370px;top:70px" onclick="selectNode(this,'rpc','daemon.create_automation')"><span class="tip">daemon.create_automation</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:340px;top:100px" onclick="selectNode(this,'rpc','daemon.run_automation')"><span class="tip">daemon.run_automation</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:410px;top:95px" onclick="selectNode(this,'rpc','daemon.pause_automation')"><span class="tip">daemon.pause_automation</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:440px;top:130px" onclick="selectNode(this,'rpc','daemon.get_automation_history')"><span class="tip">daemon.get_automation_history</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:350px;top:150px" onclick="selectNode(this,'rpc','daemon.authenticate')"><span class="tip">daemon.authenticate</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:400px;top:170px" onclick="selectNode(this,'rpc','daemon.git_commit')"><span class="tip">daemon.git_commit</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:460px;top:160px" onclick="selectNode(this,'rpc','daemon.create_pr')"><span class="tip">daemon.create_pr</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:480px;top:110px" onclick="selectNode(this,'rpc','daemon.generate_semantic_diff')"><span class="tip">daemon.generate_semantic_diff</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:320px;top:60px" onclick="selectNode(this,'rpc','daemon.search_sessions')"><span class="tip">daemon.search_sessions</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--cyan);left:500px;top:70px" onclick="selectNode(this,'rpc','daemon.start_code_server')"><span class="tip">daemon.start_code_server</span></div>
+
+    <!-- Automation schema -->
+    <div class="gn gn-schema" style="width:12px;height:12px;background:var(--cyan);opacity:0.7;left:430px;top:55px" onclick="selectNode(this,'schema','Gy0')"><span class="tip">schema:Gy0 (automation)</span></div>
+    <!-- Auth schema -->
+    <div class="gn gn-schema" style="width:12px;height:12px;background:var(--cyan);opacity:0.7;left:310px;top:130px" onclick="selectNode(this,'schema','ax0')"><span class="tip">schema:ax0 (auth)</span></div>
+
+    <!-- ── MCP cluster ── -->
+    <div class="gn" style="width:10px;height:10px;background:var(--running);right:120px;top:90px" onclick="selectNode(this,'rpc','daemon.add_mcp_server')"><span class="tip">daemon.add_mcp_server</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--running);right:90px;top:120px" onclick="selectNode(this,'rpc','daemon.authenticate_mcp_server')"><span class="tip">daemon.authenticate_mcp_server</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--running);right:140px;top:145px" onclick="selectNode(this,'rpc','daemon.list_mcp_tools')"><span class="tip">daemon.list_mcp_tools</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--running);right:100px;top:170px" onclick="selectNode(this,'rpc','droid.toggle_mcp_tool')"><span class="tip">droid.toggle_mcp_tool</span></div>
+    <div class="gn" style="width:8px;height:8px;background:var(--running);opacity:0.6;right:150px;top:110px" onclick="selectNode(this,'event','mcp_auth_required')"><span class="tip">mcp_auth_required</span></div>
+    <div class="gn" style="width:8px;height:8px;background:var(--running);opacity:0.6;right:70px;top:155px" onclick="selectNode(this,'event','mcp_auth_completed')"><span class="tip">mcp_auth_completed</span></div>
+
+    <!-- ── Mission cluster ── -->
+    <div class="gn" style="width:10px;height:10px;background:var(--warn);left:200px;bottom:85px" onclick="selectNode(this,'event','mission_accepted')"><span class="tip">mission_accepted</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--warn);left:240px;bottom:110px" onclick="selectNode(this,'event','mission_run_started')"><span class="tip">mission_run_started</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--warn);left:280px;bottom:90px" onclick="selectNode(this,'event','mission_state_changed')"><span class="tip">mission_state_changed</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--warn);left:310px;bottom:120px" onclick="selectNode(this,'event','worker_started')"><span class="tip">worker_started</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--warn);left:340px;bottom:95px" onclick="selectNode(this,'event','worker_completed')"><span class="tip">worker_completed</span></div>
+    <div class="gn" style="width:8px;height:8px;background:var(--warn);opacity:0.6;left:220px;bottom:130px" onclick="selectNode(this,'event','mission_heartbeat')"><span class="tip">mission_heartbeat</span></div>
+    <div class="gn" style="width:8px;height:8px;background:var(--warn);opacity:0.6;left:260px;bottom:140px" onclick="selectNode(this,'event','mission_paused')"><span class="tip">mission_paused</span></div>
+    <div class="gn" style="width:8px;height:8px;background:var(--warn);opacity:0.6;left:300px;bottom:145px" onclick="selectNode(this,'event','worker_failed')"><span class="tip">worker_failed</span></div>
+
+    <!-- ── Terminal cluster ── -->
+    <div class="gn" style="width:10px;height:10px;background:var(--passed);right:80px;bottom:90px" onclick="selectNode(this,'rpc','daemon.create_terminal')"><span class="tip">daemon.create_terminal</span></div>
+    <div class="gn" style="width:10px;height:10px;background:var(--passed);right:110px;bottom:120px" onclick="selectNode(this,'rpc','daemon.write_terminal_data')"><span class="tip">daemon.write_terminal_data</span></div>
+    <div class="gn" style="width:8px;height:8px;background:var(--passed);right:60px;bottom:120px" onclick="selectNode(this,'rpc','daemon.close_terminal')"><span class="tip">daemon.close_terminal</span></div>
+    <div class="gn gn-schema" style="width:12px;height:12px;background:var(--passed);opacity:0.7;right:90px;bottom:60px" onclick="selectNode(this,'schema','s6I')"><span class="tip">schema:s6I (terminal)</span></div>
+
+    <!-- Legend -->
+    <div class="graph-legend">
+      <div class="gl"><div class="d" style="background:var(--accent)"></div>session</div>
+      <div class="gl"><div class="d" style="background:var(--cyan)"></div>daemon</div>
+      <div class="gl"><div class="d" style="background:var(--running)"></div>MCP</div>
+      <div class="gl"><div class="d" style="background:var(--warn)"></div>mission</div>
+      <div class="gl"><div class="d" style="background:var(--passed)"></div>terminal</div>
+      <div class="gl"><div class="d" style="border-radius:2px;border:1px solid var(--dim);width:6px;height:6px"></div>schema</div>
+    </div>
+    <div class="graph-stats">43 nodes · 5 clusters</div>
+  </div>
+</div>
+
+<!-- ═══ MIDDLE: DETAIL ═══ -->
+<div class="pane-detail" id="detail-pane">
+  <!-- Populated state: daemon.create_automation selected -->
+  <div class="detail-header">
+    <div class="label">JSON-RPC Method</div>
+    <div class="name">daemon.create_automation</div>
+    <div class="kind">daemon namespace · server-side</div>
+  </div>
+
+  <div class="detail-scroll">
+    <!-- LLM Explanation (FIRST — this is the point) -->
+    <div class="dsec">
+      <div class="dsec-title">What is this? <span class="badge">LLM</span></div>
+      <div class="explanation">
+        Creates a new <strong>scheduled automation</strong> — a cron-triggered agent task that runs without human input. The caller provides a <code>prompt</code> (the instruction), a <code>schedule</code> (cron expression), and a <code>model</code> (which LLM to use). The daemon validates, assigns an <code>automationId</code>, and schedules it.
+        <br><br>
+        This is the entry point for droid's <strong>"set it and forget it"</strong> mode — recurring tasks like "review PRs every morning" or "run tests on push."
+      </div>
+    </div>
+
+    <!-- Relationships (SECOND — what connects to this) -->
+    <div class="dsec">
+      <div class="dsec-title">Connections <span class="badge">7</span></div>
+
+      <div class="rel-group">
+        <div class="rel-group-title">Lifecycle methods</div>
+        <div class="rel-chips">
+          <span class="rel-chip">run_automation</span>
+          <span class="rel-chip">pause_automation</span>
+          <span class="rel-chip">resume_automation</span>
+          <span class="rel-chip">delete_automation</span>
+          <span class="rel-chip">rename_automation</span>
+          <span class="rel-chip">update_automation_model</span>
+        </div>
+      </div>
+
+      <div class="rel-group">
+        <div class="rel-group-title">Schema <span style="color:var(--cyan)">→</span> payload</div>
+        <div class="rel-chips">
+          <span class="rel-chip" style="border-color:rgba(255,170,0,0.2);color:var(--warn)">Gy0 <span class="arrow">→</span> automation</span>
+        </div>
+      </div>
+
+      <div class="rel-group">
+        <div class="rel-group-title">Events emitted</div>
+        <div class="rel-chips">
+          <span class="rel-chip" style="border-color:rgba(255,170,0,0.15);color:var(--warn)">mission_accepted</span>
+          <span class="rel-chip" style="border-color:rgba(255,170,0,0.15);color:var(--warn)">mission_run_started</span>
+          <span class="rel-chip" style="border-color:rgba(255,170,0,0.15);color:var(--warn)">worker_started</span>
+        </div>
+      </div>
+
+      <div class="rel-group">
+        <div class="rel-group-title">State machine</div>
+        <div class="rel-chips">
+          <span class="rel-chip" style="border-color:rgba(255,170,0,0.15);color:var(--warn)">M <span class="arrow">→</span> awaiting_input → running → completed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Fields (THIRD — progressive disclosure) -->
+    <div class="dsec">
+      <div class="dsec-title">Key Fields <span class="badge">8 of 82</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">
+        <span class="rel-chip" style="color:var(--cyan)">automationId</span>
+        <span class="rel-chip" style="color:var(--cyan)">prompt</span>
+        <span class="rel-chip" style="color:var(--cyan)">schedule</span>
+        <span class="rel-chip" style="color:var(--cyan)">model</span>
+        <span class="rel-chip">name</span>
+        <span class="rel-chip">status</span>
+        <span class="rel-chip">nextRunAt</span>
+        <span class="rel-chip">durationMs</span>
+      </div>
+
+      <!-- Collapsed raw data -->
+      <div class="raw-toggle" onclick="toggleRaw(this)">
+        <span class="chevron">›</span> Show all 82 fields
+      </div>
+      <div class="raw-data">
+        <div class="raw-field"><span class="fname">automationId</span> · basePath · method · id · name · description · status · schedule · model · tags · nextRunAt · isValid · path · automations · prompt · automationName · cwd · success · error · limit · offset · runId · startedAt · completedAt · durationMs · errorMessage · isRetry · originalRunId · runs · totalCount · exists · content · isStale · newName ...</div>
+      </div>
+    </div>
+
+    <!-- Architecture context -->
+    <div class="dsec">
+      <div class="dsec-title">Architecture Context <span class="badge">LLM</span></div>
+      <div class="explanation" style="font-size:11px">
+        Automations are the bridge between droid's <strong>interactive sessions</strong> and <strong>unattended execution</strong>. Each automation wraps a session with a schedule. The <code>get_automation_visual</code> method suggests a timeline/Gantt view exists in the GUI. The <code>isRetry</code> and <code>originalRunId</code> fields indicate automatic retry logic on failure — the daemon doesn't just report errors, it retries.
+      </div>
+    </div>
+  </div>
+
+  <!-- Evidence footer -->
+  <div class="evidence">
+    <code>method: KH.literal("daemon.create_automation")</code><br>
+    tier: 0 (deterministic) · confidence: 1.0<br>
+    schema linked via shared <code>automationId</code> field
+  </div>
+</div>
+
+<!-- ═══ RIGHT: CHAT ═══ -->
+<div class="pane-chat">
+  <div class="chat-header">
+    <div class="dot"></div>
+    <span class="title">Ask</span>
+    <span class="ctx">grounded</span>
+  </div>
+
+  <div class="chat-scroll">
+    <div class="cm cm-sys">82 RPC methods, 59 events, 9 schemas loaded as context</div>
+
+    <div class="cm cm-user">What can automations do?</div>
+
+    <div class="cm cm-bot">
+      Automations are <strong>cron-scheduled agent sessions</strong>. You give them a prompt, a model, and a schedule — the daemon runs them unattended.
+      <br><br>
+      The CRUD surface is complete: <code>create</code>, <code>run</code>, <code>pause</code>, <code>resume</code>, <code>rename</code>, <code>update_model</code>, <code>delete</code>. Each run is tracked with <code>startedAt</code>, <code>completedAt</code>, <code>durationMs</code>, and <code>errorMessage</code>.
+      <br><br>
+      Failed runs auto-retry (<code>isRetry</code> + <code>originalRunId</code> fields). There's also a visual timeline (<code>get_automation_visual</code>).
+      <div class="ev">Evidence: schema Gy0 (82 fields) + 7 daemon.* methods</div>
+    </div>
+
+    <div class="cm cm-user">Can they trigger missions?</div>
+
+    <div class="cm cm-bot">
+      Yes — automations and missions share the same execution path. When <code>daemon.run_automation</code> fires, it emits <code>mission_accepted</code> → <code>mission_run_started</code>, then fans out to workers. State machine <code>M</code> tracks the lifecycle.
+      <br><br>
+      The connection: <code>automationId</code> appears in both the Gy0 automation schema AND the mission event payloads. An automation IS a mission with a cron schedule attached.
+      <div class="ev">Evidence: shared automationId field + mission_* events</div>
+    </div>
+
+    <div class="cm cm-user">Is this exposed without auth?</div>
+
+    <div class="cm cm-bot">
+      No. <code>daemon.authenticate</code> is required before any daemon method. Schema <code>ax0</code> shows the auth handshake: <code>token</code> or <code>apiKey</code> + <code>userId</code>/<code>orgId</code>. The <code>connectionId</code> field suggests per-connection auth state.
+      <br><br>
+      All automation methods are in the <code>daemon.*</code> namespace — not <code>droid.*</code> — meaning they require the daemon connection, which requires auth.
+      <div class="ev">Evidence: daemon.authenticate RPC + schema ax0 + namespace isolation</div>
+    </div>
+  </div>
+
+  <div class="chat-input-area">
+    <div class="chat-ctx-hint">
+      Context: <span class="sel">daemon.create_automation</span>
+    </div>
+    <div class="chat-input-row">
+      <textarea placeholder="Ask about this node..." rows="1"></textarea>
+      <button class="chat-send">↑</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .panes -->
+
+<script>
+/* ═══ Node Selection ═══ */
+function selectNode(el, kind, name) {
+  // Deselect previous
+  document.querySelectorAll('.gn.selected').forEach(n => n.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Update chat context hint
+  const ctx = document.querySelector('.chat-ctx-hint .sel');
+  if (ctx) ctx.textContent = name;
+
+  // In the real app: fetch detail from enriched JSON and update detail pane
+  // In this mockup: detail pane is static showing daemon.create_automation
+}
+
+/* ═══ Raw Data Toggle ═══ */
+function toggleRaw(el) {
+  el.classList.toggle('open');
+  const data = el.nextElementSibling;
+  data.classList.toggle('visible');
+}
+</script>
+
+</body></html>

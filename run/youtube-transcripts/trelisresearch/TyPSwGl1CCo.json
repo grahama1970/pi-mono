@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TyPSwGl1CCo",
+    "language": "en",
+    "took_ms": 7637,
+    "method": null,
+    "title": "LLM Evals - Part 2: Improving Performance",
+    "channel": "Trelis Research",
+    "upload_date": "20250107",
+    "duration_sec": 2086,
+    "description": "➡️ Lifetime access to the ADVANCED-Evals Repo (incl. future additions): https://trelis.com/ADVANCED-evals/\n➡️ Slides: https://docs.google.com/presentation/d/1qhfxURAJFP81HCmefyELq33KFmnBW5bEyMklc5s6Ww0/edit?usp=sharing\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://trelis.substack.com\n➡️ Other Resources and Products from Trelis: https://Trelis.com/\n\nTIMESTAMPS:\n00:00:00 - Introduction to LLM evals and their importance\n00:00:15 - Overview of creating high-quality prompts from scratch\n00:00:32 - Emphasis on importance of high-quality examples\n00:00:57 - Introduction to systematic approach for creating examples\n00:01:14 - Overview of demonstration using touch rugby example\n00:02:23 - Introduction to LLM eval repo and UI demonstration\n00:03:30 - Start of UI demonstration with pipeline creation\n00:04:39 - Creating initial pipeline with Claude Sonnet\n00:05:54 - Creating first dataset for touch rugby Q&A\n00:07:47 - Setting up evaluation criteria and format requirements\n00:09:04 - Demonstration of generating ground truth answers\n00:10:14 - Creating second evaluation task\n00:12:14 - Introduction to creating few-shot examples\n00:14:15 - Setting up pipeline with few-shot examples\n00:19:21 - Creating training examples for few-shot learning\n00:23:59 - Demonstration of improved performance with few-shot examples\n00:27:53 - Discussion of pipeline customization options\n00:28:28 - Final tips on judges and evaluation\n00:29:56 - Recommendations for managing examples\n00:31:30 - Discussion of OpenAI's o1 model considerations\n00:34:23 - Conclusion and future topics",
+    "view_count": 1555
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TyPSwGl1CCo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

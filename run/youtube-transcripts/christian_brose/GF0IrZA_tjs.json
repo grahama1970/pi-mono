@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GF0IrZA_tjs",
+    "language": "en",
+    "took_ms": 8990,
+    "method": null,
+    "title": "The Rise of Islamism: Its Impact on Religious Minorities",
+    "channel": "Hudson Institute",
+    "upload_date": "20130515",
+    "duration_sec": 5172,
+    "description": "With the rise of Islamism in the Middle East, South Asia, and Africa, religious minorities have come increasingly under siege. Already this year, nearly two hundred Hazara Shiite Muslims in Baluchistan, Pakistan have been killed in bombings launched by the Sunni extremist group Lashkar-e-Jangvi. In Egypt, the nation's new constitution denies Baha'is the right to houses of worship, while Iran's denies Baha'is any rights at all. In Mali, Islamists have destroyed historic Sufi shrines, and in Iraq,",
+    "view_count": 774
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GF0IrZA_tjs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

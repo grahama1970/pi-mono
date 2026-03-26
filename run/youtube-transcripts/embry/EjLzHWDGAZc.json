@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EjLzHWDGAZc",
+    "language": "en",
+    "took_ms": 8827,
+    "method": null,
+    "title": "Sending a Tesla to Mars on a Falcon Heavy in Kerbal Space Program Real Solar System",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180107",
+    "duration_sec": 4363,
+    "description": "After yesterday's kind of successful Falcon Heavy launch, I decided to redo it better today! We're re-sending our very own Tesla to the red planet! Which as some of us may know is really just a elliptical heliocentric orbit with the aphelion going out to Mars' orbit... but none the less, perhaps today will be better than yesterday! \n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 85843
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EjLzHWDGAZc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

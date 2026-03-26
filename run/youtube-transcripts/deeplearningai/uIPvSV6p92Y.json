@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uIPvSV6p92Y",
+    "language": "en",
+    "took_ms": 8882,
+    "method": null,
+    "title": "A new course on Retrieval Augmented Generation (RAG) is here!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250716",
+    "duration_sec": 34,
+    "description": "We're thrilled to announce our new course: Retrieval Augmented Generation (RAG)\n\nRAG is a key part of building LLM applications that are grounded, accurate, and adaptable.\n\nIn this course, taught by AI engineer Zain Hasan and available on Coursera, you’ll learn how to design and deploy production-ready RAG systems. You'll:\n\n- Combine retrievers and LLMs using tools like Weaviate, Together.AI, and Phoenix\n- Apply keyword and semantic search methods\n- Evaluate performance to deploy and optimize production-ready systems\n\nYou'll apply these techniques using real-world datasets in domains like healthcare, media, and e-commerce, and build the intuition to make informed architectural decisions.\n\n📈 With the global RAG market projected to grow from $1.2B in 2024 to over $11B by 2030, RAG is core to real-world LLM systems.\n\nStart building with it today! Enroll at deeplearning.ai",
+    "view_count": 6389
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uIPvSV6p92Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

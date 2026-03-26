@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6FrjNya9lBU",
+    "language": "en",
+    "took_ms": 8225,
+    "method": null,
+    "title": "Sell Access to GitHub Repositories",
+    "channel": "Trelis Research",
+    "upload_date": "20240126",
+    "duration_sec": 1500,
+    "description": "Life-time Access to the Server Repo: https://trelis.com/trelis-mart-server-lifetime-repo-access/\n\nSlides: http://tinyurl.com/52eve6uk\nTrelis Research Newsletter: https://Trelis.Substack.com\n\nChapters:\n0:00 My experience selling GitHub Repo Access\n0:52 How to get started, simply!\n4:50 Simple payment links\n6:55 How to automate GitHub Access\n9:31 Server Demo for Automating Access\n13:43 Setting up a Server in 20 mins\n24:30 Future updates!",
+    "view_count": 1709
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6FrjNya9lBU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

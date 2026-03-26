@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "b8-uDKkfw5c",
+    "language": "en",
+    "took_ms": 9138,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - Tactical Flipper Zero You Have 1 Hour and No Other Equipment - Grey Fox",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2080,
+    "description": "You just arrived in some city where the enemy is active. You have a mission to locate and identify a hostile team. They operate in and around a hotel adjacent to friendly force headquarters. They use radios to talk, rented cars to move, local Wi-Fi to conduct operations, and Bluetooth for everything else. Your phone just buzzed with a message that screams \"They're planning something today. You have one hour to find them so we can direct local law enforcement. Go!\" You just realised your equipment bag never made it off the plane. Bad. There is nowhere nearby to get what you need to do RF work in one hour. Worse. You happened to stuff your Flipper Zero into your pocket. Good? It's what you have and it can work on all that enemy tech--let's power it up and get at the mission. Better than nothing, right? Go!",
+    "view_count": 19343
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] b8-uDKkfw5c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

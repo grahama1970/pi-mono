@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W0nLoIa2Dqc",
+    "language": "en",
+    "took_ms": 10083,
+    "method": null,
+    "title": "Saving Water as Cities Grow",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20121029",
+    "duration_sec": 296,
+    "description": "As cities grow, water is drawn from further and from more expensive sources. Here, simple arguments are outlined as to why it makes economic sense for a city's population to be encouraged to use water more efficiently.",
+    "view_count": 121
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W0nLoIa2Dqc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2a_vVt96JhE",
+    "language": "en",
+    "took_ms": 7636,
+    "method": null,
+    "title": "DEF CON 31 - Video Based Cryptanalysis  Extracting Keys from Power LEDs - Ben Nassi, Ofek Vayner",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2624,
+    "description": "In this talk, we present video-based cryptanalysis, a new method to recover secret keys from a non-compromised device by analyzing video footage obtained from a device’s power LED. We show that cryptographic computations performed by the device’s CPU change the power consumption of the device which affects the brightness/color of the device’s power LED. The changes in the brightness can be detected at a sufficient sampling rate for cryptanalysis by obtaining video footage from a device’s power LED (by filling the frame with the LED) and exploiting the video camera’s rolling shutter, to increase the sampling rate by three orders of magnitude. The frames of the video footage are analyzed in the RGB space, and the RGB values are used to recover the secret key. We demonstrate the recovery of: (1) a 256- bit ECDSA key from a smartcard using video footage obtained from the power LED of the smartcard reader via a hijacked Internet-connected security camera located 16 meters away from the smartcard reader, and (2) a 378-bit SIKE key from a Samsung Galaxy S8 using video footage obtained from the power LED of Logitech Z120 USB speakers (that were connected to the same USB Hub of the Galaxy S8) via iPhone 12. We discuss countermeasures, limitations, and the future of video-based cryptanalysis.",
+    "view_count": 2405
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2a_vVt96JhE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

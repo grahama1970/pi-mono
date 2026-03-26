@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NdrFKrPjSqk",
+    "language": "en",
+    "took_ms": 7658,
+    "method": null,
+    "title": "(Previously) LIVE Hosting SpaceX OTV-5 (Secret Space Plane)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170907",
+    "duration_sec": 5309,
+    "description": "SpaceX is launching Boeing's secretive X-37B experimental spaceplane on top of their work horse Falcon 9 rocket. This is the 13th launch for SpaceX this year and 41st launch of the Falcon 9 overall. It will launch from pad 39A at Kennedy Space Center in Florida. After stage separation, they will be attempting a first stage landing back at the Cape Canaveral Air Force Base at LZ-1 (about 6 miles from the launch pad). \n\nGet your own Everyday Astronaut merch at http://everydayastronaut.com/shop\n\nShow your support on Patreon - http://patreon.com/everydayastronaut",
+    "view_count": 16001
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NdrFKrPjSqk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

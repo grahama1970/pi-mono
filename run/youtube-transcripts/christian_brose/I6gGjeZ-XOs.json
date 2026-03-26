@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "I6gGjeZ-XOs",
+    "language": "en",
+    "took_ms": 9087,
+    "method": null,
+    "title": "US-Taiwan Economic Relations",
+    "channel": "Hudson Institute",
+    "upload_date": "20140128",
+    "duration_sec": 3769,
+    "description": "Economic and trade policy are an important part of any significant bilateral relationship, and the United States and Taiwan are a timely case in point.\n \nOn January 13 Hudson Institute convened a conference on Taiwan-U.S. economic relations to examine, in detail, the priority of current bilateral trade and investment arrangements, the status of Taiwan's ongoing economic development, and the various opportunities and challenges Taiwan and the U.S. will face together in the future--including Taiwan's possible membership in the Trans-Pacific Partnership.",
+    "view_count": 216
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] I6gGjeZ-XOs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

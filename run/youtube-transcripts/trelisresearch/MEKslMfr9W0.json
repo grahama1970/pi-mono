@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MEKslMfr9W0",
+    "language": "en",
+    "took_ms": 8748,
+    "method": null,
+    "title": "Multi-modal MoonDream API - Mixtral 8x22B Instruct - Llama 3",
+    "channel": "Trelis Research",
+    "upload_date": "20240419",
+    "duration_sec": 6273,
+    "description": "A livestream recording covering Multi-modal MoonDream API - Mixtral 8x22B Instruct - Llama 3\n\n➡️ Video Notes:\nhttps://colab.research.google.com/drive/1Pk5kbk0ciqGu3LTII1W0pJxyc1a3xJHs?usp=sharing\n\n➡️ Trelis Resources/Support: Trelis.com/About",
+    "view_count": 1829
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MEKslMfr9W0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

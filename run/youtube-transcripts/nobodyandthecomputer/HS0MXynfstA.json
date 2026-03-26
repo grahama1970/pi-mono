@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HS0MXynfstA",
+    "language": "en",
+    "took_ms": 8678,
+    "method": null,
+    "title": "BachGPT",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230626",
+    "duration_sec": 924,
+    "description": "Gear up for a thrilling journey with ChatGPT, MIDI technology, and none other than the maestro of counterpoints - JS Bach himself! Brace yourselves for a rollercoaster ride into the world of music intertwined with artificial intelligence. Let's dive in!\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n__________________________________________________\n\nchatGPT:\nhttps://openai.com/blog/chatgpt\n\nColab Notebook text2 MIDI:\nhttps://www.patreon.com/posts/bachgpt-text-to-85162551\n\nBachGPT prompt for chatGPT:\nhttps://www.patreon.com/posts/bachgpt-prompt-85162417\n\nColab MIDI2Text\nhttps://www.patreon.com/posts/midi2text-google-85162653\n \nBach Text prompt:\nhttps://www.patreon.com/posts/bach-text-prompt-85165612\n__________________________________________________\n\n00:00 Intro\n02:28 Prompt for ChatGPT\n03:24 A J.S. Bach Motif with A.I.\n05:13 A.I. Prelude\n07:55 More Prompt for ChatGPT\n09:34 Another A.I. Bach Composition\n11:54 Bach, Wendy Carlos and Kubrick\n13:40 Bach and Aphex Twin\n14:39 Outro",
+    "view_count": 329458
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HS0MXynfstA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

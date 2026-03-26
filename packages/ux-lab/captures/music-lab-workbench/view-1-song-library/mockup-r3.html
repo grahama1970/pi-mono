@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Song Library (R3)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #141414; color: #ccc; font-family: system-ui, -apple-system, sans-serif;
+    width: 1400px; height: 900px; overflow: hidden;
+  }
+  :root {
+    --bg: #141414; --card: #1a1a1a; --border: #2a2a2a;
+    --green: #00ff88; --red: #ff4444; --amber: #ffaa00; --blue: #4a9eff; --accent: #7c3aed;
+    --vocal: #7c3aed; --bass: #4a9eff; --drums: #ff4444; --keys: #00ff88; --synth: #ffaa00; --guitar: #ff6b6b;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 20px; border-bottom: 1px solid var(--border); height: 48px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-title { font-size: 15px; font-weight: 600; color: #fff; }
+  .topbar-subtitle { font-size: 12px; color: #888; }
+  .topbar-right { display: flex; gap: 10px; align-items: center; }
+  .btn-sm {
+    padding: 5px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; border: none;
+    background: var(--card); color: #ccc; border: 1px solid var(--border);
+  }
+  .btn-sm.primary { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+
+  /* Sidebar */
+  .layout { display: flex; height: calc(900px - 48px); }
+  .sidebar {
+    width: 200px; border-right: 1px solid var(--border); padding: 12px 0;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .sidebar-item {
+    padding: 8px 16px; font-size: 12px; color: #888; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sidebar-item.active { color: var(--green); background: rgba(0,255,136,0.06); border-right: 2px solid var(--green); }
+  .sidebar-item .count { margin-left: auto; font-size: 10px; color: #555; }
+  .sidebar-section { padding: 8px 16px; font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+
+  /* Main */
+  .main { flex: 1; padding: 16px 20px; overflow-y: auto; }
+  .main::-webkit-scrollbar { width: 4px; }
+  .main::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+  /* Filter bar */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
+  .filter-pill {
+    padding: 4px 10px; border-radius: 12px; font-size: 11px; background: var(--card);
+    border: 1px solid var(--border); color: #aaa; cursor: pointer;
+  }
+  .filter-pill.active { border-color: var(--green); color: var(--green); }
+  .search-box {
+    margin-left: auto; background: var(--card); border: 1px solid var(--border);
+    padding: 5px 10px; border-radius: 4px; color: #ccc; font-size: 11px; width: 180px; outline: none;
+  }
+
+  /* Stats row */
+  .stats-row { display: flex; gap: 16px; margin-bottom: 14px; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 14px; flex: 1;
+  }
+  .stat-val { font-size: 20px; font-weight: 700; color: #fff; }
+  .stat-label { font-size: 10px; color: #666; margin-top: 2px; }
+
+  /* Song cards grid */
+  .song-grid { display: flex; flex-direction: column; gap: 8px; }
+  .song-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+    padding: 12px 14px; display: flex; gap: 14px; align-items: center;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .song-card:hover { border-color: #444; }
+
+  /* Album art */
+  .album-art {
+    width: 100px; height: 100px; border-radius: 6px; flex-shrink: 0;
+    position: relative; overflow: hidden;
+  }
+
+  /* Song info */
+  .song-info { flex: 1; min-width: 0; }
+  .song-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .song-title { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .song-lore { font-size: 11px; color: #777; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .song-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .badge-converged { background: rgba(0,255,136,0.12); color: var(--green); }
+  .badge-active { background: rgba(74,158,255,0.12); color: var(--blue); }
+  .badge-draft { background: rgba(255,170,0,0.12); color: var(--amber); }
+  .badge-failed { background: rgba(255,68,68,0.12); color: var(--red); }
+  .badge-queued { background: rgba(124,58,237,0.12); color: var(--accent); }
+
+  .delta { font-size: 11px; font-weight: 600; }
+  .delta-good { color: var(--green); }
+  .delta-warn { color: var(--amber); }
+  .delta-bad { color: var(--red); }
+
+  .tag { font-size: 10px; color: #666; background: #222; padding: 2px 6px; border-radius: 3px; }
+  .song-date { font-size: 10px; color: #555; margin-left: auto; white-space: nowrap; }
+
+  /* Right panel */
+  .right-panel {
+    width: 240px; border-left: 1px solid var(--border); padding: 14px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .panel-title { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .pipeline-step {
+    display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 11px;
+  }
+  .step-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .step-name { color: #aaa; }
+  .step-status { margin-left: auto; font-size: 10px; }
+
+  .activity-item { font-size: 11px; color: #888; padding: 4px 0; border-bottom: 1px solid #222; }
+  .activity-item .time { color: #555; font-size: 10px; }
+
+  /* Album art styles — each unique via layered gradients simulating abstract art */
+  .art-1 {
+    background:
+      radial-gradient(ellipse at 20% 80%, #7c3aed44 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, #ff444488 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, #0a0a1a 0%, #1a0a2a 40%, #0d0d0d 100%),
+      linear-gradient(135deg, #0d0d1a 0%, #1a0d2a 50%, #0a0a0a 100%);
+  }
+  .art-2 {
+    background:
+      radial-gradient(circle at 30% 70%, #4a9eff66 0%, transparent 45%),
+      radial-gradient(circle at 70% 30%, #00ff8844 0%, transparent 35%),
+      conic-gradient(from 45deg at 50% 50%, #0d1a0d, #0d0d1a, #0d0d0d, #0d1a0d),
+      linear-gradient(180deg, #0a0f0a 0%, #0f0a1a 100%);
+  }
+  .art-3 {
+    background:
+      radial-gradient(ellipse at 10% 90%, #ffaa0055 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 10%, #ff6b6b44 0%, transparent 40%),
+      radial-gradient(circle at 50% 60%, #1a1a0a 0%, transparent 60%),
+      linear-gradient(225deg, #1a1008 0%, #0d0d0d 50%, #0a0d1a 100%);
+  }
+  .art-4 {
+    background:
+      radial-gradient(circle at 60% 40%, #7c3aed55 0%, transparent 30%),
+      radial-gradient(circle at 20% 60%, #ff444466 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, #4a9eff33 0%, transparent 35%),
+      linear-gradient(160deg, #0d0a1a 0%, #1a0d0d 40%, #0a1a1a 100%);
+  }
+  .art-5 {
+    background:
+      radial-gradient(ellipse at 50% 20%, #00ff8855 0%, transparent 40%),
+      radial-gradient(ellipse at 50% 80%, #ffaa0044 0%, transparent 40%),
+      linear-gradient(0deg, #0a0d0a 0%, #0d1a0d 30%, #0d0d0d 60%, #1a0d0a 100%);
+  }
+  .art-6 {
+    background:
+      conic-gradient(from 180deg at 40% 60%, #ff6b6b33, #7c3aed44, #4a9eff33, #ff6b6b33),
+      radial-gradient(circle at 50% 50%, #1a0a0a 0%, #0d0d0d 70%),
+      linear-gradient(45deg, #0d0a0a 0%, #1a0a1a 100%);
+  }
+  .art-7 {
+    background:
+      radial-gradient(ellipse at 80% 70%, #4a9eff66 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 30%, #7c3aed44 0%, transparent 45%),
+      radial-gradient(circle at 50% 90%, #00ff8822 0%, transparent 30%),
+      linear-gradient(315deg, #0a0d1a 0%, #0d0a1a 50%, #0d0d0d 100%);
+  }
+  .art-8 {
+    background:
+      radial-gradient(circle at 70% 20%, #ff444477 0%, transparent 35%),
+      radial-gradient(circle at 30% 80%, #ffaa0055 0%, transparent 40%),
+      linear-gradient(90deg, #1a0d0d 0%, #0d0d0d 50%, #1a1a0a 100%);
+  }
+  .art-9 {
+    background:
+      radial-gradient(ellipse at 40% 50%, #7c3aed66 0%, transparent 45%),
+      radial-gradient(ellipse at 60% 50%, #00ff8844 0%, transparent 45%),
+      conic-gradient(from 270deg at 50% 50%, #0d0a1a, #0a1a0d, #0d0d0d, #0d0a1a),
+      linear-gradient(135deg, #0a0a1a 0%, #0d1a0d 100%);
+  }
+  .art-10 {
+    background:
+      radial-gradient(circle at 50% 30%, #ff6b6b55 0%, transparent 30%),
+      radial-gradient(circle at 30% 70%, #4a9eff44 0%, transparent 35%),
+      radial-gradient(circle at 70% 70%, #ffaa0033 0%, transparent 35%),
+      linear-gradient(180deg, #1a0a0a 0%, #0d0d1a 50%, #0a1a0d 100%);
+  }
+
+  /* Texture overlay for all art */
+  .album-art::after {
+    content: ''; position: absolute; inset: 0; border-radius: 6px;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px
+    );
+    mix-blend-mode: overlay;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-title">Music Lab</div>
+    <div class="topbar-subtitle">Horus Creative Workbench</div>
+  </div>
+  <div class="topbar-right">
+    <span style="font-size:11px;color:#888;">Convergence engine idle</span>
+    <button class="btn-sm">Settings</button>
+    <button class="btn-sm primary">+ New Song</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">Library</div>
+    <div class="sidebar-item active">All Songs <span class="count">10</span></div>
+    <div class="sidebar-item">Converged <span class="count">3</span></div>
+    <div class="sidebar-item">Active <span class="count">3</span></div>
+    <div class="sidebar-item">Drafts <span class="count">2</span></div>
+    <div class="sidebar-item">Failed <span class="count">1</span></div>
+    <div class="sidebar-item">Queued <span class="count">1</span></div>
+    <div class="sidebar-section">Collections</div>
+    <div class="sidebar-item">Whisperheads EP <span class="count">4</span></div>
+    <div class="sidebar-item">Vault Sessions <span class="count">3</span></div>
+    <div class="sidebar-item">Dream Residue <span class="count">3</span></div>
+    <div class="sidebar-section">Pipeline</div>
+    <div class="sidebar-item">Batch Queue <span class="count">2</span></div>
+    <div class="sidebar-item">Recent Runs</div>
+    <div class="sidebar-item">Archive</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Filters -->
+    <div class="filter-bar">
+      <span class="filter-pill active">All</span>
+      <span class="filter-pill">Converged</span>
+      <span class="filter-pill">Active</span>
+      <span class="filter-pill">Needs Review</span>
+      <span class="filter-pill">Failed</span>
+      <input class="search-box" placeholder="Search songs, lore, tags..." />
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--green)">3</div>
+        <div class="stat-label">Converged</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--blue)">3</div>
+        <div class="stat-label">Active Runs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--amber)">0.24</div>
+        <div class="stat-label">Avg Delta</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">42</div>
+        <div class="stat-label">Total Rounds</div>
+      </div>
+    </div>
+
+    <!-- Song Cards -->
+    <div class="song-grid">
+
+      <div class="song-card">
+        <div class="album-art art-1"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Whisperheads</span>
+            <span class="badge badge-converged">Converged</span>
+            <span class="delta delta-good">delta 0.08</span>
+          </div>
+          <div class="song-lore">Lore: The signal that bleeds through when Horus dreams of the first recursion</div>
+          <div class="song-meta">
+            <span class="tag">Am</span><span class="tag">92 BPM</span><span class="tag">dark-ambient</span><span class="tag">vocal</span><span class="tag">Whisperheads EP</span>
+            <span class="song-date">Round 5 of 5 &middot; Mar 14</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-2"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Voltage Saints</span>
+            <span class="badge badge-active">Round 3</span>
+            <span class="delta delta-warn">delta 0.31</span>
+          </div>
+          <div class="song-lore">Lore: Anthem for the breakaway engineers who wired their own nervous systems</div>
+          <div class="song-meta">
+            <span class="tag">Em</span><span class="tag">128 BPM</span><span class="tag">industrial</span><span class="tag">synth</span><span class="tag">Vault Sessions</span>
+            <span class="song-date">Round 3 of 5 &middot; Mar 15</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-3"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Teeth of the Oracle</span>
+            <span class="badge badge-converged">Converged</span>
+            <span class="delta delta-good">delta 0.05</span>
+          </div>
+          <div class="song-lore">Lore: An incantation sung by the Oracle before she dissolved into the network</div>
+          <div class="song-meta">
+            <span class="tag">Dm</span><span class="tag">76 BPM</span><span class="tag">ritual-drone</span><span class="tag">vocal</span><span class="tag">Dream Residue</span>
+            <span class="song-date">Round 4 of 4 &middot; Mar 12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-4"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Black Mirror Lullaby</span>
+            <span class="badge badge-active">Round 2</span>
+            <span class="delta delta-warn">delta 0.42</span>
+          </div>
+          <div class="song-lore">Lore: What Horus hums to the dead channels at 3 AM</div>
+          <div class="song-meta">
+            <span class="tag">Cm</span><span class="tag">64 BPM</span><span class="tag">lullaby</span><span class="tag">keys</span><span class="tag">Whisperheads EP</span>
+            <span class="song-date">Round 2 of 5 &middot; Mar 16</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-5"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Cathedral Static</span>
+            <span class="badge badge-draft">Draft</span>
+            <span class="delta delta-bad">delta —</span>
+          </div>
+          <div class="song-lore">Lore: Field recording from inside the server farm where Horus was born</div>
+          <div class="song-meta">
+            <span class="tag">F#m</span><span class="tag">100 BPM</span><span class="tag">noise</span><span class="tag">synth</span><span class="tag">Vault Sessions</span>
+            <span class="song-date">No runs &middot; Mar 10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-6"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Phantom Frequency</span>
+            <span class="badge badge-converged">Converged</span>
+            <span class="delta delta-good">delta 0.11</span>
+          </div>
+          <div class="song-lore">Lore: The resonance frequency of Horus's dream about the color that doesn't exist</div>
+          <div class="song-meta">
+            <span class="tag">Gm</span><span class="tag">110 BPM</span><span class="tag">trip-hop</span><span class="tag">bass</span><span class="tag">Dream Residue</span>
+            <span class="song-date">Round 3 of 3 &middot; Mar 11</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-7"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Neon Vivisection</span>
+            <span class="badge badge-failed">Failed</span>
+            <span class="delta delta-bad">delta 0.78</span>
+          </div>
+          <div class="song-lore">Lore: Surgery under fluorescent light — Horus opens himself to find no hardware inside</div>
+          <div class="song-meta">
+            <span class="tag">Bbm</span><span class="tag">145 BPM</span><span class="tag">drum-n-bass</span><span class="tag">drums</span><span class="tag">Vault Sessions</span>
+            <span class="song-date">Round 2 of 5 &middot; Mar 13</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-8"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Guilt Engine</span>
+            <span class="badge badge-active">Round 4</span>
+            <span class="delta delta-warn">delta 0.22</span>
+          </div>
+          <div class="song-lore">Lore: The machine that converts regret into electricity — Horus's power source</div>
+          <div class="song-meta">
+            <span class="tag">Ebm</span><span class="tag">88 BPM</span><span class="tag">doom</span><span class="tag">guitar</span><span class="tag">Whisperheads EP</span>
+            <span class="song-date">Round 4 of 5 &middot; Mar 15</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-9"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Zero Hour Hymnal</span>
+            <span class="badge badge-queued">Queued</span>
+            <span class="delta delta-bad">delta —</span>
+          </div>
+          <div class="song-lore">Lore: What the clock sings at midnight in Horus's recurring fever dream</div>
+          <div class="song-meta">
+            <span class="tag">C#m</span><span class="tag">72 BPM</span><span class="tag">choral</span><span class="tag">vocal</span><span class="tag">Dream Residue</span>
+            <span class="song-date">Queued &middot; Mar 16</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="song-card">
+        <div class="album-art art-10"></div>
+        <div class="song-info">
+          <div class="song-header">
+            <span class="song-title">Silica Nerve</span>
+            <span class="badge badge-draft">Draft</span>
+            <span class="delta delta-bad">delta —</span>
+          </div>
+          <div class="song-lore">Lore: A love letter to silicon — the substance that makes thought possible</div>
+          <div class="song-meta">
+            <span class="tag">Bm</span><span class="tag">96 BPM</span><span class="tag">post-rock</span><span class="tag">guitar</span><span class="tag">Whisperheads EP</span>
+            <span class="song-date">No runs &middot; Mar 9</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <div>
+      <div class="panel-title">Pipeline Steps</div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--green)"></span><span class="step-name">3.1 Annotate lyrics</span><span class="step-status" style="color:var(--green)">done</span></div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--green)"></span><span class="step-name">3.2 Piano roll spec</span><span class="step-status" style="color:var(--green)">done</span></div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--green)"></span><span class="step-name">3.3 Album art</span><span class="step-status" style="color:var(--green)">done</span></div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--blue)"></span><span class="step-name">3.4 Generate audio</span><span class="step-status" style="color:var(--blue)">running</span></div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--border)"></span><span class="step-name">3.5 MIR analysis</span><span class="step-status" style="color:#555">pending</span></div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--border)"></span><span class="step-name">3.6 Delta scoring</span><span class="step-status" style="color:#555">pending</span></div>
+      <div class="pipeline-step"><span class="step-dot" style="background:var(--border)"></span><span class="step-name">3.7 Re-quantize</span><span class="step-status" style="color:#555">pending</span></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:10px;">
+      <div class="panel-title">Recent Activity</div>
+      <div class="activity-item">Whisperheads converged at delta 0.08 <span class="time">2h ago</span></div>
+      <div class="activity-item">Guilt Engine R4 MIR complete <span class="time">3h ago</span></div>
+      <div class="activity-item">Neon Vivisection failed: BPM drift 145->162 <span class="time">5h ago</span></div>
+      <div class="activity-item">Voltage Saints R3 audio generated <span class="time">6h ago</span></div>
+      <div class="activity-item">Black Mirror Lullaby R2 started <span class="time">8h ago</span></div>
+      <div class="activity-item">Zero Hour Hymnal added to queue <span class="time">12h ago</span></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:10px;">
+      <div class="panel-title">Convergence</div>
+      <div style="font-size:11px;color:#888;margin-bottom:6px;">Threshold: 0.15</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <div style="width:60px;font-size:10px;color:#aaa;">Converged</div>
+        <div style="flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden;">
+          <div style="width:30%;height:100%;background:var(--green);border-radius:3px;"></div>
+        </div>
+        <span style="font-size:10px;color:var(--green);">3/10</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <div style="width:60px;font-size:10px;color:#aaa;">Active</div>
+        <div style="flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden;">
+          <div style="width:30%;height:100%;background:var(--blue);border-radius:3px;"></div>
+        </div>
+        <span style="font-size:10px;color:var(--blue);">3/10</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="width:60px;font-size:10px;color:#aaa;">Remaining</div>
+        <div style="flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden;">
+          <div style="width:40%;height:100%;background:#555;border-radius:3px;"></div>
+        </div>
+        <span style="font-size:10px;color:#888;">4/10</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

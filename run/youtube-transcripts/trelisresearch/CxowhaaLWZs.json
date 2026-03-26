@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CxowhaaLWZs",
+    "language": "en",
+    "took_ms": 9633,
+    "method": null,
+    "title": "Multi GPU Training with Unsloth",
+    "channel": "Trelis Research",
+    "upload_date": "20250903",
+    "duration_sec": 3262,
+    "description": "📜 Get LIFETIME repo access at https://Trelis.com/ADVANCED-fine-tuning\n\n🗝️ Get Trelis Multi-Repo Bundle (https://Trelis.com/multi-repo-bundle)\n- Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n- Support via Github Issues & Trelis’ Private Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Fine-tuning Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/12xMF9Mh-sV8sliVxkBdw2DGuWKnD1BzqD070kHyj0mQ/edit?usp=sharing\n- Unsloth multi-gpu issue: https://github.com/unslothai/unsloth/issues/2435\n\nTIMESTAMPS:\n0:00 Faster training with multiple GPUs\n0:39 Video Overview\n1:24 Data parallel versus Pipeline Parallel versus Fully Sharded Data Parallel\n6:38 Downloading a jupyter notebook as a python script for multi-gpu, e.g. an unsloth notebook\n7:44 Unsloth vs Transformers for multi-gpu\n8:13 Modifying a fine-tuning script for distributed data parallel\n9:03 Starting up a GPU in one-click for fine-tuning\n10:27 Converting a jupyter notebook to a python script\n11:30 Installation notes for unsloth and tensorboard, and uv\n13:32 Script modifications required for DDP\n18:50 Training script run-through, for LoRA\n22:46 Setting gradient accumulation steps\n24:07 Dataset loading\n26:22 Setting up the run name and training parameters\n29:30 Running without multi-gpu (single gpu check)\n35:47 Running with multiple GPUs using accelerate config (btw torch run can result in run hangs)\n41:02 Sanity check of running with accelerate and a single gpu\n44:48 Open (at time of recording) issues with loss reporting and using unsloth with batch size larger than one\n53:11 Conclusion and shout-outs to spr1nter and rakshith",
+    "view_count": 4487
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CxowhaaLWZs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

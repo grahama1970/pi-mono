@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PZLmzbyYs2g",
+    "language": "en",
+    "took_ms": 9227,
+    "method": null,
+    "title": "DEF CON 33 - Thinking like an attacker is no longer optional - Abhijith 'Abx' B R, Keenan Skelly",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2203,
+    "description": "As threat actors evolve in speed, sophistication, and stealth, traditional defense strategies alone are no longer sufficient. This panel delves into the strategic importance of adopting an adversarial mindset, where defenders must think like attackers to stay ahead. Industry experts will discuss how adversary emulation and offensive cyber security techniques are being used not just to test systems, but to actively inform and strengthen defensive strategies. From red teaming to threat-informed defense, the panel will dive into how organizations are embedding adversarial thinking into their security programs to uncover blind spots, reduce response times, and build resilience against real-world threats. Whether you are defending an enterprise or building the next wave of security tools, embracing the adversarial mindset is no longer optional, it is essential. The panel will also cover a range of adversarial scenarios, including not only nation-state sponsored threat actors and targeted cyberattacks, but also the evolving warfare landscape witnessed recently, the use of technology by adversaries during conflicts, and effective countermeasures to address these challenges.",
+    "view_count": 487
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PZLmzbyYs2g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

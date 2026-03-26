@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JcmI433iPdk",
+    "language": "en",
+    "took_ms": 9452,
+    "method": null,
+    "title": "Intellectual Property and the Right-To-Repair Movement",
+    "channel": "Hudson Institute",
+    "upload_date": "20221102",
+    "duration_sec": 3033,
+    "description": "The right-to-repair movement has grown in recent years as proponents argue that consumers’ repair of their electronic devices is necessarily in the public interest. Many bills have been introduced in state legislatures and Congress mandating that consumers be given access to all materials to repair their products, including access to computer code and other copyrighted works. These legislative proposals generally conflict with federally protected intellectual property (IP) right, which needs to be accounted for in any right-to-repair legislation. State bills in particular overlook longstanding federal policy that IP rights serve the public interest, as well as the constitutional supremacy of federal laws over state laws. Moreover, right-to-repair advocates do not acknowledge how IP rights have been central to the success of the US innovation economy.",
+    "view_count": 704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JcmI433iPdk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iMBJSknnAnI",
+    "language": "en",
+    "took_ms": 8984,
+    "method": null,
+    "title": "First Hand Account from a Survivor of Boko Haram's Religious",
+    "channel": "Hudson Institute",
+    "upload_date": "20140513",
+    "duration_sec": 3169,
+    "description": "Boko Haram—a Hausa phrase meaning \"Western education is a sin\"—is an Islamic terrorist group whose stated aim is the establishment, by force, of a strict, sharia-law theocracy in Nigeria. Christians and students, both Muslim and Christian alike, have been among Boko Haram's principal civilian targets. In April, Boko Haram abducted and enslaved 276 schoolgirls taking exams in a facility in the northeastern Nigerian Christian enclave of Chibok. It threatens to sell the girls for $12.00 each.",
+    "view_count": 3616
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iMBJSknnAnI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

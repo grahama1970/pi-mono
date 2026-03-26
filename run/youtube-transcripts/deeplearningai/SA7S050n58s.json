@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SA7S050n58s",
+    "language": "en",
+    "took_ms": 9189,
+    "method": null,
+    "title": "Andrew Ng’s AI Python for Beginners final courses are live! Join now",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240904",
+    "duration_sec": 221,
+    "description": "Enroll now: https://bit.ly/4cO4vGr\n\nWe're excited to announce that Course 3 and Course 4 of AI Python for Beginners are now live, and enrollment is free for a limited time!\n\nTaught by Andrew Ng, these parts build on the skills you've developed in the first two courses, introducing more advanced topics in Python programming and AI integration, and packed with hands-on projects and practical examples to get experience coding with Python, supported by an AI companion!\n\nHere’s what you’ll learn:\n\nCourse 3: Working With Your Own Data and Documents in Python\n\n- Learn how to handle both structured and unstructured data using Python, from reading text files to processing data in CSV format for tasks like vacation planning.\n- Use Python and AI to process large volumes of text, such as extracting relevant details from food critics' journals or other documents, and generate useful insights.\n- Turn repetitive code blocks into reusable Python functions to make your code more modular and efficient.\n- Combine data processing techniques with AI to generate detailed travel itineraries, integrating multiple data sources.\n\nCourse 4: Extending Python With Packages and APIs\n\n- Learn how to import and use Python's built-in and third-party packages for various tasks, such as math, statistics, and visualizations.\n- Use third-party packages like Pandas for data manipulation and Matplotlib for data visualization, enabling you to create detailed and informative plots and charts.\n- Add randomness to your Python code, enhancing the ability to generate diverse and creative outputs, such as generating random recipes or datasets.\n- Learn to install and use packages like BeautifulSoup4 for web scraping, enabling you to process and analyze data directly from the web.\n\nWhether you're a knowledge worker looking to enhance your analytical skills and productivity or a developer looking to add Python experience to your toolkit, these courses offer practical ways to level up your skills!\n\nLearn more: https://bit.ly/4cO4vGr",
+    "view_count": 24630
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SA7S050n58s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

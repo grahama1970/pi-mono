@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CK5QGWUf1vo",
+    "language": "en",
+    "took_ms": 8430,
+    "method": null,
+    "title": "AI Dev 25 | Jeff Huber: Teach Chroma how to play Doom",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1149,
+    "description": "Can a retrieval system learn to play Doom? In this lighthearted and insightful session, Jeff Huber, Founder and CEO of Chroma, explores the idea of instruction retrieval as a form of agentic memory—using Chroma in a unique and unexpected way.\n\nWith live code and practical examples, this talk is a great entry point for developers curious about retrieval in AI agents, and how memory systems can support more complex behaviors.\n\nKeep building,\nDeepLearning.AI",
+    "view_count": 616
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CK5QGWUf1vo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JoE7I9iUysk",
+    "language": "en",
+    "took_ms": 8104,
+    "method": null,
+    "title": "Israel and Hezbollah: The Prospect of Renewed Hostilities Ten Years after War",
+    "channel": "Hudson Institute",
+    "upload_date": "20160726",
+    "duration_sec": 5105,
+    "description": "Lee Smith, Michael Doran, Reuven Azar, and Tony Badran discuss the 2006 Israel-Hezbollah War and the prospect of resumed conflict.",
+    "view_count": 6558
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JoE7I9iUysk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

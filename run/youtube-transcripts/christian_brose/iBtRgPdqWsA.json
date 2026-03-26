@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iBtRgPdqWsA",
+    "language": "en",
+    "took_ms": 7779,
+    "method": null,
+    "title": "Reassessing Military Power in the Middle East",
+    "channel": "Hudson Institute",
+    "upload_date": "20250725",
+    "duration_sec": 3269,
+    "description": "Iran has entered a new phase of strategic uncertainty after successful Israeli and American military operations dismantled the Islamic Republic’s nuclear infrastructure, fractured its proxy network, and significantly weakened its position in the region.\n\nSenior Fellows Michael Doran, Bryan Clark, and Can Kasapoğlu will explore the implications of this shift for the United States, Israel, and their partners and discuss how Iran might respond.\n\nLearn more at: https://www.hudson.org/events/reassessing-military-power-middle-east",
+    "view_count": 16820
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iBtRgPdqWsA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "06-AZXmwHjo",
+    "language": "en",
+    "took_ms": 7526,
+    "method": null,
+    "title": "A Chat with Andrew on MLOps: From Model-centric to Data-centric AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210324",
+    "duration_sec": 3610,
+    "description": "In this event, Dr.Andrew Ng shared the skills he sees as fundamental to the next generation of machine learning practitioners, and followed with a Q&A.\n\nLet us know what you think of the presentation by filling out a quick survey at http://bit.ly/30yeWuO\n\nTo learn more about us and signup for future events:\nDeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 305540
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 06-AZXmwHjo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

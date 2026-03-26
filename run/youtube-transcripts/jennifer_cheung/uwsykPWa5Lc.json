@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uwsykPWa5Lc",
+    "language": "en",
+    "took_ms": 7857,
+    "method": null,
+    "title": "DEF CON 32 - Why are you still using my server for your internet access - Thomas Boejstrup Johansen",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2349,
+    "description": "Pawning countries at top level domain by just buying one specific domain name ‘wpad.tld’, come hear about this more the 25+ years old issue and the research from running eight different wpad.tld domains for more than one year that turn into more the 1+ billion DNS request and more then 600+GB of Apache log data with leaked information from the clients.\n\nThis is the story about how easy it is to just buying one domain and then many hundreds of thousands of Internet clients will get auto pwned without knowing it and start sending traffic to this man-in-the-middle setup there is bypassing encryption and can change content with the ability to get the clients to download harmful content and execute it.\n\nThe talk will explain the technical behind this issue and showcase why and how clients will be trick into this Man-in-the-middle trap.",
+    "view_count": 64876
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uwsykPWa5Lc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

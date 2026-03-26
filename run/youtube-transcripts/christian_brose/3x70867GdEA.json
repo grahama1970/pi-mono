@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3x70867GdEA",
+    "language": "en",
+    "took_ms": 7751,
+    "method": null,
+    "title": "South and East China Seas: Challenges and Opportunities for",
+    "channel": "Hudson Institute",
+    "upload_date": "20130607",
+    "duration_sec": 5905,
+    "description": "Washington's proposed \"pivot to Asia\" faces important tests in a region vital to global economic growth, but riven by territorial disputes and escalating defense budgets. \r\n\r\nTensions between China and Japan over the Japanese-controlled Senkaku/Diaoyu islands have risen. Chinese naval forces have been involved in a standoff with the Philippines at Scarborough Shoal and continue to be active throughout the disputed waters surrounding the Paracel and Spratly islands. Taiwan remains a pot",
+    "view_count": 492
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3x70867GdEA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

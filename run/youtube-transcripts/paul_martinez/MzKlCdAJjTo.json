@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MzKlCdAJjTo",
+    "language": "en",
+    "took_ms": 8656,
+    "method": null,
+    "title": "Chris Blask: Cybersecurity Pioneer and Idea Man",
+    "channel": "S4 Events",
+    "upload_date": "20230426",
+    "duration_sec": 2798,
+    "description": "Chris Blask has a long career bringing new ideas to reality. He currently is Vice President of Strategy at Cybeats, who has a SBOM Studio product.\n\nCybeats is different in that SBOM Studio does not create SBOMs. This requires SBOMs to be available from somewhere, and Dale & Chris spend a lot of the podcast talking about the SBOM market today and in the future.\n\n- What percentage of the OT software solutions have SBOMs today? What will that number be in three years, five years, seven years?\n\n- When will the top 10% asset owners be able to be get value worth the effort from SBOMs and related tools and information?\n\n- What will the SBOM marketplace look like?\n\n- the DBOM.io project\n\nOf course being Dale and Chris, they deviate into a lot of other topics. Such as Chris's quotes:\n\n- “Security comes through transparency and automation”\n\n- “2020 this is the last decade of cybersecurity” “the last decade when entirely new fields will be discovered” I think we have covered the field.",
+    "view_count": 347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MzKlCdAJjTo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

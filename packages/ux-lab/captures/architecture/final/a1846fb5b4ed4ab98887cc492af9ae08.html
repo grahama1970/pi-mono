@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-fixed": "#25005a",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "primary-fixed": "#eaddff",
+                        "surface-container-high": "#2a2a2a",
+                        "on-background": "#e5e2e1",
+                        "inverse-primary": "#732ee4",
+                        "outline-variant": "#4a4455",
+                        "secondary-fixed": "#eaddff",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#84ffa8",
+                        "on-primary": "#3f008e",
+                        "tertiary-fixed-dim": "#00e479",
+                        "surface-container-highest": "#353534",
+                        "inverse-on-surface": "#313030",
+                        "outline": "#958da1",
+                        "on-primary-container": "#ede0ff",
+                        "surface-container": "#201f1f",
+                        "surface-bright": "#393939",
+                        "secondary-container": "#523787",
+                        "surface-tint": "#d2bbff",
+                        "on-tertiary": "#003919",
+                        "tertiary-fixed": "#60ff99",
+                        "primary": "#d2bbff",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#00773c",
+                        "background": "#131313",
+                        "primary-container": "#7c3aed",
+                        "on-secondary-fixed-variant": "#523787",
+                        "tertiary": "#00e479",
+                        "surface-variant": "#353534",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface": "#131313",
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-container": "#c3a6ff",
+                        "secondary": "#d2bbff",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-fixed": "#25005a",
+                        "on-tertiary-fixed": "#00210c",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-secondary": "#3b1e6f",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-surface-variant": "#ccc3d8",
+                        "inverse-surface": "#e5e2e1"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .pulse-green {
+            box-shadow: 0 0 0 0 rgba(0, 228, 121, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 228, 121, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 228, 121, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 228, 121, 0); }
+        }
+        .canvas-grid {
+            background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-[#131313] flex justify-between items-center w-full px-6 h-16 fixed top-0 z-50 border-b border-outline-variant/10">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#d2bbff] font-['Space_Grotesk'] uppercase">QUERYSPEC PIPELINE</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#00e479] font-mono text-xs tracking-widest uppercase" href="#">LIVE_RENDER</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 bg-[#2a2a2a] px-3 py-1.5 transition-colors hover:bg-[#353534] border border-outline-variant/20">
+<span class="material-symbols-outlined text-[#d2bbff] text-sm" data-icon="memory">memory</span>
+<span class="font-mono text-[10px] text-zinc-400">SYS_METRICS</span>
+</button>
+<div class="flex items-center gap-3 bg-[#0e0e0e] px-4 py-1.5 border border-tertiary/20">
+<div class="w-2 h-2 rounded-full bg-tertiary pulse-green"></div>
+<span class="font-mono text-xs font-bold text-tertiary tracking-widest">AGENT</span>
+</div>
+</div>
+</header>
+<main class="flex h-screen pt-16 pb-12 overflow-hidden">
+<!-- SideNavBar (Left Pane) -->
+<aside class="flex flex-col h-full w-64 bg-[#0e0e0e] shrink-0 z-40">
+<div class="px-6 py-8 border-b border-outline-variant/10">
+<h2 class="font-['JetBrains_Mono'] text-xs uppercase tracking-[0.2em] text-[#d2bbff] font-bold">ARCHITECTURES</h2>
+<p class="font-['JetBrains_Mono'] text-[10px] text-zinc-500 mt-1 uppercase">SYSTEM_OPERATOR</p>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<!-- Architecture List -->
+<div class="mb-8">
+<div class="text-[#d2bbff] bg-[#131313] border-l-2 border-[#7c3aed] px-6 py-3 flex items-center gap-3 group">
+<span class="material-symbols-outlined text-sm" data-icon="account_tree">account_tree</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">QuerySpec Pipeline</span>
+</div>
+<div class="text-zinc-600 hover:text-zinc-200 hover:bg-[#131313] px-6 py-3 flex items-center gap-3 transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="memory">memory</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">SPARTA Recall</span>
+</div>
+<div class="text-zinc-600 hover:text-zinc-200 hover:bg-[#131313] px-6 py-3 flex items-center gap-3 transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="description">description</span>
+<span class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest">Evidence Case</span>
+</div>
+</div>
+<!-- Version List -->
+<div class="px-6 mb-4">
+<h3 class="font-['JetBrains_Mono'] text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-4">VERSIONS</h3>
+<div class="space-y-1">
+<div class="flex items-center justify-between text-[#d2bbff] bg-[#2a2a2a]/30 px-3 py-2 border border-primary/20 cursor-pointer">
+<span class="font-mono text-xs">v3_current</span>
+<span class="text-[9px] bg-primary/20 text-primary px-1">ACTIVE</span>
+</div>
+<div class="flex items-center justify-between text-zinc-500 hover:bg-[#131313] px-3 py-2 cursor-pointer">
+<span class="font-mono text-xs">v2_stable</span>
+</div>
+<div class="flex items-center justify-between text-zinc-500 hover:bg-[#131313] px-3 py-2 cursor-pointer">
+<span class="font-mono text-xs">v1_deprec</span>
+</div>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10 space-y-2">
+<button class="w-full bg-primary-container text-on-primary-container font-mono text-xs py-3 uppercase tracking-widest hover:brightness-110 transition-all">
+                    NEW_NODE
+                </button>
+<div class="flex gap-1">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 text-zinc-500 hover:bg-[#131313] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="description">description</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 text-zinc-500 hover:bg-[#131313] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Center Canvas Area -->
+<section class="flex-1 relative bg-surface-container-lowest canvas-grid">
+<!-- HUD Tool Overlays (Corners) -->
+<div class="absolute top-4 left-4 z-10 font-mono text-[10px] text-tertiary flex gap-4">
+<span class="bg-black/40 px-2 py-1 backdrop-blur-md">LATENCY: 14ms</span>
+<span class="bg-black/40 px-2 py-1 backdrop-blur-md">NODES: 12_ACTIVE</span>
+</div>
+<div class="absolute bottom-4 right-4 z-10 font-mono text-[10px] text-zinc-500">
+                COORD: 142.02, -88.11 | ZOOM: 100%
+            </div>
+<!-- Excalidraw Floating Toolbar -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2 z-30 flex items-center bg-[#131313]/90 backdrop-blur-xl border border-outline-variant/20 p-1 shadow-2xl">
+<div class="flex items-center gap-0.5 px-2 border-r border-outline-variant/20 mr-1">
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Lock"><span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span></button>
+</div>
+<div class="flex items-center gap-0.5">
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Pan"><span class="material-symbols-outlined text-[20px]" data-icon="pan_tool">pan_tool</span></button>
+<button class="p-2 bg-primary/10 text-primary border-b-2 border-primary" title="Select"><span class="material-symbols-outlined text-[20px]" data-icon="near_me">near_me</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Rectangle"><span class="material-symbols-outlined text-[20px]" data-icon="rectangle">rectangle</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Diamond"><span class="material-symbols-outlined text-[20px]" data-icon="pentagon">pentagon</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Circle"><span class="material-symbols-outlined text-[20px]" data-icon="circle">circle</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Arrow"><span class="material-symbols-outlined text-[20px]" data-icon="trending_flat">trending_flat</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Line"><span class="material-symbols-outlined text-[20px]" data-icon="horizontal_rule">horizontal_rule</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Pencil"><span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Text"><span class="material-symbols-outlined text-[20px]" data-icon="title">title</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Image"><span class="material-symbols-outlined text-[20px]" data-icon="image">image</span></button>
+<button class="p-2 hover:bg-[#2a2a2a] text-zinc-400" title="Eraser"><span class="material-symbols-outlined text-[20px]" data-icon="ink_eraser">ink_eraser</span></button>
+</div>
+</div>
+<!-- Canvas Properties Panel (Floating Left) -->
+<div class="absolute left-6 top-32 z-30 w-56 bg-[#131313]/90 backdrop-blur-xl border border-outline-variant/10 p-4 shadow-xl">
+<div class="mb-6">
+<label class="font-mono text-[10px] text-zinc-500 uppercase block mb-2">Stroke Color</label>
+<div class="flex gap-2">
+<div class="w-6 h-6 bg-primary border border-white/20"></div>
+<div class="w-6 h-6 bg-tertiary"></div>
+<div class="w-6 h-6 bg-zinc-200"></div>
+<div class="w-6 h-6 bg-transparent border border-zinc-700 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-px bg-error rotate-45 origin-top-left"></div>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<label class="font-mono text-[10px] text-zinc-500 uppercase block mb-2">Stroke Style</label>
+<div class="grid grid-cols-3 gap-1">
+<button class="p-2 bg-[#2a2a2a] border border-primary/40"><span class="material-symbols-outlined text-xs" data-icon="check_box_outline_blank">check_box_outline_blank</span></button>
+<button class="p-2 bg-[#0e0e0e] border border-outline-variant/10"><span class="material-symbols-outlined text-xs" data-icon="border_style">border_style</span></button>
+<button class="p-2 bg-[#0e0e0e] border border-outline-variant/10"><span class="material-symbols-outlined text-xs" data-icon="texture">texture</span></button>
+</div>
+</div>
+<div class="mb-6">
+<label class="font-mono text-[10px] text-zinc-500 uppercase block mb-2">Opacity</label>
+<div class="h-1 w-full bg-[#2a2a2a] relative">
+<div class="absolute inset-y-0 left-0 w-3/4 bg-primary"></div>
+<div class="absolute top-1/2 left-3/4 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/10">
+<button class="w-full flex justify-between items-center text-zinc-400 hover:text-on-surface py-1">
+<span class="font-mono text-[10px] uppercase">Layers</span>
+<span class="material-symbols-outlined text-sm" data-icon="layers">layers</span>
+</button>
+</div>
+</div>
+<!-- Canvas Content Simulation -->
+<div class="w-full h-full flex items-center justify-center p-20">
+<div class="relative w-full h-full">
+<!-- INGEST_SVC -->
+<div class="absolute top-1/4 left-1/4 w-48 h-32 bg-[#131313] border-2 border-primary p-4 shadow-[0_0_20px_rgba(124,58,237,0.15)]">
+<div class="font-mono text-[10px] text-primary mb-2">SERVICE_NODE</div>
+<h4 class="font-headline font-bold text-lg leading-none mb-4">INGEST_SVC</h4>
+<div class="space-y-1">
+<div class="h-1 bg-primary/20 w-full"></div>
+<div class="h-1 bg-primary/20 w-2/3"></div>
+</div>
+</div>
+<!-- Arrow 1 -->
+<svg class="absolute top-[calc(25%+64px)] left-[calc(25%+192px)] w-40 h-2" style="transform: translateY(-50%);">
+<path d="M0,1 L150,1" fill="none" stroke="#7c3aed" stroke-dasharray="8,4" stroke-width="2"></path>
+<path d="M150,1 L142,-3 L142,5 Z" fill="#7c3aed"></path>
+</svg>
+<!-- PROCESSING_ENGINE -->
+<div class="absolute top-1/4 left-[calc(25%+240px)] w-64 h-48 bg-[#1a1a1a] border-2 border-tertiary p-6">
+<div class="font-mono text-[10px] text-tertiary mb-2">COMPUTE_CLUSTER</div>
+<h4 class="font-headline font-bold text-xl leading-none mb-6">PROCESSING_ENGINE</h4>
+<div class="grid grid-cols-2 gap-2">
+<div class="h-12 bg-tertiary/5 border border-tertiary/20 flex items-center justify-center font-mono text-[8px] text-tertiary/60">WORKER_A</div>
+<div class="h-12 bg-tertiary/5 border border-tertiary/20 flex items-center justify-center font-mono text-[8px] text-tertiary/60">WORKER_B</div>
+</div>
+</div>
+<!-- Markdown Documents -->
+<div class="absolute bottom-1/4 left-1/3 w-32 h-40 bg-[#0e0e0e] border border-outline-variant/30 rotate-2 shadow-xl">
+<div class="p-2 border-b border-outline-variant/10 flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-zinc-500" data-icon="description">description</span>
+<span class="font-mono text-[8px] text-zinc-400">WALKTHROUGH.md</span>
+</div>
+<div class="p-3 space-y-2">
+<div class="h-1.5 bg-zinc-800 w-full"></div>
+<div class="h-1.5 bg-zinc-800 w-full"></div>
+<div class="h-1.5 bg-zinc-800 w-3/4"></div>
+</div>
+</div>
+<div class="absolute bottom-[15%] left-[calc(1/3+180px)] w-32 h-40 bg-[#0e0e0e] border border-outline-variant/30 -rotate-3 shadow-xl">
+<div class="p-2 border-b border-outline-variant/10 flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px] text-zinc-500" data-icon="description">description</span>
+<span class="font-mono text-[8px] text-zinc-400">SKILL.md</span>
+</div>
+<div class="p-3 space-y-2">
+<div class="h-1.5 bg-zinc-800 w-full"></div>
+<div class="h-1.5 bg-zinc-800 w-5/6"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane (Details Panel) -->
+<aside class="w-80 h-full bg-[#131313] border-l border-outline-variant/10 flex flex-col z-40">
+<div class="p-6 border-b border-outline-variant/10 bg-[#0e0e0e]">
+<h2 class="font-['JetBrains_Mono'] text-xs uppercase tracking-widest text-[#d2bbff] mb-1">ELEMENT DETAILS</h2>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="database">database</span>
+<span class="font-mono text-[10px] text-zinc-500">ID: ARANGO_PR_0912</span>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant/10">
+<button class="flex-1 py-3 font-mono text-[10px] uppercase tracking-tighter text-on-surface border-b-2 border-primary bg-[#1a1a1a]">Properties</button>
+<button class="flex-1 py-3 font-mono text-[10px] uppercase tracking-tighter text-zinc-600 hover:text-zinc-400">Connections</button>
+<button class="flex-1 py-3 font-mono text-[10px] uppercase tracking-tighter text-zinc-600 hover:text-zinc-400">Code Paths</button>
+</div>
+<!-- Metadata List -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<div>
+<h3 class="font-mono text-[9px] text-zinc-500 uppercase tracking-widest mb-3">ArangoDB Metadata</h3>
+<div class="space-y-4">
+<div class="group">
+<label class="block font-mono text-[8px] text-zinc-600 uppercase mb-1">node_id</label>
+<div class="font-mono text-xs text-on-surface bg-[#0e0e0e] px-3 py-2 border border-outline-variant/10 group-hover:border-primary/40 transition-colors">
+                                engine_cluster_01
+                            </div>
+</div>
+<div class="group">
+<label class="block font-mono text-[8px] text-zinc-600 uppercase mb-1">latency_p99</label>
+<div class="flex items-center justify-between font-mono text-xs text-tertiary bg-[#0e0e0e] px-3 py-2 border border-outline-variant/10">
+<span>14.2ms</span>
+<span class="material-symbols-outlined text-xs" data-icon="trending_down">trending_down</span>
+</div>
+</div>
+<div class="group">
+<label class="block font-mono text-[8px] text-zinc-600 uppercase mb-1">throughput</label>
+<div class="font-mono text-xs text-on-surface bg-[#0e0e0e] px-3 py-2 border border-outline-variant/10">
+                                1.2M req/sec
+                            </div>
+</div>
+<div class="group">
+<label class="block font-mono text-[8px] text-zinc-600 uppercase mb-1">status</label>
+<div class="flex items-center gap-2 font-mono text-xs text-tertiary bg-tertiary/5 px-3 py-2 border border-tertiary/20">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+                                OPERATIONAL
+                            </div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-mono text-[9px] text-zinc-500 uppercase tracking-widest mb-3">Dependency Graph</h3>
+<div class="bg-[#0e0e0e] border border-outline-variant/10 p-4">
+<img alt="Technical diagram" class="w-full h-32 object-cover opacity-50 filter grayscale contrast-125" data-alt="Abstract technical data visualization showing glowing purple interconnected nodes and digital fiber optics on a black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPEexxWTzmwueK5fDu3u4lvIca5p1Ks8NMhoboOQ7MnP6e__-6UxFlJOmZar9RRkPEyH8Pp3E5TE_d6pX90O45g-Qa2rHduE1Dz6mpEM_Xcx-4RI1Jp1MDMiPKVaHEGsn99SLQR_4ThnS_Wxr-SMsbLTiGWEotwVF4I-SORePEeSnboKhpI0aVVQMTSevGJtwvfB9_t8zKV5GgiCD_cg9GXz_y8jMe-1JGZ4dnNEAOC6qghXFV1hKUaJm1pn_zFmi7zm5bdnHnBwc"/>
+</div>
+</div>
+</div>
+<div class="p-4 bg-[#0e0e0e]">
+<button class="w-full py-2 border border-outline-variant/30 font-mono text-[10px] text-zinc-400 uppercase tracking-widest hover:text-on-surface hover:bg-[#131313] transition-colors">
+                    REFRESH_SCHEMA
+                </button>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-center items-center px-8 h-12 bg-[#131313] border-t border-[#2a2a2a]/15 shadow-2xl">
+<button class="flex items-center gap-3 px-8 h-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-all group active:opacity-80">
+<span class="material-symbols-outlined text-[#00e479]" data-icon="save" data-weight="fill" style="font-variation-settings: 'FILL' 1;">save</span>
+<span class="font-['JetBrains_Mono'] font-bold text-[#00e479] text-xs tracking-[0.2em]">SAVE TO MEMORY</span>
+</button>
+<div class="absolute right-8 flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-zinc-600" data-icon="cloud_done">cloud_done</span>
+<span class="font-mono text-[9px] text-zinc-600">SYNCED_TO_ARANGODB</span>
+</div>
+<div class="h-4 w-px bg-zinc-800"></div>
+<span class="font-mono text-[9px] text-zinc-600">v3.0.4-BETA</span>
+</div>
+</footer>
+</body></html>

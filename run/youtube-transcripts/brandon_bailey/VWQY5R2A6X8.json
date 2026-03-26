@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "VWQY5R2A6X8",
+    "language": "en",
+    "took_ms": 9229,
+    "method": null,
+    "title": "DEF CON 31 - ELECTRONizing MacOS Privacy - A New Weapon in Your Red Teaming Armory - Wojciech Reguła",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1194,
+    "description": "MacOS is known for an additional layer of privacy controls called TCC - Transparency, Consent, and Control (TCC) that restricts access to sensitive personal resources: documents, camera, microphone, emails, and more. Granting such access requires authorization, and the mechanism's main design concern was clear user consent.\n\nDespite many vulnerabilities in that mechanism found in the past, using 0-days during red teaming engagements is impractical. Apple fixes TCC vulnerabilities but red teams still have to get access to files saved on the victim’s desktop or be able take a screenshot.\n\nWhat if I tell you that there are many open doors to resolve all the TCC problems that are already installed on your target machines?! Electron apps are everywhere. And you probably heard the joke that: ‘S’ in Electron stands for security.\n\nIn this talk I will share a new tool that, by abusing Electron default configuration, allows executing code in the context of those Electron apps and thus inherit their TCC permissions.\n\nThe audience will leave with a solid understanding of the macOS privacy restrictions framework (TCC) and its weaknesses. The part of the audience interested in macOS red teaming will also get to know my new, free and open source tool. Blue teams on the stage will also see some ideas regarding detections.",
+    "view_count": 5516
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] VWQY5R2A6X8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

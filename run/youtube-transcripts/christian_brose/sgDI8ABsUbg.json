@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sgDI8ABsUbg",
+    "language": "en",
+    "took_ms": 7961,
+    "method": null,
+    "title": "Counterbalance | Ep. 4: Miles Yu, Framing the Free World's Struggle with the CCP",
+    "channel": "Hudson Institute",
+    "upload_date": "20210324",
+    "duration_sec": 3303,
+    "description": "Mike and Marshall speak with recently announced Hudson Institute Senior Fellow, Miles Yu. Dr. Yu illustrates the wide array of threats that the Chinese Communist Party poses to the West, including economic pressures, regional alliance building, and authoritarian policies threatening freedom's around the world. Dr. Yu uses his expertise in academia and government to answer questions like: Are we winning the struggle with the CCP? Can we? What must be done to do so?",
+    "view_count": 2498
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sgDI8ABsUbg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

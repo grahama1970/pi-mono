@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZJYy-brELyg",
+    "language": "en",
+    "took_ms": 8926,
+    "method": null,
+    "title": "How to Break Into Data Engineering  #dataengineeringessentials #dataengineering",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241105",
+    "duration_sec": 41,
+    "description": "Data engineering can be tough to break into—most companies don’t hire junior roles. Many start as software engineers or data analysts. Zach Wilson began his journey in a software engineering role himself!\n\nLearn more about his path in the Data Engineering professional certificate: https://bit.ly/3Y4Qb70",
+    "view_count": 4900
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZJYy-brELyg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

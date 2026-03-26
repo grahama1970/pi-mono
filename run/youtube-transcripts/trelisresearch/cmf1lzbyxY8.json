@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cmf1lzbyxY8",
+    "language": "en",
+    "took_ms": 8764,
+    "method": null,
+    "title": "Really Long Context LLMs - 200k input tokens",
+    "channel": "Trelis Research",
+    "upload_date": "20231120",
+    "duration_sec": 1517,
+    "description": "Models and Scripts all at Trelis.com\n~~~\nModels:\n- \"Base\" Yi 34B 200k Model: https://huggingface.co/01-ai/Yi-34B\n- \"Chat\" Version: https://huggingface.co/Trelis/Yi-34B-200K-Llamafied-chat-SFT\n- \"Function-calling\" Version: https://huggingface.co/Trelis/Yi-34B-200K-Llamafied-chat-SFT-function-calling-v2 \n\nInference:\n- Inference Guide/Scripts: https://trelis.com/enterprise-server-api-and-inference-guide/\n- One click Runpod template: https://runpod.io/gsc?template=g3oeoerfm3&ref=jmfkcdio\n- Runpod affiliate link (helps support the channel): http://tinyurl.com/ym3sph3c\n\nChapters:\n0:00 Really long context length large language models\n00:10 Video overview\n1:21 Yi 200k context model\n2:55 Which long context models are actually good?\n4:25 Base model vs Chat fine-tuned Yi model\n9:16 Passkey Retrieval on Yi 6B\n12:36 Passkey retrieval for Claude\n14:19 Yi 34B performance at 107k context\n16:38 Inferencing Yi models with Runpod\n22:10 Yi Function-calling models\n22:26 Long Context Model Resources\n23:53 Video Summary",
+    "view_count": 1563
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cmf1lzbyxY8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

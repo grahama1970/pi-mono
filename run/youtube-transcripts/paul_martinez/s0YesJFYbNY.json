@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s0YesJFYbNY",
+    "language": "en",
+    "took_ms": 8155,
+    "method": null,
+    "title": "The Future of ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20211020",
+    "duration_sec": 1572,
+    "description": "Susan Peterson Sturm and Dale Peterson talked about the future at Cognite's Ignite event. They discussed:\n- what changes can we expect when architectures base on the Purdue mode are dying\n- trust and restricted capabilities between service providers and assets owners\n- how data ops coming online now can help secure OT and leverage IT / OT convergence\n- cultural convergence\n- the promise of process variable anomaly detection",
+    "view_count": 913
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s0YesJFYbNY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

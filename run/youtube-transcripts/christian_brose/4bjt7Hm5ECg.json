@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4bjt7Hm5ECg",
+    "language": "en",
+    "took_ms": 8855,
+    "method": null,
+    "title": "A Book Talk with Robert B. Zoellick",
+    "channel": "Hudson Institute",
+    "upload_date": "20211012",
+    "duration_sec": 3065,
+    "description": "Join Hudson Institute Senior Fellow Thomas J. Duesterberg in conversation with Ambassador Robert B. Zoellick, former World Bank president, U.S. Trade Representative, and deputy secretary of State, on his recent book, “America in the World.” Combining deep historical research with a practitioner’s perspective on statecraft, Zoellick provides fresh insights into major episodes in the history of U.S. foreign and international economic policy. Please join Hudson Institute for what promises to be a fascinating and wide-ranging discussion.",
+    "view_count": 747
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4bjt7Hm5ECg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

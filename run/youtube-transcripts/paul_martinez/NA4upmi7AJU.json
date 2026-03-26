@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NA4upmi7AJU",
+    "language": "en",
+    "took_ms": 7923,
+    "method": null,
+    "title": "Identifying the Disgruntled Insider",
+    "channel": "S4 Events",
+    "upload_date": "20170130",
+    "duration_sec": 1891,
+    "description": "The disgruntled insider is perhaps the most dangerous threat agent to an industrial control system (ICS). He has access, and he often knows how to do the most damage to the plant, pipeline, process ...\n\nDr. Eric Shaw describes a fascinating and effective technique to identify disgruntled insiders by using email analysis and psycholinguistics. They run a company's email through this tool and it identifies the small number of employees who are likely to be a threat.\n\nThe approach does not identify the exact person who did or could do a nasty insider attack, but it very effectively narrows down the list of people to look at. Dr. Shaw says it narrows it down to 1% of the employees and 1% of the emails. \n\nHe goes through in some detail what they look for in the emails and has some interesting case studies.\n\nMany of the S4x17 attendees listed this as their favorite session.",
+    "view_count": 1983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NA4upmi7AJU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

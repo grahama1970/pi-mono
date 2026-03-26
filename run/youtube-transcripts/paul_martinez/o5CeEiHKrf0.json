@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "o5CeEiHKrf0",
+    "language": "en",
+    "took_ms": 7782,
+    "method": null,
+    "title": "Cyber Insurance Exclusions and Rates",
+    "channel": "S4 Events",
+    "upload_date": "20220216",
+    "duration_sec": 3800,
+    "description": "Two cyber insurance underwriters, Monica Tigleanu of Munich Re and Paul Gooch of Tokio Marine Kiln, join Dale Peterson on the Unsolicited Response show to talk cyber insurance. \n\nMost of the episode discusses exclusions. Recently we had the high profile ruling that Merck's property policy in fact covered NotPetya losses because there was not a cyber exclusion statement. \n\nThe more interesting and important discussion is around the four recommended exclusions related to cyber war for cyber insurance policies that Lloyd's Market Association issued. These will likely by used by many in the Lloyd's syndicate and will affect other insurers. We look at the language around cyber operations, attribution, and other key terms.\n\nThen the last part of the podcast talks about how insurers will be looking to set cyber insurance rates. How do they determine the cyber security posture of a potential insured.\n\nIt's an area that cybersecurity pro's in OT, and IT, need to understand better if they are part of cyber risk discussions.",
+    "view_count": 5356
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] o5CeEiHKrf0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

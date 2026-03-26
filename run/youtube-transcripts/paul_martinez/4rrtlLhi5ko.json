@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4rrtlLhi5ko",
+    "language": "en",
+    "took_ms": 8602,
+    "method": null,
+    "title": "Pwn2Own Miami Results At S4x20",
+    "channel": "S4 Events",
+    "upload_date": "20200224",
+    "duration_sec": 1479,
+    "description": "ZDI ran the first Pwn2Own competition on ICS software at S4x20 in Miami South Beach. They gave away $280K in prize money for 0day exploits. \n\nIn this session Dustin Childs of ZDI goes over the competition and results. And he awards the Master of Pwn award to the team that got the most points in the competition.",
+    "view_count": 251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4rrtlLhi5ko: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

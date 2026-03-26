@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1wBdD-KZ4rI",
+    "language": "en",
+    "took_ms": 8841,
+    "method": null,
+    "title": "The Industrial Radio Project - Hacking Cranes Using SDR",
+    "channel": "S4 Events",
+    "upload_date": "20190128",
+    "duration_sec": 2084,
+    "description": "Crane's and other mobile equipment lack basic security controls. When operation is local and wired, this risk is minor. When they move to wireless control, it becomes possible for an adversary even 1 or more kilometers away to take control of the crane as Stephen Hilt and Jonathan Andersson of Trend Micro show at S4x19 in Miami South Beach.\n\nThere's a bit of fun stunt hacking included where Stephen performs the crane control from a modified Casio watch. While the watch has the sizzle, the software and hardware development the Trend team developed to process and understand the signal is the impressive technical feat.",
+    "view_count": 1449
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1wBdD-KZ4rI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

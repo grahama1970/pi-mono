@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "scwlePccqgc",
+    "language": "en",
+    "took_ms": 8718,
+    "method": null,
+    "title": "OT Specific DPI for Operational Awareness: Ultra 3eti Session",
+    "channel": "S4 Events",
+    "upload_date": "20170724",
+    "duration_sec": 2269,
+    "description": "Matt Cowell presented for Ultra 3eti on the S4x17 Sponsor Stage. This is a good primer on ICS deep packet inspection (DPI). What it is. How it can help you with the identify, detect and respond portions of your ICS security program.\n\n4:04 - Describes 3 categories of ICS anomalies (system, network, device)\n15:00 - DPI benefits in OT\n22:00 3eti's view of ICS DPI\n28:55 Cyberfence product presentation",
+    "view_count": 216
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] scwlePccqgc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

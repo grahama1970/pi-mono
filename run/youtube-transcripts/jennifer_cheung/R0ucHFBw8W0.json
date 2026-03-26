@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R0ucHFBw8W0",
+    "language": "en",
+    "took_ms": 9266,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Harshad Sathaye - A Deeper Dive into ILS and ADS B Spoofing",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1359,
+    "description": "Modern aircraft heavily rely on several wireless technologies for communications control and navigation. Researchers demonstrated vulnerabilities in many aviation systems e.g., spoofing ILS signals to disrupt the landing, injecting ghost aircraft into airspace, spoof locations, and manipulate key communication messages. This presentation will give the viewers a better understanding of the fundamental problems associated with these critical systems and what makes spoofing attacks possible.",
+    "view_count": 810
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R0ucHFBw8W0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

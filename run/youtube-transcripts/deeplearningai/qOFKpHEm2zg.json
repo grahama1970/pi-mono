@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qOFKpHEm2zg",
+    "language": "en",
+    "took_ms": 9602,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Samraj Moorjani: Accelerate High quality Agent Development with MLflow",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1769,
+    "description": "Building high-quality agents is one of the biggest challenges teams face today, often requiring vibe checks, manual labeling, analyzing traces by hand, and endless iterations. \n\nIn this presentation by Samraj Moorjani, Software Engineer at Databricks, attendees learned how to streamline this process with MLflow to enable the rapid development of high-quality agents, leveraging techniques used by leading companies with deployed agents in production.\n\n------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 769
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qOFKpHEm2zg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

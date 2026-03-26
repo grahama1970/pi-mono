@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NS47q32aWZw",
+    "language": "en",
+    "took_ms": 7688,
+    "method": null,
+    "title": "Learn to build effective Agentic AI systems",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251007",
+    "duration_sec": 59,
+    "description": "Agentic AI, taught by Andrew Ng, is now available worldwide.\n\nLearn to design and evaluate AI systems that plan, reflect, and collaborate across multiple steps, built in raw Python.\n\nAvailable exclusively at DeepLearning.AI.\n\nEnroll now 👉 https://www.deeplearning.ai/courses/agentic-ai/",
+    "view_count": 59395
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NS47q32aWZw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

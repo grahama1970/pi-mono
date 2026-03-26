@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "094rB295yBE",
+    "language": "en",
+    "took_ms": 8950,
+    "method": null,
+    "title": "Antitrust in the 21st Century: The Ninth Circuit’s Decision in FTC v. Qualcomm",
+    "channel": "Hudson Institute",
+    "upload_date": "20201012",
+    "duration_sec": 3400,
+    "description": "Join the Hudson Institute for a discussion on the recent decision of the U.S. Court of Appeals for the Ninth Circuit in FTC v. Qualcomm, which some have described as one of the most important antitrust cases of the twenty-first century. The discussion will be hosted by Hudson Institute Senior Fellow, Urška Petrovcic and feature leading legal experts and industry leaders.",
+    "view_count": 1076
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 094rB295yBE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qXtPPgujufI",
+    "language": "en",
+    "took_ms": 10708,
+    "method": null,
+    "title": "Fine tune and Serve Faster Whisper Turbo",
+    "channel": "Trelis Research",
+    "upload_date": "20241016",
+    "duration_sec": 2083,
+    "description": "➡️ Colab Notebook: https://colab.research.google.com/drive/1OkT0CLE219qbwQoXV94wNk_4Un7Du2sH?usp=sharing\n➡️ Get Life-time Access to the ADVANCED Transcription Scripts (and future improvements): https://Trelis.com/ADVANCED-transcription\n➡️ One-click-templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER RESOURCES:\n- Faster Whisper: https://github.com/SYSTRAN/faster-whisper\n- CTranslate2: https://github.com/OpenNMT/CTranslate2/\n- Insanely Fast Whisper: https://github.com/Vaibhavs10/insanely-fast-whisper\n\nTIMESTAMPS:\n0:00 Whisper Turbo Fine-tuning and Serving\n0:39 Colab Demo: Transcribing Audio Files and Youtube Audio\n2:34 How does Whisper (Turbo) work?\n6:00 Faster Whisper, Insanely Fast Whisper, and Fast Whisper Server?\n8:01 Fine-tuning Whisper Turbo for new words or accents\n16:27 Automating training data cleanup with LLMs\n18:36 Chunking our input audio and text data and pushing to hub\n22:27 LoRA and Trainer Setup\n25:15 Saving, evaluating and converting the model for OpenAI format and Faster Whisper\n29:24 Setting up a Faster Whisper Server Endpoint",
+    "view_count": 10186
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qXtPPgujufI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

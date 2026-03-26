@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uiVkZMceYRk",
+    "language": "en",
+    "took_ms": 10073,
+    "method": null,
+    "title": "Why is the F-22 so GOOD?",
+    "channel": "Sandboxx",
+    "upload_date": "20230208",
+    "duration_sec": 60,
+    "description": "The F-22 Raptor is widely seen as the most dominant air superiority fighter on the planet... but what makes it so special?\n#f22 #f22raptor #stealth #stealthfighter #shorts",
+    "view_count": 103514
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uiVkZMceYRk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

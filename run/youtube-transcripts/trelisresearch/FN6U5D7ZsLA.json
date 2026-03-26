@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FN6U5D7ZsLA",
+    "language": "en",
+    "took_ms": 9720,
+    "method": null,
+    "title": "Document-Reading Agents with Read-Write Memory",
+    "channel": "Trelis Research",
+    "upload_date": "20250306",
+    "duration_sec": 2574,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\n📸 Thumbnail Tutorial\nSee How It’s Made: https://youtu.be/ThKYjTdkyP8\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1e31UhJ2tb8wxAXLIOulDoqnFdXF6oub_F8T9JdTYrHc/edit?usp=sharing\n- Marker: https://github.com/VikParuchuri/marker\n- MemGPT paper: https://arxiv.org/abs/2310.08560\n\nTIMESTAMPS:\n00:00 Introduction to LLM Memory\n00:35 Setting Up Local Memory\n02:29 Read-Write Memory Explained\n05:05 Document Database Integration\n06:54 LLM Document Reading Techniques\n10:41 Search Methods and Their Effectiveness\n12:57 Demo: Setting Up and Testing Local Memory\n19:28 Demo: Reading a Document with LLM\n34:41 Code Walkthrough and Implementation\n42:25 Conclusion and Resources",
+    "view_count": 2777
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FN6U5D7ZsLA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

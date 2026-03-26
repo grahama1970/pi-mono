@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Nbyz3PRsQgo",
+    "language": "en",
+    "took_ms": 8525,
+    "method": null,
+    "title": "Fine-tuning Llama 2 for Tone or Style",
+    "channel": "Trelis Research",
+    "upload_date": "20230907",
+    "duration_sec": 1050,
+    "description": "Fine-tune Llama 2 (or any huggingface model!) for tone or style using a custom dataset - here, Shakespeare!\n\nFine-tuning for structured responses, e.g. function calling? https://www.youtube.com/watch?v=OQdp-OeG1as\n\n*Free Resources*\nSimple fine-tuning Colab Notebook: https://colab.research.google.com/drive/1VoYNfYDKcKRQRor98Zbf2-9VQTtGJ24k?usp=sharing\n\n*Embedding Notebook - see https://youtu.be/egnf8L-EUJU*\n1. Create Embeddings with OpenAI, marco, or Llama 2.\n2. Run inference with injected embeddings \nBuy Access Here: https://buy.stripe.com/eVa5l6cWh0zpg7edRc\n\n*Supervised Fine-tuning Notebook - see https://youtu.be/DMcxxg5iEZQ*\n- Run fine-tuning using a Q&A dataset.\nBuy Access Here: https://buy.stripe.com/4gw6pag8t5TJ9IQbJ6\n\n*Fine-tuning Repository Access*\n1. Supervised Fine-tuning Notebook\n2. Q&A Dataset Preparation Scripts\n3. Embedding Notebook (Scripts to create and use Embeddings)\n4. Notebook to fine-tune for Tone or Style\n5. Forum Support\nLearn More: https://trelis.com/advanced-fine-tuning-scripts/\n\nShakespeare Dataset on HuggingFace: https://huggingface.co/datasets/Trelis/tiny-shakespeare\n\nKarpathy's nanoGPT repo (where he trains a model from scratch on Shakespeare): https://github.com/karpathy/nanoGPT\n\nChapters:\n0:00 How to fine tune on a custom dataset\n0:15 What dataset should I use for fine-tuning?\n0:50 Fine-tuning in Google Colab\n2:45 Loading Llama 2 with bitsandbytes\n3:15 Fine-tuning with LoRA\n3:50 Target modules for fine-tuning\n4:15 Loading data for fine-tuning\n5:30 Training Llama 2 with a validation set\n6:30 Setting training parameters for fine-tuning\n7:50 Choosing batch size for training\n8:15 Setting gradient accumulation for training\n9:25 Using an eval dataset for training\n9:50 Setting warm-up parameters for training\n10:50 Using AdamW for optimisation\n13:20 Fix for when commands don't work in Colab\n15:00 Evaluating training loss\n16:20 Running inference after training",
+    "view_count": 2441
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Nbyz3PRsQgo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

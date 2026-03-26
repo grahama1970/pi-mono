@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "b4lut5uWs2w",
+    "language": "en",
+    "took_ms": 7725,
+    "method": null,
+    "title": "Detecting ICS Attacks Through Process Variable Analysis",
+    "channel": "S4 Events",
+    "upload_date": "20170814",
+    "duration_sec": 2392,
+    "description": "Great ICS attack detection session at the 2017 S4xEurope by Jean-Christophe Testud of Sentryo. His research attempted to use the process variables, e.g. temperature, pressure, speed, rotation, pedal position, etc., to determine when the attacker was injecting false data into the ICS.\n\nS4 has seen many sessions on detecting attacks, especially related to attacks on electric substations. Past research has focused on modeling the current state thoroughly and required a great deal of knowledge and work to set up. Jean-Christophe uses a classic machine learning approach to identify correlations between variables and create equations.\n\nQuite simply, when the predicted value, based on the machine learning equation, of a process varies significantly from the reported value, then an attack or other anomaly is identified.\n\nThe sample system used in this project is an automobile and the mile-per-hour (MPH) value. This makes the approach easy to understand without the mathematics.\n\n4:30 A refresher on CAN protocol basics\n\n7:45 Example of an attacker targeting park assist\n\n9:50 Dissecting CANbus packets\n\n14:00 Anomaly detection prototype using a MPH predictor\n\n20:25 Shows it is hard to fool the MPH predictor because it relies on many variables\n\n21:50 Creating an attack predictor with no knowledge of the protocol or variables",
+    "view_count": 1014
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] b4lut5uWs2w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5y0cq732zqk",
+    "language": "en",
+    "took_ms": 8686,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Sara Fluchs, Vivek Ponnada - Top 20 Secure PLC Coding Practices",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 2769,
+    "description": "This presentation is the outcome of a community driven project called \"Top 20 Secure PLC Coding Practices\", with document version 1.0 to be released on plc-security.com on June 15th, 2021, for downloading free or charge, and will have no restrictions on distribution and use.",
+    "view_count": 733
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5y0cq732zqk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B7muujSls6Y",
+    "language": "en",
+    "took_ms": 7780,
+    "method": null,
+    "title": "Prompt Compression and Query Optimization, a new course with MongoDB is coming soon",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240710",
+    "duration_sec": 193,
+    "description": "Enroll for free: https://bit.ly/3L8Gnmi\n\nThis course focuses on integrating traditional database features with vector search capabilities to optimize the performance and cost-efficiency of large-scale Retrieval Augmented Generation (RAG) applications.\n\nYou'll learn how to apply these key techniques: \n\n- Prefiltering and Postfiltering: These are techniques to filter results based on specific conditions. Prefiltering is done at the database index creation stage, while postfiltering is applied after the vector search is performed.\n- Projection: This technique involves selecting a subset of the fields returned from a query to minimize the size of the output.\n- Reranking: This involves reordering the results of a search based on other data fields to move the more desired results higher up the list.\n- Prompt Compression: This technique is used to reduce the length of prompts, which can be expensive to process in large-scale applications.\n\nYou’ll also learn with hands-on exercises how to: \n\n- Implement vector search for RAG using MongoDB.\n- Develop a multi-stage MongoDB aggregation pipeline. \n- Use metadata to refine and limit the search results returned from database operations, enhancing efficiency and relevancy.\n- Streamline the outputs from database operations by incorporating a projection stage into the MongoDB aggregation pipeline, reducing the amount of data returned and optimizing performance, memory usage, and security.\n- Rerank documents to improve information retrieval relevance and quality, and use metadata values to determine reordering position.\n- Implement prompt compression and gain an intuition of how to use it and the operational advantages it brings to LLM applications.\n\nStart optimizing the efficiency, security, query processing speed, and cost of your RAG applications with prompt compression and query optimization techniques.\n\nLearn more: https://bit.ly/3L8Gnmi",
+    "view_count": 2990
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B7muujSls6Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F1UWJ28WcZI",
+    "language": "en",
+    "took_ms": 8005,
+    "method": null,
+    "title": "Emerging 5G Technology and Its Disruptive Impact on Innovation and Competition",
+    "channel": "Hudson Institute",
+    "upload_date": "20200602",
+    "duration_sec": 4013,
+    "description": "Join Hudson as it hosts top industry experts to discuss the latest developments and real-world applications of the emerging technology. Hudson Senior Fellow Tom Duesterberg will moderate the discussion.",
+    "view_count": 1378
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F1UWJ28WcZI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

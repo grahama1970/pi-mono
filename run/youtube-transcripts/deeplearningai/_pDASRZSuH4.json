@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_pDASRZSuH4",
+    "language": "en",
+    "took_ms": 8865,
+    "method": null,
+    "title": "deeplearning.ai Learner Community Event ft. Roger Smith",
+    "channel": "DeepLearningAI",
+    "upload_date": "20201029",
+    "duration_sec": 2980,
+    "description": "deeplearning.ai presents virtual mini-event series for our Learner Community of those taking the AI for Medicine specialization!\n\n#MeetYourMentor: Mentors sharing their personal experiences of breaking into AI\n#DeepDive: A deep dive into a specific area that the guest speaker is working on\nand more!\n\nThis event will be at 4pm PDT on May 28th featuring Roger Smith. Roger is going to introduce how they apply Google AutoML services to surgical training videos to determine whether the AI can derive the same scores as human evaluators of video. \n\nAbout Roger Smith: Roger has spent 30 years developing software and simulation systems for defense and healthcare organizations. He has been upskilling in AI and Deep Learning to be able to intelligently manage and lead the AI-focused projects that all organizations are beginning to pursue. He holds a PhD in Computer Science, MS in Statistics, BS in Applied Mathematics, and an MBA.\n\n \nEnroll in the AI For Medicine Specialization here:  https://bit.ly/2UBOUEO\nCheck out all our courses: https://bit.ly/39yz95P",
+    "view_count": 599
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _pDASRZSuH4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

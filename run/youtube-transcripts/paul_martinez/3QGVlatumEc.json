@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3QGVlatumEc",
+    "language": "en",
+    "took_ms": 10257,
+    "method": null,
+    "title": "Security Issues In Compiled PLC Logic (CoDeSys & ProConOs)",
+    "channel": "S4 Events",
+    "upload_date": "20230227",
+    "duration_sec": 1761,
+    "description": "Reid Wightman on S4x23's Technical Deep Dive Stage looks at two popular, used in 100's of different PLCs, runtime logic packages: CoDeSys and ProConOs. After some background Reid asks the key question he will address at the 5:00 mark:\n\nCan we install a logic rootkit without root privileges? The answer of course is yes since Reid is on stage.\n\nOne of the key problems: applications have write access to have almost all areas of memory in the runtime. Key quote: \"The logic runtime is basically the sole mechanism of interfacing with the PLC AND the logic runtime has the ability to have all kinds of data tampered with from the program logic.\"\n\nReid then goes into detailed examples, and ends with some suggestions for the CoDeSys and ProConOs vendors, 3rd party vendors that use these runtimes, and asset owners.",
+    "view_count": 1315
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3QGVlatumEc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

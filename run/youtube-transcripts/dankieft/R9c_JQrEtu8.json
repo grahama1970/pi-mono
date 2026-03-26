@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R9c_JQrEtu8",
+    "language": "en",
+    "took_ms": 8515,
+    "method": null,
+    "title": "I Built An AI Influencer Automation in N8n that Automatically Posts Videos",
+    "channel": "Dan Kieft",
+    "upload_date": "20250911",
+    "duration_sec": 700,
+    "description": "Copy my AI Influencer Automation in N8n To automate your AI Influencer - full tutorial\nAI Influencer tool 👉  https://arcads.ai/?via=dankieft3\nAi social media poster 👉  https://blotato.com/?ref=ainfluencer\nN8n 👉 https://n8n.partnerlinks.io/fah1s9i1n7eq\n\nI Tried automating my ai influencers into automatically posting on instagram so I don't have to lift a finger. Through this n8n ai automation I can automatically post my AI influencers directly from Arcads AI onto instagram\n\nDownload my workflow👇\nhttps://docs.google.com/document/d/1evdUNEAL6_n0mLZ7wNxQfshIdk_Ttq39gVCm_mzhF-g/edit?usp=sharing\n\n\n👉My Ai Toolkit - https://dankieft.carrd.co/\nMy toolkit gives you over 30+ ai tools that I've gathered over the years and use daily. You'll also get access to my free newsletter that educates you about the latest ai tools.\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 195101
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R9c_JQrEtu8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

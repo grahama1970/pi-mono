@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4Lqh-JvgX_M",
+    "language": "en",
+    "took_ms": 7869,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Ali Abdollahi - Hacking Airplane A2G Systems",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1016,
+    "description": "One of the most important parts of avionic systems is the communication. Airplanes use mobile communication to connect to stations on the ground. In many cases the connection is based on LTE-Advanced technology and in some cases when an airplane is on the seas or somewhere else that there is no base station on the ground, It uses the satellite as a hub. In this presentation I will explain vulnerabilities and ways to take advantage of A2G systems and other avionic components.",
+    "view_count": 566
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4Lqh-JvgX_M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

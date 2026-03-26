@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XBDm1iCwXuM",
+    "language": "en",
+    "took_ms": 9134,
+    "method": null,
+    "title": "USMC Bootcamp Gas Chamber and Rappel Tower",
+    "channel": "Sandboxx",
+    "upload_date": "20170105",
+    "duration_sec": 85,
+    "description": "USMC Bootcamp Gas Chamber and Rappel Tower\n\nDownload the Sandboxx app free: https://lynm.app.link/yts\n\nGet more from Sandboxx:\nhttps://www.facebook.com/sandboxxapp/ \nhttps://twitter.com/sandboxx\nhttps://www.instagram.com/sandboxxapp/\nhttps://www.pinterest.com/sandboxxapp/\nhttp://www.sandboxx.us/\n\nSandboxx builds technology and content for our military and veteran communities. We enable members of the armed forces and their families to stay better connected throughout their military journey.",
+    "view_count": 1451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XBDm1iCwXuM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

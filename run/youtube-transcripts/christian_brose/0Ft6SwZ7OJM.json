@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0Ft6SwZ7OJM",
+    "language": "en",
+    "took_ms": 10462,
+    "method": null,
+    "title": "Crossroads in Caracas: Strategic Considerations for the U.S.",
+    "channel": "Hudson Institute",
+    "upload_date": "20151006",
+    "duration_sec": 6322,
+    "description": "Jaime Daremblum, Gustavo Coronel, Aníbal Romero, Gerver Torres, and Rubén M.  Perina discuss Nicolas Maduro and Venezuela's fate.",
+    "view_count": 315
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0Ft6SwZ7OJM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

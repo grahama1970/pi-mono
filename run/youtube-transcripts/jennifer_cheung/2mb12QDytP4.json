@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2mb12QDytP4",
+    "language": "en",
+    "took_ms": 8452,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Mazin Ahmed -  Attack Vectors on Terraform Environments",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2086,
+    "description": "Ever come across an environment in an engagement that uses Terraform for IAC (infrastructure-as-code) management? Almost every modern company does now.\n\nIn this talk, I will be sharing techniques and attack vectors to exploit and compromise Terraform environments in engagements, as well as patterns that I have seen that achieve successful infrastructure takeover against companies. I will be also covering prevention methods for the discussed attack vectors in my talk. This is part of my work-in-progress research in cloud security and attacking modern environments.",
+    "view_count": 743
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2mb12QDytP4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

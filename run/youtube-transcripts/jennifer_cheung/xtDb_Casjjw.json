@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xtDb_Casjjw",
+    "language": "en",
+    "took_ms": 8121,
+    "method": null,
+    "title": "DEF CON China Party 2021 - IOT Fails Learning from Sex Toys How Not to Suck - RenderMan",
+    "channel": "DEFCONConference",
+    "upload_date": "20210408",
+    "duration_sec": 2994,
+    "description": "IoT is everywhere and generally assumed to have terrible security and privacy. The Internet of Dongs project looks at the privacy and security around connected adult devices, an often overlooked branch of IoT where consumers expect and hope for strong security and privacy. By looking at the types of vulnerabilities, their root causes, the effects, and the impact from these types of devices, the rest of the IoT industry can see how common practices that may not be of concern in many products day to day, can have severe impacts when applied elsewhere.",
+    "view_count": 3206
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xtDb_Casjjw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

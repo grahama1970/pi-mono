@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yuZazP22rpI",
+    "language": "en",
+    "took_ms": 10007,
+    "method": null,
+    "title": "VPNFilter Deep Dive",
+    "channel": "S4 Events",
+    "upload_date": "20190327",
+    "duration_sec": 1487,
+    "description": "The definitive video on the ICS module in VPNFilter from Carl Hurd and the team at Talos. The fact that this Modbus / HTTP module was so targeted (one device and selected IP) and yet did so little (logging only) is one of the mysteries. An overview of VPNFilter and detail on that ICS module. Another good example of a S4 Stage 2: Technical Deep Dive.",
+    "view_count": 1039
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yuZazP22rpI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

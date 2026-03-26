@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eiUPPhdl3fg",
+    "language": "en",
+    "took_ms": 9015,
+    "method": null,
+    "title": "Diana Furchtgott-Roth on the Debt Ceiling for CNBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20110802",
+    "duration_sec": 414,
+    "description": "Hudson Senior Fellow Diana Furchtgott-Roth joined CNBC on August 1st to discuss the debt ceiling and what it means for businesses.",
+    "view_count": 238
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eiUPPhdl3fg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

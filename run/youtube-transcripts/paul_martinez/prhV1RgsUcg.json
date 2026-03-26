@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "prhV1RgsUcg",
+    "language": "en",
+    "took_ms": 8919,
+    "method": null,
+    "title": "OT Security Standards Wars",
+    "channel": "S4 Events",
+    "upload_date": "20240513",
+    "duration_sec": 1538,
+    "description": "For years, the IEC 62443 standards have served as the primary reference for OT cybersecurity - in part due to lack of alternatives in the niche. A game-changing alternative exists that demands the attention of the community. SAE, renowned for its contributions to the transportation industry, has introduced a standard for cyber-physical system security.\n\nSAE did not try to repeat the traditional approach of long lists of controls that expire when you have a different use case or old, cumbersome, and subjective risk analysis methods that lead to easily \"cooking the books.\"\n\nKenneth Crowther describes the SAE approach and its three pillars. He compares and contrasts this to 62443, using a compelling series of stories surrounding an electric vehicle charging station.",
+    "view_count": 1152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] prhV1RgsUcg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

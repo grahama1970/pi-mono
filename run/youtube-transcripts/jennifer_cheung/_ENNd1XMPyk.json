@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_ENNd1XMPyk",
+    "language": "en",
+    "took_ms": 8767,
+    "method": null,
+    "title": "DEF CON 33 - No Brain No Gain - Mehmet Önder Key, Temel Demir & Dr  Ahmet Furkan Aydogan",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3418,
+    "description": "Traditional digital security often falls short when applied to IoT environments, where devices are limited in processing power and exposed to a wider range of threats. Human vulnerabilities—especially against deepfake-style attacks—further weaken current systems. Static biometrics like fingerprints or facial scans are no longer enough. This work proposes a new direction: using the brain’s unique electrical activity (EEG signals) as a security layer. These dynamic, hard-to-replicate patterns offer a way to authenticate users without storing sensitive data or relying on heavy computation. By grounding trust in the user’s own biological signals, this approach offers a lightweight, resilient solution tailored to the constraints of modern IoT devices.",
+    "view_count": 633
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _ENNd1XMPyk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OOG5NTzP6Tc",
+    "language": "en",
+    "took_ms": 8817,
+    "method": null,
+    "title": "Irwin Stelzer on President Obama's Job Plan",
+    "channel": "Hudson Institute",
+    "upload_date": "20110912",
+    "duration_sec": 160,
+    "description": "Hudson Senior Fellow Irwin Stelzer discusses President Obama's $447 billion job plan. Is this plan feasible? How will it be paid for?",
+    "view_count": 50
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OOG5NTzP6Tc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

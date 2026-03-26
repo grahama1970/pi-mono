@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BfkR8ElsgHo",
+    "language": "en",
+    "took_ms": 9181,
+    "method": null,
+    "title": "Marty Edwards, Director of DHS ICS-CERT, Interview",
+    "channel": "S4 Events",
+    "upload_date": "20160524",
+    "duration_sec": 2781,
+    "description": "Dale Peterson interviews Marty Edwards, who leads the ICS cyber security effort at the US Department of Homeland Security (DHS), on the Main Stage at S4x16 in Miami South Beach.\n\nThe first 6 minutes introduce Marty and clarify what ICS-CERT does (it's much more than a CERT).\n\n6:50 What are ICS-CERT's goals / metrics / measures of success?\n9:05 What is the purpose of DHS doing ICS assessments? and 13:13 If this assessment program is the best way to make a difference, why wouldn't you scale it up by a factor of 1000 or more?\n17:00 How do you (ICS-CERT) decide what incidents require a response team from DHS to get involved?\n22:26 Are most of the incidents ICS-CERT responses to on the corporate network?\n26:20 Why is DHS providing free training, assessment, incident response and other services for large companies when a commercial capability exists?\n29:20 How well do the higher levels of the US Government, in all branches, understand the ICS cyber security problem?\n33:52 A discussion on how ICS-CERT handles the CERT activities.",
+    "view_count": 1143
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BfkR8ElsgHo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

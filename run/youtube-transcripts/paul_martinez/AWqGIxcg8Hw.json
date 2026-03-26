@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AWqGIxcg8Hw",
+    "language": "en",
+    "took_ms": 8641,
+    "method": null,
+    "title": "Small Pox, Armor and ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20190220",
+    "duration_sec": 1138,
+    "description": "Michael Thompson gave an interesting, 20 minute think piece that tied well into the S4x19 Create The Future theme. It revolved around stories of the small pox vaccine and armoring WWII allied planes where the success involved looking at the problem very differently.\n\nMichael then ties this to some of the biggest challenges we have in ICS and how we might get past those challenges.",
+    "view_count": 467
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AWqGIxcg8Hw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

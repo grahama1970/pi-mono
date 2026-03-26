@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JeS-z9P8afg",
+    "language": "en",
+    "took_ms": 8231,
+    "method": null,
+    "title": "DEF CON Safe Mode Recon Village - Chloe Messdaghi -  Burnout is Real",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2357,
+    "description": "Mental health is an ongoing issue within infosec before and during COVID-19. There's a fine balance between hacking and personal life. Majority of the time, they cross over. This talk shares an overview of the warning signs, symptoms, and practices to prevent burnout and how to deal with burnout to keep balanced.",
+    "view_count": 1184
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JeS-z9P8afg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

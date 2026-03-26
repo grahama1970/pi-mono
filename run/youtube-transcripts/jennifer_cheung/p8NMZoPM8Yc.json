@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p8NMZoPM8Yc",
+    "language": "en",
+    "took_ms": 9182,
+    "method": null,
+    "title": "DEF CON 32 - Speed Bumps and Speed HacksP: Adventures in Car Mfg Security - Paulo Silva, David Sopas",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1890,
+    "description": "Since the first car hit the road, manufacturers have been obsessed with safety. But hey, as AI wisely points out, determining the absolute 'safest' car can be as subjective as trying to decide on the best pizza topping! So, we decided to shift gears… into the world of car manufacturers' (application) security.\n\nIn this talk, get ready for a wild ride as we unveil the security findings from our research, affecting at least eleven major car manufacturers. Buckle up, folks, because your favorite brand might be on our list—along with your personal info!\n\nBring popcorn to watch some proof-of-concept videos.\n\nWith this talk we aim to demonstrate:\n\nthat modern Web Applications are still affected by old/traditional vulnerabilities,\nhow security issues can be chained together to build real attacks/demonstrate impact,\nhighlight a common pattern on running unpatched third-party software,\nhow organizations benefit from a responsible disclosure policy.",
+    "view_count": 3176
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p8NMZoPM8Yc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

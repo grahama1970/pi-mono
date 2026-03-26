@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cVfzXin618o",
+    "language": "en",
+    "took_ms": 8068,
+    "method": null,
+    "title": "What’s Happening In The Cisco S4 Prime Room",
+    "channel": "S4 Events",
+    "upload_date": "20250211",
+    "duration_sec": 939,
+    "description": "",
+    "view_count": 80
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cVfzXin618o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

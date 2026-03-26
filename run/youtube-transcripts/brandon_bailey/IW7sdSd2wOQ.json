@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IW7sdSd2wOQ",
+    "language": "en",
+    "took_ms": 7760,
+    "method": null,
+    "title": "DEF CON 30 - Yolan Romailler - A Dead Man’s Full-yet-responsible-disclosure System",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2623,
+    "description": "UPDATE: The slide presentation freezes from 00:27:32 until 00:29:58 due to onsite AV issues. you can get the complete slide deck on the DEF CON Media Server:\n\nhttps://media.defcon.org/DEF%20CON%2030/DEF%20CON%2030%20presentations/Yolan%20Romailler%20-%20A%20dead%20mans%20full-yet-responsible-disclosure%20system.pdf \n\n\nDo you  worry about responsible disclosure because they could instead exploit the time-to-patch to find you and remove you from the equation? Dead man switches exist for a reason... \nIn this talk we present a new form of vulnerability disclosure relying on timelock encryption of content: where you encrypt a message that cannot be decrypted until a given (future) time. This notion of timelock encryption first surfaced on the Cypherpunks mailing list in 1993 by the crypto-anarchist founder, Tim May, and to date while there have been numerous attempts to tackle it, none have been deployed at scale, nor made available to be used in any useful way.\n\nThis changes today: we’re releasing a free, open-source tool that achieves this goal with proper security guarantees. We rely on threshold cryptography and decentralization of trust to exploit the existing League of Entropy (that is running a distributed, public, verifiable randomness beacon network) in order to do so. We will first cover what all of these means, we will then see how these building blocks allow us to deploy a responsible disclosure system that guarantees that your report will be fully disclosed after the time-to-patch has elapsed. This system works without any further input from you, unlike the usual Twitter SHA256 commitments to a file on your computer.",
+    "view_count": 718
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IW7sdSd2wOQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

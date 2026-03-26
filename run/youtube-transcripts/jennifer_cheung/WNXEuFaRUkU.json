@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WNXEuFaRUkU",
+    "language": "en",
+    "took_ms": 8897,
+    "method": null,
+    "title": "DEF CON 29 - Ionut Cernica - Hack the hackers  Leaking data over SSL TLS",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 1168,
+    "description": "Have you considered that in certain situations the way hackers exploit vulnerabilities over the network can be predictable? Anyone with access to encrypted traffic can reverse the logic behind the exploit and thus obtain the same data as the exploit.\n\nVarious automated tools have been analyzed and it has been found that these tools operate in an unsafe way. Various exploit databases were analyzed and we learned that some of these are written in an insecure (predictable) way.\n\nThis presentation will showcase the results of the research, including examples of exploits that once executed can be harmful. The data we obtain after exploitation can be accessible to other entities without the need of decrypting the traffic. The SSL/TLS specs will not change. There is a clear reason for that and in this presentation I will argue this, but what will change for sure is the way hackers will write some of the exploits.",
+    "view_count": 2257
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WNXEuFaRUkU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

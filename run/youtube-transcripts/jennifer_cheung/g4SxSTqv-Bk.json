@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g4SxSTqv-Bk",
+    "language": "en",
+    "took_ms": 9033,
+    "method": null,
+    "title": "DEF CON 30 Car Hacking Village - Ayyapan Rajesh - Security like the 80s How I stole your RF",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2380,
+    "description": "The issue about convenience vs. security has been spoken about for years now, with most devices having wireless capability now, it invites trouble, especially when it is not encrypted or secured. Right from our tap-to-pay cards to even unlocking and starting out car.\n\nThis talk discusses CVE-2022-27254 and the story of how we came about discovering it. The CVE exploits an issues wherein the remote keyless system on various Honda vehicles, allowing an attacker to access the cars, and potentially even let them drive away with it!",
+    "view_count": 6102
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g4SxSTqv-Bk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

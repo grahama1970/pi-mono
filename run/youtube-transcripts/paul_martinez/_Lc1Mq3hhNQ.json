@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_Lc1Mq3hhNQ",
+    "language": "en",
+    "took_ms": 8003,
+    "method": null,
+    "title": "A PLC Integrated Security Module",
+    "channel": "S4 Events",
+    "upload_date": "20250723",
+    "duration_sec": 1480,
+    "description": "In 2024 Mitsubishi announced the integration of a security module with Nozomi software into select models of their MELSEC PLCs. This is, to S4's knowledge, the first integration of a security model with access to the PLC backplane. The potential for PLC EDR, VPN, firewall, and very granular OT security capabilities are vast.\n\nS4 invited Kobayashi-san of Mitsubishi to present:\n- Why Mitsubishi choose to integrate a security module?\n- The different integration options (such as hardware card) and why the current approach was selected\n- An architecture overview and the ability to access backplane data and act on backplane data\n- A bit of futurecasting on what this means for Mitsubishi, its customers and the industry\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 217
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _Lc1Mq3hhNQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

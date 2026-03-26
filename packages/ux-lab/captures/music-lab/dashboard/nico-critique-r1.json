@@ -1,0 +1,38 @@
+[
+  {
+    "id": "CRIT-R1-01",
+    "component": "MusicLabDashboard",
+    "subComponent": "Root",
+    "severity": "HIGH",
+    "title": "Fixed-Size Layout",
+    "finding": "The entire dashboard is implemented with a fixed pixel width and height (1440x900px). While the prompt specified a minimum 1440px viewport, the design does not fluidly adapt to viewports larger than this. The container is centered on a full-screen body, but the UI itself does not grow or shrink, leading to either excessive empty space or potential clipping on slightly smaller-than-expected viewports.",
+    "recommendation": "Refactor the root container and grid to use responsive units (percentages, `vh`, `vw`, `fr`) instead of fixed pixel dimensions. The layout should stretch to fill the available viewport above 1440px, ensuring no wasted space. Define clear `min-width` and `min-height` constraints to maintain integrity at smaller sizes approaching the minimum."
+  },
+  {
+    "id": "CRIT-R1-02",
+    "component": "MusicLabDashboard",
+    "subComponent": "Layout",
+    "severity": "MEDIUM",
+    "title": "Implied Shared Timeline",
+    "finding": "The design rationale mentions a shared timeline across the Piano Roll, Waveform, and Lyrics panes, which is a critical feature. However, there are no visual elements to enforce or communicate this shared state. A user cannot see how a point in the Piano Roll corresponds to a point in the Waveform below it.",
+    "recommendation": "Introduce a visual 'Playhead' or 'Scrubber Bar' element—a vertical line that spans across the Piano Roll and Waveform panes. This element's horizontal position should be shared. Additionally, demonstrate how the lyrics view would scroll or highlight in sync with this timeline."
+  },
+  {
+    "id": "CRIT-R1-03",
+    "component": "MusicLabDashboard",
+    "subComponent": "DashboardHeader",
+    "severity": "LOW",
+    "title": "Round Selector Ambiguity",
+    "finding": "The round selector is functional but its implementation is ambiguous. The 'ROUND:' text label adds visual noise, and the buttons lack a clear grouping context. It's not immediately obvious this is a single-selection control from a component perspective.",
+    "recommendation": "Remove the 'ROUND:' text label and wrap the buttons in a component that semantically groups them, like a `<PillButtonGroup>`. The active state is clear, but the component definition could be more robust. For accessibility, this should be a radio group."
+  },
+  {
+    "id": "CRIT-R1-04",
+    "component": "MusicLabDashboard",
+    "subComponent": "Layout",
+    "severity": "LOW",
+    "title": "Brittle Height Calculation",
+    "finding": "The main grid's height is set via `height: calc(100% - 74px)`. This 'magic number' is derived from the header's height and is brittle. If the header's padding or content changes, this calculation will break the layout.",
+    "recommendation": "Refactor the dashboard's root container to use Flexbox (`display: flex; flex-direction: column;`). The header can have a fixed height, and the main grid can have `flex-grow: 1;`, allowing it to automatically fill the remaining vertical space without brittle calculations."
+  }
+]

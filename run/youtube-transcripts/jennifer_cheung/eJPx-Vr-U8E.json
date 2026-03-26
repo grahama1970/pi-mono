@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eJPx-Vr-U8E",
+    "language": "en",
+    "took_ms": 8637,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Sanne Maasakkers - Phish Like An APT",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1778,
+    "description": "Have you ever wondered what phishing strategy real world APTs use? And how these compare with the scenarios that you use during your Red Team / social engineering activities? If you did, you probably found out that there's a lot of research about APT techniques, tactics and procedures, like the use of specific malware or attack vectors, but there are not many public resources on which techniques those attackers actually use to convince a non-suspecting person to aid them in their operation. In this talk an analysis is presented of hundreds of phishing emails that were used in real campaigns. All characteristics of an email, like the method of influence, tone of speech and used technologies are classified and measures how well a phishing campaign is designed, scoring from “obvious spam” to “near-realistic original mail”. By comparing and measuring the state of these phishing emails,we can learn more about how certain groups operate and how much “effort” they put into their scenarios. This is important knowledge for both attackers and defenders. If you want to know how to phish like you’re an APT, then this talk is for you. Spoiler alert: you might already be a better phisher than these groups.",
+    "view_count": 1815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eJPx-Vr-U8E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

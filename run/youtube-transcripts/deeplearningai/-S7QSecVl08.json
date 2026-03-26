@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-S7QSecVl08",
+    "language": "en",
+    "took_ms": 8409,
+    "method": null,
+    "title": "AI Dev 25 | Bryan Catanzaro & Aleksandr Patrushev: Accelerating AI Development",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1876,
+    "description": "As AI applications become more complex, choosing the right infrastructure for training, hosting, and inference is critical.\n\nIn this session from AI Dev 25, Bryan Catanzaro (VP of Applied Deep Learning Research, NVIDIA) and Aleksandr Patrushev (Head of Product, Nebius) explore the range of deployment strategies available to developers today.\n\nThey share insights on how to reduce total cost of ownership while accelerating development—from optimizing training workflows to choosing cost-efficient hosting and inference solutions.\n\nA practical session for developers, engineers, and product teams working to scale AI applications effectively.",
+    "view_count": 770
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -S7QSecVl08: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

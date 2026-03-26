@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wT9gyOeN6zY",
+    "language": "en",
+    "took_ms": 9566,
+    "method": null,
+    "title": "DEF CON 32 - QuickShell Sharing is caring abt RCE attack chain on QuickShare - Or Yair, Shmuel Cohen",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2707,
+    "description": "Quick Share (formerly Nearby Share) has enabled file sharing on Android for 4 years and expanded to Windows a year ago.\n\nGoogle's promotion of Quick Share for preinstallation on Windows, alongside the limited recent research, ignited our curiosity about its safety, leading to an investigation that uncovered more than we had imagined.\n\nWe studied its Protobuf-based protocol using hooks, built tools to communicate with Quick Share devices, and a fuzzer that found non-exploitable crashes in the Windows app. We then diverted to search for logical vulnerabilities, and boy oh boy, we regretted we hadn’t done it sooner.\n\nWe found 10 vulnerabilities both in Windows & Android allowing us to remotely write files into devices without approval, force the Windows app to crash in additional ways, redirect its traffic to our WiFi AP, traverse paths to the user’s folder, and more. However, we desired the holy grail, an RCE. Thus, we returned to the drawing board, where we realized that the RCE is already in our possession in a form of a complex chain.\n\nIn this talk, we’ll introduce QuickShell - An RCE attack chain on Windows combining 5 out of 10 vulnerabilities in Quick Share. We’ll provide an overview about Quick Share’s protocol, present our fuzzer, the found vulnerabilities, a new HTTPS MITM technique, and finally the RCE chain.",
+    "view_count": 1378
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wT9gyOeN6zY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

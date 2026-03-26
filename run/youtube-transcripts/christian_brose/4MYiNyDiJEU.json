@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4MYiNyDiJEU",
+    "language": "en",
+    "took_ms": 9537,
+    "method": null,
+    "title": "Next Steps for U.S. Strategy in Syria",
+    "channel": "Hudson Institute",
+    "upload_date": "20181026",
+    "duration_sec": 5316,
+    "description": "On October 26, Hudson Institute hosted a panel to assess U.S. policy in Syria. Panelists considered how the Trump Administration’s new Syria strategy diverges from previous administrations’ and analyze how the new strategy intends to respond to outside influencers, particularly Russia, Iran, and the Islamic State, who continue to obstruct U.S. efforts within Syria.\n\nPanelists included the Representative for the Syrian Opposition Coalition to the United Nations, Mariam Jalabi; Hudson Institute Senior Fellows Michael Doran and Jonas Parello-Plesner; and Georgetown doctoral candidate and former senior policy analyst at the US commission on international religious freedom, Jomana Qaddour.",
+    "view_count": 1884
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4MYiNyDiJEU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

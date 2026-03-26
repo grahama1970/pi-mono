@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ypQXtVQgxLo",
+    "language": "en",
+    "took_ms": 9076,
+    "method": null,
+    "title": "DEF CON 29 Car Hacking Village - Lennert Wouters -  Compromising the Tesla Model X keyless entry",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1618,
+    "description": "This talk covers a practical security evaluation of the Tesla Model X keyless entry system. We will cover the internal workings of the system, including the key fob, the body control module and the pairing protocol. Additionally, we detail our reverse engineering techniques and document several security issues. The identified issues in the key fob firmware update mechanism and the key fob pairing protocol allow us to bypass all of the cryptographic security measures put in place. Our proof-of-concept attack allows to unlock and start a Model X in a matter of minutes. The vulnerability in the key fob firmware update mechanism was fixed by Tesla using an OTA update.",
+    "view_count": 3147
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ypQXtVQgxLo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

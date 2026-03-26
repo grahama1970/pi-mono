@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ovghcbt8oBI",
+    "language": "en",
+    "took_ms": 8541,
+    "method": null,
+    "title": "Anatomy of Smart Building Ransomware Attacks",
+    "channel": "S4 Events",
+    "upload_date": "20240530",
+    "duration_sec": 1494,
+    "description": "The company Anthony works for, JLL, manages almost 5 billion square feet of property. Some of that large number of properties have had cyber incidents in their building management systems. In this session, Anthony shares hard-earned lessons and common pitfalls due to major events, such as the discovery of a ransom note and loss of operations due to the incident.\n\nAll phases of the attacker life cycle are explored and aligned to the MITRE ATT&CK Framework. He also highlights what evidence sources and/or forensic artifacts may or may not be available depending on which phase of the attacker life cycle was being investigated. The scenarios presented are based on real-world intrusions, their respective investigations, and real-world consequences.",
+    "view_count": 607
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ovghcbt8oBI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

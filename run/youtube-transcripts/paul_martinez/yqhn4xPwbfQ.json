@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yqhn4xPwbfQ",
+    "language": "en",
+    "took_ms": 8374,
+    "method": null,
+    "title": "PLCs: To Scan Or Not To Scan",
+    "channel": "S4 Events",
+    "upload_date": "20240620",
+    "duration_sec": 1967,
+    "description": "Can you scan a PLC? The answer in 2013 was no.\nWhat's the answer in 2023?\n\nRaphael has a lab full of scanners including traditional IT/OT scanning tools, OT detection products that have added scanning, attack surface management tools and more. Plus he addresses and tests different meanings of \"scanning\".\n\nIn this session Raphael discusses what he scanned, how he scanned and what were the results for many of the most popular PLCs.",
+    "view_count": 2003
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yqhn4xPwbfQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

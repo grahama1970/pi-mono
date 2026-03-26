@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SONIC OBSERVATORY - S07_COMPILE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#0e0e0e",
+                        "inverse-on-surface": "#565555",
+                        "tertiary": "#6aabff",
+                        "primary-dim": "#8a4cfc",
+                        "primary-container": "#b28cff",
+                        "on-primary-fixed-variant": "#390083",
+                        "on-secondary-fixed-variant": "#006632",
+                        "tertiary-container": "#499dfe",
+                        "surface": "#0e0e0e",
+                        "on-secondary-container": "#e3ffe4",
+                        "background": "#0e0e0e",
+                        "surface-container": "#191a1a",
+                        "primary": "#bd9dff",
+                        "secondary-fixed": "#00fd87",
+                        "outline": "#767575",
+                        "primary-fixed": "#b28cff",
+                        "outline-variant": "#484848",
+                        "on-primary-fixed": "#000000",
+                        "on-error": "#490013",
+                        "secondary": "#00fd87",
+                        "on-surface-variant": "#adaaaa",
+                        "on-primary-container": "#2e006c",
+                        "surface-tint": "#bd9dff",
+                        "on-secondary-fixed": "#004621",
+                        "on-primary": "#3c0089",
+                        "inverse-primary": "#742fe5",
+                        "on-surface": "#ffffff",
+                        "error-container": "#a70138",
+                        "surface-container-lowest": "#000000",
+                        "secondary-dim": "#00ed7e",
+                        "on-background": "#ffffff",
+                        "error-dim": "#d73357",
+                        "tertiary-dim": "#4fa0ff",
+                        "primary-fixed-dim": "#a67aff",
+                        "secondary-container": "#006d37",
+                        "on-tertiary": "#002a52",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "tertiary-fixed": "#7bb3ff",
+                        "on-error-container": "#ffb2b9",
+                        "inverse-surface": "#fcf9f8",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "surface-variant": "#262626",
+                        "surface-container-high": "#202020",
+                        "on-tertiary-container": "#001e3c",
+                        "on-secondary": "#005b2c",
+                        "surface-container-low": "#131313",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "surface-bright": "#2c2c2c",
+                        "error": "#ff6e84",
+                        "surface-container-highest": "#262626",
+                        "on-tertiary-fixed": "#001833"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(25, 26, 26, 0.8);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50 flex items-center justify-between px-6 h-16 w-full shadow-2xl shadow-violet-900/10">
+<div class="flex items-center gap-8">
+<span class="font-['Space_Grotesk'] font-bold tracking-widest text-violet-500 uppercase">SONIC_OBSERVATORY</span>
+<nav class="hidden md:flex items-center gap-6 font-['Inter'] tracking-tight font-medium text-sm">
+<a class="text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Dashboard</a>
+<a class="text-violet-400 border-b-2 border-violet-500 pb-1" href="#">Pipeline</a>
+<a class="text-zinc-500 hover:text-zinc-300 transition-colors" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest border border-outline-variant/20 px-3 py-1.5 flex items-center gap-2 rounded-lg">
+<span class="material-symbols-outlined text-sm text-zinc-500">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface-variant font-label" placeholder="Search parameters..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-zinc-500 hover:text-zinc-300 transition-all active:scale-95">settings</button>
+<button class="material-symbols-outlined text-zinc-500 hover:text-zinc-300 transition-all active:scale-95">account_circle</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col py-4 overflow-y-auto">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<h2 class="font-['Space_Grotesk'] uppercase tracking-wider text-[10px] text-zinc-300 font-bold">PIPELINE_v2.1</h2>
+</div>
+<p class="font-['Space_Grotesk'] uppercase tracking-wider text-[10px] text-emerald-400 opacity-80">STATUS: S07_ACTIVE</p>
+</div>
+<nav class="flex flex-col flex-1">
+<!-- S00 to S09 Tabs -->
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">power</span> S00_INIT
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">memory</span> S01_CORE
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">waves</span> S02_STEM
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">equalizer</span> S03_FREQ
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">subtitles</span> S04_LYRIC
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">music_note</span> S05_MELOD
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">layers</span> S06_HARMN
+            </a>
+<!-- Active S07 -->
+<a class="bg-zinc-800 text-emerald-400 border-l-4 border-emerald-500 flex items-center gap-3 px-6 py-3 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">terminal</span> S07_COMPL
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">tune</span> S08_MIXIN
+            </a>
+<a class="text-zinc-500 flex items-center gap-3 px-6 py-3 hover:bg-zinc-800/40 font-['Space_Grotesk'] uppercase tracking-wider text-[10px] transition-all hover:text-zinc-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined text-sm">ios_share</span> S09_OUTPT
+            </a>
+</nav>
+<div class="mt-auto px-4 pb-4">
+<button class="w-full bg-emerald-500/10 border border-emerald-500/50 text-emerald-400 font-label text-[10px] tracking-widest py-3 rounded hover:bg-emerald-500/20 transition-all uppercase">
+                EXECUTE_COMPILE
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-8 h-[calc(100vh-64px)] overflow-y-auto">
+<!-- Header Section -->
+<header class="flex items-center justify-between mb-12">
+<div class="flex items-center gap-6">
+<span class="font-label text-4xl font-bold text-primary tracking-tighter">S07</span>
+<div>
+<h1 class="text-2xl font-bold text-on-surface tracking-tight leading-none mb-1">Compile Generation Prompt</h1>
+<span class="font-label text-xs uppercase text-on-surface-variant tracking-widest">YuE target</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-highest border-l-2 border-tertiary rounded-sm">
+<span class="font-label text-[10px] font-bold text-amber-500 tracking-widest">COMPILING</span>
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+</div>
+</header>
+<!-- Source Knowledge Grid -->
+<section class="mb-12">
+<div class="flex items-center gap-3 mb-4">
+<span class="font-label text-[10px] tracking-[0.2em] text-on-surface-variant uppercase">Source Knowledge</span>
+<div class="h-px flex-1 bg-outline-variant/20"></div>
+</div>
+<div class="grid grid-cols-7 gap-3">
+<!-- S00 Heart -->
+<div class="bg-surface-container-low p-3 rounded-lg border border-transparent hover:border-outline-variant/30 transition-all">
+<span class="font-label text-[9px] text-primary block mb-2 opacity-70">S00: HEART</span>
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="text-[8px] font-label text-red-400">ANGER</span>
+<span class="text-[8px] font-label text-on-surface-variant">0.91</span>
+</div>
+<div class="h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-red-500" style="width: 91%"></div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-[8px] font-label text-blue-400">SADNESS</span>
+<span class="text-[8px] font-label text-on-surface-variant">0.87</span>
+</div>
+<div class="h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-blue-500" style="width: 87%"></div>
+</div>
+</div>
+</div>
+<!-- S01 Lore -->
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col justify-between">
+<span class="font-label text-[9px] text-primary block mb-1 opacity-70">S01: LORE</span>
+<p class="text-[10px] leading-tight text-on-surface-variant italic font-medium">"signal, silence, lost frequencies"</p>
+</div>
+<!-- S02 Refs -->
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="font-label text-[9px] text-primary block mb-1 opacity-70">S02: REFS</span>
+<p class="text-[10px] leading-snug text-on-surface-variant font-medium">Portishead Roads, Massive Attack, Dead Can Dance</p>
+</div>
+<!-- S03 Stems -->
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="font-label text-[9px] text-primary block mb-1 opacity-70">S03: STEMS</span>
+<p class="text-[10px] leading-snug text-on-surface-variant">sparse bass half notes, ghost snare, pads, dry vocal</p>
+</div>
+<!-- S04 Lyrics -->
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="font-label text-[9px] text-primary block mb-1 opacity-70">S04: LYRICS</span>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-on-surface">4 sections / 10 lines</span>
+<span class="text-[9px] text-tertiary-dim font-label">fear→anger→trust</span>
+</div>
+</div>
+<!-- S05 Timing -->
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="font-label text-[9px] text-primary block mb-1 opacity-70">S05: TIMING</span>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-on-surface">85 BPM | D minor</span>
+<span class="text-[9px] text-on-surface-variant font-label">42 SYLLABLES</span>
+</div>
+</div>
+<!-- S06 Midi -->
+<div class="bg-surface-container-low p-3 rounded-lg">
+<span class="font-label text-[9px] text-primary block mb-1 opacity-70">S06: MIDI</span>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-on-surface">8 bars | 44 notes</span>
+<span class="text-[9px] text-on-surface-variant font-label">Dm-Am-Bb-Gm</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Middle Section: Target Platform -->
+<section class="mb-12">
+<div class="flex items-center gap-3 mb-6">
+<span class="font-label text-[10px] tracking-[0.2em] text-on-surface-variant uppercase">Target Platform Selection</span>
+<div class="h-px flex-1 bg-outline-variant/20"></div>
+</div>
+<div class="grid grid-cols-3 gap-6">
+<!-- YuE Selected -->
+<div class="group relative bg-surface-container p-6 rounded-xl border border-primary/40 shadow-xl shadow-primary-dim/10 ring-1 ring-primary-dim/20 overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<div class="bg-primary text-on-primary-fixed rounded-full w-6 h-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-lg bg-primary-dim/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">psychology</span>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface tracking-tight">YuE</h3>
+<p class="text-xs text-on-surface-variant">Transformative LLM-Audio</p>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6">High-fidelity coherence optimized for complex lyrics and technical instrumentation.</p>
+<div class="flex gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-[9px] font-label text-primary">LOSSLESS</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-[9px] font-label text-primary">PROMPT_DRIVEN</span>
+</div>
+</div>
+<!-- Sonauto -->
+<div class="group bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 hover:border-outline-variant/40 transition-all cursor-pointer">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant group-hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined text-3xl">fluid</span>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface tracking-tight">Sonauto</h3>
+<p class="text-xs text-on-surface-variant">Latent Style Transfer</p>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6">Excellent for rapid prototyping of textures and melodic variations.</p>
+</div>
+<!-- Suno -->
+<div class="group bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 hover:border-outline-variant/40 transition-all cursor-pointer">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant group-hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-3xl">auto_videocam</span>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface tracking-tight">Suno</h3>
+<p class="text-xs text-on-surface-variant">General V3.5 Alpha</p>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-6">Balanced generation for vocals and production polish.</p>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Compiled Prompt -->
+<section class="mb-20">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="font-label text-[10px] tracking-[0.2em] text-on-surface-variant uppercase">Compiled Prompt Output</span>
+<span class="text-[10px] font-label text-emerald-400/60 font-medium">READY_FOR_INJECTION</span>
+</div>
+<button class="flex items-center gap-2 text-[10px] font-label text-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span> COPY
+                </button>
+</div>
+<div class="bg-[#0d1117] p-8 rounded-xl border border-white/5 relative group">
+<div class="absolute top-4 left-4 flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-red-500/30"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-amber-500/30"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-emerald-500/30"></div>
+</div>
+<div class="mt-4">
+<code class="font-label text-emerald-400 text-sm md:text-base leading-relaxed break-words">
+                        Genre: "atmospheric dark trip-hop, sparse instrumentation, deep sustained bass in D minor, dry intimate vocals in verses with reverb in chorus, ghost snare on 3, Rhodes-like pad sustain, 85 BPM 4/4"
+                    </code>
+</div>
+</div>
+<div class="mt-4 flex items-start gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-base mt-0.5">info</span>
+<p class="text-xs text-on-surface-variant max-w-2xl leading-relaxed">
+                    This prompt was compiled from stem analysis + MIDI arrangement + heart tags. 
+                    <span class="text-primary-dim font-medium underline underline-offset-4 decoration-primary-dim/30">Round 2: added tempo correction from S09 convergence delta.</span>
+</p>
+</div>
+</section>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-64 right-0 h-20 bg-surface/90 backdrop-blur-md border-t border-outline-variant/10 flex items-center justify-between px-10 z-40">
+<div class="flex items-center gap-4">
+<div class="flex gap-1">
+<div class="w-4 h-1 bg-primary rounded-full"></div>
+<div class="w-4 h-1 bg-primary rounded-full"></div>
+<div class="w-4 h-1 bg-surface-container-highest rounded-full"></div>
+<div class="w-4 h-1 bg-surface-container-highest rounded-full"></div>
+<div class="w-4 h-1 bg-surface-container-highest rounded-full"></div>
+</div>
+<span class="font-label text-[10px] text-on-surface-variant tracking-wider uppercase">Round 2/5 · delta improvements applied</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-xs font-label text-on-surface-variant hover:text-white transition-colors uppercase tracking-widest">Abort Process</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary-container px-10 py-3 rounded-lg font-label font-bold text-xs tracking-[0.15em] transition-all flex items-center gap-3 shadow-lg shadow-primary/20 active:scale-95 group">
+                    GENERATE 
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</footer>
+</main>
+<!-- Background Decorative Elements -->
+<div class="fixed top-0 right-0 p-12 opacity-10 pointer-events-none">
+<span class="font-label text-[120px] font-bold text-white leading-none">07</span>
+</div>
+<div class="fixed bottom-24 right-12 w-64 h-64 bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+</body></html>

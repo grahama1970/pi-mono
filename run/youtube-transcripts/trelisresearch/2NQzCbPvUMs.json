@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2NQzCbPvUMs",
+    "language": "en",
+    "took_ms": 9206,
+    "method": null,
+    "title": "How to Boost RAG Accuracy with SmolAgents & BM25",
+    "channel": "Trelis Research",
+    "upload_date": "20250127",
+    "duration_sec": 3256,
+    "description": "🔑 Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Join the Trelis Team: https://trelis.com/developer-collaborations/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n📸 Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO LINKS:\n- SmolAgents Blog: https://huggingface.co/blog/smolagents\n- SmolAgents Tools: https://huggingface.co/docs/smolagents/tutorials/tools\n\nTIMESTAMPS:\n00:00:00 - Introduction to using agents for document retrieval\n00:00:14 - Three key insights about function calling and embeddings\n00:01:00 - Explanation of traditional function calling approach\n00:01:38 - Introduction to SmolAgents and code execution\n00:02:24 - Discussion of HuggingFace's safe Python environment\n00:02:57 - Demo of SmolAgents basic implementation\n00:04:08 - Setup instructions for running the code\n00:06:04 - Explanation of document preparation and Markdown conversion\n00:10:28 - Discussion of table of contents generation\n00:13:40 - Introduction to BM25 retrieval tool\n00:19:20 - Implementation details of BM25 search\n00:24:40 - Setup of document section reading tool\n00:29:20 - Explanation of section retrieval implementation\n00:33:40 - Demo of BM25 retriever tool\n00:37:20 - Integration of section reading tool\n00:40:40 - Demonstration of combined tools with Claude model\n00:47:55 - Testing with different language models\n00:52:43 - Summary and conclusion of tutorial\n00:54:02 - Mention of future improvements needed for context management",
+    "view_count": 3852
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2NQzCbPvUMs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ekp5iMPEgVw",
+    "language": "en",
+    "took_ms": 9012,
+    "method": null,
+    "title": "DEF CON 33 - Operational Twilight: APTs, OT, & geopolitics of a dying climate - Cybelle Oliveira",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1426,
+    "description": "We’re trying to debug the end of the world through trial and error — mostly error. In the middle of a worsening climate crisis, outdated OT protocols like Modbus are being exploited by state-sponsored actors in ways that turn environmental infrastructure into geopolitical weapons. From hijacked dams running Windows 95-era code to smart thermostats recruited into botnets fighting over Arctic oil, the climate-tech battlefield is already here.\n\nThis session dives into how APTs are quietly compromising the systems designed to save the planet. We’ll examine real-world campaigns where threat actors have targeted energy grids, carbon capture labs, and EV infrastructure — and how climate action is being derailed by 1970s-era code and modern apathy.\n\nThis is Cyber Threat Intelligence meets Climate Fiction (Cli-Fi). It’s weird, terrifying, and very real.",
+    "view_count": 218
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ekp5iMPEgVw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

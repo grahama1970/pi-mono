@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GwwxeY11xMI",
+    "language": "en",
+    "took_ms": 7596,
+    "method": null,
+    "title": "DEF CON 32 - Outlook Unleashing RCE Chaos  CVE 2024 30103 - Michael Gorelik, Arnold Osipov",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2470,
+    "description": "Did you ever receive an empty email and immediately think it might be a reconnaissance attack? What if opening such an email in your Outlook client could trigger remote code execution through an invisible form? Yes, all forms are COM objects, and CVE-2024-21378 has flung open the gates to Outlook RCE chaos.\n\nIn our session, \"Outlook Unleashing RCE Chaos: CVE-2024-30103\" we'll dive into how this seemingly innocuous vulnerability can lead to mayhem. This vulnerability paved the way for us to discover a series of new remote code execution vulnerabilities in Outlook, including CVE-2024-30103. But we’re not stopping there.\n\nAdditionally, we'll uncover other vulnerabilities that can cause NTLM leaks from your domain-joined devices.\n\nSo, how did we get here? Join us as we construct an evolution timeline of this attack surface. From the origins of these exploits to their current incarnations, we'll cover it all. And because we believe in building a safer digital world, we'll conclude with specific, actionable recommendations on how to minimize these threats.",
+    "view_count": 564
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GwwxeY11xMI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

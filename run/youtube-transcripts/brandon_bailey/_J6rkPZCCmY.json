@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_J6rkPZCCmY",
+    "language": "en",
+    "took_ms": 8818,
+    "method": null,
+    "title": "DEF CON 30 - Panel - Global Challenges, Global Approaches in Cyber Policy",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2771,
+    "description": "While each nation and region around the world has unique governance models and concerns, there is a large commonality in our: adversaries, markets, supply chains, vulnerabilities, and connectivity. So each nation and region approaches cyber policy in ways that are unique and ways that are in common with the broader global community. Join this session to hear from national leaders in cyber policy on what makes their distinct practices appropriate for them, and how they work together on the international stage where interests and concerns are aligned.",
+    "view_count": 359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _J6rkPZCCmY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

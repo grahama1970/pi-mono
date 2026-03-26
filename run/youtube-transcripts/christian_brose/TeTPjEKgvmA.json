@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TeTPjEKgvmA",
+    "language": "en",
+    "took_ms": 9587,
+    "method": null,
+    "title": "A Conversation with Secretary Michael R. Pompeo",
+    "channel": "Hudson Institute",
+    "upload_date": "20210519",
+    "duration_sec": 947,
+    "description": "With Hamas waging war on Israel yet again, Hudson is hosting a special conversation with Hudson Distinguished Fellow and former Secretary of State Michael R. Pompeo and Senior Fellow Michael Doran to examine the implications of the conflict for the United States. What are the underlying causes of the violence? What is the end result that best serves the interests of the people of the Middle East and the United States? What role does the conflict play in American foreign policy writ large?",
+    "view_count": 2759
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TeTPjEKgvmA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

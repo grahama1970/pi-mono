@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Uw-8H5x-NzQ",
+    "language": "en",
+    "took_ms": 8106,
+    "method": null,
+    "title": "DEF CON Safe Mode   Aerospace Village   What I Learned Trying to Hack a 737",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1669,
+    "description": "As part of work looking at avionics security, we reverse-engineered two Communication Management Units used on 737s, and they are engineered unlike any other embedded system I’ve seen. CMUs must be certified to a high Design Assurance Level, but airlines typically want to add custom airline operations applications. This talk explores how these seemingly incompatible requirements are met in two very different ways, and takes a deep dive into how the CMUs work.\n\nThis event will be coordinated on the DEF CON Discord server, in channel #av-aviation-text.",
+    "view_count": 1840
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Uw-8H5x-NzQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

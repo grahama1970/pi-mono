@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s10wZUdM17w",
+    "language": "en",
+    "took_ms": 7578,
+    "method": null,
+    "title": "(Previously) LIVE Hosting SpaceX KoreaSat 5A",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20171031",
+    "duration_sec": 5334,
+    "description": "SpaceX  is delivering a 3,500 KG satellite, KoreaSat 5A, to geostationary transfer orbit (GTO). SpaceX will be attempting to land the first stage back on their drone ship Of Course I still Love you (OCISLY) about 8 minutes after launch several hundred km's downrange in the Atlantic Ocean.\n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/",
+    "view_count": 18409
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s10wZUdM17w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BckjigOTTiA",
+    "language": "en",
+    "took_ms": 8679,
+    "method": null,
+    "title": "The F-35 is the most SUCCESSFUL stealth aircraft in HISTORY",
+    "channel": "Sandboxx",
+    "upload_date": "20230406",
+    "duration_sec": 49,
+    "description": "The F-35 may have been an acquisition nightmare, but the resulting fighter is the most technologically advanced tactical aircraft ever to fly... and with creeping up on 900 airframes built, it's also one of the most prolific. \n\n#f35 #airpower #defense #stealth #stealthfighter #f22 #j20 #su57 #f116 #b2",
+    "view_count": 90002
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BckjigOTTiA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-8QC0CdCbuc",
+    "language": "en",
+    "took_ms": 7911,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village -Jake Smith & Jack McDowell - Building BLUESPAWN",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3121,
+    "description": "Our team has developed BLUESPAWN, a fully open-source, active defense and EDR tool for Windows. While there are ample offensive oriented tools publicly available, there is very little on the defensive side. We aim to use this project to demonstrate how modern-day security solutions work by building our own from the ground up. In addition, we integrate a number of popular community libraries and tools such as MITRE ATT&CK, DoD STIGs, YARA, and PE-Sieve with one goal: to enable any security analyst to quickly detect, identify, and eliminate malicious activity on a system.",
+    "view_count": 802
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -8QC0CdCbuc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

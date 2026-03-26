@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-CSbWpj_IZM",
+    "language": "en",
+    "took_ms": 8655,
+    "method": null,
+    "title": "DEF CON 33 - Not Just a Pipeline Leak: Reconstructing  Real Attack Behind tj-actions - Aviad Hahami",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2528,
+    "description": "Every once in a while, we get a grim reminder that the open-source trust model that enables developers to use each other’s code and resources can be abused by attackers.\n\nGitHub users recently suffered from such a wake-up call. In March 2025, the highly-publicized \"tj-actions\" incident came to light, throwing many GitHub organizations and users into panic, as their credentials were leaked via their supply chain. But while the masses were scared about the massive credential exposure, we were able to piece together evidence to show that the leakage wasn't the primary goal of this attack, and that the initial buzz was just the tip of the iceberg. Our investigations indicate that more highly-popular projects were targeted as part of this campaign, and DefCon will be the first place that we reveal the newly-discovered details.\n\nWe’ll reveal how the attack began months earlier than initially believed, with the attacker compromising multiple open-source projects utilizing them for lateral movement. We'll detail how the adversary maintained a low profile, patiently waiting to spear-target Coinbase. We will dissect the sophisticated evasion techniques employed and the attacker’s modus operandi, showing how the open-source access and trust model were weaponized to deliver a precise and calculated supply chain attack.",
+    "view_count": 294
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -CSbWpj_IZM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

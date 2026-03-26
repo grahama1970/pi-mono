@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xIMS2gFH54o",
+    "language": "en",
+    "took_ms": 8932,
+    "method": null,
+    "title": "Gabe Schoenfeld on Fox News discussing Iran and Iraq",
+    "channel": "Hudson Institute",
+    "upload_date": "20100311",
+    "duration_sec": 175,
+    "description": "Hudson Senior Fellow Gabriel Schoenfeld appeared on Fox News to discuss the CIA and their dealings in Iran and Iraq.",
+    "view_count": 373
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xIMS2gFH54o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

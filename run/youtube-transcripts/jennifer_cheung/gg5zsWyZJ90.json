@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gg5zsWyZJ90",
+    "language": "en",
+    "took_ms": 8300,
+    "method": null,
+    "title": "DEF CON 32 - Unlocking the Gates: Understanding Authentication Bypass Vulnerabilities - Vikas Khanna",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1831,
+    "description": "Industrial VPN gateways play a crucial role in operational technology by enabling secure remote access to systems within industrial networks. However, their importance goes hand in hand with increased security risks, as their architecture makes them lucrative targets for threat actors. Over the years, we have seen such devices being used in various industrial environments, which underlines their widespread use in critical infrastructures.\n\nThis talk is about a security analysis of a widely used industrial remote access solution. We will dive deep into and expose various vulnerabilities. This includes rooting the device, bypassing hardware-based security mechanisms such as the use of a hardware security module, and reverse engineering software and firmware. Ultimately, we will show how various identified vulnerabilities allowed us to hijack remote access sessions, creating significant security risks.",
+    "view_count": 1688
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gg5zsWyZJ90: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lF8NEsl3-kQ",
+    "language": "en",
+    "took_ms": 9821,
+    "method": null,
+    "title": "DEF CON 32 - Where’s the Money-Defeating ATM Disk Encryption - Matt Burch",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2313,
+    "description": "Holding upwards of $400,000, ATMs continue to be a target of opportunity and have seen over a 600% increase in crime in just the last few years. During this time, I led security research with another colleague into the enterprise ATM industry resulting in the discovery of 6 zero-day vulnerabilities affecting Diebold Nixdorf’s Vynamic Security Suite (VSS), the most prolific ATM security solution in the market. 10 minutes or less is all that a malicious actor would need to gain full control of any system running VSS via offline code injection and decryption of the primary Windows OS. Diebold Nixdorf is one of three major North American enterprise class ATM manufacturers with a global presence in the financial, casino/gaming, and point-of-sale markets. Similar attack surfaces are currently being used in the wild and impact millions of systems across the globe. Furthermore, VSS is known to be present throughout the US gaming industry, including most of the ATM/cash-out systems across Vegas.\n\nIn this session, I will publicly disclose this research, review the discovery process, and dive into the technical intricacies of each vulnerability. The Full Disk Encryption module of VSS conducts a complex integrity validation process to ensure a trusted system state, performed as a layered approach during system initialization. Examination of the workflow will highlight various deficiencies that I will demonstrate through PoC exploitation.\n\nEach vulnerability presented in this session has been observed to have a recursive impact across all major versions of VSS and represents a systemic ongoing risk. We will explore the root-cause, vendor remediation steps, and short-comings thereof – perpetuating the attack narrative. In conclusion, proper mitigation techniques and procedures will be covered, providing valuable insights into defending against potential compromise.",
+    "view_count": 40956
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lF8NEsl3-kQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

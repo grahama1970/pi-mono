@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QofeTV39kQE",
+    "language": "en",
+    "took_ms": 8446,
+    "method": null,
+    "title": "DEF CON 29 - Claire Vacherot - Sneak into buildings with KNXnetIP",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2096,
+    "description": "Building Management Systems control a myriad of devices such as lighting, shutters and HVAC. KNX (and by extension KNXnet/IP) is a common protocol used to interact with these BMS. However, the public's understanding and awareness is lacking, and effective tooling is scarce all while the BMS device market keeps on growing.\n\nThe ability to craft arbitrary KNXnet/IP frames to interact with these often-insecure BMS provides an excellent opportunity in uncovering vulnerabilities in both the implementation of KNX as well as the protocol itself. From unpacking KNX at a lower level, to using a Python-based protocol crafting framework we developed to interact with KNXnet/IP implementations, in this talk we’ll go on a journey of discovering how BMS that implement KNXnet/IP work as well as how to interact with and fuzz them.\n\nAfter this talk you could also claim that “the pool on the roof has a leak”!",
+    "view_count": 2902
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QofeTV39kQE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

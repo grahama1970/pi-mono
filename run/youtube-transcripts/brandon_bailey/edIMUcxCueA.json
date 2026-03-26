@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "edIMUcxCueA",
+    "language": "en",
+    "took_ms": 8089,
+    "method": null,
+    "title": "DEF CON 30 - Kyle Avery - Avoiding Memory Scanners - Customizing Malware to Evade YARA, PE-sieve",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2613,
+    "description": "Tired of obfuscating strings and recompiling to break signatures? Wish you could keep PE-sieve from ripping your malware out of memory? Interested in learning how to do all of this with your existing COTS or private toolsets?\n\nFor years, reverse engineers and endpoint security software have used memory scanning to locate shellcode and malware implants in Windows memory. These tools rely on IOCs such as signatures and unbacked executable memory. This talk will dive into the various methods in which memory scanners search for these indicators and demonstrate a stable evasion technique for each method. A new position-independent reflective DLL loader, AceLdr, will be released alongside the presentation and features the demonstrated techniques to evade all of the previously described memory scanners. The presenter and their colleagues have used AceLdr on red team operations against mature security programs to avoid detection successfully.\n\nThis talk will focus on the internals of PE-sieve, MalMemDetect, Moneta, Volatility malfind, and YARA to understand how they find malware in memory and how malware can be modified to fly under their radar consistently.",
+    "view_count": 10251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] edIMUcxCueA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

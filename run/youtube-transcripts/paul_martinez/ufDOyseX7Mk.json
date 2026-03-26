@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ufDOyseX7Mk",
+    "language": "en",
+    "took_ms": 10055,
+    "method": null,
+    "title": "Challenges Of Using IEC 62443 To Secure IIoT",
+    "channel": "S4 Events",
+    "upload_date": "20230406",
+    "duration_sec": 1554,
+    "description": "IEC 62443 security standards were written to secure Industrial Automation and Control Systems (IACS). In this S4x23 video, Ryan Dsouza of AWS looks at how well IEC 62443 standards can be used to secure IIoT.\n\nRyan contends there is no need to start over with IIoT security standards, and there is a need for some updates to recognize the cloud provider role and new communication paths.\n\nProgress to date, including a Technical Report and two IIoT certifications by ISASecure are covered in the video.",
+    "view_count": 4825
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ufDOyseX7Mk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

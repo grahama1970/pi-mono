@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4uV61EHLKKA",
+    "language": "en",
+    "took_ms": 8020,
+    "method": null,
+    "title": "DEF CON 33 - Building Onramps for Emergency Web Archiving in Ukraine and Beyond - Quinn Dombrowski",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2149,
+    "description": "Quinn Dombrowski is one of the co-founders of Saving Ukrainian Cultural Heritage Online (SUCHO), and an Academic Technology Specialist in Stanford's Division of Literatures, Cultures, and Languages, and in Stanford Libraries. Given a computer lab to manage in 2018, Quinn got rid of the ancient computers, bought some sewing machines, and put up a sign calling it the Textile Makerspace. Then people started to believe it, and fund it, and now Quinn teaches Data Visualization with Textiles there every spring and manages a space full of sewing machines, looms, crochet hooks, and multiple hacked digital knitting machines. Quinn has served as co-president of the Association for Computers and the Humanities (the US-based organization for Digital Humanities), and founded The Data-Sitters Club, a project that walks through, step-by-step, how to use different computational tools and methods for literature. They have incorporated textile data encoding into their work in various forms, including weaving all the data (grading, attendance, readings, complaint emails) from an AI class they taught, knitting all regularly-scheduled meetings and when they were canceled in 2022, and visualizing the distribution of references to computers, librarians, and archives across \"Star Trek\" novels.",
+    "view_count": 191
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4uV61EHLKKA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oZoy79S-edw",
+    "language": "en",
+    "took_ms": 9631,
+    "method": null,
+    "title": "GPT OSS Release, Inference and Fine tuning",
+    "channel": "Trelis Research",
+    "upload_date": "20250806",
+    "duration_sec": 3188,
+    "description": "📜Get repo access at https://Trelis.com/ADVANCED-fine-tuning\n\n🗝️ Get Trelis Multi-Repo Bundle (https://Trelis.com/multi-repo-bundle)\n- Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n- Support via Github Issues & Trelis’ Private Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Fine-tuning Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- OpenAI Blog: https://openai.com/index/introducing-gpt-oss/\n- HuggingFace Model: https://huggingface.co/openai/gpt-oss-20b\n- BASIC-fine-tuning repo: https://github.com/TrelisResearch/BASIC-fine-tuning\n- MX FP4: https://chatgpt.com/share/68936c44-7fcc-8003-a686-8e237738c6c2\n\nTIMESTAMPS:\n00:00 Introduction to OpenAI's OSS Models\n00:16 Model Specifications and Performance\n02:36 Quantization and Mixture of Experts\n04:00 MXFP8 Data Type\n08:46 Running Inference on OSS Models\n13:01 Fine-Tuning GPT OSS Models with transformers\n24:43 Exploring Track IO Feature\n26:33 ADVANCED fine-tuning tricks\n27:37 Using TensorBoard for Logging\n29:03 Creating a Validation Split\n30:12 Inspecting the Chat Template\n31:30 Preparing the Model for Training\n31:47 Training Parameters and Debugging\n46:41 Connecting to the Pod via SSH to git commit\n49:06 Final Thoughts on OpenAI OSS Models\n49:52 BONUS: Insights on Proprietary Models",
+    "view_count": 10451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oZoy79S-edw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

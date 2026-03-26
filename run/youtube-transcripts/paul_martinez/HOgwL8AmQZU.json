@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HOgwL8AmQZU",
+    "language": "en",
+    "took_ms": 8307,
+    "method": null,
+    "title": "Understanding and Using the Cyberwar Meta",
+    "channel": "S4 Events",
+    "upload_date": "20180205",
+    "duration_sec": 1745,
+    "description": "Dave Aitel of Immunity Inc. looks at crypto policy, the future of offensive techniques and state v. non-state actor capabilities ... and he puts much of this in context with examples from the game Overwatch.\n\nDave says \"I'm going to pick on some people, because they can take it. And because they are super wrong.\"\n\nOn the policy front he asserts it is being made by academia and the legal community, much like atomic, chemical and biological warfare, but in this case they know little about the field. They are not experts or practitioners. Dave gives specific examples.\n\nThe middle switches into offensive tactics and tools, along with some predictions. The parts on what a modern implant was left us wanting more info. Interesting and important.\n\nDave finishes off with a push back that Nation States have a huge skills advantage on non-state actors. Even the \n\nHe pushes back on the idea that Nation States are the only players that can have a big impact, and makes the case that this big mega-group strategy\n\n\n\n\nOffensive techniques and implants\n\nAssumes that code has a built in \"intent\". \n\nWhat is an Overwatch \"meta\"\n\nImmunity bet that worms would be the most obvious meta\n\nNon-state actors are much more important than the governments and policy people realize and preach. The \"outside\" is not understood by the \"inside\".",
+    "view_count": 1045
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HOgwL8AmQZU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

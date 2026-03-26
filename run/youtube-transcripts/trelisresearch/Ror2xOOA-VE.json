@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Ror2xOOA-VE",
+    "language": "en",
+    "took_ms": 7781,
+    "method": null,
+    "title": "Deploy Llama 2 for your Entire Organisation",
+    "channel": "Trelis Research",
+    "upload_date": "20230827",
+    "duration_sec": 1495,
+    "description": "An installation guide for Llama 2 or Code Llama for enterprise use-cases:\n* Run Llama on a server you control\n* Control the branding of the user interface\n\n*Critical tools:*\n- text-generation-inference: https://github.com/huggingface/text-generation-inference\n- chat-ui: https://github.com/huggingface/chat-ui\n\n*Get access to the private Github repo for:*\n- Detailed install instructions for running on AWS\n- Detailed instructions for deploying with RunPod (cheaper/easier GPU access).\n- Detailed questions/support\n- Function calling inference scripts\nLearn more: https://trelis.com/enterprise-server-api-and-inference-guide/\n\n0:00 Deploy an Enterprise Language Model on AWS (or on Google, Azure or Oracle).\n0:59 How do I run Llama 2 on a server\n1:43 What is the best GPU for running Llama 2\n2:27 How to set up an AWS server for Llama 2\n12:17 How to set up an api for llama with text-generation-inference\n13:24 How to set up Nvidia drivers on an AWS server\n15:25 What Llama model to choose?\n17:20 Installing an app to run a Llama chatbot with chat-ui\n20:05 How to select temperature and length for a language model\n23:10 Adding password protection to your chat model (and more)",
+    "view_count": 17039
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Ror2xOOA-VE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

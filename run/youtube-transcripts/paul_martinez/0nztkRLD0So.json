@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0nztkRLD0So",
+    "language": "en",
+    "took_ms": 9040,
+    "method": null,
+    "title": "25 Reasons Information Sharing Fails",
+    "channel": "S4 Events",
+    "upload_date": "20221017",
+    "duration_sec": 1690,
+    "description": "Kenneth Crowther presents a list of why information sharing fails in cybersecurity that actually mirrors historical information sharing fails outside of cybersecurity. Of course, the flip side is if we avoid these causes of failure we have a better chance of successfully sharing and using important information.",
+    "view_count": 424
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0nztkRLD0So: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

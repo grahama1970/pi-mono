@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gDRoHtRDT0I",
+    "language": "en",
+    "took_ms": 9812,
+    "method": null,
+    "title": "A.I. reimagines 'Donuts', the best instrumental hip-hop album of all time",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20240116",
+    "duration_sec": 867,
+    "description": "Yeah A.I. Donuts\n--------------------------------------------------------------------------------\nJoin the Nobodies Collective:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n__________________________________________________\nColab Notebooks for beat generation:\nhttps://www.patreon.com/posts/ai-dilla-ai-3-96245463\n\nColab Notebook for stem isolation based on demucs:\nhttps://www.patreon.com/posts/shaggs-notebook-95021734\n__________________________________________________\nTools used in the video:\nGPT playground:\nhttps://platform.openai.com/playground\nMETA AudioGen and MusicGEN\nhttps://about.fb.com/news/2023/08/audiocraft-generative-ai-for-music-and-audio/\nSUNO:\nhttps://www.suno.ai/\nA.I. videos:\nPika Labs.\nhttps://www.pika.art/\n__________________________________________________",
+    "view_count": 17176
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gDRoHtRDT0I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

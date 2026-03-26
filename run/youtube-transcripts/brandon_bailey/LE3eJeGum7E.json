@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LE3eJeGum7E",
+    "language": "en",
+    "took_ms": 7703,
+    "method": null,
+    "title": "DEF CON Safe Mode ICS Village -  Chris Kubecka  - Operationalizing Cyber Norms",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 1642,
+    "description": "Critical Infrastructure Protection",
+    "view_count": 4365
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LE3eJeGum7E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

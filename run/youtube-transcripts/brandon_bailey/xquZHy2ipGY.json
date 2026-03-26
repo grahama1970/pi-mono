@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xquZHy2ipGY",
+    "language": "en",
+    "took_ms": 9117,
+    "method": null,
+    "title": "DEF CON 30 - Panel - Moving Regulation Upstream - Focus on the Role of Digital Service Providers",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 6901,
+    "description": "Cyber criminals are no longer focusing all their efforts on the biggest fish, which means organizations below the security poverty line - who often struggle with achieving adequate cyber resilience - are increasingly being hit. At the same time, we've seen an increase in supply chain attacks, which makes sense as more and more of the tech ecosystem is moving to cloud or managed service provider models. Various governments are paying attention to these shifts and are considering how regulating digital service providers may advance security more broadly, while also alleviating the burden on small to medium businesses. This session will be led by one or two governments working on this issue and will include an open discussion on the challenges and opportunities of this approach.",
+    "view_count": 293
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xquZHy2ipGY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

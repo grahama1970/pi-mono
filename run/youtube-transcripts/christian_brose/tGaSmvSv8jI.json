@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tGaSmvSv8jI",
+    "language": "en",
+    "took_ms": 8168,
+    "method": null,
+    "title": "Warfighting at Sea: What Has Changed Since the Falklands War of 1982",
+    "channel": "Hudson Institute",
+    "upload_date": "20151021",
+    "duration_sec": 5206,
+    "description": "Rear Admiral Chris Parry and Arthur Herman discuss the nature of modern conflicts at sea and the Falklands War.",
+    "view_count": 150763
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tGaSmvSv8jI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

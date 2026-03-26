@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wzWfwYTXoJM",
+    "language": "en",
+    "took_ms": 7803,
+    "method": null,
+    "title": "LIVE Hosting - SpaceX Hispasat 30W-6",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180306",
+    "duration_sec": 5506,
+    "description": "SpaceX is launching their 50th Falcon 9 rocket from SLC-40 at Cape Canaveral Air Force Base in Florida. They're launching the Hispasat 30W-6 satellite on a brand new Falcon 9 rocket. \n\nEven though the first stage has landing legs and the expensive titanium grid fins, they will not be attempting to land this time due to poor weather conditions at the landing site and potentially due to there just not being enough margins for a safe landing attempt.\n\nThis will be the largest satellite (potentially in size and not necessarily weight) that SpaceX has ever launched to Geostationary transfer orbit. The satellite weights 6,092 KG and will provide television, broadband, corporate networks and telecommunications for 30° west.\n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 30219
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wzWfwYTXoJM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

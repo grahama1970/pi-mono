@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mqnrZtOovEg",
+    "language": "en",
+    "took_ms": 8919,
+    "method": null,
+    "title": "Gabriel Schoenfeld discussing the U.S. drones hacked by Iraqi insurgents on CNN",
+    "channel": "Hudson Institute",
+    "upload_date": "20091218",
+    "duration_sec": 282,
+    "description": "Hudson Senior Fellow Gabriel Schoenfeld appeared on CNN December 17, 2009 to discuss the U.S. drones that were hacked by Iraqi insurgents.",
+    "view_count": 499
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mqnrZtOovEg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

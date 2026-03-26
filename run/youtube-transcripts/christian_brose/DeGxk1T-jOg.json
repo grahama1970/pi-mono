@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DeGxk1T-jOg",
+    "language": "en",
+    "took_ms": 9401,
+    "method": null,
+    "title": "Patents and Economic Development: Examining the Success of the Patent Tigers",
+    "channel": "Hudson Institute",
+    "upload_date": "20200601",
+    "duration_sec": 2165,
+    "description": "Join Hudson Institute for a discussion with Professor Jonathan Barnett on the “patent tiger” phenomenon and the implications not only for developing countries seeking to build their economies, but also for the United States, which has significantly weakened its patent system over the past decade.",
+    "view_count": 517
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DeGxk1T-jOg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

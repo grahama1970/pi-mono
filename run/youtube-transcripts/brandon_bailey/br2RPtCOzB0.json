@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "br2RPtCOzB0",
+    "language": "en",
+    "took_ms": 7740,
+    "method": null,
+    "title": "DEF CON 33 - Cybersecurity in Latin America - Stories of Resilience & Innovation - Giovanni  Forero",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1030,
+    "description": "atin America faces a perfect storm of cyber threats—sophisticated criminal networks, underfunded defenses, and systemic vulnerabilities. Yet, within this chaos lies an untold narrative of adaptation, recursion, and community-driven resilience.",
+    "view_count": 160
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] br2RPtCOzB0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

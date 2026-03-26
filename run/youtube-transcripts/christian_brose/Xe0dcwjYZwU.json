@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Xe0dcwjYZwU",
+    "language": "en",
+    "took_ms": 9008,
+    "method": null,
+    "title": "Douglas Feith on Hardball with Chris Matthews discussing the New START Treaty",
+    "channel": "Hudson Institute",
+    "upload_date": "20101217",
+    "duration_sec": 487,
+    "description": "Hudson Senior Fellow Douglas Feith was on Hardball with Chris Matthews discussing the New START Treaty on December 14, 2010.",
+    "view_count": 538
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Xe0dcwjYZwU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

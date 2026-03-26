@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NN3mRgLzHVY",
+    "language": "en",
+    "took_ms": 7960,
+    "method": null,
+    "title": "The Next Century of Aerial Refueling",
+    "channel": "Hudson Institute",
+    "upload_date": "20230714",
+    "duration_sec": 3506,
+    "description": "Aerial refueling, one of the United States military’s most important advantages, enables the US to dynamically project power across the globe. However, the advanced age of America’s tanker inventory and the growing strength of the People’s Republic of China place this advantage at risk. As the Air Force celebrates a century of aerial refueling, it is time to look to the future.\n\nBuilding on the Center for Defense Concepts and Technology’s report Resilient Aerial Refueling: Safeguarding the US Military’s Global Reach, Hudson Senior Fellow Timothy A. Walton will host a panel discussion on the history of aerial refueling, the role of Air Force and congressional leadership, and future opportunities to maintain America’s advantage.\n\nJoining Walton will be Jeremiah Gertler, director of the Defense Concepts Organization, a senior associate with the Center for Strategic and International Studies’ Aerospace Security Project, and a senior analyst for the Teal Group; Jon Ludwigson, director of Contracting and National Security Acquisitions at the Government Accountability Office; and Lieutenant General Thomas Sharpy (USAF, Ret.), owner of the Sharpy Group.",
+    "view_count": 1576
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NN3mRgLzHVY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

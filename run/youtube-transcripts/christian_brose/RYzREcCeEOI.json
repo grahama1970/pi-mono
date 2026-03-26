@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RYzREcCeEOI",
+    "language": "en",
+    "took_ms": 8871,
+    "method": null,
+    "title": "Transnational Biological Threats and Global Security 1",
+    "channel": "Hudson Institute",
+    "upload_date": "20180425",
+    "duration_sec": 3530,
+    "description": "Opening remarks followed by keynote remarks by The Honorable Howard A. Zucker.",
+    "view_count": 8868
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RYzREcCeEOI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ejgaaSvkKzQ",
+    "language": "en",
+    "took_ms": 9902,
+    "method": null,
+    "title": "Mislabeled as Terrorists: Government Inaction Keeps Refugee",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 3416,
+    "description": "During this holiday season, more than 5,000 people who have already passed the difficult test to prove they are refugees and are living peacefully in the United States — and untold numbers of refugees who remain in dangerous situations abroad — are wrongly being categorized by the U.S. government as \"terrorists.\" A pro-democracy Burmese student who protested against the Burmese government and was persecuted as a result, a young Sudanese man who was forcibly abducted and detained by a S",
+    "view_count": 9
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ejgaaSvkKzQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

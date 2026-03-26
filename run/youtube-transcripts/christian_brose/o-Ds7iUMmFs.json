@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "o-Ds7iUMmFs",
+    "language": "en",
+    "took_ms": 9234,
+    "method": null,
+    "title": "Mexico 2018 Presidential Elections: A Populist Revolution?",
+    "channel": "Hudson Institute",
+    "upload_date": "20180726",
+    "duration_sec": 4756,
+    "description": "On July 1st, with 53 percent of the vote, Andrés Manuel López Obrador (AMLO) was elected the 58th President of Mexico. Participating in the largest election in Mexico’s history, López Obrador’s party—the National Regeneration Movement—also secured a majority in Congress. This is the first presidential victory for a Mexican third party since 1929, and the first time since 1997 that a ruling party has had an absolute majority in Congress, marking a seismic shift in the country's domestic politics.\n\nOn July 26, Hudson Institute hosted a panel to discuss the long- and short-term implications of the recent elections in Mexico. Panelists included Carlos Bravo Regidor, Associate Professor at the Center for Economic Research and Teaching; James R. Sisco, Founder and President of ENODO Global Inc; and former Ambassador of Mexico to China Jorge Eugenio Guajardo Gonzalez. The discussion will be moderated by the Director of Hudson’s Center for Latin American Studies, Jaime Daremblum.",
+    "view_count": 566
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] o-Ds7iUMmFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3CHB3_Q6GkA",
+    "language": "en",
+    "took_ms": 8264,
+    "method": null,
+    "title": "Generative AI with Large Language Models by AWS and DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230628",
+    "duration_sec": 118,
+    "description": "Enroll today: https://coursera.org/learn/generative-ai-with-llms\n\nIn “Generative AI with Large Language Models”, made in collaboration with AWS, you’ll learn how generative AI works, and how to deploy it in real-world applications. You’ll gain foundational knowledge, practical skills, and a functional understanding of how generative AI works, and you’ll dive into the latest research on generative AI to understand how companies are creating value with cutting-edge technology.\n\nWe are thrilled to offer this course with AWS. Our instructors, with their extensive expertise in AI and machine learning, provide practical knowledge drawn from real-world experience that can be applied to your projects and career.\n\n“Generative AI with Large Language Models” is an intermediate course, so you should have some experience coding in Python to get the most out of it. If you have taken the Machine Learning Specialization or Deep Learning Specialization, you’ll be ready to take this course and dive deeper into the fundamentals of generative AI.\n\nLearn more: https://www.deeplearning.ai/courses/generative-ai-with-llms/",
+    "view_count": 12142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3CHB3_Q6GkA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

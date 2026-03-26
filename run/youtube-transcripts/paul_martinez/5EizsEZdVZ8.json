@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5EizsEZdVZ8",
+    "language": "en",
+    "took_ms": 8388,
+    "method": null,
+    "title": "3. NIST CSF and Maturity Models with Joel Langill",
+    "channel": "S4 Events",
+    "upload_date": "20201210",
+    "duration_sec": 3093,
+    "description": "Joel ’SCADAHacker’ Langill of amentum (formerly AECOM) gives the session on ICS Security Frameworks and Maturity Models. \n\nThe main focus is on the US NIST Cybersecurity Framework. While this is a US developed Framework, it is being used in other countries as well. Joel not only covers what the Framework is. Importantly he goes into detail on how he uses the NISF CSF and shows another freely available tool. The video also provides some detail on C2M2 and CMMC and compares them to NIST CSF.\n\nJoel closes with information on the DHS CISA CSET tool, how to customize it, and then some Q&A.\n\nQuestions:\n\n1) Do you use a Framework to structure your cyber security program? If yes, which Framework and why? Does your industry have a Profile for the NIST CSF?\n\n2) Can you be compliant to a Framework? Why or why not? (admittedly there is disagreement on the answer to this question)\n\nNote - I have some more detailed info on how I use the NIST CSF coming out here on Tuesday in an audio file, and I'll be happy to answer any questions.",
+    "view_count": 1902
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5EizsEZdVZ8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

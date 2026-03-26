@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_KB_7lHe_TA",
+    "language": "en",
+    "took_ms": 9238,
+    "method": null,
+    "title": "The Strength of Democracies: The Atlantic Relationship During COVID-19",
+    "channel": "Hudson Institute",
+    "upload_date": "20200518",
+    "duration_sec": 2907,
+    "description": "Join Hudson Institute for a discussion on what democracies can do to bolster democratic principles and push back against authoritarian attempts to exploit COVID-19 for their illicit advantage.",
+    "view_count": 395
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _KB_7lHe_TA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

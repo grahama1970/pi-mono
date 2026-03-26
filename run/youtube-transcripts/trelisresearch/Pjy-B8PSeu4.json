@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Pjy-B8PSeu4",
+    "language": "en",
+    "took_ms": 8038,
+    "method": null,
+    "title": "Day 3 Recap - AI Engineer World's Fair",
+    "channel": "Trelis Research",
+    "upload_date": "20250606",
+    "duration_sec": 1247,
+    "description": "Tip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 AI World’s Fair San Francisco Day 3\n0:12 Last Gemini 2.5 release before Gemini 3?\n0:41 Gemini embeddings! And Gemini Code/CLI?\n1:35 Open Source Western Models Falling Behind\n2:39 Almost half of devs are doing fine-tuning?\n3:31 Text LLM usage far ahead, audio catching up\n4:15 OpenRouter Usage Growth is Massive\n6:03 We still don’t know how to do Reinforcement Learning?\n7:11 OpenThoughts Reasoning Dataset: Filtering correct answers hurts performance?\n8:48 Nathan Lambert highlights models OVERTHINK!\n10:29 LLMs were trained to think, next they’ll be trained to plan\n11:17 ARC Prize 3! A Sneak Preview\n12:15 How Waymo might address edge cases? Gemini Pro!!!\n16:22 Humoids are needed because of worker shortages (?)\n17:12 Nvidia Gr00t N1 - a language + vision + action foundation model\n17:47 A Humanoid for less than $9k - open source. K-Bot",
+    "view_count": 1237
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Pjy-B8PSeu4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

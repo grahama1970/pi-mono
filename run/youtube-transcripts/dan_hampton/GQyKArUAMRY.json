@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GQyKArUAMRY",
+    "language": "en",
+    "took_ms": 2700,
+    "method": null,
+    "title": "B-1B GUNSHIP: BOEING’S PLAN TO RUN BIG GUNS ON THE LANCER",
+    "channel": "Sandboxx",
+    "upload_date": "20210414",
+    "duration_sec": 530,
+    "description": "The B-1B Lancer has long served as America’s only supersonic heavy payload bomber, but for a time, Boeing considered extended its life as a high-speed gunship that would combine the firepower of the Spooky AC-130 gunship with the speed and maneuverability of an oversized fighter.\n\nRead the full story:\nhttps://sbxx.us/3uKxiWw",
+    "view_count": 462471
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GQyKArUAMRY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

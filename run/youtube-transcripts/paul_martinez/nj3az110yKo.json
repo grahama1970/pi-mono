@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nj3az110yKo",
+    "language": "en",
+    "took_ms": 8536,
+    "method": null,
+    "title": "OT Data Lakes",
+    "channel": "S4 Events",
+    "upload_date": "20230810",
+    "duration_sec": 1504,
+    "description": "Greg Valentine begins by introducing data lakes as a concept and its usefulness for OT. He shows the key steps and goes over some of the leading data lake service providers. He shows the difference between data warehouses and data lakes, and how data lakes can be used for a variety of security related purposes, such as SIEM and threat intel.",
+    "view_count": 569
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nj3az110yKo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

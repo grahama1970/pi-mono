@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jV0n4JseQT8",
+    "language": "en",
+    "took_ms": 7712,
+    "method": null,
+    "title": "LIVE Hosting Super moon eclipse",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180131",
+    "duration_sec": 13246,
+    "description": "For the first time in 150 years, we will experience a blue moon (two full moons in a month), super moon (when the moon is at it's closest point in its orbit and full), and a lunar eclipse, (when the Earth blocks the sun from the moon). Join me as I watch it unfold live and answer your questions! \n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 45999
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jV0n4JseQT8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

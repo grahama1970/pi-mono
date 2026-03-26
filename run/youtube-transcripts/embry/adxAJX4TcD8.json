@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "adxAJX4TcD8",
+    "language": "en",
+    "took_ms": 7977,
+    "method": null,
+    "title": "Watch NASA and Northrop Grumman launch to the ISS! (CRS-13)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20200215",
+    "duration_sec": 4252,
+    "description": "Cygnus is returning to the International Space Station! The Antares 230+ rocket will leap off the pad on Wallops Island located in Virginia in the United States carrying a Cygnus capsule full of supplies for the crew onboard the ISS.\n\nWant to know more about this mission? Check out our Prelaunch Preview! - https://everydayastronaut.com/antares-230-cygnus-crs-ng-13/\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 81774
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] adxAJX4TcD8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

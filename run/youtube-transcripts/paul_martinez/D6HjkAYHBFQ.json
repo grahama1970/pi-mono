@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D6HjkAYHBFQ",
+    "language": "en",
+    "took_ms": 8714,
+    "method": null,
+    "title": "6. Managing Risk Through Consequence Reduction with Andy Bochman",
+    "channel": "S4 Events",
+    "upload_date": "20201221",
+    "duration_sec": 2606,
+    "description": "Andy Bochman is one of the leaders at INL developing the Consequence-Driven Cyber-Informed Engineering (CCE) program. Andy begins by talking about risk in general and the importance of understanding Acceptable Risk.\n\nA basic version of the risk equation is:\n\nRisk = Probability (or Likelihood) x Consequence\n\nSecurity professionals tend to focus, exclusively sometimes, on implementing security controls to reduce the Likelihood side of the risk equation. Andy talks about some of the difficulties in credibly measuring or determining the likelihood. \n\nIn the last 15-minutes, Andy talks about the benefits of looking at the Consequence side of the risk equation and a methodology or approach to evaluating and reducing Consequence.",
+    "view_count": 420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D6HjkAYHBFQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

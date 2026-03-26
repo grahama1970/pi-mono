@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "a3UtMuz_GSA",
+    "language": "en",
+    "took_ms": 8863,
+    "method": null,
+    "title": "DEF CON 29 Blue Team Village - Gert-Jan Bruggink - This is what we thought would happen in 2021",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1685,
+    "description": "At the beginning of each year, companies share lessons learned and forecasts on what (cyber) threats are expected in the next 12 months. The reality is that a lot of teams and companies publish about this and you probably did not read all these articles or reports.\n\nThis talk explores the results of a meta-analysis on threat forecasting, based on open-source reports and articles. As a defender you constantly balance between pushing Jira tickets and looking ahead. By giving you a TLDR, defenders have context into what needs to be prioritised next to the daily operations.\n\nThis talk explores the concept of forecasting to help your cyber security program. Following concepts introduced in the book ‘Superforecasting: the art and science of prediction’ (Tetlock, Gardner), the average of multiple forecasts is usually the most accurate.\n\nIn preparation to this talk, all publicly available research released in Jan-April 2021 from companies on their expectations for 2021’ threat landscape has been analysed. This exercise resulted into a prioritised list of topics expected for 2021. This list is also actively tracked, to monitor if events already occurred and topics are more/less relevant. By giving you the TLDR, defenders have more context into what needs to be prioritised - next to the daily operations.\n\nAs a defender, there is always the constant balance where to focus your precious time. There is great value in looking ahead, yet this is hard when constantly pivoting between Jira tickets. Forecasting is just one way to look ahead and prepare yourself and your teams.\n\nThe objective of this talk is to provide defenders access to a larger narrative around cyber threats to support both business and senior stakeholder’s decision making. Providing more situational awareness. As a defender you constantly balance between pushing Jira tickets and looking ahead. This session supports keeping that balance.",
+    "view_count": 342
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] a3UtMuz_GSA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

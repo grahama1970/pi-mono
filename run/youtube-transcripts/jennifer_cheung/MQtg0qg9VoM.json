@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MQtg0qg9VoM",
+    "language": "en",
+    "took_ms": 9102,
+    "method": null,
+    "title": "DEF CON 29 Crypto and Privacy Village - Day 1",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 31012,
+    "description": "The complete proceedings of Day One for the Crypto and Privacy Village, DEF CON 29 Las Vegas Edition.",
+    "view_count": 1325
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MQtg0qg9VoM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

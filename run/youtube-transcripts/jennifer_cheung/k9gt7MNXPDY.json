@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k9gt7MNXPDY",
+    "language": "en",
+    "took_ms": 7888,
+    "method": null,
+    "title": "DEF CON 31 - LLMs at the Forefront  Pioneering the Future of Fuzz Testing - X",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2618,
+    "description": "Large Language Models are already revolutionizing the software development landscape. As hackers we can only do what we've always done, embrace the machine and use it to do our bidding.\n\nThere are many valid criticisms of GPT models for writing code like the tendency to hallucinate functions, not being able to reason about architecture, training done on amateur code, limited context due to token length, and more. None of which are particularly important when writing fuzz tests. This presentation will delve into the integration of LLMs into fuzz testing, providing attendees with the insights and tools necessary to transform and automate their security assessment strategies.\n\nThe presentation will kick off with an introduction to LLMs; how they work, the potential use cases and challenges for hackers, prompt writing tips, and the deficiencies of current models. We will then provide a high level overview explaining the purpose, goals, and obstacles of fuzzing, why this research was undertaken, and why we chose to start with 'memory safe' Python. We will then explore efficient usage of LLMs for coding, and the primary benefits LLMs offer for security work, paving the way for a comprehensive understanding of how LLMs can automate tasks traditionally performed by humans in fuzz testing engagements.\n\nWe will then introduce FuzzForest, an open source tool that harnesses the power of LLMs to automatically write, fix, and triage fuzz tests on Python code. A thorough discussion on the workings of FuzzForest will follow, with a focus on the challenges faced during development and our solutions. The highlight of the talk will showcase the results of running the tool on the 20 most popular open-source Python libraries which resulted in identifying dozens of bugs.\n\nWe will end the talk with an analysis of efficacy and question if we'll all be replaced with a SecurityGPT model soon.\n\nTo maximize the benefits of this talk, attendees should possess a fundamental understanding of fuzz testing, programming languages, and basic AI concepts. However, a high-level refresher will be provided to ensure a smooth experience for all participants.",
+    "view_count": 2319
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k9gt7MNXPDY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

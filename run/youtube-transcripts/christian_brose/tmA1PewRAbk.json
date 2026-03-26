@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tmA1PewRAbk",
+    "language": "en",
+    "took_ms": 7861,
+    "method": null,
+    "title": "Iraq: Political Parties, Protests, and Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20180817",
+    "duration_sec": 5364,
+    "description": "The Iraqi elections in May, which were boycotted by 55 percent of the voting age population, reflect growing disenchantment with the current political system. Amid protests and accusations of election fraud, the government mandated a vote recount, which concluded on August 6 and resulted in fewer than a dozen Parliament members losing their seats. Discontent persists, and many questions remain unanswered regarding the future of democracy in the country. Pressure on the country’s political elite has only been made worse by mounting tensions in the region, particularly between the U.S. and Iran, as well as a resurgence of ISIS and other militant groups.\n\nOn August 17, Hudson Institute hosted a panel to examine the current state of Iraq, U.S. policy in the region, and the resurgence of ISIS and other militant groups. Panelists included Michael Pregent, a senior fellow at Hudson Institute; Vivian Salama, a reporter for The Wall Street Journal; Bilal Wahab, the Nathan and Esther K. Wagner fellow at The Washington Institute; and Ahmad Khalid Majidyar, a fellow and the director of the IranObserved Project at the Middle East Institute.",
+    "view_count": 1815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tmA1PewRAbk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

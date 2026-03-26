@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "75A_qDF7qf8",
+    "language": "en",
+    "took_ms": 8645,
+    "method": null,
+    "title": "The Bird’s Eye View of a Changing World with Amb. John Sullivan and Mario Mancuso (Part 1)",
+    "channel": "Hudson Institute",
+    "upload_date": "20231218",
+    "duration_sec": 2305,
+    "description": "Hudson Senior Fellow Mario Mancuso sits down with Ambassador John Sullivan, who served as United States ambassador to Russia immediately before, during, and after Russia’s invasion of Ukraine in 2022.\n\nOne of America’s most distinguished public servants, Ambassador Sullivan has served under five US presidents, in leadership roles at four cabinet departments, and as deputy secretary of the Departments of State and Commerce. Amid the ongoing debate about additional US funding for Ukraine, Ambassador Sullivan gives a bird’s eye view of some of the most consequential geopolitical events in recent times, including the lead-up to Russia’s invasion of Ukraine, the regime dynamics in the Kremlin and what they mean for Vladimir Putin’s future, Hamas’s brutal attack on Israel, and Iran’s proxy war in a changing Middle East.\n\nThe conversation will continue in a second part coming soon.",
+    "view_count": 2026
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 75A_qDF7qf8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

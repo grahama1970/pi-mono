@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-KXgcWuv-Ug",
+    "language": "en",
+    "took_ms": 8129,
+    "method": null,
+    "title": "DEF CON 32 - Secrets & Shadows: Leveraging Big Data for Vulnerability Discovery - Bill Demirkapi",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2544,
+    "description": "When we consider the conventional approaches to vulnerability discovery, be it in software or websites, we tend to confine ourselves to a specific target or platform. In the case of software, we might reverse engineer an application's attack surfaces for untrusted input, aiming to trigger edge cases. For websites, we might enumerate a domain for related assets and seek out unpatched, less defended, or occasionally abandoned resources.\n\nThis presentation explores the untapped potential of scaling security research by leveraging unconventional data sources. We'll walk through design flaws that enable two examples: forgotten cloud assets and leaked secrets. Instead of starting with a target and finding vulnerabilities, we'll find vulnerabilities and relate them to our targets. We won't just stop at discovery. We'll also discuss the incentives that create them and how to solve the ecosystem issues as an industry.\n\nWhile you can't easily scale every issue, this project has led to tens of thousands of highly significant yet seemingly trivial weaknesses in some of the world's largest organizations. Prepare to shift your perspective on vulnerability discovery, learn scalable approaches to address commonly overlooked bugs, and understand how even the simplest misconfiguration can have a devastating impact.",
+    "view_count": 1413
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -KXgcWuv-Ug: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

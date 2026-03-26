@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6gnvm-8NEmA",
+    "language": "en",
+    "took_ms": 8164,
+    "method": null,
+    "title": "Learn to build multi-agent systems with diverse roles and capabilities with AutoGen",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240606",
+    "duration_sec": 762,
+    "description": "Enroll in the full course: https://bit.ly/3Rg3VcA\n\nExplore the first lesson of AI Agentic Design Patterns with AutoGen, a short course made in collaboration with Microsoft and Penn State University, and taught by AutoGen creators Chi Wang, Principle Researcher at Microsoft Research, and Qingyun Wu, Assistant Professor at Penn State University.\n\nIn this course, you’ll learn how to build and customize multi-agent systems, enabling agents to take on different roles and collaborate to accomplish complex tasks using AutoGen, a framework that enables the development of LLM applications using multi-agents, all while implementing four agentic design patterns: Reflection, Tool use, Planning, and Multi-agent collaboration using AutoGen.\n\nYou’ll create: \n\n- A two-agent chat that shows a conversation between two standup comedians, using “ConversableAgent,” a built-in agent class of AutoGen for constructing multi-agent conversations. \n- A sequence of chats between agents to provide a fun customer onboarding experience for a product, using the multi-agent collaboration design pattern.\n- A high-quality blog post by using the agent reflection framework. You’ll use the “nested chat” structure to develop a system where reviewer agents, nested within a critic agent, reflect on the blog post written by another agent.\n- A conversational chess game where two agent players can call a tool and make legal moves on the chessboard, by implementing the tool use design pattern.\n- A coding agent capable of generating the necessary code to plot stock gains for financial analysis. This agent can also integrate user-defined functions into the code.\n- Agents with coding capabilities to complete a financial analysis task. You’ll create two systems where agents collaborate and seek human feedback. The first system will generate code from scratch using an LLM, and the second will use user-provided code.\n\nYou can use the AutoGen framework with any model via API call or locally within your own environment. In this course, you’ll use OpenAI’s API. \n\nStart effectively implementing multi-agent systems in your workflows using AutoGen!\n\nLearn more: https://bit.ly/3Rg3VcA",
+    "view_count": 4804
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6gnvm-8NEmA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

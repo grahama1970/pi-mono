@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tMT28NXbKW0",
+    "language": "en",
+    "took_ms": 9708,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village  - Panel Discussion  - What makes a good operator",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 1839,
+    "description": "Panel discussion around what makes a good ham operator, as opposed to a 'lid' (a bad operator). We'll also talk about all of the strange lingo ham radio loves to use.",
+    "view_count": 310
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tMT28NXbKW0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

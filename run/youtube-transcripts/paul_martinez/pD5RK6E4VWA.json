@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pD5RK6E4VWA",
+    "language": "en",
+    "took_ms": 9976,
+    "method": null,
+    "title": "Fortinet - Beyond Visibility in OT",
+    "channel": "S4 Events",
+    "upload_date": "20200313",
+    "duration_sec": 1357,
+    "description": "Rick Peters of Fortinet begins by going over what he sees as the key trends in and threats to Operations Technology (OT). He then turns to solutions and talks about the broad, integrated and automated security framework that asset owners need. And collaboration between the asset owners and multiple vendors is required to make this work.\n\nHe finishes by giving an overview of the Fortinet Security Fabric and how it can be used in OT.",
+    "view_count": 199
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pD5RK6E4VWA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

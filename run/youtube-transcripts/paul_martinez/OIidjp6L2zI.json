@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OIidjp6L2zI",
+    "language": "en",
+    "took_ms": 8727,
+    "method": null,
+    "title": "Hacking ICS Via DNS",
+    "channel": "S4 Events",
+    "upload_date": "20160714",
+    "duration_sec": 1878,
+    "description": "Reid Wightman of Digital Bond Labs goes over two important methods that adversaries can use DNS to hack ICS.\n\nThe beginning covers DNS basics, so if you know that skip to \n\n5:15 Survey of various DNS squatting on 11 ICS vendor site names\n\n8:30 SlEMENS.com (slemens.com) Malware and other attacks and issues.\n\n24:40 DNS for exfiltration or establishing tunnels with command and control servers. In 2016 this still works frequently as DNS is allowed outbound to resolve Internet addresses.",
+    "view_count": 653
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OIidjp6L2zI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

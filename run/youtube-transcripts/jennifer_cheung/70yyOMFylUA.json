@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "70yyOMFylUA",
+    "language": "en",
+    "took_ms": 10102,
+    "method": null,
+    "title": "DEF CON 32 - Gotta Cache ‘em all  bending the rules of web cache exploitation - Martin Doyhenard",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2638,
+    "description": "In recent years, web cache attacks have become a popular way to steal sensitive data, deface websites, and deliver exploits. We've also seen parser inconsistencies causing critical vulnerabilities like HTTP Request Smuggling. This raises the question: what happens if we attack web caches' URL-parsers?\n\nIn this session, I'll introduce two powerful new techniques that exploit RFC ambiguities to bypass the limitations of web cache deception and poisoning attacks.\n\nFirst, I'll introduce Static Path Deception, a novel technique to completely compromise the confidentiality of an application. I’ll illustrate this with a case study showing how such a breach can be replicated in environments like Nginx behind Cloudflare.\n\nNext, I'll present Cache Key Confusion, and show how to exploit URL parsing inconsistencies in major platforms, including Microsoft Azure Cloud. I’ll then show how to achieve arbitrary cache poisoning and full denial of service.\n\nFinally, I'll reveal how to supercharge these vulnerabilities with a live demo that blends Cache Key Confusion with a “non-exploitable” open redirect to execute arbitrary JS code for complete site takeover.\n\nAttendees will depart armed with a set of innovative techniques, along with a definitive methodology to find and exploit these and other URL or HTTP discrepancies.",
+    "view_count": 16464
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 70yyOMFylUA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

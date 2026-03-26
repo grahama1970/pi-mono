@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WEKhqh4UjTc",
+    "language": "en",
+    "took_ms": 8684,
+    "method": null,
+    "title": "Is The Normalized, Taxonomized Approach In A SIEM Doomed To Fail",
+    "channel": "S4 Events",
+    "upload_date": "20210113",
+    "duration_sec": 2781,
+    "description": "Corey Thuen of Gravwell is Dale Peterson's guest in this first video episode of the Unsolicited Response Show. In the first 7:20, Dale explains why no virtual S4x21, S4's Why, and the content he plans for this new Unsolicited Response Show.\n\nThen Dale and Corey discuss the value of a normalized, taxonomized approach to SIEM, which Dr. Anton Chuvakin has famously claimed is doom to fail. Corey is sympathetic to this view and tries to explain it to Dale. The alternative is gathering and creating a data lake with more log data and pcaps that can be used by threat hunters and customized rules. \n\nThe conversation continues with what types of integration would be helpful between the OT detection products and whatever is used for organization wide detection and response, the packet encryption challenge, and the preference to just buy a product. \n\nYou can submit your audio question on this episode or other OT and ICS Security topics to the show by going to dale-peterson.com and clicking on \"Record Your Question\".",
+    "view_count": 461
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WEKhqh4UjTc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

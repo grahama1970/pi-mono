@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline-variant": "#484848",
+              "inverse-primary": "#742fe5",
+              "surface-container-highest": "#262626",
+              "inverse-on-surface": "#565555",
+              "secondary-dim": "#00ed7e",
+              "on-background": "#ffffff",
+              "tertiary-container": "#499dfe",
+              "on-secondary-container": "#e3ffe4",
+              "on-primary-fixed": "#000000",
+              "outline": "#767575",
+              "primary": "#bd9dff",
+              "secondary-fixed": "#00fd87",
+              "on-primary-container": "#2e006c",
+              "on-secondary-fixed-variant": "#006632",
+              "on-primary": "#3c0089",
+              "tertiary": "#6aabff",
+              "error-container": "#a70138",
+              "tertiary-fixed-dim": "#5da5ff",
+              "on-error": "#490013",
+              "on-tertiary-fixed-variant": "#003a6d",
+              "on-tertiary-fixed": "#001833",
+              "surface-container": "#191a1a",
+              "tertiary-dim": "#4fa0ff",
+              "surface": "#0e0e0e",
+              "surface-bright": "#2c2c2c",
+              "primary-container": "#b28cff",
+              "background": "#0e0e0e",
+              "inverse-surface": "#fcf9f8",
+              "on-secondary": "#005b2c",
+              "on-error-container": "#ffb2b9",
+              "surface-variant": "#262626",
+              "surface-tint": "#bd9dff",
+              "secondary": "#00fd87",
+              "surface-dim": "#0e0e0e",
+              "on-primary-fixed-variant": "#390083",
+              "on-surface": "#ffffff",
+              "error": "#ff6e84",
+              "primary-fixed-dim": "#a67aff",
+              "on-tertiary": "#002a52",
+              "surface-container-lowest": "#000000",
+              "surface-container-high": "#202020",
+              "error-dim": "#d73357",
+              "secondary-container": "#006d37",
+              "on-surface-variant": "#adaaaa",
+              "on-secondary-fixed": "#004621",
+              "surface-container-low": "#131313",
+              "primary-dim": "#8a4cfc",
+              "tertiary-fixed": "#7bb3ff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .waveform-bg {
+        background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar Shared Component -->
+<nav class="flex justify-between items-center w-full px-6 py-3 border-b border-white/5 bg-[#131313] docked full-width top-0 z-50 font-['Inter'] tracking-tight antialiased">
+<div class="text-xl font-bold tracking-tighter text-white font-['Inter']">Sonic Observatory</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#bd9dff] font-bold border-b-2 border-[#7c3aed] pb-1 hover:text-white transition-colors duration-200" href="#">Project</a>
+<a class="text-[#adaaaa] font-medium hover:text-white transition-colors duration-200" href="#">History</a>
+<a class="text-[#adaaaa] font-medium hover:text-white transition-colors duration-200" href="#">Export</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#adaaaa] hover:text-white transition-colors">settings</button>
+<button class="material-symbols-outlined text-[#adaaaa] hover:text-white transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User profile" data-alt="User profile avatar circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAihBfrAYx9OHBDqcL-URxxBxFELVQy7dQE2umIDzQBPPDVM0EP_KTZOkLsROd3ZnJVTOS1ul6z6O-4PmUyMNDxyQmYaOQlhb6l3i-sFd3CpIz7HNNlXGiOPA0YVzIJdEPebc-qB4QftTXg1AgSyeYHwVpVgM7JxZ35wHycYAprctmJQiuN0LngQ6uxOXdRavc1Yn7xdw_00eb1M45aKet-hCspKgeIOaR6Q1uZgp59kjyzHu5nE0iZ5T3PgTLO1ObHF5zLCO7C44"/>
+</div>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar Shared Component -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col h-full py-8 bg-[#131313] border-r border-white/5 z-40 mt-[57px]">
+<div class="px-6 mb-8 flex items-center gap-4">
+<img alt="Album Art Thumbnail" class="w-12 h-12 rounded-lg object-cover shadow-2xl" data-alt="Dark neon aesthetic album cover art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYxFGXQ8xxuyfVVZ7POKw6JtKj9tgZRD3bpXTiGD8qS7PrJ0S4iQtU4SYnQRIV17P8SELIfcA4-3QH_ANB9RMLsmJAz7l__fysS63cBc39DTnCmzYZw4eW6umCTaRfeMQ9RYFM-s68sOA3Ekx_l3S9an9XnyGVwwR5pG4tR9nt9xsRlx01h2P9xM7NX0AyuSrfi15e2jfkF8T09N4PHMX9R7fisNxA8OOiMCH3zs0Ui1JQnbb7zStBZbNHxs5qFcGemCMPFK4NrAw"/>
+<div>
+<h2 class="text-white font-bold leading-tight">Neon Horizon</h2>
+<p class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">124 BPM • G Minor</p>
+</div>
+</div>
+<nav class="flex flex-col flex-1">
+<div class="flex items-center gap-3 text-[#adaaaa] px-4 py-3 hover:bg-[#191a1a] hover:text-white transition-all font-label uppercase tracking-widest text-[10px]">
+<span class="material-symbols-outlined">fingerprint</span> Identity
+                </div>
+<div class="flex items-center gap-3 text-[#00fd87] bg-[#191a1a] border-l-2 border-[#00fd87] px-4 py-3 font-label uppercase tracking-widest text-[10px]">
+<span class="material-symbols-outlined">waves</span> Stem Extraction
+                </div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-4 py-3 hover:bg-[#191a1a] hover:text-white transition-all font-label uppercase tracking-widest text-[10px]">
+<span class="material-symbols-outlined">rule</span> Alignment
+                </div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-4 py-3 hover:bg-[#191a1a] hover:text-white transition-all font-label uppercase tracking-widest text-[10px]">
+<span class="material-symbols-outlined">layers</span> Structure
+                </div>
+<div class="flex items-center gap-3 text-[#adaaaa] px-4 py-3 hover:bg-[#191a1a] hover:text-white transition-all font-label uppercase tracking-widest text-[10px]">
+<span class="material-symbols-outlined">check_circle</span> Finalize
+                </div>
+</nav>
+<div class="px-6 mt-auto pb-20">
+<button class="w-full py-3 bg-primary text-on-primary font-bold rounded-xl transition-transform active:scale-95">
+                    Export Stems
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 flex flex-col bg-surface mt-[57px]">
+<!-- Song Identity Header -->
+<header class="p-8 flex items-start justify-between">
+<div class="flex items-center gap-6">
+<img alt="Album Art" class="w-16 h-16 rounded-lg shadow-2xl ring-1 ring-white/10" data-alt="Classic vinyl album cover texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRukQ9ocu1MyHRR-4KK8e_gs3rENSIAIRfkfx41mzRONt5Gnd3H0blnK3FEIqI4pcj8SoV2whcuzVE2zRwnycHXv9mRFQBQ6b4JniiHbD-xYIHVD-82W-ybxg2JoEa4NqFzOZ074KmGcsZYTurMiU2X3nOWDFqh3OTAudDbZ6cO56pzwxQQ1zfH6tHiM9QCd0jJ0eU3dLeUDfJJfS47PrzEJMvZRMp-QPfPgPs8VJ3LVGebZuJXp2hW18Hni604zCYBLSJLNJrb6o"/>
+<div>
+<h1 class="text-4xl font-extrabold tracking-tight text-white mb-1">Roads</h1>
+<p class="text-on-surface-variant font-label text-sm uppercase tracking-wider">
+                            Portishead · Dummy 1994 · 85 BPM · D minor
+                        </p>
+<p class="text-secondary font-label text-[10px] mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                            Selecting reference clips for Whisperheads
+                        </p>
+</div>
+</div>
+<!-- Transport Controls -->
+<div class="bg-surface-container rounded-2xl p-2 flex items-center gap-4 border border-white/5">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-white"><span class="material-symbols-outlined">fast_rewind</span></button>
+<button class="w-12 h-12 flex items-center justify-center bg-primary rounded-full text-on-primary shadow-lg shadow-primary/20"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-white"><span class="material-symbols-outlined">fast_forward</span></button>
+</div>
+</header>
+<!-- Timeline Ruler -->
+<div class="px-8 flex">
+<div class="w-48"></div> <!-- Track Controls spacer -->
+<div class="flex-1 border-b border-white/10 flex items-end pb-1 font-label text-[10px] text-on-surface-variant tracking-widest">
+<div class="w-1/12">001</div>
+<div class="w-1/12">002</div>
+<div class="w-1/12">003</div>
+<div class="w-1/12">004</div>
+<div class="w-1/12">005</div>
+<div class="w-1/12">006</div>
+<div class="w-1/12">007</div>
+<div class="w-1/12">008</div>
+<div class="w-1/12">009</div>
+<div class="w-1/12">010</div>
+<div class="w-1/12">011</div>
+<div class="w-1/12">012</div>
+</div>
+</div>
+<!-- Stems Viewer -->
+<div class="flex-1 relative overflow-y-auto scrollbar-hide px-8 py-2">
+<!-- Vertical Playhead -->
+<div class="absolute top-0 bottom-0 left-[45%] w-px bg-white/80 z-30 shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+<!-- Selection Overlays -->
+<!-- Verse Ref (Green) -->
+<div class="absolute top-0 bottom-0 left-[240px] w-[25%] bg-secondary/10 border-x-2 border-secondary z-20 pointer-events-none">
+<div class="absolute top-2 left-4 bg-secondary text-on-secondary px-2 py-0.5 rounded font-label text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">arrow_forward</span> verse ref
+                    </div>
+</div>
+<!-- Chorus Ref (Purple) -->
+<div class="absolute top-0 bottom-0 left-[60%] w-[20%] bg-primary/10 border-x-2 border-primary z-20 pointer-events-none">
+<div class="absolute top-2 left-4 bg-primary text-on-primary px-2 py-0.5 rounded font-label text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">arrow_forward</span> chorus ref
+                    </div>
+</div>
+<!-- Track Rows -->
+<div class="flex flex-col gap-1 h-full">
+<!-- Vocal -->
+<div class="flex h-[15%] min-h-[60px]">
+<div class="w-40 flex items-center justify-between pr-4">
+<span class="font-label text-xs uppercase tracking-widest font-bold">Vocal</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest border border-white/5 font-label text-xs hover:border-secondary transition-colors">S</button>
+</div>
+<div class="flex-1 bg-secondary rounded-lg overflow-hidden relative">
+<div class="absolute inset-0 waveform-bg opacity-40 scale-y-75"></div>
+<span class="absolute top-3 left-4 text-[10px] font-bold text-black/60 uppercase font-headline">ROADS (VOCAL)</span>
+</div>
+</div>
+<!-- Bass -->
+<div class="flex h-[15%] min-h-[60px]">
+<div class="w-40 flex items-center justify-between pr-4">
+<span class="font-label text-xs uppercase tracking-widest font-bold">Bass</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest border border-white/5 font-label text-xs hover:border-secondary transition-colors">S</button>
+</div>
+<div class="flex-1 bg-[#ff0095] rounded-lg overflow-hidden relative">
+<div class="absolute inset-0 waveform-bg opacity-40 scale-y-90"></div>
+<span class="absolute top-3 left-4 text-[10px] font-bold text-black/60 uppercase font-headline">ROADS (SUB_BASS)</span>
+</div>
+</div>
+<!-- Drums -->
+<div class="flex h-[15%] min-h-[60px]">
+<div class="w-40 flex items-center justify-between pr-4">
+<span class="font-label text-xs uppercase tracking-widest font-bold">Drums</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest border border-white/5 font-label text-xs hover:border-secondary transition-colors">S</button>
+</div>
+<div class="flex-1 bg-[#eaff00] rounded-lg overflow-hidden relative">
+<div class="absolute inset-0 waveform-bg opacity-40 scale-y-110"></div>
+<span class="absolute top-3 left-4 text-[10px] font-bold text-black/60 uppercase font-headline">ROADS (BEAT_LOOP)</span>
+</div>
+</div>
+<!-- Keys -->
+<div class="flex h-[15%] min-h-[60px]">
+<div class="w-40 flex items-center justify-between pr-4">
+<span class="font-label text-xs uppercase tracking-widest font-bold">Keys</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest border border-white/5 font-label text-xs hover:border-secondary transition-colors">S</button>
+</div>
+<div class="flex-1 bg-primary rounded-lg overflow-hidden relative">
+<div class="absolute inset-0 waveform-bg opacity-40 scale-y-50"></div>
+<span class="absolute top-3 left-4 text-[10px] font-bold text-black/60 uppercase font-headline">ROADS (RHODES)</span>
+</div>
+</div>
+<!-- Guitar -->
+<div class="flex h-[15%] min-h-[60px]">
+<div class="w-40 flex items-center justify-between pr-4">
+<span class="font-label text-xs uppercase tracking-widest font-bold">Guitar</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-highest border border-white/5 font-label text-xs hover:border-secondary transition-colors">S</button>
+</div>
+<div class="flex-1 bg-[#ff6a00] rounded-lg overflow-hidden relative">
+<div class="absolute inset-0 waveform-bg opacity-40 scale-y-60"></div>
+<span class="absolute top-3 left-4 text-[10px] font-bold text-black/60 uppercase font-headline">ROADS (LEAD_GTR)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Selected Clip Cards -->
+<footer class="p-8 bg-surface-container-low border-t border-white/5 flex gap-6">
+<!-- Card 1 -->
+<div class="flex-1 bg-surface-container rounded-2xl p-4 border-l-4 border-secondary flex items-center gap-4 group hover:bg-surface-container-highest transition-colors">
+<button class="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<h4 class="font-headline font-bold text-white text-sm">Verse Ref</h4>
+<p class="text-on-surface-variant font-label text-[11px] leading-relaxed mt-1 italic">"sparse brooding bass feel, focus on the low-end resonance"</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex-1 bg-surface-container rounded-2xl p-4 border-l-4 border-primary flex items-center gap-4 group hover:bg-surface-container-highest transition-colors">
+<button class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<h4 class="font-headline font-bold text-white text-sm">Chorus Ref</h4>
+<p class="text-on-surface-variant font-label text-[11px] leading-relaxed mt-1 italic">"saturated rhodes harmonics with heavy tremolo peaks"</p>
+</div>
+</div>
+<!-- Action FAB -->
+<button class="px-8 bg-secondary text-on-secondary font-bold rounded-xl flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+                    Confirm Selections <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</footer>
+</main>
+</div>
+</body></html>

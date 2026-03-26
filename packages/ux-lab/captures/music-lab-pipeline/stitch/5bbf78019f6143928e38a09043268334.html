@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#adaaaa",
+              "outline": "#767575",
+              "on-background": "#ffffff",
+              "tertiary-fixed": "#7bb3ff",
+              "secondary-dim": "#00ed7e",
+              "on-primary-fixed": "#000000",
+              "tertiary-container": "#499dfe",
+              "inverse-on-surface": "#565555",
+              "on-error": "#490013",
+              "error-dim": "#d73357",
+              "error-container": "#a70138",
+              "surface-tint": "#bd9dff",
+              "secondary-fixed": "#00fd87",
+              "primary-dim": "#8a4cfc",
+              "primary": "#bd9dff",
+              "secondary": "#00fd87",
+              "on-secondary": "#005b2c",
+              "on-tertiary-fixed-variant": "#003a6d",
+              "secondary-container": "#006d37",
+              "outline-variant": "#484848",
+              "surface-bright": "#2c2c2c",
+              "primary-container": "#b28cff",
+              "surface-container-low": "#131313",
+              "on-error-container": "#ffb2b9",
+              "surface-container-highest": "#262626",
+              "on-secondary-container": "#e3ffe4",
+              "surface-container-high": "#202020",
+              "on-secondary-fixed-variant": "#006632",
+              "secondary-fixed-dim": "#00ed7e",
+              "surface-container-lowest": "#000000",
+              "inverse-primary": "#742fe5",
+              "surface-dim": "#0e0e0e",
+              "on-primary-fixed-variant": "#390083",
+              "on-primary": "#3c0089",
+              "tertiary": "#6aabff",
+              "on-tertiary-fixed": "#001833",
+              "on-tertiary": "#002a52",
+              "surface": "#0e0e0e",
+              "on-secondary-fixed": "#004621",
+              "background": "#0e0e0e",
+              "on-primary-container": "#2e006c",
+              "on-surface": "#ffffff",
+              "surface-variant": "#262626",
+              "inverse-surface": "#fcf9f8",
+              "error": "#ff6e84",
+              "primary-fixed": "#b28cff",
+              "on-tertiary-container": "#001e3c",
+              "tertiary-fixed-dim": "#5da5ff",
+              "tertiary-dim": "#4fa0ff",
+              "surface-container": "#191a1a"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .waveform-bar {
+            mask-image: linear-gradient(to right, black 2px, transparent 2px);
+            mask-size: 4px 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313] border-none flex justify-between items-center px-8 h-16 w-full">
+<div class="text-xl font-black tracking-tighter text-[#bd9dff] uppercase font-headline">
+            Sonic Observatory
+        </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#adaaaa] font-['Inter'] tracking-tight hover:text-[#bd9dff] transition-colors duration-200 active:scale-95 transition-transform" href="#">DASHBOARD</a>
+<a class="text-[#bd9dff] font-bold font-['Inter'] tracking-tight hover:text-[#bd9dff] transition-colors duration-200 active:scale-95 transition-transform" href="#">OBSERVATORY</a>
+<a class="text-[#adaaaa] font-['Inter'] tracking-tight hover:text-[#bd9dff] transition-colors duration-200 active:scale-95 transition-transform" href="#">ARCHIVE</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-[#bd9dff] cursor-pointer transition-colors">settings</span>
+<span class="material-symbols-outlined text-[#adaaaa] hover:text-[#bd9dff] cursor-pointer transition-colors">notifications</span>
+<span class="material-symbols-outlined text-[#bd9dff]">account_circle</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-[#131313] border-r border-[#484848]/15 flex flex-col py-6 gap-2">
+<div class="px-6 mb-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div>
+<div class="text-[10px] font-label text-secondary tracking-widest uppercase">OPERATOR_01</div>
+<div class="text-[9px] font-label text-on-surface-variant opacity-60 tracking-widest uppercase">STATUS: ENCRYPTED</div>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto space-y-1">
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">power</span> S00: Initialization
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">graphic_eq</span> S01: Waveform
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">waves</span> S02: Frequency
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">vibration</span> S03: Resonance
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">settings_input_component</span> S04: Modulation
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">memory</span> S05: Synthesis
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">blur_on</span> S06: Spatial
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">compress</span> S07: Dynamics
+            </div>
+<div class="px-6 py-2 text-[#adaaaa] opacity-60 font-label uppercase tracking-widest text-[10px] hover:bg-[#262626] hover:opacity-100 transition-all cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">tune</span> S08: Harmonic
+            </div>
+<div class="px-6 py-2 bg-[#191a1a] text-[#00fd87] border-l-2 border-[#00fd87] font-label uppercase tracking-widest text-[10px] active:translate-x-1 duration-150 cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined text-sm">record_voice_over</span> S09: Voice Identity
+            </div>
+</div>
+<div class="px-6 py-4">
+<button class="w-full py-3 bg-secondary text-on-secondary font-label text-[10px] tracking-[0.2em] font-bold rounded-sm hover:brightness-110 active:scale-95 transition-all">
+                RENDER SESSION
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-12 min-h-[calc(100vh-64px)] flex flex-col items-center justify-center">
+<!-- Header Section -->
+<header class="w-full max-w-5xl mb-12 flex items-center justify-between">
+<div class="flex items-baseline gap-4">
+<h1 class="text-4xl font-black font-headline tracking-tighter text-on-background">S09 Voice Identity</h1>
+<span class="text-on-surface-variant font-label text-sm tracking-widest">RVC v2</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-variant border-l-2 border-secondary">
+<span class="text-[10px] font-label font-bold text-secondary tracking-widest">DONE</span>
+</div>
+</header>
+<!-- Comparison Cards -->
+<div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Left Card: Original Vocal -->
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">mic</span>
+</div>
+<div class="mb-8">
+<h2 class="text-xl font-bold font-headline text-on-background mb-1">Original Vocal</h2>
+<p class="text-on-surface-variant font-label text-xs uppercase tracking-widest">YuE generated vocal</p>
+</div>
+<div class="flex items-center gap-6">
+<button class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_0_20px_rgba(189,157,255,0.3)] hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div class="flex-1 h-12 flex items-end gap-[2px]">
+<!-- Waveform simulation -->
+<div class="flex-1 h-full bg-primary/20 relative overflow-hidden rounded-sm">
+<div class="absolute inset-0 bg-primary opacity-40 waveform-bar" style="width: 65%;"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-full h-[2px] bg-primary/30"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Card: Horus Voice -->
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">neurology</span>
+</div>
+<div class="mb-8">
+<h2 class="text-xl font-bold font-headline text-on-background mb-1">Horus Voice</h2>
+<p class="text-on-surface-variant font-label text-xs uppercase tracking-widest">RVC v2 Graham vocals</p>
+</div>
+<div class="flex items-center gap-6">
+<button class="w-14 h-14 rounded-full bg-secondary flex items-center justify-center text-on-secondary shadow-[0_0_20px_rgba(0,253,135,0.2)] hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div class="flex-1 h-12 flex items-end gap-[2px]">
+<!-- Waveform simulation -->
+<div class="flex-1 h-full bg-secondary/20 relative overflow-hidden rounded-sm">
+<div class="absolute inset-0 bg-secondary opacity-40 waveform-bar" style="width: 82%;"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-full h-[2px] bg-secondary/30"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Metadata -->
+<footer class="mt-16 text-center">
+<div class="inline-flex items-center gap-3 px-6 py-3 bg-surface-container-high rounded-full border border-outline-variant/5">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">settings_suggest</span>
+<p class="text-on-surface-variant font-label text-xs tracking-widest uppercase">
+                    Model: <span class="text-on-background">horus-graham-v3.pth</span>
+<span class="mx-2 opacity-30">·</span> 
+                    47 min training 
+                    <span class="mx-2 opacity-30">·</span> 
+                    Similarity: <span class="text-secondary font-bold">0.89</span>
+</p>
+</div>
+</footer>
+<!-- Decorative Elements for "Atmospheric Depth" -->
+<div class="fixed top-1/2 -right-32 w-96 h-96 bg-primary/5 blur-[120px] -z-10 rounded-full"></div>
+<div class="fixed bottom-0 -left-32 w-[500px] h-[500px] bg-secondary/5 blur-[150px] -z-10 rounded-full"></div>
+</main>
+</body></html>

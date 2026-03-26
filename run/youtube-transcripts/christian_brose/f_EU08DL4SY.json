@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f_EU08DL4SY",
+    "language": "en",
+    "took_ms": 13732,
+    "method": null,
+    "title": "U.K.-China Clash: A Conversation with Sir Iain Duncan Smith MP",
+    "channel": "Hudson Institute",
+    "upload_date": "20200708",
+    "duration_sec": 3382,
+    "description": "Join Hudson Institute for a conversation with the former leader of the Conservative Party and U.K. Co-Chair of the Inter-Parliamentary Alliance on China Sir Ian Duncan Smith MP on the threat posed by China and how Britain should respond to Beijing’s growing antagonism.",
+    "view_count": 4284
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f_EU08DL4SY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4xqLOkAWxxg",
+    "language": "en",
+    "took_ms": 8771,
+    "method": null,
+    "title": "ICS Security Assessments",
+    "channel": "S4 Events",
+    "upload_date": "20190807",
+    "duration_sec": 196,
+    "description": "3-minutes of highlights from Jason Holcomb's OnRamp / ICS Security 101 training. He shows how to select and use high value / low impact tools in the online testing portion of an ICS Security Assessment.",
+    "view_count": 246
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4xqLOkAWxxg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

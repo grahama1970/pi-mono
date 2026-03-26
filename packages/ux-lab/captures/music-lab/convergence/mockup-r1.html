@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convergence Chart - R1</title>
+    <style>
+        :root {
+            --bg-deep: #0b1220;
+            --card: #1a1a1a;
+            --nvis-green: #00ff88;
+            --nvis-red: #ff4444;
+            --nvis-amber: #ffaa00;
+            --nvis-blue: #4a9eff;
+            --nvis-accent: #7c3aed;
+            --text-white: #e2e8f0;
+            --text-dim: #64748b;
+            --border-color: rgba(255, 255, 255, 0.13);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chart-container {
+            width: 640px;
+            height: 400px;
+            background-color: var(--card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 500;
+            fill: var(--text-white);
+        }
+
+        .axis-label {
+            font-size: 12px;
+            fill: var(--text-dim);
+        }
+
+        .grid-line {
+            stroke: var(--border-color);
+            stroke-width: 1;
+            stroke-dasharray: 2, 3;
+        }
+
+        .axis-line {
+            stroke: var(--border-color);
+            stroke-width: 1;
+        }
+
+        .line-tempo { stroke: var(--nvis-green); }
+        .line-key { stroke: var(--nvis-blue); }
+        .line-chord { stroke: var(--nvis-amber); }
+        .line-dynamics { stroke: var(--nvis-red); }
+        .line-timing { stroke: var(--nvis-accent); }
+        .line-aggregate { stroke: var(--text-white); stroke-width: 2.5; }
+
+        .data-dot {
+            stroke-width: 2;
+            fill: var(--bg-deep);
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <svg class="chart-svg" viewBox="0 0 592 352">
+            <defs>
+                <linearGradient id="converged-fade" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="white" stop-opacity="1"/>
+                    <stop offset="100%" stop-color="white" stop-opacity="0.3"/>
+                </linearGradient>
+            </defs>
+
+            <text x="0" y="16" class="chart-title">Convergence Delta</text>
+
+            <!-- Y-Axis Labels & Grid -->
+            <g transform="translate(30, 0)">
+                <g class="axis-label" text-anchor="end">
+                    <text x="-8" y="52">1.0</text>
+                    <text x="-8" y="127">0.7</text>
+                    <text x="-8" y="202">0.3</text>
+                    <text x="-8" y="277">0.0</text>
+                </g>
+                <line class="grid-line" x1="0" y1="52" x2="562" y2="52"></line>
+                <line class="grid-line" x1="0" y1="127" x2="562" y2="127"></line>
+                <line class="grid-line" x1="0" y1="277" x2="562" y2="277"></line>
+            </g>
+
+            <!-- Convergence Threshold -->
+            <g transform="translate(30, 0)">
+                <line x1="0" y1="202" x2="562" y2="202" stroke="var(--text-dim)" stroke-width="1.5" stroke-dasharray="4, 4"></line>
+            </g>
+            
+            <!-- X-Axis Labels -->
+            <g transform="translate(30, 0)" class="axis-label" text-anchor="middle">
+                <text x="56.2" y="297">1</text>
+                <text x="281" y="297">2</text>
+                <text x="505.8" y="297">3</text>
+            </g>
+            <text class="axis-label" x="311" y="320" text-anchor="middle">Round</text>
+            <text class="axis-label" x="-150" y="20" transform="rotate(-90)" text-anchor="middle">Delta Score</text>
+
+            <!-- Data Lines & Dots -->
+            <g transform="translate(30, 0)" fill="none" stroke-width="1.5">
+                <!-- Tempo -->
+                <polyline class="line-tempo" points="56.2,84.4 281,202 505.8,254.8" />
+                <circle class="data-dot line-tempo" cx="56.2" cy="84.4" r="3"></circle>
+                <circle class="data-dot line-tempo" cx="281" cy="202" r="3"></circle>
+                <circle class="data-dot line-tempo" cx="505.8" cy="254.8" r="3"></circle>
+
+                <!-- Key -->
+                <polyline class="line-key" points="56.2,277 281,277 505.8,277" />
+                <circle class="data-dot line-key" cx="56.2" cy="277" r="3"></circle>
+                <circle class="data-dot line-key" cx="281" cy="277" r="3"></circle>
+                <circle class="data-dot line-key" cx="505.8" cy="277" r="3"></circle>
+
+                <!-- Chord -->
+                <polyline class="line-chord" points="56.2,134 281,179.6 505.8,232.4" />
+                <circle class="data-dot line-chord" cx="56.2" cy="134" r="3"></circle>
+                <circle class="data-dot line-chord" cx="281" cy="179.6" r="3"></circle>
+                <circle class="data-dot line-chord" cx="505.8" cy="232.4" r="3"></circle>
+
+                <!-- Dynamics -->
+                <polyline class="line-dynamics" points="56.2,109.2 281,157.2 505.8,202" />
+                <circle class="data-dot line-dynamics" cx="56.2" cy="109.2" r="3"></circle>
+                <circle class="data-dot line-dynamics" cx="281" cy="157.2" r="3"></circle>
+                <circle class="data-dot line-dynamics" cx="505.8" cy="202" r="3"></circle>
+
+                <!-- Timing (Normalized) -->
+                <polyline class="line-timing" points="56.2,172.6 281,202 505.8,243.6" />
+                <circle class="data-dot line-timing" cx="56.2" cy="172.6" r="3"></circle>
+                <circle class="data-dot line-timing" cx="281" cy="202" r="3"></circle>
+                <circle class="data-dot line-timing" cx="505.8" cy="243.6" r="3"></circle>
+
+                <!-- Aggregate -->
+                <polyline class="line-aggregate" points="56.2,120.3 281,186.64 505.8,228.04" />
+                <circle class="data-dot line-aggregate" cx="56.2" cy="120.3" r="4"></circle>
+                <circle class="data-dot line-aggregate" cx="281" cy="186.64" r="4"></circle>
+                <circle class="data-dot line-aggregate" cx="505.8" cy="228.04" r="4"></circle>
+            </g>
+
+        </svg>
+    </div>
+</body>
+</html>

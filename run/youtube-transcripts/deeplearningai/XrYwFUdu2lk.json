@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XrYwFUdu2lk",
+    "language": "en",
+    "took_ms": 8253,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Christoph Meyer, Lars Heling: Improving AI Agent Discovery with a Knowledge Graph",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251203",
+    "duration_sec": 2161,
+    "description": "Christoph Meyer, Principal AI Scientist and Lars Heling Senior Knowledge Engineer at SAP SE, discussed at AI Dev 25 x NYC how to improve AI agent discovery and execution using a knowledge graph.\n\nLLMs make agents fluent; knowledge graphs make them effective. This session showed how a knowledge graph gives AI agents the semantic and process context to discover and safely invoke the right tools and APIs across complex enterprise systems. \n\nThey covered key techniques—semantic retrieval, process-aware API connectivity, and how they align with the Model Context Protocol (MCP) and run a demo where an agent applied these methods.\n\n-------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai",
+    "view_count": 705
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XrYwFUdu2lk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AyZy2PvcuGY",
+    "language": "en",
+    "took_ms": 9793,
+    "method": null,
+    "title": "Ann Marlowe Discussing the Demographics of the Military on Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20111004",
+    "duration_sec": 204,
+    "description": "Hudson Visiting Fellow Ann Marlowe joined Fox News on September 28 to discuss the changing demographics of the U.S. military.",
+    "view_count": 832
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AyZy2PvcuGY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

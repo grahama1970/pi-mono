@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uovvDjfC9gg",
+    "language": "en",
+    "took_ms": 7854,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Alexandre Sieira -  Attack Vectors for APIs w AWS API Gateway Lambda Auth",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2321,
+    "description": "Serverless applications are a really interesting new trend that promises benefits such as increased scalability and reduced cost. Frameworks like Serverless Application Model (SAM) and Serverless Framework are increasingly used to build them. APIs are a natural part of serverless applications, and in AWS that typically is implemented using the AWS API Gateway backed by Lambdas that implement the actual API endpoint logic. Our research focused on API Gateway Lambda Authorizers. This is a feature that allows developers to use a custom authentication and authorization scheme that uses a bearer token authentication strategy (like JWTs, OAuth or SAML), or that uses request parameters to determine the caller's identity and enforce which API endpoints they are allowed to access. We will present (AFAIK novel) techniques to attack the authentication and authorization of APIs that use Lambda Authorizers. We show how IAM policy injection is possible in theory but highly unlikely in practice due to some good decisions by AWS. We also show a class of problems based on incorrect security assumptions baked into AWS' own documentation and Lambda Authorizer open source code templates. Sample source code will be provided to demonstrate all techniques.",
+    "view_count": 1365
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uovvDjfC9gg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

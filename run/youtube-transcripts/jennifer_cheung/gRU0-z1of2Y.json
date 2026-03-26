@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gRU0-z1of2Y",
+    "language": "en",
+    "took_ms": 7973,
+    "method": null,
+    "title": "DEF CON 33 Voting Village - Dominion ICX Simple Hacks Daunting Recoveries - Springall, Davis, Marks",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 2766,
+    "description": "Using the Dominion touchscreen BMD debuted at Voting Village 2023, we will discuss and demonstrate in real-time how technically simple \"hacks\" to the ballot displayed on the voter’s touchscreen can directly impact the vote count, or alternatively impact the voter’s decisions. These simple “hacks” to the election definition (with no need to inject malware) include the manipulation of display of candidate choices, silent removal of candidates from the display, and using false instructions on the touchscreen to intentionally misinform voters regarding candidates or ballot questions. Furthermore, attempting to determine/recover from such hacks on the election outcomes can range from difficult to impossible. In addition to discussing the tactics and potential impacts, we will illuminate underlying system design decisions which enabled such hacks to be technically simple, feasible, and easily executable. The knowledge and tools used/discussed were obtained through public means and public websites, available to an unlimited number of people. This talk will focus on the general methodology and ease of the vote manipulation, the range of impacts, the feasibility and scalability. Immediately following the on-stage presentation, a deeper dive into the technical aspects will occur in the adjacent Voting Village lab room.",
+    "view_count": 2674
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gRU0-z1of2Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

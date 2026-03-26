@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wAXF5oYieIA",
+    "language": "en",
+    "took_ms": 8371,
+    "method": null,
+    "title": "Paul Marshall on the Muslim Brotherhood for CBN",
+    "channel": "Hudson Institute",
+    "upload_date": "20110307",
+    "duration_sec": 310,
+    "description": "Hudson Senior Fellow Paul Marshall joined the CBN on March 6 to discuss the Muslim Brotherhood in Egypt.",
+    "view_count": 293
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wAXF5oYieIA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

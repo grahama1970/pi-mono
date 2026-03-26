@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jJWGjlFHgzA",
+    "language": "en",
+    "took_ms": 8643,
+    "method": null,
+    "title": "How Competitive Is the Wireless Industry?",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 4397,
+    "description": "Over the past 20 years, large communications companies grew by leaps and bounds through mergers and acquisitions. Until last year, the Department of Justice blocked only one such merger on antitrust grounds. That incident was the proposed merger of WorldCom and Sprint in 2000 which was blocked, ironically, allegedly because the merger would lessen competition in the long-distance market, a market that certainly does not exist today. It is difficult to look at the structure of the communications",
+    "view_count": 51
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jJWGjlFHgzA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

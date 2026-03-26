@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kW61SwPyesc",
+    "language": "en",
+    "took_ms": 9347,
+    "method": null,
+    "title": "It’s Not About Consequences. It’s About Connection.",
+    "channel": "S4 Events",
+    "upload_date": "20251110",
+    "duration_sec": 258,
+    "description": "This Unsolicited Response wasn’t about tools or exploits. It was about what actually moves security forward.\n\nBuild real relationships. Know your stakeholders beyond the org chart. Then be bold enough to tell them the hard truths anyway.\n\nCybersecurity is about protecting people. Start by talking to them like one.",
+    "view_count": 45
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kW61SwPyesc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

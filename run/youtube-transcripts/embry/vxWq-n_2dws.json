@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vxWq-n_2dws",
+    "language": "en",
+    "took_ms": 8194,
+    "method": null,
+    "title": "Why don’t we use jets to boost rockets into orbit?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240209",
+    "duration_sec": 60,
+    "description": "Can’t we build a better orbital launch system? Why aren’t we using more efficient air breathing engines in launch vehicles instead of thirsty rocket engines? Air launching a rocket is perhaps the most tantalizing concept.\n\nFull video! - \nhttps://youtu.be/AAt9WDQEMoA\n\n#SpaceX #Rockets #RocketScience #NASA",
+    "view_count": 739862
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vxWq-n_2dws: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

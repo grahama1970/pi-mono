@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gSzA_vrbAZg",
+    "language": "en",
+    "took_ms": 8047,
+    "method": null,
+    "title": "A Book Discussion of The Idealist: Jeffrey Sachs and the Que",
+    "channel": "Hudson Institute",
+    "upload_date": "20140220",
+    "duration_sec": 5054,
+    "description": "Asked about the \"core takeaway\" from her new book The Idealist: Jeffrey Sachs and the Quest to End Poverty http://www.amazon.com/The-Idealist-Jeffrey-Sachs-Poverty/dp/0385525818/ref=sr_1_1?ie=UTF8&qid=1392136803&sr=8-1&keywords=idealist,\" author Nina Munk told the Deseret News: \"In the quest to end poverty it is important to understand that theories we develop in academic environments can't anticipate the chaos of the real world. In trying to put into practice the theories he outline",
+    "view_count": 2384
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gSzA_vrbAZg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

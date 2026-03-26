@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gUqJ17kGdUs",
+    "language": "en",
+    "took_ms": 8584,
+    "method": null,
+    "title": "Is a Nuclear Iran Inevitable?",
+    "channel": "Hudson Institute",
+    "upload_date": "20211116",
+    "duration_sec": 3889,
+    "description": "For the last ten months, Iran has expanded its nuclear infrastructure and highly-enriched stockpiles in dangerous ways and rebuffed inspections. It is now increasingly apparent that the world’s leading state sponsor of terrorism could possess nuclear weapons within a little as one month. What can the United States and its partners do to prevent this terrifying development? Nuclear experts David Albright and Olli Heinonen join Hudson fellow Josh Block for the latest in a series of conversations on Iran’s nuclear ambitions.",
+    "view_count": 3567
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gUqJ17kGdUs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

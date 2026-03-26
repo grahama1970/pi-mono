@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Onxj9hw4muo",
+    "language": "en",
+    "took_ms": 8024,
+    "method": null,
+    "title": "Lessons Learned from Norsk Hydro on Loss Estimation and Cyber Insurance",
+    "channel": "S4 Events",
+    "upload_date": "20200427",
+    "duration_sec": 1799,
+    "description": "Russell Thomas of RMS use the Norsk Hydro ransomware as a case study. Not a case study on how ransomware works or how to stop it. Rather a case study on loss and risk estimation of an incident, and how this plays into risk management and insurance products and pricing.\n\nHe talks about cash flows, bow tie analysis, fragility, insurance and more.\n\nI haven't seen a session like this at any other ICS security event. Extremely important for the community to understand loss and risk from the business perspective.",
+    "view_count": 1026
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Onxj9hw4muo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

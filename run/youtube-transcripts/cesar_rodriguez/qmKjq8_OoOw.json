@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qmKjq8_OoOw",
+    "language": "en",
+    "took_ms": 7537,
+    "method": null,
+    "title": "America's AIM-9 Sidewinder in an air-to-air knife-fighter #fighterjets #usaf #usnavy",
+    "channel": "Sandboxx",
+    "upload_date": "20250205",
+    "duration_sec": 65,
+    "description": "The AIM-9 Sidewinder is America's go-to short-range air-to-air missile. \n\nStay on top of Defense Tech news by subscribing to Sandboxx!",
+    "view_count": 20890
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qmKjq8_OoOw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

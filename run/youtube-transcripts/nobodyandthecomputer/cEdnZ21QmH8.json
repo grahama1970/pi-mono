@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cEdnZ21QmH8",
+    "language": "en",
+    "took_ms": 9764,
+    "method": null,
+    "title": "GENWAVE: How AI is Redefining Music Genres",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20241017",
+    "duration_sec": 744,
+    "description": "↪ Join the Nobodies Collective:\nhttps://www.patreon.com/NobodyandTheComputer\n\n↪ contact me: \nnobodyandthecomputer@gmail.com\n\nPrompt & code ⤵⤵\nhttps://www.patreon.com/posts/genwave-convert-114199943\n\nIn addition to creating short films using AI, I also make videos where I experiment with AI tools, capturing the screen while interacting in real-time. \nThe idea is simple: whatever happens, happens! \nI call these \"Techcumentaries\" because they document, in an audiovisual way, the process of working with a tech tool. Sometimes they evolve into something meaningful, sometimes they don't—but the goal is to share the creative journey.\nIn this case, I dive into the wonders of symbolic music, having ChatGPT compose music in text form, which I then convert to MIDI—the beloved protocol from the '80s that I hold dear.",
+    "view_count": 11468
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cEdnZ21QmH8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0gYMqFYRtDI",
+    "language": "en",
+    "took_ms": 8742,
+    "method": null,
+    "title": "Automated Prompt Engineering with DSPy",
+    "channel": "Trelis Research",
+    "upload_date": "20240912",
+    "duration_sec": 2752,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. DSPy scripts in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1U5nzaoTmybgFf0l6x02pYZuMLXqORlvISLjUYKn5iCg/edit?usp=sharing\n- DSPy intro notebook: https://github.com/stanfordnlp/dspy/blob/71e5d35cc74ef959f5cc17dff42b7d78eb361ddd/intro.ipynb#l4l \n- DSPy assertions notebook: https://github.com/stanfordnlp/dspy/blob/main/examples/qa/hotpot/hotpotqa_with_assertions.ipynb\n\nTIMESTAMPS:\n0:00 Introduction to structured/automated prompt generation\n0:41 Video Overview\n2:10 Why is DSPy useful?\n3:41 Q&A and Retrieval Databases (hotpotqa and wikipedia)\n4:53 Notebooks - DSPy and Trelis\n6:08 Installation and Setup\n9:24 Step 1: Simple Prompting and Benchmarking\n12:49 Step 2: Adding Chain of Thought\n15:08 Step 3: Add vector search (retrieval)\n19:00 Step 4: Add (random) few shot examples\n24:00 Step 5: Optimally choosing few shot examples\n30:30 Step 6: Add multi-hop search/queries (Baleen / Perplexity-style)\n36:14 Step 7: Multi-hop search WITH optimally chosen few shot examples\n40:54 Overall Results Comparison!\n43:21 DSPy assertions - for further answer quality control\n45:21 Video resources",
+    "view_count": 7200
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0gYMqFYRtDI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

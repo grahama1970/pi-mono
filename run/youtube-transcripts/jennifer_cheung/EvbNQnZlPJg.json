@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EvbNQnZlPJg",
+    "language": "en",
+    "took_ms": 8571,
+    "method": null,
+    "title": "DEF CON 32 - Hi-Intensity Deconstruction: Chronicles of a Cryptographic Heist - Javadi, Levy, Draffe",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 4606,
+    "description": "Introduced in 2011, HID Global’s iCLASS SE solution is one of the world’s most widely-deployed Electronic Physical Access Control platforms. HID's iCLASS SE Readers are ubiquitous in electronic physical access control and used in most government agencies and Fortune 500 companies. The readers can be easily seen and identified in almost every form of mainstream media. Almost 13 years after iCLASS SE’s introduction, ground-breaking research and technical exploits will be disclosed publicly for the first time.\n\nIn this talk, we detail the process by which we reverse engineered the complex hardware and software chain of trust securing HID’s iCLASS SE platform.\n\nOver a seven-year research period, we analyzed hardware, firmware, and software elements the ecosystem, uncovering an unfortunate series of pitfalls and implementation defects. These flaws culminated in an attack chain that allowed for the recovery of sensitive cryptographic key material from secure elements, which have received CC EAL 5+ accreditation. This chain resulted in revealing some cryptographic keys to the kingdom.\n\nFinally, we provide comprehensive guidance on technical and operational mitigations for end customers to identify practical risks and reduce impact.",
+    "view_count": 2425
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EvbNQnZlPJg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

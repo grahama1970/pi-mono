@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A6bFMqx2LpU",
+    "language": "en",
+    "took_ms": 8986,
+    "method": null,
+    "title": "DEF CON 30 - MKFactor Badge talk",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 860,
+    "description": "Silk talks badges and more with MKFactor, the badge creators for DEF CON 30.\n\nSee more of SIlk's hacker videos at :\nYouTube.com/alexchaveriat\nYouTube.com/hackerhangouts",
+    "view_count": 947
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A6bFMqx2LpU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

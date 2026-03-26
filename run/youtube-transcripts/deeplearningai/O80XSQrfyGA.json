@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O80XSQrfyGA",
+    "language": "en",
+    "took_ms": 9640,
+    "method": null,
+    "title": "New course with Google: Pair Programming with a Large Language Model",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230927",
+    "duration_sec": 64,
+    "description": "Enroll today: https://bit.ly/46fh1Mj\n\nLearn how to use LLMs to enhance, debug, understand, and document your code in this new course built in collaboration with Google, and taught by Laurence Moroney.\n\nBy using LLMs as pair programmers, you can get quick and effective assistance on a wide range of tasks, from catching bugs to integrating complete code snippets.\n\nIn this course, you’ll gain access to the PaLM API and get hands-on experience that will prepare you to use an LLM to:\n\n- Simplify and improve your code\n- Write test cases \n- Debug and refactor your code\n- Reduce technical debt\n- Explain and document complex code written in any coding language \n\nReady to take the next step toward becoming a more productive software engineer?\n\nLearn more:  https://bit.ly/46fh1Mj",
+    "view_count": 7254
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O80XSQrfyGA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cYZmRp90hss",
+    "language": "en",
+    "took_ms": 8452,
+    "method": null,
+    "title": "DEF CON 33 - Kill List: Hacking an Assassination Site on the Dark Web - Carl Miller, Chris Monteiro",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1975,
+    "description": "Four years ago, Chris found a vulnerability with a murder for hire site on the dark net. He could exploit that vulnerability to intercept the murder orders that were being placed: names, addresses, pattern of life information, photos, and, in some cases, bitcoin payments. He reached out to Carl for help, and a small team was built in secret to intercept and triage these orders. However, after their warnings to the police fell on deaf ears, they ultimately decided to warn the targets on the kill list directly. After an initial series of successes, the investigation expanded rapidly and they formed a global cooperation with the FBI and police forces around the world, resulting over 175 murder orders being disclosed, 34 arrests 28 convictions and over 180 years of prison time being sentenced. This talk will be about those years: about the dangers and threats the team had to navigate, the times of isolation when the police wouldn’t take them seriously, about raids in Romania to uncover the cyber-criminal gang running the site and the psychological impact of racing against time to try to stop people getting murdered.",
+    "view_count": 731414
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cYZmRp90hss: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

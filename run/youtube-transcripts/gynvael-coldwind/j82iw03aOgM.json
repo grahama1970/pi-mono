@@ -1,0 +1,2174 @@
+{
+  "meta": {
+    "video_id": "j82iw03aOgM",
+    "language": "en",
+    "took_ms": 796647,
+    "method": "whisper-local",
+    "title": "C/C++ vs Security! - Gynvael Coldwind - code::dive 2018",
+    "channel": "GynvaelEN"
+  },
+  "transcript": [
+    {
+      "text": "And our presenter is Gunwe Koldwind.",
+      "start": 9.23,
+      "duration": 5.0
+    },
+    {
+      "text": "He is living in Zurich since 2010 and works for Google as a senior software engineer and information security engineer as well.",
+      "start": 14.23,
+      "duration": 10.0
+    },
+    {
+      "text": "Gunwe is a programmer enthusiast with a passion for computer security and low level aspects of computer science.",
+      "start": 24.23,
+      "duration": 8.0
+    },
+    {
+      "text": "He is also an author of to understand programming book.",
+      "start": 32.23,
+      "duration": 5.0
+    },
+    {
+      "text": "As well as numerous articles, publications, podcasts and lecturers devoted to mentioned topics.",
+      "start": 37.23,
+      "duration": 8.0
+    },
+    {
+      "text": "In 2013, he was awarded a Pevni Award together with Mateusz J\u00f3zczyk and in the most innovative research category in the field of computer security.",
+      "start": 45.23,
+      "duration": 13.0
+    },
+    {
+      "text": "He is also a co-founder and former captain of the Dragon Sector team, one of the best CTF teams in the world.",
+      "start": 58.23,
+      "duration": 10.0
+    },
+    {
+      "text": "In the free time, he lives playing games and eating sushi.",
+      "start": 68.23,
+      "duration": 4.0
+    },
+    {
+      "text": "So please welcome Gunwe Koldwind.",
+      "start": 72.23,
+      "duration": 10.43
+    },
+    {
+      "text": "Yeah, I basically made the BO so long so I can fix technical issues.",
+      "start": 82.66,
+      "duration": 5.0
+    },
+    {
+      "text": "Thank you for your patience.",
+      "start": 87.66,
+      "duration": 2.0
+    },
+    {
+      "text": "So today I'm going to talk about C and C++ and security.",
+      "start": 89.66,
+      "duration": 5.0
+    },
+    {
+      "text": "If you are a senior C++ or C programmer, they really have really cool talks in another room so just you have been warned.",
+      "start": 94.66,
+      "duration": 9.0
+    },
+    {
+      "text": "The slides will be available afterwards and there are speaker notes under the slides if you are looking at them later because well actually the slides are mostly pictures of funny cuts.",
+      "start": 103.66,
+      "duration": 13.0
+    },
+    {
+      "text": "Actually, I don't have funny so.",
+      "start": 116.66,
+      "duration": 3.0
+    },
+    {
+      "text": "Okay, if this doesn't work, more technical issues.",
+      "start": 119.66,
+      "duration": 5.0
+    },
+    {
+      "text": "So give me a second.",
+      "start": 124.66,
+      "duration": 3.0
+    },
+    {
+      "text": "Okay, that explains everything.",
+      "start": 127.66,
+      "duration": 9.11
+    },
+    {
+      "text": "Perfect.",
+      "start": 136.77,
+      "duration": 1.0
+    },
+    {
+      "text": "Okay, so I guess I was already introduced.",
+      "start": 137.77,
+      "duration": 2.0
+    },
+    {
+      "text": "Just a note.",
+      "start": 139.77,
+      "duration": 1.0
+    },
+    {
+      "text": "Our opinion expressed during this presentation, as a presentation, our mind alone and our not the votes of my employer.",
+      "start": 140.77,
+      "duration": 7.0
+    },
+    {
+      "text": "Please keep up the mind especially if I talk about really weird stuff in C++, I guess.",
+      "start": 147.77,
+      "duration": 5.0
+    },
+    {
+      "text": "I'm, yeah, like I'm also a manager for some reason.",
+      "start": 152.77,
+      "duration": 5.0
+    },
+    {
+      "text": "So yeah, what will be on the menu today?",
+      "start": 157.77,
+      "duration": 5.0
+    },
+    {
+      "text": "Basically, well, the most important message I want to give you is that the devil is always in the details.",
+      "start": 162.77,
+      "duration": 6.0
+    },
+    {
+      "text": "So it's about the small things and especially when it comes to security, it's the small things that matter.",
+      "start": 168.77,
+      "duration": 6.0
+    },
+    {
+      "text": "I'm also going to talk about the pitfalls, the trials, the perils, the hazards and errors and general bugs made with C++ code.",
+      "start": 174.77,
+      "duration": 10.0
+    },
+    {
+      "text": "This talk is not to be confused with another one made by Redford who is the vice captain and dragon sector.",
+      "start": 184.77,
+      "duration": 5.0
+    },
+    {
+      "text": "He made one C++ versus security without an exclamation mark.",
+      "start": 189.77,
+      "duration": 4.0
+    },
+    {
+      "text": "This is critical.",
+      "start": 193.77,
+      "duration": 2.0
+    },
+    {
+      "text": "I actually learned that he made this talk two days before I, well, before this talk.",
+      "start": 195.77,
+      "duration": 6.0
+    },
+    {
+      "text": "We did chat about our talks about the differences and I have a couple of slides from him because they are really amazing.",
+      "start": 201.77,
+      "duration": 6.0
+    },
+    {
+      "text": "So do check out his talk and do check out the speaker notes.",
+      "start": 207.77,
+      "duration": 4.0
+    },
+    {
+      "text": "Yeah, I also have some slides here from my, my other talks by way.",
+      "start": 211.77,
+      "duration": 6.0
+    },
+    {
+      "text": "Okay, so some thanks to Shaku for reviewing the presentation on the really short notice so to disconnect it.",
+      "start": 217.77,
+      "duration": 6.0
+    },
+    {
+      "text": "To Redford again, to folks who are Charlie Eury, who is mentioned several times in the presentation and also probably to a lot of other people who I did discuss C++ security in the past with.",
+      "start": 223.77,
+      "duration": 12.0
+    },
+    {
+      "text": "Yeah, so I'm going to mostly talk about the old style of C++ because the modern style is a little bit safer.",
+      "start": 235.77,
+      "duration": 6.0
+    },
+    {
+      "text": "It's not yet safe, but it is safer.",
+      "start": 241.77,
+      "duration": 2.0
+    },
+    {
+      "text": "If you do not know his documents, C++ core guidelines, I do encourage you to read it.",
+      "start": 243.77,
+      "duration": 5.0
+    },
+    {
+      "text": "It actually shows you how to use C++ without using pointers, which is a good thing.",
+      "start": 248.77,
+      "duration": 5.0
+    },
+    {
+      "text": "Since pointers are the source of all evil, it's not go to review or wondering its pointers.",
+      "start": 253.77,
+      "duration": 6.0
+    },
+    {
+      "text": "Yeah, but I would laugh for us to always write in the modern C++ and when you know when you are standard to use all the fancy features, but that's not the case.",
+      "start": 259.77,
+      "duration": 10.0
+    },
+    {
+      "text": "We have to deal with code bases, which are old, and furthermore, we cannot rewrite them.",
+      "start": 269.77,
+      "duration": 6.0
+    },
+    {
+      "text": "I know that I code better than the other guy, but I cannot rewrite it for some reason.",
+      "start": 275.77,
+      "duration": 6.0
+    },
+    {
+      "text": "I do have to continue developing the software, and I also have to rely on third party libraries because, well, I cannot write code to support each and every function.",
+      "start": 281.77,
+      "duration": 11.0
+    },
+    {
+      "text": "For example, if I'm doing networking code, I do not want to implement the TCP stack, right?",
+      "start": 292.77,
+      "duration": 5.0
+    },
+    {
+      "text": "I want to focus on the higher level code.",
+      "start": 297.77,
+      "duration": 2.0
+    },
+    {
+      "text": "Yeah, we are stuck with a lot of old style C++ code, basically.",
+      "start": 299.77,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, the general question which made me suggest this topic is why is the C++ code so backward?",
+      "start": 303.77,
+      "duration": 10.0
+    },
+    {
+      "text": "It is out of my experience in the FFMPG project, which is basically a set of video and audio codecs.",
+      "start": 313.77,
+      "duration": 7.0
+    },
+    {
+      "text": "Together with Mateusz, we found and reported bugs, which resulted in 1,500 fixes.",
+      "start": 320.77,
+      "duration": 7.0
+    },
+    {
+      "text": "If you actually grab the git log, there are 1,500 fixes for bugs, which we discovered by fuzzing.",
+      "start": 327.77,
+      "duration": 6.0
+    },
+    {
+      "text": "That's the worst, probably scenario I know, but all the other code isn't perfect either.",
+      "start": 333.77,
+      "duration": 8.0
+    },
+    {
+      "text": "CNC++ code is basically backridden.",
+      "start": 341.77,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, why is it backridden?",
+      "start": 344.77,
+      "duration": 2.0
+    },
+    {
+      "text": "I came to the conclusion that it's actually because of the best features in C++, which I really like, which are, but CNC++ is not fully defined.",
+      "start": 346.77,
+      "duration": 10.0
+    },
+    {
+      "text": "That's actually what makes the language so fast, and why the compilers can use aggressive optimization, so that's a good thing.",
+      "start": 356.77,
+      "duration": 7.0
+    },
+    {
+      "text": "It also because, whereas the active rule, thankfully, it doesn't make it much worse, but it does result in some weird and unexpected behavior.",
+      "start": 363.77,
+      "duration": 9.0
+    },
+    {
+      "text": "I'm going to by very explain everything in the data in a second.",
+      "start": 372.77,
+      "duration": 3.0
+    },
+    {
+      "text": "And also about the fact that the C++ and C languages are made for the general computing.",
+      "start": 375.77,
+      "duration": 8.0
+    },
+    {
+      "text": "We are not specialized language for only this platform, for only x86, but being said, we, as the programming scene, really like to use, especially C,",
+      "start": 383.77,
+      "duration": 9.0
+    },
+    {
+      "text": "as a language that is specialized for low-level programming, which is not really the case.",
+      "start": 392.77,
+      "duration": 6.0
+    },
+    {
+      "text": "This means that it's being used in some scenarios where it has to be used really, really carefully to not do things wrong.",
+      "start": 398.77,
+      "duration": 10.0
+    },
+    {
+      "text": "So, okay, go, sorry.",
+      "start": 408.77,
+      "duration": 1.0
+    },
+    {
+      "text": "What's the undefined behavior? Probably most of you know, it's basically...",
+      "start": 409.77,
+      "duration": 5.0
+    },
+    {
+      "text": "There are parts in the standard, which it's basically written that's...",
+      "start": 414.77,
+      "duration": 5.0
+    },
+    {
+      "text": "In some cases, the behavior is undefined.",
+      "start": 419.77,
+      "duration": 3.0
+    },
+    {
+      "text": "What that means is that the compiler trust the programmer to basically never create code, which leads into executing, into falling into an undefined behavior.",
+      "start": 422.77,
+      "duration": 13.0
+    },
+    {
+      "text": "The compiler trust the programmer to write code that doesn't happen.",
+      "start": 435.77,
+      "duration": 4.0
+    },
+    {
+      "text": "And thanks to that, that's actually a really good thing from optimization perspective.",
+      "start": 440.77,
+      "duration": 3.0
+    },
+    {
+      "text": "Because thanks to that, the standard doesn't say what happens, for example, when you do division by zero, right?",
+      "start": 443.77,
+      "duration": 6.0
+    },
+    {
+      "text": "The standard, that means that the compiler doesn't have to emulate a given, well, effect of a division by zero, which is in the standard.",
+      "start": 449.77,
+      "duration": 9.0
+    },
+    {
+      "text": "For example, let's say the standard would say, yeah, set error, or like for an exception, that's more probable once actually happening on the platform.",
+      "start": 458.77,
+      "duration": 8.0
+    },
+    {
+      "text": "If the standard would say that, that means that the compiler would have to inject this additional pseudocode or code with each division.",
+      "start": 466.77,
+      "duration": 8.0
+    },
+    {
+      "text": "And that would make it a little bit slower.",
+      "start": 474.77,
+      "duration": 3.0
+    },
+    {
+      "text": "And thanks to the undefined behavior, well, it doesn't have to do that.",
+      "start": 477.77,
+      "duration": 4.0
+    },
+    {
+      "text": "It trust the programmer, but if the programmer is really sure that the zero division will not happen, then the programmer will just do the division otherwise,",
+      "start": 481.77,
+      "duration": 10.0
+    },
+    {
+      "text": "and trust the programmer will verify that the zero division will not happen.",
+      "start": 491.77,
+      "duration": 5.0
+    },
+    {
+      "text": "Yeah, so by the way, is this code secure?",
+      "start": 496.77,
+      "duration": 3.0
+    },
+    {
+      "text": "And this is, I guess some of you might know it.",
+      "start": 499.77,
+      "duration": 3.0
+    },
+    {
+      "text": "What is happening here is I have a function which is, which does the division, right? A by B.",
+      "start": 502.77,
+      "duration": 5.0
+    },
+    {
+      "text": "And I do check for the zero case.",
+      "start": 507.77,
+      "duration": 4.0
+    },
+    {
+      "text": "And I'm using STD optional, which means this returns a non-value, which is basically error handling.",
+      "start": 511.77,
+      "duration": 7.0
+    },
+    {
+      "text": "And I will write it returns the result.",
+      "start": 518.77,
+      "duration": 3.0
+    },
+    {
+      "text": "We can check if this is actually fine.",
+      "start": 521.77,
+      "duration": 3.0
+    },
+    {
+      "text": "Let's see if something else works.",
+      "start": 524.77,
+      "duration": 3.0
+    },
+    {
+      "text": "Okay.",
+      "start": 527.77,
+      "duration": 1.0
+    },
+    {
+      "text": "Okay.",
+      "start": 528.77,
+      "duration": 1.0
+    },
+    {
+      "text": "Perfect.",
+      "start": 529.77,
+      "duration": 1.0
+    },
+    {
+      "text": "Actually does.",
+      "start": 530.77,
+      "duration": 1.0
+    },
+    {
+      "text": "So let me just open the code.",
+      "start": 531.77,
+      "duration": 4.24
+    },
+    {
+      "text": "You know the right directory.",
+      "start": 536.01,
+      "duration": 6.35
+    },
+    {
+      "text": "Yeah.",
+      "start": 542.36,
+      "duration": 5.3
+    },
+    {
+      "text": "Here we go.",
+      "start": 547.66,
+      "duration": 1.0
+    },
+    {
+      "text": "Okay.",
+      "start": 548.66,
+      "duration": 1.0
+    },
+    {
+      "text": "So this is the code.",
+      "start": 549.66,
+      "duration": 1.0
+    },
+    {
+      "text": "And then I have some test cases.",
+      "start": 550.66,
+      "duration": 1.0
+    },
+    {
+      "text": "Well, I have actually two test cases.",
+      "start": 551.66,
+      "duration": 2.0
+    },
+    {
+      "text": "One is for normal division and the other is for division by zero.",
+      "start": 553.66,
+      "duration": 4.0
+    },
+    {
+      "text": "And I want to run it and I want to check what happens if I'm actually locked into a party.",
+      "start": 557.66,
+      "duration": 6.0
+    },
+    {
+      "text": "Which is not the case for some reason.",
+      "start": 563.66,
+      "duration": 3.0
+    },
+    {
+      "text": "Or is it?",
+      "start": 566.66,
+      "duration": 1.0
+    },
+    {
+      "text": "No, it works.",
+      "start": 567.66,
+      "duration": 1.0
+    },
+    {
+      "text": "It says, okay, it says an active on the top.",
+      "start": 568.66,
+      "duration": 2.0
+    },
+    {
+      "text": "Whatever.",
+      "start": 570.66,
+      "duration": 1.0
+    },
+    {
+      "text": "Maybe I'm going to move it a little.",
+      "start": 571.66,
+      "duration": 2.0
+    },
+    {
+      "text": "So the folks in the back can see it as well.",
+      "start": 573.66,
+      "duration": 3.0
+    },
+    {
+      "text": "Perfect.",
+      "start": 576.66,
+      "duration": 1.0
+    },
+    {
+      "text": "So make test.",
+      "start": 577.66,
+      "duration": 1.0
+    },
+    {
+      "text": "And it obviously works.",
+      "start": 578.66,
+      "duration": 2.0
+    },
+    {
+      "text": "No result in case of division by zero because we are handling it.",
+      "start": 580.66,
+      "duration": 3.0
+    },
+    {
+      "text": "And the question is, will this code ever crash?",
+      "start": 583.66,
+      "duration": 2.0
+    },
+    {
+      "text": "The code will still crash even though we are handling division by zero.",
+      "start": 585.66,
+      "duration": 4.0
+    },
+    {
+      "text": "Perfect.",
+      "start": 589.66,
+      "duration": 1.0
+    },
+    {
+      "text": "Who thinks that the code is perfect like we don't have to check any other case?",
+      "start": 590.66,
+      "duration": 4.0
+    },
+    {
+      "text": "Okay.",
+      "start": 594.66,
+      "duration": 1.0
+    },
+    {
+      "text": "You are really a careful crowd.",
+      "start": 595.66,
+      "duration": 2.0
+    },
+    {
+      "text": "Well done.",
+      "start": 597.66,
+      "duration": 2.37
+    },
+    {
+      "text": "So.",
+      "start": 600.03,
+      "duration": 1.0
+    },
+    {
+      "text": "Okay.",
+      "start": 601.03,
+      "duration": 2.25
+    },
+    {
+      "text": "If we go to the test cases and get another one.",
+      "start": 603.28,
+      "duration": 5.0
+    },
+    {
+      "text": "Which is.",
+      "start": 608.28,
+      "duration": 1.0
+    },
+    {
+      "text": "Let's divide STD.",
+      "start": 609.28,
+      "duration": 3.0
+    },
+    {
+      "text": "Numeric limits and min.",
+      "start": 612.28,
+      "duration": 7.34
+    },
+    {
+      "text": "It is the minimal value of integer by minus one.",
+      "start": 619.62,
+      "duration": 3.0
+    },
+    {
+      "text": "Which is basically a sign change.",
+      "start": 622.62,
+      "duration": 2.0
+    },
+    {
+      "text": "Right.",
+      "start": 624.62,
+      "duration": 1.0
+    },
+    {
+      "text": "Let's see what happens.",
+      "start": 625.62,
+      "duration": 2.0
+    },
+    {
+      "text": "We do make tests and it.",
+      "start": 627.62,
+      "duration": 2.0
+    },
+    {
+      "text": "Coordumped.",
+      "start": 629.62,
+      "duration": 1.0
+    },
+    {
+      "text": "It actually crashed.",
+      "start": 630.62,
+      "duration": 1.0
+    },
+    {
+      "text": "Now.",
+      "start": 631.62,
+      "duration": 3.0
+    },
+    {
+      "text": "Why did it?",
+      "start": 634.62,
+      "duration": 1.0
+    },
+    {
+      "text": "Why did it crash?",
+      "start": 635.62,
+      "duration": 1.0
+    },
+    {
+      "text": "I guess.",
+      "start": 636.62,
+      "duration": 2.0
+    },
+    {
+      "text": "It's obvious for most of you, but let's talk about it anyway.",
+      "start": 638.62,
+      "duration": 5.6
+    },
+    {
+      "text": "Okay.",
+      "start": 644.22,
+      "duration": 1.0
+    },
+    {
+      "text": "It crashed because for some reason, and there's actually a really good reason for it.",
+      "start": 645.22,
+      "duration": 7.0
+    },
+    {
+      "text": "There are more negative integers than positive integers.",
+      "start": 652.22,
+      "duration": 3.0
+    },
+    {
+      "text": "And the division by minus one is basically a sign change.",
+      "start": 655.22,
+      "duration": 3.0
+    },
+    {
+      "text": "Which means that we try to change the sign of this number, which is the minimum integer.",
+      "start": 658.22,
+      "duration": 5.0
+    },
+    {
+      "text": "And what resulted in a positive integer of the size, like a signal by minus here,",
+      "start": 663.22,
+      "duration": 5.0
+    },
+    {
+      "text": "which, well, it's not representable in int type, which means the processor didn't couldn't represent this value",
+      "start": 668.22,
+      "duration": 7.0
+    },
+    {
+      "text": "and decided to throw an exception because that's a reasonable thing to do to actually signal an error.",
+      "start": 675.22,
+      "duration": 5.0
+    },
+    {
+      "text": "And that's why the code still crashes and we would have to add another case to fix it.",
+      "start": 680.22,
+      "duration": 6.0
+    },
+    {
+      "text": "By the way, fun fact.",
+      "start": 686.22,
+      "duration": 2.0
+    },
+    {
+      "text": "If you would actually write this number, this is a long type and this is an int type.",
+      "start": 688.22,
+      "duration": 5.0
+    },
+    {
+      "text": "Why is it a long type?",
+      "start": 693.22,
+      "duration": 1.0
+    },
+    {
+      "text": "Because it does fit integers, like the int type.",
+      "start": 694.22,
+      "duration": 3.0
+    },
+    {
+      "text": "But actually, it's treated as this literal value, which doesn't fit an integer.",
+      "start": 697.22,
+      "duration": 5.0
+    },
+    {
+      "text": "And then the sign change operation.",
+      "start": 702.22,
+      "duration": 2.0
+    },
+    {
+      "text": "So if you write this in code, for example, auto, you will get a long and not an end, which might be surprising.",
+      "start": 704.22,
+      "duration": 5.0
+    },
+    {
+      "text": "And therefore, in the libraries, like C limits, you will see this notation instead of this notation, which is kind of counterintuitive.",
+      "start": 709.22,
+      "duration": 8.0
+    },
+    {
+      "text": "But if you think about it, it does make sense.",
+      "start": 717.22,
+      "duration": 2.0
+    },
+    {
+      "text": "If you're not abusing auto when your keyword, which allows you to make even more mistakes in C++, then you're fine.",
+      "start": 719.22,
+      "duration": 7.0
+    },
+    {
+      "text": "Cool.",
+      "start": 726.22,
+      "duration": 1.0
+    },
+    {
+      "text": "Then the other thing from the glossary is the unspecified behavior.",
+      "start": 727.22,
+      "duration": 4.0
+    },
+    {
+      "text": "And the unspecified behavior is basically a moment in the standard where the standard gives you a set of things which might happen.",
+      "start": 731.22,
+      "duration": 9.0
+    },
+    {
+      "text": "It's a defined, well defined set, but the standard doesn't tell you which exact thing will happen.",
+      "start": 740.22,
+      "duration": 4.0
+    },
+    {
+      "text": "And it's up to the implementation to actually select one of the things or maybe like do different things in different cases.",
+      "start": 744.22,
+      "duration": 6.0
+    },
+    {
+      "text": "I guess the most popular example, which I'm not sure is really accurate nowadays, but it was accurate some time ago, as in years ago when I last checked it on a different set of compilers, is basically the order of executing the functions.",
+      "start": 751.22,
+      "duration": 14.0
+    },
+    {
+      "text": "Because if you read, if we read the code, like humans right from left to right, like humans in this part of the world, I guess, then we assume that they will be executed first, then B, and then C.",
+      "start": 765.22,
+      "duration": 12.0
+    },
+    {
+      "text": "And in the meantime, there might be, might happen the evaluation of the addition and then the evaluation of the second addition after we get the second result.",
+      "start": 778.22,
+      "duration": 9.0
+    },
+    {
+      "text": "Now this might not be the case according to the standard order of execution is not guaranteed basically, but at the, at the something we just called a sequence point at the in the old standards.",
+      "start": 787.22,
+      "duration": 13.0
+    },
+    {
+      "text": "At the second point, we know that all the executions and evaluations already happened and have been basically the result has been committed.",
+      "start": 801.22,
+      "duration": 8.0
+    },
+    {
+      "text": "So yeah, in this case, we, we shouldn't really rely on the order of execution. Hopefully this is the, well, thankfully, this is a back which you don't fall into to often.",
+      "start": 809.22,
+      "duration": 12.0
+    },
+    {
+      "text": "You have to do really weird stuff to fall into it.",
+      "start": 821.22,
+      "duration": 3.0
+    },
+    {
+      "text": "For comparison, this is well defined behavior. This order of execution is known first a will be executed and if a will be evaluated as true, then B will not be executed at all.",
+      "start": 825.22,
+      "duration": 11.0
+    },
+    {
+      "text": "Otherwise, B will be executed and so on. This is, I guess, the basics of programming.",
+      "start": 836.22,
+      "duration": 5.0
+    },
+    {
+      "text": "And the next term is implementation defined behavior. The implementation defined behavior is basically when the compiler is to decide what is going to happen and documented.",
+      "start": 841.22,
+      "duration": 10.0
+    },
+    {
+      "text": "As a fight behavior doesn't have to be documented by the implementation. The implementation defined behavior should be because well, it's implementation defined a couple of examples, for example, if open and what happens when you open with just read or read binary depends on the implementation and on most unique subsystems or systems.",
+      "start": 851.22,
+      "duration": 20.0
+    },
+    {
+      "text": "There's no difference, like on Linux, right? On Windows, there's a difference. The new lines, if you ever tried opening a binary file this way, you will fall into this trap. You might fall into this trap as well, because a character of this ASCII code is actually treated as the end of a file for some reason.",
+      "start": 871.22,
+      "duration": 18.0
+    },
+    {
+      "text": "So another is the size of variables, you know, long, long and pointer model in 64 bits where the long itself is only 32 bits. This is what's the case on 64 bit windows and long slash pointer 64 bit is the case on Unix, which if you're porting code, you might actually fall into this trap.",
+      "start": 889.22,
+      "duration": 23.0
+    },
+    {
+      "text": "And defined behavior can be resolved in several ways. The common example given is that an implementation is allowed to format the hard drive when undefined behavior happens.",
+      "start": 912.22,
+      "duration": 12.0
+    },
+    {
+      "text": "What actually happens is usually the implementation doesn't care about it or uses it for aggressive optimization, but it also can actually define the behavior and say, oh, in this case, this will always happen. And then when you are using a given compiler, we can actually use that.",
+      "start": 924.22,
+      "duration": 16.0
+    },
+    {
+      "text": "Okay, to sum up, to sum up, basically, if you're a line on any implementation defined behavior on unspecified behavior, which I do not recommend, you will have portability issues.",
+      "start": 940.22,
+      "duration": 11.0
+    },
+    {
+      "text": "If you're a line on undefined behavior, you are asking for trouble and you might get hacked. If you are writing a service or a server or something, you might actually get hacked because we as hackers actually go after undefined behaviors.",
+      "start": 951.22,
+      "duration": 14.0
+    },
+    {
+      "text": "Yeah, and this is a sentiment, which I found in the comments of my blog after publishing a couple of blog posts explaining what is happening, if this undefined behavior is hit.",
+      "start": 965.22,
+      "duration": 13.0
+    },
+    {
+      "text": "But programmers shouldn't really discuss it because the programmers should make sure that the undefined behavior never happens in the code.",
+      "start": 978.22,
+      "duration": 7.0
+    },
+    {
+      "text": "While this is somewhat true, I would argue that knowing what happens in what is the most probable thing to happen in if an undefined behavior is hit is a good thing because it is the bugging.",
+      "start": 985.22,
+      "duration": 12.0
+    },
+    {
+      "text": "You will know that, oh, this behavior, oh, I have an undefined behavior somewhere.",
+      "start": 997.22,
+      "duration": 4.0
+    },
+    {
+      "text": "What's one thing we ever think is hackers actually really know really well what is happening when an undefined behavior is encountered because, again, it is documented, there are research papers and scientific papers published on it.",
+      "start": 1001.22,
+      "duration": 13.0
+    },
+    {
+      "text": "So it isn't black magic. It actually makes sense what is happening with each undefined behavior.",
+      "start": 1014.22,
+      "duration": 5.0
+    },
+    {
+      "text": "Okay, so why do bugs happen and why is it so hard to get right? I mean, it's just a list of undefined behavior we should basically avoid and what's it, problem solved, no security issues now.",
+      "start": 1019.22,
+      "duration": 15.0
+    },
+    {
+      "text": "First, discopancy basically an execution as in what we as programmers want the code to execute and what the source code actually says what we have written to be executed to be compiled.",
+      "start": 1034.22,
+      "duration": 14.0
+    },
+    {
+      "text": "Sometimes we mean one thing and then we tell the compiler the other thing and, well, we get a source of bugs.",
+      "start": 1048.22,
+      "duration": 8.0
+    },
+    {
+      "text": "Then there is the other thing which is what the standard says because what the compiler does or what we think will happen and what the standard says might be totally two different things.",
+      "start": 1056.22,
+      "duration": 9.0
+    },
+    {
+      "text": "And if we compile without optimization stuff might work if we compile with optimization then, yeah, stuff gets crazy.",
+      "start": 1065.22,
+      "duration": 8.0
+    },
+    {
+      "text": "Also, what the generated assembly looks like because it's also an other thing that might be considered a source of truth, but actually looking at the disassembly instead of the generated assembly might be a better idea.",
+      "start": 1074.22,
+      "duration": 13.0
+    },
+    {
+      "text": "But being said versus also a last thing, which is what the CPU actually does execute. So we might not be aligned in all of these and we have to get everything right for the code to be secure. Now, let's actually discuss the examples.",
+      "start": 1087.22,
+      "duration": 13.0
+    },
+    {
+      "text": "Let's discuss the first two points like what the programmer meant and what the source code says. And this is one of my favorite examples of mistakes in code from my SQL and well, Mario's code may be as well, but not sure it happened in 2012.",
+      "start": 1101.22,
+      "duration": 17.0
+    },
+    {
+      "text": "So that was a time ago. Basically, when you authenticate it in the system, well, you have to give a password usually, right.",
+      "start": 1118.22,
+      "duration": 7.0
+    },
+    {
+      "text": "And it fell into code which looked more or less like this. You basically, the password does hashed and it was when compared with a secret from the database, for example, using the memcompere function, which compares two blocks of memory of this size for two bytes, which is fine.",
+      "start": 1125.22,
+      "duration": 16.0
+    },
+    {
+      "text": "And the result was written in an end, basically, eight bit end and then compared to zero. If it's zero, when it's a good password, because memcompere actually return zero when both blocks are equal.",
+      "start": 1142.22,
+      "duration": 14.0
+    },
+    {
+      "text": "If you program and see you know what's the case, actually, good programmers will know that usually implementations return a difference between the non matching characters.",
+      "start": 1156.22,
+      "duration": 13.0
+    },
+    {
+      "text": "And it's quite useful when sorting things actually for it to behave like this. And a good programmer knows this a great programmer knows that it actually returns an integer, not an eight bit result.",
+      "start": 1169.22,
+      "duration": 12.0
+    },
+    {
+      "text": "And the only thing specified is that it will be equal to zero or not equal to zero. What does that mean? What means that? Well, it can be, it can return like 512 because why not?",
+      "start": 1181.22,
+      "duration": 12.0
+    },
+    {
+      "text": "But yeah, like it returns a non zero value. That's a non zero value. Everything's fine. That's actually hexadecimal 200, 2 and 2 zeros.",
+      "start": 1193.22,
+      "duration": 10.0
+    },
+    {
+      "text": "Now, if you cast this to an eight bit long end, you get zeros. Oh, perfect. We got a good password. So this is how you log in into root of a database.",
+      "start": 1204.22,
+      "duration": 12.0
+    },
+    {
+      "text": "You basically run this code in the sequence 1000 times with the password being well, just iterating. And sooner or later, you will hit the situation where this case actually happens and you are logged in as root.",
+      "start": 1216.22,
+      "duration": 15.0
+    },
+    {
+      "text": "Basically, technically, we would say it's an integer, integer truncation, which is undefined behavior, by the way, in the standard into authentication bypass. And this is like an amazing example of how, how to do everything correct and when fail us at a small thing.",
+      "start": 1231.22,
+      "duration": 16.0
+    },
+    {
+      "text": "Like this is one, one character error. This would be like in 32 that would be better.",
+      "start": 1247.22,
+      "duration": 7.0
+    },
+    {
+      "text": "Now, let's move to another, well, discopancy, basically, which is between what the source code says, what will happen and what the standard says, what will happen. And this is, well, everyone, okay.",
+      "start": 1254.22,
+      "duration": 13.0
+    },
+    {
+      "text": "So who doesn't know what an integer overflow is? Okay. Just just in case anyway, one actually raised their hands because I have this light shining in my face. And I don't really see you anyway.",
+      "start": 1267.22,
+      "duration": 13.0
+    },
+    {
+      "text": "If you have an integer value, which is like, let's say on the boundary of the integer values, like on the upper range. And then you add something which would exceed this range.",
+      "start": 1280.22,
+      "duration": 10.0
+    },
+    {
+      "text": "Well, that's an undefined behavior. And usually what happens, usually what happens is that the value will just overlap. Like you go there and then it starts at the beginning.",
+      "start": 1290.22,
+      "duration": 10.0
+    },
+    {
+      "text": "It's actually defined for unsigned integers and it says that it will, the result will be modulo the maximum value plus one. But in case of ends like signed in this actually undefined.",
+      "start": 1300.22,
+      "duration": 11.0
+    },
+    {
+      "text": "So we create this function add, add actually to non zero values without an overflow because we want to detect this.",
+      "start": 1311.22,
+      "duration": 9.0
+    },
+    {
+      "text": "We check first that a is positive or actually non zero. B is also non zero. If it is we return minus one because we know that we will this function only adds positive or zero numbers.",
+      "start": 1320.22,
+      "duration": 13.0
+    },
+    {
+      "text": "So it will never return a negative number. So that's fine to use this as an error case. And then we make sure that the overflow didn't happen.",
+      "start": 1333.22,
+      "duration": 7.0
+    },
+    {
+      "text": "Again, if an overflow would happen, two positive numbers would actually give us a negative number because they would overflow.",
+      "start": 1340.22,
+      "duration": 8.0
+    },
+    {
+      "text": "That's actually what happens on assembly level on the CPU level. And in this case, if it did happen, if we detect it, we also return minus one.",
+      "start": 1348.22,
+      "duration": 10.0
+    },
+    {
+      "text": "Otherwise, we just add them and done fixed. Now, let's do a demo.",
+      "start": 1358.22,
+      "duration": 6.0
+    },
+    {
+      "text": "Okay, so here we go. I need to change directories, I believe I need to find my mouse pointer, which is a good problem, whatever.",
+      "start": 1364.22,
+      "duration": 11.99
+    },
+    {
+      "text": "And we go to enter.",
+      "start": 1376.21,
+      "duration": 4.0
+    },
+    {
+      "text": "Okay, let me open the code. Okay, here we go.",
+      "start": 1380.21,
+      "duration": 8.68
+    },
+    {
+      "text": "So this is a function which I just described and we have some testing. Now, the testing works like this.",
+      "start": 1388.89,
+      "duration": 6.0
+    },
+    {
+      "text": "We basically, well, print out. We are testing one case statically and that's the maximum integer, which is the boundary value.",
+      "start": 1394.89,
+      "duration": 10.0
+    },
+    {
+      "text": "And we add 42. So we add like this will overflow. It's guaranteed to overflow. And we call this function with exactly these parameters.",
+      "start": 1404.89,
+      "duration": 7.0
+    },
+    {
+      "text": "And then we actually ask the user, hey, do you want to test anything else? We read the values and we do the testing with the two values that the user has provided.",
+      "start": 1411.89,
+      "duration": 8.0
+    },
+    {
+      "text": "Okay, let's do it. Okay, make test.",
+      "start": 1419.89,
+      "duration": 5.0
+    },
+    {
+      "text": "And as you can see, we actually detect the integer overflow correctly. We get minus one.",
+      "start": 1424.89,
+      "duration": 6.0
+    },
+    {
+      "text": "Do we want to test anything else? Let's actually test two, one, four, seven, four, eight.",
+      "start": 1430.89,
+      "duration": 8.0
+    },
+    {
+      "text": "You know what? I would prefer my mouse cursor would happen to it. Oh, here it is. This will be way easier.",
+      "start": 1438.89,
+      "duration": 10.08
+    },
+    {
+      "text": "Okay, here we go. And 42. And we get minus one. It makes sense, right? I mean, we did the same test.",
+      "start": 1448.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Now, let's actually compile this with O3, which is optimized, aggressively optimized, actually.",
+      "start": 1454.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And we get still minus one. It still works, right? Let's test it manually again, service 42 and whoa.",
+      "start": 1461.97,
+      "duration": 8.0
+    },
+    {
+      "text": "Okay, so we do the same test twice and we get different results. Why?",
+      "start": 1469.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And again, you can think undefined behaviors are magic, but let's explain what happened because that's actually way more interesting, I would say.",
+      "start": 1476.97,
+      "duration": 11.0
+    },
+    {
+      "text": "Cool. So if you're thinking what just happened, then let's look at the first case at this, the static test.",
+      "start": 1487.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Actually, the compiler just executes it at the compilation time and says, oh, it will return minus one.",
+      "start": 1494.97,
+      "duration": 7.0
+    },
+    {
+      "text": "So in print F1, while printing, it doesn't call the function, it never calls the function, it just prints minus one.",
+      "start": 1501.97,
+      "duration": 6.0
+    },
+    {
+      "text": "That's why we get minus one at the beginning, because it never executed the code. It executed only on compilation time, which is what the compiler might do if it knows all the variables and all the values, actually.",
+      "start": 1507.97,
+      "duration": 12.0
+    },
+    {
+      "text": "The other thing is more interesting, what happened with our check here, right? So the compilers are really smart now.",
+      "start": 1519.97,
+      "duration": 7.0
+    },
+    {
+      "text": "They look at the code and they say, I know A will be never negative. I know B will be never negative at this point.",
+      "start": 1526.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Therefore, I know that two positive numbers will never give a negative value. Oh, wait, there might be an undefined behavior and integer overflow, right?",
+      "start": 1533.97,
+      "duration": 8.0
+    },
+    {
+      "text": "But what's the undefined behavior? We trust the programmer never writes code, which will lead into the situation of an undefined behavior happening, where for that case will never happen.",
+      "start": 1541.97,
+      "duration": 10.0
+    },
+    {
+      "text": "So let's go back here. Two positive or non-zero numbers will never give a negative value. This is that code. Let's remove it. Let's never compile it in.",
+      "start": 1551.97,
+      "duration": 8.0
+    },
+    {
+      "text": "So yeah, thanks to this and the undefined behavior, which is happening here, the code got never compiled in. And actually, this is what happened with the integer overflow is still there. So how to fix it, basically.",
+      "start": 1559.97,
+      "duration": 14.0
+    },
+    {
+      "text": "In this case, just use for this like CC forbid integers, because why not? If you are using 32 bit here, you can use 64 bit here, but it's fine. Otherwise, think about you and do the check if the result is basically not fitting into the range.",
+      "start": 1573.97,
+      "duration": 14.0
+    },
+    {
+      "text": "Now, if you are using, well, different mathematical operations, ideally find the library, which signals error for you. And this is super important when calculating the memory size needed for a buffer to be allocated.",
+      "start": 1587.97,
+      "duration": 14.0
+    },
+    {
+      "text": "This is, this is where you use the safe integer library. Yeah, I am not sure why the standard doesn't have a safe integer library, it should have.",
+      "start": 1601.97,
+      "duration": 9.0
+    },
+    {
+      "text": "Yeah, okay, speaking of integers overflows, another case of changing the sign, which is the absolute value function. So we put the minimum integer and what do we get into this kind of function?",
+      "start": 1610.97,
+      "duration": 11.0
+    },
+    {
+      "text": "There is another function in C anyway, you have apps function there as well, which, you know, if it's a negative value, it just changes the sign and returns it. Now, what actually happens on x86, at least, is it will return the same value, which is still a negative value.",
+      "start": 1621.97,
+      "duration": 15.0
+    },
+    {
+      "text": "Why? Well, because this is actually what's happening on the hardware level when you are changing the sign, it first does a bit negation and then adds plus one, because that's how the two complement system integer system actually works.",
+      "start": 1636.97,
+      "duration": 14.0
+    },
+    {
+      "text": "Which means this value is this hexadecimal. And if we negate all the bits, we get this value. If we add plus one, oh, we get the same value.",
+      "start": 1650.97,
+      "duration": 10.0
+    },
+    {
+      "text": "So, yeah, this is why this function, you also need to check before using it if you are not in this edge case. Now, when did it, does it matter? Okay, I actually have one picture of a cat. I was lying. I'm sorry.",
+      "start": 1660.97,
+      "duration": 14.0
+    },
+    {
+      "text": "Now, if you know the BMP format, yeah, I know it's old. And for some reason, still implemented even in some browsers. So, usually a BMP is written upside down. It has a really cool reason related to the OS slash to operating system.",
+      "start": 1674.97,
+      "duration": 17.0
+    },
+    {
+      "text": "But that's not not good there. Yeah, but if you pass the height as a negative value, it will actually take the absolute value of it as the height and it will say, oh, this BMP is encoded normally not upside down.",
+      "start": 1691.97,
+      "duration": 17.0
+    },
+    {
+      "text": "So, that means if you are writing a BMP parser, you will have this code somewhere in your code, like if the height is negative and upside down is false.",
+      "start": 1708.97,
+      "duration": 8.0
+    },
+    {
+      "text": "Therefore, you still need to calculate the height to do the, you know, to do the typical calculations of with times height with the size of pixel to allocate a block probably for the image. Well, so you call apps. You already know what happens in this case, right?",
+      "start": 1716.97,
+      "duration": 19.0
+    },
+    {
+      "text": "And then there is usually a typical check, like, hey, is the height actually larger than a sane value, because if the value is insane, by the way, this value is too small for, I guess, modern cameras, but okay.",
+      "start": 1735.97,
+      "duration": 11.0
+    },
+    {
+      "text": "It's just assume this is sane. If it's insane, then let's just bail out early because I ever something fishy is going on or we just don't want to support this use case in any way.",
+      "start": 1746.97,
+      "duration": 12.0
+    },
+    {
+      "text": "And usually, if apps fails and actually we had a minimum integer there and we still have a minimum integer, it will pass this check because well minimum integer, which is a large negative number is smaller than 10,000, right?",
+      "start": 1758.97,
+      "duration": 14.0
+    },
+    {
+      "text": "And then when calculations are done, usually an integer overflow happens and you can arrive at malloc allocating zero because due to again the integer overflow.",
+      "start": 1772.97,
+      "duration": 12.0
+    },
+    {
+      "text": "Now malloc allocating zero is actually not allocating zero. One thing important in C++ is that malloc zero always has to return an integer, sorry, an address, a pointer, which is non-null pointer.",
+      "start": 1784.97,
+      "duration": 11.0
+    },
+    {
+      "text": "It actually has to point somewhere in memory, which is about address. Usually what libraries do the heap allocation managers, heap managers, they allocate either 16 bytes or 32 bytes, so it will actually point in the in the heap region anyway.",
+      "start": 1795.97,
+      "duration": 15.0
+    },
+    {
+      "text": "Yeah, and this can lead to basically a later on a heap based buffer overflow and this can lead into code execution and this can lead into, well, you're watching VMH and somebody's watching you, which is not a good thing.",
+      "start": 1810.97,
+      "duration": 14.0
+    },
+    {
+      "text": "Again, due to just due to like a sign change operation, so let that sink in.",
+      "start": 1824.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Okay, let's get back to our main topic, which is what the source, well, the next discrepancy, which is what the source code says will happen and what the generated assembly looks like.",
+      "start": 1831.97,
+      "duration": 11.0
+    },
+    {
+      "text": "And first we need to, I actually need to introduce you into double fetters because that's where this makes most sense.",
+      "start": 1842.97,
+      "duration": 8.0
+    },
+    {
+      "text": "This is the standard. We read there like the CRC++ standard. This is basically the memory model model. There is some null pointer value, which is magical and not really equal to zero, but usually equal to zero.",
+      "start": 1850.97,
+      "duration": 12.0
+    },
+    {
+      "text": "And the very drag on basically don't go there. The rest of the memory is either contains an object a valid object or it doesn't contain a valid object.",
+      "start": 1862.97,
+      "duration": 11.0
+    },
+    {
+      "text": "But if it doesn't then an object can be put there. So this is basically the model what that the standard operates on. Now, a typical real world memory model is still too different.",
+      "start": 1873.97,
+      "duration": 12.0
+    },
+    {
+      "text": "You have not not all of the memories allocated. Usually the null pointer area shouldn't be allocatable at all. If it was allocatable, that let an it was allocatable in the past, both on windows, both on Linux and that led to a lot of bugs. So don't.",
+      "start": 1885.97,
+      "duration": 17.0
+    },
+    {
+      "text": "Yeah, and then you have like the executable images or the library images, the dynamically linked libraries, you have the heap and you also have the stack. And this is only the half of a virtual memory address space because the ever half is reserved for the kernel.",
+      "start": 1902.97,
+      "duration": 16.0
+    },
+    {
+      "text": "And it's not really accessible by the user mode program.",
+      "start": 1918.97,
+      "duration": 4.0
+    },
+    {
+      "text": "And this is a typical model that being said, we also have this model where we actually have two processes and I mean the process here really, really broadly.",
+      "start": 1922.97,
+      "duration": 14.0
+    },
+    {
+      "text": "Our interacting together on the same memory space and they are sharing some area of memory to communicate with each other to pass data.",
+      "start": 1936.97,
+      "duration": 11.0
+    },
+    {
+      "text": "Yeah, so usually well, let's assume that we have a less privileged process, like for example, a user process on Linux or on windows and a higher privileged process, for example, the kernel.",
+      "start": 1947.97,
+      "duration": 14.0
+    },
+    {
+      "text": "It might also be a virtual machine and a hypervisor. It also might be like just two processes, normal user process is sharing memory and talking to each other on different users.",
+      "start": 1961.97,
+      "duration": 10.0
+    },
+    {
+      "text": "Yeah, so this is basically a scenario and usually one has less privileges, the other has more privileges.",
+      "start": 1971.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And this is the scenario we'll be discussing now, a double fetch. I think the term was used, the usual classic term is talk to, which is time of check to time of use.",
+      "start": 1978.97,
+      "duration": 12.0
+    },
+    {
+      "text": "But the double fetch is basically a race condition, which is kind of a subset, but kind of super set of a talk to is like this.",
+      "start": 1990.97,
+      "duration": 9.0
+    },
+    {
+      "text": "You have a high privileged thread and you have the evil thread. Now the evil thread puts a good value in the shared memory memory and like when I don't know, call it a Cisco or whatever, which is going to use this shared value.",
+      "start": 1999.97,
+      "duration": 11.0
+    },
+    {
+      "text": "Then the kernel, let's say the kernel fetches the value and verifies it. Hey, is this like, for example, it's a pointer in the buffer, like an index in the buffer, is it fine?",
+      "start": 2010.97,
+      "duration": 13.0
+    },
+    {
+      "text": "If it is fine, then it continues execution, but at this time, the evil thread actually switches the value to an evil value.",
+      "start": 2023.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And for some reason, the kernel fetches the value again from the shared memory and uses it because it was verified, right?",
+      "start": 2030.97,
+      "duration": 6.0
+    },
+    {
+      "text": "If you look on the end of this thread, it makes sense. You verified it in the source code, you see that it was verified and then you actually use the value.",
+      "start": 2036.97,
+      "duration": 9.0
+    },
+    {
+      "text": "If you think about two threads running together simultaneously on different course, this, yeah, it's you can squeeze within.",
+      "start": 2045.97,
+      "duration": 8.0
+    },
+    {
+      "text": "Now, can you really squeeze in, I mean, like two fetches from memory that's like what three cycles on modern x86.",
+      "start": 2053.97,
+      "duration": 9.0
+    },
+    {
+      "text": "Like you have one instruction than another with all the simultaneous execution of multiple instructions, speculative execution, and so on.",
+      "start": 2062.97,
+      "duration": 8.0
+    },
+    {
+      "text": "This is like, literally, should be three or four cycles. Can we, can we hit with another thread, the value change exactly in this moment?",
+      "start": 2070.97,
+      "duration": 9.0
+    },
+    {
+      "text": "Well, if you start actually thinking into it, it seems that if you put the shared value on a shared between the cache line boundary, so that the value is actually on two cache lines.",
+      "start": 2079.97,
+      "duration": 14.0
+    },
+    {
+      "text": "That means that you actually have to this instruction, the CPU will have to fetch the value from both cache lines and then merge it and then evaluate it, and this is slower.",
+      "start": 2093.97,
+      "duration": 9.0
+    },
+    {
+      "text": "You already gain twice the cycles, well, eight cycles that's still like, I don't know, nanoseconds, right?",
+      "start": 2102.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Actually, if there is a cache miss on one of the lines, that's 14 cycles twice as good.",
+      "start": 2109.97,
+      "duration": 6.0
+    },
+    {
+      "text": "But I'm talking about the lowest level L1 data cache on x86, for example, well, this is x86 assembly, so it's as x86.",
+      "start": 2115.97,
+      "duration": 8.0
+    },
+    {
+      "text": "And you get 14 cycles. Now, if you get a level two cache miss as well, that's 50 cycles because you need to fetch the value from level three cache.",
+      "start": 2123.97,
+      "duration": 8.0
+    },
+    {
+      "text": "If we miss on level three cache and the value is not there, that's 200 cycles because you need to fetch it from RAM, and RAM is actually really slow.",
+      "start": 2131.97,
+      "duration": 8.0
+    },
+    {
+      "text": "You need to spend several cycles to actually request the value and then wait some cycles and then the value arrives.",
+      "start": 2139.97,
+      "duration": 8.0
+    },
+    {
+      "text": "But if we actually put the value on the boundary, not only of cache lines, but also of RAM blocks or page boundary, because the values in RAM are fetched in like blocks of, I think, 64 bytes, it depends on the technology.",
+      "start": 2147.97,
+      "duration": 15.0
+    },
+    {
+      "text": "Yeah, or on a page boundary, where the page is for 1096, and it basically guarantees that it will be on the RAM block boundary as well.",
+      "start": 2162.97,
+      "duration": 7.0
+    },
+    {
+      "text": "You need to not fetch only one, but actually two RAM blocks, so it takes twice the amount of time.",
+      "start": 2169.97,
+      "duration": 6.0
+    },
+    {
+      "text": "This is all happening by very in virtual memory, and virtual memory has, you know, this tree that you use to translate a virtual address into a physical address.",
+      "start": 2175.97,
+      "duration": 11.0
+    },
+    {
+      "text": "Well, if you actually, well, this actually uses also a cache of its own, which is called the TLB, which is, I don't remember what, whatever, it's the cache for the tree.",
+      "start": 2186.97,
+      "duration": 12.0
+    },
+    {
+      "text": "Now, I think it's translation look a side buffer.",
+      "start": 2198.97,
+      "duration": 4.0
+    },
+    {
+      "text": "Anyway, if you miss there, you suddenly need to query the tree in RAM.",
+      "start": 2202.97,
+      "duration": 4.0
+    },
+    {
+      "text": "You need to do several fetches to get several notes of the tree, or from the, like, the page directory table, from the page tables, and so on.",
+      "start": 2206.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And then I can take two thousand cycles. That's a large gap. We can squeeze into that.",
+      "start": 2213.97,
+      "duration": 8.0
+    },
+    {
+      "text": "Actually, if you swap out part of one page, and it needs to be read from the disk, like, given if it says this is still milliseconds, so it's easy to actually squeeze in.",
+      "start": 2221.97,
+      "duration": 10.0
+    },
+    {
+      "text": "We have enough time to exploit this if we, as attackers, prepare the environment correctly.",
+      "start": 2231.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Now, actually we did with your quite a lot of research into the topic.",
+      "start": 2237.97,
+      "duration": 4.0
+    },
+    {
+      "text": "We came well with a lot of these methods. We described them, measured them, and so on.",
+      "start": 2241.97,
+      "duration": 6.0
+    },
+    {
+      "text": "We also found, I think, like, 20 bugs in the Windows kernel and drivers.",
+      "start": 2247.97,
+      "duration": 5.0
+    },
+    {
+      "text": "Well, thanks to an instrument, an instrumented emulator, which we created.",
+      "start": 2252.97,
+      "duration": 5.0
+    },
+    {
+      "text": "And we got a ponia word for that. A ponia word is basically, like, it's given out in Las Vegas on Black Hat conference.",
+      "start": 2257.97,
+      "duration": 6.0
+    },
+    {
+      "text": "It's, like, V-award in security. We got one in the most innovative research that bacteria.",
+      "start": 2263.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And yeah, this video is amazing. I really love it. It's, like, great research.",
+      "start": 2270.97,
+      "duration": 4.0
+    },
+    {
+      "text": "I find it hilarious that you're going to spend so much time learning how to make computers run slow.",
+      "start": 2274.97,
+      "duration": 6.0
+    },
+    {
+      "text": "That's, like, spot on. Anyway, yeah, there was today an FPGA talk.",
+      "start": 2280.97,
+      "duration": 8.0
+    },
+    {
+      "text": "If this is interesting for you, go either if you haven't been on that talk, go look at the recording",
+      "start": 2288.97,
+      "duration": 7.0
+    },
+    {
+      "text": "because it will explain a lot of what is happening here in the background.",
+      "start": 2295.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Cool. Now, yeah, so apart from the double fetches, right, there are also other types of similar vulnerabilities.",
+      "start": 2302.97,
+      "duration": 9.0
+    },
+    {
+      "text": "For example, when the kernel writes into the short, normally, a large object.",
+      "start": 2311.97,
+      "duration": 4.0
+    },
+    {
+      "text": "And then the size of it, I need to actually zero out some fields because they are secret.",
+      "start": 2315.97,
+      "duration": 4.0
+    },
+    {
+      "text": "You can snatch the values in the meantime. You published a monograph on, like, 100 pages on the topic.",
+      "start": 2319.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Do read it. It's amazing.",
+      "start": 2326.97,
+      "duration": 3.0
+    },
+    {
+      "text": "Yeah, so back to our show because this was actually an introduction to another discovery, right?",
+      "start": 2329.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Well, let's look at this code versus which and we have this value and then we have two cases, right?",
+      "start": 2335.97,
+      "duration": 7.0
+    },
+    {
+      "text": "So looking at the source code, we see there's one fetch of the value and when it's being compared to other values.",
+      "start": 2342.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Well, most of us actually know what will happen in this case because well, there are only a couple of reasonable things to happen.",
+      "start": 2348.97,
+      "duration": 5.0
+    },
+    {
+      "text": "It will either be converted into a set of ifs, like an iftree.",
+      "start": 2353.97,
+      "duration": 4.0
+    },
+    {
+      "text": "And which means that the value will be fetched, start on the CPU register and the register will be compared to type A.",
+      "start": 2357.97,
+      "duration": 6.0
+    },
+    {
+      "text": "And then to type B and it will jump to one of the brackets or a niver.",
+      "start": 2363.97,
+      "duration": 5.0
+    },
+    {
+      "text": "Another thing, if we have a lot of cases, they're quite close to each other.",
+      "start": 2368.97,
+      "duration": 4.0
+    },
+    {
+      "text": "We might also use a jump table. So there's basically a list of addresses and the compiler fetches the value into CPU registers,",
+      "start": 2372.97,
+      "duration": 7.0
+    },
+    {
+      "text": "compare it against a range, well, basically the size of a jump table and then just a jump table, the case number,",
+      "start": 2379.97,
+      "duration": 8.0
+    },
+    {
+      "text": "and it points to the code which is responsible for handling that.",
+      "start": 2387.97,
+      "duration": 4.0
+    },
+    {
+      "text": "If you don't reverse engineering, that's really basic knowledge.",
+      "start": 2391.97,
+      "duration": 4.0
+    },
+    {
+      "text": "If you have an reverse engineering school, try to learn.",
+      "start": 2395.97,
+      "duration": 4.0
+    },
+    {
+      "text": "But you've probably done reading another person's code, but it's basically reverse engineering.",
+      "start": 2399.97,
+      "duration": 5.0
+    },
+    {
+      "text": "You're reading another person's code and parallel that's like total high level reverse engineering.",
+      "start": 2404.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Anyway, what actually happened is because it's unspecified, what actually happened in the case described by Felix Wilhelm and his ZenPone research,",
+      "start": 2410.97,
+      "duration": 11.0
+    },
+    {
+      "text": "where he did basically the similar instrumentation to what we did, but tested on hypervisors, on virtual machines.",
+      "start": 2421.97,
+      "duration": 8.0
+    },
+    {
+      "text": "What happened is that it did compare the value in the memory versus the range, and then it fetched the value into a CPU register and used the jump table.",
+      "start": 2429.97,
+      "duration": 11.0
+    },
+    {
+      "text": "So you have a double-fed full-narrability here, which is not obvious from the source code.",
+      "start": 2440.97,
+      "duration": 4.0
+    },
+    {
+      "text": "Looking at the source code, I have a lot of experience in back hunting and I would not find this.",
+      "start": 2444.97,
+      "duration": 4.0
+    },
+    {
+      "text": "So what was quite amazing and Felix did discover it with certain automation.",
+      "start": 2448.97,
+      "duration": 5.0
+    },
+    {
+      "text": "So yeah, again, what happened, we compared it when another thread just changes the type to way out of range.",
+      "start": 2454.97,
+      "duration": 7.0
+    },
+    {
+      "text": "Which means it has like, depending on the register size on the value size, it can be, well, basically it can choose any address in memory where there is some other pointer probably controlled by that attacker and then that attacker can jump into any code they choose.",
+      "start": 2461.97,
+      "duration": 18.0
+    },
+    {
+      "text": "So that's free code execution, basically.",
+      "start": 2479.97,
+      "duration": 3.0
+    },
+    {
+      "text": "Another example, which is, yeah, which is how I learned some stuff the hard way.",
+      "start": 2482.97,
+      "duration": 6.0
+    },
+    {
+      "text": "I made this game. This is actually an exploitation challenge where you have to shoot out the exploit using tanks.",
+      "start": 2488.97,
+      "duration": 7.0
+    },
+    {
+      "text": "You probably know this type of a game.",
+      "start": 2495.97,
+      "duration": 3.0
+    },
+    {
+      "text": "It's like, some would like warm, some would like scorched air or scorched tanks in the past.",
+      "start": 2498.97,
+      "duration": 6.0
+    },
+    {
+      "text": "And, yeah, basically there was a server side and then the server side I did this, the bug message, because I thought standard error won't be redirected to sockets.",
+      "start": 2504.97,
+      "duration": 9.0
+    },
+    {
+      "text": "Actually, it was so I had to patch it.",
+      "start": 2513.97,
+      "duration": 2.0
+    },
+    {
+      "text": "And I had to patch it at the last moment because this was a challenge on Google CTF finals in Zurich.",
+      "start": 2515.97,
+      "duration": 5.0
+    },
+    {
+      "text": "So, you know, the teams are on site already started playing and I have to patch my challenge.",
+      "start": 2520.97,
+      "duration": 4.0
+    },
+    {
+      "text": "So the last thing I wanted to do is recompile because when you recompile the addresses change and your test exploit stops working because the addresses change.",
+      "start": 2524.97,
+      "duration": 9.0
+    },
+    {
+      "text": "So you don't want to recompile. You want to probably fix the binary.",
+      "start": 2533.97,
+      "duration": 4.0
+    },
+    {
+      "text": "Okay, well, easy, right? It's actually a F-print F. So it takes an ASCII zero terminated string versus zero here.",
+      "start": 2537.97,
+      "duration": 7.0
+    },
+    {
+      "text": "You probably know that. And it prints it out.",
+      "start": 2544.97,
+      "duration": 3.0
+    },
+    {
+      "text": "So if I put the zero at the beginning, instead of a first letter, nothing will be printed out.",
+      "start": 2547.97,
+      "duration": 6.0
+    },
+    {
+      "text": "And actually, it sent this to the players for the server.",
+      "start": 2553.97,
+      "duration": 5.0
+    },
+    {
+      "text": "Slash zero, W wasn't here, was my typo.",
+      "start": 2558.97,
+      "duration": 3.0
+    },
+    {
+      "text": "The slash zero orcs.",
+      "start": 2561.97,
+      "duration": 2.0
+    },
+    {
+      "text": "And I was like, what? Why does F-print F actually transmit a null byte? What shouldn't happen?",
+      "start": 2563.97,
+      "duration": 9.0
+    },
+    {
+      "text": "It turned out that the compiler was funny. It actually said, oh, you're using a like constant length string here.",
+      "start": 2572.97,
+      "duration": 7.0
+    },
+    {
+      "text": "So I'm just going to change it to F-write and put the length of the string here.",
+      "start": 2579.97,
+      "duration": 4.0
+    },
+    {
+      "text": "So yeah, fixing it just made things worse, I guess.",
+      "start": 2583.97,
+      "duration": 4.0
+    },
+    {
+      "text": "And the end, I just noped out this in the binary. And what fixed things in the end?",
+      "start": 2587.97,
+      "duration": 5.0
+    },
+    {
+      "text": "But I told you didn't expect this. I did know that for example, if you have print F with a new line, it's going to be changed to puts, but I didn't expect a shift from this paradigm where you have a zero terminated buffer into the paradigm where we have data and length.",
+      "start": 2592.97,
+      "duration": 15.0
+    },
+    {
+      "text": "Which is weird.",
+      "start": 2607.97,
+      "duration": 2.0
+    },
+    {
+      "text": "Okay, another discrepancy.",
+      "start": 2609.97,
+      "duration": 3.0
+    },
+    {
+      "text": "What the generated assembly looks like and what the actual disassembly looks like.",
+      "start": 2612.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Because it turned out, and again, I learned that the hard way this might not be the same thing.",
+      "start": 2618.97,
+      "duration": 5.0
+    },
+    {
+      "text": "Now, usually you find into this kind of, you fall into this kind of trap if you're doing really weird stuff in the beginning.",
+      "start": 2623.97,
+      "duration": 7.0
+    },
+    {
+      "text": "And I was doing really weird stuff.",
+      "start": 2630.97,
+      "duration": 3.0
+    },
+    {
+      "text": "And basically compiling Cheryl Coase, a lot of Cheryl Coase, which I had to have in the memory.",
+      "start": 2633.97,
+      "duration": 5.0
+    },
+    {
+      "text": "And I actually written a lot of code, everything worked perfectly. And then I used the global variable. And it crashed. And it crashed badly. And I was like, why?",
+      "start": 2638.97,
+      "duration": 11.0
+    },
+    {
+      "text": "By the way, this was position-dependent code and was actually a big factor here.",
+      "start": 2649.97,
+      "duration": 4.0
+    },
+    {
+      "text": "So I started looking into it, debugging it.",
+      "start": 2653.97,
+      "duration": 4.0
+    },
+    {
+      "text": "And this is the way you compile it. And you probably might know dash capital S and G++ or C-Lank.",
+      "start": 2657.97,
+      "duration": 6.0
+    },
+    {
+      "text": "You basically get an assembly output that generated assembly. And the generated assembly was like this.",
+      "start": 2663.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Into racks, move a pointer from the global offset table for the global variable.",
+      "start": 2669.97,
+      "duration": 6.0
+    },
+    {
+      "text": "So this offset table actually has a pointer to the global variable. And we get it into racks. And then we interact through it using this pointer.",
+      "start": 2675.97,
+      "duration": 8.0
+    },
+    {
+      "text": "Well, okay. I already knew that something will not be right here because I'm actually was using a custom linker script. And I was pretty sure I don't have a global offset table in my linker script.",
+      "start": 2683.97,
+      "duration": 12.0
+    },
+    {
+      "text": "But I did compile it normally, like to a standard health. And I object dump the assembly. And I see that hey, verse actually, it's okay. It's fine.",
+      "start": 2695.97,
+      "duration": 10.0
+    },
+    {
+      "text": "This Leah, like load effective address of this. Basically, it puts this value. It calculates this value and puts the value into racks.",
+      "start": 2705.97,
+      "duration": 8.0
+    },
+    {
+      "text": "It doesn't do any memory fortress. It's like these brackets are fake.",
+      "start": 2713.97,
+      "duration": 4.0
+    },
+    {
+      "text": "So this is fine. And this code would work fine in my environment. And I was sure of it. But and this code, by the way, was put here by the linker.",
+      "start": 2717.97,
+      "duration": 10.0
+    },
+    {
+      "text": "Like not very compiler. The linker changed machine code, which is a weird thing to do. But that's actually what's happening.",
+      "start": 2727.97,
+      "duration": 6.0
+    },
+    {
+      "text": "And it turned out that for some reason it's not being the case. My move is not being replaced by a Leah instruction when I use a custom script.",
+      "start": 2733.97,
+      "duration": 9.0
+    },
+    {
+      "text": "After reading some quite a lot of emails on groups related to the linker and so on, I found out that hey, actually, you know, position independent executables are not supported if you compile into the binary type.",
+      "start": 2742.97,
+      "duration": 12.0
+    },
+    {
+      "text": "They are only supported if you compile into an elf type. And what was used to me. And I really was surprised what the actual disassembly differ from what the compiler generated.",
+      "start": 2754.97,
+      "duration": 9.0
+    },
+    {
+      "text": "If you run into weird cases, do look at that level of abstraction as well.",
+      "start": 2763.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Yeah. So to summarize this, the programmers say often that the source code is the ultimate documentation.",
+      "start": 2769.97,
+      "duration": 8.0
+    },
+    {
+      "text": "I mean, why do we have to update the documentation or write the documentation at the beginning because well, the source code is the ultimate documentation hackers disagree and I disagree.",
+      "start": 2777.97,
+      "duration": 11.0
+    },
+    {
+      "text": "This assembled code is the ultimate source of truth. That's what I think now turns out we are all wrong.",
+      "start": 2788.97,
+      "duration": 9.0
+    },
+    {
+      "text": "Fast forward to this and to the well, this year and the specter and melt down a young horn from Project zero published this blog post, which is reading privilege memory for site channel, which is if you haven't read it or you are not familiar with this, I will give you a brief rundown how it works.",
+      "start": 2797.97,
+      "duration": 20.0
+    },
+    {
+      "text": "But there has been a lot of research published in this area from this post by young and it's like it's just amazing.",
+      "start": 2817.97,
+      "duration": 8.0
+    },
+    {
+      "text": "So the discrepancy is basically between what the actual code says and what the CPU executes now.",
+      "start": 2825.97,
+      "duration": 6.0
+    },
+    {
+      "text": "Let's look at this scenario. The scenario is also in case we have a less privileged process and a more privileged process, for example, the kernel and the user process.",
+      "start": 2831.97,
+      "duration": 11.0
+    },
+    {
+      "text": "And this is the code which is running in the kernel. The kernel has some buffer where the part of that data in the buffer is accessible to the color.",
+      "start": 2842.97,
+      "duration": 12.0
+    },
+    {
+      "text": "By the means of this API and there's also some secret values afterwards like, you know, this is a typical buffer overflow. So usually there is some secret data in the memory like, for example, pointers, cookies and so on stuff you want to get us an attacker to ease your exploitation of our stuff.",
+      "start": 2854.97,
+      "duration": 17.0
+    },
+    {
+      "text": "Now, you call this Cisco like this, you pass it an attacker controlled index and the index is compared with the buffer size with this public size.",
+      "start": 2871.97,
+      "duration": 10.0
+    },
+    {
+      "text": "If the index is greater or equal to the public area size, then well, you actually never execute this. You just bail out because what would be a buffer overrun, right? And it's actually checked in the code.",
+      "start": 2881.97,
+      "duration": 14.0
+    },
+    {
+      "text": "It's checked in the assembly. Everything is fine. Otherwise, if the index is fine, you execute this. There's some operation. It doesn't matter almost at all.",
+      "start": 2895.97,
+      "duration": 9.0
+    },
+    {
+      "text": "What matters is what we fetch the value from secret index, which is a byte value. Let's assume it's a byte value. And then we multiply it by some number. It doesn't have to be exactly the cash line size or cash page size.",
+      "start": 2904.97,
+      "duration": 14.0
+    },
+    {
+      "text": "It's some number. It's fine if it is large enough. And then we use this as an index to the detector array, whatever detector is the piece of memory controlled by the attacker again. It's controlled fully by the attacker. Now, it looks fine.",
+      "start": 2918.97,
+      "duration": 15.0
+    },
+    {
+      "text": "If you read the source code, if you look at the disassembly, everything looks fine. Now, actually, we do have something called the speculative execution in the, in the CPU.",
+      "start": 2933.97,
+      "duration": 12.0
+    },
+    {
+      "text": "And it also handles, but it's also related to branch predictions because here we have to branches, right? The condition is met and branches taken or the condition is not met and the branches not taken so to branches.",
+      "start": 2945.97,
+      "duration": 12.0
+    },
+    {
+      "text": "Now, if this would be not in the cash and again, that might take several cycles, several hundred cycles to actually fetch, well, the CPU would be sold at this moment.",
+      "start": 2957.97,
+      "duration": 13.0
+    },
+    {
+      "text": "So what was introduced is, again, the speculative execution, which means try to execute some code, but never commit the results into registers, never commit the results into real registers by way into real memory, just keep them there.",
+      "start": 2970.97,
+      "duration": 14.0
+    },
+    {
+      "text": "And if later when the value arrives actually from RAM, for example, and we can actually execute the code, if we predicted correctly the branch, we can just commit the values and continue. We don't lose too much time.",
+      "start": 2984.97,
+      "duration": 12.0
+    },
+    {
+      "text": "The speculative execution does for you. And that means that the CPUs, even though like the frequency doesn't go high in the recent years, they are still getting faster due to algorithms just like that.",
+      "start": 2996.97,
+      "duration": 13.0
+    },
+    {
+      "text": "So if you actually start to think about it, is if you train the CPU to always take the branch, like always pass okay values like zero here or one or whatever, and the CPU knows that this is like the most likely branch to be taken because it's always has been taken.",
+      "start": 3009.97,
+      "duration": 17.0
+    },
+    {
+      "text": "The CPU actually keeps a cache of which branches were taken in the past. So this is how it actually works.",
+      "start": 3026.97,
+      "duration": 8.0
+    },
+    {
+      "text": "And then we remove this from cache. There are ways like one way is just like fill the cache with anything else and then this will be removed. So we don't even have to have access direct access to it.",
+      "start": 3034.97,
+      "duration": 10.0
+    },
+    {
+      "text": "But let's assume we have a way to actually evict it from cache. So the CPU will stall on this moment and the CPU will do again, like branch prediction, it knows that it will enter here and it will speculatively execute this code.",
+      "start": 3044.97,
+      "duration": 15.0
+    },
+    {
+      "text": "So but what what why does it matter? I mean we this result as soon as this value arrive and the CPU will know index is actually greater or equal to secret size.",
+      "start": 3059.97,
+      "duration": 12.0
+    },
+    {
+      "text": "It will say no do not commit result discard the speculative execution results and bail out. So what does this give us like nothing we don't have the results.",
+      "start": 3071.97,
+      "duration": 11.0
+    },
+    {
+      "text": "But there's not something to be committed, but if the CPU would have to do any cache fetches due to the speculative execution, then we can actually measure whether the cache fetch actually happened, whether a part of the detector array is in the cache.",
+      "start": 3082.97,
+      "duration": 20.0
+    },
+    {
+      "text": "So let's actually assume this case, but we have this detector array, which is quite large and whereas it has been evicted everything has been evicted from cache just before calling this function.",
+      "start": 3102.97,
+      "duration": 11.0
+    },
+    {
+      "text": "Assuming that the secret at this position is C, for example, that means that the speculative execution going into this branch will calculate this as this offset and it will issue a cache fetch.",
+      "start": 3113.97,
+      "duration": 14.0
+    },
+    {
+      "text": "That cache fetch might never be realized in time, but it will issue it and the value will arrive in the cache. So this part of the array of the big array with our large blocks is actually in the cache and these are not.",
+      "start": 3127.97,
+      "duration": 14.0
+    },
+    {
+      "text": "That means that as soon as the code returns to the less privileged process, the attacker can do this can actually measure the time this is read time stamp counter, which is the most accurate, actually, well, maybe not accurate, the timer with the most precision and the operating system on x86 or actually in the CPU.",
+      "start": 3141.97,
+      "duration": 19.0
+    },
+    {
+      "text": "So we get the value, you know, like standard benchmarking stuff, right? And then we access the each of these blocks. We access the first one and we measure the time we check the difference when we say it was slow, the access was slow. This was not in the cache, but we actually access the value. So now it is in the cache.",
+      "start": 3160.97,
+      "duration": 18.0
+    },
+    {
+      "text": "It doesn't matter. We check the next value. Again, the time to access it, it was slow. This was wasn't either in the cache. And now I'm missing a slide. Where is my slide? Anyway, in the end, we access this one as well. And we find out that the access was actually fast because this was in the cache. Why was it in the cache? Oh, because the speculative execution actually done it. So fetched it for us. So we know that the secret will be see.",
+      "start": 3178.97,
+      "duration": 27.0
+    },
+    {
+      "text": "Because, well, that's what came out from our benchmarking. So this is how the variant, the first variant worked off of these kind of speculative attacks. If you're interested about other attacks like that, do read the stuff because it's really the papers because we are really, really interesting.",
+      "start": 3205.97,
+      "duration": 20.0
+    },
+    {
+      "text": "Yeah, so in the end, we have the, well, this capacity on all the levels and it's not easy to get everything right, even if you write proper code. There are some other stuff which I have in the slides. I will not talk about it because we have, I guess, five minutes left.",
+      "start": 3225.97,
+      "duration": 18.0
+    },
+    {
+      "text": "So let's go to some some stuff is really fine. Like, for example, the random device, which is supposed to be going into the cryptographically safe territory has this entropy function and the standard library and read for it actually told me that it's like you cannot know based on the result of this function.",
+      "start": 3243.97,
+      "duration": 19.0
+    },
+    {
+      "text": "So if your implementation actually is cryptographically safe or not, because the values returned are weird. Another problem with the standard library was, for example, the DNS resolver, which is in the, the GNUC library who had some issues and like critical vulnerabilities that was discovered by some folks at Google and handling by firm and certain other stuff.",
+      "start": 3262.97,
+      "duration": 21.0
+    },
+    {
+      "text": "Also, if you think you know the C standard library do checks Esther and Kat, what are the arguments and what how they are used because you will be surprised is not what you think.",
+      "start": 3283.97,
+      "duration": 11.0
+    },
+    {
+      "text": "Every typical stuff like I didn't talk about buffer overflows too much today, use after free and so on. One of my favorite ones is mistaking an assert for an if because asserts are actually not compiled into the production code. So if you do a security checks based on asserts, you're going to have a bad day.",
+      "start": 3295.97,
+      "duration": 16.0
+    },
+    {
+      "text": "Yeah, then there is some fun math stuff and basically the summer is that C++ is a hard language to master because you get have to get everything right. It has to be the perfect code and then you still have to care about the CPU with the CPU actually does, especially if you're writing code which interacts between the in like non standard execution and memory models.",
+      "start": 3313.97,
+      "duration": 22.0
+    },
+    {
+      "text": "At least it doesn't have evil or like the weak comparison operators like PHP has. That's a good thing, thankfully.",
+      "start": 3335.97,
+      "duration": 8.0
+    },
+    {
+      "text": "Yeah, so now it will take care while coding and also use modern C++ without pointers and pointer, so without pointer added metric if you can.",
+      "start": 3344.97,
+      "duration": 8.0
+    },
+    {
+      "text": "That's it. Ever any easy questions? I can take try to answer them. Ever any hard ones? I think we are out of time. So thank you.",
+      "start": 3353.97,
+      "duration": 8.0
+    }
+  ],
+  "full_text": "And our presenter is Gunwe Koldwind.  He is living in Zurich since 2010 and works for Google as a senior software engineer and information security engineer as well.  Gunwe is a programmer enthusiast with a passion for computer security and low level aspects of computer science.  He is also an author of to understand programming book.  As well as numerous articles, publications, podcasts and lecturers devoted to mentioned topics.  In 2013, he was awarded a Pevni Award together with Mateusz J\u00f3zczyk and in the most innovative research category in the field of computer security.  He is also a co-founder and former captain of the Dragon Sector team, one of the best CTF teams in the world.  In the free time, he lives playing games and eating sushi.  So please welcome Gunwe Koldwind.  Yeah, I basically made the BO so long so I can fix technical issues.  Thank you for your patience.  So today I'm going to talk about C and C++ and security.  If you are a senior C++ or C programmer, they really have really cool talks in another room so just you have been warned.  The slides will be available afterwards and there are speaker notes under the slides if you are looking at them later because well actually the slides are mostly pictures of funny cuts.  Actually, I don't have funny so.  Okay, if this doesn't work, more technical issues.  So give me a second.  Okay, that explains everything.  Perfect.  Okay, so I guess I was already introduced.  Just a note.  Our opinion expressed during this presentation, as a presentation, our mind alone and our not the votes of my employer.  Please keep up the mind especially if I talk about really weird stuff in C++, I guess.  I'm, yeah, like I'm also a manager for some reason.  So yeah, what will be on the menu today?  Basically, well, the most important message I want to give you is that the devil is always in the details.  So it's about the small things and especially when it comes to security, it's the small things that matter.  I'm also going to talk about the pitfalls, the trials, the perils, the hazards and errors and general bugs made with C++ code.  This talk is not to be confused with another one made by Redford who is the vice captain and dragon sector.  He made one C++ versus security without an exclamation mark.  This is critical.  I actually learned that he made this talk two days before I, well, before this talk.  We did chat about our talks about the differences and I have a couple of slides from him because they are really amazing.  So do check out his talk and do check out the speaker notes.  Yeah, I also have some slides here from my, my other talks by way.  Okay, so some thanks to Shaku for reviewing the presentation on the really short notice so to disconnect it.  To Redford again, to folks who are Charlie Eury, who is mentioned several times in the presentation and also probably to a lot of other people who I did discuss C++ security in the past with.  Yeah, so I'm going to mostly talk about the old style of C++ because the modern style is a little bit safer.  It's not yet safe, but it is safer.  If you do not know his documents, C++ core guidelines, I do encourage you to read it.  It actually shows you how to use C++ without using pointers, which is a good thing.  Since pointers are the source of all evil, it's not go to review or wondering its pointers.  Yeah, but I would laugh for us to always write in the modern C++ and when you know when you are standard to use all the fancy features, but that's not the case.  We have to deal with code bases, which are old, and furthermore, we cannot rewrite them.  I know that I code better than the other guy, but I cannot rewrite it for some reason.  I do have to continue developing the software, and I also have to rely on third party libraries because, well, I cannot write code to support each and every function.  For example, if I'm doing networking code, I do not want to implement the TCP stack, right?  I want to focus on the higher level code.  Yeah, we are stuck with a lot of old style C++ code, basically.  Now, the general question which made me suggest this topic is why is the C++ code so backward?  It is out of my experience in the FFMPG project, which is basically a set of video and audio codecs.  Together with Mateusz, we found and reported bugs, which resulted in 1,500 fixes.  If you actually grab the git log, there are 1,500 fixes for bugs, which we discovered by fuzzing.  That's the worst, probably scenario I know, but all the other code isn't perfect either.  CNC++ code is basically backridden.  Now, why is it backridden?  I came to the conclusion that it's actually because of the best features in C++, which I really like, which are, but CNC++ is not fully defined.  That's actually what makes the language so fast, and why the compilers can use aggressive optimization, so that's a good thing.  It also because, whereas the active rule, thankfully, it doesn't make it much worse, but it does result in some weird and unexpected behavior.  I'm going to by very explain everything in the data in a second.  And also about the fact that the C++ and C languages are made for the general computing.  We are not specialized language for only this platform, for only x86, but being said, we, as the programming scene, really like to use, especially C,  as a language that is specialized for low-level programming, which is not really the case.  This means that it's being used in some scenarios where it has to be used really, really carefully to not do things wrong.  So, okay, go, sorry.  What's the undefined behavior? Probably most of you know, it's basically...  There are parts in the standard, which it's basically written that's...  In some cases, the behavior is undefined.  What that means is that the compiler trust the programmer to basically never create code, which leads into executing, into falling into an undefined behavior.  The compiler trust the programmer to write code that doesn't happen.  And thanks to that, that's actually a really good thing from optimization perspective.  Because thanks to that, the standard doesn't say what happens, for example, when you do division by zero, right?  The standard, that means that the compiler doesn't have to emulate a given, well, effect of a division by zero, which is in the standard.  For example, let's say the standard would say, yeah, set error, or like for an exception, that's more probable once actually happening on the platform.  If the standard would say that, that means that the compiler would have to inject this additional pseudocode or code with each division.  And that would make it a little bit slower.  And thanks to the undefined behavior, well, it doesn't have to do that.  It trust the programmer, but if the programmer is really sure that the zero division will not happen, then the programmer will just do the division otherwise,  and trust the programmer will verify that the zero division will not happen.  Yeah, so by the way, is this code secure?  And this is, I guess some of you might know it.  What is happening here is I have a function which is, which does the division, right? A by B.  And I do check for the zero case.  And I'm using STD optional, which means this returns a non-value, which is basically error handling.  And I will write it returns the result.  We can check if this is actually fine.  Let's see if something else works.  Okay.  Okay.  Perfect.  Actually does.  So let me just open the code.  You know the right directory.  Yeah.  Here we go.  Okay.  So this is the code.  And then I have some test cases.  Well, I have actually two test cases.  One is for normal division and the other is for division by zero.  And I want to run it and I want to check what happens if I'm actually locked into a party.  Which is not the case for some reason.  Or is it?  No, it works.  It says, okay, it says an active on the top.  Whatever.  Maybe I'm going to move it a little.  So the folks in the back can see it as well.  Perfect.  So make test.  And it obviously works.  No result in case of division by zero because we are handling it.  And the question is, will this code ever crash?  The code will still crash even though we are handling division by zero.  Perfect.  Who thinks that the code is perfect like we don't have to check any other case?  Okay.  You are really a careful crowd.  Well done.  So.  Okay.  If we go to the test cases and get another one.  Which is.  Let's divide STD.  Numeric limits and min.  It is the minimal value of integer by minus one.  Which is basically a sign change.  Right.  Let's see what happens.  We do make tests and it.  Coordumped.  It actually crashed.  Now.  Why did it?  Why did it crash?  I guess.  It's obvious for most of you, but let's talk about it anyway.  Okay.  It crashed because for some reason, and there's actually a really good reason for it.  There are more negative integers than positive integers.  And the division by minus one is basically a sign change.  Which means that we try to change the sign of this number, which is the minimum integer.  And what resulted in a positive integer of the size, like a signal by minus here,  which, well, it's not representable in int type, which means the processor didn't couldn't represent this value  and decided to throw an exception because that's a reasonable thing to do to actually signal an error.  And that's why the code still crashes and we would have to add another case to fix it.  By the way, fun fact.  If you would actually write this number, this is a long type and this is an int type.  Why is it a long type?  Because it does fit integers, like the int type.  But actually, it's treated as this literal value, which doesn't fit an integer.  And then the sign change operation.  So if you write this in code, for example, auto, you will get a long and not an end, which might be surprising.  And therefore, in the libraries, like C limits, you will see this notation instead of this notation, which is kind of counterintuitive.  But if you think about it, it does make sense.  If you're not abusing auto when your keyword, which allows you to make even more mistakes in C++, then you're fine.  Cool.  Then the other thing from the glossary is the unspecified behavior.  And the unspecified behavior is basically a moment in the standard where the standard gives you a set of things which might happen.  It's a defined, well defined set, but the standard doesn't tell you which exact thing will happen.  And it's up to the implementation to actually select one of the things or maybe like do different things in different cases.  I guess the most popular example, which I'm not sure is really accurate nowadays, but it was accurate some time ago, as in years ago when I last checked it on a different set of compilers, is basically the order of executing the functions.  Because if you read, if we read the code, like humans right from left to right, like humans in this part of the world, I guess, then we assume that they will be executed first, then B, and then C.  And in the meantime, there might be, might happen the evaluation of the addition and then the evaluation of the second addition after we get the second result.  Now this might not be the case according to the standard order of execution is not guaranteed basically, but at the, at the something we just called a sequence point at the in the old standards.  At the second point, we know that all the executions and evaluations already happened and have been basically the result has been committed.  So yeah, in this case, we, we shouldn't really rely on the order of execution. Hopefully this is the, well, thankfully, this is a back which you don't fall into to often.  You have to do really weird stuff to fall into it.  For comparison, this is well defined behavior. This order of execution is known first a will be executed and if a will be evaluated as true, then B will not be executed at all.  Otherwise, B will be executed and so on. This is, I guess, the basics of programming.  And the next term is implementation defined behavior. The implementation defined behavior is basically when the compiler is to decide what is going to happen and documented.  As a fight behavior doesn't have to be documented by the implementation. The implementation defined behavior should be because well, it's implementation defined a couple of examples, for example, if open and what happens when you open with just read or read binary depends on the implementation and on most unique subsystems or systems.  There's no difference, like on Linux, right? On Windows, there's a difference. The new lines, if you ever tried opening a binary file this way, you will fall into this trap. You might fall into this trap as well, because a character of this ASCII code is actually treated as the end of a file for some reason.  So another is the size of variables, you know, long, long and pointer model in 64 bits where the long itself is only 32 bits. This is what's the case on 64 bit windows and long slash pointer 64 bit is the case on Unix, which if you're porting code, you might actually fall into this trap.  And defined behavior can be resolved in several ways. The common example given is that an implementation is allowed to format the hard drive when undefined behavior happens.  What actually happens is usually the implementation doesn't care about it or uses it for aggressive optimization, but it also can actually define the behavior and say, oh, in this case, this will always happen. And then when you are using a given compiler, we can actually use that.  Okay, to sum up, to sum up, basically, if you're a line on any implementation defined behavior on unspecified behavior, which I do not recommend, you will have portability issues.  If you're a line on undefined behavior, you are asking for trouble and you might get hacked. If you are writing a service or a server or something, you might actually get hacked because we as hackers actually go after undefined behaviors.  Yeah, and this is a sentiment, which I found in the comments of my blog after publishing a couple of blog posts explaining what is happening, if this undefined behavior is hit.  But programmers shouldn't really discuss it because the programmers should make sure that the undefined behavior never happens in the code.  While this is somewhat true, I would argue that knowing what happens in what is the most probable thing to happen in if an undefined behavior is hit is a good thing because it is the bugging.  You will know that, oh, this behavior, oh, I have an undefined behavior somewhere.  What's one thing we ever think is hackers actually really know really well what is happening when an undefined behavior is encountered because, again, it is documented, there are research papers and scientific papers published on it.  So it isn't black magic. It actually makes sense what is happening with each undefined behavior.  Okay, so why do bugs happen and why is it so hard to get right? I mean, it's just a list of undefined behavior we should basically avoid and what's it, problem solved, no security issues now.  First, discopancy basically an execution as in what we as programmers want the code to execute and what the source code actually says what we have written to be executed to be compiled.  Sometimes we mean one thing and then we tell the compiler the other thing and, well, we get a source of bugs.  Then there is the other thing which is what the standard says because what the compiler does or what we think will happen and what the standard says might be totally two different things.  And if we compile without optimization stuff might work if we compile with optimization then, yeah, stuff gets crazy.  Also, what the generated assembly looks like because it's also an other thing that might be considered a source of truth, but actually looking at the disassembly instead of the generated assembly might be a better idea.  But being said versus also a last thing, which is what the CPU actually does execute. So we might not be aligned in all of these and we have to get everything right for the code to be secure. Now, let's actually discuss the examples.  Let's discuss the first two points like what the programmer meant and what the source code says. And this is one of my favorite examples of mistakes in code from my SQL and well, Mario's code may be as well, but not sure it happened in 2012.  So that was a time ago. Basically, when you authenticate it in the system, well, you have to give a password usually, right.  And it fell into code which looked more or less like this. You basically, the password does hashed and it was when compared with a secret from the database, for example, using the memcompere function, which compares two blocks of memory of this size for two bytes, which is fine.  And the result was written in an end, basically, eight bit end and then compared to zero. If it's zero, when it's a good password, because memcompere actually return zero when both blocks are equal.  If you program and see you know what's the case, actually, good programmers will know that usually implementations return a difference between the non matching characters.  And it's quite useful when sorting things actually for it to behave like this. And a good programmer knows this a great programmer knows that it actually returns an integer, not an eight bit result.  And the only thing specified is that it will be equal to zero or not equal to zero. What does that mean? What means that? Well, it can be, it can return like 512 because why not?  But yeah, like it returns a non zero value. That's a non zero value. Everything's fine. That's actually hexadecimal 200, 2 and 2 zeros.  Now, if you cast this to an eight bit long end, you get zeros. Oh, perfect. We got a good password. So this is how you log in into root of a database.  You basically run this code in the sequence 1000 times with the password being well, just iterating. And sooner or later, you will hit the situation where this case actually happens and you are logged in as root.  Basically, technically, we would say it's an integer, integer truncation, which is undefined behavior, by the way, in the standard into authentication bypass. And this is like an amazing example of how, how to do everything correct and when fail us at a small thing.  Like this is one, one character error. This would be like in 32 that would be better.  Now, let's move to another, well, discopancy, basically, which is between what the source code says, what will happen and what the standard says, what will happen. And this is, well, everyone, okay.  So who doesn't know what an integer overflow is? Okay. Just just in case anyway, one actually raised their hands because I have this light shining in my face. And I don't really see you anyway.  If you have an integer value, which is like, let's say on the boundary of the integer values, like on the upper range. And then you add something which would exceed this range.  Well, that's an undefined behavior. And usually what happens, usually what happens is that the value will just overlap. Like you go there and then it starts at the beginning.  It's actually defined for unsigned integers and it says that it will, the result will be modulo the maximum value plus one. But in case of ends like signed in this actually undefined.  So we create this function add, add actually to non zero values without an overflow because we want to detect this.  We check first that a is positive or actually non zero. B is also non zero. If it is we return minus one because we know that we will this function only adds positive or zero numbers.  So it will never return a negative number. So that's fine to use this as an error case. And then we make sure that the overflow didn't happen.  Again, if an overflow would happen, two positive numbers would actually give us a negative number because they would overflow.  That's actually what happens on assembly level on the CPU level. And in this case, if it did happen, if we detect it, we also return minus one.  Otherwise, we just add them and done fixed. Now, let's do a demo.  Okay, so here we go. I need to change directories, I believe I need to find my mouse pointer, which is a good problem, whatever.  And we go to enter.  Okay, let me open the code. Okay, here we go.  So this is a function which I just described and we have some testing. Now, the testing works like this.  We basically, well, print out. We are testing one case statically and that's the maximum integer, which is the boundary value.  And we add 42. So we add like this will overflow. It's guaranteed to overflow. And we call this function with exactly these parameters.  And then we actually ask the user, hey, do you want to test anything else? We read the values and we do the testing with the two values that the user has provided.  Okay, let's do it. Okay, make test.  And as you can see, we actually detect the integer overflow correctly. We get minus one.  Do we want to test anything else? Let's actually test two, one, four, seven, four, eight.  You know what? I would prefer my mouse cursor would happen to it. Oh, here it is. This will be way easier.  Okay, here we go. And 42. And we get minus one. It makes sense, right? I mean, we did the same test.  Now, let's actually compile this with O3, which is optimized, aggressively optimized, actually.  And we get still minus one. It still works, right? Let's test it manually again, service 42 and whoa.  Okay, so we do the same test twice and we get different results. Why?  And again, you can think undefined behaviors are magic, but let's explain what happened because that's actually way more interesting, I would say.  Cool. So if you're thinking what just happened, then let's look at the first case at this, the static test.  Actually, the compiler just executes it at the compilation time and says, oh, it will return minus one.  So in print F1, while printing, it doesn't call the function, it never calls the function, it just prints minus one.  That's why we get minus one at the beginning, because it never executed the code. It executed only on compilation time, which is what the compiler might do if it knows all the variables and all the values, actually.  The other thing is more interesting, what happened with our check here, right? So the compilers are really smart now.  They look at the code and they say, I know A will be never negative. I know B will be never negative at this point.  Therefore, I know that two positive numbers will never give a negative value. Oh, wait, there might be an undefined behavior and integer overflow, right?  But what's the undefined behavior? We trust the programmer never writes code, which will lead into the situation of an undefined behavior happening, where for that case will never happen.  So let's go back here. Two positive or non-zero numbers will never give a negative value. This is that code. Let's remove it. Let's never compile it in.  So yeah, thanks to this and the undefined behavior, which is happening here, the code got never compiled in. And actually, this is what happened with the integer overflow is still there. So how to fix it, basically.  In this case, just use for this like CC forbid integers, because why not? If you are using 32 bit here, you can use 64 bit here, but it's fine. Otherwise, think about you and do the check if the result is basically not fitting into the range.  Now, if you are using, well, different mathematical operations, ideally find the library, which signals error for you. And this is super important when calculating the memory size needed for a buffer to be allocated.  This is, this is where you use the safe integer library. Yeah, I am not sure why the standard doesn't have a safe integer library, it should have.  Yeah, okay, speaking of integers overflows, another case of changing the sign, which is the absolute value function. So we put the minimum integer and what do we get into this kind of function?  There is another function in C anyway, you have apps function there as well, which, you know, if it's a negative value, it just changes the sign and returns it. Now, what actually happens on x86, at least, is it will return the same value, which is still a negative value.  Why? Well, because this is actually what's happening on the hardware level when you are changing the sign, it first does a bit negation and then adds plus one, because that's how the two complement system integer system actually works.  Which means this value is this hexadecimal. And if we negate all the bits, we get this value. If we add plus one, oh, we get the same value.  So, yeah, this is why this function, you also need to check before using it if you are not in this edge case. Now, when did it, does it matter? Okay, I actually have one picture of a cat. I was lying. I'm sorry.  Now, if you know the BMP format, yeah, I know it's old. And for some reason, still implemented even in some browsers. So, usually a BMP is written upside down. It has a really cool reason related to the OS slash to operating system.  But that's not not good there. Yeah, but if you pass the height as a negative value, it will actually take the absolute value of it as the height and it will say, oh, this BMP is encoded normally not upside down.  So, that means if you are writing a BMP parser, you will have this code somewhere in your code, like if the height is negative and upside down is false.  Therefore, you still need to calculate the height to do the, you know, to do the typical calculations of with times height with the size of pixel to allocate a block probably for the image. Well, so you call apps. You already know what happens in this case, right?  And then there is usually a typical check, like, hey, is the height actually larger than a sane value, because if the value is insane, by the way, this value is too small for, I guess, modern cameras, but okay.  It's just assume this is sane. If it's insane, then let's just bail out early because I ever something fishy is going on or we just don't want to support this use case in any way.  And usually, if apps fails and actually we had a minimum integer there and we still have a minimum integer, it will pass this check because well minimum integer, which is a large negative number is smaller than 10,000, right?  And then when calculations are done, usually an integer overflow happens and you can arrive at malloc allocating zero because due to again the integer overflow.  Now malloc allocating zero is actually not allocating zero. One thing important in C++ is that malloc zero always has to return an integer, sorry, an address, a pointer, which is non-null pointer.  It actually has to point somewhere in memory, which is about address. Usually what libraries do the heap allocation managers, heap managers, they allocate either 16 bytes or 32 bytes, so it will actually point in the in the heap region anyway.  Yeah, and this can lead to basically a later on a heap based buffer overflow and this can lead into code execution and this can lead into, well, you're watching VMH and somebody's watching you, which is not a good thing.  Again, due to just due to like a sign change operation, so let that sink in.  Okay, let's get back to our main topic, which is what the source, well, the next discrepancy, which is what the source code says will happen and what the generated assembly looks like.  And first we need to, I actually need to introduce you into double fetters because that's where this makes most sense.  This is the standard. We read there like the CRC++ standard. This is basically the memory model model. There is some null pointer value, which is magical and not really equal to zero, but usually equal to zero.  And the very drag on basically don't go there. The rest of the memory is either contains an object a valid object or it doesn't contain a valid object.  But if it doesn't then an object can be put there. So this is basically the model what that the standard operates on. Now, a typical real world memory model is still too different.  You have not not all of the memories allocated. Usually the null pointer area shouldn't be allocatable at all. If it was allocatable, that let an it was allocatable in the past, both on windows, both on Linux and that led to a lot of bugs. So don't.  Yeah, and then you have like the executable images or the library images, the dynamically linked libraries, you have the heap and you also have the stack. And this is only the half of a virtual memory address space because the ever half is reserved for the kernel.  And it's not really accessible by the user mode program.  And this is a typical model that being said, we also have this model where we actually have two processes and I mean the process here really, really broadly.  Our interacting together on the same memory space and they are sharing some area of memory to communicate with each other to pass data.  Yeah, so usually well, let's assume that we have a less privileged process, like for example, a user process on Linux or on windows and a higher privileged process, for example, the kernel.  It might also be a virtual machine and a hypervisor. It also might be like just two processes, normal user process is sharing memory and talking to each other on different users.  Yeah, so this is basically a scenario and usually one has less privileges, the other has more privileges.  And this is the scenario we'll be discussing now, a double fetch. I think the term was used, the usual classic term is talk to, which is time of check to time of use.  But the double fetch is basically a race condition, which is kind of a subset, but kind of super set of a talk to is like this.  You have a high privileged thread and you have the evil thread. Now the evil thread puts a good value in the shared memory memory and like when I don't know, call it a Cisco or whatever, which is going to use this shared value.  Then the kernel, let's say the kernel fetches the value and verifies it. Hey, is this like, for example, it's a pointer in the buffer, like an index in the buffer, is it fine?  If it is fine, then it continues execution, but at this time, the evil thread actually switches the value to an evil value.  And for some reason, the kernel fetches the value again from the shared memory and uses it because it was verified, right?  If you look on the end of this thread, it makes sense. You verified it in the source code, you see that it was verified and then you actually use the value.  If you think about two threads running together simultaneously on different course, this, yeah, it's you can squeeze within.  Now, can you really squeeze in, I mean, like two fetches from memory that's like what three cycles on modern x86.  Like you have one instruction than another with all the simultaneous execution of multiple instructions, speculative execution, and so on.  This is like, literally, should be three or four cycles. Can we, can we hit with another thread, the value change exactly in this moment?  Well, if you start actually thinking into it, it seems that if you put the shared value on a shared between the cache line boundary, so that the value is actually on two cache lines.  That means that you actually have to this instruction, the CPU will have to fetch the value from both cache lines and then merge it and then evaluate it, and this is slower.  You already gain twice the cycles, well, eight cycles that's still like, I don't know, nanoseconds, right?  Actually, if there is a cache miss on one of the lines, that's 14 cycles twice as good.  But I'm talking about the lowest level L1 data cache on x86, for example, well, this is x86 assembly, so it's as x86.  And you get 14 cycles. Now, if you get a level two cache miss as well, that's 50 cycles because you need to fetch the value from level three cache.  If we miss on level three cache and the value is not there, that's 200 cycles because you need to fetch it from RAM, and RAM is actually really slow.  You need to spend several cycles to actually request the value and then wait some cycles and then the value arrives.  But if we actually put the value on the boundary, not only of cache lines, but also of RAM blocks or page boundary, because the values in RAM are fetched in like blocks of, I think, 64 bytes, it depends on the technology.  Yeah, or on a page boundary, where the page is for 1096, and it basically guarantees that it will be on the RAM block boundary as well.  You need to not fetch only one, but actually two RAM blocks, so it takes twice the amount of time.  This is all happening by very in virtual memory, and virtual memory has, you know, this tree that you use to translate a virtual address into a physical address.  Well, if you actually, well, this actually uses also a cache of its own, which is called the TLB, which is, I don't remember what, whatever, it's the cache for the tree.  Now, I think it's translation look a side buffer.  Anyway, if you miss there, you suddenly need to query the tree in RAM.  You need to do several fetches to get several notes of the tree, or from the, like, the page directory table, from the page tables, and so on.  And then I can take two thousand cycles. That's a large gap. We can squeeze into that.  Actually, if you swap out part of one page, and it needs to be read from the disk, like, given if it says this is still milliseconds, so it's easy to actually squeeze in.  We have enough time to exploit this if we, as attackers, prepare the environment correctly.  Now, actually we did with your quite a lot of research into the topic.  We came well with a lot of these methods. We described them, measured them, and so on.  We also found, I think, like, 20 bugs in the Windows kernel and drivers.  Well, thanks to an instrument, an instrumented emulator, which we created.  And we got a ponia word for that. A ponia word is basically, like, it's given out in Las Vegas on Black Hat conference.  It's, like, V-award in security. We got one in the most innovative research that bacteria.  And yeah, this video is amazing. I really love it. It's, like, great research.  I find it hilarious that you're going to spend so much time learning how to make computers run slow.  That's, like, spot on. Anyway, yeah, there was today an FPGA talk.  If this is interesting for you, go either if you haven't been on that talk, go look at the recording  because it will explain a lot of what is happening here in the background.  Cool. Now, yeah, so apart from the double fetches, right, there are also other types of similar vulnerabilities.  For example, when the kernel writes into the short, normally, a large object.  And then the size of it, I need to actually zero out some fields because they are secret.  You can snatch the values in the meantime. You published a monograph on, like, 100 pages on the topic.  Do read it. It's amazing.  Yeah, so back to our show because this was actually an introduction to another discovery, right?  Well, let's look at this code versus which and we have this value and then we have two cases, right?  So looking at the source code, we see there's one fetch of the value and when it's being compared to other values.  Well, most of us actually know what will happen in this case because well, there are only a couple of reasonable things to happen.  It will either be converted into a set of ifs, like an iftree.  And which means that the value will be fetched, start on the CPU register and the register will be compared to type A.  And then to type B and it will jump to one of the brackets or a niver.  Another thing, if we have a lot of cases, they're quite close to each other.  We might also use a jump table. So there's basically a list of addresses and the compiler fetches the value into CPU registers,  compare it against a range, well, basically the size of a jump table and then just a jump table, the case number,  and it points to the code which is responsible for handling that.  If you don't reverse engineering, that's really basic knowledge.  If you have an reverse engineering school, try to learn.  But you've probably done reading another person's code, but it's basically reverse engineering.  You're reading another person's code and parallel that's like total high level reverse engineering.  Anyway, what actually happened is because it's unspecified, what actually happened in the case described by Felix Wilhelm and his ZenPone research,  where he did basically the similar instrumentation to what we did, but tested on hypervisors, on virtual machines.  What happened is that it did compare the value in the memory versus the range, and then it fetched the value into a CPU register and used the jump table.  So you have a double-fed full-narrability here, which is not obvious from the source code.  Looking at the source code, I have a lot of experience in back hunting and I would not find this.  So what was quite amazing and Felix did discover it with certain automation.  So yeah, again, what happened, we compared it when another thread just changes the type to way out of range.  Which means it has like, depending on the register size on the value size, it can be, well, basically it can choose any address in memory where there is some other pointer probably controlled by that attacker and then that attacker can jump into any code they choose.  So that's free code execution, basically.  Another example, which is, yeah, which is how I learned some stuff the hard way.  I made this game. This is actually an exploitation challenge where you have to shoot out the exploit using tanks.  You probably know this type of a game.  It's like, some would like warm, some would like scorched air or scorched tanks in the past.  And, yeah, basically there was a server side and then the server side I did this, the bug message, because I thought standard error won't be redirected to sockets.  Actually, it was so I had to patch it.  And I had to patch it at the last moment because this was a challenge on Google CTF finals in Zurich.  So, you know, the teams are on site already started playing and I have to patch my challenge.  So the last thing I wanted to do is recompile because when you recompile the addresses change and your test exploit stops working because the addresses change.  So you don't want to recompile. You want to probably fix the binary.  Okay, well, easy, right? It's actually a F-print F. So it takes an ASCII zero terminated string versus zero here.  You probably know that. And it prints it out.  So if I put the zero at the beginning, instead of a first letter, nothing will be printed out.  And actually, it sent this to the players for the server.  Slash zero, W wasn't here, was my typo.  The slash zero orcs.  And I was like, what? Why does F-print F actually transmit a null byte? What shouldn't happen?  It turned out that the compiler was funny. It actually said, oh, you're using a like constant length string here.  So I'm just going to change it to F-write and put the length of the string here.  So yeah, fixing it just made things worse, I guess.  And the end, I just noped out this in the binary. And what fixed things in the end?  But I told you didn't expect this. I did know that for example, if you have print F with a new line, it's going to be changed to puts, but I didn't expect a shift from this paradigm where you have a zero terminated buffer into the paradigm where we have data and length.  Which is weird.  Okay, another discrepancy.  What the generated assembly looks like and what the actual disassembly looks like.  Because it turned out, and again, I learned that the hard way this might not be the same thing.  Now, usually you find into this kind of, you fall into this kind of trap if you're doing really weird stuff in the beginning.  And I was doing really weird stuff.  And basically compiling Cheryl Coase, a lot of Cheryl Coase, which I had to have in the memory.  And I actually written a lot of code, everything worked perfectly. And then I used the global variable. And it crashed. And it crashed badly. And I was like, why?  By the way, this was position-dependent code and was actually a big factor here.  So I started looking into it, debugging it.  And this is the way you compile it. And you probably might know dash capital S and G++ or C-Lank.  You basically get an assembly output that generated assembly. And the generated assembly was like this.  Into racks, move a pointer from the global offset table for the global variable.  So this offset table actually has a pointer to the global variable. And we get it into racks. And then we interact through it using this pointer.  Well, okay. I already knew that something will not be right here because I'm actually was using a custom linker script. And I was pretty sure I don't have a global offset table in my linker script.  But I did compile it normally, like to a standard health. And I object dump the assembly. And I see that hey, verse actually, it's okay. It's fine.  This Leah, like load effective address of this. Basically, it puts this value. It calculates this value and puts the value into racks.  It doesn't do any memory fortress. It's like these brackets are fake.  So this is fine. And this code would work fine in my environment. And I was sure of it. But and this code, by the way, was put here by the linker.  Like not very compiler. The linker changed machine code, which is a weird thing to do. But that's actually what's happening.  And it turned out that for some reason it's not being the case. My move is not being replaced by a Leah instruction when I use a custom script.  After reading some quite a lot of emails on groups related to the linker and so on, I found out that hey, actually, you know, position independent executables are not supported if you compile into the binary type.  They are only supported if you compile into an elf type. And what was used to me. And I really was surprised what the actual disassembly differ from what the compiler generated.  If you run into weird cases, do look at that level of abstraction as well.  Yeah. So to summarize this, the programmers say often that the source code is the ultimate documentation.  I mean, why do we have to update the documentation or write the documentation at the beginning because well, the source code is the ultimate documentation hackers disagree and I disagree.  This assembled code is the ultimate source of truth. That's what I think now turns out we are all wrong.  Fast forward to this and to the well, this year and the specter and melt down a young horn from Project zero published this blog post, which is reading privilege memory for site channel, which is if you haven't read it or you are not familiar with this, I will give you a brief rundown how it works.  But there has been a lot of research published in this area from this post by young and it's like it's just amazing.  So the discrepancy is basically between what the actual code says and what the CPU executes now.  Let's look at this scenario. The scenario is also in case we have a less privileged process and a more privileged process, for example, the kernel and the user process.  And this is the code which is running in the kernel. The kernel has some buffer where the part of that data in the buffer is accessible to the color.  By the means of this API and there's also some secret values afterwards like, you know, this is a typical buffer overflow. So usually there is some secret data in the memory like, for example, pointers, cookies and so on stuff you want to get us an attacker to ease your exploitation of our stuff.  Now, you call this Cisco like this, you pass it an attacker controlled index and the index is compared with the buffer size with this public size.  If the index is greater or equal to the public area size, then well, you actually never execute this. You just bail out because what would be a buffer overrun, right? And it's actually checked in the code.  It's checked in the assembly. Everything is fine. Otherwise, if the index is fine, you execute this. There's some operation. It doesn't matter almost at all.  What matters is what we fetch the value from secret index, which is a byte value. Let's assume it's a byte value. And then we multiply it by some number. It doesn't have to be exactly the cash line size or cash page size.  It's some number. It's fine if it is large enough. And then we use this as an index to the detector array, whatever detector is the piece of memory controlled by the attacker again. It's controlled fully by the attacker. Now, it looks fine.  If you read the source code, if you look at the disassembly, everything looks fine. Now, actually, we do have something called the speculative execution in the, in the CPU.  And it also handles, but it's also related to branch predictions because here we have to branches, right? The condition is met and branches taken or the condition is not met and the branches not taken so to branches.  Now, if this would be not in the cash and again, that might take several cycles, several hundred cycles to actually fetch, well, the CPU would be sold at this moment.  So what was introduced is, again, the speculative execution, which means try to execute some code, but never commit the results into registers, never commit the results into real registers by way into real memory, just keep them there.  And if later when the value arrives actually from RAM, for example, and we can actually execute the code, if we predicted correctly the branch, we can just commit the values and continue. We don't lose too much time.  The speculative execution does for you. And that means that the CPUs, even though like the frequency doesn't go high in the recent years, they are still getting faster due to algorithms just like that.  So if you actually start to think about it, is if you train the CPU to always take the branch, like always pass okay values like zero here or one or whatever, and the CPU knows that this is like the most likely branch to be taken because it's always has been taken.  The CPU actually keeps a cache of which branches were taken in the past. So this is how it actually works.  And then we remove this from cache. There are ways like one way is just like fill the cache with anything else and then this will be removed. So we don't even have to have access direct access to it.  But let's assume we have a way to actually evict it from cache. So the CPU will stall on this moment and the CPU will do again, like branch prediction, it knows that it will enter here and it will speculatively execute this code.  So but what what why does it matter? I mean we this result as soon as this value arrive and the CPU will know index is actually greater or equal to secret size.  It will say no do not commit result discard the speculative execution results and bail out. So what does this give us like nothing we don't have the results.  But there's not something to be committed, but if the CPU would have to do any cache fetches due to the speculative execution, then we can actually measure whether the cache fetch actually happened, whether a part of the detector array is in the cache.  So let's actually assume this case, but we have this detector array, which is quite large and whereas it has been evicted everything has been evicted from cache just before calling this function.  Assuming that the secret at this position is C, for example, that means that the speculative execution going into this branch will calculate this as this offset and it will issue a cache fetch.  That cache fetch might never be realized in time, but it will issue it and the value will arrive in the cache. So this part of the array of the big array with our large blocks is actually in the cache and these are not.  That means that as soon as the code returns to the less privileged process, the attacker can do this can actually measure the time this is read time stamp counter, which is the most accurate, actually, well, maybe not accurate, the timer with the most precision and the operating system on x86 or actually in the CPU.  So we get the value, you know, like standard benchmarking stuff, right? And then we access the each of these blocks. We access the first one and we measure the time we check the difference when we say it was slow, the access was slow. This was not in the cache, but we actually access the value. So now it is in the cache.  It doesn't matter. We check the next value. Again, the time to access it, it was slow. This was wasn't either in the cache. And now I'm missing a slide. Where is my slide? Anyway, in the end, we access this one as well. And we find out that the access was actually fast because this was in the cache. Why was it in the cache? Oh, because the speculative execution actually done it. So fetched it for us. So we know that the secret will be see.  Because, well, that's what came out from our benchmarking. So this is how the variant, the first variant worked off of these kind of speculative attacks. If you're interested about other attacks like that, do read the stuff because it's really the papers because we are really, really interesting.  Yeah, so in the end, we have the, well, this capacity on all the levels and it's not easy to get everything right, even if you write proper code. There are some other stuff which I have in the slides. I will not talk about it because we have, I guess, five minutes left.  So let's go to some some stuff is really fine. Like, for example, the random device, which is supposed to be going into the cryptographically safe territory has this entropy function and the standard library and read for it actually told me that it's like you cannot know based on the result of this function.  So if your implementation actually is cryptographically safe or not, because the values returned are weird. Another problem with the standard library was, for example, the DNS resolver, which is in the, the GNUC library who had some issues and like critical vulnerabilities that was discovered by some folks at Google and handling by firm and certain other stuff.  Also, if you think you know the C standard library do checks Esther and Kat, what are the arguments and what how they are used because you will be surprised is not what you think.  Every typical stuff like I didn't talk about buffer overflows too much today, use after free and so on. One of my favorite ones is mistaking an assert for an if because asserts are actually not compiled into the production code. So if you do a security checks based on asserts, you're going to have a bad day.  Yeah, then there is some fun math stuff and basically the summer is that C++ is a hard language to master because you get have to get everything right. It has to be the perfect code and then you still have to care about the CPU with the CPU actually does, especially if you're writing code which interacts between the in like non standard execution and memory models.  At least it doesn't have evil or like the weak comparison operators like PHP has. That's a good thing, thankfully.  Yeah, so now it will take care while coding and also use modern C++ without pointers and pointer, so without pointer added metric if you can.  That's it. Ever any easy questions? I can take try to answer them. Ever any hard ones? I think we are out of time. So thank you.",
+  "errors": []
+}

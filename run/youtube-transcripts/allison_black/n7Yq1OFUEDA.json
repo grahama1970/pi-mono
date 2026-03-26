@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n7Yq1OFUEDA",
+    "language": "en",
+    "took_ms": 8737,
+    "method": null,
+    "title": "Send your Letters to basic training with the Sandboxx app.",
+    "channel": "Sandboxx",
+    "upload_date": "20180724",
+    "duration_sec": 30,
+    "description": "",
+    "view_count": 4962
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n7Yq1OFUEDA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

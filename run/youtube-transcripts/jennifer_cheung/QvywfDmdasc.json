@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QvywfDmdasc",
+    "language": "en",
+    "took_ms": 7793,
+    "method": null,
+    "title": "DEF CON 32 - Ground Control to Major Threat Hacking the Space Link Extension Protocol - Andrzej Olch",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1526,
+    "description": "Space missions have increasingly been the subject in the context of security breaches and satellite hacks. The majority of discussions revolve around direct communication and access to spacecraft through means such as Software Defined Radio. However, the reality is that this approach isn't practical for most adversaries, as it requires substantial resources and is easily detectable due to the power and radio frequencies required to command a spacecraft. Instead, adversaries might shift their focus away from the Space Segment and opt for a more practical approach, such as accessing and exploiting the Ground Segment vulnerabilities and flaws in order to gain control over spacecraft. Every space mission comprises custom-made hardware and software components, which interact with each other utilizing dedicated protocols and standards designed and developed for this sole purpose. Numerous potential failure points can adversely impact a space mission, many of which persist on the ground. Considering the essential services they facilitate and the extent to which contemporary society relies on space technology, each component utilized in space missions should be regarded as integral to critical infrastructure and treated as such, particularly from a security standpoint. This study centers on the Space Link Extension (SLE) protocol, which is employed as a standard for communication between mission data systems and ground stations by various space agencies and organizations, including NASA and ESA. We will address the security concerns inherent in the SLE protocol. At the same time, we demonstrate methods and techniques malicious actors can employ to conduct a Denial of Service (DoS) or tap into the ground station communications, gaining control over an actual spacecraft. We will conclude this publication by presenting the reader with a possible mitigation strategy that we believe should be employed at the SLE protocol level. Additionally, we will outline a forecast for future work, detailing both planned endeavors and those already in progress, to further expand on this research.",
+    "view_count": 859
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QvywfDmdasc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sd8w0ibBzaw",
+    "language": "en",
+    "took_ms": 8094,
+    "method": null,
+    "title": "Richard Weitz on the Iranian Nuclear Negotiations",
+    "channel": "Hudson Institute",
+    "upload_date": "20091022",
+    "duration_sec": 342,
+    "description": "Senior Fellow and Director of the Center for Political-Military Analysis Richard Weitz discusses the ongoing nuclear negotiations with Iran",
+    "view_count": 231
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sd8w0ibBzaw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

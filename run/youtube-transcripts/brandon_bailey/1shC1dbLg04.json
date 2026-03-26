@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1shC1dbLg04",
+    "language": "en",
+    "took_ms": 8820,
+    "method": null,
+    "title": "DEF CON Safe Mode Hardware Hacking Village - Farith Mauro and Luis  Mendoza - Onkeypress Hack",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1223,
+    "description": "In this talk we will see the assembly and use of a modified BadUSB keyboard with an integrated DIY physical keylogger.\nUsing a built-in WiFi module, this keyboard is capable of sending user keystrokes to a remote server and storing it in a database.\nBoth the piece by piece assembly, its diagram, and its programming will be demonstrated. Also there will also be a live demo to demonstrate its operation.\n\nThis talk is recommended for both novice and experienced users alike.",
+    "view_count": 790
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1shC1dbLg04: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

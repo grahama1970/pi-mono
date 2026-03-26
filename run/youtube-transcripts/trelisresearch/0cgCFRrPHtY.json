@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0cgCFRrPHtY",
+    "language": "en",
+    "took_ms": 8757,
+    "method": null,
+    "title": "Fine-tune Multi-modal Video + Text Models",
+    "channel": "Trelis Research",
+    "upload_date": "20240517",
+    "duration_sec": 1330,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-vision/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Trelis Livestreams: Thursdays 5 pm Irish time on YouTube and X.\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- IDEFICS 2 Chatty Model: https://huggingface.co/Trelis/idefics2-8b-chatty-bf16\n- IDEFICS 2 Blog: https://huggingface.co/blog/idefics2\n\nTIMESTAMPS:\n0:00 \"Video + Text\" from \"Image + Text\" models\n0:25 Clipping and Querying Videos with an IDEFICS 2 endpoint\n4:57 Fine-tuning video + text models\n6:01 Dataset generation for video fine-tuning + pushing to hub\n11:42 Clipping and querying videos with image splitting in a Jupyter Notebook\n15:54 Side-note - IDEFICS 2 vision to text adapter architecture\n18:23 Video clip notebook evaluation - continued\n19:40 Loading a video dataset for fine-tuning\n20:55 Recap of video + text model fine-tuning",
+    "view_count": 2544
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0cgCFRrPHtY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

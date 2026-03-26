@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8RUzN9odRzI",
+    "language": "en",
+    "took_ms": 10614,
+    "method": null,
+    "title": "Post-training TRM & A Retrospective on ARC Prize 2025",
+    "channel": "Trelis Research",
+    "upload_date": "20251106",
+    "duration_sec": 5889,
+    "description": "Covering a) Winners, b) Trelis TRM fine-tuning approach, c) My experience competing for the prize.\n\nThanks to Runpod for compute sponsorship, affiliate sign-up link: https://runpod.io?ref=jmfkcdio",
+    "view_count": 350
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8RUzN9odRzI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

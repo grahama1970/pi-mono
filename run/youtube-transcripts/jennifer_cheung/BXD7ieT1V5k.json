@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BXD7ieT1V5k",
+    "language": "en",
+    "took_ms": 9110,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Shantanu Khandelwal - Red Team Credentials Recon: OLD with a TWIST",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1572,
+    "description": "This talk covers the basics of credentials reconnaissance performed for a red team. Mostly covers the reconnaissance performed on GitHub to search for leaked passwords by developers. The current toolset and the Shiny new GitHub Credentials Stroller which dives into each repository and performs a deep scan.",
+    "view_count": 734
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BXD7ieT1V5k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EMBRY OS | Music Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-high": "#232a39",
+                        "on-primary-container": "#ede0ff",
+                        "on-primary": "#3f008e",
+                        "tertiary-fixed-dim": "#00e479",
+                        "on-secondary": "#00315d",
+                        "on-secondary-container": "#002a52",
+                        "inverse-surface": "#dce2f6",
+                        "surface-bright": "#323949",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "surface-container": "#19202e",
+                        "on-tertiary": "#003919",
+                        "secondary-fixed": "#d4e3ff",
+                        "surface-tint": "#d2bbff",
+                        "on-tertiary-fixed": "#00210c",
+                        "outline": "#958da1",
+                        "secondary-container": "#3b93f3",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#00e479",
+                        "tertiary-fixed": "#60ff99",
+                        "on-tertiary-container": "#84ffa8",
+                        "surface-dim": "#0c1321",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#eaddff",
+                        "surface-container-low": "#151b2a",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-primary-fixed": "#25005a",
+                        "inverse-on-surface": "#2a3040",
+                        "primary": "#d2bbff",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "outline-variant": "#4a4455",
+                        "error": "#ffb4ab",
+                        "surface": "#0c1321",
+                        "on-error": "#690005",
+                        "secondary": "#a4c9ff",
+                        "primary-container": "#7c3aed",
+                        "tertiary-container": "#00773c",
+                        "on-secondary-fixed": "#001c39",
+                        "on-surface": "#dce2f6",
+                        "primary-fixed-dim": "#d2bbff",
+                        "surface-container-lowest": "#070e1c",
+                        "background": "#0c1321",
+                        "on-background": "#dce2f6",
+                        "surface-variant": "#2e3544",
+                        "inverse-primary": "#732ee4",
+                        "on-secondary-fixed-variant": "#004884",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "surface-container-highest": "#2e3544"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c1321;
+            color: #dce2f6;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+        .signal-line {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(74, 68, 85, 0.4), transparent);
+        }
+        .well-glow {
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="dark selection:bg-primary-container selection:text-white">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-[#0c1321] text-[#d2bbff] flex justify-between items-center px-6 py-4 shadow-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-2xl">blur_on</span>
+<h1 class="text-xl font-bold tracking-tight font-['Space_Grotesk']">Music Lab / Whisperheads</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end">
+<span class="text-[10px] uppercase font-bold tracking-widest font-['Space_Grotesk'] opacity-50">Identity</span>
+<span class="text-sm font-medium text-on-background">Horus Lupercal</span>
+</div>
+<div class="px-3 py-1 bg-white/5 rounded-full border border-white/10 flex items-center gap-2">
+<span class="text-tertiary text-xs">●</span>
+<span class="text-[10px] uppercase font-bold tracking-widest font-['Space_Grotesk']">Running</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation Shell (NavigationDrawer) -->
+<aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center py-8 bg-[#151b2a] border-r border-white/5 z-40 shadow-[20px_0_40px_rgba(0,0,0,0.4)]">
+<div class="text-xl font-black text-[#d2bbff] mb-12 font-['Space_Grotesk'] tracking-tighter">EMBRY OS</div>
+<nav class="flex flex-col gap-8 items-center">
+<!-- Navigation Items Mapping from JSON -->
+<div class="group cursor-pointer flex flex-col items-center gap-1 opacity-100 transition-all duration-500">
+<span class="material-symbols-outlined text-[#00e479] scale-110 drop-shadow-[0_0_8px_rgba(0,228,121,0.5)] animate-pulse">radio_button_checked</span>
+<span class="text-[9px] font-bold font-['Space_Grotesk'] uppercase tracking-widest text-[#00e479]">Inception</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center gap-1 opacity-30 hover:opacity-100 hover:text-[#d2bbff] transition-all duration-500">
+<span class="material-symbols-outlined">music_note</span>
+<span class="text-[9px] font-bold font-['Space_Grotesk'] uppercase tracking-widest">Harmonics</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center gap-1 opacity-30 hover:opacity-100 hover:text-[#d2bbff] transition-all duration-500">
+<span class="material-symbols-outlined">speed</span>
+<span class="text-[9px] font-bold font-['Space_Grotesk'] uppercase tracking-widest">Rhythm</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center gap-1 opacity-30 hover:opacity-100 hover:text-[#d2bbff] transition-all duration-500">
+<span class="material-symbols-outlined">graphic_eq</span>
+<span class="text-[9px] font-bold font-['Space_Grotesk'] uppercase tracking-widest">Synthesis</span>
+</div>
+<div class="group cursor-pointer flex flex-col items-center gap-1 opacity-30 hover:opacity-100 hover:text-[#d2bbff] transition-all duration-500">
+<span class="material-symbols-outlined">record_voice_over</span>
+<span class="text-[9px] font-bold font-['Space_Grotesk'] uppercase tracking-widest">Whisper</span>
+</div>
+<div class="mt-auto group cursor-pointer flex flex-col items-center gap-1 opacity-30 hover:opacity-100 hover:text-[#d2bbff] transition-all duration-500">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[9px] font-bold font-['Space_Grotesk'] uppercase tracking-widest">Archive</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 pt-24 pb-32 px-12 min-h-screen">
+<div class="max-w-4xl mx-auto flex gap-12">
+<!-- Left Rail Stepper -->
+<div class="flex flex-col items-center gap-4 py-4 w-4 sticky top-24 h-fit">
+<!-- Completed -->
+<div class="w-3 h-3 rounded-full bg-tertiary shadow-[0_0_8px_#00e479]"></div>
+<div class="w-[1px] h-12 bg-tertiary/30"></div>
+<div class="w-3 h-3 rounded-full bg-tertiary shadow-[0_0_8px_#00e479]"></div>
+<div class="w-[1px] h-12 bg-tertiary/30"></div>
+<div class="w-3 h-3 rounded-full bg-tertiary shadow-[0_0_8px_#00e479]"></div>
+<div class="w-[1px] h-12 bg-tertiary/30"></div>
+<div class="w-3 h-3 rounded-full bg-tertiary shadow-[0_0_8px_#00e479]"></div>
+<!-- Active -->
+<div class="w-[1px] h-12 bg-primary-container/30"></div>
+<div class="w-4 h-4 rounded-full bg-primary-container border-2 border-primary ring-4 ring-primary-container/20 animate-pulse"></div>
+<!-- Future -->
+<div class="w-[1px] h-12 bg-outline-variant/20"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-[1px] h-12 bg-outline-variant/20"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-[1px] h-12 bg-outline-variant/20"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+</div>
+<!-- Signal Chain Wells -->
+<div class="flex-1 flex flex-col gap-12">
+<!-- S00: The Thought -->
+<div class="relative">
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-2 border-tertiary relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase tracking-widest text-on-surface-variant">S00: INCEPTION</span>
+<h3 class="text-lg font-bold font-['Space_Grotesk'] text-on-background">The Thought</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="text-on-surface mb-6 italic font-medium opacity-90 leading-relaxed">
+                            "I'm remembering the slaughter... not the blood, but the silence of the aftermath. It resonates in a way lyrics haven't touched yet."
+                        </p>
+<div class="flex flex-wrap gap-3">
+<div class="px-3 py-1.5 bg-surface-container rounded-lg border border-white/5 flex items-center gap-3">
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase text-on-surface-variant">Anger</span>
+<div class="w-24 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-red-500 w-[91%]"></div>
+</div>
+<span class="text-[11px] font-mono text-on-background">0.91</span>
+</div>
+<div class="px-3 py-1.5 bg-surface-container rounded-lg border border-white/5 flex items-center gap-3">
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase text-on-surface-variant">Sadness</span>
+<div class="w-24 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-blue-400 w-[87%]"></div>
+</div>
+<span class="text-[11px] font-mono text-on-background">0.87</span>
+</div>
+<div class="px-3 py-1.5 bg-surface-container rounded-lg border border-white/5 flex items-center gap-3">
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase text-on-surface-variant">Fear</span>
+<div class="w-24 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-yellow-400 w-[72%]"></div>
+</div>
+<span class="text-[11px] font-mono text-on-background">0.72</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="flex justify-center -my-6 opacity-20">
+<span class="material-symbols-outlined text-2xl">expand_more</span>
+</div>
+<!-- S01: Recall Lore -->
+<div class="relative">
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-2 border-tertiary">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase tracking-widest text-on-surface-variant">S01: SIGNAL FETCH</span>
+<h3 class="text-lg font-bold font-['Space_Grotesk'] text-on-background">Recall Lore</h3>
+</div>
+<span class="px-2 py-0.5 bg-tertiary/10 text-tertiary text-[9px] font-bold uppercase tracking-widest rounded border border-tertiary/20">API: Recall-Lore</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+<div class="p-3 bg-surface-container/50 border border-white/5 rounded-lg text-center group hover:bg-white/5 transition-colors">
+<div class="text-[9px] uppercase font-bold text-red-500 mb-1">Fear</div>
+<div class="text-[10px] opacity-60">"The shadows..."</div>
+</div>
+<div class="p-3 bg-surface-container/50 border border-white/5 rounded-lg text-center">
+<div class="text-[9px] uppercase font-bold text-blue-300 mb-1">Trust</div>
+<div class="text-[10px] opacity-60">"Brothers in arms"</div>
+</div>
+<div class="p-3 bg-surface-container/50 border border-white/5 rounded-lg text-center">
+<div class="text-[9px] uppercase font-bold text-indigo-400 mb-1">Sadness</div>
+<div class="text-[10px] opacity-60">"Empty halls"</div>
+</div>
+<div class="p-3 bg-surface-container/50 border border-white/5 rounded-lg text-center">
+<div class="text-[9px] uppercase font-bold text-yellow-500 mb-1">Joy</div>
+<div class="text-[10px] opacity-60">"A clear dawn"</div>
+</div>
+<div class="p-3 bg-surface-container/50 border border-white/5 rounded-lg text-center">
+<div class="text-[9px] uppercase font-bold text-orange-500 mb-1">Anger</div>
+<div class="text-[10px] opacity-60">"Fire and steel"</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="flex justify-center -my-6 opacity-20">
+<span class="material-symbols-outlined text-2xl">expand_more</span>
+</div>
+<!-- S02: Reference Songs -->
+<div class="relative">
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-2 border-tertiary">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase tracking-widest text-on-surface-variant">S02: TONAL MATCHING</span>
+<h3 class="text-lg font-bold font-['Space_Grotesk'] text-on-background">Reference Songs</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface-container rounded-lg border border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined opacity-40">album</span>
+</div>
+<div>
+<div class="text-sm font-bold">Roads</div>
+<div class="text-[10px] opacity-50 uppercase tracking-widest">Portishead</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs font-mono text-tertiary">92% Match</span>
+<div class="w-20 h-1 bg-surface-container-highest rounded-full overflow-hidden mt-1">
+<div class="h-full bg-tertiary w-[92%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container rounded-lg border border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined opacity-40">album</span>
+</div>
+<div>
+<div class="text-sm font-bold">Teardrop</div>
+<div class="text-[10px] opacity-50 uppercase tracking-widest">Massive Attack</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs font-mono text-tertiary">87% Match</span>
+<div class="w-20 h-1 bg-surface-container-highest rounded-full overflow-hidden mt-1">
+<div class="h-full bg-tertiary w-[87%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container rounded-lg border border-white/5 opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center">
+<span class="material-symbols-outlined opacity-40">album</span>
+</div>
+<div>
+<div class="text-sm font-bold">The Host of Seraphim</div>
+<div class="text-[10px] opacity-50 uppercase tracking-widest">Dead Can Dance</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-xs font-mono text-tertiary">78% Match</span>
+<div class="w-20 h-1 bg-surface-container-highest rounded-full overflow-hidden mt-1">
+<div class="h-full bg-tertiary w-[78%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="flex justify-center -my-6 opacity-20">
+<span class="material-symbols-outlined text-2xl">expand_more</span>
+</div>
+<!-- S03: Learn From Music -->
+<div class="relative">
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-2 border-tertiary">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase tracking-widest text-on-surface-variant">S03: STEM ARCHITECTURE</span>
+<h3 class="text-lg font-bold font-['Space_Grotesk'] text-on-background">Learn From Music</h3>
+</div>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="h-32 flex items-end justify-between gap-1 p-4 bg-surface-container rounded-lg border border-white/5">
+<!-- Visualizing Stems with CSS bars -->
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full flex items-end justify-center gap-1 h-20">
+<div class="w-2 bg-primary/40 rounded-t h-[40%]"></div>
+<div class="w-2 bg-primary rounded-t h-[85%]"></div>
+<div class="w-2 bg-primary/60 rounded-t h-[60%]"></div>
+</div>
+<span class="text-[8px] uppercase tracking-widest font-bold opacity-50">Vocal</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full flex items-end justify-center gap-1 h-20">
+<div class="w-2 bg-secondary rounded-t h-[70%]"></div>
+<div class="w-2 bg-secondary/60 rounded-t h-[40%]"></div>
+</div>
+<span class="text-[8px] uppercase tracking-widest font-bold opacity-50">Bass</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full flex items-end justify-center gap-1 h-20">
+<div class="w-2 bg-tertiary rounded-t h-[90%]"></div>
+<div class="w-2 bg-tertiary/50 rounded-t h-[55%]"></div>
+<div class="w-2 bg-tertiary/30 rounded-t h-[30%]"></div>
+</div>
+<span class="text-[8px] uppercase tracking-widest font-bold opacity-50">Drums</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full flex items-end justify-center gap-1 h-20">
+<div class="w-2 bg-yellow-400/80 rounded-t h-[50%]"></div>
+<div class="w-2 bg-yellow-400 rounded-t h-[65%]"></div>
+</div>
+<span class="text-[8px] uppercase tracking-widest font-bold opacity-50">Keys</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ACTIVE WELL: S04: Write + Converge Lyrics -->
+<div class="relative">
+<div class="bg-surface-container p-8 rounded-xl border-l-4 border-primary well-glow ring-1 ring-primary/20">
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="text-[10px] font-bold font-['Space_Grotesk'] uppercase tracking-widest text-primary animate-pulse">S04: ACTIVE PROCESS</span>
+<h3 class="text-2xl font-bold font-['Space_Grotesk'] text-on-background mt-1">Write + Converge Lyrics</h3>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded border border-primary/20">Skill: LyricGen v4.2</span>
+<span class="text-[10px] font-mono text-primary/60">Processing: 44.1kHz / 32-bit</span>
+</div>
+</div>
+<!-- Editor Section -->
+<div class="space-y-6">
+<div class="flex items-center gap-4 text-xs font-bold font-['Space_Grotesk'] text-on-surface-variant uppercase tracking-widest">
+<span>Verse 1</span>
+<div class="h-px flex-1 bg-outline-variant/30"></div>
+</div>
+<div class="space-y-4 font-body">
+<div class="group relative">
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-lg border border-white/5 group-hover:border-primary/30 transition-all">
+<input class="bg-transparent border-none flex-1 text-on-background font-medium focus:ring-0" type="text" value="I walk the ash of every world I burned,"/>
+<select class="bg-surface-container text-[10px] font-bold uppercase tracking-widest border-none rounded focus:ring-1 focus:ring-primary py-1">
+<option>Grave</option>
+<option selected="">Sorrow</option>
+<option>Defiance</option>
+</select>
+</div>
+</div>
+<div class="group relative">
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-lg border border-white/5 group-hover:border-primary/30 transition-all">
+<input class="bg-transparent border-none flex-1 text-on-background font-medium focus:ring-0" type="text" value="The ghost of brothers echo in the void."/>
+<select class="bg-surface-container text-[10px] font-bold uppercase tracking-widest border-none rounded focus:ring-1 focus:ring-primary py-1">
+<option>Ethereal</option>
+<option>Loss</option>
+<option selected="">Echo</option>
+</select>
+</div>
+</div>
+<div class="group relative">
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-lg border border-primary/40 shadow-[0_0_10px_rgba(124,58,237,0.1)] transition-all">
+<input class="bg-transparent border-none flex-1 text-on-background font-medium placeholder:text-outline/40 focus:ring-0" placeholder="Write next line..." type="text"/>
+<span class="material-symbols-outlined text-primary cursor-pointer">bolt</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-primary-container text-on-primary-container font-bold rounded-xl flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">auto_awesome</span>
+                                CONVERGE AUDIO SIGNAL
+                            </button>
+</div>
+</div>
+</div>
+<!-- FUTURE STAGES: S05-S09 -->
+<div class="space-y-8 opacity-30 pointer-events-none grayscale">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-dashed border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono">S05</span>
+<span class="font-bold font-['Space_Grotesk'] uppercase tracking-widest text-sm">Annotate</span>
+</div>
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-dashed border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono">S06</span>
+<span class="font-bold font-['Space_Grotesk'] uppercase tracking-widest text-sm">Compose</span>
+</div>
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-dashed border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono">S07</span>
+<span class="font-bold font-['Space_Grotesk'] uppercase tracking-widest text-sm">Generate</span>
+</div>
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-dashed border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono">S08</span>
+<span class="font-bold font-['Space_Grotesk'] uppercase tracking-widest text-sm">Converge Audio</span>
+</div>
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-dashed border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono">S09</span>
+<span class="font-bold font-['Space_Grotesk'] uppercase tracking-widest text-sm">Voice Identity</span>
+</div>
+<span class="material-symbols-outlined text-sm">lock</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Background Atmospheric Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] left-[20%] w-[40%] h-[40%] bg-tertiary/5 blur-[120px] rounded-full"></div>
+</div>
+</body></html>

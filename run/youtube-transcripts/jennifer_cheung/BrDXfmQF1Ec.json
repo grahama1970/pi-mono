@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BrDXfmQF1Ec",
+    "language": "en",
+    "took_ms": 8507,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Rod Soto -  Have My Keys Been Pwned API Edition",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2544,
+    "description": "Current status quo of credential management in cloud related DEVOPS environments enables attackers to easily obtain leaked credentials. This presentation showcases how leaked credentials in public repositories can potentially lead to further compromise in enterprise environments.The focus will be on the DEVOPS attack surface and the toolchains involved within this process in cloud platform environments. Presenters will use a recently released tool (Git Wild Hunt) to show how public leaks can lead to further compromise of individuals and enterprises with actual examples of derived information from compromised secrets. An analysis of credentials leaked globally and its source (company affected and user) will be provided as examples.",
+    "view_count": 428
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BrDXfmQF1Ec: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

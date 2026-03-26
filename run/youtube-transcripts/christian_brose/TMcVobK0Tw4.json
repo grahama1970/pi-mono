@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TMcVobK0Tw4",
+    "language": "en",
+    "took_ms": 9726,
+    "method": null,
+    "title": "The 2012 Bradley Symposium: The Legacy of James Q. Wilson",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 5391,
+    "description": "\"In an age where every form of authority was being eroded by the tide of democratic individualism, the man who documented that erosion became an authority himself. He was modern America's most authoritative intellectual figure. . . . What is singular about [James Q. Wilson] is that he was deeply conversant with essentially the entire range of public affairs, and marshaled his knowledge in every field with evident sound judgment and probity, with lucidity, and with democratic modesty and accessib",
+    "view_count": 218
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TMcVobK0Tw4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

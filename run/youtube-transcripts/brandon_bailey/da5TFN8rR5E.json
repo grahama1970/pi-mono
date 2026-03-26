@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "da5TFN8rR5E",
+    "language": "en",
+    "took_ms": 9097,
+    "method": null,
+    "title": "DEF CON 30 - Demo Labs",
+    "channel": "DEFCONConference",
+    "upload_date": "20220908",
+    "duration_sec": 294,
+    "description": "Silk gets schooled on DEF CON's showcase for new open-source projects, the Demo Labs.\n\nSee more of SIlk's hacker videos at :\nYouTube.com/alexchaveriat\nYouTube.com/hackerhangouts",
+    "view_count": 619
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] da5TFN8rR5E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

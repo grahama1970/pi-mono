@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Xu8pR8DaO0o",
+    "language": "en",
+    "took_ms": 9225,
+    "method": null,
+    "title": "DEF CON 31 XR VIllage - Augmented Reality and Implications on Mobile Security - Whitney Phillips",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1675,
+    "description": "A discussion of the privacy and security implications of Augmented Reality, especially in the context of Mobile Security.",
+    "view_count": 1354
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Xu8pR8DaO0o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

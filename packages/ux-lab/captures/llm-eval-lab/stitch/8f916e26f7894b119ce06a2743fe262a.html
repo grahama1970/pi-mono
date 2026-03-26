@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LLM Eval Lab — Model Evaluation Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ffb4ab",
+                        "on-secondary-container": "#007239",
+                        "on-secondary-fixed": "#00210c",
+                        "tertiary": "#f9bd22",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-tertiary": "#402d00",
+                        "on-primary": "#3f008e",
+                        "surface-container-high": "#232a39",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "inverse-primary": "#732ee4",
+                        "secondary-fixed": "#00ff88",
+                        "outline-variant": "#4a4455",
+                        "surface-tint": "#d2bbff",
+                        "inverse-surface": "#dce2f6",
+                        "surface-dim": "#0c1321",
+                        "on-primary-container": "#ede0ff",
+                        "secondary": "#f5fff3",
+                        "tertiary-container": "#836100",
+                        "surface": "#0c1321",
+                        "surface-container-low": "#151b2a",
+                        "background": "#0c1321",
+                        "on-secondary-fixed-variant": "#005228",
+                        "tertiary-fixed": "#ffdf9f",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#00e479",
+                        "on-background": "#dce2f6",
+                        "secondary-container": "#34ff8d",
+                        "inverse-on-surface": "#2a3040",
+                        "on-error": "#690005",
+                        "primary-container": "#7c3aed",
+                        "surface-bright": "#323949",
+                        "primary-fixed": "#eaddff",
+                        "primary-fixed-dim": "#d2bbff",
+                        "surface-variant": "#2e3544",
+                        "on-tertiary-container": "#ffe2ab",
+                        "on-secondary": "#003919",
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "on-surface-variant": "#ccc3d8",
+                        "outline": "#958da1",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#070e1c",
+                        "primary": "#d2bbff",
+                        "surface-container-highest": "#2e3544",
+                        "on-primary-fixed": "#25005a",
+                        "surface-container": "#19202e",
+                        "on-surface": "#dce2f6",
+                        "tertiary-fixed-dim": "#f9bd22"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c1321; }
+        ::-webkit-scrollbar-thumb { background: #2e3544; }
+        .glass-panel { background: rgba(46, 53, 68, 0.8); backdrop-filter: blur(20px); }
+        .ghost-border { border: 1px solid rgba(74, 68, 85, 0.2); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Anchor -->
+<header class="bg-[#0c1321] text-[#7c3aed] font-['Space_Grotesk'] uppercase tracking-wider text-sm docked full-width top-0 border-b border-[#4a4455]/20 flex justify-between items-center w-full px-6 h-14 shrink-0">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-[#d2bbff] tracking-tighter">LLM EVAL LAB</span>
+<div class="h-4 w-[1px] bg-outline-variant/30 ml-2"></div>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-[#d2bbff] border-b-2 border-[#7c3aed] py-4 h-14 flex items-center" href="#">Dashboard</a>
+<a class="text-[#94a3b8] hover:bg-[#2e3544]/50 transition-colors duration-100 py-4 h-14 flex items-center px-2" href="#">Models</a>
+<a class="text-[#94a3b8] hover:bg-[#2e3544]/50 transition-colors duration-100 py-4 h-14 flex items-center px-2" href="#">Datasets</a>
+<a class="text-[#94a3b8] hover:bg-[#2e3544]/50 transition-colors duration-100 py-4 h-14 flex items-center px-2" href="#">Evaluation</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">settings</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors">account_circle</button>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation Anchor -->
+<aside class="hidden lg:flex flex-col h-full w-16 bg-[#151b2a] border-r border-[#4a4455]/20 py-4 items-center gap-6 shrink-0">
+<div class="material-symbols-outlined text-primary bg-surface-container-high p-2">dashboard</div>
+<div class="material-symbols-outlined text-outline hover:text-primary transition-all">Model_Training</div>
+<div class="material-symbols-outlined text-outline hover:text-primary transition-all">database</div>
+<div class="material-symbols-outlined text-outline hover:text-primary transition-all">analytics</div>
+<div class="material-symbols-outlined text-outline hover:text-primary transition-all">history</div>
+<div class="mt-auto flex flex-col gap-6">
+<div class="material-symbols-outlined text-outline hover:text-primary transition-all">description</div>
+<div class="material-symbols-outlined text-outline hover:text-primary transition-all">help</div>
+</div>
+</aside>
+<!-- Main Workspace (3-Pane Horizontal) -->
+<section class="flex flex-1 overflow-hidden">
+<!-- Left Pane: Configuration (25%) -->
+<div class="w-1/4 min-w-[320px] bg-surface-container-low border-r border-outline-variant/20 flex flex-col p-6 overflow-y-auto">
+<div class="mb-8">
+<h2 class="font-headline text-xs font-bold uppercase tracking-[0.2em] text-outline-variant mb-4">Configuration</h2>
+<div class="space-y-6">
+<!-- Ground Truth Dropdown -->
+<div>
+<label class="block text-[10px] uppercase tracking-widest text-outline mb-2">Ground Truth Dataset</label>
+<select class="w-full bg-surface-container border-b border-outline-variant text-on-surface font-mono text-sm focus:ring-0 focus:border-primary px-3 py-2">
+<option>benchmark_v2.json</option>
+<option>qa_ground_truth.json</option>
+</select>
+</div>
+<!-- Threshold Slider -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Confidence Threshold</label>
+<span class="text-primary font-mono font-bold">80%</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest appearance-none accent-primary-container cursor-pointer" max="100" min="50" type="range" value="80"/>
+</div>
+<!-- Model Filter Toggle -->
+<div>
+<label class="block text-[10px] uppercase tracking-widest text-outline mb-2">Model Source</label>
+<div class="flex">
+<button class="flex-1 bg-primary-container text-on-primary-container font-mono text-xs py-2 border-r border-surface-dim">Local</button>
+<button class="flex-1 bg-surface-container text-outline font-mono text-xs py-2 border-r border-surface-dim hover:text-on-surface">API</button>
+<button class="flex-1 bg-surface-container text-outline font-mono text-xs py-2 hover:text-on-surface">All</button>
+</div>
+</div>
+<!-- System Prompt -->
+<div>
+<button class="w-full flex justify-between items-center text-[10px] uppercase tracking-widest text-outline border-b border-outline-variant/20 py-2 group">
+<span>Default System Prompt</span>
+<span class="text-[8px] opacity-60">[Expand]</span>
+</button>
+</div>
+<!-- Cost Estimation -->
+<div class="pt-4 border-t border-outline-variant/10">
+<button class="w-full text-left text-[10px] uppercase tracking-widest text-outline mb-3">Cost Estimation Parameters</button>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-[9px] text-outline-variant mb-1">Batch Size</label>
+<input class="w-full bg-surface-container-high border-none text-on-surface font-mono text-xs p-2" type="text" value="90,000"/>
+</div>
+<div>
+<label class="block text-[9px] text-outline-variant mb-1">Avg Tokens</label>
+<input class="w-full bg-surface-container-high border-none text-on-surface font-mono text-xs p-2" type="text" value="512"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<button class="w-full bg-primary-container text-on-primary-container font-headline font-bold uppercase py-4 tracking-widest hover:bg-primary-fixed-dim transition-colors active:scale-95">
+                        Run Find-Minimum
+                    </button>
+<button class="w-full border border-outline-variant text-primary font-headline font-bold uppercase py-3 tracking-widest hover:bg-surface-container-highest transition-colors">
+                        Compare Models
+                    </button>
+</div>
+</div>
+<!-- Middle Pane: Model Registry (25%) -->
+<div class="w-1/4 min-w-[320px] bg-surface-container border-r border-outline-variant/20 flex flex-col">
+<div class="p-6 border-b border-outline-variant/20 shrink-0">
+<h2 class="font-headline text-xs font-bold uppercase tracking-[0.2em] text-outline-variant">Model Registry</h2>
+</div>
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container border-b border-outline-variant/20">
+<tr>
+<th class="p-3 text-[9px] uppercase tracking-wider text-outline">Alias</th>
+<th class="p-3 text-[9px] uppercase tracking-wider text-outline text-right">Size</th>
+<th class="p-3 text-[9px] uppercase tracking-wider text-outline">Prov</th>
+<th class="p-3 text-[9px] uppercase tracking-wider text-outline text-center">JSON</th>
+<th class="p-3 text-[9px] uppercase tracking-wider text-outline">Caps</th>
+</tr>
+</thead>
+<tbody class="font-mono text-[11px]">
+<tr class="hover:bg-surface-container-high">
+<td class="p-3 text-on-surface">qwen3:1.7b</td>
+<td class="p-3 text-right text-outline">1.7B</td>
+<td class="p-3 text-outline">ollama</td>
+<td class="p-3 text-center text-secondary-fixed">Y</td>
+<td class="p-3 text-outline">-</td>
+</tr>
+<tr class="hover:bg-surface-container-high">
+<td class="p-3 text-on-surface">qwen2.5-coder:7b</td>
+<td class="p-3 text-right text-outline">7B</td>
+<td class="p-3 text-outline">ollama</td>
+<td class="p-3 text-center text-secondary-fixed">Y</td>
+<td class="p-3 text-primary-container">code</td>
+</tr>
+<!-- Winner -->
+<tr class="bg-secondary-fixed/10 border-l-2 border-secondary-fixed">
+<td class="p-3 font-bold text-secondary-fixed">qwen3:8b</td>
+<td class="p-3 text-right text-secondary-fixed/80">8B</td>
+<td class="p-3 text-secondary-fixed/80">ollama</td>
+<td class="p-3 text-center text-secondary-fixed">Y</td>
+<td class="p-3 text-secondary-fixed/80">reason</td>
+</tr>
+<!-- Failed -->
+<tr class="bg-error/5 border-l-2 border-error">
+<td class="p-3 font-bold text-error">deepseek</td>
+<td class="p-3 text-right text-error/80">671B</td>
+<td class="p-3 text-error/80">chutes</td>
+<td class="p-3 text-center text-error">Y</td>
+<td class="p-3 text-error/80">F1:0.93</td>
+</tr>
+<!-- Dimmed Untested -->
+<tr class="opacity-40 grayscale">
+<td class="p-3">llama3.2:1b</td>
+<td class="p-3 text-right">1B</td>
+<td class="p-3">local</td>
+<td class="p-3 text-center">N</td>
+<td class="p-3">none</td>
+</tr>
+<tr class="opacity-40 grayscale">
+<td class="p-3">mistral-v0.3</td>
+<td class="p-3 text-right">7B</td>
+<td class="p-3">local</td>
+<td class="p-3 text-center">Y</td>
+<td class="p-3">reason</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Pane: Results (50%) -->
+<div class="flex-1 bg-surface flex flex-col overflow-hidden">
+<!-- Status Bar -->
+<div class="bg-surface-container-high p-4 flex items-center justify-between border-b border-outline-variant/20">
+<div class="flex items-center gap-4">
+<span class="text-xs font-mono">Testing <span class="text-primary">qwen3:8b</span> (3/7)...</span>
+<div class="w-48 h-1 bg-surface-container-highest">
+<div class="h-full bg-primary-container" style="width: 40%"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-secondary-fixed animate-pulse"></div>
+<span class="text-[10px] uppercase font-bold tracking-widest text-outline">Active Task</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- Results Table -->
+<div>
+<h3 class="text-[10px] uppercase tracking-widest text-outline mb-4">Evaluation Live Feed</h3>
+<table class="w-full text-left font-mono text-[11px]">
+<thead>
+<tr class="text-outline border-b border-outline-variant/20">
+<th class="pb-2 font-normal">Model</th>
+<th class="pb-2 font-normal text-right">JSON%</th>
+<th class="pb-2 font-normal text-right">Action%</th>
+<th class="pb-2 font-normal text-right">Time</th>
+<th class="pb-2 font-normal text-right">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/10">
+<td class="py-3 flex items-center gap-2">
+<span class="text-on-surface">qwen3:8b</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed text-[8px] px-1 font-bold">RECOMMENDED</span>
+</td>
+<td class="py-3 text-right text-secondary-fixed">98.2%</td>
+<td class="py-3 text-right text-secondary-fixed">87.0%</td>
+<td class="py-3 text-right text-outline">12.4s</td>
+<td class="py-3 text-right"><span class="text-secondary-fixed">PASS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="py-3 text-on-surface">qwen2.5-coder:7b</td>
+<td class="py-3 text-right text-secondary-fixed">94.1%</td>
+<td class="py-3 text-right text-tertiary">72.4%</td>
+<td class="py-3 text-right text-outline">14.1s</td>
+<td class="py-3 text-right"><span class="text-secondary-fixed">PASS</span></td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="py-3 text-on-surface">qwen3:1.7b</td>
+<td class="py-3 text-right text-error">42.0%</td>
+<td class="py-3 text-right text-error">11.5%</td>
+<td class="py-3 text-right text-outline">4.2s</td>
+<td class="py-3 text-right"><span class="text-error">FAIL</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Cost Comparison -->
+<div>
+<h3 class="text-[10px] uppercase tracking-widest text-outline mb-4">Provider Economics</h3>
+<table class="w-full text-left font-mono text-[11px] border border-outline-variant/20">
+<thead class="bg-surface-container-low">
+<tr class="text-outline">
+<th class="p-2 border-r border-outline-variant/20">Provider</th>
+<th class="p-2 border-r border-outline-variant/20">In $/M</th>
+<th class="p-2 border-r border-outline-variant/20">Out $/M</th>
+<th class="p-2 border-r border-outline-variant/20">Est. Cost</th>
+<th class="p-2">Est. Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="bg-secondary-fixed/10">
+<td class="p-2 border-r border-outline-variant/20 text-secondary-fixed">Local (Ollama)</td>
+<td class="p-2 border-r border-outline-variant/20">0.00</td>
+<td class="p-2 border-r border-outline-variant/20">0.00</td>
+<td class="p-2 border-r border-outline-variant/20">$0.00</td>
+<td class="p-2">--:--</td>
+</tr>
+<tr>
+<td class="p-2 border-r border-outline-variant/20">Chutes.ai</td>
+<td class="p-2 border-r border-outline-variant/20">0.05</td>
+<td class="p-2 border-r border-outline-variant/20">0.05</td>
+<td class="p-2 border-r border-outline-variant/20">$4.50</td>
+<td class="p-2">~14m</td>
+</tr>
+<tr>
+<td class="p-2 border-r border-outline-variant/20">Together AI</td>
+<td class="p-2 border-r border-outline-variant/20">0.20</td>
+<td class="p-2 border-r border-outline-variant/20">0.20</td>
+<td class="p-2 border-r border-outline-variant/20">$18.00</td>
+<td class="p-2">~2m</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Recommended Banner -->
+<div class="bg-secondary-fixed p-6 flex items-center gap-4">
+<span class="material-symbols-outlined text-on-secondary-fixed text-4xl" data-weight="fill">stars</span>
+<div>
+<p class="text-[10px] uppercase font-bold tracking-widest text-on-secondary-fixed opacity-70">Best Value Model Selected</p>
+<h4 class="font-headline font-bold text-on-secondary-fixed text-xl tracking-tight">
+                                RECOMMENDED: qwen3:8b (8B, ollama)
+                            </h4>
+<p class="font-mono text-sm text-on-secondary-fixed font-medium">87% accuracy, $0.00/batch — Passed 3/7 stress tests</p>
+</div>
+</div>
+<!-- Judge Verdict -->
+<div>
+<h3 class="text-[10px] uppercase tracking-widest text-outline mb-4">Judge Verdict / Model Output Comparison</h3>
+<div class="grid grid-cols-2 gap-[1px] bg-outline-variant/20 border border-outline-variant/20">
+<div class="bg-surface-container-low p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] text-primary font-bold uppercase tracking-widest">Model: qwen3:8b</span>
+<span class="text-[10px] text-secondary-fixed">MATCH (0.94)</span>
+</div>
+<div class="font-mono text-[11px] text-on-surface-variant leading-relaxed">
+<span class="text-outline">SYSTEM:</span> Use JSON only.<br/>
+<span class="text-outline">USER:</span> Extract items from list.<br/>
+<span class="text-on-surface">OUTPUT:</span><br/>
+                                    {<br/>
+                                      "status": "success",<br/>
+                                      "data": [<br/>
+                                        {"id": 1, "item": "bench_v2"},<br/>
+                                        {"id": 2, "item": "threshold_80"}<br/>
+                                      ]<br/>
+                                    }
+                                </div>
+</div>
+<div class="bg-surface-container-low p-4">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] text-outline font-bold uppercase tracking-widest">Model: deepseek-671b</span>
+<span class="text-[10px] text-error">MISMATCH (0.21)</span>
+</div>
+<div class="font-mono text-[11px] text-on-surface-variant leading-relaxed opacity-60">
+<span class="text-outline">SYSTEM:</span> Use JSON only.<br/>
+<span class="text-outline">USER:</span> Extract items from list.<br/>
+<span class="text-on-surface">OUTPUT:</span><br/>
+                                    Thinking: The user wants a JSON object from the provided list. I will process each line...<br/>
+                                    Here is the JSON you requested:<br/>
+                                    { "items": [ "bench_v2", "threshold_80" ] }
+                                </div>
+<div class="mt-4 text-[10px] text-error flex items-center gap-1 uppercase font-bold">
+<span class="material-symbols-outlined text-sm">warning</span> 
+                                    Failure: Model ignored "JSON ONLY" constraint (included chain of thought).
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Visual Layering Element (Tonal Depth) -->
+<div class="fixed bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+</body></html>

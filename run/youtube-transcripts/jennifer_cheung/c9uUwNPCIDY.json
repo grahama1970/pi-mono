@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "c9uUwNPCIDY",
+    "language": "en",
+    "took_ms": 10186,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Samuel Kimmons -  Intro to Adversary Emulation",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 1839,
+    "description": "Adversary Emulation is quickly becoming a hot topic in information security, and there is a good reason for it. Security analysts, threat hunters, and incident responders are constantly facing an onslaught of old and new threats. How can defenders properly prepare for the ever-changing threat landscape, improve their skill set, and improve the security posture of their organization? In this presentation I'll answer those questions by covering: The various forms of Adversary Emulation, where/how it fits into Security Operations, Threat Intelligence, the benefits of using it as a Blue Team training tool, and how to get started!",
+    "view_count": 801
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] c9uUwNPCIDY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

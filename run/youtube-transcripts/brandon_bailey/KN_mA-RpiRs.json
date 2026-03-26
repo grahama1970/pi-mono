@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KN_mA-RpiRs",
+    "language": "en",
+    "took_ms": 8713,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Ria Cheruvu - Ethics at the Edge",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 1822,
+    "description": "In the eyes of a smart device and their human controllers, the world is an immense source of data and power. The expanding Internet of Things ecosystem only adds fuel to this, empowering real-time automatic sensing + actuation posing regulatory dilemmas, easily exploitable definitions of trusted entities (e.g., see the 2021 Verkada hack), and measurements of security, robustness, and ethics that change apropos data in the blink of an eye.\n\nGovernance and policing of Internet of Things devices is growing to cover the upcoming trail of destruction by flailing technical solutions, but some intriguing key unanswered questions are starting to reveal themselves.\n\nIn this talk, we’ll dive into what the sociotechnical problem of ethics means at the edge in the context of machine learning/artificial intelligence and address these questions:\n\n1. Individual vectors of ethics (“Sustainability is an ethical principle?” “Edge devices have their own definition of fairness and bias different from human concepts?”)\n2. Evolving principles and governance for IoT devices, and the importance of accountable anonymity\n3. Definitions of trusted entities (“When are users a threat?” “Should humans be out of the loop?”), and how key ethical principles, such as privacy and transparency, can be a double-edged sword in the context of IoT security.\n4. Incorporating morality into machines is now a reality (“How do we define a calculus and value alignment for IoT ethics?”) - what are key unconventional ethical concerns for human-centered design?",
+    "view_count": 471
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KN_mA-RpiRs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

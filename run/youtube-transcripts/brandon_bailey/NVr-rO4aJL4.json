@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NVr-rO4aJL4",
+    "language": "en",
+    "took_ms": 7791,
+    "method": null,
+    "title": "DEF CON 33 - HoloConnect AI - From Space to Biohacking - Dr. Fernando De La Peña Llaca",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 835,
+    "description": "Imagine a hologram that talks, thinks, and operates offline—no cloud, no internet, no mercy. Born on the ISS and battle-tested in zero-gravity, HoloConnect AI is now aiming at Earth’s most vulnerable systems: medical devices.\n\nThis talk reveals how we’re embedding vision- and voice-aware AI inside air-gapped holographic agents that run locally, assist in surgery, and diagnose without ever phoning home. We'll unpack how we cracked the interface between hardware, holography, and healthcare, and why offline is the new secure. Expect deep insights on sandboxed AI logic, secure embedded stacks, voice spoofing defense, and real-world risks when you give a glowing face to machine intelligence. Bonus: live demo of a medical-grade hologram running without Wi-Fi—because in space and in surgery, there is no Ctrl+Z.",
+    "view_count": 134
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NVr-rO4aJL4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

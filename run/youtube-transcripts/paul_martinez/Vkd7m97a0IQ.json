@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Vkd7m97a0IQ",
+    "language": "en",
+    "took_ms": 8920,
+    "method": null,
+    "title": "Kelly Shortridge: Security Chaos Engineering in ICS",
+    "channel": "S4 Events",
+    "upload_date": "20231101",
+    "duration_sec": 2835,
+    "description": "Kelly joins Dale to discuss her new book Security Chaos Engineering: Sustaining Resilience in Software and Systems. Kelly points out the second part of the title is the most descriptive, and she is not a big fan of the Chaos term that has taken hold.\n\nThey discuss:\n- A quick description of Security Chaos Engineering\n- Is there similarity or overlap with the CCE or CIE approach?\n- The value of decision trees\n- Her view of checklists of security controls like CISA's CPG\n- Lesson 1 - \"Start in Nonproduction environments\"\n- The experiment / scientific method approach and how it can start small\n- The Danger Zone: tight coupling and complex interactions\n- How should ICS use Chaos Engineering",
+    "view_count": 783
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Vkd7m97a0IQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X9rsv4YIShY",
+    "language": "en",
+    "took_ms": 8104,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Darren Cofer - Steal This Drone High Assurance Cyber Military Systems",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1478,
+    "description": "As part of DARPA’s High Assurance Cyber Military Systems program, Collins Aerospace led a team of researchers developing new tools for building aircraft software that is provably secure against many classes of cyber attack. We developed system architecture models, software components, and operating system software which have been mathematically analyzed to ensure key security properties. This talk describes the research results and demonstration in-flight on a military helicopter.",
+    "view_count": 1328
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X9rsv4YIShY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

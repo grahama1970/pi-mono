@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(npx tsx:*)",
+      "Bash(node:*)",
+      "Skill(agent-inbox)",
+      "Bash(ps aux:*)",
+      "Bash(pgrep:*)",
+      "Bash(pkill:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(/home/graham/workspace/experiments/memory/.venv/bin/python:*)",
+      "Bash(time /home/graham/workspace/experiments/memory/.venv/bin/python:*)",
+      "Bash(uv run:*)",
+      "Bash(sudo docker:*)",
+      "Bash(arangodump:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(bash:*)",
+      "Bash(CONTAINER=arangodb bash:*)",
+      "Bash(systemctl:*)",
+      "Bash(CONTAINER=arangodb OUT_BASE=/mnt/storage12tb/backups/arangodb bash:*)",
+      "Bash(curl:*)",
+      "Bash(do:*)",
+      "Bash(head:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f''Databases: {len\\(d[\"\"result\"\"]\\)} - {d[\"\"result\"\"]}''\\)\")",
+      "Bash(python3 -c \"import py_compile; py_compile.compile\\(''/home/graham/workspace/experiments/pi-mono/.pi/skills/monitor-claude/monitor.py'', doraise=True\\)\")",
+      "Bash(python3 -c \"import py_compile; py_compile.compile\\(''/home/graham/workspace/experiments/pi-mono/.pi/skills/skills-ci/runtime_scanners.py'', doraise=True\\)\")",
+      "Skill(assess)",
+      "Bash(xargs -r kill -9)",
+      "Bash(xargs -I{} pstree -aps {})",
+      "Bash(kill -9 93979 93969 99258 99601 99607 99619)",
+      "Bash(xargs -I{} ps -o ppid= -p {})",
+      "Bash(xargs -I{} ps -fp {})"
+    ]
+  }
+}

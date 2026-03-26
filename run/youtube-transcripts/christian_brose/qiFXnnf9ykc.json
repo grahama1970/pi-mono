@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qiFXnnf9ykc",
+    "language": "en",
+    "took_ms": 9283,
+    "method": null,
+    "title": "Rebuilding American Naval Dominance",
+    "channel": "Hudson Institute",
+    "upload_date": "20230501",
+    "duration_sec": 3060,
+    "description": "For 70 years, the world’s oceans have been a global commons protected by America’s dominance of the high seas. However, since the end of World War II, the active US Navy fleet has shrunk from nearly 1,000 ships to fewer than 300. China and Russia are eager to fill this dangerous vacuum. \n\nPlease join retired Navy Captain Dr. Jerry Hendrix and Hudson Senior Fellow Timothy Walton for a conversation about rebuilding American naval dominance. Hudson Media Fellow Jeremy Hunt will moderate the event.",
+    "view_count": 1884
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qiFXnnf9ykc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

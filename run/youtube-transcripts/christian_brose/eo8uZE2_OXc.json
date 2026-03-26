@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eo8uZE2_OXc",
+    "language": "en",
+    "took_ms": 9041,
+    "method": null,
+    "title": "Hanns Kuttner on the Move to Digital Payment from the Government",
+    "channel": "Hudson Institute",
+    "upload_date": "20110308",
+    "duration_sec": 220,
+    "description": "Hudson Visiting Fellow Hanns Kuttner describes his fascinating new paper illustrating the federal government's attempt to move to purely digital payments. He discusses the cost savings associated with implementing these systems.",
+    "view_count": 246
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eo8uZE2_OXc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

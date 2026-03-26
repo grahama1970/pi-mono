@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "meC2JqNAbCA",
+    "language": "en",
+    "took_ms": 7541,
+    "method": null,
+    "title": "DEF CON 33 - Recording PCAPs from Stingrays With a $20 Hotspot - Cooper Quintin, oopsbagel",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2391,
+    "description": "What if you could use Wireshark on the connection between your cellphone and the tower it's connected to?\n\nIn this talk we present Rayhunter, a cell site simulator detector built on top of a cheap cellular hotspot. It works by collecting and analyzing real-time control plane traffic between a cellular modem and the base station it's connected to. We will outline the hardware and the software developed to get low level information from the Qualcomm DIAG protocol, as well as go on a deep dive into the methods we think are used by modern cell-site simulators. We’ll present independently validated results from tests of our device in a simulated attack environment and real world scenarios. Finally, we will discuss how we hope to put this device into the hands of journalists, researchers, and human rights defenders around the world to answer the question: how often are we being spied on by cell site simulators?",
+    "view_count": 40474
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] meC2JqNAbCA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

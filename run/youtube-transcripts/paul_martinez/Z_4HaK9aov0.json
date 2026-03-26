@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z_4HaK9aov0",
+    "language": "en",
+    "took_ms": 8849,
+    "method": null,
+    "title": "Sensors and Sensibility",
+    "channel": "S4 Events",
+    "upload_date": "20180316",
+    "duration_sec": 1774,
+    "description": "Justin Woody and Chris Sistrunk of FireEye/Mandiant talk about what to do after you deploy a security sensors in an ICS. \n\nGetting rid of nuisance alarms, developing a detection and monitoring strategy, considering threats, workforce needs and more.",
+    "view_count": 143
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z_4HaK9aov0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4Tn71-1GN20",
+    "language": "en",
+    "took_ms": 8611,
+    "method": null,
+    "title": "DEF CON Safe Mode Crypto and Privacy Village - Mansi Sheth - How to store sensitive info in 2020?",
+    "channel": "DEFCONConference",
+    "upload_date": "20200822",
+    "duration_sec": 2678,
+    "description": "It goes without saying never ever store personal/sensitive information in clear text. It is also a well-known fact salting, hashing or stretching your information can just provide little offline information cracking protection against contemporary computer architectures and modern brute force attack constructs. Those abreast with this subject would have come across countless advocatory material suggesting to use key derivation functions (KDFs) to store sensitive information.\n\nThere are handful of solid KDFs, which are good candidates to use for storing sensitive information such as pbkdf2, bcrypt, scrypt, Argon2. In this talk, lets dive deeper to study some of its underlying crypto, what and how to tune these algorithms with secure input parameter configurations and how to decide which algorithm would be the right choice for your needs? Lastly, I will present some statistics on how well do all these different algorithms compare against each other.",
+    "view_count": 1953
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4Tn71-1GN20: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

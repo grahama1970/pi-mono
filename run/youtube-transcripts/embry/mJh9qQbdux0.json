@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mJh9qQbdux0",
+    "language": "en",
+    "took_ms": 10103,
+    "method": null,
+    "title": "Watch SpaceX launch and LAND their Falcon 9 for CSG-2",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20220201",
+    "duration_sec": 7415,
+    "description": "SpaceX will be attempting to launch the Cosmo-Skymed Second Generation 2 (CSG-2) satellite to a Sun-syncronous orbit for the Italian Space Agency, a part of the European Space Agency. The Falcon 9 Block 5 Booster B1052-3 will lift off from Space Launch Complex 40 (SLC-40) and a few minutes later perform a boostback burn to return to land and touchdown on Landing Zone 1 (LZ-1).\n\nNeed to know more information? Check out our Prelaunch Preview - \nhttps://everydayastronaut.com/csg-2-falcon-9-block-5/\n\n00:00:00 - Intro\n00:03:15 - Prelaunch Preview\n00:09:40 - Q&A\n00:19:00 - SpaceX Stream Starts\n00:20:35 - More Q&A\n00:25:05 - T minus 6 minutes\n00:30:10 - T minus 1 minute\n00:31:10 - Lift Off!\n00:33:32 - MECO / Stage Sep\n00:38:33 - Landing Burn / SECO\n00:40:45 - Q&A / Coast Phase\n01:26:30 - SES-2 / Deploy\n01:32:00 - Q&A\n\n-------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 219815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mJh9qQbdux0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

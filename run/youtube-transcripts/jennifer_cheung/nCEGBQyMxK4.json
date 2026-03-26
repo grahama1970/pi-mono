@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nCEGBQyMxK4",
+    "language": "en",
+    "took_ms": 9888,
+    "method": null,
+    "title": "DEF CON 31 - Red Team Village Preview - video team",
+    "channel": "DEFCONConference",
+    "upload_date": "20230811",
+    "duration_sec": 178,
+    "description": "Chris from the DEF CON video team gets you the behind the scenes on the Red Team Village for DEF CON 31",
+    "view_count": 6908
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nCEGBQyMxK4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

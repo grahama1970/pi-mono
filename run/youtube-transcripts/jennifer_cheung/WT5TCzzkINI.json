@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WT5TCzzkINI",
+    "language": "en",
+    "took_ms": 9187,
+    "method": null,
+    "title": "DEF CON 29 Blue Team Village - Drimacus - Leveraging NGFWs for Threat Hunting",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1410,
+    "description": "Sharing research and details around running passive NGFWs to complement threat hunting tools. This talk will walk through sharing why, how, and what I learned about these to share with the community and the value that can be gained by leveraging NGFWs for threat hunting.\n\nWith the introduction of NGFWs came new operational risk in the form of application ID. After taking a path down to mitigate this risk by implementing passive NGFWs, it also become an opportunity to leverage them for threat hunting.\n\nThis talk will review research over the past 5 years of running such passive NGFWs.\nThe pros/cons of the environment over exiting threat hunting tools, review of architecture, and a deep dive into the various functionality will be discussed.",
+    "view_count": 335
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WT5TCzzkINI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

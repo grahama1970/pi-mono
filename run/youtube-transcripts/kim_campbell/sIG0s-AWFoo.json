@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sIG0s-AWFoo",
+    "language": "en",
+    "took_ms": 9702,
+    "method": null,
+    "title": "How can I get free letters on Sandboxx? (Sandboxx Referral Program)",
+    "channel": "Sandboxx",
+    "upload_date": "20200909",
+    "duration_sec": 189,
+    "description": "UPDATE: Our app has changed a bit. To access your referral link, scroll to the bottom of the letters screen and tap on the \"Refer A Friend\" button.\n\nReady to spread the word about Sandboxx and start earning free letter credits? Here's how to invite your friends and family to Sandboxx and earn credits for it.",
+    "view_count": 8276
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sIG0s-AWFoo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

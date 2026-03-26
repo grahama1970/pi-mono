@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HI4hs7VnqPw",
+    "language": "en",
+    "took_ms": 11100,
+    "method": null,
+    "title": "A Handful of Bullets: How the Murder of Archduke Franz Ferdi",
+    "channel": "Hudson Institute",
+    "upload_date": "20150120",
+    "duration_sec": 3374,
+    "description": "Amb. Husain Haqqani and author Harlan Ullman discuss his new book A Handful of Bullets and ongoing challenges to international order and cooperation. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 958
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HI4hs7VnqPw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

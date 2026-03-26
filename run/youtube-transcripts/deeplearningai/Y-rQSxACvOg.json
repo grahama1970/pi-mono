@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y-rQSxACvOg",
+    "language": "en",
+    "took_ms": 8860,
+    "method": null,
+    "title": "AI Dev 25 x NYC | João Moura: Design, Develop, and Deploy Multi Agent Systems with CrewAI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 1756,
+    "description": "In this Presentation, João Moura, CEO of CrewAI, guided the audience through a comprehensive exploration of the rapidly emerging world of AI Agents. \n\nHe explained what AI Agents are, why leading enterprises are increasingly establishing mandates to deploy them in real-world environments, and how these intelligent systems are transforming the way organizations operate.\n\nTake João Moura's course on this topic: https://www.deeplearning.ai/courses/design-develop-and-deploy-multi-agent-systems-with-crewai/\n\n-------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 724
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y-rQSxACvOg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y8kbuGgH2eQ",
+    "language": "en",
+    "took_ms": 9653,
+    "method": null,
+    "title": "DEF CON 33 - Making the DEF CON 33 Badge - Mar",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 735,
+    "description": "Limitations can result in creative solutions. For most hackers I know, this is core to why we do what we do. Being an artist has taught me to do the challenging and ridiculous at all costs. Most of the time, these values align, but sometimes they result in fabulous disasters. As of this writing, this is not the latter.\n\nThis talk is a reflection on badge creation, challenges, the badge curse, and the blurred lines between art and hacking. It examines how we perceive and value creation and making, inside and outside of our own circles.",
+    "view_count": 250
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y8kbuGgH2eQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

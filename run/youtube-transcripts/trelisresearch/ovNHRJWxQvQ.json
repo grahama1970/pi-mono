@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ovNHRJWxQvQ",
+    "language": "en",
+    "took_ms": 7942,
+    "method": null,
+    "title": "Coding Assistant for Jupyter Lab",
+    "channel": "Trelis Research",
+    "upload_date": "20241029",
+    "duration_sec": 238,
+    "description": "➡️ This service is no longer running. For inquiries submit a request for consulting support on Trelis.com\n\nTIMESTAMPS:\n0:00 Coding Assistant for Jupyter Lab\n0:05 Installation with `pip install trelis`\n1:03 Getting an API key\n1:37 Fixing your code with Trelis Assistant\n3:05 Running on a remote server (e.g. Runpod)\n3:47 Resources",
+    "view_count": 1700
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ovNHRJWxQvQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

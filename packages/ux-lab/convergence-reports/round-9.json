@@ -1,0 +1,395 @@
+{
+  "round": 9,
+  "avgScore": 5.8,
+  "reviewCount": 15,
+  "perPersona": [
+    {
+      "persona": "tim-blazytko",
+      "avg": 5.4,
+      "count": 5
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "avg": 5.8,
+      "count": 5
+    },
+    {
+      "persona": "liveoverflow",
+      "avg": 6.2,
+      "count": 5
+    }
+  ],
+  "criticisms": [
+    {
+      "category": "other",
+      "count": 36,
+      "examples": [
+        "CWE column is present but shows “–” for all entries — no actual CWE IDs are mapped or displayed, making it useless for vulnerability triage.",
+        "No indication of whether CWE mappings are derived from static analysis, LLM inference, or manual annotation — undermines trust in the data.",
+        "Populate the CWE column with actual MITRE IDs (e.g., CWE-78, CWE-122) and make them clickable to MITRE pages or internal knowledge base.",
+        "Add a provenance badge (e.g., “Static Analysis” or “LLM Inferred”) next to each CWE/confidence pair to clarify source and reliability.",
+        "No drill-down from ATT&CK technique → implementing functions — even if techniques were present, there’s no linkage to code or call graphs.",
+        "Populate the ATT&CK column with MITRE technique IDs (e.g., T1059.001, T1071.001) based on function semantics (e.g., “exec” → T1059.001, “http” → T1071.001), and enable click-to-filter to show all functions mapped to a technique.",
+        "Add a “Threat Context” panel that surfaces campaign tags (e.g., “APT29”, “Cobalt Strike”) based on feature clusters — this would directly accelerate attribution.",
+        "No visible Python pseudocode or scriptable output — the UI is visualization-centric, not code-generation-centric.",
+        "“Source Patterns (0 available)” indicates no extracted logic or control flow — critical for scripting behavior analysis.",
+        "Add a “Generate Python Analysis Stub” button that outputs:",
+        "Expose “Source Patterns” as AST or pseudocode (e.g., via Ghidra’s Python API or angr’s claripy) — even if incomplete, it’s better than zero.",
+        "No visible IR (intermediate representation) or query AST for debugging or auditing how natural language queries are parsed — critical for trust and reproducibility in professional RE workflows.",
+        "No evidence of scripting or API access to QuerySpec — automation (e.g., CI/CD integration, batch analysis) appears unsupported.",
+        "Add a “Show IR” toggle next to each query that reveals the compiled QuerySpec AST or DSL syntax, enabling analysts to validate and modify the underlying logic.",
+        "Expose a “Script Mode” panel with a REPL or exportable query templates (e.g., JSON/YAML/DSL) to enable automation and integration with external tooling (e.g., CI pipelines, Jupyter notebooks).",
+        "UI-centric design with no CLI or scriptable export (e.g., JSON, SARIF, protobuf) — blocks integration into CI/CD or agentic pipelines.",
+        "Expose a `/api/v1/binary/{hash}/graph` endpoint returning JSON/GraphQL with full node/edge metadata, and add a “Copy cURL” button for each action.",
+        "No visible call graph or function-level dependency tracing — critical for RE workflows like identifying callers/callees or indirect calls (vtables, function pointers).",
+        "Integrate a “Call Depth Slider” and toggle for indirect calls (vtables, function pointers) to enable granular attack surface analysis.",
+        "No actual state machine graph is rendered — “No nodes in scene” indicates the visualization is not active or not yet loaded, which defeats the purpose of a state machine explorer.",
+        "No visible state nodes, transitions, labels, or initial/terminal state indicators — critical for protocol RE.",
+        "Integration with CWE/ATT&CK via “View Vulnerability Map” provides contextual security relevance, which is valuable for protocol analysis.",
+        "Add a status bar at the bottom showing: “Loaded: 334 features | 755 edges | Cache: 87% | Pending: 0 queries | Last API: 2.1s” — improves situational awareness.",
+        "No export mechanism for analysis notes, chat logs, or graph snapshots — makes it impossible to generate reports or share findings with collaborators.",
+        "The “ANALYSIS” panel appears static and query-driven rather than narrative — lacks the ability to annotate, bookmark, or reference “that function we looked at earlier” during a session.",
+        "Implement “Export Session” functionality that bundles graph state, chat log, and feature annotations into a shareable report (PDF/Markdown) — essential for documentation and team collaboration.",
+        "“6/334 in scene” is cryptic — doesn’t explain what “in scene” means or how to load more nodes.",
+        "Metadata summary at bottom (features, edges, namespaces) gives quick stats — useful for triage.",
+        "No visible evidence that the journal auto-captures screenshots or graph states at each step — a major gap for writeup automation.",
+        "No UI affordance for adding personal annotations or markdown notes alongside automated logs — limits narrative control for writeups.",
+        "Add a “Capture Step” button that snapshots the current graph + logs the action + lets you attach a note — auto-assemble these into a downloadable Markdown/PDF writeup.",
+        "Integrate the “Ask about this binary…” input with the journal: every query + AI response should be timestamped and tagged in the journal with optional user annotations.",
+        "Graph area appears inert to arrow keys or WASD — critical for navigating large dependency graphs without dragging.",
+        "No keyboard shortcut reference or “?” help overlay — violates accessibility and efficiency norms for power users.",
+        "Metadata summary (T0/T1/T2, confidence, namespaces) gives immediate context about binary complexity and analysis coverage.",
+        "Implement a “Ctrl+?” shortcut to toggle a modal with all available keyboard commands — essential for mouse-free workflows and inclusive design."
+      ]
+    },
+    {
+      "category": "schema-detail",
+      "count": 8,
+      "examples": [
+        "No struct definitions, no ctypes/construct output, no Pythonic abstractions — just raw feature counts and namespace labels.",
+        "Integration with /analyze-elf + treesitter implies structured parsing, which is a solid foundation for automation.",
+        "Add a “Export Analysis” button that outputs structured data (e.g., SBOM, ATT&CK mapping, or custom schema) to feed into SIEMs, YARA rule generators, or automated deobfuscation agents.",
+        "Color palette for node types is too subtle (e.g., green vs. blue) — hard to distinguish at a glance under fatigue or low-light conditions.",
+        "No visible disassembly pane, hex view, or instruction-level breakdown — missing core RE workflow components.",
+        "Increase saturation and contrast of node type colors in the graph (e.g., use bright red for state machines, bold yellow for CLI commands) — improves rapid visual parsing.",
+        "Metadata summary at bottom (namespaces, features, edges) provides quick context about binary structure and complexity.",
+        "No interactive tutorial or walkthrough — misses opportunity to teach users how to navigate the graph or interpret node types."
+      ]
+    },
+    {
+      "category": "empty-canvas",
+      "count": 7,
+      "examples": [
+        "ATT&CK column is entirely empty — no technique mapping visible, which defeats the purpose of threat intel integration. This is a critical omission for malware attribution.",
+        "Empty graph state is silent — no explanation, no onboarding, no “click here to start” guidance. Frustrating for new users.",
+        "Replace empty graph with a “Getting Started” card: “Select a binary from the left, or try this query: ‘How do daemon.* and droid.* interact?’”",
+        "Empty space interaction is ambiguous: No indication whether clicking empty space deselects or resets the view — this should be explicit or visually confirmed.",
+        "Add a subtle “deselect” animation or border fade when clicking empty space, and optionally show a tooltip: “Click empty space to clear selection.”",
+        "No visible loading spinner, skeleton UI, or progress bar during graph rendering — creates ambiguity: is it loading or empty?",
+        "Graph viewport is completely blank during load — no placeholder or “initializing graph…” message to reassure users."
+      ]
+    },
+    {
+      "category": "selection-feedback",
+      "count": 6,
+      "examples": [
+        "No indication of configurable call depth, path highlighting, or entry-point-to-target tracing — missing core RE capabilities for attack surface mapping.",
+        "Implement a dedicated “State Machine View” tab that renders state nodes as circles, transitions as labeled arrows, and highlights initial/error states with color or iconography.",
+        "Add a “Trace State Path” button that lets users select a starting state and auto-generate a traversal path based on triggering events (e.g., “on mcp_auth_completed → next state”).",
+        "“No nodes in scene” state lacks feedback on why (e.g., filter applied, no selection, or pending load) — can confuse users during initial exploration.",
+        "Hover feedback is minimal or absent: No visible cursor change or node highlight on hover makes it unclear what’s clickable, especially for newcomers.",
+        "Implement hover states: Change cursor to pointer on hover, and lightly highlight nodes with a glow or border to indicate interactivity — this would make the interface feel more responsive and intuitive."
+      ]
+    },
+    {
+      "category": "loading-indicator",
+      "count": 5,
+      "examples": [
+        "No visible indication of data loading progress, memory footprint, or API latency — critical for large binaries or remote analysis.",
+        "Introduce a “Loading…” animation or progress bar when ingesting or rendering large graphs — prevents user uncertainty during delays.",
+        "No estimated time or “loading…” message — viewers might assume the tool is frozen or broken, especially during first use.",
+        "Add a subtle, animated “Loading graph…” overlay with a pulsing spinner centered in the viewport until nodes render.",
+        "Include a progress bar or percentage indicator (e.g., “Loading 6/334 nodes…”) in the top-right of the graph area to set expectations during ingestion."
+      ]
+    },
+    {
+      "category": "onboarding",
+      "count": 3,
+      "examples": [
+        "No clickable CWE links or hover tooltips to reveal remediation guidance or MITRE details — misses opportunity for actionable intelligence.",
+        "Add an interactive onboarding overlay: “Click a binary → see its graph → double-click nodes to expand → right-click for context menu.”",
+        "Double-click behavior (“expand neighbors”) is powerful but not discoverable without reading the tooltip — could benefit from a subtle animation or visual cue on first use."
+      ]
+    },
+    {
+      "category": "disassembly",
+      "count": 3,
+      "examples": [
+        "No visible syntax highlighting for assembly or hex dumps — critical for RE; currently looks like a generic graph viewer, not a binary analysis tool.",
+        "Add a dedicated disassembly/hex view panel with syntax highlighting (e.g., opcodes in magenta, registers in cyan, immediates in yellow) — essential for RE.",
+        "“Browse Source Patterns” and “View Vulnerability Map” provide quick pivots to high-value artifacts (ASM, CWE/ATT&CK), accelerating exploit discovery."
+      ]
+    },
+    {
+      "category": "navigation",
+      "count": 3,
+      "examples": [
+        "No path tracing capability demonstrated; the UI offers no way to step through or animate state transitions.",
+        "No visible keyboard navigation cues or shortcuts — no indication of how to traverse graph nodes, filter binaries, or trigger actions without a mouse.",
+        "Add keyboard navigation: Arrow keys to move focus between nodes, Tab to cycle through UI controls (filter, save, viewport), Enter to expand/interact."
+      ]
+    },
+    {
+      "category": "error-states",
+      "count": 2,
+      "examples": [
+        "No visible API endpoint, network tab, or documentation link — zero evidence of programmatic access or automation hooks.",
+        "No cache state, pending queries, or network activity indicators — limits transparency during complex or multi-stage analysis."
+      ]
+    },
+    {
+      "category": "undo-redo",
+      "count": 2,
+      "examples": [
+        "No visible conversation history or session persistence — critical for iterative RE work where you revisit earlier hypotheses or findings.",
+        "Add a persistent, scrollable chat/history panel tied to the binary session, allowing analysts to reference prior queries, notes, or discoveries (e.g., “see line 42 of our session on droid.* namespace”)."
+      ]
+    },
+    {
+      "category": "graph-layout",
+      "count": 1,
+      "examples": [
+        "Add an interactive call graph view with zoom/pan, node selection, and path highlighting (e.g., “Show all paths to kill_worker_session”)."
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_table_03",
+      "score": 7,
+      "weaknesses": [
+        "CWE column is present but shows “–” for all entries — no actual CWE IDs are mapped or displayed, making it useless for vulnerability triage.",
+        "No indication of whether CWE mappings are derived from static analysis, LLM inference, or manual annotation — undermines trust in the data.",
+        "No clickable CWE links or hover tooltips to reveal remediation guidance or MITRE details — misses opportunity for actionable intelligence."
+      ],
+      "suggestions": [
+        "Populate the CWE column with actual MITRE IDs (e.g., CWE-78, CWE-122) and make them clickable to MITRE pages or internal knowledge base.",
+        "Add a provenance badge (e.g., “Static Analysis” or “LLM Inferred”) next to each CWE/confidence pair to clarify source and reliability."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10  \n\n**Strengths**  \n- Clear visualization of binary features with confidence scores (e.g., 100% conf) — useful for prioritizing high-certainty candidates.  \n- Integrated filtering by CWE/ATT&CK and “6/334 in scene” context helps narrow focus during triage.  \n- Namespace and state machine breakdown (daemon.*, droid.*, tunnel.*) provides structural context for attack surface mapping.  \n\n**Weaknesses**  \n- CWE column is present but shows “–” for all entries — no actual CWE IDs are mapped or displayed, making it useless for vulnerability triage.  \n- No indication of whether CWE mappings are derived from static analysis, LLM inference, or manual annotation — undermines trust in the data.  \n- No clickable CWE links or hover tooltips to reveal remediation guidance or MITRE details — misses opportunity for actionable intelligence.  \n\n**What you would change**  \n- Populate the CWE column with actual MITRE IDs (e.g., CWE-78, CWE-122) and make them clickable to MITRE pages or internal knowledge base.  \n- Add a provenance badge (e.g., “Static Analysis” or “LLM Inferred”) next to each CWE/confidence pair to clarify source and reliability."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_tax_03",
+      "score": 5,
+      "weaknesses": [
+        "ATT&CK column is entirely empty — no technique mapping visible, which defeats the purpose of threat intel integration. This is a critical omission for malware attribution.",
+        "No drill-down from ATT&CK technique → implementing functions — even if techniques were present, there’s no linkage to code or call graphs."
+      ],
+      "suggestions": [
+        "Populate the ATT&CK column with MITRE technique IDs (e.g., T1059.001, T1071.001) based on function semantics (e.g., “exec” → T1059.001, “http” → T1071.001), and enable click-to-filter to show all functions mapped to a technique.",
+        "Add a “Threat Context” panel that surfaces campaign tags (e.g., “APT29”, “Cobalt Strike”) based on feature clusters — this would directly accelerate attribution."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10  \n\n**Strengths**  \n- Clean, dark-themed UI with logical panel separation (binaries, features, analysis) — reduces cognitive load during long RE sessions.  \n- Feature-level confidence scoring (100% conf) and type tagging (cli_command, event) provide immediate signal on feature reliability and semantics.  \n- Namespace and connection graphs (daemon.*, droid.*, tunnel.*) hint at modular architecture — useful for mapping attack surfaces or lateral movement paths.  \n\n**Weaknesses**  \n- ATT&CK column is entirely empty — no technique mapping visible, which defeats the purpose of threat intel integration. This is a critical omission for malware attribution.  \n- No drill-down from ATT&CK technique → implementing functions — even if techniques were present, there’s no linkage to code or call graphs.  \n- “VULNERABILITY MAP” header suggests taxonomy data exists, but no CVE/CWE/ATT&CK cross-references are displayed — renders the map useless for threat intel workflows.  \n\n**What you would change**  \n- Populate the ATT&CK column with MITRE technique IDs (e.g., T1059.001, T1071.001) based on function semantics (e.g., “exec” → T1059.001, “http” → T1071.001), and enable click-to-filter to show all functions mapped to a technique.  \n- Add a “Threat Context” panel that surfaces campaign tags (e.g., “APT29”, “Cobalt Strike”) based on feature clusters — this would directly accelerate attribution."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_code_03",
+      "score": 4,
+      "weaknesses": [
+        "No visible Python pseudocode or scriptable output — the UI is visualization-centric, not code-generation-centric.",
+        "“Source Patterns (0 available)” indicates no extracted logic or control flow — critical for scripting behavior analysis.",
+        "No struct definitions, no ctypes/construct output, no Pythonic abstractions — just raw feature counts and namespace labels."
+      ],
+      "suggestions": [
+        "Integration with /analyze-elf + treesitter implies structured parsing, which is a solid foundation for automation.",
+        "Add a “Generate Python Analysis Stub” button that outputs:",
+        "Expose “Source Patterns” as AST or pseudocode (e.g., via Ghidra’s Python API or angr’s claripy) — even if incomplete, it’s better than zero."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10  \n\n**Strengths**  \n- The interface surfaces high-level metadata (namespaces, features, edges) that can guide targeted analysis.  \n- Suggested queries (e.g., “How do daemon.* and droid.* interact?”) hint at semantic understanding of binary relationships — useful for hypothesis-driven RE.  \n- Integration with /analyze-elf + treesitter implies structured parsing, which is a solid foundation for automation.  \n\n**Weaknesses**  \n- No visible Python pseudocode or scriptable output — the UI is visualization-centric, not code-generation-centric.  \n- “Source Patterns (0 available)” indicates no extracted logic or control flow — critical for scripting behavior analysis.  \n- No struct definitions, no ctypes/construct output, no Pythonic abstractions — just raw feature counts and namespace labels.  \n\n**What you would change**  \n- Add a “Generate Python Analysis Stub” button that outputs:  \n  • ctypes structs for parsed ELF sections  \n  • Network protocol skeletons (if RPCs detected)  \n  • Control flow graph as networkx/igraph objects  \n- Expose “Source Patterns” as AST or pseudocode (e.g., via Ghidra’s Python API or angr’s claripy) — even if incomplete, it’s better than zero."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_chat_03",
+      "score": 7,
+      "weaknesses": [
+        "No visible IR (intermediate representation) or query AST for debugging or auditing how natural language queries are parsed — critical for trust and reproducibility in professional RE workflows.",
+        "No evidence of scripting or API access to QuerySpec — automation (e.g., CI/CD integration, batch analysis) appears unsupported."
+      ],
+      "suggestions": [
+        "Add a “Show IR” toggle next to each query that reveals the compiled QuerySpec AST or DSL syntax, enabling analysts to validate and modify the underlying logic.",
+        "Expose a “Script Mode” panel with a REPL or exportable query templates (e.g., JSON/YAML/DSL) to enable automation and integration with external tooling (e.g., CI pipelines, Jupyter notebooks)."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- The interface surfaces high-level semantic queries (e.g., “How do daemon.* namespace and droid.* namespace interact?”) that map intuitively to binary feature relationships — suggesting a natural language → QuerySpec translation layer is present.  \n- The “SUGGESTED QUERIES” panel implies a guided exploration model that lowers the barrier to entry for analysts unfamiliar with the binary’s structure.  \n- The bottom panel exposes granular feature counts (namespaces, state machines, RPCs) and allows filtering by connection strength — useful for triaging attack surfaces or behavioral patterns.\n\n4. Weaknesses  \n- No visible IR (intermediate representation) or query AST for debugging or auditing how natural language queries are parsed — critical for trust and reproducibility in professional RE workflows.  \n- No evidence of scripting or API access to QuerySpec — automation (e.g., CI/CD integration, batch analysis) appears unsupported.  \n- Query language documentation is absent from the UI; users must guess syntax or rely on suggested queries, which limits advanced usage.\n\n5. What you would change  \n- Add a “Show IR” toggle next to each query that reveals the compiled QuerySpec AST or DSL syntax, enabling analysts to validate and modify the underlying logic.  \n- Expose a “Script Mode” panel with a REPL or exportable query templates (e.g., JSON/YAML/DSL) to enable automation and integration with external tooling (e.g., CI pipelines, Jupyter notebooks)."
+    },
+    {
+      "persona": "tim-blazytko",
+      "testId": "tb_auto_01",
+      "score": 4,
+      "weaknesses": [
+        "No visible API endpoint, network tab, or documentation link — zero evidence of programmatic access or automation hooks.",
+        "UI-centric design with no CLI or scriptable export (e.g., JSON, SARIF, protobuf) — blocks integration into CI/CD or agentic pipelines."
+      ],
+      "suggestions": [
+        "Expose a `/api/v1/binary/{hash}/graph` endpoint returning JSON/GraphQL with full node/edge metadata, and add a “Copy cURL” button for each action.",
+        "Add a “Export Analysis” button that outputs structured data (e.g., SBOM, ATT&CK mapping, or custom schema) to feed into SIEMs, YARA rule generators, or automated deobfuscation agents."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n**Strengths**  \n- Rich visual graph representation with interactive node/edge filtering (e.g., “rpc”, “event”, “state machine”) — useful for exploratory analysis.  \n- Integrated feature breakdown (namespaces, schemas, cli commands) with quantified metrics (T0/T1/T2, confidence %) — good for triage and prioritization.  \n- Suggested queries panel (“How does request_permission connect to kill_worker_session?”) hints at semantic understanding — valuable for hypothesis-driven RE.\n\n**Weaknesses**  \n- No visible API endpoint, network tab, or documentation link — zero evidence of programmatic access or automation hooks.  \n- UI-centric design with no CLI or scriptable export (e.g., JSON, SARIF, protobuf) — blocks integration into CI/CD or agentic pipelines.  \n- “Ask about this binary…” suggests LLM-assisted Q&A, but no export of reasoning or traceability — undermines reproducibility and auditability.\n\n**What you would change**  \n- Expose a `/api/v1/binary/{hash}/graph` endpoint returning JSON/GraphQL with full node/edge metadata, and add a “Copy cURL” button for each action.  \n- Add a “Export Analysis” button that outputs structured data (e.g., SBOM, ATT&CK mapping, or custom schema) to feed into SIEMs, YARA rule generators, or automated deobfuscation agents."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_first_04",
+      "score": 7,
+      "weaknesses": [
+        "No visible syntax highlighting for assembly or hex dumps — critical for RE; currently looks like a generic graph viewer, not a binary analysis tool.",
+        "Color palette for node types is too subtle (e.g., green vs. blue) — hard to distinguish at a glance under fatigue or low-light conditions.",
+        "No visible disassembly pane, hex view, or instruction-level breakdown — missing core RE workflow components."
+      ],
+      "suggestions": [
+        "Add a dedicated disassembly/hex view panel with syntax highlighting (e.g., opcodes in magenta, registers in cyan, immediates in yellow) — essential for RE.",
+        "Increase saturation and contrast of node type colors in the graph (e.g., use bright red for state machines, bold yellow for CLI commands) — improves rapid visual parsing."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths  \n- Clean, minimal dark theme with high contrast between text and background — suitable for long sessions.  \n- Clear legend for node types (rpc, event, schema, etc.) — helps quickly identify semantic categories in the graph.  \n- Structured metadata panel at bottom provides quick stats (features, edges, namespaces) — useful for triage.\n\n4. Weaknesses  \n- No visible syntax highlighting for assembly or hex dumps — critical for RE; currently looks like a generic graph viewer, not a binary analysis tool.  \n- Color palette for node types is too subtle (e.g., green vs. blue) — hard to distinguish at a glance under fatigue or low-light conditions.  \n- No visible disassembly pane, hex view, or instruction-level breakdown — missing core RE workflow components.\n\n5. What you would change  \n- Add a dedicated disassembly/hex view panel with syntax highlighting (e.g., opcodes in magenta, registers in cyan, immediates in yellow) — essential for RE.  \n- Increase saturation and contrast of node type colors in the graph (e.g., use bright red for state machines, bold yellow for CLI commands) — improves rapid visual parsing."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_xref_01",
+      "score": 5,
+      "weaknesses": [
+        "No visible call graph or function-level dependency tracing — critical for RE workflows like identifying callers/callees or indirect calls (vtables, function pointers)."
+      ],
+      "suggestions": [
+        "Metadata summary at bottom (namespaces, features, edges) provides quick context about binary structure and complexity.",
+        "No indication of configurable call depth, path highlighting, or entry-point-to-target tracing — missing core RE capabilities for attack surface mapping.",
+        "Add an interactive call graph view with zoom/pan, node selection, and path highlighting (e.g., “Show all paths to kill_worker_session”).",
+        "Integrate a “Call Depth Slider” and toggle for indirect calls (vtables, function pointers) to enable granular attack surface analysis."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n3. Strengths  \n- Clean, modern UI with intuitive navigation and visual hierarchy — reduces cognitive load during complex analysis.  \n- Integrated “Suggested Queries” panel offers guided exploration (e.g., “Trace the B:Connection state machine”), which is helpful for beginners or rapid triage.  \n- Metadata summary at bottom (namespaces, features, edges) provides quick context about binary structure and complexity.\n\n4. Weaknesses  \n- No visible call graph or function-level dependency tracing — critical for RE workflows like identifying callers/callees or indirect calls (vtables, function pointers).  \n- “No nodes in scene” state with only sample graph options suggests the tool is not yet loaded with actual function-level data — lacks real-time interactive exploration of call chains.  \n- No indication of configurable call depth, path highlighting, or entry-point-to-target tracing — missing core RE capabilities for attack surface mapping.\n\n5. What you would change  \n- Add an interactive call graph view with zoom/pan, node selection, and path highlighting (e.g., “Show all paths to kill_worker_session”).  \n- Integrate a “Call Depth Slider” and toggle for indirect calls (vtables, function pointers) to enable granular attack surface analysis."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_state_01",
+      "score": 5,
+      "weaknesses": [
+        "No actual state machine graph is rendered — “No nodes in scene” indicates the visualization is not active or not yet loaded, which defeats the purpose of a state machine explorer.",
+        "No visible state nodes, transitions, labels, or initial/terminal state indicators — critical for protocol RE.",
+        "No path tracing capability demonstrated; the UI offers no way to step through or animate state transitions."
+      ],
+      "suggestions": [
+        "Integration with CWE/ATT&CK via “View Vulnerability Map” provides contextual security relevance, which is valuable for protocol analysis.",
+        "Implement a dedicated “State Machine View” tab that renders state nodes as circles, transitions as labeled arrows, and highlights initial/error states with color or iconography.",
+        "Add a “Trace State Path” button that lets users select a starting state and auto-generate a traversal path based on triggering events (e.g., “on mcp_auth_completed → next state”)."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n3. Strengths  \n- The interface surfaces state machines as a first-class concept (visible in legend and stats: “6 state machine” under DROID summary).  \n- Suggested queries (e.g., “Trace the B:Connection state machine”) imply intent to support state machine navigation — a good UX signal for RE workflows.  \n- Integration with CWE/ATT&CK via “View Vulnerability Map” provides contextual security relevance, which is valuable for protocol analysis.\n\n4. Weaknesses  \n- No actual state machine graph is rendered — “No nodes in scene” indicates the visualization is not active or not yet loaded, which defeats the purpose of a state machine explorer.  \n- No visible state nodes, transitions, labels, or initial/terminal state indicators — critical for protocol RE.  \n- No path tracing capability demonstrated; the UI offers no way to step through or animate state transitions.\n\n5. What you would change  \n- Implement a dedicated “State Machine View” tab that renders state nodes as circles, transitions as labeled arrows, and highlights initial/error states with color or iconography.  \n- Add a “Trace State Path” button that lets users select a starting state and auto-generate a traversal path based on triggering events (e.g., “on mcp_auth_completed → next state”)."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_perf_03",
+      "score": 7,
+      "weaknesses": [
+        "No visible indication of data loading progress, memory footprint, or API latency — critical for large binaries or remote analysis.",
+        "“No nodes in scene” state lacks feedback on why (e.g., filter applied, no selection, or pending load) — can confuse users during initial exploration.",
+        "No cache state, pending queries, or network activity indicators — limits transparency during complex or multi-stage analysis."
+      ],
+      "suggestions": [
+        "Add a status bar at the bottom showing: “Loaded: 334 features | 755 edges | Cache: 87% | Pending: 0 queries | Last API: 2.1s” — improves situational awareness.",
+        "Introduce a “Loading…” animation or progress bar when ingesting or rendering large graphs — prevents user uncertainty during delays."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10\n\n3. Strengths:\n- Clear display of high-level binary metadata (334 features, 755 edges, 3 namespaces) — useful for quick triage.\n- Visual categorization of feature types (rpc, event, schema, etc.) with color-coded legend — aids rapid pattern recognition.\n- Suggested queries panel provides context-aware guidance for deeper exploration — helpful for junior analysts or unfamiliar binaries.\n\n4. Weaknesses:\n- No visible indication of data loading progress, memory footprint, or API latency — critical for large binaries or remote analysis.\n- “No nodes in scene” state lacks feedback on why (e.g., filter applied, no selection, or pending load) — can confuse users during initial exploration.\n- No cache state, pending queries, or network activity indicators — limits transparency during complex or multi-stage analysis.\n\n5. What you would change:\n- Add a status bar at the bottom showing: “Loaded: 334 features | 755 edges | Cache: 87% | Pending: 0 queries | Last API: 2.1s” — improves situational awareness.\n- Introduce a “Loading…” animation or progress bar when ingesting or rendering large graphs — prevents user uncertainty during delays."
+    },
+    {
+      "persona": "gynvael-coldwind",
+      "testId": "gc_chat_04",
+      "score": 5,
+      "weaknesses": [
+        "No visible conversation history or session persistence — critical for iterative RE work where you revisit earlier hypotheses or findings.",
+        "No export mechanism for analysis notes, chat logs, or graph snapshots — makes it impossible to generate reports or share findings with collaborators.",
+        "The “ANALYSIS” panel appears static and query-driven rather than narrative — lacks the ability to annotate, bookmark, or reference “that function we looked at earlier” during a session."
+      ],
+      "suggestions": [
+        "Add a persistent, scrollable chat/history panel tied to the binary session, allowing analysts to reference prior queries, notes, or discoveries (e.g., “see line 42 of our session on droid.* namespace”).",
+        "Implement “Export Session” functionality that bundles graph state, chat log, and feature annotations into a shareable report (PDF/Markdown) — essential for documentation and team collaboration."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n3. Strengths  \n- The interface provides a structured view of binary features (namespaces, state machines, RPCs) with visual graph rendering — useful for rapid high-level understanding.  \n- Suggested queries (e.g., “How do daemon.* and droid.* interact?”) demonstrate intent to guide the analyst toward meaningful questions — helpful for junior reverse engineers.  \n- Integration of “Ask about this binary…” suggests potential for AI-assisted Q&A tied to the current binary context — a promising direction for contextual analysis.\n\n4. Weaknesses  \n- No visible conversation history or session persistence — critical for iterative RE work where you revisit earlier hypotheses or findings.  \n- No export mechanism for analysis notes, chat logs, or graph snapshots — makes it impossible to generate reports or share findings with collaborators.  \n- The “ANALYSIS” panel appears static and query-driven rather than narrative — lacks the ability to annotate, bookmark, or reference “that function we looked at earlier” during a session.\n\n5. What you would change  \n- Add a persistent, scrollable chat/history panel tied to the binary session, allowing analysts to reference prior queries, notes, or discoveries (e.g., “see line 42 of our session on droid.* namespace”).  \n- Implement “Export Session” functionality that bundles graph state, chat log, and feature annotations into a shareable report (PDF/Markdown) — essential for documentation and team collaboration."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_first_04",
+      "score": 4,
+      "weaknesses": [
+        "Empty graph state is silent — no explanation, no onboarding, no “click here to start” guidance. Frustrating for new users.",
+        "No interactive tutorial or walkthrough — misses opportunity to teach users how to navigate the graph or interpret node types.",
+        "“6/334 in scene” is cryptic — doesn’t explain what “in scene” means or how to load more nodes."
+      ],
+      "suggestions": [
+        "Metadata summary at bottom (features, edges, namespaces) gives quick stats — useful for triage.",
+        "Add an interactive onboarding overlay: “Click a binary → see its graph → double-click nodes to expand → right-click for context menu.”",
+        "Replace empty graph with a “Getting Started” card: “Select a binary from the left, or try this query: ‘How do daemon.* and droid.* interact?’”"
+      ],
+      "fullText": "1. FAIL  \n2. Score: 4/10\n\n3. Strengths  \n- Clean, dark-themed UI with clear visual hierarchy — reduces cognitive load for RE work.  \n- Suggested queries panel on the right provides immediate context and direction for exploration.  \n- Metadata summary at bottom (features, edges, namespaces) gives quick stats — useful for triage.\n\n4. Weaknesses  \n- Empty graph state is silent — no explanation, no onboarding, no “click here to start” guidance. Frustrating for new users.  \n- No interactive tutorial or walkthrough — misses opportunity to teach users how to navigate the graph or interpret node types.  \n- “6/334 in scene” is cryptic — doesn’t explain what “in scene” means or how to load more nodes.\n\n5. What you would change  \n- Add an interactive onboarding overlay: “Click a binary → see its graph → double-click nodes to expand → right-click for context menu.”  \n- Replace empty graph with a “Getting Started” card: “Select a binary from the left, or try this query: ‘How do daemon.* and droid.* interact?’”"
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_ctf_01",
+      "score": 7,
+      "weaknesses": [
+        "No visible evidence that the journal auto-captures screenshots or graph states at each step — a major gap for writeup automation.",
+        "No UI affordance for adding personal annotations or markdown notes alongside automated logs — limits narrative control for writeups."
+      ],
+      "suggestions": [
+        "“Browse Source Patterns” and “View Vulnerability Map” provide quick pivots to high-value artifacts (ASM, CWE/ATT&CK), accelerating exploit discovery.",
+        "Add a “Capture Step” button that snapshots the current graph + logs the action + lets you attach a note — auto-assemble these into a downloadable Markdown/PDF writeup.",
+        "Integrate the “Ask about this binary…” input with the journal: every query + AI response should be timestamped and tagged in the journal with optional user annotations."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10  \n\n3. Strengths  \n- The “JOURNAL” tab (with notification badge) suggests built-in session logging — critical for CTF writeups.  \n- Suggested queries (e.g., “Trace the B:Connection state machine”) act as guided investigation prompts, reducing cognitive load during analysis.  \n- “Browse Source Patterns” and “View Vulnerability Map” provide quick pivots to high-value artifacts (ASM, CWE/ATT&CK), accelerating exploit discovery.  \n\n4. Weaknesses  \n- No visible evidence that the journal auto-captures screenshots or graph states at each step — a major gap for writeup automation.  \n- No UI affordance for adding personal annotations or markdown notes alongside automated logs — limits narrative control for writeups.  \n- “Ask about this binary…” suggests LLM-assisted Q&A, but lacks integration with journaling — misses opportunity to turn Q&A into structured notes.  \n\n5. What you would change  \n- Add a “Capture Step” button that snapshots the current graph + logs the action + lets you attach a note — auto-assemble these into a downloadable Markdown/PDF writeup.  \n- Integrate the “Ask about this binary…” input with the journal: every query + AI response should be timestamped and tagged in the journal with optional user annotations."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_interact_01",
+      "score": 8,
+      "weaknesses": [
+        "Empty space interaction is ambiguous: No indication whether clicking empty space deselects or resets the view — this should be explicit or visually confirmed.",
+        "Hover feedback is minimal or absent: No visible cursor change or node highlight on hover makes it unclear what’s clickable, especially for newcomers.",
+        "Double-click behavior (“expand neighbors”) is powerful but not discoverable without reading the tooltip — could benefit from a subtle animation or visual cue on first use."
+      ],
+      "suggestions": [
+        "Add a subtle “deselect” animation or border fade when clicking empty space, and optionally show a tooltip: “Click empty space to clear selection.”",
+        "Implement hover states: Change cursor to pointer on hover, and lightly highlight nodes with a glow or border to indicate interactivity — this would make the interface feel more responsive and intuitive."
+      ],
+      "fullText": "1. PASS  \n2. Score: 8/10\n\n3. Strengths  \n- Clear visual hierarchy: The node legend (rpc, event, schema, etc.) and color-coding make it easy to distinguish feature types at a glance.  \n- Contextual tooltips and interaction hints (e.g., “Click: select node, Double-click: expand neighbors”) reduce cognitive load for new users.  \n- The “Suggested Queries” panel provides immediate, actionable entry points for exploration — excellent for guiding beginners or jump-starting analysis.\n\n4. Weaknesses  \n- Empty space interaction is ambiguous: No indication whether clicking empty space deselects or resets the view — this should be explicit or visually confirmed.  \n- Hover feedback is minimal or absent: No visible cursor change or node highlight on hover makes it unclear what’s clickable, especially for newcomers.  \n- Double-click behavior (“expand neighbors”) is powerful but not discoverable without reading the tooltip — could benefit from a subtle animation or visual cue on first use.\n\n5. What you would change  \n- Add a subtle “deselect” animation or border fade when clicking empty space, and optionally show a tooltip: “Click empty space to clear selection.”  \n- Implement hover states: Change cursor to pointer on hover, and lightly highlight nodes with a glow or border to indicate interactivity — this would make the interface feel more responsive and intuitive."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_a11y_01",
+      "score": 5,
+      "weaknesses": [
+        "No visible keyboard navigation cues or shortcuts — no indication of how to traverse graph nodes, filter binaries, or trigger actions without a mouse.",
+        "Graph area appears inert to arrow keys or WASD — critical for navigating large dependency graphs without dragging.",
+        "No keyboard shortcut reference or “?” help overlay — violates accessibility and efficiency norms for power users."
+      ],
+      "suggestions": [
+        "Metadata summary (T0/T1/T2, confidence, namespaces) gives immediate context about binary complexity and analysis coverage.",
+        "Add keyboard navigation: Arrow keys to move focus between nodes, Tab to cycle through UI controls (filter, save, viewport), Enter to expand/interact.",
+        "Implement a “Ctrl+?” shortcut to toggle a modal with all available keyboard commands — essential for mouse-free workflows and inclusive design."
+      ],
+      "fullText": "1. FAIL  \n2. Score: 5/10\n\n3. Strengths  \n- Clear visual hierarchy with color-coded node types (rpc, event, schema, etc.) aids quick pattern recognition for experienced reverse engineers.  \n- Suggested queries panel provides guided exploration — useful for newcomers or during CTF time pressure.  \n- Metadata summary (T0/T1/T2, confidence, namespaces) gives immediate context about binary complexity and analysis coverage.\n\n4. Weaknesses  \n- No visible keyboard navigation cues or shortcuts — no indication of how to traverse graph nodes, filter binaries, or trigger actions without a mouse.  \n- Graph area appears inert to arrow keys or WASD — critical for navigating large dependency graphs without dragging.  \n- No keyboard shortcut reference or “?” help overlay — violates accessibility and efficiency norms for power users.\n\n5. What you would change  \n- Add keyboard navigation: Arrow keys to move focus between nodes, Tab to cycle through UI controls (filter, save, viewport), Enter to expand/interact.  \n- Implement a “Ctrl+?” shortcut to toggle a modal with all available keyboard commands — essential for mouse-free workflows and inclusive design."
+    },
+    {
+      "persona": "liveoverflow",
+      "testId": "lo_error_03",
+      "score": 7,
+      "weaknesses": [
+        "No visible loading spinner, skeleton UI, or progress bar during graph rendering — creates ambiguity: is it loading or empty?",
+        "No estimated time or “loading…” message — viewers might assume the tool is frozen or broken, especially during first use.",
+        "Graph viewport is completely blank during load — no placeholder or “initializing graph…” message to reassure users."
+      ],
+      "suggestions": [
+        "Add a subtle, animated “Loading graph…” overlay with a pulsing spinner centered in the viewport until nodes render.",
+        "Include a progress bar or percentage indicator (e.g., “Loading 6/334 nodes…”) in the top-right of the graph area to set expectations during ingestion."
+      ],
+      "fullText": "1. PASS  \n2. Score: 7/10  \n\n3. Strengths  \n- Clear visual indicators of data state: “6/334 in scene” and “334 features · 755 edges” give quantitative context to scale and progress.  \n- Bottom status bar shows real-time ingestion stats (T0, T1, T2, conf%, ELF) — useful for power users and demo audiences to track analysis depth.  \n- Suggested queries panel provides immediate context and guidance, reducing cognitive load during initial exploration.  \n\n4. Weaknesses  \n- No visible loading spinner, skeleton UI, or progress bar during graph rendering — creates ambiguity: is it loading or empty?  \n- No estimated time or “loading…” message — viewers might assume the tool is frozen or broken, especially during first use.  \n- Graph viewport is completely blank during load — no placeholder or “initializing graph…” message to reassure users.  \n\n5. What you would change  \n- Add a subtle, animated “Loading graph…” overlay with a pulsing spinner centered in the viewport until nodes render.  \n- Include a progress bar or percentage indicator (e.g., “Loading 6/334 nodes…”) in the top-right of the graph area to set expectations during ingestion."
+    }
+  ],
+  "timestamp": "2026-03-25T22:29:53.205Z"
+}

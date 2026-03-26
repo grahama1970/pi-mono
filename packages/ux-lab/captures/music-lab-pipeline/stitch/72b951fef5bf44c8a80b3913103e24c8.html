@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#6aabff",
+              "primary-fixed": "#b28cff",
+              "primary-container": "#b28cff",
+              "surface-bright": "#2c2c2c",
+              "surface": "#0e0e0e",
+              "on-secondary": "#005b2c",
+              "inverse-primary": "#742fe5",
+              "on-tertiary-fixed-variant": "#003a6d",
+              "error-container": "#a70138",
+              "on-background": "#ffffff",
+              "tertiary-fixed-dim": "#5da5ff",
+              "primary-dim": "#8a4cfc",
+              "surface-container-lowest": "#000000",
+              "on-secondary-fixed-variant": "#006632",
+              "surface-container-low": "#131313",
+              "secondary-fixed": "#00fd87",
+              "surface-dim": "#0e0e0e",
+              "primary": "#bd9dff",
+              "inverse-surface": "#fcf9f8",
+              "surface-container-highest": "#262626",
+              "on-tertiary-container": "#001e3c",
+              "surface-container": "#191a1a",
+              "secondary": "#00fd87",
+              "outline-variant": "#484848",
+              "tertiary-dim": "#4fa0ff",
+              "tertiary-container": "#499dfe",
+              "on-tertiary": "#002a52",
+              "tertiary-fixed": "#7bb3ff",
+              "on-secondary-fixed": "#004621",
+              "on-primary-fixed": "#000000",
+              "secondary-dim": "#00ed7e",
+              "surface-container-high": "#202020",
+              "surface-tint": "#bd9dff",
+              "on-secondary-container": "#e3ffe4",
+              "on-primary-fixed-variant": "#390083",
+              "secondary-fixed-dim": "#00ed7e",
+              "on-tertiary-fixed": "#001833",
+              "on-surface-variant": "#adaaaa",
+              "on-error-container": "#ffb2b9",
+              "inverse-on-surface": "#565555",
+              "surface-variant": "#262626",
+              "on-surface": "#ffffff",
+              "primary-fixed-dim": "#a67aff",
+              "on-error": "#490013",
+              "secondary-container": "#006d37",
+              "background": "#0e0e0e",
+              "error-dim": "#d73357",
+              "on-primary": "#3c0089",
+              "on-primary-container": "#2e006c",
+              "outline": "#767575",
+              "error": "#ff6e84"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .waveform-bg {
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-[#0e0e0e] dark:bg-black font-['Inter'] tracking-tight font-bold uppercase text-xs flex justify-between items-center px-6 w-full z-50 docked full-width top-0 h-14 bg-[#131313] flat no shadows shrink-0">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-white font-['Inter']">SONIC OBSERVATORY</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-zinc-500 font-['Space_Grotesk'] hover:bg-zinc-800/50 transition-colors active:scale-95 transition-transform" href="#">PROJECT</a>
+<a class="text-white border-b-2 border-violet-500 pb-1 hover:bg-zinc-800/50 transition-colors active:scale-95 transition-transform" href="#">EDIT</a>
+<a class="text-zinc-500 font-['Space_Grotesk'] hover:bg-zinc-800/50 transition-colors active:scale-95 transition-transform" href="#">ARRANGE</a>
+<a class="text-zinc-500 font-['Space_Grotesk'] hover:bg-zinc-800/50 transition-colors active:scale-95 transition-transform" href="#">VIEW</a>
+</nav>
+</div>
+<!-- DAW Info Display Middle -->
+<div class="absolute left-1/2 -translate-x-1/2 bg-surface-container-lowest px-4 py-1.5 rounded-lg flex items-center gap-4 border border-outline-variant/10">
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-label text-on-surface-variant leading-none">PROJECT STATUS</span>
+<span class="text-secondary text-xs font-label">READY FOR S07</span>
+</div>
+<div class="h-6 w-px bg-outline-variant/30"></div>
+<div class="flex items-center gap-4 px-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="play_arrow">play_arrow</span>
+<span class="text-primary font-label text-sm tracking-widest">01:23 / 04:58</span>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-zinc-600 text-sm" data-icon="stop">stop</span>
+<span class="material-symbols-outlined text-error text-sm" data-icon="fiber_manual_record">fiber_manual_record</span>
+</div>
+</div>
+<div class="h-6 w-px bg-outline-variant/30"></div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-label text-on-surface-variant leading-none">PORTISHEAD — ROADS</span>
+<span class="text-[10px] font-label text-tertiary">D MINOR · 85 BPM</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-500 cursor-pointer hover:text-white" data-icon="settings">settings</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Operator Profile Technical Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvrZyq0kGjL2U8M3hZVMcsEfH9WtyjnwwaL-Qzl1Uca4CuaBfVWros7Z1VnG7xh-TLaxj58MNvAKRlaK34pF-nmYPe-YnXisDjjJZM8VO89DohlfPPBrLIzJdv3n7eEXt3UE4Sg6Ao8kIMzRp8u65Kzx9nmkhihfr_Bwn5_wpKVKGKzk7fByZWODZc7_IrFTkE3_69XUgkBrNH3X7pTOPgztqr2e5ysxek0KUz4fCjm0Kd8W7RpcE6CkLZCAWrOUHx3ojYdVith5U"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<aside class="bg-[#131313] dark:bg-[#0e0e0e] font-['Space_Grotesk'] uppercase tracking-widest text-[10px] docked vertical left-0 w-64 h-full border-r border-zinc-800/20 flex flex-col h-full py-8 shrink-0">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-on-surface text-xs font-bold">PIPELINE</span>
+</div>
+<p class="text-on-surface-variant text-[9px] tracking-[0.2em]">v2.4.0-STABLE</p>
+</div>
+<nav class="flex-1">
+<div class="text-zinc-500 py-4 px-6 flex items-center gap-4 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer active:translate-x-1 transition-transform">
+<span class="material-symbols-outlined" data-icon="input">input</span>
+<span>INGEST</span>
+</div>
+<div class="text-zinc-500 py-4 px-6 flex items-center gap-4 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer active:translate-x-1 transition-transform">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>DECONSTRUCT</span>
+</div>
+<div class="text-[#00fd87] bg-zinc-900/50 border-l-2 border-[#00fd87] py-4 px-6 flex items-center gap-4 cursor-default">
+<span class="material-symbols-outlined" data-icon="Waves">waves</span>
+<span>PROCESS</span>
+</div>
+<div class="text-zinc-500 py-4 px-6 flex items-center gap-4 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer active:translate-x-1 transition-transform">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span>MIX</span>
+</div>
+<div class="text-zinc-500 py-4 px-6 flex items-center gap-4 hover:text-white hover:bg-zinc-800 transition-all cursor-pointer active:translate-x-1 transition-transform">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<span>EXPORT</span>
+</div>
+</nav>
+<div class="mt-auto px-6 mb-8">
+<button class="w-full py-3 bg-primary-container text-on-primary-container font-bold rounded-lg hover:brightness-110 transition-all active:scale-95">
+                    NEW SESSION
+                </button>
+</div>
+<div class="border-t border-zinc-800/20 pt-4">
+<div class="text-zinc-500 py-3 px-6 flex items-center gap-4 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>TERMINAL</span>
+</div>
+<div class="text-zinc-500 py-3 px-6 flex items-center gap-4 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="hard_drive">hard_drive</span>
+<span>STORAGE</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Canvas -->
+<main class="flex-1 flex flex-col bg-surface relative">
+<!-- DAW Timeline View -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<!-- Ruler / Markers -->
+<div class="h-10 border-b border-outline-variant/10 flex items-end relative bg-surface-container-low">
+<div class="absolute inset-0 flex">
+<!-- Marker: Intro -->
+<div class="w-[10%] h-full border-r border-outline-variant/20 flex flex-col justify-end px-2 pb-1">
+<span class="text-[9px] font-label text-on-surface-variant">0:00</span>
+<span class="text-[10px] font-label font-bold text-tertiary">INTRO</span>
+</div>
+<!-- Marker: Verse 1 -->
+<div class="w-[30%] h-full border-r border-outline-variant/20 flex flex-col justify-end px-2 pb-1 bg-tertiary/5">
+<span class="text-[9px] font-label text-on-surface-variant">0:15</span>
+<span class="text-[10px] font-label font-bold text-tertiary">VERSE 1</span>
+</div>
+<!-- Marker: Chorus 1 -->
+<div class="w-[40%] h-full border-r border-outline-variant/20 flex flex-col justify-end px-2 pb-1 bg-primary/5">
+<span class="text-[9px] font-label text-on-surface-variant">1:23</span>
+<span class="text-[10px] font-label font-bold text-primary">CHORUS 1</span>
+</div>
+<!-- Marker: Bridge -->
+<div class="flex-1 h-full border-r border-outline-variant/20 flex flex-col justify-end px-2 pb-1">
+<span class="text-[9px] font-label text-on-surface-variant">2:10</span>
+<span class="text-[10px] font-label font-bold text-on-surface-variant">BRIDGE</span>
+</div>
+</div>
+<!-- Playhead -->
+<div class="absolute left-[35%] top-0 bottom-0 w-px bg-secondary-fixed z-40 shadow-[0_0_8px_rgba(0,253,135,0.8)]">
+<div class="absolute -top-1 -left-1.5 w-3 h-3 rotate-45 bg-secondary-fixed"></div>
+</div>
+</div>
+<!-- Tracks Container -->
+<div class="flex-1 overflow-y-auto space-y-1 py-1 bg-surface-container-lowest relative">
+<!-- Track: Vocal (Purple) -->
+<div class="h-20 flex items-stretch group relative">
+<div class="w-12 bg-primary-dim/20 flex flex-col items-center justify-center border-r border-primary/20">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="mic">mic</span>
+<span class="text-[8px] font-label text-primary mt-1">VOX</span>
+</div>
+<div class="flex-1 relative bg-surface-container/30 overflow-hidden">
+<div class="absolute inset-0 waveform-bg opacity-30"></div>
+<!-- Selection Overlay A (Verse) -->
+<div class="absolute left-[15%] w-[18%] top-0 bottom-0 bg-secondary/20 border-x border-secondary/40 z-10">
+<div class="absolute top-1 left-2 text-[8px] font-label bg-secondary text-on-secondary px-1 rounded-sm">VERSE REF</div>
+</div>
+<!-- Selection Overlay B (Chorus) -->
+<div class="absolute left-[40%] w-[25%] top-0 bottom-0 bg-primary/20 border-x border-primary/40 z-10"></div>
+<!-- Waveform Mockup -->
+<div class="absolute inset-x-0 h-12 top-4 flex items-center gap-[1px]">
+<div class="w-1 bg-primary/40 h-[20%] rounded-full"></div><div class="w-1 bg-primary/60 h-[40%] rounded-full"></div><div class="w-1 bg-primary h-[80%] rounded-full shadow-[0_0_4px_rgba(189,157,255,0.4)]"></div><div class="w-1 bg-primary h-[60%] rounded-full"></div><div class="w-1 bg-primary/40 h-[30%] rounded-full"></div><div class="w-1 bg-primary/80 h-[90%] rounded-full"></div><div class="w-1 bg-primary h-[50%] rounded-full"></div><div class="w-1 bg-primary/40 h-[70%] rounded-full"></div><div class="w-1 bg-primary/20 h-[30%] rounded-full"></div><div class="w-1 bg-primary/50 h-[60%] rounded-full"></div><div class="w-1 bg-primary h-[85%] rounded-full"></div><div class="w-1 bg-primary/30 h-[40%] rounded-full"></div><div class="w-1 bg-primary/60 h-[70%] rounded-full"></div><div class="w-1 bg-primary/40 h-[40%] rounded-full"></div><div class="w-1 bg-primary/80 h-[95%] rounded-full"></div><div class="w-1 bg-primary/30 h-[20%] rounded-full"></div><div class="w-1 bg-primary/60 h-[70%] rounded-full"></div><div class="w-1 bg-primary/40 h-[50%] rounded-full"></div><div class="w-1 bg-primary/90 h-[80%] rounded-full"></div><div class="w-1 bg-primary/40 h-[60%] rounded-full"></div><div class="w-1 bg-primary h-[40%] rounded-full"></div><div class="w-1 bg-primary/50 h-[70%] rounded-full"></div><div class="w-1 bg-primary/30 h-[50%] rounded-full"></div><div class="w-1 bg-primary/70 h-[90%] rounded-full"></div><div class="w-1 bg-primary/40 h-[60%] rounded-full"></div><div class="w-1 bg-primary/80 h-[75%] rounded-full"></div><div class="w-1 bg-primary/30 h-[45%] rounded-full"></div><div class="w-1 bg-primary h-[65%] rounded-full"></div><div class="w-1 bg-primary/50 h-[35%] rounded-full"></div><div class="w-1 bg-primary/80 h-[90%] rounded-full"></div><div class="w-1 bg-primary/40 h-[55%] rounded-full"></div><div class="w-1 bg-primary/70 h-[80%] rounded-full"></div><div class="w-1 bg-primary/30 h-[40%] rounded-full"></div><div class="w-1 bg-primary/60 h-[75%] rounded-full"></div><div class="w-1 bg-primary/40 h-[45%] rounded-full"></div><div class="w-1 bg-primary/90 h-[95%] rounded-full"></div><div class="w-1 bg-primary/30 h-[30%] rounded-full"></div><div class="w-1 bg-primary/60 h-[65%] rounded-full"></div><div class="w-1 bg-primary/40 h-[40%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Track: Bass (Blue) -->
+<div class="h-20 flex items-stretch group relative">
+<div class="w-12 bg-tertiary-dim/20 flex flex-col items-center justify-center border-r border-tertiary/20">
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="speaker_group">speaker_group</span>
+<span class="text-[8px] font-label text-tertiary mt-1">BASS</span>
+</div>
+<div class="flex-1 relative bg-surface-container/30 overflow-hidden">
+<div class="absolute inset-0 waveform-bg opacity-30"></div>
+<!-- Selection Overlay A (Verse) -->
+<div class="absolute left-[15%] w-[18%] top-0 bottom-0 bg-secondary/20 border-x border-secondary/40 z-10"></div>
+<!-- Selection Overlay B (Chorus) -->
+<div class="absolute inset-x-0 h-8 top-6 flex items-center gap-[1px]">
+<div class="w-1 bg-tertiary/50 h-[40%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[45%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[35%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[50%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[42%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[48%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[40%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[52%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[44%] rounded-full"></div><div class="w-1 bg-tertiary/50 h-[50%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Track: Drums (Red) -->
+<div class="h-20 flex items-stretch group relative">
+<div class="w-12 bg-error-dim/20 flex flex-col items-center justify-center border-r border-error/20">
+<span class="material-symbols-outlined text-error text-lg" data-icon="pentagon">pentagon</span>
+<span class="text-[8px] font-label text-error mt-1">DRUM</span>
+</div>
+<div class="flex-1 relative bg-surface-container/30 overflow-hidden">
+<div class="absolute inset-0 waveform-bg opacity-30"></div>
+<!-- Selection Overlay B (Chorus) -->
+<div class="absolute left-[40%] w-[25%] top-0 bottom-0 bg-primary/20 border-x border-primary/40 z-10">
+<div class="absolute top-1 left-2 text-[8px] font-label bg-primary text-on-primary-container px-1 rounded-sm">CHORUS REF</div>
+</div>
+<div class="absolute inset-x-0 h-14 top-3 flex items-center gap-[1px]">
+<div class="w-1 bg-error/70 h-[90%] rounded-full"></div><div class="w-1 bg-error/20 h-[10%] rounded-full"></div><div class="w-1 bg-error/20 h-[10%] rounded-full"></div><div class="w-1 bg-error/20 h-[10%] rounded-full"></div><div class="w-1 bg-error/70 h-[80%] rounded-full"></div><div class="w-1 bg-error/20 h-[10%] rounded-full"></div><div class="w-1 bg-error/20 h-[10%] rounded-full"></div><div class="w-1 bg-error/20 h-[10%] rounded-full"></div><div class="w-1 bg-error/70 h-[90%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Track: Keys (Green) -->
+<div class="h-20 flex items-stretch group relative">
+<div class="w-12 bg-secondary-dim/20 flex flex-col items-center justify-center border-r border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="keyboard">keyboard</span>
+<span class="text-[8px] font-label text-secondary mt-1">KEYS</span>
+</div>
+<div class="flex-1 relative bg-surface-container/30 overflow-hidden">
+<div class="absolute inset-0 waveform-bg opacity-30"></div>
+<!-- Selection Overlay B (Chorus) -->
+<div class="absolute left-[40%] w-[25%] top-0 bottom-0 bg-primary/20 border-x border-primary/40 z-10"></div>
+</div>
+</div>
+<!-- Track: Guitar (Amber) -->
+<div class="h-20 flex items-stretch group relative">
+<div class="w-12 bg-orange-400/10 flex flex-col items-center justify-center border-r border-orange-400/20">
+<span class="material-symbols-outlined text-orange-400 text-lg" data-icon="legend_toggle">legend_toggle</span>
+<span class="text-[8px] font-label text-orange-400 mt-1">GTR</span>
+</div>
+<div class="flex-1 relative bg-surface-container/30 overflow-hidden">
+<div class="absolute inset-0 waveform-bg opacity-30"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Panel: Selected Clips -->
+<div class="h-64 border-t border-outline-variant/20 bg-surface-container-low p-6">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<h2 class="text-sm font-label font-bold tracking-widest text-on-surface">SELECTED REFERENCE CLIPS</h2>
+<span class="bg-surface-container-highest text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-label">2 CLIPS SELECTED</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-zinc-500 cursor-pointer" data-icon="filter_list">filter_list</span>
+<span class="material-symbols-outlined text-zinc-500 cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<div class="flex gap-6 overflow-x-auto pb-4">
+<!-- Card A -->
+<div class="min-w-[320px] bg-surface-container border-l-4 border-secondary p-4 rounded-lg flex flex-col gap-4 shadow-xl">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label font-bold text-xs">Verse Ref</h3>
+<p class="text-[10px] text-on-surface-variant">0:20 - 0:50 · VOCAL + BASS</p>
+</div>
+<div class="bg-secondary/10 px-2 py-1 rounded">
+<span class="text-[10px] text-secondary font-bold font-label">FEAR, SADNESS</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<button class="flex items-center gap-2 bg-secondary/10 hover:bg-secondary/20 text-secondary px-3 py-1.5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow">play_arrow</span>
+<span class="text-[10px] font-bold font-label">PLAY PREVIEW</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label text-secondary">ACTIVE</span>
+<div class="w-8 h-4 bg-secondary rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card B -->
+<div class="min-w-[320px] bg-surface-container border-l-4 border-primary p-4 rounded-lg flex flex-col gap-4 shadow-xl">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-label font-bold text-xs">Chorus Ref</h3>
+<p class="text-[10px] text-on-surface-variant">1:25 - 1:55 · VOCAL + DRUMS + KEYS</p>
+</div>
+<div class="bg-primary/10 px-2 py-1 rounded">
+<span class="text-[10px] text-primary font-bold font-label">ANGER, TRUST</span>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<button class="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1.5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="play_arrow">play_arrow</span>
+<span class="text-[10px] font-bold font-label">PLAY PREVIEW</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label text-primary">ACTIVE</span>
+<div class="w-8 h-4 bg-primary rounded-full relative">
+<div class="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Tag Assignment -->
+<aside class="absolute right-0 top-0 bottom-0 w-80 bg-surface-container-low border-l border-outline-variant/20 flex flex-col">
+<div class="p-6 border-b border-outline-variant/10">
+<h2 class="text-xs font-label font-black tracking-widest text-on-surface mb-1 uppercase">Heart Tag Assignment</h2>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Section Emotions Mapping</p>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<div class="bg-surface-container-high/50 p-4 rounded-lg border border-outline-variant/10">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold text-on-surface font-label">INTRO (0:00)</span>
+<span class="text-[9px] bg-zinc-800 text-zinc-400 px-2 rounded-full font-label">NEUTRAL</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="h-1 bg-zinc-800 rounded-full"></div>
+<div class="h-1 bg-zinc-800 rounded-full"></div>
+</div>
+</div>
+<div class="bg-tertiary/5 p-4 rounded-lg border border-tertiary/20">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold text-tertiary font-label uppercase">Verse 1 (0:15)</span>
+<div class="flex gap-1">
+<span class="text-[9px] bg-tertiary/20 text-tertiary px-2 rounded-full font-label">SADNESS</span>
+<span class="text-[9px] bg-tertiary/20 text-tertiary px-2 rounded-full font-label">FEAR</span>
+</div>
+</div>
+<div class="h-1.5 bg-tertiary/20 rounded-full overflow-hidden">
+<div class="w-4/5 h-full bg-tertiary"></div>
+</div>
+<p class="mt-2 text-[9px] text-on-surface-variant font-label leading-relaxed">Ambient layers emphasize isolated frequency ranges, triggering uncertainty responses.</p>
+</div>
+<div class="bg-primary/5 p-4 rounded-lg border border-primary/20">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold text-primary font-label uppercase">Chorus 1 (1:23)</span>
+<div class="flex gap-1">
+<span class="text-[9px] bg-primary/20 text-primary px-2 rounded-full font-label">ANGER</span>
+<span class="text-[9px] bg-primary/20 text-primary px-2 rounded-full font-label">TRUST</span>
+</div>
+</div>
+<div class="h-1.5 bg-primary/20 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<p class="mt-2 text-[9px] text-on-surface-variant font-label leading-relaxed">Dynamic shift in drum transients creates forward momentum and high-valence arousal.</p>
+</div>
+<div class="bg-surface-container-high/50 p-4 rounded-lg border border-outline-variant/10 opacity-50">
+<div class="flex justify-between items-center mb-3">
+<span class="text-[10px] font-bold text-on-surface font-label uppercase">Bridge (2:10)</span>
+<span class="text-[9px] text-zinc-500 font-label italic">UNASSIGNED...</span>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1.5 border border-dashed border-outline-variant rounded text-[9px] font-label text-on-surface-variant hover:text-white hover:border-white transition-all">ADD TAG</button>
+</div>
+</div>
+</div>
+<div class="p-6 bg-surface-container-highest/30 border-t border-outline-variant/10">
+<button class="w-full py-4 bg-gradient-to-br from-primary-dim to-primary text-on-primary-fixed font-black tracking-widest text-[10px] rounded-xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(189,157,255,0.2)] hover:scale-[1.02] transition-transform">
+                        INITIALIZE S07 EXPORT
+                        <span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+</button>
+</div>
+</aside>
+</main>
+</div>
+</body></html>

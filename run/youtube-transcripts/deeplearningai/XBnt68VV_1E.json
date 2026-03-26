@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XBnt68VV_1E",
+    "language": "en",
+    "took_ms": 8332,
+    "method": null,
+    "title": "New course with Predibase: Efficiently Serving LLMs",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240318",
+    "duration_sec": 177,
+    "description": "Enroll now: https://bit.ly/3IA1WLs\n\nThis course will help you build a ground-up understanding of how to serve large language model applications. \n\nWhether you’re ready to launch your own application or just getting started building it, you will deepen your foundational knowledge of how LLMs work and better understand the performance trade-offs you must consider when building LLM applications that will serve large numbers of users.\n\nYou’ll walk through the most important optimizations that allow LLM vendors to efficiently serve models to many customers, including strategies for working with multiple fine-tuned models at once. In this course, you will:\n\n- Learn how auto-regressive LLMs generate text one token at a time.\nImplement the foundational elements of a modern LLM inference stack in code, including KV caching, continuous batching, and model quantization, and benchmark their impacts on inference throughput and latency.\n- Explore the details of how LoRA adapters work, and learn how batching techniques allow different LoRA adapters to be served to multiple customers simultaneously.\n- Get hands-on with Predibase’s LoRAX framework inference server to see these optimization techniques implemented in a real world LLM inference server.\n- Enhance your understanding of the options you have to increase the performance and efficiency of your LLM-powered applications.\n\nLearn more: https://bit.ly/3IA1WLs",
+    "view_count": 2099
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XBnt68VV_1E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

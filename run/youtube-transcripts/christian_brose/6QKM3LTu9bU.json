@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6QKM3LTu9bU",
+    "language": "en",
+    "took_ms": 8113,
+    "method": null,
+    "title": "The Patents that Power Your Connected Devices: Discussing Methods for Identifying Essential Patents",
+    "channel": "Hudson Institute",
+    "upload_date": "20230315",
+    "duration_sec": 3266,
+    "description": "Technology standards like 5G have revolutionized the way we use our smartphones, and they are bringing similar changes to other industries as connectivity becomes an invaluable feature for most products. Although the next revolution in the industry is already underway, some have questioned whether the government needs to revise the system by providing more information about the patents that are essential to practice technology standards. Join Hudson Institute’s panel to learn more about the methodologies for identifying essential patents.",
+    "view_count": 260
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6QKM3LTu9bU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

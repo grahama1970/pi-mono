@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f5ym8e1pwHA",
+    "language": "en",
+    "took_ms": 8956,
+    "method": null,
+    "title": "New course with Databricks! DSPy: Build and Optimize Agentic Apps",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250604",
+    "duration_sec": 208,
+    "description": "Learn more: https://bit.ly/4mIpgcJ\n\nAs generative AI applications grow more complex, spanning reasoning, retrieval, and tool use, writing and maintaining prompts across multiple components becomes challenging. Small changes to the model or input format can break your system, and debugging multi-step agents often requires guesswork.\n\nIn DSPy: Build and Optimize Agentic Apps, a new short course taught by Chen Qian, co-lead of the DSPy framework at Databricks, you’ll learn how to build agents that are easier to reason about, debug, and improve over time.\n\nYou’ll use DSPy’s signature-based programming model to define modular steps in your application, trace each component with MLflow, and improve performance using DSPy Optimizer without needing to hand-craft or re-tune prompts for every model change.\n\nThrough hands-on examples like a sentiment classifier, a guessing game, a travel assistant, and a Wikipedia-based RAG agent, you’ll learn how to apply these ideas in practice.\n\nWhat you’ll learn includes:\n\n- Building agentic apps using DSPy modules like Predict, ChainOfThought, and React\n- Tracing and debugging multi-step workflows using MLflow\n- Improving accuracy through prompt tuning and few-shot example generation with DSPy Optimizer\n\nThis course is ideal for developers and engineers looking to build more maintainable GenAI applications. No prior DSPy or MLflow experience needed.\n\nEnroll now: https://bit.ly/4mIpgcJ",
+    "view_count": 4890
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f5ym8e1pwHA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

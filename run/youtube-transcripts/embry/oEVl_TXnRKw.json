@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oEVl_TXnRKw",
+    "language": "en",
+    "took_ms": 9155,
+    "method": null,
+    "title": "Why don’t we see stars in space? #apollo #moonlanding Full video - https://youtu.be/fMHLvoWZfqQ",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20250228",
+    "duration_sec": 146,
+    "description": "",
+    "view_count": 78549
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oEVl_TXnRKw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

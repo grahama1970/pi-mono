@@ -195,6 +195,38 @@ interface RunResult {
 const RESULTS_DIR = resolve(process.cwd(), 'test-results');
 const MANIFEST_PATH = resolve(process.cwd(), 'test-manifest.json');
 
+/** Feature group → source file mapping for persona reviews */
+const GROUP_FILES: Record<string, string> = {
+  'first-impressions': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1-200)',
+  'graph-navigation': 'src/components/binary-explorer/BinaryGraph.tsx',
+  'graph-exploration': 'src/components/binary-explorer/BinaryGraph.tsx',
+  'graph-interaction': 'src/components/binary-explorer/BinaryGraph.tsx',
+  'code-view': 'src/components/binary-explorer/CodePane.tsx',
+  'node-detail': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 800-1100)',
+  'chat-analysis': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1200-1500)',
+  'chat-exploration': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1200-1500)',
+  'table-view': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1000-1200)',
+  'symbol-tree': 'src/components/binary-explorer/SymbolTree.tsx',
+  'progressive-disclosure': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 580-650)',
+  'search-and-filter': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 400-550)',
+  'vulnerability-hunting': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1300-1500)',
+  'visual-design': 'src/components/common/EmbryStyle.ts',
+  'perspective-views': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 300-400)',
+  'scene-management': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 550-620)',
+  'investigation-journal': 'src/components/common/InvestigationJournal.tsx',
+  'taxonomy-integration': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 270-350)',
+  'automation': 'server/index.ts',
+  'data-structures': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 800-1000)',
+  'cross-references': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 900-1000)',
+  'state-machines': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1100-1200)',
+  'performance': 'src/components/binary-explorer/BinaryGraph.tsx',
+  'context-menu': 'src/components/common/ContextMenu.tsx',
+  'ctf-workflow': 'src/components/common/InvestigationJournal.tsx',
+  'learning-path': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 100-300)',
+  'accessibility': 'src/components/binary-explorer/BinaryExplorerView.tsx',
+  'error-states': 'src/components/binary-explorer/BinaryExplorerView.tsx (lines 1500-1550)',
+};
+
 // In-memory store for results (persisted to disk optionally)
 const runHistory = new Map<string, RunResult>();
 let activeCDP: CDPClient | null = null;
@@ -223,6 +255,31 @@ function scanTestIds(dir: string): string[] {
   walk(dir);
   return [...ids].sort();
 }
+
+// ── Round tracking for convergence loop ─────────────────────────────────────
+interface RoundResult {
+  round: number;
+  testId: string;
+  group: string;
+  persona: string;
+  score: number;
+  verdict: string;
+  weaknesses: string[];
+  changes: string[];
+  durationMs: number;
+  timestamp: string;
+}
+
+interface RoundSummary {
+  round: number;
+  avg: number;
+  passed: number;
+  total: number;
+  results: RoundResult[];
+  timestamp: string;
+}
+
+const roundHistory: RoundSummary[] = [];
 
 export function registerTestRunnerRoutes(app: Express, broadcast: (msg: any) => void) {
 
@@ -353,6 +410,256 @@ export function registerTestRunnerRoutes(app: Express, broadcast: (msg: any) => 
     const result = runHistory.get(req.params.runId);
     if (!result) return res.status(404).json({ error: 'RUN_NOT_FOUND' });
     res.json(result);
+  });
+
+  // ── Round tracking endpoints ──────────────────────────────────────────────
+  app.get('/api/test-runner/rounds', (_req, res) => {
+    res.json({ rounds: roundHistory, currentRound: roundHistory.length });
+  });
+
+  app.get('/api/test-runner/rounds/:round', (req, res) => {
+    const round = roundHistory.find(r => r.round === Number(req.params.round));
+    if (!round) return res.status(404).json({ error: 'ROUND_NOT_FOUND' });
+    res.json(round);
+  });
+
+  // Round history for a specific test ID across all rounds (for the trajectory display)
+  app.get('/api/test-runner/test-rounds/:testId', (req, res) => {
+    const testId = req.params.testId;
+    const history = roundHistory.map(r => {
+      const result = r.results.find(rr => rr.testId === testId);
+      return result ? { round: r.round, ...result } : null;
+    }).filter(Boolean);
+    res.json({ testId, rounds: history });
+  });
+
+  // Record current run results as a new round
+  app.post('/api/test-runner/rounds/record', (req, res) => {
+    const { runId } = req.body;
+    const run = runHistory.get(runId);
+    if (!run) return res.status(404).json({ error: 'RUN_NOT_FOUND' });
+
+    const roundNum = roundHistory.length + 1;
+    const results: RoundResult[] = [];
+    for (const r of run.results) {
+      for (const s of r.steps || []) {
+        if (s.action === 'persona_review' && s.score !== undefined) {
+          results.push({
+            round: roundNum, testId: r.testId, group: (r as any).group || '',
+            persona: s.persona || '', score: s.score, verdict: s.verdict || 'FAIL',
+            weaknesses: s.weaknesses || [], changes: s.changes || [],
+            durationMs: s.durationMs || 0, timestamp: new Date().toISOString(),
+          });
+        }
+      }
+    }
+
+    const scores = results.map(r => r.score).filter(s => s > 0);
+    const avg = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+    const passed = scores.filter(s => s >= 8).length;
+
+    const summary: RoundSummary = { round: roundNum, avg, passed, total: scores.length, results, timestamp: new Date().toISOString() };
+    roundHistory.push(summary);
+
+    const roundDir = join(RESULTS_DIR, 'rounds');
+    if (!existsSync(roundDir)) mkdirSync(roundDir, { recursive: true });
+    writeFileSync(join(roundDir, `round-${roundNum}.json`), JSON.stringify(summary, null, 2));
+
+    broadcast({ type: 'round-complete', payload: { round: roundNum, avg, passed, total: scores.length } });
+    res.json(summary);
+  });
+
+  // ── Persona Convergence: subagent reviews + fixes in worktree ─────────────
+  //
+  // POST /api/test-runner/persona-converge
+  // { manifest: "tim-blazytko-review.test.json", groups?: ["code-view", "graph-navigation"] }
+  //
+  // 1. Creates git worktree branch for the persona
+  // 2. Sends subagent prompt: read code → create task list → fix each task sequentially
+  // 3. Streams progress via SSE (broadcast)
+  // 4. Each task must PASS before next starts
+  // 5. Returns completed manifest with commits
+  //
+  const activeConvergences = new Map<string, { persona: string; branch: string; status: string }>();
+
+  app.post('/api/test-runner/persona-converge', async (req, res) => {
+    const { manifest: manifestFile, groups: requestedGroups } = req.body;
+    if (!manifestFile) return res.status(400).json({ error: 'manifest required' });
+
+    const manifestPath = resolve(process.cwd(), manifestFile);
+    if (!existsSync(manifestPath)) return res.status(404).json({ error: 'manifest not found' });
+
+    const mData = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+    const persona = mData.persona || manifestFile.replace('-review.test.json', '');
+    const agentMdPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', persona, 'AGENTS.md');
+    const agentProfile = existsSync(agentMdPath) ? readFileSync(agentMdPath, 'utf-8').slice(0, 2000) : '';
+
+    // Collect review criteria grouped by feature group
+    const groupCriteria: Record<string, { tests: number; criteria: string[]; sourceFile: string }> = {};
+    for (const test of mData.tests) {
+      const g = test.group || 'unknown';
+      if (requestedGroups && !requestedGroups.includes(g)) continue;
+      if (!groupCriteria[g]) groupCriteria[g] = { tests: 0, criteria: [], sourceFile: '' };
+      groupCriteria[g].tests++;
+      for (const step of test.steps || []) {
+        if (step.action === 'persona_review') {
+          if (step.review_criteria && !groupCriteria[g].criteria.includes(step.review_criteria)) {
+            groupCriteria[g].criteria.push(step.review_criteria);
+          }
+          if (step.source_file) groupCriteria[g].sourceFile = step.source_file;
+        }
+      }
+    }
+
+    // Build the subagent prompt
+    const groupBlock = Object.entries(groupCriteria).map(([group, info]) => {
+      const src = info.sourceFile || (GROUP_FILES as Record<string, string>)[group] || 'src/components/binary-explorer/BinaryExplorerView.tsx';
+      return `### ${group} (${info.tests} tests)\nSource: ${src}\nCriteria:\n${info.criteria.map((c, i) => `  ${i + 1}. ${c}`).join('\n')}`;
+    }).join('\n\n');
+
+    const prompt = `You are ${persona.replace(/-/g, ' ')}, reverse engineering expert.
+
+${agentProfile}
+
+## Your Mission
+
+You are reviewing and FIXING Binary Explorer. For each feature group below:
+
+1. Read the source file
+2. Evaluate against the criteria
+3. Create a task list of issues found (score each 1-10)
+4. Fix each issue IN THE CODE — do not just report it
+5. After each fix, run: npx tsc --noEmit to verify compilation
+6. Only move to the next task after the current one compiles clean
+7. After all tasks in a group are fixed, move to the next group
+
+## CRITICAL RULES
+- git commit BEFORE making any changes (your safety checkpoint)
+- Fix one task at a time. Verify. Then next.
+- If a fix breaks compilation, revert and try again
+- Do NOT skip tasks. Each must PASS before moving on.
+- Return a JSON summary at the end
+
+## Feature Groups to Review and Fix
+
+${groupBlock}
+
+## Output Format
+
+After all fixes, return JSON:
+{
+  "persona": "${persona}",
+  "tasks_found": <number>,
+  "tasks_fixed": <number>,
+  "tasks_failed": <number>,
+  "groups": {
+    "<group-name>": {
+      "score_before": <1-10>,
+      "score_after": <1-10>,
+      "tasks": [{"description": "...", "status": "PASS|FAIL", "commit": "sha"}]
+    }
+  }
+}`;
+
+    const branch = `persona/${persona}-${Date.now()}`;
+    const convergenceId = `${persona}-${Date.now()}`;
+    activeConvergences.set(convergenceId, { persona, branch, status: 'STARTING' });
+
+    // Create git branch for the persona (safety checkpoint)
+    const { execSync } = await import('child_process');
+    const repoRoot = resolve(process.cwd(), '..', '..');
+    try {
+      execSync(`git -C "${repoRoot}" checkout -b "${branch}"`, { stdio: 'pipe' });
+      console.log(`[CONVERGE] Created branch: ${branch}`);
+    } catch {
+      // Branch might already exist or we're in detached HEAD — proceed anyway
+      console.log(`[CONVERGE] Branch creation failed, continuing on current branch`);
+    }
+
+    // Return immediately, stream progress via broadcast
+    res.json({ convergenceId, persona, branch, groupCount: Object.keys(groupCriteria).length, status: 'STARTING' });
+
+    // Fire subagent via SSE in background
+    const subagentPort = Number(process.env.SUBAGENT_PORT || 8620);
+    try {
+      activeConvergences.set(convergenceId, { persona, branch, status: 'RUNNING' });
+      broadcast({ type: 'persona-converge-start', payload: { convergenceId, persona, branch } });
+
+      // Subagent runs in Docker: host path maps to /home/node/workspace
+      const containerWorkspace = process.cwd().replace(/^\/home\/graham\/workspace\/experiments\/pi-mono/, '/home/node/workspace');
+      const payload = JSON.stringify({ model: 'sonnet', prompt, workspace: containerWorkspace });
+      const sseReq = httpRequest(
+        { hostname: 'localhost', port: subagentPort, path: '/chat/stream', method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } },
+        (sseRes) => {
+          let resultText = '';
+          let currentEvent = '';
+          let buffer = '';
+
+          sseRes.on('data', (chunk: Buffer) => {
+            buffer += chunk.toString();
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (trimmed.startsWith('event: ')) {
+                currentEvent = trimmed.slice(7);
+              } else if (trimmed.startsWith('data: ')) {
+                try {
+                  const data = JSON.parse(trimmed.slice(6));
+                  if (currentEvent === 'assistant') {
+                    const content = data?.message?.content;
+                    if (Array.isArray(content)) {
+                      for (const c of content) {
+                        if (c.type === 'tool_use') {
+                          broadcast({ type: 'persona-converge-progress', payload: { convergenceId, persona, tool: c.name } });
+                        } else if (c.type === 'text') {
+                          broadcast({ type: 'persona-converge-text', payload: { convergenceId, persona, text: c.text?.slice(0, 200) } });
+                        }
+                      }
+                    }
+                  } else if (currentEvent === 'result') {
+                    resultText = data.result || '';
+                  } else if (currentEvent === 'done') {
+                    const durationMs = data.duration_ms || 0;
+                    activeConvergences.set(convergenceId, { persona, branch, status: 'DONE' });
+                    broadcast({ type: 'persona-converge-done', payload: { convergenceId, persona, durationMs, resultLength: resultText.length } });
+
+                    // Save result to disk
+                    const outPath = join(RESULTS_DIR, `converge-${convergenceId}.json`);
+                    writeFileSync(outPath, JSON.stringify({ convergenceId, persona, branch, durationMs, result: resultText }, null, 2));
+                  }
+                } catch {}
+              }
+            }
+          });
+          sseRes.on('error', (err) => {
+            activeConvergences.set(convergenceId, { persona, branch, status: 'ERROR' });
+            broadcast({ type: 'persona-converge-error', payload: { convergenceId, persona, error: err.message } });
+          });
+        }
+      );
+      sseReq.on('error', (err) => {
+        activeConvergences.set(convergenceId, { persona, branch, status: 'ERROR' });
+        broadcast({ type: 'persona-converge-error', payload: { convergenceId, persona, error: err.message } });
+      });
+      sseReq.setTimeout(600_000, () => {
+        sseReq.destroy();
+        activeConvergences.set(convergenceId, { persona, branch, status: 'TIMEOUT' });
+        broadcast({ type: 'persona-converge-error', payload: { convergenceId, persona, error: 'SSE timeout 600s' } });
+      });
+      sseReq.write(payload);
+      sseReq.end();
+    } catch (err: any) {
+      activeConvergences.set(convergenceId, { persona, branch, status: 'ERROR' });
+      broadcast({ type: 'persona-converge-error', payload: { convergenceId, persona, error: err.message } });
+    }
+  });
+
+  app.get('/api/test-runner/persona-converge/status', (_req, res) => {
+    const status: Record<string, any> = {};
+    for (const [id, info] of activeConvergences) status[id] = info;
+    res.json(status);
   });
 
   // Manifest CRUD
@@ -698,75 +1005,152 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
         case 'persona_review': {
           const personaSlug = step.persona || 'unknown';
           const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface.';
-          const reviewUrl = step.url || await cdp.evaluate('window.location.href');
+          const sourceFile = step.source_file || 'src/components/binary-explorer/BinaryExplorerView.tsx';
 
-          // Load prompt from /prompt-lab
-          const prPromptDir = resolve(process.cwd(), '..', '..', '.pi', 'skills', 'prompt-lab', 'prompts');
-          const prTemplate = existsSync(join(prPromptDir, 'persona_review_v1.txt'))
-            ? readFileSync(join(prPromptDir, 'persona_review_v1.txt'), 'utf-8')
-            : 'You are {persona_name}. Navigate to {review_url}. Review against: {review_criteria}. Return JSON verdict.';
-
-          // Load AGENTS.md
+          // Load AGENTS.md for persona context
           const prAgentPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', personaSlug, 'AGENTS.md');
           const prAgentProfile = existsSync(prAgentPath) ? readFileSync(prAgentPath, 'utf-8').slice(0, 1500) : '';
 
-          const personaPrompt = prTemplate
-            .replace('{persona_name}', personaSlug.replace(/-/g, ' '))
-            .replace('{agent_profile}', prAgentProfile)
-            .replace('{persona_context}', '')
-            .replace('{review_criteria}', `Navigate to ${reviewUrl} and evaluate: ${reviewCriteria}`);
+          // Load prior round weaknesses for this test (stored in runHistory)
+          const priorKey = `${personaSlug}:${step.name || step.persona_scope || 'default'}`;
+          const priorWeaknesses: string[] = (globalThis as any).__priorWeaknesses?.[priorKey] || [];
+          let priorBlock = '';
+          if (priorWeaknesses.length > 0) {
+            priorBlock = `\n## Prior Round Weaknesses (verify if these were fixed)\n${priorWeaknesses.map((w: string, i: number) => `${i + 1}. ${w}`).join('\n')}\n`;
+          }
+
+          const personaPrompt = `You are ${personaSlug.replace(/-/g, ' ')}, reverse engineering expert.
+
+${prAgentProfile}
+
+## Task: Review "${step.name || step.persona_scope || 'feature'}"
+
+Read the source file: ${sourceFile}
+If the file is large, read the section indicated in parentheses.
+
+## Review Criteria (from test manifest)
+${reviewCriteria}
+${priorBlock}
+## Response Format
+
+Return ONLY JSON:
+{"verdict":"PASS" or "FAIL","score":1-10,"strengths":["..."],"weaknesses":["..."],"changes":["..."],"professional_impact":"..."}
+
+9-10=production (IDA/Ghidra level), 7-8=usable, 5-6=promising, 3-4=prototype, 1-2=broken.
+Be specific. Reference line numbers and variable names.`;
 
           // Per-persona model routing
           const prModels: Record<string, string> = {
-            'tim-blazytko': 'sonnet', 'gynvael-coldwind': 'sonnet', 'liveoverflow': 'gemini-2.5-flash',
+            'tim-blazytko': 'sonnet', 'gynvael-coldwind': 'sonnet', 'liveoverflow': 'sonnet',
           };
 
           try {
             const subagentPort = Number(process.env.SUBAGENT_PORT || 8620);
-            const subagentModel = prModels[personaSlug] || 'codex';
-            console.log(`[PERSONA_REVIEW] ${personaSlug} via ${subagentModel} on port ${subagentPort}...`);
+            const subagentModel = prModels[personaSlug] || 'sonnet';
+            console.log(`[PERSONA_REVIEW] ${personaSlug} via SSE ${subagentModel} on port ${subagentPort}...`);
 
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 600_000); // 10 min — subagent browses + evaluates
+            // Use SSE /chat/stream — mandatory for >60s tasks per SKILL.md
+            const sseResult = await new Promise<{ result: string; durationMs: number }>((resolve, reject) => {
+              const payload = JSON.stringify({ model: subagentModel, prompt: personaPrompt, workspace: process.cwd() });
+              const req = httpRequest(
+                { hostname: 'localhost', port: subagentPort, path: '/chat/stream', method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } },
+                (res) => {
+                  let resultText = '';
+                  let durationMs = 0;
+                  let currentEvent = '';
+                  let buffer = '';
 
-            const prRes = await fetch(`http://localhost:${subagentPort}/chat`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              signal: controller.signal,
-              body: JSON.stringify({
-                model: subagentModel,
-                prompt: personaPrompt,
-                workspace: resolve(process.cwd()),
-              }),
+                  res.on('data', (chunk: Buffer) => {
+                    buffer += chunk.toString();
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
+                    for (const line of lines) {
+                      const trimmed = line.trim();
+                      if (trimmed.startsWith('event: ')) {
+                        currentEvent = trimmed.slice(7);
+                      } else if (trimmed.startsWith('data: ')) {
+                        try {
+                          const data = JSON.parse(trimmed.slice(6));
+                          if (currentEvent === 'assistant') {
+                            const content = data?.message?.content;
+                            if (Array.isArray(content)) {
+                              for (const c of content) {
+                                if (c.type === 'tool_use') console.log(`    [${personaSlug}] tool: ${c.name}`);
+                              }
+                            }
+                          } else if (currentEvent === 'result') {
+                            resultText = data.result || '';
+                          } else if (currentEvent === 'done') {
+                            durationMs = data.duration_ms || 0;
+                          }
+                        } catch {}
+                      }
+                    }
+                  });
+                  res.on('end', () => resolve({ result: resultText, durationMs }));
+                  res.on('error', reject);
+                }
+              );
+              req.on('error', reject);
+              req.setTimeout(300_000, () => { req.destroy(); reject(new Error('SSE timeout 300s')); });
+              req.write(payload);
+              req.end();
             });
-            clearTimeout(timeoutId);
 
-            const prData = await prRes.json() as any;
-            console.log(`[PERSONA_REVIEW] ${personaSlug}: exit=${prData.exit_code}, response_len=${(prData.response||'').length}`);
-            const prAnswer = prData.response || 'No persona review response';
+            console.log(`[PERSONA_REVIEW] ${personaSlug}: ${sseResult.result.length} chars, ${sseResult.durationMs}ms`);
 
-            // Parse structured JSON from subagent response
+            // Parse JSON from response using 3-level fallback (thunderdome pattern)
             let score = 0;
             let verdict = 'FAIL';
-            try {
-              const jsonMatch = prAnswer.match(/\{[\s\S]*\}/);
-              if (jsonMatch) {
-                const parsed = JSON.parse(jsonMatch[0]);
+            let weaknesses: string[] = [];
+            let changes: string[] = [];
+            let parsed: any = null;
+
+            const responseText = sseResult.result || '';
+            if (responseText) {
+              // Level 1: whole text as JSON
+              try { parsed = JSON.parse(responseText); } catch {}
+              // Level 2: markdown fence
+              if (!parsed) {
+                const fenceMatch = responseText.match(/```(?:json)?\s*\n([\s\S]*?)\n```/);
+                if (fenceMatch) { try { parsed = JSON.parse(fenceMatch[1]); } catch {} }
+              }
+              // Level 3: brace matching
+              if (!parsed) {
+                let depth = 0, start = -1;
+                for (let i = 0; i < responseText.length; i++) {
+                  if (responseText[i] === '{') { if (depth === 0) start = i; depth++; }
+                  else if (responseText[i] === '}') { depth--; if (depth === 0 && start >= 0) {
+                    try { parsed = JSON.parse(responseText.slice(start, i + 1)); break; } catch { start = -1; }
+                  }}
+                }
+              }
+
+              if (parsed) {
                 verdict = (parsed.verdict || '').toUpperCase();
                 score = typeof parsed.score === 'number' ? parsed.score : 0;
+                weaknesses = Array.isArray(parsed.weaknesses) ? parsed.weaknesses : [];
+                changes = Array.isArray(parsed.changes) ? parsed.changes : [];
               }
-            } catch {
-              // Fallback: string check if JSON parse fails
-              verdict = prAnswer.toUpperCase().includes('"PASS"') ? 'PASS' : 'FAIL';
             }
+
+            // Store weaknesses for next round
+            if (!(globalThis as any).__priorWeaknesses) (globalThis as any).__priorWeaknesses = {};
+            (globalThis as any).__priorWeaknesses[priorKey] = weaknesses.slice(0, 3);
+
             const prPassed = verdict === 'PASS';
 
             return {
               status: prPassed ? 'PASSED' : 'FAILED',
               expected: `${personaSlug}: ${reviewCriteria}`,
-              actual: prAnswer,
+              actual: responseText || 'No persona review response',
               score,
               verdict,
+              weaknesses,
+              changes,
+              durationMs: sseResult.durationMs,
+              priorWeaknesses: priorWeaknesses.length > 0 ? priorWeaknesses : undefined,
             };
           } catch (prErr: any) {
             console.error(`[PERSONA_REVIEW] FAILED for ${personaSlug}:`, prErr.message, prErr.cause || '');

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "95U4SJYoMgk",
+    "language": "en",
+    "took_ms": 8328,
+    "method": null,
+    "title": "Real Dogfight Training #shorts",
+    "channel": "Hasard Lee",
+    "upload_date": "20220719",
+    "duration_sec": 52,
+    "description": "",
+    "view_count": 8212696
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 95U4SJYoMgk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

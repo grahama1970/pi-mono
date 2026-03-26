@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8Pn6i8PPPaM",
+    "language": "en",
+    "took_ms": 7926,
+    "method": null,
+    "title": "Stop Panicking Over Patching: CHERI Morello Memory Safety",
+    "channel": "S4 Events",
+    "upload_date": "20240509",
+    "duration_sec": 1595,
+    "description": "Mo Javadi presents a potentially ground-breaking hardware architecture that delivers segmentation and illuminates memory vulnerabilities deep at the hardware layer. The introduction of this new technological advancement into the OT could reduce the need for patching by two-third.\n\nParticularly in geographically dispersed utility systems that are challenged to keep up with cyber security demands, this innovative solution promises to revolutionize the status quo. Reducing the barriers to cyber securing the utility networks is a crucial step in achieving hyperconnectivity and ultimately net zero.",
+    "view_count": 426
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8Pn6i8PPPaM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

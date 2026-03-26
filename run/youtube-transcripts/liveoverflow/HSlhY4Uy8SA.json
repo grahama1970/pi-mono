@@ -1,0 +1,1148 @@
+{
+  "meta": {
+    "video_id": "HSlhY4Uy8SA",
+    "language": "en",
+    "took_ms": 1217,
+    "method": "direct",
+    "title": "First Exploit! Buffer Overflow with Shellcode - bin 0x0E",
+    "channel": "LiveOverflow",
+    "upload_date": "20160203",
+    "duration_sec": 743,
+    "description": "We write our first real exploit to get root access. Solving stack5 from exploit-exercises.com with a simple Buffer Overflow and shellcode.\n\nRun into some problems (illegal instruction): https://www.reddit.com/r/LiveOverflow/comments/54o705/found_what_i_think_is_a_slight_problem_in_the/\nStack Level 5: https://exploit.education/protostar/stack-five/\n\n-=[ 🔴 Stuff I use ]=-\n\n→ Microphone:* https://geni.us/ntg3b\n→ Graphics tablet:* https://geni.us/wacom-intuos\n→ Camera#1 for streaming:* https://geni.us/sony-camera\n→ Lens for streaming:* https://geni.us/sony-lense\n→ Connect Camera#1 to PC:* https://geni.us/cam-link\n→ Keyboard:* https://geni.us/mech-keyboard\n→ Old Microphone:* https://geni.us/mic-at2020usb\n\nUS Store Front:* https://www.amazon.com/shop/liveoverflow\n\n-=[ ❤️ Support ]=-\n\n→ per Video: https://www.patreon.com/join/liveoverflow\n→ per Month: https://www.youtube.com/channel/UClcE-kVhqyiHCcjYwcpfj9w/join\n\n-=[ 🐕 Social ]=-\n\n→ Twitter: https://twitter.com/LiveOverflow/\n→ Website: https://liveoverflow.com/\n→ Subreddit: https://www.reddit.com/r/LiveOverflow/\n→ Facebook: https://www.facebook.com/LiveOverflow/\n\n-=[ 📄 P.S. ]=-\n\nAll links with \"*\" are affiliate links.\nLiveOverflow / Security Flag GmbH is part of the Amazon Affiliate Partner Programm.\n\n#BufferOverflow #BinaryExploitation #Shellcode",
+    "view_count": 288794
+  },
+  "transcript": [
+    {
+      "text": "Let’s move on to exploit-exercises stack\nlevel 5.",
+      "start": 6.23,
+      "duration": 2.82
+    },
+    {
+      "text": "You should have watched the previous videos\nto understand how we got here.",
+      "start": 9.05,
+      "duration": 4.38
+    },
+    {
+      "text": "The challenge description says",
+      "start": 13.43,
+      "duration": 1.1
+    },
+    {
+      "text": "Stack5 is a standard buffer overflow, this\ntime introducing shellcode.",
+      "start": 14.53,
+      "duration": 5.71
+    },
+    {
+      "text": "And the hints are:",
+      "start": 20.24,
+      "duration": 1.02
+    },
+    {
+      "text": "that, it might be easier to use someone elses\nshellcode.",
+      "start": 21.26,
+      "duration": 3.939
+    },
+    {
+      "text": "That is also what we will do.",
+      "start": 25.199,
+      "duration": 1.981
+    },
+    {
+      "text": "And",
+      "start": 27.18,
+      "duration": 1.0
+    },
+    {
+      "text": "If debugging the shellcode, use the “int3”\ninstruction with the opcode hex CC, to stop",
+      "start": 28.18,
+      "duration": 5.399
+    },
+    {
+      "text": "the program executing and return to the debugger.",
+      "start": 33.579,
+      "duration": 3.471
+    },
+    {
+      "text": "And that is very helpful.",
+      "start": 37.05,
+      "duration": 1.31
+    },
+    {
+      "text": "Ok, let’s have a look at this code.",
+      "start": 38.36,
+      "duration": 3.4
+    },
+    {
+      "text": "It is surprisingly small.",
+      "start": 41.76,
+      "duration": 1.189
+    },
+    {
+      "text": "There is just one function call to gets(),\nwhich we know allows us to overwrite data",
+      "start": 42.949,
+      "duration": 5.36
+    },
+    {
+      "text": "on the stack.",
+      "start": 48.309,
+      "duration": 1.531
+    },
+    {
+      "text": "So how do we get from no functionality of\nthe program, to a root shell?",
+      "start": 49.84,
+      "duration": 4.84
+    },
+    {
+      "text": "So put on your wizard's hat, because we will\ndo some magic.",
+      "start": 54.68,
+      "duration": 7.24
+    },
+    {
+      "text": "Let’s open this program in gdb, and let’s\njust throw a long string against it.",
+      "start": 61.92,
+      "duration": 5.44
+    },
+    {
+      "text": "To do that let’s already prepare our exploit\nscript.",
+      "start": 67.36,
+      "duration": 3.46
+    },
+    {
+      "text": "So first we want to find the offset that allows\nus to control the instruction pointer.",
+      "start": 70.82,
+      "duration": 4.08
+    },
+    {
+      "text": "I’d like to use a simple pattern like the\nalphabet.",
+      "start": 74.9,
+      "duration": 2.9
+    },
+    {
+      "text": "So I create this exploit variable and assign\nthe long string to it, and then print that.",
+      "start": 77.8,
+      "duration": 3.97
+    },
+    {
+      "text": "Now redirect the output of this script into\na file, which we then can use as input for",
+      "start": 81.77,
+      "duration": 5.07
+    },
+    {
+      "text": "gdb.",
+      "start": 86.84,
+      "duration": 1.51
+    },
+    {
+      "text": "Before we execute the program, let’s create\na breakpoint at the return of main.",
+      "start": 88.35,
+      "duration": 3.8
+    },
+    {
+      "text": "And let’s define a hook, like we have done\nin a previous video.",
+      "start": 92.15,
+      "duration": 4.82
+    },
+    {
+      "text": "Define hook stop, and we want to display the\ncurrent instruction that will be executed",
+      "start": 96.97,
+      "duration": 4.64
+    },
+    {
+      "text": "next, so examine one instruction at the location\nof eip.",
+      "start": 101.61,
+      "duration": 5.58
+    },
+    {
+      "text": "And then examine 8 words as hex from the stack.",
+      "start": 107.19,
+      "duration": 4.2
+    },
+    {
+      "text": "And end.",
+      "start": 111.39,
+      "duration": 1.5
+    },
+    {
+      "text": "Then execute it, and we hit the breakpoint\nat the return.",
+      "start": 112.89,
+      "duration": 3.56
+    },
+    {
+      "text": "The next line shows us how the stack looks\nlike right now.",
+      "start": 116.45,
+      "duration": 3.34
+    },
+    {
+      "text": "And when we execute the ret, we will jump\nto the address that was on the stack before.",
+      "start": 119.79,
+      "duration": 5.48
+    },
+    {
+      "text": "So no execute it again with the alphabet.",
+      "start": 125.27,
+      "duration": 3.12
+    },
+    {
+      "text": "We are at the return again, and we can see\nthat we have overwritten stuff on the stack.",
+      "start": 128.39,
+      "duration": 4.5
+    },
+    {
+      "text": "So now we try to return to address hex 54545454.",
+      "start": 132.89,
+      "duration": 5.579
+    },
+    {
+      "text": "Which is obviously invalid, so we get a Segmentation\nFault.",
+      "start": 138.469,
+      "duration": 3.25
+    },
+    {
+      "text": "And with examine as string, we can see that\nwe have overwritten the return pointer with",
+      "start": 141.719,
+      "duration": 4.74
+    },
+    {
+      "text": "T’s.",
+      "start": 146.459,
+      "duration": 4.961
+    },
+    {
+      "text": "So let’s update our exploit script.",
+      "start": 151.42,
+      "duration": 2.849
+    },
+    {
+      "text": "This will be our padding.",
+      "start": 154.269,
+      "duration": 1.55
+    },
+    {
+      "text": "And we create the variable eip, which we can\nuse to control the instruction pointer and",
+      "start": 155.819,
+      "duration": 4.301
+    },
+    {
+      "text": "jump anywhere we want.",
+      "start": 160.12,
+      "duration": 2.16
+    },
+    {
+      "text": "And I use struct to create a binary string\nfrom the address again.",
+      "start": 162.28,
+      "duration": 4.12
+    },
+    {
+      "text": "So struct.pack.",
+      "start": 166.4,
+      "duration": 2.349
+    },
+    {
+      "text": "But where do we want to jump to?",
+      "start": 168.749,
+      "duration": 1.52
+    },
+    {
+      "text": "We don’t have any win() function like in\nprevious levels.",
+      "start": 170.269,
+      "duration": 4.821
+    },
+    {
+      "text": "Do you have any idea where we could jump to?",
+      "start": 175.09,
+      "duration": 2.129
+    },
+    {
+      "text": "I think I will give you a second to think\nabout this.",
+      "start": 177.219,
+      "duration": 7.371
+    },
+    {
+      "text": "Right, we can just jump to the stack where\nwe control data.",
+      "start": 184.59,
+      "duration": 8.45
+    },
+    {
+      "text": "So obviously we could place some assembler\ncode there.",
+      "start": 193.04,
+      "duration": 3.25
+    },
+    {
+      "text": "Now let’s find a good address.",
+      "start": 196.29,
+      "duration": 2.029
+    },
+    {
+      "text": "We could just jump right after the instruction\npointer we control.",
+      "start": 198.319,
+      "duration": 3.771
+    },
+    {
+      "text": "To do that just run again, execute the ret\nand have a look at the stack pointer.",
+      "start": 202.09,
+      "duration": 4.929
+    },
+    {
+      "text": "So that is the address we want to jump to.",
+      "start": 207.019,
+      "duration": 2.981
+    },
+    {
+      "text": "And now we have to append code that we want\nto execute after the return pointer, so why",
+      "start": 210.0,
+      "duration": 5.819
+    },
+    {
+      "text": "not use the opcode CC, the int3, they were\nsuggesting in the challenge description.",
+      "start": 215.819,
+      "duration": 5.991
+    },
+    {
+      "text": "Let’s also quickly have a look at the intel\ninstruction reference.",
+      "start": 221.81,
+      "duration": 3.53
+    },
+    {
+      "text": "Let’s search for “Int 3”.",
+      "start": 225.34,
+      "duration": 2.459
+    },
+    {
+      "text": "Ok mmhh… call itnerrupt procedure.",
+      "start": 227.799,
+      "duration": 2.67
+    },
+    {
+      "text": "what else do we find.",
+      "start": 230.469,
+      "duration": 1.691
+    },
+    {
+      "text": "In this table about general exceptions it\ncalls this instruction breakpoint?",
+      "start": 232.16,
+      "duration": 4.409
+    },
+    {
+      "text": "Huuu, that’s interesting.",
+      "start": 236.569,
+      "duration": 2.541
+    },
+    {
+      "text": "Ok and here is the description of it.",
+      "start": 239.11,
+      "duration": 3.049
+    },
+    {
+      "text": "Interrupt number 3, traps to debugger.",
+      "start": 242.159,
+      "duration": 2.241
+    },
+    {
+      "text": "And down here it reads:",
+      "start": 244.4,
+      "duration": 1.989
+    },
+    {
+      "text": "The INT 3 instruction is a special one byte\nopcode (CC) that is intended for calling the",
+      "start": 246.389,
+      "duration": 5.43
+    },
+    {
+      "text": "debug exception handler.",
+      "start": 251.819,
+      "duration": 1.76
+    },
+    {
+      "text": "(This one byte form is valuable because it\ncan be used to replace the first byte of any",
+      "start": 253.579,
+      "duration": 4.821
+    },
+    {
+      "text": "instruction with a breakpoint, including other\none byte instructions, without over-writing",
+      "start": 258.4,
+      "duration": 4.6
+    },
+    {
+      "text": "other code).",
+      "start": 263.0,
+      "duration": 1.05
+    },
+    {
+      "text": "wooooh.",
+      "start": 264.05,
+      "duration": 1.0
+    },
+    {
+      "text": "What does that mean?",
+      "start": 265.05,
+      "duration": 1.46
+    },
+    {
+      "text": "Well, how do you think gdb works?",
+      "start": 266.51,
+      "duration": 2.51
+    },
+    {
+      "text": "Or any other debugger for that matter?",
+      "start": 269.02,
+      "duration": 2.48
+    },
+    {
+      "text": "How can you just stop the CPU from executing\nsomething.",
+      "start": 271.5,
+      "duration": 2.72
+    },
+    {
+      "text": "Or just step one instruction?",
+      "start": 274.22,
+      "duration": 1.98
+    },
+    {
+      "text": "Actually a debugger can just use the INT 3\ninstruction.",
+      "start": 276.2,
+      "duration": 4.43
+    },
+    {
+      "text": "Let’s make an example.",
+      "start": 280.63,
+      "duration": 1.94
+    },
+    {
+      "text": "We just created a breakpoint at this ret.",
+      "start": 282.57,
+      "duration": 3.24
+    },
+    {
+      "text": "What we actually did was, we replaced this\nreturn instruction in memory with int 3.",
+      "start": 285.81,
+      "duration": 5.27
+    },
+    {
+      "text": "And when the CPU reached this instruction,\nan exception was raised.",
+      "start": 291.08,
+      "duration": 3.03
+    },
+    {
+      "text": "Or in hardware terms an interrupt got triggered,\nwhich stopped the CPU from continuing excecuting",
+      "start": 294.11,
+      "duration": 5.9
+    },
+    {
+      "text": "this and called an interrupt handler (similar\nto how a syscall caused an interrupt and execution",
+      "start": 300.01,
+      "duration": 7.13
+    },
+    {
+      "text": "continued somewhere else).",
+      "start": 307.14,
+      "duration": 1.0
+    },
+    {
+      "text": "And we can now decide how we want to handle\nthis exception.",
+      "start": 308.14,
+      "duration": 4.04
+    },
+    {
+      "text": "And if we are a debugger we would now replace\nthis INT 3 instruction again with the original",
+      "start": 312.18,
+      "duration": 4.81
+    },
+    {
+      "text": "value, the return instruction.",
+      "start": 316.99,
+      "duration": 1.93
+    },
+    {
+      "text": "That can also be used as an anti reversing\ntechnique.",
+      "start": 318.92,
+      "duration": 4.0
+    },
+    {
+      "text": "Because a regular application will not use\nthe CC instruction.",
+      "start": 322.92,
+      "duration": 3.86
+    },
+    {
+      "text": "So a malware might constantly scan itself\nfor the CC opcode, and if it finds it, it",
+      "start": 326.78,
+      "duration": 5.11
+    },
+    {
+      "text": "knows that somebody attached a debugger and\ntried to set a breakpoint.",
+      "start": 331.89,
+      "duration": 4.7
+    },
+    {
+      "text": "And now we will use the CC in our payload.",
+      "start": 336.59,
+      "duration": 1.63
+    },
+    {
+      "text": "So let’s append a couple of CCs after the\noverwritten return pointer.",
+      "start": 338.22,
+      "duration": 1.0
+    },
+    {
+      "text": "Don’t forget to write the output of the\nscript into the exploit file.",
+      "start": 339.22,
+      "duration": 2.67
+    },
+    {
+      "text": "And then test this in gdb.",
+      "start": 341.89,
+      "duration": 2.15
+    },
+    {
+      "text": "Ok run again.",
+      "start": 344.04,
+      "duration": 1.7
+    },
+    {
+      "text": "We can see that we stopped at the ret and\nwe see the address where we would return to.",
+      "start": 345.74,
+      "duration": 4.06
+    },
+    {
+      "text": "And when we continue now, we pop the instruction\npointer value from the stack, thus continue",
+      "start": 349.8,
+      "duration": 6.4
+    },
+    {
+      "text": "excecuting on the stack, where we have our\nINT 3 instrucitons, and as you can see, gdb",
+      "start": 356.2,
+      "duration": 6.3
+    },
+    {
+      "text": "stopped because it received a signal SIGTRAP,\na trace/breakpoint trap.",
+      "start": 362.5,
+      "duration": 5.06
+    },
+    {
+      "text": "Cool.",
+      "start": 367.56,
+      "duration": 1.0
+    },
+    {
+      "text": "This way we know that we have code execution,\nbecause we successfully injected an assembler",
+      "start": 368.56,
+      "duration": 4.66
+    },
+    {
+      "text": "instruction.",
+      "start": 373.22,
+      "duration": 1.71
+    },
+    {
+      "text": "Now does that work without gdb too?",
+      "start": 374.93,
+      "duration": 2.43
+    },
+    {
+      "text": "Let’s try it…",
+      "start": 377.36,
+      "duration": 2.12
+    },
+    {
+      "text": "But we get an illegal instruction?",
+      "start": 379.48,
+      "duration": 2.95
+    },
+    {
+      "text": "That is not what we should see.",
+      "start": 382.43,
+      "duration": 2.2
+    },
+    {
+      "text": "We should get the breakpoint message.",
+      "start": 384.63,
+      "duration": 1.61
+    },
+    {
+      "text": "Let’s open it in gdb here and try it again.",
+      "start": 386.24,
+      "duration": 4.82
+    },
+    {
+      "text": "Still illegal instruction.",
+      "start": 391.06,
+      "duration": 1.4
+    },
+    {
+      "text": "Let’s set the hooks and the breakpoints\nlike in the other gdb session.",
+      "start": 392.46,
+      "duration": 7.42
+    },
+    {
+      "text": "Ok run.",
+      "start": 399.88,
+      "duration": 1.49
+    },
+    {
+      "text": "mhmh…",
+      "start": 401.37,
+      "duration": 1.29
+    },
+    {
+      "text": "The addresses on the stack are not the same.",
+      "start": 402.66,
+      "duration": 2.4
+    },
+    {
+      "text": "Why are they different?",
+      "start": 405.06,
+      "duration": 2.16
+    },
+    {
+      "text": "Let’s do something crazy.",
+      "start": 407.22,
+      "duration": 2.33
+    },
+    {
+      "text": "Print the whole stack.",
+      "start": 409.55,
+      "duration": 1.16
+    },
+    {
+      "text": "I just print a thousand strings or something.",
+      "start": 410.71,
+      "duration": 2.35
+    },
+    {
+      "text": "Let’s se what we get.",
+      "start": 413.06,
+      "duration": 2.19
+    },
+    {
+      "text": "Ok first we have some gibebrish.",
+      "start": 415.25,
+      "duration": 1.88
+    },
+    {
+      "text": "Let’s go further.",
+      "start": 417.13,
+      "duration": 1.14
+    },
+    {
+      "text": "UUUh… see.",
+      "start": 418.27,
+      "duration": 1.0
+    },
+    {
+      "text": "Now we get some interesting stuff.",
+      "start": 419.27,
+      "duration": 1.71
+    },
+    {
+      "text": "Let’s do the same in the other gdb session.",
+      "start": 420.98,
+      "duration": 3.18
+    },
+    {
+      "text": "This looks like the environment variables.",
+      "start": 424.16,
+      "duration": 2.22
+    },
+    {
+      "text": "For example here us the USER environment variable\nthat we have used in a previous programming",
+      "start": 426.38,
+      "duration": 4.77
+    },
+    {
+      "text": "video.",
+      "start": 431.15,
+      "duration": 1.0
+    },
+    {
+      "text": "Mh and when you look at the addresses, they\nare still diferent.",
+      "start": 432.15,
+      "duration": 4.25
+    },
+    {
+      "text": "So let’s look a bit further down.",
+      "start": 436.4,
+      "duration": 1.0
+    },
+    {
+      "text": "mh!",
+      "start": 437.4,
+      "duration": 1.0
+    },
+    {
+      "text": "down here they are the same.",
+      "start": 438.4,
+      "duration": 3.23
+    },
+    {
+      "text": "So between here and the environemnt variables\nabove there mus be something different.",
+      "start": 441.63,
+      "duration": 4.91
+    },
+    {
+      "text": "And when you look closely, you can see that\nthe PWD environment variable, the current",
+      "start": 446.54,
+      "duration": 5.17
+    },
+    {
+      "text": "working directory is different.",
+      "start": 451.71,
+      "duration": 1.9
+    },
+    {
+      "text": "They have a different length.",
+      "start": 453.61,
+      "duration": 2.35
+    },
+    {
+      "text": "So obviously the one execution environment\nneeds more space on the stack to store this",
+      "start": 455.96,
+      "duration": 5.05
+    },
+    {
+      "text": "path.",
+      "start": 461.01,
+      "duration": 1.0
+    },
+    {
+      "text": "And thus pushing the stack further up.",
+      "start": 462.01,
+      "duration": 2.05
+    },
+    {
+      "text": "No wonder that the stack addresses are not\nthe same anymore.",
+      "start": 464.06,
+      "duration": 4.11
+    },
+    {
+      "text": "So how can we cope with that?",
+      "start": 468.17,
+      "duration": 2.17
+    },
+    {
+      "text": "There are a couple of techniques that you\ncan use to get a bit more control over the",
+      "start": 470.34,
+      "duration": 3.95
+    },
+    {
+      "text": "stack.",
+      "start": 474.29,
+      "duration": 1.0
+    },
+    {
+      "text": "For example by removing all environment variables\nbefore executing a binary.",
+      "start": 475.29,
+      "duration": 3.85
+    },
+    {
+      "text": "But there is another very easy but effective\ntrick.",
+      "start": 479.14,
+      "duration": 4.41
+    },
+    {
+      "text": "here is a hint:",
+      "start": 483.55,
+      "duration": 1.14
+    },
+    {
+      "text": "nop, nop, nop, nop, nop",
+      "start": 484.69,
+      "duration": 3.57
+    },
+    {
+      "text": "Riiiight… a nop slide…",
+      "start": 488.26,
+      "duration": 2.02
+    },
+    {
+      "text": "Let’s just add a looooot of NOP instructions.",
+      "start": 490.28,
+      "duration": 3.02
+    },
+    {
+      "text": "A Nop instruction performs no operation.",
+      "start": 493.3,
+      "duration": 2.75
+    },
+    {
+      "text": "And it has the opcode hex 90.",
+      "start": 496.05,
+      "duration": 1.93
+    },
+    {
+      "text": "And instead of picking a very specific stack\naddress, let’s just pick one that we hope",
+      "start": 497.98,
+      "duration": 4.33
+    },
+    {
+      "text": "hits our nops.",
+      "start": 502.31,
+      "duration": 1.84
+    },
+    {
+      "text": "So run again.",
+      "start": 504.15,
+      "duration": 1.43
+    },
+    {
+      "text": "Now we can see we have a lot of NOPs on the\nstack.",
+      "start": 505.58,
+      "duration": 3.13
+    },
+    {
+      "text": "And the address we will jump to points somewhere\nelse further down.",
+      "start": 508.71,
+      "duration": 3.99
+    },
+    {
+      "text": "If we look at more of the stack, we can see\nthat it points almost right in the middle",
+      "start": 512.7,
+      "duration": 4.23
+    },
+    {
+      "text": "of the nops.",
+      "start": 516.93,
+      "duration": 3.06
+    },
+    {
+      "text": "So let’s just single step forwards.",
+      "start": 519.99,
+      "duration": 2.75
+    },
+    {
+      "text": "And now we happily slide down the nop slide\nuntil we reach the bottom with our traps!",
+      "start": 522.74,
+      "duration": 5.289
+    },
+    {
+      "text": "Boom.",
+      "start": 528.029,
+      "duration": 1.191
+    },
+    {
+      "text": "Cool.",
+      "start": 529.22,
+      "duration": 1.19
+    },
+    {
+      "text": "And that also works now outside of gdb.",
+      "start": 530.41,
+      "duration": 3.369
+    },
+    {
+      "text": "Now instead of CC, we want to execute something\nuseful.",
+      "start": 533.779,
+      "duration": 3.181
+    },
+    {
+      "text": "So let’s look for some shellcode.",
+      "start": 536.96,
+      "duration": 2.429
+    },
+    {
+      "text": "As the challenge description said, it’s\nbest to reuse shellcode from other people.",
+      "start": 539.389,
+      "duration": 4.87
+    },
+    {
+      "text": "I really like the collection of shellcode\nfrom shellstorm.",
+      "start": 544.259,
+      "duration": 4.381
+    },
+    {
+      "text": "Shellstorm has a lot of different kind of\nshellcode, for a lot of different system.",
+      "start": 548.64,
+      "duration": 4.02
+    },
+    {
+      "text": "So we are looking for a Linux Intel 32bit\nshellcode.",
+      "start": 552.66,
+      "duration": 3.619
+    },
+    {
+      "text": "FreeBSD, Linux on ARM, 64bit, and here we\nhave 32bit.",
+      "start": 556.279,
+      "duration": 5.531
+    },
+    {
+      "text": "They all have a short description and do different\nstuff.",
+      "start": 561.81,
+      "duration": 2.55
+    },
+    {
+      "text": "But we are looking for a simple execve that\nwill execute a shell.",
+      "start": 564.36,
+      "duration": 4.18
+    },
+    {
+      "text": "So, why not take this one.",
+      "start": 568.54,
+      "duration": 2.62
+    },
+    {
+      "text": "If you look at the assembler code, what it\ndoes is basically just pushing some values",
+      "start": 571.16,
+      "duration": 4.15
+    },
+    {
+      "text": "on the stack, which are infact just a string\nthat is the path /bin/sh.",
+      "start": 575.31,
+      "duration": 5.42
+    },
+    {
+      "text": "And then calls execve.",
+      "start": 580.73,
+      "duration": 2.229
+    },
+    {
+      "text": "Copy the bytes into the python exploit script\nas payload and we can throw it against the",
+      "start": 582.959,
+      "duration": 3.74
+    },
+    {
+      "text": "program.",
+      "start": 586.699,
+      "duration": 5.861
+    },
+    {
+      "text": "mhmh… nothing happens.",
+      "start": 592.56,
+      "duration": 7.04
+    },
+    {
+      "text": "Does it not work?",
+      "start": 599.6,
+      "duration": 1.0
+    },
+    {
+      "text": "Let’s add the CC at the start of the payload\nif we still hit it.",
+      "start": 600.6,
+      "duration": 3.331
+    },
+    {
+      "text": "It should work.",
+      "start": 603.931,
+      "duration": 3.778
+    },
+    {
+      "text": "Remove the CC againa and try it in gdb.",
+      "start": 607.709,
+      "duration": 2.5
+    },
+    {
+      "text": "let’s single step.",
+      "start": 610.209,
+      "duration": 1.82
+    },
+    {
+      "text": "We are sliding down the nop slide.",
+      "start": 612.029,
+      "duration": 1.521
+    },
+    {
+      "text": "All seems fine.",
+      "start": 613.55,
+      "duration": 1.0
+    },
+    {
+      "text": "And now comes the shellcode.",
+      "start": 614.55,
+      "duration": 1.409
+    },
+    {
+      "text": "And it says: “Executing new program, /bin/dash”.",
+      "start": 615.959,
+      "duration": 4.101
+    },
+    {
+      "text": "That first sounds weird, but is correct.",
+      "start": 620.06,
+      "duration": 2.95
+    },
+    {
+      "text": "/bin/sh just points to /bin/dash.",
+      "start": 623.01,
+      "duration": 2.17
+    },
+    {
+      "text": "So why the hell does it not work?",
+      "start": 625.18,
+      "duration": 2.79
+    },
+    {
+      "text": "Also on a side note.",
+      "start": 627.97,
+      "duration": 1.0
+    },
+    {
+      "text": "This gdb session is no broken.",
+      "start": 628.97,
+      "duration": 1.55
+    },
+    {
+      "text": "Because execve, replaces the current program\nwith another one.",
+      "start": 630.52,
+      "duration": 3.569
+    },
+    {
+      "text": "So stack5 got replaced by /bin/dash.",
+      "start": 634.089,
+      "duration": 1.821
+    },
+    {
+      "text": "And you can see that when you try to execute\nit again.",
+      "start": 635.91,
+      "duration": 3.58
+    },
+    {
+      "text": "So you would have to load stack5 again with\nfile.",
+      "start": 639.49,
+      "duration": 2.459
+    },
+    {
+      "text": "Ok.",
+      "start": 641.949,
+      "duration": 1.0
+    },
+    {
+      "text": "So what’s the issue then?",
+      "start": 642.949,
+      "duration": 2.39
+    },
+    {
+      "text": "This is one of the things I got nuts.",
+      "start": 645.339,
+      "duration": 1.641
+    },
+    {
+      "text": "When I first got stuck like this I spend houuurs\ntrying to figure out what is happening.",
+      "start": 646.98,
+      "duration": 5.089
+    },
+    {
+      "text": "As much as I want to see anybody else suffer\nlike me, I tell you what the problem is.",
+      "start": 652.069,
+      "duration": 5.51
+    },
+    {
+      "text": "A shell you execute, wants some input, right?",
+      "start": 657.579,
+      "duration": 3.88
+    },
+    {
+      "text": "From standard input.",
+      "start": 661.459,
+      "duration": 1.3
+    },
+    {
+      "text": "But!.",
+      "start": 662.759,
+      "duration": 1.0
+    },
+    {
+      "text": "We used a program and redirected it’s stdoutput\ninto the stdinput of this program.",
+      "start": 663.759,
+      "duration": 5.55
+    },
+    {
+      "text": "And when the program was done it closed that\npipe.",
+      "start": 669.309,
+      "duration": 3.08
+    },
+    {
+      "text": "So now the shell is executed, but doesn’t\nhave any input.",
+      "start": 672.389,
+      "duration": 3.911
+    },
+    {
+      "text": "Because it’s closed.",
+      "start": 676.3,
+      "duration": 1.01
+    },
+    {
+      "text": "So it will just exit.",
+      "start": 677.31,
+      "duration": 2.18
+    },
+    {
+      "text": "And there is a neat trick to get basically\naround that.",
+      "start": 679.49,
+      "duration": 3.469
+    },
+    {
+      "text": "When you use cat without parameters, it simply\nredirect it’s stdinput to the standard output.",
+      "start": 682.959,
+      "duration": 6.031
+    },
+    {
+      "text": "See like here.",
+      "start": 688.99,
+      "duration": 1.14
+    },
+    {
+      "text": "You type something in, and it get’s reflected\nout.",
+      "start": 690.13,
+      "duration": 4.149
+    },
+    {
+      "text": "Now you can chain programs together on one\nline, for example with semicolon.",
+      "start": 694.279,
+      "duration": 4.581
+    },
+    {
+      "text": "So we can first print the output of the exploit,\nand afterwards cat is executed, so we can",
+      "start": 698.86,
+      "duration": 5.07
+    },
+    {
+      "text": "enter new input.",
+      "start": 703.93,
+      "duration": 1.8
+    },
+    {
+      "text": "And if we group that now with some brackets,\nand redirect their combined output into the",
+      "start": 705.73,
+      "duration": 4.54
+    },
+    {
+      "text": "stack level, the exploit will first run and\nexecute a shell, and then cat will take over",
+      "start": 710.27,
+      "duration": 5.289
+    },
+    {
+      "text": "and we can simply relay input via cat to the\nshell.",
+      "start": 715.559,
+      "duration": 3.9
+    },
+    {
+      "text": "BAM!",
+      "start": 719.459,
+      "duration": 1.0
+    },
+    {
+      "text": "it works.",
+      "start": 720.459,
+      "duration": 1.25
+    },
+    {
+      "text": "We have an ugly shell, and we can verify our\nidentity with whoami, or id.",
+      "start": 721.709,
+      "duration": 4.891
+    },
+    {
+      "text": "So now we escalated privileges to root.",
+      "start": 726.6,
+      "duration": 2.659
+    },
+    {
+      "text": "Damn. feels so good.",
+      "start": 729.259,
+      "duration": 1.981
+    },
+    {
+      "text": "It’s just beautiful.",
+      "start": 731.24,
+      "duration": 1.11
+    }
+  ],
+  "full_text": "Let’s move on to exploit-exercises stack\nlevel 5. You should have watched the previous videos\nto understand how we got here. The challenge description says Stack5 is a standard buffer overflow, this\ntime introducing shellcode. And the hints are: that, it might be easier to use someone elses\nshellcode. That is also what we will do. And If debugging the shellcode, use the “int3”\ninstruction with the opcode hex CC, to stop the program executing and return to the debugger. And that is very helpful. Ok, let’s have a look at this code. It is surprisingly small. There is just one function call to gets(),\nwhich we know allows us to overwrite data on the stack. So how do we get from no functionality of\nthe program, to a root shell? So put on your wizard's hat, because we will\ndo some magic. Let’s open this program in gdb, and let’s\njust throw a long string against it. To do that let’s already prepare our exploit\nscript. So first we want to find the offset that allows\nus to control the instruction pointer. I’d like to use a simple pattern like the\nalphabet. So I create this exploit variable and assign\nthe long string to it, and then print that. Now redirect the output of this script into\na file, which we then can use as input for gdb. Before we execute the program, let’s create\na breakpoint at the return of main. And let’s define a hook, like we have done\nin a previous video. Define hook stop, and we want to display the\ncurrent instruction that will be executed next, so examine one instruction at the location\nof eip. And then examine 8 words as hex from the stack. And end. Then execute it, and we hit the breakpoint\nat the return. The next line shows us how the stack looks\nlike right now. And when we execute the ret, we will jump\nto the address that was on the stack before. So no execute it again with the alphabet. We are at the return again, and we can see\nthat we have overwritten stuff on the stack. So now we try to return to address hex 54545454. Which is obviously invalid, so we get a Segmentation\nFault. And with examine as string, we can see that\nwe have overwritten the return pointer with T’s. So let’s update our exploit script. This will be our padding. And we create the variable eip, which we can\nuse to control the instruction pointer and jump anywhere we want. And I use struct to create a binary string\nfrom the address again. So struct.pack. But where do we want to jump to? We don’t have any win() function like in\nprevious levels. Do you have any idea where we could jump to? I think I will give you a second to think\nabout this. Right, we can just jump to the stack where\nwe control data. So obviously we could place some assembler\ncode there. Now let’s find a good address. We could just jump right after the instruction\npointer we control. To do that just run again, execute the ret\nand have a look at the stack pointer. So that is the address we want to jump to. And now we have to append code that we want\nto execute after the return pointer, so why not use the opcode CC, the int3, they were\nsuggesting in the challenge description. Let’s also quickly have a look at the intel\ninstruction reference. Let’s search for “Int 3”. Ok mmhh… call itnerrupt procedure. what else do we find. In this table about general exceptions it\ncalls this instruction breakpoint? Huuu, that’s interesting. Ok and here is the description of it. Interrupt number 3, traps to debugger. And down here it reads: The INT 3 instruction is a special one byte\nopcode (CC) that is intended for calling the debug exception handler. (This one byte form is valuable because it\ncan be used to replace the first byte of any instruction with a breakpoint, including other\none byte instructions, without over-writing other code). wooooh. What does that mean? Well, how do you think gdb works? Or any other debugger for that matter? How can you just stop the CPU from executing\nsomething. Or just step one instruction? Actually a debugger can just use the INT 3\ninstruction. Let’s make an example. We just created a breakpoint at this ret. What we actually did was, we replaced this\nreturn instruction in memory with int 3. And when the CPU reached this instruction,\nan exception was raised. Or in hardware terms an interrupt got triggered,\nwhich stopped the CPU from continuing excecuting this and called an interrupt handler (similar\nto how a syscall caused an interrupt and execution continued somewhere else). And we can now decide how we want to handle\nthis exception. And if we are a debugger we would now replace\nthis INT 3 instruction again with the original value, the return instruction. That can also be used as an anti reversing\ntechnique. Because a regular application will not use\nthe CC instruction. So a malware might constantly scan itself\nfor the CC opcode, and if it finds it, it knows that somebody attached a debugger and\ntried to set a breakpoint. And now we will use the CC in our payload. So let’s append a couple of CCs after the\noverwritten return pointer. Don’t forget to write the output of the\nscript into the exploit file. And then test this in gdb. Ok run again. We can see that we stopped at the ret and\nwe see the address where we would return to. And when we continue now, we pop the instruction\npointer value from the stack, thus continue excecuting on the stack, where we have our\nINT 3 instrucitons, and as you can see, gdb stopped because it received a signal SIGTRAP,\na trace/breakpoint trap. Cool. This way we know that we have code execution,\nbecause we successfully injected an assembler instruction. Now does that work without gdb too? Let’s try it… But we get an illegal instruction? That is not what we should see. We should get the breakpoint message. Let’s open it in gdb here and try it again. Still illegal instruction. Let’s set the hooks and the breakpoints\nlike in the other gdb session. Ok run. mhmh… The addresses on the stack are not the same. Why are they different? Let’s do something crazy. Print the whole stack. I just print a thousand strings or something. Let’s se what we get. Ok first we have some gibebrish. Let’s go further. UUUh… see. Now we get some interesting stuff. Let’s do the same in the other gdb session. This looks like the environment variables. For example here us the USER environment variable\nthat we have used in a previous programming video. Mh and when you look at the addresses, they\nare still diferent. So let’s look a bit further down. mh! down here they are the same. So between here and the environemnt variables\nabove there mus be something different. And when you look closely, you can see that\nthe PWD environment variable, the current working directory is different. They have a different length. So obviously the one execution environment\nneeds more space on the stack to store this path. And thus pushing the stack further up. No wonder that the stack addresses are not\nthe same anymore. So how can we cope with that? There are a couple of techniques that you\ncan use to get a bit more control over the stack. For example by removing all environment variables\nbefore executing a binary. But there is another very easy but effective\ntrick. here is a hint: nop, nop, nop, nop, nop Riiiight… a nop slide… Let’s just add a looooot of NOP instructions. A Nop instruction performs no operation. And it has the opcode hex 90. And instead of picking a very specific stack\naddress, let’s just pick one that we hope hits our nops. So run again. Now we can see we have a lot of NOPs on the\nstack. And the address we will jump to points somewhere\nelse further down. If we look at more of the stack, we can see\nthat it points almost right in the middle of the nops. So let’s just single step forwards. And now we happily slide down the nop slide\nuntil we reach the bottom with our traps! Boom. Cool. And that also works now outside of gdb. Now instead of CC, we want to execute something\nuseful. So let’s look for some shellcode. As the challenge description said, it’s\nbest to reuse shellcode from other people. I really like the collection of shellcode\nfrom shellstorm. Shellstorm has a lot of different kind of\nshellcode, for a lot of different system. So we are looking for a Linux Intel 32bit\nshellcode. FreeBSD, Linux on ARM, 64bit, and here we\nhave 32bit. They all have a short description and do different\nstuff. But we are looking for a simple execve that\nwill execute a shell. So, why not take this one. If you look at the assembler code, what it\ndoes is basically just pushing some values on the stack, which are infact just a string\nthat is the path /bin/sh. And then calls execve. Copy the bytes into the python exploit script\nas payload and we can throw it against the program. mhmh… nothing happens. Does it not work? Let’s add the CC at the start of the payload\nif we still hit it. It should work. Remove the CC againa and try it in gdb. let’s single step. We are sliding down the nop slide. All seems fine. And now comes the shellcode. And it says: “Executing new program, /bin/dash”. That first sounds weird, but is correct. /bin/sh just points to /bin/dash. So why the hell does it not work? Also on a side note. This gdb session is no broken. Because execve, replaces the current program\nwith another one. So stack5 got replaced by /bin/dash. And you can see that when you try to execute\nit again. So you would have to load stack5 again with\nfile. Ok. So what’s the issue then? This is one of the things I got nuts. When I first got stuck like this I spend houuurs\ntrying to figure out what is happening. As much as I want to see anybody else suffer\nlike me, I tell you what the problem is. A shell you execute, wants some input, right? From standard input. But!. We used a program and redirected it’s stdoutput\ninto the stdinput of this program. And when the program was done it closed that\npipe. So now the shell is executed, but doesn’t\nhave any input. Because it’s closed. So it will just exit. And there is a neat trick to get basically\naround that. When you use cat without parameters, it simply\nredirect it’s stdinput to the standard output. See like here. You type something in, and it get’s reflected\nout. Now you can chain programs together on one\nline, for example with semicolon. So we can first print the output of the exploit,\nand afterwards cat is executed, so we can enter new input. And if we group that now with some brackets,\nand redirect their combined output into the stack level, the exploit will first run and\nexecute a shell, and then cat will take over and we can simply relay input via cat to the\nshell. BAM! it works. We have an ugly shell, and we can verify our\nidentity with whoami, or id. So now we escalated privileges to root. Damn. feels so good. It’s just beautiful.",
+  "errors": []
+}

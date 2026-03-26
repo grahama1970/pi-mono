@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gPcwLA4SRFs",
+    "language": "en",
+    "took_ms": 8986,
+    "method": null,
+    "title": "Priority Is In The Eye Of The Asset Owner",
+    "channel": "S4 Events",
+    "upload_date": "20240422",
+    "duration_sec": 1221,
+    "description": "Danielle helped run a critical infrastructure prioritization exercise with water utilities to rank operational technology cyber scenarios and critical entities at H2oSecCon last fall. The exercise methodology had 2 key purposes:\n\n1. to help asset owners choose and prioritize the right OT scenario to prepare for and run TTX on, and \n2. to provide a standardized priority score, which can be used by government and industry stakeholders to compare entities, locations, facilities, or sites within any jurisdiction (by geography, sector, regulatory body, etc.).\n\nAfter a brief overview of the methodology, Danielle will present the results from the exercise.",
+    "view_count": 470
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gPcwLA4SRFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Vd_aFOGeE2o",
+    "language": "en",
+    "took_ms": 8585,
+    "method": null,
+    "title": "Supply Chain Chipping Attacks: When Should I Worry?",
+    "channel": "S4 Events",
+    "upload_date": "20250818",
+    "duration_sec": 1517,
+    "description": "Monta explains what supply chain chipping attacks are and how they work, including examples such as malicious USB cables, keyboards, and other hardware components.\n\nAsset owners will learn when / if you should worry about these attacks, typically in counterfeit products. Vendors will learn how they can work together with system integrators and asset owners to address this problem.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 224
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Vd_aFOGeE2o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XO4nkkT2Nps",
+    "language": "en",
+    "took_ms": 8687,
+    "method": null,
+    "title": "Does the Obama Administration Have a Middle East Policy?",
+    "channel": "Hudson Institute",
+    "upload_date": "20140311",
+    "duration_sec": 4965,
+    "description": "Recent statements by President Obama suggest that he has a coherent strategy for American policy in the Middle East. As he told the New Yorker, he wants to create \"geopolitical equilibrium\" in the region by balancing Washington's longtime ally Saudi Arabia against the Islamic Republic of Iran, which has had an adversarial relationship with the United States for 35 years. This balancing act, the president suggests, will bring some stability to an especially volatile part of the world, now engaged",
+    "view_count": 338
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XO4nkkT2Nps: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

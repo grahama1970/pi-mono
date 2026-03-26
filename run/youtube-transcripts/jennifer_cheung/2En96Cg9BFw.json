@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2En96Cg9BFw",
+    "language": "en",
+    "took_ms": 7632,
+    "method": null,
+    "title": "DEF CON 33 - Breakin 'Em All – Overcoming Pokemon Go's Anti Cheat Mechanism - Tal Skverer",
+    "channel": "DEFCONConference",
+    "upload_date": "20251125",
+    "duration_sec": 2844,
+    "description": "It was the summer of 2016, and like everyone else, I was out playing Pokémon Go. Except my rural location barely spawned anything interesting. Naturally, I dove into the game's code, reverse engineered its protocol, and built a custom Pokémon scanner.\n\nBut the story doesn't end there. One day, a switch was flipped, enabling a fancy new anti-cheating feature that locked out any custom implementations.\n\nIn this talk, I'll begin by exploring how mobile games like Pokémon Go handle communication through specialized protocols—and how I replicated that behavior to build a scanner. Then, I'll walk you through a 4-day hacking marathon where I teamed up with a group of like-minded enthusiasts to overcome the anti-cheating mechanism that nearly broke our scanners.\n\nWe'll examine how mobile games attempt to thwart such applications, unraveling the anti-cheating mechanism that was deployed by Pokemon Go. We'll explore how we managed, through obfuscated cryptographic functions, unexpected use of smartphone peripherals and hidden protobuf definitions, to break the anti-cheating system and release a publicly available API for the game's protocol.\n\nAlmost a decade later, the full story is ready to be told. Join me for an inside look at the anti-cheating mechanisms of online mobile games—and how to hack them.",
+    "view_count": 25815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2En96Cg9BFw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

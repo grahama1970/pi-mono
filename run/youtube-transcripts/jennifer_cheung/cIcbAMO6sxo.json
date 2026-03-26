@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cIcbAMO6sxo",
+    "language": "en",
+    "took_ms": 8425,
+    "method": null,
+    "title": "DEF CON 29 - Richard Henderson - Old MacDonald Had a Barcode, E I E I CAR",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2620,
+    "description": "For decades, the EICAR test string has been used by antivirus and security vendors to safely test their detection engines without having to use live virulent samples which could cause harm. What would happen if you took that string, encoded it into a machine readable format like a QR code and started scanning various devices with the QR code? This talk shows how there are a lot of systems out there that aren't expecting an input string like EICAR and how many of them just collapse when shown the code. We will also discuss the types of systems you can target and how you may be able to extend this to more than a nuisance attack.\n\nREFERENCES:\nEICAR test string: https://www.eicar.org/?page_id=3950\nEICAR wikipedia entry: https://en.wikipedia.org/wiki/EICAR_test_file\nQR codes: https://en.wikipedia.org/wiki/QR_code\nRisks surrounding QR codes: https://en.wikipedia.org/wiki/QR_code#Risks",
+    "view_count": 17840
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cIcbAMO6sxo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

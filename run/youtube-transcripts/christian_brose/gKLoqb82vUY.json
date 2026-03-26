@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gKLoqb82vUY",
+    "language": "en",
+    "took_ms": 8557,
+    "method": null,
+    "title": "Cambria Press Forgotten Partnership Redux Canada-US Relations.wmv",
+    "channel": "Hudson Institute",
+    "upload_date": "20111110",
+    "duration_sec": 329,
+    "description": "Hudson Institute Senior Fellow Christopher Sands discusses the work of Johns Hopkins University Professor Charles F. Doran and a new book of essays entitled Forgotten Partnership Redux: Canada-U.S. Relations in the 21st Century, which Sands co-edited with Greg Anderson of the University of Alberta, and has been published by Cambria Press.\r\n\r\nVisit www.cambriapress.com/books/9781604977622.cfm for more information and to purchase the book.",
+    "view_count": 242
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gKLoqb82vUY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

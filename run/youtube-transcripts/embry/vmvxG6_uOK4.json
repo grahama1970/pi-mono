@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vmvxG6_uOK4",
+    "language": "en",
+    "took_ms": 8034,
+    "method": null,
+    "title": "Watch the last Antares 230+ rocket fly for NASA to the ISS! #NG19",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230802",
+    "duration_sec": 3140,
+    "description": "For the final time in its seven year history, the Antares 200 series rocket will take to the skies over the east coast of the United States. It will lift off from the MARS (Mid-Atlantic Regional Spaceport) Launch Pad 0A (LP-0A). As the spacecraft, a Cygnus cargo vehicle built by Northrop Grumman, is making a rendezvous with the International Space Station (ISS), the launch window is only five minutes. Set for 00:31:11 UTC on August 2 (20:31:11 PM Eastern Time on August 1), if this window is missed, the launch will be called off for the day.\n\nFor more info, check out our Prelaunch Preview! - https://everydayastronaut.com/cygnus-crs2-ng-19-laurel-clark-antares-230/\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 60280
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vmvxG6_uOK4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PKLe_eW0mB0",
+    "language": "en",
+    "took_ms": 9828,
+    "method": null,
+    "title": "How Health Security Strengthens National Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20230413",
+    "duration_sec": 2383,
+    "description": "A recently released Senate report found that drug shortages increased by nearly 30 percent from 2021 to 2022. One prevailing cause for this issue is that 80 to 90 percent of critical medical supplies are manufactured overseas—particularly in China. How does this vulnerability affect our national security? \n\nPlease join former US Department of Health and Human Services Secretary Tom Price and Hudson Media Fellow Jeremy Hunt for a discussion on the future of American health security.\n\n#China #nationalsecurity",
+    "view_count": 318
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PKLe_eW0mB0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

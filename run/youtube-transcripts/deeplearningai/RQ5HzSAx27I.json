@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RQ5HzSAx27I",
+    "language": "en",
+    "took_ms": 8281,
+    "method": null,
+    "title": "LLMs as Operating Systems: Agent Memory, a new course based on the MemGPT approach",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241107",
+    "duration_sec": 178,
+    "description": "Enroll now: https://bit.ly/3YwWJeR\n\nBuild agentic memory into your applications with LLMs as Operating Systems: Agent Memory, a short course made in partnership with Letta and taught by its founders, Charles Packer and Sarah Wooders.\n\nLLMs can use information stored in their input context window, but it has limited space and costs more to extend the window.. \n\nManaging this context efficiently is crucial, and the innovative MemGPT research paper, Towards LLMs as Operating Systems, coauthored by Charles and Sarah, introduces a solution: using an LLM agent to create managed, persistent memory for applications. This is what you’ll learn in this course.\n\nThis course covers:\n\n- Building an agent with self-editing memory, using tool-calling and multi-step reasoning.\n- Using Letta, an open-source framework that enhances LLM agents with advanced reasoning and persistent long-term memory.\n- Key ideas from MemGPT, including two levels of memory inside and outside the context window, and how agent states, combining memory, tools, and messages, form prompts.\n- Techniques for creating and interacting with a MemGPT agent using Letta, and customizing its core and archival memory.\n- Designing core memory with examples of customizable blocks and memory tools.\n- Implementing multi-agent collaboration through message-sharing and memory block exchange.\n\nBy the end, you’ll have the tools to build LLM applications with extended virtual memory, surpassing the finite context window limitations of standard LLMs.\n\nLearn more: https://bit.ly/3YwWJeR",
+    "view_count": 19476
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RQ5HzSAx27I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

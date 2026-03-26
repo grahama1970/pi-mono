@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BKJje3Ram2I",
+    "language": "en",
+    "took_ms": 8645,
+    "method": null,
+    "title": "Project Basecamp - PLC Hacking Intro",
+    "channel": "S4 Events",
+    "upload_date": "20161212",
+    "duration_sec": 847,
+    "description": "Digital Bond led research project that tore apart six different PLC/RTU. Yes there were vulnerabilities, but more importantly they had serious insecure-by-design issues. Everything an attacker would need was a documented feature such as backdoors, unauthenticated firmware upload, etc.",
+    "view_count": 1510
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BKJje3Ram2I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

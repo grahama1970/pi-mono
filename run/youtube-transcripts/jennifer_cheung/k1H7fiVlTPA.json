@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k1H7fiVlTPA",
+    "language": "en",
+    "took_ms": 8776,
+    "method": null,
+    "title": "DEF CON 29 -Jiska, Alexander Heinrich - Wibbly Wobbly, Timey Wimey   Whats Inside Apples U1 chip",
+    "channel": "DEFCONConference",
+    "upload_date": "20210805",
+    "duration_sec": 2377,
+    "description": "Apple introduced an Ultra Wideband (UWB) chip in the iPhone 11. Its cryptographically secured spatial measurement capabilities are accessible via the Nearby Interaction framework since iOS 14. As of now, it only supports interaction with other Apple devices including the latest Apple Watch and HomePod mini. These are the first steps to support UWB in a larger ecosystem, as measuring precise distance and direction can be an enabler for various future applications. The automotive industry already announced UWB support for mobile car keys on the iPhone.\n\nBut what’s really inside Apple’s U1 chip, internally called Rose? In this talk, we will travel through time, space, firmware and kernel components—and fight daemons to modify firmware interaction from user space. This will not only cover one or two, but three firmwares that process or forward each Rose time measurement: The Rose Digital Signal Processor (DSP), Rose Application Processor (AP), and the Always-On Processor (AOP).\n\nREFERENCES:\nThere's almost nothing known about UWB on the iPhones... So the only reference is this:\nhttps://support.apple.com/guide/security/ultra-wideband-security-sec1e6108efd/web",
+    "view_count": 1985
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k1H7fiVlTPA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

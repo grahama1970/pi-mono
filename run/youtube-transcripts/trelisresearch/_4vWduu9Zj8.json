@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_4vWduu9Zj8",
+    "language": "en",
+    "took_ms": 8551,
+    "method": null,
+    "title": "OpenAI Fine-tuning vs Distillation - Free Colab Notebook",
+    "channel": "Trelis Research",
+    "upload_date": "20241014",
+    "duration_sec": 1356,
+    "description": "➡️ Colab Notebook: https://colab.research.google.com/drive/1aXoGCvRV6pWus63oy5kYDtkbyhXRf95a?usp=sharing\n➡️ Get Life-time Access to the ADVANCED Scripts (and future improvements): https://Trelis.com/ADVANCED-fine-tuning\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER RESOURCES:\n- Synthetic Data Preparation Video (more advanced techniques): https://youtu.be/iogrvDu5K0k\n- Model Distillation from Scratch (relevant for pre-training more than fine-tuning): https://youtu.be/tf60owmwR-c\n- Touch Rugby Synthetic Data: https://huggingface.co/datasets/Trelis/touch-rugby-synth\n\nTIMESTAMPS:\n0:00 Fine-tuning and Distilling with OpenAI\n0:23 Video Overview and Colab Notebook\n1:17 Why bother with distilling or fine-tuning?\n2:48 How is distillation different to fine-tuning?\n6:18 Simple Approach to Distillation\n7:16 Installation, student and teacher model selection\n7:58 Set up training questions\n8:37 Setting up simple evaluation\n9:41 Generating and storing a distilled dataset\n11:43 Running fine-tuning on the distilled dataset\n13:17 Evaluating the fine-tuned model\n15:03 Advanced techniques to generate larger datasets\n17:31 Results from comprehensive fine-tuning and distillation from got-4o to gpt-4o-mini\n19:41 Notes on OpenAI Evals and Gemini fine-tuning",
+    "view_count": 3212
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _4vWduu9Zj8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

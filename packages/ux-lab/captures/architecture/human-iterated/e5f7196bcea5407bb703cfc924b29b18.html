@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TACTICAL_ARCHITECT // V3_LATEST</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#d2bbff",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-container": "#ede0ff",
+                        "on-primary": "#3f008e",
+                        "on-secondary-fixed-variant": "#523787",
+                        "secondary": "#d2bbff",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#005228",
+                        "surface-container": "#201f1f",
+                        "primary": "#d2bbff",
+                        "secondary-fixed-dim": "#d2bbff",
+                        "on-tertiary": "#003919",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#25005a",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "outline-variant": "#4a4455",
+                        "on-surface": "#e5e2e1",
+                        "secondary-container": "#523787",
+                        "tertiary-fixed-dim": "#00e479",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#353534",
+                        "outline": "#958da1",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-container": "#c3a6ff",
+                        "secondary-fixed": "#eaddff",
+                        "on-background": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface": "#131313",
+                        "tertiary": "#00e479",
+                        "surface-dim": "#131313",
+                        "primary-fixed": "#eaddff",
+                        "on-primary-fixed": "#25005a",
+                        "inverse-primary": "#732ee4",
+                        "primary-container": "#7c3aed",
+                        "on-surface-variant": "#ccc3d8",
+                        "on-secondary": "#3b1e6f",
+                        "inverse-on-surface": "#313030",
+                        "surface-bright": "#393939",
+                        "tertiary-container": "#00773c",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#84ffa8",
+                        "tertiary-fixed": "#60ff99",
+                        "on-tertiary-fixed": "#00210c",
+                        "background": "#131313"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Space Grotesk"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            overflow: hidden;
+        }
+        .pipeline-grid {
+            background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(124, 58, 237, 0.05) 50.5%, transparent 51%);
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-on-primary">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 w-full z-50 flex justify-between px-6 items-center bg-[#131313]/80 backdrop-blur-xl h-14 border-b border-[#2a2a2a]/30">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-[#d2bbff] tracking-tighter font-headline">TACTICAL_ARCHITECT</span>
+<div class="flex items-center space-x-4 h-full">
+<div class="text-[10px] font-mono text-gray-500 tracking-widest uppercase">ENV: PRODUCTION</div>
+<div class="h-4 w-[1px] bg-[#2a2a2a]"></div>
+<div class="text-[10px] font-mono text-[#00e479] tracking-widest uppercase flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-[#00e479] animate-pulse"></span>
+                    SYSTEM_STATUS_ACTIVE
+                </div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-[#d2bbff] cursor-pointer transition-colors duration-150">terminal</span>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-[#d2bbff] cursor-pointer transition-colors duration-150">settings</span>
+</div>
+<div class="flex gap-2">
+<button class="bg-[#2a2a2a] text-[#d2bbff] px-4 py-1.5 text-[11px] font-mono font-bold tracking-widest border-0 hover:bg-[#353534] transition-all">VALIDATE</button>
+<button class="bg-primary-container text-on-primary-container px-4 py-1.5 text-[11px] font-mono font-bold tracking-widest border-0 hover:brightness-110 transition-all">DEPLOY</button>
+</div>
+</div>
+</header>
+<!-- SIDE NAV BAR -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#0e0e0e] pt-20 flex flex-col">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-10 h-10 bg-[#2a2a2a] border border-[#7c3aed]/20 flex items-center justify-center overflow-hidden">
+<img alt="Architect Profile" class="w-8 h-8 opacity-80" data-alt="minimalist architectural avatar with geometric wireframe lines on a dark obsidian background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE0lAIK5MsEde7VWPwabkRinU_2_oaODTxU7Fj_pGqNcO-FilO0JO2o-pBX-AZ9E_Hp3gTwrOUuGGN2waQ35Qp1LJDN6VfkgCmnjwmL8mklLEfh_LUqgpC6uYujKkuRLrJHXurArGmzau-wZ0EDcTyuYl5GyMl7Qcf_67R-5Nar0yII3IPc-8mmRV61EjaIzM7uESVArk7B0PpcULXdavKbih--f_z-DNJ7PkKWCVXxt3iBPP0OTD5c7zWRCDbhnQnTAbOM_WDkdA"/>
+</div>
+<div>
+<div class="text-sm font-bold text-[#d2bbff] font-headline tracking-tighter">PROJECT_S_001</div>
+<div class="text-[10px] font-mono text-gray-500 tracking-tight">V3_LATEST</div>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="flex flex-col">
+<!-- Active Tab: Revisions (based on timeline focus) -->
+<a class="flex items-center px-6 py-3 gap-4 text-gray-500 hover:text-gray-300 transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-xl">history</span>
+<span class="font-mono text-xs tracking-tight">History</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-gray-500 hover:text-gray-300 transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-xl">layers</span>
+<span class="font-mono text-xs tracking-tight">Layers</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-gray-500 hover:text-gray-300 transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-xl">extension</span>
+<span class="font-mono text-xs tracking-tight">Components</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-[#d2bbff] bg-[#2a2a2a] border-l-2 border-[#7c3aed]" href="#">
+<span class="material-symbols-outlined text-xl">update</span>
+<span class="font-mono text-xs tracking-tight">Revisions</span>
+</a>
+</div>
+</nav>
+<div class="p-6">
+<div class="p-4 bg-[#131313] border-0">
+<div class="text-[9px] font-mono text-[#7c3aed] mb-2 uppercase tracking-widest">Architecture Attribution</div>
+<div class="text-[11px] font-headline text-gray-300 leading-tight">v3 (current) - Human/Agent collaboration</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="pl-64 pt-14 pb-8 h-screen w-full relative overflow-hidden flex flex-col">
+<!-- HORIZONTAL VERSION TIMELINE -->
+<section class="h-20 bg-[#0e0e0e] flex items-center px-10 gap-0 border-b border-[#2a2a2a]/50">
+<div class="flex-1 flex items-center justify-between max-w-4xl mx-auto relative">
+<!-- Connection Line -->
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-[#2a2a2a] -translate-y-1/2"></div>
+<!-- Version 1 -->
+<div class="relative z-10 flex flex-col items-center group cursor-pointer">
+<div class="w-3 h-3 bg-gray-600 border border-transparent mb-2 group-hover:scale-125 transition-transform"></div>
+<span class="font-mono text-[10px] text-gray-500 group-hover:text-gray-300">V_01</span>
+</div>
+<!-- Version 2 -->
+<div class="relative z-10 flex flex-col items-center group cursor-pointer">
+<div class="w-3 h-3 bg-gray-600 border border-transparent mb-2 group-hover:scale-125 transition-transform"></div>
+<span class="font-mono text-[10px] text-gray-500 group-hover:text-gray-300">V_02</span>
+</div>
+<!-- Version 3 (Active) -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-5 h-5 bg-[#7c3aed] border-2 border-[#d2bbff] mb-1.5 shadow-[0_0_15px_rgba(124,58,237,0.4)]"></div>
+<span class="font-mono text-[10px] text-[#d2bbff] font-bold">V_03 (LATEST)</span>
+</div>
+<!-- Future Revision -->
+<div class="relative z-10 flex flex-col items-center opacity-30">
+<div class="w-3 h-3 border border-gray-600 mb-2"></div>
+<span class="font-mono text-[10px] text-gray-600">V_04_STAGING</span>
+</div>
+</div>
+</section>
+<!-- CANVAS PIPELINE DIAGRAM -->
+<section class="flex-1 relative pipeline-grid overflow-auto p-12">
+<div class="scanline absolute inset-0 pointer-events-none opacity-20"></div>
+<!-- Pipeline Container -->
+<div class="relative flex items-center gap-16 min-h-full">
+<!-- OMNIBAR INPUT -->
+<div class="flex flex-col gap-2 relative">
+<div class="px-3 py-1 bg-surface-container-high font-mono text-[9px] text-[#7c3aed] uppercase tracking-widest w-fit">OMNIBAR_INPUT</div>
+<div class="w-64 h-24 bg-[#0e0e0e] border-l-2 border-[#7c3aed] p-4 flex flex-col justify-between group hover:bg-[#1a1a1a] transition-colors relative">
+<div class="text-xs text-gray-400 font-mono italic">"Find recent user logs..."</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-mono text-[#00e479]">&lt;10ms</span>
+<span class="material-symbols-outlined text-sm text-[#7c3aed]">input</span>
+</div>
+</div>
+</div>
+<div class="w-12 h-[1px] bg-[#7c3aed]/40 relative">
+<div class="absolute -right-1 -top-1 w-2 h-2 bg-[#7c3aed] rotate-45"></div>
+</div>
+<!-- INTENT CLASSIFIER -->
+<div class="flex flex-col gap-2 group relative">
+<div class="px-3 py-1 bg-surface-container-high font-mono text-[9px] text-[#7c3aed] uppercase tracking-widest w-fit">ML_LAYER_01</div>
+<div class="w-56 h-32 bg-[#131313] border border-[#2a2a2a] hover:border-[#7c3aed] p-4 flex flex-col justify-between relative transition-all">
+<span class="font-headline font-bold text-sm text-[#d2bbff]">Intent Classifier</span>
+<div class="font-mono text-[10px] text-gray-500 space-y-1">
+<div>PROB: 0.992</div>
+<div>CLASS: QUERY</div>
+</div>
+<span class="text-[10px] font-mono text-[#00e479] self-end">&lt;45ms</span>
+</div>
+<!-- HUD HOVER DETAILS -->
+<div class="absolute -top-32 left-0 w-64 p-4 bg-[#1c1b1b] border-l-2 border-[#00e479] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl backdrop-blur-md">
+<div class="text-[10px] font-mono text-[#00e479] mb-1">REAL_TIME_SPEC</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[11px] font-mono"><span class="text-gray-500">MODEL</span><span>BERT_BASE_V3</span></div>
+<div class="flex justify-between text-[11px] font-mono"><span class="text-gray-500">PRECISION</span><span>FP16</span></div>
+<div class="flex justify-between text-[11px] font-mono"><span class="text-gray-500">THREADS</span><span>16</span></div>
+</div>
+</div>
+</div>
+<div class="w-12 h-[1px] bg-[#7c3aed]/40 relative">
+<div class="absolute -right-1 -top-1 w-2 h-2 bg-[#7c3aed] rotate-45"></div>
+</div>
+<!-- EXTRACT ENTITIES / RECALL HUB -->
+<div class="flex flex-col gap-6 relative">
+<!-- Extract entities -->
+<div class="flex flex-col gap-2 group relative">
+<div class="w-56 h-20 bg-[#131313] border border-[#2a2a2a] hover:border-[#7c3aed] p-4 flex items-center justify-between transition-all">
+<span class="font-mono text-xs text-[#d2bbff]">/extract-entities</span>
+<span class="text-[10px] font-mono text-[#00e479]">&lt;30ms</span>
+</div>
+<!-- HUD HOVER -->
+<div class="absolute -bottom-24 left-0 w-64 p-4 bg-[#1c1b1b] border-l-2 border-[#7c3aed] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-xl backdrop-blur-md">
+<div class="text-[10px] font-mono text-[#7c3aed] mb-1">ENTITY_MAP</div>
+<div class="text-[10px] font-mono text-gray-400">Extracted: [UID, Timestamp, Severity, Action]</div>
+</div>
+</div>
+<!-- Recall -->
+<div class="flex flex-col gap-2 group relative">
+<div class="w-56 h-20 bg-[#131313] border border-[#2a2a2a] hover:border-[#7c3aed] p-4 flex items-center justify-between transition-all">
+<span class="font-mono text-xs text-[#d2bbff]">/recall</span>
+<span class="text-[10px] font-mono text-[#00e479]">&lt;120ms</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-24 h-full py-20 justify-center">
+<div class="w-12 h-[1px] bg-[#7c3aed]/40"></div>
+<div class="w-12 h-[1px] bg-[#7c3aed]/40"></div>
+</div>
+<!-- SFT MODEL -->
+<div class="flex flex-col gap-2 group relative">
+<div class="px-3 py-1 bg-surface-container-high font-mono text-[9px] text-[#7c3aed] uppercase tracking-widest w-fit">CORE_ORCHESTRATOR</div>
+<div class="w-64 h-48 bg-[#0e0e0e] border border-[#7c3aed]/40 hover:bg-[#1a1a1a] p-6 flex flex-col justify-between relative transition-all overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-6xl">memory</span>
+</div>
+<div>
+<span class="font-headline font-bold text-lg text-[#d2bbff] block mb-1">SFT Model</span>
+<div class="w-full bg-[#2a2a2a] h-1 mb-4">
+<div class="bg-[#00e479] h-full w-[78%]"></div>
+</div>
+</div>
+<div class="font-mono text-[10px] text-gray-400 space-y-2">
+<div class="flex justify-between"><span>TOKEN_RATE</span><span class="text-[#00e479]">140/s</span></div>
+<div class="flex justify-between"><span>CTX_LENGTH</span><span>8192</span></div>
+<div class="flex justify-between"><span>TEMP</span><span>0.1</span></div>
+</div>
+<span class="text-[10px] font-mono text-[#00e479] self-end mt-4">&lt;450ms</span>
+</div>
+</div>
+<div class="w-12 h-[1px] bg-[#7c3aed]/40 relative">
+<div class="absolute -right-1 -top-1 w-2 h-2 bg-[#7c3aed] rotate-45"></div>
+</div>
+<!-- EXECUTE QUERY SPEC -->
+<div class="flex flex-col gap-2 group relative">
+<div class="px-3 py-1 bg-surface-container-high font-mono text-[9px] text-[#00e479] uppercase tracking-widest w-fit">EXECUTION_TERMINAL</div>
+<div class="w-64 h-24 bg-[#00773c]/10 border border-[#00e479]/30 hover:border-[#00e479] p-4 flex flex-col justify-between relative transition-all">
+<span class="font-mono text-xs font-bold text-[#00e479]">/execute-queryspec</span>
+<div class="flex justify-between items-center">
+<span class="text-[9px] font-mono text-gray-500 uppercase">STATUS: FINALIZING</span>
+<span class="text-[10px] font-mono text-[#00e479]">&lt;15ms</span>
+</div>
+</div>
+</div>
+</div>
+<!-- FLOATING HUD ELEMENTS -->
+<div class="fixed top-20 right-8 w-72 bg-[#131313]/90 backdrop-blur-xl border border-[#2a2a2a] p-6 pointer-events-none">
+<div class="text-[10px] font-mono text-[#7c3aed] mb-4 tracking-[0.2em] font-bold">LIVE_TELEMETRY</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-[#2a2a2a] pb-2">
+<span class="font-mono text-[11px] text-gray-500 uppercase">Latency P99</span>
+<span class="font-mono text-xl text-[#00e479]">682ms</span>
+</div>
+<div class="flex justify-between items-end border-b border-[#2a2a2a] pb-2">
+<span class="font-mono text-[11px] text-gray-500 uppercase">Throughput</span>
+<span class="font-mono text-xl text-[#d2bbff]">42.8 QPS</span>
+</div>
+<div class="flex justify-between items-end border-b border-[#2a2a2a] pb-2">
+<span class="font-mono text-[11px] text-gray-500 uppercase">Active Agents</span>
+<span class="font-mono text-xl text-white">004</span>
+</div>
+</div>
+<div class="mt-8">
+<img alt="Waveform telemetry" class="w-full h-16 object-cover opacity-50 contrast-125" data-alt="sharp jagged neon green waveform chart on a pitch black background showing digital frequency oscillations" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxDvPSjLCEgWi9kI8lOsyVk3Pt4yxsPPigsvOc-QjE73K7LXWXM0fgWMMPtO81ydeN23OxvTmBCJskbEyN7QzJPIfaYlULQMWvYtaEyqJzSIIeuyHJtF-V5M40_1-wbxFiIJ0suo6vu8Sib16Letj3WWMfLY7lTkpWvjI7ssH50g3mCMJXBoPxWBaF5nUQsL8Ld8oyw_nrXUCue5B3rP2qkE9iiw5Z5ohwdnIa6ae2ty_JoahrX4hRKmD2eem93F_U1cEurLuGo3g"/>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-between items-center px-4 bg-[#0e0e0e] h-8 border-t border-[#2a2a2a]/20">
+<div class="flex items-center gap-4">
+<span class="text-[#00e479] font-mono text-[10px] tracking-tight">SYSTEM_STATUS_ACTIVE</span>
+<span class="h-3 w-[1px] bg-[#2a2a2a]"></span>
+<span class="text-gray-600 font-mono text-[10px] tracking-tight">LATENCY: 12ms</span>
+</div>
+<div class="flex gap-4">
+<a class="text-gray-600 hover:text-white font-mono text-[10px] transition-colors" href="#">V3_STABLE</a>
+<a class="text-gray-600 hover:text-white font-mono text-[10px] transition-colors" href="#">OP:HUMAN_AGENT</a>
+</div>
+</footer>
+</body></html>

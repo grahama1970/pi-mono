@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WvQTkMiOrxo",
+    "language": "en",
+    "took_ms": 8335,
+    "method": null,
+    "title": "New course! Orchestrating Workflows for GenAI Applications",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250611",
+    "duration_sec": 143,
+    "description": "Learn more: https://bit.ly/45BbJ0D\n\nWhen building generative AI applications, it's common to start in a Jupyter Notebook or script, but notebooks aren’t built for automation, monitoring, or scale. To run GenAI workflows reliably in production, you need orchestration.\n\nIn Orchestrating Workflows for GenAI Applications, a new short course taught by Kenten Danas and Tamara Fingerlin from Astronomer, you’ll learn how to transform a RAG prototype into a robust, automated pipeline using Apache Airflow 3.\n\nYou’ll build two production-ready workflows: one to ingest and embed book descriptions into a vector database, and another to query that database to recommend books, each composed of discrete, trackable tasks managed by Airflow dags.\n\nWhat you’ll learn includes:\n\n- Scheduling pipelines using both time-based and event-driven triggers\n- Parallelizing tasks with dynamic task mapping\n- Adding retries, alerts, and backfills to ensure reliability\n- Scaling orchestration using real-world techniques from apps like Astronomer’s Ask Astro\n\nThis course is ideal for AI builders who want to move from prototype to production. No prior Airflow experience required.\n\nEnroll now: https://bit.ly/45BbJ0D",
+    "view_count": 3533
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WvQTkMiOrxo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

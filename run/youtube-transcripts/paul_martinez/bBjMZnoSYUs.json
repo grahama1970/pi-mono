@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bBjMZnoSYUs",
+    "language": "en",
+    "took_ms": 9048,
+    "method": null,
+    "title": "Layered Blueprints for OT Security",
+    "channel": "S4 Events",
+    "upload_date": "20190226",
+    "duration_sec": 1615,
+    "description": "Sarah Fluchs begins with a bold statement, reminiscent of an earlier Witch Doctor vs. Engineer S4x12 session, \"OT Security Engineering does not deserve to be called Engineering.\" She then lays out a series of three questions that must be asked and a methodology to answer the questions.\n\nSarah goes over the OT Security Engineering methodology as applied to a Water ICS and frankly discusses the process and lessons learned through iterating the methodology. She ends with a call to the S4 audience to contribute to ICS security solutions and approaches worthy of the engineering discipline.",
+    "view_count": 2716
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bBjMZnoSYUs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

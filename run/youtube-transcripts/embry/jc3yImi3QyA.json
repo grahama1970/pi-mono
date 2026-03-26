@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jc3yImi3QyA",
+    "language": "en",
+    "took_ms": 8913,
+    "method": null,
+    "title": "Remembering the astronaut who snuck a sandwich to space",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180106",
+    "duration_sec": 310,
+    "description": "Today my favorite astronaut, John Young passed away and I wanted to reflect on his incredible life. From 2 Gemini missions, to two Apollo missions and even 2 space shuttle missions. He was hilarious, smart, witty and well rounded. I hope this video helps you remember why John Young was amazing.\n\nHear from John Young in the amazing documentary series \"When We Left Earth: The NASA Missions.\" - https://www.youtube.com/watch?v=m71TsLdEw_U\n\nHelp support Everyday Astronaut - http://patreon.com/everydayastronaut\n\nTranslations:\nFrench - Gaetan Lafitte",
+    "view_count": 43488
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jc3yImi3QyA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

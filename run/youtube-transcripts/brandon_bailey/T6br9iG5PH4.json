@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T6br9iG5PH4",
+    "language": "en",
+    "took_ms": 8365,
+    "method": null,
+    "title": "DEF CON 31 Packet Hacking Village - OSINT for Physical Security Intelligence - Raggo, Hosmer",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2271,
+    "description": "Organizations seek rapid intelligence about critical situations that impact their teams, locations, or assets. Yet when it comes to OSINT we find organizations performing Open Source Information gathering; wasting time sifting through data to get to the actionable intelligence. In this presentation we demonstrate how to collect curated data and eliminate 99% of the time spent on reliminary data analysis. Furthermore, all of this data can be combined to perform trending and predictive analysis for natural disasters, geo-political situations, or business risk. The goal is to provide attendees with ideas for formulating new approaches for physical security OSINT.",
+    "view_count": 1524
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T6br9iG5PH4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

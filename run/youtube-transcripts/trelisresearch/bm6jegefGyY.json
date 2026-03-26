@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bm6jegefGyY",
+    "language": "en",
+    "took_ms": 7800,
+    "method": null,
+    "title": "Create a Python Sandbox for Agents to Run Code",
+    "channel": "Trelis Research",
+    "upload_date": "20250424",
+    "duration_sec": 948,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- mcp-run-python: https://ai.pydantic.dev/mcp/run-python/#installation\n\nTIMESTAMPS:\n0:00 Why run code in a sandbox?\n0:27 Code Sandboxing for Agents with mcp-run-python\n1:08 Video Overview\n2:30 Types of Sandbox (Docker, Podman, Pyodide, Deno, SmolAgents)\n4:27 How a CPython Sandbox works (e.g. smolagents)\n6:01 How the MCP-run-python sandbox works\n6:56 Running a pyodide-Deno sandbox with pydantic AI\n11:01 Running code in a mcp-run-python sandbox\n14:50 Conclusions (local sandboxing vs e2b)",
+    "view_count": 5838
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bm6jegefGyY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

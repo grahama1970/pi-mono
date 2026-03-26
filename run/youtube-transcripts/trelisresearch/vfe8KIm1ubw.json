@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vfe8KIm1ubw",
+    "language": "en",
+    "took_ms": 9119,
+    "method": null,
+    "title": "Fine-tune Text to Speech Models in 2025: CSM-1B and Orpheus TTS",
+    "channel": "Trelis Research",
+    "upload_date": "20250324",
+    "duration_sec": 5820,
+    "description": "📜 Get LIFETIME repo access at https://Trelis.com/ADVANCED-transcription\n\n🗝️ Get LIFETIME access to the Trelis Multi-Repo Bundle (https://Trelis.com/multi-repo-bundle)\n- Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n- Support via Github Issues & Trelis’ Private Discord\n\n📧 Get the Trelis AI Newsletter: https://trelis.substack.com\n\n❗️If you subscribed here, click the bell to be notified of new vids\n\n🤝 Work for Trelis: https://trelis.com/jobs/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1N_05lO2rOu2dlEv10NrbJNjsCLV7-o6B7WUCu66BeFE/edit?usp=sharing \n- One-click Runpod template (affiliate): https://www.runpod.io/console/deploy?template=ifyqsvjlzj\n- Llama 3 Paper: https://arxiv.org/pdf/2407.21783\n- StyleTTS2: https://arxiv.org/pdf/2306.07691\n- Moshi: https://arxiv.org/pdf/2410.00037\n- Orpheus: https://canopylabs.ai/model-releases\n- Sesame’s CSM-1B: https://www.sesame.com/research/crossing_the_uncanny_valley_of_voic\n- Colab Notebook - Orpheus Cloning: https://colab.research.google.com/drive/18efbyjnUI_WcmfPPYex4xff0DzixAwsy?usp=sharing\n- Colab Notebook - Orpheus Inference: https://colab.research.google.com/drive/1W7t1YburdKrbOkLvNReAX0M9ogBThBWp?usp=sharing \n\nTIMESTAMPS:\n00:00 Introduction to End-to-End Audio + Text Models like GPT-4o and Llama 4 (?)\n01:04 End-to-End Multimodal Models and Their Capabilities\n02:36 Traditional Approaches to Text-to-Speech\n03:06 Token-Based Approaches and Their Advantages\n03:25 Detailed Look at Orpheus and CSM-1B Models\n06:58 Training and Inference with Token-Based Models\n12:53 Hierarchical Tokenization for High-Quality Audio\n14:11 Kyutai’s Moshi Model for Text + Speech\n23:41 Sesame’s CSM-1B Model Architecture\n25:13 Orpheus TTS architecture by Canopy Labs\n27:34 Inferencing and Cloning with CSM-1B\n40:13 Context Aware Text to Speech with CSM-1B\n48:21 Orpheus Inference and Cloning - FREE Colab\n55:09 Orpheus Voice Cloning Setup\n01:01:20 Orpheus Fine-tuning (Full fine-tuning and LoRA fine-tuning)\n01:09:55 Running Full Fine Tuning\n01:19:33 Running LoRa Fine Tuning\n01:25:20 Inference and Comparison\n01:29:27 Inference with Cloning AND fine-tuning\n01:35:48 The future of token-based multi-modal models\n\nPS: I've rotated all hf access keys",
+    "view_count": 15936
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vfe8KIm1ubw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "C6AV8SK6jHs",
+    "language": "en",
+    "took_ms": 7571,
+    "method": null,
+    "title": "Navigating GPS Vulnerabilities Implications for US Economic and National Security",
+    "channel": "Hudson Institute",
+    "upload_date": "20241104",
+    "duration_sec": 5483,
+    "description": "Beyond merely guiding Americans to their destinations, the Global Positioning System is essential to the United States’ electricity grid, financial markets, and wireless networks. First responders rely on GPS to locate individuals in distress. Many US military systems rely on the position, navigation, and timing (PNT) functions of GPS, and systems similar to GPS have been central to new forms of warfare such as drones and precision guided munitions.\n\nBut current US GPS technology is 51 years old and grows increasingly fragile as new, more resilient American GPS satellites sit idle in warehouses. Hostile nations such as Iran and Russia frequently spoof GPS so that ships mistake their actual location. Airline pilots encounter GPS jamming in many parts of the world, especially near the Russia-Ukraine border. Perhaps worse, the US has no robust backup to GPS, which could prove catastrophic in a military conflict or a natural disaster.\n\nTo explain the challenges facing GPS and how Washington can solve them, Hudson will host an event with several leading authorities on the system.\n\nAgenda\n\n10:00 a.m. | Panel Discussion\n\nRobert M. McDowell, Senior Fellow, Hudson Institute\nDana Goward, President, Resilient Navigation Foundation\nTodd Humphreys, Ashley H. Priddy Centennial Professor in Engineering, University of Texas at Austin\nZak Kassas, Professor and TRC Endowed Chair in Intelligent Transportation Systems, Department of Electrical and Computer Engineering, Ohio State University\nRear Admiral Mark Montgomery, Senior Director, Center on Cyber and Technology Innovation, Foundation for Defense of Democracies\nModerator\n\nHarold Furchtgott-Roth, Senior Fellow and Director, Center for the Economics of the Internet, Hudson Institute\n11:00 a.m. | Keynote Address\n\nNathan Simington, Commissioner, Federal Communications Commission",
+    "view_count": 1170
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] C6AV8SK6jHs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

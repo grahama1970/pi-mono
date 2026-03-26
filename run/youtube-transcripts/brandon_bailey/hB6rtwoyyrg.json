@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hB6rtwoyyrg",
+    "language": "en",
+    "took_ms": 9682,
+    "method": null,
+    "title": "DEF CON 32 - Securing CCTV Cameras Against Blind Spots - Jacob Shams",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 968,
+    "description": "In recent years, CCTV footage has been integrated in systems to observe areas and detect traversing malicious actors (e.g., criminals, terrorists). However, this footage has \"blind spots\", areas where objects are detected with lower confidence due to their angle/distance from the camera.\n\nIn this talk, we investigate a novel side effect of object detection in CCTV footage; location-based confidence weakness.\n\nWe demonstrate that a pedestrian's position (distance, angle, height) in footage impacts an object detector's confidence.\n\nWe analyze this phenomenon in four lighting conditions (lab, morning, afternoon, night) using five object detectors (YOLOv3, Faster R-CNN, SSD, DiffusionDet, RTMDet).\n\nWe then demonstrate this in footage of pedestrian traffic from three locations (Broadway, Shibuya Crossing, Castro Street), showing they contain \"blind spots\" where pedestrians are detected with low confidence. This persists across various locations, object detectors, and times of day. A malicious actor could take advantage of this to avoid detection.\n\nWe propose TipToe, a novel evasion attack leveraging \"blind spots\" to construct a minimum confidence path between two points in a CCTV-recorded area. We demonstrate its performance on footage of Broadway, Shibuya Crossing, and Castro Street, observed by YOLOv3, Faster R-CNN, SSD, DiffusionDet, and RTMDet.\n\nTipToe reduces max/average confidence by 0.10 and 0.16, respectively, on paths in Shibuya Crossing observed by YOLOv3, with similar performance for other locations and object detectors.",
+    "view_count": 1704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hB6rtwoyyrg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

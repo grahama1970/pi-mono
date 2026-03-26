@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X3cysL9St3M",
+    "language": "en",
+    "took_ms": 2807,
+    "method": null,
+    "title": "Use of Unidirectional Gateways in ICS (Japanese)",
+    "channel": "S4 Events",
+    "upload_date": "20170918",
+    "duration_sec": 3186,
+    "description": "This presentation in Japanese by Mr. Hirokazu Ofuji at S4xJapan provides a good background of what a unidirectional / one-way gateway is and how it can be deployed in ICS architectures.",
+    "view_count": 344
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X3cysL9St3M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

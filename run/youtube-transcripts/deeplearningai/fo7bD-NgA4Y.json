@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fo7bD-NgA4Y",
+    "language": "en",
+    "took_ms": 10337,
+    "method": null,
+    "title": "LangChain: Chat with Your Data by DeepLearning.AI Now Available",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230707",
+    "duration_sec": 198,
+    "description": "Enroll today: https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/\n\nJoin our new short course, LangChain: Chat With Your Data! Learn from LangChain creator, Harrison Chase, where you’ll dive deep into this framework by building systems that enable new ways to interface with data.\n\nThe course covers two main topics: (1) Retrieval Augmented Generation (RAG), a common LLM application that retrieves contextual documents from an external dataset, and (2) a guide to building a chatbot that responds to queries based on the content of your documents, rather than the information it has learned in training. \n\nYou’ll learn about: \n\nDocument Loading: Learn the fundamentals of data loading and discover over 80 unique loaders LangChain provides to access diverse data sources, including audio and video.\nDocument Splitting: Discover the best practices and considerations for splitting data.\nVector stores and embeddings: Dive into the concept of embeddings and explore vector store integrations within LangChain.\nRetrieval: Grasp advanced techniques for accessing and indexing data in the vector store, enabling you to retrieve the most relevant information beyond semantic queries.\nQuestion Answering: Build a one-pass question-answering solution.\nChat: Learn how to track and select pertinent information from conversations and data sources, as you build your own chatbot using LangChain.\n\nStart building practical applications that allow you to interact with data using LangChain and LLMs.\n\nLearn more:\nhttps://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/",
+    "view_count": 9378
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fo7bD-NgA4Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

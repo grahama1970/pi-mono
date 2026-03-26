@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LysMyDrOGn4",
+    "language": "en",
+    "took_ms": 8525,
+    "method": null,
+    "title": "DEF CON 32 - XR for All:  Accessibility and Privacy for Disabled Users - Dylan Fox",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1375,
+    "description": "Extended Reality (XR) technologies offer tremendous new possibilities for socializing, entertainment, training, and more. Unfortunately, many disabled users find themselves excluded from XR entirely or exposed to severe privacy risks for using it. In this talk, Dylan Fox, Director of Operations for the XR Access Initiative at Cornell Tech, will discuss the core challenges disabled people face in using XR, the tensions between privacy and assistive capabilities, and the open-source efforts happening now to ensure XR is accessible to everyone.",
+    "view_count": 1145
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LysMyDrOGn4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

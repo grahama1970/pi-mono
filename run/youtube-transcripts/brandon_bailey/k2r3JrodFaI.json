@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k2r3JrodFaI",
+    "language": "en",
+    "took_ms": 8714,
+    "method": null,
+    "title": "DEF CON 33 - Hacking Context for Auto Root Cause and Attack Flow Discovery - Ezz Tahoun",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3825,
+    "description": "IoT environments generate massive, noisy streams of logs and alerts—most of which lack the context needed for meaningful detection or response. This talk introduces a novel, LLM-free approach to large-scale alert contextualization that doesn't rely on writing complex queries or integrating heavy ML models. We’ll demonstrate how lightweight, modular correlation logic can automatically enrich logs, infer context, and group related events across sensors, devices, and cloud services. By leveraging time, topology, and behavioral attributes, this method builds causality sequences that explain what happened, where, and why—without human-crafted rules or expensive AI inference. Attendees will walk away with practical techniques and open-source tools for deploying contextualization pipelines in resource-constrained IoT environments. Whether you're defending smart homes, industrial OT networks, or edge devices, you'll learn how to extract insight from noise—fast.",
+    "view_count": 642
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k2r3JrodFaI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

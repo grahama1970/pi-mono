@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dkDQ-sfvGcg",
+    "language": "en",
+    "took_ms": 9109,
+    "method": null,
+    "title": "GE - Maintaining Security In An Agile Environment",
+    "channel": "S4 Events",
+    "upload_date": "20200410",
+    "duration_sec": 1792,
+    "description": "Nick Ritter and Marcelo Carvalho of GE discuss how they have integrated security into their development process. They focus on some of the challenges with agile / rapid development that is not going to wait for a traditional security development approach. For example, a two to four week pen test is way to long for a 4 to 6 week sprint. It can support about 48 hours of testing.\n\nThe session includes tools they have developed, techniques and lessons learned throughout the development lifecycle. They flat out say, “we didn’t get here quickly”. Doing this right is a lot of work.",
+    "view_count": 763
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dkDQ-sfvGcg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

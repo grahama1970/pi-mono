@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Brz7GaUPEDw",
+    "language": "en",
+    "took_ms": 7993,
+    "method": null,
+    "title": "Buildathon - From Zero to Product in a Day",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250817",
+    "duration_sec": 39292,
+    "description": "Hosted by @AIFundVentureStudio and DeepLearning.AI, the Buildathon is a multi-stage competition that challenges participants to rapidly prototype innovative AI solutions in one day. The event culminates in project presentations and prize distribution, with swag and networking opportunities for all participants.\n\nFor more information, please visit: https://www.buildathon.ai/",
+    "view_count": 22699
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Brz7GaUPEDw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gc56q16RAGg",
+    "language": "en",
+    "took_ms": 7677,
+    "method": null,
+    "title": "DEF CON 31 XR Village - Push All the Buttons Digital Twinning w Idaho National Labs - Kolton Heaps",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1922,
+    "description": "Extended Reality (XR) is an umbrella term that involves virtual reality (VR), augmented reality (AR), and mixed reality (MR) capabilities. VR describes an environment in which a user’s physical environment is completely replaced with a virtual one. This allows the user to view any digitally created content but separates the user from interacting with the physical world. On the other hand, AR enhances the user’s physical environment with virtual overlays but offers little interaction with digital content. Lastly, MR is a blend of the physical and digital worlds, unlocking natural and intuitive 3D human, computer, and environmental interactions. Using these technologies, analysts, operators, and stakeholders will be able to interpret radio frequency data effectively and efficiently. \n\nThe Idaho National Laboratory is integrating the next-generation XR capabilities into the various projects that support Nuclear, Integrated Energy and National and Homeland Security missions. They use a suite of tools for the visualization of capabilities to capture and analyze digital twins. Digital Engineering delivers semi-autonomous design, autonomous operation, and real-time anomaly detection as well as integrates threads of data, visualizations, AI/ML, and physics models into a cohesive digital twin.\n\nThe primary benefit of incorporating XR with signal analysis is to allow for simple interpretation and representation of complex data. Current techniques or trends rely on certain subject matter experts to collect, examine, and report anomalous data manually. By allowing the operator to spatially view the captured data, the process of identifying and plotting data is anticipated to be greatly simplified. Data and anomalies will become engaging, allowing the operator to easily identify unknown signals in real-time or near real-time.",
+    "view_count": 2514
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gc56q16RAGg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

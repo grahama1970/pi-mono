@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8JO5KCkEPGA",
+    "language": "en",
+    "took_ms": 11875,
+    "method": null,
+    "title": "Cyber Risk Ratings From Moodys' Company",
+    "channel": "S4 Events",
+    "upload_date": "20200914",
+    "duration_sec": 461,
+    "description": "Dale Peterson interviews Derek Vadala of Cyber Assessments (a joint venture of Moodys and Team8) in the S4x20 Green Room. This new company is developing a cyber risk rating for companies that will be used in similar ways to Moodys' credit risk rating.",
+    "view_count": 282
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8JO5KCkEPGA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

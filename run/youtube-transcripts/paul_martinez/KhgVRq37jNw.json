@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KhgVRq37jNw",
+    "language": "en",
+    "took_ms": 8942,
+    "method": null,
+    "title": "SOAR In ICS",
+    "channel": "S4 Events",
+    "upload_date": "20211027",
+    "duration_sec": 2308,
+    "description": "Peter Lund of Industrial Defender joins Dale to discuss SOAR in ICS.\n\n- Examples of early big wins for SOAR in ICS\n\n- Can you mix and match your SIEM and SOAR from different vendors?\n\n- Partial v Full Automation ... will there always be a person in the loop?\n\n- Does SOAR need to be customized for OT to be of real use in OT?\n\nThey finish the conversation with a bit on Industrial Defender's recently announced OT Machine Learning Language.",
+    "view_count": 594
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KhgVRq37jNw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

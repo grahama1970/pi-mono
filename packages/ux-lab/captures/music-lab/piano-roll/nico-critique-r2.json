@@ -1,0 +1,34 @@
+{
+  "findings": [
+    {
+      "severity": "MEDIUM",
+      "category": "Component API Shape",
+      "description": "The minimap, while conceptually excellent for solving the scalability problem, is implemented as a static, illustrative decoration. The notes within it are hardcoded and do not reflect the actual notes in the main viewport or the overall song structure. This could mislead an implementer into thinking the minimap is a separate, static asset rather than a dynamically generated overview of the `notes` data prop.",
+      "suggestion": "The minimap's SVG content must be dynamically generated from the same `notes` and `drumNotes` data as the main view. It should render a scaled-down version of every note in the song, ensuring a 1-to-1 correspondence. This clarifies that the minimap is a data-driven component, not a decorative one, and reinforces the expected API shape."
+    },
+    {
+      "severity": "LOW",
+      "category": "Data Density",
+      "description": "The revised pitch axis is a significant improvement in usability. However, the default range shown (C2-C6) is very wide, causing the actual note data (clustered between C3-A5) to occupy only about 50% of the vertical space. This is a less severe version of the R1 finding, now more of a configuration/defaulting issue.",
+      "suggestion": "Establish a sensible default `pitchRange` prop, perhaps calculated automatically based on the provided notes (`auto`) or a musically common range like `[C3, C6]`. The key is that the default experience should not feel sparse. In the mockup, adjust the `viewBox` or note Y-positions to show a tighter, more representative default view."
+    },
+    {
+      "severity": "LOW",
+      "category": "Interaction Feasibility",
+      "description": "The playhead's glow effect, while visually appealing, is implemented with an SVG `<filter>`. Animating an element with a filter (e.g., changing its x-position every frame) can be computationally expensive and lead to choppy animations, especially on lower-end hardware, as the browser must recalculate the filter on each paint.",
+      "suggestion": "For optimal animation performance, the playhead's movement should be handled via `transform: translateX(Npx)` on the `<line>` element. The glow effect itself is fine, but it should be applied to a static element or one that does not animate frequently. Recommend removing the filter from the playhead line itself in favor of a simple, non-filtered line for the animation-critical element."
+    },
+    {
+      "severity": "LOW",
+      "category": "Component API Shape",
+      "description": "The design now clearly separates melodic and percussive notes, implying `notes` and `drumNotes` props. This is good. However, the R1 critique regarding the separation of `onNoteClick` (audition) and `onSelectionChange` (selection state) is a state management concern not fully resolved by the visual mockup. The current design doesn't preclude a bad implementation.",
+      "suggestion": "No visual change required. This finding should be carried forward into the implementation ticket/spec. Ensure the component's technical specification explicitly calls for the `selectedNoteIds: string[]` prop and the `onSelectionChange: (ids: string[]) => void` callback to handle selection as a controlled state, distinct from simple click events."
+    }
+  ],
+  "summary": "This is a dramatic and successful revision. All four HIGH-severity blockers from R1 have been fully resolved. The addition of the dedicated drum lane is an excellent solution for interaction targets. The use of SVG patterns for accessibility is well-executed. The minimap concept and playhead solve the scalability and context problems. The design is now viable for implementation. The single remaining MEDIUM finding is a refinement of the minimap's implementation, and the LOW findings are minor defaults and implementation notes. We are very close to convergence.",
+  "approval": false,
+  "meta": {
+    "reviewer": "Nico Bailon",
+    "round": 2
+  }
+}

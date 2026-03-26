@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0uSuHEhjhPE",
+    "language": "en",
+    "took_ms": 8692,
+    "method": null,
+    "title": "6. The Threat To ICS with Rob Lee",
+    "channel": "S4 Events",
+    "upload_date": "20201117",
+    "duration_sec": 2917,
+    "description": "As always Rob has an entertaining and informative session on what most casual observers want to hear about: who is attacking whom and how are they doing it?\n\nYou get a lot of that in this video, and pay special attention when Rob starts to talk about Intelligence Consumption at 34:30 in the video. This is the key if you are an asset owner.\n\nQuestions To Consider & Comment On?\n\n1) What are your bias related to threat?\n\n2) How can you integrate threat intelligence into your ICSsec program? (admittedly this is a long and not easy question) What should you do when you learn of a new ICS attack?",
+    "view_count": 6062
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0uSuHEhjhPE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

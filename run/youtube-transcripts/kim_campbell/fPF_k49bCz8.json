@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fPF_k49bCz8",
+    "language": "en",
+    "took_ms": 7689,
+    "method": null,
+    "title": "Does the US really have an F-35 KILL SWITCH?!",
+    "channel": "Sandboxx",
+    "upload_date": "20250311",
+    "duration_sec": 255,
+    "description": "There's been a lot of talk lately about the possibility that the United States might possess an F-35 kill switch that can stop other nations from operating these advanced stealth jets. The truth is... more complicated than that.",
+    "view_count": 106702
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fPF_k49bCz8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

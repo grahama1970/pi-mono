@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pTSEViCwAig",
+    "language": "en",
+    "took_ms": 8190,
+    "method": null,
+    "title": "DEF CON 32 - On Your Ocean's 11 Team, I'm the AI Guy (technically Girl) - Harriet Farlow",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2261,
+    "description": "One of the best parts of DEF CON is the glitz and glam of Vegas, the gambling capital of the world. Many have explored hacking casinos (on and off stage). Unfortunately, it’s just not like it is portrayed in the Oceans franchise.. in real life there’s much less action, no George Clooney, and it’s a lot harder to pull off a successful heist.\n\nFortunately I’m not your typical hacker, I’m an AI hacker. I use adversarial machine learning techniques to disrupt, deceive and disclose information from Artificial Intelligence systems.\n\nI chose my target carefully: Canberra Casino. It’s the best casino in my city.. It’s also the only casino but that’s not the point. The casino industry is at an interesting inflection point. Many large casinos have already adopted AI for surveillance and gameplay monitoring, smaller casinos are starting to make the transition, and there’s only a couple of companies in the world that provide this software. It’s ripe for exploitation.\n\nIn this talk I’m going to show you how I bypassed Casino Canberra's AI systems - facial recognition, surveillance systems and gameplay monitoring. AI Security is the new cyber security threat, and attacks on AI systems could have broad implications including misdiagnoses in medical imaging, navigation errors in autonomous vehicles.. and successful casino heists.",
+    "view_count": 27483
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pTSEViCwAig: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

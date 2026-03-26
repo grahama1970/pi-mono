@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JL2PT1Dac3g",
+    "language": "en",
+    "took_ms": 9147,
+    "method": null,
+    "title": "DEF CON 33 - AutoDetection & Exploitation of DOM Clobbering Vuln at Scale - Zhengyu Liu, Jianjia Yu",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2262,
+    "description": "DOM Clobbering is a type of code-reuse attack on the web that exploits naming collisions between DOM elements and JavaScript variables for malicious consequences, such as Cross-site Scripting.\n\nIn this talk, we present a novel systematization of DOM Clobbering exploitation in four stages, integrating existing techniques while introducing new clobbering primitives. Based on this foundation, we introduce Hulk, the first dynamic analysis tool to automatically detect DOM Clobbering gadgets and generate working exploits end-to-end.\n\nOur evaluation revealed an alarming prevalence of DOM Clobbering vulnerabilities across the web ecosystem. We discovered 497 zero-day DOM Clobbering gadgets in the Tranco Top 5,000 sites, affecting popular client-side libraries, including Google Client API, Webpack, Vite, Rollup, and Astro—all of which have since acknowledged and patched the issue.\n\nTo complete our exploitation chain, we further study its trigger---HTML Injection vulnerability. Our systematic analysis of HTML Injection uncovered over 200 websites vulnerable to HTML injection. By combining them with our discovered gadgets, we demonstrated complete attack chains in popular applications like Jupyter Notebook/JupyterLab, HackMD.io, and Canvas LMS. This research has resulted in 19 CVE identifiers being assigned to date.",
+    "view_count": 745
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JL2PT1Dac3g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

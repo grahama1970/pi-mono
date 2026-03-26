@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Uo_lvFcJwzU",
+    "language": "en",
+    "took_ms": 10132,
+    "method": null,
+    "title": "Real Fighter Pilot Breaks Down DOGFIGHT - DCS",
+    "channel": "Hasard Lee",
+    "upload_date": "20230514",
+    "duration_sec": 60,
+    "description": "",
+    "view_count": 63720
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Uo_lvFcJwzU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

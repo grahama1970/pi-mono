@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tnw2HAEfXWs",
+    "language": "en",
+    "took_ms": 8698,
+    "method": null,
+    "title": "Michael Horowitz on Recent Developments in the Chen Guangcheng Case",
+    "channel": "Hudson Institute",
+    "upload_date": "20120504",
+    "duration_sec": 747,
+    "description": "Hudson Institute Senior Fellow Michael Horowitz testifies before the Congressional-Executive Commission on China on Thursday, May 3, 2012. The topic of his testimony was: Recent Developments and History of the Chen Guangcheng Case.",
+    "view_count": 858
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tnw2HAEfXWs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

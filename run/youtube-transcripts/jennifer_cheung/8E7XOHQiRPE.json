@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8E7XOHQiRPE",
+    "language": "en",
+    "took_ms": 8824,
+    "method": null,
+    "title": "DEF CON 30  - Thomas Roth , Solana - JIT - Lessons from fuzzing a smart contract compiler",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1909,
+    "description": "Solana is a blockchain with a $37 billion dollar market cap with the security of that chain relying on the security of the smart contracts on the chain - and we found very little research on the actual execution environment of those contracts. In contrast to Ethereum, where contracts are mostly written in Solidity and then compiled to the Ethereum Virtual Machine, Solana uses a different approach: Solana contracts can be written in C, Rust, and C++, and are compiled to eBPF. Underneath the hood, Solana uses rBPF: A Rust BPF implementation with a just-in-time compiler. Given the security history of eBPF in the Linux kernel, and the lack of previous public, low-level Solana research, we decided to dig deeper: We built Solana reverse-engineering tooling and fuzzing harnesses as we slowly dug our way into the JIT - eventually discovering multiple out-of-bounds vulnerabilities.",
+    "view_count": 4375
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8E7XOHQiRPE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

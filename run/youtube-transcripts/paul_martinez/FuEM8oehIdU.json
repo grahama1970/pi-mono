@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FuEM8oehIdU",
+    "language": "en",
+    "took_ms": 9365,
+    "method": null,
+    "title": "Presidential Candidate Will Hurd",
+    "channel": "S4 Events",
+    "upload_date": "20231004",
+    "duration_sec": 1632,
+    "description": "Former Congressman and Presidential candidate Will Hurd is a rarity with a tech background in someone who was elected to the US Congress, and even rarer in someone running for President. Will graduated Texas A&M with Computer Science degree. Worked as a Senior Adviser to the cybersecurity company FusionX, which was acquired by Accenture. More recently he was on the board of OpenAI.\n\nThis is probably one of the most technical interviews with a Presidential candidate you will hear. Dale asks Will:\n\n- How he would rate CISA's performance (he co-sponsored the bill to create CISA)?\n- Does the Executive Branch have the authority required to secure critical infrastructure?\n- His views on Cyber Command / DoD policy of \"defend forward\"?\n- The current level of Congress's technical literacy?\n- What type of cybersecurity legislation, if any, Congress should pass?",
+    "view_count": 190
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FuEM8oehIdU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

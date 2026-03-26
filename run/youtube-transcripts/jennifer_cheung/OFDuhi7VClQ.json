@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OFDuhi7VClQ",
+    "language": "en",
+    "took_ms": 8560,
+    "method": null,
+    "title": "DEF CON 30 - Jen Easterly - Walk This Way: What Run DMC & Aerosmith Can Teach On Future of Cybersec",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3301,
+    "description": "The year was 1986 and the arena rock of the 1970s was coming to a whimpering end, while rap had not quite gained a mainstream foothold. The unlikely collaboration between Aerosmith and Run D.M.C. changed the course of music forever, reinvigorating the relevance of rock while bringing rap to the forefront of prominence. This collaboration, unexpected, and by some accounts uncomfortable, paved the way for the future of music and celebrated the genius of innovation of partnership. The cybersecurity community has much to learn from this example of partnership for the better.",
+    "view_count": 1023
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OFDuhi7VClQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

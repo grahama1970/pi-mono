@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ee6_WJBVihQ",
+    "language": "en",
+    "took_ms": 8217,
+    "method": null,
+    "title": "Is China the Big Winner in the Red Sea",
+    "channel": "Hudson Institute",
+    "upload_date": "20240415",
+    "duration_sec": 2846,
+    "description": "Prosperity Guardian, the United States–led military operation designed to end Houthi attacks on international shipping, has failed.\n\nMichael Roberts and Salvatore Mercogliano, two leading experts on international shipping, will join Senior Fellow Michael Doran for a virtual event. They will discuss the Houthi attacks’ consequences for the global economy and the balance of power between the US and its global rivals—in particular, how Iran and its proxies’ weaponization of global supply chains strengthens China.",
+    "view_count": 2934
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ee6_WJBVihQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

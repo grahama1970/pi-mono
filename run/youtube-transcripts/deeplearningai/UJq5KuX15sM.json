@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UJq5KuX15sM",
+    "language": "en",
+    "took_ms": 9173,
+    "method": null,
+    "title": "The Biggest Mistake AI Beginners Make",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260206",
+    "duration_sec": 42,
+    "description": "Most people fail at AI projects before they write a single line of code.\nIf you’re asking “What model should I use?” you’re already stuck.\nGreat AI starts with a real problem people actually care about, not the latest model.",
+    "view_count": 23850
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UJq5KuX15sM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

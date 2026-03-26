@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary": "#432c00",
+            "surface-dim": "#131313",
+            "on-secondary-fixed": "#281800",
+            "tertiary-fixed-dim": "#00daf3",
+            "on-surface": "#e5e2e1",
+            "surface-container-low": "#1c1b1b",
+            "surface-container-highest": "#353534",
+            "on-background": "#e5e2e1",
+            "on-tertiary": "#00363d",
+            "outline-variant": "#3b4b37",
+            "inverse-surface": "#e5e2e1",
+            "on-primary-fixed-variant": "#00530e",
+            "primary-fixed": "#72ff70",
+            "inverse-primary": "#006e16",
+            "tertiary-container": "#7fecff",
+            "secondary-container": "#ffb211",
+            "tertiary": "#ecfcff",
+            "surface-container-lowest": "#0e0e0e",
+            "on-tertiary-fixed": "#001f24",
+            "error-container": "#93000a",
+            "surface": "#131313",
+            "surface-container-high": "#2a2a2a",
+            "outline": "#84967e",
+            "on-tertiary-fixed-variant": "#004f58",
+            "primary-fixed-dim": "#00e639",
+            "secondary-fixed": "#ffdeae",
+            "secondary": "#ffd79b",
+            "surface-container": "#201f1f",
+            "on-error": "#690005",
+            "on-secondary-fixed-variant": "#604100",
+            "tertiary-fixed": "#9cf0ff",
+            "on-secondary-container": "#6b4800",
+            "on-primary": "#003907",
+            "on-error-container": "#ffdad6",
+            "on-primary-container": "#007117",
+            "on-primary-fixed": "#002203",
+            "surface-variant": "#353534",
+            "primary-container": "#00ff41",
+            "on-tertiary-container": "#006b78",
+            "on-surface-variant": "#b9ccb2",
+            "background": "#131313",
+            "surface-tint": "#00e639",
+            "primary": "#ebffe2",
+            "inverse-on-surface": "#313030",
+            "surface-bright": "#393939",
+            "secondary-fixed-dim": "#ffba3f",
+            "error": "#ffb4ab"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 1.25rem;
+    }
+    .tonal-shift {
+      background: linear-gradient(to bottom, #131313, #201f1f);
+    }
+    body {
+      background-color: #131313;
+      color: #e5e2e1;
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+<!-- SideNavBar Component -->
+<aside class="flex flex-col h-full sticky top-0 left-0 h-screen w-64 bg-[#131313] dark:bg-[#131313] border-r-0 z-50">
+<div class="p-6 flex flex-col gap-1">
+<div class="text-[#00FF41] font-black tracking-tighter text-lg uppercase">Project Space</div>
+<div class="font-['Inter'] font-medium text-[0.6875rem] tracking-tight text-gray-500">V1.0.4-TACTICAL</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full py-2 bg-[#2a2a2a] text-[#00FF41] font-bold text-xs uppercase tracking-widest hover:bg-[#353534] transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[1rem]">add</span>
+        New Project
+      </button>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- SPARTA Explorer -->
+<a class="font-['Inter'] font-medium text-[0.875rem] tracking-tight flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-2 hover:bg-[#2a2a2a] transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span>SPARTA Explorer</span>
+</a>
+<!-- Music Lab Pipeline (ACTIVE) -->
+<a class="font-['Inter'] font-medium text-[0.875rem] tracking-tight flex items-center gap-3 border-l-2 border-[#00FF41] bg-[#2a2a2a] text-[#00FF41] transition-all px-4 py-2" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span>Music Lab Pipeline</span>
+</a>
+<!-- Prompt Lab -->
+<a class="font-['Inter'] font-medium text-[0.875rem] tracking-tight flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-2 hover:bg-[#2a2a2a] transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span>Prompt Lab</span>
+</a>
+</nav>
+<div class="mt-auto pb-6 space-y-1">
+<a class="font-['Inter'] font-medium text-[0.875rem] tracking-tight flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-2 hover:bg-[#2a2a2a] transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="font-['Inter'] font-medium text-[0.875rem] tracking-tight flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-2 hover:bg-[#2a2a2a] transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Support</span>
+</a>
+<div class="px-4 pt-4 flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="User avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeYTP9i88h4eJEb87uv77SfR53Eh2-7QXRFflRCMfmm50b4v6Qb3YkXjaOBAye_6FM_zqPiKZFBnZ7oIorl-4g-gXVa4kq3poiQ268vlZozTxvPyoVU7ppoRw2E7x4VDak6Jy9VXATzTm8PCo6bNuZETIBv8cJYKrdb-_LyBJjP39nYlIUFhivyW2k8smS3sw2DFr78UDY5w0q1EuFrniiZafiW056xRHxCwOiWIafMf7YHppZDSXSZZ1uOLl_t4A1KslSJoETdUw"/>
+</div>
+<div class="flex flex-col">
+<span class="text-[0.75rem] font-bold text-on-surface">OPERATOR_01</span>
+<span class="text-[0.625rem] text-primary-container">CONNECTED</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Stage -->
+<main class="flex-1 flex flex-col bg-surface-container overflow-hidden">
+<!-- TopNavBar Component -->
+<header class="flex items-center justify-between w-full sticky top-0 z-50 px-0 bg-[#201f1f] dark:bg-[#201f1f] h-12">
+<div class="flex items-center h-full">
+<!-- Mockups (ACTIVE) -->
+<a class="font-['Inter'] text-[0.6875rem] uppercase tracking-[0.05em] font-bold bg-[#2a2a2a] text-[#e5e2e1] border-t-2 border-[#00FF41] px-6 h-full flex items-center" href="#">
+          Mockups
+        </a>
+<!-- Components -->
+<a class="font-['Inter'] text-[0.6875rem] uppercase tracking-[0.05em] font-bold bg-[#1a1a1a] text-gray-500 px-6 h-full flex items-center hover:bg-[#2a2a2a] hover:text-[#00FF41] transition-all duration-200" href="#">
+          Components
+        </a>
+<!-- Design Board -->
+<a class="font-['Inter'] text-[0.6875rem] uppercase tracking-[0.05em] font-bold bg-[#1a1a1a] text-gray-500 px-6 h-full flex items-center hover:bg-[#2a2a2a] hover:text-[#00FF41] transition-all duration-200" href="#">
+          Design Board
+        </a>
+<!-- Reviews -->
+<a class="font-['Inter'] text-[0.6875rem] uppercase tracking-[0.05em] font-bold bg-[#1a1a1a] text-gray-500 px-6 h-full flex items-center hover:bg-[#2a2a2a] hover:text-[#00FF41] transition-all duration-200" href="#">
+          Reviews
+        </a>
+</div>
+<div class="flex items-center gap-4 px-6 h-full">
+<div class="flex items-center gap-2">
+<button class="text-gray-500 hover:text-[#00FF41] transition-colors">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</button>
+<button class="text-gray-500 hover:text-[#00FF41] transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-gray-500 hover:text-[#00FF41] transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+</div>
+<button class="bg-primary-container text-on-primary-container px-4 py-1 font-black text-[0.6875rem] uppercase tracking-wider hover:bg-primary-fixed transition-colors">
+          Deploy
+        </button>
+</div>
+</header>
+<!-- Editor Canvas -->
+<div class="flex-1 p-8 overflow-y-auto custom-scrollbar">
+<div class="flex justify-between items-end mb-8">
+<div>
+<div class="text-[0.6875rem] font-bold text-primary-container uppercase tracking-widest mb-1">Active Pipeline</div>
+<h1 class="text-3xl font-black tracking-tighter text-on-surface">MUSIC_LAB_MOCKUPS</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-end">
+<span class="text-[0.625rem] text-gray-500 font-bold uppercase tracking-widest">Global Status</span>
+<span class="text-[0.6875rem] text-secondary font-bold uppercase tracking-widest">75% Complete</span>
+</div>
+<div class="w-32 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[75%]"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- S01: Vocals (Approved) -->
+<div class="group bg-[#1a1a1a] p-1 flex flex-col hover:bg-surface-container-high transition-colors">
+<div class="p-3 pb-1 flex justify-between items-start">
+<div>
+<div class="text-[0.625rem] font-bold text-gray-500 tracking-wider mb-0.5 uppercase">Stage S01</div>
+<h3 class="text-sm font-bold tracking-tight text-on-surface">Vocals</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[0.625rem] font-black uppercase tracking-tighter flex items-center gap-1">
+<span class="w-1 h-1 bg-primary-container rounded-full"></span>
+              Approved
+            </span>
+</div>
+<div class="relative w-full h-[140px] bg-surface-container-lowest overflow-hidden">
+<img alt="S01 Mockup" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Close up of a studio microphone with neon lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp7b94xdZLogeOBkgNpB65PoQz4i05st8ThBCRgHsrgHgYEsnqYFbBjULJQCPH01jS1qrPsx9aR3qs128JZ76WRoVaNztVYn6ETTMLayi0nfa1u0tsZvy5JKyIXzI7eMDkaeaA8pBKwGMqfe0CqgBzznc_BKkOCuAlV_QtUDqgyESXIbpig73n2B5xKECA_AdQKHYIsWPMy9weY1sqI32f5G8y3vqS4uKWpbcat7pUkal_YCqIt04P21GtEdgvWCjM00b-v1iICzA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-40"></div>
+</div>
+</div>
+<!-- S02: Bass (Approved) -->
+<div class="group bg-[#1a1a1a] p-1 flex flex-col hover:bg-surface-container-high transition-colors">
+<div class="p-3 pb-1 flex justify-between items-start">
+<div>
+<div class="text-[0.625rem] font-bold text-gray-500 tracking-wider mb-0.5 uppercase">Stage S02</div>
+<h3 class="text-sm font-bold tracking-tight text-on-surface">Bass</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[0.625rem] font-black uppercase tracking-tighter flex items-center gap-1">
+<span class="w-1 h-1 bg-primary-container rounded-full"></span>
+              Approved
+            </span>
+</div>
+<div class="relative w-full h-[140px] bg-surface-container-lowest overflow-hidden">
+<img alt="S02 Mockup" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Abstract visualization of deep sound waves in green color" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpi4_m43eLdBldVsAjBkLnbkZeaZay1Qh84ptFQ3KA_Nm6GlJG6y2yzn3XfDekTDnVS2c95zKEy8pVVcHTe6gP_-zop5FnfNaIHeodd5t7NoEfGgkNa-VsD9aYCb4PimGR2Jo-gnJuoRU-emdn8ZBAq3JQ6Uv-2F6jE7YiVEBQx6nX5hD7XUcBpPIfKFdodX9DpkhTyLuX_41uoJ0G0ayB4URud91FeZoWnixCPny47CVxz15uv2kaoEeGHQ0i4jwor4kGAemPIyc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-40"></div>
+</div>
+</div>
+<!-- S03: Stem Viewer (Approved) -->
+<div class="group bg-[#1a1a1a] p-1 flex flex-col hover:bg-surface-container-high transition-colors">
+<div class="p-3 pb-1 flex justify-between items-start">
+<div>
+<div class="text-[0.625rem] font-bold text-gray-500 tracking-wider mb-0.5 uppercase">Stage S03</div>
+<h3 class="text-sm font-bold tracking-tight text-on-surface">Stem Viewer</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[0.625rem] font-black uppercase tracking-tighter flex items-center gap-1">
+<span class="w-1 h-1 bg-primary-container rounded-full"></span>
+              Approved
+            </span>
+</div>
+<div class="relative w-full h-[140px] bg-surface-container-lowest overflow-hidden">
+<img alt="S03 Mockup" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Digital audio workstation interface with multiple tracks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZnStt-fEJxjBj9YW_Kxxy0PnKwBEqfuTMLLZrS5N-fmZsmGR2tms-Sro7RkX0jhcVtfFXxf23qAn9Q_BgbbsVqqIoq80uNUZcIjgAcTtbbKYefH0wT1_W2LpMCR-2UL0KJfvCpeY2eCiPeKXRgxSdxNQ7q_T_B9oEb2OtJcJt23lXRBU6SZHak3pzMS8zgDBHilmlpFgyTlj1-lS_8H7kXsV4TzhpMDc-Wwbh92YCFeZCiyUhxpVNA68X_80vKFjTe2_Jk8J6NJw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-40"></div>
+</div>
+</div>
+<!-- S04: Lyrics (Draft) -->
+<div class="group bg-[#1a1a1a] p-1 flex flex-col hover:bg-surface-container-high transition-colors">
+<div class="p-3 pb-1 flex justify-between items-start">
+<div>
+<div class="text-[0.625rem] font-bold text-gray-500 tracking-wider mb-0.5 uppercase">Stage S04</div>
+<h3 class="text-sm font-bold tracking-tight text-on-surface">Lyrics</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-[0.625rem] font-black uppercase tracking-tighter flex items-center gap-1">
+<span class="w-1 h-1 bg-secondary rounded-full"></span>
+              Draft
+            </span>
+</div>
+<div class="relative w-full h-[140px] bg-surface-container-lowest overflow-hidden">
+<img alt="S04 Mockup" class="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0" data-alt="Close up of handwritten text under dim warm light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnMVwnwyQb8EnbZRsmp3X7O_rqxnl_PlPBe28evJSJwNyJ4zUfau1BDXtbhjkOqGhoS-rNGNUkHVvWEkukqXH1DazmH0IngM0WYqWT1rHr6JE2t-uyKEmOh6poDt9lFk5Lbeye1rCrPih2uyQE6EyLGcixjpiIp0WFSoH1xdIE1aZmHxNeQ9xWfmQiMHoMf9ngWLbl2_wGkG5PmKz62qxsmNj6MI3el_DZ5XNXnd-8lLry2IhELMSSpNHgMCmtP1YT9UXfXzj8vZs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-40"></div>
+</div>
+</div>
+</div>
+<!-- Additional Section: Telemetry/Project Data -->
+<section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="col-span-1 md:col-span-2 bg-[#201f1f] p-6">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-[0.6875rem] font-bold text-on-surface uppercase tracking-[0.1em]">Pipeline Analytics</h2>
+<div class="text-[0.625rem] text-primary-container font-mono">LIVE_STREAM_OK</div>
+</div>
+<div class="h-48 w-full bg-surface-container-lowest flex items-end gap-1 p-4 border border-outline-variant/10">
+<!-- Mock Bar Chart -->
+<div class="flex-1 bg-primary-container/20 h-24 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-32 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-16 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-40 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-28 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-36 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-20 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/60 h-44 hover:bg-primary-container transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary-container/20 h-32 hover:bg-primary-container/40 transition-all cursor-pointer"></div>
+</div>
+<div class="mt-4 flex justify-between text-[0.625rem] font-bold text-gray-600 uppercase">
+<span>00:00:00</span>
+<span>Spectral Density Index</span>
+<span>00:24:59</span>
+</div>
+</div>
+<div class="bg-[#1a1a1a] p-6 flex flex-col justify-between">
+<div>
+<h2 class="text-[0.6875rem] font-bold text-on-surface uppercase tracking-[0.1em] mb-4">Project Metadata</h2>
+<div class="space-y-4">
+<div class="flex justify-between border-b border-outline-variant/5 pb-2">
+<span class="text-[0.625rem] text-gray-500 uppercase">Lead Engineer</span>
+<span class="text-[0.6875rem] font-bold">@S_CALE</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/5 pb-2">
+<span class="text-[0.625rem] text-gray-500 uppercase">BPM Target</span>
+<span class="text-[0.6875rem] font-bold text-primary-container">128.00</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/5 pb-2">
+<span class="text-[0.625rem] text-gray-500 uppercase">Sample Rate</span>
+<span class="text-[0.6875rem] font-bold">96 KHZ</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/5 pb-2">
+<span class="text-[0.625rem] text-gray-500 uppercase">Storage Used</span>
+<span class="text-[0.6875rem] font-bold">14.2 GB</span>
+</div>
+</div>
+</div>
+<button class="mt-6 w-full py-2 border border-outline-variant/20 text-gray-400 hover:text-on-surface hover:bg-[#2a2a2a] transition-all text-[0.6875rem] font-bold uppercase tracking-widest">
+            Export Manifest
+          </button>
+</div>
+</section>
+</div>
+<!-- Bottom Status Bar (Utility) -->
+<footer class="h-8 bg-[#0e0e0e] border-t border-outline-variant/5 px-6 flex items-center justify-between text-[0.625rem] font-mono text-gray-500">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>LATENCY: 12ms</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>CACHE: 89%</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span>LOC: US-EAST-1</span>
+<span>UTC: 14:32:01</span>
+</div>
+</footer>
+</main>
+</body></html>

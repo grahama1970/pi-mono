@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EOVWCHP1t_s",
+    "language": "en",
+    "took_ms": 8033,
+    "method": null,
+    "title": "DEF CON 30 - Jay Lagorio - Tear Down this Zywall: Breaking Open Zyxel Encrypted Firmware",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1595,
+    "description": "How do you go bug hunting in devices you own when the manufacturer has slapped some pesky encryption scheme on the firmware? Starting from an encrypted blob of bits and getting to executable code is hard and can be even more frustrating when you already know the bug is there, you just want to see it! Join me on my expedition to access the contents of my Zyxel firewall's firmware using password and hash cracking, hardware and software reverse engineering, and duct taping puzzle pieces together. We'll start with a device and a firmware blob, flail helplessly at the crypto, tear apart the hardware, reverse engineer the software and emulate the platform, and finally identify the decryption routine – ultimately breaking the protection used by the entire product line to decrypt whatever firmware version we want.",
+    "view_count": 1354
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EOVWCHP1t_s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

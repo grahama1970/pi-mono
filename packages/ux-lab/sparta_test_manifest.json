@@ -1,0 +1,205 @@
+{
+  "version": 1,
+  "app": "SPARTA Explorer Component Gallery",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "threat-map",
+      "path": "/#threat-map/full",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "threat-map-grid",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "ThreatMap full 9-tactic grid rendering"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "control-table",
+      "path": "/#control-table/all",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "control-table-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "ControlTable with 12 controls, framework badges, sort headers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "chat-well",
+      "path": "/#chat-well/with-history",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "chat-well-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "ChatWell with 4 sample messages (natural + AQL modes)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lemma-graph",
+      "path": "/#lemma-graph/full",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "lemma-graph-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "LemmaGraph SVG with 10 nodes, 10 edges, framework colors"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "integrity-card",
+      "path": "/#integrity-card/nominal",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "integrity-card-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "IntegrityCard in NOMINAL state with green status"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "control-detail",
+      "path": "/#control-detail/with-relations",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "control-detail-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "ControlDetail for REC-0001 with metadata grid and related controls"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inspector-with-edges",
+      "path": "/#inspector-panel/with-edges",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "inspector-edges-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "InspectorPanel with 4 edges, 3 parameter buttons, bool toggle"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inspector-with-results",
+      "path": "/#inspector-panel/with-results",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "inspector-results-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "InspectorPanel with pre-populated cascade results (4 chains, 2 broken, 2 held)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inspector-no-params",
+      "path": "/#inspector-panel/no-params",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "inspector-no-params-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "InspectorPanel for AC-2 with no parameterized predicates message"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lemma-graph-with-inspector",
+      "path": "/#lemma-graph/with-inspector",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 8000,
+      "elements": [
+        {
+          "name": "lemma-inspector-view",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "LemmaGraph with inspector panel side-by-side, 19 nodes, 22 directed edges with arrowheads"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "composed-explorer",
+      "path": "/#composed-explorer/3-column",
+      "wait_ready": "body",
+      "wait_ready_timeout_ms": 10000,
+      "elements": [
+        {
+          "name": "composed-layout",
+          "selector": "body",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full 3-pane SPARTA Explorer layout with ThoughtTrace bar"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

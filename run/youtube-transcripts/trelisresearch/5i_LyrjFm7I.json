@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5i_LyrjFm7I",
+    "language": "en",
+    "took_ms": 8685,
+    "method": null,
+    "title": "How to Build an Inference Service",
+    "channel": "Trelis Research",
+    "upload_date": "20241119",
+    "duration_sec": 3637,
+    "description": "➡️ Lifetime access to ADVANCED-inference Repo (incl. future additions): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/16pzJu0yKlVHA5TEdls62HseCA05YLLTnVfhkp24ScLQ/edit?usp=sharing\n\nTIMESTAMPS:\n00:00 - Introduction to AI Inference Scaling\n00:38 - Video Agenda Overview\n02:00 - Different Inference Approaches\n05:13 - Understanding GPU Utilization\n08:53 - Setting Up One-Click Templates\n14:14 - Docker Image Configuration\n24:19 - Building Auto-Scaling Service\n29:19 - Model Configuration Settings\n35:35 - Load Testing and Metrics\n41:35 - Scaling Manager Implementation\n56:15 - Setting Up API Endpoint\n59:51 - Conclusion and Future Topics",
+    "view_count": 3575
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5i_LyrjFm7I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

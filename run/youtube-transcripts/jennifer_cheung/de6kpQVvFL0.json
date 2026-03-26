@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "de6kpQVvFL0",
+    "language": "en",
+    "took_ms": 8834,
+    "method": null,
+    "title": "DEF CON 31 - Exploiting OPC UA - Practical Attacks Against OPC UA Architectures - Moshe, Brizinov",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2361,
+    "description": "OPC-UA is the most popular protocol today in ICS/SCADA and IoT environments for data exchanges from sensors to on-premises or cloud applications. OPC-UA is therefore the bridge between different OT trust zones and a crown jewel for attacks attempting to break security zones and crossover from the industrial to corporate networks.\n\nWe have been researching during the past two years dozens of OPC-UA protocol stack implementations being used in millions of industrial products. We focused on two main attack vectors: attacking OPC-UA servers and protocol gateways, and attacking OPC-UA clients. The research yielded unique attack techniques that targeted specific OPC-UA protocol specification pitfalls that enabled us to create a wide range of vulns ranging from denial of service to remote code execution.\n\nFor example, we explored OPC-UA features such as method call processing, chunking mechanisms, certification handling, complex variant structures, monitored items, race-conditions, and many more. For each part of the specification, we tried to understand its caveats and exploit them to achieve RCE, information leaks, or denial of service attacks.\n\nIn this talk, we will share our journey, methods, and release an open-source framework with all of our techniques and vulnerabilities to exploit modern OPC-UA protocol stacks. , Noam Moshe is a vulnerability researcher at Claroty Team82. Noam specializes in vulnerability research, web applications pentesting, malware analysis, network forensics and ICS/SCADA security. In addition, Noam presented in well-known Hacking conferences like Blackhat Europe, as well as won Master of Pwn at Pwn2Own Miami 2023.",
+    "view_count": 2385
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] de6kpQVvFL0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

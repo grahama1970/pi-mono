@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NbWDhk-9k_k",
+    "language": "en",
+    "took_ms": 7979,
+    "method": null,
+    "title": "DEF CON 33 - Orion: Fuzzing Workflow Automation - Max Bazalii, Marius Fleischer",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2661,
+    "description": "\"Fuzzing\" is an automated software testing technique essential for detecting security vulnerabilities, effectively identifying over 100,000 bugs across the industry.\n\nWhile fuzzing has proven effective in uncovering critical issues, software teams often face challenges when implementing the fuzzing process. Teams must spend significant time identifying targets for fuzzing and creating test harnesses with initial inputs. Finally, engineering teams must analyze and fix issues detected by fuzzing.\n\nWe created an automated fuzzing solution that leverages LLMs for the codebase analysis to identify optimal fuzzing targets, generating precise fuzzing test harnesses and initial seed inputs.\n\nOur solution automates the reproduction of bugs discovered during fuzzing and generates patches for the affected code.\n\nWe achieved significant improvements across all targeted areas, demonstrating the effectiveness of integrating LLMs and automatic code analysis into the fuzzing process.",
+    "view_count": 479
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NbWDhk-9k_k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

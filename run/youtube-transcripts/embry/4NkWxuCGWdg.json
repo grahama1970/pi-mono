@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4NkWxuCGWdg",
+    "language": "en",
+    "took_ms": 8757,
+    "method": null,
+    "title": "Building, flying, landing SpaceX's BFR in Kerbal Space Program (STOCK)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20171004",
+    "duration_sec": 2391,
+    "description": "All stock, no mods other than Kerbal Engineer for DV readouts. Not necessarily to scale, but everything functions fairly well as a decent analogue to SpaceX's upcoming BFR rocket. This is a recap of the livestream on 10/3/2017. Stay tuned for our first butt-to-butt docking followed by a Mun mission and eventually a Duna mission!\n\nHere's the craft file for those interested! - https://kerbalx.com/EverydayAstronaut/BFR\n\nShow your support and join our discord channel by becoming Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/",
+    "view_count": 218831
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4NkWxuCGWdg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

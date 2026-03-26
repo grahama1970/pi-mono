@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3ywgdiictnQ",
+    "language": "en",
+    "took_ms": 7763,
+    "method": null,
+    "title": "Why you can't invade America (and win)",
+    "channel": "Sandboxx",
+    "upload_date": "20260221",
+    "duration_sec": 79,
+    "description": "Why you can't invade America (and win) #defense #tech #military #miltok #usmilitary",
+    "view_count": 112771
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3ywgdiictnQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

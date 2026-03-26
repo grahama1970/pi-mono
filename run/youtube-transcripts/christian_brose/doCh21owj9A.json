@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "doCh21owj9A",
+    "language": "en",
+    "took_ms": 8166,
+    "method": null,
+    "title": "Lunch with John-Clark Levin, author of Private Anti-Piracy N",
+    "channel": "Hudson Institute",
+    "upload_date": "20131122",
+    "duration_sec": 1799,
+    "description": "Lunch with John-Clark Levin, author of Private Anti-Piracy Navies: How Warships for Hire are Changing Maritime Security. This event is hosted by Seth Cropsey, Senior Fellow at Hudson Institute. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 398
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] doCh21owj9A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

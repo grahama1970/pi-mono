@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Hlj_PkYvfnc",
+    "language": "en",
+    "took_ms": 8870,
+    "method": null,
+    "title": "Our telescope tracking footage of #Starship’s #SuperHeavy reentry! #IFT5 @CosmicPerspective",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20241018",
+    "duration_sec": 53,
+    "description": "",
+    "view_count": 828461
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Hlj_PkYvfnc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

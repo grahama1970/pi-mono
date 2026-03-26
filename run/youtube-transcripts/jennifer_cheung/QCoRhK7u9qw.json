@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QCoRhK7u9qw",
+    "language": "en",
+    "took_ms": 8978,
+    "method": null,
+    "title": "Title: DEF CON 32 - DEF CON Unplugged: Cocktails & Cyber with Jeff & Jen - Jen Easterly, Jeff Moss",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2893,
+    "description": "REAL WORLD DEFCON: Where hackers stop being polite and start getting real. The Dark Tangent and Jen Easterly sit down for an Ask Me Anything.",
+    "view_count": 393
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QCoRhK7u9qw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

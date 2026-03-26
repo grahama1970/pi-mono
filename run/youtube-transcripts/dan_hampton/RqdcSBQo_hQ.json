@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RqdcSBQo_hQ",
+    "language": "en",
+    "took_ms": 7984,
+    "method": null,
+    "title": "Turning cargo planes in missile-packing arsenal planes!",
+    "channel": "Sandboxx",
+    "upload_date": "20230307",
+    "duration_sec": 48,
+    "description": "The Air Force's Rapid Dragon program allows cargo planes like the C-130 and C-17 to deploy huge numbers of AGM-158 JASSM cruise missiles from hundreds of miles away, well outside the reach of enemy air defenses. \n\n#shorts #airpower #rapiddragon #missiles #missile #cruisemissile #aviation #technology #defense #airforce",
+    "view_count": 41165
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RqdcSBQo_hQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

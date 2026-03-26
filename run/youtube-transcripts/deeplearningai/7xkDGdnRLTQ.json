@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7xkDGdnRLTQ",
+    "language": "en",
+    "took_ms": 9889,
+    "method": null,
+    "title": "How to transition into a career in ML/AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20220216",
+    "duration_sec": 3973,
+    "description": "Event Agenda:\n- 20 mins: Event kickoff + Presentation by Sadie St.Lawrence (https://www.linkedin.com/in/sadiestlawrence/)\n- 40 mins:  Q&A on Discourse \n\nHow to participate in Q&A:\n- Join our community on Discourse to post questions to our speakers and discuss with others.\n- After logging in, go to the career category (https://community.deeplearning.ai/c/random-discussions/careers/how-to-transition-into-a-ml-ai-career/238) and post your questions or upvote others. \n- If you are new to Discourse, click here (https://community.deeplearning.ai/invites/qGd2yfxaVp ) to sign up first\n- To participate, simply ask a question by creating a topic, upvote others', or reply to posts!\n\nThis event is designed for two audience groups looking to explore a career pivot into machine learning or AI:\nThose with a non-technical background.\nAnd those who are currently studying or working in data science or software engineering.\n\nTo sign up for our future events, subscribe to our newsletter: https://www.deeplearning.ai/events/\n\nSpecial thanks to FourthBrain for co-hosting the event with us!\nAbout FourthBrain: https://www.fourthbrain.ai/",
+    "view_count": 13036
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7xkDGdnRLTQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

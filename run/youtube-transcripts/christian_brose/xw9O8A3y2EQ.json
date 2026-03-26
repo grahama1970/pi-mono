@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xw9O8A3y2EQ",
+    "language": "en",
+    "took_ms": 9042,
+    "method": null,
+    "title": "Diana Furchtgott-Roth on the Health Care Law for CNBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20110201",
+    "duration_sec": 406,
+    "description": "Senior Fellow Diana Furchtgott-Roth on the Health Care Law being deemed unconstitutional by a federal judge for CNBC's Kudlow Report.",
+    "view_count": 141
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xw9O8A3y2EQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

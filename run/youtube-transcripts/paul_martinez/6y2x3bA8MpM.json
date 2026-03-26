@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6y2x3bA8MpM",
+    "language": "en",
+    "took_ms": 8841,
+    "method": null,
+    "title": "OT Threat Intel with Sergio Caltagirone",
+    "channel": "S4 Events",
+    "upload_date": "20220316",
+    "duration_sec": 3325,
+    "description": "Dale Peterson's guest on the Unsolicited Response show is Sergio Caltagirone, VP of Threat Intel at Dragos.\n- What is good threat intel?\n- How does threat intel \"reduce harm by reducing operational meantime to recovery\"?\n- Should an asset owner care about the various threat actors named by Dragos, Mandiant and others? Does it matter if it was Petrovite or Erythracite?\n- Why are the top recommendations in Dragos and other threat intel annual reports the typical, same as they always are, recommendations? What is the value if this is the case?\n- What does an asset owner need to have in place to make use of threat intel?\n- How does threat intel deal with the fact we are very bad at calculating or predicting likelihood?\n- Why did you feel the new Journal of Threat Intelligence and Incident Response was needed?",
+    "view_count": 821
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6y2x3bA8MpM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

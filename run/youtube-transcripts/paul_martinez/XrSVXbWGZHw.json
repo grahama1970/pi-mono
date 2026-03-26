@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XrSVXbWGZHw",
+    "language": "en",
+    "took_ms": 8882,
+    "method": null,
+    "title": "Lessons from the CISA COVID Task Force",
+    "channel": "S4 Events",
+    "upload_date": "20230605",
+    "duration_sec": 1872,
+    "description": "Josh Corman graciously accepted the call from the US Government to serve on the important and high pressure US Government CISA COVID Task Force. Josh tells some stories and provides lessons learned from the experience.\n\nWhile there is a lot of talk on healthcare and the challenges and close calls with developing and delivering the vaccine, Josh also touches on other CI sectors and the USG sector based approach.\n\nAnd yes, people have died as a result of cyber attacks on hospitals.",
+    "view_count": 371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XrSVXbWGZHw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

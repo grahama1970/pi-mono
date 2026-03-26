@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7s1j1cBw55E",
+    "language": "en",
+    "took_ms": 9007,
+    "method": null,
+    "title": "DEFCON Documentary Teaser Trailer",
+    "channel": "DEFCONConference",
+    "upload_date": "20201030",
+    "duration_sec": 224,
+    "description": "This is the trailer for the DEF CON Documentary created at DEF CON 20 in 2012.",
+    "view_count": 8014
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7s1j1cBw55E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DrCZpMFswGk",
+    "language": "en",
+    "took_ms": 7908,
+    "method": null,
+    "title": "What's Your Cyber Narrative?",
+    "channel": "S4 Events",
+    "upload_date": "20241030",
+    "duration_sec": 136,
+    "description": "Jennifer Dulles talks to Dale about the importance of having a cyber narrative in advance of a cyber incident.",
+    "view_count": 124
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DrCZpMFswGk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

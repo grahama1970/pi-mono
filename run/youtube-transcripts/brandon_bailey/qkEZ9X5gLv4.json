@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qkEZ9X5gLv4",
+    "language": "en",
+    "took_ms": 7917,
+    "method": null,
+    "title": "DEF CON Safe Mode Demo Labs - Jakub Botwicz - Cotopaxi",
+    "channel": "DEFCONConference",
+    "upload_date": "20200818",
+    "duration_sec": 1730,
+    "description": "Cotopaxi is a set of tools for security testing of Internet of Things devices using specific network IoT/IIoT/M2M protocols (e.g. AMQP, CoAP, MQTT, DTLS, mDNS, QUIC).\n\nThese tools will be used by penetration testers and/or security researchers to identify IoT services and verify security vulnerabilities or misconfigurations.\n\nBased on recent publications, including a report from Trend Micro (https://www.trendmicro.com/vinfo/us/...tion-protocols),\nnew IoT protocols are widely used both in public networks and in industrial environments. Unfortunately, in most cases those servers are not configured properly or use outdated components.\n\nCurrently available tools used for security testing, like nmap or OpenVAS, do not support all new IoT protocols (e.g. AMQP, CoAP, MQTT, DTLS, mDNS, QUIC).\n\nSo possibilities to test IoT products and discover such devices in tested networks are limited. We are working to fill this gap with Cotopaxi toolkit.",
+    "view_count": 741
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qkEZ9X5gLv4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

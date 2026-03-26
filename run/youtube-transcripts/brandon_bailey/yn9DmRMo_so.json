@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yn9DmRMo_so",
+    "language": "en",
+    "took_ms": 8810,
+    "method": null,
+    "title": "DEF CON 30 Blue Team Village - Project Obsidian - IR OODA An hour in incident responder life",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2045,
+    "description": "",
+    "view_count": 419
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yn9DmRMo_so: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WLBrpwYSCjQ",
+    "language": "en",
+    "took_ms": 8151,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Aayush Kapoor: Vercel AI SDK: From Fundamentals to Deep Research",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251202",
+    "duration_sec": 1879,
+    "description": "Aayush Kapoor, Software Engineer on the AI SDK team at Vercel, shared during AI Dev 25 x NYC how to build production-ready agents with the Vercel AI SDK. \n\nHe covered fundamentals like text generation, tool and function calling, structured outputs, and swapping models with a single line, then code a Deep Research style agent in Node.js that searches the web and writes a markdown report. \n-----------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 1661
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WLBrpwYSCjQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

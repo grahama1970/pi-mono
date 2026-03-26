@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8V6AyG4ju4Q",
+    "language": "en",
+    "took_ms": 7857,
+    "method": null,
+    "title": "The Rumsfeld Era at the Pentagon: Inside Perspectives",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 6566,
+    "description": "Few Americans have spent more time near the center of power than former Secretary of Defense Donald Rumsfeld. His years at the helm of the Pentagon have included momentous times, including the 9/11 attack. He was instrumental in devising the U.S. response to that attack and the overall U.S. strategy for the war on terrorism, including the campaigns in Afghanistan and Iraq.  Now he has written Known and Unknown, a best-selling memoir of his half-century career, sharing previously undisclosed deta",
+    "view_count": 649
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8V6AyG4ju4Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

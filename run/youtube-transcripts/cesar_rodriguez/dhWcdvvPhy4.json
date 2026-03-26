@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dhWcdvvPhy4",
+    "language": "en",
+    "took_ms": 8253,
+    "method": null,
+    "title": "Air Force Basic Training Week One",
+    "channel": "Sandboxx",
+    "upload_date": "20160928",
+    "duration_sec": 117,
+    "description": "In week one, your trainee will earnestly begin the training they need in order to become a professional Airman. Trainees will head into an in-processing center and be assigned to the flight that they will remain in for the duration of training.\n\nJoining the military? Get Sandboxx to stay connected with friends and family before you ship for training. Download Sandboxx https://link.sandboxx.us/jsTLspZQ96",
+    "view_count": 56533
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dhWcdvvPhy4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

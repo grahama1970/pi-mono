@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tdX5l67BcDo",
+    "language": "en",
+    "took_ms": 7726,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Daniel Prizmant - Windows Server Containers are Broken",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2113,
+    "description": "A container packages up code and its dependencies, creating a minimal computing environment that can be cloned quickly and reliably across the ever-changing variety of operating system distributions. Originally available for Linux alone, containerized software will always run the same, regardless of the infrastructure. Microsoft teamed up with Docker to offer a container solution for Windows. Support for containers was added in 2016, but little documentation on the internal implementation was released. It was necessary to reverse engineer some of the components of Windows in order to better understand the kernel implementation. How does Windows prevent containers from running system calls that may allow attackers to escape containers? How does Windows prevent containers from accessing sensitive files outside the container, on the host? Why go through all this trouble? A vulnerability in the low level implementation of containers could impact hundreds of thousands of affected instances. Not to mention a full escape from the container to its host machine. How would such an escape vulnerability affect Kuberenetes and Azure services? In this presentation I will show you how to fully escape a Windows container and gain full access to the host’s file system. I will discuss why Microsoft originally didn’t consider this a vulnerability, but do now. I will also show the use of this vulnerability in the wild by a malware.",
+    "view_count": 625
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tdX5l67BcDo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

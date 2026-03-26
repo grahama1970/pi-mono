@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V6L723j7Zs4",
+    "language": "en",
+    "took_ms": 9253,
+    "method": null,
+    "title": "ICS Is Doing Threat Intelligence Wrong - Targeteering Is Needed",
+    "channel": "S4 Events",
+    "upload_date": "20230330",
+    "duration_sec": 1581,
+    "description": "Anna Skelton at S4x23 makes the case that most ICS threat intel is too reactive and needs to be proactive. She then presents a 5-step targeteering process will help you be more proactive and effective.\n\nAnna shares resources she has found helpful for each step of the process and gives relevant ICS examples. She finishes with the tough question of when it is time to stop.",
+    "view_count": 716
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V6L723j7Zs4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

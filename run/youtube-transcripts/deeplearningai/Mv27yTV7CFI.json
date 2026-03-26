@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Mv27yTV7CFI",
+    "language": "en",
+    "took_ms": 7815,
+    "method": null,
+    "title": "Integrate data governance into your agent's workflow in this new course!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251022",
+    "duration_sec": 122,
+    "description": "Learn more: https://bit.ly/4nh0gZ5\n\nIntroducing Governing AI Agents, a short course built in collaboration with Databricks and taught by Amber Roberts.\n\nAs AI agents autonomously access larger and more sensitive data, governance becomes essential. Without proper controls, an agent can accidentally expose personal information, modify sensitive records, or operate beyond its intended scope. As a developer, you need to design agents that are not only capable but also safe, compliant, and observable in production.\n\nIn this course,you’ll learn how to integrate governance into every stage of your agent’s lifecycle, from defining access control to monitoring runtime behavior. You’ll explore what it means to govern an agent, how to apply governance policies to a real dataset in Databricks, and how to add observability to track and debug performance.\n\nBy the end, you’ll know how to build agents that handle data responsibly while maintaining visibility, and safety.\n\nWhat you’ll do: \n\n- Apply the four pillars of agent governance (lifecycle management, risk management, security, and observability)  to build safer, production-ready agents.\n- Use Unity Catalog, Databricks’ centralized governance layer, to organize data, manage permissions, and enforce least-privilege data access for your agents.\n- Manage data permissions for Databricks identities and assign your agent an identity with appropriate access.\n- Apply governance to an agent analyzing an HR dataset: create anonymized views, mask personal information, and build tools that provide only the data needed.\n- Build, evaluate, and prepare your agent for production using MLflow to log, version, and deploy it with proper governance.\n- Deploy your governed agent with a secure, traceable endpoint in Databricks.\n\nBy applying these governance practices to your own agents, you’ll build observable systems that handle data securely!\n\nEnroll now: https://bit.ly/4nh0gZ5",
+    "view_count": 6386
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Mv27yTV7CFI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

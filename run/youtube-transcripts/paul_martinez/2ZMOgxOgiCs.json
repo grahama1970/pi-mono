@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2ZMOgxOgiCs",
+    "language": "en",
+    "took_ms": 8828,
+    "method": null,
+    "title": "Industrial Cyber Risk Management with Jason Christopher",
+    "channel": "S4 Events",
+    "upload_date": "20210324",
+    "duration_sec": 2960,
+    "description": "Jason Christopher is the lead author of the new paper: Industrial Cyber Risk Management, https://www.dragos.com/resource/industrial-cyber-risk-management/\n\nDale Peterson interviews Jason on this episode of the Unsolicited Response show.\n- How industrial cyber risk fits into the business risk management strategy\n- The proposed addition of resilience to the industrial cyber risk equation\n- How much an asset owner needs to know about threat to perform effective cyber risk management (and how often it changes)\n- When quantitative risk management will be feasible for industrial cyber risk\n- The paper's proposed double heat map.",
+    "view_count": 581
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2ZMOgxOgiCs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

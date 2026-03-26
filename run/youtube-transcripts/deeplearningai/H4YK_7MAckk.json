@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H4YK_7MAckk",
+    "language": "en",
+    "took_ms": 7906,
+    "method": null,
+    "title": "ChatGPT Prompt Engineering for Developers: A short course from OpenAI and DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230427",
+    "duration_sec": 117,
+    "description": "Learn for free: https://learn.deeplearning.ai/\n\nIn ChatGPT Prompt Engineering for Developers, you will learn how to use a large language model (LLM) to quickly build new and powerful applications. Using the OpenAI API you’ll be able to quickly build capabilities that innovate and create value using methods that were cost-prohibitive, highly technical, or simply impossible before now.\n\nThis short course taught by Isa Fulford (OpenAI) and Andrew Ng (DeepLearning.AI) will describe how LLMs work, provide best practices for prompt engineering, and show how LLM APIs can be used in applications for a variety of tasks, including:\n\nSummarizing (e.g., summarizing user reviews for brevity) \nInferring (e.g., sentiment classification, topic extraction) \nTransforming text (e.g., translation, spelling & grammar correction) \nExpanding (e.g., automatically writing emails) \n\nIn addition, you’ll learn two key principles for writing effective prompts, how to systematically engineer good prompts, and also learn to build a custom chatbot. \n\nAll concepts are illustrated with numerous examples, which you can play with directly in our Jupyter notebook environment to get hands-on experience with prompt engineering, \n\nWe are thrilled to offer this course with OpenAI to support developers wanting to use LLM tools. This course reflects the latest understanding of best practices for using prompts for the latest LLM models. \n\nChatGPT Prompt Engineering for Developers is beginner-friendly. Only a basic understanding of Python is needed. But it is also suitable for advanced machine learning engineers wanting to approach the cutting-edge of prompt engineering and use LLMs. \n\n\"Generative AI offers many opportunities for AI engineers to build, in minutes or hours, powerful applications that previously would have taken days or weeks. I’m excited about sharing these best practices to enable many more people to take advantage of these revolutionary new capabilities.\" -Andrew Ng\n\nLearn more: https://www.deeplearning.ai/",
+    "view_count": 209816
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H4YK_7MAckk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

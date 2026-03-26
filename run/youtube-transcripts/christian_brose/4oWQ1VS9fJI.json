@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4oWQ1VS9fJI",
+    "language": "en",
+    "took_ms": 8780,
+    "method": null,
+    "title": "The Patriot Act and the Internet: Recent Developments",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 4134,
+    "description": "Passed in the aftermath of the 9/11 attacks on the United States, the USA PATRIOT Act gave the agencies of the federal government greater flexibility to counter terrorism, including on the Internet. Many of the federal government's powers related to the Internet are rooted in the Patriot Act. In 2011, President Obama extended parts of the Patriot Act. Hudson's Center for the Economics of the Internet will host David B. Rivkin, Jr., one of the leading authorities on the Patriot Act, to discuss re",
+    "view_count": 80
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4oWQ1VS9fJI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

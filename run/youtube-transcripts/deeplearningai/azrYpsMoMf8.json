@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "azrYpsMoMf8",
+    "language": "en",
+    "took_ms": 8046,
+    "method": null,
+    "title": "Is AI Really Coming For Your Job? (Not What You Think)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260302",
+    "duration_sec": 34,
+    "description": "A doctor still makes the call. A teacher still runs the room. A therapist still holds the space. But behind all of them? AI is quietly handling the tasks that used to take hours every week.",
+    "view_count": 9680
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] azrYpsMoMf8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

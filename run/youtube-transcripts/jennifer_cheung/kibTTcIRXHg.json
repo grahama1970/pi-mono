@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kibTTcIRXHg",
+    "language": "en",
+    "took_ms": 8909,
+    "method": null,
+    "title": "DEF CON 30 - Winn Schwartau - My First Hack Was in 1958",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2255,
+    "description": "My first hack was in 1958, and it was all my mother’s fault. Or perhaps I should also blame my father. They were both engineers and I got their DNA. As a kid I hacked phones… cuz, well, phones were expensive! (Cardboard was an important hacking tool.) At age 6 I made a decent living cuz I could fix tube TVs. True!\n\nIn roughly 1970 (thanks to NYU) we moved on to hacking Hollerith (punch) cards to avoid paying for telephone and our utilities, and of course, shenanigans.\n\nAs a recording studio designer and builder, we dumpster dived for technology from AT&T. We never threw anything out and learned how to repurpose and abuse tech from the 1940s.\n\nAs a rock’n’roll engineer, I learned to live with constant systems epic failures. Anything that could break would break: before a live TV event or a massive concert. Talk about lessons in Disaster Recovery and Incident Response.\n\nThis talk, chock full of pictures and stories from the past, covers my hacking path as a kid then as a necessary part of survival in the entertainment industry. 1958-1981.\n\nCome on down for the ride and see how 64 years of lessons learned can give you an entirely different view of Hacking and how and why I have embraced failure for both of my careers!",
+    "view_count": 1651
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kibTTcIRXHg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EiXbzVlNYro",
+    "language": "en",
+    "took_ms": 8448,
+    "method": null,
+    "title": "DEF CON 33 3- Red teaming fraud prevention systems with GenAI - Karthik Tadinada,  Martyn Higson",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2777,
+    "description": "Fraudsters are innovative and persistent, constantly trying out variations of attacks to breach fraud defenses. The advent of gen AI has made it easier for fraudsters to experiment. This talk will outline ways in which LLMs can be used to test the resilience of your fraud systems to fraudster attacks.",
+    "view_count": 597
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EiXbzVlNYro: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

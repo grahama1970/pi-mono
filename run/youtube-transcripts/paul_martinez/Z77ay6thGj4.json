@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Z77ay6thGj4",
+    "language": "en",
+    "took_ms": 8817,
+    "method": null,
+    "title": "The Case for Vertical-Specific OT Cybersecurity Solutions",
+    "channel": "S4 Events",
+    "upload_date": "20240516",
+    "duration_sec": 1394,
+    "description": "Most of the OT cybersecurity solutions are designed and sold to address the near full set of industry segments. Power, water, manufacturing, maritime, rail, petrochem, ... Would an OT cybersecurity solution tailored for a specific sector be a better approach? Miki Shifman believes the answer is yes and makes his case in this session. \n\nHe aims to explore the importance of detailed industry based context and rich data fidelity as key criteria in the evolution of operational technology (OT) security and how this is only possible with vertical industry specialization using rail and maritime as examples and highlighting the unique characteristics that differentiate these vertical industries.",
+    "view_count": 340
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Z77ay6thGj4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

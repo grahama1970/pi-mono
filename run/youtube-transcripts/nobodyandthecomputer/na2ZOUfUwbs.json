@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "na2ZOUfUwbs",
+    "language": "en",
+    "took_ms": 10058,
+    "method": null,
+    "title": "BachGPT is back: Can AI Compose Like the Greatest Musician of All Time?",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20250108",
+    "duration_sec": 846,
+    "description": "↪ Join the Nobodies Collective: https://www.patreon.com/NobodyandTheComputer\n\nThe prompt:\nhttps://www.patreon.com/posts/bach-gpt-prompt-119590489\n\nThe code:\nhttps://www.patreon.com/posts/code-to-convert-119591558\n\n↪ contact me: \nnobodyandthecomputer@gmail.com\nhttps://www.instagram.com/nobodyandthecomputer/\nhttps://twitter.com/NobodyComputer\n\ncompositions:\n08:00 OpenAI ChatGPT\n10:00 Anthropic Claude\n12:28 Google Gemini",
+    "view_count": 41762
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] na2ZOUfUwbs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

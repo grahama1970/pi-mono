@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oRcmzTbPuOI",
+    "language": "en",
+    "took_ms": 9486,
+    "method": null,
+    "title": "Christopher Sands on the Upcoming G-8 and G-20 Summits in Canada",
+    "channel": "Hudson Institute",
+    "upload_date": "20100608",
+    "duration_sec": 474,
+    "description": "Hudson Senior Fellow Christopher Sands joined CTV on June 7th to discuss the upcoming G-8 and G-20 Summits in Canada.",
+    "view_count": 112
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oRcmzTbPuOI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

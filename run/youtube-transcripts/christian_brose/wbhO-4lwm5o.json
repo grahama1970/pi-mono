@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wbhO-4lwm5o",
+    "language": "en",
+    "took_ms": 8625,
+    "method": null,
+    "title": "The Past, Present and Future of Election Interference",
+    "channel": "Hudson Institute",
+    "upload_date": "20181130",
+    "duration_sec": 6467,
+    "description": "On November 30, Hudson Institute hosted a discussion on election interference in NATO countries. Panelists included Transatlantic Commission on Election Integrity Co-chairs Anders Fogh Rasmussen and Michael Chertoff, as well as former Canadian Ambassador to the United Nations Allan Rock. The discussion was moderated by Hudson President and CEO Ken Weinstein.\r\n\r\nElection interference has increasingly become a concern in North America and Europe. Combatting cyberattacks, misinformation campaigns, and other strategies that seek to alter the outcome of elections is a top priority for many NATO countries, but more coordination and cooperation is still needed to ensure the security and preserve the legitimacy of these electoral systems. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 271
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wbhO-4lwm5o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

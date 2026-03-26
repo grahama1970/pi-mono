@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xSiN65J5dP8",
+    "language": "en",
+    "took_ms": 8834,
+    "method": null,
+    "title": "Watch Rocket Lab launch NASA's ELaNa mission!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20181216",
+    "duration_sec": 6960,
+    "description": "Rocket Lab will be launching their Electron rocket for NASA’a ELaNa XIX mission from LC-1 on the Mahia Peninsula in New Zealand.\n\nELaNa XIX is the first mission for NASA’s Venture Class Launch Services. 10 CubeSats from various NASA Centers and Universities will be deployed into a 500 km (310 mile) circular low Earth orbit with an inclination of 85 degrees.\n\nNeed more info? I've got it all right here! - https://everydayastronaut.com/prelaunch-preview-electron-elana-xix/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nBrand new shop now open! - http://shop.everydayastronaut.com\n\nCheck out my new podcast!!!! - https://ourludicrousfuture.com\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nThinking about ordering a Tesla? Get free unlimited supercharging!! http://ts.la/tim19804\n\nAlready order a Model 3 and waiting for delivery? You can use my referral code too (talk to your advisor) tim19804 :)",
+    "view_count": 106908
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xSiN65J5dP8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "axkCZqngOSc",
+    "language": "en",
+    "took_ms": 8595,
+    "method": null,
+    "title": "Building Machine Learning Apps with Hugging Face: LLMs to Diffusion Modeling",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230323",
+    "duration_sec": 3965,
+    "description": "Welcome! Join us for a fun interactive workshop with Hugging Face's product director Jeff Boudier! \n\nWe will be taking questions during the event. Please submit your question or upvote others' here:\nhttps://app.sli.do/event/2XqD3r7Uovc6dBHa4Cby4K\n\nSpeakers\nJeff Boudier, builds products at Hugging Face\nhttps://www.linkedin.com/in/jeffboudier/\n\nDr. Greg Loughnane, Head of Product & Curriculum at FourthBrain\nhttps://www.linkedin.com/in/gregloughnane/\n\nLet us know how we're doing? We will be giving out discount codes for a selected number of people who fill out the survey:\nhttps://forms.gle/8pvWcBNxxZUv8ZU46\n\nWant to learn more about NLP or MLOps? Check out our courses and start learning today!\nhttps://bit.ly/3yfQQ98\nhttps://bit.ly/3yjcQAc\n\nLooking to connect with your peer learners, share projects, and swap advice? Join our AI community: \nhttps://community.deeplearning.ai/invites/VVGtXQuWNR\n\nTo learn more about us and signup for future events:\nhttps://www.deeplearning.ai/events/",
+    "view_count": 32753
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] axkCZqngOSc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

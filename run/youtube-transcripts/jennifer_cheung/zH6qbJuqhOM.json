@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zH6qbJuqhOM",
+    "language": "en",
+    "took_ms": 9178,
+    "method": null,
+    "title": "DEF CON 32 - Mutual authentication is optional - Xavier Zhang",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1031,
+    "description": "Physical access control systems are often exploited in a number of ways. It could be weaknesses found within the credential itself, the antiquated communication protocol, the hardware itself, or the firmware it is running. But more often than not, it is a combination of factors that allow a variety of attacks from multiple dimensions. Some are extremely trivial and require little to no skill to perform, whereas some attacks require a bit more setup and knowledge of how the underlying technology works. We will go into detail on how these systems work, why verifying mutual authentication is important for physical access control systems and the exploits that can be accomplished, as well as ways to mitigate these exploits to make your facility more secure. This talk will include interactive demos involving official HID readers and hardware, proxmark3, and the flipper zero.",
+    "view_count": 546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zH6qbJuqhOM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

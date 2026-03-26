@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1eHC51-vA8k",
+    "language": "en",
+    "took_ms": 8235,
+    "method": null,
+    "title": "Tevi Troy on Bioterrorism for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20100916",
+    "duration_sec": 184,
+    "description": "Hudson Institute Visiting Senior Fellow Tevi Troy joined Fox and Friends on September 16, 2010 to discuss the threat of bioterrorism.",
+    "view_count": 347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1eHC51-vA8k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

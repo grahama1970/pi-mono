@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T13YfM8z0lE",
+    "language": "en",
+    "took_ms": 9149,
+    "method": null,
+    "title": "DEF CON 33 -  Mac PRT Cookie Theft & Entra ID Persistence - Shang-De Jiang, Dong-Yi Ye, Tung-lin Lee",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2473,
+    "description": "While the theft of Primary Refresh Token (PRT) cookies on Windows has been extensively studied, similar attacks on macOS remain unexplored. As organizations increasingly use Microsoft Intune to manage both Windows and macOS devices, a critical question arises: can attackers also extract PRT cookies from macOS?\n\nIn this talk, we present our research into Microsoft’s SSO implementation within the Intune Company Portal for macOS. We compare authentication flows and security controls between Windows and macOS, exposing weaknesses that allow attackers to bypass process validation and obtain authentication tokens under certain conditions.\n\nAnother obstacle for attackers has been Microsoft’s efforts to make it more difficult to register new devices using stolen credentials for persistence. Our research introduces a novel technique: once an attacker acquires a token with an MFA claim on the device, they can still register new devices and generate new tokens without concern for the original stolen token’s expiration.\n\nWe will demonstrate PRT Cookie extraction on macOS and release a proof-of-concept tool, showing not only how credential theft techniques can now extend beyond Windows to macOS environments, but also how attackers can leverage these techniques for long-term persistence.",
+    "view_count": 784
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T13YfM8z0lE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

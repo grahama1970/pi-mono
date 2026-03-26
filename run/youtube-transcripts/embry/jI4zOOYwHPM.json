@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jI4zOOYwHPM",
+    "language": "en",
+    "took_ms": 8044,
+    "method": null,
+    "title": "Why does SpaceX land on a drone ship sometimes and land on land other times?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170501",
+    "duration_sec": 529,
+    "description": "Have you ever wondered why SpaceX lands their Falcon 9's on a drone ship sometimes and on land other times? Other times they don't even try to land at all! What gives? Hold on tight, the reason is pretty dense, but also a lot of fun!\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nShow your support on Patreon - http://patreon.com/everydayastronaut\n\nThe original giraffestronaut video from 2014 here - https://youtu.be/ABwUtVDqozk\n\nThanks Declan Murphy for the awesome website http://flightclub.io",
+    "view_count": 218085
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jI4zOOYwHPM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

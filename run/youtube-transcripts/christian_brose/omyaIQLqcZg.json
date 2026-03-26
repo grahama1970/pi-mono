@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "omyaIQLqcZg",
+    "language": "en",
+    "took_ms": 7440,
+    "method": null,
+    "title": "A Conversation with Bernard Nigro on the Evolving Patent-Antitrust Relationship",
+    "channel": "Hudson Institute",
+    "upload_date": "20200529",
+    "duration_sec": 3553,
+    "description": "Join Hudson Institute for a discussion with Principal Deputy Assistant Attorney General at the Antitrust Division of the Department of Justice Bernard A. Nigro, Jr., on the recent developments in the field of antitrust law and patents. Mr. Nigro previously served as deputy director for the Federal Trade Commission’s Bureau of Competition from 2003 to 2005. Hudson Institute Senior Fellow Urška Petrovčič will moderate the conversation.",
+    "view_count": 486
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] omyaIQLqcZg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

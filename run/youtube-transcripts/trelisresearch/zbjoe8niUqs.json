@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zbjoe8niUqs",
+    "language": "en",
+    "took_ms": 7729,
+    "method": null,
+    "title": "Price Comparison: OpenAI vs ElevenLabs vs DeepGram for TTS and STT",
+    "channel": "Trelis Research",
+    "upload_date": "20250327",
+    "duration_sec": 930,
+    "description": "📜 Explore audio inference and fine-tuning scripts: Trelis.com/ADVANCED-transcription\n\n📧 Get the Trelis AI Newsletter: https://trelis.substack.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Work for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nVideo Links:\n- ChatGPT Chat: https://chatgpt.com/share/67e19d1b-245c-8003-bbe2-c2b4fe115a1f\n- Canopy Labs: https://canopylabs.ai/model-releases\n- OpenAI Pricing: https://platform.openai.com/docs/pricing#transcription-and-speech-generation\n- OpenAI API Pricing: https://openai.com/api/pricing/\n- Deepgram: https://deepgram.com/pricing\n- ElevenLabs: https://elevenlabs.io/pricing\n- Fireworks: https://fireworks.ai/pricing#overview\n\nTIMESTAMPS:\n00:00 Introduction to Audio Service Pricing\n00:41 Understanding Audio Tokens\n02:30 Comparing Audio Service Providers\n03:27 OpenAI Pricing Analysis\n08:39 Deep Gram and 11 Labs Pricing\n12:48 Future Pricing Trends\n15:08 Conclusion and Final Thoughts",
+    "view_count": 3505
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zbjoe8niUqs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

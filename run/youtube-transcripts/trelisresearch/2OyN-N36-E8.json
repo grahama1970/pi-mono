@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2OyN-N36-E8",
+    "language": "en",
+    "took_ms": 8030,
+    "method": null,
+    "title": "How to Fine-tune Florence 2: The Best Small Vision Model",
+    "channel": "Trelis Research",
+    "upload_date": "20241112",
+    "duration_sec": 3036,
+    "description": "➡️ Florence 2 Colab Notebook: https://colab.research.google.com/drive/1t0C7pYtcrS_BOR-0jHVL8QsZsfMNtTih?usp=sharing\n➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-vision/\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nVIDEO RESOURCES:\nSlides: https://docs.google.com/presentation/d/1djNIaMCcDRBuMj-GPX5TClMn03gZjMpsArixedR_MCo/edit?usp=sharing\n- Chess Dataset: https://huggingface.co/datasets/Trelis/chess_pieces\n- Chess Dataset w/ bounding boxes: https://huggingface.co/datasets/Trelis/chess_bounding_boxes\n- Florence paper: https://arxiv.org/pdf/2311.06242\n- Florence base model on HF: https://huggingface.co/microsoft/Florence-2-base-ft\n- Thumbnail created using Flux Schnell in this video: https://youtu.be/ThKYjTdkyP8\n\nTIMESTAMPS:\n0:00 Object and Bounding Box Detection with Vision Models\n0:42 Video Overview\n2:15 Florence 2 Architecture\n8:03 How bounding boxes and segmentation work\n12:55 Inferencing Florence 2 in Google Colab. Bounding boxes and segmentation.\n21:17 Annotating a custom dataset with bounding boxes.\n28:06 Fine-tuning Florence 2 on bounding boxes. Notebook demo.\n41:41 Setting up LoRA adapters\n44:12 How to choose learning rate and training arguments\n48:40 Fine-tuning results and performance\n49:43 Video Resources",
+    "view_count": 4447
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2OyN-N36-E8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

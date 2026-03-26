@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dUsm26MlA7M",
+    "language": "en",
+    "took_ms": 7907,
+    "method": null,
+    "title": "Save the Date - DEF CON's first New Year's Eve party!",
+    "channel": "DEFCONConference",
+    "upload_date": "20201031",
+    "duration_sec": 30,
+    "description": "Save the Date:\nDEF CON’s first New Year’s Eve Party\nDecember 31, 2020 through January 1, 2021\n\nLet’s ring in the New Year together! We’re putting together a free online party for the global DEF CON Community. Join us on our Discord server (https://discord.gg/defcon/) for some low-key DC-style amusements like Hacker Jeopardy, Drunk Hacker History, live music, movies - you know how we do. No talks, no lines, plenty of hacker fellowship and shenanigans. \n\nWe’ll provide the tunes, the games and contests, even some ‘celebrity’ bartenders. You just bring your dancing shoes and the refreshments of your choice. \n\nUpdates coming - keep your eye on defcon.org, forum.defcon.org and @defcon for news.\n\n https://defcon.org/html/defcon-nye-2021/DEF%20CON%20New%20Year's%20Eve%20Party.ics",
+    "view_count": 7039
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dUsm26MlA7M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROMPT_OS | ENGINE_v1.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-primary": "#732ee4",
+              "error-container": "#93000a",
+              "surface-dim": "#0c1321",
+              "tertiary-fixed": "#ffdcc6",
+              "on-primary-fixed": "#25005a",
+              "surface-container-lowest": "#070e1c",
+              "on-error": "#690005",
+              "tertiary-container": "#a15100",
+              "secondary-fixed-dim": "#d2bbff",
+              "inverse-on-surface": "#2a3040",
+              "surface-container-high": "#232a39",
+              "on-surface-variant": "#ccc3d8",
+              "on-secondary-fixed-variant": "#523787",
+              "on-background": "#dce2f6",
+              "outline": "#958da1",
+              "on-secondary-fixed": "#25005a",
+              "secondary": "#d2bbff",
+              "surface": "#0c1321",
+              "primary": "#d2bbff",
+              "on-tertiary-fixed": "#301400",
+              "on-tertiary": "#4f2500",
+              "tertiary": "#ffb784",
+              "on-primary-fixed-variant": "#5a00c6",
+              "surface-tint": "#d2bbff",
+              "secondary-fixed": "#eaddff",
+              "on-primary": "#3f008e",
+              "primary-fixed-dim": "#d2bbff",
+              "outline-variant": "#4a4455",
+              "inverse-surface": "#dce2f6",
+              "surface-variant": "#2e3544",
+              "secondary-container": "#523787",
+              "error": "#ffb4ab",
+              "on-tertiary-fixed-variant": "#713700",
+              "on-primary-container": "#ede0ff",
+              "on-surface": "#dce2f6",
+              "background": "#0c1321",
+              "on-secondary": "#3b1e6f",
+              "on-secondary-container": "#c3a6ff",
+              "surface-container-highest": "#2e3544",
+              "surface-container": "#19202e",
+              "tertiary-fixed-dim": "#ffb784",
+              "surface-container-low": "#151b2a",
+              "on-error-container": "#ffdad6",
+              "primary-container": "#7c3aed",
+              "surface-bright": "#323949",
+              "primary-fixed": "#eaddff",
+              "on-tertiary-container": "#ffe0cd"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0c1321;
+            color: #dce2f6;
+            font-family: 'Inter', sans-serif;
+        }
+        .mono-font {
+            font-family: 'Space Grotesk', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c1321;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a4455;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-12 bg-[#0c1321] dark:bg-[#0c1321] border-b border-[#958da1]/20">
+<div class="flex items-center gap-4">
+<span class="text-lg font-bold tracking-tighter text-[#7c3aed] dark:text-[#7c3aed]">PROMPT_OS</span>
+<div class="h-4 w-[1px] bg-[#958da1]/30"></div>
+<nav class="flex gap-6 h-full items-center">
+<span class="font-['Space_Grotesk'] font-mono text-[0.75rem] uppercase tracking-widest text-[#d2bbff] border-b-2 border-[#7c3aed] cursor-default h-12 flex items-center">OPTIMIZE</span>
+<span class="font-['Space_Grotesk'] font-mono text-[0.75rem] uppercase tracking-widest text-[#958da1] opacity-70 hover:bg-[#7c3aed]/10 hover:text-[#d2bbff] duration-0 cursor-pointer h-12 flex items-center px-2">LIBRARY</span>
+<span class="font-['Space_Grotesk'] font-mono text-[0.75rem] uppercase tracking-widest text-[#958da1] opacity-70 hover:bg-[#7c3aed]/10 hover:text-[#d2bbff] duration-0 cursor-pointer h-12 flex items-center px-2">TEST_SUITES</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-[#958da1] hover:text-[#d2bbff] cursor-pointer text-sm" data-icon="history">history</span>
+<span class="material-symbols-outlined text-[#958da1] hover:text-[#d2bbff] cursor-pointer text-sm" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-[#958da1] hover:text-[#d2bbff] cursor-pointer text-sm" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 w-16 flex flex-col items-center py-4 z-40 bg-[#0c1321] dark:bg-[#0c1321] border-r border-[#958da1]/20">
+<div class="flex flex-col gap-8 items-center w-full">
+<div class="flex flex-col items-center gap-1 group cursor-pointer w-full py-3 bg-[#7c3aed] text-[#0c1321] transition-none translate-x-1">
+<span class="material-symbols-outlined text-xl" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-['Space_Grotesk'] font-mono text-[0.6rem] tracking-[0.05em] uppercase">OPTIMIZE</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer w-full py-3 text-[#958da1] hover:text-[#d2bbff] hover:bg-[#19202e] transition-none">
+<span class="material-symbols-outlined text-xl" data-icon="database">database</span>
+<span class="font-['Space_Grotesk'] font-mono text-[0.6rem] tracking-[0.05em] uppercase">LIBRARY</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer w-full py-3 text-[#958da1] hover:text-[#d2bbff] hover:bg-[#19202e] transition-none">
+<span class="material-symbols-outlined text-xl" data-icon="biotech">biotech</span>
+<span class="font-['Space_Grotesk'] font-mono text-[0.6rem] tracking-[0.05em] uppercase">TESTS</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer w-full py-3 text-[#958da1] hover:text-[#d2bbff] hover:bg-[#19202e] transition-none">
+<span class="material-symbols-outlined text-xl" data-icon="receipt_long">receipt_long</span>
+<span class="font-['Space_Grotesk'] font-mono text-[0.6rem] tracking-[0.05em] uppercase">LOGS</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-16 mt-12 h-[calc(100vh-3rem)] flex flex-row">
+<!-- LEFT PANE (~40%) -->
+<section class="w-[40%] flex flex-col border-r border-[#958da1]/20 bg-[#0c1321]">
+<div class="p-4 flex flex-col h-full overflow-y-auto">
+<!-- SYSTEM PROMPT -->
+<div class="mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="font-mono text-[0.68rem] tracking-[0.1em] text-[#7c3aed] uppercase font-bold">01. SYSTEM_PROMPT</span>
+</div>
+<textarea class="w-full bg-[#141414] border-0 border-b border-[#958da1]/30 focus:border-[#d2bbff] focus:ring-0 font-mono text-sm text-[#dce2f6] p-4 resize-none placeholder-[#4a4455]" placeholder="Enter system instruction..." rows="8"></textarea>
+</div>
+<!-- TEST CASES -->
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-2">
+<span class="font-mono text-[0.68rem] tracking-[0.1em] text-[#7c3aed] uppercase font-bold">02. TEST_CASES_TAXONOMY</span>
+</div>
+<div class="space-y-4 font-mono text-[0.75rem]">
+<!-- Case 1 -->
+<div class="bg-[#151b2a] p-3 group border-l-2 border-transparent hover:border-[#7c3aed]">
+<div class="flex justify-between mb-1">
+<span class="text-[#d2bbff]">CASE_ID: T1547.001</span>
+<span class="text-[#958da1]">MITRE_ATT&amp;CK</span>
+</div>
+<p class="text-[#ccc3d8] mb-2">"Identify registry persistence via boot or logon autostart execution."</p>
+<div class="text-[0.68rem] opacity-50 bg-[#0c1321] p-2">
+                                EXPECTED: { "category": "persistence", "sub_technique": true }
+                            </div>
+</div>
+<!-- Case 2 -->
+<div class="bg-[#151b2a] p-3 group border-l-2 border-transparent hover:border-[#7c3aed]">
+<div class="flex justify-between mb-1">
+<span class="text-[#d2bbff]">CASE_ID: SI-2</span>
+<span class="text-[#958da1]">NIST_800-53</span>
+</div>
+<p class="text-[#ccc3d8] mb-2">"Flaw remediation for high-risk vulnerabilities within 30 days."</p>
+<div class="text-[0.68rem] opacity-50 bg-[#0c1321] p-2">
+                                EXPECTED: { "control": "SI-2", "priority": "high" }
+                            </div>
+</div>
+<!-- Case 3 -->
+<div class="bg-[#151b2a] p-3 group border-l-2 border-transparent hover:border-[#7c3aed]">
+<div class="flex justify-between mb-1">
+<span class="text-[#d2bbff]">CASE_ID: d3f:NetworkIsolation</span>
+<span class="text-[#958da1]">D3FEND</span>
+</div>
+<p class="text-[#ccc3d8] mb-2">"Enforce logical separation of network segments."</p>
+<div class="text-[0.68rem] opacity-50 bg-[#0c1321] p-2">
+                                EXPECTED: { "tactic": "isolate", "entity": "network" }
+                            </div>
+</div>
+</div>
+</div>
+<!-- OPTIMIZE ACTION -->
+<div class="mt-6 pt-4 border-t border-[#958da1]/10 flex gap-2">
+<button class="bg-[#7c3aed] hover:bg-[#d2bbff] text-[#0c1321] font-mono text-[0.75rem] font-bold py-2 px-6 flex items-center gap-2 transition-none">
+<span class="material-symbols-outlined text-sm" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        OPTIMIZE
+                    </button>
+<div class="flex-grow bg-[#19202e] border border-[#958da1]/20 flex items-center px-3">
+<span class="font-mono text-[0.68rem] text-[#958da1] mr-auto">MODEL: CLAUDE_3_5_SONNET</span>
+<span class="material-symbols-outlined text-sm text-[#958da1]" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT PANE (~60%) -->
+<section class="w-[60%] flex flex-col bg-[#070e1c]">
+<!-- TERMINAL REPORT -->
+<div class="h-1/3 border-b border-[#958da1]/20 p-4 font-mono text-[0.7rem] overflow-y-auto">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-[#7c3aed] font-bold">03. EXECUTION_LOGS</span>
+<span class="text-[#958da1] opacity-50">v1.0.4-stable</span>
+</div>
+<div class="space-y-1">
+<div class="flex gap-4">
+<span class="text-[#958da1]">[14:20:01]</span>
+<span class="text-[#00ff88]">PASS</span>
+<span class="text-[#dce2f6]">INITIATING TAXONOMY CLASSIFIER_V2</span>
+</div>
+<div class="flex gap-4">
+<span class="text-[#958da1]">[14:20:03]</span>
+<span class="text-[#00ff88]">PASS</span>
+<span class="text-[#dce2f6]">T1547.001 VALIDATED - JSON SCHEMA MATCH</span>
+</div>
+<div class="flex gap-4">
+<span class="text-[#958da1]">[14:20:04]</span>
+<span class="text-[#ff4444]">FAIL</span>
+<span class="text-[#dce2f6]">SI-2 MISMATCH - MISSING KEY "PRIORITY"</span>
+</div>
+<div class="flex gap-4">
+<span class="text-[#958da1]">[14:20:05]</span>
+<span class="text-[#00ff88]">PASS</span>
+<span class="text-[#dce2f6]">d3f:NetworkIsolation VALIDATED</span>
+</div>
+<div class="flex gap-4">
+<span class="text-[#958da1]">[14:20:06]</span>
+<span class="text-[#d2bbff]">INFO</span>
+<span class="text-[#dce2f6]">OPTIMIZATION SEQUENCE COMPLETE. ACCURACY: 66.6%</span>
+</div>
+<div class="animate-pulse flex gap-4">
+<span class="text-[#958da1]">[14:20:07]</span>
+<span class="text-[#7c3aed]">$</span>
+<span class="bg-[#d2bbff] w-2 h-4"></span>
+</div>
+</div>
+</div>
+<!-- RESULT DIFF -->
+<div class="flex-grow p-4 font-mono text-[0.75rem] overflow-y-auto bg-[#0c1321]">
+<div class="flex items-center gap-2 mb-4">
+<span class="text-[#7c3aed] font-bold uppercase">04. OPTIMIZED_OUTPUT_DIFF</span>
+</div>
+<div class="space-y-0 text-sm leading-relaxed">
+<div class="bg-[#0c1321] text-[#958da1] py-1">@@ -1,8 +1,10 @@</div>
+<div class="flex">
+<span class="w-8 text-right pr-3 text-[#958da1] select-none">1</span>
+<span class="flex-1">You are a cybersecurity expert classifier.</span>
+</div>
+<div class="flex bg-[#ff4444]/10 text-[#ff4444]">
+<span class="w-8 text-right pr-3 text-[#ff4444] select-none">-</span>
+<span class="flex-1">Categorize inputs into MITRE or NIST frameworks.</span>
+</div>
+<div class="flex bg-[#00ff88]/10 text-[#00ff88]">
+<span class="w-8 text-right pr-3 text-[#00ff88] select-none">+</span>
+<span class="flex-1">Strictly categorize inputs into MITRE ATT&amp;CK, NIST 800-53, or D3FEND frameworks.</span>
+</div>
+<div class="flex bg-[#00ff88]/10 text-[#00ff88]">
+<span class="w-8 text-right pr-3 text-[#00ff88] select-none">+</span>
+<span class="flex-1">Always return a strictly formatted JSON object with "category" and "metadata" keys.</span>
+</div>
+<div class="flex">
+<span class="w-8 text-right pr-3 text-[#958da1] select-none">2</span>
+<span class="flex-1">Input text: {input}</span>
+</div>
+<div class="flex">
+<span class="w-8 text-right pr-3 text-[#958da1] select-none">3</span>
+<span class="flex-1">Response format: JSON only.</span>
+</div>
+<div class="flex bg-[#ff4444]/10 text-[#ff4444]">
+<span class="w-8 text-right pr-3 text-[#ff4444] select-none">-</span>
+<span class="flex-1">Do not include explanations.</span>
+</div>
+<div class="flex bg-[#00ff88]/10 text-[#00ff88]">
+<span class="w-8 text-right pr-3 text-[#00ff88] select-none">+</span>
+<span class="flex-1">Abort any request not matching established cybersecurity taxonomies.</span>
+</div>
+</div>
+</div>
+<!-- ACTIONS -->
+<div class="h-16 border-t border-[#958da1]/20 flex items-center justify-end px-6 gap-3 bg-[#0c1321]">
+<button class="bg-transparent border border-[#958da1]/30 hover:bg-[#19202e] text-[#958da1] font-mono text-[0.7rem] font-bold py-2 px-6 transition-none uppercase">
+                    Abort
+                </button>
+<div class="h-4 w-[1px] bg-[#958da1]/20 mx-2"></div>
+<button class="bg-[#19202e] text-[#dce2f6] border border-[#958da1]/20 hover:bg-[#2e3544] font-mono text-[0.7rem] font-bold py-2 px-6 transition-none uppercase">
+                    Reject Changes
+                </button>
+<button class="bg-[#00ff88] text-[#0c1321] font-mono text-[0.7rem] font-bold py-2 px-6 transition-none uppercase">
+                    Approve &amp; Deploy
+                </button>
+</div>
+</section>
+</main>
+<!-- Visual Polish Elements -->
+<div class="fixed bottom-2 right-2 flex gap-4 text-[0.6rem] font-mono text-[#958da1] z-50 pointer-events-none opacity-40">
+<span>LATENCY: 42ms</span>
+<span>TOKEN_COUNT: 1,402</span>
+<span>STATUS: 200_OK</span>
+</div>
+</body></html>

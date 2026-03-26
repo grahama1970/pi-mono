@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NlcTJAWTSLc",
+    "language": "en",
+    "took_ms": 7967,
+    "method": null,
+    "title": "DEF CON 30  - Jacob Baines - Do Not Trust the ASA, Trojans",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2165,
+    "description": "Cisco ASA and ASA-X are widely deployed firewalls that are relied upon to protect internal networks from the dangers of the outside world. This key piece of network infrastructure is an obvious point of attack, and a known target for exploitation and implantation by APT such as the Equation Group. Yet it’s been a number of years since a new vulnerability has been published that can provide privileged access to the ASA or the protected internal network. But all good things must come to an end.\n\nIn this talk, new vulnerabilities affecting the Cisco ASA will be presented. We’ll exploit the firewall, the system’s administrators, and the ASA-X FirePOWER module. The result of which should call into question the firewall’s trustworthiness.\n\nThe talk will focus on the practical exploitation of the ASA using these new vulnerabilities. To that end, new tooling and Metasploit modules will be presented. For IT protectors, mitigation and potential indicators of compromise will also be explored.",
+    "view_count": 1741
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NlcTJAWTSLc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

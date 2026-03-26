@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S7mPcEPaKHU",
+    "language": "en",
+    "took_ms": 9195,
+    "method": null,
+    "title": "DEF CON 33 - Intro to Common Industrial Protocol Exploitation - Trevor Flynn",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1404,
+    "description": "Explore the basics of what CIP is, how it is used in industry, and how to get started hacking it.",
+    "view_count": 431
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S7mPcEPaKHU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

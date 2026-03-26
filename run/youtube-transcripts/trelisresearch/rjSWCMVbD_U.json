@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rjSWCMVbD_U",
+    "language": "en",
+    "took_ms": 9494,
+    "method": null,
+    "title": "Run Code Llama in Google Colab",
+    "channel": "Trelis Research",
+    "upload_date": "20230825",
+    "duration_sec": 232,
+    "description": "Tutorial: Run Code Llama in less than 2 mins in a Free Colab Notebook.\n\n**Colab Code Llama**\nA Coding Assistant built on Code Llama (Llama 2).\nFree notebook: https://colab.research.google.com/drive/17GjLg0zB6VSpFcoO_r_wZtaGqNV6VCxC?usp=sharing\n\n**Colab Code Llama PRO**\n- Upload chats and documents.\n- Save/re-load chats.\n- Get access for €4.99 ($5.49) at https://buy.stripe.com/cN24h2f4pa9ZbQY6oB \n\nFind Trelis on [HuggingFace](https://huggingface.co/Trelis) and [YouTube](https://www.youtube.com/@TrelisResearch) - for videos on fine-tuning!\n\n0:00 Code Llama Announcement\n0:07 Run Code Llama in Google Colab\n1:20 Upload files and save chats",
+    "view_count": 4749
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rjSWCMVbD_U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

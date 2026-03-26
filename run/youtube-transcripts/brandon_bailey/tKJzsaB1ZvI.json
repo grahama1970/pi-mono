@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tKJzsaB1ZvI",
+    "language": "en",
+    "took_ms": 7985,
+    "method": null,
+    "title": "DEF CON 31 -  Smashing the State Machine the True Potential of Web Race Conditions - James Kettle",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2538,
+    "description": "For too long, web race-condition attacks have focused on a tiny handful of scenarios. Their true potential has been masked thanks to tricky workflows, missing tooling, and simple network jitter hiding all but the most trivial, obvious examples. In this session, I'll introduce multiple new classes of race condition that go far beyond the limit-overrun exploits you're probably already familiar with.\n\nInside every website lurks a state machine: a delicately balanced system of states and transitions that each user, session, and object can flow through. I'll show how to fire salvos of conflicting inputs at high-profile websites to make state machines collapse, enabling you to forge trusted data, misroute tokens, and mask backdoors.\n\nTo handle this explosion of attack surface, I'll share a polished methodology designed to help you eke out subtle tell-tale clues and scent blood long before sacrificing anything to the RNG gods. I've also taken lore amassed over years of research into HTTP Desync Attacks and developed a strategy that can squeeze 30 requests sent from Melbourne to Dublin into a sub-1ms execution window. Alongside the open source tool, we'll also release free online labs so you can try out your new skillset immediately.",
+    "view_count": 41493
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tKJzsaB1ZvI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

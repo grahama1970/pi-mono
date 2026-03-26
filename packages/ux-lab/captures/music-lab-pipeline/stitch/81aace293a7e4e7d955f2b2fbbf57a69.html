@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SONIC OBSERVATORY - S06 COMPOSE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ff6e84",
+                        "on-primary": "#3c0089",
+                        "on-secondary-fixed-variant": "#006632",
+                        "error-container": "#a70138",
+                        "primary-dim": "#8a4cfc",
+                        "outline-variant": "#484848",
+                        "primary": "#bd9dff",
+                        "on-tertiary-container": "#001e3c",
+                        "inverse-on-surface": "#565555",
+                        "surface-container-low": "#131313",
+                        "primary-fixed": "#b28cff",
+                        "secondary-fixed-dim": "#00ed7e",
+                        "error-dim": "#d73357",
+                        "on-error": "#490013",
+                        "tertiary-fixed-dim": "#5da5ff",
+                        "secondary-container": "#006d37",
+                        "on-background": "#ffffff",
+                        "on-tertiary-fixed": "#001833",
+                        "surface-dim": "#0e0e0e",
+                        "on-primary-container": "#2e006c",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-container-high": "#202020",
+                        "outline": "#767575",
+                        "secondary-dim": "#00ed7e",
+                        "on-surface": "#ffffff",
+                        "on-tertiary-fixed-variant": "#003a6d",
+                        "on-primary-fixed-variant": "#390083",
+                        "on-error-container": "#ffb2b9",
+                        "primary-container": "#b28cff",
+                        "tertiary-dim": "#4fa0ff",
+                        "surface-container-lowest": "#000000",
+                        "on-tertiary": "#002a52",
+                        "on-primary-fixed": "#000000",
+                        "on-secondary": "#005b2c",
+                        "surface": "#0e0e0e",
+                        "inverse-primary": "#742fe5",
+                        "tertiary": "#6aabff",
+                        "surface-container": "#191a1a",
+                        "tertiary-fixed": "#7bb3ff",
+                        "on-surface-variant": "#adaaaa",
+                        "on-secondary-fixed": "#004621",
+                        "surface-container-highest": "#262626",
+                        "surface-bright": "#2c2c2c",
+                        "secondary-fixed": "#00fd87",
+                        "on-secondary-container": "#e3ffe4",
+                        "secondary": "#00fd87",
+                        "surface-tint": "#bd9dff",
+                        "primary-fixed-dim": "#a67aff",
+                        "tertiary-container": "#499dfe",
+                        "surface-variant": "#262626",
+                        "background": "#0e0e0e"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .piano-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #262626 1px, transparent 1px),
+                linear-gradient(to bottom, #262626 1px, transparent 1px);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #131313; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #484848; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313] border-none flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black tracking-tighter text-white font-['Inter'] uppercase">SONIC OBSERVATORY</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[#adaaaa] hover:bg-[#262626] transition-all duration-200 px-3 py-1 rounded" href="#">DASHBOARD</a>
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[#bd9dff] hover:bg-[#262626] transition-all duration-200 px-3 py-1 rounded" href="#">PIPELINE</a>
+<a class="font-['Inter'] tracking-tight font-bold uppercase text-[#adaaaa] hover:bg-[#262626] transition-all duration-200 px-3 py-1 rounded" href="#">LIBRARY</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#adaaaa] hover:bg-[#262626] p-2 rounded-full transition-all">settings</button>
+<button class="material-symbols-outlined text-[#adaaaa] hover:bg-[#262626] p-2 rounded-full transition-all">account_circle</button>
+</div>
+</nav>
+<!-- SideNavBar (Pipeline Stepper) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-[#131313] border-none tonal-shift flex flex-col py-6 gap-1">
+<div class="px-6 mb-8">
+<h2 class="font-['Space_Grotesk'] text-xs tracking-widest uppercase text-[#00fd87]">PIPELINE</h2>
+<p class="font-['Space_Grotesk'] text-[10px] opacity-40 uppercase tracking-tighter">OPERATOR MODE</p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="text-[#adaaaa] px-4 py-3 flex items-center gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S00 ARCHIVE</span>
+</div>
+<div class="text-[#adaaaa] px-4 py-3 flex items-center gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S01 INGEST</span>
+</div>
+<div class="text-[#adaaaa] px-4 py-3 flex items-center gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S02 ANALYZE</span>
+</div>
+<div class="text-[#adaaaa] px-4 py-3 flex items-center gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S03 DECONSTRUCT</span>
+</div>
+<div class="text-[#adaaaa] px-4 py-3 flex items-center gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S04 SYNTHESIZE</span>
+</div>
+<div class="text-[#adaaaa] px-4 py-3 flex items-center gap-3 opacity-60 hover:opacity-100 hover:bg-[#191a1a] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S05 MIXDOWN</span>
+</div>
+<div class="bg-[#191a1a] text-[#bd9dff] border-l-2 border-[#7c3aed] px-4 py-3 font-bold flex items-center gap-3 cursor-default">
+<span class="material-symbols-outlined text-xs">radio_button_checked</span>
+<span class="font-['Space_Grotesk'] text-xs tracking-widest uppercase">S06 COMPOSE</span>
+</div>
+</div>
+<div class="mt-auto px-4 pb-4">
+<button class="w-full bg-[#191a1a] border border-[#00fd87]/30 text-[#00fd87] font-['Space_Grotesk'] text-[10px] tracking-widest py-3 hover:bg-[#00fd87]/10 transition-all uppercase">
+                EXPORT STEMS
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-8 h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar bg-surface flex flex-col gap-8">
+<!-- Header Section -->
+<header class="flex justify-between items-end">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-4">
+<span class="font-label text-primary text-2xl font-bold tracking-tighter">S06</span>
+<h1 class="text-4xl font-headline font-black tracking-tight uppercase">Compose Arrangement</h1>
+</div>
+<div class="flex gap-4 items-center">
+<div class="flex gap-4 border-r border-outline-variant pr-6">
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">D MINOR</span>
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">85 BPM</span>
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">4/4</span>
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">8 BARS</span>
+</div>
+<div class="flex items-center gap-3 pl-2">
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">32 LAYERS SYNCED</span>
+<span class="bg-secondary/10 text-secondary border border-secondary/20 px-2 py-0.5 rounded-sm font-label text-[9px] tracking-widest flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'wght' 700;">check</span> DONE
+                        </span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-3 bg-surface-container-highest hover:bg-surface-bright rounded-lg transition-all">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+<button class="p-3 bg-surface-container-highest hover:bg-surface-bright rounded-lg transition-all">
+<span class="material-symbols-outlined">stop</span>
+</button>
+<button class="p-3 bg-surface-container-highest hover:bg-surface-bright rounded-lg transition-all">
+<span class="material-symbols-outlined">repeat</span>
+</button>
+</div>
+</header>
+<!-- Piano Roll Workstation -->
+<div class="flex flex-col bg-surface-container-low rounded-xl overflow-hidden border-none relative group">
+<!-- Timeline Headers (Verse / Chorus) -->
+<div class="grid grid-cols-8 h-10 border-b border-outline-variant/20">
+<div class="col-span-4 bg-tertiary-container/5 border-t-2 border-tertiary/40 flex items-center px-4">
+<span class="font-label text-[10px] tracking-[0.2em] text-tertiary/80 uppercase font-bold">VERSE</span>
+</div>
+<div class="col-span-4 bg-primary-container/5 border-t-2 border-primary/40 flex items-center px-4">
+<span class="font-label text-[10px] tracking-[0.2em] text-primary/80 uppercase font-bold">CHORUS</span>
+</div>
+</div>
+<!-- Main Piano Grid -->
+<div class="flex h-[400px]">
+<!-- Y-Axis Pitch Labels -->
+<div class="w-16 bg-surface-container-highest flex flex-col-reverse justify-between py-1 border-r border-outline-variant/30">
+<span class="font-label text-[9px] text-center opacity-40">C3</span>
+<span class="font-label text-[9px] text-center opacity-40">E3</span>
+<span class="font-label text-[9px] text-center opacity-40">G3</span>
+<span class="font-label text-[9px] text-center opacity-40">C4</span>
+<span class="font-label text-[9px] text-center opacity-40">E4</span>
+<span class="font-label text-[9px] text-center opacity-40">G4</span>
+<span class="font-label text-[9px] text-center opacity-40">B4</span>
+<span class="font-label text-[9px] text-center opacity-40">C5</span>
+<span class="font-label text-[9px] text-center opacity-40">E5</span>
+</div>
+<!-- Grid & Notes -->
+<div class="flex-grow piano-grid relative overflow-hidden">
+<!-- Bar Numbers -->
+<div class="absolute top-0 w-full flex justify-between px-2 pt-1">
+<span class="font-label text-[8px] opacity-20">BAR 1</span>
+<span class="font-label text-[8px] opacity-20">BAR 2</span>
+<span class="font-label text-[8px] opacity-20">BAR 3</span>
+<span class="font-label text-[8px] opacity-20">BAR 4</span>
+<span class="font-label text-[8px] opacity-20">BAR 5</span>
+<span class="font-label text-[8px] opacity-20">BAR 6</span>
+<span class="font-label text-[8px] opacity-20">BAR 7</span>
+<span class="font-label text-[8px] opacity-20">BAR 8</span>
+</div>
+<!-- MIDI NOTES (Absolute positioning simulated) -->
+<!-- Bass (Blue #4a9eff) -->
+<div class="absolute bottom-10 left-[10%] w-[15%] h-3 bg-[#4a9eff] rounded-sm opacity-90 border-l-2 border-white/20"></div>
+<div class="absolute bottom-14 left-[26%] w-[10%] h-3 bg-[#4a9eff] rounded-sm opacity-90 border-l-2 border-white/20"></div>
+<div class="absolute bottom-10 left-[40%] w-[20%] h-3 bg-[#4a9eff] rounded-sm opacity-90 border-l-2 border-white/20"></div>
+<!-- Keys (Green #00fd87) -->
+<div class="absolute top-60 left-[5%] w-[30%] h-12 bg-secondary/40 border border-secondary/60 rounded flex items-center justify-center">
+<div class="w-full h-full opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);"></div>
+</div>
+<div class="absolute top-52 left-[55%] w-[30%] h-12 bg-secondary/40 border border-secondary/60 rounded flex items-center justify-center">
+<div class="w-full h-full opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);"></div>
+</div>
+<!-- Drums (Red #ff4444) -->
+<div class="absolute bottom-2 left-[2%] w-2 h-4 bg-error rounded-full shadow-[0_0_10px_rgba(255,110,132,0.4)]"></div>
+<div class="absolute bottom-2 left-[12%] w-2 h-4 bg-error rounded-full"></div>
+<div class="absolute bottom-2 left-[22%] w-2 h-4 bg-error rounded-full"></div>
+<div class="absolute bottom-2 left-[32%] w-2 h-4 bg-error rounded-full"></div>
+<div class="absolute bottom-2 left-[42%] w-2 h-4 bg-error rounded-full"></div>
+<div class="absolute bottom-2 left-[52%] w-2 h-4 bg-error rounded-full"></div>
+<div class="absolute bottom-2 left-[62%] w-2 h-4 bg-error rounded-full"></div>
+<div class="absolute bottom-2 left-[72%] w-2 h-4 bg-error rounded-full"></div>
+<!-- Vocal (Purple #7c3aed) -->
+<div class="absolute top-24 left-[15%] w-[70%] h-1 bg-primary-dim rounded-full shadow-[0_0_15px_#8a4cfc]">
+<div class="absolute top-[-4px] left-[10%] w-3 h-3 bg-primary rounded-full border-2 border-white/40"></div>
+<div class="absolute top-[2px] left-[30%] w-3 h-3 bg-primary rounded-full border-2 border-white/40"></div>
+<div class="absolute top-[-6px] left-[55%] w-3 h-3 bg-primary rounded-full border-2 border-white/40"></div>
+</div>
+<!-- Synth (Pink #ff4a9e) -->
+<div class="absolute top-8 right-[5%] w-[20%] h-4 bg-[#ff4a9e] rounded-sm blur-[1px]"></div>
+<div class="absolute top-12 right-[12%] w-[10%] h-4 bg-[#ff4a9e] rounded-sm blur-[1px]"></div>
+<!-- Guitar (Amber #ffaa00) -->
+<div class="absolute top-44 left-[40%] w-[10%] h-2 bg-[#ffaa00] rotate-[15deg]"></div>
+<div class="absolute top-40 left-[45%] w-[10%] h-2 bg-[#ffaa00] rotate-[15deg]"></div>
+<div class="absolute top-36 left-[50%] w-[10%] h-2 bg-[#ffaa00] rotate-[15deg]"></div>
+<!-- Playhead -->
+<div class="absolute top-0 left-[35%] w-[2px] h-full bg-white z-10 shadow-[0_0_15px_rgba(255,255,255,0.8)]"></div>
+</div>
+</div>
+<!-- Harmonic Progression Timeline -->
+<div class="h-14 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center px-16 relative">
+<div class="absolute left-16 top-0 w-[calc(100%-128px)] h-full grid grid-cols-8">
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">Dm</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">Am</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">Bb</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">Gm</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/80 font-bold">Bb</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">F</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">Gm</div>
+<div class="flex items-center justify-center font-label text-xs tracking-widest text-on-surface/60">Dm</div>
+</div>
+<span class="font-label text-[9px] uppercase tracking-widest opacity-30 absolute left-4">CHORDS</span>
+</div>
+</div>
+<!-- Legend & Stats -->
+<footer class="mt-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+<!-- Legend -->
+<div class="flex flex-wrap gap-x-6 gap-y-3 p-6 bg-surface-container rounded-xl border-none">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#4a9eff]"></span>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Bass</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Keys</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Drums</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-dim"></span>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Vocal</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#ff4a9e]"></span>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Synth</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#ffaa00]"></span>
+<span class="font-label text-[10px] tracking-widest uppercase text-on-surface-variant">Guitar</span>
+</div>
+</div>
+<!-- Asymmetric Metadata Module -->
+<div class="flex justify-end gap-12">
+<div class="flex flex-col gap-1">
+<span class="font-label text-[9px] text-primary/60 tracking-widest uppercase">Complexity Score</span>
+<span class="text-2xl font-headline font-black tracking-tighter italic">88.4<span class="text-xs opacity-40 px-1">%</span></span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label text-[9px] text-secondary/60 tracking-widest uppercase">Phasing Status</span>
+<span class="text-2xl font-headline font-black tracking-tighter italic">NOMINAL</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label text-[9px] text-tertiary/60 tracking-widest uppercase">Buffer Health</span>
+<div class="w-32 h-1 bg-surface-container-highest mt-2 rounded-full overflow-hidden">
+<div class="w-4/5 h-full bg-tertiary"></div>
+</div>
+</div>
+</div>
+</footer>
+</main>
+<!-- Visual Polish: Atmospheric Depth Overlays -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none bg-[radial-gradient(circle_at_50%_0%,_rgba(189,157,255,0.03)_0%,_transparent_50%)] z-0"></div>
+<div class="fixed bottom-0 right-0 w-[500px] h-[500px] pointer-events-none bg-[radial-gradient(circle_at_100%_100%,_rgba(0,253,135,0.02)_0%,_transparent_70%)] z-0"></div>
+</body></html>

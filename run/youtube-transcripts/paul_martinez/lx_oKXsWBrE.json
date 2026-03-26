@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lx_oKXsWBrE",
+    "language": "en",
+    "took_ms": 9500,
+    "method": null,
+    "title": "In Firmware We Trust: Securing The Software Supply Chain",
+    "channel": "S4 Events",
+    "upload_date": "20190520",
+    "duration_sec": 2890,
+    "description": "This was a fun presentation. Go to 41:50 if you want to see why Jonathan Butts, Jacob Kitchel, Bryan Owen, and Billy Rios are dressed like pirates (and Eric Byres is in a shark suit).\n\nThe first 40 minutes discuss the importance and difficulties of securing the ICS software/firmware supply chain. And the community effort that aDolus is working on so asset owners can get assurance in what is provided by the vendor or integrator prior to using it in their ICS.",
+    "view_count": 210
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lx_oKXsWBrE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

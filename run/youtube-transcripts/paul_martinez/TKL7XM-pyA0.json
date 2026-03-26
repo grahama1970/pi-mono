@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TKL7XM-pyA0",
+    "language": "en",
+    "took_ms": 8759,
+    "method": null,
+    "title": "Non-Security Metrics To Identify & Quantify Security Related Risk",
+    "channel": "S4 Events",
+    "upload_date": "20250406",
+    "duration_sec": 1730,
+    "description": "Security metrics are one way to evaluate cyber risk. However, companies with seemingly good security metrics have been hacked due to other corporate risk factors. JC discusses non-security data and business indicators you should look at through a cyber risk lens.\n\nThere are mountains of non-security data about company risk: financial health or distress, ownership changes, regulatory violations and legal issues, and business performance. On-time delivery. Defects. Contract cancellation. Layoffs. Staffing in general.\n\nMany security professionals have lived through chapters of company history when security posture is insufficient. Lack of focus. Other priorities. But those other priorities have a way of showing up in non-security data. This session helps you identify and use these leading indicators of security incidents.",
+    "view_count": 561
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TKL7XM-pyA0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

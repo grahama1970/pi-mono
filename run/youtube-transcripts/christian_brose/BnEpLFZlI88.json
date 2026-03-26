@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BnEpLFZlI88",
+    "language": "en",
+    "took_ms": 8557,
+    "method": null,
+    "title": "Herbert London on the Decline and Revival of Higher Education",
+    "channel": "Hudson Institute",
+    "upload_date": "20100810",
+    "duration_sec": 216,
+    "description": "Hudson President Herbert London discussed the current state and history of higher education. How is this institution different than it was in the past? What factors led to this change?",
+    "view_count": 131
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BnEpLFZlI88: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

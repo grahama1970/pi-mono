@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MZnnKl8xDTw",
+    "language": "en",
+    "took_ms": 8026,
+    "method": null,
+    "title": "DEF CON 29 HHV - Ben Gardiner - A Lazy Solve of @mediumrehr's HHV Challenge 6",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 2178,
+    "description": "Join Ben for an informal let’s play of @mediumrehr’s Hardware Hacking Village challenge 6. Some topics we will cover include: radare2 , AVR assembly, 7 segment displays, and sigrok. It should be fun and relaxed with plenty of time to stop and re-do some steps if something needs more deliberation. See you there.",
+    "view_count": 603
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MZnnKl8xDTw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

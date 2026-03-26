@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zaWytSAw8Kc",
+    "language": "en",
+    "took_ms": 8504,
+    "method": null,
+    "title": "I asked you to predict 2022's spaceflight milestones...",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230101",
+    "duration_sec": 1031,
+    "description": "On January 1st, 2022, I tweeted a set of polls and wanted to see how well we in the spaceflight community could predict what would happen in the year forward. You did pretty decent this year! Want to participate next year? Here's the links to 2023's polls! \n\nTwitter - https://twitter.com/Erdayastronaut/status/1609557794650202112?s=20&t=dYo16pKBhl4KvoAR410Flw\nSurvey Monkey - https://www.surveymonkey.com/r/BT29GL5\n\nAnd here were last year's polls so you can play along and see how you did! - https://twitter.com/Erdayastronaut/status/1477394959342972942?s=20&t=SgvAWHMaK2qnxhhAMfszww\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 204391
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zaWytSAw8Kc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

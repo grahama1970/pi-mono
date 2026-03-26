@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n04DAvO1vf8",
+    "language": "en",
+    "took_ms": 8698,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Liz Wharton -   Airport Hacking Choose Your Own Adventure",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2307,
+    "description": "Check-in software glitches, payment system data breaches, gate signage ransomware attacks... Airports are an interconnected, mini-smart city of retail, dining, infrastructure, and transportation logistics operated by a hodgepodge of business interests + federal, state, and local entities and agencies. Join an interactive adventure as a passenger navigating the airport to catch a flight before hackers cause chaos, highlighting security pitfalls and risks all based on publicly disclosed incidents.",
+    "view_count": 629
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n04DAvO1vf8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

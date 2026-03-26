@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0Z3VadqyFiM",
+    "language": "en",
+    "took_ms": 9486,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Daniel Duggan - Designing a C2 Framework",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 2811,
+    "description": "Over recent years, there has been a huge boom in open-source C2 frameworks hitting the information security space. So much so they made a website and a logo - that’s how you know things are serious! Such a trend naturally drives more people towards taking on the gauntlet but all too often it becomes an insurmountable challenge and another dashed dream of the aspiring red teamer, or veteran alike. Believe me when I say - I’ve been there. I’ve felt the pain, the frustration, the imposter syndrome. Heck, I still do. However, I’ve (mostly) come out the other side with some hard learned lessons. Those lessons are the subject of this talk. The goal is not to write or provide code. We shall discuss how to approach initial design ideas; decide what is important and what is not; anticipate and deal with potential problem areas; consider different use cases and perspectives; and more.\n\nIf you are interested in building your own C2 framework, contributing to existing frameworks, or even software development in general, there’s something in this talk for you.",
+    "view_count": 6072
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0Z3VadqyFiM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

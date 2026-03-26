@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HXyWeM9i8eo",
+    "language": "en",
+    "took_ms": 9436,
+    "method": null,
+    "title": "Underestimated: Our Not So Peaceful Nuclear Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20150619",
+    "duration_sec": 5247,
+    "description": "Henry Sokolski, Lee Smith, Tod Lindberg and Dov Zakheim discuss the fututre of international nuclear strategy.",
+    "view_count": 500
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HXyWeM9i8eo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

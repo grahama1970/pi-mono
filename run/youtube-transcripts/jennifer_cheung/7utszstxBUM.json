@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7utszstxBUM",
+    "language": "en",
+    "took_ms": 8517,
+    "method": null,
+    "title": "DEF CON Safe Mode Crypto and Privacy Village  - Emily Crose - Fun with FOIA",
+    "channel": "DEFCONConference",
+    "upload_date": "20200822",
+    "duration_sec": 2220,
+    "description": "",
+    "view_count": 977
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7utszstxBUM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_v5jdbpLYqI",
+    "language": "en",
+    "took_ms": 9463,
+    "method": null,
+    "title": "Build GenAI app prototypes in days instead of months! Join our new course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 125,
+    "description": "Learn more: https://bit.ly/47tqm5j\n\nTraditional development cycles, where it takes months of planning before anything ships, don’t work in the era of generative AI. New capabilities surface every week, and ideas lose momentum unless you put a prototype in front of people fast.\n\nOur new course, Fast Prototyping of GenAI Apps with Streamlit, built in partnership with Snowflake and led by Chanin Nantasenamat, helps you work around this shift. You’ll learn a repeatable workflow to go from idea to share-ready demo software in days, not months. \n\nYou’ll start with a simple chatbot, then add prompt engineering and RAG powered by Snowflake’s secure data and LLM services, and push your prototype to Snowflake or Streamlit Community Cloud for instant feedback and rapid improvement.\n\nIn detail, you’ll: \n\nBuild an interactive Streamlit analytics assistant that mines a customer-review dataset for sentiment insights within your own Snowflake account (120-day free trial included).\nImprove response quality with structured prompt engineering and RAG, grounding each answer in the review data.\nShip your prototype to internal Snowflake workspaces, or publish it to Streamlit Community Cloud, gather feedback, and iterate fast with the course’s MVP playbook.\n\nStart building and iterating GenAI apps fast.\n\nEnroll now: https://bit.ly/47tqm5j",
+    "view_count": 1032
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _v5jdbpLYqI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

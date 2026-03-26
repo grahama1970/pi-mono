@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2vO9sEGPBvc",
+    "language": "en",
+    "took_ms": 9069,
+    "method": null,
+    "title": "The Future of the Middle East: Regional Scenarios Beyond the",
+    "channel": "Hudson Institute",
+    "upload_date": "20141209",
+    "duration_sec": 5254,
+    "description": "Hudson Institute hosted a panel featuring Shmuel Bar, Michael Doran, Hillel Fradkin, and Lee Smith to explore U.S. policy in the Middle East with respect to regional strategy for the next two, five, ten, and twenty-five years. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 3382
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2vO9sEGPBvc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

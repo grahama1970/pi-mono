@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dldX9UFhNTs",
+    "language": "en",
+    "took_ms": 8511,
+    "method": null,
+    "title": "DEF CON 32 - Laundering Money - Michael Orlitzky",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1173,
+    "description": "CSC ServiceWorks is a large vendor of pay-to-play laundry machines in apartments and condomiums. Most are Speed Queens, but newer CSC-branded machines use an app for payment and have custom circuitry inside. Many however accept quarters as well. We show that, when all else fails, you can always physically bypass the coin slot to run the machines for free.",
+    "view_count": 2105
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dldX9UFhNTs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

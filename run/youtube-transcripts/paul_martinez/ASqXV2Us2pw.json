@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ASqXV2Us2pw",
+    "language": "en",
+    "took_ms": 8845,
+    "method": null,
+    "title": "S4x26 Updates and Q&A",
+    "channel": "S4 Events",
+    "upload_date": "20250814",
+    "duration_sec": 1618,
+    "description": "I'll answer your questions and provide quick updates on the CFP, Women In ICS Security program, POC Pavilion, Tickets, Welcome Party, Hotels. Lot's happening and receiving many questions.\n\n🎙️ New to streaming or looking to level up? Check out StreamYard and get $10 discount! 😍 https://streamyard.com/pal/d/4860836049977344",
+    "view_count": 76
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ASqXV2Us2pw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

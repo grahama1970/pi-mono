@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CEUe7fae0I8",
+    "language": "en",
+    "took_ms": 7628,
+    "method": null,
+    "title": "China-India Border Clash: What’s Behind China’s Belligerence?",
+    "channel": "Hudson Institute",
+    "upload_date": "20200623",
+    "duration_sec": 2622,
+    "description": "Join Hudson Institute for a discussion on the recent deadly clash between India and China along their disputed Himalayan border. Hudson Director for South and Central Asia Husain Haqqani will moderate the event.",
+    "view_count": 134282
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CEUe7fae0I8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

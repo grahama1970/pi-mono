@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3dHZ-l3XSsE",
+    "language": "en",
+    "took_ms": 9709,
+    "method": null,
+    "title": "DEF CON 32 - Your CI CD Pipeline Is Vulnerable, But It's Not Your Fault - Elad Pticha, Oreen Livni",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1544,
+    "description": "Are you really sure that the code executed inside your pipelines is secure? Join us as we explore how command injection in a single CI/CD pipeline component can create a major vulnerability in Google's flagship project, Bazel.\n\nOur research reveals a command injection vulnerability within Bazel GitHub Action, showcasing the potential compromise of the entire open-source project. Through live demonstrations, we illustrate how threat actors can exploit seemingly secure pipelines and tamper widely used repositories with malicious code.\n\nBy attending, you'll gain actionable insights into securing your CI/CD pipelines and learn practical strategies to protect your projects from similar vulnerabilities.",
+    "view_count": 4111
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3dHZ-l3XSsE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

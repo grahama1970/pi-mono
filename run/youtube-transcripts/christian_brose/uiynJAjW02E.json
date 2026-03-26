@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uiynJAjW02E",
+    "language": "en",
+    "took_ms": 9129,
+    "method": null,
+    "title": "Russia and the Rule of Law",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 6139,
+    "description": "In 2003, Mikhail Khodorkovsky, once one of Russia's wealthiest businessmen as head of YUKOS Oil, was arrested on what most analysts considered trumped up and politically motivated charges of multi-billion ruble tax evasion.   When Khodorkovsky was eligible for parole in 2008, prosecutors leveled a second series of money-laundering charges against him, accusing him and his business partner of stealing 350 million tons of oil. The Economist described these charges as \"Kafkaesque.\"  Khodo",
+    "view_count": 420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uiynJAjW02E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

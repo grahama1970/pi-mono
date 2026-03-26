@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l4KduoIWVCg",
+    "language": "en",
+    "took_ms": 8899,
+    "method": null,
+    "title": "2024 Threat Report - Cyber Incidents With Physical Impact",
+    "channel": "S4 Events",
+    "upload_date": "20240502",
+    "duration_sec": 3202,
+    "description": "Waterfall Security Solutions and ICSSTRIVE put out an annual threat report that Dale Peterson believes is the best in OT. Why? It only includes incidents that had physical consequences on systems monitored and controlled by OT. \n\nDale and Andrew discuss:\n- What is in and out of scope for the report.\n- The breakdown of the 68 incidents that occurred in 2023 by industry sector, cause, threat actor and more.\n- The impact reporting requirements may have on these numbers in the future.\n- What percentage of OT cyber incidents with physical consequences are made public.\n- Ransomware on IT causing physical consequences, exfil v. encryption, and what asset owners should do given this represents 80% of the known incidents in the report.\n- And more.\n\nLinks:\n- 2024 Threat Report: https://waterfall-security.com/ot-insights-center/ot-cybersecurity-insights-center/2024-threat-report-ot-cyberattacks-with-physical-consequences/ \n- ICSSTRIVE: https://icsstrive.com\n- S4 Events YouTube Channel: https://youtube.com/s4events",
+    "view_count": 919
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l4KduoIWVCg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

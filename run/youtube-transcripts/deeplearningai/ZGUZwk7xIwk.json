@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZGUZwk7xIwk",
+    "language": "en",
+    "took_ms": 8919,
+    "method": null,
+    "title": "C5W3L05 Error Analysis of Beam Search",
+    "channel": "DeepLearningAI",
+    "upload_date": "20180205",
+    "duration_sec": 584,
+    "description": "",
+    "view_count": 9962
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZGUZwk7xIwk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

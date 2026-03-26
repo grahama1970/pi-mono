@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MsRo12h0mrg",
+    "language": "en",
+    "took_ms": 8900,
+    "method": null,
+    "title": "DEF CON 33 - China's 5+ year campaign to penetrate perimeter network defenses - Andrew  Brandt",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2112,
+    "description": "For more than five years, firewall vendors have been under persistent, cyclical struggle against a well-resourced and relentless China-based adversary that has expended considerable resources developing custom exploits and bespoke malware expressly for the purpose of compromising enterprise firewalls in customer environments. In this first-of-its-kind presentation, Andrew Brandt will walk attendees through the complete history of the campaign, detailing the full scope of attacks and the countermeasures one firewall vendor developed to derail the threat actors, including detail into the exploits targeting specific firewalls, and malware deployed inside the firewalls as a result of these attacks.\n\nFundamental to this presentation is the fact that the adversary behind this campaign has not targeted only one firewall vendor: Most of the large network security providers in the industry have been targeted multiple times, using many of the same tactics and tools. So this serves not merely as a warning to the entire security industry, but as an urgent call to the companies that make up this industry to collectively combat this ongoing problem. Because at the end of the day, we all face the same threat, and we cannot hope to withstand the tempo and volume of these attacks alone. We must work together.",
+    "view_count": 105375
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MsRo12h0mrg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

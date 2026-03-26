@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "F4prIyQ0xvw",
+    "language": "en",
+    "took_ms": 7682,
+    "method": null,
+    "title": "Why don’t they launch rockets from on top of mountains? #rockets #rocketscience",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20240219",
+    "duration_sec": 53,
+    "description": "",
+    "view_count": 1333583
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] F4prIyQ0xvw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WC-tY-gEIPc",
+    "language": "en",
+    "took_ms": 8129,
+    "method": null,
+    "title": "DEF CON 32 - Hacker vs AI perspectives from an ex spy - Harriet Farlow",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2439,
+    "description": "The convergence of Artificial Intelligence (AI) and national security not only fuels international discourse but also inspires narratives within popular culture. Harriet is no stranger to these myths, as an ex-intelligence professional who specialized in applying machine learning to cyber security. In fact, she likes to lean into them. This makes her previous bosses nervous, so she uses pop culture as the lens through which to communicate her insights - and in this talk she utilizes the worlds of Ghost in the Shell, Neuromancer and Mission Impossible.\n\nThrough these stories, as well as her own decade of experience working at the intersection of artificial intelligence and cyber security, Harriet discusses the extent to which fears surrounding AI systems are applicable to real life national security settings. From cyber warfare to AI-driven surveillance, she unravels the interplay between hackers, AI, and government agencies. This session is interactive, with demos of how these AI systems actually work under the hood, as well as discussion time. Blur the lines between human and machine, and understand how you can contribute your skills to prevent our own modern day Puppet Master.",
+    "view_count": 920
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WC-tY-gEIPc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

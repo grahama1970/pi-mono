@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uCZRf3v3EUI",
+    "language": "en",
+    "took_ms": 7880,
+    "method": null,
+    "title": "DEF CON 33 - Automated Unpacking & Deobfuscation of Nested VM-Based Protectors - Agostino Panico",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2321,
+    "description": "Modern software protectors increasingly rely on complex, often nested, virtualization techniques (VMProtect, Themida, custom solutions) which significantly hinder static and dynamic analysis. This talk introduces DragonSlayer, an automated framework combining symbolic execution with fine-grained dynamic taint tracking to systematically lift obfuscated bytecode from these protectors. Our approach precisely identifies VM handlers, recovers original instruction semantics, automatically unpacks multiple virtualization layers, and reconstructs analyzable representations of protected code. We demonstrate DragonSlayer's effectiveness against the latest commercial VM protectors and custom obfuscation solutions, significantly reducing analysis time from weeks to hours. This presentation includes technical deep-dives into our methodology, real-world case studies, and a demonstration of our tooling that helps reverse engineers slay the virtualization dragon.",
+    "view_count": 2078
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uCZRf3v3EUI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

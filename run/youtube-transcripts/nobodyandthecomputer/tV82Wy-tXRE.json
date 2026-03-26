@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tV82Wy-tXRE",
+    "language": "en",
+    "took_ms": 8649,
+    "method": null,
+    "title": "A.I. MIDIs with chatGPT (The future of music production?)",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230502",
+    "duration_sec": 571,
+    "description": "ChatGPT and midis? No way!\nAbsolutely, watch me demonstrate how it's done!\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n\nchatGPT:\nhttps://openai.com/blog/chatgpt\n\nableton live:\nhttps://www.ableton.com/en/\n\nA.I. MIDIS is all you need:\nhttps://www.youtube.com/watch?v=wmMa8AsIlZ8\n\ncolab notebook:\nhttps://www.patreon.com/posts/i-midis-with-82852051\n\n00:00 Intro\n01:18 Asking chatGPT for a MIDI\n03:24 Colab Notebooks\n04:28 first super basic MIDI\n04:44 More complex MIDI\n05:33 Other format for prompting chatGPT for a MIDI\n07:07 BachGPT\n07:44 CanonGPT or PachelbelGPT\n08:23 ChopinGPT\n08:39 Outro",
+    "view_count": 273632
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tV82Wy-tXRE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

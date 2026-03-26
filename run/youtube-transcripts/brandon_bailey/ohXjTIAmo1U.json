@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ohXjTIAmo1U",
+    "language": "en",
+    "took_ms": 8928,
+    "method": null,
+    "title": "Hacker History Project - The Dark Tangent Interviewed at DEF CON 5 - courtesy of ZDnet",
+    "channel": "DEFCONConference",
+    "upload_date": "20210114",
+    "duration_sec": 408,
+    "description": "DEF CON founder Jeff Moss talks about the conference's origin story to a ZDnet reporter at DEF CON 5. The venue is the Aladdin Hotel and Casino in Las Vegas, in July of 1997.",
+    "view_count": 8513
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ohXjTIAmo1U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KIOeu5JZ3mM",
+    "language": "en",
+    "took_ms": 9033,
+    "method": null,
+    "title": "Sacred Duty: A Book Discussion with U.S. Senator Tom Cotton",
+    "channel": "Hudson Institute",
+    "upload_date": "20190520",
+    "duration_sec": 2340,
+    "description": "Hudson Institute hosted U.S. Senator Tom Cotton of Arkansas to discuss his new book, Sacred Duty: A Soldier’s Tour at Arlington Cemetery.\r\n\r\nSacred Duty takes an in-depth look behind the scenes of Arlington National Cemetery and the U.S. Army’s 3rd U.S. Infantry Regiment (The Old Guard), the unit responsible for conducting memorial affairs to honor fallen soldiers at Arlington and other events and ceremonies on behalf of the U.S. Army.\r\n\r\nSen. Cotton served five years of active duty in the U.S. Army, including combat tours in Iraq with the 101st Airborne and Afghanistan with a Provincial Reconstruction Team. Between his two overseas deployments, Sen. Cotton served as a platoon leader with The Old Guard at Arlington National Cemetery. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1143
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KIOeu5JZ3mM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

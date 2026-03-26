@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aNVxdfFLNhM",
+    "language": "en",
+    "took_ms": 9410,
+    "method": null,
+    "title": "New course with LlamaIndex: JavaScript RAG Web Apps with LlamaIndex",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240327",
+    "duration_sec": 168,
+    "description": "Enroll now: https://bit.ly/3TrTMK6\n\nIntroducing JavaScript RAG Web Apps with LlamaIndex, a new short course built in collaboration with LlamaIndex and instructed by Laurie Voss, VP of developer relations at LlamaIndex, and the co-founder of npm, the central registry of JavaScript packages. \n\nThis course will guide you through the process of building full-stack retrieval augment generation (RAG) applications in JavaScript, from the API server to a React component that queries your data. You’ll assemble an intelligent agent capable of running its own queries and learn to develop a persistent chat that streams your answers to an interactive front-end in real time.\n\nIn this course:\n\n- Develop tools to interact with multiple data sources using a router query engine that intelligently selects the right tool for your queries.\n- Build a full-stack web application step by step, starting with a backend web app and progressing to an interactive React frontend that calls your API to display query results.\n- Learn about production-ready techniques, including persisting your data, chatting with your data, and streaming responses for multiple queries.\n- Create a user-friendly web app that can chat with data using the create-llama command line tool from LlamaIndex.\n\nStart building RAG web applications in JavaScript and sharing demos quickly! \n\nLearn more: https://bit.ly/3TrTMK6",
+    "view_count": 3800
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aNVxdfFLNhM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

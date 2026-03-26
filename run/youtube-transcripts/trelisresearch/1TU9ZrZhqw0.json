@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1TU9ZrZhqw0",
+    "language": "en",
+    "took_ms": 8232,
+    "method": null,
+    "title": "Serve a Custom LLM for Over 100 Customers",
+    "channel": "Trelis Research",
+    "upload_date": "20231215",
+    "duration_sec": 3115,
+    "description": "➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ ADVANCED Vision Fine-tuning Repo: https://trelis.com/advanced-vision/\n➡️ ADVANCED Transcription Repo: https://trelis.com/advanced-transcription/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nChapters:\n0:00 Serving a model for 100 customers\n0:25 Video Overview\n1:08 Choosing a server\n7:45 Choosing software to serve an API\n11:26 One-click templates\n12:13 Tips on GPU selection.\n17:34 Using quantisation to fit in a cheaper GPU\n21:31 Vast.ai setup\n22:25 Serve Mistral with vLLM and AWQ, incl. concurrent requests\n35:22 Serving a function calling model\n45:00 API speed tests, including concurrent\n49:56 Video Recap",
+    "view_count": 28293
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1TU9ZrZhqw0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

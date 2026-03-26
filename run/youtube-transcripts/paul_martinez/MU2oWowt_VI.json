@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MU2oWowt_VI",
+    "language": "en",
+    "took_ms": 7811,
+    "method": null,
+    "title": "Interview with Robert Malmgren of CS3STHLM",
+    "channel": "S4 Events",
+    "upload_date": "20200226",
+    "duration_sec": 467,
+    "description": "Robert Malmgren, Erik Johansson and others from Sweden were attendees of S4 from the early days. They since went on to create the leading ICS security event in Europe, CS3STHLM, which takes place every October in Stockholm. Here I talk with Robert about CS3 at the S4 Cabana Sessions.",
+    "view_count": 139
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MU2oWowt_VI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

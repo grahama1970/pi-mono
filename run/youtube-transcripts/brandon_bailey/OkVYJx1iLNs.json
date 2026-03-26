@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OkVYJx1iLNs",
+    "language": "en",
+    "took_ms": 8573,
+    "method": null,
+    "title": "DEF CON 33 - Post Quantum Panic: When Will the Cracking Begin, & Can We Detect it?  - K Karagiannis",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2369,
+    "description": "Quantum computers will crack RSA and ECC and weaken symmetric encryption, but when? NIST is betting it won't happen before 2035, setting that deadline for companies to migrate to post-quantum cryptography (PQC). However, recent developments make it clear that we might not have 10 years; we might have only 5! Join Konstantinos Karagiannis (KonstantHacker) as he breaks down the latest algorithmic estimates, including Oded Regev's game-changing tweak to Shor's algorithm, which promises faster factoring with fewer qubits. He also discusses IonQ and IBM's aggressive roadmaps, pushing us closer to cryptographically relevant quantum computers (CRQCs). Think 1000+ qubits by 2026 and fault-tolerant systems by 2030. And when Q-Day does arrive, will we be able to catch or prevent bad actors from running these algorithms on cloud quantum platforms? Learn what's possible when monitoring quantum circuit patterns and suspicious API calls.",
+    "view_count": 152003
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OkVYJx1iLNs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

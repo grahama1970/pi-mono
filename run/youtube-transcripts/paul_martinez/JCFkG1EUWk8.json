@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JCFkG1EUWk8",
+    "language": "en",
+    "took_ms": 7780,
+    "method": null,
+    "title": "Mocana Sponsor Session: Automated Security Lifecycle Management",
+    "channel": "S4 Events",
+    "upload_date": "20190524",
+    "duration_sec": 1586,
+    "description": "Dean Weber of Mocana goes into detail on the challenges and crypto and process solutions to the supply chain problem. He covers the development, onboarding, enrollment and update phases, and he stresses how this can be automated to lessen the burden while still providing strong security.",
+    "view_count": 62
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JCFkG1EUWk8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

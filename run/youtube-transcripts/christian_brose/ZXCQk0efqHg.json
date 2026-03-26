@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZXCQk0efqHg",
+    "language": "en",
+    "took_ms": 8978,
+    "method": null,
+    "title": "Douglas Feith on Obama's Iraq War Speech",
+    "channel": "Hudson Institute",
+    "upload_date": "20100902",
+    "duration_sec": 337,
+    "description": "Hudson Senior Fellow Douglas Feith joined Neil Cavuto on Fox Business Network to discuss President Obama's speech about the war in Iraq on August 31, 2010.",
+    "view_count": 563
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZXCQk0efqHg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

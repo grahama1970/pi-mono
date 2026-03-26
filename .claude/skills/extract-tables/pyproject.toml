@@ -1,0 +1,8 @@
+[project]
+name = "extract-tables"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["polars", "click", "Pillow"]
+
+[tool.maturin]
+module-name = "extract_tables_rs"

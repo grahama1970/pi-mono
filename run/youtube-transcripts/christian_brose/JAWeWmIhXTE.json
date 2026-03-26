@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JAWeWmIhXTE",
+    "language": "en",
+    "took_ms": 8721,
+    "method": null,
+    "title": "Promoting American Leadership in 5G Technology",
+    "channel": "Hudson Institute",
+    "upload_date": "20181113",
+    "duration_sec": 6904,
+    "description": "On November 13, Hudson Institute hosted an event to discuss how the U.S. can maintain a competitive edge in the development of 5G technology and the future of global telecommunications.  Panelists included former Federal Communications Commissioner and Hudson Senior Fellow Harold Furchtgott-Roth; CEO of global telecommunications company Rivada Networks Declan Ganley; and former Deputy Chief of Staff to President George W. Bush Karl Rove; and Nokia's Brian Hendricks. \r\n\r\nChinese technology has played a growing role in the global 5G network, with over 58 countries agreeing to use Chinese hardware in their future networks. As it emerges over the next decade, 5G promises to vastly increase the speed and responsiveness of wireless networks. While the rollout of 5G will demand billions of dollars, the companies and countries investing now will have a strong say in not only how 5G transmits information, but how others are able to access the system. The discussion was moderated by Hudson Senior Fellow Arthur Herman. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 6123
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JAWeWmIhXTE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

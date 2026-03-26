@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uAkKl8XSp9E",
+    "language": "en",
+    "took_ms": 7879,
+    "method": null,
+    "title": "SpaceX Logo Song",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170329",
+    "duration_sec": 9,
+    "description": "I drew the SpaceX logo in Logic Pro X and created a little ring tone out of it! Download it here! - \n\nhttps://soundcloud.com/everydayastronaut/sets/spacex-logo-song\n\nKeep up on Instagram @EverydayAstronaut - http://instagram.com/everydayastronaut\n\nAnd don't forget to subscribe right here on YouTube!",
+    "view_count": 15822
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uAkKl8XSp9E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

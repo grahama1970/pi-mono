@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AdIO2bZ5lXs",
+    "language": "en",
+    "took_ms": 8293,
+    "method": null,
+    "title": "Sea Power: Is the Sun Setting in the West or Rising in the E",
+    "channel": "Hudson Institute",
+    "upload_date": "20131107",
+    "duration_sec": 5148,
+    "description": "The Royal Navy today is a shrinking shadow of its former self. Nineteen surface ships currently exist in the entire Royal Navy where more than three times that number made up the surface fleet during the Falklands War of 1982. The U.S. fleet has also experienced large decreases, although not on the same scale. Where the U.S. Navy had almost 600 ships in the mid-1980s, it is down to 284 today with the likelihood of additional large reductions in the future even if sequestration is lifted. \r\nAdmir",
+    "view_count": 2349
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AdIO2bZ5lXs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

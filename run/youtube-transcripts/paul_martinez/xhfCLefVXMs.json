@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xhfCLefVXMs",
+    "language": "en",
+    "took_ms": 8000,
+    "method": null,
+    "title": "How To Measure Anything in Cybersecurity Risk",
+    "channel": "S4 Events",
+    "upload_date": "20180801",
+    "duration_sec": 1749,
+    "description": "Author Richard Seiersen makes the case that quantitative methods can be used to measure cybersecurity risk in a useful way ... even when there is very limited data, such as the case in ICS.\n\nHe gives a number of examples in this fast paced presentation related to the book by the same name.",
+    "view_count": 6463
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xhfCLefVXMs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

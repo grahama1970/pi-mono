@@ -1,0 +1,27 @@
+[
+  {
+    "view": "setup-tab",
+    "screenId": "a04374b746b14e11b6bf59dc2b4c20d5",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/prompt-lab-optimize/stitch/tabs/setup-tab.png"
+  },
+  {
+    "view": "running-tab",
+    "screenId": "eafec90674044b86869b83a0ad2a607d",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/prompt-lab-optimize/stitch/tabs/running-tab.png"
+  },
+  {
+    "view": "results-tab",
+    "screenId": "5b8b287e806649688eee2691d5e21ecc",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/prompt-lab-optimize/stitch/tabs/results-tab.png"
+  },
+  {
+    "view": "history-tab",
+    "screenId": "8a307eca43374d11aa8a961adb236429",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/prompt-lab-optimize/stitch/tabs/history-tab.png"
+  },
+  {
+    "view": "context-menu-note",
+    "screenId": "40ab97b9fe22405481aaac3fad6d95d3",
+    "imagePath": "/home/graham/workspace/experiments/pi-mono/packages/ux-lab/captures/prompt-lab-optimize/stitch/tabs/context-menu-note.png"
+  }
+]

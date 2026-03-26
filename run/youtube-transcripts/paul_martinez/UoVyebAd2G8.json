@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UoVyebAd2G8",
+    "language": "en",
+    "took_ms": 7619,
+    "method": null,
+    "title": "Josh Corman",
+    "channel": "S4 Events",
+    "upload_date": "20230628",
+    "duration_sec": 3888,
+    "description": "Josh Corman is the VP of Cyber Safety Strategy at Claroty, was the Chief Strategist of the CISA COVID Task Force, and founder of I Am The Cavalry. Josh and I dive into Healthcare Security, SBOMs and other topics. \n\n- Can OT in healthcare be treated in a similar way as the factory, power plant, water treatment plant, ... ? \n- The first fatality due to a cyber attack on a hospital.\n- Should we be focusing our efforts on reducing the impact if ransomware hits a healthcare facility? What is the equivalent to a steel reinforced cockpit door?\n- The PATCH Act (included in the Omnibus bill passed in Dec 2022) requiring medical device manufactures to provide a SBOM and a patching program. What is it? What will be the impact of this? (BTW, Josh changed my mind on this as a start to a long term impact)\n- Will the PATCH Act provisions delay approval of medical devices?\n- How accurate and complete are vendor generated SBOMs today? How will this be solved?\n- What will be the impact of SBOM mandates?\n- Differing views on the importance to society of attacks and outages in the agriculture / food industry\n- I Am The Cavalry turns 10.\n\nWe will need to have Josh back for a Part 2.",
+    "view_count": 281
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UoVyebAd2G8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

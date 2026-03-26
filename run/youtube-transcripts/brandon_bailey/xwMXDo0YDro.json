@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xwMXDo0YDro",
+    "language": "en",
+    "took_ms": 9284,
+    "method": null,
+    "title": "DEF CON 30 - Omri Misgav - Running Rootkits Like A Nation-State Hacker",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1425,
+    "description": "Code Integrity is a threat protection feature first introduced by Microsoft over 15 years ago. On x64-based versions of Windows, kernel drivers must be digitally signed and checked each time they are loaded into memory. This is also referred to as Driver Signature Enforcement (DSE).\n\nThe passing year showed high-profile APT groups kept leveraging the well-known tampering technique to disable DSE on runtime. Meanwhile, Microsoft rolled out new mitigations: driver blocklists and Kernel Data Protection (KDP), a new platform security technology for preventing data-oriented attacks.\n\nSince using blocklist only narrows the attack vector, we focused on how KDP was applied in this case to eliminate the attack surface.\n\nWe found two novel data-based attacks to bypass KDP-protected DSE, one of which is feasible in real-world scenarios. Furthermore, they work on all Windows versions, starting with the first release of DSE. We’ll present each method and run them on live machines.\n\nWe’ll discuss why KDP is an ineffective mitigation. As it didn’t raise the bar against DSE tampering, we looked for a different approach to mitigate it. We’ll talk about how defenders can take a page out of attackers’ playbook to cope with the issue until HVCI becomes prevalent and really eliminates this attack surface.",
+    "view_count": 4398
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xwMXDo0YDro: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

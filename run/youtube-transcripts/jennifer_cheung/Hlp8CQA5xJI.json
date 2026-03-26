@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Hlp8CQA5xJI",
+    "language": "en",
+    "took_ms": 8690,
+    "method": null,
+    "title": "DEF CON 29 Aerospace Village - Kevin Hood - Developing Aerospace Security 3D Training Models",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1163,
+    "description": "The challenge for students interested in aerospace cybersecurity is how to jump-start their learning and prepare themselves for this career path. Developing models and simulated aerospace infrastructure can enhance critical skills needed in aerospace cybersecurity. From a student’s perspective, learn how to get started in aerospace cybersecurity and the future developments of a hackable, large-scale model airport at the Aerospace Village.",
+    "view_count": 348
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Hlp8CQA5xJI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

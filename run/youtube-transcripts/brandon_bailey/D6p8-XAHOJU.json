@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D6p8-XAHOJU",
+    "language": "en",
+    "took_ms": 8114,
+    "method": null,
+    "title": "DEF CON 33 - Hacker v. Triage - Inside  Bug Bounty Battleground - Richard Hyunho Im, Denis Smajlović",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2805,
+    "description": "Bug bounty programs often resemble battlegrounds, where security researchers (\"\"hackers\"\") and vulnerability triagers collide over validity, severity, and bounty rewards. Although this friction can strain relationships, it also represents a powerful opportunity for collaboration and community-building. In this session, experienced bug bounty hacker Richard Hyunho Im (@richeeta) and seasoned triage expert Denis Smajlović (@deni) team up to dissect these challenging interactions, share real-world stories from high-stakes bounty scenarios, and propose practical solutions for improved hacker-triager relationships.\n\nDrawing directly from their experiences on both the researcher and company sides, Richard and Denis cover common scenarios including severity debates (e.g., Gmail aliasing vulnerabilities), unclear bug submissions, controversial gray-area issues (such as Apple's BAC vulnerability rejection), and respectful escalation of bounty disputes (e.g., CVE-2025-24198). Attendees will gain insights into how effective communication, clear business impact framing, and mutual respect can bridge the divide between researchers and triagers.\n\nBeyond monetary rewards, this presentation emphasizes how researchers can strategically leverage bug bounty work to enhance personal branding, build professional networks, and advance career opportunities. With empathy, humor, and candor, Richard and Denis demonstrate that the \"\"bounty battleground\"\" doesn't need to be hostile; it can instead become a place for growth, trust, and professional success.\n\nKey takeaways include actionable strategies for clearer reporting, effectively communicating severity, navigating gray-area cases, and respectfully challenging triage decisions. Ultimately, this talk equips attendees with tools and mindsets to positively shape the bug bounty ecosystem and foster genuine collaboration within the community.",
+    "view_count": 5545
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D6p8-XAHOJU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

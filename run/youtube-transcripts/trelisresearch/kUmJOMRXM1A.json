@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kUmJOMRXM1A",
+    "language": "en",
+    "took_ms": 7960,
+    "method": null,
+    "title": "OpenAI’s $500B ‘Stargate’ Project, GPU Export Bans, Musk’s Critique, and DeepSeek’s Reasoning Model",
+    "channel": "Trelis Research",
+    "upload_date": "20250123",
+    "duration_sec": 848,
+    "description": "➡️ Trelis Tools and Tutorials: https://trelis.com/\n➡️ AI Consulting: https://forms.gle/2VXzrBzpvm1BmG6e7\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://trelis.substack.com\n➡️ Other Resources and Products from Trelis: https://Trelis.com/\n\nVIDEO Links:\n- Stargate at Whitehouse: https://www.youtube.com/watch?v=E3HS_LwNKps\n- Musk tweets: https://x.com/elonmusk/status/1881923570458304780\n- Semianalysis on Texas site: https://semianalysis.com/2025/01/23/openai-stargate-joint-venture-demystified/\n- The Information on OpenAI and Softbank investments: https://www.theinformation.com/articles/openai-softbank-each-commit-19-billion-to-stargate-data-center-venture?utm_campaign=article_email&utm_content=article-14368&utm_medium=email&utm_source=sg\n- Oracle financials: https://finance.yahoo.com/quote/ORCL/balance-sheet/\n- Satya on Stargate: https://www.youtube.com/watch?v=lb_ZJylekWo\n- Export ban map: https://x.com/BeanJD/status/1878448852455322097/photo/1\n- Export ban document: https://public-inspection.federalregister.gov/2025-00636.pdf\n- DeepSeek on ARC prize: https://x.com/arcprize/status/1881761987090325517\n- DeepSeek R1 launch: https://api-docs.deepseek.com/news/news250120\n- ARC chart: https://docs.google.com/presentation/d/1eG2jiKJnCRhkw-0EEfOF_cRoenidP18tr4LMwBhQGJQ/edit#slide=id.p\n- R1 paper: https://arxiv.org/pdf/2501.12948\n\nTIMESTAMPS:\n00:00:00 - Sam Altman announces Stargate launch in D.C. with $500B data center plan\n00:00:35 - Masayoshi Son discusses immediate deployment of $100B with $500B goal\n00:01:17 - Elon Musk questions funding, Altman confirms Texas site underway\n00:02:01 - Breakdown of funding commitments from OpenAI, SoftBank, and Oracle\n00:02:51 - Discussion of how Stargate reduces OpenAI's reliance on Microsoft\n00:03:25 - Satya Nadella comments on Microsoft's partnership with OpenAI\n00:03:53 - Details of Microsoft's investment and equity stake in OpenAI\n00:06:58 - Overview of GPU export restrictions and country tiers\n00:07:34 - Discussion of countries excluded from GPU allow list\n00:08:52 - Explanation of model weights export restrictions\n00:09:18 - Introduction of DeepSeek reasoning model\n00:10:13 - Performance comparison of DeepSeek models vs OpenAI models\n00:11:16 - Explanation of DeepSeek's recursive improvement training approach\n00:13:43 - Discussion of data preparation challenges and OpenAI's scaling strategy",
+    "view_count": 1064
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kUmJOMRXM1A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

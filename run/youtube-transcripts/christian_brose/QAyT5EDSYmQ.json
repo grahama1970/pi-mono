@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QAyT5EDSYmQ",
+    "language": "en",
+    "took_ms": 9020,
+    "method": null,
+    "title": "Is the American Military Fading into Irrelevance?",
+    "channel": "Hudson Institute",
+    "upload_date": "20220216",
+    "duration_sec": 2632,
+    "description": "Join Hudson Institute Senior Fellows Bryan Clark and Dan Patt and Major General Arnold L. Punaro, USMC (Ret.) for a discussion on the challenges facing the U.S. military. With rising costs, a sclerotic bureaucracy, and an absence of clear priorities, the combat capacity of the U.S. military is shrinking while contending with the rising threats of Russian and Chinese aggression. The Department of Defense will need a combination of reform and leadership to navigate this challenging situation. Please join Hudson Institute for this important discussion.\n\nWatch on Hudson.org: https://www.hudson.org/events/2075-virtual-event-is-the-american-military-fading-into-irrelevance-22022",
+    "view_count": 8030
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QAyT5EDSYmQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

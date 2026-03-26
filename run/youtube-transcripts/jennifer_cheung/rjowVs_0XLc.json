@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rjowVs_0XLc",
+    "language": "en",
+    "took_ms": 8721,
+    "method": null,
+    "title": "DEF CON 29 BIC Village - Keith Chapman - The Action Plan for Cyber Diversity",
+    "channel": "DEFCONConference",
+    "upload_date": "20210902",
+    "duration_sec": 1257,
+    "description": "What does it take to increase diversity, equity, and inclusion in information security? An inside perspective with actionable steps. These actions will build a stronger defense and future for us all.",
+    "view_count": 821
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rjowVs_0XLc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

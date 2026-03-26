@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0lE5oHqZV0s",
+    "language": "en",
+    "took_ms": 9502,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village -Pablo Gonzalez - ATTPwn Adversarial Emulation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 2756,
+    "description": "ATTPwn is a computer security open source tool designed to emulate adversaries. The tool aims to bring emulation of a real threat into closer contact with implementations based on the techniques and tactics from the MITRE ATT&CK framework. The goal is to simulate how a threat works in an intrusion scenario, where the threat has been successfully deployed. It is focused on Microsoft Windows systems through the use of the Powershell command line. This enables the different techniques based on MITRE ATT&CK to be applied. ATTPwn is designed to allow the emulation of adversaries as for a Red Team exercise and to verify the effectiveness and efficiency of the organization's controls in the face of a real threat.\nFurthermore, ATTPwn provides the possibility of knowledge transfer between users. This knowledge is exchanged through implementation of ATT&CK techniques. This new user-generated knowledge can be shared with the community through a special feature within ATTPwn. The collaborative part of ATTPwn enhances the know-how that every users can bring to the community in the shape of offensive techniques, which are always being mapped with ATT&CK.",
+    "view_count": 489
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0lE5oHqZV0s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3Bk_d4Tp5pE",
+    "language": "en",
+    "took_ms": 8115,
+    "method": null,
+    "title": "Day 1 Recap - AI Engineer World's Fair",
+    "channel": "Trelis Research",
+    "upload_date": "20250604",
+    "duration_sec": 1872,
+    "description": "📜 Repo: https://github.com/trelisresearch/ai-worlds-fair-2025\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠️ (NEW) Trelis Workshops: https://trelis.com/workshops-and-seminars/\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Overview: LLM Diarization, Web Scraping, Gitingest, Voice Agents and Jailbreaks\n1:10 Joke\n1:16 Resources\n1:46 Diarization and Transcription with Gemini\n7:20 Gitingest for Github repo analysis\n9:55 Web Scraping with Gemini (like Firecrawl)\n16:02 Feed repos to an LLM with Gitingest\n22:28 Pipecat Voice Agents\n22:28 Jailbreaking the Wolf of Wall Street",
+    "view_count": 1541
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3Bk_d4Tp5pE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

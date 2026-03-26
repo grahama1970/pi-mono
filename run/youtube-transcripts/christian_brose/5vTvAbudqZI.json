@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5vTvAbudqZI",
+    "language": "en",
+    "took_ms": 8762,
+    "method": null,
+    "title": "Counterbalance Podcast | Can the US Withstand An Economic Standoff with China? (feat. Jonathan Ward)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240328",
+    "duration_sec": 2352,
+    "description": "Hudson Senior Fellow Jonathan Ward joins co-host Peter Rough to discuss his new book The Decisive Decade: American Grand Strategy for Triumph Over China. In his book, and during the episode, Ward lays out how the US gave up many of its economic advantages while allowing China's rise. Thankfully, according to Ward, it's not too late to reverse course, but America has to start by winning one decade at a time.",
+    "view_count": 17200
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5vTvAbudqZI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

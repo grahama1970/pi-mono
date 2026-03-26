@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dJ69gY0qRbg",
+    "language": "en",
+    "took_ms": 8797,
+    "method": null,
+    "title": "Deploy an API for Llama 70B in 5 Clicks",
+    "channel": "Trelis Research",
+    "upload_date": "20230922",
+    "duration_sec": 594,
+    "description": "*Runpod Affiliate Link* https://tinyurl.com/yjxbdc9w\n*One Click Runpod Template* https://runpod.io/gsc?template=6e9yxszwne&ref=jmfkcdio\n\n*Purchase GitHub Repo Access* https://buy.stripe.com/9AQ28UcWh4PF1ckeV9\n- Detailed API/server setup instructions\n- Guides for RunPod and EC2/Ubuntu instances.\n- Forum for questions/support.\n\n*Underlying tools:*\n- text-generation-inference: https://github.com/huggingface/text-generation-inference\n- chat-ui: https://github.com/huggingface/chat-ui\n\n0:00 Deploying an API for Llama 70B in five clicks.\n1:27 Making calls to the Llama 70B api\n2:24 Calling the API from a chat-ui interface\n5:30 Pro Tip! Increasing inference speed\n6:07 Running long context models in 5 clicks\n6:49 Making multiple api calls for higher throughput\n8:35 Why run your own Llama 2 server?\n9:23 Github Repo Access",
+    "view_count": 3574
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dJ69gY0qRbg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

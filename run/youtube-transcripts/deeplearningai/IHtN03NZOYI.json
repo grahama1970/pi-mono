@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IHtN03NZOYI",
+    "language": "en",
+    "took_ms": 8637,
+    "method": null,
+    "title": "AI Dev 25 | Panel Discussion: Building AI Application in 2025",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1891,
+    "description": "What will it take to build impactful AI applications in 2025 and beyond?\n\nIn the panel discussion at AI Dev 25, moderated by Laurence Moroney, leading voices in AI from industry and academia come together to explore the future of AI development. The conversation covers emerging trends, practical challenges, and the opportunities shaping the next wave of AI applications.\n\nPanelists include:\n– Michele Catasta (President, Replit)\n– Percy Liang (Associate Professor, Stanford University)\n– Roman Chernin (Co-founder and CBO, Nebius)\n– Thomas Wolf (Co-founder & Chief Science Officer, Hugging Face)\n\nFrom infrastructure and model development to deployment and ethics, this discussion offers valuable insights for developers, researchers, and anyone building at the frontier of AI.",
+    "view_count": 2219
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IHtN03NZOYI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

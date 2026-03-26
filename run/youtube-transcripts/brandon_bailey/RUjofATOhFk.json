@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RUjofATOhFk",
+    "language": "en",
+    "took_ms": 8784,
+    "method": null,
+    "title": "DEF CON 30 -  Arik Atar - Top performing account crackers business modules, architecture, technique",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2697,
+    "description": "The rise of the machines.\n\nWhenever you buy online, especially if it's a limited stock item, you compete against bots and most likely lose miserably.\n\nHave you tried to buy a GPU/PS5 or even baby formula and couldn't understand how stock ran out after 3 minutes?\n\nMaybe, you tried to online schedule an appointment with government services but couldn't find available spots for the next months?\n\nHave you ever seen your favorite artist's concert tickets - sold for 4-5X of his original price?\n\nBots operators are to blame.\n\nEvery bot user can simulate thousands of concurrent human-like web interactions.\n\nThey will buy everything you want before you even google it, take appointment spots with government services you will pay for later, win at every online auction you attend, and fake positive reviews that will make you buy scam products.\n\nEven when you are asleep, there's a good chance that a bot is trying to log into one of the 200+ digital accounts you own by guessing your ridiculously - predicted password.\n\nMalicious automation is here to stay, serving tens of thousands of hackers and retail scalpers while driving billions of dollars worth of marketplaces.\n\nDuring my talk, we will dive deep into the fascinating architecture, business modules, and techniques top-performing account crackers and retail bots developer uses to maximize their success rate and revenue.\n\nIf you're:\nIn the hacking community: you'll learn techniques top-performers probably won't share so they won't lose their relative advantage over you.\nPart of the CyberSec community: this talk will trigger many research leads you probably never thought of.\nOwn E-shop - you'll learn how bots sabotage your supply, stock, client experience, and marketing analytics.\nSneakerhead/Gamer - get to know how your GPU/PS5/Sneakers sellers really get their stock.",
+    "view_count": 2719
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RUjofATOhFk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

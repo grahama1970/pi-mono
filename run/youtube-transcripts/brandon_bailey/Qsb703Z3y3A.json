@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Qsb703Z3y3A",
+    "language": "en",
+    "took_ms": 8050,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Matt Murray - Satellite Orbits 101",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 648,
+    "description": "Satellite Orbits 101 will provide an introductory understanding of the orbit of satellites/space vehicles. Leveraging knowledge, experience and visualization tools designed to describe and present orbital behaviors; the presentation will cover introductions to an array of orbital topics including what it even takes to reach and maintain orbit; which launch sites and windows are as important as they are; altitude classifications, such as HEO and LEO; directional classifications; inclination classifications, eccentricity classifications and more. The overlaps and interactions of these topics will also be discussed, as for example a satellite launched from near the equator and destined for a low-inclination orbit could receive help in reaching orbit from the rotation of the earth itself, but how this is not true for satellites bound for high inclination orbits. An attendee will walk away layman’s introductory demystification of just how many layers are beneath the phrase Satellite Orbit.",
+    "view_count": 454
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Qsb703Z3y3A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

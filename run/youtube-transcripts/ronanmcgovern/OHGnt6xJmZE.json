@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OHGnt6xJmZE",
+    "language": "en",
+    "took_ms": 8651,
+    "method": null,
+    "title": "COVID Antigen Test Demonstration (skip to 7 mins)",
+    "channel": "Rónán Mac Samhráin",
+    "upload_date": "20210108",
+    "duration_sec": 821,
+    "description": "Rapid home testing provides a means to identify and act on COVID-19 cases cheaply and effectively.\n\n00:00 Intro - Ireland's high covid cases\n07:00 Ronan does the test.\n\nThe test shown is approved for clinical use in the EU, but not for home use. I provide a demonstration of how easy/difficult it is to figure out and do a test yourself.\n\nRead more on: https://www.rapidtests.org/ (note - I have no formal affiliation) .\n\nP.S. My test resulted in a negative result after 15 mins.",
+    "view_count": 107
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OHGnt6xJmZE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

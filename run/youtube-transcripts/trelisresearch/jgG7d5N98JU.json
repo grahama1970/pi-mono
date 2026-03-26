@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jgG7d5N98JU",
+    "language": "en",
+    "took_ms": 8965,
+    "method": null,
+    "title": "How to inspect an MCP server?",
+    "channel": "Trelis Research",
+    "upload_date": "20250401",
+    "duration_sec": 154,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-inference\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1S8ATZYr-nQnKSydl6HztXB_Lat3QAKL-5Vnkp96FBak/edit?usp=sharing\n- MCP Servers: https://github.com/modelcontextprotocol/servers\n- OpenAI MCP: https://openai.github.io/openai-agents-python/mcp/\n\nTIMESTAMPS:\n0:00 What is MCP (Model Context Protocol)?\n0:46 Table of Contents\n1:46 How does MCP work?\n5:18 What problem does MCP solve?\n9:22 Finding the scripts for this video (https://trelis.com/ADVANCED-inference)\n10:03 How to inspect an MCP tool service?\n16:56 How to use MCP with Cursor?\n20:33 Browser navigation with MCP using Playwright or Puppeteer\n23:09 How to use MCP with Github to grant repo access\n25:01 How to use MCP with Stripe\n27:50 Running a remote MCP server with SSE\n30:45 How to use MCP with Windsurf?\n32:33 How to use MCP with Claude Desktop App?\n35:58 How to use MCP with OpenAI agents?\n42:41 How to use MCP with a Custom LLM? (via LiteLLM, and supporting image responses)\n55:22 Conclusion",
+    "view_count": 1415
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jgG7d5N98JU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oEe12GSEIgE",
+    "language": "en",
+    "took_ms": 9069,
+    "method": null,
+    "title": "Strengthening Defense in an Unstable World",
+    "channel": "Hudson Institute",
+    "upload_date": "20221215",
+    "duration_sec": 1401,
+    "description": "Many predicted that a multipolar world order would follow the Cold War, and it is now coming into focus as numerous threats to the United States and the rules-based order emerge. Russia continues to attack neighboring Ukraine while China regularly harasses Taiwan. Iran both supports Russia and uses proxies to attack Middle Eastern rivals. Each of these revisionist regimes is also confronting internal dissent that could drive their leaders to foreign adventurism. Meanwhile, the US military is shrinking and aging under the weight of increasing costs and responsibilities. Please join Hudson Senior Fellow Bryan Clark for a discussion on these issues and the future of US defense strategy and budgets with Senator Roger Wicker of Mississippi.",
+    "view_count": 578
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oEe12GSEIgE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

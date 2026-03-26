@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "es72oviu0Lg",
+    "language": "en",
+    "took_ms": 9360,
+    "method": null,
+    "title": "DEF CON 32 - How I  hacked Learning Codes of the key job of a car assembled in my country - D. Erazo",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1622,
+    "description": "Using hardware hacking techniques, it was possible to detect the use of learning codes instead of rolling codes in a key job of a car widely used in my country. For this purpose, the key job was disassembled and the HS2240 integrated circuit was detected and, using a logic analyzer, the emission of learning codes from the integrated circuit to the radio frequency LED emitter was checked. With the use of HackRF SDR, the learning code is duplicated to be able to open the car N times without needing the original key anymore, which proves that the use of learning codes is very vulnerable, just like fixed codes.",
+    "view_count": 1216
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] es72oviu0Lg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

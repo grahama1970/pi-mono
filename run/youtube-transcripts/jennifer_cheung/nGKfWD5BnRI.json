@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nGKfWD5BnRI",
+    "language": "en",
+    "took_ms": 8664,
+    "method": null,
+    "title": "DEF CON Safe Mode - Elie Bursztein - A Hacker's Guide to Reducing Side Channel Attack Surfaces",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2009,
+    "description": "Question and Answer Session for Elie Bursztein - A Hacker's Guide to Reducing Side Channel Attack Surfaces",
+    "view_count": 342
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nGKfWD5BnRI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

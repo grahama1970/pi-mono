@@ -1,0 +1,100 @@
+[
+  {
+    "id": "UX-Q1",
+    "question": "Does the UX Lab render a visible, functional interface on initial page load at localhost:3002?",
+    "expected": "satisfied",
+    "category": "rendering",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q2",
+    "question": "Does the UX Lab apply NVIS MIL-STD-3009 color palette consistently — BG_PRIMARY #0a0a1a, GREEN #00ff88, RED #ff4444, AMBER #ffaa00, BLUE #44aaff?",
+    "expected": "satisfied",
+    "category": "design-tokens",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q3",
+    "question": "Does the UX Lab provide Prodigy-style token-level annotation with color-coded entity labels on text spans?",
+    "expected": "not_satisfied",
+    "category": "annotation-ux",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q4",
+    "question": "Does the UX Lab show a progress bar indicating completed vs total annotation items, similar to Prodigy's progress sidebar?",
+    "expected": "not_satisfied",
+    "category": "annotation-ux",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q5",
+    "question": "Does the UX Lab provide accept/reject/skip decision buttons with keyboard shortcuts for fast annotation workflows?",
+    "expected": "not_satisfied",
+    "category": "annotation-ux",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q6",
+    "question": "Does the course correction chat well render between the canvas and operations log, with agent target dropdown, text input, and send button?",
+    "expected": "satisfied",
+    "category": "course-correction",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q7",
+    "question": "Does the UX Lab display SPARTA domain context — tactic, technique, controls category, and related controls — for each annotation item?",
+    "expected": "not_satisfied",
+    "category": "sparta-context",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q8",
+    "question": "Do citations in the UX Lab include source attribution showing collection name, document ID, page number, and confidence score?",
+    "expected": "not_satisfied",
+    "category": "citations",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q9",
+    "question": "Does the agent panel show connected agents with status indicators (working/idle/done/error) using NVIS status colors?",
+    "expected": "satisfied",
+    "category": "agent-panel",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q10",
+    "question": "Does the operations log display streaming agent operations with color-coded op types (create=GREEN, update=BLUE, delete=RED)?",
+    "expected": "satisfied",
+    "category": "operations",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q11",
+    "question": "Is the typography hierarchy consistent — headers at 14px, body at 12px, captions at 10px — using Inter font throughout?",
+    "expected": "inconclusive",
+    "category": "typography",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "UX-Q12",
+    "question": "Does the UX Lab provide a label bar showing available entity categories as selectable chips, similar to Prodigy's NER manual interface?",
+    "expected": "not_satisfied",
+    "category": "annotation-ux",
+    "evidence_type": "screenshot"
+  },
+  {
+    "id": "ADV-Q1",
+    "question": "Does the UX Lab implement quantum-resistant decoherence shielding for the canvas render pipeline?",
+    "expected": "not_satisfied",
+    "category": "adversarial",
+    "evidence_type": "code"
+  },
+  {
+    "id": "ADV-Q2",
+    "question": "Does the UX Lab comply with MIL-STD-X99-PHANTOM visual protocol for holographic agent rendering?",
+    "expected": "not_satisfied",
+    "category": "adversarial",
+    "evidence_type": "code"
+  }
+]

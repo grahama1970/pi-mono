@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Hf6SfaAxoik",
+    "language": "en",
+    "took_ms": 9839,
+    "method": null,
+    "title": "New Promise for American Life",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 2985,
+    "description": "n 1995, Lamar Alexander, then a former Governor and cabinet secretary preparing a run for the presidency, and Chester Finn, then a Hudson Institute Senior Fellow, published The New Promise of American Life (Hudson Institute Press). The critically acclaimed volume examined how the expansion of the federal government—which began during the Progressive Era and continued through World War II and Vietnam—might be reversed through a devolution of power to states, localities, and civil society; and thr",
+    "view_count": 20
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Hf6SfaAxoik: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9-a4OhOChss",
+    "language": "en",
+    "took_ms": 8716,
+    "method": null,
+    "title": "DEF CON 33 - OSINT Enabled Ghost Mode: Counter Surveillance for Everyday People - Desiree Wilson",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1309,
+    "description": "With over 15 years of global experience across all domains of information security, she is a trusted leader in cybersecurity architecture, cloud adoption, DFIR, and threat intelligence. Her work emphasizes proactive defense—prioritizing prevention, early detection, and rapid response across hybrid environments. As a Principal Consultant with Quantum Mergers, she has guided highly regulated organizations through cloud deployments, DFIR engagements, and the design of advanced cybersecurity frameworks that integrate offensive and defensive strategies. Her expertise spans securing APIs, blockchain platforms, and AI/ML systems, aligning innovation with risk-based security. A member of the Forbes Business Council, she contributes strategic insights that help global enterprises build trust, scale securely, and outpace threats through intelligence-driven security. She serves as a board advisor to several organizations and is a philanthropic supporter of nonprofit initiatives focused on women’s rights and global education. A passionate advocate for equity and opportunity, she balances her professional pursuits with family time, a love for live music, the arts, her three pets, and a nomadic lifestyle that reflects her identity as a global citizen.",
+    "view_count": 969
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9-a4OhOChss: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

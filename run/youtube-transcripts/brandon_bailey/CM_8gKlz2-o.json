@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CM_8gKlz2-o",
+    "language": "en",
+    "took_ms": 8423,
+    "method": null,
+    "title": "DEF CON 33 - Vibe School: Making dumb devices smart with AI - Dr  Katie Paxton Fear",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1347,
+    "description": "Smart home technology often comes with a hefty price tag, particularly for specialized devices like weather stations. So instead I did it myself, instead of buying an expensive 'smart' device, I integrated a conventional weather station into Home Assistant. With AI-powered assistance and \"vibe coding\" approach, even complex devices can be made smart. From sniffing device communications to getting Gemini to generate C++. With modern AI tools, empowering your existing \"dumb\" devices is more accessible and achievable than ever before, opening up a world of custom smart solutions without breaking the bank.",
+    "view_count": 541
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CM_8gKlz2-o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

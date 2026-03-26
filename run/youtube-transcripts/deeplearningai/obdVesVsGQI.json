@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "obdVesVsGQI",
+    "language": "en",
+    "took_ms": 8460,
+    "method": null,
+    "title": "How Diffusion Models Work: A short course by DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20230531",
+    "duration_sec": 98,
+    "description": "Learn for free: https://learn.deeplearning.ai/\n\nIn How Diffusion Models Work, you will gain a deep familiarity with the diffusion process and the models which carry it out. More than simply pulling in a pre-built model or using an API, this course will teach you to build a diffusion model from scratch.\n\nThis one-hour course, taught by Sharon Zhou will expand your generative AI capabilities to include building, training, and optimizing diffusion models.\n\nHow Diffusion Models Work is an intermediate-level course. Knowledge of Python, Tensorflow, or Pytorch will help you get the most out of this course.\n\nLearn more: https://www.deeplearning.ai/",
+    "view_count": 21420
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] obdVesVsGQI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

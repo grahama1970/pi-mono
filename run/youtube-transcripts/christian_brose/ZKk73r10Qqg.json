@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZKk73r10Qqg",
+    "language": "en",
+    "took_ms": 9040,
+    "method": null,
+    "title": "The Third Anniversary of the Hong Kong National Security Law",
+    "channel": "Hudson Institute",
+    "upload_date": "20230630",
+    "duration_sec": 2840,
+    "description": "On the third anniversary of Hong Kong’s 2020 national security law, join Hudson Institute’s China Center for a conversation between Miles Yu and Benedict Rogers about the state of Hong Kong politics and the enduring ramifications of the Chinese Communist Party’s crackdown on human rights and freedom.",
+    "view_count": 1270
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZKk73r10Qqg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

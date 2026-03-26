@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "anplUNnkM68",
+    "language": "en",
+    "took_ms": 9517,
+    "method": null,
+    "title": "Fine tuning Whisper for Speech Transcription",
+    "channel": "Trelis Research",
+    "upload_date": "20240119",
+    "duration_sec": 2965,
+    "description": "➡️ Get LIFETIME access to the ADVANCED Transcription Repo: https://trelis.com/advanced-transcription/\n\n🗝️ Get LIFETIME access to the Trelis Multi-Repo Bundle (https://Trelis.com/multi-repo-bundle)\n- Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n- Support via Github Issues & Trelis’ Private Discord\n\nKEY TRELIS LINKS:\n🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Done-for-you Custom Fine-tuning Services: https://trelis.com/fine-tuning-services/\n🤝 Work for Trelis: https://trelis.com/jobs/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n\nVideo Resources:\n- Dataset: https://huggingface.co/datasets/Trelis/llm-lingo\n- Slides: https://docs.google.com/presentation/d/1_vxojbAwSzjB4L4NlNfQq0tudpyQ4ptSQtQSXE8GstM/edit?usp=sharing \n- Simple Whisper Transcription Notebook: https://colab.research.google.com/drive/1tM1U2fAH30niw23l5Qz0gjWZs1AuDXlt?usp=sharing \n- Basic fine-tuning notebook: https://colab.research.google.com/github/sanchit-gandhi/notebooks/blob/main/fine_tune_whisper.ipynb#scrollTo=BRdrdFIeU78w\n- PEFT Example: https://colab.research.google.com/drive/1DOkD_5OUjFa0r5Ik3SgywJLJtEo2qLxO?usp=sharing#scrollTo=8d230e6d-624c-400a-bbf5-fa660881df25\n\nChapters\n0:00  Fine-tuning speech-to-text models\n0:17 Video Overview\n1:39 How to transcribe YouTube videos with Whisper\n7:39 How do transcription models work?\n20:08 Fine-tuning Whisper with LoRA\n43:32 Performance evaluation of fine-tuned Whisper\n48:32 Final Tips",
+    "view_count": 56590
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] anplUNnkM68: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

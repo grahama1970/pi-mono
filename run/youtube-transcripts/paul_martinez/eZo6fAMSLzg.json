@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eZo6fAMSLzg",
+    "language": "en",
+    "took_ms": 8300,
+    "method": null,
+    "title": "LOGIIC Project 12 - Safety Instrumentation",
+    "channel": "S4 Events",
+    "upload_date": "20210512",
+    "duration_sec": 2869,
+    "description": "Dale Peterson talks with Ulf Lindqvist and Laura Tinnel of SRI International about the recent LOGIIC report on the (in)security of safety instrumentations systems. Particularly the IMS/AMS components that configure and manage smart instruments. They go over the three main findings, which are deadly serious and two have actionable mitigations. \n\nThey finish with a discussion of why there is not a hard recommendation to not allow the IMS/AMS to be on or accessible from the PCN.\n\nGet the report at: https://www.logiic.org\n\nSee the S4x15 video on testing 114 DTM's at: https://youtu.be/qbno2woz7p4",
+    "view_count": 330
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eZo6fAMSLzg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

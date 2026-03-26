@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8ay_H1YGZvk",
+    "language": "en",
+    "took_ms": 8860,
+    "method": null,
+    "title": "Vulnerability Inheritance in PLC's",
+    "channel": "S4 Events",
+    "upload_date": "20180103",
+    "duration_sec": 3085,
+    "description": "Reid Wightman of Digital Bond Labs session from S4xJapan, October 2014.\n\nReid uses the example of vulnerable CoDeSys libraries integrated into 100's of PLC's to show the importance of vendors in Red Teaming both their own code and any inherited code. \n\nAs this is in Japan, he gives detail on Hitachi and Sanyo-Denki PLC's that use the CoDeSys library. Especially distressing is CoDeSys claim that these vulnerabilities found in Version 2 were fixed in Version 3. This is not true. The same vulnerabilities are there. 3S simply modified the CoDeSys software enough so the Version 2 attack tools no longer worked. Reid shows this and releases new proof of concept attack tools.",
+    "view_count": 366
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8ay_H1YGZvk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

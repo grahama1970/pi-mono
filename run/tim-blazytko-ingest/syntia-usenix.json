@@ -1,0 +1,26 @@
+Tier 1: Trying direct youtube-transcript-api...
+Tier 2: Trying with IPRoyal proxy (retries: 3)...
+Tier 3: Trying yt-dlp + Whisper fallback...
+  Downloading audio with yt-dlp...
+ERROR: [youtube] RANGyrCbLe8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError("('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U
+{
+  "meta": {
+    "video_id": "RANGyrCbLe8",
+    "language": "en",
+    "took_ms": 4011,
+    "method": null,
+    "title": "USENIX Security '17 -  Syntia: Synthesizing the Semantics of Obfuscated Code",
+    "channel": "USENIX",
+    "upload_date": "20170915",
+    "duration_sec": 1762,
+    "description": "Tim Blazytko, Moritz Contag, Cornelius Aschermann, and Thorsten Holz, Ruhr-Universität Bochum\n\nCurrent state-of-the-art deobfuscation approaches operate on instruction traces and use a mixed approach of symbolic execution and taint analysis; two techniques that require precise analysis of the underlying code. However, recent research has shown that both techniques can easily be thwarted by specific transformations.\n\nAs program synthesis can synthesize code of arbitrary code complexity, it is only limited by the complexity of the underlying code’s semantic. In our work, we propose a generic approach for automated code deobfuscation using program synthesis guided by Monte Carlo Tree Search (MCTS). Specifically, our prototype implementation, Syntia, simplifies execution traces by dividing them into distinct trace windows whose semantics are then “learned” by the synthesis. To demonstrate the practical feasibility of our approach, we automatically learn the semantics of 489 out of 500 random expressions obfuscated via Mixed Boolean-Arithmetic. Furthermore, we synthesize the semantics of arithmetic instruction handlers in two state-of-the art commercial virtualization-based obfuscators (VMProtect and Themida) with a success rate of more than 94%. Finally, to substantiate our claim that the approach is generic and applicable to different use cases, we show that Syntia can also automatically learn the semantics of ROP gadgets.\n\nView the full program: https://www.usenix.org/sec17/program",
+    "view_count": 1410
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Tier 1 (direct): No transcript found for language: en",
+    "Tier 2 (proxy): 402 Payment Required",
+    "Tier 3 (whisper): Download failed - yt-dlp error: ERROR: [youtube] RANGyrCbLe8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

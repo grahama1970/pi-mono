@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MX4S74AlLug",
+    "language": "en",
+    "took_ms": 8717,
+    "method": null,
+    "title": "DEF CON 30 - Aviv Sasson - The Journey From an Isolated Container to Cluster Admin in Service Fabric",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2596,
+    "description": "Service Fabric is a scalable and reliable container orchestrator developed by Microsoft. It is widely used in Microsoft Azure as well as in Microsoft’s internal production environments as an infrastructure for containerized applications.\n\nDeveloping a container orchestrator is not an easy task as it involves harnessing many technologies in a complicated and distributed environment. This complexity can ultimately lead to security issues. Such security issues can impose a critical risk since compromising an infrastructure allows attackers to escalate their privileges and take over an entire environment quickly and effectively.\n\nIn this session, Aviv will share his research on Service Fabric and his journey of escalating from an isolated container to cluster admin. He will go through researching the code and finding a zero-day vulnerability, explaining his exploitation process in Azure Service Fabric offering while dealing with race conditions and other limitations, and explain how it all allowed him to break out of his container to later gain full control over the underlying Service Fabric cluster.\n\nIn the end, he will share his thoughts on security in the cloud and his concerns on cloud multitenancy.",
+    "view_count": 1042
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MX4S74AlLug: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

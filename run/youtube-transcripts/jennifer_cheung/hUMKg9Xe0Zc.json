@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hUMKg9Xe0Zc",
+    "language": "en",
+    "took_ms": 9928,
+    "method": null,
+    "title": "DEF CON 31 - Defeating VPN Always On - Maxime Clementz",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 2407,
+    "description": "VPN Always-On is a security control that can be deployed to mobile endpoints that remotely access corporate resources through VPN. It is designed to prevent data leaks and narrow attack surface of enrolled end-user equipment connected to untrusted networks. When it is enforced, the mobile device can only reach the VPN gateway and all connections are tunneled.\n\nWe will review the relevant Windows API, the practicalities of this feature, look at popular VPN software; we will then consider ridiculously complex exfil methods and... finally bypass it with unexpectedly trivial tricks. We will exploit design, implementation and configuration issues to circumvent this control in offensive scenarios. We will then learn how to fix or harden VPN Always-On deployment to further limit the risks posed by untrusted networks.",
+    "view_count": 14825
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hUMKg9Xe0Zc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pv5g4-sEtwo",
+    "language": "en",
+    "took_ms": 8413,
+    "method": null,
+    "title": "Why Everyone Needs AI Skills",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260218",
+    "duration_sec": 47,
+    "description": "Like reading in the past, AI literacy will spread to everyone, not just engineers. Start learning AI today.",
+    "view_count": 40888
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pv5g4-sEtwo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

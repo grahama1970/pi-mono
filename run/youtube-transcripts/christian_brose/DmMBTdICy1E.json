@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DmMBTdICy1E",
+    "language": "en",
+    "took_ms": 9489,
+    "method": null,
+    "title": "Cybersecurity Threats in Latin America",
+    "channel": "Hudson Institute",
+    "upload_date": "20181113",
+    "duration_sec": 4578,
+    "description": "Hudson Institute hosted a panel to discuss cybersecurity concerns present in Latin America. Threats range from hacking, identity theft, and criminal dark web activities to the exploitation of online services by insurgent groups for propaganda purposes. These concerns have prompted a number of government initiatives to crack down on cybercrime including the creation of cyber-security agencies within police and armed forces and improved citizen awareness initiatives. However, more should be done in order to deter attackers and minimize consequences of these threats. \r\n\r\nPanelists included Analyst and Jane's Defence Weekly Contributor Wilder Alejandro Sanchez; author Richard Stiennon; and Organization of American States Cyber Security Programme Manager Belisario Contreras. The discussion was moderated by Hudson Senior Fellow Ambassador Jaime Daremblum. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 370
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DmMBTdICy1E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

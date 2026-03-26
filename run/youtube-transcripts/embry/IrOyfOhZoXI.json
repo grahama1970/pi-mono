@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IrOyfOhZoXI",
+    "language": "en",
+    "took_ms": 7972,
+    "method": null,
+    "title": "Live Hosting SpaceX SES-12 Launch",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180604",
+    "duration_sec": 4641,
+    "description": "SpaceX will launch a flight proven Falcon 9 booster with a Block 5 second stage to put the SES-12 communication satellite into a geostationary transfer orbit. SES-12 is the heaviest payload ever launched to GTO by a Falcon 9 rocket at 5,384 KG. \n\nThe launch is scheduled for 12:45 a.m. EDT local time (4:45 UTC) on June 4th, 2018 in a four hour launch window out of SLC-40 at Cape Canaveral Air Force Station in Florida. \n\nThis first stage previously flew on the OTV-5 mission in September of 2017. There will be no attempt to recover the booster. \n\nFollow and Like my upcoming new series on Facebook Watch with Space.com \"Spacing Out!\" - https://www.facebook.com/SpacingOutEverydayAstronaut/\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 48637
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IrOyfOhZoXI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

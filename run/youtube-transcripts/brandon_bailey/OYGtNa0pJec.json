@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OYGtNa0pJec",
+    "language": "en",
+    "took_ms": 7940,
+    "method": null,
+    "title": "DEF CON 33 - No Spook Leaves Randomness to Chance -  Shaanan Cohney",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3297,
+    "description": "Cryptographic random number generators are a critical part of many deployed cryptosystems. When they fail, so does the cryptography. So why leave their security to chance?\n\nYet, over the past two decades, researchers have discovered vulnerabilities in numerous widely deployed algorithms and implementations designed to produce secure random numbers–all derived from supposedly vetted standards!\n\nIf you're more conspiratorially minded, you suspect some foul play.\n\nThis talk draws on Shaanan’s work discovering many of the CVEs and vulns to find that behind each one is the hint of an under-discussed flavour of adversary: one who subtly threads flaws into our standards.",
+    "view_count": 824
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OYGtNa0pJec: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

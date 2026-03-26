@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0AcKJXdeseA",
+    "language": "en",
+    "took_ms": 8552,
+    "method": null,
+    "title": "DEF CON Safe Mode Crypto and Privacy Village  - Zhanna Malekos Smith - Fear  Uncertainty and Doubt",
+    "channel": "DEFCONConference",
+    "upload_date": "20200822",
+    "duration_sec": 1528,
+    "description": "Why are some U.S. lawmakers calling for a preemptive ban on human microchip implants? Today, more than 50,000 people worldwide have elected to receive microchip implants. This technology is especially popular in Sweden, where more than 4,000 Swedes are replacing keycards for chip implants to use for gym access, e-tickets on railway travel, and even store emergency contact information and social media profiles. While chip implants are gradually being embraced, some U.S. lawmakers are taking preemptive action to prohibit forced microchipping and calling it “a rabbit hole I don’t think we should go down\". Together, let's go down this 'rabbit hole' to explore the legal, technical, and ethical implications of human microchipping.",
+    "view_count": 647
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0AcKJXdeseA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

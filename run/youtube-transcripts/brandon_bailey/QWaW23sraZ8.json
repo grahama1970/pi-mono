@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QWaW23sraZ8",
+    "language": "en",
+    "took_ms": 8652,
+    "method": null,
+    "title": "DEF CON 31 - Hack the Future - Why Congress & White House Support AI Red Teaming  - Austin Carson",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2703,
+    "description": "On May 4th, the White House announced the AI Village at DEF CON's Generative AI Red Team and their participation, followed by announcements from the House and Senate AI Caucus leadership and the National Science Foundation.\n\nIn this panel, we'll hear from top officials and executives about how they're balancing the explosion of creativity and entrepreneurship from the advent of GenAI with the known & unknown risks of deployment at scale.\n\nWe'll also hear how this exercise is viewed as a model for enhancing trust & safety through democratizing AI education. Panelists will also discuss why it's meaningful to bring together thousands of people from different communities to conduct the exercise across the available AI models.",
+    "view_count": 690
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QWaW23sraZ8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

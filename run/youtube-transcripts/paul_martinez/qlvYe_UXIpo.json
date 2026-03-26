@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qlvYe_UXIpo",
+    "language": "en",
+    "took_ms": 9930,
+    "method": null,
+    "title": "Security By Design Decision",
+    "channel": "S4 Events",
+    "upload_date": "20230515",
+    "duration_sec": 1620,
+    "description": "Sarah Fluchs opens with a key question - what are you going to spend your security budget on? And she makes the case that security design decisions, building systems that are defensible, deserve more attention and resources.\n\nSarah then describes four security engineering simplifiers. Items that can help engineers build systems that are defensible without the need to become security experts.\n\nLots of gems in this, such as \"management should decide what high consequence events should focus on\".",
+    "view_count": 3161
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qlvYe_UXIpo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

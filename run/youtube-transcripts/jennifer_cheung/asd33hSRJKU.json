@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "asd33hSRJKU",
+    "language": "en",
+    "took_ms": 8702,
+    "method": null,
+    "title": "DEF CON 32 - OH MY DC  Abusing OIDC all the way to your cloud - Aviad Hahami",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2259,
+    "description": "As DevOps and developers are slowly shifting away from storing long-lived static credentials to the more secure, still kinda-new, OIDC alternative - the underlying logic, mechanisms and implementations tend to feel like complicated magic and are mostly overlooked.\n\nIn this talk, we'll begin by recapping what OIDC is, who are the interacting entities when OIDC is used, and how OIDC is taking place to securely access one's cloud using CI/CD flows.\n\nOnce covered, we will be able to alternate our point-of-view between the entities in play and demonstrate potential vulnerabilities in various setups.\n\nStarting with the user PoV, we will show what \"under-configurations\" look like, and continue by demonstrating how new OIDC configuration options can actually be misconfigurations that can result with a compromise.\n\nWe will then see another attack vector where leaking an OIDC token from a single repository in an organization can allow an attacker to abuse under-configurations and access private clouds.\n\nAfter that, we will shift our PoV to be of the Identity Provider (IdP) so that we can look into what happens if an IdP is misconfigured, and disclose a real-world security vulnerability found in one of the most popular CI vendors that allowed us to access any of their customers' cloud environments.\n\nI'll refer to this talk by the Tinder Security team link where they show how they could \"claim\" in the name of other identities due to under-configured WIFs.",
+    "view_count": 5542
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] asd33hSRJKU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

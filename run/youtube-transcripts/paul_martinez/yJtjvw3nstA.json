@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yJtjvw3nstA",
+    "language": "en",
+    "took_ms": 8885,
+    "method": null,
+    "title": "ICS Security Certification Panel at S4x17",
+    "channel": "S4 Events",
+    "upload_date": "20170227",
+    "duration_sec": 2945,
+    "description": "A panel discussion with representatives from ISASecure, UL and an ICS vendor discuss:\n\n- what type of certification is of most value: application/device, system or vendor?\n- is a low bar / relatively simple to pass test certification worthwhile or misleading?\n- is source code evaluation for a security certification practical? How will this work in the environment of significantly reduced development cycle times?\n- is a system certification possible? is a product certification of value if it is only one component of a system that is not certified? Bryan brings up a good analogy with auto safety systems\n- why would an asset owner want a certified system, eg better security, regulation, insurability?\n- is there a successful security certification effort that ICS can learn from or mimic? or certification programs we should not copy? Cloud service certifications were given as an example.\n- would you buy a toaster if it were not certified?\n- what happens when a researcher exploits a certified product or system?\n\nModerator: Dale Peterson, Digital Bond\nPanelists: Ken Modeste of UL, Paul Forney of Schneider Electric, Bryan Owen of OSIsoft",
+    "view_count": 354
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yJtjvw3nstA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

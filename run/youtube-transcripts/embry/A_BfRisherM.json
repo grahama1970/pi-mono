@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A_BfRisherM",
+    "language": "en",
+    "took_ms": 7929,
+    "method": null,
+    "title": "(Previously) LIVE Hosting SpaceX Formosat-5",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170824",
+    "duration_sec": 5427,
+    "description": "SpaceX is launching a Falcon 9 carrying Formosat-5 satellite out of Vandenberg Air Force Base in California. They will be landing the first stage on their droneship \"Just Read The Instructions\" about 213 miles (343 km's) south of Vandenberg AFB in the Pacific Ocean. Feel free to ask any questions you have about this mission, SpaceX, or rockets! Please keep it family friendly, any harassing or vulgar comments will result in an immediate and permanent ban.\n\nGet your own Everyday Astronaut merch at http://everydayastronaut.com/shop\n\nShow your support on Patreon - http://patreon.com/everydayastronaut",
+    "view_count": 7023
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A_BfRisherM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

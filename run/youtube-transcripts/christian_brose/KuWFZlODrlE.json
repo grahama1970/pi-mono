@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KuWFZlODrlE",
+    "language": "en",
+    "took_ms": 8994,
+    "method": null,
+    "title": "India's Response to COVID-19 and its Role in Global Politics",
+    "channel": "Hudson Institute",
+    "upload_date": "20200515",
+    "duration_sec": 2041,
+    "description": "Join Hudson Institute for a broad-ranging conversation with noted member of India’s parliament, technology strategist, and entrepreneur Rajeev Chandrasekhar on New Delhi’s response to the current health crisis, including its effect on India’s economic and political life, and the role of technology in curtailing the pandemic. The conversation will also address the pandemic’s impact on Asian geopolitics, India’s relations with both China and the United States, and the need to maintain democratic leadership over technological innovation and the industries of the future.",
+    "view_count": 1149
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KuWFZlODrlE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

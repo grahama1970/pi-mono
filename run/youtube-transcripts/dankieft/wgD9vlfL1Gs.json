@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wgD9vlfL1Gs",
+    "language": "en",
+    "took_ms": 9468,
+    "method": null,
+    "title": "I Copied Fern's YouTube Channel With AI *From Scratch*",
+    "channel": "Dan Kieft",
+    "upload_date": "20250908",
+    "duration_sec": 1067,
+    "description": "Learn How To Make 3D Documentary Animations with AI like Fern\n3D Animation tool - http://openart.ai/home/?ref=documentary\n\nI found 5 AI tools to recreate Fern style 3d documentary editing  videos from completely scratch. \nIn this video I will show you how to write scripts like Fern, How to create AI animations like Fern, How to use AI voice over and how to create AI Thumbnails. What use to cost thousands and hours of your time can now be done in a few hours with AI. \n\nTools I used👇\nPoppy → Ideation + Scripting ➡️ https://start.getpoppy.ai/dan\nOpenArt → Animations ➡️ http://openart.ai/home/?ref=documentary\nElevenLabs → VoiceOver ➡️ https://try.elevenlabs.io/fern\nPikzels → Thumbnails ➡️ https://go.pikzels.com/dan?via=dankieft&fp_sid=11june \n\nGet My Template & Prompts\nGoogle doc 👉 https://docs.google.com/document/d/19pP4wIqXzxA-YfwpBMihE8ve5yBE3BNjhlxluXo9O1g/edit?usp=sharing\n\n👉My Ai Toolkit - https://dankieft.carrd.co/\nMy toolkit gives you over 30+ ai tools that I've gathered over the years and use daily. You'll also get access to my free newsletter that educates you about the latest ai tools.\n\n📧 For business inquiries: business@dankieft.com\nFollow me on Instagram: https://www.instagram.com/dan.kieft/",
+    "view_count": 101276
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wgD9vlfL1Gs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

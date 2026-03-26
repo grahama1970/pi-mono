@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DLKpsjtVvlc",
+    "language": "en",
+    "took_ms": 8495,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Aaron Boyd - Living off the Land in an ICS OT Penetration Test",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1513,
+    "description": "Many antivirus or application whitelisting solutions are composed of signature-based detections only monitoring for known malicious files or tools being executed or loaded onto the disk of an operating system by default. Knowing this, adversaries and activity groups needed to put a focus to living off the land tactics and techniques to target ICS/OT environments as well as enterprise environments if they are being used as the pivoting point in reaching an ICS/OT environment. Living off the Land is the term used to describe the use of typically pre-existing utilities, that are known and trusted with legitimate capabilities, present on a victim host and network for nefarious purposes. Aaron Boyd, a Senior Industrial Penetration Tester with Dragos, will talk about and show an example of one of the living off the land techniques used by Dragos when conducting penetration tests within an ICS/OT environment and some strategies customers can use to detect it.",
+    "view_count": 1669
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DLKpsjtVvlc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

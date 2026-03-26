@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MY8YRsMzGKw",
+    "language": "en",
+    "took_ms": 8716,
+    "method": null,
+    "title": "What should you learn next? #AI #deeplearning",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260303",
+    "duration_sec": 34,
+    "description": "It's obvious that we should all learn more about AI, but how do you know what to focus on? \n\nTo answer this question, DeepLearning.AI has released a free AI Skill Builder tool that gives you a full picture of where you're at and what to focus on to level up: \nhttps://skillbuilder.deeplearning.ai/",
+    "view_count": 9106
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MY8YRsMzGKw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

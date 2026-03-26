@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IllijoYSH80",
+    "language": "en",
+    "took_ms": 8328,
+    "method": null,
+    "title": "LLMs: Understanding Temperature and Context Length of a GPT",
+    "channel": "Trelis Research",
+    "upload_date": "20230622",
+    "duration_sec": 1505,
+    "description": "When doing research with Large Language Models (LLMs) like chatGPT or Claude, it's valuable to understand how temperature and context length affect results.\n\nI share an overly simple example of how a GPT model works .\n\nCheck out also:\n\n*Function-calling Llama 2/Code-Llama Model in 7b, 13b and 34b formats*\nhttps://huggingface.co/Trelis/Llama-2-13b-chat-hf-function-calling-v2 \n\n*QLoRA Training Script / Fine-tuning Colab Notebook*\nhttps://www.youtube.com/watch?v=OQdp-OeG1as and purchase the advanced script here: https://buy.stripe.com/5kA5l69K52Hxf3a006\n\n*Long Document and Website Summarisation Tool*\nhttps://Summarise-Me.com",
+    "view_count": 4753
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IllijoYSH80: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

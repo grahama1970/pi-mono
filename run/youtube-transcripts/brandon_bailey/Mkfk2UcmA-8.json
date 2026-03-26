@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Mkfk2UcmA-8",
+    "language": "en",
+    "took_ms": 8700,
+    "method": null,
+    "title": "DEF CON 30  - Jake Labelle - Doing the Impossible - How I Found Mainframe Buffer Overflows",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2332,
+    "description": "Mainframes run the world, literally. Have you ever paid for something,\na mainframe was involved, flown? Used a bank? Gone to college? A\nmainframe was involved. Do you live in a country with a government?\nMainframes! The current (and really only) mainframe OS is z/OS from\nIBM. If you've ever talked to a mainframer you'll get told how they're\nmore secure because buffer overflows are (were) impossible. This talk\nwill prove them all wrong!\n\nFinding exploits on z/OS is no different than any other platform. This\ntalk will walk through how you too can become a mainframe exploit\nresearcher!\n\nRemote code execution is extra tricky on a mainframe as almost all\nsockets read data with the ASCII character set and convert that to\nEBCDIC for the application. With this talk you will find out how to\nfind and then remotely overflow a vulnerable mainframe C program and\ncreate a ASCII - EBCDIC shellcode to escalate your privileges\nremotely, without auth. Previous mainframe talks focused on\ninfrastructure based attacks. This talk builds on those but adds a\nclass of vulnerabilities, opening up the mainframe hacking community.",
+    "view_count": 1658
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Mkfk2UcmA-8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k3azcuz_dO0",
+    "language": "en",
+    "took_ms": 7781,
+    "method": null,
+    "title": "Syria’s Proxy Battle: Regional Players and U.S. Policy",
+    "channel": "Hudson Institute",
+    "upload_date": "20181003",
+    "duration_sec": 5406,
+    "description": "On October 3, Hudson Institute hosted a discussion to examine the current state of Syria and risks of new regional conflict. Syria remains a geopolitical hotspot with the U.S., Israel, Turkey, Russia, and Iran directing military forces deployed in the country. The panel will consider the potential for conflict between proxy powers, the continued use of chemical weapons by the Assad regime, and the country’s prospects for peace and stability. Panelists included Michael Pregent, a senior fellow at Hudson Institute; Oubai Shahbandar, a fellow with New America's International Security program; Bassam Barabandi, a former Syrian diplomat; and Yasmine Farouk, a visiting scholar at the Carnegie Endowment for International Peace's Middle East program.",
+    "view_count": 1145
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k3azcuz_dO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

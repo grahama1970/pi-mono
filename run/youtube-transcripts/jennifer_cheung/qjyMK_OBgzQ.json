@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qjyMK_OBgzQ",
+    "language": "en",
+    "took_ms": 9453,
+    "method": null,
+    "title": "DEF CON 33 - Tunnelpocalypse - Rich Compton",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1691,
+    "description": "Did you know that you or anyone can launch a spoofed DDoS amplification attack from ANY IP on the Internet? Come find out about this mind blowing vulnerability that may well cause a Tunnelpocalypse!",
+    "view_count": 208
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qjyMK_OBgzQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

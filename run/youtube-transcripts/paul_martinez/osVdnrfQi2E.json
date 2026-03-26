@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "osVdnrfQi2E",
+    "language": "en",
+    "took_ms": 9363,
+    "method": null,
+    "title": "OT Managed Security Services - 1898 & Co.",
+    "channel": "S4 Events",
+    "upload_date": "20230301",
+    "duration_sec": 2321,
+    "description": "Matt Morris and Mark Mattei of 1898 & Co. joined Dale to talk OT Managed Security Services as 1898 recently introduced an OT Managed Threat Protection and Response service. The discussion included:\n\n- what they are monitoring in the OT environment\n- the OT MSP competitive landscape (OT detection vendors, ICS vendors, large consulting vendors, ...)\n- can you / should you monitor OT separate from IT\n- how 1898 deals with competing partners (such as Claroty, Dragos and Nozomi) that they resell and install and competing against them for MSP\n- the active response and threat hunting services and how that is accepted in the generally conservative \n- and more",
+    "view_count": 530
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] osVdnrfQi2E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

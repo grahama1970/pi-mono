@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Zfs_J-FfSQA",
+    "language": "en",
+    "took_ms": 8005,
+    "method": null,
+    "title": "How Coronavirus Is Remaking the Food Industry",
+    "channel": "Hudson Institute",
+    "upload_date": "20200610",
+    "duration_sec": 3630,
+    "description": "What is the industry doing to make their products and shopping safe? What new consumer behaviors do we expect to continue? How will the industry and the food supply fundamentally be changed? Join Hudson Institute and top food industry leaders as they answer these and other questions.",
+    "view_count": 456
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Zfs_J-FfSQA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

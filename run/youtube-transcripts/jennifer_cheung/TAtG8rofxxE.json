@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TAtG8rofxxE",
+    "language": "en",
+    "took_ms": 8943,
+    "method": null,
+    "title": "DEF CON 33 - Vulns to end your space mission - A. Olchawa, M. Starcik, R. Fradique & A.Boulaich",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1052,
+    "description": "The frequency of space missions has been increasing in recent years, raising concerns about security breaches and satellite cyber threats. Each space mission relies on highly specialized hardware and software components that communicate through dedicated protocols and standards developed for mission-specific purposes. Numerous potential failure points exist across both the space and ground segments, any of which could compromise mission integrity. Given the critical role that space-based infrastructure plays in modern society, every component involved in space missions should be recognized as part of critical infrastructure and afforded the highest level of security consideration.\n\nThis briefing highlights a subset of vulnerabilities that we identified within last couple of years across both ground-based systems and onboard spacecraft software. We will provide an in-depth analysis of our findings, demonstrating the impact of these vulnerabilities by showing our PoC exploits in action—including their potential to grant unauthorized control over targeted spacecraft. Additionally, we will show demonstrations of the exploitation process, illustrating the real-world implications of these security flaws.",
+    "view_count": 244
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TAtG8rofxxE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

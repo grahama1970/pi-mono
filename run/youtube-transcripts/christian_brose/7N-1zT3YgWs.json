@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7N-1zT3YgWs",
+    "language": "en",
+    "took_ms": 9135,
+    "method": null,
+    "title": "The New START: Its Impact, Its Future",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 7233,
+    "description": "December 5, 2010 marks the one-year anniversary of the expiration of the Strategic Arms Reduction Treaty (START) between the U.S. and Russia. While Presidents Barack Obama and Dmitriy Medvedev signed the follow-on New START agreement this past April, it has yet to be ratified by the Senate, raising serious questions about the treaty's future. What impact does the treaty have on American national security? What is the likelihood that New START will be ratified? How would ratification or non-ratif",
+    "view_count": 23
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7N-1zT3YgWs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

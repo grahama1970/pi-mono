@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "nYDBx78itDo",
+    "language": "en",
+    "took_ms": 9419,
+    "method": null,
+    "title": "Advanced Embedding Models and Techniques for RAG",
+    "channel": "Trelis Research",
+    "upload_date": "20250120",
+    "duration_sec": 2984,
+    "description": "➡️ Get Access to the Scripts/Repo: https://Trelis.com/ADVANCED-fine-tuning\n➡️ Newsletter: https://Trelis.Substack.com\n➡️ Thumbnail made with this tutorial: https://youtu.be/ThKYjTdkyP8\n\nBTW, I should have said this in the video, but ModernBERT is also trained on code! So should be better for that application than previous embedding models!\n\nKEY TRELIS LINKS:\n🛠 Tools (Fine-tuning, Vision, Audio, Inference): https://Trelis.com\n💡 Consulting (Technical Assistance OR Market Insights): https://forms.gle/2VXzrBzpvm1BmG6e7\n🤝 Join the Trelis Team: https://trelis.com/developer-collaborations/\n💸 Grants Program: https://trelis.com/trelis-ai-grants/\n📧 Newsletter: https://trelis.substack.com\n\nTIMESTAMPS:\n00:00:00 - Introduction to advanced video on embedding models for RAG systems\n00:00:14 - Introduction to ModernBERT and its improved performance\n00:00:20 - Overview of contextual document embeddings\n00:01:17 - Explanation of ModernBERT family improvements\n00:02:28 - Discussion of ModernBERT's faster runtime and quality metrics\n00:03:12 - Explanation of periodic attention layers in ModernBERT\n00:03:34 - Discussion of unpacked sequence feeding method\n00:04:52 - Introduction to Nomic's fine-tuned ModernBERT model\n00:06:15 - Explanation of Matryoshka embeddings for storage optimization\n00:07:37 - Discussion of quantization options for memory reduction\n00:09:41 - Introduction to contextual document embeddings approach\n00:10:43 - Explanation of BM25 and why it works well\n00:14:55 - Detailed explanation of contextual document embeddings process\n00:19:55 - Presentation of performance results across different models\n00:23:28 - Demonstration of creating embeddings with ModernBERT\n00:27:50 - Demonstration of CDE model implementation\n00:34:24 - Guide to fine-tuning embedding models\n00:40:30 - Walkthrough of fine-tuning notebook setup\n00:43:43 - Explanation of training process and loss functions\n00:48:39 - Summary of tips for implementing embedding models",
+    "view_count": 5973
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] nYDBx78itDo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

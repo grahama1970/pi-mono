@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3PAauAy-Fb4",
+    "language": "en",
+    "took_ms": 7514,
+    "method": null,
+    "title": "DEF CON 30 - Minh Duong - The Big Rick - How I Rickrolled My High School District,  Got Away With It",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1249,
+    "description": "What happens when you have networked projectors, misconfigured devices, and a bored high school student looking for the perfect senior prank? You get a massive rickroll spanning six high schools and over 11,000 students at one of the largest school districts in suburban Chicago.\n\nThis talk will go over the coordination required to execute a hack of this scale and the logistics of commanding a botnet of IoT systems. It will also describe the operational security measures taken so that *you* can evade detection, avoid punishment, and successfully walk at graduation.",
+    "view_count": 76963
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3PAauAy-Fb4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

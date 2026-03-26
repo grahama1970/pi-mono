@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Xqw8VmTcDUI",
+    "language": "en",
+    "took_ms": 8673,
+    "method": null,
+    "title": "Dan Geer on Patching ICS Vulnerabilities",
+    "channel": "S4 Events",
+    "upload_date": "20181025",
+    "duration_sec": 132,
+    "description": "Excerpt from Dan Geer's S4x18 Interview. Here he tackles the issues of how to respond (patching?, other?) if vulnerabilities are dense or sparse. Of course you should watch the whole interview on this channel.",
+    "view_count": 402
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Xqw8VmTcDUI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

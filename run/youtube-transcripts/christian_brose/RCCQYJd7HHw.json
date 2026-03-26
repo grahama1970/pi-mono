@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RCCQYJd7HHw",
+    "language": "en",
+    "took_ms": 8879,
+    "method": null,
+    "title": "America’s Fight Against Russian Dark Money",
+    "channel": "Hudson Institute",
+    "upload_date": "20190315",
+    "duration_sec": 5691,
+    "description": "Hudson Institute's Ben Judah sat down for a conversation with The Atlantic’s Franklin Foer and Elise Bean, former Staff Director and Chief Counsel on the U.S. Senate Homeland Security and Governmental Affairs Committee. The discussion examined how the United States and its allies can safeguard their institutions from transnational kleptocracy and consider Foer's recent article, Russian-Style Kleptocracy Is Infiltrating America, which cites research conducted by Hudson's Kleptocracy Initiative. \n\nWhile Russian attempts to interfere in Western elections provoked intense scrutiny of the underhand methods employed by the Kremlin to project power and influence, they also exposed systemic vulnerabilities in the democratic, legal, and financial institutions of the U.S. and its democratic allies. Outdated national anti-money laundering systems have failed to keep pace with globalized crime and corruption, leaving the door open to illicit funds from Russia and other authoritarian regimes. The corrosive effect of this dark money threatens national security, poisons capitalism, and undermines democracy.",
+    "view_count": 684
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RCCQYJd7HHw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

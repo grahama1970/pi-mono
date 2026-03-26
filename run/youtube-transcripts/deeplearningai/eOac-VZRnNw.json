@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eOac-VZRnNw",
+    "language": "en",
+    "took_ms": 8561,
+    "method": null,
+    "title": "New course with Meta: Prompt Engineering with Llama 2",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240228",
+    "duration_sec": 254,
+    "description": "Enroll now: https://bit.ly/3OLbyqc\n\nWe’re pleased to announce the launch of our new short course Prompt Engineering with Llama 2, built in collaboration with @AIatMeta. \n\nThis course is designed to help you advance your prompt engineering skills. You’ll learn best practices in prompting and building applications with the collection of Llama 2 models.\n\nLlama 2 models and model weights are free to download, including quantized model versions that can run on your local machine. You’ll interact with these models with a simple API call and explore the differences in output between models for various tasks.\n\nWhat you’ll do in this course: \n\n- Learn best practices for prompting and selecting among the Llama 2 models by using them as a personal assistant to help you complete day-to-day tasks.\n- Experiment with advanced prompt engineering techniques, like few-shot prompting to get Llama 2 to classify the sentiment of text messages, and chain-of-thought prompting to solve logic problems.\n- Treat Code Llama as a pair programming partner to learn to write and improve code.\n- Promote safe and responsible use of LLMs by having Llama Guard check user prompts and model responses for harmful content.\n\nJoin a growing community of open source builders that use Llama 2.\n\nLearn more: https://bit.ly/3OLbyqc",
+    "view_count": 5998
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eOac-VZRnNw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4GsZo-6tyhQ",
+    "language": "en",
+    "took_ms": 8610,
+    "method": null,
+    "title": "OT Security: Cyber & Climate Nexus",
+    "channel": "S4 Events",
+    "upload_date": "20230717",
+    "duration_sec": 1567,
+    "description": "Andy Bochman of INL makes the case that there is a nexus between addressing OT cyber risk and climate change risk. Are we so focused on OT cyber risk that we are missing the risk of climate change? Not enough water or do much water. Changes in temperature radically changing our electric sector needs. Wildfires. Heat domes. And more.\n\nAndy introduces a new way to look at the challenge and risk in the electric sector that includes Physical, Cyber and Energy Transition. He dives into each of these areas.\n\nAt 20:51 there is a great Venn diagram showing OT Cyber, Climate Change and the overlap between these two areas. The overlap is where the OT Cybersecurity Community needs to get involved to help adapt to climate change. \n\"Putting on an additional hat\".",
+    "view_count": 497
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4GsZo-6tyhQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

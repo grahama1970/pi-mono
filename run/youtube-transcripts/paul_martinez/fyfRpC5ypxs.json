@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fyfRpC5ypxs",
+    "language": "en",
+    "took_ms": 9015,
+    "method": null,
+    "title": "Detecting Counterfeit Smart Grid Devices",
+    "channel": "S4 Events",
+    "upload_date": "20171214",
+    "duration_sec": 1736,
+    "description": "Selcuk Uluagac of FIU discussed a US Dept of Energy supported project on detecting counterfeit devices on a Smart Grid.\n\nCounterfeit devices can cause Information Leakage, Measurement Poisoning, Store and Send Later and other impacts.",
+    "view_count": 541
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fyfRpC5ypxs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

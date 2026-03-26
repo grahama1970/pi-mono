@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mHFcecX4RIA",
+    "language": "en",
+    "took_ms": 8418,
+    "method": null,
+    "title": "DEF CON 33 Preview - Cryptocurrency Preview",
+    "channel": "DEFCONConference",
+    "upload_date": "20250801",
+    "duration_sec": 201,
+    "description": "What to expect from the expanded Cryptocurrency offerings at DEF CON 33",
+    "view_count": 2168
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mHFcecX4RIA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

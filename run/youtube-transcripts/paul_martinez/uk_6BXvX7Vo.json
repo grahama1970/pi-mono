@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uk_6BXvX7Vo",
+    "language": "en",
+    "took_ms": 18974,
+    "method": null,
+    "title": "ICS Detection Market ... December Analysis",
+    "channel": "S4 Events",
+    "upload_date": "20201217",
+    "duration_sec": 2904,
+    "description": "I published a two-part analysis on the ICS Detection Market on the 10th and 15th. It this live broadcast I'll answer questions and get alternate analysis with guests and the live viewers.",
+    "view_count": 235
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uk_6BXvX7Vo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

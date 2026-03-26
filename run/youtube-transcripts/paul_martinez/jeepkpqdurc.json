@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jeepkpqdurc",
+    "language": "en",
+    "took_ms": 7920,
+    "method": null,
+    "title": "ICS Anomaly Detection Panel",
+    "channel": "S4 Events",
+    "upload_date": "20170612",
+    "duration_sec": 2973,
+    "description": "Dale Peterson moderated a panel with Damiano Bolzoni of Security Matters, Andrea Carcano of Nozomi Networks, and Patrick McBride of Claroty, \n\nPrimary Question: How should an owner / operator who wants to purchase an ICS anomaly detection solution select the best solution from 20+ offerings?\n\n1:00 Definition of ICS Anomaly Detection\n5:00 Companies in the ICS Anomaly Detection space\n7:25 At what stage in an ICS security program should an asset owner consider ICS anomaly detection\n14:20 How should an asset owner select between the 20+ solutions (the answers are only of limited help)\n20:00 Most of the solutions are rules based and not learning baselines and identifying variances.\n23:00 Financial and stability considerations in selecting a vendor that will be around in the future\n27:20 Demo or evaluate with your protocol / pcap and active v. passive approach\n31:40 What are the ongoing operational costs to effectively use this type of detection solution?\n44:42 What can we expect from this product category in the next 2-5 years?",
+    "view_count": 2151
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jeepkpqdurc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

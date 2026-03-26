@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gtbS3Gr264w",
+    "language": "en",
+    "took_ms": 9056,
+    "method": null,
+    "title": "DEF CON Safe Mode Payment Village - Aleksei Stennikov - PoS Terminal Security  Uncovered",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2076,
+    "description": "Everyone uses different types of payment hardware in order to pay by card everyday. But how often do you think, how secure is it? \n\nThe speaker will talk about the payment terminals hardware internals and the approach to the security of common manufacturers, typical vulnerabilities, approaches to research and the consequences of research related to the payment security. This presentation uncovers some of results from our payment security projects.",
+    "view_count": 2025
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gtbS3Gr264w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

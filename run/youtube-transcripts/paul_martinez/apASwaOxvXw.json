@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "apASwaOxvXw",
+    "language": "en",
+    "took_ms": 8568,
+    "method": null,
+    "title": "OT Sponsorship By Advancing Operational Priorities",
+    "channel": "S4 Events",
+    "upload_date": "20240502",
+    "duration_sec": 1440,
+    "description": "Fritz Byam identifies the roles that make effective OT sponsors (the people who can get you the needed resources and authority) in the asset owner environment. He then focuses on how to win over these potential sponsors and get their support. This session includes many lessons learned from getting sponsors for large ServiceNow projects.",
+    "view_count": 209
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] apASwaOxvXw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

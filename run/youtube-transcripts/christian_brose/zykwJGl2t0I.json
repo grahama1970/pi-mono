@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zykwJGl2t0I",
+    "language": "en",
+    "took_ms": 8981,
+    "method": null,
+    "title": "Diana Furchtgott-Roth on the Job Market for CNBC",
+    "channel": "Hudson Institute",
+    "upload_date": "20110603",
+    "duration_sec": 278,
+    "description": "Hudson Senior Fellow Diana Furchtgott-Roth discussed the current job market with CNBC on June 2.",
+    "view_count": 370
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zykwJGl2t0I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

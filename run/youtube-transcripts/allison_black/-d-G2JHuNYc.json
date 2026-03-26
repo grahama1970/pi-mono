@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-d-G2JHuNYc",
+    "language": "en",
+    "took_ms": 8848,
+    "method": null,
+    "title": "XB-70: The biggest, fastest bomber ever",
+    "channel": "Sandboxx",
+    "upload_date": "20220204",
+    "duration_sec": 1080,
+    "description": "In the late 1950s, the North American XB-70 Valkyrie looked like it had been ripped straight out of the pages of a science fiction comic book. With a sharp, angular design, six afterburning engines, and the latest targeting, navigation, and electronic warfare systems America could muster, the XB-70 was to become the world’s biggest, fastest, and highest-flying bomber in history… Until it wasn’t.\n\nLockheed's YF-12 - The SR-71's missile packing sister: https://youtu.be/1yRd8fY281g\n\n📱 Follow Sandboxx News on social\nTwitter: https://twitter.com/sandboxxnews\nInstagram: https://instagram.com/sandboxxnews\nFacebook: https://facebook.com/sandboxxnews\n\n📱Follow Alex Hollings on social\nTwitter: https://twitter.com/AlexHollings52\nInstagram: https://www.instagram.com/alexhollingswrites\nFacebook: https://www.facebook.com/AlexHollingsWrites",
+    "view_count": 100530
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -d-G2JHuNYc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

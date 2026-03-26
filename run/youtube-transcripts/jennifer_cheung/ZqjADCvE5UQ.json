@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZqjADCvE5UQ",
+    "language": "en",
+    "took_ms": 8619,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - Petty Proteins When Molecules Go Rogue& Why Cyberbiosecurity - Tia Pope",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 2461,
+    "description": "Explore how AI-designed proteins and biological misbehavior mirror cybersecurity threats—and why we need diverse cyberbiosecurity defenders.",
+    "view_count": 516
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZqjADCvE5UQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

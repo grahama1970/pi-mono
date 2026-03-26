@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EU1ftYdZkkI",
+    "language": "en",
+    "took_ms": 7957,
+    "method": null,
+    "title": "DEF CON 31 War Stories - Cracking Cicada 3301 - Taiiwo, Artorias, Puck, TheClockworkBird",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 2518,
+    "description": "This talk will explore the ongoing efforts of the CicadaSolvers community to solve Cicada3301’s Liber Primus, a book of elder futhark runes and codes that has challenged cryptographers and puzzle-solvers since 2014. Using our experiences as leaders within the community, we will delve into the cultural significance of the puzzle and discuss the various strategies and techniques employed by members to crack its code, and the story of their struggle to maintain motivation through 9 years of solving one of the most difficult puzzles ever released. Attendees will gain insights into the future of collaborative puzzle-solving and the challenges that the Liber Primus presents for the future of cryptography. This presentation is suitable for anyone interested in cryptography, puzzle-solving, internet mysteries, and the persistence of collaborative communities. No prior technical knowledge or tools are required.",
+    "view_count": 16446
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EU1ftYdZkkI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

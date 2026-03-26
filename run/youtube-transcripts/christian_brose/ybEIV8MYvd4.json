@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ybEIV8MYvd4",
+    "language": "en",
+    "took_ms": 7952,
+    "method": null,
+    "title": "Taiwan’s Energy Transition",
+    "channel": "Hudson Institute",
+    "upload_date": "20240801",
+    "duration_sec": 3756,
+    "description": "Energy policy has become a contentious issue in Taiwan. Amid the summer heat, occasional blackouts create public unrest. Meanwhile, Taipei continues to implement policy from the last decade to transition Taiwan’s energy production away from coal and nuclear and toward liquefied natural gas (LNG) and renewables like solar, hydroelectric, and wind power. While renewables increase Taiwan’s ability to generate electricity domestically, the island—which is roughly the size of Maryland—remains mostly dependent on imported coal, LNG, and nuclear material.\n\nJoin Hudson as an expert panel discusses the current state of Taiwan’s energy transition and how the island’s energy mix might change in the next several years.\n\nLearn more at: https://www.hudson.org/events/taiwans-energy-transition-brigham-mccown",
+    "view_count": 1001
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ybEIV8MYvd4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gno8-aiL6mw",
+    "language": "en",
+    "took_ms": 9438,
+    "method": null,
+    "title": "A Conversation with UK Air Chief Marshal Sir Mike Wigston",
+    "channel": "Hudson Institute",
+    "upload_date": "20210427",
+    "duration_sec": 2639,
+    "description": "Join Hudson Institute Senior Fellow Bryan Clark and Air Chief Marshal Sir Mike Wigston, Chief of the Air Staff, Royal Air Force (RAF), to discuss the implications of the U.K. Integrated Review for NATO, the United States, and global security.\n\nThe U.K. government recently announced its vision of Britain’s global role for the next decade, pledging to strengthen security and defense at home and overseas and work with allies and partners to combat terrorism, weapons proliferation, and state threats. Major defense decisions include reducing active personnel, retiring legacy systems, and accelerating the development of new capabilities needed to address emerging challenges. How will this impact the U.K.’s cooperation with its closest ally? Please join Hudson for this important discussion.",
+    "view_count": 869
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gno8-aiL6mw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

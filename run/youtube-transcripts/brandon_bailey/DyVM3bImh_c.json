@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DyVM3bImh_c",
+    "language": "en",
+    "took_ms": 9599,
+    "method": null,
+    "title": "DEF CON 33 - Live Music - Friday Night - Daemon Chadeau",
+    "channel": "DEFCONConference",
+    "upload_date": "20251020",
+    "duration_sec": 3579,
+    "description": "Live set from Daemon Chadeau, Friday Night at the LVCC.",
+    "view_count": 1312
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DyVM3bImh_c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

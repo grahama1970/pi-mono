@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6OyUBk_EpjA",
+    "language": "en",
+    "took_ms": 7735,
+    "method": null,
+    "title": "Persisting in Level 1: The Building is Alive",
+    "channel": "S4 Events",
+    "upload_date": "20190219",
+    "duration_sec": 1884,
+    "description": "This is a great example of the steps an attacker would take to attack, exploit and persist on an industrial control system (ICS), specifically a building control system in this presentation by Elisa Costante of FourScout.\n\nTwo things to note:\n1) The persistence in Level 1 is why we added this to the S4x19 lineup. This is what is novel. PLC's and other level 1 devices are great places for attack code to hang out because they lack endpoint protection and forensics of Level 1 devices is in its infancy.\n\n2) Elisa and the team tracked their time in doing this work to give an example of the resources required to do this. She concludes it is far from a \"Nation State\" resource requirement.",
+    "view_count": 704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6OyUBk_EpjA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

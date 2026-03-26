@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "U2x8GIiM6vc",
+    "language": "en",
+    "took_ms": 8768,
+    "method": null,
+    "title": "A High Interaction Factory Honeynet",
+    "channel": "S4 Events",
+    "upload_date": "20201019",
+    "duration_sec": 138,
+    "description": "A 2-minute clip from Stephen Hilt on their highly realistic factory honeynet. They even created \"employees\". The end talks about a ransomware incident and the level of ICS knowledge the perpetrators had.",
+    "view_count": 307
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] U2x8GIiM6vc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

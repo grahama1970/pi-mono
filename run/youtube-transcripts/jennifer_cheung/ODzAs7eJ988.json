@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ODzAs7eJ988",
+    "language": "en",
+    "took_ms": 7812,
+    "method": null,
+    "title": "DEF CON 31 Policy - A Global Approach to Tackling Software Resilience - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 6460,
+    "description": "Software is the lifeblood of the digital world, but as software embeds itself ever further into our societies and economies, the threat of software attacks grows with it. In our ever-more connected world, Governments are realizing that more must be done to protect businesses, organizations and individuals from these cyber threats. Governments are exploring a range of options to foster software security practices, including convening experts, international organizations and standards, using the power of government purchasing, and even potential regulation. However, the software ecosystem and the risks are rapidly evolving, and require insights into the dynamics of attack and defense from the security and developer communities.\n\nThis panel will bring together representatives from governments around the world which are trying to address this challenge. Software risks are global risks, and this will be a unique opportunity to hear how different governments are approaching the issue of software resilience, and discuss how policymakers and the hacker community can to work together to overcome these collective challenges.",
+    "view_count": 294
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ODzAs7eJ988: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

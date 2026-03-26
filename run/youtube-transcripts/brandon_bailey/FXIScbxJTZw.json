@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "FXIScbxJTZw",
+    "language": "en",
+    "took_ms": 10115,
+    "method": null,
+    "title": "DEF CON 33 - Playing Dirty w/o Cheating - Getting Banned for Fun  - S Collins, M Muench, T Chothia",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2317,
+    "description": "Welcome to the world’s worst let’s-play: if you’ve ever wanted to get yourself or your friends banned from a game: Stick around. We explore how modern anti-cheat systems work, and practically show how to get banned in the most innovative and hilarious ways possible—all without launching a single real cheat.\n\nWe also dive into Hardware ID bans, and how machine ‘fingerprints’ are collected and enforced. With this knowledge at hand, we demonstrate how to remotely poison innocent machines — capturing a target’s HWID, spoofing it, and getting it burned. BIOS flashing, RAM SPD rewriting, and other fun tricks included. Join our masterclass in making yourself and others appear guilty online.",
+    "view_count": 55845
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] FXIScbxJTZw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

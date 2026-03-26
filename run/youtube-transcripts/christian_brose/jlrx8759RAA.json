@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jlrx8759RAA",
+    "language": "en",
+    "took_ms": 7950,
+    "method": null,
+    "title": "NATO Public Forum: An Interview with Greek Prime Minister Kyriakos Mitsotakis",
+    "channel": "Hudson Institute",
+    "upload_date": "20240712",
+    "duration_sec": 583,
+    "description": "What is the North Atlantic Treaty Organization? Why was it created? How do 32 countries work together effectively to ensure the security of all? \n\nAt the NATO Public Forum, Greek Prime Minister Kyriakos Mitsotakis answered these questions and more. With Hudson Senior Fellow Nadia Schadlow, he explored the history and geography of the world’s oldest and most successful military alliance and discussed why it is still relevant today.",
+    "view_count": 545
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jlrx8759RAA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Vt1GSnZxPdo",
+    "language": "en",
+    "took_ms": 7577,
+    "method": null,
+    "title": "Connecting With Engineers",
+    "channel": "S4 Events",
+    "upload_date": "20220114",
+    "duration_sec": 44,
+    "description": "Bryan Singer #s4xevents clip on a common discussion between security professionals and engineers. Why haven't you? #icssecurity #otsecurity",
+    "view_count": 152
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Vt1GSnZxPdo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

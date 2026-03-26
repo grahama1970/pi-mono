@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0O-60Bg2mRo",
+    "language": "en",
+    "took_ms": 7784,
+    "method": null,
+    "title": "The Rise of Russia-Iran Partnership",
+    "channel": "Hudson Institute",
+    "upload_date": "20231219",
+    "duration_sec": 2695,
+    "description": "To explore the Russian-Iranian partnership and how it affects American national security, please join Hudson for a discussion with Senior Fellow and Director of Hudson’s Center for Defense Concepts and Technology Bryan Clark, Senior Fellow and Director of Hudson’s Center for Peace and Security in the Middle East Michael Doran, and Hudson Institute non-resident Senior Fellow Can Kasapoğlu.",
+    "view_count": 3483
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0O-60Bg2mRo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

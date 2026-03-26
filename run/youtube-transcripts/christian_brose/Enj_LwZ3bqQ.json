@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Enj_LwZ3bqQ",
+    "language": "en",
+    "took_ms": 9074,
+    "method": null,
+    "title": "Escape from North Korea: The Untold Story of Asia's Undergro",
+    "channel": "Hudson Institute",
+    "upload_date": "20120919",
+    "duration_sec": 4486,
+    "description": "Escape from North Korea (Encounter Books) is a rare good-news story from the world's most repressive state—a compelling account of the people who dare to escape and the Good Samaritans who help them.\r\rIn her new book, Hudson Senior Fellow and former Wall Street Journal editorial board member Melanie Kirkpatrick describes the secret network of safe houses and transit routes that carry North Koreans hiding in China to safety in neighboring countries. The conductors are brokers motivated by money,",
+    "view_count": 1068
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Enj_LwZ3bqQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

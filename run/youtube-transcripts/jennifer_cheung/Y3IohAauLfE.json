@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y3IohAauLfE",
+    "language": "en",
+    "took_ms": 8864,
+    "method": null,
+    "title": "DEF CON 33 - Evolution of Drain Attacks -  Utvecklas & George",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1283,
+    "description": "This interactive workshop explores the history and evolution of draining attacks across major blockchains such as Ethereum, Solana, and TON. Participants will witness live demonstrations of various draining techniques, from early ERC-20 approval abuse to sophisticated token spoofing. Learn to recognize, trace, and defend against these exploits while discussing popular laundering methods and current security measures. A final group challenge will involve tracking an attacker's wallet and evaluating how to recover stolen funds.",
+    "view_count": 1251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y3IohAauLfE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

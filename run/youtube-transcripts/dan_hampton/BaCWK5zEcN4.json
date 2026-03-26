@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BaCWK5zEcN4",
+    "language": "en",
+    "took_ms": 8951,
+    "method": null,
+    "title": "New SandboxxNews.com and Sandboxx Magazine!",
+    "channel": "Sandboxx",
+    "upload_date": "20230810",
+    "duration_sec": 52,
+    "description": "The all-news SandboxxNews.com is now live! And we've got more big news than that!\n\nSign up now to stay in the loop as we roll out the Sandboxx Magazine! \nhttps://info.sandboxx.us/Sandboxx_Magazine\n#Sandboxx #SandboxxNews #military #defense #analysis",
+    "view_count": 20313
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BaCWK5zEcN4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

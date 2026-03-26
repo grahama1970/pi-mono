@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "EHdI6bdw-wo",
+    "language": "en",
+    "took_ms": 8848,
+    "method": null,
+    "title": "DEF CON 32 - Feet Feud",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2380,
+    "description": "Another fascinating DEF CON Game show.",
+    "view_count": 488
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] EHdI6bdw-wo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

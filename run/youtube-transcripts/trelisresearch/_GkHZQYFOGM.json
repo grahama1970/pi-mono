@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_GkHZQYFOGM",
+    "language": "en",
+    "took_ms": 8051,
+    "method": null,
+    "title": "Fine tuning LLMs for Memorization",
+    "channel": "Trelis Research",
+    "upload_date": "20240304",
+    "duration_sec": 2811,
+    "description": "➡️ Get Life-time Access to the ADVANCED-fine-tuning Repo (incl. Memorization Scripts): https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Trelis Runpod Affiliate Link (supports the channel): https://runpod.io?ref=jmfkcdio\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1Un-H9d3ghlR23VddD3aR8aSWHHg9vjIwvYC45o0Vn7g/edit?usp=sharing\n- Dataset: https://huggingface.co/datasets/Trelis/touch-rugby-rules-memorisation\n\nTIMESTAMPS:\n0:00 Fine-tuning on a custom dataset\n0:18 Video Overview\n1:28 GPTs as statistical models\n2:07 What is the reversal curse?\n4:08 Synthetic dataset generation\n8:28 Choosing the best batch size\n14:17 What learning rate to use for fine-tuning?\n14:50 How many epochs to train for?\n16:04 Choosing the right base model\n17:12 Step by step dataset generation\n28:20 Fine-tuning script, step-by-step\n40:47 Performance Ablation: Hyperparameters\n42:56 Performance Ablation: Base Models\n46:00 Final Recommendations for Fine-tuning for Memorization",
+    "view_count": 20414
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _GkHZQYFOGM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

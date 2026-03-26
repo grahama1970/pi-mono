@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cS9m2jyH20s",
+    "language": "en",
+    "took_ms": 9041,
+    "method": null,
+    "title": "Minimum Deterrence: Examining the Evidence",
+    "channel": "Hudson Institute",
+    "upload_date": "20131016",
+    "duration_sec": 6016,
+    "description": "Recently, President Obama called for large reductions in the U.S. nuclear arsenal from the New Strategic Arms Reduction Treaty levels. Such reductions could leave the U.S. with roughly 1,000 weapons. The President's announcement has renewed the debate over the appropriate size of the U.S. nuclear weapons arsenal. \r\nAdvocates of a Minimum Deterrence strategy applaud the announcement and view it as progress towards a nuclear-free world. Skeptics of Minimum Deterrence maintain that deeply reduced f",
+    "view_count": 255
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cS9m2jyH20s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

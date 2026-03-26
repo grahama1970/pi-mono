@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IHzn9BiH6rY",
+    "language": "en",
+    "took_ms": 7697,
+    "method": null,
+    "title": "DEF CON 33 - Loading Models, Launching Shells: Abusing AI File Formats fr Code Execution - C Parzian",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1120,
+    "description": "Everyone knows not to trust pickle files, but what about .onnx, .h5, or .npz? This talk explores how trusted file formats used in AI and large language model workflows can be weaponized to deliver reverse shells and stealth payloads. These attacks rely solely on the default behavior of widely used machine learning libraries and do not require exploits or unsafe configuration.\n\nThe presentation focuses on formats that are not typically seen as dangerous: ONNX, HDF5, Feather, YAML, JSON, and NPZ. These formats are commonly used across model sharing, training pipelines, and inference systems, and are automatically loaded by tools such as onnx, h5py, pyarrow, and numpy. A live demo will show a healthcare chatbot executing code silently when these formats are deserialized, with no user interaction and no alerts. This is a demonstration of how trusted data containers can become malware carriers in AI systems. Attendees will leave with a clear understanding of the risks introduced by modern ML workflows, and practical techniques for payload delivery, threat detection, and hardening against this type of tradecraft.",
+    "view_count": 295
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IHzn9BiH6rY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

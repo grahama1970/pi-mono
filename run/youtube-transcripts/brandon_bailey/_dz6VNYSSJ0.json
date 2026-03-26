@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_dz6VNYSSJ0",
+    "language": "en",
+    "took_ms": 8688,
+    "method": null,
+    "title": "DEF CON 30 -  Jimmy Wylie - Analyzing PIPEDREAM - Challenges in Testing an ICS Attack Toolkit",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2518,
+    "description": "Identified early in 2022, PIPEDREAM is the seventh-known ICS-specific\nmalware and the fifth malware specifically developed to disrupt\nindustrial processes. PIPEDREAM demonstrates significant adversary\nresearch and development focused on the disruption, degradation, and\npotentially, the destruction of industrial environments and physical\nprocesses. PIPEDREAM can impact a wide variety of PLCs including Omron\nand Schneider Electric controllers. PIPEDREAM can also execute attacks\nthat take advantage of ubiquitous industrial protocols, including\nCODESYS, Modbus, FINS, and OPC-UA.\n\nThis presentation will summarize the malware, and detail the\ndifficulties encountered during the reverse engineering and analysis\nof the malware to include acquiring equipment and setting up our\nlab. This talk will also release the latest results from Drago's lab\nincluding an assessment of the breadth of impact of PIPEDREAM's\nCODESYS modules on equipment beyond Schneider Electric's PLCs, testing\nOmron servo manipulation, as well as OPC-UA server manipulation.\nWhile a background in ICS is helpful to understand this talk, it is\nnot required. The audience will learn about what challenges they can\nexpect to encounter when testing ICS malware and how to overcome them.",
+    "view_count": 3458
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _dz6VNYSSJ0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

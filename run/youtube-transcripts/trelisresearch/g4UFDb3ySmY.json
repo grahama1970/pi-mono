@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "g4UFDb3ySmY",
+    "language": "en",
+    "took_ms": 8790,
+    "method": null,
+    "title": "Deepseek Coder vs CodeLlama vs Claude vs OpenAI",
+    "channel": "Trelis Research",
+    "upload_date": "20231106",
+    "duration_sec": 1649,
+    "description": "Trelis.com - for inference, fine-tuning and function-calling scripts.\n\n* Deepseek Inference *\nOne-click template: https://runpod.io/gsc?template=51tpe9tqk2&ref=jmfkcdio\nTheBloke AWQ: https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-AWQ\n\n* Deepseek 1.3B, 6.7B and 33B function-calling models *\nhttps://huggingface.co/Trelis/deepseek-coder-33b-instruct-function-calling-v2\n\n* Inference Guide *\nhttps://trelis.com/enterprise-server-api-and-inference-guide/\n\n* Fine-tuning Scripts *\nhttps://trelis.com/advanced-fine-tuning-scripts/\nFull Repo Includes:\n- LLM Comparison Notebook from this video\n- Supervised fine-tuning\n- Unsupervised fine-tuning\n- Quantization scripts\n- Function calling / Structured response fine-tuning\n- Embeddings notebook\nOR buy only the LLM Comparison Notebook here: https://buy.stripe.com/5kAcNy8G12Hxg7edRr\n\n\nChapters:\n0:00 Deepseek coder\n0:24 Agenda\n1:03 Model sizes and license\n2:02 Prompt format\n3:36 Inference on Runpod\n5:05 Performance vs CodeLlama, OpenAI, Claude\n7:04 Returning a sequence in reverse\n10:40 Passkey retrieval\n16:23 Website generation\n24:20 Function calling\n25:22 Resources",
+    "view_count": 6717
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] g4UFDb3ySmY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "n55MINKCpSk",
+    "language": "en",
+    "took_ms": 9059,
+    "method": null,
+    "title": "Communications Policy and Looking to the Future: A Fireside",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 3711,
+    "description": "FCC Commissioner McDowell has often noted that decreasing the burdens of onerous or unnecessary regulations increases investment, spurs innovation, accelerates competition, lowers prices, creates jobs and serves consumers. He has also expressed his view that the FCC should approach its statutory mission through a deregulatory lens, as Congress intended. Hudson Institute's Center for Economics of the Internet is pleased to invite you to a fireside chat between current FCC Commissioner Robert McDo",
+    "view_count": 22
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] n55MINKCpSk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

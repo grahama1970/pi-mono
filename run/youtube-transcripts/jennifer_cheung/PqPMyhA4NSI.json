@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PqPMyhA4NSI",
+    "language": "en",
+    "took_ms": 8730,
+    "method": null,
+    "title": "DEF CON 33 - Amber64 - Mining Hacker History from Over 500k Commodore 64 Disks - Wesley McGrew",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2653,
+    "description": "The Commodore 64 home computer, which sold at least 12.5 million units from 1982 to 1994, was widely used during a formative early decade in the subcultures of hacking, phreaking, piracy, and cybercrime. Like ancient insects trapped in amber, discovered and studied millions of years later, ephemera of hacker history has been fortuitously preserved in the file system structures of C64 floppy disks from the 1980s and 90s.\n\nEnthusiasts and researchers have created byte-for-byte copies of disks in order to preserve games, applications, and demos of the time period. What is less obvious, however, is that users of the time tended to reuse disks, deleting old files to make space for new programs. This and other use patterns have resulted in interesting data being retained in unallocated sectors alongside the overtly-accessible programs and data. Often, this data can be recovered and includes logs of online sessions, hacker text files, and more.\n\nIn this talk, Dr. McGrew describes software and workflow he developed to perform forensic processing and full-text indexing of over 650,000 unique C64 floppy disk images from publicly-accessible online archives. He will also present interesting findings from searches and analysis that illustrate, for the modern audience, day-to-day hacker communications and tools of the past.",
+    "view_count": 979
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PqPMyhA4NSI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

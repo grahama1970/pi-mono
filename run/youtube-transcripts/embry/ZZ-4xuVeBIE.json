@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZZ-4xuVeBIE",
+    "language": "en",
+    "took_ms": 9209,
+    "method": null,
+    "title": "How does SpaceX’s Dragon get back to Earth from Orbit? How exactly it re-enters and lands!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20200802",
+    "duration_sec": 1918,
+    "description": "How do you actually get back from orbit? Do you just pump the brakes and fall right out of space? Well, there’s a lot of fun physics involved in deorbiting and today we’ll do a summary of how you deorbit, go over the hardware that allows the Crew Dragon Capsule to reenter and safely splash down, we’ll go over the sequence of events and even the exact conditions that need to be met in order to allow for a safe reentry.\n\nTimestamps:\n00:00 - Intro\n03:10 - Re-Entry Criteria\n05:30 - Crew Dragon Re-Entry Timeline\n12:35 - Hardware Overview\n25:10 - Orbital Mechanics Rundown\n29:30 - Summary\n\nArticle Version (Written by Alex Crouch)\nhttps://everydayastronaut.com/how-to-return-from-orbit\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThis episode wouldn't be possible without my incredible Mission Directors!!! \nZiad ramadan, Arthur Carty, John H, Lawrence Mansour, Bob Lewis, DLB, Joshua Rule, Gerardo Barillas, lil rod, Ryan M., David Glover, Scott G Raderstorf, Nicholas T. Gallman, Mahlon Miller, Max Haot, John Malkin, TTTA, Jared smith, Simon Pilkington, Héctor Ramos, Tomdmay, Mac Malkawi, Ole Mathias Aarseth Heggem, Eric Beavers, John H and Matt Rixon\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 606057
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZZ-4xuVeBIE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

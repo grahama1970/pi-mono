@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DAYst1L9-k4",
+    "language": "en",
+    "took_ms": 9140,
+    "method": null,
+    "title": "Does Putin's Move on Syria Make Russia the New Middle East Power Broker?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150929",
+    "duration_sec": 5524,
+    "description": "Lee Smith, Michael Doran, Tony Badran, & Hannah Thoburn discuss Putin's power play in Syria and the balance of international power in the Middle East.",
+    "view_count": 7546
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DAYst1L9-k4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

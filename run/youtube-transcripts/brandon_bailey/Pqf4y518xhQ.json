@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Pqf4y518xhQ",
+    "language": "en",
+    "took_ms": 8113,
+    "method": null,
+    "title": "DEF CON Safe Mode AppSec Village - Philipp Krenn - Secure Your Code   Injections and Logging",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2779,
+    "description": "This talk combines two of the OWASP top ten security risks to highlight some widespread \"this is fine\" issues:\n\n* Injections (A1:2017): We are using a simple application exploitable by injection and will then secure it with the Web Application Firewall (WAF) ModSecurity.\n* Insufficient Logging & Monitoring (A10:2017): We are logging and monitoring both the secured and the unsecured application with the Elastic Stack.",
+    "view_count": 611
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Pqf4y518xhQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

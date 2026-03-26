@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "k-JaOjm5rbU",
+    "language": "en",
+    "took_ms": 7510,
+    "method": null,
+    "title": "Exploiting XIoT Devices",
+    "channel": "S4 Events",
+    "upload_date": "20230727",
+    "duration_sec": 1819,
+    "description": "Noam Moshe shows how the Claroty research team is identifying vulnerabilities and exploit techniques in XIoT devices. It begins with understanding the architecture, and then moves to identifying attack vectors. He describes:\n- cloud takeover\n- looking for information leaks\n- remote code execution\n\nNoam gives a real world example on an XIoT device.",
+    "view_count": 815
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] k-JaOjm5rbU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

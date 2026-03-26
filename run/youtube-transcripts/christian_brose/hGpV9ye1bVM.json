@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hGpV9ye1bVM",
+    "language": "en",
+    "took_ms": 9234,
+    "method": null,
+    "title": "Gabriel Schoenfeld on the NYC Bomb Plot for Fox News",
+    "channel": "Hudson Institute",
+    "upload_date": "20100510",
+    "duration_sec": 166,
+    "description": "Hudson Senior Fellow Gabriel Schoenfeld discussed the New York City bomb plot with Fox and Friends",
+    "view_count": 238
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hGpV9ye1bVM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

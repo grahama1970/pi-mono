@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "E5BCnASVyN4",
+    "language": "en",
+    "took_ms": 8286,
+    "method": null,
+    "title": "China, Technology, and Mass Surveillance: A Conversation with Congressman Mark Green",
+    "channel": "Hudson Institute",
+    "upload_date": "20220406",
+    "duration_sec": 2131,
+    "description": "China’s rise has been fueled in part by the theft of the intellectual property from American businesses and exploiting loopholes in U.S. copyright law. The technological knowledge gleaned through this malfeasance has been used by Beijing for the mass surveillance and repression of the Chinese people.\n\nCongress is currently considering a bipartisan bill to respond to China’s aggressive behavior and protect American technology, the China Technology Transfer Control Act. Join Hudson Senior Fellow Eric B. Brown and Walter P. Stern Distinguished Fellow Ken Weinstein for a discussion on this legislation with one of its sponsors, Congressman Mark Green (R-TN).\n\nWatch on Hudson.org: https://www.hudson.org/events/2094-virtual-event-china-technology-and-mass-surveillance-a-conversation-with-congressman-mark-green42022",
+    "view_count": 3423
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] E5BCnASVyN4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

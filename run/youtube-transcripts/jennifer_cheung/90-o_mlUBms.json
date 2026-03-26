@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "90-o_mlUBms",
+    "language": "en",
+    "took_ms": 8799,
+    "method": null,
+    "title": "DEF CON 31 - Policy How Hackers Can Work with Govt to Protect High Risk Communities - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2093,
+    "description": "The US cyber workforce consists of 1.2 million professionals, but over half a million jobs in the cybersecurity sector remain vacant, leading to a talent shortage that affects society as a whole, and high-risk communities most particularly. The predicted talent shortage rising to 3.5 million by 2030 suggests that these communities are unlikely to receive the help they need anytime soon.\n\nThe hacker community has been helping high-risk communities for decades. But how can they do so at scale? How can decision makers around the world, in government but also industry and civil society, work together with hackers to create solutions that build cyber resiliency for high-risk communities?\n\nThis public session will explore how governments, industry and civil society can work with the hacker community at large, to develop scalable and systemic solutions to protect those no one should ever attack. It will also aim to identify policy solutions and overall recommendations to generate more secure environments for communities at risk.",
+    "view_count": 548
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 90-o_mlUBms: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_mcC2lG9YDc",
+    "language": "en",
+    "took_ms": 8602,
+    "method": null,
+    "title": "The PyTorch for Deep Learning Professional Certificate is live",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251113",
+    "duration_sec": 138,
+    "description": "Learn more: https://bit.ly/4o70AuF\n\nPyTorch is one of the most widely used frameworks in AI research and production. Its Python-based design makes it easy to experiment, debug, and scale models, from simple prototypes to deployed systems.\n\nThrough this Professional Certificate, you’ll learn how PyTorch powers the full deep learning workflow. Build and train neural networks from scratch, develop deep learning models for computer vision and natural language processing, apply transfer learning and fine-tuning, plus design advanced architectures used in modern AI applications. You’ll also learn to prepare and deploy models for real-world use with tools and methods like ONNX, MLflow, pruning, and quantization.\n\n- Build deep learning systems step-by-step: Code neural networks from the ground up in PyTorch. Work directly with tensors, neural networks, and training loops to create and evaluate your first image classifier.\n- Apply your skills to vision and natural language tasks: Use TorchVision and Hugging Face models, fine-tune pretrained models, compare architectures, and boost performance through hyperparameter tuning.\n- Advance to modern architectures and deployment: Explore the structures behind today’s AI systems, such as Siamese networks, ResNets, DenseNets, and Transformers. Interpret model behavior with saliency maps and class activation maps, and prepare your models for deployment using tools and techniques such as ONNX, MLflow, pruning, and quantization.\n\nEnroll now: https://bit.ly/4o70AuF",
+    "view_count": 7164
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _mcC2lG9YDc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

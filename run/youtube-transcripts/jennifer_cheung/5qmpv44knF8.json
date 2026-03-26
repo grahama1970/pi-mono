@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5qmpv44knF8",
+    "language": "en",
+    "took_ms": 8780,
+    "method": null,
+    "title": "DEF CON 33 -Voting Village - Protecting Election Researchers Globally - Miracle Owolabi",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 891,
+    "description": "Across the world, ethical hackers and researchers working to improve election security often operate in legal gray zones.\n\nWhile the U.S. has seen high-profile efforts around voting machine testing, post-election audits, and researcher collaboration, many countries in the Global South still criminalize or discourage independent security testing even when it aims to protect democracy. This talk explores the legal and institutional risks faced by election security researchers in countries like Nigeria, where old cybercrime laws, state distrust, and political retaliation pose real threats. I’ll compare legal environments in the U.S. and emerging democracies, highlighting how Nigeria’s laws suppress the same practices that once exposed major flaws in U.S. voting systems.\n\nThrough case studies which include a vulnerable Nigerian biometric system that researchers were barred from testing, the presentation shows how these legal risks leave democracies dangerously exposed.\n\nMr. Owolabi argues to expand the “safe harbor” concept to include not just vulnerability disclosures, but electoral research itself. I will outline how adapting U.S. safe harbor models (like those proposed in the ELECT Act) could protect researchers abroad while strengthening global election integrity by drawing parallels to California’s Top-to-Bottom Review (TTBR). By bringing a Global South perspective to the Voting Village, this talk invites participants to consider a more inclusive and international approach to securing elections.\n\n(Note: This talk was accepted for presentation at the DEF CON Voting Village, but could not be presented live because for unknown reasons Mr. Owolabi was not granted a visa to enter the United States. This is the talk he would have given in person if he could have.)",
+    "view_count": 458
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5qmpv44knF8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

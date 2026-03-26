@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P-LDkCygCcE",
+    "language": "en",
+    "took_ms": 8735,
+    "method": null,
+    "title": "Ed Schweitzer Clip on Complexity and Waynes World",
+    "channel": "S4 Events",
+    "upload_date": "20200903",
+    "duration_sec": 158,
+    "description": "Ed Schweitzer of Schweitzer Engineering Laboratories (SEL) went from insightful to technical to funny in our S4x20 onstage interview. This 3-minute clip discusses resetting complexity in a product/system and ends with Wayne's World. #icssecurity #s4xevents",
+    "view_count": 192
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P-LDkCygCcE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

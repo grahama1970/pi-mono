@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZtCMnKHZJUM",
+    "language": "en",
+    "took_ms": 8626,
+    "method": null,
+    "title": "DEF CON Safe Mode Demo Labs  - Matthew Creel - redlure",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1742,
+    "description": "redlure can be described as a distributed phishing platform. There is a centralized API (redlure-console) where you can create the different aspects of your phishing campaigns. This console controls secondary servers running a more basic API (redlure-workers) that do the actual hosting of your phishing sites/files and communicate results back to the main server. Obviously there are existing tools that can accomplish phishing, but here are a few features to this tool that differentiate it and will be described in the abstract.",
+    "view_count": 451
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZtCMnKHZJUM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

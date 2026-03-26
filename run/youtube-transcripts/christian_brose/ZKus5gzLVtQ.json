@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZKus5gzLVtQ",
+    "language": "en",
+    "took_ms": 8234,
+    "method": null,
+    "title": "Strategic Implications of the Chinese Economic Slowdown: Challenges and Opportunities for America",
+    "channel": "Hudson Institute",
+    "upload_date": "20151119",
+    "duration_sec": 3236,
+    "description": "John Lee discusses China's economic slowdown and its implications for domestic policy and the PLA's capacity to project power.",
+    "view_count": 1724
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZKus5gzLVtQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

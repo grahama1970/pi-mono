@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sNutDYMkNAo",
+    "language": "en",
+    "took_ms": 7649,
+    "method": null,
+    "title": "PLC EDR: Model Checking Of Logic",
+    "channel": "S4 Events",
+    "upload_date": "20220711",
+    "duration_sec": 1777,
+    "description": "What would endpoint detection and response look like in PLC's and other Level 1 devices. Roberto Bruttomesso makes the case that model checking of PLC logic is one approach that should be considered. The technique converts ladder logic to a model. Then a query is submitted to the model checker and a result is given. Roberto provides some examples to show how this works.\n\nThis technical session was on S4x22's Stage 2: Technical Deep Dives.",
+    "view_count": 632
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sNutDYMkNAo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

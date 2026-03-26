@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Fg0dATm156Y",
+    "language": "en",
+    "took_ms": 8883,
+    "method": null,
+    "title": "ICS Security Month In Review - June",
+    "channel": "S4 Events",
+    "upload_date": "20220707",
+    "duration_sec": 3381,
+    "description": "This month's stories:\r\n\r\n1. Dragos (Rob Lee/Bloomberg and Dragos OT-CERT)\r\n2. OT:ICEFALL (I'll be joined by Forescout's Daniel dos Santos)\r\n3. Dept of Energy's Cyber-Informed Engineering Strategy Document\r\n\r\nPlus my win, fail and prediction for the month ... and hopefully lots of your comments and questions in this Unsolicited Response Live episode.",
+    "view_count": 162
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Fg0dATm156Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

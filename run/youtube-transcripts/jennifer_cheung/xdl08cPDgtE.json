@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xdl08cPDgtE",
+    "language": "en",
+    "took_ms": 7847,
+    "method": null,
+    "title": "DEF CON 33 - Your Passkey is Weak: Phishing the Unphishable - Chad Spensky, Ph D",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1453,
+    "description": "While passkeys are being touted as the end of phishing, they might be putting your organization at even more risk. In this talk I will demonstrate a relatively straightforward phishing attack against “phishing-resistant” synced passkeys and provide guidance and advice for responsible passkey usage.",
+    "view_count": 1388
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xdl08cPDgtE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

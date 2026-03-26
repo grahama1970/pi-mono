@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7IFsoRaYYgs",
+    "language": "en",
+    "took_ms": 9406,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - How AI Is Revolutionizing Phishing Attacks & Defenses - Levone Campbell",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1950,
+    "description": "This thought-provoking session dives into the dual-edged role of artificial intelligence in the phishing ecosystem. On one side, AI is enabling attackers to craft more convincing and scalable phishing campaigns, making detection increasingly difficult. On the other, it's empowering defenders with smarter tools for real-time detection, adaptive filtering, and behavioral analysis.",
+    "view_count": 1705
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7IFsoRaYYgs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

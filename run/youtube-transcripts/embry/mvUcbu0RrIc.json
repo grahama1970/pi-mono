@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mvUcbu0RrIc",
+    "language": "en",
+    "took_ms": 12350,
+    "method": null,
+    "title": "Watch Astronauts Launch to Space on the Awesome Soyuz Rocket!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20201014",
+    "duration_sec": 5454,
+    "description": "Cosmonauts Sergey Ryzhikov and Sergey Kud-Sverchkov, and NASA astronaut Kate Rubins are launching from the Baikonur Cosmodrome in Kazakhstan as part of the Soyuz (“Saw-YOOZ”) MS-17 mission. They are traveling to Low Earth Orbit for rendezvous with the International Space Station (ISS). This flight is Soyuz MS-17. This crew will join  Expedition 63 on the ISS, taking the crew complement to 6. The current ISS crew will leave soon after, forming the start of Expedition 64. They will be joined two weeks later by SpaceX’ Crew 1 flight, raising the crew complement to 7.\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 128565
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mvUcbu0RrIc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

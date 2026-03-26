@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QSD4yg0YZ2E",
+    "language": "en",
+    "took_ms": 8015,
+    "method": null,
+    "title": "October ICS Security Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20211103",
+    "duration_sec": 3046,
+    "description": "Clay Carter, VP and Head of Product Security at Xylem, joins Dale Peterson to discuss the top 3 stories of the month and give their win, fail and prediction. The stories:\n\n- what did CISA's Water & Wastewater Alert mean to those sectors and a broader discussion on what would be helpful to those sectors.\n\n- Drago's raising $200M at a post money valuation of $1.7B.\n\n- Shodan Trends and how it could be used by asset owners and potentially .gov.",
+    "view_count": 392
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QSD4yg0YZ2E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

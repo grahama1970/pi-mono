@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H-bhmSwnRdY",
+    "language": "en",
+    "took_ms": 8687,
+    "method": null,
+    "title": "DEF CON 32 - Exploiting the Unexploitable Insights from the Kibana Bug Bounty -  Mikhail Shcherbakov",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2750,
+    "description": "We explore case studies of exploiting vulnerabilities in modern JavaScript and TypeScript applications, drawing on experiences from participating in the Kibana Bug Bounty Program. It's not uncommon to encounter a vulnerability that appears unexploitable at first glance, or to be told by a triage team that the behavior is \"by design.\" So, what options does a security researcher have in such situations? And what primitives can be utilized to construct an exploitation chain with significant impact?\n\nOur study involves breaking out of properly isolated containers in scenarios where there is RCE-by-design. We will examine several Prototype Pollutions that crash an application in less than one second after exploitation and explore how these vulnerabilities can ultimately lead to critical RCEs. Furthermore, we introduce new primitives and gadgets that enable the achievement of RCE from Prototype Pollutions previously deemed unexploitable beyond DoS attacks.\n\nBy highlighting these methods, the talk aims to equip attendees with advanced techniques for exploiting complex vulnerability chains in JavaScript applications, as well as recommendations for proper defense and mitigations against them.",
+    "view_count": 1343
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H-bhmSwnRdY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

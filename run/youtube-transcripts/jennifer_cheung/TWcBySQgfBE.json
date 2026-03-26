@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TWcBySQgfBE",
+    "language": "en",
+    "took_ms": 9685,
+    "method": null,
+    "title": "DEF CON 29 Adversary Village - Mauro Eldritch, Luis Ramirez - Everything is a C2 if you're brave",
+    "channel": "DEFCONConference",
+    "upload_date": "20210816",
+    "duration_sec": 2504,
+    "description": "It is truly amazing how many and diverse methods an attacker has to \"call home\", exfiltrate information, or coordinate the next steps in his chain of attack. In this talk we will demonstrate (and automate) the most wacky, unexpected, and interesting methods for setting up a C2 server: Messaging apps? social media profiles? video games or gaming platforms? Yes, and there's more. The more sacred and innocent an app appears to be, the higher the score for us when weaponizing it. We will explain from scratch the function, the construction and even the automation with Ruby and Python of C2 servers based on a wide range of applications of common and daily use. For this we will use a fake toy ransomware, which will try to call home, exfiltrate information and coordinate an attack in the most crazy,bizarre and above all ... unexpected ways. Lots of short demos make this talk suitable to both newcomers and experienced people.",
+    "view_count": 2231
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TWcBySQgfBE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

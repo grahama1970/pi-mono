@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DRMX9YzmYMQ",
+    "language": "en",
+    "took_ms": 8044,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Eric Sondhi: Small AI: The Next Big Thing",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251204",
+    "duration_sec": 1803,
+    "description": "At AI Dev 25 in New York City, Eric Sondhi, Senior Manager Developer Marketing Strategy at ARM, discussed the two emerging paths for AI: big AI and small AI.\n\nLocal, power-efficient, open-source models that run directly on your devices are proving to be compelling alternatives to the large, centralized, costly frontier and foundation models that have been at the forefront of the AI landscape to date. \n\nSondhi discussed how Small AI can empower developers everywhere to innovate by overcoming economic, technical, and accessibility limitations of \"Big AI\" alongside some of the challenges and potential solutions for leveraging and adopting Small AI.\n\n------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 610
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DRMX9YzmYMQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fKlW9vOs7X4",
+    "language": "en",
+    "took_ms": 8173,
+    "method": null,
+    "title": "CSAF, Not SBOM, Is The Solution",
+    "channel": "S4 Events",
+    "upload_date": "20221128",
+    "duration_sec": 1706,
+    "description": "Jens Wiesner of BSI in Germany makes the case that CSAF is the key standard to help solve the vulnerability management problem in OT.\n\nHe begins with some basic ICS security patching challenges. The session gets cooking at 9:15 when Jens gets into the Common Security Advisory Framework (CSAF). This is a common, vendor independent standard on how to present advisory information in a machine readable format. This allows asset owners to filter advisories based on various fields.\n\nJens contends that vendors need SBOMS, and asset owners need CSAF not SBOMs because they need actionable information. He also contends that CSAF can provide the same information, actually more information, that VEX is envisioned to provide when completed.",
+    "view_count": 1718
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fKlW9vOs7X4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

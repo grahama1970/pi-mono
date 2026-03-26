@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lJuOR72PRBM",
+    "language": "en",
+    "took_ms": 8369,
+    "method": null,
+    "title": "National Security, Privacy, and Renewing the USA PATRIOT Act",
+    "channel": "Hudson Institute",
+    "upload_date": "20150603",
+    "duration_sec": 3417,
+    "description": "Representative Mike Pompeo will join former FCC Commissioner and Hudson Senior Fellow Robert McDowell for a conversation on the USA PATRIOT Act. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 376
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lJuOR72PRBM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

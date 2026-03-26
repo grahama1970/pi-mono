@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SOPftW_muSQ",
+    "language": "en",
+    "took_ms": 9404,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Manish Kapur: Assessing the Quality of AI Generated Code",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 1624,
+    "description": "This session by Manish Kapur, Sr. Director, Product and Solutions at Sonar, revealed Sonar's new research into the unique coding \"personalities\" and flaws of leading LLMs, based on their experience analyzing over 300 billion lines of code daily. \n\nKapur shared these key findings and showed how SonarQube enables teams to adopt AI coding tools with confidence, turning a critical business challenge into a competitive advantage.\n\n-----------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 363
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SOPftW_muSQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

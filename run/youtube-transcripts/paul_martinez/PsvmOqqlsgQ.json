@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PsvmOqqlsgQ",
+    "language": "en",
+    "took_ms": 9157,
+    "method": null,
+    "title": "Modified ROP Chain Generators To Identify Potential Code Execution Exploits",
+    "channel": "S4 Events",
+    "upload_date": "20250813",
+    "duration_sec": 1672,
+    "description": "ROP (return-oriented programming) is today the de facto standard technique for performing arbitrary code execution attacks. Ulf describes the development and use of a tool that will tell you which components of your code base are most at risk of ROP attacks. \n\nThe goal is a vulnerability-independent analysis of risk-of-exploitability for memory based vulnerabilities in embedded systems.\n\nThe session describes the how and why this tool differs from other ROP generators. It ends by presenting comprehensive exploitation risk analyses of real, deployed software images from ICS vendors.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 170
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PsvmOqqlsgQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

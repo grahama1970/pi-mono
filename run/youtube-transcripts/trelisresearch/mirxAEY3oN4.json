@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mirxAEY3oN4",
+    "language": "en",
+    "took_ms": 8516,
+    "method": null,
+    "title": "How to Beat ARC AGI 2?",
+    "channel": "Trelis Research",
+    "upload_date": "20250716",
+    "duration_sec": 1823,
+    "description": "🤝Join the Team | Sponsor the Team: Trelis.com/arc-agi-2\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1NFjeFxoi4_JssxT-FXkVjr_gMTZs0f9qdlZQvTxukjU/edit?usp=sharing\n- How to Beat ARC AGI 2 Blog: https://lewish.io/posts/how-to-beat-arc-agi-2\n- ARC Prize Tasks: https://arcprize.org/play?task=e3721c99\n\nTIMESTAMPS:\n0:00 Introduction and Team Formation\n01:10 Overview of ARC AGI Challenge\n03:13 Call for Team Members and Sponsors\n04:07 Hypotheses for Solving ARC\n05:42 Detailed Explanation of Hypotheses\n06:18 Understanding Program Generation and Primitives\n18:51 Training Data and Expressive Primitives\n23:52 Test Time Adaptation\n28:35 Research Plan and Conclusion",
+    "view_count": 1648
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mirxAEY3oN4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

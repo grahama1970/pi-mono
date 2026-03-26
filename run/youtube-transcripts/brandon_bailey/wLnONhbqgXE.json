@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wLnONhbqgXE",
+    "language": "en",
+    "took_ms": 9486,
+    "method": null,
+    "title": "DEF CON Safe Mode Recon Village - Master Chen - Twitter Word Phrequency",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 1899,
+    "description": "What you say can hurt you, but how? In this talk, I will take a deep dive into Twitter Word Phrequency analysis and the implications of the resulting data. I will cover data acquisition, curation, analysis, weaponization, and maybe even profit. What is revealed by everyday social media engagent? Predictive speech? Password lists? Automated trolling? Let's find out!",
+    "view_count": 489
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wLnONhbqgXE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

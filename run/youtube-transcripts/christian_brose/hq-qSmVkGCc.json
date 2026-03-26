@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hq-qSmVkGCc",
+    "language": "en",
+    "took_ms": 28636,
+    "method": null,
+    "title": "Assessing the Obama Doctrine in the Middle East ─ What Next?",
+    "channel": "Hudson Institute",
+    "upload_date": "20160408",
+    "duration_sec": 6006,
+    "description": "Senator Lindsey Graham gave remarks at a panel on the Middle East featuring Robert Satloff, Amb. Eric Edelman, Michele Dunne, and Michael Doran.",
+    "view_count": 1944
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hq-qSmVkGCc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

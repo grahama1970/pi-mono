@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8cANuTuAkds",
+    "language": "en",
+    "took_ms": 10421,
+    "method": null,
+    "title": "DEF CON 31 War Stories - UNConventional Cybercrime -  Bad Treaty Becoming Law - Rodriguez, Budington",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 1519,
+    "description": "Heads up DEF CON! The future of hacking, cybersecurity, and human rights are at risk as the United Nations negotiates a draft UN cybercrime treaty that has the potential to substantively reshape anti-hacking law around the world. The proposed Treaty could change the game for security researchers and coders like you. With Russia and China playing an initial role in pushing for this treaty, the future for security researchers’s rights could be at risk.\n\nJoin us as we deep dive into the murky waters of these negotiations, exploring its risks for security and human rights, including the universal criminalization of network and device intrusion without any protections for legitimate security research. The lack of legal shield for security researchers could hinder bug bounties, responsible vulnerability disclosure, and pentesting. We'll discuss the geopolitical complexities, and the vital role you can play.\n\nEFF has been on the front lines in Vienna, attending the negotiations and representing the interests of our members since the start, and we need your help. Your insights and experiences are crucial. Together we will review the text, identify new challenges that you may face so we can better understand the community concerns. Let’s champion together a future where security research and human rights can thrive!",
+    "view_count": 5041
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8cANuTuAkds: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

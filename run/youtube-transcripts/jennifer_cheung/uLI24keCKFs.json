@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uLI24keCKFs",
+    "language": "en",
+    "took_ms": 7817,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village -  Felipe Pr0teus - Hunting for AWS Exposed Resources",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 1591,
+    "description": "Like all major public cloud providers, AWS allows users to expose managed resources like S3 buckets, SQS queues, RDS databases, and others publicly on the Internet. There are legitimate uses for making resources public, such as publishing non-sensitive data. However, we often find that this functionality is mistakenly used, often due to a lack of cloud security expertise, to erroneously expose sensitive data. News of exposed S3 buckets are sadly very frequent in the specialized media. It is important to note, however, that there are many other relevant kinds of AWS resources that can be equally dangerous when publicly exposed but that doesn't get nearly as much scrutiny as S3 buckets. In this talk we are going to describe some of the methods that researchers and attackers use to discover and exploit these publicly exposed resources, and how cloud providers and defenders can have taken action to monitor, prevent and respond to these activities.",
+    "view_count": 1093
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uLI24keCKFs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

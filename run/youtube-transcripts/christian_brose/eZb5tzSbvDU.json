@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eZb5tzSbvDU",
+    "language": "en",
+    "took_ms": 8728,
+    "method": null,
+    "title": "Under Pressure: The Trajectory of U.S.-Turkish Relations",
+    "channel": "Hudson Institute",
+    "upload_date": "20190522",
+    "duration_sec": 5468,
+    "description": "Hudson Institute will host a discussion exploring the interplay between internal and external developments in Turkey and what it portends for U.S.-Turkish relations. Panelists will include the Svante Cornell, senior fellow at the American Foreign Policy Council; Alan Makovsky, senior fellow at Center for American Progress; Blaise Misztal, a fellow at Hudson Institute; and Lisel Hintz, assistant professor at Johns Hopkins University’s School of Advanced International Studies. The discussion will be moderated by Hudson Senior Fellow Lee Smith.\n\nTurkish President Erdogan has suffered setbacks in recent weeks, both domestic and international. In the March 31 local elections, his party lost control of most of Turkey’s major cities, including Ankara, and Istanbul—until the election board suspiciously ordered a new election. Meanwhile, the United States has increasingly urged Turkey to suspend its purchase of the Russian S-400 air defense system, threatened to pull Turkey out of the F-35 prog - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 7296
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eZb5tzSbvDU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S24RSuAasU8",
+    "language": "en",
+    "took_ms": 3196,
+    "method": null,
+    "title": "Tevi Troy on Medicare and the 2012 Election for Fox Business",
+    "channel": "Hudson Institute",
+    "upload_date": "20110907",
+    "duration_sec": 240,
+    "description": "Hudson Senior Fellow Tevi Troy joined Fox Business on September 6, 2011 to discuss his newest piece in Commentary Magazine entitled \"Mediscare\". The article can be read here: http://tinyurl.com/3epsu8v. How much will the debate over medicare affect the 2012 presidential election?",
+    "view_count": 266
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S24RSuAasU8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XOavekICZaE",
+    "language": "en",
+    "took_ms": 9134,
+    "method": null,
+    "title": "Create an AI Assistant or Endpoint for your Documents",
+    "channel": "Trelis Research",
+    "upload_date": "20240809",
+    "duration_sec": 175,
+    "description": "Key \"how-to\" videos:\n➡️ BM25 and Similiarity Retrieval Video: https://youtu.be/9QJXvNiJIG8\n➡️ Citation Verification Video: https://youtu.be/-wGzSnhQKPM\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n➡️ Trelis Endpoints: The hosted service has been discontinued. Reach out via a consulting inquiry on Trelis.com if you would like support for deployment.\n\nCredit Rohan Sharma for help building Trelis Endpoints as part of the Trelis Internships program (find out more at Trelis.com/internships).\n\nTIMESTAMPS:\n0:00 Upload docs, get an OpenAI-style endpoint\n0:21 Trelis Endpoints Demo\n1:53 How we built this!",
+    "view_count": 1004
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XOavekICZaE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

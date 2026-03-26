@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DQuWbKwpbhg",
+    "language": "en",
+    "took_ms": 8576,
+    "method": null,
+    "title": "Will Your Protection System Work In A Cyber Incident?",
+    "channel": "S4 Events",
+    "upload_date": "20190203",
+    "duration_sec": 1939,
+    "description": "Protection and Safety systems are designed and deployed to prevent high consequence incidents from happening. The ICSsec community has seen examples where these systems have been hacked and modified, Stuxnet and Triton, to prevent proper operation. But what if it isn't even necessary to attack the safety or protection system to prevent it from doing it's one task?\n\nThis video shows the result of a research team conducting network testing of a power and load shedding system against a large simulator for a customer's power system feeding a very large oil field. A number of test cases to prove the protection systems operated as anticipated, this became the base-line for performance. After getting the base line measurements, the team started to break various links in the network, and other degrading actions and various network loads, and measured the impact to the protection system being able to perform its tasks.\n\nThis video shows the testing methodology, results and lessons learned for you to insure you can rely on your safety and protection systems to perform as expected and required during any type of incident",
+    "view_count": 446
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DQuWbKwpbhg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

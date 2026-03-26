@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0_kTOcvupaM",
+    "language": "en",
+    "took_ms": 8974,
+    "method": null,
+    "title": "Bringing Containers Into The ICS Space",
+    "channel": "S4 Events",
+    "upload_date": "20220512",
+    "duration_sec": 1778,
+    "description": "Brian Foster asks, and answers, the question of should we bring containers into the ICS space. He covers, in a number of different ways, the importance and techniques to maintain the persistence of data as containers are brought down and up.\n\n18:55 dives into whether you system & company are good, or not good, candidates for a containerized ICS environment.\n\nKey benefits\n- rolling updates\n- test beds\n- dynamic scalability (only an issue with certain sectors such as distributed energy resources)\n- support for agile development / DevOps\n\nBrian also goes into the downsides and challenges of bringing containers into the ICS space.\n\nThe Q&A at the end is quite good.",
+    "view_count": 1021
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0_kTOcvupaM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

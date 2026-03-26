@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H8Y-j0sYqvo",
+    "language": "en",
+    "took_ms": 8021,
+    "method": null,
+    "title": "DEF CON 32 - Fine Grained Authorisation with Relationship Based Access Control - Ben Dechrai",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1721,
+    "description": "Who can tag me in a post? If I move this file to another folder, who now has access? If my owner breaks up with his friend, will I still get a bone?\n\nWhether you're a human, or a dog, let's face it, authorisation is hard. Role-based access control is a great starting point but hard to scale. Attribute-based access control scales better, but neither are much good at answering more complex conditions, like whether friends-of-friends can read your posts. For such situations, we generally have to wrap this up into business logic.\n\nThis is where relationship-based access control (ReBAC) comes in, offering a nuanced approach to accessing resources without codifying that into the applications.\n\nIn this session, we'll look at how to define these relationships, experience live demos, and discover how we can deploy our own fine-grained authorisation service. Expect some tail-wagging insights and a few laughs as we explore access control from a canine's point of view.",
+    "view_count": 356
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H8Y-j0sYqvo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

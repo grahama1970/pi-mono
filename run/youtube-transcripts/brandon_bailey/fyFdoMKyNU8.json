@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fyFdoMKyNU8",
+    "language": "en",
+    "took_ms": 9542,
+    "method": null,
+    "title": "DEF CON Safe Mode Blue Team Village - Panel - Incident Response Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 4583,
+    "description": "Our panel of experts will discuss lessons learned from their experiences on the front lines of incident response. What happens during a breach? What are common mistakes victims make? What are key steps you can take to prepare for the worst? How can you best secure your organization today?",
+    "view_count": 804
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fyFdoMKyNU8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

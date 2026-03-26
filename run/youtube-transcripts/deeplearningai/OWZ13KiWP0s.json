@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OWZ13KiWP0s",
+    "language": "en",
+    "took_ms": 7809,
+    "method": null,
+    "title": "New course! Enroll in Building Code Agents with Hugging Face smolagents",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250423",
+    "duration_sec": 138,
+    "description": "Learn more: https://bit.ly/3RrxUhi\n\nLearn how to build code agents in Building Code Agents with Hugging Face smolagents, created in collaboration with Hugging Face, and taught by Thomas Wolf, co-founder and CSO, and Aymeric Roucher, Project Lead.\n\nTool-calling agents use large language models to write out multiple function calls sequentially to complete a complex sequence of tasks. They generate one function call, execute it, observe, reason, and then decide what to do next. Code agents take a different approach. They consolidate all these calls into a single block or snippet of code, letting the LLM lay out an entire plan of action at once.  That block can be executed efficiently, providing more reliable results.\n\nIn this short course, you’ll learn how to build your own code agents using smolagents, a lightweight agentic framework from Hugging Face. Along the way, you’ll explore real-world use cases, learn how to run LLM-generated code safely, and build an evaluation system that optimizes your code agent for production.\n\nIn detail, you’ll learn:\n\n- How agentic systems have evolved, gaining greater levels of agency over time—and why code agents are the next big step.\n- The core idea of code agents and how they write their actions in code.\n- The benefits of code agents by comparing their performance to function-calling agents.\n- How to run code agents safely in your system using a constrained Python interpreter and sandboxing using E2B.\n- To trace, debug, and assess the code agent to optimize its behaviour as it handles a flow of complex requests.\n- How to build a research multi-agent system that can find information online and organize it into an interactive report.\n\nBy the end of this course, you’ll know how to build and run code agents using smolagents, understand their advantages over tool-calling agents, and be ready to deploy them safely with a structured evaluation system in your projects.\n\nEnroll now: https://bit.ly/3RrxUhi",
+    "view_count": 4046
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OWZ13KiWP0s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

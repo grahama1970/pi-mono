@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CERGVC0IzHs",
+    "language": "en",
+    "took_ms": 9664,
+    "method": null,
+    "title": "Learn LLM app development by designing an AI game in this new course",
+    "channel": "DeepLearningAI",
+    "upload_date": "20241120",
+    "duration_sec": 123,
+    "description": "Enroll now: https://bit.ly/4ey5cEA\n\nJoin \"Building an AI-Powered Game,\" and learn how to build an LLM-based application by creating your own AI-powered game. \n\nNiki Birkner, Senior Product Manager at Together AI, and Nick Walton, CEO and Co-Founder of Latitude, will guide you through the process of creating a world with hierarchical content generation based on a prompt, setting up its core mechanics, and giving it a simple Gradio user interface. \n\nBy the end of this course, you’ll have a playable game to share with your friends, built from scratch using LLMs.\n\nWhat you’ll do: \n\n- Use prompt engineering to create a world with a consistent narrative so that the AI can flesh out your game.\n- Build the first version of your game with a user interface, load the world, and define the core action loop of the game, so you can have a game to play and interact with.\n- Implement safe user-dependent and context-dependent guardrails into your game application with Llama Guard and custom content policy.\n- Learn LLM tool calling by adding story and state components that improve your game's memory, track inventory, and show progress.  \n\nHone your AI skills by building your own sharable game. Start today! \n\nLearn more: https://bit.ly/4ey5cEA",
+    "view_count": 4263
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CERGVC0IzHs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

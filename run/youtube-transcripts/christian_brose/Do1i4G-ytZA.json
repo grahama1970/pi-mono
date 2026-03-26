@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Do1i4G-ytZA",
+    "language": "en",
+    "took_ms": 7793,
+    "method": null,
+    "title": "Charles Blahous on Pay-Go and Congress",
+    "channel": "Hudson Institute",
+    "upload_date": "20091110",
+    "duration_sec": 423,
+    "description": "Hudson Institute Senior Fellow Charles Blahous discusses the concept of Pay-Go and how Congress uses this in regards to the federal deficit and budget. Pay-Go says that Congress should not take any action that increases the deficit. If Congress acts to increase spending, it has to offset that spending with cuts elsewhere in the budget.",
+    "view_count": 72
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Do1i4G-ytZA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

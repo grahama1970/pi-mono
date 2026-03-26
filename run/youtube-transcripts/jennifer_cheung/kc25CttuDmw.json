@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kc25CttuDmw",
+    "language": "en",
+    "took_ms": 7719,
+    "method": null,
+    "title": "DEF CON 32 - Social Engineering Like you’re Picard - Jayson E  Street",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2809,
+    "description": "AI is transforming social engineering. Using tools like ChatGPT, Gemini, and Copilot, attackers can make phishing and vishing attacks nearly impossible to distinguish from legitimate Interactions. This presentation will demonstrate how virtually anyone with a pulse can now use AI to craft sophisticated phishing sites and conduct vishing operations with unprecedented subtlety and effectiveness. These next-generation techniques are transforming the landscape of social engineering.\n\nYou will learn how to replicate these advanced techniques to elevate your own social-engineering game. You will learn how criminals can manipulate AI tools to simulate real-world attacks and gain a deeper insight into their tactics. You’ll learn how to use A.I. to enhance how you attack now & ways for it to supplement skills you don’t currently have.\n\nYou will learn how to leverage these techniques to transform an organization’s, traditional, “security awareness” mentality into a “situational awareness” mindset. Using real-world examples, we demonstrate turning potential threats into teachable moments.\n\nThis session is essential for anyone looking to harness the power of AI in hacking and Red Teaming. We offer practical skills to engage employees and enhance your approach to social engineering both offensively and defensively. And yes, we do this with a certain theme in mind as I ENGAGE the audience as we boldly go where no Hackers have gone before!",
+    "view_count": 63936
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kc25CttuDmw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

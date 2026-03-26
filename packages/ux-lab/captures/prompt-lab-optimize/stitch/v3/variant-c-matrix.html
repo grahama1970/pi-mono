@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Lab — Optimize Live Tab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* NVIS MIL-STD-3009 Dark Theme Colors */
+        :root {
+            --bg-color: #0b1220;
+            --surface-color: #111827;
+            --border-color: #1e293b;
+            --text-color: #e2e8f0;
+            --text-light-color: #a0aec0; /* A lighter text color for less important info */
+            --accent-purple: #7c3aed; /* For conceptual tags, divider, round badge */
+            --accent-blue: #3a8ded;   /* For tactical tags */
+            --accent-green: #00ff88;  /* For converged status, pass, approve */
+            --accent-red: #ff4444;    /* For failed status, fail, reject */
+            --accent-amber: #ffaa00;  /* For running status, still optimizing, agent rewrite */
+
+            /* Specific tints for backgrounds with opacity */
+            --red-tint-bg: #ff444433; /* For failure brief background */
+            --amber-tint-bg: #ffaa0033; /* For agent rewrite background */
+            --green-pass-bg: #00ff881a; /* For pass icon background */
+            --red-fail-bg: #ff44441a; /* For fail icon background */
+
+            /* Fonts */
+            --font-primary: 'Inter Variable', 'Inter', sans-serif;
+            --font-mono: 'SF Mono', 'Roboto Mono', 'Ubuntu Mono', monospace;
+        }
+
+        /* Base styles */
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll */
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Main container for the whole application */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: hidden; /* Ensure inner components manage their scroll */
+        }
+
+        /* Container for the side-by-side lanes */
+        .lanes-container {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden; /* Important for independent scrolling lanes */
+        }
+
+        /* Thick purple divider */
+        .lane-divider {
+            width: 8px; /* Thick purple divider */
+            background-color: var(--accent-purple);
+            flex-shrink: 0; /* Don't allow it to shrink */
+        }
+
+        /* Each model lane */
+        .model-lane {
+            flex: 1; /* Each lane takes equal width */
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Independent scrolling */
+            padding: 20px;
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--border-color); /* Separator between content and divider */
+        }
+        .model-lane:first-child {
+            border-left: 1px solid var(--border-color); /* Leftmost border for the first lane */
+        }
+        .model-lane:last-child {
+            border-right: none; /* No right border on the last lane */
+        }
+
+        /* Lane Header */
+        .lane-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; /* Sticky header within the scrolling lane */
+            top: 0;
+            background-color: var(--surface-color); /* Ensure header background covers scrolling content */
+            z-index: 10; /* Make sure it's above other content when scrolling */
+        }
+        .lane-header h2 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .lane-header .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-left: 10px;
+            text-transform: uppercase;
+        }
+        .status-badge.running { background-color: var(--accent-amber); color: var(--bg-color); }
+        .status-badge.converged { background-color: var(--accent-green); color: var(--bg-color); }
+        .status-badge.failed { background-color: var(--accent-red); color: var(--bg-color); }
+
+        .lane-header .round-counter {
+            font-size: 1em;
+            color: var(--text-light-color);
+        }
+
+        /* Ground Truth section */
+        .ground-truth {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .ground-truth h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+        .test-case {
+            margin-bottom: 10px;
+        }
+        .test-case:last-child {
+            margin-bottom: 0;
+        }
+        .test-case-name {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 500;
+            margin-right: 5px;
+            margin-bottom: 5px; /* For wrapping tags */
+            white-space: nowrap; /* Prevent tags from breaking */
+        }
+        .tag-pill.conceptual { background-color: var(--accent-purple); color: var(--bg-color); }
+        .tag-pill.tactical { background-color: var(--accent-blue); color: var(--bg-color); }
+
+        /* Round Section */
+        .round-section {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .round-number-badge {
+            position: absolute;
+            top: -12px; /* Half of height + some offset */
+            left: 15px;
+            background-color: var(--accent-purple);
+            color: var(--text-color);
+            border-radius: 15px;
+            padding: 4px 10px;
+            font-size: 0.8em;
+            font-weight: 600;
+            z-index: 5;
+        }
+        .round-section h4 {
+            margin-top: 10px; /* Space from badge/top */
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: var(--text-light-color);
+        }
+
+        /* System Prompt */
+        .system-prompt-box {
+            background-color: var(--bg-color); /* Slightly darker bg for code */
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            white-space: pre-wrap; /* Preserve whitespace and wrap */
+            word-break: break-word; /* Break long words */
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .system-prompt-box .added {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .system-prompt-box .removed {
+            background-color: var(--accent-red);
+            color: var(--bg-color);
+            text-decoration: line-through;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+
+        /* Results Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        .results-table th, .results-table td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .results-table th {
+            color: var(--text-light-color);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+        .results-table td {
+            color: var(--text-color);
+        }
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+        .results-table .pass-fail-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-weight: 700;
+            line-height: 1; /* Adjust line-height for vertical centering */
+        }
+        .results-table .pass-fail-icon.pass {
+            background-color: var(--green-pass-bg);
+            color: var(--accent-green);
+        }
+        .results-table .pass-fail-icon.fail {
+            background-color: var(--red-fail-bg);
+            color: var(--accent-red);
+        }
+
+        /* Brief Boxes */
+        .failure-brief, .agent-rewrite {
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .failure-brief {
+            background-color: var(--red-tint-bg);
+            border-left: 4px solid var(--accent-red);
+        }
+        .agent-rewrite {
+            background-color: var(--amber-tint-bg);
+            border-left: 4px solid var(--accent-amber);
+        }
+
+        /* Score Comparison */
+        .score-comparison {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Align to right */
+            margin-top: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .score-comparison .old-score {
+            color: var(--text-light-color);
+            font-size: 0.8em; /* Slightly smaller */
+            margin-right: 5px;
+        }
+        .score-comparison .arrow {
+            color: var(--accent-green);
+            margin: 0 8px;
+            font-size: 1.1em; /* Make arrow slightly larger */
+        }
+        .score-comparison .new-score {
+            color: var(--accent-green);
+        }
+
+        /* Convergence Banner */
+        .convergence-banner {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .convergence-banner.converged {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+        }
+        .convergence-banner.optimizing {
+            background-color: var(--accent-amber);
+            color: var(--bg-color);
+        }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            flex-shrink: 0; /* Don't allow it to shrink */
+            padding: 15px 20px;
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end; /* Align buttons to the right */
+            gap: 10px;
+        }
+        .bottom-bar button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .bottom-bar .btn-approve {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+            border: none;
+            font-weight: 600;
+        }
+        .bottom-bar .btn-approve:hover {
+            background-color: #00e673; /* Slightly lighter green on hover */
+        }
+        .bottom-bar .btn-reject {
+            background-color: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            font-weight: 500;
+        }
+        .bottom-bar .btn-reject:hover {
+            background-color: var(--red-fail-bg);
+            color: var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="lanes-container">
+            <!-- DeepSeek-V3 Lane -->
+            <div class="model-lane">
+                <div class="lane-header">
+                    <h2>DeepSeek-V3 <span class="status-badge converged">Converged</span></h2>
+                    <span class="round-counter">Round 2/2</span>
+                </div>
+
+                <div class="ground-truth">
+                    <h3>Ground Truth</h3>
+                    <div class="test-case">
+                        <span class="test-case-name">T1547.001 Registry Run Keys</span>
+                        <span class="tag-pill conceptual">Corruption</span>
+                        <span class="tag-pill tactical">Persist</span>
+                    </div>
+                    <div class="test-case">
+                        <span class="test-case-name">SI-2 Flaw Remediation</span>
+                        <span class="tag-pill conceptual">Resilience</span>
+                        <span class="tag-pill conceptual">Fragility</span>
+                        <span class="tag-pill tactical">Harden</span>
+                    </div>
+                    <div class="test-case">
+                        <span class="test-case-name">d3f:NetworkIsolation</span>
+                        <span class="tag-pill conceptual">Resilience</span>
+                        <span class="tag-pill tactical">Isolate</span>
+                    </div>
+                </div>
+
+                <!-- DeepSeek-V3 Round 1 -->
+                <div class="round-section">
+                    <span class="round-number-badge">Round 1</span>
+                    <h4>System Prompt</h4>
+                    <pre class="system-prompt-box">You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags from the provided text. Categorize them into 'conceptual' (e.g., resilience, fragility) and 'tactical' (e.g., persistence, evasion, hardening). Only output the tags found in the text, and their category. If no tags are found, output an empty list.</pre>
+
+                    <h4>Results</h4>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Case Name</th>
+                                <th>Predicted Tags</th>
+                                <th>F1 Score</th>
+                                <th>Pass/Fail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T1547.001 Registry Run Keys</td>
+                                <td>[Corruption, Evade]</td>
+                                <td>0.500</td>
+                                <td><span class="pass-fail-icon fail">&#x2717;</span></td>
+                            </tr>
+                            <tr>
+                                <td>SI-2 Flaw Remediation</td>
+                                <td>[Resilience, Fragility, Harden]</td>
+                                <td>1.000</td>
+                                <td><span class="pass-fail-icon pass">&#x2713;</span></td>
+                            </tr>
+                            <tr>
+                                <td>d3f:NetworkIsolation</td>
+                                <td>[Resilience]</td>
+                                <td>0.667</td>
+                                <td><span class="pass-fail-icon fail">&#x2717;</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="failure-brief">
+                        <strong>Hallucinated:</strong> Evade (×2). <strong>Missing:</strong> Persist, Isolate.
+                    </div>
+
+                    <div class="agent-rewrite">
+                        Added negative example for Evade disambiguation.
+                    </div>
+
+                    <div class="score-comparison">
+                        Total F1: <span class="old-score">0.000</span> <span class="arrow">&rarr;</span> <span class="new-score">0.619</span>
+                    </div>
+                </div>
+
+                <!-- DeepSeek-V3 Round 2 -->
+                <div class="round-section">
+                    <span class="round-number-badge">Round 2</span>
+                    <h4>System Prompt</h4>
+                    <pre class="system-prompt-box">You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags from the provided text. Categorize them into 'conceptual' (e.g., resilience, fragility) and 'tactical' (e.g., persistence, evasion, hardening). <span class='added'>For 'evasion', specifically look for active attempts to bypass defenses, not just general stealth.</span> Only output the tags found in the text, and their category. If no tags are found, output an empty list.</pre>
+
+                    <h4>Results</h4>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Case Name</th>
+                                <th>Predicted Tags</th>
+                                <th>F1 Score</th>
+                                <th>Pass/Fail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T1547.001 Registry Run Keys</td>
+                                <td>[Corruption, Persist]</td>
+                                <td>1.000</td>
+                                <td><span class="pass-fail-icon pass">&#x2713;</span></td>
+                            </tr>
+                            <tr>
+                                <td>SI-2 Flaw Remediation</td>
+                                <td>[Resilience, Fragility, Harden]</td>
+                                <td>1.000</td>
+                                <td><span class="pass-fail-icon pass">&#x2713;</span></td>
+                            </tr>
+                            <tr>
+                                <td>d3f:NetworkIsolation</td>
+                                <td>[Resilience, Isolate]</td>
+                                <td>1.000</td>
+                                <td><span class="pass-fail-icon pass">&#x2713;</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="score-comparison">
+                        Total F1: <span class="old-score">0.619</span> <span class="arrow">&rarr;</span> <span class="new-score">0.929</span>
+                    </div>
+                </div>
+
+                <div class="convergence-banner converged">
+                    CONVERGED
+                </div>
+            </div>
+
+            <div class="lane-divider"></div>
+
+            <!-- qwen2.5:7b Lane -->
+            <div class="model-lane">
+                <div class="lane-header">
+                    <h2>qwen2.5:7b <span class="status-badge running">Running</span></h2>
+                    <span class="round-counter">Round 4/4</span>
+                </div>
+
+                <div class="ground-truth">
+                    <h3>Ground Truth</h3>
+                    <div class="test-case">
+                        <span class="test-case-name">T1547.001 Registry Run Keys</span>
+                        <span class="tag-pill conceptual">Corruption</span>
+                        <span class="tag-pill tactical">Persist</span>
+                    </div>
+                    <div class="test-case">
+                        <span class="test-case-name">SI-2 Flaw Remediation</span>
+                        <span class="tag-pill conceptual">Resilience</span>
+                        <span class="tag-pill conceptual">Fragility</span>
+                        <span class="tag-pill tactical">Harden</span>
+                    </div>
+                    <div class="test-case">
+                        <span class="test-case-name">d3f:NetworkIsolation</span>
+                        <span class="tag-pill conceptual">Resilience</span>
+                        <span class="tag-pill tactical">Isolate</span>
+                    </div>
+                </div>
+
+                <!-- qwen2.5:7b Round 1 -->
+                <div class="round-section">
+                    <span class="round-number-badge">Round 1</span>
+                    <h4>System Prompt</h4>
+                    <pre class="system-prompt-box">You are a cybersecurity taxonomy classifier. Extract conceptual and tactical bridge tags from the provided text. Categorize them into 'conceptual' (e.g., resilience, fragility) and 'tactical' (e.g., persistence, evasion, hardening). Only output the tags found in the text, and their category. If no tags are found, output an empty list.</pre>
+
+                    <h4>Results</h4>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Case Name</th>
+                                <th>Predicted Tags</th>
+                                <th>F1 Score</th>
+                                <th>Pass/Fail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T1547.001 Registry Run Keys</td>
+                                <td>[Corruption]</td>
+                                <td>0.667</td>
+                                <td><span class="pass-fail-icon fail">&#x2717;</span></td>
+                            </tr>
+                            <tr>
+                                <td>SI-2 Flaw Remediation</td>
+                                <td>[Resilience]</td>
+                                <td>0.500</td>
+                                <td><span class="pass-fail-icon fail">&#x2717;</span></td>
+                            </tr>
+                            <tr>
+                                <td>d3f:NetworkIsolation</td>
+                                <td>[]</td>
+                                <td>0.000</td>
+                                <td><span class="pass-fail-icon fail">&#x2717;</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="failure-brief">
+                        <strong>Hallucinated:</strong>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Y4ziT89VmAk",
+    "language": "en",
+    "took_ms": 8340,
+    "method": null,
+    "title": "DEF CON 33 - Back to Basics: Building Resilient Cyber Defenses - Yael Grauer",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1299,
+    "description": "In spite of novel cybersecurity threats, digital security advice has remained largely unchanged in recent years. In fact, much of the viral advice in response to high-profile attacks or threats doesn't actually address the risks people are most likely to face. In this talk, we'll analyze high-profile digital privacy and security concerns, whether the viral advice to address said concerns is effective and practical, and what steps could be taken—both before and after an issue arises.",
+    "view_count": 464
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Y4ziT89VmAk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

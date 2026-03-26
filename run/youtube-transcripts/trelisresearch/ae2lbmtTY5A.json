@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ae2lbmtTY5A",
+    "language": "en",
+    "took_ms": 10236,
+    "method": null,
+    "title": "Fine tuning Optimizations - DoRA, NEFT, LoRA+, Unsloth",
+    "channel": "Trelis Research",
+    "upload_date": "20240226",
+    "duration_sec": 2005,
+    "description": "➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nVIDEO RESOURCES:\n-Slides: https://docs.google.com/presentation/d/1dcE-PEs5kP5Zr5M2EGyqOoQ2BgUTYfX6LpOhsx4Q9S8/edit?usp=sharing\n-DoRA: https://arxiv.org/abs/2402.09353\n-LoRA+: https://arxiv.org/abs/2402.12354\n-Unsloth: https://github.com/unslothai/unsloth\n-NEFT: https://arxiv.org/abs/2310.05914\n-Transformers integration: https://huggingface.co/docs/trl/main/en/sft_trainer\n\nTIMESTAMPS:\n0:00 Improving on LoRA\n0:30 Video Overview\n1:25 How does LoRA work?\n4:26 Understanding DoRA\n8:42 NEFT - Adding Noise to Embeddings\n7:12 LoRA Plus\n9:34 Unsloth for fine-tuning speedups\n11:27 Comparing LoRA+, Unsloth, DoRA, NEFT\n13:02 Notebook Setup and LoRA\n23:17 DoRA Notebook Walk-through\n25:40 NEFT Notebook Example\n26:45 LoRA Plus\n30:10 Unsloth\n31:18 Final Recommendation",
+    "view_count": 10370
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ae2lbmtTY5A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

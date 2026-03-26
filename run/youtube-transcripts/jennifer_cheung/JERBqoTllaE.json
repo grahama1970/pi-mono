@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JERBqoTllaE",
+    "language": "en",
+    "took_ms": 8008,
+    "method": null,
+    "title": "DEF CON 32 - Splitting the email atom  exploiting parsers to bypass access controls - Gareth Heyes",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2175,
+    "description": "Websites often parse users' email addresses to identify their organisation. Unfortunately, parsing emails is far from straightforward thanks to a collection of ancient RFCs that everyone knows are crazy. You can probably see where this is going…\n\nIn this session, I'll introduce techniques for crafting RFC-compliant email addresses that bypass virtually all defences leading to broken assumptions, parser discrepancies and emails being routed to wildly unexpected destinations. I'll show you how to exploit multiple applications and libraries to spoof email domains, access internal systems protected by 'Zero Trust', and bypass employee-only registration barriers.\n\nThen I'll introduce another class of attack - harmless-looking input transformed into malicious payloads by unwitting libraries, leading to yet more misrouted emails, and blind CSS injection on a well-known target.\n\nI'll leave you with a full methodology and toolkit to identify and exploit your own targets, plus a CTF to develop your new skillset.",
+    "view_count": 8325
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JERBqoTllaE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

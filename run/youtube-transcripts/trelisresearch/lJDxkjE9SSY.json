@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lJDxkjE9SSY",
+    "language": "en",
+    "took_ms": 8916,
+    "method": null,
+    "title": "My TOP TEN TIPS for Fine-tuning",
+    "channel": "Trelis Research",
+    "upload_date": "20240609",
+    "duration_sec": 1498,
+    "description": "➡️ Get Life-time Access to the Complete Scripts (and future improvements): https://Trelis.com/ADVANCED-fine-tuning\n➡️ One-click fine-tuning and LLM templates: https://github.com/TrelisResearch/one-click-llms\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1D0zUkbMnBpz4huYrBu5qdge3HArXBX6olAmXEItVHNY/edit?usp=sharing\n\nTIMESTAMPS:\n0:00 Top Ten Fine-tuning Tips\n0:12 Tip 1: Start with a Small Model\n0:49 Tip 2: Use LoRA or QLoRA\n1:39 Tip 3: Create 10 manual questions\n2:27 Tip 4: Create datasets manually\n3:05 Tip 5: Start training with just 100 rows\n3:38 Tip 6: Always create a validation data split\n4:27 Tip 7: Start by only training on one GPU\n5:44 Tip 8: Use weights and biases for logging\n6:31 Scale up rows, tuning type, then model size\n7:18 Tip 9: Consider unsupervised fine-tuning if you've lots of data\n7:49 Tip 10: Use preference fine-tuning (ORPO)\n9:21 Recap of the ten tips\n10:54 Ten tips applied to multi-modal fine-tuning\n11:31 Playlists to watch\n12:59 Trelis repo overview\n13:17 ADVANCED Fine-tuning repo (Trelis.com/ADVANCED-fine-tuning)\n17:08 Training on completions only\n18:10 ADVANCED fine-tuning repo CONTINUED\n21:56 ADVANCED vision (Trelis.com/ADVANCED-vision)\n22:35 ADVANCED inference (trelis.com/enterprise-server-api-and-inference-guide/)\n24:21 ADVANCED transcription (trelis.com/ADVANCED-transcription)\n24:39 Support + Resources (Trelis.com/About)",
+    "view_count": 5751
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lJDxkjE9SSY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

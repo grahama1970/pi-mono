@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yFcS020WSZY",
+    "language": "en",
+    "took_ms": 8263,
+    "method": null,
+    "title": "Exploring Three Handy Chatbot Tools 🤖",
+    "channel": "Trelis Research",
+    "upload_date": "20230815",
+    "duration_sec": 495,
+    "description": "In this video, I will introduce you to three chatbot tools that I find handy. The first tool is labs.perplexity.ai, which allows you to chat with Llama models of different sizes. The second tool is chatbotui.com, a replica of OpenAI's chatbot that lets you set temperature and system prompts for more control over responses. Lastly, I will show you llama.cpp, a browser-based tool with a user-friendly interface and customizable system prompts.\n\nLinks:\n- Llama Chatbot: labs.perplexity.ai\n- Web UI for OpenAI API keys: chatbotui.com\n- Run Llama on your computer: https://github.com/TrelisResearch/llamacpp-install-basics/blob/main/instructions.md\n- Google Colab: https://colab.research.google.com/drive/1u8x41Jx8WWtI-nzHOgqTxkS3Q_lcjaSX\n\n00:00 Introduction\n01:03 Tool 1: labs.proplexity.ai\n01:29 Tool 2: chatbotui.com\n03:40 Tool 3: llama CCP\n06:34 Bonus: Chatting in a Jupyter Notebook\n\nCheck out also Trelis' notebooks for fine-tuning and function calling:\n\n# 1. ADVANCED Fine-tuning Notebook\nThis advanced script provides improved performance when training with small datasets:\n- Includes a prompt loss-mask for improved performance when structured responses are required.\n- Includes a stop token after responses - allowing the model to provide a short reponse (e.g. a function call) and then stop.\n- Request access here: https://buy.stripe.com/5kA5l69K52Hxf3a006. €14.99 (or $16.49) per seat/user. Access will be provided within 24 hours of purchase.\n\n# 2. Function Calling Dataset\n- Commercial dataset allowing language models to be fine-tuned for function calling. Get access here: https://huggingface.co/datasets/Trelis/function_calling_extended.\n- Created using only human input or Apache 2 licensed datasets (no third party commercial licensing limitations)",
+    "view_count": 349
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yFcS020WSZY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

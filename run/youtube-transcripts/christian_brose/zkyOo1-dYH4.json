@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zkyOo1-dYH4",
+    "language": "en",
+    "took_ms": 8194,
+    "method": null,
+    "title": "U S , China, and Lessons from the Fracking Boom",
+    "channel": "Hudson Institute",
+    "upload_date": "20151119",
+    "duration_sec": 3457,
+    "description": "U.S., China, and Lessons from the Fracking Boom panel featuring David Sandalow, Jeremy Carl, and Arthur Herman",
+    "view_count": 497
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zkyOo1-dYH4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

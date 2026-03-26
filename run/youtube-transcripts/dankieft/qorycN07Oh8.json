@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qorycN07Oh8",
+    "language": "en",
+    "took_ms": 7859,
+    "method": null,
+    "title": "NEW AI Video Editor makes Editing 10X Easier | Descript AI Tutorial",
+    "channel": "Dan Kieft",
+    "upload_date": "20240626",
+    "duration_sec": 483,
+    "description": "NEW AI Video Editor makes Editing 10X Easier | Descript AI Tutorial\nGet started with Descript for free at https://get.descript.com/ffkf40ipgb5q ! You don’t need multiple subscriptions to different tools to create for all your platforms. You just need Descript.\n\nDescript is an AI video editor that edits your videos based on the text transcript. With Descript you can easily remove mistakes, silences or retakes. Besides that you can easily add in captions, enhance the voice over with AI and you can even create a description with AI",
+    "view_count": 8321
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qorycN07Oh8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qfHu_wz12z8",
+    "language": "en",
+    "took_ms": 9471,
+    "method": null,
+    "title": "Holding the Line in Blues and Packets",
+    "channel": "S4 Events",
+    "upload_date": "20251006",
+    "duration_sec": 339,
+    "description": "Not a keynote. Not a whitepaper. A blues song—written by his son—about the misery, the madness, and the myth of holding the OT security line solo.\n\nWelcome to Unsolicited Response at S4x25, Episode 1.\n\n“IEC 62443 Misery Row… holding the line like a one-man cyber dam.”",
+    "view_count": 49
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qfHu_wz12z8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

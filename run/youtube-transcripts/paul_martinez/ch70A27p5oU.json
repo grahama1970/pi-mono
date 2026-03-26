@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ch70A27p5oU",
+    "language": "en",
+    "took_ms": 7586,
+    "method": null,
+    "title": "New Detection Models: Testing & Results",
+    "channel": "S4 Events",
+    "upload_date": "20250702",
+    "duration_sec": 1697,
+    "description": "State of the art detection solutions are using multi-step correlation or chaining rules that join same-origin alerts tagged with sequential Mitre ATT&CK Techniques happening within a short time window of each other. This is ineffective as most environments have multiple sensor types with varying quality and consistency of Mitre ATT&CK Techniques tagging to their alerts. Additionally the correlation logic is inadequate and lacks the necessary complexity to encompass possible Mitre ATT&CK Flows and be resilient to detection gaps. \n\nAn alternate approach is a weakly supervised solution, with open-source AI models that can be repurposed to connect disjointed incidents into cohesive Mitre ATT&CK Flows.\n\nEzz describes a custom made LLM to classify each alert with relevant ATT&CK Techniques, and a specifically designed graph model to probabilistic-ally cluster alerts with relevant telemetry and events to establish incident context. Subsequently, a tailored model comprehensively cross-correlates and chains incidents, revealing Mitre ATT&CK Flows. \n\nAn interesting sidelight of this session is the testing methodology using public and private datasets.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 207
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ch70A27p5oU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

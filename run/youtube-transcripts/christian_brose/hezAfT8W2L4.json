@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hezAfT8W2L4",
+    "language": "en",
+    "took_ms": 7738,
+    "method": null,
+    "title": "Combating the Opioid Epidemic: Finding Alternatives in Pain Management",
+    "channel": "Hudson Institute",
+    "upload_date": "20180725",
+    "duration_sec": 4857,
+    "description": "Opioid-related fatalities have reached epidemic levels in the United States. According to the latest data, more than 63,000 drug overdose deaths were recorded in 2016, a 22-percent increase over the previous year, with two-thirds of these deaths the result of opioids. While politicians, public health officials, and law enforcement seek solutions to stem the catastrophic increase in overdose deaths, the struggle to gain the upper hand is ongoing.\n\nThe roots of this crisis stem from a variety of factors, including years of overprescribed opioids in medical treatment and increased efforts by drug cartels to flood America with heroin and potent synthetic opioids, such as fentanyl. Yet one underexamined area in countering this crisis is the development of pain-relieving alternatives to opioids.\n\nOn July 25, Hudson Institute hosted a panel of leading drug policy experts to examine the opioid epidemic and discuss solutions to help reverse this growing national crisis. Discussants included Louisiana Senator Bill Cassidy; Hudson Institute Chief Operating Officer John Walters and Senior Fellow David Murray; Pacira Pharmaceuticals Chief Medical Officer Richard Scranton; and journalist Barry Meier.",
+    "view_count": 268
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hezAfT8W2L4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

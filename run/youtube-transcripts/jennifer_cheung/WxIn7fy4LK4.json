@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WxIn7fy4LK4",
+    "language": "en",
+    "took_ms": 7648,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Don C Weber - Scripts and Tools to Help Your ICS InfoSec Journey",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1483,
+    "description": "Conducting security assessments and gathering information from control environments are obviously different than doing the same tasks in a corporate environment. But, where do you start? Don will outline some of the tools to conduct research, perform assessments, and gather information. He will review some of the scripts the Cutaway Security team has developed to make this easier for administrators, information security professionals, and operational technology teams teams.",
+    "view_count": 1162
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WxIn7fy4LK4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pfWowqyJzF0",
+    "language": "en",
+    "took_ms": 8669,
+    "method": null,
+    "title": "S4x23 Call For Presentations",
+    "channel": "S4 Events",
+    "upload_date": "20220627",
+    "duration_sec": 778,
+    "description": "Dale Peterson gives information and tips on how to get up on one of the three S4x23 stages next Feb 14-16 in Miami South Beach. In brief:\n- what is new and important about your session for the advanced ICS security pro\n- future focused ... remember the S4 mantra is Create The Future\n- submit early ... sessions are evaluated as they come in",
+    "view_count": 632
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pfWowqyJzF0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

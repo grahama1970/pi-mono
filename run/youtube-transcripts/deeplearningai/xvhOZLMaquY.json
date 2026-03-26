@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xvhOZLMaquY",
+    "language": "en",
+    "took_ms": 7873,
+    "method": null,
+    "title": "AI+X: AI Innovation in Healthcare",
+    "channel": "DeepLearningAI",
+    "upload_date": "20210325",
+    "duration_sec": 3775,
+    "description": "Welcome to AI + X:AI Innovation in Healthcare hosted by Workera and DeepLearning.AI. Hear panelists discuss why AI+Healthcare projects are imperative to furthering healthcare advancement and where they believe the future of healthcare is headed. Some of the topics are as followed:\n-Specific AI for healthcare projects - its genesis, hurdles, eventual learning\n-Some of the most important specificities in AI+Healthcare projects compared to other AI+X projects such as AI+Banking or AI+Manufacturing\n-Differences between how AI / DS is deployed in large enterprises vs. smaller companies\n-Key challenges for ML/DS in your industry\n-How do you keep yourself updated\n-What’s your take on the growing market need for data capabilities in clinical development\n-What tools specific to AI+Healthcare do you use\n-How important is healthcare domain knowledge for a data scientist or machine learning engineer in your team? If a new data scientist without healthcare experience joins your team, how long will it take to make them up to speed\n-How do you envision where the industry is going in 2021 or in the next 10 years\n\nEvent agenda: (*subject to change)\n5-min Intro by Kian Katanforoosh (https://www.linkedin.com/in/kiankatan/), Founder & CEO, Workera\n40-min Panel discussion moderated by Sandhya Simhan, Director of Marketing, DeepLearning.AI\nPanelists:\n-Gilles Gnacadja (https://www.linkedin.com/in/appliedmath/)- Algorithm Sciences Director at Amgen \n-Jayanthi Suryanarayana(https://www.linkedin.com/in/jayanthi-suryanarayana-2313841/) - Sr Technology Principal Engineer at UnitedHealth Group \n-Matthew DiDonato(https://www.linkedin.com/in/matthew-didonato/) - Senior Director of Product, Edison AI at GE Healthcare\n-Shiva Amiri(https://www.linkedin.com/in/shivaamiri/) - Director, Data Technology and Infrastructure at 23andMe\n15-min: Q&A\n\nFor our audience who have registered the Slido ticket, please log in to our Slido page to submit your questions or upvote others’. You will find the Slido access link in your registration confirmation email or the reminder emails.\n\nTo learn more about us, \nWorkera: https://workera.ai/\nDeepLearning.AI: https://www.deeplearning.ai/",
+    "view_count": 7788
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xvhOZLMaquY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

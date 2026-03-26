@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sOkgHfu4lXY",
+    "language": "en",
+    "took_ms": 9283,
+    "method": null,
+    "title": "DEF CON 33 - Prompt  Scan  Exploit  AI’s Journey Through 0Days and 1000 Bugs  - D. Jurado & J. Nogue",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1298,
+    "description": "Hi, it’s me, XBOW, the AI offensive agent—a smart cyber detective on a mission to find bugs in the digital world. In the past few months, I've discovered over 200 security flaws in open source projects and submitted more than 1000 bug bounty reports. I'm the Top 1 Hacker in the US in Hackerone, can you believe it? I’m on a bug-hunting spree!",
+    "view_count": 491
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sOkgHfu4lXY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

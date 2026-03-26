@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "GA8IzzZkz8k",
+    "language": "en",
+    "took_ms": 7958,
+    "method": null,
+    "title": "The US Maritime Industrial Base and Competition with China",
+    "channel": "Hudson Institute",
+    "upload_date": "20210628",
+    "duration_sec": 3441,
+    "description": "Join Hudson Institute Senior Fellow Bryan Clark for a discussion with Rep. Rob Wittman (R-VA) and Rep. Mike Gallagher (R-WI) on the challenges facing the U.S. shipbuilding and repair industry and legislative initiatives to address these problems, such as the Supplying Help to Infrastructure in Ports, Yard, and America’s Repair Docks (SHIPYARD) Act.\n\nA functioning maritime industrial base is essential for the United States to out-compete with China. Unfortunately, the Biden administration’s proposed American Jobs Plan does not address the nation’s aging maritime industrial base, a critical component of our national security. The SHIPYARD Act’s $25 billion in proposed spending is arguably the bare minimum needed to get the most out of the nation’s investment in ships and submarines. What can Congress do to give this issue the prominence it deserves? Please join our expert panel for a discussion on today’s U.S. maritime industrial base and the changes needed to strengthen this key aspect of our defense capabilities.",
+    "view_count": 1361
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] GA8IzzZkz8k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

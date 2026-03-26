@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sJFLGps_N2U",
+    "language": "en",
+    "took_ms": 10206,
+    "method": null,
+    "title": "Apollo 13 (Today-ish in Spaceflight History)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180419",
+    "duration_sec": 3954,
+    "description": "Apollo 13 launched on April 11, 1970 and ended on April 17, 1970 after a very close call and almost losing the crew. I teach my curious co-host, Jacob EQ all about this amazing and historic mission by playing through the mission in Kerbal Space Program. \n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 36303
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sJFLGps_N2U: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

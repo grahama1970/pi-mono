@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XAByUhnb-D4",
+    "language": "en",
+    "took_ms": 8471,
+    "method": null,
+    "title": "What you might get wrong about defense analysis",
+    "channel": "Sandboxx",
+    "upload_date": "20260218",
+    "duration_sec": 133,
+    "description": "Let's talk about defense analysis (and what most people get wrong about it) #defense #tech #military #miltok #usmilitary",
+    "view_count": 41224
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XAByUhnb-D4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

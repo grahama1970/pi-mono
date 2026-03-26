@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "d3TOjplLoSk",
+    "language": "en",
+    "took_ms": 8303,
+    "method": null,
+    "title": "Deep Dive On Low Skilled Threat Actors",
+    "channel": "S4 Events",
+    "upload_date": "20250528",
+    "duration_sec": 1938,
+    "description": "ICS \"Threat Actors\" get a lot of press when they access (\"hack\") low hanging fruit. Ron has tracked some of these groups activities for the past year(s). He has found that many, or most, are neither advanced, nor are they targeting their specific victims.\n\nRon shared information on some examples, such as CARR/RCAT or CyberAv3ngers, and tell you what this means for your OT security and cyber risk management program. And if you want, he will show you how to access and research this type of threat actor for yourself and your company.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 830
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] d3TOjplLoSk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

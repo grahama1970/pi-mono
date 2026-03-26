@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fZQHFC8ZL-0",
+    "language": "en",
+    "took_ms": 9555,
+    "method": null,
+    "title": "Making a Killing | Ep. 5: Matthew Caruana Galizia on Malta’s Kleptocracy",
+    "channel": "Hudson Institute",
+    "upload_date": "20210408",
+    "duration_sec": 3892,
+    "description": "Matthew Caruana Galizia, director of the Daphne Caruana Galizia Foundation, talks to Nate Sibley about his mother’s legacy of exposing elite corruption in Malta. Paul Massaro and Casey Michel discuss Alexei Navalny, golden visas, and Hong Kong shell companies.\n\nSubscribe: \n\nApple podcasts: https://podcasts.apple.com/us/podcast/making-a-killing/id1551344782\nSpotify: https://open.spotify.com/show/0LksXZHMcTGwMk1eV1BsLu",
+    "view_count": 1331
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fZQHFC8ZL-0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

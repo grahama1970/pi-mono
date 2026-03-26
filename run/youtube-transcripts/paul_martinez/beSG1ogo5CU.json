@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "beSG1ogo5CU",
+    "language": "en",
+    "took_ms": 8915,
+    "method": null,
+    "title": "Security Dashboards for Plant Managers",
+    "channel": "S4 Events",
+    "upload_date": "20230724",
+    "duration_sec": 1464,
+    "description": "Pia Capra tells the S4 audience what security information the Plant Managers want to see and why? Cyber is on their radar, but they lack technical expertise. And cybersecurity is only one of many issues the Plant Managers are worried about.\n\nThen Pia shows some sample security dashboards for Plant Managers that provide visibility of cyber risk and how it could affect their Operations and KPI.",
+    "view_count": 664
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] beSG1ogo5CU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

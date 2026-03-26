@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "viGNDA6Be3s",
+    "language": "en",
+    "took_ms": 7610,
+    "method": null,
+    "title": "Shell's Approach To ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20160815",
+    "duration_sec": 1808,
+    "description": "Shell has a large number of industrial control systems (ICS) that monitor and control their upstream, midstream and downstream operations. After a multi-year journey to try to find an effective way to secure these ICS, Shell has found an approach that they are finding effective.\n\nWilliam Alyea goes over how Shell has identified a set of Core Security Controls that they require all ICS to meet a minimum security level that can be met in a measurable and standardized way.\n\nThe key slides on Shell's view of the threats and controls are shown at 10:18 and 17:40 in the video.",
+    "view_count": 7071
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] viGNDA6Be3s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

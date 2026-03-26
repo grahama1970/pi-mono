@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "53e0OIjiKEw",
+    "language": "en",
+    "took_ms": 7779,
+    "method": null,
+    "title": "Bradley Symposium 2010 Preview",
+    "channel": "Hudson Institute",
+    "upload_date": "20100527",
+    "duration_sec": 50,
+    "description": "Once a year in Washington, leading political thinkers gather to discuss important questions: Who are we as Americans? What ideas move us politically? Which direction should our country be taking? Has Washington misjudged? If so, how can we get back on track? \"Tea Time: Can There Be a Populist Conservatism?\" is the topic of this year's Bradley Symposium, to be held on June 16 in Washington, DC. Panelists will include Rep. Mike Pence, Dick Armey, Michael Barone, Jonah Goldberg, and William Kristol (moderator).  For more information, visit Hudson Institute's Bradley Center at http://www.bradleysymposium.org",
+    "view_count": 41702
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 53e0OIjiKEw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

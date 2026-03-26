@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KBUDhgxLND8",
+    "language": "en",
+    "took_ms": 8796,
+    "method": null,
+    "title": "AI Dev 25 | Kate Blair & Ismael Faro: The future of agent interoperability",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 1828,
+    "description": "AI agents are being developed at an unprecedented pace—but today’s landscape is fragmented, with incompatible frameworks and tools limiting collaboration and reuse.\n\nIn this session, Kate Blair (Director of Incubation) and Ismael Faro (VP Quantum+AI, Distinguished Engineer) from IBM Research share their vision for a more connected ecosystem: one where agents can interoperate seamlessly across different platforms using open protocols.\n\nThey introduce an approach that enables developers to discover, integrate, and swap agents—regardless of their implementation—and showcase it with live demos powered by the open-source BeeAI platform.\n\nThis talk is a compelling look at what’s possible when we break down the silos in AI development.",
+    "view_count": 848
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KBUDhgxLND8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

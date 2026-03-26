@@ -1,0 +1,53 @@
+{
+  "match_score": 78,
+  "missing_features": [
+    "Node shapes: The design uses rectangles for 'schema' nodes and diamonds for 'parameter' nodes, but the code only renders circles for all node types (BinaryGraph.tsx: nodeRadius() only returns numbers, no shape logic).",
+    "Double-ring for state_machine nodes: The design shows state machines with a double ring, but the code does not implement this visual cue (BinaryGraph.tsx: no double-ring rendering in nodeGs.append()).",
+    "Cluster toggle UI: The design has a cluster filter panel on the left with toggle buttons, but the code only has a state for activeClusters without rendering any UI to toggle them (BinaryGraph.tsx: toggleCluster() is defined but not wired to any UI).",
+    "Edge label hover behavior: The design shows edge labels appearing on hover, but the code sets edgeLabels opacity to 0 and never changes it (BinaryGraph.tsx: edgeLabels.attr('opacity', 0) with no mouseenter/leave handlers).",
+    "Graph background color: The design uses #0b1220 for graph panel background, but the code does not set any background on the SVG (BinaryGraph.tsx: no background fill on root or zoomG)."
+  ],
+  "extra_features": [
+    "Edge arrowheads for 'contains' and 'has_parameter' are defined in code but not in design (BinaryGraph.tsx: defs.append('marker') for all edge types except structural, but design specifies no arrows for these).",
+    "Node glow ring on hover: The code starts to implement a glow ring (BinaryGraph.tsx: d3.select(this).select('.glow-ring')...), but it’s incomplete and not in the design target.",
+    "Tooltip styling: The code creates a tooltip with specific styles (font, padding, shadow), but the design target does not show tooltips or specify their appearance."
+  ],
+  "code_fixes": [
+    {
+      "file": "BinaryGraph.tsx",
+      "line": 108,
+      "issue": "nodeRadius() returns a number but design requires different shapes (rect, diamond) for schema and parameter nodes.",
+      "fix": "Return an object with { shape: 'circle'|'rect'|'diamond', radius?: number, width?: number, height?: number } and update node rendering to use appropriate SVG elements."
+    },
+    {
+      "file": "BinaryGraph.tsx",
+      "line": 250,
+      "issue": "No double-ring for state_machine nodes as specified in design (design-tokens.json: state_machine.radius=12, doubleRing=true).",
+      "fix": "For state_machine nodes, append a second circle with slightly larger radius and different stroke to create a double-ring effect."
+    },
+    {
+      "file": "BinaryGraph.tsx",
+      "line": 335,
+      "issue": "Edge labels are set to opacity 0 and never shown; design shows labels on hover.",
+      "fix": "Add mouseenter/mouseleave handlers to edgeLines to toggle edgeLabels opacity between 0 and 1."
+    },
+    {
+      "file": "BinaryGraph.tsx",
+      "line": 195,
+      "issue": "SVG background is not set; design uses #0b1220.",
+      "fix": "Add root.append('rect').attr('width', width).attr('height', height).attr('fill', '#0b1220') after setting viewBox."
+    },
+    {
+      "file": "BinaryGraph.tsx",
+      "line": 168,
+      "issue": "Arrowheads are defined for 'contains' and 'has_parameter' edges, but design specifies no arrows for these.",
+      "fix": "Remove the marker definitions for 'contains' and 'has_parameter' from the defs section."
+    }
+  ],
+  "layout_issues": [
+    "The design shows a left sidebar with cluster toggles and a right panel with code/analysis, but the code only renders the graph SVG without any surrounding layout containers or panels.",
+    "The design has a top bar with navigation and a bottom chat bar, but the code does not include any UI for these elements.",
+    "The graph in the design occupies ~70% of the width with a detail panel on the right, but the code renders the graph at 100% width without any adjacent panels."
+  ],
+  "overall": "The code implements the core D3 force-directed graph with correct node/edge data binding and zoom/pan, but misses key visual design elements like node shapes, double-rings, and edge label hover behavior. Layout is entirely missing — no sidebar, top bar, or detail panel as shown in the design. The match score is 78% because the graph structure and color scheme are mostly correct, but visual fidelity and UI layout are incomplete."
+}

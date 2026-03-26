@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p84HJveHQdg",
+    "language": "en",
+    "took_ms": 8684,
+    "method": null,
+    "title": "Factory Honeynet: Highly Realistic and Interactive",
+    "channel": "S4 Events",
+    "upload_date": "20200601",
+    "duration_sec": 1819,
+    "description": "Stephen Hilt and the team at Trend Micro developed a high interaction honeynet that looked like a factory making injection molded plastic products. In this session, Stephen discusses how they built it, ran it like a real factory, and how it was attacked (the last 20 minutes).\n\nThere were real PLC's and simulated computers. The movement of the belts and robotic arms were realistic (not just on/off or impractical movement rates). If an attacker got on this system they would think they are on and are controlling a real factory.\n\nThe Honeynet also included a real website, physical address, employees with personalities and more. And it drew attackers. Of course ransomware and crypto miners and other things as well.  And it drew well meaning people telling them to secure their system.\n\nLots of great information here and shows what is possible.",
+    "view_count": 1089
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p84HJveHQdg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

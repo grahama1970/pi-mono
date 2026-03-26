@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Jhd-gsk_Bs8",
+    "language": "en",
+    "took_ms": 8457,
+    "method": null,
+    "title": "Our Interruptible Future",
+    "channel": "S4 Events",
+    "upload_date": "20250526",
+    "duration_sec": 1854,
+    "description": "The OT world has a mantra that this is not IT where occasional outages are expected. OT needs 24x7 uptime and has been designed with the redundancy and resiliency in mind to achieve this. Reality is stepping in. Andy shows how to prepare and adapt to what is increasingly our interruptible future.\n\nThe summer and winter blackouts NERC has been warning about for the past several years are leading to intentional power interruptions – rolling blackouts and brownouts – initiated by the grid operators themselves. Five states now are turning the grid off at times of high wildfire threat. And there is Volt Typhoon and other projected cyber attack scenarios that could cause intentional or unintentional outages.\n\nWe will learn to not only live with these interruptions, but that by adapting our business processes and personal lives to creatively accommodate them, we in the US, like the Ukrainians, will become an inherently more resilient nation. \n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 166
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Jhd-gsk_Bs8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

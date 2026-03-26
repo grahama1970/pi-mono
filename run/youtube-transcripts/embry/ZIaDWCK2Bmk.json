@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZIaDWCK2Bmk",
+    "language": "en",
+    "took_ms": 8204,
+    "method": null,
+    "title": "How Rocket Lab will catch a rocket with a helicopter!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190810",
+    "duration_sec": 1647,
+    "description": "Want an article version of this video? Here you go! - https://everydayastronaut.com/rocket-lab-electron-reuse/\n\nRocket Lab just announced they plan to try and recover their Electron rockets using a parachute and a helicopter… Yeah, seriously.\n\nToday we’re going to dive into Rocket Lab’s plans for reusability including some deep dives on the challenges they face including the forces and velocities. \n\nThen we’ll go into the history of air recovery, and compare Rocket Lab’s reusability plans to other space systems that utilize parachutes such as the space shuttle’s SRBs, the Falcon 9, SpaceX’s fairings, and even ULA’s similar plans they’re calling SMART reuse.\n\nI also got exclusive information from Rocket Lab and Peter Beck himself with some exciting additional details on just how exactly they hope to do this.\n\n----------------------------------------\n\nThanks to Declan Murphy from http://Flightclub.io for helping me get all that yummy data! Check out his website and support him on Patreon! http://patreon.com/flightclub\n\nHUGE thanks to my Moon Walker Patreon supporters! Blake Jacobs, Eli Burton, Jethro, Mac Malkawi, Neurostream, Ole Mathias Heggem and James Locke.\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 636177
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZIaDWCK2Bmk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

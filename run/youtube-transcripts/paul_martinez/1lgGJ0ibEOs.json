@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1lgGJ0ibEOs",
+    "language": "en",
+    "took_ms": 9768,
+    "method": null,
+    "title": "How To Avoid Getting Attacked By A Bear",
+    "channel": "S4 Events",
+    "upload_date": "20240504",
+    "duration_sec": 56,
+    "description": "Are you better off focusing on being more secure than others in your sector or trying to improve the sector's overall hygiene? A bear and camping analogy.",
+    "view_count": 580
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1lgGJ0ibEOs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

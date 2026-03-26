@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BGuaIun8qiA",
+    "language": "en",
+    "took_ms": 9686,
+    "method": null,
+    "title": "DEF CON 33 - Cryptocurrency Weekend Keynote Chelsea Button, Alfonso Tinoco & Elaine Shi",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1540,
+    "description": "Traditional encrypted databases encrypt only the data contents but do not hide accesses to the data. Such accesses can leak highly sensitive information in practical applications like contact discovery, blockchains, and large language models. In this talk, Elaine Shi will describe what is oblivious computation, and how to construct simple and provably secure algorithms for oblivious computation. She will also cover the broad applications of oblivious computation including in Signal and Ethereum's (intended) use cases.",
+    "view_count": 223
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BGuaIun8qiA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

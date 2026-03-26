@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5pQlupsuZr0",
+    "language": "en",
+    "took_ms": 9314,
+    "method": null,
+    "title": "What do eclipses look like in space?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170830",
+    "duration_sec": 659,
+    "description": "What if you were to board a spaceship and view a solar eclipse from different points in space? \n\nSign up for your FREE trial of the Great Courses Plus here: http://ow.ly/tYxe30eJvcL\n\nThe Great Courses Plus is currently available to watch through a web browser to almost anyone in the world and optimized for the US market. The Great Courses Plus is currently working to both optimize the product globally and accept credit card payments globally.\n\nShow your support on Patreon - http://patreon.com/everydayastronaut\n\nSolar Telescope from my friends at OPT - \nhttps://www.optcorp.com/coronado-pst-40mm-f-10-1-0a-h-alpha-telescope.html\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/",
+    "view_count": 42839
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5pQlupsuZr0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

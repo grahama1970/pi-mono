@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bsj1zoUtqMY",
+    "language": "en",
+    "took_ms": 8330,
+    "method": null,
+    "title": "What About Jordan: Does Regional Crisis Threaten the Securit",
+    "channel": "Hudson Institute",
+    "upload_date": "20140826",
+    "duration_sec": 5218,
+    "description": "On August 26th, Hudson Institute hosted an expert panel—Senior Fellow and moderator Lee Smith joined by Faysal Itani, Salameh Nematt, and David Schenker—for a discussion about the present state and future prospects of Jordan and its central role in American Middle East policy. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 388
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bsj1zoUtqMY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

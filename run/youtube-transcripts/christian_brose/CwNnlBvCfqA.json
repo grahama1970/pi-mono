@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CwNnlBvCfqA",
+    "language": "en",
+    "took_ms": 8255,
+    "method": null,
+    "title": "The U.S. and Saudi Arabia: Is a 70-Year Strategic Alliance o",
+    "channel": "Hudson Institute",
+    "upload_date": "20131220",
+    "duration_sec": 5372,
+    "description": "The Obama administration's outreach to Iran over its alleged nuclear program has Washington's traditional Middle East allies concerned—perhaps the Kingdom of Saudi Arabia above all. An alliance that began in 1944 when President Roosevelt met with the founder of modern Saudi Arabia, King Ibn Saud, the U.S.-Saudi partnership, despite many ups and downs, has remained a cornerstone interest of both countries for nearly 70 years. Now, however, this bilateral relationship appears suddenly troubled—if",
+    "view_count": 1504
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CwNnlBvCfqA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

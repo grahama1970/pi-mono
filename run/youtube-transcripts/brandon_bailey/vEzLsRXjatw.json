@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vEzLsRXjatw",
+    "language": "en",
+    "took_ms": 9273,
+    "method": null,
+    "title": "DEF CON 32 - Securing Frontends at Scale;Paving our Way to Post XSS World - jen ozmen, Aaron Shim",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1481,
+    "description": "Cross-site scripting (XSS) remains a top web vulnerability. Google has invested heavily in defenses, and in this talk, we'll share our blueprint for protecting your code. We'll discuss how we implemented runtime and compile-time protections across hundreds of products used by billions, highlighting technical lessons and best practices. We'll also glimpse into the future of anti-XSS defenses and explore how we can make the web safer for everyone.",
+    "view_count": 911
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vEzLsRXjatw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

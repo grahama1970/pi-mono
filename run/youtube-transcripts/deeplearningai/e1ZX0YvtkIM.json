@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e1ZX0YvtkIM",
+    "language": "en",
+    "took_ms": 8907,
+    "method": null,
+    "title": "New course with Pinecone: Building Applications with Vector Databases",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240131",
+    "duration_sec": 140,
+    "description": "Enroll now: https://bit.ly/3vQkmEx\n\nIn this course, you'll learn how to use vector databases to create diverse applications quickly and with minimal coding, ranging from retrieval augmented generation (RAG) to facial similarity and hybrid search.\n\nYou’ll build unique apps using the following:\n\n- Semantic Search: Create a search tool that goes beyond keyword matching, focusing on the meaning of content for efficient text-based searches on a user Q/A dataset.\n\n- RAG: Enhance your LLM applications by incorporating content from sources the model wasn't trained on, like answering questions using the Wikipedia dataset.\n\n- Recommender System: Develop a system that combines semantic search and RAG to recommend topics, and demonstrate it with a news article dataset.\n\n- Hybrid Search: Build an application that finds items using both images and descriptive text, using an eCommerce dataset as an example.\n\n- Facial Similarity: Create an app to compare facial features, using a database of public figures to determine the likeness between them.\n\n- Anomaly Detection: Learn how to build an anomaly detection app that identifies unusual patterns in network communication logs.\n\nBy the end of this course, you'll have a toolkit of ideas for building applications with any vector database.\n\nLearn more: https://bit.ly/3vQkmEx",
+    "view_count": 4367
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e1ZX0YvtkIM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LbH1ZDImaI8",
+    "language": "en",
+    "took_ms": 8338,
+    "method": null,
+    "title": "Is SpaceX's Raptor engine the king of rocket engines?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190525",
+    "duration_sec": 2942,
+    "description": "00:00 - Intro\n02:55 - Basic physics of rocket engines \n06:10 - Rocket engine cycles \n20:30 - Rocket fuel comparison\n30:40 - Raptor vs other rocket engines\n44:05 - Summary\n\nArticle version - https://everydayastronaut.com/?p=9823&preview=true\n\nSpaceX's new raptor engine is a methane fueled full flow staged combustion cycle engine and its so hard to develop, no engine like this has ever flown before! \n\nNow this topic can be really intimidating so in order to bring the Raptor engine into context, we’re going to do an overview of a few common types of rocket engine cycles then compare the Raptor to a few other common rocket engines, like SpaceX’s current work horse, the Merlin, The Space Shuttle’s RS-25, the RD-180, Blue Origin’s BE-4 and the F-1 engine.\n\nAnd if that’s not enough, not only is SpaceX using a crazy engine cycle, they’re also going to be using Liquid Methane as their fuel, again something that no orbital rocket has ever used! So we’ll also go over the unique characteristics of liquid methane as a rocket fuel and see if we can figure out why SpaceX went with Methane for the Raptor engine.\n\nWe'll also break down and explain all the different engine cycle types so you know what the full flow staged combustion cycle is, how it works, and how it compares to the other cycles.\n\nSo by the end of this video hopefully we’ll have the context to know why the raptor engine is special, how it compares to other rocket engines, why it’s using methane and hopefully find out if the Raptor engine will be the new king of rocket engines…\n\n-----------------------------------------------\n\nRocket engine renders by  @MartianDays https://twitter.com/MartianDays\n\nF-1 Turbopump photo provided by Mike Jetzer/heroicrelics.org\n\nHUGE thanks to my Moon Walker Patreon supporters! Blake Jacobs, Eli Burton, Jethro, Mac Malkawi, Neurostream, Ole Mathias Heggem\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 5360276
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LbH1ZDImaI8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

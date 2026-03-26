@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RJR8r56tpN0",
+    "language": "en",
+    "took_ms": 9029,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Mohammed Aldoub -   Using Barq to Perform AWS Post-Exploitation",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 1260,
+    "description": "barq is a post-exploitation framework that allows you to easily perform attacks on a running AWS infrastructure. It allows you to attack running EC2 instances without having the original instance SSH keypairs. It also allows you to perform enumeration and extraction of stored Secrets and Parameters in AWS.",
+    "view_count": 984
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RJR8r56tpN0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

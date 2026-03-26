@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jBobjt_8W6o",
+    "language": "en",
+    "took_ms": 7912,
+    "method": null,
+    "title": "DEF CON Safe Mode Demo Labs - Emilio Couto - CIRCO v2",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2178,
+    "description": "Designed under Raspberry Pi and aimed for Red Team Ops, we take advantage of \"Sec/Net/Dev/Ops\" enterprise tools to capture network credentials in stealth mode\n\nUsing a low-profile hardware & electronics camouflaged as simple network outlet box/PoE injector to be sitting under/over a desk.\nCIRCO include different techniques for network data exfiltration to avoid detection from IDS/IPS or monitoring systems.This tool gathers information and use a combination of honeypots to trick Automation Systems to give us their network credentials!We will build a physical network & infrastructure lab to show how CIRCO works (live demo)\n\nMajor features for release v2:\n- Python 3- New code structure (modular)- Install/build scripts- Net-Creds Support (exfiltration)- Light Detector for case alarm- Spoof MAC/IP for exfiltration- VoIP info collector- Extra exfiltration methods",
+    "view_count": 309
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jBobjt_8W6o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

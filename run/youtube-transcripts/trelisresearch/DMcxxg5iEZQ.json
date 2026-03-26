@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DMcxxg5iEZQ",
+    "language": "en",
+    "took_ms": 8577,
+    "method": null,
+    "title": "Embeddings vs Fine Tuning  - Part 2, Supervised Fine-tuning",
+    "channel": "Trelis Research",
+    "upload_date": "20230920",
+    "duration_sec": 2938,
+    "description": "*Supervised Fine-tuning Notebook*\n- Run fine-tuning using a Q&A dataset.\nBuy Access Here: https://buy.stripe.com/4gw6pag8t5TJ9IQbJ6\n\n*Fine-tuning Repository Access*\n1. Supervised Fine-tuning Notebook\n2. Q&A Dataset Preparation Scripts\n3. Scripts to create and use Embeddings\n4. Forum Support\nLearn More: https://trelis.com/advanced-fine-tuning-scripts/\n\n*Other Resources*\nPresentation Slides: \nhttps://docs.google.com/presentation/d/1Ig8BposLO6h34pLQy0MFTRxNjdhan8fkvVmzl4MsIoI/edit?usp=sharing\n\nLlama 2 Inference Notebook (to compare Chat and Base models):\nhttps://colab.research.google.com/drive/17GjLg0zB6VSpFcoO_r_wZtaGqNV6VCxC?usp=sharing\n\n0:00 Part 2: Supervised Fine-tuning\n0:30 How to make fine-tuning work?\n1:10 How NOT to do fine-tuning\n2:20 Video Overview\n2:50 Chat vs Base models\n7:50 Supervised versus Unsupervised fine-tuning\n19:40 Converting a dataset into Q&A\n30:50 Supervised fine-tuning in google colab.\n46:45 Pro tips\n48:32 Scripts and GitHub Repo Access",
+    "view_count": 5484
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DMcxxg5iEZQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LQ7ZQXs-uC0",
+    "language": "en",
+    "took_ms": 9242,
+    "method": null,
+    "title": "DEF CON 31 - Defender Pretender  When Windows Defender Updates Become a Security Risk  -Bar, Attias",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2343,
+    "description": "The signature update process is critical to EDR's effectiveness against emerging threats. The security update process must be highly secured, as demonstrated by the Flame malware attack that leveraged a rogue certificate for lateral movement. Nation-state capabilities are typically required for such an attack, given that signature update files are digitally signed by Microsoft.\n\nWe wondered if we could achieve similar capabilities running as an unprivileged user without possessing a rough certificate, instead we aimed to turn the original Windows Defender process to our full control.\n\nIn this talk we will deep dive into Windows Defender architecture, the signature database format and the update process, with a focus on the security verification logic. We will explain how an attacker can completely compromise any Windows agent or server, including those used by enterprises, by exploiting a powerful 0day vulnerability that even we didn't expect to discover.\n\nWe will demonstrate Defender-Pretender, a tool we developed to achieve neutralization of the EDR. allowing any already known malicious code to run Fully Un-Detected. It can also force Defender to delete admin’s data. OS and driver files, resulting in an unrecoverable OS. We will also explain how an attacker can alter Defender's detection and mitigation logic.",
+    "view_count": 15014
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LQ7ZQXs-uC0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

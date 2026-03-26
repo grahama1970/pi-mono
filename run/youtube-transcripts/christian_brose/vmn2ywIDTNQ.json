@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vmn2ywIDTNQ",
+    "language": "en",
+    "took_ms": 7789,
+    "method": null,
+    "title": "The Future of Industrial Cybersecurity",
+    "channel": "Hudson Institute",
+    "upload_date": "20210721",
+    "duration_sec": 3318,
+    "description": "Join Hudson Institute Adjunct Fellow and former Acting Under Secretary of Defense for Intelligence and Security Ezra Cohen for a discussion with former Deputy Assistant to the President for National Security Affairs and Senior Director for Cyber Security Joshua Steinman on the future of industrial cybersecurity.\n\nThe industrial world has spent the past twenty years optimizing its operational infrastructure with computers. From manufacturing to energy grids, water treatment to food processing, the world as it exists today runs on top of the internet. This has enabled four, five, and in some cases six sigmas of uptime and efficiency— unlocking greater profits, performance, and predictability. But has it also introduced incalculable risks in the form of ransomware, foreign exploitation, and other attacks? Please join Hudson Institute for this important discussion.",
+    "view_count": 2902
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vmn2ywIDTNQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

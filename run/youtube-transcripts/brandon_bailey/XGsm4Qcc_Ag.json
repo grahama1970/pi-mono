@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XGsm4Qcc_Ag",
+    "language": "en",
+    "took_ms": 7558,
+    "method": null,
+    "title": "DEF CON 32 - Decoding Galah, an LLM Powered Web Honeypot - Adel Karimi",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1496,
+    "description": "Honeypots are invaluable tools for monitoring internet-wide scans and understanding attackers' techniques. Traditional low-interaction web honeypots use manual methods to emulate various applications or vulnerabilities. Introducing Galah, an LLM-powered web honeypot that mimics diverse applications with a single prompt. This honeypot dynamically crafts relevant HTTP responses, including headers and body content, to various HTTP requests, effectively simulating multiple web applications. In this talk, I will share lessons learned from building and deploying Galah and address two key questions: How do different large language models perform in generating HTTP messages? Does delivering authentic-looking HTTP responses increase attackers’ engagement with the honeypot?",
+    "view_count": 918
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XGsm4Qcc_Ag: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

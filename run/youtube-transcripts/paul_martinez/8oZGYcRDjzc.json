@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8oZGYcRDjzc",
+    "language": "en",
+    "took_ms": 9039,
+    "method": null,
+    "title": "Cyber Process Hazards Analysis (PHA) to Assess ICS Cybersecurity Risk",
+    "channel": "S4 Events",
+    "upload_date": "20170503",
+    "duration_sec": 1757,
+    "description": "A great session to understand basic safety risk management philosophy and methodology, and then to learn how to adapt it to address cyber related risk.\n\nJohn Cusimano of aeSolutions brings a lot of PHA and cyber PHA consulting experience and Chris Da Costa of Air Products discusses it from an asset owner perspective. A few highlights:\n\n4:25 How good is good enough with regards to security\n19:10 A Cyber PHA worksheet example\n20:15 Risk is risk to management. Quantify cyber risk and address it like any other risk",
+    "view_count": 2907
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8oZGYcRDjzc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

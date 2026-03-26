@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_H_wbbPWQjo",
+    "language": "en",
+    "took_ms": 9071,
+    "method": null,
+    "title": "Metrics: How Effective Is A Security Control?",
+    "channel": "S4 Events",
+    "upload_date": "20230517",
+    "duration_sec": 3005,
+    "description": "How much does a security control reduce cyber risk? What control or mix of controls provides the most efficient cyber risk reduction? Tough questions that a team of researchers at INL and Sandia tried to answer in a project.\n\nTwo of the researchers, Jay Johnson of Sandia and Jake Gentle of INL, join Dale on the show to talk about the metrics and results. The project was Cyber Resilience for Wind Installations, but the metrics and results are applicable to every sector. We get into the weeds on this episode and discuss:\n\n- how they created the test environment\n- the two attack scenarios (and why only two and how easy it would be to expand)\n- the physical resilience score\n- the cyber resilience score\n- the results from four different mixes of security controls\n- areas for further testing and improvement\n- and a tiny bit about trying to calculate an Expected Benefit from Cybersecurity Investment, which is a bit like ROI and how much money to spend.\n\nLinks\n\n• Video: https://www.youtube.com/watch?v=bBLbLUFKzIc\n\n• IEEE Access Journal Paper: https://ieeexplore.ieee.org/document/10043706\n\n• POWER magazine article: https://www.powermag.com/cyber-resilience-for-wind-power-installations/\n\n• 2-page flyer: https://www.researchgate.net/publication/367074443_Cyber_Resilience_for_Wind_Installations_A_Cyber_Resilient_Reference_Architecture\n\n• Final project report: https://www.researchgate.net/publication/368599508_Hardening_Wind_Energy_Systems_from_Cyber_Threats-Final_Project_Report",
+    "view_count": 802
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _H_wbbPWQjo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

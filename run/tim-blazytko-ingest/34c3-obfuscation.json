@@ -1,0 +1,6174 @@
+Tier 1: Trying direct youtube-transcript-api...
+{
+  "meta": {
+    "video_id": "TDnAkm6ZTYw",
+    "language": "en",
+    "took_ms": 1216,
+    "method": "direct",
+    "title": "34C3 -  Lets break modern binary code obfuscation",
+    "channel": "media.ccc.de",
+    "upload_date": "20171228",
+    "duration_sec": 3602,
+    "description": "https://media.ccc.de/v/34c3-8789-lets_break_modern_binary_code_obfuscation\n\nA semantics based approach\n\nDo you want to learn how modern binary code obfuscation and deobfuscation works? Did you ever encounter road-blocks where well-known deobfuscation techniques do not work? Do you want to see a novel deobfuscation method that learns the code's behavior without analyzing the code itself? Then come to our talk and we give you a step-by-step guide.\n\nThis talk might be interesting for you if you love reverse engineering or binary security analysis. We present you modern code obfuscation techniques, such as opaque predicates, arithmetic encoding and virtualization-based obfuscation. Further, we explain state-of-the-art methods in (automated) deobfuscation [1] as well as how to break these [2]. Finally, we introduce a novel  approach [3] that learns the code's semantics and demonstrate how this can be used to deobfuscate real-world obfuscated code.\n\n[1] https://www.ieee-security.org/TC/SP2015/papers-archived/6949a674.pdf\n[2] https://mediatum.ub.tum.de/doc/1343173/1343173.pdf\n[3] https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-blazytko.pdf\n\nTim Blazytko Moritz Contag\n\nhttps://fahrplan.events.ccc.de/congress/2017/Fahrplan/events/8789.html",
+    "view_count": 9444
+  },
+  "transcript": [
+    {
+      "text": "[Music]",
+      "start": 0.08,
+      "duration": 19.75
+    },
+    {
+      "text": "to the 6:30 talk of today it's one of",
+      "start": 15.8,
+      "duration": 6.52
+    },
+    {
+      "text": "the many things I love Congress for is",
+      "start": 19.83,
+      "duration": 4.529
+    },
+    {
+      "text": "the bold programming normally this is",
+      "start": 22.32,
+      "duration": 4.56
+    },
+    {
+      "text": "that and culture states and society",
+      "start": 24.359,
+      "duration": 5.49
+    },
+    {
+      "text": "stage and so I'm very excited that",
+      "start": 26.88,
+      "duration": 5.01
+    },
+    {
+      "text": "there's also a security talk today",
+      "start": 29.849,
+      "duration": 6.571
+    },
+    {
+      "text": "happening and Annette's next talk let's",
+      "start": 31.89,
+      "duration": 6.96
+    },
+    {
+      "text": "break modern binary code obfuscation is",
+      "start": 36.42,
+      "duration": 4.65
+    },
+    {
+      "text": "going to be translated into German",
+      "start": 38.85,
+      "duration": 5.6
+    },
+    {
+      "text": "espera half Dutch possessed under this",
+      "start": 41.07,
+      "duration": 7.2
+    },
+    {
+      "text": "address streaming dot C three lingo dot",
+      "start": 44.45,
+      "duration": 6.28
+    },
+    {
+      "text": "or which should also appear on the",
+      "start": 48.27,
+      "duration": 10.74
+    },
+    {
+      "text": "screen now wonderful and from boham I'm",
+      "start": 50.73,
+      "duration": 11.099
+    },
+    {
+      "text": "gonna welcome now Tim lets it go and",
+      "start": 59.01,
+      "duration": 4.969
+    },
+    {
+      "text": "move its contact and they're gonna",
+      "start": 61.829,
+      "duration": 5.4
+    },
+    {
+      "text": "explain to us how you can do you up",
+      "start": 63.979,
+      "duration": 5.231
+    },
+    {
+      "text": "first get code without looking at the",
+      "start": 67.229,
+      "duration": 5.25
+    },
+    {
+      "text": "code but only its behavior warm welcome",
+      "start": 69.21,
+      "duration": 5.23
+    },
+    {
+      "text": "and Allah a lot of applause",
+      "start": 72.479,
+      "duration": 3.091
+    },
+    {
+      "text": "[Applause]",
+      "start": 74.44,
+      "duration": 5.12
+    },
+    {
+      "text": "[Music]",
+      "start": 75.57,
+      "duration": 3.99
+    },
+    {
+      "text": "thank you",
+      "start": 81.6,
+      "duration": 6.78
+    },
+    {
+      "text": "first can we enable the TV down here",
+      "start": 83.23,
+      "duration": 5.15
+    },
+    {
+      "text": "technique Oh - well well hi",
+      "start": 91.62,
+      "duration": 9.79
+    },
+    {
+      "text": "so welcome to our talk so we are mobile",
+      "start": 96.61,
+      "duration": 7.47
+    },
+    {
+      "text": "and I to teach these students and",
+      "start": 101.41,
+      "duration": 5.069
+    },
+    {
+      "text": "reverse engineers at a visit in Bochum",
+      "start": 104.08,
+      "duration": 8.429
+    },
+    {
+      "text": "Germany and we we discuss and we in our",
+      "start": 106.479,
+      "duration": 7.831
+    },
+    {
+      "text": "daily work we do reverse engineering and",
+      "start": 112.509,
+      "duration": 4.171
+    },
+    {
+      "text": "things like that and as part of one of",
+      "start": 114.31,
+      "duration": 5.64
+    },
+    {
+      "text": "our academic projects we started with",
+      "start": 116.68,
+      "duration": 4.92
+    },
+    {
+      "text": "programs and teasers for binary",
+      "start": 119.95,
+      "duration": 7.559
+    },
+    {
+      "text": "deification and then thank you and so",
+      "start": 121.6,
+      "duration": 8.639
+    },
+    {
+      "text": "this is basically is a more technical",
+      "start": 127.509,
+      "duration": 5.851
+    },
+    {
+      "text": "version of our academic talk that we",
+      "start": 130.239,
+      "duration": 5.581
+    },
+    {
+      "text": "present it on public public ated at",
+      "start": 133.36,
+      "duration": 5.34
+    },
+    {
+      "text": "unique security this year so in the",
+      "start": 135.82,
+      "duration": 4.98
+    },
+    {
+      "text": "first moments we'll talk about code",
+      "start": 138.7,
+      "duration": 3.69
+    },
+    {
+      "text": "obfuscation techniques and the",
+      "start": 140.8,
+      "duration": 3.63
+    },
+    {
+      "text": "obfuscation techniques and I will later",
+      "start": 142.39,
+      "duration": 4.5
+    },
+    {
+      "text": "join with programs and teasers and how",
+      "start": 144.43,
+      "duration": 6.3
+    },
+    {
+      "text": "to apply that thank you all right thank",
+      "start": 146.89,
+      "duration": 7.59
+    },
+    {
+      "text": "you for the introduction okay first",
+      "start": 150.73,
+      "duration": 6.539
+    },
+    {
+      "text": "things first why do we want to office",
+      "start": 154.48,
+      "duration": 5.25
+    },
+    {
+      "text": "cake code in the first place so to",
+      "start": 157.269,
+      "duration": 3.961
+    },
+    {
+      "text": "settle the scene it's important to note",
+      "start": 159.73,
+      "duration": 2.97
+    },
+    {
+      "text": "that we cannot really prevent reverse",
+      "start": 161.23,
+      "duration": 3.6
+    },
+    {
+      "text": "engineering it tends but rather we seek",
+      "start": 162.7,
+      "duration": 4.23
+    },
+    {
+      "text": "to complicate them at least is some",
+      "start": 164.83,
+      "duration": 4.53
+    },
+    {
+      "text": "degree reasons why we would want to do",
+      "start": 166.93,
+      "duration": 4.71
+    },
+    {
+      "text": "so many intellectual property and the",
+      "start": 169.36,
+      "duration": 3.9
+    },
+    {
+      "text": "projection thereof so like if you get",
+      "start": 171.64,
+      "duration": 4.319
+    },
+    {
+      "text": "some super secret algorithm which gives",
+      "start": 173.26,
+      "duration": 5.22
+    },
+    {
+      "text": "you some competitive advantage over some",
+      "start": 175.959,
+      "duration": 4.651
+    },
+    {
+      "text": "competitor that you can just protect it",
+      "start": 178.48,
+      "duration": 7.319
+    },
+    {
+      "text": "and here just have a head start to do",
+      "start": 180.61,
+      "duration": 8.31
+    },
+    {
+      "text": "this other corporation or something",
+      "start": 185.799,
+      "duration": 5.041
+    },
+    {
+      "text": "another reason why we want to offshore",
+      "start": 188.92,
+      "duration": 4.289
+    },
+    {
+      "text": "skate code would be malicious payloads",
+      "start": 190.84,
+      "duration": 4.2
+    },
+    {
+      "text": "so we want to make them harder to detect",
+      "start": 193.209,
+      "duration": 5.31
+    },
+    {
+      "text": "so that analysis are not easily able to",
+      "start": 195.04,
+      "duration": 5.85
+    },
+    {
+      "text": "create signatures for those and the",
+      "start": 198.519,
+      "duration": 4.56
+    },
+    {
+      "text": "malware lives longer without being",
+      "start": 200.89,
+      "duration": 6.0
+    },
+    {
+      "text": "picked up by a navy and the third I",
+      "start": 203.079,
+      "duration": 5.22
+    },
+    {
+      "text": "think most interesting cases together",
+      "start": 206.89,
+      "duration": 3.24
+    },
+    {
+      "text": "rights management where",
+      "start": 208.299,
+      "duration": 4.171
+    },
+    {
+      "text": "software especially Triple A games",
+      "start": 210.13,
+      "duration": 5.31
+    },
+    {
+      "text": "larger games are just office catered in",
+      "start": 212.47,
+      "duration": 5.91
+    },
+    {
+      "text": "order to prevent cracking attempts and",
+      "start": 215.44,
+      "duration": 6.72
+    },
+    {
+      "text": "illegal distribution of the game of the",
+      "start": 218.38,
+      "duration": 5.73
+    },
+    {
+      "text": "game itself and especially in the",
+      "start": 222.16,
+      "duration": 3.57
+    },
+    {
+      "text": "context of to go to rights management",
+      "start": 224.11,
+      "duration": 3.27
+    },
+    {
+      "text": "there's a very fitting quote which",
+      "start": 225.73,
+      "duration": 4.68
+    },
+    {
+      "text": "settled sincerely as to what you can",
+      "start": 227.38,
+      "duration": 4.38
+    },
+    {
+      "text": "expect from code obfuscation",
+      "start": 230.41,
+      "duration": 4.31
+    },
+    {
+      "text": "it's from Martin Slater of 2k Australia",
+      "start": 231.76,
+      "duration": 6.72
+    },
+    {
+      "text": "and was issued regarding to the release",
+      "start": 234.72,
+      "duration": 7.6
+    },
+    {
+      "text": "of Bioshock back in 2007 and he told us",
+      "start": 238.48,
+      "duration": 6.3
+    },
+    {
+      "text": "that they achieved their goals because",
+      "start": 242.32,
+      "duration": 6.32
+    },
+    {
+      "text": "they were uncrate for 13 whole days so",
+      "start": 244.78,
+      "duration": 6.48
+    },
+    {
+      "text": "apparently we cannot really prevent",
+      "start": 248.64,
+      "duration": 6.49
+    },
+    {
+      "text": "obfuscation we can just make sure - yeah",
+      "start": 251.26,
+      "duration": 6.3
+    },
+    {
+      "text": "make the software would stand cracking",
+      "start": 255.13,
+      "duration": 6.39
+    },
+    {
+      "text": "attempts at least 13 days which is about",
+      "start": 257.56,
+      "duration": 6.35
+    },
+    {
+      "text": "about the time in which the game",
+      "start": 261.52,
+      "duration": 4.71
+    },
+    {
+      "text": "distributor makes most of it office",
+      "start": 263.91,
+      "duration": 9.6
+    },
+    {
+      "text": "revenue okay how do we protect software",
+      "start": 266.23,
+      "duration": 10.23
+    },
+    {
+      "text": "so there are different approaches to",
+      "start": 273.51,
+      "duration": 5.5
+    },
+    {
+      "text": "protecting software some better some",
+      "start": 276.46,
+      "duration": 5.28
+    },
+    {
+      "text": "worse for example we can just take a",
+      "start": 279.01,
+      "duration": 4.5
+    },
+    {
+      "text": "look at the software that's been used to",
+      "start": 281.74,
+      "duration": 4.29
+    },
+    {
+      "text": "analyze the programs it sells like all",
+      "start": 283.51,
+      "duration": 4.74
+    },
+    {
+      "text": "the debug like disassembly and so on and",
+      "start": 286.03,
+      "duration": 4.29
+    },
+    {
+      "text": "one idea that comes to our mind is just",
+      "start": 288.25,
+      "duration": 4.53
+    },
+    {
+      "text": "to abuse shortcomings of these tools so",
+      "start": 290.32,
+      "duration": 5.37
+    },
+    {
+      "text": "if we know already about crashes due to",
+      "start": 292.78,
+      "duration": 6.03
+    },
+    {
+      "text": "some code analysis part of the office",
+      "start": 295.69,
+      "duration": 5.79
+    },
+    {
+      "text": "specific FPU sequence we could just she",
+      "start": 298.81,
+      "duration": 5.13
+    },
+    {
+      "text": "issued that and make already back crash",
+      "start": 301.48,
+      "duration": 4.59
+    },
+    {
+      "text": "or similarly if we got some process",
+      "start": 303.94,
+      "duration": 5.22
+    },
+    {
+      "text": "number which is relying on fields of the",
+      "start": 306.07,
+      "duration": 5.52
+    },
+    {
+      "text": "PE had a memory we can easily confuse",
+      "start": 309.16,
+      "duration": 4.76
+    },
+    {
+      "text": "them and just may render these to its",
+      "start": 311.59,
+      "duration": 5.82
+    },
+    {
+      "text": "unusable another approach that's very",
+      "start": 313.92,
+      "duration": 5.2
+    },
+    {
+      "text": "popular is just to detect the",
+      "start": 317.41,
+      "duration": 3.81
+    },
+    {
+      "text": "environment the program Lanson and check",
+      "start": 319.12,
+      "duration": 4.95
+    },
+    {
+      "text": "if we're running an application in an",
+      "start": 321.22,
+      "duration": 5.85
+    },
+    {
+      "text": "environment that here gives us",
+      "start": 324.07,
+      "duration": 4.38
+    },
+    {
+      "text": "information about the presence of a",
+      "start": 327.07,
+      "duration": 3.96
+    },
+    {
+      "text": "debugger so there's some capability by",
+      "start": 328.45,
+      "duration": 4.62
+    },
+    {
+      "text": "the operating system for example the",
+      "start": 331.03,
+      "duration": 5.52
+    },
+    {
+      "text": "being debugged a bit and the PB which is",
+      "start": 333.07,
+      "duration": 5.7
+    },
+    {
+      "text": "being set if we do ba guys attached",
+      "start": 336.55,
+      "duration": 4.29
+    },
+    {
+      "text": "similarly there are more low-level",
+      "start": 338.77,
+      "duration": 5.16
+    },
+    {
+      "text": "tricks we can abuse or some operator",
+      "start": 340.84,
+      "duration": 4.71
+    },
+    {
+      "text": "system internals which allow us to",
+      "start": 343.93,
+      "duration": 3.18
+    },
+    {
+      "text": "somehow detect the presence of a",
+      "start": 345.55,
+      "duration": 3.929
+    },
+    {
+      "text": "debugger and then just abort execution",
+      "start": 347.11,
+      "duration": 5.76
+    },
+    {
+      "text": "and yet to just prevent any reverse",
+      "start": 349.479,
+      "duration": 6.361
+    },
+    {
+      "text": "engineering attempts however both",
+      "start": 352.87,
+      "duration": 5.13
+    },
+    {
+      "text": "techniques have the drawback that first",
+      "start": 355.84,
+      "duration": 4.53
+    },
+    {
+      "text": "they are once you know how they work",
+      "start": 358.0,
+      "duration": 4.979
+    },
+    {
+      "text": "they easily fix you can just patch your",
+      "start": 360.37,
+      "duration": 5.94
+    },
+    {
+      "text": "tool or you can just circumvent the anti",
+      "start": 362.979,
+      "duration": 5.041
+    },
+    {
+      "text": "debugging tricks but just supplying the",
+      "start": 366.31,
+      "duration": 6.27
+    },
+    {
+      "text": "correct values also if you go to Google",
+      "start": 368.02,
+      "duration": 6.03
+    },
+    {
+      "text": "and just search for game doesn't start",
+      "start": 372.58,
+      "duration": 3.6
+    },
+    {
+      "text": "debugger detected you get over six",
+      "start": 374.05,
+      "duration": 3.69
+    },
+    {
+      "text": "million people's complaining that they",
+      "start": 376.18,
+      "duration": 2.9
+    },
+    {
+      "text": "cannot run the latest triple-a game",
+      "start": 377.74,
+      "duration": 3.69
+    },
+    {
+      "text": "because the anti debugging technique",
+      "start": 379.08,
+      "duration": 4.63
+    },
+    {
+      "text": "that you might have which might have",
+      "start": 381.43,
+      "duration": 5.1
+    },
+    {
+      "text": "worked reliably on Windows XP does not",
+      "start": 383.71,
+      "duration": 4.799
+    },
+    {
+      "text": "really hold up on Windows 7 and it's",
+      "start": 386.53,
+      "duration": 4.02
+    },
+    {
+      "text": "just a false positive so benign",
+      "start": 388.509,
+      "duration": 4.261
+    },
+    {
+      "text": "customers cannot really use the game",
+      "start": 390.55,
+      "duration": 4.95
+    },
+    {
+      "text": "cannot really play the game because the",
+      "start": 392.77,
+      "duration": 5.82
+    },
+    {
+      "text": "delegatee bug a detection was faulty so",
+      "start": 395.5,
+      "duration": 4.86
+    },
+    {
+      "text": "let's set up some requirements we need",
+      "start": 398.59,
+      "duration": 6.57
+    },
+    {
+      "text": "for code obfuscation an important one is",
+      "start": 400.36,
+      "duration": 6.27
+    },
+    {
+      "text": "that we want a call to be semantics",
+      "start": 405.16,
+      "duration": 5.009
+    },
+    {
+      "text": "preserving so the may effect of",
+      "start": 406.63,
+      "duration": 5.43
+    },
+    {
+      "text": "protecting the application showed my",
+      "start": 410.169,
+      "duration": 4.351
+    },
+    {
+      "text": "changes of server behavior so we don't",
+      "start": 412.06,
+      "duration": 4.2
+    },
+    {
+      "text": "do not want the game to break only",
+      "start": 414.52,
+      "duration": 5.1
+    },
+    {
+      "text": "because we want to protect it a second",
+      "start": 416.26,
+      "duration": 5.399
+    },
+    {
+      "text": "point we want to avoid external",
+      "start": 419.62,
+      "duration": 3.57
+    },
+    {
+      "text": "dependencies at least in the context of",
+      "start": 421.659,
+      "duration": 3.69
+    },
+    {
+      "text": "our discussion here so they are various",
+      "start": 423.19,
+      "duration": 5.219
+    },
+    {
+      "text": "attempts to outsource data like on the",
+      "start": 425.349,
+      "duration": 5.521
+    },
+    {
+      "text": "internet on an internet server on an USB",
+      "start": 428.409,
+      "duration": 7.471
+    },
+    {
+      "text": "dongle or another separate media but we",
+      "start": 430.87,
+      "duration": 7.079
+    },
+    {
+      "text": "are mostly interested in techniques that",
+      "start": 435.88,
+      "duration": 3.81
+    },
+    {
+      "text": "protect the code only so we got it white",
+      "start": 437.949,
+      "duration": 3.271
+    },
+    {
+      "text": "box attack scenario where the attacker",
+      "start": 439.69,
+      "duration": 3.509
+    },
+    {
+      "text": "has everything he needs to attack the",
+      "start": 441.22,
+      "duration": 5.06
+    },
+    {
+      "text": "application at his or her hand and",
+      "start": 443.199,
+      "duration": 5.101
+    },
+    {
+      "text": "finally the most important point",
+      "start": 446.28,
+      "duration": 4.06
+    },
+    {
+      "text": "probably is that we want to employ",
+      "start": 448.3,
+      "duration": 4.98
+    },
+    {
+      "text": "techniques that are easier or way easier",
+      "start": 450.34,
+      "duration": 5.759
+    },
+    {
+      "text": "to deploy for us then for the reverse",
+      "start": 453.28,
+      "duration": 4.29
+    },
+    {
+      "text": "engineer to attack",
+      "start": 456.099,
+      "duration": 4.671
+    },
+    {
+      "text": "so the anti debugging tricks we've seen",
+      "start": 457.57,
+      "duration": 6.06
+    },
+    {
+      "text": "also the shortcomings of the tools which",
+      "start": 460.77,
+      "duration": 5.05
+    },
+    {
+      "text": "we cannot be used they are more less",
+      "start": 463.63,
+      "duration": 4.56
+    },
+    {
+      "text": "effort one on one want to know how it",
+      "start": 465.82,
+      "duration": 5.01
+    },
+    {
+      "text": "works you can easily bypass us but we",
+      "start": 468.19,
+      "duration": 5.01
+    },
+    {
+      "text": "want to employ techniques that are easy",
+      "start": 470.83,
+      "duration": 4.559
+    },
+    {
+      "text": "to deploy for us but they are very hard",
+      "start": 473.2,
+      "duration": 2.529
+    },
+    {
+      "text": "to",
+      "start": 475.389,
+      "duration": 6.351
+    },
+    {
+      "text": "attack by other parties okay counter",
+      "start": 475.729,
+      "duration": 8.861
+    },
+    {
+      "text": "code obfuscation techniques one",
+      "start": 481.74,
+      "duration": 5.19
+    },
+    {
+      "text": "technique that's been used commercial",
+      "start": 484.59,
+      "duration": 4.62
+    },
+    {
+      "text": "protection engines is what we is more",
+      "start": 486.93,
+      "duration": 5.94
+    },
+    {
+      "text": "known as about predicates so consider",
+      "start": 489.21,
+      "duration": 7.739
+    },
+    {
+      "text": "this rather easy CFG on the on the left",
+      "start": 492.87,
+      "duration": 6.75
+    },
+    {
+      "text": "side so we get some application with a",
+      "start": 496.949,
+      "duration": 6.0
+    },
+    {
+      "text": "linear control flow graph if we now",
+      "start": 499.62,
+      "duration": 5.669
+    },
+    {
+      "text": "insert what is known as part predicates",
+      "start": 502.949,
+      "duration": 7.411
+    },
+    {
+      "text": "the problem looks vastly more complex so",
+      "start": 505.289,
+      "duration": 7.56
+    },
+    {
+      "text": "get more branches and control for which",
+      "start": 510.36,
+      "duration": 3.96
+    },
+    {
+      "text": "we have to track and we have no clue",
+      "start": 512.849,
+      "duration": 4.231
+    },
+    {
+      "text": "that the underlying program in fact is",
+      "start": 514.32,
+      "duration": 5.459
+    },
+    {
+      "text": "very simple let's zoom in on one of",
+      "start": 517.08,
+      "duration": 7.05
+    },
+    {
+      "text": "those predicates okay so we've got a bit",
+      "start": 519.779,
+      "duration": 6.93
+    },
+    {
+      "text": "of code we got a true branch and a false",
+      "start": 524.13,
+      "duration": 5.19
+    },
+    {
+      "text": "branch both branching to a different",
+      "start": 526.709,
+      "duration": 4.921
+    },
+    {
+      "text": "basic block so if we're just looking at",
+      "start": 529.32,
+      "duration": 3.69
+    },
+    {
+      "text": "this we might come to the conclusion",
+      "start": 531.63,
+      "duration": 3.48
+    },
+    {
+      "text": "okay we don't know which branch is going",
+      "start": 533.01,
+      "duration": 7.769
+    },
+    {
+      "text": "to be taking right however it turns out",
+      "start": 535.11,
+      "duration": 8.34
+    },
+    {
+      "text": "that this is what we call an attack -",
+      "start": 540.779,
+      "duration": 6.18
+    },
+    {
+      "text": "predicate so in this case the true",
+      "start": 543.45,
+      "duration": 6.15
+    },
+    {
+      "text": "branch is always taken irregardless of",
+      "start": 546.959,
+      "duration": 6.771
+    },
+    {
+      "text": "the behavior here in the predicate so",
+      "start": 549.6,
+      "duration": 6.84
+    },
+    {
+      "text": "what's happening here is that you get a",
+      "start": 553.73,
+      "duration": 4.84
+    },
+    {
+      "text": "path predicates on top this is the whole",
+      "start": 556.44,
+      "duration": 5.43
+    },
+    {
+      "text": "block which is just constructing a",
+      "start": 558.57,
+      "duration": 6.15
+    },
+    {
+      "text": "predicate based on a no pack well you",
+      "start": 561.87,
+      "duration": 5.159
+    },
+    {
+      "text": "like the return value of the API call",
+      "start": 564.72,
+      "duration": 4.26
+    },
+    {
+      "text": "gate current process and if you've ever",
+      "start": 567.029,
+      "duration": 4.231
+    },
+    {
+      "text": "worked with the windows 8 API before you",
+      "start": 568.98,
+      "duration": 4.799
+    },
+    {
+      "text": "might know that get one process always",
+      "start": 571.26,
+      "duration": 5.78
+    },
+    {
+      "text": "returns a constant value namely minus 1",
+      "start": 573.779,
+      "duration": 8.221
+    },
+    {
+      "text": "so by just issuing this predicate we",
+      "start": 577.04,
+      "duration": 7.12
+    },
+    {
+      "text": "make sure that we always take the left",
+      "start": 582.0,
+      "duration": 4.26
+    },
+    {
+      "text": "branch the right branch might point to",
+      "start": 584.16,
+      "duration": 5.57
+    },
+    {
+      "text": "that code or to other point to confuse",
+      "start": 586.26,
+      "duration": 6.269
+    },
+    {
+      "text": "here confuse the reverse engineer that",
+      "start": 589.73,
+      "duration": 5.08
+    },
+    {
+      "text": "we I dreamt on we always take the left",
+      "start": 592.529,
+      "duration": 2.991
+    },
+    {
+      "text": "branch",
+      "start": 594.81,
+      "duration": 3.24
+    },
+    {
+      "text": "similarly there are apart for decades",
+      "start": 595.52,
+      "duration": 4.39
+    },
+    {
+      "text": "which just invert this condition and",
+      "start": 598.05,
+      "duration": 4.47
+    },
+    {
+      "text": "follow the false branch and there's a",
+      "start": 599.91,
+      "duration": 4.619
+    },
+    {
+      "text": "another flavor called random apart",
+      "start": 602.52,
+      "duration": 4.38
+    },
+    {
+      "text": "predicate in which branch upon random",
+      "start": 604.529,
+      "duration": 4.871
+    },
+    {
+      "text": "value this means that we can",
+      "start": 606.9,
+      "duration": 4.54
+    },
+    {
+      "text": "potentially at runtime follow both",
+      "start": 609.4,
+      "duration": 6.0
+    },
+    {
+      "text": "branches so the challenge here is that",
+      "start": 611.44,
+      "duration": 6.54
+    },
+    {
+      "text": "we have to make sure that both blocks on",
+      "start": 615.4,
+      "duration": 4.83
+    },
+    {
+      "text": "both paths that follow have to be",
+      "start": 617.98,
+      "duration": 3.72
+    },
+    {
+      "text": "semantically equivalent because the",
+      "start": 620.23,
+      "duration": 5.16
+    },
+    {
+      "text": "program problem breaks otherwise however",
+      "start": 621.7,
+      "duration": 6.42
+    },
+    {
+      "text": "it is also a challenge to ensure that",
+      "start": 625.39,
+      "duration": 6.09
+    },
+    {
+      "text": "it's not easily detected by the attacker",
+      "start": 628.12,
+      "duration": 5.01
+    },
+    {
+      "text": "that both branches are in fact",
+      "start": 631.48,
+      "duration": 5.43
+    },
+    {
+      "text": "semantically equivalent ok recapping on",
+      "start": 633.13,
+      "duration": 5.55
+    },
+    {
+      "text": "the part predicates obviously they",
+      "start": 636.91,
+      "duration": 4.38
+    },
+    {
+      "text": "increase the complexity of the",
+      "start": 638.68,
+      "duration": 4.83
+    },
+    {
+      "text": "application also they can be built on",
+      "start": 641.29,
+      "duration": 4.98
+    },
+    {
+      "text": "hard problems but what is most important",
+      "start": 643.51,
+      "duration": 5.28
+    },
+    {
+      "text": "is that they forced the analysis the",
+      "start": 646.27,
+      "duration": 4.2
+    },
+    {
+      "text": "analyst to encode additional knowledge",
+      "start": 648.79,
+      "duration": 4.8
+    },
+    {
+      "text": "that either the analyst himself has no",
+      "start": 650.47,
+      "duration": 6.18
+    },
+    {
+      "text": "it or he has to readjust extend this",
+      "start": 653.59,
+      "duration": 5.88
+    },
+    {
+      "text": "tool to know maybe about the Wynn API",
+      "start": 656.65,
+      "duration": 6.03
+    },
+    {
+      "text": "know about a few instructions know about",
+      "start": 659.47,
+      "duration": 6.06
+    },
+    {
+      "text": "automatic identities or some other heart",
+      "start": 662.68,
+      "duration": 5.04
+    },
+    {
+      "text": "problems that he all has to encode in",
+      "start": 665.53,
+      "duration": 4.38
+    },
+    {
+      "text": "this another tool to provide reasonable",
+      "start": 667.72,
+      "duration": 5.37
+    },
+    {
+      "text": "results so they are hard to solve",
+      "start": 669.91,
+      "duration": 9.06
+    },
+    {
+      "text": "statically however if we now opt to only",
+      "start": 673.09,
+      "duration": 8.1
+    },
+    {
+      "text": "look at concrete execution traces so we",
+      "start": 678.97,
+      "duration": 4.23
+    },
+    {
+      "text": "just left my application run I don't",
+      "start": 681.19,
+      "duration": 3.54
+    },
+    {
+      "text": "look at concrete values we know that",
+      "start": 683.2,
+      "duration": 4.11
+    },
+    {
+      "text": "apart predicator essentially solved for",
+      "start": 684.73,
+      "duration": 4.65
+    },
+    {
+      "text": "free for us so this is good to keep in",
+      "start": 687.31,
+      "duration": 5.73
+    },
+    {
+      "text": "mind another very interesting technique",
+      "start": 689.38,
+      "duration": 5.55
+    },
+    {
+      "text": "that has been also been deployed and I",
+      "start": 693.04,
+      "duration": 3.93
+    },
+    {
+      "text": "guess every major copy-protection out",
+      "start": 694.93,
+      "duration": 4.08
+    },
+    {
+      "text": "there are what you call virtual machines",
+      "start": 696.97,
+      "duration": 5.91
+    },
+    {
+      "text": "so take for example this native code on",
+      "start": 699.01,
+      "duration": 7.08
+    },
+    {
+      "text": "the left look at some some loop here and",
+      "start": 702.88,
+      "duration": 8.43
+    },
+    {
+      "text": "some x86 code and let's just assume the",
+      "start": 706.09,
+      "duration": 7.5
+    },
+    {
+      "text": "loop here is our freshest intellectual",
+      "start": 711.31,
+      "duration": 5.94
+    },
+    {
+      "text": "property we want to protect obviously we",
+      "start": 713.59,
+      "duration": 6.63
+    },
+    {
+      "text": "can use our common tools like this",
+      "start": 717.25,
+      "duration": 5.94
+    },
+    {
+      "text": "assemblers like Ida or LED back to look",
+      "start": 720.22,
+      "duration": 4.59
+    },
+    {
+      "text": "at this code and reason about this code",
+      "start": 723.19,
+      "duration": 4.11
+    },
+    {
+      "text": "and get to know what this code does so",
+      "start": 724.81,
+      "duration": 4.92
+    },
+    {
+      "text": "the idea here is to replace the code on",
+      "start": 727.3,
+      "duration": 4.92
+    },
+    {
+      "text": "the Left what something our common tools",
+      "start": 729.73,
+      "duration": 5.3
+    },
+    {
+      "text": "cannot understand so what we are doing",
+      "start": 732.22,
+      "duration": 5.34
+    },
+    {
+      "text": "we're just getting creative and we're",
+      "start": 735.03,
+      "duration": 4.33
+    },
+    {
+      "text": "just making up an anti instruction set",
+      "start": 737.56,
+      "duration": 5.22
+    },
+    {
+      "text": "as you seen on the right so VL aav pop",
+      "start": 739.36,
+      "duration": 3.96
+    },
+    {
+      "text": "and sorry",
+      "start": 742.78,
+      "duration": 4.95
+    },
+    {
+      "text": "they're not known in this way by any",
+      "start": 743.32,
+      "duration": 8.1
+    },
+    {
+      "text": "other architecture they're full with new",
+      "start": 747.73,
+      "duration": 6.14
+    },
+    {
+      "text": "registers what we went codex and so on",
+      "start": 751.42,
+      "duration": 7.92
+    },
+    {
+      "text": "and both the native code and the new",
+      "start": 753.87,
+      "duration": 8.26
+    },
+    {
+      "text": "instruction codes are semantically",
+      "start": 759.34,
+      "duration": 4.86
+    },
+    {
+      "text": "equivalent again what you're now doing",
+      "start": 762.13,
+      "duration": 4.32
+    },
+    {
+      "text": "is just replace the native code by a",
+      "start": 764.2,
+      "duration": 4.77
+    },
+    {
+      "text": "core to what we call an virtual machine",
+      "start": 766.45,
+      "duration": 5.61
+    },
+    {
+      "text": "or like also known as interpreter which",
+      "start": 768.97,
+      "duration": 5.43
+    },
+    {
+      "text": "is basically a CPU and software which",
+      "start": 772.06,
+      "duration": 6.24
+    },
+    {
+      "text": "just yeah lets you run the imaginary",
+      "start": 774.4,
+      "duration": 7.17
+    },
+    {
+      "text": "architecture we've thought about so if",
+      "start": 778.3,
+      "duration": 6.0
+    },
+    {
+      "text": "we now try to take our common tools like",
+      "start": 781.57,
+      "duration": 6.03
+    },
+    {
+      "text": "Ida or Olli debug or some other tools to",
+      "start": 784.3,
+      "duration": 5.43
+    },
+    {
+      "text": "just analyze this code it's not really",
+      "start": 787.6,
+      "duration": 5.49
+    },
+    {
+      "text": "viable anymore because we don't because",
+      "start": 789.73,
+      "duration": 4.62
+    },
+    {
+      "text": "they don't know about our made-up",
+      "start": 793.09,
+      "duration": 3.42
+    },
+    {
+      "text": "architecture but we still have to make",
+      "start": 794.35,
+      "duration": 3.63
+    },
+    {
+      "text": "sure that the transition from native",
+      "start": 796.51,
+      "duration": 4.98
+    },
+    {
+      "text": "code to a virtual instruction he goes",
+      "start": 797.98,
+      "duration": 5.73
+    },
+    {
+      "text": "seriously and to this effect you have to",
+      "start": 801.49,
+      "duration": 4.26
+    },
+    {
+      "text": "look at the components so there are",
+      "start": 803.71,
+      "duration": 3.78
+    },
+    {
+      "text": "three core components to a virtual",
+      "start": 805.75,
+      "duration": 3.96
+    },
+    {
+      "text": "machine so mainly we get the VM entry",
+      "start": 807.49,
+      "duration": 4.94
+    },
+    {
+      "text": "and exit and they what they do is just",
+      "start": 809.71,
+      "duration": 4.59
+    },
+    {
+      "text": "performing the context switch from",
+      "start": 812.43,
+      "duration": 4.36
+    },
+    {
+      "text": "native to virtual context and back so",
+      "start": 814.3,
+      "duration": 4.65
+    },
+    {
+      "text": "the entry just copies the native context",
+      "start": 816.79,
+      "duration": 4.2
+    },
+    {
+      "text": "that say registers and flex of the",
+      "start": 818.95,
+      "duration": 3.78
+    },
+    {
+      "text": "native architecture to the virtual",
+      "start": 820.99,
+      "duration": 4.59
+    },
+    {
+      "text": "context and the exit copies them back to",
+      "start": 822.73,
+      "duration": 5.79
+    },
+    {
+      "text": "the native context usually the mapping",
+      "start": 825.58,
+      "duration": 4.5
+    },
+    {
+      "text": "of native to virtual reversers",
+      "start": 828.52,
+      "duration": 3.71
+    },
+    {
+      "text": "one-to-one which makes it a bit easier",
+      "start": 830.08,
+      "duration": 4.47
+    },
+    {
+      "text": "then we got a traditional fetch decode",
+      "start": 832.23,
+      "duration": 4.24
+    },
+    {
+      "text": "execute loop like in a traditional CPU",
+      "start": 834.55,
+      "duration": 5.07
+    },
+    {
+      "text": "and what it does suggests fetches and",
+      "start": 836.47,
+      "duration": 5.73
+    },
+    {
+      "text": "decode is one instruction and forwards",
+      "start": 839.62,
+      "duration": 3.69
+    },
+    {
+      "text": "the visual instruction pointer",
+      "start": 842.2,
+      "duration": 5.72
+    },
+    {
+      "text": "accordingly then it looks up the handler",
+      "start": 843.31,
+      "duration": 7.2
+    },
+    {
+      "text": "which defines the virtual instruction",
+      "start": 847.92,
+      "duration": 5.2
+    },
+    {
+      "text": "and what we call the handler table here",
+      "start": 850.51,
+      "duration": 4.68
+    },
+    {
+      "text": "on the right and just invokes this",
+      "start": 853.12,
+      "duration": 3.8
+    },
+    {
+      "text": "handler and the handler goes on to",
+      "start": 855.19,
+      "duration": 5.61
+    },
+    {
+      "text": "actually execute the instruction so as",
+      "start": 856.92,
+      "duration": 5.53
+    },
+    {
+      "text": "we've seen the enter table is just a",
+      "start": 860.8,
+      "duration": 2.91
+    },
+    {
+      "text": "table of function pointers",
+      "start": 862.45,
+      "duration": 4.05
+    },
+    {
+      "text": "index by opcode and referred least one",
+      "start": 863.71,
+      "duration": 5.76
+    },
+    {
+      "text": "handler provision section and each",
+      "start": 866.5,
+      "duration": 5.07
+    },
+    {
+      "text": "handler then just decodes the operands",
+      "start": 869.47,
+      "duration": 5.16
+    },
+    {
+      "text": "operates on them and just updates the VM",
+      "start": 871.57,
+      "duration": 5.06
+    },
+    {
+      "text": "context accordingly",
+      "start": 874.63,
+      "duration": 5.759
+    },
+    {
+      "text": "okay so this is an example of a yeah an",
+      "start": 876.63,
+      "duration": 7.84
+    },
+    {
+      "text": "office catered version of a popular VM",
+      "start": 880.389,
+      "duration": 6.0
+    },
+    {
+      "text": "of Education and we might be able to",
+      "start": 884.47,
+      "duration": 5.82
+    },
+    {
+      "text": "make out these components here so on top",
+      "start": 886.389,
+      "duration": 7.291
+    },
+    {
+      "text": "we see the VM entry so this is where",
+      "start": 890.29,
+      "duration": 4.469
+    },
+    {
+      "text": "we're coming from the native code",
+      "start": 893.68,
+      "duration": 3.329
+    },
+    {
+      "text": "calling into the interpreter and here",
+      "start": 894.759,
+      "duration": 4.291
+    },
+    {
+      "text": "were just switching the context to the",
+      "start": 897.009,
+      "duration": 4.171
+    },
+    {
+      "text": "virtual context we initialize in the",
+      "start": 899.05,
+      "duration": 5.459
+    },
+    {
+      "text": "virtual context then we at the VM",
+      "start": 901.18,
+      "duration": 6.51
+    },
+    {
+      "text": "dispatcher loop which just looks up the",
+      "start": 904.509,
+      "duration": 4.5
+    },
+    {
+      "text": "current virtual instruction in the",
+      "start": 907.69,
+      "duration": 3.78
+    },
+    {
+      "text": "handler table which in turn points to",
+      "start": 909.009,
+      "duration": 4.111
+    },
+    {
+      "text": "the individual handlers you see here",
+      "start": 911.47,
+      "duration": 3.479
+    },
+    {
+      "text": "below so get direct reference to this",
+      "start": 913.12,
+      "duration": 2.31
+    },
+    {
+      "text": "address",
+      "start": 914.949,
+      "duration": 3.45
+    },
+    {
+      "text": "and the handler them update the little",
+      "start": 915.43,
+      "duration": 4.769
+    },
+    {
+      "text": "context and branch back to the VM",
+      "start": 918.399,
+      "duration": 5.011
+    },
+    {
+      "text": "dispatcher eventually we end up at the",
+      "start": 920.199,
+      "duration": 5.731
+    },
+    {
+      "text": "VM exit handler which just performs the",
+      "start": 923.41,
+      "duration": 4.47
+    },
+    {
+      "text": "context switch from virtual context back",
+      "start": 925.93,
+      "duration": 6.719
+    },
+    {
+      "text": "to the native one okay taking a closer",
+      "start": 927.88,
+      "duration": 8.04
+    },
+    {
+      "text": "look in our saya we have the virtual",
+      "start": 932.649,
+      "duration": 5.641
+    },
+    {
+      "text": "instruction pointer and an RVP we got",
+      "start": 935.92,
+      "duration": 4.89
+    },
+    {
+      "text": "the VM context so you see that the VM",
+      "start": 938.29,
+      "duration": 3.0
+    },
+    {
+      "text": "dispatcher",
+      "start": 940.81,
+      "duration": 2.49
+    },
+    {
+      "text": "all it does is just taking one byte of",
+      "start": 941.29,
+      "duration": 4.859
+    },
+    {
+      "text": "memory increasing the instruction",
+      "start": 943.3,
+      "duration": 5.159
+    },
+    {
+      "text": "pointer and looking up the corresponding",
+      "start": 946.149,
+      "duration": 4.68
+    },
+    {
+      "text": "handler and jumping to it it might run",
+      "start": 948.459,
+      "duration": 5.43
+    },
+    {
+      "text": "to a new handler as seen here and as you",
+      "start": 950.829,
+      "duration": 4.711
+    },
+    {
+      "text": "can see just reads out of the virtual",
+      "start": 953.889,
+      "duration": 5.31
+    },
+    {
+      "text": "context performs some semantics and then",
+      "start": 955.54,
+      "duration": 5.52
+    },
+    {
+      "text": "writes values back into the context and",
+      "start": 959.199,
+      "duration": 4.32
+    },
+    {
+      "text": "finally jumps back to the dispatcher to",
+      "start": 961.06,
+      "duration": 4.399
+    },
+    {
+      "text": "execute the next virtual instruction",
+      "start": 963.519,
+      "duration": 5.43
+    },
+    {
+      "text": "okay so this is rather simple and easily",
+      "start": 965.459,
+      "duration": 5.261
+    },
+    {
+      "text": "understandable how do we harm this whole",
+      "start": 968.949,
+      "duration": 7.771
+    },
+    {
+      "text": "country concept for one obviously as we",
+      "start": 970.72,
+      "duration": 7.799
+    },
+    {
+      "text": "seem the answers are simple there are",
+      "start": 976.72,
+      "duration": 3.63
+    },
+    {
+      "text": "only a few instructions and they easily",
+      "start": 978.519,
+      "duration": 3.93
+    },
+    {
+      "text": "understood what we can do here is",
+      "start": 980.35,
+      "duration": 3.51
+    },
+    {
+      "text": "justify traditional code obfuscation",
+      "start": 982.449,
+      "duration": 3.51
+    },
+    {
+      "text": "transformations to make analysis of them",
+      "start": 983.86,
+      "duration": 4.5
+    },
+    {
+      "text": "harder like substituting operations",
+      "start": 985.959,
+      "duration": 4.921
+    },
+    {
+      "text": "inserting of our predicates inserting",
+      "start": 988.36,
+      "duration": 5.13
+    },
+    {
+      "text": "junk code and so on so on the right you",
+      "start": 990.88,
+      "duration": 5.73
+    },
+    {
+      "text": "see some slightly more complex assembly",
+      "start": 993.49,
+      "duration": 7.039
+    },
+    {
+      "text": "listing than before another technique",
+      "start": 996.61,
+      "duration": 6.18
+    },
+    {
+      "text": "imagine you only got four hundred",
+      "start": 1000.529,
+      "duration": 4.271
+    },
+    {
+      "text": "individual instruction set you want to",
+      "start": 1002.79,
+      "duration": 3.39
+    },
+    {
+      "text": "make it more complicated more work for",
+      "start": 1004.8,
+      "duration": 3.57
+    },
+    {
+      "text": "the reverse engineer and what we're",
+      "start": 1006.18,
+      "duration": 3.18
+    },
+    {
+      "text": "doing",
+      "start": 1008.37,
+      "duration": 3.48
+    },
+    {
+      "text": "it's tough duplicating individual",
+      "start": 1009.36,
+      "duration": 5.069
+    },
+    {
+      "text": "handlers to increase the workout for the",
+      "start": 1011.85,
+      "duration": 4.13
+    },
+    {
+      "text": "attacker",
+      "start": 1014.429,
+      "duration": 4.71
+    },
+    {
+      "text": "so because the enter table is usually",
+      "start": 1015.98,
+      "duration": 5.649
+    },
+    {
+      "text": "indexed using one single bite we get up",
+      "start": 1019.139,
+      "duration": 6.121
+    },
+    {
+      "text": "to 256 entries we can populate so what",
+      "start": 1021.629,
+      "duration": 5.55
+    },
+    {
+      "text": "you didn't doing just duplicate existing",
+      "start": 1025.26,
+      "duration": 3.569
+    },
+    {
+      "text": "handlers to populate the full table and",
+      "start": 1027.179,
+      "duration": 4.23
+    },
+    {
+      "text": "then again use traditional codes office",
+      "start": 1028.829,
+      "duration": 4.771
+    },
+    {
+      "text": "casion techniques to him that the",
+      "start": 1031.409,
+      "duration": 5.341
+    },
+    {
+      "text": "attacker from from easily finding out",
+      "start": 1033.6,
+      "duration": 5.87
+    },
+    {
+      "text": "that two handlers are in fact similar",
+      "start": 1036.75,
+      "duration": 5.88
+    },
+    {
+      "text": "and again yeah we want to increase the",
+      "start": 1039.47,
+      "duration": 4.9
+    },
+    {
+      "text": "worker to the attacker who is now",
+      "start": 1042.63,
+      "duration": 4.259
+    },
+    {
+      "text": "analyzed after 256 differently of",
+      "start": 1044.37,
+      "duration": 5.48
+    },
+    {
+      "text": "escalated versions of the handlers",
+      "start": 1046.889,
+      "duration": 5.731
+    },
+    {
+      "text": "another technique you might recognize we",
+      "start": 1049.85,
+      "duration": 4.78
+    },
+    {
+      "text": "here get the sample dispatcher and",
+      "start": 1052.62,
+      "duration": 4.049
+    },
+    {
+      "text": "multiple handlers which all branch back",
+      "start": 1054.63,
+      "duration": 4.59
+    },
+    {
+      "text": "to the dispatcher which execute the next",
+      "start": 1056.669,
+      "duration": 4.801
+    },
+    {
+      "text": "instruction what you can do here's to",
+      "start": 1059.22,
+      "duration": 4.799
+    },
+    {
+      "text": "omit this similar point of failure and",
+      "start": 1061.47,
+      "duration": 5.1
+    },
+    {
+      "text": "just inline the dispatcher at the end of",
+      "start": 1064.019,
+      "duration": 4.41
+    },
+    {
+      "text": "each handler so what happens here is",
+      "start": 1066.57,
+      "duration": 3.06
+    },
+    {
+      "text": "that we don't have them central",
+      "start": 1068.429,
+      "duration": 3.691
+    },
+    {
+      "text": "dispatcher but every handler branches to",
+      "start": 1069.63,
+      "duration": 9.149
+    },
+    {
+      "text": "the next version in summary we in line",
+      "start": 1072.12,
+      "duration": 9.779
+    },
+    {
+      "text": "the dispatcher into each handler because",
+      "start": 1078.779,
+      "duration": 5.76
+    },
+    {
+      "text": "a central VM dispatcher just allows an",
+      "start": 1081.899,
+      "duration": 4.5
+    },
+    {
+      "text": "attacker key more easily observe what",
+      "start": 1084.539,
+      "duration": 4.02
+    },
+    {
+      "text": "happens inside the VM like recording",
+      "start": 1086.399,
+      "duration": 4.971
+    },
+    {
+      "text": "every handler that has been executed and",
+      "start": 1088.559,
+      "duration": 5.37
+    },
+    {
+      "text": "the third technique we can also get rid",
+      "start": 1091.37,
+      "duration": 4.63
+    },
+    {
+      "text": "of the handler table actually because",
+      "start": 1093.929,
+      "duration": 3.931
+    },
+    {
+      "text": "the explicit handler terribly able",
+      "start": 1096.0,
+      "duration": 4.08
+    },
+    {
+      "text": "easily reveals all the amount less as",
+      "start": 1097.86,
+      "duration": 5.789
+    },
+    {
+      "text": "we've seen earlier because everything it",
+      "start": 1100.08,
+      "duration": 6.24
+    },
+    {
+      "text": "points to every single start of each",
+      "start": 1103.649,
+      "duration": 5.88
+    },
+    {
+      "text": "handler what you can then do instead of",
+      "start": 1106.32,
+      "duration": 5.37
+    },
+    {
+      "text": "clearing the explicit handler table with",
+      "start": 1109.529,
+      "duration": 4.74
+    },
+    {
+      "text": "in lying around in memory which has been",
+      "start": 1111.69,
+      "duration": 4.38
+    },
+    {
+      "text": "called the next handler address in the",
+      "start": 1114.269,
+      "duration": 5.13
+    },
+    {
+      "text": "VM instruction set itself so this might",
+      "start": 1116.07,
+      "duration": 4.26
+    },
+    {
+      "text": "look a bit like this",
+      "start": 1119.399,
+      "duration": 3.601
+    },
+    {
+      "text": "we get the opcode the operand and then",
+      "start": 1120.33,
+      "duration": 4.349
+    },
+    {
+      "text": "somewhere in the encoding we encoding",
+      "start": 1123.0,
+      "duration": 5.61
+    },
+    {
+      "text": "the next hand address this has the",
+      "start": 1124.679,
+      "duration": 6.0
+    },
+    {
+      "text": "effect that it essentially hides look",
+      "start": 1128.61,
+      "duration": 3.84
+    },
+    {
+      "text": "there's the starting location of each",
+      "start": 1130.679,
+      "duration": 3.811
+    },
+    {
+      "text": "handler that has not been executed yet",
+      "start": 1132.45,
+      "duration": 4.53
+    },
+    {
+      "text": "what the handler table would easily see",
+      "start": 1134.49,
+      "duration": 4.289
+    },
+    {
+      "text": "where every hand the licen can see of",
+      "start": 1136.98,
+      "duration": 4.679
+    },
+    {
+      "text": "escape and analyze it but what these",
+      "start": 1138.779,
+      "duration": 5.371
+    },
+    {
+      "text": "indirect and",
+      "start": 1141.659,
+      "duration": 4.891
+    },
+    {
+      "text": "we can only observe those handlers that",
+      "start": 1144.15,
+      "duration": 4.62
+    },
+    {
+      "text": "have been occurring in the concrete",
+      "start": 1146.55,
+      "duration": 5.28
+    },
+    {
+      "text": "execution trace okay but also mixed",
+      "start": 1148.77,
+      "duration": 6.08
+    },
+    {
+      "text": "boolean arithmetic which is another",
+      "start": 1151.83,
+      "duration": 6.15
+    },
+    {
+      "text": "office keishon technique not so what we",
+      "start": 1154.85,
+      "duration": 6.07
+    },
+    {
+      "text": "used in modern affectation yet but to",
+      "start": 1157.98,
+      "duration": 5.1
+    },
+    {
+      "text": "give you an idea how it works just look",
+      "start": 1160.92,
+      "duration": 4.79
+    },
+    {
+      "text": "at this instruction here or at this term",
+      "start": 1163.08,
+      "duration": 5.76
+    },
+    {
+      "text": "so it looks a bit involved and you might",
+      "start": 1165.71,
+      "duration": 4.84
+    },
+    {
+      "text": "not be surprised when I tell you that",
+      "start": 1168.84,
+      "duration": 2.91
+    },
+    {
+      "text": "there's a simpler version of this",
+      "start": 1170.55,
+      "duration": 3.69
+    },
+    {
+      "text": "expression which is a simple addition of",
+      "start": 1171.75,
+      "duration": 6.42
+    },
+    {
+      "text": "the values X plus y you might guess that",
+      "start": 1174.24,
+      "duration": 6.6
+    },
+    {
+      "text": "even for this more involved term there's",
+      "start": 1178.17,
+      "duration": 6.15
+    },
+    {
+      "text": "again a similar variant especially here",
+      "start": 1180.84,
+      "duration": 6.65
+    },
+    {
+      "text": "it's the addition of X plus y plus set",
+      "start": 1184.32,
+      "duration": 6.66
+    },
+    {
+      "text": "okay you might believe me that it's easy",
+      "start": 1187.49,
+      "duration": 5.53
+    },
+    {
+      "text": "if you throw the first term and the",
+      "start": 1190.98,
+      "duration": 4.26
+    },
+    {
+      "text": "second term in your favorite SMT solver",
+      "start": 1193.02,
+      "duration": 4.28
+    },
+    {
+      "text": "and you are able to prove equivalence",
+      "start": 1195.24,
+      "duration": 4.56
+    },
+    {
+      "text": "however what is interesting how do we",
+      "start": 1197.3,
+      "duration": 4.84
+    },
+    {
+      "text": "get to the second term if we only have",
+      "start": 1199.8,
+      "duration": 5.97
+    },
+    {
+      "text": "the first so we can try to maybe apply",
+      "start": 1202.14,
+      "duration": 6.3
+    },
+    {
+      "text": "boolean identities we known from school",
+      "start": 1205.77,
+      "duration": 5.22
+    },
+    {
+      "text": "or something maybe arithmetic identities",
+      "start": 1208.44,
+      "duration": 5.85
+    },
+    {
+      "text": "maybe we might even go so far as to draw",
+      "start": 1210.99,
+      "duration": 7.83
+    },
+    {
+      "text": "a nice wedge map however it becomes",
+      "start": 1214.29,
+      "duration": 6.48
+    },
+    {
+      "text": "evident that this doesn't really help us",
+      "start": 1218.82,
+      "duration": 5.52
+    },
+    {
+      "text": "here in fact what we've what we are",
+      "start": 1220.77,
+      "duration": 5.49
+    },
+    {
+      "text": "using here is the concept of a boolean",
+      "start": 1224.34,
+      "duration": 5.4
+    },
+    {
+      "text": "or thematic algebra which gives us a ton",
+      "start": 1226.26,
+      "duration": 6.96
+    },
+    {
+      "text": "of different operations that are in this",
+      "start": 1229.74,
+      "duration": 7.5
+    },
+    {
+      "text": "algebra like boolean algebra boolean",
+      "start": 1233.22,
+      "duration": 7.62
+    },
+    {
+      "text": "operators comparisons and if not",
+      "start": 1237.24,
+      "duration": 5.21
+    },
+    {
+      "text": "arithmetic operators",
+      "start": 1240.84,
+      "duration": 5.04
+    },
+    {
+      "text": "it's what knotting that we would in",
+      "start": 1242.45,
+      "duration": 7.45
+    },
+    {
+      "text": "algebra also includes sorry that the mix",
+      "start": 1245.88,
+      "duration": 5.67
+    },
+    {
+      "text": "wouldn't automatic also includes the",
+      "start": 1249.9,
+      "duration": 3.39
+    },
+    {
+      "text": "boolean algebra and an interior",
+      "start": 1251.55,
+      "duration": 5.22
+    },
+    {
+      "text": "modelling and it is worth noting that no",
+      "start": 1253.29,
+      "duration": 6.3
+    },
+    {
+      "text": "techniques exists to simply to simplify",
+      "start": 1256.77,
+      "duration": 5.28
+    },
+    {
+      "text": "expressions that contain both we know",
+      "start": 1259.59,
+      "duration": 5.64
+    },
+    {
+      "text": "how to reduce expressions and boolean",
+      "start": 1262.05,
+      "duration": 5.88
+    },
+    {
+      "text": "algebra and in the integral modeling but",
+      "start": 1265.23,
+      "duration": 4.8
+    },
+    {
+      "text": "there is no underlying feel with that",
+      "start": 1267.93,
+      "duration": 4.53
+    },
+    {
+      "text": "helps us in easily attack the tackling",
+      "start": 1270.03,
+      "duration": 5.79
+    },
+    {
+      "text": "boat at the same time okay",
+      "start": 1272.46,
+      "duration": 3.84
+    },
+    {
+      "text": "on",
+      "start": 1275.82,
+      "duration": 4.35
+    },
+    {
+      "text": "to deification in every deification",
+      "start": 1276.3,
+      "duration": 6.45
+    },
+    {
+      "text": "scheme or inevitably education tool",
+      "start": 1280.17,
+      "duration": 5.55
+    },
+    {
+      "text": "we've seen we get to a point where we",
+      "start": 1282.75,
+      "duration": 5.97
+    },
+    {
+      "text": "employ a technique at some at some point",
+      "start": 1285.72,
+      "duration": 4.71
+    },
+    {
+      "text": "which is called a symbolic execution",
+      "start": 1288.72,
+      "duration": 4.08
+    },
+    {
+      "text": "so consider the handler here on the left",
+      "start": 1290.43,
+      "duration": 4.02
+    },
+    {
+      "text": "this is the nor handler we've seen",
+      "start": 1292.8,
+      "duration": 5.79
+    },
+    {
+      "text": "earlier and we now want to reason about",
+      "start": 1294.45,
+      "duration": 5.88
+    },
+    {
+      "text": "this handler so what we're doing is we",
+      "start": 1298.59,
+      "duration": 4.83
+    },
+    {
+      "text": "execute it but not what concrete values",
+      "start": 1300.33,
+      "duration": 6.33
+    },
+    {
+      "text": "but with symbolic values this looks like",
+      "start": 1303.42,
+      "duration": 5.97
+    },
+    {
+      "text": "this so we're just executing this move",
+      "start": 1306.66,
+      "duration": 5.52
+    },
+    {
+      "text": "symbolically we signed to RCA X the",
+      "start": 1309.39,
+      "duration": 5.97
+    },
+    {
+      "text": "value of the memory cell index by the",
+      "start": 1312.18,
+      "duration": 6.39
+    },
+    {
+      "text": "way register RVP we can continue to do",
+      "start": 1315.36,
+      "duration": 6.95
+    },
+    {
+      "text": "so and we've got the second assignment",
+      "start": 1318.57,
+      "duration": 7.17
+    },
+    {
+      "text": "also if we got a not operation on our",
+      "start": 1322.31,
+      "duration": 5.23
+    },
+    {
+      "text": "six we just assigned to us X the",
+      "start": 1325.74,
+      "duration": 4.62
+    },
+    {
+      "text": "negation of our CX which is the same as",
+      "start": 1327.54,
+      "duration": 4.65
+    },
+    {
+      "text": "the negation of the memory cell pointed",
+      "start": 1330.36,
+      "duration": 4.86
+    },
+    {
+      "text": "to by the register rbp and we go on and",
+      "start": 1332.19,
+      "duration": 6.09
+    },
+    {
+      "text": "what gets interesting is this case where",
+      "start": 1335.22,
+      "duration": 6.72
+    },
+    {
+      "text": "we got a logical end on our six and RB X",
+      "start": 1338.28,
+      "duration": 5.97
+    },
+    {
+      "text": "which is the same like the brocation of",
+      "start": 1341.94,
+      "duration": 5.7
+    },
+    {
+      "text": "the memory cell want to do by RPP with",
+      "start": 1344.25,
+      "duration": 5.43
+    },
+    {
+      "text": "the logical end and the negation of the",
+      "start": 1347.64,
+      "duration": 4.35
+    },
+    {
+      "text": "other memory cell that because symbolic",
+      "start": 1349.68,
+      "duration": 3.87
+    },
+    {
+      "text": "execution is basically a computer",
+      "start": 1351.99,
+      "duration": 3.9
+    },
+    {
+      "text": "algebra system that encodes some",
+      "start": 1353.55,
+      "duration": 6.57
+    },
+    {
+      "text": "well-known identities from the boolean",
+      "start": 1355.89,
+      "duration": 7.47
+    },
+    {
+      "text": "algebra for example and in this case it",
+      "start": 1360.12,
+      "duration": 6.54
+    },
+    {
+      "text": "knows that this expression is equivalent",
+      "start": 1363.36,
+      "duration": 7.86
+    },
+    {
+      "text": "to an or of bottom memory cells we can",
+      "start": 1366.66,
+      "duration": 6.63
+    },
+    {
+      "text": "then just continue with the execution",
+      "start": 1371.22,
+      "duration": 6.27
+    },
+    {
+      "text": "and again here the symbolic execution",
+      "start": 1373.29,
+      "duration": 7.83
+    },
+    {
+      "text": "engine recognizes the next nor at some",
+      "start": 1377.49,
+      "duration": 5.85
+    },
+    {
+      "text": "point this works rather well and we see",
+      "start": 1381.12,
+      "duration": 3.78
+    },
+    {
+      "text": "that the core semantics of our handler",
+      "start": 1383.34,
+      "duration": 4.11
+    },
+    {
+      "text": "here is just a no operation on two",
+      "start": 1384.9,
+      "duration": 4.86
+    },
+    {
+      "text": "memory cells and strong the result in",
+      "start": 1387.45,
+      "duration": 4.47
+    },
+    {
+      "text": "another memory cells so apparently this",
+      "start": 1389.76,
+      "duration": 4.86
+    },
+    {
+      "text": "works fine for this handler but what can",
+      "start": 1391.92,
+      "duration": 5.37
+    },
+    {
+      "text": "we do or what is the result if we try to",
+      "start": 1394.62,
+      "duration": 5.04
+    },
+    {
+      "text": "follow this whole concept of symbolic",
+      "start": 1397.29,
+      "duration": 5.87
+    },
+    {
+      "text": "execution added more obfuscated handler",
+      "start": 1399.66,
+      "duration": 6.93
+    },
+    {
+      "text": "these rather simple example of not to",
+      "start": 1403.16,
+      "duration": 5.41
+    },
+    {
+      "text": "skated handler you might be able to make",
+      "start": 1406.59,
+      "duration": 3.32
+    },
+    {
+      "text": "to make out some parts",
+      "start": 1408.57,
+      "duration": 5.12
+    },
+    {
+      "text": "let's just a symbolic execution at it we",
+      "start": 1409.91,
+      "duration": 5.64
+    },
+    {
+      "text": "see that you get a ton of information",
+      "start": 1413.69,
+      "duration": 5.34
+    },
+    {
+      "text": "here but the problem is we don't really",
+      "start": 1415.55,
+      "duration": 5.28
+    },
+    {
+      "text": "want a ton of information what you want",
+      "start": 1419.03,
+      "duration": 3.9
+    },
+    {
+      "text": "is just the underlying semantics which",
+      "start": 1420.83,
+      "duration": 4.74
+    },
+    {
+      "text": "is rather simple it's the no operation",
+      "start": 1422.93,
+      "duration": 4.65
+    },
+    {
+      "text": "of two memory certs and the assignment",
+      "start": 1425.57,
+      "duration": 5.4
+    },
+    {
+      "text": "to another memory sir also let's try to",
+      "start": 1427.58,
+      "duration": 6.5
+    },
+    {
+      "text": "to throw this at mix boolean arithmetic",
+      "start": 1430.97,
+      "duration": 6.24
+    },
+    {
+      "text": "so we have this rather complicated mix",
+      "start": 1434.08,
+      "duration": 5.5
+    },
+    {
+      "text": "pool an automatic expression and I'll",
+      "start": 1437.21,
+      "duration": 5.55
+    },
+    {
+      "text": "just simply compile it into a program",
+      "start": 1439.58,
+      "duration": 5.97
+    },
+    {
+      "text": "just like the binary program and then",
+      "start": 1442.76,
+      "duration": 5.28
+    },
+    {
+      "text": "run symbol of his execution on this",
+      "start": 1445.55,
+      "duration": 5.73
+    },
+    {
+      "text": "trace what we get is the semantics and",
+      "start": 1448.04,
+      "duration": 5.43
+    },
+    {
+      "text": "it didn't really fit on the slide so it",
+      "start": 1451.28,
+      "duration": 4.56
+    },
+    {
+      "text": "goes on and on and you might be able to",
+      "start": 1453.47,
+      "duration": 4.08
+    },
+    {
+      "text": "make out yeah this the resulting values",
+      "start": 1455.84,
+      "duration": 4.14
+    },
+    {
+      "text": "in our array X and we got this super",
+      "start": 1457.55,
+      "duration": 5.28
+    },
+    {
+      "text": "complicated expression and again what we",
+      "start": 1459.98,
+      "duration": 5.01
+    },
+    {
+      "text": "got here as I'm allowing semantics is",
+      "start": 1462.83,
+      "duration": 4.29
+    },
+    {
+      "text": "rather simple so I didn't want to have",
+      "start": 1464.99,
+      "duration": 3.84
+    },
+    {
+      "text": "this complicated expression we just want",
+      "start": 1467.12,
+      "duration": 6.06
+    },
+    {
+      "text": "this more simple semantics here so",
+      "start": 1468.83,
+      "duration": 7.23
+    },
+    {
+      "text": "symbolic execution is nice because it",
+      "start": 1473.18,
+      "duration": 4.83
+    },
+    {
+      "text": "allows us to capture the full semantics",
+      "start": 1476.06,
+      "duration": 4.44
+    },
+    {
+      "text": "of the code we execute also it's a",
+      "start": 1478.01,
+      "duration": 4.8
+    },
+    {
+      "text": "computer algebra system and as we've",
+      "start": 1480.5,
+      "duration": 5.13
+    },
+    {
+      "text": "seen in our example it lost some degree",
+      "start": 1482.81,
+      "duration": 5.52
+    },
+    {
+      "text": "of simplification of the intermediate",
+      "start": 1485.63,
+      "duration": 5.63
+    },
+    {
+      "text": "expressions however the usability",
+      "start": 1488.33,
+      "duration": 7.08
+    },
+    {
+      "text": "decreases to some point if the syntactic",
+      "start": 1491.26,
+      "duration": 6.16
+    },
+    {
+      "text": "complexity of the underlying code",
+      "start": 1495.41,
+      "duration": 5.25
+    },
+    {
+      "text": "increases for example we can introduce",
+      "start": 1497.42,
+      "duration": 5.21
+    },
+    {
+      "text": "artificial complexity by just",
+      "start": 1500.66,
+      "duration": 7.14
+    },
+    {
+      "text": "substituting instructions or just using",
+      "start": 1502.63,
+      "duration": 7.09
+    },
+    {
+      "text": "apart predicates or other schemes we've",
+      "start": 1507.8,
+      "duration": 4.11
+    },
+    {
+      "text": "seen earlier you can also increase",
+      "start": 1509.72,
+      "duration": 4.92
+    },
+    {
+      "text": "increase the algebraic complexity by",
+      "start": 1511.91,
+      "duration": 4.5
+    },
+    {
+      "text": "employing techniques like mixed people",
+      "start": 1514.64,
+      "duration": 7.44
+    },
+    {
+      "text": "and arithmetic expressions ok so it's",
+      "start": 1516.41,
+      "duration": 7.32
+    },
+    {
+      "text": "obvious that we have a problem",
+      "start": 1522.08,
+      "duration": 4.32
+    },
+    {
+      "text": "what syntactic complexity and we want to",
+      "start": 1523.73,
+      "duration": 4.68
+    },
+    {
+      "text": "handle this somehow so the interesting",
+      "start": 1526.4,
+      "duration": 4.35
+    },
+    {
+      "text": "question is what if we could reason",
+      "start": 1528.41,
+      "duration": 4.26
+    },
+    {
+      "text": "about the semantics of the code only",
+      "start": 1530.75,
+      "duration": 4.8
+    },
+    {
+      "text": "instead of having to fight about the",
+      "start": 1532.67,
+      "duration": 4.59
+    },
+    {
+      "text": "syntax and just improving our tools to",
+      "start": 1535.55,
+      "duration": 4.17
+    },
+    {
+      "text": "be able to cope with more complicated",
+      "start": 1537.26,
+      "duration": 5.55
+    },
+    {
+      "text": "syntax this leads us to the topic of",
+      "start": 1539.72,
+      "duration": 4.06
+    },
+    {
+      "text": "problem synthesis",
+      "start": 1542.81,
+      "duration": 3.67
+    },
+    {
+      "text": "which Tim will tell you more about yeah",
+      "start": 1543.78,
+      "duration": 3.45
+    },
+    {
+      "text": "thank you",
+      "start": 1546.48,
+      "duration": 3.77
+    },
+    {
+      "text": "so we have seen some limitations of",
+      "start": 1547.23,
+      "duration": 6.81
+    },
+    {
+      "text": "syntactic complexity so that it comes in",
+      "start": 1550.25,
+      "duration": 7.45
+    },
+    {
+      "text": "my mind alpha station a semantics",
+      "start": 1554.04,
+      "duration": 6.06
+    },
+    {
+      "text": "preserving that means it has the same IO",
+      "start": 1557.7,
+      "duration": 5.79
+    },
+    {
+      "text": "behavior input-output behavior so why",
+      "start": 1560.1,
+      "duration": 6.24
+    },
+    {
+      "text": "not just using a function as a black box",
+      "start": 1563.49,
+      "duration": 5.94
+    },
+    {
+      "text": "and observe what it's doing so for",
+      "start": 1566.34,
+      "duration": 6.3
+    },
+    {
+      "text": "instance we might for this just generate",
+      "start": 1569.43,
+      "duration": 5.34
+    },
+    {
+      "text": "some random inputs one one one and",
+      "start": 1572.64,
+      "duration": 5.64
+    },
+    {
+      "text": "observe three and we note sit down and",
+      "start": 1574.77,
+      "duration": 7.41
+    },
+    {
+      "text": "produces several times more so we store",
+      "start": 1578.28,
+      "duration": 6.96
+    },
+    {
+      "text": "this one and this one and twenty others",
+      "start": 1582.18,
+      "duration": 6.78
+    },
+    {
+      "text": "again so and then we don't look at the",
+      "start": 1585.24,
+      "duration": 5.79
+    },
+    {
+      "text": "code at all we just look at its IO",
+      "start": 1588.96,
+      "duration": 6.21
+    },
+    {
+      "text": "behaviour this year and then what we",
+      "start": 1591.03,
+      "duration": 7.23
+    },
+    {
+      "text": "learn is that we learn a function that",
+      "start": 1595.17,
+      "duration": 6.93
+    },
+    {
+      "text": "has the same behavior so we might learn",
+      "start": 1598.26,
+      "duration": 7.32
+    },
+    {
+      "text": "X plus y plus that and the goal of",
+      "start": 1602.1,
+      "duration": 5.7
+    },
+    {
+      "text": "programs on traces is to automatically",
+      "start": 1605.58,
+      "duration": 5.75
+    },
+    {
+      "text": "learn these things based on io samples",
+      "start": 1607.8,
+      "duration": 8.85
+    },
+    {
+      "text": "so how do we do that so we use an",
+      "start": 1611.33,
+      "duration": 8.8
+    },
+    {
+      "text": "holistic approach basically we have an",
+      "start": 1616.65,
+      "duration": 6.44
+    },
+    {
+      "text": "optimization problem we have a surface",
+      "start": 1620.13,
+      "duration": 6.9
+    },
+    {
+      "text": "something like that and each and this",
+      "start": 1623.09,
+      "duration": 6.31
+    },
+    {
+      "text": "this thing has some deep points some",
+      "start": 1627.03,
+      "duration": 4.89
+    },
+    {
+      "text": "large points and we have a global Maxima",
+      "start": 1629.4,
+      "duration": 5.52
+    },
+    {
+      "text": "tops there and signal Maxima is a",
+      "start": 1631.92,
+      "duration": 5.49
+    },
+    {
+      "text": "program that has exactly the same IO",
+      "start": 1634.92,
+      "duration": 5.91
+    },
+    {
+      "text": "behavior as our black box and we had a",
+      "start": 1637.41,
+      "duration": 6.33
+    },
+    {
+      "text": "complete value for each point on the",
+      "start": 1640.83,
+      "duration": 6.93
+    },
+    {
+      "text": "surface so the closer we are to the",
+      "start": 1643.74,
+      "duration": 6.63
+    },
+    {
+      "text": "global Maxima the higher is our score",
+      "start": 1647.76,
+      "duration": 6.6
+    },
+    {
+      "text": "and in public optimization problem we",
+      "start": 1650.37,
+      "duration": 7.29
+    },
+    {
+      "text": "basically start with a with a with a",
+      "start": 1654.36,
+      "duration": 6.27
+    },
+    {
+      "text": "minor score and just increase until we",
+      "start": 1657.66,
+      "duration": 6.63
+    },
+    {
+      "text": "find the global Maxima how we do that is",
+      "start": 1660.63,
+      "duration": 6.09
+    },
+    {
+      "text": "an algorithm that is based on Monte",
+      "start": 1664.29,
+      "duration": 5.28
+    },
+    {
+      "text": "Carlo tree search basically Monte Carlo",
+      "start": 1666.72,
+      "duration": 4.68
+    },
+    {
+      "text": "tree search is one of the main reasons",
+      "start": 1669.57,
+      "duration": 6.03
+    },
+    {
+      "text": "why as ago last year was able to beat",
+      "start": 1671.4,
+      "duration": 5.39
+    },
+    {
+      "text": "world-class you",
+      "start": 1675.6,
+      "duration": 6.74
+    },
+    {
+      "text": "go play us in computer go so let's get",
+      "start": 1676.79,
+      "duration": 8.25
+    },
+    {
+      "text": "practical and less just into size a plus",
+      "start": 1682.34,
+      "duration": 6.33
+    },
+    {
+      "text": "B modulo 8 we first somehow have to",
+      "start": 1685.04,
+      "duration": 5.76
+    },
+    {
+      "text": "design how we generate programs",
+      "start": 1688.67,
+      "duration": 6.03
+    },
+    {
+      "text": "well we design a grammar we have a",
+      "start": 1690.8,
+      "duration": 6.93
+    },
+    {
+      "text": "non-terminal symbol u non-terminal means",
+      "start": 1694.7,
+      "duration": 5.73
+    },
+    {
+      "text": "that we just can replace it with other",
+      "start": 1697.73,
+      "duration": 7.35
+    },
+    {
+      "text": "symbols so for instance he place u by u",
+      "start": 1700.43,
+      "duration": 8.97
+    },
+    {
+      "text": "plus a or by u Plus u plus u or by u",
+      "start": 1705.08,
+      "duration": 10.05
+    },
+    {
+      "text": "times u or by a or B we say that a and B",
+      "start": 1709.4,
+      "duration": 8.04
+    },
+    {
+      "text": "our input variables we cannot derive",
+      "start": 1715.13,
+      "duration": 6.63
+    },
+    {
+      "text": "them any further so therefore we have a",
+      "start": 1717.44,
+      "duration": 7.62
+    },
+    {
+      "text": "candidate program something as a B a",
+      "start": 1721.76,
+      "duration": 8.24
+    },
+    {
+      "text": "times B a plus B B plus B and so on",
+      "start": 1725.06,
+      "duration": 8.07
+    },
+    {
+      "text": "contrary in intermediate program is a",
+      "start": 1730.0,
+      "duration": 5.77
+    },
+    {
+      "text": "program that contains at least one you",
+      "start": 1733.13,
+      "duration": 6.75
+    },
+    {
+      "text": "so we can derive it further so only that",
+      "start": 1735.77,
+      "duration": 7.11
+    },
+    {
+      "text": "as a foundation we do much ecology",
+      "start": 1739.88,
+      "duration": 5.4
+    },
+    {
+      "text": "research we start with an empty tree",
+      "start": 1742.88,
+      "duration": 4.65
+    },
+    {
+      "text": "that has just the rule as good nor the U",
+      "start": 1745.28,
+      "duration": 6.18
+    },
+    {
+      "text": "and then we randomly applies the rules",
+      "start": 1747.53,
+      "duration": 5.07
+    },
+    {
+      "text": "of our drama",
+      "start": 1751.46,
+      "duration": 5.19
+    },
+    {
+      "text": "so we derive a a in this case is the",
+      "start": 1752.6,
+      "duration": 6.33
+    },
+    {
+      "text": "terminal program so it cannot be the I",
+      "start": 1756.65,
+      "duration": 4.74
+    },
+    {
+      "text": "further so we can't give a score to that",
+      "start": 1758.93,
+      "duration": 4.65
+    },
+    {
+      "text": "because we're in a probabilistic surface",
+      "start": 1761.39,
+      "duration": 6.57
+    },
+    {
+      "text": "we have to score sinks and so how we",
+      "start": 1763.58,
+      "duration": 6.21
+    },
+    {
+      "text": "calculate the score it doesn't matter",
+      "start": 1767.96,
+      "duration": 3.33
+    },
+    {
+      "text": "now we come to exact later",
+      "start": 1769.79,
+      "duration": 5.13
+    },
+    {
+      "text": "just we give it a score and then we",
+      "start": 1771.29,
+      "duration": 6.54
+    },
+    {
+      "text": "derive the next thing B and also there",
+      "start": 1774.92,
+      "duration": 7.86
+    },
+    {
+      "text": "we give it just a score and this time we",
+      "start": 1777.83,
+      "duration": 8.58
+    },
+    {
+      "text": "derive u times u so we cannot give it a",
+      "start": 1782.78,
+      "duration": 6.2
+    },
+    {
+      "text": "score since we have intermediate program",
+      "start": 1786.41,
+      "duration": 6.72
+    },
+    {
+      "text": "what do we do and we do something that",
+      "start": 1788.98,
+      "duration": 6.85
+    },
+    {
+      "text": "is called random playout we apply the",
+      "start": 1793.13,
+      "duration": 5.07
+    },
+    {
+      "text": "rules of the grammar randomly to the nth",
+      "start": 1795.83,
+      "duration": 5.4
+    },
+    {
+      "text": "replace you until we get a final program",
+      "start": 1798.2,
+      "duration": 6.15
+    },
+    {
+      "text": "that we can evaluate so we have",
+      "start": 1801.23,
+      "duration": 4.829
+    },
+    {
+      "text": "something a s",
+      "start": 1804.35,
+      "duration": 4.649
+    },
+    {
+      "text": "plus a times B plus a and give it a",
+      "start": 1806.059,
+      "duration": 6.271
+    },
+    {
+      "text": "score and then we do the same with you",
+      "start": 1808.999,
+      "duration": 5.821
+    },
+    {
+      "text": "cuz you here again we have intermediate",
+      "start": 1812.33,
+      "duration": 5.729
+    },
+    {
+      "text": "program we derive something score it and",
+      "start": 1814.82,
+      "duration": 6.689
+    },
+    {
+      "text": "come back now we don't have any further",
+      "start": 1818.059,
+      "duration": 6.631
+    },
+    {
+      "text": "rules to apply what we then do is we",
+      "start": 1821.509,
+      "duration": 6.27
+    },
+    {
+      "text": "choose the best child note in a",
+      "start": 1824.69,
+      "duration": 5.309
+    },
+    {
+      "text": "probabilistic manner in this case it is",
+      "start": 1827.779,
+      "duration": 7.83
+    },
+    {
+      "text": "u times U and do the same thing again we",
+      "start": 1829.999,
+      "duration": 7.77
+    },
+    {
+      "text": "derive some expression to a play out",
+      "start": 1835.609,
+      "duration": 6.62
+    },
+    {
+      "text": "give it a score go back now each score",
+      "start": 1837.769,
+      "duration": 7.41
+    },
+    {
+      "text": "basically represents the average score",
+      "start": 1842.229,
+      "duration": 5.591
+    },
+    {
+      "text": "of all these two little scores so in",
+      "start": 1845.179,
+      "duration": 5.011
+    },
+    {
+      "text": "this case we have we had a new score",
+      "start": 1847.82,
+      "duration": 5.549
+    },
+    {
+      "text": "here so we just update this one and we",
+      "start": 1850.19,
+      "duration": 5.989
+    },
+    {
+      "text": "go back again you choose the best note",
+      "start": 1853.369,
+      "duration": 7.98
+    },
+    {
+      "text": "we do a derivation step and so on go",
+      "start": 1856.179,
+      "duration": 8.98
+    },
+    {
+      "text": "back update choose the best note play",
+      "start": 1861.349,
+      "duration": 10.26
+    },
+    {
+      "text": "out score update and so on so now here",
+      "start": 1865.159,
+      "duration": 9.0
+    },
+    {
+      "text": "you plus a we have a really high score",
+      "start": 1871.609,
+      "duration": 5.971
+    },
+    {
+      "text": "you must be we have a rather lowest go",
+      "start": 1874.159,
+      "duration": 6.08
+    },
+    {
+      "text": "up and if you want to synthesize it as B",
+      "start": 1877.58,
+      "duration": 6.899
+    },
+    {
+      "text": "this means that u plus B had a bet play",
+      "start": 1880.239,
+      "duration": 6.91
+    },
+    {
+      "text": "out and that u plus a had a good play",
+      "start": 1884.479,
+      "duration": 5.27
+    },
+    {
+      "text": "out because here the scores better",
+      "start": 1887.149,
+      "duration": 7.65
+    },
+    {
+      "text": "so we update this and go back so we",
+      "start": 1889.749,
+      "duration": 8.86
+    },
+    {
+      "text": "again choose this note go back and go",
+      "start": 1894.799,
+      "duration": 9.36
+    },
+    {
+      "text": "back so as you can see we always explore",
+      "start": 1898.609,
+      "duration": 8.4
+    },
+    {
+      "text": "this area more accent that the reason is",
+      "start": 1904.159,
+      "duration": 5.76
+    },
+    {
+      "text": "well because you cuz you seems to me am",
+      "start": 1907.009,
+      "duration": 4.98
+    },
+    {
+      "text": "way more promising than you time school",
+      "start": 1909.919,
+      "duration": 5.43
+    },
+    {
+      "text": "however and we just have some",
+      "start": 1911.989,
+      "duration": 5.88
+    },
+    {
+      "text": "probabilistic behavior that means we",
+      "start": 1915.349,
+      "duration": 5.221
+    },
+    {
+      "text": "sometimes explore also different ways",
+      "start": 1917.869,
+      "duration": 6.51
+    },
+    {
+      "text": "just to get to know if we might miss",
+      "start": 1920.57,
+      "duration": 6.359
+    },
+    {
+      "text": "something so in this case we would",
+      "start": 1924.379,
+      "duration": 5.821
+    },
+    {
+      "text": "normally choose u plus a again but we",
+      "start": 1926.929,
+      "duration": 7.32
+    },
+    {
+      "text": "just decide to set we do a play out we",
+      "start": 1930.2,
+      "duration": 6.24
+    },
+    {
+      "text": "give it a score interval it wasn't",
+      "start": 1934.249,
+      "duration": 5.191
+    },
+    {
+      "text": "really good so because of that",
+      "start": 1936.44,
+      "duration": 6.089
+    },
+    {
+      "text": "next step we go back to you plus a then",
+      "start": 1939.44,
+      "duration": 6.989
+    },
+    {
+      "text": "we derive B plus a and so we have a",
+      "start": 1942.529,
+      "duration": 6.48
+    },
+    {
+      "text": "final program we cannot derive it any",
+      "start": 1946.429,
+      "duration": 4.531
+    },
+    {
+      "text": "further so we can score a trial at",
+      "start": 1949.009,
+      "duration": 5.01
+    },
+    {
+      "text": "directly okay we give it a score of one",
+      "start": 1950.96,
+      "duration": 4.38
+    },
+    {
+      "text": "by one",
+      "start": 1954.019,
+      "duration": 4.171
+    },
+    {
+      "text": "well because B plus a has exactly the",
+      "start": 1955.34,
+      "duration": 6.179
+    },
+    {
+      "text": "same IO behavior as a plus B so in other",
+      "start": 1958.19,
+      "duration": 5.67
+    },
+    {
+      "text": "terms we are finished with our programs",
+      "start": 1961.519,
+      "duration": 8.731
+    },
+    {
+      "text": "internal part okay how do we score some",
+      "start": 1963.86,
+      "duration": 9.09
+    },
+    {
+      "text": "values how do we calculate something",
+      "start": 1970.25,
+      "duration": 6.09
+    },
+    {
+      "text": "basically what we do is we generate a",
+      "start": 1972.95,
+      "duration": 6.329
+    },
+    {
+      "text": "random playout we generate random inputs",
+      "start": 1976.34,
+      "duration": 4.77
+    },
+    {
+      "text": "and query our black box",
+      "start": 1979.279,
+      "duration": 5.88
+    },
+    {
+      "text": "and observe the output so two plus two",
+      "start": 1981.11,
+      "duration": 8.279
+    },
+    {
+      "text": "is four and now we use the same input",
+      "start": 1985.159,
+      "duration": 6.931
+    },
+    {
+      "text": "and query our intermediate program and",
+      "start": 1989.389,
+      "duration": 6.601
+    },
+    {
+      "text": "observe the output then we calculate the",
+      "start": 1992.09,
+      "duration": 5.73
+    },
+    {
+      "text": "similarity of these tools and get a",
+      "start": 1995.99,
+      "duration": 5.46
+    },
+    {
+      "text": "score similarity I will come to the back",
+      "start": 1997.82,
+      "duration": 6.18
+    },
+    {
+      "text": "to this on the next slide so to test we",
+      "start": 2001.45,
+      "duration": 5.069
+    },
+    {
+      "text": "compare somehow the similarity we don't",
+      "start": 2004.0,
+      "duration": 5.25
+    },
+    {
+      "text": "do this only for one input pair we do it",
+      "start": 2006.519,
+      "duration": 6.15
+    },
+    {
+      "text": "for many so we do this we do it for this",
+      "start": 2009.25,
+      "duration": 5.929
+    },
+    {
+      "text": "one in this case we have the same output",
+      "start": 2012.669,
+      "duration": 5.34
+    },
+    {
+      "text": "that means the similarity is one because",
+      "start": 2015.179,
+      "duration": 5.651
+    },
+    {
+      "text": "it is exactly the same and we do it",
+      "start": 2018.009,
+      "duration": 7.081
+    },
+    {
+      "text": "several times more and finally our score",
+      "start": 2020.83,
+      "duration": 6.479
+    },
+    {
+      "text": "for this node is basically the average",
+      "start": 2025.09,
+      "duration": 7.65
+    },
+    {
+      "text": "score of all these similarities how do",
+      "start": 2027.309,
+      "duration": 9.12
+    },
+    {
+      "text": "we calculate a similarity well we are",
+      "start": 2032.74,
+      "duration": 6.21
+    },
+    {
+      "text": "operating in the bed into the bit vector",
+      "start": 2036.429,
+      "duration": 4.86
+    },
+    {
+      "text": "space so we compare the similarity of",
+      "start": 2038.95,
+      "duration": 6.599
+    },
+    {
+      "text": "bit vectors in other terms we can",
+      "start": 2041.289,
+      "duration": 7.05
+    },
+    {
+      "text": "compare if they are in the same range so",
+      "start": 2045.549,
+      "duration": 5.34
+    },
+    {
+      "text": "we have a look at the trailing zeros or",
+      "start": 2048.339,
+      "duration": 5.401
+    },
+    {
+      "text": "ones and its leading zeros or ones and",
+      "start": 2050.889,
+      "duration": 9.72
+    },
+    {
+      "text": "count how many are the same then we can",
+      "start": 2053.74,
+      "duration": 9.21
+    },
+    {
+      "text": "still compare how many bits are",
+      "start": 2060.609,
+      "duration": 4.201
+    },
+    {
+      "text": "different this is the Hamming distance",
+      "start": 2062.95,
+      "duration": 4.8
+    },
+    {
+      "text": "we use that for instance for something",
+      "start": 2064.81,
+      "duration": 7.47
+    },
+    {
+      "text": "as overflows in terms of addition or XOR",
+      "start": 2067.75,
+      "duration": 5.639
+    },
+    {
+      "text": "operations and",
+      "start": 2072.28,
+      "duration": 3.359
+    },
+    {
+      "text": "and operation and things like that and",
+      "start": 2073.389,
+      "duration": 6.21
+    },
+    {
+      "text": "then we still have a plus B or something",
+      "start": 2075.639,
+      "duration": 6.96
+    },
+    {
+      "text": "like that without overflow where we can",
+      "start": 2079.599,
+      "duration": 6.18
+    },
+    {
+      "text": "where we can have a look at how close at",
+      "start": 2082.599,
+      "duration": 5.341
+    },
+    {
+      "text": "where two values numerically so",
+      "start": 2085.779,
+      "duration": 5.941
+    },
+    {
+      "text": "basically as a distance and we use these",
+      "start": 2087.94,
+      "duration": 7.02
+    },
+    {
+      "text": "matrix to tackle these different",
+      "start": 2091.72,
+      "duration": 6.329
+    },
+    {
+      "text": "behaviors of the bit vector space such",
+      "start": 2094.96,
+      "duration": 6.45
+    },
+    {
+      "text": "as overflows and since exit and we take",
+      "start": 2098.049,
+      "duration": 6.05
+    },
+    {
+      "text": "again the average of all this matrix",
+      "start": 2101.41,
+      "duration": 7.199
+    },
+    {
+      "text": "okay how do we use that as a core to",
+      "start": 2104.099,
+      "duration": 7.92
+    },
+    {
+      "text": "synthesize of your stated binary code so",
+      "start": 2108.609,
+      "duration": 6.631
+    },
+    {
+      "text": "basically what we do is that we have an",
+      "start": 2112.019,
+      "duration": 4.391
+    },
+    {
+      "text": "execution pass",
+      "start": 2115.24,
+      "duration": 3.66
+    },
+    {
+      "text": "perhaps obtained from an instruction",
+      "start": 2116.41,
+      "duration": 4.399
+    },
+    {
+      "text": "trace perhaps from static analysis",
+      "start": 2118.9,
+      "duration": 6.48
+    },
+    {
+      "text": "whatever you want and we somehow emulate",
+      "start": 2120.809,
+      "duration": 8.77
+    },
+    {
+      "text": "it and observe indirectly inputs and",
+      "start": 2125.38,
+      "duration": 6.899
+    },
+    {
+      "text": "outputs we say that everything is an",
+      "start": 2129.579,
+      "duration": 5.79
+    },
+    {
+      "text": "input which we read before right to it",
+      "start": 2132.279,
+      "duration": 5.371
+    },
+    {
+      "text": "so in this case these are the two memory",
+      "start": 2135.369,
+      "duration": 5.881
+    },
+    {
+      "text": "cells tops there and everything is",
+      "start": 2137.65,
+      "duration": 7.35
+    },
+    {
+      "text": "output in red that we that we write",
+      "start": 2141.25,
+      "duration": 6.96
+    },
+    {
+      "text": "lastly - so for instance the RBX it's",
+      "start": 2145.0,
+      "duration": 5.4
+    },
+    {
+      "text": "not any it's not modified anywhere so",
+      "start": 2148.21,
+      "duration": 4.77
+    },
+    {
+      "text": "this is an output the same for a CX and",
+      "start": 2150.4,
+      "duration": 3.33
+    },
+    {
+      "text": "things like that",
+      "start": 2152.98,
+      "duration": 4.589
+    },
+    {
+      "text": "and then we treat this again as a black",
+      "start": 2153.73,
+      "duration": 7.98
+    },
+    {
+      "text": "box generate random inputs and feed it",
+      "start": 2157.569,
+      "duration": 6.361
+    },
+    {
+      "text": "into our black box and observe the",
+      "start": 2161.71,
+      "duration": 7.069
+    },
+    {
+      "text": "output in this case a B X so we do this",
+      "start": 2163.93,
+      "duration": 7.8
+    },
+    {
+      "text": "many times so something about twenty or",
+      "start": 2168.779,
+      "duration": 6.04
+    },
+    {
+      "text": "thirty times and then we synthesize this",
+      "start": 2171.73,
+      "duration": 6.18
+    },
+    {
+      "text": "output and then we learn that our BX is",
+      "start": 2174.819,
+      "duration": 6.69
+    },
+    {
+      "text": "not M 0 and M 0 is here in this case the",
+      "start": 2177.91,
+      "duration": 7.8
+    },
+    {
+      "text": "first number itself we do the same for",
+      "start": 2181.509,
+      "duration": 8.76
+    },
+    {
+      "text": "that for a CX and learn then this is",
+      "start": 2185.71,
+      "duration": 6.42
+    },
+    {
+      "text": "basically the Neue of these operations",
+      "start": 2190.269,
+      "duration": 5.28
+    },
+    {
+      "text": "and finally we do it for this one and",
+      "start": 2192.13,
+      "duration": 6.179
+    },
+    {
+      "text": "also they are we learn that this is an",
+      "start": 2195.549,
+      "duration": 7.47
+    },
+    {
+      "text": "or to conclude we learn the semantics of",
+      "start": 2198.309,
+      "duration": 6.0
+    },
+    {
+      "text": "the two nos",
+      "start": 2203.019,
+      "duration": 3.58
+    },
+    {
+      "text": "and the negation",
+      "start": 2204.309,
+      "duration": 4.75
+    },
+    {
+      "text": "what we don't learn in this handler is",
+      "start": 2206.599,
+      "duration": 5.341
+    },
+    {
+      "text": "the push F operation to the Fleck paste",
+      "start": 2209.059,
+      "duration": 5.76
+    },
+    {
+      "text": "and the flex that I've written back into",
+      "start": 2211.94,
+      "duration": 5.04
+    },
+    {
+      "text": "the memory cell pointing at a BP",
+      "start": 2214.819,
+      "duration": 4.47
+    },
+    {
+      "text": "why don't we learned that because we",
+      "start": 2216.98,
+      "duration": 3.089
+    },
+    {
+      "text": "don't care",
+      "start": 2219.289,
+      "duration": 2.911
+    },
+    {
+      "text": "so basically we designed that we",
+      "start": 2220.069,
+      "duration": 4.651
+    },
+    {
+      "text": "designed our diorama in such a way that",
+      "start": 2222.2,
+      "duration": 5.309
+    },
+    {
+      "text": "it just abstracts higher-level semantics",
+      "start": 2224.72,
+      "duration": 5.67
+    },
+    {
+      "text": "or ignores ignores bit level semantics",
+      "start": 2227.509,
+      "duration": 4.951
+    },
+    {
+      "text": "and just abstract higher-level semantics",
+      "start": 2230.39,
+      "duration": 4.979
+    },
+    {
+      "text": "on other terms we don't consider flex as",
+      "start": 2232.46,
+      "duration": 7.47
+    },
+    {
+      "text": "any sort of input okay we do random",
+      "start": 2235.369,
+      "duration": 6.061
+    },
+    {
+      "text": "sampling about a code",
+      "start": 2239.93,
+      "duration": 5.159
+    },
+    {
+      "text": "what is if there's a branch that may be",
+      "start": 2241.43,
+      "duration": 7.73
+    },
+    {
+      "text": "conditional and we feed in random inputs",
+      "start": 2245.089,
+      "duration": 7.2
+    },
+    {
+      "text": "well we might trigger some different",
+      "start": 2249.16,
+      "duration": 5.409
+    },
+    {
+      "text": "behavior such that the emulate or",
+      "start": 2252.289,
+      "duration": 4.861
+    },
+    {
+      "text": "decides to do to choose another pass",
+      "start": 2254.569,
+      "duration": 5.7
+    },
+    {
+      "text": "well what we do here again is we just",
+      "start": 2257.15,
+      "duration": 5.159
+    },
+    {
+      "text": "ignore the flags and we force the",
+      "start": 2260.269,
+      "duration": 4.201
+    },
+    {
+      "text": "execution to go the path that we",
+      "start": 2262.309,
+      "duration": 5.401
+    },
+    {
+      "text": "observed so if you want to go to a we",
+      "start": 2264.47,
+      "duration": 6.66
+    },
+    {
+      "text": "just for us to get to a if we want to go",
+      "start": 2267.71,
+      "duration": 8.279
+    },
+    {
+      "text": "to B we force it to go to B so how do we",
+      "start": 2271.13,
+      "duration": 7.169
+    },
+    {
+      "text": "implement something like this basically",
+      "start": 2275.989,
+      "duration": 4.401
+    },
+    {
+      "text": "you have lots of different opportunities",
+      "start": 2278.299,
+      "duration": 5.22
+    },
+    {
+      "text": "what you need is some code base that you",
+      "start": 2280.39,
+      "duration": 6.869
+    },
+    {
+      "text": "can't somehow execute code for instance",
+      "start": 2283.519,
+      "duration": 6.6
+    },
+    {
+      "text": "emulated as in box or an unicorn engine",
+      "start": 2287.259,
+      "duration": 6.31
+    },
+    {
+      "text": "or you can do it with dynamic binary",
+      "start": 2290.119,
+      "duration": 5.64
+    },
+    {
+      "text": "instrumentation as in pin or a dynamic",
+      "start": 2293.569,
+      "duration": 6.151
+    },
+    {
+      "text": "i/o what you also can do is you can just",
+      "start": 2295.759,
+      "duration": 5.971
+    },
+    {
+      "text": "translate it into intermediate language",
+      "start": 2299.72,
+      "duration": 4.68
+    },
+    {
+      "text": "is Ambala key execute it and evaluate",
+      "start": 2301.73,
+      "duration": 6.509
+    },
+    {
+      "text": "just the symbolic expressions while",
+      "start": 2304.4,
+      "duration": 6.839
+    },
+    {
+      "text": "feeding it with complete inputs but",
+      "start": 2308.239,
+      "duration": 5.37
+    },
+    {
+      "text": "normally this is much much slower it's",
+      "start": 2311.239,
+      "duration": 5.07
+    },
+    {
+      "text": "especially for large constraints if",
+      "start": 2313.609,
+      "duration": 5.49
+    },
+    {
+      "text": "you've seen it before but in general it",
+      "start": 2316.309,
+      "duration": 6.69
+    },
+    {
+      "text": "is possible what we did is that we",
+      "start": 2319.099,
+      "duration": 6.18
+    },
+    {
+      "text": "implemented everything in our framework",
+      "start": 2322.999,
+      "duration": 4.891
+    },
+    {
+      "text": "that you could Cynthia basically assume",
+      "start": 2325.279,
+      "duration": 4.47
+    },
+    {
+      "text": "tia is the program synthesis framework",
+      "start": 2327.89,
+      "duration": 4.349
+    },
+    {
+      "text": "for code of your station it is written",
+      "start": 2329.749,
+      "duration": 5.881
+    },
+    {
+      "text": "in Python it performs and miR sampling",
+      "start": 2332.239,
+      "duration": 5.52
+    },
+    {
+      "text": "for assembly code based on the unicorn",
+      "start": 2335.63,
+      "duration": 4.53
+    },
+    {
+      "text": "engine and it also implement",
+      "start": 2337.759,
+      "duration": 4.8
+    },
+    {
+      "text": "it's MCTS at the Monte Carlo tree search",
+      "start": 2340.16,
+      "duration": 5.159
+    },
+    {
+      "text": "based programs Antonis a Sequoia we",
+      "start": 2342.559,
+      "duration": 5.49
+    },
+    {
+      "text": "published published is and GPL version",
+      "start": 2345.319,
+      "duration": 4.98
+    },
+    {
+      "text": "tool and this is a link where you can",
+      "start": 2348.049,
+      "duration": 7.851
+    },
+    {
+      "text": "get it so we will just do a quick demo",
+      "start": 2350.299,
+      "duration": 5.601
+    },
+    {
+      "text": "so first I will show something about the",
+      "start": 2358.089,
+      "duration": 8.291
+    },
+    {
+      "text": "program synthesis itself basically we",
+      "start": 2361.28,
+      "duration": 7.799
+    },
+    {
+      "text": "define an avoid of a curve that is a",
+      "start": 2366.38,
+      "duration": 4.83
+    },
+    {
+      "text": "function that we treat as a black box",
+      "start": 2369.079,
+      "duration": 4.591
+    },
+    {
+      "text": "that we use for i/o same thing on what",
+      "start": 2371.21,
+      "duration": 5.7
+    },
+    {
+      "text": "we want just is to synthesize X plus X",
+      "start": 2373.67,
+      "duration": 13.169
+    },
+    {
+      "text": "plus y plus y so we just run it and what",
+      "start": 2376.91,
+      "duration": 13.709
+    },
+    {
+      "text": "you can see here is that we start with",
+      "start": 2386.839,
+      "duration": 6.45
+    },
+    {
+      "text": "different nodes that we try out",
+      "start": 2390.619,
+      "duration": 5.551
+    },
+    {
+      "text": "difficult things and always assign a",
+      "start": 2393.289,
+      "duration": 8.25
+    },
+    {
+      "text": "hierarchy water to this and you also see",
+      "start": 2396.17,
+      "duration": 8.01
+    },
+    {
+      "text": "Oh at this case it's somehow learned",
+      "start": 2401.539,
+      "duration": 5.731
+    },
+    {
+      "text": "that there must be a lot of additional",
+      "start": 2404.18,
+      "duration": 6.929
+    },
+    {
+      "text": "and at some point we get something like",
+      "start": 2407.27,
+      "duration": 8.16
+    },
+    {
+      "text": "that so this is basically V 1 or V 1 and",
+      "start": 2411.109,
+      "duration": 7.891
+    },
+    {
+      "text": "V 2 and V 2 so this isn't the simplest",
+      "start": 2415.43,
+      "duration": 6.179
+    },
+    {
+      "text": "form but it is simple enough such that",
+      "start": 2419.0,
+      "duration": 4.92
+    },
+    {
+      "text": "we can easily simplify it to something",
+      "start": 2421.609,
+      "duration": 5.851
+    },
+    {
+      "text": "like 2 times the input plus 2 times the",
+      "start": 2423.92,
+      "duration": 8.46
+    },
+    {
+      "text": "other input so we can do it another time",
+      "start": 2427.46,
+      "duration": 7.56
+    },
+    {
+      "text": "and we might we might choose a",
+      "start": 2432.38,
+      "duration": 5.729
+    },
+    {
+      "text": "completely different path because it's",
+      "start": 2435.02,
+      "duration": 4.799
+    },
+    {
+      "text": "all probabilistic perhaps one play out",
+      "start": 2438.109,
+      "duration": 3.72
+    },
+    {
+      "text": "was better than the other then we choose",
+      "start": 2439.819,
+      "duration": 4.77
+    },
+    {
+      "text": "another pass it might take up to five",
+      "start": 2441.829,
+      "duration": 4.831
+    },
+    {
+      "text": "seconds up to one minute so it basically",
+      "start": 2444.589,
+      "duration": 5.52
+    },
+    {
+      "text": "depends how the quality of our inputs",
+      "start": 2446.66,
+      "duration": 4.919
+    },
+    {
+      "text": "how we choose the path and things like",
+      "start": 2450.109,
+      "duration": 4.291
+    },
+    {
+      "text": "that but at the end we will mainly reach",
+      "start": 2451.579,
+      "duration": 7.641
+    },
+    {
+      "text": "our goal if not we just started again so",
+      "start": 2454.4,
+      "duration": 4.82
+    },
+    {
+      "text": "the first one it took nearly twenty",
+      "start": 2460.299,
+      "duration": 5.591
+    },
+    {
+      "text": "seconds now it took 24 seconds and you",
+      "start": 2463.01,
+      "duration": 5.45
+    },
+    {
+      "text": "see now we have a much more or less",
+      "start": 2465.89,
+      "duration": 5.37
+    },
+    {
+      "text": "obfuscated version and our non",
+      "start": 2468.46,
+      "duration": 5.379
+    },
+    {
+      "text": "simplified form so",
+      "start": 2471.26,
+      "duration": 4.62
+    },
+    {
+      "text": "it's okay how do we use it for",
+      "start": 2473.839,
+      "duration": 5.071
+    },
+    {
+      "text": "simplified code for to synthesize of",
+      "start": 2475.88,
+      "duration": 7.589
+    },
+    {
+      "text": "your skated code let's have a look it's",
+      "start": 2478.91,
+      "duration": 12.27
+    },
+    {
+      "text": "a sauce this and obfuscated the top",
+      "start": 2483.469,
+      "duration": 11.82
+    },
+    {
+      "text": "layer this is the plain code basically",
+      "start": 2491.18,
+      "duration": 7.619
+    },
+    {
+      "text": "it takes five inputs just perform some",
+      "start": 2495.289,
+      "duration": 6.121
+    },
+    {
+      "text": "addition and multiplication and returns",
+      "start": 2498.799,
+      "duration": 5.46
+    },
+    {
+      "text": "a value note this is a function that",
+      "start": 2501.41,
+      "duration": 6.059
+    },
+    {
+      "text": "means our final values return value will",
+      "start": 2504.259,
+      "duration": 8.01
+    },
+    {
+      "text": "be starting e^x and the obvious case is",
+      "start": 2507.469,
+      "duration": 7.171
+    },
+    {
+      "text": "with tigris and MBAs when we get",
+      "start": 2512.269,
+      "duration": 4.111
+    },
+    {
+      "text": "something like that this is a little bit",
+      "start": 2514.64,
+      "duration": 2.27
+    },
+    {
+      "text": "longer",
+      "start": 2516.38,
+      "duration": 5.79
+    },
+    {
+      "text": "so and then we compile it and get some",
+      "start": 2516.91,
+      "duration": 13.27
+    },
+    {
+      "text": "get some assembly listing that basically",
+      "start": 2522.17,
+      "duration": 14.669
+    },
+    {
+      "text": "is about C 760 lines so we don't",
+      "start": 2530.18,
+      "duration": 9.689
+    },
+    {
+      "text": "symbolically execute it here because it",
+      "start": 2536.839,
+      "duration": 5.331
+    },
+    {
+      "text": "would be really really a match of time",
+      "start": 2539.869,
+      "duration": 5.82
+    },
+    {
+      "text": "instead we just learn it what we do is",
+      "start": 2542.17,
+      "duration": 6.879
+    },
+    {
+      "text": "we just random sampling input so we give",
+      "start": 2545.689,
+      "duration": 6.12
+    },
+    {
+      "text": "it by basically a code file this is our",
+      "start": 2549.049,
+      "duration": 5.67
+    },
+    {
+      "text": "instruction case we define the",
+      "start": 2551.809,
+      "duration": 9.72
+    },
+    {
+      "text": "architecture we do well let's take 28",
+      "start": 2554.719,
+      "duration": 10.14
+    },
+    {
+      "text": "and mio samples and we write an output",
+      "start": 2561.529,
+      "duration": 5.601
+    },
+    {
+      "text": "file",
+      "start": 2564.859,
+      "duration": 2.271
+    },
+    {
+      "text": "so you see is this were only less than",
+      "start": 2570.49,
+      "duration": 7.589
+    },
+    {
+      "text": "five seconds so if you look at the file",
+      "start": 2574.099,
+      "duration": 7.74
+    },
+    {
+      "text": "what we see is that we have different",
+      "start": 2578.079,
+      "duration": 7.54
+    },
+    {
+      "text": "outputs here this is one output this is",
+      "start": 2581.839,
+      "duration": 7.561
+    },
+    {
+      "text": "another output we basically have 1718",
+      "start": 2585.619,
+      "duration": 5.761
+    },
+    {
+      "text": "outputs because you can start counting",
+      "start": 2589.4,
+      "duration": 6.0
+    },
+    {
+      "text": "at 0 we are only interested in EAX so we",
+      "start": 2591.38,
+      "duration": 6.239
+    },
+    {
+      "text": "will just synthesize that in a few",
+      "start": 2595.4,
+      "duration": 5.85
+    },
+    {
+      "text": "minutes and you see we have here our 5",
+      "start": 2597.619,
+      "duration": 6.541
+    },
+    {
+      "text": "memory inputs our parameter for the",
+      "start": 2601.25,
+      "duration": 5.76
+    },
+    {
+      "text": "function and also some registers that",
+      "start": 2604.16,
+      "duration": 8.31
+    },
+    {
+      "text": "were treated as input ok so what we then",
+      "start": 2607.01,
+      "duration": 10.5
+    },
+    {
+      "text": "do is we just design in our several",
+      "start": 2612.47,
+      "duration": 6.93
+    },
+    {
+      "text": "synthesis this is agata",
+      "start": 2617.51,
+      "duration": 5.43
+    },
+    {
+      "text": "about MCTS this leads basically is a",
+      "start": 2619.4,
+      "duration": 9.24
+    },
+    {
+      "text": "input file from before and here i noted",
+      "start": 2622.94,
+      "duration": 8.339
+    },
+    {
+      "text": "0 because we only want to synthesize the",
+      "start": 2628.64,
+      "duration": 11.57
+    },
+    {
+      "text": "first output now so we just started it",
+      "start": 2631.279,
+      "duration": 11.371
+    },
+    {
+      "text": "basically takes the same thing file as",
+      "start": 2640.21,
+      "duration": 14.109
+    },
+    {
+      "text": "input and an output file and this again",
+      "start": 2642.65,
+      "duration": 14.459
+    },
+    {
+      "text": "this might take between seconds and 1",
+      "start": 2654.319,
+      "duration": 6.51
+    },
+    {
+      "text": "minute so it depends so we are ready we",
+      "start": 2657.109,
+      "duration": 6.66
+    },
+    {
+      "text": "can have a look at the result you see",
+      "start": 2660.829,
+      "duration": 6.72
+    },
+    {
+      "text": "this is output the top non-terminal is",
+      "start": 2663.769,
+      "duration": 8.971
+    },
+    {
+      "text": "some time some some integer some",
+      "start": 2667.549,
+      "duration": 6.901
+    },
+    {
+      "text": "integers that have not been frosted",
+      "start": 2672.74,
+      "duration": 2.49
+    },
+    {
+      "text": "arrived",
+      "start": 2674.45,
+      "duration": 5.669
+    },
+    {
+      "text": "plus a concrete variable the best top",
+      "start": 2675.23,
+      "duration": 7.289
+    },
+    {
+      "text": "terminal so those best programs that is",
+      "start": 2680.119,
+      "duration": 4.831
+    },
+    {
+      "text": "cannot be derived any further is a",
+      "start": 2682.519,
+      "duration": 5.401
+    },
+    {
+      "text": "memory cell times the memory cell plus a",
+      "start": 2684.95,
+      "duration": 6.119
+    },
+    {
+      "text": "memory cell and so this is our final",
+      "start": 2687.92,
+      "duration": 6.3
+    },
+    {
+      "text": "expression basically we learned that the",
+      "start": 2691.069,
+      "duration": 6.841
+    },
+    {
+      "text": "whole semantics is the first memory",
+      "start": 2694.22,
+      "duration": 7.53
+    },
+    {
+      "text": "eight times the second memory dete times",
+      "start": 2697.91,
+      "duration": 5.57
+    },
+    {
+      "text": "a certain or we eat",
+      "start": 2701.75,
+      "duration": 7.58
+    },
+    {
+      "text": "last v Emily read so okay coming back to",
+      "start": 2703.48,
+      "duration": 12.69
+    },
+    {
+      "text": "our slides how can we use that to break",
+      "start": 2709.33,
+      "duration": 9.72
+    },
+    {
+      "text": "little machine-based of your station",
+      "start": 2716.17,
+      "duration": 6.63
+    },
+    {
+      "text": "quick reminder the goal of the end based",
+      "start": 2719.05,
+      "duration": 6.72
+    },
+    {
+      "text": "obfuscation is was to introduce a new",
+      "start": 2722.8,
+      "duration": 5.97
+    },
+    {
+      "text": "cpu scheme that you don't can analyze",
+      "start": 2725.77,
+      "duration": 5.01
+    },
+    {
+      "text": "easily with yet rules you have to",
+      "start": 2728.77,
+      "duration": 4.29
+    },
+    {
+      "text": "manually reverse to reverse engineer all",
+      "start": 2730.78,
+      "duration": 4.02
+    },
+    {
+      "text": "the handlers and things like that and",
+      "start": 2733.06,
+      "duration": 4.29
+    },
+    {
+      "text": "well one simple thing we can do with",
+      "start": 2734.8,
+      "duration": 4.77
+    },
+    {
+      "text": "that it's just learn the semantics of",
+      "start": 2737.35,
+      "duration": 4.32
+    },
+    {
+      "text": "arithmetic handlers such as if the",
+      "start": 2739.57,
+      "duration": 4.56
+    },
+    {
+      "text": "semantic system at or nor or something",
+      "start": 2741.67,
+      "duration": 5.699
+    },
+    {
+      "text": "like that so Roberts discussed four",
+      "start": 2744.13,
+      "duration": 5.58
+    },
+    {
+      "text": "different hardening techniques and we",
+      "start": 2747.369,
+      "duration": 4.441
+    },
+    {
+      "text": "will talk about how we can't like all of",
+      "start": 2749.71,
+      "duration": 5.31
+    },
+    {
+      "text": "these so the first one was obvious",
+      "start": 2751.81,
+      "duration": 8.22
+    },
+    {
+      "text": "cating it obfuscating the individual for",
+      "start": 2755.02,
+      "duration": 6.78
+    },
+    {
+      "text": "M handless with more complex of",
+      "start": 2760.03,
+      "duration": 4.62
+    },
+    {
+      "text": "education streams then plus duplicate",
+      "start": 2761.8,
+      "duration": 5.25
+    },
+    {
+      "text": "handlers and somehow transform them such",
+      "start": 2764.65,
+      "duration": 5.58
+    },
+    {
+      "text": "that they don't look the same then we",
+      "start": 2767.05,
+      "duration": 5.7
+    },
+    {
+      "text": "don't have note central vm dispatcher so",
+      "start": 2770.23,
+      "duration": 5.19
+    },
+    {
+      "text": "we don't have an F de loop instead each",
+      "start": 2772.75,
+      "duration": 5.76
+    },
+    {
+      "text": "handler in lines and concrete the",
+      "start": 2775.42,
+      "duration": 5.43
+    },
+    {
+      "text": "calculation of the next handler and then",
+      "start": 2778.51,
+      "duration": 4.82
+    },
+    {
+      "text": "we don't have any explicit handler table",
+      "start": 2780.85,
+      "duration": 3.89
+    },
+    {
+      "text": "okay",
+      "start": 2783.33,
+      "duration": 4.48
+    },
+    {
+      "text": "what you see here is in handler of",
+      "start": 2784.74,
+      "duration": 6.94
+    },
+    {
+      "text": "tamyra it looks quietly more complex and",
+      "start": 2787.81,
+      "duration": 6.84
+    },
+    {
+      "text": "you don't allele easily see also not the",
+      "start": 2791.68,
+      "duration": 5.42
+    },
+    {
+      "text": "symbolic execution what this is doing",
+      "start": 2794.65,
+      "duration": 6.39
+    },
+    {
+      "text": "well if we act us if you if we ask",
+      "start": 2797.1,
+      "duration": 7.12
+    },
+    {
+      "text": "Cynthia it says well the semantics is",
+      "start": 2801.04,
+      "duration": 6.51
+    },
+    {
+      "text": "that it is an addition of the 13th and",
+      "start": 2804.22,
+      "duration": 5.7
+    },
+    {
+      "text": "the 14th member wavey it and it is",
+      "start": 2807.55,
+      "duration": 8.97
+    },
+    {
+      "text": "stored into an 64-bit value ok solve",
+      "start": 2809.92,
+      "duration": 9.65
+    },
+    {
+      "text": "this problem the other problem and",
+      "start": 2816.52,
+      "duration": 6.42
+    },
+    {
+      "text": "duplicated vm handlers assume we have a",
+      "start": 2819.57,
+      "duration": 7.39
+    },
+    {
+      "text": "handler table where we can see each",
+      "start": 2822.94,
+      "duration": 6.3
+    },
+    {
+      "text": "handler or we have an instruction test",
+      "start": 2826.96,
+      "duration": 3.899
+    },
+    {
+      "text": "where we know where each handler is",
+      "start": 2829.24,
+      "duration": 3.74
+    },
+    {
+      "text": "located so",
+      "start": 2830.859,
+      "duration": 5.541
+    },
+    {
+      "text": "given we know where handlers are so",
+      "start": 2832.98,
+      "duration": 6.66
+    },
+    {
+      "text": "how can we learn duplicated VM handless",
+      "start": 2836.4,
+      "duration": 6.119
+    },
+    {
+      "text": "well at least we learn it's simple",
+      "start": 2839.64,
+      "duration": 5.459
+    },
+    {
+      "text": "semantics we can learn based on our",
+      "start": 2842.519,
+      "duration": 5.131
+    },
+    {
+      "text": "drama if it's a net if it's an X or if",
+      "start": 2845.099,
+      "duration": 5.101
+    },
+    {
+      "text": "it's an SAP recent shift left things",
+      "start": 2847.65,
+      "duration": 5.369
+    },
+    {
+      "text": "like that and of course we can find",
+      "start": 2850.2,
+      "duration": 5.76
+    },
+    {
+      "text": "duplicate firstly because we learn the",
+      "start": 2853.019,
+      "duration": 5.31
+    },
+    {
+      "text": "semantics and if they are the same we",
+      "start": 2855.96,
+      "duration": 8.309
+    },
+    {
+      "text": "learn it ok so coming back to our Tomita",
+      "start": 2858.329,
+      "duration": 9.96
+    },
+    {
+      "text": "handler and no sensor vm dispatcher have",
+      "start": 2864.269,
+      "duration": 7.141
+    },
+    {
+      "text": "a look at the end of the handler let's",
+      "start": 2868.289,
+      "duration": 7.441
+    },
+    {
+      "text": "zoom in basically this plastic coat",
+      "start": 2871.41,
+      "duration": 7.83
+    },
+    {
+      "text": "Basia is the code to calculate and next",
+      "start": 2875.73,
+      "duration": 7.609
+    },
+    {
+      "text": "hand address so we don't this",
+      "start": 2879.24,
+      "duration": 6.089
+    },
+    {
+      "text": "calculation is a little bit too",
+      "start": 2883.339,
+      "duration": 5.081
+    },
+    {
+      "text": "complicated for us into this part so it",
+      "start": 2885.329,
+      "duration": 4.77
+    },
+    {
+      "text": "doesn't take our semantics a coach",
+      "start": 2888.42,
+      "duration": 4.199
+    },
+    {
+      "text": "because we still learn the semantics as",
+      "start": 2890.099,
+      "duration": 5.43
+    },
+    {
+      "text": "a handler and since the semantics of the",
+      "start": 2892.619,
+      "duration": 5.19
+    },
+    {
+      "text": "next address calculation is too complex",
+      "start": 2895.529,
+      "duration": 5.641
+    },
+    {
+      "text": "we just don't learn it and one other",
+      "start": 2897.809,
+      "duration": 7.881
+    },
+    {
+      "text": "thing have a look at the jump RBX one",
+      "start": 2901.17,
+      "duration": 7.649
+    },
+    {
+      "text": "advantage or disadvantage depends how",
+      "start": 2905.69,
+      "duration": 5.95
+    },
+    {
+      "text": "you see it of inlining something like",
+      "start": 2908.819,
+      "duration": 6.321
+    },
+    {
+      "text": "that is that we have a hat a holistic",
+      "start": 2911.64,
+      "duration": 7.83
+    },
+    {
+      "text": "how we can find the end of the EM",
+      "start": 2915.14,
+      "duration": 7.03
+    },
+    {
+      "text": "handlers basically the end with some",
+      "start": 2919.47,
+      "duration": 5.309
+    },
+    {
+      "text": "literal or with some jump RBX so",
+      "start": 2922.17,
+      "duration": 5.28
+    },
+    {
+      "text": "basically if we split an instruction",
+      "start": 2924.779,
+      "duration": 4.71
+    },
+    {
+      "text": "trace it indirect control flow chasers",
+      "start": 2927.45,
+      "duration": 5.46
+    },
+    {
+      "text": "control for transfers we split it into",
+      "start": 2929.489,
+      "duration": 8.401
+    },
+    {
+      "text": "the separate VM handlers this comes this",
+      "start": 2932.91,
+      "duration": 8.129
+    },
+    {
+      "text": "helps us for our first part we don't",
+      "start": 2937.89,
+      "duration": 6.0
+    },
+    {
+      "text": "have an expectation a table so we don't",
+      "start": 2941.039,
+      "duration": 5.58
+    },
+    {
+      "text": "know by static analysis whereas the each",
+      "start": 2943.89,
+      "duration": 5.639
+    },
+    {
+      "text": "where each headless so what we can do is",
+      "start": 2946.619,
+      "duration": 5.64
+    },
+    {
+      "text": "we just execute it and we observe an",
+      "start": 2949.529,
+      "duration": 4.651
+    },
+    {
+      "text": "instruction phase and then we have",
+      "start": 2952.259,
+      "duration": 2.971
+    },
+    {
+      "text": "something like that",
+      "start": 2954.18,
+      "duration": 4.23
+    },
+    {
+      "text": "we just then apply the rule from above",
+      "start": 2955.23,
+      "duration": 6.119
+    },
+    {
+      "text": "we split everything where we observe in",
+      "start": 2958.41,
+      "duration": 5.399
+    },
+    {
+      "text": "that control flow and we get something",
+      "start": 2961.349,
+      "duration": 3.781
+    },
+    {
+      "text": "like that",
+      "start": 2963.809,
+      "duration": 4.651
+    },
+    {
+      "text": "and as it points out each color is a",
+      "start": 2965.13,
+      "duration": 7.29
+    },
+    {
+      "text": "different handler so and then became K",
+      "start": 2968.46,
+      "duration": 6.54
+    },
+    {
+      "text": "can take the simplest single components",
+      "start": 2972.42,
+      "duration": 5.49
+    },
+    {
+      "text": "and just synthesizes on their own and in",
+      "start": 2975.0,
+      "duration": 6.69
+    },
+    {
+      "text": "this case we automatically learned that",
+      "start": 2977.91,
+      "duration": 8.189
+    },
+    {
+      "text": "large portions or large things of",
+      "start": 2981.69,
+      "duration": 7.169
+    },
+    {
+      "text": "instruction case and we haven't built in",
+      "start": 2986.099,
+      "duration": 4.92
+    },
+    {
+      "text": "semantic disassembler for the-- for the",
+      "start": 2988.859,
+      "duration": 5.121
+    },
+    {
+      "text": "new architecture if you want it that way",
+      "start": 2991.019,
+      "duration": 6.631
+    },
+    {
+      "text": "so but we can say you a lot of things",
+      "start": 2993.98,
+      "duration": 7.75
+    },
+    {
+      "text": "just write out your own we also released",
+      "start": 2997.65,
+      "duration": 6.659
+    },
+    {
+      "text": "our code and furthermore released all of",
+      "start": 3001.73,
+      "duration": 5.76
+    },
+    {
+      "text": "our samples so just feel free to use it",
+      "start": 3004.309,
+      "duration": 8.851
+    },
+    {
+      "text": "and play it with round so to conclude we",
+      "start": 3007.49,
+      "duration": 7.74
+    },
+    {
+      "text": "talked about obfuscation techniques",
+      "start": 3013.16,
+      "duration": 5.31
+    },
+    {
+      "text": "mainly OPAC predicates the end of",
+      "start": 3015.23,
+      "duration": 5.01
+    },
+    {
+      "text": "discussion schemes and hardening and",
+      "start": 3018.47,
+      "duration": 4.26
+    },
+    {
+      "text": "makes put in arithmetic and of course",
+      "start": 3020.24,
+      "duration": 5.129
+    },
+    {
+      "text": "they all can be used together and they",
+      "start": 3022.73,
+      "duration": 4.889
+    },
+    {
+      "text": "all are mainly the it's all mainly the",
+      "start": 3025.369,
+      "duration": 5.22
+    },
+    {
+      "text": "same is easily of the if we work on the",
+      "start": 3027.619,
+      "duration": 5.791
+    },
+    {
+      "text": "application on a section test level so",
+      "start": 3030.589,
+      "duration": 5.43
+    },
+    {
+      "text": "then you we discussed about symbolic",
+      "start": 3033.41,
+      "duration": 4.949
+    },
+    {
+      "text": "execution and for a syntactic d",
+      "start": 3036.019,
+      "duration": 4.651
+    },
+    {
+      "text": "obfuscation and we saw that it is really",
+      "start": 3038.359,
+      "duration": 5.551
+    },
+    {
+      "text": "great but it has some drawbacks if it is",
+      "start": 3040.67,
+      "duration": 6.06
+    },
+    {
+      "text": "syntactically too complex so on the",
+      "start": 3043.91,
+      "duration": 6.99
+    },
+    {
+      "text": "other hand we asked SM what about not",
+      "start": 3046.73,
+      "duration": 6.18
+    },
+    {
+      "text": "looking at the code level but instead",
+      "start": 3050.9,
+      "duration": 3.99
+    },
+    {
+      "text": "looking at the semantic level using the",
+      "start": 3052.91,
+      "duration": 4.59
+    },
+    {
+      "text": "code as a black box to obtain I or",
+      "start": 3054.89,
+      "duration": 5.04
+    },
+    {
+      "text": "samples and learn something difficult so",
+      "start": 3057.5,
+      "duration": 6.089
+    },
+    {
+      "text": "this is program sentences and finally",
+      "start": 3059.93,
+      "duration": 5.73
+    },
+    {
+      "text": "mind that you find everything in our",
+      "start": 3063.589,
+      "duration": 4.431
+    },
+    {
+      "text": "gates thank you very much",
+      "start": 3065.66,
+      "duration": 5.93
+    },
+    {
+      "text": "[Applause]",
+      "start": 3068.02,
+      "duration": 3.57
+    },
+    {
+      "text": "thank you very much indeed for this",
+      "start": 3078.83,
+      "duration": 4.3
+    },
+    {
+      "text": "creative solution to an existing problem",
+      "start": 3081.24,
+      "duration": 4.92
+    },
+    {
+      "text": "we now have about 10 minutes for Q&A you",
+      "start": 3083.13,
+      "duration": 5.7
+    },
+    {
+      "text": "know the drill there are two microphones",
+      "start": 3086.16,
+      "duration": 5.49
+    },
+    {
+      "text": "in the middle and one to the left please",
+      "start": 3088.83,
+      "duration": 5.94
+    },
+    {
+      "text": "line up also signal engine do you have",
+      "start": 3091.65,
+      "duration": 7.76
+    },
+    {
+      "text": "questions from the internet ok none and",
+      "start": 3094.77,
+      "duration": 8.48
+    },
+    {
+      "text": "other questions from the audience here",
+      "start": 3099.41,
+      "duration": 9.93
+    },
+    {
+      "text": "one OK in the back please all right",
+      "start": 3103.25,
+      "duration": 8.83
+    },
+    {
+      "text": "yes I was one of these try to go out",
+      "start": 3109.34,
+      "duration": 7.95
+    },
+    {
+      "text": "silent I was ok do you still hear me",
+      "start": 3112.08,
+      "duration": 8.76
+    },
+    {
+      "text": "yeah I was wondering and if when takes a",
+      "start": 3117.29,
+      "duration": 5.05
+    },
+    {
+      "text": "look at these obfuscation techniques",
+      "start": 3120.84,
+      "duration": 3.66
+    },
+    {
+      "text": "wouldn't it be possible for a closed",
+      "start": 3122.34,
+      "duration": 5.16
+    },
+    {
+      "text": "source operating system to just prevent",
+      "start": 3124.5,
+      "duration": 6.6
+    },
+    {
+      "text": "any debugging of code so say we could",
+      "start": 3127.5,
+      "duration": 5.97
+    },
+    {
+      "text": "encrypt the code with some key that only",
+      "start": 3131.1,
+      "duration": 4.41
+    },
+    {
+      "text": "the operating system has access to and",
+      "start": 3133.47,
+      "duration": 4.88
+    },
+    {
+      "text": "only Shoveler to a protected memory area",
+      "start": 3135.51,
+      "duration": 8.13
+    },
+    {
+      "text": "well what you might do is that you",
+      "start": 3138.35,
+      "duration": 8.02
+    },
+    {
+      "text": "execute it inside a virtual machine or",
+      "start": 3143.64,
+      "duration": 4.2
+    },
+    {
+      "text": "something like that assume you can do",
+      "start": 3146.37,
+      "duration": 4.11
+    },
+    {
+      "text": "that and you can take memory snapshot",
+      "start": 3147.84,
+      "duration": 4.65
+    },
+    {
+      "text": "the memory breakpoints at different",
+      "start": 3150.48,
+      "duration": 4.8
+    },
+    {
+      "text": "points of execution what you can then do",
+      "start": 3152.49,
+      "duration": 5.64
+    },
+    {
+      "text": "is if you know somewhere was in",
+      "start": 3155.28,
+      "duration": 4.38
+    },
+    {
+      "text": "combination with reverse-engineering",
+      "start": 3158.13,
+      "duration": 4.47
+    },
+    {
+      "text": "that adds it at this memory area now",
+      "start": 3159.66,
+      "duration": 6.87
+    },
+    {
+      "text": "lies in the obfuscated code it include",
+      "start": 3162.6,
+      "duration": 8.01
+    },
+    {
+      "text": "decrypted code because you know you know",
+      "start": 3166.53,
+      "duration": 6.6
+    },
+    {
+      "text": "it just was decrypted because it is used",
+      "start": 3170.61,
+      "duration": 6.42
+    },
+    {
+      "text": "for execution now you can take memory",
+      "start": 3173.13,
+      "duration": 5.64
+    },
+    {
+      "text": "snapshot and dumps the code and then",
+      "start": 3177.03,
+      "duration": 5.13
+    },
+    {
+      "text": "feed it into something like that you",
+      "start": 3178.77,
+      "duration": 7.08
+    },
+    {
+      "text": "also to add up on this this also yet",
+      "start": 3182.16,
+      "duration": 5.73
+    },
+    {
+      "text": "kind of a non-technical argument to make",
+      "start": 3185.85,
+      "duration": 5.16
+    },
+    {
+      "text": "you because all the like like the",
+      "start": 3187.89,
+      "duration": 4.92
+    },
+    {
+      "text": "argument weight on the slides of you try",
+      "start": 3191.01,
+      "duration": 3.39
+    },
+    {
+      "text": "to outsource your code this is like a",
+      "start": 3192.81,
+      "duration": 3.9
+    },
+    {
+      "text": "similar scenario because to have hard",
+      "start": 3194.4,
+      "duration": 3.63
+    },
+    {
+      "text": "guarantees on that you might want to",
+      "start": 3196.71,
+      "duration": 3.45
+    },
+    {
+      "text": "have like some HSM or some other",
+      "start": 3198.03,
+      "duration": 4.98
+    },
+    {
+      "text": "hardware mechanism to enforce this which",
+      "start": 3200.16,
+      "duration": 4.26
+    },
+    {
+      "text": "might not always be feasible like",
+      "start": 3203.01,
+      "duration": 3.24
+    },
+    {
+      "text": "imagine having a corporate environment",
+      "start": 3204.42,
+      "duration": 4.74
+    },
+    {
+      "text": "where you need to supply your speed on",
+      "start": 3206.25,
+      "duration": 4.339
+    },
+    {
+      "text": "us or something which might",
+      "start": 3209.16,
+      "duration": 3.74
+    },
+    {
+      "text": "yeah what might be in violation of some",
+      "start": 3210.589,
+      "duration": 4.71
+    },
+    {
+      "text": "corporate policy so we were looking only",
+      "start": 3212.9,
+      "duration": 4.379
+    },
+    {
+      "text": "at things we can do in a white box",
+      "start": 3215.299,
+      "duration": 3.331
+    },
+    {
+      "text": "attack scenario where the attack has",
+      "start": 3217.279,
+      "duration": 4.26
+    },
+    {
+      "text": "everything he needs to analyze the code",
+      "start": 3218.63,
+      "duration": 7.26
+    },
+    {
+      "text": "which is the most yeah non restrictive",
+      "start": 3221.539,
+      "duration": 15.33
+    },
+    {
+      "text": "scenario here hello I would like to ask",
+      "start": 3225.89,
+      "duration": 13.74
+    },
+    {
+      "text": "these techniques also seem to be very",
+      "start": 3236.869,
+      "duration": 4.801
+    },
+    {
+      "text": "useful for code optimization in",
+      "start": 3239.63,
+      "duration": 4.8
+    },
+    {
+      "text": "compilers has any research been done in",
+      "start": 3241.67,
+      "duration": 5.099
+    },
+    {
+      "text": "this direction yeah lots of desserts so",
+      "start": 3244.43,
+      "duration": 4.829
+    },
+    {
+      "text": "basically there's one big project this",
+      "start": 3246.769,
+      "duration": 4.77
+    },
+    {
+      "text": "is called stalk this is understand for",
+      "start": 3249.259,
+      "duration": 6.631
+    },
+    {
+      "text": "guys they they do stochastic program",
+      "start": 3251.539,
+      "duration": 6.44
+    },
+    {
+      "text": "synthesis for a soup optimization and",
+      "start": 3255.89,
+      "duration": 7.109
+    },
+    {
+      "text": "this was also one of the inspirations",
+      "start": 3257.979,
+      "duration": 7.421
+    },
+    {
+      "text": "for us to use and so Hasek synthesis of",
+      "start": 3262.999,
+      "duration": 7.56
+    },
+    {
+      "text": "course thank you do we have a question",
+      "start": 3265.4,
+      "duration": 10.25
+    },
+    {
+      "text": "on the left also ok yeah then you go so",
+      "start": 3270.559,
+      "duration": 7.891
+    },
+    {
+      "text": "if I understood your country correctly",
+      "start": 3275.65,
+      "duration": 5.29
+    },
+    {
+      "text": "then you focus primarily on aeromedical",
+      "start": 3278.45,
+      "duration": 4.829
+    },
+    {
+      "text": "functions or on arithmetic expressions",
+      "start": 3280.94,
+      "duration": 5.22
+    },
+    {
+      "text": "so count you use or currently simply use",
+      "start": 3283.279,
+      "duration": 7.04
+    },
+    {
+      "text": "techniques of numerical curve fitting",
+      "start": 3286.16,
+      "duration": 4.159
+    },
+    {
+      "text": "well this might be possible we haven't",
+      "start": 3291.039,
+      "duration": 9.76
+    },
+    {
+      "text": "looked into that but we also we mainly",
+      "start": 3294.859,
+      "duration": 8.071
+    },
+    {
+      "text": "you looked at that because we needed",
+      "start": 3300.799,
+      "duration": 5.581
+    },
+    {
+      "text": "some some image something to evaluate",
+      "start": 3302.93,
+      "duration": 6.27
+    },
+    {
+      "text": "our approach so we designed our grammar",
+      "start": 3306.38,
+      "duration": 5.31
+    },
+    {
+      "text": "to learn something like that but we are",
+      "start": 3309.2,
+      "duration": 4.619
+    },
+    {
+      "text": "free to choose any more complex grammar",
+      "start": 3311.69,
+      "duration": 5.549
+    },
+    {
+      "text": "or learn much more deep expressions so",
+      "start": 3313.819,
+      "duration": 6.51
+    },
+    {
+      "text": "this was just obvious that that we",
+      "start": 3317.239,
+      "duration": 5.04
+    },
+    {
+      "text": "wanted to addy obvious Kate was rather",
+      "start": 3320.329,
+      "duration": 5.46
+    },
+    {
+      "text": "easy from the semantic level here but it",
+      "start": 3322.279,
+      "duration": 7.681
+    },
+    {
+      "text": "is a porter is much more powerful thank",
+      "start": 3325.789,
+      "duration": 4.53
+    },
+    {
+      "text": "you",
+      "start": 3329.96,
+      "duration": 3.029
+    },
+    {
+      "text": "I heard that the internet is also still",
+      "start": 3330.319,
+      "duration": 4.29
+    },
+    {
+      "text": "awakened we have a question from the",
+      "start": 3332.989,
+      "duration": 4.8
+    },
+    {
+      "text": "signal angel please signal angel yes we",
+      "start": 3334.609,
+      "duration": 7.271
+    },
+    {
+      "text": "do have you tried synthesizing it",
+      "start": 3337.789,
+      "duration": 9.581
+    },
+    {
+      "text": "immediate representations no this isn't",
+      "start": 3341.88,
+      "duration": 9.03
+    },
+    {
+      "text": "another possible because both Falls and",
+      "start": 3347.37,
+      "duration": 6.39
+    },
+    {
+      "text": "as us did some work on that and there's",
+      "start": 3350.91,
+      "duration": 4.74
+    },
+    {
+      "text": "no reason why you cannot do this with",
+      "start": 3353.76,
+      "duration": 5.73
+    },
+    {
+      "text": "set approach but we basically it depends",
+      "start": 3355.65,
+      "duration": 5.37
+    },
+    {
+      "text": "mainly on the camera what you want to",
+      "start": 3359.49,
+      "duration": 5.25
+    },
+    {
+      "text": "synthesize and on your IOPS so if you",
+      "start": 3361.02,
+      "duration": 5.82
+    },
+    {
+      "text": "design the glamour that way that we want",
+      "start": 3364.74,
+      "duration": 6.14
+    },
+    {
+      "text": "to synthesize some I air you can do it",
+      "start": 3366.84,
+      "duration": 6.51
+    },
+    {
+      "text": "because we're moving so fast I think we",
+      "start": 3370.88,
+      "duration": 4.36
+    },
+    {
+      "text": "still have time for one question of",
+      "start": 3373.35,
+      "duration": 4.68
+    },
+    {
+      "text": "number two in the back just this work",
+      "start": 3375.24,
+      "duration": 5.91
+    },
+    {
+      "text": "yeah okay so you you've been using kind",
+      "start": 3378.03,
+      "duration": 4.59
+    },
+    {
+      "text": "of fancy words but in the end I think",
+      "start": 3381.15,
+      "duration": 3.87
+    },
+    {
+      "text": "what you're doing is essentially an",
+      "start": 3382.62,
+      "duration": 4.47
+    },
+    {
+      "text": "optimized search for an expression that",
+      "start": 3385.02,
+      "duration": 3.87
+    },
+    {
+      "text": "looks like it gives the same semantics",
+      "start": 3387.09,
+      "duration": 4.05
+    },
+    {
+      "text": "yeah and now I'm wondering what what is",
+      "start": 3388.89,
+      "duration": 3.72
+    },
+    {
+      "text": "it that makes you believe that this is",
+      "start": 3391.14,
+      "duration": 3.12
+    },
+    {
+      "text": "faster than just randomly trying",
+      "start": 3392.61,
+      "duration": 3.12
+    },
+    {
+      "text": "expressions so so why do you think that",
+      "start": 3394.26,
+      "duration": 4.64
+    },
+    {
+      "text": "the child nodes in in this MC GS tree or",
+      "start": 3395.73,
+      "duration": 6.42
+    },
+    {
+      "text": "some indications are somehow better if",
+      "start": 3398.9,
+      "duration": 4.9
+    },
+    {
+      "text": "the metric of the parent node is better",
+      "start": 3402.15,
+      "duration": 3.78
+    },
+    {
+      "text": "well basically we have a really large",
+      "start": 3403.8,
+      "duration": 4.95
+    },
+    {
+      "text": "search space so if you for the M",
+      "start": 3405.93,
+      "duration": 5.25
+    },
+    {
+      "text": "handless if you have just a plus B this",
+      "start": 3408.75,
+      "duration": 4.65
+    },
+    {
+      "text": "is rather simple and semantics but",
+      "start": 3411.18,
+      "duration": 5.07
+    },
+    {
+      "text": "normally we have something about 20 to",
+      "start": 3413.4,
+      "duration": 6.57
+    },
+    {
+      "text": "50 inputs and pivotal outputs and we",
+      "start": 3416.25,
+      "duration": 6.81
+    },
+    {
+      "text": "have not only just multiplication or",
+      "start": 3419.97,
+      "duration": 5.16
+    },
+    {
+      "text": "something like that we have a much much",
+      "start": 3423.06,
+      "duration": 4.71
+    },
+    {
+      "text": "lower start space so we have 8-bit input",
+      "start": 3425.13,
+      "duration": 5.25
+    },
+    {
+      "text": "variables we have 64 to info variables",
+      "start": 3427.77,
+      "duration": 5.79
+    },
+    {
+      "text": "we have downcast upcast 0 extends the",
+      "start": 3430.38,
+      "duration": 5.37
+    },
+    {
+      "text": "whole grammar as bit shift left shift",
+      "start": 3433.56,
+      "duration": 7.2
+    },
+    {
+      "text": "arithmetic shift and XR and also model",
+      "start": 3435.75,
+      "duration": 6.81
+    },
+    {
+      "text": "oh and division and things like that so",
+      "start": 3440.76,
+      "duration": 5.4
+    },
+    {
+      "text": "we have lots of components such that we",
+      "start": 3442.56,
+      "duration": 6.78
+    },
+    {
+      "text": "need so that four four four four it must",
+      "start": 3446.16,
+      "duration": 4.32
+    },
+    {
+      "text": "be something like that",
+      "start": 3449.34,
+      "duration": 5.52
+    },
+    {
+      "text": "you are probably faster but if you take",
+      "start": 3450.48,
+      "duration": 7.83
+    },
+    {
+      "text": "a plus B plus 4a plus C you are not that",
+      "start": 3454.86,
+      "duration": 6.0
+    },
+    {
+      "text": "fast anymore so we actually really have",
+      "start": 3458.31,
+      "duration": 6.99
+    },
+    {
+      "text": "slapped subspace and if we so if you use",
+      "start": 3460.86,
+      "duration": 7.95
+    },
+    {
+      "text": "some kind of guided learning this helps",
+      "start": 3465.3,
+      "duration": 9.509
+    },
+    {
+      "text": "much final question Mike one all right",
+      "start": 3468.81,
+      "duration": 7.649
+    },
+    {
+      "text": "so it looks to me a very interesting",
+      "start": 3474.809,
+      "duration": 4.71
+    },
+    {
+      "text": "work but my only question is what if the",
+      "start": 3476.459,
+      "duration": 6.51
+    },
+    {
+      "text": "the function you are trying to obtain",
+      "start": 3479.519,
+      "duration": 5.52
+    },
+    {
+      "text": "maybe I mean what if the similarity",
+      "start": 3482.969,
+      "duration": 4.53
+    },
+    {
+      "text": "function does not respect what they did",
+      "start": 3485.039,
+      "duration": 4.77
+    },
+    {
+      "text": "the confiscated code is doing what if",
+      "start": 3487.499,
+      "duration": 4.86
+    },
+    {
+      "text": "for instance it's not the case that the",
+      "start": 3489.809,
+      "duration": 4.62
+    },
+    {
+      "text": "similarity increases the the more you",
+      "start": 3492.359,
+      "duration": 4.41
+    },
+    {
+      "text": "get closer and stuff like that short",
+      "start": 3494.429,
+      "duration": 4.05
+    },
+    {
+      "text": "term in shorter terms I would you break",
+      "start": 3496.769,
+      "duration": 3.871
+    },
+    {
+      "text": "your own system as violating the",
+      "start": 3498.479,
+      "duration": 3.78
+    },
+    {
+      "text": "assumptions of your similarity function",
+      "start": 3500.64,
+      "duration": 5.609
+    },
+    {
+      "text": "well of course of course if you just",
+      "start": 3502.259,
+      "duration": 6.21
+    },
+    {
+      "text": "make it semantically Hara for instance",
+      "start": 3506.249,
+      "duration": 5.43
+    },
+    {
+      "text": "it won't work at some level anymore but",
+      "start": 3508.469,
+      "duration": 6.54
+    },
+    {
+      "text": "it's observable so what you can do for",
+      "start": 3511.679,
+      "duration": 5.91
+    },
+    {
+      "text": "instance is if you apply some form of",
+      "start": 3515.009,
+      "duration": 4.77
+    },
+    {
+      "text": "local encryption or something like that",
+      "start": 3517.589,
+      "duration": 4.98
+    },
+    {
+      "text": "this might break as well break for sure",
+      "start": 3519.779,
+      "duration": 6.09
+    },
+    {
+      "text": "but one of the observations we made this",
+      "start": 3522.569,
+      "duration": 6.54
+    },
+    {
+      "text": "is isn't done yet so this was a really",
+      "start": 3525.869,
+      "duration": 8.85
+    },
+    {
+      "text": "interesting fact and also one of the",
+      "start": 3529.109,
+      "duration": 7.14
+    },
+    {
+      "text": "main things is how you choose two",
+      "start": 3534.719,
+      "duration": 3.57
+    },
+    {
+      "text": "boundaries of where you start or where",
+      "start": 3536.249,
+      "duration": 4.381
+    },
+    {
+      "text": "you end with your window that you",
+      "start": 3538.289,
+      "duration": 5.4
+    },
+    {
+      "text": "analyze and there can also be in this",
+      "start": 3540.63,
+      "duration": 5.01
+    },
+    {
+      "text": "case we had a look on a handler level",
+      "start": 3543.689,
+      "duration": 4.53
+    },
+    {
+      "text": "but there's there's no reason why not to",
+      "start": 3545.64,
+      "duration": 4.289
+    },
+    {
+      "text": "combine simple handlers or split into",
+      "start": 3548.219,
+      "duration": 3.81
+    },
+    {
+      "text": "handlers in half or things like that so",
+      "start": 3549.929,
+      "duration": 4.23
+    },
+    {
+      "text": "there might also be ways by choosing",
+      "start": 3552.029,
+      "duration": 4.47
+    },
+    {
+      "text": "window the order is to tackle this again",
+      "start": 3554.159,
+      "duration": 7.56
+    },
+    {
+      "text": "I think ok those who didn't get a chance",
+      "start": 3556.499,
+      "duration": 6.99
+    },
+    {
+      "text": "I'm sure you can approach the speakest",
+      "start": 3561.719,
+      "duration": 6.23
+    },
+    {
+      "text": "next to the stage well once they leave",
+      "start": 3563.489,
+      "duration": 7.141
+    },
+    {
+      "text": "again thank you very much for the",
+      "start": 3567.949,
+      "duration": 4.48
+    },
+    {
+      "text": "interesting talk and let's conclude this",
+      "start": 3570.63,
+      "duration": 3.949
+    },
+    {
+      "text": "with",
+      "start": 3572.429,
+      "duration": 2.15
+    },
+    {
+      "text": "[Music]",
+      "start": 3578.88,
+      "duration": 13.679
+    },
+    {
+      "text": "[Music]",
+      "start": 3595.99,
+      "duration": 7.34
+    }
+  ],
+  "full_text": "[Music] to the 6:30 talk of today it's one of the many things I love Congress for is the bold programming normally this is that and culture states and society stage and so I'm very excited that there's also a security talk today happening and Annette's next talk let's break modern binary code obfuscation is going to be translated into German espera half Dutch possessed under this address streaming dot C three lingo dot or which should also appear on the screen now wonderful and from boham I'm gonna welcome now Tim lets it go and move its contact and they're gonna explain to us how you can do you up first get code without looking at the code but only its behavior warm welcome and Allah a lot of applause [Applause] [Music] thank you first can we enable the TV down here technique Oh - well well hi so welcome to our talk so we are mobile and I to teach these students and reverse engineers at a visit in Bochum Germany and we we discuss and we in our daily work we do reverse engineering and things like that and as part of one of our academic projects we started with programs and teasers for binary deification and then thank you and so this is basically is a more technical version of our academic talk that we present it on public public ated at unique security this year so in the first moments we'll talk about code obfuscation techniques and the obfuscation techniques and I will later join with programs and teasers and how to apply that thank you all right thank you for the introduction okay first things first why do we want to office cake code in the first place so to settle the scene it's important to note that we cannot really prevent reverse engineering it tends but rather we seek to complicate them at least is some degree reasons why we would want to do so many intellectual property and the projection thereof so like if you get some super secret algorithm which gives you some competitive advantage over some competitor that you can just protect it and here just have a head start to do this other corporation or something another reason why we want to offshore skate code would be malicious payloads so we want to make them harder to detect so that analysis are not easily able to create signatures for those and the malware lives longer without being picked up by a navy and the third I think most interesting cases together rights management where software especially Triple A games larger games are just office catered in order to prevent cracking attempts and illegal distribution of the game of the game itself and especially in the context of to go to rights management there's a very fitting quote which settled sincerely as to what you can expect from code obfuscation it's from Martin Slater of 2k Australia and was issued regarding to the release of Bioshock back in 2007 and he told us that they achieved their goals because they were uncrate for 13 whole days so apparently we cannot really prevent obfuscation we can just make sure - yeah make the software would stand cracking attempts at least 13 days which is about about the time in which the game distributor makes most of it office revenue okay how do we protect software so there are different approaches to protecting software some better some worse for example we can just take a look at the software that's been used to analyze the programs it sells like all the debug like disassembly and so on and one idea that comes to our mind is just to abuse shortcomings of these tools so if we know already about crashes due to some code analysis part of the office specific FPU sequence we could just she issued that and make already back crash or similarly if we got some process number which is relying on fields of the PE had a memory we can easily confuse them and just may render these to its unusable another approach that's very popular is just to detect the environment the program Lanson and check if we're running an application in an environment that here gives us information about the presence of a debugger so there's some capability by the operating system for example the being debugged a bit and the PB which is being set if we do ba guys attached similarly there are more low-level tricks we can abuse or some operator system internals which allow us to somehow detect the presence of a debugger and then just abort execution and yet to just prevent any reverse engineering attempts however both techniques have the drawback that first they are once you know how they work they easily fix you can just patch your tool or you can just circumvent the anti debugging tricks but just supplying the correct values also if you go to Google and just search for game doesn't start debugger detected you get over six million people's complaining that they cannot run the latest triple-a game because the anti debugging technique that you might have which might have worked reliably on Windows XP does not really hold up on Windows 7 and it's just a false positive so benign customers cannot really use the game cannot really play the game because the delegatee bug a detection was faulty so let's set up some requirements we need for code obfuscation an important one is that we want a call to be semantics preserving so the may effect of protecting the application showed my changes of server behavior so we don't do not want the game to break only because we want to protect it a second point we want to avoid external dependencies at least in the context of our discussion here so they are various attempts to outsource data like on the internet on an internet server on an USB dongle or another separate media but we are mostly interested in techniques that protect the code only so we got it white box attack scenario where the attacker has everything he needs to attack the application at his or her hand and finally the most important point probably is that we want to employ techniques that are easier or way easier to deploy for us then for the reverse engineer to attack so the anti debugging tricks we've seen also the shortcomings of the tools which we cannot be used they are more less effort one on one want to know how it works you can easily bypass us but we want to employ techniques that are easy to deploy for us but they are very hard to attack by other parties okay counter code obfuscation techniques one technique that's been used commercial protection engines is what we is more known as about predicates so consider this rather easy CFG on the on the left side so we get some application with a linear control flow graph if we now insert what is known as part predicates the problem looks vastly more complex so get more branches and control for which we have to track and we have no clue that the underlying program in fact is very simple let's zoom in on one of those predicates okay so we've got a bit of code we got a true branch and a false branch both branching to a different basic block so if we're just looking at this we might come to the conclusion okay we don't know which branch is going to be taking right however it turns out that this is what we call an attack - predicate so in this case the true branch is always taken irregardless of the behavior here in the predicate so what's happening here is that you get a path predicates on top this is the whole block which is just constructing a predicate based on a no pack well you like the return value of the API call gate current process and if you've ever worked with the windows 8 API before you might know that get one process always returns a constant value namely minus 1 so by just issuing this predicate we make sure that we always take the left branch the right branch might point to that code or to other point to confuse here confuse the reverse engineer that we I dreamt on we always take the left branch similarly there are apart for decades which just invert this condition and follow the false branch and there's a another flavor called random apart predicate in which branch upon random value this means that we can potentially at runtime follow both branches so the challenge here is that we have to make sure that both blocks on both paths that follow have to be semantically equivalent because the program problem breaks otherwise however it is also a challenge to ensure that it's not easily detected by the attacker that both branches are in fact semantically equivalent ok recapping on the part predicates obviously they increase the complexity of the application also they can be built on hard problems but what is most important is that they forced the analysis the analyst to encode additional knowledge that either the analyst himself has no it or he has to readjust extend this tool to know maybe about the Wynn API know about a few instructions know about automatic identities or some other heart problems that he all has to encode in this another tool to provide reasonable results so they are hard to solve statically however if we now opt to only look at concrete execution traces so we just left my application run I don't look at concrete values we know that apart predicator essentially solved for free for us so this is good to keep in mind another very interesting technique that has been also been deployed and I guess every major copy-protection out there are what you call virtual machines so take for example this native code on the left look at some some loop here and some x86 code and let's just assume the loop here is our freshest intellectual property we want to protect obviously we can use our common tools like this assemblers like Ida or LED back to look at this code and reason about this code and get to know what this code does so the idea here is to replace the code on the Left what something our common tools cannot understand so what we are doing we're just getting creative and we're just making up an anti instruction set as you seen on the right so VL aav pop and sorry they're not known in this way by any other architecture they're full with new registers what we went codex and so on and both the native code and the new instruction codes are semantically equivalent again what you're now doing is just replace the native code by a core to what we call an virtual machine or like also known as interpreter which is basically a CPU and software which just yeah lets you run the imaginary architecture we've thought about so if we now try to take our common tools like Ida or Olli debug or some other tools to just analyze this code it's not really viable anymore because we don't because they don't know about our made-up architecture but we still have to make sure that the transition from native code to a virtual instruction he goes seriously and to this effect you have to look at the components so there are three core components to a virtual machine so mainly we get the VM entry and exit and they what they do is just performing the context switch from native to virtual context and back so the entry just copies the native context that say registers and flex of the native architecture to the virtual context and the exit copies them back to the native context usually the mapping of native to virtual reversers one-to-one which makes it a bit easier then we got a traditional fetch decode execute loop like in a traditional CPU and what it does suggests fetches and decode is one instruction and forwards the visual instruction pointer accordingly then it looks up the handler which defines the virtual instruction and what we call the handler table here on the right and just invokes this handler and the handler goes on to actually execute the instruction so as we've seen the enter table is just a table of function pointers index by opcode and referred least one handler provision section and each handler then just decodes the operands operates on them and just updates the VM context accordingly okay so this is an example of a yeah an office catered version of a popular VM of Education and we might be able to make out these components here so on top we see the VM entry so this is where we're coming from the native code calling into the interpreter and here were just switching the context to the virtual context we initialize in the virtual context then we at the VM dispatcher loop which just looks up the current virtual instruction in the handler table which in turn points to the individual handlers you see here below so get direct reference to this address and the handler them update the little context and branch back to the VM dispatcher eventually we end up at the VM exit handler which just performs the context switch from virtual context back to the native one okay taking a closer look in our saya we have the virtual instruction pointer and an RVP we got the VM context so you see that the VM dispatcher all it does is just taking one byte of memory increasing the instruction pointer and looking up the corresponding handler and jumping to it it might run to a new handler as seen here and as you can see just reads out of the virtual context performs some semantics and then writes values back into the context and finally jumps back to the dispatcher to execute the next virtual instruction okay so this is rather simple and easily understandable how do we harm this whole country concept for one obviously as we seem the answers are simple there are only a few instructions and they easily understood what we can do here is justify traditional code obfuscation transformations to make analysis of them harder like substituting operations inserting of our predicates inserting junk code and so on so on the right you see some slightly more complex assembly listing than before another technique imagine you only got four hundred individual instruction set you want to make it more complicated more work for the reverse engineer and what we're doing it's tough duplicating individual handlers to increase the workout for the attacker so because the enter table is usually indexed using one single bite we get up to 256 entries we can populate so what you didn't doing just duplicate existing handlers to populate the full table and then again use traditional codes office casion techniques to him that the attacker from from easily finding out that two handlers are in fact similar and again yeah we want to increase the worker to the attacker who is now analyzed after 256 differently of escalated versions of the handlers another technique you might recognize we here get the sample dispatcher and multiple handlers which all branch back to the dispatcher which execute the next instruction what you can do here's to omit this similar point of failure and just inline the dispatcher at the end of each handler so what happens here is that we don't have them central dispatcher but every handler branches to the next version in summary we in line the dispatcher into each handler because a central VM dispatcher just allows an attacker key more easily observe what happens inside the VM like recording every handler that has been executed and the third technique we can also get rid of the handler table actually because the explicit handler terribly able easily reveals all the amount less as we've seen earlier because everything it points to every single start of each handler what you can then do instead of clearing the explicit handler table with in lying around in memory which has been called the next handler address in the VM instruction set itself so this might look a bit like this we get the opcode the operand and then somewhere in the encoding we encoding the next hand address this has the effect that it essentially hides look there's the starting location of each handler that has not been executed yet what the handler table would easily see where every hand the licen can see of escape and analyze it but what these indirect and we can only observe those handlers that have been occurring in the concrete execution trace okay but also mixed boolean arithmetic which is another office keishon technique not so what we used in modern affectation yet but to give you an idea how it works just look at this instruction here or at this term so it looks a bit involved and you might not be surprised when I tell you that there's a simpler version of this expression which is a simple addition of the values X plus y you might guess that even for this more involved term there's again a similar variant especially here it's the addition of X plus y plus set okay you might believe me that it's easy if you throw the first term and the second term in your favorite SMT solver and you are able to prove equivalence however what is interesting how do we get to the second term if we only have the first so we can try to maybe apply boolean identities we known from school or something maybe arithmetic identities maybe we might even go so far as to draw a nice wedge map however it becomes evident that this doesn't really help us here in fact what we've what we are using here is the concept of a boolean or thematic algebra which gives us a ton of different operations that are in this algebra like boolean algebra boolean operators comparisons and if not arithmetic operators it's what knotting that we would in algebra also includes sorry that the mix wouldn't automatic also includes the boolean algebra and an interior modelling and it is worth noting that no techniques exists to simply to simplify expressions that contain both we know how to reduce expressions and boolean algebra and in the integral modeling but there is no underlying feel with that helps us in easily attack the tackling boat at the same time okay on to deification in every deification scheme or inevitably education tool we've seen we get to a point where we employ a technique at some at some point which is called a symbolic execution so consider the handler here on the left this is the nor handler we've seen earlier and we now want to reason about this handler so what we're doing is we execute it but not what concrete values but with symbolic values this looks like this so we're just executing this move symbolically we signed to RCA X the value of the memory cell index by the way register RVP we can continue to do so and we've got the second assignment also if we got a not operation on our six we just assigned to us X the negation of our CX which is the same as the negation of the memory cell pointed to by the register rbp and we go on and what gets interesting is this case where we got a logical end on our six and RB X which is the same like the brocation of the memory cell want to do by RPP with the logical end and the negation of the other memory cell that because symbolic execution is basically a computer algebra system that encodes some well-known identities from the boolean algebra for example and in this case it knows that this expression is equivalent to an or of bottom memory cells we can then just continue with the execution and again here the symbolic execution engine recognizes the next nor at some point this works rather well and we see that the core semantics of our handler here is just a no operation on two memory cells and strong the result in another memory cells so apparently this works fine for this handler but what can we do or what is the result if we try to follow this whole concept of symbolic execution added more obfuscated handler these rather simple example of not to skated handler you might be able to make to make out some parts let's just a symbolic execution at it we see that you get a ton of information here but the problem is we don't really want a ton of information what you want is just the underlying semantics which is rather simple it's the no operation of two memory certs and the assignment to another memory sir also let's try to to throw this at mix boolean arithmetic so we have this rather complicated mix pool an automatic expression and I'll just simply compile it into a program just like the binary program and then run symbol of his execution on this trace what we get is the semantics and it didn't really fit on the slide so it goes on and on and you might be able to make out yeah this the resulting values in our array X and we got this super complicated expression and again what we got here as I'm allowing semantics is rather simple so I didn't want to have this complicated expression we just want this more simple semantics here so symbolic execution is nice because it allows us to capture the full semantics of the code we execute also it's a computer algebra system and as we've seen in our example it lost some degree of simplification of the intermediate expressions however the usability decreases to some point if the syntactic complexity of the underlying code increases for example we can introduce artificial complexity by just substituting instructions or just using apart predicates or other schemes we've seen earlier you can also increase increase the algebraic complexity by employing techniques like mixed people and arithmetic expressions ok so it's obvious that we have a problem what syntactic complexity and we want to handle this somehow so the interesting question is what if we could reason about the semantics of the code only instead of having to fight about the syntax and just improving our tools to be able to cope with more complicated syntax this leads us to the topic of problem synthesis which Tim will tell you more about yeah thank you so we have seen some limitations of syntactic complexity so that it comes in my mind alpha station a semantics preserving that means it has the same IO behavior input-output behavior so why not just using a function as a black box and observe what it's doing so for instance we might for this just generate some random inputs one one one and observe three and we note sit down and produces several times more so we store this one and this one and twenty others again so and then we don't look at the code at all we just look at its IO behaviour this year and then what we learn is that we learn a function that has the same behavior so we might learn X plus y plus that and the goal of programs on traces is to automatically learn these things based on io samples so how do we do that so we use an holistic approach basically we have an optimization problem we have a surface something like that and each and this this thing has some deep points some large points and we have a global Maxima tops there and signal Maxima is a program that has exactly the same IO behavior as our black box and we had a complete value for each point on the surface so the closer we are to the global Maxima the higher is our score and in public optimization problem we basically start with a with a with a minor score and just increase until we find the global Maxima how we do that is an algorithm that is based on Monte Carlo tree search basically Monte Carlo tree search is one of the main reasons why as ago last year was able to beat world-class you go play us in computer go so let's get practical and less just into size a plus B modulo 8 we first somehow have to design how we generate programs well we design a grammar we have a non-terminal symbol u non-terminal means that we just can replace it with other symbols so for instance he place u by u plus a or by u Plus u plus u or by u times u or by a or B we say that a and B our input variables we cannot derive them any further so therefore we have a candidate program something as a B a times B a plus B B plus B and so on contrary in intermediate program is a program that contains at least one you so we can derive it further so only that as a foundation we do much ecology research we start with an empty tree that has just the rule as good nor the U and then we randomly applies the rules of our drama so we derive a a in this case is the terminal program so it cannot be the I further so we can't give a score to that because we're in a probabilistic surface we have to score sinks and so how we calculate the score it doesn't matter now we come to exact later just we give it a score and then we derive the next thing B and also there we give it just a score and this time we derive u times u so we cannot give it a score since we have intermediate program what do we do and we do something that is called random playout we apply the rules of the grammar randomly to the nth replace you until we get a final program that we can evaluate so we have something a s plus a times B plus a and give it a score and then we do the same with you cuz you here again we have intermediate program we derive something score it and come back now we don't have any further rules to apply what we then do is we choose the best child note in a probabilistic manner in this case it is u times U and do the same thing again we derive some expression to a play out give it a score go back now each score basically represents the average score of all these two little scores so in this case we have we had a new score here so we just update this one and we go back again you choose the best note we do a derivation step and so on go back update choose the best note play out score update and so on so now here you plus a we have a really high score you must be we have a rather lowest go up and if you want to synthesize it as B this means that u plus B had a bet play out and that u plus a had a good play out because here the scores better so we update this and go back so we again choose this note go back and go back so as you can see we always explore this area more accent that the reason is well because you cuz you seems to me am way more promising than you time school however and we just have some probabilistic behavior that means we sometimes explore also different ways just to get to know if we might miss something so in this case we would normally choose u plus a again but we just decide to set we do a play out we give it a score interval it wasn't really good so because of that next step we go back to you plus a then we derive B plus a and so we have a final program we cannot derive it any further so we can score a trial at directly okay we give it a score of one by one well because B plus a has exactly the same IO behavior as a plus B so in other terms we are finished with our programs internal part okay how do we score some values how do we calculate something basically what we do is we generate a random playout we generate random inputs and query our black box and observe the output so two plus two is four and now we use the same input and query our intermediate program and observe the output then we calculate the similarity of these tools and get a score similarity I will come to the back to this on the next slide so to test we compare somehow the similarity we don't do this only for one input pair we do it for many so we do this we do it for this one in this case we have the same output that means the similarity is one because it is exactly the same and we do it several times more and finally our score for this node is basically the average score of all these similarities how do we calculate a similarity well we are operating in the bed into the bit vector space so we compare the similarity of bit vectors in other terms we can compare if they are in the same range so we have a look at the trailing zeros or ones and its leading zeros or ones and count how many are the same then we can still compare how many bits are different this is the Hamming distance we use that for instance for something as overflows in terms of addition or XOR operations and and operation and things like that and then we still have a plus B or something like that without overflow where we can where we can have a look at how close at where two values numerically so basically as a distance and we use these matrix to tackle these different behaviors of the bit vector space such as overflows and since exit and we take again the average of all this matrix okay how do we use that as a core to synthesize of your stated binary code so basically what we do is that we have an execution pass perhaps obtained from an instruction trace perhaps from static analysis whatever you want and we somehow emulate it and observe indirectly inputs and outputs we say that everything is an input which we read before right to it so in this case these are the two memory cells tops there and everything is output in red that we that we write lastly - so for instance the RBX it's not any it's not modified anywhere so this is an output the same for a CX and things like that and then we treat this again as a black box generate random inputs and feed it into our black box and observe the output in this case a B X so we do this many times so something about twenty or thirty times and then we synthesize this output and then we learn that our BX is not M 0 and M 0 is here in this case the first number itself we do the same for that for a CX and learn then this is basically the Neue of these operations and finally we do it for this one and also they are we learn that this is an or to conclude we learn the semantics of the two nos and the negation what we don't learn in this handler is the push F operation to the Fleck paste and the flex that I've written back into the memory cell pointing at a BP why don't we learned that because we don't care so basically we designed that we designed our diorama in such a way that it just abstracts higher-level semantics or ignores ignores bit level semantics and just abstract higher-level semantics on other terms we don't consider flex as any sort of input okay we do random sampling about a code what is if there's a branch that may be conditional and we feed in random inputs well we might trigger some different behavior such that the emulate or decides to do to choose another pass well what we do here again is we just ignore the flags and we force the execution to go the path that we observed so if you want to go to a we just for us to get to a if we want to go to B we force it to go to B so how do we implement something like this basically you have lots of different opportunities what you need is some code base that you can't somehow execute code for instance emulated as in box or an unicorn engine or you can do it with dynamic binary instrumentation as in pin or a dynamic i/o what you also can do is you can just translate it into intermediate language is Ambala key execute it and evaluate just the symbolic expressions while feeding it with complete inputs but normally this is much much slower it's especially for large constraints if you've seen it before but in general it is possible what we did is that we implemented everything in our framework that you could Cynthia basically assume tia is the program synthesis framework for code of your station it is written in Python it performs and miR sampling for assembly code based on the unicorn engine and it also implement it's MCTS at the Monte Carlo tree search based programs Antonis a Sequoia we published published is and GPL version tool and this is a link where you can get it so we will just do a quick demo so first I will show something about the program synthesis itself basically we define an avoid of a curve that is a function that we treat as a black box that we use for i/o same thing on what we want just is to synthesize X plus X plus y plus y so we just run it and what you can see here is that we start with different nodes that we try out difficult things and always assign a hierarchy water to this and you also see Oh at this case it's somehow learned that there must be a lot of additional and at some point we get something like that so this is basically V 1 or V 1 and V 2 and V 2 so this isn't the simplest form but it is simple enough such that we can easily simplify it to something like 2 times the input plus 2 times the other input so we can do it another time and we might we might choose a completely different path because it's all probabilistic perhaps one play out was better than the other then we choose another pass it might take up to five seconds up to one minute so it basically depends how the quality of our inputs how we choose the path and things like that but at the end we will mainly reach our goal if not we just started again so the first one it took nearly twenty seconds now it took 24 seconds and you see now we have a much more or less obfuscated version and our non simplified form so it's okay how do we use it for simplified code for to synthesize of your skated code let's have a look it's a sauce this and obfuscated the top layer this is the plain code basically it takes five inputs just perform some addition and multiplication and returns a value note this is a function that means our final values return value will be starting e^x and the obvious case is with tigris and MBAs when we get something like that this is a little bit longer so and then we compile it and get some get some assembly listing that basically is about C 760 lines so we don't symbolically execute it here because it would be really really a match of time instead we just learn it what we do is we just random sampling input so we give it by basically a code file this is our instruction case we define the architecture we do well let's take 28 and mio samples and we write an output file so you see is this were only less than five seconds so if you look at the file what we see is that we have different outputs here this is one output this is another output we basically have 1718 outputs because you can start counting at 0 we are only interested in EAX so we will just synthesize that in a few minutes and you see we have here our 5 memory inputs our parameter for the function and also some registers that were treated as input ok so what we then do is we just design in our several synthesis this is agata about MCTS this leads basically is a input file from before and here i noted 0 because we only want to synthesize the first output now so we just started it basically takes the same thing file as input and an output file and this again this might take between seconds and 1 minute so it depends so we are ready we can have a look at the result you see this is output the top non-terminal is some time some some integer some integers that have not been frosted arrived plus a concrete variable the best top terminal so those best programs that is cannot be derived any further is a memory cell times the memory cell plus a memory cell and so this is our final expression basically we learned that the whole semantics is the first memory eight times the second memory dete times a certain or we eat last v Emily read so okay coming back to our slides how can we use that to break little machine-based of your station quick reminder the goal of the end based obfuscation is was to introduce a new cpu scheme that you don't can analyze easily with yet rules you have to manually reverse to reverse engineer all the handlers and things like that and well one simple thing we can do with that it's just learn the semantics of arithmetic handlers such as if the semantic system at or nor or something like that so Roberts discussed four different hardening techniques and we will talk about how we can't like all of these so the first one was obvious cating it obfuscating the individual for M handless with more complex of education streams then plus duplicate handlers and somehow transform them such that they don't look the same then we don't have note central vm dispatcher so we don't have an F de loop instead each handler in lines and concrete the calculation of the next handler and then we don't have any explicit handler table okay what you see here is in handler of tamyra it looks quietly more complex and you don't allele easily see also not the symbolic execution what this is doing well if we act us if you if we ask Cynthia it says well the semantics is that it is an addition of the 13th and the 14th member wavey it and it is stored into an 64-bit value ok solve this problem the other problem and duplicated vm handlers assume we have a handler table where we can see each handler or we have an instruction test where we know where each handler is located so given we know where handlers are so how can we learn duplicated VM handless well at least we learn it's simple semantics we can learn based on our drama if it's a net if it's an X or if it's an SAP recent shift left things like that and of course we can find duplicate firstly because we learn the semantics and if they are the same we learn it ok so coming back to our Tomita handler and no sensor vm dispatcher have a look at the end of the handler let's zoom in basically this plastic coat Basia is the code to calculate and next hand address so we don't this calculation is a little bit too complicated for us into this part so it doesn't take our semantics a coach because we still learn the semantics as a handler and since the semantics of the next address calculation is too complex we just don't learn it and one other thing have a look at the jump RBX one advantage or disadvantage depends how you see it of inlining something like that is that we have a hat a holistic how we can find the end of the EM handlers basically the end with some literal or with some jump RBX so basically if we split an instruction trace it indirect control flow chasers control for transfers we split it into the separate VM handlers this comes this helps us for our first part we don't have an expectation a table so we don't know by static analysis whereas the each where each headless so what we can do is we just execute it and we observe an instruction phase and then we have something like that we just then apply the rule from above we split everything where we observe in that control flow and we get something like that and as it points out each color is a different handler so and then became K can take the simplest single components and just synthesizes on their own and in this case we automatically learned that large portions or large things of instruction case and we haven't built in semantic disassembler for the-- for the new architecture if you want it that way so but we can say you a lot of things just write out your own we also released our code and furthermore released all of our samples so just feel free to use it and play it with round so to conclude we talked about obfuscation techniques mainly OPAC predicates the end of discussion schemes and hardening and makes put in arithmetic and of course they all can be used together and they all are mainly the it's all mainly the same is easily of the if we work on the application on a section test level so then you we discussed about symbolic execution and for a syntactic d obfuscation and we saw that it is really great but it has some drawbacks if it is syntactically too complex so on the other hand we asked SM what about not looking at the code level but instead looking at the semantic level using the code as a black box to obtain I or samples and learn something difficult so this is program sentences and finally mind that you find everything in our gates thank you very much [Applause] thank you very much indeed for this creative solution to an existing problem we now have about 10 minutes for Q&A you know the drill there are two microphones in the middle and one to the left please line up also signal engine do you have questions from the internet ok none and other questions from the audience here one OK in the back please all right yes I was one of these try to go out silent I was ok do you still hear me yeah I was wondering and if when takes a look at these obfuscation techniques wouldn't it be possible for a closed source operating system to just prevent any debugging of code so say we could encrypt the code with some key that only the operating system has access to and only Shoveler to a protected memory area well what you might do is that you execute it inside a virtual machine or something like that assume you can do that and you can take memory snapshot the memory breakpoints at different points of execution what you can then do is if you know somewhere was in combination with reverse-engineering that adds it at this memory area now lies in the obfuscated code it include decrypted code because you know you know it just was decrypted because it is used for execution now you can take memory snapshot and dumps the code and then feed it into something like that you also to add up on this this also yet kind of a non-technical argument to make you because all the like like the argument weight on the slides of you try to outsource your code this is like a similar scenario because to have hard guarantees on that you might want to have like some HSM or some other hardware mechanism to enforce this which might not always be feasible like imagine having a corporate environment where you need to supply your speed on us or something which might yeah what might be in violation of some corporate policy so we were looking only at things we can do in a white box attack scenario where the attack has everything he needs to analyze the code which is the most yeah non restrictive scenario here hello I would like to ask these techniques also seem to be very useful for code optimization in compilers has any research been done in this direction yeah lots of desserts so basically there's one big project this is called stalk this is understand for guys they they do stochastic program synthesis for a soup optimization and this was also one of the inspirations for us to use and so Hasek synthesis of course thank you do we have a question on the left also ok yeah then you go so if I understood your country correctly then you focus primarily on aeromedical functions or on arithmetic expressions so count you use or currently simply use techniques of numerical curve fitting well this might be possible we haven't looked into that but we also we mainly you looked at that because we needed some some image something to evaluate our approach so we designed our grammar to learn something like that but we are free to choose any more complex grammar or learn much more deep expressions so this was just obvious that that we wanted to addy obvious Kate was rather easy from the semantic level here but it is a porter is much more powerful thank you I heard that the internet is also still awakened we have a question from the signal angel please signal angel yes we do have you tried synthesizing it immediate representations no this isn't another possible because both Falls and as us did some work on that and there's no reason why you cannot do this with set approach but we basically it depends mainly on the camera what you want to synthesize and on your IOPS so if you design the glamour that way that we want to synthesize some I air you can do it because we're moving so fast I think we still have time for one question of number two in the back just this work yeah okay so you you've been using kind of fancy words but in the end I think what you're doing is essentially an optimized search for an expression that looks like it gives the same semantics yeah and now I'm wondering what what is it that makes you believe that this is faster than just randomly trying expressions so so why do you think that the child nodes in in this MC GS tree or some indications are somehow better if the metric of the parent node is better well basically we have a really large search space so if you for the M handless if you have just a plus B this is rather simple and semantics but normally we have something about 20 to 50 inputs and pivotal outputs and we have not only just multiplication or something like that we have a much much lower start space so we have 8-bit input variables we have 64 to info variables we have downcast upcast 0 extends the whole grammar as bit shift left shift arithmetic shift and XR and also model oh and division and things like that so we have lots of components such that we need so that four four four four it must be something like that you are probably faster but if you take a plus B plus 4a plus C you are not that fast anymore so we actually really have slapped subspace and if we so if you use some kind of guided learning this helps much final question Mike one all right so it looks to me a very interesting work but my only question is what if the the function you are trying to obtain maybe I mean what if the similarity function does not respect what they did the confiscated code is doing what if for instance it's not the case that the similarity increases the the more you get closer and stuff like that short term in shorter terms I would you break your own system as violating the assumptions of your similarity function well of course of course if you just make it semantically Hara for instance it won't work at some level anymore but it's observable so what you can do for instance is if you apply some form of local encryption or something like that this might break as well break for sure but one of the observations we made this is isn't done yet so this was a really interesting fact and also one of the main things is how you choose two boundaries of where you start or where you end with your window that you analyze and there can also be in this case we had a look on a handler level but there's there's no reason why not to combine simple handlers or split into handlers in half or things like that so there might also be ways by choosing window the order is to tackle this again I think ok those who didn't get a chance I'm sure you can approach the speakest next to the stage well once they leave again thank you very much for the interesting talk and let's conclude this with [Music] [Music]",
+  "errors": []
+}

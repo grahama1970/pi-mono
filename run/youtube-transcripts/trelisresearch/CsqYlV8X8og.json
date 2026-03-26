@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CsqYlV8X8og",
+    "language": "en",
+    "took_ms": 7789,
+    "method": null,
+    "title": "SFT vs GRPO",
+    "channel": "Trelis Research",
+    "upload_date": "20250217",
+    "duration_sec": 3315,
+    "description": "📜Get repo access at Trelis.com/ADVANCED-fine-tuning\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\n🛠 Build & Deploy Faster\nFine-tuning, Inference, Audio, Evals, and Vision Tools: https://trelis.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nJoin the Trelis team: https://trelis.com/developer-collaborations/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\n📸 Thumbnail Tutorial\nSee How It’s Made: https://youtu.be/ThKYjTdkyP8\n\nVideo Links:\n- Slides: https://docs.google.com/presentation/d/1T2dYnxcXQLF8eAEkRZ3w5Qlf51c_hQAwrqKPl5bb7rc/edit?usp=sharing\n- DeepSeek paper: https://arxiv.org/pdf/2501.12948\n- Unsloth script: https://colab.research.google.com/github/unslothai/notebooks/blob/main/nb/Llama3.1_(8B)-GRPO.ipynb\n- Will Brown's GRPO: https://gist.github.com/willccbb/4676755236bb08cab5f4e54a0475d6fb\n\nTIMESTAMPS:\n00:00 Introduction to GRPO and Study Overview\n00:51 Detailed Study Methodology\n03:21 Supervised Fine Tuning (SFT) Explained\n04:57 Odds Ratio Preference Optimization (ORPO)\n07:00 Group Relative Policy Optimization (GRPO)\n10:08 Implementation and Code Walkthrough\n16:16 Training Data Creation and Optimization\n19:22 Analyzing and Comparing Results\n20:28 Setting Up and Running GRPO\n27:19 Understanding Batch Sizes and Backpropagation\n27:51 Setting Up the GRPO Trainer\n28:31 Exploring Reward Functions\n29:12 Densifying Rewards for Better Training\n31:44 Implementing GRPO Training\n33:59 Running Inference and Analyzing Results\n35:33 Challenges and Considerations in GRPO\n44:46 Comparing GRPO with Other Techniques\n48:33 Practical Recommendations for Reinforcement Learning\n54:58 Conclusion and Further Resources",
+    "view_count": 5331
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CsqYlV8X8og: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

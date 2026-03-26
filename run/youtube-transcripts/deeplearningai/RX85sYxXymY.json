@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RX85sYxXymY",
+    "language": "en",
+    "took_ms": 7758,
+    "method": null,
+    "title": "New course with Microsoft: Building Your Own Database Agent",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240613",
+    "duration_sec": 161,
+    "description": "Enroll now: https://bit.ly/3Kz18r0\n\nWe’re excited to launch a new course on agentic AI in collaboration with Microsoft: Building Your Own Database Agent.\n\nIn this course, taught by Adrian Gonzalez Sanchez, Data & AI Specialist at Microsoft, you will develop an AI agent that interacts with tabular data and SQL databases using natural language, simplifying the process for querying and extracting insights. \n\nYou’ll gain hands-on experience with the Azure OpenAI Service, implementing techniques like Retrieval Augmented Generation (RAG) and function calling, and you’ll test the Assistants API with features like code interpreter.\n\nWhat you’ll do, in detail:\n\n- Learn about the levels of knowledge customization with Azure OpenAI Service, focusing on RAG to build your first AI agent, deploy your instance, test the API, and set up an orchestration engine like LangChain to enable these scenarios.\n- Load tabular data from a CSV file and perform natural language queries using Azure OpenAI to extract information quickly, and learn to reapply the agent to analyze your own CSV files.\n- Implement LangChain agents to connect to a provided SQL database, and how to build a DB agent that translates natural language to SQL code.\n- Use Azure OpenAI Service's function calling feature to use pre-built functions for sending queries to databases, improving the efficiency and security of your SQL agent.\n- Work with the Assistants API and test it with the function calling and code interpreter features, which will enable you to connect to SQL databases and create your own DB agents more efficiently.\n\nThis course is designed for developers, data professionals, as well as business analysts and professionals who want more sophisticated interaction with their databases through natural language instead of advanced SQL queries.\n\nLearn more: https://bit.ly/3Kz18r0",
+    "view_count": 4966
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RX85sYxXymY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iN9YDuf0fQQ",
+    "language": "en",
+    "took_ms": 8697,
+    "method": null,
+    "title": "Incorporating National Security in Federal Spectrum Policy",
+    "channel": "Hudson Institute",
+    "upload_date": "20210604",
+    "duration_sec": 3213,
+    "description": "Join Hudson Institute Senior Fellows Bryan Clark, Robert M. McDowell, and Harold Furchtgott-Roth in a discussion about how the federal government balances commercial and national security interests in the radio spectrum.\n\nAmerican military, diplomatic, and intelligence operations are vital to our nation’s national security. These operations rely upon a wide array of technologies, including for communications, surveillance, and navigation. These technologies in turn rely upon scarce radio spectrum rights that are increasingly in competition—and even conflict—with commercial uses, such as commercial GPS, satellite, and 5G wireless services. Please join Hudson Institute for this important discussion.",
+    "view_count": 417
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iN9YDuf0fQQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

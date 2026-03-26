@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G99SWnxFUp8",
+    "language": "en",
+    "took_ms": 7730,
+    "method": null,
+    "title": "Ukraine receives new western fighter jets: The Mirage 2000",
+    "channel": "Sandboxx",
+    "upload_date": "20250210",
+    "duration_sec": 156,
+    "description": "The Mirage 2000 is a capable 4th generation (non-stealth) fighter originally designed as an air-to-air interceptor for France, but will soon be flying strike missions for Ukraine. \n\nFollow Sandboxx to stay on top of the latest in Defense news!",
+    "view_count": 49966
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G99SWnxFUp8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

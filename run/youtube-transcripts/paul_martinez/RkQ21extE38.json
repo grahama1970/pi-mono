@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RkQ21extE38",
+    "language": "en",
+    "took_ms": 9247,
+    "method": null,
+    "title": "Integrating Cybersecurity Accelerated Computing & AI Technologies Into OT",
+    "channel": "S4 Events",
+    "upload_date": "20250304",
+    "duration_sec": 1843,
+    "description": "Warning: This is one of the most commercial presentations ever on a S4 stage. The reasons we put it on stage is NVIDIA is the massive leading company providing AI infrastructure and the thumbnail shows this new announced offering could find it's way into many OT security offerings in the next 1 to 3 years. NVIDIA was not a sponsor of S4x25.\n\nOfir Arkin of NVIDIA announces the Bluefield DPU, sensor and enforcement point, that can be integrated into OT solutions. Bluefield replaces the network interface card. \n\nBluefield sends data to the NVIDIA's Morpheus AI cybersecurity software framework.\n\nOfir goes over a number of broadly stated use cases. We had hoped, and will be looking, for specific cases with OT security partners and products. \n\nEven with all these caveats, if you want to see a likely future OT security product path, you should watch this.",
+    "view_count": 1444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RkQ21extE38: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

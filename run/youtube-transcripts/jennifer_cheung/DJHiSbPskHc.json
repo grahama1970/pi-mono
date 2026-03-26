@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DJHiSbPskHc",
+    "language": "en",
+    "took_ms": 8950,
+    "method": null,
+    "title": "DEF CON 33 - Off Grid Datarunning in Oppresive Regimes: Sneakernet and Pirate Box - Robert  Menes",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1136,
+    "description": "Robert is a hacker and longtime Linux user and sysadmin who knows the importance of education and information sharing, and is passionate to his core about human rights issues and community outreach. He has spoken at length about Linux distros from oppressive regimes, including North Korea's Red Star OS, and understands how these regimes wish to stifle the flow of information. He is also an unashamed sharer of information, old school punk, and loves to make a good meal for his friends.",
+    "view_count": 444
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DJHiSbPskHc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

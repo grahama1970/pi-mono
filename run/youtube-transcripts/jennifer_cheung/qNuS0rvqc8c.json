@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qNuS0rvqc8c",
+    "language": "en",
+    "took_ms": 10319,
+    "method": null,
+    "title": "DEF CON 33 - How API flaws led to admin access to 1k+ USA dealers & control of yr car - Eaton Zveare",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1346,
+    "description": "Many automotive dealers in the USA utilize centralized platforms for everything from sales to service to marketing. The interconnectivity of various systems makes things easy to manage, but also exposes certain risks should any of these systems have a vulnerability. API flaws were discovered in a top automaker's dealer platform that enabled the creation of a national admin account. With that level of access, being able to remotely take over your car was only the tip of the iceberg…",
+    "view_count": 662
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qNuS0rvqc8c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

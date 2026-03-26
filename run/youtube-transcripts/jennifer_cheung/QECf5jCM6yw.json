@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QECf5jCM6yw",
+    "language": "en",
+    "took_ms": 9191,
+    "method": null,
+    "title": "DEF CON 33 - Live Music - Saturday Night - DJ null",
+    "channel": "DEFCONConference",
+    "upload_date": "20251020",
+    "duration_sec": 332,
+    "description": "Live Set from DJ null, Saturday Night at the LVCC.",
+    "view_count": 1794
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QECf5jCM6yw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zdqJ_JLxni0",
+    "language": "en",
+    "took_ms": 9257,
+    "method": null,
+    "title": "2015 Global Leadership Award Dinner Honoring Rupert Murdoch",
+    "channel": "Hudson Institute",
+    "upload_date": "20151204",
+    "duration_sec": 2148,
+    "description": "The Global Leadership Award is presented to a man or woman in honor of lifetime accomplishment and strategic leadership in service to the principles that Hudson Institute values: promoting democracy, free markets and economic growth, innovation, national security and a strong civil society.\n\nRupert Murdoch’s lifework is an embodiment of these principles, from his days in Australia running the News Limited to those in the UK running The Times and The Times of London, building Fox, Fox News and the Wall Street Journal.  Throughout, he has been a steadfast friend of freedom and pro-growth economics.\n\nThis award is especially significant to us because of Mr. Murdoch’s dedication to the crucial role that ideas play in the world of policy and his appreciation of the importance that strategic leaders play in changing the course of history.\n\nThe fact that Mr. Murdoch accepted this award as he transitions leadership of 21st Century Fox to his sons makes the timing all the more auspicious.",
+    "view_count": 1099
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zdqJ_JLxni0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

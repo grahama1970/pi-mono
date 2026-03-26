@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eqHGxFrn0IE",
+    "language": "en",
+    "took_ms": 9360,
+    "method": null,
+    "title": "Transatlantic Crossroads: What To Expect from the NATO Summit",
+    "channel": "Hudson Institute",
+    "upload_date": "20180712",
+    "duration_sec": 5726,
+    "description": "On July 11-12, amid increasingly contentious relations, members of NATO will gather in Brussels for what will likely be one of the tensest summits in the organization’s history. The Alliance faces a slew of challenges that will be at the forefront of next week’s discussions, including burden-sharing, terrorism and migration, countering an increasingly assertive Russia, and NATO’s eastern border. \r\n\r\nOn July 12, Hudson Institute hosted a public event to discuss the summit and the many challenges currently faced by the Alliance. The high-level panel will consist of European Parliament members; the leader of the Democratic Party of Albania, Lulzim Basha; and American experts, including Hudson Senior Fellow Rebeccah Heinrichs and the Centre for European Policy Analysis' Peter Doran. The conversation was moderated by Hudson Research Fellow Benjamin Haddad. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 825
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eqHGxFrn0IE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

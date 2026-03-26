@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5kDjayx2Tyg",
+    "language": "en",
+    "took_ms": 9110,
+    "method": null,
+    "title": "Democracy and Authoritarianism in the Age of Pandemic",
+    "channel": "Hudson Institute",
+    "upload_date": "20200428",
+    "duration_sec": 2778,
+    "description": "The COVID-19 pandemic is erupting at a time when democracy was already being challenged by authoritarian regimes. Now, competitors to the liberal order are treating the coronavirus crisis as an opportunity to exploit for their advantage. But the crisis is also an opportunity to prove the resilience of democracy and could drive new demands for freedom.\n\nJoin Hudson Institute for a discussion on what the ongoing crisis means for the future of global democracy and what the United States and allies can do to protect freedom around the world.",
+    "view_count": 2038
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5kDjayx2Tyg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fuiySqGKDko",
+    "language": "en",
+    "took_ms": 8031,
+    "method": null,
+    "title": "ICSsec Awards: Last SCADA Diva and First Beer ISAC Community Builder Award",
+    "channel": "S4 Events",
+    "upload_date": "20200817",
+    "duration_sec": 380,
+    "description": "Dale Peterson interviews Ron Fabela, Patrick Miller, Bryan Owen and Chris Sistrunk in the S4x20 Green Room. They discuss: \n- Patrick Miller's win, and the subsequent retirement, of the SCADA Diva award.\n- The first Beer ISAC Community Builder award being given to the ICS Village\n- And what the Beer ISAC is and isn't",
+    "view_count": 93
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fuiySqGKDko: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

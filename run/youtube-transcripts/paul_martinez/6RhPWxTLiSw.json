@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6RhPWxTLiSw",
+    "language": "en",
+    "took_ms": 7839,
+    "method": null,
+    "title": "Test Effect Payloads for Tuning ICS Incident Response",
+    "channel": "S4 Events",
+    "upload_date": "20200709",
+    "duration_sec": 1808,
+    "description": "Ginger Wright of INL uses the example of Netflix's simian army program to create the situations that they were most worried about, such as the chaos monkey killing sessions. They injected these situations into the system and found a way to deal with them.\n\nGinger then shows how they used the chaos engineering approach to test and improve the resilience of the grid as part of RADICS. The key is developing Test Effect Payloads (TEPs) for ICS in general and the grid specifically. At 17:50, Ginger goes into examples of TEPs.\n\nRADICS (Rapid Attack Detection Isolation Characterization Systems) is a DARPA program that is working with a cyber affected black start exercise on Plum Island. And using this environment to improve the processes and development of tools to assist with the resilience and recovery of the grid.",
+    "view_count": 291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6RhPWxTLiSw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dKjVh-XUeYc",
+    "language": "en",
+    "took_ms": 8708,
+    "method": null,
+    "title": "DEF CON 29 HHV - Gigs - The Black Box and the Brain Box When Electronics and Deception Collide",
+    "channel": "DEFCONConference",
+    "upload_date": "20210919",
+    "duration_sec": 1023,
+    "description": "Electricity has, from the earliest history of man, been seen as an almost mystical force. From Thor’s lightning onward, various individuals and groups have used electricity and electrical devices to baffle, mystify, mislead, and control people. In the modern day, this practice continues in the form of polygraph, questionable uses of fMRI and EEG, and other high-tech props intended to dazzle the victim or lend a technological veneer of credibility to the user. This talk will focus on the history and current applications of deception by and with electrical and electronic devices.",
+    "view_count": 1228
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dKjVh-XUeYc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Cla6_2Lojjc",
+    "language": "en",
+    "took_ms": 7842,
+    "method": null,
+    "title": "The Afghan Peace Process: Progress or Peril?",
+    "channel": "Hudson Institute",
+    "upload_date": "20210205",
+    "duration_sec": 3546,
+    "description": "Join Hudson Institute for an expert panel discussion on the United States’ peace agreement with the Afghan Taliban. This conversation will be moderated by Ambassador Husain Haqqani, Director for South and Central Asia at Hudson Institute and the former Ambassador of Pakistan to the United States. Ambassador Haqqani will speak with Ambassador Javid Ahmad, Afghanistan’s Ambassador to the United Arab Emirates (UAE) and Senior Fellow (nonresident) at the Atlantic Council, and Bill Roggio, Senior Fellow and Editor of The Foundation for Defense of Democracies’ Long War Journal.",
+    "view_count": 2771
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Cla6_2Lojjc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

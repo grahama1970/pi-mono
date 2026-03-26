@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KYTFbXcNw0c",
+    "language": "en",
+    "took_ms": 9410,
+    "method": null,
+    "title": "Pwn2Own Miami ... $250K for ICS Exploits",
+    "channel": "S4 Events",
+    "upload_date": "20210120",
+    "duration_sec": 3208,
+    "description": "Brian Gorenc and Abdul-Aziz Hariri of ZDI join Dale Peterson to discuss the Pwn2Own Miami event. 30 0Day ICS vulnerabilities were exploited by the contestants to earn almost $300K.\n\n0:00 Dale's opening monologue on when vulnerabilities matter and don't matter in ICS, and how this ties into the community being ready for Pwn2Own\n\n8:10 The interview with Brian and Abdul\n\n46:46 ZDI's cool video on Pwn2Own Miami",
+    "view_count": 485
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KYTFbXcNw0c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

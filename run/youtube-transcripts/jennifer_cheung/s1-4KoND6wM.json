@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s1-4KoND6wM",
+    "language": "en",
+    "took_ms": 9107,
+    "method": null,
+    "title": "DEF CON 33 - How Computers Kill People: Marine Systems - Michael DeVolld & Austin Reid",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1264,
+    "description": "As digital systems increasingly control the world’s most powerful machines, software failures have become a silent but deadly threat—sometimes with fatal consequences. This DEFCON presentation dives deep into maritime and military incidents where software errors, automation missteps, and human-computer interface flaws have led to catastrophic outcomes. Reviewing the USS Yorktown’s infamous “Smart Ship” crash and the USS Vincennes’ tragic misidentification of a civilian airliner, we dissect how code, configuration, and design choices can escalate into life-or-death situations at sea. We’ll also draw parallels to high-profile aviation incidents like the Boeing 737 Max and F-35, illustrating common threads in software assurance failures across domains. We’ll walk through how a subtle software flaw could be exploited to disrupt critical vessel operations, and what this means for the future of maritime cybersecurity. Attendees will gain insight into the technical, organizational, and ethical challenges of securing mission-critical systems, and leave with practical takeaways for hackers, engineers, and policymakers seeking to prevent the next digital disaster on the high seas.",
+    "view_count": 279
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s1-4KoND6wM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

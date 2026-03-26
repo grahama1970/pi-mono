@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MB0ZJ5Y-07s",
+    "language": "en",
+    "took_ms": 8776,
+    "method": null,
+    "title": "Llama 2 tokenizer, padding and prompt format",
+    "channel": "Trelis Research",
+    "upload_date": "20230918",
+    "duration_sec": 894,
+    "description": "GitHub Repo and Colab Tutorial: https://github.com/TrelisResearch/llama-2-setup\n\n0:00 Introduction and colab notebook setup for Llama 2\n2:03 How to add BOS and EOS tokens with the Llama 2 tokenizer?\n4:10 How to set a pad token for Llama 2?\n6:55 How to set a mask token for Llama 2?\n9:00 What is the prompt format for Llama 2?\n11:00 What is the multi-turn prompt format for Llama 2?\n14:00 Finding the Github Repo and Colab Notebook Tutorial",
+    "view_count": 4374
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MB0ZJ5Y-07s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

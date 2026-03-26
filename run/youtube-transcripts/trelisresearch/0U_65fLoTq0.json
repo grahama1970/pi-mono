@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0U_65fLoTq0",
+    "language": "en",
+    "took_ms": 9670,
+    "method": null,
+    "title": "Understanding Mixture of Experts",
+    "channel": "Trelis Research",
+    "upload_date": "20231010",
+    "duration_sec": 1681,
+    "description": "For ADVANCED fine-tuning scripts, function-calling Llama 2 and more... check out Trelis.com\n\nSlides: https://tinyurl.com/mtm54unn\nBinary-tree/FFF paper: https://arxiv.org/pdf/2308.14711.pdf\nMoE papers: https://arxiv.org/pdf/2208.02813.pdf ; https://arxiv.org/pdf/1701.06538.pdf\nReddit thread: https://tinyurl.com/ythsu2nd\n\nChapters\n0:00 GPT-3, GPT-4 and Mixture of Experts\n0:55 Why Mixture of Experts?\n2:35 The idea behind Mixture of Experts\n3:59 How to train MoE\n5:41 Problems training MoE\n7:54 Adding noise during training\n9:06 Adjusting the loss function for router evenness\n10:56 Is MoE useful for LLMs on laptops?\n12:37 How might MoE help big companies like OpenAI?\n14:22 Disadvantages of MoE\n15:42 Binary tree MoE (fast feed forward)\n18:15 Data on GPT vs MoE vs FFF\n21:55 Inference speed up with binary tree MoE\n23:48 Recap - Does MoE make sense?\n25:05 Why might big companies use MoE?",
+    "view_count": 13015
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0U_65fLoTq0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

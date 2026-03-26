@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zg-Zr5R_aR8",
+    "language": "en",
+    "took_ms": 9244,
+    "method": null,
+    "title": "Eastern Sudan: Threats to the Beja People and Global Securit",
+    "channel": "Hudson Institute",
+    "upload_date": "20150106",
+    "duration_sec": 5108,
+    "description": "In January, South Sudan voted overwhelmingly for its independence. But millions of oppressed and marginalized people remain in Sudan, including in Eastern Sudan, home of the Beja people who comprise 15% of Sudan's overall population. Eastern Sudan possesses gold, oil, and natural gas, and is the site of Sudan's main port city, Port Sudan, a strategic Red Sea harbor. Successive Sudanese governments have attempted to suppress Beja culture and identity, and barred humanitarian relief organizations",
+    "view_count": 2447
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zg-Zr5R_aR8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

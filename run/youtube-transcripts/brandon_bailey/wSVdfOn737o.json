@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wSVdfOn737o",
+    "language": "en",
+    "took_ms": 8337,
+    "method": null,
+    "title": "DEF CON 32  - GPS spoofing it's about time, not just position - Ken Munro",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1325,
+    "description": "Talking to pilots and operators, an important aspect of GPS spoofing and jamming is being missed from the narrative in the media. We know about position spoofing, that's a given. What doesn't appear to be getting much attention is the effect of time spoofing.\n\nThe most significant of these is an incident where time was spoofed a significant period into the future. This caused all digital certificates on board an aircraft to become invalid and caused all electronic communications to fail. As GPS clocks have protection against time being rolled backwards, but not forward, the aircraft was grounded for several weeks for systems to be reflashed and the clocks to be reset,\n\nCoarse time spoofing could therefore ground entire fleets. We'll discuss this and potential mitigations. If time allows, we could touch on conventional RF navaids and their exposure to similar attacks.",
+    "view_count": 2000
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wSVdfOn737o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

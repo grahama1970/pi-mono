@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V93p147ag98",
+    "language": "en",
+    "took_ms": 8581,
+    "method": null,
+    "title": "DEF CON 31 Policy - Navigating the Digital Frontier  Advancing Cyber Diplomacy - Panel",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3289,
+    "description": "In an increasingly interconnected and technologically driven world, the need for robust and comprehensive cyber diplomacy has become paramount. This panel titled \"\"Navigating the Digital Frontier: Advancing Cyber Diplomacy in a Connected World\"\" will bring together experts across government, industry and civil society to explore the multifaceted challenges posed by cyberspace and discuss strategies to ensure a secure and resilient digital landscape. The panel will delve into ongoing global and regional international cyber dialogues, such as the United Nations (UN) Open-Ended Working Group on security of and in the use of information and communications technologies, the UN Ad-Hoc Committee on Cybercrime (AHC), and the Organization of American States (OAS) Working Group on Cooperation and Confidence-Building Measures in cyberspace. It will also explore capacity building initiatives being pursued across the international community and surface efforts that promote cooperation and trust in cyberspace across different regions. Moreover, the panel will investigate the role of public-private partnerships in shaping effective cyber policy frameworks.",
+    "view_count": 304
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V93p147ag98: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

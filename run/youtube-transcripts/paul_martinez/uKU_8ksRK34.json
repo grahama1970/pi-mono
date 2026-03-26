@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uKU_8ksRK34",
+    "language": "en",
+    "took_ms": 9172,
+    "method": null,
+    "title": "12 Months of Incidents Lessons, Trends & Predictions",
+    "channel": "S4 Events",
+    "upload_date": "20220801",
+    "duration_sec": 2120,
+    "description": "Andrew Ginter and Greg Hale discuss the highlights the last 12 months of ICS cyber security incidents on S4x22's Stage 3. These were pulled from the ICS STRIVE Incident Database.\n\nThey cover a wide variety, not just the incidents that have generated a lot of press.",
+    "view_count": 310
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uKU_8ksRK34: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

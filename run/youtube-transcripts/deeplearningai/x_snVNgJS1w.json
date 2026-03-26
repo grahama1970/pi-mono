@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "x_snVNgJS1w",
+    "language": "en",
+    "took_ms": 8503,
+    "method": null,
+    "title": "New course with Vectara! Embedding Models: From Architecture to Implementation",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240731",
+    "duration_sec": 212,
+    "description": "Enroll today: https://bit.ly/3yfHmOP\n\nWe’re excited to introduce Embedding Models: From Architecture to Implementation, a short course built in collaboration with Vectara, and taught by Ofer Mendelevitch, Vectara’s Head of Developer Relations.\n\nMany LLM apps use a single embedding model for both questions and answers. This leads to retrieval issues, such as getting responses similar to the question itself. A dual encoder architecture uses separate embedding models for questions and for answers, allowing retrieval to be more meaningful and contextual.\n\nThis course goes into the details of the architecture and capabilities of embedding models, which are used in many AI applications to capture the meaning of words and sentences.\n\nYou will learn about the evolution of embedding models, from word to sentence embeddings, and build and train a simple dual encoder model. This hands-on approach will help you understand the technical concepts behind embedding models and how to use them effectively.\n\nIn detail, you’ll: \n\n- Learn about word embedding, sentence embedding, and cross-encoder models; and how they can be used in RAG\n- Understand how transformer models, specifically BERT (Bi-directional Encoder Representations from Transformers), are trained and used in semantic search systems\n- Gain knowledge of the evolution of sentence embedding and understand how the dual encoder architecture was formed\n- Use a contrastive loss to train a dual encoder model, with one encoder trained for questions and another for the responses\n- Utilize separate encoders for question and answer in a RAG pipeline and see how it affects the retrieval compared to using a single encoder model.\n\nBy the end of this course, you will understand word, sentence, and cross-encoder embedding models, and how transformer-based models like BERT are trained and used in semantic search. You will also learn how to train dual encoder models with contrastive loss and evaluate their impact on retrieval in a RAG pipeline.\n\nLearn more: https://bit.ly/3yfHmOP",
+    "view_count": 3976
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] x_snVNgJS1w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

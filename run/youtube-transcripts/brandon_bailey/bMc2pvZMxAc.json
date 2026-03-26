@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bMc2pvZMxAc",
+    "language": "en",
+    "took_ms": 9385,
+    "method": null,
+    "title": "DEF CON 29 Blue Team Village - Charles Rumford -  Uncomfortable Networking",
+    "channel": "DEFCONConference",
+    "upload_date": "20210910",
+    "duration_sec": 1835,
+    "description": "There is so much networking architecture we do in the name of security which ultimately just gets in the way of so many thing. Learn about things to simplify your network design and reduce your management overhead while maintaining or increasing your security posture.\n\nWhen it comes to security, networking can be your first line of defense, but it shouldn't be your only, and it shouldn't add complexity and management overhead to your system. There are ways to keep the network design simple while also keeping resources secure.\n\nCome and hear from a security and usability focused network engineer about the things we do to our network architectures and design in the name of security but ultimately create large amounts of complexity, management overhead, and the need to redesign constantly.",
+    "view_count": 555
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bMc2pvZMxAc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

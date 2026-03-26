@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7k3zOylPKbM",
+    "language": "en",
+    "took_ms": 8777,
+    "method": null,
+    "title": "DEF CON 32 - AWS CloudQuarry: Digging for secrets in public AMIs - Eduard Agavriloae, Matei Josephs",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2372,
+    "description": "Join us as we unravel another story of public resources from AWS, digging in 3.1 million AMIs for secrets. Beyond the findings, we'll delve into the ominous connection between exfiltrated AWS access credentials from these AMIs and the heightened risk of AWS account takeover. This talk will highlight key methodologies, tools, and lessons learned, emphasizing the critical need for robust security measures in the cloud to prevent both data exposure and potential account compromise.",
+    "view_count": 1119
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7k3zOylPKbM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

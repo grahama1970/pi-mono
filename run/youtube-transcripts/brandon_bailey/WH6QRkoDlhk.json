@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WH6QRkoDlhk",
+    "language": "en",
+    "took_ms": 9327,
+    "method": null,
+    "title": "DEF CON 33 Recon Village - Plug and Prey Scanning and Scoring Browser Extensions - Nishant Sharma",
+    "channel": "DEFCONConference",
+    "upload_date": "20251231",
+    "duration_sec": 1738,
+    "description": "",
+    "view_count": 710
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WH6QRkoDlhk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bS10sRfpKyE",
+    "language": "en",
+    "took_ms": 9324,
+    "method": null,
+    "title": "DEF CON Safe Mode Ethics Village  - Travis LeBlanc - US Privacy and Civil Liberties Oversight Board",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 2956,
+    "description": "Travis LeBlanc, US Privacy and Civil Liberties Oversight Board",
+    "view_count": 341
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bS10sRfpKyE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

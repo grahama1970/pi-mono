@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "X5MKHzOhBAU",
+    "language": "en",
+    "took_ms": 7778,
+    "method": null,
+    "title": "Decision Points: OT Fit-For-Purpose Or IT",
+    "channel": "S4 Events",
+    "upload_date": "20250521",
+    "duration_sec": 1382,
+    "description": "Is OT really all that different from IT? Why can't tools that have been battle-tested in robust IT environments work just as well in OT? Is an on-premise OT DMZ environment truly the most secure place to host OT security management tools, or is SaaS a more secure environment?\n\nMany technology categories, such as firewalls, remote access, file transfer, network monitoring, and endpoint security have released OT specific offerings that claim to solve specific problems related to OT and industrial environments.  \n\nEric dived into the OT cybersecurity technology stack within every level of the Purdue Model and investigated whether OT fit-for-purpose or IT technology may make more sense. He identifies where IT technology starts to give inadequate protection and OT specific technology becomes the better choice. \n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\n[https://s4xevents.com](https://s4xevents.com/)",
+    "view_count": 299
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] X5MKHzOhBAU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

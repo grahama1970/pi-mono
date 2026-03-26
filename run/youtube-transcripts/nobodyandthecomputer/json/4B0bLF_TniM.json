@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4B0bLF_TniM",
+    "language": "en",
+    "took_ms": 6134,
+    "method": null,
+    "title": "ChatGPT 4o Image Generator for Album Cover Design",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20250424",
+    "duration_sec": 746,
+    "description": "↪ Join the Nobodies Collective: https://www.patreon.com/NobodyandTheComputer\n\n↪ All the Album prompts:\nhttps://www.patreon.com/posts/album-cover-with-127303748\n\n↪ contact me: \nnobodyandthecomputer@gmail.com\n\n00:00 Intro\n01:29 Introducing The Mothics\n01:54 Recreating Iconic Album Styles\n05:01 Color Harmony in Album Design\n07:50 Typography in Album Design\n09:27 DIY Bootleg Aesthetic\n10:47 Listen to £3 Revolution",
+    "view_count": 7788
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "\nCould not retrieve a transcript for the video https://www.youtube.com/watch?v=4B0bLF_TniM! This is most likely caused by:\n\nYouTube is blocking requests from your IP. This usually is due to one of the following reasons:\n- You have done too many requests and your IP has been blocked by YouTube\n- You are doing requests from an IP belonging to a cloud provider (like AWS, Google Cloud Platform, Azure, etc.). Unfortunately, most IPs from cloud providers are blocked by YouTube.\n\nThere are two things you can do to work around this:\n1. Use proxies to hide your IP address, as explained in the \"Working around IP bans\" section of the README (https://github.com/jdepoix/youtube-transcript-api?tab=readme-ov-file#working-around-ip-bans-requestblocked-or-ipblocked-exception).\n2. (NOT RECOMMENDED) If you authenticate your requests using cookies, you will be able to continue doing requests for a while. However, YouTube will eventually permanently ban the account that you have used to authenticate with! So only do this if you don't mind your account being banned!\n\nIf you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!"
+  ]
+}

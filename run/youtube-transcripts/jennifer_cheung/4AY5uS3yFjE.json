@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4AY5uS3yFjE",
+    "language": "en",
+    "took_ms": 9049,
+    "method": null,
+    "title": "DEF CON 31 - Track the Planet! Mapping IDs, Monitoring Presence in the Azure Ecosystem  - nyxgeek",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 1916,
+    "description": "Microsoft Azure is ripe with user information disclosures. We are going to look at weaponizing these disclosures by performing data collection at a large scale against OneDrive, Teams, and Graph.\n\nOneDrive and Teams present silent enumeration methods, requiring no logon attempts and creating no logs. This enables enumeration at a massive scale against the biggest corporations, educational instututes, and government entities in the world. Over the last 1.5 years I have enumerated over 20m users. We will explore the techniques used and the data that was collected, including Azure adoption rates and analysis of username formats.\n\nMicrosoft Teams suffers from information dislcosure due to default settings allowing users to see the online presence of others. An undocumented, unauthenticated Microsoft Teams Presence lookup trick will be shared, which enables easy unauthenticated enumeration of the online Teams Presence of users at many organizations. To demonstrate this we will monitor approximately 100,000 Microsoft employees' online presence and any out-of-office messages that are stored.\n\nFinally, Azure supports Guest users, allowing two companies to collaborate on a project. I will unveil a method of identifying Azure Guest users at other tenants. In this way, hidden corporate relationships can be revealed.",
+    "view_count": 4382
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4AY5uS3yFjE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

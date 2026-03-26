@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pKdkRLpAOvo",
+    "language": "en",
+    "took_ms": 9174,
+    "method": null,
+    "title": "Watch NASA fire up SLS for the first time!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20210117",
+    "duration_sec": 11280,
+    "description": "NASA will be putting their super heavy lift rocket, the SLS [Space Launch System], through the ultimate test. They will fill the tanks with LOx and LH2 and then light the four RS25 engines for a 8 minute full duration burn. It will not leave the pad, which means we will get 8 full minutes of awesome engine sounds.\n\nWant to learn more? We've got you covered:\n\nSLS vs Starship: Why does SLS Still Exist? - https://youtu.be/KA69Oh3_obY\n\nWill Starship and Commercial Landers Make Artemis Better Than Apollo? - https://youtu.be/9O15vipueLs\n\n00:00 - Intro\n03:00 - What to expect\n09:20 - Listening to the NASA stream\n13:30 - Q&A\n21:30 - Listening to NASA / Update\n27:00 - Q&A\n34:00 - Listening to NASA\n44:45 - Q&A\n01:25:00 - Listening to NASA\n01:29:15 - Q&A\n01:36:15 - Listening to NASA\n01:47:00 - T minus 10\n01:47:10 - IGNITION!!!\n01:48:14 - Shut down\n02:00:00 - Q&A\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 542439
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pKdkRLpAOvo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

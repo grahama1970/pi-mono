@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8BC0oHu5QGQ",
+    "language": "en",
+    "took_ms": 8309,
+    "method": null,
+    "title": "DEF CON 32 - Bridging Space and Medicine - Fernando De La Peña Llaca",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2132,
+    "description": "In the vast expanse of space, holographic teleportation—a futuristic blend of holography and teleportation—has revolutionized astronaut communication. Imagine beaming a lifelike 3D image of yourself across light-years. Now, consider its potential in medicine: remote surgeries, expert consultations, and training—where distance dissolves, and expertise transcends borders. Buckle up; holoconnect is our cosmic ticket to healing!",
+    "view_count": 245
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8BC0oHu5QGQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

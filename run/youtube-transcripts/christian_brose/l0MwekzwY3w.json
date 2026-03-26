@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l0MwekzwY3w",
+    "language": "en",
+    "took_ms": 9420,
+    "method": null,
+    "title": "A Human Rights Perspective on Pakistan: A Conversation with Asma Jahangir",
+    "channel": "Hudson Institute",
+    "upload_date": "20160519",
+    "duration_sec": 5697,
+    "description": "Husain Haqqani joins Asma Jahangir, Pakistan’s leading human rights lawyer and activist, for an in-depth look at the current situation in Pakistan.",
+    "view_count": 10405
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l0MwekzwY3w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

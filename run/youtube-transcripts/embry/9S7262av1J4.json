@@ -1,0 +1,6403 @@
+{
+  "meta": {
+    "video_id": "9S7262av1J4",
+    "language": "en",
+    "took_ms": 1234,
+    "method": "direct",
+    "title": "Watch Rocket Lab's 8th launch - \"Look Ma, No Hands\"",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190819",
+    "duration_sec": 3459,
+    "description": "Rocket Lab will be launching their Electron rocket on a ride share mission for UNSEENLABS and Spaceflight Industries from Launch Complex 1 (LC-1) on the Mahia Peninsula in New Zealand. The launch window for this mission is open from August 16th through the 30th.\n\nWant more info? Check out our Prelaunch Preview! - https://everydayastronaut.com/prelaunch-preview-rocket-lab-look-ma-no-hands/\n\nThanks to Trevor Mahlmann for the gorgeous picture for the thumbnail! - Support his work on Patreon! - https://www.patreon.com/trevormahlmann\n\n-------------------------------\n\nShow your support by becoming a Patreon - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 85308
+  },
+  "transcript": [
+    {
+      "text": "[Music]",
+      "start": 0.66,
+      "duration": 6.37
+    },
+    {
+      "text": "[Applause]",
+      "start": 3.91,
+      "duration": 3.12
+    },
+    {
+      "text": "you",
+      "start": 8.65,
+      "duration": 2.06
+    },
+    {
+      "text": "[Music]",
+      "start": 11.55,
+      "duration": 11.02
+    },
+    {
+      "text": "[Applause]",
+      "start": 18.1,
+      "duration": 14.22
+    },
+    {
+      "text": "[Music]",
+      "start": 22.57,
+      "duration": 10.78
+    },
+    {
+      "text": "[Applause]",
+      "start": 32.32,
+      "duration": 14.24
+    },
+    {
+      "text": "[Music]",
+      "start": 33.35,
+      "duration": 17.199
+    },
+    {
+      "text": "[Applause]",
+      "start": 46.56,
+      "duration": 3.989
+    },
+    {
+      "text": "[Music]",
+      "start": 55.82,
+      "duration": 4.74
+    },
+    {
+      "text": "[Music]",
+      "start": 63.45,
+      "duration": 9.92
+    },
+    {
+      "text": "[Music]",
+      "start": 78.08,
+      "duration": 1.55
+    },
+    {
+      "text": "[Applause]",
+      "start": 78.58,
+      "duration": 4.159
+    },
+    {
+      "text": "[Music]",
+      "start": 79.63,
+      "duration": 3.109
+    },
+    {
+      "text": "[Music]",
+      "start": 97.66,
+      "duration": 9.429
+    },
+    {
+      "text": "[Music]",
+      "start": 110.49,
+      "duration": 2.29
+    },
+    {
+      "text": "[Applause]",
+      "start": 111.02,
+      "duration": 7.7
+    },
+    {
+      "text": "[Music]",
+      "start": 112.78,
+      "duration": 7.63
+    },
+    {
+      "text": "[Applause]",
+      "start": 118.72,
+      "duration": 13.18
+    },
+    {
+      "text": "[Music]",
+      "start": 120.41,
+      "duration": 15.45
+    },
+    {
+      "text": "[Applause]",
+      "start": 131.9,
+      "duration": 3.96
+    },
+    {
+      "text": "[Music]",
+      "start": 136.12,
+      "duration": 3.8
+    },
+    {
+      "text": "[Applause]",
+      "start": 136.31,
+      "duration": 9.62
+    },
+    {
+      "text": "[Music]",
+      "start": 139.92,
+      "duration": 6.01
+    },
+    {
+      "text": "[Music]",
+      "start": 154.71,
+      "duration": 7.16
+    },
+    {
+      "text": "[Music]",
+      "start": 172.17,
+      "duration": 6.959
+    },
+    {
+      "text": "hey guys this morning I was reading that",
+      "start": 185.87,
+      "duration": 5.25
+    },
+    {
+      "text": "and for some reason couldn't sleep",
+      "start": 191.45,
+      "duration": 12.36
+    },
+    {
+      "text": "because I and it's also good cleaning",
+      "start": 193.86,
+      "duration": 9.95
+    },
+    {
+      "text": "really like trying to have a big thing",
+      "start": 204.05,
+      "duration": 6.61
+    },
+    {
+      "text": "about like there's a trial whether or",
+      "start": 208.74,
+      "duration": 5.97
+    },
+    {
+      "text": "not I buried it into sleep because I had",
+      "start": 210.66,
+      "duration": 7.35
+    },
+    {
+      "text": "internet aerospike to run trial so oh",
+      "start": 214.71,
+      "duration": 6.41
+    },
+    {
+      "text": "yes do do that that could go crap okay",
+      "start": 218.01,
+      "duration": 9.05
+    },
+    {
+      "text": "classic ones just give me a minute here",
+      "start": 221.12,
+      "duration": 5.94
+    },
+    {
+      "text": "[Music]",
+      "start": 231.63,
+      "duration": 3.96
+    },
+    {
+      "text": "sorry I give it or trying to do this",
+      "start": 239.599,
+      "duration": 14.36
+    },
+    {
+      "text": "from hotel what's a second",
+      "start": 244.12,
+      "duration": 9.839
+    },
+    {
+      "text": "okay is that better wow I think that's",
+      "start": 260.139,
+      "duration": 3.291
+    },
+    {
+      "text": "better",
+      "start": 262.75,
+      "duration": 4.169
+    },
+    {
+      "text": "okay is this did that that fix it can",
+      "start": 263.43,
+      "duration": 5.53
+    },
+    {
+      "text": "you guys still hear me hopefully that",
+      "start": 266.919,
+      "duration": 6.631
+    },
+    {
+      "text": "fixed it all right let me know guys yay",
+      "start": 268.96,
+      "duration": 8.489
+    },
+    {
+      "text": "alright so as I was saying I really",
+      "start": 273.55,
+      "duration": 5.429
+    },
+    {
+      "text": "didn't sleep very well last night",
+      "start": 277.449,
+      "duration": 2.701
+    },
+    {
+      "text": "because I was dreaming that aerospike",
+      "start": 278.979,
+      "duration": 3.24
+    },
+    {
+      "text": "engines were on trial for some reason",
+      "start": 280.15,
+      "duration": 4.199
+    },
+    {
+      "text": "because I was watching true crime",
+      "start": 282.219,
+      "duration": 6.72
+    },
+    {
+      "text": "documentaries last night okay what is",
+      "start": 284.349,
+      "duration": 5.97
+    },
+    {
+      "text": "right okay so let's start off let's do",
+      "start": 288.939,
+      "duration": 3.991
+    },
+    {
+      "text": "this guy's sorry I'm like really really",
+      "start": 290.319,
+      "duration": 5.34
+    },
+    {
+      "text": "tired but oh look at that that's fun let",
+      "start": 292.93,
+      "duration": 6.299
+    },
+    {
+      "text": "me fix this we let me also get the",
+      "start": 295.659,
+      "duration": 8.01
+    },
+    {
+      "text": "countdown clock going mm-hmm um what is",
+      "start": 299.229,
+      "duration": 6.84
+    },
+    {
+      "text": "that why is that not showing up yeah",
+      "start": 303.669,
+      "duration": 5.31
+    },
+    {
+      "text": "it's coming up you'll see it so anyway",
+      "start": 306.069,
+      "duration": 4.831
+    },
+    {
+      "text": "if you guys want to know when it launch",
+      "start": 308.979,
+      "duration": 3.421
+    },
+    {
+      "text": "is gonna happen and what it's going to",
+      "start": 310.9,
+      "duration": 3.81
+    },
+    {
+      "text": "be you can go to everyday astronaut comm",
+      "start": 312.4,
+      "duration": 5.19
+    },
+    {
+      "text": "slash pre-launch previews and look we",
+      "start": 314.71,
+      "duration": 4.709
+    },
+    {
+      "text": "can click on this and it's gonna be 21",
+      "start": 317.59,
+      "duration": 4.74
+    },
+    {
+      "text": "minutes from now so let's click on this",
+      "start": 319.419,
+      "duration": 5.731
+    },
+    {
+      "text": "we're gonna go through this mission this",
+      "start": 322.33,
+      "duration": 4.199
+    },
+    {
+      "text": "is of course going to be rocket lab",
+      "start": 325.15,
+      "duration": 5.609
+    },
+    {
+      "text": "launching today August 19th at 12:00",
+      "start": 326.529,
+      "duration": 6.51
+    },
+    {
+      "text": "12:00 UTC which is yeah again",
+      "start": 330.759,
+      "duration": 5.641
+    },
+    {
+      "text": "20-something minutes from right now it's",
+      "start": 333.039,
+      "duration": 7.261
+    },
+    {
+      "text": "as the look ma no hands mission this is",
+      "start": 336.4,
+      "duration": 5.97
+    },
+    {
+      "text": "a rideshare mission with one cube set",
+      "start": 340.3,
+      "duration": 3.69
+    },
+    {
+      "text": "for unseen lamps and three other",
+      "start": 342.37,
+      "duration": 3.15
+    },
+    {
+      "text": "payloads organized by spaceflight",
+      "start": 343.99,
+      "duration": 3.66
+    },
+    {
+      "text": "industries I think two of them are with",
+      "start": 345.52,
+      "duration": 4.739
+    },
+    {
+      "text": "the air force it's a pretty loaded",
+      "start": 347.65,
+      "duration": 5.519
+    },
+    {
+      "text": "loaded mission the launch provider of",
+      "start": 350.259,
+      "duration": 4.981
+    },
+    {
+      "text": "course this is a rocket lab mission the",
+      "start": 353.169,
+      "duration": 3.99
+    },
+    {
+      "text": "customer is unseen labs and spaceflight",
+      "start": 355.24,
+      "duration": 3.209
+    },
+    {
+      "text": "industries and spaceflight industries",
+      "start": 357.159,
+      "duration": 2.671
+    },
+    {
+      "text": "are the ones that they take and",
+      "start": 358.449,
+      "duration": 3.21
+    },
+    {
+      "text": "aggregate and do ride-sharing so it's",
+      "start": 359.83,
+      "duration": 3.6
+    },
+    {
+      "text": "multiple they like find a bunch of",
+      "start": 361.659,
+      "duration": 3.031
+    },
+    {
+      "text": "customers and then they put them all on",
+      "start": 363.43,
+      "duration": 3.12
+    },
+    {
+      "text": "a rocket and they kind of like figure",
+      "start": 364.69,
+      "duration": 5.219
+    },
+    {
+      "text": "all that out the rocket today is the",
+      "start": 366.55,
+      "duration": 6.78
+    },
+    {
+      "text": "electron the launch location is LC one",
+      "start": 369.909,
+      "duration": 5.1
+    },
+    {
+      "text": "on the magia Peninsula New Zealand's",
+      "start": 373.33,
+      "duration": 3.179
+    },
+    {
+      "text": "that's that really really pretty place",
+      "start": 375.009,
+      "duration": 3.511
+    },
+    {
+      "text": "that rocket lab has I'm just out on a",
+      "start": 376.509,
+      "duration": 4.41
+    },
+    {
+      "text": "very this really like pretty peninsula",
+      "start": 378.52,
+      "duration": 4.59
+    },
+    {
+      "text": "in New Zealand the payload mass we don't",
+      "start": 380.919,
+      "duration": 3.631
+    },
+    {
+      "text": "actually know we're hoping to hear that",
+      "start": 383.11,
+      "duration": 4.91
+    },
+    {
+      "text": "in the the webs the webcast today these",
+      "start": 384.55,
+      "duration": 5.489
+    },
+    {
+      "text": "satellites are going to low-earth orbit",
+      "start": 388.02,
+      "duration": 5.26
+    },
+    {
+      "text": "the they are not attending to",
+      "start": 390.039,
+      "duration": 6.361
+    },
+    {
+      "text": "cover the booster for now but today",
+      "start": 393.28,
+      "duration": 4.83
+    },
+    {
+      "text": "actually they will be testing they",
+      "start": 396.4,
+      "duration": 3.239
+    },
+    {
+      "text": "mentioned in their last livestream about",
+      "start": 398.11,
+      "duration": 3.3
+    },
+    {
+      "text": "work and recoverability remember if you",
+      "start": 399.639,
+      "duration": 3.301
+    },
+    {
+      "text": "need to know about their recoverability",
+      "start": 401.41,
+      "duration": 3.72
+    },
+    {
+      "text": "plans I did a really deep rundown on all",
+      "start": 402.94,
+      "duration": 7.68
+    },
+    {
+      "text": "of their plans and and it was yeah it's",
+      "start": 405.13,
+      "duration": 7.83
+    },
+    {
+      "text": "it's interesting I think it's doable",
+      "start": 410.62,
+      "duration": 4.5
+    },
+    {
+      "text": "it's the 27 minute long video got into",
+      "start": 412.96,
+      "duration": 3.75
+    },
+    {
+      "text": "all about like air recovery and all that",
+      "start": 415.12,
+      "duration": 4.59
+    },
+    {
+      "text": "kind of stuff and yeah so this this",
+      "start": 416.71,
+      "duration": 5.49
+    },
+    {
+      "text": "booster is not recoverable for now but",
+      "start": 419.71,
+      "duration": 4.14
+    },
+    {
+      "text": "today they are testing they're putting a",
+      "start": 422.2,
+      "duration": 3.84
+    },
+    {
+      "text": "black box on it to record all of the",
+      "start": 423.85,
+      "duration": 4.71
+    },
+    {
+      "text": "data through re-entry and the black",
+      "start": 426.04,
+      "duration": 4.76
+    },
+    {
+      "text": "box's name is Brutus I believe and",
+      "start": 428.56,
+      "duration": 3.99
+    },
+    {
+      "text": "hopefully by the end of this mission",
+      "start": 430.8,
+      "duration": 3.82
+    },
+    {
+      "text": "they'll be able to recover that that",
+      "start": 432.55,
+      "duration": 4.29
+    },
+    {
+      "text": "black box and they'll have all of the",
+      "start": 434.62,
+      "duration": 4.23
+    },
+    {
+      "text": "data necessary to kind of have a better",
+      "start": 436.84,
+      "duration": 4.079
+    },
+    {
+      "text": "sense of if their models their fluid",
+      "start": 438.85,
+      "duration": 3.87
+    },
+    {
+      "text": "models worked out compared to what",
+      "start": 440.919,
+      "duration": 2.851
+    },
+    {
+      "text": "they're expecting so that's that's",
+      "start": 442.72,
+      "duration": 2.34
+    },
+    {
+      "text": "actually really exciting this is the",
+      "start": 443.77,
+      "duration": 3.84
+    },
+    {
+      "text": "state you know step kind of step 3 for",
+      "start": 445.06,
+      "duration": 5.01
+    },
+    {
+      "text": "them because they've done - they've",
+      "start": 447.61,
+      "duration": 5.43
+    },
+    {
+      "text": "collected data for true reentry's from",
+      "start": 450.07,
+      "duration": 4.71
+    },
+    {
+      "text": "previous missions and this is going to",
+      "start": 453.04,
+      "duration": 2.76
+    },
+    {
+      "text": "be their third this was going to be the",
+      "start": 454.78,
+      "duration": 3.36
+    },
+    {
+      "text": "most detailed and then we'll see one",
+      "start": 455.8,
+      "duration": 3.99
+    },
+    {
+      "text": "more flight and then flight 10 we will",
+      "start": 458.14,
+      "duration": 3.36
+    },
+    {
+      "text": "start to see recovery Hardware already",
+      "start": 459.79,
+      "duration": 3.75
+    },
+    {
+      "text": "on the rocket so it's coming up guys",
+      "start": 461.5,
+      "duration": 5.85
+    },
+    {
+      "text": "it's coming it's finally coming where",
+      "start": 463.54,
+      "duration": 5.58
+    },
+    {
+      "text": "will this end up this will crash into",
+      "start": 467.35,
+      "duration": 4.26
+    },
+    {
+      "text": "the ocean the first stage this would be",
+      "start": 469.12,
+      "duration": 3.87
+    },
+    {
+      "text": "the 8th launch of the electron the",
+      "start": 471.61,
+      "duration": 2.79
+    },
+    {
+      "text": "fourth launch flow for rocket lab this",
+      "start": 472.99,
+      "duration": 3.48
+    },
+    {
+      "text": "year and of course we have this graphic",
+      "start": 474.4,
+      "duration": 5.19
+    },
+    {
+      "text": "by Jeff Barrett kind of explaining all",
+      "start": 476.47,
+      "duration": 5.55
+    },
+    {
+      "text": "of that stuff it looks like we maybe",
+      "start": 479.59,
+      "duration": 4.62
+    },
+    {
+      "text": "have a stream coming in from rocket lab",
+      "start": 482.02,
+      "duration": 4.95
+    },
+    {
+      "text": "finally that's good so I'm gonna just",
+      "start": 484.21,
+      "duration": 5.01
+    },
+    {
+      "text": "kind of keep this here in the meantime",
+      "start": 486.97,
+      "duration": 5.67
+    },
+    {
+      "text": "and it might be I don't know if that's",
+      "start": 489.22,
+      "duration": 5.91
+    },
+    {
+      "text": "loud or not so I'll do this sorry this",
+      "start": 492.64,
+      "duration": 5.61
+    },
+    {
+      "text": "is like you know the most ridiculous",
+      "start": 495.13,
+      "duration": 4.38
+    },
+    {
+      "text": "life you've set up in the world",
+      "start": 498.25,
+      "duration": 4.169
+    },
+    {
+      "text": "I had to plug my I've had just the worst",
+      "start": 499.51,
+      "duration": 5.279
+    },
+    {
+      "text": "luck already this morning my monitor my",
+      "start": 502.419,
+      "duration": 3.841
+    },
+    {
+      "text": "external monitor that I normally used to",
+      "start": 504.789,
+      "duration": 2.761
+    },
+    {
+      "text": "do this stuff",
+      "start": 506.26,
+      "duration": 4.11
+    },
+    {
+      "text": "live broke so I have this like a little",
+      "start": 507.55,
+      "duration": 4.5
+    },
+    {
+      "text": "mini portable battery-powered monitor",
+      "start": 510.37,
+      "duration": 3.81
+    },
+    {
+      "text": "yeah that broke so I'll be replacing",
+      "start": 512.05,
+      "duration": 4.109
+    },
+    {
+      "text": "that then I was like oh luckily I have a",
+      "start": 514.18,
+      "duration": 4.02
+    },
+    {
+      "text": "hundred feet of HDMI cable just plug it",
+      "start": 516.159,
+      "duration": 3.121
+    },
+    {
+      "text": "into the TV because I actually need",
+      "start": 518.2,
+      "duration": 3.06
+    },
+    {
+      "text": "actually the second source to be able to",
+      "start": 519.28,
+      "duration": 4.65
+    },
+    {
+      "text": "send it out for some reason like I can't",
+      "start": 521.26,
+      "duration": 6.21
+    },
+    {
+      "text": "have like a fake external display",
+      "start": 523.93,
+      "duration": 5.82
+    },
+    {
+      "text": "to merit you actually have to send it to",
+      "start": 527.47,
+      "duration": 4.35
+    },
+    {
+      "text": "something and then I can capture that",
+      "start": 529.75,
+      "duration": 4.56
+    },
+    {
+      "text": "without it having to render so like is",
+      "start": 531.82,
+      "duration": 4.2
+    },
+    {
+      "text": "this poster like a screen capture it's",
+      "start": 534.31,
+      "duration": 4.56
+    },
+    {
+      "text": "easier to do a full display capture at",
+      "start": 536.02,
+      "duration": 5.79
+    },
+    {
+      "text": "least on the CPU so I have to send it to",
+      "start": 538.87,
+      "duration": 4.5
+    },
+    {
+      "text": "a TV and also this way can I can look at",
+      "start": 541.81,
+      "duration": 3.27
+    },
+    {
+      "text": "it so I went out and grabbed a",
+      "start": 543.37,
+      "duration": 3.9
+    },
+    {
+      "text": "hundred-foot so I was like thirty meters",
+      "start": 545.08,
+      "duration": 5.34
+    },
+    {
+      "text": "of HDMI cable that I had my car come to",
+      "start": 547.27,
+      "duration": 5.07
+    },
+    {
+      "text": "find out that cable doesn't work so then",
+      "start": 550.42,
+      "duration": 4.02
+    },
+    {
+      "text": "I had a smorgasbord this whole thing and",
+      "start": 552.34,
+      "duration": 8.85
+    },
+    {
+      "text": "yeah needless to say it's a mess nurbs",
+      "start": 554.44,
+      "duration": 9.9
+    },
+    {
+      "text": "apollo 2:13 asks why ain't you uploading",
+      "start": 561.19,
+      "duration": 5.76
+    },
+    {
+      "text": "more videos i just uploaded one last",
+      "start": 564.34,
+      "duration": 5.19
+    },
+    {
+      "text": "saturday was a 27 minute long video a",
+      "start": 566.95,
+      "duration": 6.72
+    },
+    {
+      "text": "deep rundown on on these guys has",
+      "start": 569.53,
+      "duration": 6.66
+    },
+    {
+      "text": "recovered like i mean i and besides that",
+      "start": 573.67,
+      "duration": 5.22
+    },
+    {
+      "text": "I'm currently in Texas I have been down",
+      "start": 576.19,
+      "duration": 4.59
+    },
+    {
+      "text": "here for almost a week now about five",
+      "start": 578.89,
+      "duration": 4.89
+    },
+    {
+      "text": "days and trying to catch Starr hopper",
+      "start": 580.78,
+      "duration": 5.03
+    },
+    {
+      "text": "and so every time I do this it's it's",
+      "start": 583.78,
+      "duration": 5.13
+    },
+    {
+      "text": "two days drive time down here two days",
+      "start": 585.81,
+      "duration": 5.5
+    },
+    {
+      "text": "uh and I had to turn this down otherwise",
+      "start": 588.91,
+      "duration": 4.19
+    },
+    {
+      "text": "my ears are gonna explode",
+      "start": 591.31,
+      "duration": 4.44
+    },
+    {
+      "text": "two days driving down here two days",
+      "start": 593.1,
+      "duration": 4.33
+    },
+    {
+      "text": "driving homes there's four days away",
+      "start": 595.75,
+      "duration": 3.27
+    },
+    {
+      "text": "from scripting but meanwhile I've been",
+      "start": 597.43,
+      "duration": 3.42
+    },
+    {
+      "text": "working I'm on page twelve or thirteen",
+      "start": 599.02,
+      "duration": 3.63
+    },
+    {
+      "text": "of a really in-depth rundown on",
+      "start": 600.85,
+      "duration": 3.54
+    },
+    {
+      "text": "aerospike engines it's going to be at",
+      "start": 602.65,
+      "duration": 4.29
+    },
+    {
+      "text": "least as long as the Raptor video I",
+      "start": 604.39,
+      "duration": 3.84
+    },
+    {
+      "text": "think that's gonna have a lot of",
+      "start": 606.94,
+      "duration": 2.37
+    },
+    {
+      "text": "animations I've actually been working",
+      "start": 608.23,
+      "duration": 2.82
+    },
+    {
+      "text": "some of the graphics for it already so",
+      "start": 609.31,
+      "duration": 4.8
+    },
+    {
+      "text": "I'm really excited but yeah that's I",
+      "start": 611.05,
+      "duration": 5.22
+    },
+    {
+      "text": "don't know what do you mean where my",
+      "start": 614.11,
+      "duration": 3.39
+    },
+    {
+      "text": "videos I've been making videos like",
+      "start": 616.27,
+      "duration": 2.28
+    },
+    {
+      "text": "crazy what you talking about",
+      "start": 617.5,
+      "duration": 5.34
+    },
+    {
+      "text": "we're gonna do this now hello and",
+      "start": 618.55,
+      "duration": 6.15
+    },
+    {
+      "text": "welcome to the live broadcast of rocket",
+      "start": 622.84,
+      "duration": 3.81
+    },
+    {
+      "text": "labs Athey electron mission a rideshare",
+      "start": 624.7,
+      "duration": 3.54
+    },
+    {
+      "text": "long as that we've called look ma no",
+      "start": 626.65,
+      "duration": 3.57
+    },
+    {
+      "text": "hands you're looking at electron on the",
+      "start": 628.24,
+      "duration": 3.9
+    },
+    {
+      "text": "pad of rocket labs very own launch",
+      "start": 630.22,
+      "duration": 4.14
+    },
+    {
+      "text": "complex one in Mahia which is on New",
+      "start": 632.14,
+      "duration": 4.32
+    },
+    {
+      "text": "Zealand's eastern coast close you",
+      "start": 634.36,
+      "duration": 3.45
+    },
+    {
+      "text": "joining us from around the world we are",
+      "start": 636.46,
+      "duration": 3.12
+    },
+    {
+      "text": "coming to you live from the future in",
+      "start": 637.81,
+      "duration": 3.21
+    },
+    {
+      "text": "the late hours of the evening on August",
+      "start": 639.58,
+      "duration": 3.54
+    },
+    {
+      "text": "19th right here at Mission Control in",
+      "start": 641.02,
+      "duration": 4.44
+    },
+    {
+      "text": "Auckland liftoff is targeted for 12:00",
+      "start": 643.12,
+      "duration": 4.35
+    },
+    {
+      "text": "12:00 a.m. New Zealand Standard Time or",
+      "start": 645.46,
+      "duration": 5.79
+    },
+    {
+      "text": "12:12 p.m. UTC my name is max Muncie I'm",
+      "start": 647.47,
+      "duration": 5.31
+    },
+    {
+      "text": "part of the launch operations team here",
+      "start": 651.25,
+      "duration": 2.88
+    },
+    {
+      "text": "at rocket lab and it's great to be with",
+      "start": 652.78,
+      "duration": 2.79
+    },
+    {
+      "text": "you guys as we countdown to our next",
+      "start": 654.13,
+      "duration": 3.63
+    },
+    {
+      "text": "mission look ma no hands will be rocket",
+      "start": 655.57,
+      "duration": 3.96
+    },
+    {
+      "text": "labs 8th mission following a successful",
+      "start": 657.76,
+      "duration": 3.39
+    },
+    {
+      "text": "flight from magia just a few weeks ago",
+      "start": 659.53,
+      "duration": 3.87
+    },
+    {
+      "text": "today's launches the complex mission we",
+      "start": 661.15,
+      "duration": 3.84
+    },
+    {
+      "text": "have narrow orbital parameters to meet",
+      "start": 663.4,
+      "duration": 2.939
+    },
+    {
+      "text": "and only a brief window for launch",
+      "start": 664.99,
+      "duration": 3.51
+    },
+    {
+      "text": "between to stand down for any reason and",
+      "start": 666.339,
+      "duration": 3.631
+    },
+    {
+      "text": "whatsoever we have plenty of backup",
+      "start": 668.5,
+      "duration": 3.15
+    },
+    {
+      "text": "launch available availability over the",
+      "start": 669.97,
+      "duration": 3.99
+    },
+    {
+      "text": "next 10 days right now are sitting at",
+      "start": 671.65,
+      "duration": 4.71
+    },
+    {
+      "text": "t-minus 17 minutes on the clock so",
+      "start": 673.96,
+      "duration": 3.629
+    },
+    {
+      "text": "before we get into the details of the",
+      "start": 676.36,
+      "duration": 2.88
+    },
+    {
+      "text": "payload onboard today's flight let's",
+      "start": 677.589,
+      "duration": 3.241
+    },
+    {
+      "text": "take a look back at our most recent",
+      "start": 679.24,
+      "duration": 4.49
+    },
+    {
+      "text": "mission make it rain",
+      "start": 680.83,
+      "duration": 2.9
+    },
+    {
+      "text": "liftoff",
+      "start": 689.79,
+      "duration": 2.75
+    },
+    {
+      "text": "[Music]",
+      "start": 701.63,
+      "duration": 3.959
+    },
+    {
+      "text": "so let's take this quick second to talk",
+      "start": 703.46,
+      "duration": 3.629
+    },
+    {
+      "text": "about the rocket they probably will but",
+      "start": 705.589,
+      "duration": 3.361
+    },
+    {
+      "text": "don't forget one of my favorite things",
+      "start": 707.089,
+      "duration": 4.371
+    },
+    {
+      "text": "about the electron is that it uses",
+      "start": 708.95,
+      "duration": 4.889
+    },
+    {
+      "text": "electric turbo pumps or just well",
+      "start": 711.46,
+      "duration": 4.9
+    },
+    {
+      "text": "technically they're not turbo pumps",
+      "start": 713.839,
+      "duration": 4.471
+    },
+    {
+      "text": "that's a little bit of a nomenclature or",
+      "start": 716.36,
+      "duration": 4.38
+    },
+    {
+      "text": "misnomer picture because turbo means",
+      "start": 718.31,
+      "duration": 4.2
+    },
+    {
+      "text": "turbine these are just electrical fuel",
+      "start": 720.74,
+      "duration": 3.15
+    },
+    {
+      "text": "things carry it satellites for our",
+      "start": 722.51,
+      "duration": 3.18
+    },
+    {
+      "text": "mission partners spaceflight we're",
+      "start": 723.89,
+      "duration": 3.21
+    },
+    {
+      "text": "excited to be teaming up with once again",
+      "start": 725.69,
+      "duration": 3.78
+    },
+    {
+      "text": "for tonight's launch so right now we're",
+      "start": 727.1,
+      "duration": 4.26
+    },
+    {
+      "text": "just 15 minutes and 45 seconds away from",
+      "start": 729.47,
+      "duration": 3.96
+    },
+    {
+      "text": "our targeted launch so let's listen in",
+      "start": 731.36,
+      "duration": 3.36
+    },
+    {
+      "text": "to Mission Control as they conduct their",
+      "start": 733.43,
+      "duration": 4.159
+    },
+    {
+      "text": "final health checks on electron systems",
+      "start": 734.72,
+      "duration": 4.679
+    },
+    {
+      "text": "okay so while they're listening I'll",
+      "start": 737.589,
+      "duration": 4.541
+    },
+    {
+      "text": "continue to explain so see yes they they",
+      "start": 739.399,
+      "duration": 4.981
+    },
+    {
+      "text": "use battery-powered electronic power",
+      "start": 742.13,
+      "duration": 5.01
+    },
+    {
+      "text": "just electric motors to spin the pumps",
+      "start": 744.38,
+      "duration": 4.56
+    },
+    {
+      "text": "of of this of the rocket engine and",
+      "start": 747.14,
+      "duration": 3.509
+    },
+    {
+      "text": "that's considered it was actually",
+      "start": 748.94,
+      "duration": 3.69
+    },
+    {
+      "text": "considered impossible to be able to have",
+      "start": 750.649,
+      "duration": 3.961
+    },
+    {
+      "text": "enough energy density and really",
+      "start": 752.63,
+      "duration": 4.019
+    },
+    {
+      "text": "efficiency enough to be able to get",
+      "start": 754.61,
+      "duration": 3.75
+    },
+    {
+      "text": "something into orbit and rocket labs the",
+      "start": 756.649,
+      "duration": 3.451
+    },
+    {
+      "text": "first company in the world to do that",
+      "start": 758.36,
+      "duration": 5.31
+    },
+    {
+      "text": "and really if we think about it the fuel",
+      "start": 760.1,
+      "duration": 5.07
+    },
+    {
+      "text": "pumps do not have turbines they have",
+      "start": 763.67,
+      "duration": 4.8
+    },
+    {
+      "text": "impellers so they really are not",
+      "start": 765.17,
+      "duration": 6.539
+    },
+    {
+      "text": "considered turbo pumps it's just easy",
+      "start": 768.47,
+      "duration": 4.68
+    },
+    {
+      "text": "enough to say electric turbo pumps",
+      "start": 771.709,
+      "duration": 5.121
+    },
+    {
+      "text": "though so in the same way that like a",
+      "start": 773.15,
+      "duration": 8.09
+    },
+    {
+      "text": "standby for a final post launch us yes",
+      "start": 776.83,
+      "duration": 6.28
+    },
+    {
+      "text": "our CEOs go for launch",
+      "start": 781.24,
+      "duration": 5.61
+    },
+    {
+      "text": "od these go for launch executive",
+      "start": 783.11,
+      "duration": 7.31
+    },
+    {
+      "text": "executive is go for launch",
+      "start": 786.85,
+      "duration": 3.57
+    },
+    {
+      "text": "flat our CEO mission cord go hit open",
+      "start": 790.9,
+      "duration": 4.71
+    },
+    {
+      "text": "MCC launch switch cover and confirm",
+      "start": 793.87,
+      "duration": 6.6
+    },
+    {
+      "text": "confirmed open toggle report confirming",
+      "start": 795.61,
+      "duration": 7.58
+    },
+    {
+      "text": "board more chug",
+      "start": 800.47,
+      "duration": 2.72
+    },
+    {
+      "text": "confirmed go confirm the Balkan femke",
+      "start": 804.17,
+      "duration": 6.12
+    },
+    {
+      "text": "copy keep MCC Lawrence which cover up",
+      "start": 806.77,
+      "duration": 6.24
+    },
+    {
+      "text": "your honor",
+      "start": 810.29,
+      "duration": 2.72
+    },
+    {
+      "text": "so as you've heard our operators and",
+      "start": 814.66,
+      "duration": 2.85
+    },
+    {
+      "text": "launch director have confirmed that",
+      "start": 816.4,
+      "duration": 3.27
+    },
+    {
+      "text": "electron is go for launch we're",
+      "start": 817.51,
+      "duration": 3.99
+    },
+    {
+      "text": "approaching t-minus 14 minutes before",
+      "start": 819.67,
+      "duration": 3.66
+    },
+    {
+      "text": "target lifts off which gives us some",
+      "start": 821.5,
+      "duration": 3.36
+    },
+    {
+      "text": "time to talk about the spacecraft for",
+      "start": 823.33,
+      "duration": 2.16
+    },
+    {
+      "text": "this mission",
+      "start": 824.86,
+      "duration": 2.88
+    },
+    {
+      "text": "onboard electron today we have a black",
+      "start": 825.49,
+      "duration": 4.44
+    },
+    {
+      "text": "sky global for Earth imaging satellite",
+      "start": 827.74,
+      "duration": 4.2
+    },
+    {
+      "text": "it joins the black sky Global 3",
+      "start": 829.93,
+      "duration": 3.27
+    },
+    {
+      "text": "satellite that we launched on our last",
+      "start": 831.94,
+      "duration": 2.67
+    },
+    {
+      "text": "mission on June 29",
+      "start": 833.2,
+      "duration": 3.48
+    },
+    {
+      "text": "both of these satellites form part of",
+      "start": 834.61,
+      "duration": 3.75
+    },
+    {
+      "text": "black skies constellation to deliver",
+      "start": 836.68,
+      "duration": 3.57
+    },
+    {
+      "text": "rapid revisit satellite imagery to",
+      "start": 838.36,
+      "duration": 3.3
+    },
+    {
+      "text": "monitor things like crop development",
+      "start": 840.25,
+      "duration": 4.35
+    },
+    {
+      "text": "herd migration and urban planning space",
+      "start": 841.66,
+      "duration": 4.89
+    },
+    {
+      "text": "Flay has also manifests a technology",
+      "start": 844.6,
+      "duration": 3.48
+    },
+    {
+      "text": "demonstrator satellites for the United",
+      "start": 846.55,
+      "duration": 3.18
+    },
+    {
+      "text": "States Air Force Space Command on this",
+      "start": 848.08,
+      "duration": 3.93
+    },
+    {
+      "text": "mission these satellites aim to test new",
+      "start": 849.73,
+      "duration": 4.52
+    },
+    {
+      "text": "technologies including propulsion power",
+      "start": 852.01,
+      "duration": 4.56
+    },
+    {
+      "text": "communications and drag capabilities and",
+      "start": 854.25,
+      "duration": 3.79
+    },
+    {
+      "text": "how they might be used on future",
+      "start": 856.57,
+      "duration": 3.87
+    },
+    {
+      "text": "spacecraft the final spacecraft on this",
+      "start": 858.04,
+      "duration": 3.93
+    },
+    {
+      "text": "mission is a CubeSat for me the",
+      "start": 860.44,
+      "duration": 2.94
+    },
+    {
+      "text": "cornerstone of a new maritime",
+      "start": 861.97,
+      "duration": 3.39
+    },
+    {
+      "text": "surveillance constellation for a company",
+      "start": 863.38,
+      "duration": 4.17
+    },
+    {
+      "text": "called unseen labs they are aims to",
+      "start": 865.36,
+      "duration": 3.99
+    },
+    {
+      "text": "deliver precise reliable and secure",
+      "start": 867.55,
+      "duration": 4.14
+    },
+    {
+      "text": "maritime data enabling organizations to",
+      "start": 869.35,
+      "duration": 3.81
+    },
+    {
+      "text": "keep an eye on their own vessels as well",
+      "start": 871.69,
+      "duration": 2.91
+    },
+    {
+      "text": "as to watch out for those that presenter",
+      "start": 873.16,
+      "duration": 3.6
+    },
+    {
+      "text": "ESCs Deuter are Jackie there's a",
+      "start": 874.6,
+      "duration": 3.84
+    },
+    {
+      "text": "possibility of losing tonight's video",
+      "start": 876.76,
+      "duration": 3.42
+    },
+    {
+      "text": "feed but rest assured we'll keep you",
+      "start": 878.44,
+      "duration": 3.72
+    },
+    {
+      "text": "updated here if that happens in addition",
+      "start": 880.18,
+      "duration": 3.45
+    },
+    {
+      "text": "to that we won't have live video footage",
+      "start": 882.16,
+      "duration": 2.82
+    },
+    {
+      "text": "showing payload deployment due to the",
+      "start": 883.63,
+      "duration": 3.63
+    },
+    {
+      "text": "location of the kick stage in orbit so",
+      "start": 884.98,
+      "duration": 3.54
+    },
+    {
+      "text": "be ending the webcast shortly after",
+      "start": 887.26,
+      "duration": 2.43
+    },
+    {
+      "text": "confirmation at the kick stage",
+      "start": 888.52,
+      "duration": 3.15
+    },
+    {
+      "text": "separation so keep an eye on our social",
+      "start": 889.69,
+      "duration": 3.63
+    },
+    {
+      "text": "media feeds for confirmation of payload",
+      "start": 891.67,
+      "duration": 4.2
+    },
+    {
+      "text": "deployment so now it's time for a few",
+      "start": 893.32,
+      "duration": 4.8
+    },
+    {
+      "text": "updates on the electron program from day",
+      "start": 895.87,
+      "duration": 3.78
+    },
+    {
+      "text": "one the electron program has been all",
+      "start": 898.12,
+      "duration": 3.75
+    },
+    {
+      "text": "about using innovation and creativity to",
+      "start": 899.65,
+      "duration": 4.29
+    },
+    {
+      "text": "provide frequent and reliable access to",
+      "start": 901.87,
+      "duration": 4.44
+    },
+    {
+      "text": "space developing a 3d printed engine",
+      "start": 903.94,
+      "duration": 4.05
+    },
+    {
+      "text": "that can be printed in just 24 hours was",
+      "start": 906.31,
+      "duration": 3.45
+    },
+    {
+      "text": "one step as what's developing the",
+      "start": 907.99,
+      "duration": 3.66
+    },
+    {
+      "text": "world's only private orbital launch site",
+      "start": 909.76,
+      "duration": 3.84
+    },
+    {
+      "text": "but we're taking our plans to a whole",
+      "start": 911.65,
+      "duration": 3.63
+    },
+    {
+      "text": "new level to make our launches even more",
+      "start": 913.6,
+      "duration": 4.11
+    },
+    {
+      "text": "frequent for small satellites recently",
+      "start": 915.28,
+      "duration": 4.59
+    },
+    {
+      "text": "unveiled plans to recover and reef lie",
+      "start": 917.71,
+      "duration": 4.65
+    },
+    {
+      "text": "electrons first stage capturing and",
+      "start": 919.87,
+      "duration": 3.99
+    },
+    {
+      "text": "reusing a rocket stage is an enormous",
+      "start": 922.36,
+      "duration": 3.33
+    },
+    {
+      "text": "technical challenge but one that we hope",
+      "start": 923.86,
+      "duration": 3.42
+    },
+    {
+      "text": "will enable us to launch faster and more",
+      "start": 925.69,
+      "duration": 3.36
+    },
+    {
+      "text": "frequently by eliminating the need to",
+      "start": 927.28,
+      "duration": 3.68
+    },
+    {
+      "text": "build a new first stage every mission",
+      "start": 929.05,
+      "duration": 4.44
+    },
+    {
+      "text": "the plan to reuse electrons first stage",
+      "start": 930.96,
+      "duration": 4.93
+    },
+    {
+      "text": "will be implemented in two phases the",
+      "start": 933.49,
+      "duration": 3.6
+    },
+    {
+      "text": "first phase will see us attempt to",
+      "start": 935.89,
+      "duration": 3.21
+    },
+    {
+      "text": "recover a full electron first stage from",
+      "start": 937.09,
+      "duration": 3.87
+    },
+    {
+      "text": "the ocean downrange of launch complex",
+      "start": 939.1,
+      "duration": 3.48
+    },
+    {
+      "text": "one and then ship it back to rocket labs",
+      "start": 940.96,
+      "duration": 4.14
+    },
+    {
+      "text": "production complex for refurbishment the",
+      "start": 942.58,
+      "duration": 3.87
+    },
+    {
+      "text": "second phase will see his attempt to",
+      "start": 945.1,
+      "duration": 3.27
+    },
+    {
+      "text": "capture electrons first stage in midair",
+      "start": 946.45,
+      "duration": 3.78
+    },
+    {
+      "text": "helicopter before the stage is delivered",
+      "start": 948.37,
+      "duration": 3.21
+    },
+    {
+      "text": "for the deck of a ship and then",
+      "start": 950.23,
+      "duration": 3.0
+    },
+    {
+      "text": "transported back to launch complex one",
+      "start": 951.58,
+      "duration": 3.57
+    },
+    {
+      "text": "for your first rent and relaunch so",
+      "start": 953.23,
+      "duration": 3.27
+    },
+    {
+      "text": "we've got a quick animation for you that",
+      "start": 955.15,
+      "duration": 2.85
+    },
+    {
+      "text": "shows the planned mid-air capture",
+      "start": 956.5,
+      "duration": 11.13
+    },
+    {
+      "text": "process this is uh this is pretty old",
+      "start": 958.0,
+      "duration": 13.65
+    },
+    {
+      "text": "and I I can't wait they are is this the",
+      "start": 967.63,
+      "duration": 9.149
+    },
+    {
+      "text": "new one the one with the yeah this is so",
+      "start": 971.65,
+      "duration": 6.629
+    },
+    {
+      "text": "crazy I I cannot believe they're",
+      "start": 976.779,
+      "duration": 4.021
+    },
+    {
+      "text": "actually going to try and do this it's",
+      "start": 978.279,
+      "duration": 4.171
+    },
+    {
+      "text": "just the right size to be able to do",
+      "start": 980.8,
+      "duration": 3.33
+    },
+    {
+      "text": "this I can't believe they're gonna try",
+      "start": 982.45,
+      "duration": 2.88
+    },
+    {
+      "text": "and do this without any kind of",
+      "start": 984.13,
+      "duration": 4.77
+    },
+    {
+      "text": "propulsive reentry burn I still",
+      "start": 985.33,
+      "duration": 5.33
+    },
+    {
+      "text": "speculate that on the interstage those",
+      "start": 988.9,
+      "duration": 4.73
+    },
+    {
+      "text": "those kind of silver looking things I",
+      "start": 990.66,
+      "duration": 5.89
+    },
+    {
+      "text": "think those I really do think those",
+      "start": 993.63,
+      "duration": 5.38
+    },
+    {
+      "text": "might actually be some kind of air brake",
+      "start": 996.55,
+      "duration": 4.62
+    },
+    {
+      "text": "that could deploy out like pedal out and",
+      "start": 999.01,
+      "duration": 4.23
+    },
+    {
+      "text": "provide a little extra aerodynamic",
+      "start": 1001.17,
+      "duration": 3.3
+    },
+    {
+      "text": "surface a little more surface area",
+      "start": 1003.24,
+      "duration": 3.27
+    },
+    {
+      "text": "through at least the upper portion of",
+      "start": 1004.47,
+      "duration": 5.34
+    },
+    {
+      "text": "reentry and then then the balut will",
+      "start": 1006.51,
+      "duration": 5.37
+    },
+    {
+      "text": "come out once they're kind of below",
+      "start": 1009.81,
+      "duration": 3.96
+    },
+    {
+      "text": "hypersonic speeds between hypersonic and",
+      "start": 1011.88,
+      "duration": 5.0
+    },
+    {
+      "text": "supersonic think it deploy that balut",
+      "start": 1013.77,
+      "duration": 6.09
+    },
+    {
+      "text": "but yeah I don't think they could deploy",
+      "start": 1016.88,
+      "duration": 4.959
+    },
+    {
+      "text": "the blue anywhere near hypersonic speeds",
+      "start": 1019.86,
+      "duration": 4.08
+    },
+    {
+      "text": "we all seem to say hi footing that guy",
+      "start": 1021.839,
+      "duration": 5.391
+    },
+    {
+      "text": "had dreams breathing rocket fumes um",
+      "start": 1023.94,
+      "duration": 5.91
+    },
+    {
+      "text": "yeah bad dreams",
+      "start": 1027.23,
+      "duration": 5.05
+    },
+    {
+      "text": "just literally thinking I was forgetting",
+      "start": 1029.85,
+      "duration": 5.19
+    },
+    {
+      "text": "something about the air spike hey stupid",
+      "start": 1032.28,
+      "duration": 5.279
+    },
+    {
+      "text": "Tara thank you so much for coffee money",
+      "start": 1035.04,
+      "duration": 5.789
+    },
+    {
+      "text": "and Demetri who decides go slash hold is",
+      "start": 1037.559,
+      "duration": 4.801
+    },
+    {
+      "text": "the flight director only can it be an",
+      "start": 1040.829,
+      "duration": 4.441
+    },
+    {
+      "text": "automated decision yes the computer on I",
+      "start": 1042.36,
+      "duration": 3.87
+    },
+    {
+      "text": "don't know what the rocket lab in",
+      "start": 1045.27,
+      "duration": 2.069
+    },
+    {
+      "text": "particular but most the time the",
+      "start": 1046.23,
+      "duration": 4.89
+    },
+    {
+      "text": "computer can actually call a hold at",
+      "start": 1047.339,
+      "duration": 5.251
+    },
+    {
+      "text": "least in fact SpaceX the computer can",
+      "start": 1051.12,
+      "duration": 4.2
+    },
+    {
+      "text": "just go into a hold but the launch",
+      "start": 1052.59,
+      "duration": 4.83
+    },
+    {
+      "text": "director normally or anyone at Council",
+      "start": 1055.32,
+      "duration": 4.41
+    },
+    {
+      "text": "can say hold a critical test",
+      "start": 1057.42,
+      "duration": 3.87
+    },
+    {
+      "text": "instrumentation and electrons first",
+      "start": 1059.73,
+      "duration": 3.54
+    },
+    {
+      "text": "stage to inform a recovery attempts in",
+      "start": 1061.29,
+      "duration": 3.84
+    },
+    {
+      "text": "the future now we're using the first",
+      "start": 1063.27,
+      "duration": 3.06
+    },
+    {
+      "text": "stage of a small launch vehicle as a",
+      "start": 1065.13,
+      "duration": 2.85
+    },
+    {
+      "text": "complex challenge as there's little mass",
+      "start": 1066.33,
+      "duration": 3.12
+    },
+    {
+      "text": "margin to dedicate to the recovery",
+      "start": 1067.98,
+      "duration": 3.51
+    },
+    {
+      "text": "systems for a long time we said we",
+      "start": 1069.45,
+      "duration": 3.479
+    },
+    {
+      "text": "wouldn't pursue visibility for this very",
+      "start": 1071.49,
+      "duration": 3.24
+    },
+    {
+      "text": "reason after conducting some research",
+      "start": 1072.929,
+      "duration": 3.361
+    },
+    {
+      "text": "and testing we've been able to develop",
+      "start": 1074.73,
+      "duration": 2.94
+    },
+    {
+      "text": "the technology that could make recovery",
+      "start": 1076.29,
+      "duration": 3.48
+    },
+    {
+      "text": "feasible for electron so it really is an",
+      "start": 1077.67,
+      "duration": 3.78
+    },
+    {
+      "text": "exciting Network next step for all of us",
+      "start": 1079.77,
+      "duration": 2.46
+    },
+    {
+      "text": "here at rocket lab",
+      "start": 1081.45,
+      "duration": 2.13
+    },
+    {
+      "text": "because with the introduction of our",
+      "start": 1082.23,
+      "duration": 3.39
+    },
+    {
+      "text": "usability plans and with our second",
+      "start": 1083.58,
+      "duration": 3.09
+    },
+    {
+      "text": "launch complex in Virginia under",
+      "start": 1085.62,
+      "duration": 3.15
+    },
+    {
+      "text": "construction our goal to launch once per",
+      "start": 1086.67,
+      "duration": 3.54
+    },
+    {
+      "text": "week is becoming a reality",
+      "start": 1088.77,
+      "duration": 3.18
+    },
+    {
+      "text": "so speaking of Virginia let's have a",
+      "start": 1090.21,
+      "duration": 3.33
+    },
+    {
+      "text": "quick update on the construction of",
+      "start": 1091.95,
+      "duration": 3.66
+    },
+    {
+      "text": "rocket labs launch complex-2 at Wallops",
+      "start": 1093.54,
+      "duration": 4.26
+    },
+    {
+      "text": "Island construction on the pad is",
+      "start": 1095.61,
+      "duration": 3.78
+    },
+    {
+      "text": "nearing completion with almost all the",
+      "start": 1097.8,
+      "duration": 3.9
+    },
+    {
+      "text": "concrete having been forward the strong",
+      "start": 1099.39,
+      "duration": 3.99
+    },
+    {
+      "text": "back and the last platform are due for",
+      "start": 1101.7,
+      "duration": 3.03
+    },
+    {
+      "text": "delivery to the site in the coming weeks",
+      "start": 1103.38,
+      "duration": 3.3
+    },
+    {
+      "text": "so from now on the focus starts to shift",
+      "start": 1104.73,
+      "duration": 3.99
+    },
+    {
+      "text": "from construction over to integration",
+      "start": 1106.68,
+      "duration": 4.8
+    },
+    {
+      "text": "and testing this is of course a second",
+      "start": 1108.72,
+      "duration": 4.26
+    },
+    {
+      "text": "launch light that rocket has built and",
+      "start": 1111.48,
+      "duration": 2.58
+    },
+    {
+      "text": "it really is exciting to see it all",
+      "start": 1112.98,
+      "duration": 3.21
+    },
+    {
+      "text": "coming together again a big thanks goes",
+      "start": 1114.06,
+      "duration": 3.84
+    },
+    {
+      "text": "out to the hard-working rocket lab team",
+      "start": 1116.19,
+      "duration": 3.87
+    },
+    {
+      "text": "in Virginia also to our army of local",
+      "start": 1117.9,
+      "duration": 3.87
+    },
+    {
+      "text": "suppliers and contractors and of course",
+      "start": 1120.06,
+      "duration": 2.97
+    },
+    {
+      "text": "to the team of Virginia's space who are",
+      "start": 1121.77,
+      "duration": 3.06
+    },
+    {
+      "text": "making launch complex-2 a reality all in",
+      "start": 1123.03,
+      "duration": 4.02
+    },
+    {
+      "text": "record time in the coming months we'll",
+      "start": 1124.83,
+      "duration": 3.75
+    },
+    {
+      "text": "be gearing up for the first electron",
+      "start": 1127.05,
+      "duration": 3.09
+    },
+    {
+      "text": "launch from this site we can't wait to",
+      "start": 1128.58,
+      "duration": 3.6
+    },
+    {
+      "text": "see like Tron the launch from US soil so",
+      "start": 1130.14,
+      "duration": 3.3
+    },
+    {
+      "text": "we'll have more share about that first",
+      "start": 1132.18,
+      "duration": 2.58
+    },
+    {
+      "text": "mission including the timing and the",
+      "start": 1133.44,
+      "duration": 4.02
+    },
+    {
+      "text": "customer later this year with all these",
+      "start": 1134.76,
+      "duration": 3.84
+    },
+    {
+      "text": "exciting opportunities that I've",
+      "start": 1137.46,
+      "duration": 2.4
+    },
+    {
+      "text": "mentioned we're looking to bring even",
+      "start": 1138.6,
+      "duration": 3.12
+    },
+    {
+      "text": "more people onto our rocket lab teams in",
+      "start": 1139.86,
+      "duration": 4.8
+    },
+    {
+      "text": "magia Oakland California and in Virginia",
+      "start": 1141.72,
+      "duration": 4.77
+    },
+    {
+      "text": "we've got roles in almost all of our",
+      "start": 1144.66,
+      "duration": 3.6
+    },
+    {
+      "text": "varmints from hands-on roles building",
+      "start": 1146.49,
+      "duration": 3.24
+    },
+    {
+      "text": "and testing our rockets and engineering",
+      "start": 1148.26,
+      "duration": 3.12
+    },
+    {
+      "text": "and manufacturing right through to our",
+      "start": 1149.73,
+      "duration": 3.36
+    },
+    {
+      "text": "corporate functions like finance HR",
+      "start": 1151.38,
+      "duration": 4.38
+    },
+    {
+      "text": "business support and logistics you could",
+      "start": 1153.09,
+      "duration": 3.81
+    },
+    {
+      "text": "be at the very start of your career or a",
+      "start": 1155.76,
+      "duration": 2.4
+    },
+    {
+      "text": "seasoned professional looking for a",
+      "start": 1156.9,
+      "duration": 1.77
+    },
+    {
+      "text": "change",
+      "start": 1158.16,
+      "duration": 1.62
+    },
+    {
+      "text": "if you're looking for a great",
+      "start": 1158.67,
+      "duration": 2.55
+    },
+    {
+      "text": "opportunity with a leader in the small",
+      "start": 1159.78,
+      "duration": 3.21
+    },
+    {
+      "text": "satellite launch industry please get in",
+      "start": 1161.22,
+      "duration": 3.33
+    },
+    {
+      "text": "touch with us you can check out the",
+      "start": 1162.99,
+      "duration": 3.15
+    },
+    {
+      "text": "roles available at our website rocket",
+      "start": 1164.55,
+      "duration": 4.4
+    },
+    {
+      "text": "lab usa.com",
+      "start": 1166.14,
+      "duration": 2.81
+    },
+    {
+      "text": "so thank you please confirm stage one",
+      "start": 1169.13,
+      "duration": 4.75
+    },
+    {
+      "text": "engines already eight months away guys",
+      "start": 1171.9,
+      "duration": 5.88
+    },
+    {
+      "text": "just confirming here Ian chase had a",
+      "start": 1173.88,
+      "duration": 9.5
+    },
+    {
+      "text": "good question I heard a good suggestion",
+      "start": 1177.78,
+      "duration": 5.6
+    },
+    {
+      "text": "save a lock on FDA's metric if t XO",
+      "start": 1183.62,
+      "duration": 7.17
+    },
+    {
+      "text": "power lock table",
+      "start": 1187.98,
+      "duration": 2.81
+    },
+    {
+      "text": "okay cool Ian's looking forward to the",
+      "start": 1191.74,
+      "duration": 5.25
+    },
+    {
+      "text": "mantra from Wallops he's only a few",
+      "start": 1195.25,
+      "duration": 5.37
+    },
+    {
+      "text": "hours away so often confirm um I'm",
+      "start": 1196.99,
+      "duration": 5.97
+    },
+    {
+      "text": "almost a little sad that they're opening",
+      "start": 1200.62,
+      "duration": 3.6
+    },
+    {
+      "text": "wall up so soon because I want my",
+      "start": 1202.96,
+      "duration": 3.63
+    },
+    {
+      "text": "pharoahe monch I wanna see one down in",
+      "start": 1204.22,
+      "duration": 5.579
+    },
+    {
+      "text": "New Zealand and I have a feeling if it",
+      "start": 1206.59,
+      "duration": 4.74
+    },
+    {
+      "text": "starts launching once the search about",
+      "start": 1209.799,
+      "duration": 2.73
+    },
+    {
+      "text": "watching Wallops will be way more",
+      "start": 1211.33,
+      "duration": 4.26
+    },
+    {
+      "text": "tempting to just go to Wallis lien let's",
+      "start": 1212.529,
+      "duration": 7.201
+    },
+    {
+      "text": "listen to the rest of those copy enable",
+      "start": 1215.59,
+      "duration": 10.219
+    },
+    {
+      "text": "failsafe and confirm failsafe enabled",
+      "start": 1219.73,
+      "duration": 6.079
+    },
+    {
+      "text": "and FTS confirm FGS is green and able to",
+      "start": 1226.01,
+      "duration": 6.6
+    },
+    {
+      "text": "fly so you may be wondering why we",
+      "start": 1228.65,
+      "duration": 5.97
+    },
+    {
+      "text": "called this mission look ma no hands",
+      "start": 1232.61,
+      "duration": 4.38
+    },
+    {
+      "text": "well before liftoff electron is secured",
+      "start": 1234.62,
+      "duration": 3.929
+    },
+    {
+      "text": "to the launch pad by the strong back and",
+      "start": 1236.99,
+      "duration": 2.73
+    },
+    {
+      "text": "it's top clamp",
+      "start": 1238.549,
+      "duration": 2.611
+    },
+    {
+      "text": "it's that tall structure that you can",
+      "start": 1239.72,
+      "duration": 3.63
+    },
+    {
+      "text": "see here standing behind electron and",
+      "start": 1241.16,
+      "duration": 3.78
+    },
+    {
+      "text": "approximately six minutes before liftoff",
+      "start": 1243.35,
+      "duration": 3.36
+    },
+    {
+      "text": "the top clamp opens up and the strong",
+      "start": 1244.94,
+      "duration": 3.33
+    },
+    {
+      "text": "back retracts away from electron to",
+      "start": 1246.71,
+      "duration": 3.06
+    },
+    {
+      "text": "clear clear away for launch",
+      "start": 1248.27,
+      "duration": 3.149
+    },
+    {
+      "text": "once electron is free from the strong",
+      "start": 1249.77,
+      "duration": 3.6
+    },
+    {
+      "text": "backs grasp it's look ma no hands for",
+      "start": 1251.419,
+      "duration": 6.39
+    },
+    {
+      "text": "electron that's why couldn't it be",
+      "start": 1253.37,
+      "duration": 6.97
+    },
+    {
+      "text": "disabled all HVAC and confirm",
+      "start": 1257.809,
+      "duration": 5.631
+    },
+    {
+      "text": "[Music]",
+      "start": 1260.34,
+      "duration": 3.1
+    },
+    {
+      "text": "someone asked what what fuel does this",
+      "start": 1267.85,
+      "duration": 4.319
+    },
+    {
+      "text": "thing run on this does like mike is",
+      "start": 1270.549,
+      "duration": 4.56
+    },
+    {
+      "text": "decidable okay that runs on the trek",
+      "start": 1272.169,
+      "duration": 5.82
+    },
+    {
+      "text": "fairing of course smoking Hoban and hot",
+      "start": 1275.109,
+      "duration": 6.57
+    },
+    {
+      "text": "and just like Falcon 9 and Alice 5 their",
+      "start": 1277.989,
+      "duration": 6.89
+    },
+    {
+      "text": "umbilical is retracted",
+      "start": 1281.679,
+      "duration": 3.2
+    },
+    {
+      "text": "yeah people are asking what the blue",
+      "start": 1301.34,
+      "duration": 3.45
+    },
+    {
+      "text": "light is I'm not sure probably some kind",
+      "start": 1303.14,
+      "duration": 4.38
+    },
+    {
+      "text": "of like morning light there's something",
+      "start": 1304.79,
+      "duration": 4.16
+    },
+    {
+      "text": "kind of thing if you're standing here",
+      "start": 1307.52,
+      "duration": 5.43
+    },
+    {
+      "text": "don't just do not this is the blue light",
+      "start": 1308.95,
+      "duration": 7.36
+    },
+    {
+      "text": "of don't stand here Ness I'm not a lamp",
+      "start": 1312.95,
+      "duration": 5.76
+    },
+    {
+      "text": "is opened um and another front right",
+      "start": 1316.31,
+      "duration": 3.96
+    },
+    {
+      "text": "here don't forget to be that the reason",
+      "start": 1318.71,
+      "duration": 3.48
+    },
+    {
+      "text": "they're the the Rockets entirely black",
+      "start": 1320.27,
+      "duration": 3.84
+    },
+    {
+      "text": "but right now it's like halfway halfway",
+      "start": 1322.19,
+      "duration": 4.5
+    },
+    {
+      "text": "GC go ahead that was mine literally just",
+      "start": 1324.11,
+      "duration": 5.12
+    },
+    {
+      "text": "I am back",
+      "start": 1326.69,
+      "duration": 2.54
+    },
+    {
+      "text": "Liam thank you for the nut guy thank you",
+      "start": 1343.52,
+      "duration": 3.87
+    },
+    {
+      "text": "if it asks if I met cloud liquor there",
+      "start": 1345.44,
+      "duration": 4.35
+    },
+    {
+      "text": "yet I'm in Texas but I'm not in Boca",
+      "start": 1347.39,
+      "duration": 4.14
+    },
+    {
+      "text": "Chica or Brownsville or South Padre",
+      "start": 1349.79,
+      "duration": 3.93
+    },
+    {
+      "text": "Island I'm hanging out kind of in the",
+      "start": 1351.53,
+      "duration": 4.32
+    },
+    {
+      "text": "middle of Texas right now I didn't want",
+      "start": 1353.72,
+      "duration": 3.9
+    },
+    {
+      "text": "to drive all the way down there because",
+      "start": 1355.85,
+      "duration": 4.05
+    },
+    {
+      "text": "it's literally a 24 hour drive so I",
+      "start": 1357.62,
+      "duration": 5.19
+    },
+    {
+      "text": "figured until it for sure is going to",
+      "start": 1359.9,
+      "duration": 4.59
+    },
+    {
+      "text": "happen this this next hop I was like I",
+      "start": 1362.81,
+      "duration": 3.12
+    },
+    {
+      "text": "don't want to drive all the way down",
+      "start": 1364.49,
+      "duration": 2.7
+    },
+    {
+      "text": "there in case it gets totally scrubbed",
+      "start": 1365.93,
+      "duration": 3.63
+    },
+    {
+      "text": "just to save me an extra day or two of",
+      "start": 1367.19,
+      "duration": 6.33
+    },
+    {
+      "text": "driving so so I'm stationed outside I'm",
+      "start": 1369.56,
+      "duration": 6.33
+    },
+    {
+      "text": "actually i'm currently in Austin which",
+      "start": 1373.52,
+      "duration": 5.19
+    },
+    {
+      "text": "is awesome and I might and hung out",
+      "start": 1375.89,
+      "duration": 4.44
+    },
+    {
+      "text": "Dallas for a little bit then Austin and",
+      "start": 1378.71,
+      "duration": 2.88
+    },
+    {
+      "text": "I might kind of just keep popping around",
+      "start": 1380.33,
+      "duration": 3.66
+    },
+    {
+      "text": "somewhere up in northern Texas or middle",
+      "start": 1381.59,
+      "duration": 3.87
+    },
+    {
+      "text": "northern Texas instead of like driving",
+      "start": 1383.99,
+      "duration": 2.88
+    },
+    {
+      "text": "all the way down there because it's",
+      "start": 1385.46,
+      "duration": 3.54
+    },
+    {
+      "text": "another you know six hours or so down",
+      "start": 1386.87,
+      "duration": 5.07
+    },
+    {
+      "text": "from here even and I figure you know if",
+      "start": 1389.0,
+      "duration": 4.83
+    },
+    {
+      "text": "they end up saying yeah the FAA is not",
+      "start": 1391.94,
+      "duration": 4.26
+    },
+    {
+      "text": "gonna grant us permission for a month or",
+      "start": 1393.83,
+      "duration": 3.54
+    },
+    {
+      "text": "whatever they're waiting on for Starr",
+      "start": 1396.2,
+      "duration": 3.9
+    },
+    {
+      "text": "hopper it'll just save me a full day or",
+      "start": 1397.37,
+      "duration": 6.03
+    },
+    {
+      "text": "two of driving so so I have not even",
+      "start": 1400.1,
+      "duration": 5.58
+    },
+    {
+      "text": "been down there yet until it gets a",
+      "start": 1403.4,
+      "duration": 4.29
+    },
+    {
+      "text": "little closer so therefore I have not",
+      "start": 1405.68,
+      "duration": 4.85
+    },
+    {
+      "text": "met cloud liquor",
+      "start": 1407.69,
+      "duration": 2.84
+    },
+    {
+      "text": "I did not see Jo Jo works as much as I",
+      "start": 1412.22,
+      "duration": 4.26
+    },
+    {
+      "text": "do",
+      "start": 1416.27,
+      "duration": 2.55
+    },
+    {
+      "text": "which means he worked so long back has",
+      "start": 1416.48,
+      "duration": 4.98
+    },
+    {
+      "text": "retracted a lot a lot so copy that I",
+      "start": 1418.82,
+      "duration": 4.95
+    },
+    {
+      "text": "just popped up sitting with are you",
+      "start": 1421.46,
+      "duration": 3.48
+    },
+    {
+      "text": "worried about the white clouds that you",
+      "start": 1423.77,
+      "duration": 2.76
+    },
+    {
+      "text": "see coming off the rocket and some of",
+      "start": 1424.94,
+      "duration": 3.36
+    },
+    {
+      "text": "the ground support equipment they're",
+      "start": 1426.53,
+      "duration": 3.66
+    },
+    {
+      "text": "actually clouds of really cold oxygen",
+      "start": 1428.3,
+      "duration": 3.24
+    },
+    {
+      "text": "gas coming in contact with the",
+      "start": 1430.19,
+      "duration": 3.45
+    },
+    {
+      "text": "atmosphere this is totally normal as the",
+      "start": 1431.54,
+      "duration": 3.54
+    },
+    {
+      "text": "electron is fueled with highly refined",
+      "start": 1433.64,
+      "duration": 3.75
+    },
+    {
+      "text": "kerosene and cryogenic liquid oxygen as",
+      "start": 1435.08,
+      "duration": 4.59
+    },
+    {
+      "text": "electron warms up its standard to lose",
+      "start": 1437.39,
+      "duration": 4.14
+    },
+    {
+      "text": "some of our liquid oxygen throughout",
+      "start": 1439.67,
+      "duration": 3.81
+    },
+    {
+      "text": "preparation we continue to top it off so",
+      "start": 1441.53,
+      "duration": 5.15
+    },
+    {
+      "text": "we have the correct levels for fly",
+      "start": 1443.48,
+      "duration": 3.2
+    },
+    {
+      "text": "let's see some 100 station admission",
+      "start": 1456.19,
+      "duration": 4.79
+    },
+    {
+      "text": "cord Rangers green autosequence armed",
+      "start": 1457.99,
+      "duration": 5.64
+    },
+    {
+      "text": "couple dead us here in flight sorry",
+      "start": 1460.98,
+      "duration": 4.75
+    },
+    {
+      "text": "avionics is fight on mission whyhave",
+      "start": 1463.63,
+      "duration": 4.38
+    },
+    {
+      "text": "unit please confirm TBC battery charging",
+      "start": 1465.73,
+      "duration": 4.08
+    },
+    {
+      "text": "this is same like week checking on the",
+      "start": 1468.01,
+      "duration": 3.27
+    },
+    {
+      "text": "countdown were three minutes and 30",
+      "start": 1469.81,
+      "duration": 3.12
+    },
+    {
+      "text": "seconds until our target liftoff for",
+      "start": 1471.28,
+      "duration": 3.45
+    },
+    {
+      "text": "today's mission things are starting to",
+      "start": 1472.93,
+      "duration": 3.12
+    },
+    {
+      "text": "ramp up so I'm gonna leave you with the",
+      "start": 1474.73,
+      "duration": 2.64
+    },
+    {
+      "text": "team in Mission Control for the manner",
+      "start": 1476.05,
+      "duration": 2.88
+    },
+    {
+      "text": "of the count and I'll check back in with",
+      "start": 1477.37,
+      "duration": 5.43
+    },
+    {
+      "text": "you shortly after liftoff so I just",
+      "start": 1478.93,
+      "duration": 7.5
+    },
+    {
+      "text": "double check and yes am I not just over",
+      "start": 1482.8,
+      "duration": 4.8
+    },
+    {
+      "text": "10 month old car",
+      "start": 1486.43,
+      "duration": 4.65
+    },
+    {
+      "text": "I have 23,000 miles that's like what is",
+      "start": 1487.6,
+      "duration": 10.71
+    },
+    {
+      "text": "that 37 no station flags in your LCCs OD",
+      "start": 1491.08,
+      "duration": 12.21
+    },
+    {
+      "text": "flag on mission Beck was green ready for",
+      "start": 1498.31,
+      "duration": 8.49
+    },
+    {
+      "text": "flight copy VMs is led on mission code",
+      "start": 1503.29,
+      "duration": 7.41
+    },
+    {
+      "text": "go ahead please confirm flight computer",
+      "start": 1506.8,
+      "duration": 8.16
+    },
+    {
+      "text": "as goes are green I was currently just",
+      "start": 1510.7,
+      "duration": 7.41
+    },
+    {
+      "text": "flicking on the lower bound of the stage",
+      "start": 1514.96,
+      "duration": 6.62
+    },
+    {
+      "text": "1 locks mess",
+      "start": 1518.11,
+      "duration": 3.47
+    },
+    {
+      "text": "please lock the Auto sequence and",
+      "start": 1523.1,
+      "duration": 4.13
+    },
+    {
+      "text": "confirm",
+      "start": 1524.87,
+      "duration": 2.36
+    },
+    {
+      "text": "or our sequences locked",
+      "start": 1528.53,
+      "duration": 3.32
+    },
+    {
+      "text": "cool operators we are go for",
+      "start": 1533.74,
+      "duration": 5.48
+    },
+    {
+      "text": "autosequence start at two minutes",
+      "start": 1535.6,
+      "duration": 3.62
+    },
+    {
+      "text": "yeah baby",
+      "start": 1547.88,
+      "duration": 2.9
+    },
+    {
+      "text": "two minutes away guys if you don't",
+      "start": 1554.19,
+      "duration": 5.22
+    },
+    {
+      "text": "explode on mission right avionics please",
+      "start": 1556.83,
+      "duration": 4.02
+    },
+    {
+      "text": "confirm or lady that's been switched",
+      "start": 1559.41,
+      "duration": 3.93
+    },
+    {
+      "text": "internal power equals on internal power",
+      "start": 1560.85,
+      "duration": 6.12
+    },
+    {
+      "text": "Accio flag go ahead I'm sorry avionics",
+      "start": 1563.34,
+      "duration": 5.79
+    },
+    {
+      "text": "please confirm stage power disabled on",
+      "start": 1566.97,
+      "duration": 4.11
+    },
+    {
+      "text": "all three stages today four parts are",
+      "start": 1569.13,
+      "duration": 3.39
+    },
+    {
+      "text": "labeled on all three stages",
+      "start": 1571.08,
+      "duration": 3.33
+    },
+    {
+      "text": "all stations be advised vehicles now on",
+      "start": 1572.52,
+      "duration": 3.74
+    },
+    {
+      "text": "internal power peerless flag on mission",
+      "start": 1574.41,
+      "duration": 4.35
+    },
+    {
+      "text": "telescope please begin locks good",
+      "start": 1576.26,
+      "duration": 5.85
+    },
+    {
+      "text": "recirculation cubby",
+      "start": 1578.76,
+      "duration": 3.35
+    },
+    {
+      "text": "no ma'am it is it's just nuts like",
+      "start": 1584.75,
+      "duration": 4.77
+    },
+    {
+      "text": "someone asked how much is the ice way",
+      "start": 1587.72,
+      "duration": 3.81
+    },
+    {
+      "text": "and I'm sure it's not a trivial amount",
+      "start": 1589.52,
+      "duration": 4.32
+    },
+    {
+      "text": "I'm sure that is something they actually",
+      "start": 1591.53,
+      "duration": 4.05
+    },
+    {
+      "text": "have to calculate is how much ice and",
+      "start": 1593.84,
+      "duration": 3.569
+    },
+    {
+      "text": "depending on humidity and stuff I mean",
+      "start": 1595.58,
+      "duration": 4.17
+    },
+    {
+      "text": "there's certainly some eyes and a lot of",
+      "start": 1597.409,
+      "duration": 3.691
+    },
+    {
+      "text": "it does kind of fall off you notice when",
+      "start": 1599.75,
+      "duration": 2.76
+    },
+    {
+      "text": "Rockets take off if you see sheets of",
+      "start": 1601.1,
+      "duration": 4.38
+    },
+    {
+      "text": "ice falling off but it's it's not",
+      "start": 1602.51,
+      "duration": 6.649
+    },
+    {
+      "text": "trivial and it Gilley's flag on mission",
+      "start": 1605.48,
+      "duration": 5.79
+    },
+    {
+      "text": "she's to say wait you guys are in in",
+      "start": 1609.159,
+      "duration": 3.101
+    },
+    {
+      "text": "confession but it's gotta be pretty",
+      "start": 1611.27,
+      "duration": 3.75
+    },
+    {
+      "text": "thing though stage one flight mission",
+      "start": 1612.26,
+      "duration": 4.26
+    },
+    {
+      "text": "but it yeah I'm sure they actually",
+      "start": 1615.02,
+      "duration": 3.0
+    },
+    {
+      "text": "calculate that one there a little bit",
+      "start": 1616.52,
+      "duration": 2.97
+    },
+    {
+      "text": "please confirm stage one is wrist locks",
+      "start": 1618.02,
+      "duration": 4.08
+    },
+    {
+      "text": "four zero zero care at you two five in",
+      "start": 1619.49,
+      "duration": 4.65
+    },
+    {
+      "text": "front presser in stage two please",
+      "start": 1622.1,
+      "duration": 4.199
+    },
+    {
+      "text": "confirm stage to his wrists lots 365",
+      "start": 1624.14,
+      "duration": 6.71
+    },
+    {
+      "text": "care to 0-5 stage two is pressed",
+      "start": 1626.299,
+      "duration": 4.551
+    },
+    {
+      "text": "I've lined in page running",
+      "start": 1632.31,
+      "duration": 3.47
+    },
+    {
+      "text": "okay guys 30 seconds and deluge running",
+      "start": 1639.0,
+      "duration": 4.49
+    },
+    {
+      "text": "water deluge",
+      "start": 1643.52,
+      "duration": 3.45
+    },
+    {
+      "text": "that's a good thing",
+      "start": 1649.73,
+      "duration": 3.2
+    },
+    {
+      "text": "alright guys here we go 12 seconds Dean",
+      "start": 1663.07,
+      "duration": 7.8
+    },
+    {
+      "text": "non-right they started on teen 6",
+      "start": 1667.47,
+      "duration": 7.52
+    },
+    {
+      "text": "what is gone for 3",
+      "start": 1670.87,
+      "duration": 7.8
+    },
+    {
+      "text": "[Music]",
+      "start": 1674.99,
+      "duration": 3.68
+    },
+    {
+      "text": "I'm pretty sure those the sound of it",
+      "start": 1702.32,
+      "duration": 4.12
+    },
+    {
+      "text": "fighting a transformer there for a",
+      "start": 1705.12,
+      "duration": 4.5
+    },
+    {
+      "text": "second and we're off the pad for our",
+      "start": 1706.44,
+      "duration": 5.13
+    },
+    {
+      "text": "eighth electron launch soon we'll be",
+      "start": 1709.62,
+      "duration": 3.029
+    },
+    {
+      "text": "approaching the point of the flight",
+      "start": 1711.57,
+      "duration": 2.4
+    },
+    {
+      "text": "where the forces against the rocket are",
+      "start": 1712.649,
+      "duration": 3.51
+    },
+    {
+      "text": "at their peak otherwise known as max Q",
+      "start": 1713.97,
+      "duration": 4.319
+    },
+    {
+      "text": "or maximum aerodynamic pressure let's",
+      "start": 1716.159,
+      "duration": 6.9
+    },
+    {
+      "text": "listen in for that call HP battery",
+      "start": 1718.289,
+      "duration": 7.61
+    },
+    {
+      "text": "discharge nominal",
+      "start": 1723.059,
+      "duration": 2.84
+    },
+    {
+      "text": "so cool so don't for you guys are gonna",
+      "start": 1730.1,
+      "duration": 4.74
+    },
+    {
+      "text": "be collecting a lot of data on this",
+      "start": 1733.61,
+      "duration": 4.26
+    },
+    {
+      "text": "flight on the first stages we reentry",
+      "start": 1734.84,
+      "duration": 5.55
+    },
+    {
+      "text": "profile so I'll be really curious to the",
+      "start": 1737.87,
+      "duration": 4.29
+    },
+    {
+      "text": "supersonic if they actually stream the",
+      "start": 1740.39,
+      "duration": 3.8
+    },
+    {
+      "text": "re-entry at all",
+      "start": 1742.16,
+      "duration": 4.5
+    },
+    {
+      "text": "probably not that'd be interesting for",
+      "start": 1744.19,
+      "duration": 7.3
+    },
+    {
+      "text": "sure they have good cameras on this",
+      "start": 1746.66,
+      "duration": 6.14
+    },
+    {
+      "text": "thing",
+      "start": 1751.49,
+      "duration": 7.5
+    },
+    {
+      "text": "bathroom excuse virtus has anti flight",
+      "start": 1752.8,
+      "duration": 8.62
+    },
+    {
+      "text": "mode there you have it like Hans gone",
+      "start": 1758.99,
+      "duration": 4.44
+    },
+    {
+      "text": "supersonic has made its way through max",
+      "start": 1761.42,
+      "duration": 3.9
+    },
+    {
+      "text": "Q when I'll took through a number of",
+      "start": 1763.43,
+      "duration": 5.52
+    },
+    {
+      "text": "milestones on the way to orbit you guys",
+      "start": 1765.32,
+      "duration": 9.45
+    },
+    {
+      "text": "got to see that important stuff I notice",
+      "start": 1768.95,
+      "duration": 7.71
+    },
+    {
+      "text": "the engine plume expanding this is",
+      "start": 1774.77,
+      "duration": 2.97
+    },
+    {
+      "text": "something we're gonna be talking a lot",
+      "start": 1776.66,
+      "duration": 3.18
+    },
+    {
+      "text": "about in the aerospike video you know",
+      "start": 1777.74,
+      "duration": 4.44
+    },
+    {
+      "text": "why it's kinda little 50 seconds",
+      "start": 1779.84,
+      "duration": 5.91
+    },
+    {
+      "text": "remaining from the lower ambient air",
+      "start": 1782.18,
+      "duration": 7.38
+    },
+    {
+      "text": "pressure and that's Chatham station and",
+      "start": 1785.75,
+      "duration": 5.55
+    },
+    {
+      "text": "altitude compensating nozzle like an air",
+      "start": 1789.56,
+      "duration": 3.72
+    },
+    {
+      "text": "spike is a dilution remains nominal",
+      "start": 1791.3,
+      "duration": 4.14
+    },
+    {
+      "text": "standby for me : approximately 30",
+      "start": 1793.28,
+      "duration": 4.2
+    },
+    {
+      "text": "seconds but I talked to Peter back the",
+      "start": 1795.44,
+      "duration": 4.56
+    },
+    {
+      "text": "CEO about having nine engines if they",
+      "start": 1797.48,
+      "duration": 4.26
+    },
+    {
+      "text": "can do certain things to almost create",
+      "start": 1800.0,
+      "duration": 3.42
+    },
+    {
+      "text": "an air spike of fact like gimbal them",
+      "start": 1801.74,
+      "duration": 3.21
+    },
+    {
+      "text": "inwards toward each other and he didn't",
+      "start": 1803.42,
+      "duration": 3.96
+    },
+    {
+      "text": "necessarily tell me what exactly but you",
+      "start": 1804.95,
+      "duration": 4.23
+    },
+    {
+      "text": "can I was like we could do some tricks",
+      "start": 1807.38,
+      "duration": 3.45
+    },
+    {
+      "text": "the nine Rutherfurd engines on electrons",
+      "start": 1809.18,
+      "duration": 3.15
+    },
+    {
+      "text": "first stage will shut off ahead of a",
+      "start": 1810.83,
+      "duration": 3.0
+    },
+    {
+      "text": "separation from the rest of the rocket",
+      "start": 1812.33,
+      "duration": 4.02
+    },
+    {
+      "text": "one stage 1 and stage 2 have separated",
+      "start": 1813.83,
+      "duration": 4.47
+    },
+    {
+      "text": "the final vacuum optimized Rutherford",
+      "start": 1816.35,
+      "duration": 4.59
+    },
+    {
+      "text": "engine on electrons Secretariat and",
+      "start": 1818.3,
+      "duration": 3.99
+    },
+    {
+      "text": "propel like surround the rest of the way",
+      "start": 1820.94,
+      "duration": 3.71
+    },
+    {
+      "text": "to orbit",
+      "start": 1822.29,
+      "duration": 2.36
+    },
+    {
+      "text": "Stage one miko confirmed I would love to",
+      "start": 1832.66,
+      "duration": 7.32
+    },
+    {
+      "text": "compare that to city of separation",
+      "start": 1838.36,
+      "duration": 4.44
+    },
+    {
+      "text": "successful stage 2 ignition with whether",
+      "start": 1839.98,
+      "duration": 4.56
+    },
+    {
+      "text": "her polish had a nominal that also",
+      "start": 1842.8,
+      "duration": 3.06
+    },
+    {
+      "text": "conveyed more seal pv than that",
+      "start": 1844.54,
+      "duration": 4.86
+    },
+    {
+      "text": "interstate to normal but maybe not and",
+      "start": 1845.86,
+      "duration": 4.92
+    },
+    {
+      "text": "there it is Manchin cough has been",
+      "start": 1849.4,
+      "duration": 3.27
+    },
+    {
+      "text": "confirmed electrons first and second",
+      "start": 1850.78,
+      "duration": 4.35
+    },
+    {
+      "text": "stages have successfully separated for",
+      "start": 1852.67,
+      "duration": 3.87
+    },
+    {
+      "text": "the payload to be deployed from the kick",
+      "start": 1855.13,
+      "duration": 3.03
+    },
+    {
+      "text": "stage first the protective fairing needs",
+      "start": 1856.54,
+      "duration": 3.75
+    },
+    {
+      "text": "to open up and fall away things are",
+      "start": 1858.16,
+      "duration": 3.78
+    },
+    {
+      "text": "looking good in propulsion is nominal as",
+      "start": 1860.29,
+      "duration": 3.38
+    },
+    {
+      "text": "we approach very experienced jettisons",
+      "start": 1861.94,
+      "duration": 6.78
+    },
+    {
+      "text": "succeeded thanks for the coffee Jeffrey",
+      "start": 1863.67,
+      "duration": 7.06
+    },
+    {
+      "text": "I was bearing us separated clearing the",
+      "start": 1868.72,
+      "duration": 3.6
+    },
+    {
+      "text": "way for payload deployment coming up in",
+      "start": 1870.73,
+      "duration": 3.66
+    },
+    {
+      "text": "approximately 50 minutes from now I will",
+      "start": 1872.32,
+      "duration": 10.16
+    },
+    {
+      "text": "definitely that was 50 minutes from now",
+      "start": 1874.39,
+      "duration": 8.09
+    },
+    {
+      "text": "they must I don't know for sure but they",
+      "start": 1891.02,
+      "duration": 5.34
+    },
+    {
+      "text": "must also use something like - no no LT",
+      "start": 1893.63,
+      "duration": 5.94
+    },
+    {
+      "text": "churches that SpaceX uses for their but",
+      "start": 1896.36,
+      "duration": 5.73
+    },
+    {
+      "text": "it appears to be a radiatively cooled",
+      "start": 1899.57,
+      "duration": 5.19
+    },
+    {
+      "text": "and that's why it's so so so bright rock",
+      "start": 1902.09,
+      "duration": 3.839
+    },
+    {
+      "text": "and checking with you about three",
+      "start": 1904.76,
+      "duration": 2.7
+    },
+    {
+      "text": "minutes and 45 seconds into flight",
+      "start": 1905.929,
+      "duration": 3.031
+    },
+    {
+      "text": "everything is looking great as",
+      "start": 1907.46,
+      "duration": 6.569
+    },
+    {
+      "text": "electronic continues on to orbit best",
+      "start": 1908.96,
+      "duration": 7.68
+    },
+    {
+      "text": "buddy monka asks what's with the sparks",
+      "start": 1914.029,
+      "duration": 4.591
+    },
+    {
+      "text": "and the other the likely I don't know",
+      "start": 1916.64,
+      "duration": 3.389
+    },
+    {
+      "text": "for sure if the nozzle extension is",
+      "start": 1918.62,
+      "duration": 3.059
+    },
+    {
+      "text": "ablative Lee cooled or not but it might",
+      "start": 1920.029,
+      "duration": 5.28
+    },
+    {
+      "text": "be it also might just be a little bit",
+      "start": 1921.679,
+      "duration": 5.431
+    },
+    {
+      "text": "ablative Li cooled but that's what",
+      "start": 1925.309,
+      "duration": 5.401
+    },
+    {
+      "text": "likely just kind of chunks of the of the",
+      "start": 1927.11,
+      "duration": 8.819
+    },
+    {
+      "text": "nozzle extension so yeah probably a",
+      "start": 1930.71,
+      "duration": 9.12
+    },
+    {
+      "text": "little bit of ablative li cooled good",
+      "start": 1935.929,
+      "duration": 6.291
+    },
+    {
+      "text": "question",
+      "start": 1939.83,
+      "duration": 2.39
+    },
+    {
+      "text": "me and stage two actually be better at",
+      "start": 1946.95,
+      "duration": 6.03
+    },
+    {
+      "text": "discharges nominal and I don't forget on",
+      "start": 1949.83,
+      "duration": 4.559
+    },
+    {
+      "text": "the top right there you can't see this",
+      "start": 1952.98,
+      "duration": 3.149
+    },
+    {
+      "text": "like box I can think that's actually one",
+      "start": 1954.389,
+      "duration": 3.75
+    },
+    {
+      "text": "of the one of the batteries and they're",
+      "start": 1956.129,
+      "duration": 3.721
+    },
+    {
+      "text": "going to actually just romance for the",
+      "start": 1958.139,
+      "duration": 3.571
+    },
+    {
+      "text": "webcast of electrons look ma no hands",
+      "start": 1959.85,
+      "duration": 3.659
+    },
+    {
+      "text": "mission we've had successful management",
+      "start": 1961.71,
+      "duration": 4.169
+    },
+    {
+      "text": "cut off stage separation and stage 2",
+      "start": 1963.509,
+      "duration": 4.17
+    },
+    {
+      "text": "ignition electron is looking looking",
+      "start": 1965.879,
+      "duration": 3.3
+    },
+    {
+      "text": "healthy with the velocity of ten",
+      "start": 1967.679,
+      "duration": 2.97
+    },
+    {
+      "text": "thousand kilometers per hour in an",
+      "start": 1969.179,
+      "duration": 14.911
+    },
+    {
+      "text": "altitude of 220 kilometers and stick",
+      "start": 1970.649,
+      "duration": 14.791
+    },
+    {
+      "text": "around guys afterwards I'll give you",
+      "start": 1984.09,
+      "duration": 2.519
+    },
+    {
+      "text": "guys a quick little run down again on",
+      "start": 1985.44,
+      "duration": 3.209
+    },
+    {
+      "text": "kind of star hoppers progress a lot of",
+      "start": 1986.609,
+      "duration": 3.18
+    },
+    {
+      "text": "people are asking about that since",
+      "start": 1988.649,
+      "duration": 3.48
+    },
+    {
+      "text": "obviously I'm in Texas trying to catch",
+      "start": 1989.789,
+      "duration": 4.95
+    },
+    {
+      "text": "that I'm also tell you guys about cup",
+      "start": 1992.129,
+      "duration": 3.841
+    },
+    {
+      "text": "date from Rock about Mission Control",
+      "start": 1994.739,
+      "duration": 3.091
+    },
+    {
+      "text": "electrons propulsion is nominal and have",
+      "start": 1995.97,
+      "duration": 3.779
+    },
+    {
+      "text": "our battery hot-swap here we go this is",
+      "start": 1997.83,
+      "duration": 3.39
+    },
+    {
+      "text": "cool I think this is really smart this",
+      "start": 1999.749,
+      "duration": 2.76
+    },
+    {
+      "text": "is the whole reason this thing can",
+      "start": 2001.22,
+      "duration": 2.61
+    },
+    {
+      "text": "basically get into orbit hundred",
+      "start": 2002.509,
+      "duration": 3.54
+    },
+    {
+      "text": "chickens remaining it's because this",
+      "start": 2003.83,
+      "duration": 4.38
+    },
+    {
+      "text": "battery hot-swap idea so glare without",
+      "start": 2006.049,
+      "duration": 5.51
+    },
+    {
+      "text": "of that brilliant",
+      "start": 2008.21,
+      "duration": 3.349
+    },
+    {
+      "text": "all right any second now probably so",
+      "start": 2021.33,
+      "duration": 4.5
+    },
+    {
+      "text": "we're now at t plus five minutes and 45",
+      "start": 2024.029,
+      "duration": 3.931
+    },
+    {
+      "text": "seconds since liftoff an excellent list",
+      "start": 2025.83,
+      "duration": 3.689
+    },
+    {
+      "text": "of mission milestones is the battery",
+      "start": 2027.96,
+      "duration": 3.87
+    },
+    {
+      "text": "hot-swap electrons patter batteries",
+      "start": 2029.519,
+      "duration": 3.51
+    },
+    {
+      "text": "power electric pumps on the rough",
+      "start": 2031.83,
+      "duration": 2.849
+    },
+    {
+      "text": "revenge exponent we get to this point in",
+      "start": 2033.029,
+      "duration": 3.0
+    },
+    {
+      "text": "the mission these batteries are depleted",
+      "start": 2034.679,
+      "duration": 3.541
+    },
+    {
+      "text": "and we no longer need them so we do a",
+      "start": 2036.029,
+      "duration": 3.6
+    },
+    {
+      "text": "quick hotspot from the depleted",
+      "start": 2038.22,
+      "duration": 2.73
+    },
+    {
+      "text": "batteries that were to another fully",
+      "start": 2039.629,
+      "duration": 2.971
+    },
+    {
+      "text": "charged one to maintain power to the",
+      "start": 2040.95,
+      "duration": 3.51
+    },
+    {
+      "text": "engine and provide a much more efficient",
+      "start": 2042.6,
+      "duration": 3.6
+    },
+    {
+      "text": "ride the rest of the way to orbit let's",
+      "start": 2044.46,
+      "duration": 5.419
+    },
+    {
+      "text": "listen in for the call on the hotspot I",
+      "start": 2046.2,
+      "duration": 3.679
+    },
+    {
+      "text": "wonder how they decided how little",
+      "start": 2050.389,
+      "duration": 5.23
+    },
+    {
+      "text": "change to do you know why only to do one",
+      "start": 2053.19,
+      "duration": 3.869
+    },
+    {
+      "text": "hot swap instead of having like banks",
+      "start": 2055.619,
+      "duration": 2.55
+    },
+    {
+      "text": "and batteries that are constantly",
+      "start": 2057.059,
+      "duration": 3.24
+    },
+    {
+      "text": "ejecting I wonder what the engineering",
+      "start": 2058.169,
+      "duration": 3.841
+    },
+    {
+      "text": "trade-off is probably just less events",
+      "start": 2060.299,
+      "duration": 4.171
+    },
+    {
+      "text": "it's better you know probably not smart",
+      "start": 2062.01,
+      "duration": 4.44
+    },
+    {
+      "text": "to have to rely on injecting batteries",
+      "start": 2064.47,
+      "duration": 4.379
+    },
+    {
+      "text": "every like ten seconds there we go",
+      "start": 2066.45,
+      "duration": 4.949
+    },
+    {
+      "text": "that's the hot spot right there better",
+      "start": 2068.849,
+      "duration": 5.371
+    },
+    {
+      "text": "each other some confirmed that's so cool",
+      "start": 2071.399,
+      "duration": 9.361
+    },
+    {
+      "text": "Stage two propulsion still nominal as",
+      "start": 2074.22,
+      "duration": 7.8
+    },
+    {
+      "text": "you've just heard we've had successful",
+      "start": 2080.76,
+      "duration": 3.48
+    },
+    {
+      "text": "battery hot swap electrons electrons",
+      "start": 2082.02,
+      "duration": 5.69
+    },
+    {
+      "text": "tracking continues to look nominal",
+      "start": 2084.24,
+      "duration": 3.47
+    },
+    {
+      "text": "roadkill on our discord Channel asked",
+      "start": 2095.8,
+      "duration": 4.44
+    },
+    {
+      "text": "with a battery so close to that hot",
+      "start": 2097.86,
+      "duration": 4.15
+    },
+    {
+      "text": "nozzle you know why doesn't affect it",
+      "start": 2100.24,
+      "duration": 4.41
+    },
+    {
+      "text": "well there is yeah there's no air there",
+      "start": 2102.01,
+      "duration": 5.25
+    },
+    {
+      "text": "so there's not going to be you know any",
+      "start": 2104.65,
+      "duration": 4.5
+    },
+    {
+      "text": "convective heating so it's not gonna",
+      "start": 2107.26,
+      "duration": 3.96
+    },
+    {
+      "text": "heat up air which then will heat up the",
+      "start": 2109.15,
+      "duration": 3.3
+    },
+    {
+      "text": "battery so you can have stuff really",
+      "start": 2111.22,
+      "duration": 3.0
+    },
+    {
+      "text": "close to that nozzle right now and it",
+      "start": 2112.45,
+      "duration": 3.48
+    },
+    {
+      "text": "so we're approximately a minute and 45",
+      "start": 2114.22,
+      "duration": 3.75
+    },
+    {
+      "text": "seconds away from cake stage separation",
+      "start": 2115.93,
+      "duration": 4.68
+    },
+    {
+      "text": "velocity is 18,000 kilometers per hour",
+      "start": 2117.97,
+      "duration": 5.91
+    },
+    {
+      "text": "and altitude is 304 kilometers the look",
+      "start": 2120.61,
+      "duration": 4.8
+    },
+    {
+      "text": "ma no hands missin continues to look",
+      "start": 2123.88,
+      "duration": 4.47
+    },
+    {
+      "text": "good so if you put your hand up really",
+      "start": 2125.41,
+      "duration": 4.11
+    },
+    {
+      "text": "close to that nozzle right now in the",
+      "start": 2128.35,
+      "duration": 3.3
+    },
+    {
+      "text": "vacuum space you would not feel anything",
+      "start": 2129.52,
+      "duration": 5.79
+    },
+    {
+      "text": "it does still radiate heat away um I",
+      "start": 2131.65,
+      "duration": 5.01
+    },
+    {
+      "text": "guess so you can maybe feel the",
+      "start": 2135.31,
+      "duration": 3.81
+    },
+    {
+      "text": "radiative heat a little bit I'm not sure",
+      "start": 2136.66,
+      "duration": 4.38
+    },
+    {
+      "text": "actually be a better at discharge",
+      "start": 2139.12,
+      "duration": 4.05
+    },
+    {
+      "text": "holding nominal which is why I'm not a",
+      "start": 2141.04,
+      "duration": 4.71
+    },
+    {
+      "text": "rocket scientist someone tell me guess",
+      "start": 2143.17,
+      "duration": 4.26
+    },
+    {
+      "text": "now question was about six kilometers",
+      "start": 2145.75,
+      "duration": 2.7
+    },
+    {
+      "text": "per second",
+      "start": 2147.43,
+      "duration": 2.85
+    },
+    {
+      "text": "but there's Delta true just 310",
+      "start": 2148.45,
+      "duration": 3.96
+    },
+    {
+      "text": "kilometers there's no convective heating",
+      "start": 2150.28,
+      "duration": 4.5
+    },
+    {
+      "text": "in space but there is radiative heating",
+      "start": 2152.41,
+      "duration": 4.04
+    },
+    {
+      "text": "which is why it's so bright we're seeing",
+      "start": 2154.78,
+      "duration": 4.74
+    },
+    {
+      "text": "it radiates heat away just a quick",
+      "start": 2156.45,
+      "duration": 4.6
+    },
+    {
+      "text": "update for you here on rocket labs look",
+      "start": 2159.52,
+      "duration": 3.33
+    },
+    {
+      "text": "ma no hands mission we're about one",
+      "start": 2161.05,
+      "duration": 3.0
+    },
+    {
+      "text": "minute away from kick stage separation",
+      "start": 2162.85,
+      "duration": 5.7
+    },
+    {
+      "text": "and electron continues nominally but",
+      "start": 2164.05,
+      "duration": 6.3
+    },
+    {
+      "text": "since there's no medium to transfer how",
+      "start": 2168.55,
+      "duration": 5.4
+    },
+    {
+      "text": "does that work someone smile let me help",
+      "start": 2170.35,
+      "duration": 6.74
+    },
+    {
+      "text": "entering parent out to check mud",
+      "start": 2173.95,
+      "duration": 3.14
+    },
+    {
+      "text": "appreciation hurts",
+      "start": 2179.43,
+      "duration": 6.82
+    },
+    {
+      "text": "there's infrared radiation 20 seconds",
+      "start": 2180.85,
+      "duration": 10.34
+    },
+    {
+      "text": "remaining time to reflective coating",
+      "start": 2186.25,
+      "duration": 8.31
+    },
+    {
+      "text": "infrared red light so you would feel it",
+      "start": 2191.19,
+      "duration": 4.81
+    },
+    {
+      "text": "with your hand it would burn you but you",
+      "start": 2194.56,
+      "duration": 2.46
+    },
+    {
+      "text": "could prevent that with that sheet of",
+      "start": 2196.0,
+      "duration": 2.85
+    },
+    {
+      "text": "aluminum foil I hope that seems exactly",
+      "start": 2197.02,
+      "duration": 3.6
+    },
+    {
+      "text": "right you could reflect it off five",
+      "start": 2198.85,
+      "duration": 5.73
+    },
+    {
+      "text": "seconds dang I think I don't want it",
+      "start": 2200.62,
+      "duration": 6.87
+    },
+    {
+      "text": "quick if you think I can take shut down",
+      "start": 2204.58,
+      "duration": 5.63
+    },
+    {
+      "text": "there we go",
+      "start": 2207.49,
+      "duration": 2.72
+    },
+    {
+      "text": "good transfer what achieved",
+      "start": 2211.64,
+      "duration": 3.8
+    },
+    {
+      "text": "as you just saw electron ii states is",
+      "start": 2223.42,
+      "duration": 4.71
+    },
+    {
+      "text": "shut down as planned with a clean",
+      "start": 2225.91,
+      "duration": 3.81
+    },
+    {
+      "text": "separation out the kick stage electron",
+      "start": 2228.13,
+      "duration": 3.12
+    },
+    {
+      "text": "is orbital and it feels good to be back",
+      "start": 2229.72,
+      "duration": 3.299
+    },
+    {
+      "text": "so here's a quick explanation of how",
+      "start": 2231.25,
+      "duration": 3.269
+    },
+    {
+      "text": "this innovative electron kick stage",
+      "start": 2233.019,
+      "duration": 6.3
+    },
+    {
+      "text": "works to deploy payloads to orbit we use",
+      "start": 2234.519,
+      "duration": 5.971
+    },
+    {
+      "text": "stage 2 to take the payload to",
+      "start": 2239.319,
+      "duration": 3.21
+    },
+    {
+      "text": "elliptical parking orbit as shown here",
+      "start": 2240.49,
+      "duration": 3.93
+    },
+    {
+      "text": "before the kick stage separates from",
+      "start": 2242.529,
+      "duration": 4.231
+    },
+    {
+      "text": "electrons second stage by leaving the",
+      "start": 2244.42,
+      "duration": 3.78
+    },
+    {
+      "text": "second stage in this highly elliptical",
+      "start": 2246.76,
+      "duration": 3.0
+    },
+    {
+      "text": "orbit it experiences a high amount of",
+      "start": 2248.2,
+      "duration": 3.81
+    },
+    {
+      "text": "atmospheric drag and as a result the",
+      "start": 2249.76,
+      "duration": 3.839
+    },
+    {
+      "text": "stage is dragged back into the Earth's",
+      "start": 2252.01,
+      "duration": 3.539
+    },
+    {
+      "text": "atmosphere to be burned up in just a",
+      "start": 2253.599,
+      "duration": 2.99
+    },
+    {
+      "text": "matter of weeks",
+      "start": 2255.549,
+      "duration": 3.361
+    },
+    {
+      "text": "meanwhile the kick stage lights it's 3d",
+      "start": 2256.589,
+      "duration": 4.24
+    },
+    {
+      "text": "printed Curie engine and circularized at",
+      "start": 2258.91,
+      "duration": 3.709
+    },
+    {
+      "text": "the zorb before deploying the payload",
+      "start": 2260.829,
+      "duration": 4.111
+    },
+    {
+      "text": "the kick stage equipped with a cold gas",
+      "start": 2262.619,
+      "duration": 3.97
+    },
+    {
+      "text": "reaction control system which means we",
+      "start": 2264.94,
+      "duration": 3.179
+    },
+    {
+      "text": "can accurately point the kick stage and",
+      "start": 2266.589,
+      "duration": 3.121
+    },
+    {
+      "text": "deploy palos to incredibly precise",
+      "start": 2268.119,
+      "duration": 2.91
+    },
+    {
+      "text": "orbits even when we're launching",
+      "start": 2269.71,
+      "duration": 3.629
+    },
+    {
+      "text": "multiple satellites at once once the",
+      "start": 2271.029,
+      "duration": 3.75
+    },
+    {
+      "text": "kick stage has deployed the payload the",
+      "start": 2273.339,
+      "duration": 3.091
+    },
+    {
+      "text": "Curie engine is capable of reigniting",
+      "start": 2274.779,
+      "duration": 3.51
+    },
+    {
+      "text": "and performing a deorbit maneuver to",
+      "start": 2276.43,
+      "duration": 3.51
+    },
+    {
+      "text": "burn itself up leaving nothing behind in",
+      "start": 2278.289,
+      "duration": 3.421
+    },
+    {
+      "text": "orbit but our customer satellites see I",
+      "start": 2279.94,
+      "duration": 3.389
+    },
+    {
+      "text": "love that so with that I want to thank",
+      "start": 2281.71,
+      "duration": 2.79
+    },
+    {
+      "text": "our mission partners for choosing to",
+      "start": 2283.329,
+      "duration": 2.851
+    },
+    {
+      "text": "launch honor electron and thank you for",
+      "start": 2284.5,
+      "duration": 2.94
+    },
+    {
+      "text": "joining us for our eighth electron",
+      "start": 2286.18,
+      "duration": 2.73
+    },
+    {
+      "text": "launch I look forward to seeing you back",
+      "start": 2287.44,
+      "duration": 3.45
+    },
+    {
+      "text": "here next month for another mission I'm",
+      "start": 2288.91,
+      "duration": 3.389
+    },
+    {
+      "text": "max Muncie and depending on where you",
+      "start": 2290.89,
+      "duration": 2.55
+    },
+    {
+      "text": "are in the world have yourself a good",
+      "start": 2292.299,
+      "duration": 3.361
+    },
+    {
+      "text": "morning a good day or a good night this",
+      "start": 2293.44,
+      "duration": 3.839
+    },
+    {
+      "text": "is rocket lab Mission Control signing",
+      "start": 2295.66,
+      "duration": 5.49
+    },
+    {
+      "text": "off man how are they so professional at",
+      "start": 2297.279,
+      "duration": 5.881
+    },
+    {
+      "text": "their live streams are ahead here they",
+      "start": 2301.15,
+      "duration": 6.139
+    },
+    {
+      "text": "do such a freaking good job oh well",
+      "start": 2303.16,
+      "duration": 6.899
+    },
+    {
+      "text": "congratulations rocket lab you guys make",
+      "start": 2307.289,
+      "duration": 5.411
+    },
+    {
+      "text": "that like way too easy now already I",
+      "start": 2310.059,
+      "duration": 7.23
+    },
+    {
+      "text": "mean that's insane and yeah how do they",
+      "start": 2312.7,
+      "duration": 7.109
+    },
+    {
+      "text": "do that already alright good job",
+      "start": 2317.289,
+      "duration": 4.23
+    },
+    {
+      "text": "everybody good job all you guys at",
+      "start": 2319.809,
+      "duration": 4.02
+    },
+    {
+      "text": "rocket lab Congrats on your mission I'm",
+      "start": 2321.519,
+      "duration": 3.421
+    },
+    {
+      "text": "really excited I hope that we actually",
+      "start": 2323.829,
+      "duration": 4.371
+    },
+    {
+      "text": "hear something relatively soon about",
+      "start": 2324.94,
+      "duration": 5.909
+    },
+    {
+      "text": "about how that actually is going to go",
+      "start": 2328.2,
+      "duration": 4.03
+    },
+    {
+      "text": "with the recovery because they're going",
+      "start": 2330.849,
+      "duration": 4.051
+    },
+    {
+      "text": "to be collecting a lot of data we need",
+      "start": 2332.23,
+      "duration": 4.02
+    },
+    {
+      "text": "to do a quick little update here guys",
+      "start": 2334.9,
+      "duration": 2.79
+    },
+    {
+      "text": "I've had a lot of people asking about",
+      "start": 2336.25,
+      "duration": 3.5
+    },
+    {
+      "text": "like the normal hats are coming in stock",
+      "start": 2337.69,
+      "duration": 6.089
+    },
+    {
+      "text": "to my webstore but more importantly I",
+      "start": 2339.75,
+      "duration": 7.539
+    },
+    {
+      "text": "have some bad news and that is that the",
+      "start": 2343.779,
+      "duration": 7.171
+    },
+    {
+      "text": "full flow stage cycle shirts again have",
+      "start": 2347.289,
+      "duration": 6.33
+    },
+    {
+      "text": "run out of stock basically so I keep",
+      "start": 2350.95,
+      "duration": 3.78
+    },
+    {
+      "text": "telling you guys if you guys want",
+      "start": 2353.619,
+      "duration": 2.97
+    },
+    {
+      "text": "merchandise you got to get on it while",
+      "start": 2354.73,
+      "duration": 2.22
+    },
+    {
+      "text": "you",
+      "start": 2356.589,
+      "duration": 2.311
+    },
+    {
+      "text": "but I do have a really good news and",
+      "start": 2356.95,
+      "duration": 3.45
+    },
+    {
+      "text": "that's that we have a new Rudd's",
+      "start": 2358.9,
+      "duration": 4.44
+    },
+    {
+      "text": "rapid unscheduled discount section so",
+      "start": 2360.4,
+      "duration": 5.43
+    },
+    {
+      "text": "these are shirts that are on sale look",
+      "start": 2363.34,
+      "duration": 3.45
+    },
+    {
+      "text": "it I mean I don't think you'll find",
+      "start": 2365.83,
+      "duration": 4.41
+    },
+    {
+      "text": "shirts this cheap anywhere else you know",
+      "start": 2366.79,
+      "duration": 5.49
+    },
+    {
+      "text": "on the internet anywhere so we are the",
+      "start": 2370.24,
+      "duration": 4.05
+    },
+    {
+      "text": "Falcon family tea the helmet logo future",
+      "start": 2372.28,
+      "duration": 3.96
+    },
+    {
+      "text": "Martian tea and the planet logo we",
+      "start": 2374.29,
+      "duration": 4.34
+    },
+    {
+      "text": "already sold out of the planet hoodies",
+      "start": 2376.24,
+      "duration": 4.95
+    },
+    {
+      "text": "because again remember I do limited runs",
+      "start": 2378.63,
+      "duration": 3.88
+    },
+    {
+      "text": "of shirts these are not print-on-demand",
+      "start": 2381.19,
+      "duration": 3.06
+    },
+    {
+      "text": "that means they're higher quality",
+      "start": 2382.51,
+      "duration": 4.32
+    },
+    {
+      "text": "they're actually ring spun cotton shirts",
+      "start": 2384.25,
+      "duration": 4.74
+    },
+    {
+      "text": "they're nice and durable but still soft",
+      "start": 2386.83,
+      "duration": 5.64
+    },
+    {
+      "text": "and good quality and even custom tags",
+      "start": 2388.99,
+      "duration": 5.82
+    },
+    {
+      "text": "and things like that so these shirts are",
+      "start": 2392.47,
+      "duration": 4.38
+    },
+    {
+      "text": "awesome if you want to help support what",
+      "start": 2394.81,
+      "duration": 3.96
+    },
+    {
+      "text": "I do go to everyday astronaut comm slash",
+      "start": 2396.85,
+      "duration": 5.13
+    },
+    {
+      "text": "shop pick up yourself a nice inexpensive",
+      "start": 2398.77,
+      "duration": 5.31
+    },
+    {
+      "text": "shirt while they're at it these are",
+      "start": 2401.98,
+      "duration": 4.08
+    },
+    {
+      "text": "almost gone I think there's only smalls",
+      "start": 2404.08,
+      "duration": 4.94
+    },
+    {
+      "text": "left and white for the Falcon family tea",
+      "start": 2406.06,
+      "duration": 5.13
+    },
+    {
+      "text": "the other ones are almost out of stock",
+      "start": 2409.02,
+      "duration": 4.84
+    },
+    {
+      "text": "too so if you want your chance to get a",
+      "start": 2411.19,
+      "duration": 5.01
+    },
+    {
+      "text": "nice inexpensive shirt we're clearing",
+      "start": 2413.86,
+      "duration": 4.5
+    },
+    {
+      "text": "these out making room for some new stuff",
+      "start": 2416.2,
+      "duration": 3.78
+    },
+    {
+      "text": "that will be coming very soon I know a",
+      "start": 2418.36,
+      "duration": 4.35
+    },
+    {
+      "text": "lot of people are asking about things",
+      "start": 2419.98,
+      "duration": 5.25
+    },
+    {
+      "text": "like Star man hoodie that's still coming",
+      "start": 2422.71,
+      "duration": 4.62
+    },
+    {
+      "text": "I promise these are gonna be back in",
+      "start": 2425.23,
+      "duration": 4.08
+    },
+    {
+      "text": "stock soon these utility pouches those",
+      "start": 2427.33,
+      "duration": 4.86
+    },
+    {
+      "text": "sold out like right away so yeah if",
+      "start": 2429.31,
+      "duration": 4.5
+    },
+    {
+      "text": "you're not following me on Twitter do it",
+      "start": 2432.19,
+      "duration": 3.33
+    },
+    {
+      "text": "and set up set notifications because",
+      "start": 2433.81,
+      "duration": 3.96
+    },
+    {
+      "text": "when this stuff goes up online it sells",
+      "start": 2435.52,
+      "duration": 4.74
+    },
+    {
+      "text": "out pretty quickly we also are working",
+      "start": 2437.77,
+      "duration": 4.53
+    },
+    {
+      "text": "on still getting resupplied with grid",
+      "start": 2440.26,
+      "duration": 3.75
+    },
+    {
+      "text": "fanáticos there's gonna be 2.0 they're",
+      "start": 2442.3,
+      "duration": 3.6
+    },
+    {
+      "text": "gonna be a little bit a little bit",
+      "start": 2444.01,
+      "duration": 4.02
+    },
+    {
+      "text": "updated design hopefully you guys like",
+      "start": 2445.9,
+      "duration": 6.87
+    },
+    {
+      "text": "them and yeah these these are almost a",
+      "start": 2448.03,
+      "duration": 7.56
+    },
+    {
+      "text": "lot to the apollo hatch and yeah get on",
+      "start": 2452.77,
+      "duration": 4.65
+    },
+    {
+      "text": "the stuff now because it takes like",
+      "start": 2455.59,
+      "duration": 3.69
+    },
+    {
+      "text": "three weeks to get these new tags going",
+      "start": 2457.42,
+      "duration": 3.24
+    },
+    {
+      "text": "in things like that too so there's a",
+      "start": 2459.28,
+      "duration": 4.41
+    },
+    {
+      "text": "little bit of leeway time so if you like",
+      "start": 2460.66,
+      "duration": 4.73
+    },
+    {
+      "text": "a shirt and you see it do it right now",
+      "start": 2463.69,
+      "duration": 5.01
+    },
+    {
+      "text": "but that helps me I owe a huge thank you",
+      "start": 2465.39,
+      "duration": 5.26
+    },
+    {
+      "text": "to all you guys that you know have",
+      "start": 2468.7,
+      "duration": 4.05
+    },
+    {
+      "text": "purchased awesome merchandise lately",
+      "start": 2470.65,
+      "duration": 4.14
+    },
+    {
+      "text": "because that definitely helps make trips",
+      "start": 2472.75,
+      "duration": 5.34
+    },
+    {
+      "text": "like this down to currently Austin",
+      "start": 2474.79,
+      "duration": 5.67
+    },
+    {
+      "text": "working my way down to Boca Chica makes",
+      "start": 2478.09,
+      "duration": 4.41
+    },
+    {
+      "text": "it affordable makes it when I'm stuck in",
+      "start": 2480.46,
+      "duration": 4.2
+    },
+    {
+      "text": "a hotel for five nights now waiting for",
+      "start": 2482.5,
+      "duration": 7.08
+    },
+    {
+      "text": "something to happen fun right so that",
+      "start": 2484.66,
+      "duration": 5.91
+    },
+    {
+      "text": "brings us to the next",
+      "start": 2489.58,
+      "duration": 3.75
+    },
+    {
+      "text": "a star hopper yes they're waiting for",
+      "start": 2490.57,
+      "duration": 5.64
+    },
+    {
+      "text": "FAA approval it sounds like there's just",
+      "start": 2493.33,
+      "duration": 6.3
+    },
+    {
+      "text": "kind of concerns over its everything I",
+      "start": 2496.21,
+      "duration": 4.68
+    },
+    {
+      "text": "guess it sounds like they're having to",
+      "start": 2499.63,
+      "duration": 6.21
+    },
+    {
+      "text": "totally redo and get oh I didn't read",
+      "start": 2500.89,
+      "duration": 9.3
+    },
+    {
+      "text": "questions down there it sounds like that",
+      "start": 2505.84,
+      "duration": 5.73
+    },
+    {
+      "text": "is you know have to give the full",
+      "start": 2510.19,
+      "duration": 3.18
+    },
+    {
+      "text": "blessing from the FAA the FAA has not",
+      "start": 2511.57,
+      "duration": 4.85
+    },
+    {
+      "text": "granted them a launch license yet so",
+      "start": 2513.37,
+      "duration": 7.07
+    },
+    {
+      "text": "yeah that's going to be very important",
+      "start": 2516.42,
+      "duration": 7.81
+    },
+    {
+      "text": "so had Chris Chris Jay ask Space",
+      "start": 2520.44,
+      "duration": 5.89
+    },
+    {
+      "text": "conference with if I were to have a",
+      "start": 2524.23,
+      "duration": 3.96
+    },
+    {
+      "text": "space conference actually I'm working on",
+      "start": 2526.33,
+      "duration": 4.56
+    },
+    {
+      "text": "trying to get a panel someday with I",
+      "start": 2528.19,
+      "duration": 4.02
+    },
+    {
+      "text": "don't know if this counts I don't know",
+      "start": 2530.89,
+      "duration": 3.12
+    },
+    {
+      "text": "if this is quite your question but I'm",
+      "start": 2532.21,
+      "duration": 3.66
+    },
+    {
+      "text": "working on having a panel with where it",
+      "start": 2534.01,
+      "duration": 4.89
+    },
+    {
+      "text": "scott manley Amy Shira Teitel and maybe",
+      "start": 2535.87,
+      "duration": 5.31
+    },
+    {
+      "text": "a few others as well on a space panel so",
+      "start": 2538.9,
+      "duration": 3.96
+    },
+    {
+      "text": "that'd be my ideal space conference I",
+      "start": 2541.18,
+      "duration": 3.69
+    },
+    {
+      "text": "think actually I would love to go on a",
+      "start": 2542.86,
+      "duration": 5.7
+    },
+    {
+      "text": "tour with like with Amy Scott and I",
+      "start": 2544.87,
+      "duration": 5.43
+    },
+    {
+      "text": "don't know like Jo Barnard or something",
+      "start": 2548.56,
+      "duration": 3.72
+    },
+    {
+      "text": "and just answered space questions or",
+      "start": 2550.3,
+      "duration": 2.76
+    },
+    {
+      "text": "something like that I think that'd be",
+      "start": 2552.28,
+      "duration": 5.19
+    },
+    {
+      "text": "super super fun what are you guys",
+      "start": 2553.06,
+      "duration": 7.38
+    },
+    {
+      "text": "looking at then the and discord about",
+      "start": 2557.47,
+      "duration": 6.18
+    },
+    {
+      "text": "the reflective radiative oh yeah I don't",
+      "start": 2560.44,
+      "duration": 6.89
+    },
+    {
+      "text": "know might just be camera exposure stuff",
+      "start": 2563.65,
+      "duration": 5.64
+    },
+    {
+      "text": "well I should mention too a lot of",
+      "start": 2567.33,
+      "duration": 4.06
+    },
+    {
+      "text": "people are asking about that our discord",
+      "start": 2569.29,
+      "duration": 3.66
+    },
+    {
+      "text": "channel we have an exclusive to score",
+      "start": 2571.39,
+      "duration": 2.88
+    },
+    {
+      "text": "channel for patreon member so if you",
+      "start": 2572.95,
+      "duration": 3.18
+    },
+    {
+      "text": "want to join our discord channel which",
+      "start": 2574.27,
+      "duration": 4.56
+    },
+    {
+      "text": "is awesome it's where we get a lot like",
+      "start": 2576.13,
+      "duration": 5.88
+    },
+    {
+      "text": "this is definitely I think the best",
+      "start": 2578.83,
+      "duration": 4.92
+    },
+    {
+      "text": "space community in the world because",
+      "start": 2582.01,
+      "duration": 3.3
+    },
+    {
+      "text": "everyone is super friendly and we all",
+      "start": 2583.75,
+      "duration": 3.68
+    },
+    {
+      "text": "hang out in talk space literally all day",
+      "start": 2585.31,
+      "duration": 4.41
+    },
+    {
+      "text": "you can do that by joining patreon",
+      "start": 2587.43,
+      "duration": 4.27
+    },
+    {
+      "text": "patreon comm slash everyday astronaut",
+      "start": 2589.72,
+      "duration": 7.29
+    },
+    {
+      "text": "and hi guys I love you guys okay so",
+      "start": 2591.7,
+      "duration": 7.47
+    },
+    {
+      "text": "Chris J hopeful that hope that answers",
+      "start": 2597.01,
+      "duration": 4.31
+    },
+    {
+      "text": "your question",
+      "start": 2599.17,
+      "duration": 2.15
+    },
+    {
+      "text": "yeah people asked what star liner that's",
+      "start": 2601.98,
+      "duration": 4.42
+    },
+    {
+      "text": "Boeing's capsule that will be sending",
+      "start": 2604.6,
+      "duration": 3.21
+    },
+    {
+      "text": "humans to the International Space",
+      "start": 2606.4,
+      "duration": 4.23
+    },
+    {
+      "text": "Station here hopefully doing its first",
+      "start": 2607.81,
+      "duration": 6.81
+    },
+    {
+      "text": "test launch relatively soon mmm let's",
+      "start": 2610.63,
+      "duration": 4.5
+    },
+    {
+      "text": "see here",
+      "start": 2614.62,
+      "duration": 3.54
+    },
+    {
+      "text": "graham says night flights able to be",
+      "start": 2615.13,
+      "duration": 5.01
+    },
+    {
+      "text": "recovered chute and dark so I'm think I",
+      "start": 2618.16,
+      "duration": 3.57
+    },
+    {
+      "text": "was thinking about that Graham there's",
+      "start": 2620.14,
+      "duration": 3.24
+    },
+    {
+      "text": "two things don't forget first off they",
+      "start": 2621.73,
+      "duration": 2.44
+    },
+    {
+      "text": "can absolutely",
+      "start": 2623.38,
+      "duration": 2.53
+    },
+    {
+      "text": "crackit using GPS and just head to the",
+      "start": 2624.17,
+      "duration": 4.169
+    },
+    {
+      "text": "GPS heading then once they're close",
+      "start": 2625.91,
+      "duration": 4.53
+    },
+    {
+      "text": "enough they can use you know the",
+      "start": 2628.339,
+      "duration": 3.421
+    },
+    {
+      "text": "helicopter pilot could actually use like",
+      "start": 2630.44,
+      "duration": 3.78
+    },
+    {
+      "text": "infrared goggles like they do for a lot",
+      "start": 2631.76,
+      "duration": 5.069
+    },
+    {
+      "text": "of military missions you know the last",
+      "start": 2634.22,
+      "duration": 4.349
+    },
+    {
+      "text": "time zone where infrared goggles to",
+      "start": 2636.829,
+      "duration": 4.861
+    },
+    {
+      "text": "track things and a rocket that just came",
+      "start": 2638.569,
+      "duration": 4.711
+    },
+    {
+      "text": "in from reentry would have quite the",
+      "start": 2641.69,
+      "duration": 2.97
+    },
+    {
+      "text": "heat signature so they could probably",
+      "start": 2643.28,
+      "duration": 3.93
+    },
+    {
+      "text": "track it that way pretty safely and then",
+      "start": 2644.66,
+      "duration": 3.72
+    },
+    {
+      "text": "once it gets close to good literally",
+      "start": 2647.21,
+      "duration": 2.67
+    },
+    {
+      "text": "just use like a spotlight you know and",
+      "start": 2648.38,
+      "duration": 3.0
+    },
+    {
+      "text": "lights to actually track it it could",
+      "start": 2649.88,
+      "duration": 2.939
+    },
+    {
+      "text": "have a bright reflective parachute or",
+      "start": 2651.38,
+      "duration": 3.75
+    },
+    {
+      "text": "something like that too so I think night",
+      "start": 2652.819,
+      "duration": 4.05
+    },
+    {
+      "text": "recoveries would be an option but that's",
+      "start": 2655.13,
+      "duration": 2.61
+    },
+    {
+      "text": "definitely gonna be a little bit",
+      "start": 2656.869,
+      "duration": 3.571
+    },
+    {
+      "text": "trickier and a little bit more ambitious",
+      "start": 2657.74,
+      "duration": 5.28
+    },
+    {
+      "text": "I would say yeah that's a good question",
+      "start": 2660.44,
+      "duration": 4.5
+    },
+    {
+      "text": "though thank you Brian",
+      "start": 2663.02,
+      "duration": 4.17
+    },
+    {
+      "text": "great stuff Tim you like spacesuits we",
+      "start": 2664.94,
+      "duration": 4.02
+    },
+    {
+      "text": "do want to try on an apollo prototype",
+      "start": 2667.19,
+      "duration": 4.47
+    },
+    {
+      "text": "helmet sometime currently on loan from",
+      "start": 2668.96,
+      "duration": 5.609
+    },
+    {
+      "text": "my father-in-law's military history day",
+      "start": 2671.66,
+      "duration": 5.939
+    },
+    {
+      "text": "Brian I probably would want to do that",
+      "start": 2674.569,
+      "duration": 6.841
+    },
+    {
+      "text": "I've never I've never tried on an apollo",
+      "start": 2677.599,
+      "duration": 6.291
+    },
+    {
+      "text": "prototype helmet that sounds awesome",
+      "start": 2681.41,
+      "duration": 6.87
+    },
+    {
+      "text": "dang hit me up about that Mars Mountain",
+      "start": 2683.89,
+      "duration": 6.34
+    },
+    {
+      "text": "next mission it's just a flesh wound is",
+      "start": 2688.28,
+      "duration": 3.24
+    },
+    {
+      "text": "that what it is I haven't even seen",
+      "start": 2690.23,
+      "duration": 6.75
+    },
+    {
+      "text": "that's awesome John your space panel",
+      "start": 2691.52,
+      "duration": 6.69
+    },
+    {
+      "text": "sounds amazing here's a bit of funding",
+      "start": 2696.98,
+      "duration": 3.93
+    },
+    {
+      "text": "for well thank you nothing's official I",
+      "start": 2698.21,
+      "duration": 4.859
+    },
+    {
+      "text": "have reached out to them Amy and Scott",
+      "start": 2700.91,
+      "duration": 4.02
+    },
+    {
+      "text": "asking if they would want to do",
+      "start": 2703.069,
+      "duration": 4.651
+    },
+    {
+      "text": "something like that and they both said",
+      "start": 2704.93,
+      "duration": 5.52
+    },
+    {
+      "text": "absolutely so we hopefully will figure",
+      "start": 2707.72,
+      "duration": 5.81
+    },
+    {
+      "text": "out if we could find a fourth person oh",
+      "start": 2710.45,
+      "duration": 5.94
+    },
+    {
+      "text": "nice and Jeffrey Tripp my first launch",
+      "start": 2713.53,
+      "duration": 4.839
+    },
+    {
+      "text": "in your new and your first apartment",
+      "start": 2716.39,
+      "duration": 7.429
+    },
+    {
+      "text": "Congrats Jeffrey yeah that's awesome so",
+      "start": 2718.369,
+      "duration": 8.641
+    },
+    {
+      "text": "let's see you guys have some good",
+      "start": 2723.819,
+      "duration": 5.73
+    },
+    {
+      "text": "questions here",
+      "start": 2727.01,
+      "duration": 2.539
+    },
+    {
+      "text": "so d Raptor clan asks what do I think",
+      "start": 2736.71,
+      "duration": 6.69
+    },
+    {
+      "text": "about using an NTR kick stage I don't",
+      "start": 2739.92,
+      "duration": 7.17
+    },
+    {
+      "text": "know is that a nuclear kick stage for",
+      "start": 2743.4,
+      "duration": 5.13
+    },
+    {
+      "text": "starship that is already in orbits the",
+      "start": 2747.09,
+      "duration": 2.97
+    },
+    {
+      "text": "starship but maybe less revealing to go",
+      "start": 2748.53,
+      "duration": 4.23
+    },
+    {
+      "text": "to Mars or might be able to go back",
+      "start": 2750.06,
+      "duration": 6.87
+    },
+    {
+      "text": "without refueling I am assuming NTR your",
+      "start": 2752.76,
+      "duration": 7.38
+    },
+    {
+      "text": "your and also know the launch happened",
+      "start": 2756.93,
+      "duration": 6.77
+    },
+    {
+      "text": "already it just went that quickly I",
+      "start": 2760.14,
+      "duration": 6.0
+    },
+    {
+      "text": "don't know I mean I think refueling is",
+      "start": 2763.7,
+      "duration": 5.44
+    },
+    {
+      "text": "actually a relatively easy thing to do",
+      "start": 2766.14,
+      "duration": 4.65
+    },
+    {
+      "text": "in the grand scheme of things that it I",
+      "start": 2769.14,
+      "duration": 3.45
+    },
+    {
+      "text": "don't know they're doing a pretty big",
+      "start": 2770.79,
+      "duration": 4.2
+    },
+    {
+      "text": "study NASA actually gave SpaceX a",
+      "start": 2772.59,
+      "duration": 4.38
+    },
+    {
+      "text": "healthy amount of funding and/or support",
+      "start": 2774.99,
+      "duration": 3.09
+    },
+    {
+      "text": "not funding actually I think they only",
+      "start": 2776.97,
+      "duration": 3.36
+    },
+    {
+      "text": "gave them access to support and team of",
+      "start": 2778.08,
+      "duration": 4.14
+    },
+    {
+      "text": "engineers and scientists to help them",
+      "start": 2780.33,
+      "duration": 5.4
+    },
+    {
+      "text": "study in orbit refueling and that's",
+      "start": 2782.22,
+      "duration": 5.28
+    },
+    {
+      "text": "never really been done on a large scale",
+      "start": 2785.73,
+      "duration": 4.05
+    },
+    {
+      "text": "like there's never been huge vehicles",
+      "start": 2787.5,
+      "duration": 4.02
+    },
+    {
+      "text": "that are refueling with each other",
+      "start": 2789.78,
+      "duration": 3.57
+    },
+    {
+      "text": "there's only been small propellant",
+      "start": 2791.52,
+      "duration": 3.3
+    },
+    {
+      "text": "transfers between vehicles so doing a",
+      "start": 2793.35,
+      "duration": 3.75
+    },
+    {
+      "text": "full orbital refueling of something the",
+      "start": 2794.82,
+      "duration": 4.77
+    },
+    {
+      "text": "size of starship definitely never been",
+      "start": 2797.1,
+      "duration": 3.9
+    },
+    {
+      "text": "done before and that's going to have to",
+      "start": 2799.59,
+      "duration": 7.05
+    },
+    {
+      "text": "be studied so yeah yeah so um guys I",
+      "start": 2801.0,
+      "duration": 7.11
+    },
+    {
+      "text": "think that's gonna do it for me I I'm",
+      "start": 2806.64,
+      "duration": 3.44
+    },
+    {
+      "text": "gonna probably get out of here and",
+      "start": 2808.11,
+      "duration": 4.86
+    },
+    {
+      "text": "probably go back to sleep since I lit it",
+      "start": 2810.08,
+      "duration": 4.15
+    },
+    {
+      "text": "like I said I don't know if you guys are",
+      "start": 2812.97,
+      "duration": 3.45
+    },
+    {
+      "text": "here to be near this I barely slept I",
+      "start": 2814.23,
+      "duration": 3.81
+    },
+    {
+      "text": "was tossing and turning literally all",
+      "start": 2816.42,
+      "duration": 4.35
+    },
+    {
+      "text": "night cuz I was dreaming I I fell asleep",
+      "start": 2818.04,
+      "duration": 5.88
+    },
+    {
+      "text": "watching you guys remember the podcast",
+      "start": 2820.77,
+      "duration": 5.16
+    },
+    {
+      "text": "cereal with Adnan there's a like",
+      "start": 2823.92,
+      "duration": 3.54
+    },
+    {
+      "text": "follow-up to that on HBO right now I",
+      "start": 2825.93,
+      "duration": 3.63
+    },
+    {
+      "text": "fell asleep watching that this was like",
+      "start": 2827.46,
+      "duration": 4.2
+    },
+    {
+      "text": "this whole thing about trials and then I",
+      "start": 2829.56,
+      "duration": 3.87
+    },
+    {
+      "text": "was also scripting the aerospike video",
+      "start": 2831.66,
+      "duration": 4.02
+    },
+    {
+      "text": "all day and the past couple days so",
+      "start": 2833.43,
+      "duration": 4.32
+    },
+    {
+      "text": "those two things got mixed in my head",
+      "start": 2835.68,
+      "duration": 3.57
+    },
+    {
+      "text": "and I felt like aerospike engines were",
+      "start": 2837.75,
+      "duration": 3.54
+    },
+    {
+      "text": "on trial and I kept like waking up like",
+      "start": 2839.25,
+      "duration": 4.32
+    },
+    {
+      "text": "wow like that it's just I don't know",
+      "start": 2841.29,
+      "duration": 3.57
+    },
+    {
+      "text": "it's a weird debate and maybe so much",
+      "start": 2843.57,
+      "duration": 3.59
+    },
+    {
+      "text": "because my opinion I feel like the the",
+      "start": 2844.86,
+      "duration": 4.59
+    },
+    {
+      "text": "jury's still out on whether or not air",
+      "start": 2847.16,
+      "duration": 4.57
+    },
+    {
+      "text": "strikes suck I think I'm going to change",
+      "start": 2849.45,
+      "duration": 4.98
+    },
+    {
+      "text": "the title I'm not going to say aerospike",
+      "start": 2851.73,
+      "duration": 5.58
+    },
+    {
+      "text": "suck that was going to be my headline in",
+      "start": 2854.43,
+      "duration": 4.5
+    },
+    {
+      "text": "the title of the video but I don't know",
+      "start": 2857.31,
+      "duration": 5.54
+    },
+    {
+      "text": "if I actually agree that they suck so",
+      "start": 2858.93,
+      "duration": 6.9
+    },
+    {
+      "text": "the the jury still out I'm doing it",
+      "start": 2862.85,
+      "duration": 4.69
+    },
+    {
+      "text": "working on some really hard numbers",
+      "start": 2865.83,
+      "duration": 2.68
+    },
+    {
+      "text": "right now and",
+      "start": 2867.54,
+      "duration": 3.19
+    },
+    {
+      "text": "got a lot of a good info on arrow spikes",
+      "start": 2868.51,
+      "duration": 3.839
+    },
+    {
+      "text": "and I do love arrow specs they're super",
+      "start": 2870.73,
+      "duration": 4.53
+    },
+    {
+      "text": "cool but there's some major major major",
+      "start": 2872.349,
+      "duration": 4.831
+    },
+    {
+      "text": "problems with them and we'll talk about",
+      "start": 2875.26,
+      "duration": 5.609
+    },
+    {
+      "text": "that a lot so um oh there we I got a",
+      "start": 2877.18,
+      "duration": 5.58
+    },
+    {
+      "text": "couple more questions to answer here and",
+      "start": 2880.869,
+      "duration": 3.21
+    },
+    {
+      "text": "it was any word on launch escape system",
+      "start": 2882.76,
+      "duration": 2.97
+    },
+    {
+      "text": "for starship I fear there's another",
+      "start": 2884.079,
+      "duration": 5.851
+    },
+    {
+      "text": "shuttle situation so enables I don't",
+      "start": 2885.73,
+      "duration": 5.4
+    },
+    {
+      "text": "think there's going to be a launch abort",
+      "start": 2889.93,
+      "duration": 4.409
+    },
+    {
+      "text": "system and that's a video I'm working on",
+      "start": 2891.13,
+      "duration": 6.989
+    },
+    {
+      "text": "as well is should starship have a launch",
+      "start": 2894.339,
+      "duration": 7.621
+    },
+    {
+      "text": "abort system and the reason why you can",
+      "start": 2898.119,
+      "duration": 5.581
+    },
+    {
+      "text": "look at it this way adding something",
+      "start": 2901.96,
+      "duration": 3.48
+    },
+    {
+      "text": "like a launch abort system actually adds",
+      "start": 2903.7,
+      "duration": 3.69
+    },
+    {
+      "text": "a lot more complication you have a lot",
+      "start": 2905.44,
+      "duration": 3.899
+    },
+    {
+      "text": "more programming a lot more moving parts",
+      "start": 2907.39,
+      "duration": 5.6
+    },
+    {
+      "text": "a lot more things that need to go right",
+      "start": 2909.339,
+      "duration": 6.361
+    },
+    {
+      "text": "when they're needed but the rest of time",
+      "start": 2912.99,
+      "duration": 4.869
+    },
+    {
+      "text": "they're actually added parts that could",
+      "start": 2915.7,
+      "duration": 5.01
+    },
+    {
+      "text": "go wrong I mean look at DM 1 dragon",
+      "start": 2917.859,
+      "duration": 4.921
+    },
+    {
+      "text": "capsule I mean that was a pretty fairly",
+      "start": 2920.71,
+      "duration": 4.59
+    },
+    {
+      "text": "you know routine thing that had a part",
+      "start": 2922.78,
+      "duration": 4.92
+    },
+    {
+      "text": "and a system that entirely exploded and",
+      "start": 2925.3,
+      "duration": 6.09
+    },
+    {
+      "text": "I know it's an our current line of",
+      "start": 2927.7,
+      "duration": 5.85
+    },
+    {
+      "text": "thinking you know at some point people",
+      "start": 2931.39,
+      "duration": 3.63
+    },
+    {
+      "text": "you know pilots probably stopped wearing",
+      "start": 2933.55,
+      "duration": 2.22
+    },
+    {
+      "text": "parachutes",
+      "start": 2935.02,
+      "duration": 3.69
+    },
+    {
+      "text": "they just relied on the airplane to get",
+      "start": 2935.77,
+      "duration": 4.68
+    },
+    {
+      "text": "them back safely you know there's",
+      "start": 2938.71,
+      "duration": 3.24
+    },
+    {
+      "text": "probably some point where like I don't",
+      "start": 2940.45,
+      "duration": 2.73
+    },
+    {
+      "text": "know if this was ever the case but like",
+      "start": 2941.95,
+      "duration": 3.21
+    },
+    {
+      "text": "I feel like it was probably normal to",
+      "start": 2943.18,
+      "duration": 3.659
+    },
+    {
+      "text": "wear a parachute as a pilot good cyclone",
+      "start": 2945.16,
+      "duration": 3.99
+    },
+    {
+      "text": "this plane just might not work",
+      "start": 2946.839,
+      "duration": 4.711
+    },
+    {
+      "text": "it might just break you know and now",
+      "start": 2949.15,
+      "duration": 4.709
+    },
+    {
+      "text": "like you don't get on an airplane and",
+      "start": 2951.55,
+      "duration": 3.75
+    },
+    {
+      "text": "you know if they don't hand you a",
+      "start": 2953.859,
+      "duration": 2.97
+    },
+    {
+      "text": "parachute being like oh nice and it's",
+      "start": 2955.3,
+      "duration": 2.7
+    },
+    {
+      "text": "probably gonna fall out of the sky they",
+      "start": 2956.829,
+      "duration": 5.25
+    },
+    {
+      "text": "just engineer them to not do that and I",
+      "start": 2958.0,
+      "duration": 5.97
+    },
+    {
+      "text": "think starship hopefully with enough",
+      "start": 2962.079,
+      "duration": 5.161
+    },
+    {
+      "text": "runtime with enough data it could in",
+      "start": 2963.97,
+      "duration": 5.609
+    },
+    {
+      "text": "theory be reliable enough to not worry",
+      "start": 2967.24,
+      "duration": 3.78
+    },
+    {
+      "text": "about that with enough redundancy and",
+      "start": 2969.579,
+      "duration": 4.231
+    },
+    {
+      "text": "enough redundant parts to not worry",
+      "start": 2971.02,
+      "duration": 4.14
+    },
+    {
+      "text": "about a launch abort system cuz a launch",
+      "start": 2973.81,
+      "duration": 2.85
+    },
+    {
+      "text": "abort system won't save you in every",
+      "start": 2975.16,
+      "duration": 3.179
+    },
+    {
+      "text": "situation either a launch abort system",
+      "start": 2976.66,
+      "duration": 5.01
+    },
+    {
+      "text": "is great and that's a really good debate",
+      "start": 2978.339,
+      "duration": 5.52
+    },
+    {
+      "text": "though is is it necessary and don't",
+      "start": 2981.67,
+      "duration": 3.929
+    },
+    {
+      "text": "forget the shuttle had a few things that",
+      "start": 2983.859,
+      "duration": 3.841
+    },
+    {
+      "text": "plagued it I think not having a launch",
+      "start": 2985.599,
+      "duration": 5.76
+    },
+    {
+      "text": "abort system while off on the side so",
+      "start": 2987.7,
+      "duration": 5.61
+    },
+    {
+      "text": "the the crew compartment was on the side",
+      "start": 2991.359,
+      "duration": 3.841
+    },
+    {
+      "text": "of the rocket which means it was you",
+      "start": 2993.31,
+      "duration": 3.63
+    },
+    {
+      "text": "know ice and certain and other debris",
+      "start": 2995.2,
+      "duration": 4.32
+    },
+    {
+      "text": "could hit it it didn't have a clear path",
+      "start": 2996.94,
+      "duration": 4.2
+    },
+    {
+      "text": "for a launch abort",
+      "start": 2999.52,
+      "duration": 2.88
+    },
+    {
+      "text": "they used solid rocket",
+      "start": 3001.14,
+      "duration": 3.51
+    },
+    {
+      "text": "so there is literally no launch abort",
+      "start": 3002.4,
+      "duration": 4.35
+    },
+    {
+      "text": "window from the minute the second the",
+      "start": 3004.65,
+      "duration": 4.83
+    },
+    {
+      "text": "the solid rocket boosters they lit until",
+      "start": 3006.75,
+      "duration": 4.05
+    },
+    {
+      "text": "the socket solid rocket boosters",
+      "start": 3009.48,
+      "duration": 3.87
+    },
+    {
+      "text": "jettisoned so if you had a problem you",
+      "start": 3010.8,
+      "duration": 4.29
+    },
+    {
+      "text": "had to ride solid rocket boosters for",
+      "start": 3013.35,
+      "duration": 4.76
+    },
+    {
+      "text": "two full minutes and that's just not a",
+      "start": 3015.09,
+      "duration": 5.34
+    },
+    {
+      "text": "good thing so there's really like no",
+      "start": 3018.11,
+      "duration": 5.53
+    },
+    {
+      "text": "options for those two minutes and that's",
+      "start": 3020.43,
+      "duration": 4.56
+    },
+    {
+      "text": "something that a fully liquid fueled",
+      "start": 3023.64,
+      "duration": 2.76
+    },
+    {
+      "text": "rocket does have some options they can",
+      "start": 3024.99,
+      "duration": 3.81
+    },
+    {
+      "text": "start down the booster separate maybe",
+      "start": 3026.4,
+      "duration": 5.43
+    },
+    {
+      "text": "and do some neat tricks but it's not",
+      "start": 3028.8,
+      "duration": 4.92
+    },
+    {
+      "text": "like you won't be able to like abort",
+      "start": 3031.83,
+      "duration": 3.51
+    },
+    {
+      "text": "with the starship itself up with the",
+      "start": 3033.72,
+      "duration": 3.84
+    },
+    {
+      "text": "upper stage because you know like if",
+      "start": 3035.34,
+      "duration": 3.66
+    },
+    {
+      "text": "there's going to be a run of the booster",
+      "start": 3037.56,
+      "duration": 2.79
+    },
+    {
+      "text": "or something starships not gonna build",
+      "start": 3039.0,
+      "duration": 3.9
+    },
+    {
+      "text": "pull away from that per se cuz it'll",
+      "start": 3040.35,
+      "duration": 4.08
+    },
+    {
+      "text": "take you know takes a couple seconds you",
+      "start": 3042.9,
+      "duration": 3.48
+    },
+    {
+      "text": "got to do engine chillin you have to do",
+      "start": 3044.43,
+      "duration": 5.04
+    },
+    {
+      "text": "all these spins and pump spins priming",
+      "start": 3046.38,
+      "duration": 4.29
+    },
+    {
+      "text": "it and all that stuff and that takes",
+      "start": 3049.47,
+      "duration": 3.99
+    },
+    {
+      "text": "several seconds to really get going so",
+      "start": 3050.67,
+      "duration": 4.29
+    },
+    {
+      "text": "it's not going to be something like a",
+      "start": 3053.46,
+      "duration": 2.7
+    },
+    {
+      "text": "launch abort system where it's an",
+      "start": 3054.96,
+      "duration": 4.44
+    },
+    {
+      "text": "instantaneous launch so people who said",
+      "start": 3056.16,
+      "duration": 4.53
+    },
+    {
+      "text": "like well maybe the upper stage can be",
+      "start": 3059.4,
+      "duration": 3.54
+    },
+    {
+      "text": "used as a launch abort system I don't",
+      "start": 3060.69,
+      "duration": 3.63
+    },
+    {
+      "text": "buy that I don't think it's a valid",
+      "start": 3062.94,
+      "duration": 4.86
+    },
+    {
+      "text": "option at all yeah so we'll get into",
+      "start": 3064.32,
+      "duration": 5.25
+    },
+    {
+      "text": "that that'll be a really fun video to do",
+      "start": 3067.8,
+      "duration": 5.49
+    },
+    {
+      "text": "a nice fun deep dive Philip love your",
+      "start": 3069.57,
+      "duration": 5.06
+    },
+    {
+      "text": "channel and content thank you so much",
+      "start": 3073.29,
+      "duration": 4.8
+    },
+    {
+      "text": "and Jeff last webcast my son told you",
+      "start": 3074.63,
+      "duration": 5.53
+    },
+    {
+      "text": "that he was interviewing with SpaceX I'm",
+      "start": 3078.09,
+      "duration": 4.08
+    },
+    {
+      "text": "happy to say he works in Hawthorne first",
+      "start": 3080.16,
+      "duration": 4.31
+    },
+    {
+      "text": "week of September Jeff that's awesome",
+      "start": 3082.17,
+      "duration": 4.74
+    },
+    {
+      "text": "congrats to your son and progressed to",
+      "start": 3084.47,
+      "duration": 4.18
+    },
+    {
+      "text": "you that's got to be a proud dad that's",
+      "start": 3086.91,
+      "duration": 4.4
+    },
+    {
+      "text": "that's pretty awesome",
+      "start": 3088.65,
+      "duration": 7.44
+    },
+    {
+      "text": "don't forget if once as soon as he gets",
+      "start": 3091.31,
+      "duration": 7.93
+    },
+    {
+      "text": "that that SpaceX email address he can go",
+      "start": 3096.09,
+      "duration": 5.07
+    },
+    {
+      "text": "this is a little trick I I don't feel",
+      "start": 3099.24,
+      "duration": 2.88
+    },
+    {
+      "text": "good don't mention this enough to",
+      "start": 3101.16,
+      "duration": 3.99
+    },
+    {
+      "text": "actually any of my apparel say he wants",
+      "start": 3102.12,
+      "duration": 4.29
+    },
+    {
+      "text": "this full flow stage combustion cycle",
+      "start": 3105.15,
+      "duration": 5.4
+    },
+    {
+      "text": "cycle shirt you can click here where is",
+      "start": 3106.41,
+      "duration": 8.52
+    },
+    {
+      "text": "it oh we don't have the thing I need to",
+      "start": 3110.55,
+      "duration": 7.29
+    },
+    {
+      "text": "put that back in there where is it okay",
+      "start": 3114.93,
+      "duration": 5.55
+    },
+    {
+      "text": "that must not I copied over okay but",
+      "start": 3117.84,
+      "duration": 5.1
+    },
+    {
+      "text": "anyway all apparel you can click on",
+      "start": 3120.48,
+      "duration": 3.6
+    },
+    {
+      "text": "anything else and click on some other",
+      "start": 3122.94,
+      "duration": 4.41
+    },
+    {
+      "text": "apparel like this and it will say click",
+      "start": 3124.08,
+      "duration": 4.29
+    },
+    {
+      "text": "here if you're working the aerospace",
+      "start": 3127.35,
+      "duration": 3.36
+    },
+    {
+      "text": "industry boom have him click there it",
+      "start": 3128.37,
+      "duration": 5.16
+    },
+    {
+      "text": "olds held need to put in his SpaceX",
+      "start": 3130.71,
+      "duration": 5.61
+    },
+    {
+      "text": "address and then it'll send him",
+      "start": 3133.53,
+      "duration": 6.66
+    },
+    {
+      "text": "the code for 25% off apparel and that's",
+      "start": 3136.32,
+      "duration": 5.1
+    },
+    {
+      "text": "my thank you to people that work in the",
+      "start": 3140.19,
+      "duration": 2.88
+    },
+    {
+      "text": "aerospace industry for encouraging me",
+      "start": 3141.42,
+      "duration": 4.5
+    },
+    {
+      "text": "and and making me you know it's all",
+      "start": 3143.07,
+      "duration": 4.59
+    },
+    {
+      "text": "these people that have worked so hard",
+      "start": 3145.92,
+      "duration": 3.72
+    },
+    {
+      "text": "countless hours that are super-smart",
+      "start": 3147.66,
+      "duration": 4.89
+    },
+    {
+      "text": "that are encouraging me and inspiring me",
+      "start": 3149.64,
+      "duration": 4.59
+    },
+    {
+      "text": "to do what I do so that's my way of",
+      "start": 3152.55,
+      "duration": 3.27
+    },
+    {
+      "text": "saying thank you it's giving people in",
+      "start": 3154.23,
+      "duration": 3.39
+    },
+    {
+      "text": "the aerospace industry 25% off so",
+      "start": 3155.82,
+      "duration": 4.65
+    },
+    {
+      "text": "congrats to him Jeff and I'm really glad",
+      "start": 3157.62,
+      "duration": 4.47
+    },
+    {
+      "text": "that's that's so cool",
+      "start": 3160.47,
+      "duration": 3.9
+    },
+    {
+      "text": "thanks for sharing guys I'm gonna get",
+      "start": 3162.09,
+      "duration": 4.65
+    },
+    {
+      "text": "out of here it's just that time so wish",
+      "start": 3164.37,
+      "duration": 5.4
+    },
+    {
+      "text": "me luck on starship or star hopper",
+      "start": 3166.74,
+      "duration": 5.28
+    },
+    {
+      "text": "really I will be paying close attention",
+      "start": 3169.77,
+      "duration": 4.77
+    },
+    {
+      "text": "to everything I will let you guys know",
+      "start": 3172.02,
+      "duration": 4.02
+    },
+    {
+      "text": "on Twitter and things like that when",
+      "start": 3174.54,
+      "duration": 4.08
+    },
+    {
+      "text": "kind of my plan if we don't hear",
+      "start": 3176.04,
+      "duration": 4.62
+    },
+    {
+      "text": "anything probably by the end of today or",
+      "start": 3178.62,
+      "duration": 3.36
+    },
+    {
+      "text": "tomorrow I'm probably gonna start",
+      "start": 3180.66,
+      "duration": 2.82
+    },
+    {
+      "text": "heading home as in like if they don't",
+      "start": 3181.98,
+      "duration": 5.01
+    },
+    {
+      "text": "get a license to launch by tomorrow I'm",
+      "start": 3183.48,
+      "duration": 5.25
+    },
+    {
+      "text": "definitely gonna start heading home it",
+      "start": 3186.99,
+      "duration": 4.74
+    },
+    {
+      "text": "just probably is not a good thing",
+      "start": 3188.73,
+      "duration": 4.86
+    },
+    {
+      "text": "it is this might be the type of thing",
+      "start": 3191.73,
+      "duration": 5.01
+    },
+    {
+      "text": "where is a pretty long review period or",
+      "start": 3193.59,
+      "duration": 4.95
+    },
+    {
+      "text": "something like that depending on the",
+      "start": 3196.74,
+      "duration": 4.77
+    },
+    {
+      "text": "situation so it just doesn't really make",
+      "start": 3198.54,
+      "duration": 4.86
+    },
+    {
+      "text": "sense for me to sit down here forever",
+      "start": 3201.51,
+      "duration": 6.48
+    },
+    {
+      "text": "and ever but don't worry I will try",
+      "start": 3203.4,
+      "duration": 6.54
+    },
+    {
+      "text": "really hard to to catch it no matter",
+      "start": 3207.99,
+      "duration": 4.41
+    },
+    {
+      "text": "what though so even if it you know",
+      "start": 3209.94,
+      "duration": 3.93
+    },
+    {
+      "text": "happens to go like next week I might",
+      "start": 3212.4,
+      "duration": 2.79
+    },
+    {
+      "text": "start looking at it just flying down",
+      "start": 3213.87,
+      "duration": 2.79
+    },
+    {
+      "text": "even though that's not ideal because I",
+      "start": 3215.19,
+      "duration": 5.28
+    },
+    {
+      "text": "have so much thinking geared be like two",
+      "start": 3216.66,
+      "duration": 5.85
+    },
+    {
+      "text": "massive carry ons and then like three or",
+      "start": 3220.47,
+      "duration": 4.2
+    },
+    {
+      "text": "four check bags or something stupid so I",
+      "start": 3222.51,
+      "duration": 5.85
+    },
+    {
+      "text": "really want to avoid flying my car like",
+      "start": 3224.67,
+      "duration": 5.97
+    },
+    {
+      "text": "I said already has 23,000 miles and only",
+      "start": 3228.36,
+      "duration": 6.9
+    },
+    {
+      "text": "like 10 and a half months so ya know I",
+      "start": 3230.64,
+      "duration": 8.97
+    },
+    {
+      "text": "think I'm at 11 months now yeah 11",
+      "start": 3235.26,
+      "duration": 7.8
+    },
+    {
+      "text": "months so it'll easily have a 25,000",
+      "start": 3239.61,
+      "duration": 6.72
+    },
+    {
+      "text": "miles on it within the first year so",
+      "start": 3243.06,
+      "duration": 5.76
+    },
+    {
+      "text": "alright guys thank you so much for",
+      "start": 3246.33,
+      "duration": 4.47
+    },
+    {
+      "text": "joining that's gonna do it for me",
+      "start": 3248.82,
+      "duration": 3.63
+    },
+    {
+      "text": "I'm Tim Dodd the everyday a strapping",
+      "start": 3250.8,
+      "duration": 2.79
+    },
+    {
+      "text": "he's face down to earth for everyday",
+      "start": 3252.45,
+      "duration": 4.22
+    },
+    {
+      "text": "people bye guys",
+      "start": 3253.59,
+      "duration": 3.08
+    },
+    {
+      "text": "[Music]",
+      "start": 3258.89,
+      "duration": 25.92
+    },
+    {
+      "text": "[Music]",
+      "start": 3287.44,
+      "duration": 7.029
+    },
+    {
+      "text": "[Music]",
+      "start": 3298.46,
+      "duration": 71.309
+    },
+    {
+      "text": "[Music]",
+      "start": 3372.05,
+      "duration": 3.139
+    },
+    {
+      "text": "[Music]",
+      "start": 3377.45,
+      "duration": 25.709
+    },
+    {
+      "text": "[Applause]",
+      "start": 3400.08,
+      "duration": 3.079
+    },
+    {
+      "text": "[Music]",
+      "start": 3405.98,
+      "duration": 3.21
+    },
+    {
+      "text": "[Applause]",
+      "start": 3421.67,
+      "duration": 12.16
+    },
+    {
+      "text": "[Music]",
+      "start": 3430.74,
+      "duration": 3.09
+    },
+    {
+      "text": "[Applause]",
+      "start": 3435.34,
+      "duration": 6.04
+    },
+    {
+      "text": "[Music]",
+      "start": 3441.4,
+      "duration": 5.83
+    }
+  ],
+  "full_text": "[Music] [Applause] you [Music] [Applause] [Music] [Applause] [Music] [Applause] [Music] [Music] [Music] [Applause] [Music] [Music] [Music] [Applause] [Music] [Applause] [Music] [Applause] [Music] [Applause] [Music] [Music] [Music] hey guys this morning I was reading that and for some reason couldn't sleep because I and it's also good cleaning really like trying to have a big thing about like there's a trial whether or not I buried it into sleep because I had internet aerospike to run trial so oh yes do do that that could go crap okay classic ones just give me a minute here [Music] sorry I give it or trying to do this from hotel what's a second okay is that better wow I think that's better okay is this did that that fix it can you guys still hear me hopefully that fixed it all right let me know guys yay alright so as I was saying I really didn't sleep very well last night because I was dreaming that aerospike engines were on trial for some reason because I was watching true crime documentaries last night okay what is right okay so let's start off let's do this guy's sorry I'm like really really tired but oh look at that that's fun let me fix this we let me also get the countdown clock going mm-hmm um what is that why is that not showing up yeah it's coming up you'll see it so anyway if you guys want to know when it launch is gonna happen and what it's going to be you can go to everyday astronaut comm slash pre-launch previews and look we can click on this and it's gonna be 21 minutes from now so let's click on this we're gonna go through this mission this is of course going to be rocket lab launching today August 19th at 12:00 12:00 UTC which is yeah again 20-something minutes from right now it's as the look ma no hands mission this is a rideshare mission with one cube set for unseen lamps and three other payloads organized by spaceflight industries I think two of them are with the air force it's a pretty loaded loaded mission the launch provider of course this is a rocket lab mission the customer is unseen labs and spaceflight industries and spaceflight industries are the ones that they take and aggregate and do ride-sharing so it's multiple they like find a bunch of customers and then they put them all on a rocket and they kind of like figure all that out the rocket today is the electron the launch location is LC one on the magia Peninsula New Zealand's that's that really really pretty place that rocket lab has I'm just out on a very this really like pretty peninsula in New Zealand the payload mass we don't actually know we're hoping to hear that in the the webs the webcast today these satellites are going to low-earth orbit the they are not attending to cover the booster for now but today actually they will be testing they mentioned in their last livestream about work and recoverability remember if you need to know about their recoverability plans I did a really deep rundown on all of their plans and and it was yeah it's it's interesting I think it's doable it's the 27 minute long video got into all about like air recovery and all that kind of stuff and yeah so this this booster is not recoverable for now but today they are testing they're putting a black box on it to record all of the data through re-entry and the black box's name is Brutus I believe and hopefully by the end of this mission they'll be able to recover that that black box and they'll have all of the data necessary to kind of have a better sense of if their models their fluid models worked out compared to what they're expecting so that's that's actually really exciting this is the state you know step kind of step 3 for them because they've done - they've collected data for true reentry's from previous missions and this is going to be their third this was going to be the most detailed and then we'll see one more flight and then flight 10 we will start to see recovery Hardware already on the rocket so it's coming up guys it's coming it's finally coming where will this end up this will crash into the ocean the first stage this would be the 8th launch of the electron the fourth launch flow for rocket lab this year and of course we have this graphic by Jeff Barrett kind of explaining all of that stuff it looks like we maybe have a stream coming in from rocket lab finally that's good so I'm gonna just kind of keep this here in the meantime and it might be I don't know if that's loud or not so I'll do this sorry this is like you know the most ridiculous life you've set up in the world I had to plug my I've had just the worst luck already this morning my monitor my external monitor that I normally used to do this stuff live broke so I have this like a little mini portable battery-powered monitor yeah that broke so I'll be replacing that then I was like oh luckily I have a hundred feet of HDMI cable just plug it into the TV because I actually need actually the second source to be able to send it out for some reason like I can't have like a fake external display to merit you actually have to send it to something and then I can capture that without it having to render so like is this poster like a screen capture it's easier to do a full display capture at least on the CPU so I have to send it to a TV and also this way can I can look at it so I went out and grabbed a hundred-foot so I was like thirty meters of HDMI cable that I had my car come to find out that cable doesn't work so then I had a smorgasbord this whole thing and yeah needless to say it's a mess nurbs apollo 2:13 asks why ain't you uploading more videos i just uploaded one last saturday was a 27 minute long video a deep rundown on on these guys has recovered like i mean i and besides that I'm currently in Texas I have been down here for almost a week now about five days and trying to catch Starr hopper and so every time I do this it's it's two days drive time down here two days uh and I had to turn this down otherwise my ears are gonna explode two days driving down here two days driving homes there's four days away from scripting but meanwhile I've been working I'm on page twelve or thirteen of a really in-depth rundown on aerospike engines it's going to be at least as long as the Raptor video I think that's gonna have a lot of animations I've actually been working some of the graphics for it already so I'm really excited but yeah that's I don't know what do you mean where my videos I've been making videos like crazy what you talking about we're gonna do this now hello and welcome to the live broadcast of rocket labs Athey electron mission a rideshare long as that we've called look ma no hands you're looking at electron on the pad of rocket labs very own launch complex one in Mahia which is on New Zealand's eastern coast close you joining us from around the world we are coming to you live from the future in the late hours of the evening on August 19th right here at Mission Control in Auckland liftoff is targeted for 12:00 12:00 a.m. New Zealand Standard Time or 12:12 p.m. UTC my name is max Muncie I'm part of the launch operations team here at rocket lab and it's great to be with you guys as we countdown to our next mission look ma no hands will be rocket labs 8th mission following a successful flight from magia just a few weeks ago today's launches the complex mission we have narrow orbital parameters to meet and only a brief window for launch between to stand down for any reason and whatsoever we have plenty of backup launch available availability over the next 10 days right now are sitting at t-minus 17 minutes on the clock so before we get into the details of the payload onboard today's flight let's take a look back at our most recent mission make it rain liftoff [Music] so let's take this quick second to talk about the rocket they probably will but don't forget one of my favorite things about the electron is that it uses electric turbo pumps or just well technically they're not turbo pumps that's a little bit of a nomenclature or misnomer picture because turbo means turbine these are just electrical fuel things carry it satellites for our mission partners spaceflight we're excited to be teaming up with once again for tonight's launch so right now we're just 15 minutes and 45 seconds away from our targeted launch so let's listen in to Mission Control as they conduct their final health checks on electron systems okay so while they're listening I'll continue to explain so see yes they they use battery-powered electronic power just electric motors to spin the pumps of of this of the rocket engine and that's considered it was actually considered impossible to be able to have enough energy density and really efficiency enough to be able to get something into orbit and rocket labs the first company in the world to do that and really if we think about it the fuel pumps do not have turbines they have impellers so they really are not considered turbo pumps it's just easy enough to say electric turbo pumps though so in the same way that like a standby for a final post launch us yes our CEOs go for launch od these go for launch executive executive is go for launch flat our CEO mission cord go hit open MCC launch switch cover and confirm confirmed open toggle report confirming board more chug confirmed go confirm the Balkan femke copy keep MCC Lawrence which cover up your honor so as you've heard our operators and launch director have confirmed that electron is go for launch we're approaching t-minus 14 minutes before target lifts off which gives us some time to talk about the spacecraft for this mission onboard electron today we have a black sky global for Earth imaging satellite it joins the black sky Global 3 satellite that we launched on our last mission on June 29 both of these satellites form part of black skies constellation to deliver rapid revisit satellite imagery to monitor things like crop development herd migration and urban planning space Flay has also manifests a technology demonstrator satellites for the United States Air Force Space Command on this mission these satellites aim to test new technologies including propulsion power communications and drag capabilities and how they might be used on future spacecraft the final spacecraft on this mission is a CubeSat for me the cornerstone of a new maritime surveillance constellation for a company called unseen labs they are aims to deliver precise reliable and secure maritime data enabling organizations to keep an eye on their own vessels as well as to watch out for those that presenter ESCs Deuter are Jackie there's a possibility of losing tonight's video feed but rest assured we'll keep you updated here if that happens in addition to that we won't have live video footage showing payload deployment due to the location of the kick stage in orbit so be ending the webcast shortly after confirmation at the kick stage separation so keep an eye on our social media feeds for confirmation of payload deployment so now it's time for a few updates on the electron program from day one the electron program has been all about using innovation and creativity to provide frequent and reliable access to space developing a 3d printed engine that can be printed in just 24 hours was one step as what's developing the world's only private orbital launch site but we're taking our plans to a whole new level to make our launches even more frequent for small satellites recently unveiled plans to recover and reef lie electrons first stage capturing and reusing a rocket stage is an enormous technical challenge but one that we hope will enable us to launch faster and more frequently by eliminating the need to build a new first stage every mission the plan to reuse electrons first stage will be implemented in two phases the first phase will see us attempt to recover a full electron first stage from the ocean downrange of launch complex one and then ship it back to rocket labs production complex for refurbishment the second phase will see his attempt to capture electrons first stage in midair helicopter before the stage is delivered for the deck of a ship and then transported back to launch complex one for your first rent and relaunch so we've got a quick animation for you that shows the planned mid-air capture process this is uh this is pretty old and I I can't wait they are is this the new one the one with the yeah this is so crazy I I cannot believe they're actually going to try and do this it's just the right size to be able to do this I can't believe they're gonna try and do this without any kind of propulsive reentry burn I still speculate that on the interstage those those kind of silver looking things I think those I really do think those might actually be some kind of air brake that could deploy out like pedal out and provide a little extra aerodynamic surface a little more surface area through at least the upper portion of reentry and then then the balut will come out once they're kind of below hypersonic speeds between hypersonic and supersonic think it deploy that balut but yeah I don't think they could deploy the blue anywhere near hypersonic speeds we all seem to say hi footing that guy had dreams breathing rocket fumes um yeah bad dreams just literally thinking I was forgetting something about the air spike hey stupid Tara thank you so much for coffee money and Demetri who decides go slash hold is the flight director only can it be an automated decision yes the computer on I don't know what the rocket lab in particular but most the time the computer can actually call a hold at least in fact SpaceX the computer can just go into a hold but the launch director normally or anyone at Council can say hold a critical test instrumentation and electrons first stage to inform a recovery attempts in the future now we're using the first stage of a small launch vehicle as a complex challenge as there's little mass margin to dedicate to the recovery systems for a long time we said we wouldn't pursue visibility for this very reason after conducting some research and testing we've been able to develop the technology that could make recovery feasible for electron so it really is an exciting Network next step for all of us here at rocket lab because with the introduction of our usability plans and with our second launch complex in Virginia under construction our goal to launch once per week is becoming a reality so speaking of Virginia let's have a quick update on the construction of rocket labs launch complex-2 at Wallops Island construction on the pad is nearing completion with almost all the concrete having been forward the strong back and the last platform are due for delivery to the site in the coming weeks so from now on the focus starts to shift from construction over to integration and testing this is of course a second launch light that rocket has built and it really is exciting to see it all coming together again a big thanks goes out to the hard-working rocket lab team in Virginia also to our army of local suppliers and contractors and of course to the team of Virginia's space who are making launch complex-2 a reality all in record time in the coming months we'll be gearing up for the first electron launch from this site we can't wait to see like Tron the launch from US soil so we'll have more share about that first mission including the timing and the customer later this year with all these exciting opportunities that I've mentioned we're looking to bring even more people onto our rocket lab teams in magia Oakland California and in Virginia we've got roles in almost all of our varmints from hands-on roles building and testing our rockets and engineering and manufacturing right through to our corporate functions like finance HR business support and logistics you could be at the very start of your career or a seasoned professional looking for a change if you're looking for a great opportunity with a leader in the small satellite launch industry please get in touch with us you can check out the roles available at our website rocket lab usa.com so thank you please confirm stage one engines already eight months away guys just confirming here Ian chase had a good question I heard a good suggestion save a lock on FDA's metric if t XO power lock table okay cool Ian's looking forward to the mantra from Wallops he's only a few hours away so often confirm um I'm almost a little sad that they're opening wall up so soon because I want my pharoahe monch I wanna see one down in New Zealand and I have a feeling if it starts launching once the search about watching Wallops will be way more tempting to just go to Wallis lien let's listen to the rest of those copy enable failsafe and confirm failsafe enabled and FTS confirm FGS is green and able to fly so you may be wondering why we called this mission look ma no hands well before liftoff electron is secured to the launch pad by the strong back and it's top clamp it's that tall structure that you can see here standing behind electron and approximately six minutes before liftoff the top clamp opens up and the strong back retracts away from electron to clear clear away for launch once electron is free from the strong backs grasp it's look ma no hands for electron that's why couldn't it be disabled all HVAC and confirm [Music] someone asked what what fuel does this thing run on this does like mike is decidable okay that runs on the trek fairing of course smoking Hoban and hot and just like Falcon 9 and Alice 5 their umbilical is retracted yeah people are asking what the blue light is I'm not sure probably some kind of like morning light there's something kind of thing if you're standing here don't just do not this is the blue light of don't stand here Ness I'm not a lamp is opened um and another front right here don't forget to be that the reason they're the the Rockets entirely black but right now it's like halfway halfway GC go ahead that was mine literally just I am back Liam thank you for the nut guy thank you if it asks if I met cloud liquor there yet I'm in Texas but I'm not in Boca Chica or Brownsville or South Padre Island I'm hanging out kind of in the middle of Texas right now I didn't want to drive all the way down there because it's literally a 24 hour drive so I figured until it for sure is going to happen this this next hop I was like I don't want to drive all the way down there in case it gets totally scrubbed just to save me an extra day or two of driving so so I'm stationed outside I'm actually i'm currently in Austin which is awesome and I might and hung out Dallas for a little bit then Austin and I might kind of just keep popping around somewhere up in northern Texas or middle northern Texas instead of like driving all the way down there because it's another you know six hours or so down from here even and I figure you know if they end up saying yeah the FAA is not gonna grant us permission for a month or whatever they're waiting on for Starr hopper it'll just save me a full day or two of driving so so I have not even been down there yet until it gets a little closer so therefore I have not met cloud liquor I did not see Jo Jo works as much as I do which means he worked so long back has retracted a lot a lot so copy that I just popped up sitting with are you worried about the white clouds that you see coming off the rocket and some of the ground support equipment they're actually clouds of really cold oxygen gas coming in contact with the atmosphere this is totally normal as the electron is fueled with highly refined kerosene and cryogenic liquid oxygen as electron warms up its standard to lose some of our liquid oxygen throughout preparation we continue to top it off so we have the correct levels for fly let's see some 100 station admission cord Rangers green autosequence armed couple dead us here in flight sorry avionics is fight on mission whyhave unit please confirm TBC battery charging this is same like week checking on the countdown were three minutes and 30 seconds until our target liftoff for today's mission things are starting to ramp up so I'm gonna leave you with the team in Mission Control for the manner of the count and I'll check back in with you shortly after liftoff so I just double check and yes am I not just over 10 month old car I have 23,000 miles that's like what is that 37 no station flags in your LCCs OD flag on mission Beck was green ready for flight copy VMs is led on mission code go ahead please confirm flight computer as goes are green I was currently just flicking on the lower bound of the stage 1 locks mess please lock the Auto sequence and confirm or our sequences locked cool operators we are go for autosequence start at two minutes yeah baby two minutes away guys if you don't explode on mission right avionics please confirm or lady that's been switched internal power equals on internal power Accio flag go ahead I'm sorry avionics please confirm stage power disabled on all three stages today four parts are labeled on all three stages all stations be advised vehicles now on internal power peerless flag on mission telescope please begin locks good recirculation cubby no ma'am it is it's just nuts like someone asked how much is the ice way and I'm sure it's not a trivial amount I'm sure that is something they actually have to calculate is how much ice and depending on humidity and stuff I mean there's certainly some eyes and a lot of it does kind of fall off you notice when Rockets take off if you see sheets of ice falling off but it's it's not trivial and it Gilley's flag on mission she's to say wait you guys are in in confession but it's gotta be pretty thing though stage one flight mission but it yeah I'm sure they actually calculate that one there a little bit please confirm stage one is wrist locks four zero zero care at you two five in front presser in stage two please confirm stage to his wrists lots 365 care to 0-5 stage two is pressed I've lined in page running okay guys 30 seconds and deluge running water deluge that's a good thing alright guys here we go 12 seconds Dean non-right they started on teen 6 what is gone for 3 [Music] I'm pretty sure those the sound of it fighting a transformer there for a second and we're off the pad for our eighth electron launch soon we'll be approaching the point of the flight where the forces against the rocket are at their peak otherwise known as max Q or maximum aerodynamic pressure let's listen in for that call HP battery discharge nominal so cool so don't for you guys are gonna be collecting a lot of data on this flight on the first stages we reentry profile so I'll be really curious to the supersonic if they actually stream the re-entry at all probably not that'd be interesting for sure they have good cameras on this thing bathroom excuse virtus has anti flight mode there you have it like Hans gone supersonic has made its way through max Q when I'll took through a number of milestones on the way to orbit you guys got to see that important stuff I notice the engine plume expanding this is something we're gonna be talking a lot about in the aerospike video you know why it's kinda little 50 seconds remaining from the lower ambient air pressure and that's Chatham station and altitude compensating nozzle like an air spike is a dilution remains nominal standby for me : approximately 30 seconds but I talked to Peter back the CEO about having nine engines if they can do certain things to almost create an air spike of fact like gimbal them inwards toward each other and he didn't necessarily tell me what exactly but you can I was like we could do some tricks the nine Rutherfurd engines on electrons first stage will shut off ahead of a separation from the rest of the rocket one stage 1 and stage 2 have separated the final vacuum optimized Rutherford engine on electrons Secretariat and propel like surround the rest of the way to orbit Stage one miko confirmed I would love to compare that to city of separation successful stage 2 ignition with whether her polish had a nominal that also conveyed more seal pv than that interstate to normal but maybe not and there it is Manchin cough has been confirmed electrons first and second stages have successfully separated for the payload to be deployed from the kick stage first the protective fairing needs to open up and fall away things are looking good in propulsion is nominal as we approach very experienced jettisons succeeded thanks for the coffee Jeffrey I was bearing us separated clearing the way for payload deployment coming up in approximately 50 minutes from now I will definitely that was 50 minutes from now they must I don't know for sure but they must also use something like - no no LT churches that SpaceX uses for their but it appears to be a radiatively cooled and that's why it's so so so bright rock and checking with you about three minutes and 45 seconds into flight everything is looking great as electronic continues on to orbit best buddy monka asks what's with the sparks and the other the likely I don't know for sure if the nozzle extension is ablative Lee cooled or not but it might be it also might just be a little bit ablative Li cooled but that's what likely just kind of chunks of the of the nozzle extension so yeah probably a little bit of ablative li cooled good question me and stage two actually be better at discharges nominal and I don't forget on the top right there you can't see this like box I can think that's actually one of the one of the batteries and they're going to actually just romance for the webcast of electrons look ma no hands mission we've had successful management cut off stage separation and stage 2 ignition electron is looking looking healthy with the velocity of ten thousand kilometers per hour in an altitude of 220 kilometers and stick around guys afterwards I'll give you guys a quick little run down again on kind of star hoppers progress a lot of people are asking about that since obviously I'm in Texas trying to catch that I'm also tell you guys about cup date from Rock about Mission Control electrons propulsion is nominal and have our battery hot-swap here we go this is cool I think this is really smart this is the whole reason this thing can basically get into orbit hundred chickens remaining it's because this battery hot-swap idea so glare without of that brilliant all right any second now probably so we're now at t plus five minutes and 45 seconds since liftoff an excellent list of mission milestones is the battery hot-swap electrons patter batteries power electric pumps on the rough revenge exponent we get to this point in the mission these batteries are depleted and we no longer need them so we do a quick hotspot from the depleted batteries that were to another fully charged one to maintain power to the engine and provide a much more efficient ride the rest of the way to orbit let's listen in for the call on the hotspot I wonder how they decided how little change to do you know why only to do one hot swap instead of having like banks and batteries that are constantly ejecting I wonder what the engineering trade-off is probably just less events it's better you know probably not smart to have to rely on injecting batteries every like ten seconds there we go that's the hot spot right there better each other some confirmed that's so cool Stage two propulsion still nominal as you've just heard we've had successful battery hot swap electrons electrons tracking continues to look nominal roadkill on our discord Channel asked with a battery so close to that hot nozzle you know why doesn't affect it well there is yeah there's no air there so there's not going to be you know any convective heating so it's not gonna heat up air which then will heat up the battery so you can have stuff really close to that nozzle right now and it so we're approximately a minute and 45 seconds away from cake stage separation velocity is 18,000 kilometers per hour and altitude is 304 kilometers the look ma no hands missin continues to look good so if you put your hand up really close to that nozzle right now in the vacuum space you would not feel anything it does still radiate heat away um I guess so you can maybe feel the radiative heat a little bit I'm not sure actually be a better at discharge holding nominal which is why I'm not a rocket scientist someone tell me guess now question was about six kilometers per second but there's Delta true just 310 kilometers there's no convective heating in space but there is radiative heating which is why it's so bright we're seeing it radiates heat away just a quick update for you here on rocket labs look ma no hands mission we're about one minute away from kick stage separation and electron continues nominally but since there's no medium to transfer how does that work someone smile let me help entering parent out to check mud appreciation hurts there's infrared radiation 20 seconds remaining time to reflective coating infrared red light so you would feel it with your hand it would burn you but you could prevent that with that sheet of aluminum foil I hope that seems exactly right you could reflect it off five seconds dang I think I don't want it quick if you think I can take shut down there we go good transfer what achieved as you just saw electron ii states is shut down as planned with a clean separation out the kick stage electron is orbital and it feels good to be back so here's a quick explanation of how this innovative electron kick stage works to deploy payloads to orbit we use stage 2 to take the payload to elliptical parking orbit as shown here before the kick stage separates from electrons second stage by leaving the second stage in this highly elliptical orbit it experiences a high amount of atmospheric drag and as a result the stage is dragged back into the Earth's atmosphere to be burned up in just a matter of weeks meanwhile the kick stage lights it's 3d printed Curie engine and circularized at the zorb before deploying the payload the kick stage equipped with a cold gas reaction control system which means we can accurately point the kick stage and deploy palos to incredibly precise orbits even when we're launching multiple satellites at once once the kick stage has deployed the payload the Curie engine is capable of reigniting and performing a deorbit maneuver to burn itself up leaving nothing behind in orbit but our customer satellites see I love that so with that I want to thank our mission partners for choosing to launch honor electron and thank you for joining us for our eighth electron launch I look forward to seeing you back here next month for another mission I'm max Muncie and depending on where you are in the world have yourself a good morning a good day or a good night this is rocket lab Mission Control signing off man how are they so professional at their live streams are ahead here they do such a freaking good job oh well congratulations rocket lab you guys make that like way too easy now already I mean that's insane and yeah how do they do that already alright good job everybody good job all you guys at rocket lab Congrats on your mission I'm really excited I hope that we actually hear something relatively soon about about how that actually is going to go with the recovery because they're going to be collecting a lot of data we need to do a quick little update here guys I've had a lot of people asking about like the normal hats are coming in stock to my webstore but more importantly I have some bad news and that is that the full flow stage cycle shirts again have run out of stock basically so I keep telling you guys if you guys want merchandise you got to get on it while you but I do have a really good news and that's that we have a new Rudd's rapid unscheduled discount section so these are shirts that are on sale look it I mean I don't think you'll find shirts this cheap anywhere else you know on the internet anywhere so we are the Falcon family tea the helmet logo future Martian tea and the planet logo we already sold out of the planet hoodies because again remember I do limited runs of shirts these are not print-on-demand that means they're higher quality they're actually ring spun cotton shirts they're nice and durable but still soft and good quality and even custom tags and things like that so these shirts are awesome if you want to help support what I do go to everyday astronaut comm slash shop pick up yourself a nice inexpensive shirt while they're at it these are almost gone I think there's only smalls left and white for the Falcon family tea the other ones are almost out of stock too so if you want your chance to get a nice inexpensive shirt we're clearing these out making room for some new stuff that will be coming very soon I know a lot of people are asking about things like Star man hoodie that's still coming I promise these are gonna be back in stock soon these utility pouches those sold out like right away so yeah if you're not following me on Twitter do it and set up set notifications because when this stuff goes up online it sells out pretty quickly we also are working on still getting resupplied with grid fanáticos there's gonna be 2.0 they're gonna be a little bit a little bit updated design hopefully you guys like them and yeah these these are almost a lot to the apollo hatch and yeah get on the stuff now because it takes like three weeks to get these new tags going in things like that too so there's a little bit of leeway time so if you like a shirt and you see it do it right now but that helps me I owe a huge thank you to all you guys that you know have purchased awesome merchandise lately because that definitely helps make trips like this down to currently Austin working my way down to Boca Chica makes it affordable makes it when I'm stuck in a hotel for five nights now waiting for something to happen fun right so that brings us to the next a star hopper yes they're waiting for FAA approval it sounds like there's just kind of concerns over its everything I guess it sounds like they're having to totally redo and get oh I didn't read questions down there it sounds like that is you know have to give the full blessing from the FAA the FAA has not granted them a launch license yet so yeah that's going to be very important so had Chris Chris Jay ask Space conference with if I were to have a space conference actually I'm working on trying to get a panel someday with I don't know if this counts I don't know if this is quite your question but I'm working on having a panel with where it scott manley Amy Shira Teitel and maybe a few others as well on a space panel so that'd be my ideal space conference I think actually I would love to go on a tour with like with Amy Scott and I don't know like Jo Barnard or something and just answered space questions or something like that I think that'd be super super fun what are you guys looking at then the and discord about the reflective radiative oh yeah I don't know might just be camera exposure stuff well I should mention too a lot of people are asking about that our discord channel we have an exclusive to score channel for patreon member so if you want to join our discord channel which is awesome it's where we get a lot like this is definitely I think the best space community in the world because everyone is super friendly and we all hang out in talk space literally all day you can do that by joining patreon patreon comm slash everyday astronaut and hi guys I love you guys okay so Chris J hopeful that hope that answers your question yeah people asked what star liner that's Boeing's capsule that will be sending humans to the International Space Station here hopefully doing its first test launch relatively soon mmm let's see here graham says night flights able to be recovered chute and dark so I'm think I was thinking about that Graham there's two things don't forget first off they can absolutely crackit using GPS and just head to the GPS heading then once they're close enough they can use you know the helicopter pilot could actually use like infrared goggles like they do for a lot of military missions you know the last time zone where infrared goggles to track things and a rocket that just came in from reentry would have quite the heat signature so they could probably track it that way pretty safely and then once it gets close to good literally just use like a spotlight you know and lights to actually track it it could have a bright reflective parachute or something like that too so I think night recoveries would be an option but that's definitely gonna be a little bit trickier and a little bit more ambitious I would say yeah that's a good question though thank you Brian great stuff Tim you like spacesuits we do want to try on an apollo prototype helmet sometime currently on loan from my father-in-law's military history day Brian I probably would want to do that I've never I've never tried on an apollo prototype helmet that sounds awesome dang hit me up about that Mars Mountain next mission it's just a flesh wound is that what it is I haven't even seen that's awesome John your space panel sounds amazing here's a bit of funding for well thank you nothing's official I have reached out to them Amy and Scott asking if they would want to do something like that and they both said absolutely so we hopefully will figure out if we could find a fourth person oh nice and Jeffrey Tripp my first launch in your new and your first apartment Congrats Jeffrey yeah that's awesome so let's see you guys have some good questions here so d Raptor clan asks what do I think about using an NTR kick stage I don't know is that a nuclear kick stage for starship that is already in orbits the starship but maybe less revealing to go to Mars or might be able to go back without refueling I am assuming NTR your your and also know the launch happened already it just went that quickly I don't know I mean I think refueling is actually a relatively easy thing to do in the grand scheme of things that it I don't know they're doing a pretty big study NASA actually gave SpaceX a healthy amount of funding and/or support not funding actually I think they only gave them access to support and team of engineers and scientists to help them study in orbit refueling and that's never really been done on a large scale like there's never been huge vehicles that are refueling with each other there's only been small propellant transfers between vehicles so doing a full orbital refueling of something the size of starship definitely never been done before and that's going to have to be studied so yeah yeah so um guys I think that's gonna do it for me I I'm gonna probably get out of here and probably go back to sleep since I lit it like I said I don't know if you guys are here to be near this I barely slept I was tossing and turning literally all night cuz I was dreaming I I fell asleep watching you guys remember the podcast cereal with Adnan there's a like follow-up to that on HBO right now I fell asleep watching that this was like this whole thing about trials and then I was also scripting the aerospike video all day and the past couple days so those two things got mixed in my head and I felt like aerospike engines were on trial and I kept like waking up like wow like that it's just I don't know it's a weird debate and maybe so much because my opinion I feel like the the jury's still out on whether or not air strikes suck I think I'm going to change the title I'm not going to say aerospike suck that was going to be my headline in the title of the video but I don't know if I actually agree that they suck so the the jury still out I'm doing it working on some really hard numbers right now and got a lot of a good info on arrow spikes and I do love arrow specs they're super cool but there's some major major major problems with them and we'll talk about that a lot so um oh there we I got a couple more questions to answer here and it was any word on launch escape system for starship I fear there's another shuttle situation so enables I don't think there's going to be a launch abort system and that's a video I'm working on as well is should starship have a launch abort system and the reason why you can look at it this way adding something like a launch abort system actually adds a lot more complication you have a lot more programming a lot more moving parts a lot more things that need to go right when they're needed but the rest of time they're actually added parts that could go wrong I mean look at DM 1 dragon capsule I mean that was a pretty fairly you know routine thing that had a part and a system that entirely exploded and I know it's an our current line of thinking you know at some point people you know pilots probably stopped wearing parachutes they just relied on the airplane to get them back safely you know there's probably some point where like I don't know if this was ever the case but like I feel like it was probably normal to wear a parachute as a pilot good cyclone this plane just might not work it might just break you know and now like you don't get on an airplane and you know if they don't hand you a parachute being like oh nice and it's probably gonna fall out of the sky they just engineer them to not do that and I think starship hopefully with enough runtime with enough data it could in theory be reliable enough to not worry about that with enough redundancy and enough redundant parts to not worry about a launch abort system cuz a launch abort system won't save you in every situation either a launch abort system is great and that's a really good debate though is is it necessary and don't forget the shuttle had a few things that plagued it I think not having a launch abort system while off on the side so the the crew compartment was on the side of the rocket which means it was you know ice and certain and other debris could hit it it didn't have a clear path for a launch abort they used solid rocket so there is literally no launch abort window from the minute the second the the solid rocket boosters they lit until the socket solid rocket boosters jettisoned so if you had a problem you had to ride solid rocket boosters for two full minutes and that's just not a good thing so there's really like no options for those two minutes and that's something that a fully liquid fueled rocket does have some options they can start down the booster separate maybe and do some neat tricks but it's not like you won't be able to like abort with the starship itself up with the upper stage because you know like if there's going to be a run of the booster or something starships not gonna build pull away from that per se cuz it'll take you know takes a couple seconds you got to do engine chillin you have to do all these spins and pump spins priming it and all that stuff and that takes several seconds to really get going so it's not going to be something like a launch abort system where it's an instantaneous launch so people who said like well maybe the upper stage can be used as a launch abort system I don't buy that I don't think it's a valid option at all yeah so we'll get into that that'll be a really fun video to do a nice fun deep dive Philip love your channel and content thank you so much and Jeff last webcast my son told you that he was interviewing with SpaceX I'm happy to say he works in Hawthorne first week of September Jeff that's awesome congrats to your son and progressed to you that's got to be a proud dad that's that's pretty awesome don't forget if once as soon as he gets that that SpaceX email address he can go this is a little trick I I don't feel good don't mention this enough to actually any of my apparel say he wants this full flow stage combustion cycle cycle shirt you can click here where is it oh we don't have the thing I need to put that back in there where is it okay that must not I copied over okay but anyway all apparel you can click on anything else and click on some other apparel like this and it will say click here if you're working the aerospace industry boom have him click there it olds held need to put in his SpaceX address and then it'll send him the code for 25% off apparel and that's my thank you to people that work in the aerospace industry for encouraging me and and making me you know it's all these people that have worked so hard countless hours that are super-smart that are encouraging me and inspiring me to do what I do so that's my way of saying thank you it's giving people in the aerospace industry 25% off so congrats to him Jeff and I'm really glad that's that's so cool thanks for sharing guys I'm gonna get out of here it's just that time so wish me luck on starship or star hopper really I will be paying close attention to everything I will let you guys know on Twitter and things like that when kind of my plan if we don't hear anything probably by the end of today or tomorrow I'm probably gonna start heading home as in like if they don't get a license to launch by tomorrow I'm definitely gonna start heading home it just probably is not a good thing it is this might be the type of thing where is a pretty long review period or something like that depending on the situation so it just doesn't really make sense for me to sit down here forever and ever but don't worry I will try really hard to to catch it no matter what though so even if it you know happens to go like next week I might start looking at it just flying down even though that's not ideal because I have so much thinking geared be like two massive carry ons and then like three or four check bags or something stupid so I really want to avoid flying my car like I said already has 23,000 miles and only like 10 and a half months so ya know I think I'm at 11 months now yeah 11 months so it'll easily have a 25,000 miles on it within the first year so alright guys thank you so much for joining that's gonna do it for me I'm Tim Dodd the everyday a strapping he's face down to earth for everyday people bye guys [Music] [Music] [Music] [Music] [Music] [Applause] [Music] [Applause] [Music] [Applause] [Music]",
+  "errors": []
+}

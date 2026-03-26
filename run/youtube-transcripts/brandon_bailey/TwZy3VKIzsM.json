@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TwZy3VKIzsM",
+    "language": "en",
+    "took_ms": 8696,
+    "method": null,
+    "title": "DEF CON 31 - Review on the Less Traveled Road - 9 Yrs of Overlooked MikroTik PreAuth RCE - NiNi Chen",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2471,
+    "description": "MikroTik, as a supplier of network infrastructures, its products and RouterOS are adopted widely. Currently, at least 3 million+ devices are running RouterOS online. Being the target research by attackers actively, the exploits leaked from the CIA in 2018 and the massive exploits that followed are samples of the havoc that can be caused when such devices are maliciously exploited again. Therefore, RouterOS also attracts many researchers to hunt bugs in it. However, there are rarely high-impact vulnerabilities reported over a long period. Can the OS become perfect overnight? Of course not. Some details have been missed.\n\nResearches on RouterOS were mainly against jailbreak, Nova Message in IPC, and analysis of exploits in the wild. Especially researches against Nova Message have reported tons of post-auth vulnerabilities. However, the architecture design and the lower-layer objects, which are closely related to the functionality of Nova Binary, were being neglected due to their complexity, causing some details to be overlooked for a long time. Starting by introducing the mechanisms of the socket callback and the remote object, we will disclose more about the overlooked attack surface and implementations in RouterOS. Moreover, we will discuss how we, at the end of rarely visited trails, found the pre-auth RCE that existed for nine years and can exploit all active versions and the race condition in the remote object. We will also share our methodology and vulnerability patterns.\n\nDelving into the design of the RouterOS, attendees will have a greater understanding of the overlooked attack surface and implementation of it and be able to review the system more reliably. Additionally, we will also share our open-source tools and methodology to facilitate researchers researching RouterOS, making it less obscure. , Ting-Yu Chen, aka NiNi, is a security researcher at DEVCORE and a member of the Balsn CTF team. He won the title of the \"Master of Pwn\" at Pwn2Own Toronto 2022 with the DEVCORE team. NiNi has also made notable achievements in CTF competitions, including placing 2nd and 3rd in DEF CON CTF 27 and 28 as a member of HITCON⚔BFKinesiS and HITCON⚔Balsn teams, respectively. NiNi is currently immersed in vulnerability research and reverse engineering, continuing to hone his skills. You can keep up with his latest discoveries and musings on Twitter via his handle @terrynini38514 or blog at http://blog.terrynini.tw/.",
+    "view_count": 1607
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TwZy3VKIzsM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

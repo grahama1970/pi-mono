@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hgihweJeHSU",
+    "language": "en",
+    "took_ms": 7929,
+    "method": null,
+    "title": "Exploiting Omron's NEX PLC Runtime And Protocol",
+    "channel": "S4 Events",
+    "upload_date": "20240801",
+    "duration_sec": 1489,
+    "description": "While investigating CHERNOVITE capabilities, the Dragos team identified several vulnerabilities in Omron's NX and NJ series PLCs and the Symac Studio PLC programming software. \n\nLogan describes the newly discovered protocol commands and a runtime debugger found on the PLC. This protocol has over 170 commands, 130 of which are undisclosed (CHENOVITE only abused 40 commands).\n\nLogan also discusses vulnerabilities found in this protocol and offer a few POCs we developed to highlight the potential impact on Industrial Control Systems (ICS). He finishes by presenting a demonstration of manipulating logic without ever changing the PLCs run mode, all by abusing undocumented/undisclosed protocol commands. The techniques and commands for all POCs presented are unique to this presentation and are currently unknown to the public.",
+    "view_count": 557
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hgihweJeHSU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

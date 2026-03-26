@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CdNrvUrG_HM",
+    "language": "en",
+    "took_ms": 8616,
+    "method": null,
+    "title": "DEF CON 33 - Access to secure  dependency management everywhere w Nix- T Berek, F Zakaria & D Baker",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3182,
+    "description": "In a world full of unwanted app updates and SaaS providers who want your personal information, being able to self host the 120,000 Linux packages in Nixpkgs has the potential to change the game for anyone who's tired of the slow decline of cloud services. If you're curious about what NixOS can do for your homelab, or even if you're just worried about SBOMs or traceability of exactly where your software and all its dependencies came from, join us for an hour-long panel about how we can reclaim our services and software from vendor lockin and Docker image bitrot using Nix and NixOS. We'll be doing a deep dive into why Nix changes software deployment, and how you can get started and get involved in the quiet revolution that has been reshaping how we use software.",
+    "view_count": 306
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CdNrvUrG_HM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

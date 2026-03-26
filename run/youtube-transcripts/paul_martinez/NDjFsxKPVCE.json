@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NDjFsxKPVCE",
+    "language": "en",
+    "took_ms": 8599,
+    "method": null,
+    "title": "SAST Tools For Secure PLC Programming",
+    "channel": "S4 Events",
+    "upload_date": "20250625",
+    "duration_sec": 1545,
+    "description": "Sam reveals open source proof of concept tools to automatically test PLC logic/code/applications. It automates verification of parts of the Top 20 Secure PLC Coding Practices. \n\nCome see the tools, and how they can be used in practical examples.\n\nPLC programmers should be getting early automated feedback on how to program and configure PLCs securely, and these new open source tools are one solution to help.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 318
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NDjFsxKPVCE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

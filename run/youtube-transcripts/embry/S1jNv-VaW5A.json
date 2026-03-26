@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "S1jNv-VaW5A",
+    "language": "en",
+    "took_ms": 7755,
+    "method": null,
+    "title": "Docking two asteroids together Reddit Challenge! (Kerbal Space Program)",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180728",
+    "duration_sec": 11799,
+    "description": "As promised, I'll be playing some Kerbal with you all for some Friday fun! I'm attempting the /r/kerbalspaceprogram challenge to dock two asteroids together! This should be fun!\n\nShow your support and join our discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nCheck out news articles and articles based on my videos on my website - http://everydayastronaut.com\n\nFollow and Like my upcoming new series on Facebook Watch with Space.com \"Spacing Out!\" - https://www.facebook.com/SpacingOutEverydayAstronaut/\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nSpaceX models by Oli Braun http://twitter.com/oli_braun and his store - https://www.buzzspacemodels.com/",
+    "view_count": 251597
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] S1jNv-VaW5A: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3wwernOd7Bg",
+    "language": "en",
+    "took_ms": 7796,
+    "method": null,
+    "title": "Why Johnny Can’t Patch  Can Vulnerability Patching Work in the ICS World",
+    "channel": "S4 Events",
+    "upload_date": "20180408",
+    "duration_sec": 2724,
+    "description": "Here one of the pioneers in SCADA security, Eric Byres of Tofino Security, presents \"Why Johnny Can’t Patch: Can Vulnerability Patching Work in the ICS World?\"\n\nEric looks at three examples and dives into questions such as:\n\n- How many patches would be required on a sample system\n\n- How many undetected/unannounced vulnerabilities are latent on the system\n\n- The percentage of systems that incorrect and have an impact on the system including crashes or hangs\n\n- Reboot issues and cost of personnel and patching (the oil rig / personnel safety impact was interesting)\n\n- Reliance on backdoors and other vulnerabilities are relied on for \n\n- Patch acceptance by customers (data point, less than 10% are downloading security patches)\n\nOne of the examples is a no charge security patch for Tofino, where most customers would not take a free patch even after repeated contacts and urging by the vendor.",
+    "view_count": 418
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3wwernOd7Bg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

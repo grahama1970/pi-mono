@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XtKL1eJaemo",
+    "language": "en",
+    "took_ms": 9211,
+    "method": null,
+    "title": "Tips For Using The S4x25 Mobile App",
+    "channel": "S4 Events",
+    "upload_date": "20250206",
+    "duration_sec": 696,
+    "description": "We are using the Whova app again for S4x25. It is a great way to plan your agenda, meet your fellow attendees, see the maps, get the latest info and more. This video steps you through the most important features.",
+    "view_count": 110
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XtKL1eJaemo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

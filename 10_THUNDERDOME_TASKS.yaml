@@ -1,0 +1,245 @@
+version: 1
+kind: orchestrate-plan
+
+metadata:
+  title: "/thunderdome — N-way concurrent tournament convergence skill"
+  goal: >
+    Create a generic, manifest-driven tournament skill that dispatches N concurrent
+    strategies via /subagent-service, scores results against a pluggable metric,
+    diagnoses failures with persona reviewers, /dogpile-researches on combined
+    failure, and iterates until convergence or exhaustion. Replaces duplicated
+    self-improvement loops in classifier-lab, prompt-lab, paper-lab,
+    conversation-lab, music-lab, figure-lab.
+  plan_type: code
+  created: "2026-03-25"
+  primary_persona:
+    name: "Graham Anderson"
+    role: "Architect — all *-lab projects converge through this skill"
+    source: ".pi/agents/graham-anderson/AGENTS.md"
+
+repo_root: /home/graham/workspace/experiments/pi-mono
+
+execution:
+  max_concurrency: 1
+
+capability_overlap:
+  - "/memory recall 'tournament concurrent convergence subagent': found checkpoint only, no existing skill"
+  - "/battle: Red/Blue security only, 2-way fixed, hardcoded AIxCC scoring — NOT composable for classifier/prompt/paper convergence"
+  - "/orchestrate: task execution, no convergence loop or scoring"
+  - "classifier-lab/e2e_pipeline.py: serial escalation, domain-specific — will compose /thunderdome"
+  - "conversation-lab, music-lab, figure-lab: each reimplement the same loop with no /memory, no /dogpile"
+
+questions_blockers: []
+
+lanes:
+  - id: "0"
+    label: "Wave 0: Skill scaffold + manifest schema"
+  - id: "1"
+    label: "Wave 1: Core orchestrator + dispatch"
+  - id: "2"
+    label: "Wave 2: Scoring, plateau detection, persona diagnosis"
+  - id: "3"
+    label: "Wave 3: /memory tracking + /dogpile integration"
+  - id: "4"
+    label: "Wave 4: Sanity test + example manifests"
+
+tasks:
+  - id: "1"
+    title: "Create SKILL.md with frontmatter, triggers, manifest schema docs"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: []
+    command: "head -5 .pi/skills/thunderdome/SKILL.md | grep -q 'name: thunderdome'"
+    implementation:
+      - "SKILL.md with name: thunderdome, triggers, provides, composes"
+      - "Full manifest YAML schema documented with examples"
+      - "Composes: subagent-service, dogpile, memory, task-monitor"
+      - "Provides: concurrent-tournament, convergence-loop, competitive-selection"
+    tests:
+      - "head -5 .pi/skills/thunderdome/SKILL.md | grep -q 'name: thunderdome'"
+    definition_of_done:
+      command: "head -5 .pi/skills/thunderdome/SKILL.md | grep -q 'name: thunderdome'"
+      assertion: "SKILL.md exists with valid frontmatter"
+
+  - id: "2"
+    title: "Create run.sh + pyproject.toml"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: []
+    command: "cd .pi/skills/thunderdome && bash run.sh --help 2>&1 | head -3"
+    implementation:
+      - "run.sh: uv run --project SCRIPT_DIR python scripts/thunderdome.py $@"
+      - "pyproject.toml with typer, httpx, loguru, pyyaml, pydantic, jinja2"
+      - ".gitignore: .artifacts/, .venv/, __pycache__/, *.pyc, sessions/"
+      - "mkdir -p /mnt/storage12tb/skills/thunderdome/artifacts && ln -sfn /mnt/storage12tb/skills/thunderdome/artifacts .artifacts"
+      - "scripts/__init__.py: empty (thin init)"
+    tests:
+      - "cd .pi/skills/thunderdome && bash run.sh --help 2>&1 | grep -qi thunder"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && bash run.sh --help 2>&1 | grep -qi thunder"
+      assertion: "run.sh delegates to typer CLI"
+
+  - id: "3"
+    title: "Create manifest schema (Pydantic models) in scripts/manifest.py"
+    lane: "0"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: []
+    command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.manifest import ThunderdomeManifest; print(\"OK\")'"
+    implementation:
+      - "Pydantic BaseModel classes: ThunderdomeManifest, Strategy, Reviewer, ScoringConfig, ConvergenceConfig"
+      - "Strategy: name, model, prompt (Jinja2 template), skill (optional), timeout_s"
+      - "Reviewer: persona name, auto-resolved AGENTS.md path"
+      - "ScoringConfig: metric_path (jsonpath), gate_threshold, direction"
+      - "ConvergenceConfig: max_rounds, plateau_window, plateau_epsilon"
+      - "load_manifest(path) validates YAML against schema"
+    tests:
+      - "cd .pi/skills/thunderdome && uv run python -c 'from scripts.manifest import ThunderdomeManifest; print(\"OK\")'"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.manifest import ThunderdomeManifest; print(\"OK\")'"
+      assertion: "Pydantic models importable"
+
+  - id: "4"
+    title: "Create scripts/dispatch.py — concurrent /subagent-service dispatch"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "iterative"
+    depends_on: ["3"]
+    command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.dispatch import dispatch_strategies; print(\"OK\")'"
+    implementation:
+      - "discover_subagent_port(): scan 8620-8629 for healthy instance"
+      - "ensure_subagent_running(): start via run.sh if none found"
+      - "dispatch_strategies(): ThreadPoolExecutor dispatches N concurrent POST /chat calls"
+      - "Jinja2 template rendering for strategy prompts"
+      - "Collect StrategyResult per strategy"
+      - "httpx with explicit timeout"
+    tests:
+      - "cd .pi/skills/thunderdome && uv run python -c 'from scripts.dispatch import discover_subagent_port; print(\"OK\")'"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.dispatch import dispatch_strategies; print(\"OK\")'"
+      assertion: "dispatch module importable"
+
+  - id: "5"
+    title: "Create scripts/scoring.py — pluggable metric extraction + plateau detection"
+    lane: "2"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["3"]
+    command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.scoring import extract_metric, detect_plateau; print(\"OK\")'"
+    implementation:
+      - "extract_metric(response_text, metric_path): parse JSON, extract via jsonpath"
+      - "score_round(results, scoring_config): rank strategies, return RoundResult"
+      - "detect_plateau(rounds, window, epsilon): generic"
+      - "detect_regression(rounds, window=2)"
+      - "RoundResult dataclass"
+    tests:
+      - "cd .pi/skills/thunderdome && uv run python -c 'from scripts.scoring import extract_metric; print(\"OK\")'"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.scoring import extract_metric, detect_plateau; print(\"OK\")'"
+      assertion: "scoring module importable"
+
+  - id: "6"
+    title: "Create scripts/tracking.py — /memory integration via Unix socket"
+    lane: "3"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["3"]
+    command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.tracking import store_round; print(\"OK\")'"
+    implementation:
+      - "httpx to Unix socket /run/user/1000/embry/memory.sock"
+      - "store_round(): POST /learn with THUNDERDOME:{name}:round{N}"
+      - "store_dogpile(): POST /learn with DOGPILE:{name}:round{N}:{phase}"
+      - "recall_prior_tournament(): POST /recall for prior run history"
+      - "Local .artifacts/ JSON backup per round"
+    tests:
+      - "cd .pi/skills/thunderdome && uv run python -c 'from scripts.tracking import store_round; print(\"OK\")'"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.tracking import store_round; print(\"OK\")'"
+      assertion: "tracking module importable"
+
+  - id: "7"
+    title: "Create scripts/diagnosis.py — persona reviewer + /dogpile failure research"
+    lane: "2"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["3", "4"]
+    command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.diagnosis import diagnose_round; print(\"OK\")'"
+    implementation:
+      - "diagnose_round(): build diagnosis from worst strategies"
+      - "persona_review(): dispatch persona prompts via /subagent-service"
+      - "dogpile_research(): call /dogpile subprocess, store result"
+      - "Auto-dogpile triggers: plateau, all below 50% gate, modality switch"
+    tests:
+      - "cd .pi/skills/thunderdome && uv run python -c 'from scripts.diagnosis import diagnose_round; print(\"OK\")'"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.diagnosis import diagnose_round; print(\"OK\")'"
+      assertion: "diagnosis module importable"
+
+  - id: "8"
+    title: "Create scripts/thunderdome.py — main CLI orchestrator (typer)"
+    lane: "1"
+    runner: "subagent-service"
+    backend: "opus"
+    mode: "iterative"
+    depends_on: ["4", "5", "6", "7"]
+    command: "cd .pi/skills/thunderdome && bash run.sh run --help 2>&1 | grep -q manifest"
+    implementation:
+      - "typer CLI: run, status, report, list commands"
+      - "run(manifest_path): load → recall → ensure subagent → convergence loop"
+      - "Convergence loop: dispatch → score → check gates → diagnose → dogpile → iterate"
+      - "Gates: gate_passed, plateau, max_rounds, regression"
+      - "task-monitor integration: start-session/end-session"
+      - "WebSocket notify to UX Lab agent-bus"
+      - "MUST stay under 800 lines"
+    tests:
+      - "cd .pi/skills/thunderdome && bash run.sh run --help 2>&1 | grep -q manifest"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && bash run.sh run --help 2>&1 | grep -q manifest"
+      assertion: "CLI run command accepts manifest path"
+
+  - id: "9"
+    title: "Create sanity.sh with dry-run test"
+    lane: "4"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["8"]
+    command: "cd .pi/skills/thunderdome && bash sanity.sh"
+    implementation:
+      - "Create examples/example-manifest.yaml with 2 dummy strategies (echo JSON with known F1 values)"
+      - "sanity.sh: run thunderdome with --dry-run flag, verify manifest loads and strategies parsed"
+      - "sanity.sh: run scoring unit tests — feed known JSON to extract_metric, verify correct value"
+      - "sanity.sh: run plateau detection unit tests — feed known F1 sequences, verify plateau/no-plateau"
+      - "sanity.sh: verify all module imports succeed"
+      - "sanity.sh: run /skills-ci scan on thunderdome, verify 0 new errors"
+    tests:
+      - "cd .pi/skills/thunderdome && bash sanity.sh"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && bash sanity.sh"
+      assertion: "sanity.sh exits 0"
+
+  - id: "10"
+    title: "Create example manifests for classifier-lab and prompt-lab"
+    lane: "4"
+    runner: "subagent-service"
+    backend: "sonnet"
+    mode: "one_shot"
+    depends_on: ["8"]
+    command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.manifest import load_manifest; load_manifest(\"examples/classifier-table-merge.yaml\"); print(\"OK\")'"
+    implementation:
+      - "examples/classifier-table-merge.yaml: 3 strategies, 2 persona reviewers, gate F1 >= 0.90"
+      - "examples/prompt-optimization.yaml: 3 prompt variants, gate score >= 0.85"
+    tests:
+      - "cd .pi/skills/thunderdome && uv run python -c 'from scripts.manifest import load_manifest; load_manifest(\"examples/classifier-table-merge.yaml\"); print(\"OK\")'"
+    definition_of_done:
+      command: "cd .pi/skills/thunderdome && uv run python -c 'from scripts.manifest import load_manifest; load_manifest(\"examples/classifier-table-merge.yaml\"); print(\"OK\")'"
+      assertion: "Example manifests validate against schema"

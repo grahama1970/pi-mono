@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "vPVtC7VHEmU",
+    "language": "en",
+    "took_ms": 8766,
+    "method": null,
+    "title": "DEF CON 30  - Jeffrey Hofmann - PreAuth RCE Chains on an MDM - KACE SMA",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2159,
+    "description": "MDM solutions are, by design, a single point of failure for organizations. MDM appliances often have the ability to execute commands on most of the devices in an organization and provide an “instant win” target for attackers. KACE Systems Management Appliance is a popular MDM choice for hybrid environments. This talk will cover the technical details of 3 preauthentication RCE as root chains on KACE SMA and the research steps taken to identify the individual vulnerabilities used.",
+    "view_count": 1613
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] vPVtC7VHEmU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

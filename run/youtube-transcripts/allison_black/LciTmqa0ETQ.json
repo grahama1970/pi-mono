@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LciTmqa0ETQ",
+    "language": "en",
+    "took_ms": 8739,
+    "method": null,
+    "title": "Marine Corps Boot Camp Land Navigation",
+    "channel": "Sandboxx",
+    "upload_date": "20211123",
+    "duration_sec": 51,
+    "description": "Recruits complete the Land Navigation Course during Basic Warrior Training aboard Marine Corps Recruit Depot Parris Island. Land Navigation tests recruits on their knowledge and ability to use a compass and topological map. \n\n(U.S. Marine Corps video by Lance Cpl. Godfrey Ampong)",
+    "view_count": 20251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LciTmqa0ETQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

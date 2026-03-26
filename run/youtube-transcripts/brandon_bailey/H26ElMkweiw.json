@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "H26ElMkweiw",
+    "language": "en",
+    "took_ms": 8815,
+    "method": null,
+    "title": "DEF CON Safe Mode - Sean Metcalf - Hacking the Hybrid Cloud   Q&A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 2039,
+    "description": "Question and answer session for Sean Metcalf - Hacking the Hybrid Cloud",
+    "view_count": 794
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] H26ElMkweiw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

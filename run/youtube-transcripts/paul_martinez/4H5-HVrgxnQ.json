@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4H5-HVrgxnQ",
+    "language": "en",
+    "took_ms": 8804,
+    "method": null,
+    "title": "Let's Assume SBOM's Exist ... Now What?",
+    "channel": "S4 Events",
+    "upload_date": "20200823",
+    "duration_sec": 1825,
+    "description": "The need for a software bill of materials (SBOM) is widely agreed upon, and there are efforts underway on how to create and provide a SBOM. This then begs the question what do asset owners and vendors with a SBOM?\n\nAllan Friedman of NTIA introduces what a SBOM is any how they are created. Then, at 6:00, he leads a discussion with a vendor (David Foose of Emerson) and an asset owner (Kaleem Khawaja of BP) on how they would use a SBOM and some of the challenges in using a SBOM.",
+    "view_count": 720
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4H5-HVrgxnQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

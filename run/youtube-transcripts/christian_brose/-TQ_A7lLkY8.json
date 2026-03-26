@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-TQ_A7lLkY8",
+    "language": "en",
+    "took_ms": 7983,
+    "method": null,
+    "title": "Diana Furchtgott-Roth the June Employment Numbers for Fox Business",
+    "channel": "Hudson Institute",
+    "upload_date": "20100706",
+    "duration_sec": 222,
+    "description": "Hudson Senior Fellow Diana Furchtgott-Roth joined Fox Business on July 2nd to talk about the June 2010 employment numbers.",
+    "view_count": 67
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -TQ_A7lLkY8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

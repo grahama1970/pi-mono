@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hHn_cV5WUDI",
+    "language": "en",
+    "took_ms": 8898,
+    "method": null,
+    "title": "Function Calling Datasets, Training and Inference",
+    "channel": "Trelis Research",
+    "upload_date": "20231207",
+    "duration_sec": 4596,
+    "description": "➡️ Trelis Function-calling Models and Scripts: https://trelis.com/function-calling/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ ADVANCED Vision Fine-tuning Repo: https://trelis.com/advanced-vision/\n➡️ ADVANCED Transcription Repo: https://trelis.com/advanced-transcription/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nChapters:\n0:00 The power of function calling LLMs\n0:56 Video Overview\n2:45 What are function calling models?\n6:45 Function calling fine-tuning datasets\n11:52 Training an LLM for function calling\n37:49 Inferencing function calling LLMs\n41:04 OpenAI Function calling\n47:15 Inferencing function calling Llama 7B\n1:00:29 Inferencing OpenChat 7B\n1:04:27 Inferencing DeepSeek 67B\n1:08:55 Function calling EN ESPANOL\n1:14:27 Choosing a function calling model",
+    "view_count": 15129
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hHn_cV5WUDI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

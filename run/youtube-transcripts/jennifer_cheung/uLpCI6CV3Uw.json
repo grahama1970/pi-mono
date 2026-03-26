@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uLpCI6CV3Uw",
+    "language": "en",
+    "took_ms": 8087,
+    "method": null,
+    "title": "DEF CON 33 - The Anatomy of a Crypto Scam - Nick Percoco & Kitboga",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 3336,
+    "description": "Nick and Kit team up to explain a story of fraud and scam as often reported in the news. A method of deceit with a unique financial angle is introduced, starting with a video to illustrate the problem. History of the actors involved in the analysis and security research reveals their complementary partnership, where they observe the scam to develop defense methods. A breakdown of the scam workflow follows its progress and funds are tracked as they move from the victim's possession. Finally, advice is given how to protect from becoming a victim of similar fraud.",
+    "view_count": 20264
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uLpCI6CV3Uw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

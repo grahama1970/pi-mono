@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4Q0yvN_kdOE",
+    "language": "en",
+    "took_ms": 7930,
+    "method": null,
+    "title": "Diana Furchtgott-Roth on the Gender Pay Gap for Fox 5",
+    "channel": "Hudson Institute",
+    "upload_date": "20100928",
+    "duration_sec": 249,
+    "description": "Hudson Senior Fellow Diana Furchtgott-Roth joined Washington, DC's Fox 5 to discuss the gender pay gap.",
+    "view_count": 1683
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4Q0yvN_kdOE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

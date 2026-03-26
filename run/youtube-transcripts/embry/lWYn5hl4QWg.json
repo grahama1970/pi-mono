@@ -1,0 +1,3188 @@
+{
+  "meta": {
+    "video_id": "lWYn5hl4QWg",
+    "language": "en",
+    "took_ms": 1704,
+    "method": "direct",
+    "title": "Could We Help Push Rockets To Orbit?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20250716",
+    "duration_sec": 2081,
+    "description": "Can’t we build a better launch system? Why are we still more or less just using thirsty rocket engines? In the world of “why don’t they just” ideas, there’s one idea that’s perhaps most tantalizing, \n\nWhy don’t they just use a vacuum tunnel maglev catapult, or something to push the rocket off the ground so you don’t need as big and powerful of a rocket?\n\nTimestamps:\n00:00 - Intro\n02:35 - History\n06:21 - Falcon 9 Assist\n13:25 - Starship Assist\n20:25 - Electron Vacuum Maglev\n24:25 - Orbital Maglev Tunnel\n29:20 - Yeeting From The Moon\n32:00 - Summary\n\nCheck out our new 1:100 scale metal Mercury Program Rocket Models and also some new shirts at http://everydayastronaut.com/shop\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nAll music is original! Find it anywhere you listen to music! (Spotify, iTunes, Google Play, Amazon, etc)",
+    "view_count": 653961
+  },
+  "transcript": [
+    {
+      "text": "This is the Saturn V rocket\nthat took humans to the moon.",
+      "start": 1.868,
+      "duration": 3.637
+    },
+    {
+      "text": "It consumed over\n12,000kg of propellant each",
+      "start": 5.805,
+      "duration": 3.837
+    },
+    {
+      "text": "and every second\nduring its first stage burn.",
+      "start": 9.642,
+      "duration": 3.404
+    },
+    {
+      "text": "It was so thirsty, it burned through over\n125,000kg of propellant",
+      "start": 13.213,
+      "duration": 5.972
+    },
+    {
+      "text": "before it even cleared the launch tower.",
+      "start": 19.486,
+      "duration": 2.869
+    },
+    {
+      "text": "Imagine if they could have just saved\nthat propellant",
+      "start": 22.355,
+      "duration": 2.202
+    },
+    {
+      "text": "for the end of the burn, or removed it\ncompletely?",
+      "start": 24.557,
+      "duration": 2.703
+    },
+    {
+      "text": "Wouldn't that mean\nmassive gains in payload capacity?",
+      "start": 27.26,
+      "duration": 3.237
+    },
+    {
+      "text": "Can't we build a better launch system?",
+      "start": 30.697,
+      "duration": 2.336
+    },
+    {
+      "text": "in the world of why don't they just ideas?",
+      "start": 33.033,
+      "duration": 3.003
+    },
+    {
+      "text": "There's one\nthat's perhaps most tantalizing.",
+      "start": 36.069,
+      "duration": 2.869
+    },
+    {
+      "text": "Why don't they just use a vacuum tunnel,\nmaglev catapult",
+      "start": 38.938,
+      "duration": 2.903
+    },
+    {
+      "text": "or something\nto push the rocket off the ground?",
+      "start": 41.841,
+      "duration": 2.203
+    },
+    {
+      "text": "So you don't need\nas big and powerful of a rocket.",
+      "start": 44.044,
+      "duration": 2.602
+    },
+    {
+      "text": "It seems like a no brainer, doesn't it?",
+      "start": 46.646,
+      "duration": 2.069
+    },
+    {
+      "text": "I'm Tim Dodd, the Everyday Astronaut,\nand today we're going to dive",
+      "start": 48.715,
+      "duration": 3.136
+    },
+    {
+      "text": "into the art of rocket yeeting or,\nyou know, using some kind of ground",
+      "start": 51.851,
+      "duration": 4.004
+    },
+    {
+      "text": "based launch assist system to help\nmake orbital rockets more efficient.",
+      "start": 55.855,
+      "duration": 4.004
+    },
+    {
+      "text": "We'll go over the physics, the challenges,\nthe practicality and all the math",
+      "start": 60.126,
+      "duration": 3.337
+    },
+    {
+      "text": "on a few ideas, including just adding\nlaunch assist systems to existing rockets",
+      "start": 63.463,
+      "duration": 4.938
+    },
+    {
+      "text": "and infrastructure,\nor what it would look like",
+      "start": 68.401,
+      "duration": 1.902
+    },
+    {
+      "text": "to actually replace a rocket altogether\nwith some kind of heating device.",
+      "start": 70.303,
+      "duration": 3.47
+    },
+    {
+      "text": "and we'll even look into one idea where\nthis could be the most game changing.",
+      "start": 74.107,
+      "duration": 3.837
+    },
+    {
+      "text": "and hopefully by the end of this video,\nwe'll know why some kind of ground based",
+      "start": 78.011,
+      "duration": 3.17
+    },
+    {
+      "text": "launch assist system\nisn't far more common or common at all.",
+      "start": 81.181,
+      "duration": 4.07
+    },
+    {
+      "text": "Or perhaps why it's not the most common\nway of launching an orbital rocket.",
+      "start": 85.518,
+      "duration": 4.138
+    },
+    {
+      "text": "Okay, let's get started.",
+      "start": 90.39,
+      "duration": 1.301
+    },
+    {
+      "text": "Right at the top here we do\nhave two things to go over really quick.",
+      "start": 100.667,
+      "duration": 2.569
+    },
+    {
+      "text": "First,\nwe finally have our next 1:100 scale",
+      "start": 103.236,
+      "duration": 3.437
+    },
+    {
+      "text": "model rockets\nfinally available in our shop.",
+      "start": 106.673,
+      "duration": 3.003
+    },
+    {
+      "text": "Our Falcon nine was our first, you know,\nmetal 1:100 scale model rocket.",
+      "start": 109.742,
+      "duration": 3.371
+    },
+    {
+      "text": "And now we're going back to the beginning",
+      "start": 113.313,
+      "duration": 1.434
+    },
+    {
+      "text": "of human spaceflight,\nat least in the United States.",
+      "start": 114.747,
+      "duration": 2.103
+    },
+    {
+      "text": "For now,\nwith the Mercury program, rockets.",
+      "start": 116.85,
+      "duration": 2.469
+    },
+    {
+      "text": "They're in stock now\nas well as we finally have",
+      "start": 119.319,
+      "duration": 1.835
+    },
+    {
+      "text": "a new run of our Falcon Nines\nin stock at everydayastronaut.com/shop.",
+      "start": 121.154,
+      "duration": 3.837
+    },
+    {
+      "text": "Get them now\nand start your very own rocket garden.",
+      "start": 125.225,
+      "duration": 2.569
+    },
+    {
+      "text": "Okay.\nNext I have to strongly suggest",
+      "start": 127.794,
+      "duration": 1.802
+    },
+    {
+      "text": "watching some previous videos,\nincluding orbit versus sub orbit.",
+      "start": 129.596,
+      "duration": 3.637
+    },
+    {
+      "text": "Why not launch from mountains\nand or the equator?",
+      "start": 133.466,
+      "duration": 2.636
+    },
+    {
+      "text": "And why not launch from jets?",
+      "start": 136.102,
+      "duration": 1.969
+    },
+    {
+      "text": "Because they lay down",
+      "start": 138.071,
+      "duration": 0.967
+    },
+    {
+      "text": "a lot of important groundwork\nthat are vital concepts for this video.",
+      "start": 139.038,
+      "duration": 4.305
+    },
+    {
+      "text": "okay, so assuming you've seen those videos\nor you're familiar with these concepts,",
+      "start": 143.343,
+      "duration": 3.136
+    },
+    {
+      "text": "or maybe you've just played a good amount\nof Kerbal Space Program,",
+      "start": 146.479,
+      "duration": 2.736
+    },
+    {
+      "text": "I think that means you're fully qualified\nto dive into the topic of",
+      "start": 149.215,
+      "duration": 3.47
+    },
+    {
+      "text": "throwing a rocket. So",
+      "start": 152.685,
+      "duration": 1.602
+    },
+    {
+      "text": "why don't they just.",
+      "start": 155.421,
+      "duration": 2.803
+    },
+    {
+      "text": "Assisting a rocket with a ground based\nlaunch system",
+      "start": 158.224,
+      "duration": 2.303
+    },
+    {
+      "text": "certainly isn't a novel idea,\nand it's been seen in",
+      "start": 160.527,
+      "duration": 3.103
+    },
+    {
+      "text": "many concepts going back\nas far as rocketry itself.",
+      "start": 163.63,
+      "duration": 3.37
+    },
+    {
+      "text": "Actually kind of goes back\nbefore modern rockets were even made.",
+      "start": 167.1,
+      "duration": 3.503
+    },
+    {
+      "text": "I mean, one of the very first films ever\nmade, La Voyage dans la Lune,",
+      "start": 170.803,
+      "duration": 3.771
+    },
+    {
+      "text": "depicted humans being shot to the moon via\na giant cannon.",
+      "start": 174.741,
+      "duration": 3.637
+    },
+    {
+      "text": "And for some reason, those humans brought\ntheir umbrellas with them to the moon.",
+      "start": 178.578,
+      "duration": 3.37
+    },
+    {
+      "text": "And the moon had like a weird face.",
+      "start": 181.948,
+      "duration": 1.835
+    },
+    {
+      "text": "And it's it's all just so weird.",
+      "start": 183.783,
+      "duration": 3.003
+    },
+    {
+      "text": "But anyway, the point is,\nthis is far from a new idea.",
+      "start": 186.886,
+      "duration": 3.137
+    },
+    {
+      "text": "This particular concept\nkind of came to life in the 1950s",
+      "start": 190.156,
+      "duration": 2.903
+    },
+    {
+      "text": "with a project called Harpe,\nthe High Altitude Research Project.",
+      "start": 193.059,
+      "duration": 3.637
+    },
+    {
+      "text": "It was a 36 meter long cannon\nthat could shoot a 41 centimeter",
+      "start": 196.896,
+      "duration": 3.871
+    },
+    {
+      "text": "wide projectile 180km in altitude,",
+      "start": 200.767,
+      "duration": 3.57
+    },
+    {
+      "text": "officially making it a valid way\nto yeet an object into space.",
+      "start": 204.604,
+      "duration": 3.47
+    },
+    {
+      "text": "but it has some limitations.",
+      "start": 208.208,
+      "duration": 1.634
+    },
+    {
+      "text": "First, with only a single impulse,",
+      "start": 209.842,
+      "duration": 1.936
+    },
+    {
+      "text": "an object can go up to space,\nbut it can't be put into orbit.",
+      "start": 211.778,
+      "duration": 3.203
+    },
+    {
+      "text": "because it will always come back around\nto its lowest point.",
+      "start": 215.315,
+      "duration": 3.003
+    },
+    {
+      "text": "which means an object shot\nfrom a cannon from",
+      "start": 218.351,
+      "duration": 1.735
+    },
+    {
+      "text": "the ground will always hit the atmosphere\nand then the ground at some point,",
+      "start": 220.086,
+      "duration": 3.17
+    },
+    {
+      "text": "even if it had a high enough velocity\nto achieve orbit.",
+      "start": 223.556,
+      "duration": 3.437
+    },
+    {
+      "text": "Second, it's difficult\nto make sensitive electronics.",
+      "start": 226.993,
+      "duration": 2.803
+    },
+    {
+      "text": "Not to mention, living creatures\nsurvive virtually instantaneously,",
+      "start": 229.796,
+      "duration": 3.937
+    },
+    {
+      "text": "accelerating from zero to almost 8000km\nan hour",
+      "start": 233.733,
+      "duration": 3.57
+    },
+    {
+      "text": "in three hundredths of a second,\npulling about 7500 GS.",
+      "start": 237.537,
+      "duration": 4.471
+    },
+    {
+      "text": "So could we even realistically use\na ground throwing device",
+      "start": 242.342,
+      "duration": 3.336
+    },
+    {
+      "text": "for an orbital rocket?",
+      "start": 245.678,
+      "duration": 1.502
+    },
+    {
+      "text": "I'll fast forward to now.",
+      "start": 247.18,
+      "duration": 1.234
+    },
+    {
+      "text": "And a company called Spin\nLaunch is actually working on an orbital",
+      "start": 248.414,
+      "duration": 2.97
+    },
+    {
+      "text": "launch system that, instead of shooting\na rocket out of a cannon,",
+      "start": 251.384,
+      "duration": 3.27
+    },
+    {
+      "text": "spins a rocket with a centrifuge inside\nof a vacuum chamber,",
+      "start": 254.654,
+      "duration": 3.17
+    },
+    {
+      "text": "and then chucks it out fast enough to\nbasically replace the booster of a rocket.",
+      "start": 257.957,
+      "duration": 4.104
+    },
+    {
+      "text": "Their goal is to build a small liquid",
+      "start": 262.161,
+      "duration": 2.002
+    },
+    {
+      "text": "propellant rocket\nthat can take about 200kg to orbit.",
+      "start": 264.163,
+      "duration": 3.003
+    },
+    {
+      "text": "so this orbital rocket\nwouldn't even need a booster.",
+      "start": 267.267,
+      "duration": 2.802
+    },
+    {
+      "text": "Just imagine\nnot having to build the largest",
+      "start": 270.069,
+      "duration": 2.269
+    },
+    {
+      "text": "and most expensive part of a rocket,\nthe booster.",
+      "start": 272.338,
+      "duration": 2.836
+    },
+    {
+      "text": "And instead of using rocket fuel,\nthey're using electric motors",
+      "start": 275.174,
+      "duration": 3.571
+    },
+    {
+      "text": "and electrical energy\nto spin up the rocket.",
+      "start": 278.745,
+      "duration": 3.003
+    },
+    {
+      "text": "So it has the potential",
+      "start": 281.814,
+      "duration": 1.035
+    },
+    {
+      "text": "to be very reusable, reliable,\nand a very sustainable system.",
+      "start": 282.849,
+      "duration": 4.371
+    },
+    {
+      "text": "This sounds promising, doesn't it?",
+      "start": 287.32,
+      "duration": 1.902
+    },
+    {
+      "text": "To date, they've completed a 33\nmeter wide, one third scale demonstrator",
+      "start": 289.222,
+      "duration": 4.171
+    },
+    {
+      "text": "that has launched",
+      "start": 293.393,
+      "duration": 0.7
+    },
+    {
+      "text": "ten passive projectiles reaching\nalmost ten kilometers an altitude.",
+      "start": 294.093,
+      "duration": 3.571
+    },
+    {
+      "text": "But things get a little more wild\nonce this gets fully scaled up.",
+      "start": 298.031,
+      "duration": 4.037
+    },
+    {
+      "text": "100 meter wide, full scale orbital version\nwould spin up to 450 rpm over an hour",
+      "start": 302.302,
+      "duration": 5.939
+    },
+    {
+      "text": "and a half, which would put about\n10,000 GS on the rocket.",
+      "start": 308.241,
+      "duration": 3.837
+    },
+    {
+      "text": "While it's inside the center, Fuge.",
+      "start": 312.111,
+      "duration": 1.802
+    },
+    {
+      "text": "And that might not be\nthe biggest challenge they face.",
+      "start": 313.913,
+      "duration": 2.97
+    },
+    {
+      "text": "Then they also have to precisely time\nthe release of the rocket and the opening",
+      "start": 316.883,
+      "duration": 4.07
+    },
+    {
+      "text": "and closing of the vacuum doors\nwithin milliseconds of accuracy.",
+      "start": 320.953,
+      "duration": 3.304
+    },
+    {
+      "text": "So they don't accidentally hit the walls.",
+      "start": 324.39,
+      "duration": 2.202
+    },
+    {
+      "text": "And they also have to instantaneously\nrebalance that giant spinning rotor.",
+      "start": 326.592,
+      "duration": 5.272
+    },
+    {
+      "text": "Then the rocket is now traveling\nat 70 200km an hour, or about six times",
+      "start": 331.931,
+      "duration": 4.638
+    },
+    {
+      "text": "the speed of sound at sea level,\nwhich will induce a lot of heat in it.",
+      "start": 336.569,
+      "duration": 4.238
+    },
+    {
+      "text": "Also, slow the rocket down before it\neventually gets out of the atmosphere,",
+      "start": 340.807,
+      "duration": 4.304
+    },
+    {
+      "text": "and then it has to light its own engine\nto continue into orbit.",
+      "start": 345.211,
+      "duration": 3.37
+    },
+    {
+      "text": "The company seems confident\nthey've solved all these problems,",
+      "start": 348.681,
+      "duration": 2.536
+    },
+    {
+      "text": "and we'll have a system that can deliver\nmeaningful payloads into orbit",
+      "start": 351.217,
+      "duration": 2.936
+    },
+    {
+      "text": "at a fraction of the cost\nof a traditional launch system.",
+      "start": 354.153,
+      "duration": 2.536
+    },
+    {
+      "text": "If you want to learn more about Spin\nLaunch,",
+      "start": 356.689,
+      "duration": 1.702
+    },
+    {
+      "text": "may I suggest watching Real Engineering's\namazing video",
+      "start": 358.391,
+      "duration": 3.036
+    },
+    {
+      "text": "that dives really deep into their concept\nand tours their facilities.",
+      "start": 361.427,
+      "duration": 3.804
+    },
+    {
+      "text": "As with all real engineering\nvideos, it's fantastic.",
+      "start": 365.598,
+      "duration": 3.003
+    },
+    {
+      "text": "But what if we didn't want the ground\nlaunch system to do as much of the work?",
+      "start": 368.634,
+      "duration": 3.437
+    },
+    {
+      "text": "What if we just want to do\na little bit of a boost?",
+      "start": 372.438,
+      "duration": 2.469
+    },
+    {
+      "text": "And what if we want it to also be able\nto help launch humans into orbit?",
+      "start": 374.907,
+      "duration": 3.904
+    },
+    {
+      "text": "Would that be feasible?",
+      "start": 379.612,
+      "duration": 1.268
+    },
+    {
+      "text": "Okay, let's go over a",
+      "start": 383.916,
+      "duration": 0.901
+    },
+    {
+      "text": "few of these ideas\nto keep these concepts reliable and safe.",
+      "start": 384.817,
+      "duration": 3.804
+    },
+    {
+      "text": "We're going to light the rockets\nengines on the ground.",
+      "start": 388.721,
+      "duration": 2.503
+    },
+    {
+      "text": "Like what's conventional and preferred,\nand just use the launch",
+      "start": 391.224,
+      "duration": 3.57
+    },
+    {
+      "text": "assist\nto add to the acceleration of the engines.",
+      "start": 394.794,
+      "duration": 3.003
+    },
+    {
+      "text": "trying to light a rocket while is in\nfreefall is one of those challenges",
+      "start": 397.83,
+      "duration": 2.703
+    },
+    {
+      "text": "we discuss in my other video\nabout air launching.",
+      "start": 400.533,
+      "duration": 2.603
+    },
+    {
+      "text": "A common problem with dropping a rocket\nand then lighting it is",
+      "start": 403.136,
+      "duration": 3.336
+    },
+    {
+      "text": "it can lead to a complete mission failure.",
+      "start": 406.472,
+      "duration": 1.769
+    },
+    {
+      "text": "If there's a problem lighting the engines.",
+      "start": 408.241,
+      "duration": 2.035
+    },
+    {
+      "text": "Conventional rockets light their engines\nwhile still on the ground,",
+      "start": 410.276,
+      "duration": 2.836
+    },
+    {
+      "text": "and then once the computers\nconfirm everything's good to go,",
+      "start": 413.112,
+      "duration": 3.137
+    },
+    {
+      "text": "then the ground system\nwill let go of the rocket.",
+      "start": 416.516,
+      "duration": 2.535
+    },
+    {
+      "text": "This idea has saved countless rockets\nfrom a premature demise.",
+      "start": 419.051,
+      "duration": 4.138
+    },
+    {
+      "text": "Now, of course,\nthere are some submarine launches",
+      "start": 423.289,
+      "duration": 1.668
+    },
+    {
+      "text": "and nuclear silos that will yeet\nand then light the engines,",
+      "start": 424.957,
+      "duration": 3.003
+    },
+    {
+      "text": "but it's probably just not that practical\nor safe, nor is it actually the",
+      "start": 427.994,
+      "duration": 3.904
+    },
+    {
+      "text": "most advantageous as far as performance\ngoes on an orbital launcher.",
+      "start": 431.898,
+      "duration": 3.937
+    },
+    {
+      "text": "For these calculations, I'm putting\nthe numbers into this spreadsheet I made.",
+      "start": 436.002,
+      "duration": 3.036
+    },
+    {
+      "text": "And then I'm using launch calculator.com\nto help give us some baseline and easy",
+      "start": 439.038,
+      "duration": 4.171
+    },
+    {
+      "text": "calculations on the improvement.",
+      "start": 443.209,
+      "duration": 1.368
+    },
+    {
+      "text": "With and without a launch system.",
+      "start": 444.577,
+      "duration": 1.735
+    },
+    {
+      "text": "okay.\nThese numbers aren't going to be perfect.",
+      "start": 446.312,
+      "duration": 1.602
+    },
+    {
+      "text": "So don't plan your mission around them.",
+      "start": 447.914,
+      "duration": 1.501
+    },
+    {
+      "text": "But again, they're going to be",
+      "start": 449.415,
+      "duration": 1.101
+    },
+    {
+      "text": "good enough to compare with\nand without a launch assist system.",
+      "start": 450.516,
+      "duration": 3.07
+    },
+    {
+      "text": "So at least you know they'll be accurate\nlike on a percentage basis.",
+      "start": 453.82,
+      "duration": 3.169
+    },
+    {
+      "text": "So don't take these numbers\nas pure gospel,",
+      "start": 456.989,
+      "duration": 2.837
+    },
+    {
+      "text": "but I think the point will still stand.",
+      "start": 459.826,
+      "duration": 1.768
+    },
+    {
+      "text": "So for our first idea, let's\njust take a Falcon nine in reusable mode",
+      "start": 461.594,
+      "duration": 3.57
+    },
+    {
+      "text": "with a payload that weighs about 17,500kg,\nWhich is roughly its current",
+      "start": 465.164,
+      "duration": 4.204
+    },
+    {
+      "text": "peak capacity, while still being able\nto land the booster downrange.",
+      "start": 469.368,
+      "duration": 3.003
+    },
+    {
+      "text": "And then we'll see how much extra mass\nwe can add to the payload.",
+      "start": 472.572,
+      "duration": 3.536
+    },
+    {
+      "text": "If we actually help boost it off\nthe ground.",
+      "start": 476.409,
+      "duration": 2.536
+    },
+    {
+      "text": "Let's start off as simple\nas we possibly can.",
+      "start": 478.945,
+      "duration": 2.536
+    },
+    {
+      "text": "Let's imagine the strong back that holds\nonto the rocket while it's vertical",
+      "start": 481.481,
+      "duration": 3.737
+    },
+    {
+      "text": "is turned into some kind of maglev\ncatapult thing",
+      "start": 485.318,
+      "duration": 3.036
+    },
+    {
+      "text": "that can hold onto the rocket and\nboost it up the length of the strong back.",
+      "start": 488.554,
+      "duration": 3.437
+    },
+    {
+      "text": "We'll say about 70m.",
+      "start": 492.191,
+      "duration": 1.935
+    },
+    {
+      "text": "Let's build a system\nthat will have a total average",
+      "start": 494.126,
+      "duration": 2.336
+    },
+    {
+      "text": "net acceleration of three G's,\nwhich is actually a pretty good amount",
+      "start": 496.462,
+      "duration": 4.371
+    },
+    {
+      "text": "of acceleration that lift off",
+      "start": 500.833,
+      "duration": 1.301
+    },
+    {
+      "text": "considering most orbital rockets\naccelerate with as low as about 0.1 G.",
+      "start": 502.134,
+      "duration": 4.939
+    },
+    {
+      "text": "most are usually more around\n0.4 or 0.5 net G's of acceleration.",
+      "start": 507.073,
+      "duration": 4.571
+    },
+    {
+      "text": "However, even with humans on board,",
+      "start": 511.844,
+      "duration": 1.468
+    },
+    {
+      "text": "rockets are often accelerating closer\nto 4 or 5 G's close to engine cutoff,",
+      "start": 513.312,
+      "duration": 3.971
+    },
+    {
+      "text": "so three G is just a good starting point\nfor an initial yeet.",
+      "start": 517.283,
+      "duration": 4.171
+    },
+    {
+      "text": "And notice I'm saying net acceleration.",
+      "start": 521.687,
+      "duration": 2.236
+    },
+    {
+      "text": "That's the amount of acceleration\nbeyond the Earth's 9.8m/s².",
+      "start": 523.923,
+      "duration": 4.171
+    },
+    {
+      "text": "So when a rocket is lifting off\ndirectly opposing gravity, the first g of",
+      "start": 528.294,
+      "duration": 4.137
+    },
+    {
+      "text": "potential acceleration is basically eaten\naway by Earth's gravity.",
+      "start": 532.431,
+      "duration": 3.504
+    },
+    {
+      "text": "So while sitting on the ground,\na g meter would read one G,",
+      "start": 536.002,
+      "duration": 3.236
+    },
+    {
+      "text": "and at liftoff anything beyond one\nG would be net acceleration.",
+      "start": 539.438,
+      "duration": 3.771
+    },
+    {
+      "text": "So if a rocket has a thrust to weight\nratio of 1.5 to 1,",
+      "start": 543.342,
+      "duration": 3.003
+    },
+    {
+      "text": "it would have a net acceleration of 0.5 g.",
+      "start": 546.479,
+      "duration": 3.203
+    },
+    {
+      "text": "a Falcon nine on its own, reaches about\n23m/s by the time it clears the tower.",
+      "start": 549.882,
+      "duration": 4.271
+    },
+    {
+      "text": "When boosted by the tower, it would add\nan additional 41m/s of velocity.",
+      "start": 554.387,
+      "duration": 5.005
+    },
+    {
+      "text": "So how much payload does about 41m/s\nof extra velocity equate to?",
+      "start": 559.759,
+      "duration": 4.571
+    },
+    {
+      "text": "It adds about 300kg of additional payload\ncapacity, raising our total",
+      "start": 564.43,
+      "duration": 4.204
+    },
+    {
+      "text": "to about 17,800kg for a reusable\nFalcon nine.",
+      "start": 568.634,
+      "duration": 3.771
+    },
+    {
+      "text": "I mean, this sounds pretty good, 300\nextra kilograms.",
+      "start": 572.905,
+      "duration": 3.337
+    },
+    {
+      "text": "So what would it actually take\nto do something like this?",
+      "start": 576.576,
+      "duration": 3.303
+    },
+    {
+      "text": "Well, the biggest issue here\nis how much energy it actually",
+      "start": 580.112,
+      "duration": 2.77
+    },
+    {
+      "text": "takes to accelerate an object\nas heavy as a rocket.",
+      "start": 582.882,
+      "duration": 3.07
+    },
+    {
+      "text": "The Falcon nine is over 500 tons.",
+      "start": 586.218,
+      "duration": 3.17
+    },
+    {
+      "text": "It's like 550 tons.",
+      "start": 589.388,
+      "duration": 1.502
+    },
+    {
+      "text": "When it's fully fueled, Let's figure out\nhow much energy our assist system",
+      "start": 590.89,
+      "duration": 3.27
+    },
+    {
+      "text": "will need to have in order\nto accelerate a 550,000 kilogram",
+      "start": 594.16,
+      "duration": 3.837
+    },
+    {
+      "text": "rocket at a net three g of acceleration.",
+      "start": 597.997,
+      "duration": 3.27
+    },
+    {
+      "text": "So first we need to figure out\nhow much work the rocket is doing",
+      "start": 601.267,
+      "duration": 2.769
+    },
+    {
+      "text": "and how much work\nthe assist system needs to do.",
+      "start": 604.036,
+      "duration": 2.67
+    },
+    {
+      "text": "So if we're aiming for three\ng of net acceleration, we have to add one",
+      "start": 606.706,
+      "duration": 3.837
+    },
+    {
+      "text": "g because of gravity\nthat we also have to overcome.",
+      "start": 610.543,
+      "duration": 3.003
+    },
+    {
+      "text": "So it's 4G worth of force\nwe need to apply to the rocket.",
+      "start": 613.579,
+      "duration": 4.004
+    },
+    {
+      "text": "The rocket will provide 1.4\ng worth of accelerating force.",
+      "start": 617.917,
+      "duration": 3.804
+    },
+    {
+      "text": "So our assist system needs to provide\n2.6 GS worth.",
+      "start": 621.887,
+      "duration": 3.27
+    },
+    {
+      "text": "to solve for force, we just need to take\nmass times acceleration.",
+      "start": 625.191,
+      "duration": 3.27
+    },
+    {
+      "text": "If the assist is pushing at 2.6\nGS, we take",
+      "start": 628.761,
+      "duration": 3.67
+    },
+    {
+      "text": "that times 9.81m/s² to get 25.5m/s².",
+      "start": 632.431,
+      "duration": 5.539
+    },
+    {
+      "text": "And then we need to multiply that times\n550,000kg.",
+      "start": 638.17,
+      "duration": 3.504
+    },
+    {
+      "text": "And we get 14 Mega Newtons of force.",
+      "start": 641.874,
+      "duration": 3.17
+    },
+    {
+      "text": "Now we need to convert that to kinetic\nenergy by multiplying it by the distance.",
+      "start": 645.177,
+      "duration": 3.771
+    },
+    {
+      "text": "We're accelerating it. So 70m.",
+      "start": 648.948,
+      "duration": 2.369
+    },
+    {
+      "text": "And we get an incredible 982\nmegajoules of energy.",
+      "start": 651.317,
+      "duration": 3.904
+    },
+    {
+      "text": "So even though the assist is only doing\nabout two thirds the amount of work,",
+      "start": 655.321,
+      "duration": 3.603
+    },
+    {
+      "text": "it's still almost\n1000 megajoules of energy.",
+      "start": 659.191,
+      "duration": 4.138
+    },
+    {
+      "text": "Okay.",
+      "start": 665.131,
+      "duration": 0.233
+    },
+    {
+      "text": "I have to admit, I have no context\non how much energy that is.",
+      "start": 665.364,
+      "duration": 3.003
+    },
+    {
+      "text": "Is that a lot?",
+      "start": 669.068,
+      "duration": 0.968
+    },
+    {
+      "text": "Well, if we convert that to electrical\nenergy, that would require about 270",
+      "start": 670.036,
+      "duration": 3.37
+    },
+    {
+      "text": "hours of battery capacity,\nwhich that's actually not that bad.",
+      "start": 674.24,
+      "duration": 4.004
+    },
+    {
+      "text": "You could store that amount of energy\nin three Tesla model S batteries.",
+      "start": 678.244,
+      "duration": 3.603
+    },
+    {
+      "text": "So it's not like some absolutely absurd\nnumber.",
+      "start": 681.847,
+      "duration": 3.637
+    },
+    {
+      "text": "It's, you know, certainly within reason.",
+      "start": 685.484,
+      "duration": 2.369
+    },
+    {
+      "text": "but what's a bit less reasonable\nis that we have to drain those three Tesla",
+      "start": 687.853,
+      "duration": 3.871
+    },
+    {
+      "text": "model S batteries in only 2.15 seconds.",
+      "start": 691.791,
+      "duration": 3.77
+    },
+    {
+      "text": "Yikes.",
+      "start": 696.762,
+      "duration": 0.901
+    },
+    {
+      "text": "That's a power requirement of 450,000kW.",
+      "start": 697.663,
+      "duration": 3.504
+    },
+    {
+      "text": "Now, considering a model S, s peak output\nis about 800kW for the plaid",
+      "start": 701.467,
+      "duration": 3.804
+    },
+    {
+      "text": "model, that's about 562 times\nthe max power",
+      "start": 705.271,
+      "duration": 4.07
+    },
+    {
+      "text": "output of a Plaid Model\nS, which is a massive amount of power.",
+      "start": 709.341,
+      "duration": 4.405
+    },
+    {
+      "text": "Or another way to think about it,\nthe average U.S.",
+      "start": 713.846,
+      "duration": 2.169
+    },
+    {
+      "text": "home uses about 1200 watts.",
+      "start": 716.015,
+      "duration": 2.202
+    },
+    {
+      "text": "So for those 2.15 seconds,\nyou'd have to use about the same amount",
+      "start": 718.217,
+      "duration": 4.338
+    },
+    {
+      "text": "of electricity as 375,000 average U.S.",
+      "start": 722.555,
+      "duration": 4.237
+    },
+    {
+      "text": "homes. Power consumption.",
+      "start": 726.792,
+      "duration": 1.602
+    },
+    {
+      "text": "Or what if you ran it off?\nTesla Superchargers?",
+      "start": 728.394,
+      "duration": 2.202
+    },
+    {
+      "text": "You know, the chargers for EVs?",
+      "start": 730.596,
+      "duration": 2.269
+    },
+    {
+      "text": "Well,\nthe average supercharger peaks at 250kW.",
+      "start": 732.865,
+      "duration": 3.136
+    },
+    {
+      "text": "So you need to plug in 1800\nTesla Superchargers to run this system.",
+      "start": 736.335,
+      "duration": 5.672
+    },
+    {
+      "text": "Now, of course,\nyou could probably develop,",
+      "start": 742.141,
+      "duration": 1.702
+    },
+    {
+      "text": "you know, hundreds of smaller battery\npacks or use something a lot more fitting,",
+      "start": 743.843,
+      "duration": 3.904
+    },
+    {
+      "text": "like a super capacitor\nthat could reach the output and capacity.",
+      "start": 747.747,
+      "duration": 3.169
+    },
+    {
+      "text": "But the point is, it's a ridiculous amount",
+      "start": 750.916,
+      "duration": 3.47
+    },
+    {
+      "text": "of energy to release in just 2.18 seconds.",
+      "start": 754.386,
+      "duration": 3.304
+    },
+    {
+      "text": "But another really big problem here\nis that the strong back",
+      "start": 757.89,
+      "duration": 2.369
+    },
+    {
+      "text": "usually either reclines",
+      "start": 760.259,
+      "duration": 1.168
+    },
+    {
+      "text": "or falls back to get out of the way\nof the destructive rocket exhaust.",
+      "start": 761.427,
+      "duration": 3.67
+    },
+    {
+      "text": "So if the tower is now holding on\nto the rocket, it and all of its valuable",
+      "start": 765.397,
+      "duration": 4.772
+    },
+    {
+      "text": "magnets, wiring, motors and plumbing\nare just going to get absolutely torched.",
+      "start": 770.169,
+      "duration": 4.538
+    },
+    {
+      "text": "And again,\nwe could heat then light the engines.",
+      "start": 774.94,
+      "duration": 3.237
+    },
+    {
+      "text": "But we add a lot of risk.",
+      "start": 778.41,
+      "duration": 1.969
+    },
+    {
+      "text": "We add essentially A0G engine ignition\nand we lose performance because",
+      "start": 780.379,
+      "duration": 4.438
+    },
+    {
+      "text": "for every second it's not accelerating,\nit's losing velocity to gravity.",
+      "start": 784.817,
+      "duration": 3.537
+    },
+    {
+      "text": "So despite looking super cool, it's\njust not a good option here.",
+      "start": 788.621,
+      "duration": 3.236
+    },
+    {
+      "text": "Okay, maybe the Falcon nine\nisn't the right platform for this.",
+      "start": 791.957,
+      "duration": 3.17
+    },
+    {
+      "text": "And we're doing all this extra work\nand engineering",
+      "start": 795.127,
+      "duration": 2.302
+    },
+    {
+      "text": "and all this extra complication\nfor just 300 kilogram increase.",
+      "start": 797.429,
+      "duration": 3.604
+    },
+    {
+      "text": "That's only about a 1.7% increase\nin payload capacity.",
+      "start": 801.267,
+      "duration": 3.336
+    },
+    {
+      "text": "Why don't we try this again with Starship?",
+      "start": 804.703,
+      "duration": 1.902
+    },
+    {
+      "text": "Since it's stage zero, launchpad\nalready has big chopstick lifting arms.",
+      "start": 806.605,
+      "duration": 4.705
+    },
+    {
+      "text": "Maybe we could just give them way\nmore power and have them help",
+      "start": 811.644,
+      "duration": 3.503
+    },
+    {
+      "text": "boost the rocket off the ground.",
+      "start": 815.147,
+      "duration": 2.036
+    },
+    {
+      "text": "And now, since the tower is generally\nclear from the brunt of the exhaust,",
+      "start": 817.183,
+      "duration": 3.503
+    },
+    {
+      "text": "we can try and lift the rocket\nwith less fear",
+      "start": 820.853,
+      "duration": 2.069
+    },
+    {
+      "text": "of having to rebuild our maglev system\nevery single launch.",
+      "start": 822.922,
+      "duration": 3.27
+    },
+    {
+      "text": "So let's crunch the numbers on this one.",
+      "start": 826.592,
+      "duration": 2.135
+    },
+    {
+      "text": "just to keep this simple,",
+      "start": 828.727,
+      "duration": 0.734
+    },
+    {
+      "text": "let's just imagine we've engineered a way\nto utilize the full 140 meter tower",
+      "start": 829.461,
+      "duration": 3.938
+    },
+    {
+      "text": "so we have more room to accelerate\nand keep our equations nice and easy.",
+      "start": 833.399,
+      "duration": 4.104
+    },
+    {
+      "text": "So thanks to the taller tower, we actually\ngain about 54m/s of additional velocity.",
+      "start": 837.67,
+      "duration": 5.038
+    },
+    {
+      "text": "So what does this do\nfor our payload capacity?",
+      "start": 843.008,
+      "duration": 2.837
+    },
+    {
+      "text": "Well, assuming Starship\ncan someday theoretically",
+      "start": 845.845,
+      "duration": 2.035
+    },
+    {
+      "text": "put 150 tons into orbit,\nlet's just use that for our equations.",
+      "start": 847.88,
+      "duration": 4.104
+    },
+    {
+      "text": "Now, with an additional boost of 54m/s,",
+      "start": 852.318,
+      "duration": 3.236
+    },
+    {
+      "text": "it could lift closer to 155 tons.",
+      "start": 855.821,
+      "duration": 3.404
+    },
+    {
+      "text": "That's five extra tons of payload,\nwhich is about a 3% increase.",
+      "start": 859.592,
+      "duration": 4.738
+    },
+    {
+      "text": "Okay, so what's the math here?",
+      "start": 864.663,
+      "duration": 1.302
+    },
+    {
+      "text": "How much energy are we talking about?",
+      "start": 865.965,
+      "duration": 2.202
+    },
+    {
+      "text": "Well, first thing's first.",
+      "start": 868.167,
+      "duration": 1.234
+    },
+    {
+      "text": "The full stack of Starship is massive.",
+      "start": 869.401,
+      "duration": 2.77
+    },
+    {
+      "text": "It's almost ten times the weight of Falcon\nnine at about 5000 tons.",
+      "start": 872.171,
+      "duration": 4.538
+    },
+    {
+      "text": "Yeah, that's extremely heavy.",
+      "start": 877.409,
+      "duration": 2.169
+    },
+    {
+      "text": "However, it does have a little bit higher\nthrust to weight ratio than the Falcon",
+      "start": 879.578,
+      "duration": 3.604
+    },
+    {
+      "text": "nine at 1.5 to 1 versus\nthe Falcon 9S1 point 4 to 1.",
+      "start": 883.182,
+      "duration": 4.404
+    },
+    {
+      "text": "So our tower has to do proportionately\na little less work",
+      "start": 887.887,
+      "duration": 3.47
+    },
+    {
+      "text": "to hit the same target of three\ng of net acceleration.",
+      "start": 891.49,
+      "duration": 3.47
+    },
+    {
+      "text": "So now the tower needs to do 2.5\nGHz worth of accelerating force.",
+      "start": 895.094,
+      "duration": 3.67
+    },
+    {
+      "text": "And if we convert that to Mega Newtons\nand then multiply it by the 140m",
+      "start": 898.764,
+      "duration": 4.104
+    },
+    {
+      "text": "on the tower,\nwe will figure out our kinetic energy,",
+      "start": 902.868,
+      "duration": 3.003
+    },
+    {
+      "text": "which is a whopping 17,170 Megajoules,",
+      "start": 905.871,
+      "duration": 4.638
+    },
+    {
+      "text": "which converts to almost 5000\nkilowatt hours of electrical energy",
+      "start": 910.576,
+      "duration": 3.337
+    },
+    {
+      "text": "in order to accelerate\nthe 5000 ton Starship, along",
+      "start": 914.146,
+      "duration": 3.003
+    },
+    {
+      "text": "with its engines\nfor three G of net acceleration.",
+      "start": 917.149,
+      "duration": 3.003
+    },
+    {
+      "text": "so now we need to use about 20 times\nthe amount of energy as before.",
+      "start": 920.152,
+      "duration": 3.837
+    },
+    {
+      "text": "So as if needing to discharge",
+      "start": 924.189,
+      "duration": 1.569
+    },
+    {
+      "text": "273 kilowatt hours and 2.15\nseconds wasn't hard enough.",
+      "start": 925.758,
+      "duration": 3.87
+    },
+    {
+      "text": "Now we need to discharge\nalmost 5000 kilowatt",
+      "start": 929.929,
+      "duration": 3.403
+    },
+    {
+      "text": "hours in about 3.1 seconds.",
+      "start": 933.332,
+      "duration": 3.07
+    },
+    {
+      "text": "That's over 5.5 million kilowatts,",
+      "start": 936.635,
+      "duration": 3.337
+    },
+    {
+      "text": "or in other words, 5.5GW of power\nfor 3.1 seconds.",
+      "start": 940.272,
+      "duration": 5.105
+    },
+    {
+      "text": "So you need to basically plug",
+      "start": 945.678,
+      "duration": 1.601
+    },
+    {
+      "text": "the launch tower into six average sized\nnuclear power plants",
+      "start": 947.279,
+      "duration": 3.804
+    },
+    {
+      "text": "and utilize all their output\nin order to provide that much electricity.",
+      "start": 951.317,
+      "duration": 3.97
+    },
+    {
+      "text": "That's an absurd amount of energy.",
+      "start": 955.554,
+      "duration": 3.003
+    },
+    {
+      "text": "Or again, we could and should probably use\nsome huge capacitors",
+      "start": 958.59,
+      "duration": 3.704
+    },
+    {
+      "text": "for something like this,",
+      "start": 962.294,
+      "duration": 0.934
+    },
+    {
+      "text": "since they're great at storing energy\nfor a shorter period of time",
+      "start": 963.228,
+      "duration": 3.003
+    },
+    {
+      "text": "and can have extremely high discharge\nrates.",
+      "start": 966.432,
+      "duration": 2.936
+    },
+    {
+      "text": "you could do something like this.",
+      "start": 969.368,
+      "duration": 1.201
+    },
+    {
+      "text": "Here's a 50 mega Joule capacitor bank.",
+      "start": 970.569,
+      "duration": 2.603
+    },
+    {
+      "text": "Well, this is actually only about ten bays\nof a 384",
+      "start": 973.172,
+      "duration": 3.27
+    },
+    {
+      "text": "bay system\ncapable of that 50 mega joule bank.",
+      "start": 976.442,
+      "duration": 3.003
+    },
+    {
+      "text": "So you'd actually need about 130,000 times",
+      "start": 979.445,
+      "duration": 3.069
+    },
+    {
+      "text": "what you actually see on screen right now.",
+      "start": 982.514,
+      "duration": 2.136
+    },
+    {
+      "text": "just imagine all that wiring",
+      "start": 984.65,
+      "duration": 1.568
+    },
+    {
+      "text": "and the weight and the cost of it\nall, and the chance that a high voltage",
+      "start": 986.218,
+      "duration": 3.103
+    },
+    {
+      "text": "wire could get fried\nby the exhaust and end up parking.",
+      "start": 989.321,
+      "duration": 3.003
+    },
+    {
+      "text": "I mean, this is starting\nto sound like a really bad idea",
+      "start": 993.092,
+      "duration": 3.003
+    },
+    {
+      "text": "for only a 3% gain in payload capacity.",
+      "start": 996.095,
+      "duration": 3.37
+    },
+    {
+      "text": "okay?",
+      "start": 999.631,
+      "duration": 0.234
+    },
+    {
+      "text": "Let's just scrap\nthis whole electrical thing",
+      "start": 999.865,
+      "duration": 1.702
+    },
+    {
+      "text": "because it's just\nsimply getting out of hand.",
+      "start": 1001.567,
+      "duration": 2.102
+    },
+    {
+      "text": "What if instead we just use the chopsticks\nwith a pulley system",
+      "start": 1003.669,
+      "duration": 3.97
+    },
+    {
+      "text": "and a counterweight to help accelerate\nthe rocket three G's up the tower.",
+      "start": 1007.84,
+      "duration": 3.97
+    },
+    {
+      "text": "To lift a 5000 ton Starship full stack,\nadding 2.5 G's to its existing thrust",
+      "start": 1011.977,
+      "duration": 4.938
+    },
+    {
+      "text": "using a pulley and counterweight,\nThe pulley would need a gear ratio",
+      "start": 1016.915,
+      "duration": 3.471
+    },
+    {
+      "text": "of 5 to 1, and the counterweight\nrequires a mass ratio of 35 to 1.",
+      "start": 1020.386,
+      "duration": 4.404
+    },
+    {
+      "text": "So, in other words, our counterweight\nwould need to be 175,000,000kg.",
+      "start": 1024.957,
+      "duration": 6.306
+    },
+    {
+      "text": "let me say that again another way.",
+      "start": 1031.397,
+      "duration": 1.334
+    },
+    {
+      "text": "A 175,000 tons",
+      "start": 1032.731,
+      "duration": 3.203
+    },
+    {
+      "text": "for reference, an entire Gerald\nR Ford class aircraft carrier,",
+      "start": 1036.235,
+      "duration": 3.703
+    },
+    {
+      "text": "which is the largest aircraft carrier\nmade, is about 100,000 metric tons.",
+      "start": 1039.972,
+      "duration": 5.705
+    },
+    {
+      "text": "So you'd have to suspend",
+      "start": 1045.944,
+      "duration": 0.968
+    },
+    {
+      "text": "almost two of the largest aircraft\ncarriers ever made from the launch tower,",
+      "start": 1046.912,
+      "duration": 3.937
+    },
+    {
+      "text": "in order to have the right amount of mass\nto get the required potential energy",
+      "start": 1051.116,
+      "duration": 3.771
+    },
+    {
+      "text": "in the system to produce 17,167 Megajoules",
+      "start": 1054.887,
+      "duration": 3.837
+    },
+    {
+      "text": "of uplifting force on the rocket\naccelerating to three G's.",
+      "start": 1058.724,
+      "duration": 3.87
+    },
+    {
+      "text": "Okay, now, obviously an aircraft carrier\nisn't the most dense or affordable thing.",
+      "start": 1062.795,
+      "duration": 4.371
+    },
+    {
+      "text": "So what if we just use regular old steel?",
+      "start": 1067.366,
+      "duration": 2.602
+    },
+    {
+      "text": "Well,\nif we needed a 175,000 ton block of steel,",
+      "start": 1069.968,
+      "duration": 4.205
+    },
+    {
+      "text": "it would be almost 22,000m³,",
+      "start": 1074.473,
+      "duration": 2.869
+    },
+    {
+      "text": "which is a 28 by 28 by 28 meter cube.",
+      "start": 1077.342,
+      "duration": 3.304
+    },
+    {
+      "text": "But even more ridiculous\nis that much steel",
+      "start": 1080.712,
+      "duration": 1.702
+    },
+    {
+      "text": "alone is about $175\nmillion worth of steel.",
+      "start": 1082.414,
+      "duration": 4.304
+    },
+    {
+      "text": "now, of course,\nwe could shrink the cube by using over",
+      "start": 1087.152,
+      "duration": 2.803
+    },
+    {
+      "text": "15,000m³ of lead for $350 million,",
+      "start": 1089.955,
+      "duration": 4.238
+    },
+    {
+      "text": "or about 9000m³ of tungsten\nfor about $4 billion.",
+      "start": 1094.426,
+      "duration": 5.539
+    },
+    {
+      "text": "But you get the point.",
+      "start": 1100.265,
+      "duration": 1.502
+    },
+    {
+      "text": "This isn't actually all that easy\nor cheap.",
+      "start": 1101.767,
+      "duration": 2.636
+    },
+    {
+      "text": "and just imagine how big the pulley",
+      "start": 1104.403,
+      "duration": 1.935
+    },
+    {
+      "text": "and the tower would need to be to support\nthis kind of mass and forces.",
+      "start": 1106.338,
+      "duration": 3.871
+    },
+    {
+      "text": "The tower would need to be so big\nand so beefy,",
+      "start": 1110.609,
+      "duration": 3.17
+    },
+    {
+      "text": "I just can't even imagine what it'd take\nto build something capable of these loads.",
+      "start": 1113.779,
+      "duration": 4.037
+    },
+    {
+      "text": "And these forces.",
+      "start": 1117.816,
+      "duration": 1.335
+    },
+    {
+      "text": "And let's not forget about the chopsticks.",
+      "start": 1119.151,
+      "duration": 3.003
+    },
+    {
+      "text": "In order for the chopsticks\nto handle that kind of load",
+      "start": 1122.154,
+      "duration": 2.97
+    },
+    {
+      "text": "with that amount of acceleration,\nwith that much leverage,",
+      "start": 1125.124,
+      "duration": 3.003
+    },
+    {
+      "text": "just imagine how big and heavy\nthey'd need to be.",
+      "start": 1128.127,
+      "duration": 3.003
+    },
+    {
+      "text": "So now the tower\nneeds to be even more massive,",
+      "start": 1131.43,
+      "duration": 3.704
+    },
+    {
+      "text": "and the counterweight needs to also lift\nthose arms to.",
+      "start": 1135.134,
+      "duration": 3.069
+    },
+    {
+      "text": "And let's not forget\nthe booster and Starship",
+      "start": 1138.47,
+      "duration": 1.635
+    },
+    {
+      "text": "are normally lifted\nby these tiny ball mounts",
+      "start": 1140.105,
+      "duration": 2.269
+    },
+    {
+      "text": "that, again, are only meant to support\nthe weight of the drive vehicle.",
+      "start": 1142.374,
+      "duration": 3.403
+    },
+    {
+      "text": "see you need some massive redesigns\nto lift it.",
+      "start": 1145.878,
+      "duration": 2.369
+    },
+    {
+      "text": "When it's fully fueled,\nyou'd probably want to lift it down",
+      "start": 1148.247,
+      "duration": 2.435
+    },
+    {
+      "text": "near the engine section,\nsince that's where the force",
+      "start": 1150.682,
+      "duration": 2.269
+    },
+    {
+      "text": "is already moving through the rocket.",
+      "start": 1152.951,
+      "duration": 1.902
+    },
+    {
+      "text": "and let's not forget,\nwe now have a 175,000 tonne hunk of mass",
+      "start": 1154.853,
+      "duration": 5.572
+    },
+    {
+      "text": "falling that needs to be slowed down\nbefore impacting the ground.",
+      "start": 1160.692,
+      "duration": 3.17
+    },
+    {
+      "text": "So there's that consideration to",
+      "start": 1164.263,
+      "duration": 2.702
+    },
+    {
+      "text": "it all just gets absolutely absurd.",
+      "start": 1168.4,
+      "duration": 3.003
+    },
+    {
+      "text": "Okay.",
+      "start": 1171.503,
+      "duration": 0.567
+    },
+    {
+      "text": "So you'll notice that we're still doing\nall this at a fairly modest scale.",
+      "start": 1172.07,
+      "duration": 3.771
+    },
+    {
+      "text": "So a fairly reasonable acceleration\nof only three g's.",
+      "start": 1175.841,
+      "duration": 3.003
+    },
+    {
+      "text": "And the launch system\nis adding acceleration to the rocket",
+      "start": 1178.844,
+      "duration": 2.869
+    },
+    {
+      "text": "not replacing it.",
+      "start": 1181.713,
+      "duration": 1.502
+    },
+    {
+      "text": "You've notice\nwe've used existing launch tower sizes.",
+      "start": 1183.215,
+      "duration": 2.97
+    },
+    {
+      "text": "And just try to make this whole thing\nas reasonable as possible.",
+      "start": 1186.185,
+      "duration": 4.137
+    },
+    {
+      "text": "Despite this,\nthe numbers are absolutely staggering.",
+      "start": 1190.422,
+      "duration": 3.57
+    },
+    {
+      "text": "The scale of rockets and the forces\ninvolved are just ridiculous.",
+      "start": 1193.992,
+      "duration": 3.938
+    },
+    {
+      "text": "It really does give you a perspective\non how much power and energy",
+      "start": 1198.33,
+      "duration": 3.537
+    },
+    {
+      "text": "those rocket engines are producing.",
+      "start": 1201.867,
+      "duration": 2.035
+    },
+    {
+      "text": "Now, of course you could scale this down.",
+      "start": 1203.902,
+      "duration": 1.702
+    },
+    {
+      "text": "But considering all\nthis is only giving you a 3% gain",
+      "start": 1205.604,
+      "duration": 3.537
+    },
+    {
+      "text": "in payload capacity, what's the point?",
+      "start": 1209.141,
+      "duration": 3.036
+    },
+    {
+      "text": "3% gain?",
+      "start": 1212.377,
+      "duration": 1.468
+    },
+    {
+      "text": "That's very little in the grand scheme\nof things to begin with.",
+      "start": 1213.845,
+      "duration": 3.371
+    },
+    {
+      "text": "So if we scale down even more,\nit becomes even more pointless.",
+      "start": 1217.216,
+      "duration": 4.304
+    },
+    {
+      "text": "Well, perhaps we should scale this down.",
+      "start": 1221.753,
+      "duration": 2.403
+    },
+    {
+      "text": "But let's scale everything down.",
+      "start": 1224.156,
+      "duration": 2.069
+    },
+    {
+      "text": "Maybe doing this at Starship and Falcon\nnine scale isn't the right idea.",
+      "start": 1226.225,
+      "duration": 3.737
+    },
+    {
+      "text": "Maybe this would be more beneficial\non a smaller rocket.",
+      "start": 1230.262,
+      "duration": 3.003
+    },
+    {
+      "text": "Let's do another example.",
+      "start": 1233.332,
+      "duration": 1.668
+    },
+    {
+      "text": "This time, let's look at engineering\na maglev vacuum tunnel launcher",
+      "start": 1235.0,
+      "duration": 3.67
+    },
+    {
+      "text": "for Rocket Lab's Electron rocket.",
+      "start": 1238.77,
+      "duration": 1.836
+    },
+    {
+      "text": "The electron is much more feasible\nin terms of scale.",
+      "start": 1247.246,
+      "duration": 2.969
+    },
+    {
+      "text": "It's only 18m tall, 1.2m wide,",
+      "start": 1250.215,
+      "duration": 3.07
+    },
+    {
+      "text": "and is only about 13,000kg\nwhen fully fueled.",
+      "start": 1253.285,
+      "duration": 3.203
+    },
+    {
+      "text": "So let's go all out with this.",
+      "start": 1256.855,
+      "duration": 2.803
+    },
+    {
+      "text": "Let's try and maximize the performance of\nan electron with a mighty launch system.",
+      "start": 1259.658,
+      "duration": 4.738
+    },
+    {
+      "text": "for this.",
+      "start": 1264.496,
+      "duration": 0.467
+    },
+    {
+      "text": "Let's make a one kilometer deep tunnel\nthat has a maglev",
+      "start": 1264.963,
+      "duration": 3.237
+    },
+    {
+      "text": "sled capable of accelerating\nthe electron at five gs the entire way.",
+      "start": 1268.2,
+      "duration": 4.571
+    },
+    {
+      "text": "while it's in the tunnel. Let's not\nhave the rocket light its engines at all.",
+      "start": 1272.771,
+      "duration": 2.636
+    },
+    {
+      "text": "We'll just let the maglev\ngive it a free boost.",
+      "start": 1275.407,
+      "duration": 2.703
+    },
+    {
+      "text": "If you accelerate at five",
+      "start": 1278.11,
+      "duration": 1.334
+    },
+    {
+      "text": "G over a full kilometer,\nit will take you just over six seconds.",
+      "start": 1279.444,
+      "duration": 4.171
+    },
+    {
+      "text": "and you'd end up with a little over\n300m/s of velocity.",
+      "start": 1283.849,
+      "duration": 3.403
+    },
+    {
+      "text": "That's actually a pretty substantial head\nstart for a rocket.",
+      "start": 1287.819,
+      "duration": 3.571
+    },
+    {
+      "text": "That'd be more velocity than you'd receive",
+      "start": 1291.456,
+      "duration": 1.902
+    },
+    {
+      "text": "during an air launch, like what\nVirgin Orbit did with launcher one.",
+      "start": 1293.358,
+      "duration": 3.57
+    },
+    {
+      "text": "And importantly, all of the momentum\ncould be pointed in the right direction.",
+      "start": 1297.195,
+      "duration": 4.138
+    },
+    {
+      "text": "The rocket wouldn't need to do\nany large change in heading like launcher.",
+      "start": 1301.433,
+      "duration": 3.637
+    },
+    {
+      "text": "One had to do.",
+      "start": 1305.07,
+      "duration": 0.867
+    },
+    {
+      "text": "So this",
+      "start": 1305.937,
+      "duration": 0.401
+    },
+    {
+      "text": "whole system would actually require\nslightly less energy than our first Falcon",
+      "start": 1306.338,
+      "duration": 3.87
+    },
+    {
+      "text": "nine example, So thanks to the electrons,\nmuch lighter liftoff mass.",
+      "start": 1310.208,
+      "duration": 3.17
+    },
+    {
+      "text": "This whole system requires only\n177 kilowatt hours of electrical energy.",
+      "start": 1313.378,
+      "duration": 4.705
+    },
+    {
+      "text": "And since it's draining that energy over\n6.4 seconds,",
+      "start": 1318.35,
+      "duration": 3.236
+    },
+    {
+      "text": "it required just shy of 100,000kW,",
+      "start": 1321.853,
+      "duration": 2.837
+    },
+    {
+      "text": "which is much more manageable\nthan some of our other examples.",
+      "start": 1324.69,
+      "duration": 3.803
+    },
+    {
+      "text": "I mean, don't get me wrong,\nthat's still a lot of electricity.",
+      "start": 1328.627,
+      "duration": 3.003
+    },
+    {
+      "text": "It'd be about 400 superchargers\nworth of electricity to run this maglev.",
+      "start": 1331.763,
+      "duration": 4.071
+    },
+    {
+      "text": "So it's it's a lot,\nbut it's almost feasible.",
+      "start": 1336.201,
+      "duration": 3.737
+    },
+    {
+      "text": "Kind of ish.",
+      "start": 1340.305,
+      "duration": 1.368
+    },
+    {
+      "text": "Now, don't forget the vacuum portion\nis really only helpful to make the system",
+      "start": 1341.673,
+      "duration": 3.837
+    },
+    {
+      "text": "more efficient when the rocket\nis accelerating along the track.",
+      "start": 1345.51,
+      "duration": 3.437
+    },
+    {
+      "text": "Once the tunnel opens,\nthe vacuum aspect doesn't matter at all.",
+      "start": 1349.147,
+      "duration": 3.07
+    },
+    {
+      "text": "So whatever",
+      "start": 1352.217,
+      "duration": 1.001
+    },
+    {
+      "text": "consideration it is to make it a vacuum\nonly makes the system more efficient.",
+      "start": 1353.218,
+      "duration": 4.004
+    },
+    {
+      "text": "It doesn't actually really add\nanything overall.",
+      "start": 1357.222,
+      "duration": 2.87
+    },
+    {
+      "text": "In other words, a vacuum maglev like this\ndoesn't actually increase performance",
+      "start": 1360.092,
+      "duration": 3.703
+    },
+    {
+      "text": "per se, but due to its low friction\nand low air resistance,",
+      "start": 1363.795,
+      "duration": 3.671
+    },
+    {
+      "text": "it helps us get closer to these estimates\nthat we've been calculating since.",
+      "start": 1367.666,
+      "duration": 3.704
+    },
+    {
+      "text": "In the real world, you'd experienced\npretty significant losses.",
+      "start": 1371.37,
+      "duration": 3.336
+    },
+    {
+      "text": "mean,\nthis is maybe the most feasible option.",
+      "start": 1374.773,
+      "duration": 2.636
+    },
+    {
+      "text": "But now the big question.",
+      "start": 1377.409,
+      "duration": 1.969
+    },
+    {
+      "text": "All of this crazy infrastructure\nadded risk of pumping about",
+      "start": 1379.378,
+      "duration": 3.169
+    },
+    {
+      "text": "100MW of electricity\nalongside your fully fueled rocket",
+      "start": 1382.547,
+      "duration": 3.204
+    },
+    {
+      "text": "that's accelerating on a sled at five\nG's inside a vacuum sealed tunnel.",
+      "start": 1385.917,
+      "duration": 3.604
+    },
+    {
+      "text": "And then you better pray all nine\nRutherford engines light at the top",
+      "start": 1389.688,
+      "duration": 2.836
+    },
+    {
+      "text": "of the tunnel, or else you just threw\na perfectly good electron rocket.",
+      "start": 1392.524,
+      "duration": 3.403
+    },
+    {
+      "text": "So all of this complication for a total of",
+      "start": 1396.261,
+      "duration": 2.703
+    },
+    {
+      "text": "roughly a 25% increase in payload capacity",
+      "start": 1400.432,
+      "duration": 2.869
+    },
+    {
+      "text": "from 300kg to about 375kg.",
+      "start": 1403.301,
+      "duration": 4.004
+    },
+    {
+      "text": "And because it's only a 25%\nincrease in payload capacity,",
+      "start": 1407.406,
+      "duration": 3.236
+    },
+    {
+      "text": "if the infrastructure cost\nis now hundreds of millions of dollars,",
+      "start": 1410.776,
+      "duration": 3.67
+    },
+    {
+      "text": "it could take hundreds\nor maybe even thousands of launches",
+      "start": 1414.679,
+      "duration": 3.571
+    },
+    {
+      "text": "to actually see a return on investment.",
+      "start": 1418.25,
+      "duration": 2.302
+    },
+    {
+      "text": "I think what Rocket Lab is currently\ntrying to do is a much better idea.",
+      "start": 1420.552,
+      "duration": 3.07
+    },
+    {
+      "text": "they've found a way to increase\ntheir launch capacity by about 5,000%.",
+      "start": 1423.722,
+      "duration": 5.205
+    },
+    {
+      "text": "Wait, what?",
+      "start": 1430.362,
+      "duration": 1.168
+    },
+    {
+      "text": "Yeah, rocket",
+      "start": 1431.53,
+      "duration": 0.767
+    },
+    {
+      "text": "lab is working on their neutron rocket,\nwhich is simply a bigger rocket.",
+      "start": 1432.297,
+      "duration": 4.138
+    },
+    {
+      "text": "And With its development costs\nbeing around $500 million.",
+      "start": 1436.768,
+      "duration": 3.303
+    },
+    {
+      "text": "It might even be cheaper",
+      "start": 1440.238,
+      "duration": 1.468
+    },
+    {
+      "text": "than building a one kilometer\ndeep vacuum tunnel maglev launcher thing.",
+      "start": 1441.706,
+      "duration": 4.004
+    },
+    {
+      "text": "So a 25% increase or a 5,000% increase.",
+      "start": 1445.877,
+      "duration": 4.438
+    },
+    {
+      "text": "Which would you choose?",
+      "start": 1451.216,
+      "duration": 1.668
+    },
+    {
+      "text": "So at the end of the day.",
+      "start": 1452.884,
+      "duration": 1.802
+    },
+    {
+      "text": "simply scaling up a rocket seems to always\nbe the much easier solution.",
+      "start": 1454.686,
+      "duration": 4.638
+    },
+    {
+      "text": "Okay. Let's go all out.",
+      "start": 1459.391,
+      "duration": 2.035
+    },
+    {
+      "text": "What if we tried to eliminate\nthe rocket altogether?",
+      "start": 1461.426,
+      "duration": 3.404
+    },
+    {
+      "text": "building,",
+      "start": 1469.267,
+      "duration": 0.501
+    },
+    {
+      "text": "a launch system that doesn't primarily\nrely on a rocket and instead uses",
+      "start": 1469.768,
+      "duration": 3.97
+    },
+    {
+      "text": "a maglev and or a vacuum\ntube, has been envisioned for decades.",
+      "start": 1473.738,
+      "duration": 4.171
+    },
+    {
+      "text": "Star tram was one of the first versions\nof this idea in the 60s,",
+      "start": 1478.043,
+      "duration": 3.37
+    },
+    {
+      "text": "and countless ideas\nlike Mag lifter, the lost drum loop,",
+      "start": 1481.413,
+      "duration": 3.336
+    },
+    {
+      "text": "or other concepts have been presented,\nbut they never seem to come to fruition.",
+      "start": 1484.749,
+      "duration": 4.371
+    },
+    {
+      "text": "All we get are renders.\nspeaking of renders.",
+      "start": 1489.354,
+      "duration": 2.569
+    },
+    {
+      "text": "These are from a video by what about it?",
+      "start": 1491.923,
+      "duration": 2.303
+    },
+    {
+      "text": "Who just released a video about the top\nfive craziest ways to get to space?",
+      "start": 1494.226,
+      "duration": 3.77
+    },
+    {
+      "text": "And this is definitely\none of the craziest ways in my opinion.",
+      "start": 1498.296,
+      "duration": 3.003
+    },
+    {
+      "text": "So what would this actually look like\nin reality?",
+      "start": 1501.299,
+      "duration": 2.169
+    },
+    {
+      "text": "Why aren't we seeing these systems built?",
+      "start": 1503.468,
+      "duration": 2.436
+    },
+    {
+      "text": "So let's.",
+      "start": 1505.904,
+      "duration": 0.667
+    },
+    {
+      "text": "see, what would it take to launch\na Crew Dragon capsule into orbit",
+      "start": 1506.571,
+      "duration": 3.804
+    },
+    {
+      "text": "without a rocket at all?",
+      "start": 1510.542,
+      "duration": 2.069
+    },
+    {
+      "text": "Using only a giant vacuum tube\nmaglev system.",
+      "start": 1512.611,
+      "duration": 4.271
+    },
+    {
+      "text": "for this.",
+      "start": 1517.115,
+      "duration": 0.434
+    },
+    {
+      "text": "Let's just aim shy of orbital velocity\nat 70 500m for a second.",
+      "start": 1517.549,
+      "duration": 3.937
+    },
+    {
+      "text": "Since we will need to do a few hundred\nmeters per second circular burn",
+      "start": 1521.686,
+      "duration": 3.838
+    },
+    {
+      "text": "to actually get into orbit,",
+      "start": 1525.724,
+      "duration": 1.368
+    },
+    {
+      "text": "which the dragon could do with its Draco\nthrusters.",
+      "start": 1527.092,
+      "duration": 2.803
+    },
+    {
+      "text": "Let's limit the G-forces to five G's,\nsince that's about the upper limit",
+      "start": 1529.895,
+      "duration": 3.637
+    },
+    {
+      "text": "of what you should subject astronauts\nto for an extended period of time.",
+      "start": 1533.532,
+      "duration": 3.37
+    },
+    {
+      "text": "How long would a tube need to be?",
+      "start": 1537.302,
+      "duration": 1.802
+    },
+    {
+      "text": "If you're accelerating at five G's,\ntrying to reach a velocity of 70 500m/s.",
+      "start": 1539.104,
+      "duration": 5.172
+    },
+    {
+      "text": "Well,\nthere's some good news and some bad news.",
+      "start": 1544.409,
+      "duration": 2.703
+    },
+    {
+      "text": "The good news is,",
+      "start": 1547.112,
+      "duration": 1.168
+    },
+    {
+      "text": "this tunnel would easily be long enough",
+      "start": 1548.28,
+      "duration": 1.768
+    },
+    {
+      "text": "to get above\nthe majority of the atmosphere.",
+      "start": 1550.048,
+      "duration": 2.402
+    },
+    {
+      "text": "So you could suck\nall the air out of the tube,",
+      "start": 1552.45,
+      "duration": 2.069
+    },
+    {
+      "text": "and then you wouldn't\nneed a crazy mechanism for a seal on top,",
+      "start": 1554.519,
+      "duration": 3.57
+    },
+    {
+      "text": "because the top of the tube\nwould basically already be in space.",
+      "start": 1558.323,
+      "duration": 3.003
+    },
+    {
+      "text": "side note, in case you're wondering if you\nhad a tube going all the way to space.",
+      "start": 1561.426,
+      "duration": 3.504
+    },
+    {
+      "text": "No, the vacuum of space wouldn't\nsuck all the air out.",
+      "start": 1565.23,
+      "duration": 3.27
+    },
+    {
+      "text": "The reason the air gets thinner\nand thinner",
+      "start": 1568.5,
+      "duration": 1.968
+    },
+    {
+      "text": "is because of the pressure gradient.",
+      "start": 1570.468,
+      "duration": 2.036
+    },
+    {
+      "text": "If you put a tube around a column of air,",
+      "start": 1572.504,
+      "duration": 2.102
+    },
+    {
+      "text": "the pressure gradient\nwould remain the same.",
+      "start": 1574.606,
+      "duration": 2.102
+    },
+    {
+      "text": "You just now have a tube around it.",
+      "start": 1576.708,
+      "duration": 2.469
+    },
+    {
+      "text": "But if you sucked all the air out\nof the tube, it would remain in a vacuum.",
+      "start": 1579.177,
+      "duration": 3.537
+    },
+    {
+      "text": "Assuming the walls are strong enough.",
+      "start": 1582.714,
+      "duration": 1.735
+    },
+    {
+      "text": "okay. Now, the bad news.",
+      "start": 1584.449,
+      "duration": 2.035
+    },
+    {
+      "text": "This tube would need to be 573km long.",
+      "start": 1586.484,
+      "duration": 3.27
+    },
+    {
+      "text": "Yeah, nearly 600km of vacuum tube.",
+      "start": 1590.422,
+      "duration": 3.703
+    },
+    {
+      "text": "And you'd want this tube to actually\nbe nearly horizontal to the ground at exit",
+      "start": 1594.292,
+      "duration": 4.104
+    },
+    {
+      "text": "to get it into orbit.",
+      "start": 1598.663,
+      "duration": 1.502
+    },
+    {
+      "text": "So you'd have to have struts",
+      "start": 1600.165,
+      "duration": 1.668
+    },
+    {
+      "text": "and a support system for a tube\nthat's about 100km in altitude.",
+      "start": 1601.833,
+      "duration": 3.871
+    },
+    {
+      "text": "this stuff just scales really poorly\nbecause as you continue to accelerate",
+      "start": 1605.87,
+      "duration": 3.971
+    },
+    {
+      "text": "each second,\nyou cover more and more and more distance.",
+      "start": 1610.008,
+      "duration": 3.337
+    },
+    {
+      "text": "So towards\nthe end of the tunnel is acceleration.",
+      "start": 1613.612,
+      "duration": 2.635
+    },
+    {
+      "text": "You're screaming at over seven kilometers\neach and every second.",
+      "start": 1616.247,
+      "duration": 4.238
+    },
+    {
+      "text": "That's a lot of expensive\ntubing infrastructure.",
+      "start": 1621.086,
+      "duration": 3.503
+    },
+    {
+      "text": "Okay, forget the pure absurdity\nof the structure of the tube",
+      "start": 1624.589,
+      "duration": 3.737
+    },
+    {
+      "text": "and the support system of the maglev.",
+      "start": 1628.326,
+      "duration": 1.702
+    },
+    {
+      "text": "How much energy is needed to accelerate\na 12,500kg spacecraft",
+      "start": 1630.028,
+      "duration": 4.871
+    },
+    {
+      "text": "at five G Over a distance of almost 600km.",
+      "start": 1634.899,
+      "duration": 3.671
+    },
+    {
+      "text": "Well, the total amount of energy is.",
+      "start": 1638.703,
+      "duration": 3.47
+    },
+    {
+      "text": "It's a lot.",
+      "start": 1643.174,
+      "duration": 1.202
+    },
+    {
+      "text": "351,000 megajoules of energy.",
+      "start": 1644.376,
+      "duration": 4.671
+    },
+    {
+      "text": "we're talking about almost 100,000\nkilowatt hours of electrical energy.",
+      "start": 1649.481,
+      "duration": 4.938
+    },
+    {
+      "text": "Which means on average,\nwe'd require 2.3GW of power,",
+      "start": 1654.686,
+      "duration": 4.471
+    },
+    {
+      "text": "although that's not quite\nas much as eating Starship.",
+      "start": 1659.557,
+      "duration": 3.003
+    },
+    {
+      "text": "We're requiring all that energy\nfor about 2.5 minutes",
+      "start": 1662.594,
+      "duration": 3.57
+    },
+    {
+      "text": "versus only a quick three second\nburst of energy.",
+      "start": 1666.431,
+      "duration": 2.869
+    },
+    {
+      "text": "That's about the same amount of energy\nthat a city of almost 2",
+      "start": 1669.3,
+      "duration": 3.871
+    },
+    {
+      "text": "million average U.S.",
+      "start": 1673.171,
+      "duration": 1.268
+    },
+    {
+      "text": "homes would use for the entire 2.5\nminutes.",
+      "start": 1674.439,
+      "duration": 3.837
+    },
+    {
+      "text": "Man, oh, man, this probably isn't\ngoing to happen in our lifetime.",
+      "start": 1678.51,
+      "duration": 4.171
+    },
+    {
+      "text": "Quick side note you might be wondering\nhow a 12,500 kilogram Dragon capsule",
+      "start": 1682.747,
+      "duration": 4.838
+    },
+    {
+      "text": "can require anywhere\nnear the amount of power to accelerate it,",
+      "start": 1687.752,
+      "duration": 2.937
+    },
+    {
+      "text": "as getting a 5,000,000 kilogram Starship.",
+      "start": 1690.689,
+      "duration": 3.636
+    },
+    {
+      "text": "Well, first, let's take a look at how much\nkinetic energy our yeet system would do.",
+      "start": 1694.459,
+      "duration": 3.67
+    },
+    {
+      "text": "And wow, notice how much kinetic energy\nthe dragon requires",
+      "start": 1698.329,
+      "duration": 4.171
+    },
+    {
+      "text": "to accelerate it all the way to 70 500m/s.",
+      "start": 1702.834,
+      "duration": 3.503
+    },
+    {
+      "text": "Even its peak power output is closer\nthan you might think to the peak",
+      "start": 1706.504,
+      "duration": 4.038
+    },
+    {
+      "text": "power output required to yeet Starship\njust a little bit off the ground.",
+      "start": 1710.542,
+      "duration": 3.837
+    },
+    {
+      "text": "How can this be?",
+      "start": 1714.879,
+      "duration": 1.302
+    },
+    {
+      "text": "Well, the relationship\nbetween energy is velocity squared,",
+      "start": 1716.181,
+      "duration": 3.003
+    },
+    {
+      "text": "so as an object speeds up,\nit requires more",
+      "start": 1719.35,
+      "duration": 3.037
+    },
+    {
+      "text": "and more power to continue accelerating\nat a constant rate.",
+      "start": 1722.387,
+      "duration": 3.136
+    },
+    {
+      "text": "So accelerating dragon at five G\nfrom 0 to 50m/s requires only about 15kW,",
+      "start": 1725.657,
+      "duration": 6.907
+    },
+    {
+      "text": "while accelerating from 7450m/s\nto 7500m/s,",
+      "start": 1732.797,
+      "duration": 5.839
+    },
+    {
+      "text": "requires about 4.5GW of power.",
+      "start": 1738.837,
+      "duration": 3.536
+    },
+    {
+      "text": "So this does not scale well for launching\nan object into orbit from Earth.",
+      "start": 1742.774,
+      "duration": 4.705
+    },
+    {
+      "text": "But maybe there's one place\nand one situation and one example",
+      "start": 1747.612,
+      "duration": 3.904
+    },
+    {
+      "text": "we haven't talked about",
+      "start": 1751.516,
+      "duration": 1.301
+    },
+    {
+      "text": "that might actually be\na decent application for a yeet system.",
+      "start": 1752.817,
+      "duration": 4.438
+    },
+    {
+      "text": "The moon.",
+      "start": 1758.389,
+      "duration": 3.003
+    },
+    {
+      "text": "Is the",
+      "start": 1765.196,
+      "duration": 0.301
+    },
+    {
+      "text": "moon perhaps the perfect environment\nfor a launch assist system?",
+      "start": 1765.497,
+      "duration": 2.969
+    },
+    {
+      "text": "Since the moon only has one sixth\nEarth's gravity and no atmosphere,",
+      "start": 1768.533,
+      "duration": 3.77
+    },
+    {
+      "text": "it would actually be a much better place\nto try and use a ground based",
+      "start": 1772.537,
+      "duration": 3.67
+    },
+    {
+      "text": "launch system, but it still isn't quite\nas easy as you might think.",
+      "start": 1776.207,
+      "duration": 5.005
+    },
+    {
+      "text": "To get into lunar orbit,\nyou need about 1750m/s.",
+      "start": 1781.346,
+      "duration": 4.337
+    },
+    {
+      "text": "That's much less\nthan getting into low-Earth orbit,",
+      "start": 1786.151,
+      "duration": 2.702
+    },
+    {
+      "text": "which was about 70 800m/s.",
+      "start": 1788.853,
+      "duration": 2.403
+    },
+    {
+      "text": "Like we just talked about a minute ago.",
+      "start": 1791.256,
+      "duration": 1.835
+    },
+    {
+      "text": "And to get completely out of the moon's\ngravity well, you only need",
+      "start": 1793.091,
+      "duration": 3.003
+    },
+    {
+      "text": "another roughly 630m/s of delta v.",
+      "start": 1796.094,
+      "duration": 3.437
+    },
+    {
+      "text": "So a single 2380m/s impulse",
+      "start": 1799.531,
+      "duration": 3.937
+    },
+    {
+      "text": "could actually get you all the way back\nto Earth from the surface of the moon.",
+      "start": 1803.468,
+      "duration": 4.071
+    },
+    {
+      "text": "And because the moon is tidally locked\nwith the Earth, we could build",
+      "start": 1807.705,
+      "duration": 3.37
+    },
+    {
+      "text": "a permanent track\nand it would stay aimed at the Earth.",
+      "start": 1811.075,
+      "duration": 3.437
+    },
+    {
+      "text": "You could literally shoot payloads back\nto Earth without using any propellant.",
+      "start": 1814.813,
+      "duration": 3.937
+    },
+    {
+      "text": "Or then,",
+      "start": 1819.017,
+      "duration": 0.5
+    },
+    {
+      "text": "you know, of course, some minor course\ncorrections to target a perfect reentry.",
+      "start": 1819.517,
+      "duration": 3.804
+    },
+    {
+      "text": "Okay. So this is actually kind of cool.",
+      "start": 1823.321,
+      "duration": 2.102
+    },
+    {
+      "text": "So let's run the numbers on this and see\nhow much track would we need to yeet",
+      "start": 1825.423,
+      "duration": 4.071
+    },
+    {
+      "text": "something from the surface of the moon.",
+      "start": 1829.494,
+      "duration": 1.968
+    },
+    {
+      "text": "Back to the Earth.",
+      "start": 1831.462,
+      "duration": 1.001
+    },
+    {
+      "text": "Well, here's the bad news again.",
+      "start": 1832.463,
+      "duration": 2.703
+    },
+    {
+      "text": "Even if we accelerate at that\nsame constant five g's of acceleration,",
+      "start": 1835.166,
+      "duration": 3.937
+    },
+    {
+      "text": "you need to accelerate for about 48.5\nseconds.",
+      "start": 1839.337,
+      "duration": 3.17
+    },
+    {
+      "text": "You'd end up\ncovering a distance of almost 58km.",
+      "start": 1842.674,
+      "duration": 3.67
+    },
+    {
+      "text": "So even for a moon launch system,\nthe size of a project",
+      "start": 1846.578,
+      "duration": 3.303
+    },
+    {
+      "text": "like this is simply staggering\nin terms of scale.",
+      "start": 1849.881,
+      "duration": 3.103
+    },
+    {
+      "text": "But it's also still\na monumental amount of energy.",
+      "start": 1852.984,
+      "duration": 2.603
+    },
+    {
+      "text": "Even with just\nthe Dragon capsule at 12,500kg,",
+      "start": 1855.587,
+      "duration": 3.536
+    },
+    {
+      "text": "It would require about 35,000 megajoules\nof energy,",
+      "start": 1859.457,
+      "duration": 3.57
+    },
+    {
+      "text": "with an average power\nrequirement of about 668,000kW.",
+      "start": 1863.127,
+      "duration": 4.472
+    },
+    {
+      "text": "So it's still a staggering amount\nof infrastructure and energy.",
+      "start": 1867.799,
+      "duration": 3.637
+    },
+    {
+      "text": "So it's probably not",
+      "start": 1871.603,
+      "duration": 1.501
+    },
+    {
+      "text": "something we'll see launching humans\nback to Earth from the moon anytime soon.",
+      "start": 1873.104,
+      "duration": 3.637
+    },
+    {
+      "text": "But perhaps it might scale better\nif you were just sending resources",
+      "start": 1877.175,
+      "duration": 4.237
+    },
+    {
+      "text": "like helium three or lunar\nregolith at higher GS.",
+      "start": 1881.412,
+      "duration": 3.904
+    },
+    {
+      "text": "Launching a smaller payload\nreduces the energy required",
+      "start": 1885.516,
+      "duration": 2.803
+    },
+    {
+      "text": "and a higher acceleration\nwould reduce the track length.",
+      "start": 1888.319,
+      "duration": 3.003
+    },
+    {
+      "text": "I think this would be a lot better\napplication.",
+      "start": 1891.489,
+      "duration": 3.003
+    },
+    {
+      "text": "So yeah, it's still not in any way easy.",
+      "start": 1894.492,
+      "duration": 2.503
+    },
+    {
+      "text": "But you could imagine a futuristic world\nwhere we're actively mining",
+      "start": 1896.995,
+      "duration": 3.637
+    },
+    {
+      "text": "and transporting things to\nand from the moon so often that",
+      "start": 1900.632,
+      "duration": 3.303
+    },
+    {
+      "text": "the investment in a moon based accelerator\nmight actually be feasible or desirable.",
+      "start": 1903.935,
+      "duration": 5.472
+    },
+    {
+      "text": "So moral of the story is it all comes back\nto that not so exciting word compromise.",
+      "start": 1909.507,
+      "duration": 5.506
+    },
+    {
+      "text": "Okay, I think\nit's time we finally wrap this one up.",
+      "start": 1915.68,
+      "duration": 3.37
+    },
+    {
+      "text": "So to summarize, I",
+      "start": 1921.986,
+      "duration": 1.402
+    },
+    {
+      "text": "think the biggest takeaway for me\nis just an appreciation",
+      "start": 1923.388,
+      "duration": 3.203
+    },
+    {
+      "text": "for how much energy a rocket produces\nand just how immense the forces are.",
+      "start": 1926.591,
+      "duration": 5.672
+    },
+    {
+      "text": "And it's wild to think rockets produce\ngigawatts of power and they don't melt.",
+      "start": 1932.697,
+      "duration": 5.305
+    },
+    {
+      "text": "It's absolutely insane.",
+      "start": 1938.836,
+      "duration": 1.569
+    },
+    {
+      "text": "I think one of the biggest problems\nwith a system like this,",
+      "start": 1940.405,
+      "duration": 2.302
+    },
+    {
+      "text": "besides just obviously the sheer scale\nand cost and energy is the fact that",
+      "start": 1942.707,
+      "duration": 3.67
+    },
+    {
+      "text": "you really commit to a system by building\nsuch an immense infrastructure.",
+      "start": 1946.377,
+      "duration": 3.938
+    },
+    {
+      "text": "If you want to scale up the vehicle or\nmake it, you know, a change to the system,",
+      "start": 1950.615,
+      "duration": 3.303
+    },
+    {
+      "text": "well, now you have this massive investment",
+      "start": 1954.585,
+      "duration": 1.936
+    },
+    {
+      "text": "in something\nthat might become a huge bottleneck.",
+      "start": 1956.521,
+      "duration": 3.003
+    },
+    {
+      "text": "But I get it.",
+      "start": 1959.624,
+      "duration": 0.567
+    },
+    {
+      "text": "Rockets are really close to the edge\nof what's physically possible.",
+      "start": 1960.191,
+      "duration": 3.57
+    },
+    {
+      "text": "So I understand why we are craving\nto find ways to try and help squeeze",
+      "start": 1963.761,
+      "duration": 3.771
+    },
+    {
+      "text": "even more performance out of them,\noptimizing them as much as possible.",
+      "start": 1967.532,
+      "duration": 3.703
+    },
+    {
+      "text": "I get questions about this stuff\nall the time.",
+      "start": 1971.469,
+      "duration": 2.369
+    },
+    {
+      "text": "But when it comes down to it, the old Kiss\nmethod or keep it simple stupid",
+      "start": 1973.838,
+      "duration": 4.638
+    },
+    {
+      "text": "like my daddy used to say,\nis what will likely win out at some point.",
+      "start": 1978.743,
+      "duration": 4.037
+    },
+    {
+      "text": "Building just a little bit bigger\nrocket is often much easier and much",
+      "start": 1982.78,
+      "duration": 4.038
+    },
+    {
+      "text": "more feasible than building costly\nand complicated launch assist systems.",
+      "start": 1986.818,
+      "duration": 4.271
+    },
+    {
+      "text": "Now, that being said,\none space spaceflight is extremely common.",
+      "start": 1991.255,
+      "duration": 3.137
+    },
+    {
+      "text": "Let's say\nthings are being flown into orbit",
+      "start": 1994.392,
+      "duration": 1.935
+    },
+    {
+      "text": "multiple times an hour or almost, as,\nyou know, as common as airplanes.",
+      "start": 1996.327,
+      "duration": 3.27
+    },
+    {
+      "text": "Perhaps large ground based\ninfrastructure would start to become more",
+      "start": 1999.964,
+      "duration": 3.804
+    },
+    {
+      "text": "and more feasible and or worthwhile.",
+      "start": 2003.768,
+      "duration": 2.97
+    },
+    {
+      "text": "So what would you do if you were building\na launch system from scratch?",
+      "start": 2006.771,
+      "duration": 3.403
+    },
+    {
+      "text": "Would you be building a traditional rocket",
+      "start": 2010.375,
+      "duration": 2.202
+    },
+    {
+      "text": "or would you be trying\nto maximize performance any way possible?",
+      "start": 2012.577,
+      "duration": 3.403
+    },
+    {
+      "text": "Let me know your thoughts or if you have\nany other questions in the comments below.",
+      "start": 2016.414,
+      "duration": 3.503
+    },
+    {
+      "text": "Like always, I owe a huge\nthank you to our Patreon supporters,",
+      "start": 2020.018,
+      "duration": 2.802
+    },
+    {
+      "text": "especially our mission\ndirectors listed right here.",
+      "start": 2022.82,
+      "duration": 2.469
+    },
+    {
+      "text": "Head on over to Patreon.com slash Everyday\nAstronaut or become a YouTube member",
+      "start": 2025.289,
+      "duration": 3.871
+    },
+    {
+      "text": "or an X subscriber.",
+      "start": 2029.16,
+      "duration": 1.201
+    },
+    {
+      "text": "Whatever's easiest for you\nif you want to support the work we do.",
+      "start": 2030.361,
+      "duration": 2.803
+    },
+    {
+      "text": "And while you're online, don't forget\nyou can check out our one 100 scale",
+      "start": 2033.164,
+      "duration": 2.97
+    },
+    {
+      "text": "model rockets that are all back in stock.",
+      "start": 2036.134,
+      "duration": 2.002
+    },
+    {
+      "text": "Or you could pick up a shirt like this,\nour Orbital Velocity shirt,",
+      "start": 2038.136,
+      "duration": 2.969
+    },
+    {
+      "text": "which actually has like a cheat sheet down\nat the bottom of all different orbital",
+      "start": 2041.105,
+      "duration": 3.27
+    },
+    {
+      "text": "velocities of different orbits.",
+      "start": 2044.509,
+      "duration": 1.668
+    },
+    {
+      "text": "It also has puff paint,\nwhich I always forget to point out.",
+      "start": 2046.177,
+      "duration": 2.836
+    },
+    {
+      "text": "Oh, and we also have two brand new\ncolorways of the shirt, which are awesome.",
+      "start": 2049.013,
+      "duration": 4.671
+    },
+    {
+      "text": "So if you want this super cool shirt\nor other cool stuff,",
+      "start": 2053.918,
+      "duration": 2.803
+    },
+    {
+      "text": "head on over to Everyday\nastronaut.com/shop.",
+      "start": 2056.721,
+      "duration": 3.036
+    },
+    {
+      "text": "Thanks everybody.",
+      "start": 2059.957,
+      "duration": 0.601
+    },
+    {
+      "text": "That's going to do it for me.",
+      "start": 2060.558,
+      "duration": 0.734
+    },
+    {
+      "text": "I'm Tim Dodd, the everyday astronaut",
+      "start": 2061.292,
+      "duration": 1.602
+    },
+    {
+      "text": "bringing space\ndown to earth for everyday people.",
+      "start": 2062.894,
+      "duration": 2.035
+    }
+  ],
+  "full_text": "This is the Saturn V rocket\nthat took humans to the moon. It consumed over\n12,000kg of propellant each and every second\nduring its first stage burn. It was so thirsty, it burned through over\n125,000kg of propellant before it even cleared the launch tower. Imagine if they could have just saved\nthat propellant for the end of the burn, or removed it\ncompletely? Wouldn't that mean\nmassive gains in payload capacity? Can't we build a better launch system? in the world of why don't they just ideas? There's one\nthat's perhaps most tantalizing. Why don't they just use a vacuum tunnel,\nmaglev catapult or something\nto push the rocket off the ground? So you don't need\nas big and powerful of a rocket. It seems like a no brainer, doesn't it? I'm Tim Dodd, the Everyday Astronaut,\nand today we're going to dive into the art of rocket yeeting or,\nyou know, using some kind of ground based launch assist system to help\nmake orbital rockets more efficient. We'll go over the physics, the challenges,\nthe practicality and all the math on a few ideas, including just adding\nlaunch assist systems to existing rockets and infrastructure,\nor what it would look like to actually replace a rocket altogether\nwith some kind of heating device. and we'll even look into one idea where\nthis could be the most game changing. and hopefully by the end of this video,\nwe'll know why some kind of ground based launch assist system\nisn't far more common or common at all. Or perhaps why it's not the most common\nway of launching an orbital rocket. Okay, let's get started. Right at the top here we do\nhave two things to go over really quick. First,\nwe finally have our next 1:100 scale model rockets\nfinally available in our shop. Our Falcon nine was our first, you know,\nmetal 1:100 scale model rocket. And now we're going back to the beginning of human spaceflight,\nat least in the United States. For now,\nwith the Mercury program, rockets. They're in stock now\nas well as we finally have a new run of our Falcon Nines\nin stock at everydayastronaut.com/shop. Get them now\nand start your very own rocket garden. Okay.\nNext I have to strongly suggest watching some previous videos,\nincluding orbit versus sub orbit. Why not launch from mountains\nand or the equator? And why not launch from jets? Because they lay down a lot of important groundwork\nthat are vital concepts for this video. okay, so assuming you've seen those videos\nor you're familiar with these concepts, or maybe you've just played a good amount\nof Kerbal Space Program, I think that means you're fully qualified\nto dive into the topic of throwing a rocket. So why don't they just. Assisting a rocket with a ground based\nlaunch system certainly isn't a novel idea,\nand it's been seen in many concepts going back\nas far as rocketry itself. Actually kind of goes back\nbefore modern rockets were even made. I mean, one of the very first films ever\nmade, La Voyage dans la Lune, depicted humans being shot to the moon via\na giant cannon. And for some reason, those humans brought\ntheir umbrellas with them to the moon. And the moon had like a weird face. And it's it's all just so weird. But anyway, the point is,\nthis is far from a new idea. This particular concept\nkind of came to life in the 1950s with a project called Harpe,\nthe High Altitude Research Project. It was a 36 meter long cannon\nthat could shoot a 41 centimeter wide projectile 180km in altitude, officially making it a valid way\nto yeet an object into space. but it has some limitations. First, with only a single impulse, an object can go up to space,\nbut it can't be put into orbit. because it will always come back around\nto its lowest point. which means an object shot\nfrom a cannon from the ground will always hit the atmosphere\nand then the ground at some point, even if it had a high enough velocity\nto achieve orbit. Second, it's difficult\nto make sensitive electronics. Not to mention, living creatures\nsurvive virtually instantaneously, accelerating from zero to almost 8000km\nan hour in three hundredths of a second,\npulling about 7500 GS. So could we even realistically use\na ground throwing device for an orbital rocket? I'll fast forward to now. And a company called Spin\nLaunch is actually working on an orbital launch system that, instead of shooting\na rocket out of a cannon, spins a rocket with a centrifuge inside\nof a vacuum chamber, and then chucks it out fast enough to\nbasically replace the booster of a rocket. Their goal is to build a small liquid propellant rocket\nthat can take about 200kg to orbit. so this orbital rocket\nwouldn't even need a booster. Just imagine\nnot having to build the largest and most expensive part of a rocket,\nthe booster. And instead of using rocket fuel,\nthey're using electric motors and electrical energy\nto spin up the rocket. So it has the potential to be very reusable, reliable,\nand a very sustainable system. This sounds promising, doesn't it? To date, they've completed a 33\nmeter wide, one third scale demonstrator that has launched ten passive projectiles reaching\nalmost ten kilometers an altitude. But things get a little more wild\nonce this gets fully scaled up. 100 meter wide, full scale orbital version\nwould spin up to 450 rpm over an hour and a half, which would put about\n10,000 GS on the rocket. While it's inside the center, Fuge. And that might not be\nthe biggest challenge they face. Then they also have to precisely time\nthe release of the rocket and the opening and closing of the vacuum doors\nwithin milliseconds of accuracy. So they don't accidentally hit the walls. And they also have to instantaneously\nrebalance that giant spinning rotor. Then the rocket is now traveling\nat 70 200km an hour, or about six times the speed of sound at sea level,\nwhich will induce a lot of heat in it. Also, slow the rocket down before it\neventually gets out of the atmosphere, and then it has to light its own engine\nto continue into orbit. The company seems confident\nthey've solved all these problems, and we'll have a system that can deliver\nmeaningful payloads into orbit at a fraction of the cost\nof a traditional launch system. If you want to learn more about Spin\nLaunch, may I suggest watching Real Engineering's\namazing video that dives really deep into their concept\nand tours their facilities. As with all real engineering\nvideos, it's fantastic. But what if we didn't want the ground\nlaunch system to do as much of the work? What if we just want to do\na little bit of a boost? And what if we want it to also be able\nto help launch humans into orbit? Would that be feasible? Okay, let's go over a few of these ideas\nto keep these concepts reliable and safe. We're going to light the rockets\nengines on the ground. Like what's conventional and preferred,\nand just use the launch assist\nto add to the acceleration of the engines. trying to light a rocket while is in\nfreefall is one of those challenges we discuss in my other video\nabout air launching. A common problem with dropping a rocket\nand then lighting it is it can lead to a complete mission failure. If there's a problem lighting the engines. Conventional rockets light their engines\nwhile still on the ground, and then once the computers\nconfirm everything's good to go, then the ground system\nwill let go of the rocket. This idea has saved countless rockets\nfrom a premature demise. Now, of course,\nthere are some submarine launches and nuclear silos that will yeet\nand then light the engines, but it's probably just not that practical\nor safe, nor is it actually the most advantageous as far as performance\ngoes on an orbital launcher. For these calculations, I'm putting\nthe numbers into this spreadsheet I made. And then I'm using launch calculator.com\nto help give us some baseline and easy calculations on the improvement. With and without a launch system. okay.\nThese numbers aren't going to be perfect. So don't plan your mission around them. But again, they're going to be good enough to compare with\nand without a launch assist system. So at least you know they'll be accurate\nlike on a percentage basis. So don't take these numbers\nas pure gospel, but I think the point will still stand. So for our first idea, let's\njust take a Falcon nine in reusable mode with a payload that weighs about 17,500kg,\nWhich is roughly its current peak capacity, while still being able\nto land the booster downrange. And then we'll see how much extra mass\nwe can add to the payload. If we actually help boost it off\nthe ground. Let's start off as simple\nas we possibly can. Let's imagine the strong back that holds\nonto the rocket while it's vertical is turned into some kind of maglev\ncatapult thing that can hold onto the rocket and\nboost it up the length of the strong back. We'll say about 70m. Let's build a system\nthat will have a total average net acceleration of three G's,\nwhich is actually a pretty good amount of acceleration that lift off considering most orbital rockets\naccelerate with as low as about 0.1 G. most are usually more around\n0.4 or 0.5 net G's of acceleration. However, even with humans on board, rockets are often accelerating closer\nto 4 or 5 G's close to engine cutoff, so three G is just a good starting point\nfor an initial yeet. And notice I'm saying net acceleration. That's the amount of acceleration\nbeyond the Earth's 9.8m/s². So when a rocket is lifting off\ndirectly opposing gravity, the first g of potential acceleration is basically eaten\naway by Earth's gravity. So while sitting on the ground,\na g meter would read one G, and at liftoff anything beyond one\nG would be net acceleration. So if a rocket has a thrust to weight\nratio of 1.5 to 1, it would have a net acceleration of 0.5 g. a Falcon nine on its own, reaches about\n23m/s by the time it clears the tower. When boosted by the tower, it would add\nan additional 41m/s of velocity. So how much payload does about 41m/s\nof extra velocity equate to? It adds about 300kg of additional payload\ncapacity, raising our total to about 17,800kg for a reusable\nFalcon nine. I mean, this sounds pretty good, 300\nextra kilograms. So what would it actually take\nto do something like this? Well, the biggest issue here\nis how much energy it actually takes to accelerate an object\nas heavy as a rocket. The Falcon nine is over 500 tons. It's like 550 tons. When it's fully fueled, Let's figure out\nhow much energy our assist system will need to have in order\nto accelerate a 550,000 kilogram rocket at a net three g of acceleration. So first we need to figure out\nhow much work the rocket is doing and how much work\nthe assist system needs to do. So if we're aiming for three\ng of net acceleration, we have to add one g because of gravity\nthat we also have to overcome. So it's 4G worth of force\nwe need to apply to the rocket. The rocket will provide 1.4\ng worth of accelerating force. So our assist system needs to provide\n2.6 GS worth. to solve for force, we just need to take\nmass times acceleration. If the assist is pushing at 2.6\nGS, we take that times 9.81m/s² to get 25.5m/s². And then we need to multiply that times\n550,000kg. And we get 14 Mega Newtons of force. Now we need to convert that to kinetic\nenergy by multiplying it by the distance. We're accelerating it. So 70m. And we get an incredible 982\nmegajoules of energy. So even though the assist is only doing\nabout two thirds the amount of work, it's still almost\n1000 megajoules of energy. Okay. I have to admit, I have no context\non how much energy that is. Is that a lot? Well, if we convert that to electrical\nenergy, that would require about 270 hours of battery capacity,\nwhich that's actually not that bad. You could store that amount of energy\nin three Tesla model S batteries. So it's not like some absolutely absurd\nnumber. It's, you know, certainly within reason. but what's a bit less reasonable\nis that we have to drain those three Tesla model S batteries in only 2.15 seconds. Yikes. That's a power requirement of 450,000kW. Now, considering a model S, s peak output\nis about 800kW for the plaid model, that's about 562 times\nthe max power output of a Plaid Model\nS, which is a massive amount of power. Or another way to think about it,\nthe average U.S. home uses about 1200 watts. So for those 2.15 seconds,\nyou'd have to use about the same amount of electricity as 375,000 average U.S. homes. Power consumption. Or what if you ran it off?\nTesla Superchargers? You know, the chargers for EVs? Well,\nthe average supercharger peaks at 250kW. So you need to plug in 1800\nTesla Superchargers to run this system. Now, of course,\nyou could probably develop, you know, hundreds of smaller battery\npacks or use something a lot more fitting, like a super capacitor\nthat could reach the output and capacity. But the point is, it's a ridiculous amount of energy to release in just 2.18 seconds. But another really big problem here\nis that the strong back usually either reclines or falls back to get out of the way\nof the destructive rocket exhaust. So if the tower is now holding on\nto the rocket, it and all of its valuable magnets, wiring, motors and plumbing\nare just going to get absolutely torched. And again,\nwe could heat then light the engines. But we add a lot of risk. We add essentially A0G engine ignition\nand we lose performance because for every second it's not accelerating,\nit's losing velocity to gravity. So despite looking super cool, it's\njust not a good option here. Okay, maybe the Falcon nine\nisn't the right platform for this. And we're doing all this extra work\nand engineering and all this extra complication\nfor just 300 kilogram increase. That's only about a 1.7% increase\nin payload capacity. Why don't we try this again with Starship? Since it's stage zero, launchpad\nalready has big chopstick lifting arms. Maybe we could just give them way\nmore power and have them help boost the rocket off the ground. And now, since the tower is generally\nclear from the brunt of the exhaust, we can try and lift the rocket\nwith less fear of having to rebuild our maglev system\nevery single launch. So let's crunch the numbers on this one. just to keep this simple, let's just imagine we've engineered a way\nto utilize the full 140 meter tower so we have more room to accelerate\nand keep our equations nice and easy. So thanks to the taller tower, we actually\ngain about 54m/s of additional velocity. So what does this do\nfor our payload capacity? Well, assuming Starship\ncan someday theoretically put 150 tons into orbit,\nlet's just use that for our equations. Now, with an additional boost of 54m/s, it could lift closer to 155 tons. That's five extra tons of payload,\nwhich is about a 3% increase. Okay, so what's the math here? How much energy are we talking about? Well, first thing's first. The full stack of Starship is massive. It's almost ten times the weight of Falcon\nnine at about 5000 tons. Yeah, that's extremely heavy. However, it does have a little bit higher\nthrust to weight ratio than the Falcon nine at 1.5 to 1 versus\nthe Falcon 9S1 point 4 to 1. So our tower has to do proportionately\na little less work to hit the same target of three\ng of net acceleration. So now the tower needs to do 2.5\nGHz worth of accelerating force. And if we convert that to Mega Newtons\nand then multiply it by the 140m on the tower,\nwe will figure out our kinetic energy, which is a whopping 17,170 Megajoules, which converts to almost 5000\nkilowatt hours of electrical energy in order to accelerate\nthe 5000 ton Starship, along with its engines\nfor three G of net acceleration. so now we need to use about 20 times\nthe amount of energy as before. So as if needing to discharge 273 kilowatt hours and 2.15\nseconds wasn't hard enough. Now we need to discharge\nalmost 5000 kilowatt hours in about 3.1 seconds. That's over 5.5 million kilowatts, or in other words, 5.5GW of power\nfor 3.1 seconds. So you need to basically plug the launch tower into six average sized\nnuclear power plants and utilize all their output\nin order to provide that much electricity. That's an absurd amount of energy. Or again, we could and should probably use\nsome huge capacitors for something like this, since they're great at storing energy\nfor a shorter period of time and can have extremely high discharge\nrates. you could do something like this. Here's a 50 mega Joule capacitor bank. Well, this is actually only about ten bays\nof a 384 bay system\ncapable of that 50 mega joule bank. So you'd actually need about 130,000 times what you actually see on screen right now. just imagine all that wiring and the weight and the cost of it\nall, and the chance that a high voltage wire could get fried\nby the exhaust and end up parking. I mean, this is starting\nto sound like a really bad idea for only a 3% gain in payload capacity. okay? Let's just scrap\nthis whole electrical thing because it's just\nsimply getting out of hand. What if instead we just use the chopsticks\nwith a pulley system and a counterweight to help accelerate\nthe rocket three G's up the tower. To lift a 5000 ton Starship full stack,\nadding 2.5 G's to its existing thrust using a pulley and counterweight,\nThe pulley would need a gear ratio of 5 to 1, and the counterweight\nrequires a mass ratio of 35 to 1. So, in other words, our counterweight\nwould need to be 175,000,000kg. let me say that again another way. A 175,000 tons for reference, an entire Gerald\nR Ford class aircraft carrier, which is the largest aircraft carrier\nmade, is about 100,000 metric tons. So you'd have to suspend almost two of the largest aircraft\ncarriers ever made from the launch tower, in order to have the right amount of mass\nto get the required potential energy in the system to produce 17,167 Megajoules of uplifting force on the rocket\naccelerating to three G's. Okay, now, obviously an aircraft carrier\nisn't the most dense or affordable thing. So what if we just use regular old steel? Well,\nif we needed a 175,000 ton block of steel, it would be almost 22,000m³, which is a 28 by 28 by 28 meter cube. But even more ridiculous\nis that much steel alone is about $175\nmillion worth of steel. now, of course,\nwe could shrink the cube by using over 15,000m³ of lead for $350 million, or about 9000m³ of tungsten\nfor about $4 billion. But you get the point. This isn't actually all that easy\nor cheap. and just imagine how big the pulley and the tower would need to be to support\nthis kind of mass and forces. The tower would need to be so big\nand so beefy, I just can't even imagine what it'd take\nto build something capable of these loads. And these forces. And let's not forget about the chopsticks. In order for the chopsticks\nto handle that kind of load with that amount of acceleration,\nwith that much leverage, just imagine how big and heavy\nthey'd need to be. So now the tower\nneeds to be even more massive, and the counterweight needs to also lift\nthose arms to. And let's not forget\nthe booster and Starship are normally lifted\nby these tiny ball mounts that, again, are only meant to support\nthe weight of the drive vehicle. see you need some massive redesigns\nto lift it. When it's fully fueled,\nyou'd probably want to lift it down near the engine section,\nsince that's where the force is already moving through the rocket. and let's not forget,\nwe now have a 175,000 tonne hunk of mass falling that needs to be slowed down\nbefore impacting the ground. So there's that consideration to it all just gets absolutely absurd. Okay. So you'll notice that we're still doing\nall this at a fairly modest scale. So a fairly reasonable acceleration\nof only three g's. And the launch system\nis adding acceleration to the rocket not replacing it. You've notice\nwe've used existing launch tower sizes. And just try to make this whole thing\nas reasonable as possible. Despite this,\nthe numbers are absolutely staggering. The scale of rockets and the forces\ninvolved are just ridiculous. It really does give you a perspective\non how much power and energy those rocket engines are producing. Now, of course you could scale this down. But considering all\nthis is only giving you a 3% gain in payload capacity, what's the point? 3% gain? That's very little in the grand scheme\nof things to begin with. So if we scale down even more,\nit becomes even more pointless. Well, perhaps we should scale this down. But let's scale everything down. Maybe doing this at Starship and Falcon\nnine scale isn't the right idea. Maybe this would be more beneficial\non a smaller rocket. Let's do another example. This time, let's look at engineering\na maglev vacuum tunnel launcher for Rocket Lab's Electron rocket. The electron is much more feasible\nin terms of scale. It's only 18m tall, 1.2m wide, and is only about 13,000kg\nwhen fully fueled. So let's go all out with this. Let's try and maximize the performance of\nan electron with a mighty launch system. for this. Let's make a one kilometer deep tunnel\nthat has a maglev sled capable of accelerating\nthe electron at five gs the entire way. while it's in the tunnel. Let's not\nhave the rocket light its engines at all. We'll just let the maglev\ngive it a free boost. If you accelerate at five G over a full kilometer,\nit will take you just over six seconds. and you'd end up with a little over\n300m/s of velocity. That's actually a pretty substantial head\nstart for a rocket. That'd be more velocity than you'd receive during an air launch, like what\nVirgin Orbit did with launcher one. And importantly, all of the momentum\ncould be pointed in the right direction. The rocket wouldn't need to do\nany large change in heading like launcher. One had to do. So this whole system would actually require\nslightly less energy than our first Falcon nine example, So thanks to the electrons,\nmuch lighter liftoff mass. This whole system requires only\n177 kilowatt hours of electrical energy. And since it's draining that energy over\n6.4 seconds, it required just shy of 100,000kW, which is much more manageable\nthan some of our other examples. I mean, don't get me wrong,\nthat's still a lot of electricity. It'd be about 400 superchargers\nworth of electricity to run this maglev. So it's it's a lot,\nbut it's almost feasible. Kind of ish. Now, don't forget the vacuum portion\nis really only helpful to make the system more efficient when the rocket\nis accelerating along the track. Once the tunnel opens,\nthe vacuum aspect doesn't matter at all. So whatever consideration it is to make it a vacuum\nonly makes the system more efficient. It doesn't actually really add\nanything overall. In other words, a vacuum maglev like this\ndoesn't actually increase performance per se, but due to its low friction\nand low air resistance, it helps us get closer to these estimates\nthat we've been calculating since. In the real world, you'd experienced\npretty significant losses. mean,\nthis is maybe the most feasible option. But now the big question. All of this crazy infrastructure\nadded risk of pumping about 100MW of electricity\nalongside your fully fueled rocket that's accelerating on a sled at five\nG's inside a vacuum sealed tunnel. And then you better pray all nine\nRutherford engines light at the top of the tunnel, or else you just threw\na perfectly good electron rocket. So all of this complication for a total of roughly a 25% increase in payload capacity from 300kg to about 375kg. And because it's only a 25%\nincrease in payload capacity, if the infrastructure cost\nis now hundreds of millions of dollars, it could take hundreds\nor maybe even thousands of launches to actually see a return on investment. I think what Rocket Lab is currently\ntrying to do is a much better idea. they've found a way to increase\ntheir launch capacity by about 5,000%. Wait, what? Yeah, rocket lab is working on their neutron rocket,\nwhich is simply a bigger rocket. And With its development costs\nbeing around $500 million. It might even be cheaper than building a one kilometer\ndeep vacuum tunnel maglev launcher thing. So a 25% increase or a 5,000% increase. Which would you choose? So at the end of the day. simply scaling up a rocket seems to always\nbe the much easier solution. Okay. Let's go all out. What if we tried to eliminate\nthe rocket altogether? building, a launch system that doesn't primarily\nrely on a rocket and instead uses a maglev and or a vacuum\ntube, has been envisioned for decades. Star tram was one of the first versions\nof this idea in the 60s, and countless ideas\nlike Mag lifter, the lost drum loop, or other concepts have been presented,\nbut they never seem to come to fruition. All we get are renders.\nspeaking of renders. These are from a video by what about it? Who just released a video about the top\nfive craziest ways to get to space? And this is definitely\none of the craziest ways in my opinion. So what would this actually look like\nin reality? Why aren't we seeing these systems built? So let's. see, what would it take to launch\na Crew Dragon capsule into orbit without a rocket at all? Using only a giant vacuum tube\nmaglev system. for this. Let's just aim shy of orbital velocity\nat 70 500m for a second. Since we will need to do a few hundred\nmeters per second circular burn to actually get into orbit, which the dragon could do with its Draco\nthrusters. Let's limit the G-forces to five G's,\nsince that's about the upper limit of what you should subject astronauts\nto for an extended period of time. How long would a tube need to be? If you're accelerating at five G's,\ntrying to reach a velocity of 70 500m/s. Well,\nthere's some good news and some bad news. The good news is, this tunnel would easily be long enough to get above\nthe majority of the atmosphere. So you could suck\nall the air out of the tube, and then you wouldn't\nneed a crazy mechanism for a seal on top, because the top of the tube\nwould basically already be in space. side note, in case you're wondering if you\nhad a tube going all the way to space. No, the vacuum of space wouldn't\nsuck all the air out. The reason the air gets thinner\nand thinner is because of the pressure gradient. If you put a tube around a column of air, the pressure gradient\nwould remain the same. You just now have a tube around it. But if you sucked all the air out\nof the tube, it would remain in a vacuum. Assuming the walls are strong enough. okay. Now, the bad news. This tube would need to be 573km long. Yeah, nearly 600km of vacuum tube. And you'd want this tube to actually\nbe nearly horizontal to the ground at exit to get it into orbit. So you'd have to have struts and a support system for a tube\nthat's about 100km in altitude. this stuff just scales really poorly\nbecause as you continue to accelerate each second,\nyou cover more and more and more distance. So towards\nthe end of the tunnel is acceleration. You're screaming at over seven kilometers\neach and every second. That's a lot of expensive\ntubing infrastructure. Okay, forget the pure absurdity\nof the structure of the tube and the support system of the maglev. How much energy is needed to accelerate\na 12,500kg spacecraft at five G Over a distance of almost 600km. Well, the total amount of energy is. It's a lot. 351,000 megajoules of energy. we're talking about almost 100,000\nkilowatt hours of electrical energy. Which means on average,\nwe'd require 2.3GW of power, although that's not quite\nas much as eating Starship. We're requiring all that energy\nfor about 2.5 minutes versus only a quick three second\nburst of energy. That's about the same amount of energy\nthat a city of almost 2 million average U.S. homes would use for the entire 2.5\nminutes. Man, oh, man, this probably isn't\ngoing to happen in our lifetime. Quick side note you might be wondering\nhow a 12,500 kilogram Dragon capsule can require anywhere\nnear the amount of power to accelerate it, as getting a 5,000,000 kilogram Starship. Well, first, let's take a look at how much\nkinetic energy our yeet system would do. And wow, notice how much kinetic energy\nthe dragon requires to accelerate it all the way to 70 500m/s. Even its peak power output is closer\nthan you might think to the peak power output required to yeet Starship\njust a little bit off the ground. How can this be? Well, the relationship\nbetween energy is velocity squared, so as an object speeds up,\nit requires more and more power to continue accelerating\nat a constant rate. So accelerating dragon at five G\nfrom 0 to 50m/s requires only about 15kW, while accelerating from 7450m/s\nto 7500m/s, requires about 4.5GW of power. So this does not scale well for launching\nan object into orbit from Earth. But maybe there's one place\nand one situation and one example we haven't talked about that might actually be\na decent application for a yeet system. The moon. Is the moon perhaps the perfect environment\nfor a launch assist system? Since the moon only has one sixth\nEarth's gravity and no atmosphere, it would actually be a much better place\nto try and use a ground based launch system, but it still isn't quite\nas easy as you might think. To get into lunar orbit,\nyou need about 1750m/s. That's much less\nthan getting into low-Earth orbit, which was about 70 800m/s. Like we just talked about a minute ago. And to get completely out of the moon's\ngravity well, you only need another roughly 630m/s of delta v. So a single 2380m/s impulse could actually get you all the way back\nto Earth from the surface of the moon. And because the moon is tidally locked\nwith the Earth, we could build a permanent track\nand it would stay aimed at the Earth. You could literally shoot payloads back\nto Earth without using any propellant. Or then, you know, of course, some minor course\ncorrections to target a perfect reentry. Okay. So this is actually kind of cool. So let's run the numbers on this and see\nhow much track would we need to yeet something from the surface of the moon. Back to the Earth. Well, here's the bad news again. Even if we accelerate at that\nsame constant five g's of acceleration, you need to accelerate for about 48.5\nseconds. You'd end up\ncovering a distance of almost 58km. So even for a moon launch system,\nthe size of a project like this is simply staggering\nin terms of scale. But it's also still\na monumental amount of energy. Even with just\nthe Dragon capsule at 12,500kg, It would require about 35,000 megajoules\nof energy, with an average power\nrequirement of about 668,000kW. So it's still a staggering amount\nof infrastructure and energy. So it's probably not something we'll see launching humans\nback to Earth from the moon anytime soon. But perhaps it might scale better\nif you were just sending resources like helium three or lunar\nregolith at higher GS. Launching a smaller payload\nreduces the energy required and a higher acceleration\nwould reduce the track length. I think this would be a lot better\napplication. So yeah, it's still not in any way easy. But you could imagine a futuristic world\nwhere we're actively mining and transporting things to\nand from the moon so often that the investment in a moon based accelerator\nmight actually be feasible or desirable. So moral of the story is it all comes back\nto that not so exciting word compromise. Okay, I think\nit's time we finally wrap this one up. So to summarize, I think the biggest takeaway for me\nis just an appreciation for how much energy a rocket produces\nand just how immense the forces are. And it's wild to think rockets produce\ngigawatts of power and they don't melt. It's absolutely insane. I think one of the biggest problems\nwith a system like this, besides just obviously the sheer scale\nand cost and energy is the fact that you really commit to a system by building\nsuch an immense infrastructure. If you want to scale up the vehicle or\nmake it, you know, a change to the system, well, now you have this massive investment in something\nthat might become a huge bottleneck. But I get it. Rockets are really close to the edge\nof what's physically possible. So I understand why we are craving\nto find ways to try and help squeeze even more performance out of them,\noptimizing them as much as possible. I get questions about this stuff\nall the time. But when it comes down to it, the old Kiss\nmethod or keep it simple stupid like my daddy used to say,\nis what will likely win out at some point. Building just a little bit bigger\nrocket is often much easier and much more feasible than building costly\nand complicated launch assist systems. Now, that being said,\none space spaceflight is extremely common. Let's say\nthings are being flown into orbit multiple times an hour or almost, as,\nyou know, as common as airplanes. Perhaps large ground based\ninfrastructure would start to become more and more feasible and or worthwhile. So what would you do if you were building\na launch system from scratch? Would you be building a traditional rocket or would you be trying\nto maximize performance any way possible? Let me know your thoughts or if you have\nany other questions in the comments below. Like always, I owe a huge\nthank you to our Patreon supporters, especially our mission\ndirectors listed right here. Head on over to Patreon.com slash Everyday\nAstronaut or become a YouTube member or an X subscriber. Whatever's easiest for you\nif you want to support the work we do. And while you're online, don't forget\nyou can check out our one 100 scale model rockets that are all back in stock. Or you could pick up a shirt like this,\nour Orbital Velocity shirt, which actually has like a cheat sheet down\nat the bottom of all different orbital velocities of different orbits. It also has puff paint,\nwhich I always forget to point out. Oh, and we also have two brand new\ncolorways of the shirt, which are awesome. So if you want this super cool shirt\nor other cool stuff, head on over to Everyday\nastronaut.com/shop. Thanks everybody. That's going to do it for me. I'm Tim Dodd, the everyday astronaut bringing space\ndown to earth for everyday people.",
+  "errors": []
+}

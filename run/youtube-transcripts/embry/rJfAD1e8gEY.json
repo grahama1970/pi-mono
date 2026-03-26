@@ -1,0 +1,5463 @@
+{
+  "meta": {
+    "video_id": "rJfAD1e8gEY",
+    "language": "en",
+    "took_ms": 1326,
+    "method": "direct",
+    "title": "Why do rockets scrub because of weather?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20251030",
+    "duration_sec": 2291,
+    "description": "If you’ve ever watched a rocket launch live, whether in person, or online, you’ve likely heard the range be talked about by the hosts. The Range is in charge of monitoring the exclusion zones, weather and they're even who has their hand on the button for Flight Termination System if things go wrong!\n\nThis video is thanks to The  @U.S.SpaceForce who sponsored this video!\n\n00:00 - Intro\n01:12 - What is the Range\n08:09 - Weather\n14:02 - Weather Balloons\n16:12 - Exclusion Zones\n24:55 - Flight Termination\n32:07 - Tracking\n34:50 - Summary\n\n--------------------------\n\nI'm finally on Nebula! Sign up today at go.nebula.tv/everydayastronaut\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nAll music is original! Find it anywhere you listen to music! (Spotify, iTunes, Google Play, Amazon, etc)",
+    "view_count": 122616
+  },
+  "transcript": [
+    {
+      "text": "Welcome to Vandenberg Space Force Base.",
+      "start": 0.24,
+      "duration": 4.079
+    },
+    {
+      "text": "Today, I'm going to be taking you guys",
+      "start": 2.72,
+      "duration": 3.36
+    },
+    {
+      "text": "inside of Vandenberg to get [music] some",
+      "start": 4.319,
+      "duration": 4.001
+    },
+    {
+      "text": "exclusive, never-beforeseen access to",
+      "start": 6.08,
+      "duration": 5.12
+    },
+    {
+      "text": "answer one big important question. What",
+      "start": 8.32,
+      "duration": 4.8
+    },
+    {
+      "text": "is the range? I feel like we hear about",
+      "start": 11.2,
+      "duration": 3.84
+    },
+    {
+      "text": "the range all the time on live streams.",
+      "start": 13.12,
+      "duration": 4.079
+    },
+    {
+      "text": "It's like this ominous sort of thing,",
+      "start": 15.04,
+      "duration": 3.92
+    },
+    {
+      "text": "person that's in control, but also like",
+      "start": 17.199,
+      "duration": 3.521
+    },
+    {
+      "text": "an exclusion zone or something. I don't",
+      "start": 18.96,
+      "duration": 3.12
+    },
+    {
+      "text": "quite get it. So, today we're going to",
+      "start": 20.72,
+      "duration": 2.639
+    },
+    {
+      "text": "be talking to some Space [music] Force",
+      "start": 22.08,
+      "duration": 3.199
+    },
+    {
+      "text": "based guardians who are in charge of",
+      "start": 23.359,
+      "duration": 3.601
+    },
+    {
+      "text": "actually keeping the public safe. We'll",
+      "start": 25.279,
+      "duration": 3.361
+    },
+    {
+      "text": "be talking to experts on the weather. We",
+      "start": 26.96,
+      "duration": 3.04
+    },
+    {
+      "text": "hear about weather scrubs all the time",
+      "start": 28.64,
+      "duration": 2.479
+    },
+    {
+      "text": "and the constraints on a [music] rocket",
+      "start": 30.0,
+      "duration": 2.96
+    },
+    {
+      "text": "if it's safe to launch. We also hear all",
+      "start": 31.119,
+      "duration": 3.6
+    },
+    {
+      "text": "the time about weward boats and planes",
+      "start": 32.96,
+      "duration": 3.759
+    },
+    {
+      "text": "and things like that in the range. So,",
+      "start": 34.719,
+      "duration": 3.68
+    },
+    {
+      "text": "we'll be learning who's tracking that",
+      "start": 36.719,
+      "duration": 3.281
+    },
+    {
+      "text": "and who's in charge of all that stuff.",
+      "start": 38.399,
+      "duration": 2.881
+    },
+    {
+      "text": "And lastly, we're going to talk about",
+      "start": 40.0,
+      "duration": 3.04
+    },
+    {
+      "text": "the flight termination system and the",
+      "start": 41.28,
+      "duration": 3.84
+    },
+    {
+      "text": "team of guardians who are inside of the",
+      "start": 43.04,
+      "duration": 3.839
+    },
+    {
+      "text": "mission flight control center, which is",
+      "start": 45.12,
+      "duration": 4.08
+    },
+    {
+      "text": "an area so classified we couldn't even",
+      "start": 46.879,
+      "duration": 4.481
+    },
+    {
+      "text": "bring our cameras into the room at all",
+      "start": 49.2,
+      "duration": 4.32
+    },
+    {
+      "text": "because this is where the range would",
+      "start": 51.36,
+      "duration": 4.4
+    },
+    {
+      "text": "send the commands to destroy a rocket in",
+      "start": 53.52,
+      "duration": 4.96
+    },
+    {
+      "text": "an emergency with that big red destruct",
+      "start": 55.76,
+      "duration": 7.479
+    },
+    {
+      "text": "button. So, let's get started.",
+      "start": 58.48,
+      "duration": 4.759
+    },
+    {
+      "text": "This video is made possible thanks to a",
+      "start": 69.119,
+      "duration": 3.36
+    },
+    {
+      "text": "partnership with United States Space",
+      "start": 70.88,
+      "duration": 3.76
+    },
+    {
+      "text": "Force. If you've ever watched a rocket",
+      "start": 72.479,
+      "duration": 4.241
+    },
+    {
+      "text": "launch live, whether in person or",
+      "start": 74.64,
+      "duration": 5.04
+    },
+    {
+      "text": "online, you've likely heard the range be",
+      "start": 76.72,
+      "duration": 4.96
+    },
+    {
+      "text": "talked about by the hosts, either saying",
+      "start": 79.68,
+      "duration": 3.92
+    },
+    {
+      "text": "something like, \"The range is green.\" Or",
+      "start": 81.68,
+      "duration": 3.6
+    },
+    {
+      "text": "you might hear them talk about how the",
+      "start": 83.6,
+      "duration": 4.0
+    },
+    {
+      "text": "range is not clear or red because of a",
+      "start": 85.28,
+      "duration": 4.8
+    },
+    {
+      "text": "weward boat or a plane or perhaps a",
+      "start": 87.6,
+      "duration": 3.6
+    },
+    {
+      "text": "storm cloud.",
+      "start": 90.08,
+      "duration": 4.24
+    },
+    {
+      "text": ">> Hold hold. boarding launch auto. It's",
+      "start": 91.2,
+      "duration": 4.72
+    },
+    {
+      "text": "launch director calling a hold. We have",
+      "start": 94.32,
+      "duration": 3.92
+    },
+    {
+      "text": "a red range for a fouled range with a",
+      "start": 95.92,
+      "duration": 3.76
+    },
+    {
+      "text": "ship in the hazard area.",
+      "start": 98.24,
+      "duration": 3.12
+    },
+    {
+      "text": ">> So, let's break down what the range",
+      "start": 99.68,
+      "duration": 4.0
+    },
+    {
+      "text": "actually is. The range is both the",
+      "start": 101.36,
+      "duration": 4.56
+    },
+    {
+      "text": "physical location that supports a rocket",
+      "start": 103.68,
+      "duration": 4.479
+    },
+    {
+      "text": "launch, but it's more importantly the",
+      "start": 105.92,
+      "duration": 4.479
+    },
+    {
+      "text": "range is actually made up of teams of",
+      "start": 108.159,
+      "duration": 4.721
+    },
+    {
+      "text": "people who make the decisions on launch",
+      "start": 110.399,
+      "duration": 4.641
+    },
+    {
+      "text": "day on whether or not it's safe to",
+      "start": 112.88,
+      "duration": 4.32
+    },
+    {
+      "text": "launch. Each launch site has a dedicated",
+      "start": 115.04,
+      "duration": 3.679
+    },
+    {
+      "text": "range. Now, I'll just be talking about",
+      "start": 117.2,
+      "duration": 2.879
+    },
+    {
+      "text": "the United States here, but when",
+      "start": 118.719,
+      "duration": 3.281
+    },
+    {
+      "text": "launching a rocket from Vandenberg Space",
+      "start": 120.079,
+      "duration": 4.0
+    },
+    {
+      "text": "Force Base in California, there's the",
+      "start": 122.0,
+      "duration": 4.719
+    },
+    {
+      "text": "Space Force's Space Launch Delta 30. At",
+      "start": 124.079,
+      "duration": 4.481
+    },
+    {
+      "text": "Kennedy Space Center or Cape Canaveral",
+      "start": 126.719,
+      "duration": 3.68
+    },
+    {
+      "text": "Space Force Station in Florida, it's the",
+      "start": 128.56,
+      "duration": 4.96
+    },
+    {
+      "text": "Space Force's Space Launch Delta 45.",
+      "start": 130.399,
+      "duration": 4.641
+    },
+    {
+      "text": "These two sites make up the vast",
+      "start": 133.52,
+      "duration": 3.439
+    },
+    {
+      "text": "majority of launches, but there's three",
+      "start": 135.04,
+      "duration": 4.32
+    },
+    {
+      "text": "more in the US that are unique. Launches",
+      "start": 136.959,
+      "duration": 4.961
+    },
+    {
+      "text": "from NASA's Wallups site in Virginia has",
+      "start": 139.36,
+      "duration": 4.959
+    },
+    {
+      "text": "their own Wallups range operations. The",
+      "start": 141.92,
+      "duration": 4.56
+    },
+    {
+      "text": "Pacific Spaceport in Alaska is operated",
+      "start": 144.319,
+      "duration": 4.481
+    },
+    {
+      "text": "by the Pacific Spaceport Complex. And",
+      "start": 146.48,
+      "duration": 4.56
+    },
+    {
+      "text": "SpaceX's Starbase launch site in Texas",
+      "start": 148.8,
+      "duration": 4.64
+    },
+    {
+      "text": "also operates their own private range,",
+      "start": 151.04,
+      "duration": 5.04
+    },
+    {
+      "text": "which is managed by SpaceX. Each range",
+      "start": 153.44,
+      "duration": 4.72
+    },
+    {
+      "text": "needs to work with multiple authorities,",
+      "start": 156.08,
+      "duration": 4.56
+    },
+    {
+      "text": "including the FAA, the Coast Guard,",
+      "start": 158.16,
+      "duration": 4.159
+    },
+    {
+      "text": "ground security, and the launch",
+      "start": 160.64,
+      "duration": 3.92
+    },
+    {
+      "text": "providers themselves to look over and",
+      "start": 162.319,
+      "duration": 4.64
+    },
+    {
+      "text": "help facilitate a rocket launch. The",
+      "start": 164.56,
+      "duration": 5.28
+    },
+    {
+      "text": "primary goal is always public safety.",
+      "start": 166.959,
+      "duration": 5.521
+    },
+    {
+      "text": "The next goal, mission success. There's",
+      "start": 169.84,
+      "duration": 4.479
+    },
+    {
+      "text": "always an inherent risk when launching a",
+      "start": 172.48,
+      "duration": 4.08
+    },
+    {
+      "text": "rocket with tons of highly explosive and",
+      "start": 174.319,
+      "duration": 4.497
+    },
+    {
+      "text": "sometimes toxic propellant on board.",
+      "start": 176.56,
+      "duration": 4.56
+    },
+    {
+      "text": "[music] So, I was curious what factors",
+      "start": 178.816,
+      "duration": 4.624
+    },
+    {
+      "text": "go into calculating that risk in order",
+      "start": 181.12,
+      "duration": 4.32
+    },
+    {
+      "text": "to know how exactly they keep [music]",
+      "start": 183.44,
+      "duration": 5.56
+    },
+    {
+      "text": "the range clear.",
+      "start": 185.44,
+      "duration": 3.56
+    },
+    {
+      "text": "[music]",
+      "start": 189.952,
+      "duration": 2.02
+    },
+    {
+      "text": ">> Hey, I'm Tim",
+      "start": 192.959,
+      "duration": 2.0
+    },
+    {
+      "text": ">> Calvin. Nice to meet you.",
+      "start": 194.0,
+      "duration": 2.319
+    },
+    {
+      "text": ">> Hey, nice to meet you. What do you do",
+      "start": 194.959,
+      "duration": 3.2
+    },
+    {
+      "text": "out here at Vandenberg Space Force Base?",
+      "start": 196.319,
+      "duration": 3.041
+    },
+    {
+      "text": ">> Awesome. So, I'm a Space Force",
+      "start": 198.159,
+      "duration": 3.041
+    },
+    {
+      "text": "responsible engineer. uh in essence I",
+      "start": 199.36,
+      "duration": 2.799
+    },
+    {
+      "text": "assess risk.",
+      "start": 201.2,
+      "duration": 3.52
+    },
+    {
+      "text": ">> So uh let's talk about that that risk is",
+      "start": 202.159,
+      "duration": 4.961
+    },
+    {
+      "text": "that actually when we talk about risk in",
+      "start": 204.72,
+      "duration": 4.239
+    },
+    {
+      "text": "the sense of like it's a risky thing",
+      "start": 207.12,
+      "duration": 5.039
+    },
+    {
+      "text": "like is there a tangible number? How do",
+      "start": 208.959,
+      "duration": 4.401
+    },
+    {
+      "text": "you do that? What's that like?",
+      "start": 212.159,
+      "duration": 2.961
+    },
+    {
+      "text": ">> It is a number right we need something",
+      "start": 213.36,
+      "duration": 4.08
+    },
+    {
+      "text": "to say how risky a situation's going to",
+      "start": 215.12,
+      "duration": 3.839
+    },
+    {
+      "text": "be right and numbers are the way to do",
+      "start": 217.44,
+      "duration": 3.92
+    },
+    {
+      "text": "it. We have huge pages of calculus that",
+      "start": 218.959,
+      "duration": 3.601
+    },
+    {
+      "text": "determine exactly what we're getting",
+      "start": 221.36,
+      "duration": 2.72
+    },
+    {
+      "text": "ourselves into for any of our launches.",
+      "start": 222.56,
+      "duration": 2.959
+    },
+    {
+      "text": "Uh, so does that mean like literally",
+      "start": 224.08,
+      "duration": 3.12
+    },
+    {
+      "text": "what variables are you bringing into",
+      "start": 225.519,
+      "duration": 3.201
+    },
+    {
+      "text": "this calculation that that help you",
+      "start": 227.2,
+      "duration": 2.8
+    },
+    {
+      "text": "determine whether or not it's safe to",
+      "start": 228.72,
+      "duration": 2.72
+    },
+    {
+      "text": "even launch in the first place?",
+      "start": 230.0,
+      "duration": 3.68
+    },
+    {
+      "text": ">> A lot. Uh, first of all, you need a lot",
+      "start": 231.44,
+      "duration": 4.719
+    },
+    {
+      "text": "of space to get to space, right? Uh, so",
+      "start": 233.68,
+      "duration": 3.839
+    },
+    {
+      "text": "everything in the physical area around",
+      "start": 236.159,
+      "duration": 2.64
+    },
+    {
+      "text": "where these rockets are launches gets",
+      "start": 237.519,
+      "duration": 2.481
+    },
+    {
+      "text": "looked at. You know, your planes, your",
+      "start": 238.799,
+      "duration": 2.961
+    },
+    {
+      "text": "trains, your automobiles, your boats,",
+      "start": 240.0,
+      "duration": 3.68
+    },
+    {
+      "text": "anything that could be in an area where",
+      "start": 241.76,
+      "duration": 4.0
+    },
+    {
+      "text": "it is a higher risk to whoever is in",
+      "start": 243.68,
+      "duration": 4.559
+    },
+    {
+      "text": "that spot gets looked at. As well as the",
+      "start": 245.76,
+      "duration": 3.92
+    },
+    {
+      "text": "history of the vehicle. You know, how",
+      "start": 248.239,
+      "duration": 2.881
+    },
+    {
+      "text": "often are we launching a specific",
+      "start": 249.68,
+      "duration": 3.919
+    },
+    {
+      "text": "vehicle? um something that's on its",
+      "start": 251.12,
+      "duration": 4.8
+    },
+    {
+      "text": "first launch or very few is going to get",
+      "start": 253.599,
+      "duration": 3.281
+    },
+    {
+      "text": "look that different than something",
+      "start": 255.92,
+      "duration": 3.599
+    },
+    {
+      "text": "that's on its 400th. Uh it all plays",
+      "start": 256.88,
+      "duration": 4.72
+    },
+    {
+      "text": "into that that numbers game for us. And",
+      "start": 259.519,
+      "duration": 4.001
+    },
+    {
+      "text": "at the end of the day, we want to say",
+      "start": 261.6,
+      "duration": 4.56
+    },
+    {
+      "text": "we're 100% zero risk for a launch, but",
+      "start": 263.52,
+      "duration": 4.08
+    },
+    {
+      "text": "that's mathematically impossible,",
+      "start": 266.16,
+      "duration": 3.36
+    },
+    {
+      "text": "especially for an engineer. Uh so",
+      "start": 267.6,
+      "duration": 3.76
+    },
+    {
+      "text": "really, we want as many nines after that",
+      "start": 269.52,
+      "duration": 3.6
+    },
+    {
+      "text": "decimal as possible, right? Five, six,",
+      "start": 271.36,
+      "duration": 3.36
+    },
+    {
+      "text": "seven, eight nines in a row before we're",
+      "start": 273.12,
+      "duration": 3.519
+    },
+    {
+      "text": "confident enough to go. So leading up to",
+      "start": 274.72,
+      "duration": 3.919
+    },
+    {
+      "text": "any rocket's launch, but especially a",
+      "start": 276.639,
+      "duration": 4.081
+    },
+    {
+      "text": "new rocket, there's teams of people that",
+      "start": 278.639,
+      "duration": 4.241
+    },
+    {
+      "text": "are assessing the risks. This comes down",
+      "start": 280.72,
+      "duration": 4.96
+    },
+    {
+      "text": "to the finest details, bolt by bolt,",
+      "start": 282.88,
+      "duration": 4.8
+    },
+    {
+      "text": "literally, with the design review of the",
+      "start": 285.68,
+      "duration": 4.239
+    },
+    {
+      "text": "rocket. But as a mission is actually",
+      "start": 287.68,
+      "duration": 4.88
+    },
+    {
+      "text": "planned out, the trajectory itself",
+      "start": 289.919,
+      "duration": 5.041
+    },
+    {
+      "text": "becomes a major factor. Most rockets",
+      "start": 292.56,
+      "duration": 4.72
+    },
+    {
+      "text": "follow a fairly similar path to reach",
+      "start": 294.96,
+      "duration": 4.959
+    },
+    {
+      "text": "orbit, but each rocket takes a specific",
+      "start": 297.28,
+      "duration": 4.8
+    },
+    {
+      "text": "path based on a host of variables,",
+      "start": 299.919,
+      "duration": 4.241
+    },
+    {
+      "text": "including its acceleration, its",
+      "start": 302.08,
+      "duration": 4.64
+    },
+    {
+      "text": "aerodynamic features, the payload mass,",
+      "start": 304.16,
+      "duration": 4.56
+    },
+    {
+      "text": "the staging event, the destination of",
+      "start": 306.72,
+      "duration": 4.0
+    },
+    {
+      "text": "the payload, etc., etc. So, once a",
+      "start": 308.72,
+      "duration": 3.6
+    },
+    {
+      "text": "trajectory is figured out, the rocket",
+      "start": 310.72,
+      "duration": 3.36
+    },
+    {
+      "text": "will have a corridor it needs to stay",
+      "start": 312.32,
+      "duration": 3.599
+    },
+    {
+      "text": "within. There is a little wiggle room to",
+      "start": 314.08,
+      "duration": 4.08
+    },
+    {
+      "text": "allow for some deviation, but the rocket",
+      "start": 315.919,
+      "duration": 4.0
+    },
+    {
+      "text": "will need to not exceed those",
+      "start": 318.16,
+      "duration": 3.599
+    },
+    {
+      "text": "boundaries. This corridor is then used",
+      "start": 319.919,
+      "duration": 3.681
+    },
+    {
+      "text": "to help determine the exact exclusion",
+      "start": 321.759,
+      "duration": 4.0
+    },
+    {
+      "text": "zones of where it is and where it's not",
+      "start": 323.6,
+      "duration": 4.08
+    },
+    {
+      "text": "safe for humans to be. Whether we're",
+      "start": 325.759,
+      "duration": 4.321
+    },
+    {
+      "text": "talking about humans on the ground or on",
+      "start": 327.68,
+      "duration": 4.56
+    },
+    {
+      "text": "a boat or in a plane or even just",
+      "start": 330.08,
+      "duration": 4.72
+    },
+    {
+      "text": "private property, remember the exclusion",
+      "start": 332.24,
+      "duration": 4.48
+    },
+    {
+      "text": "zone because we will talk about it",
+      "start": 334.8,
+      "duration": 3.839
+    },
+    {
+      "text": "often. As a rocket develops more flight",
+      "start": 336.72,
+      "duration": 3.759
+    },
+    {
+      "text": "heritage and history, there's a chance",
+      "start": 338.639,
+      "duration": 3.681
+    },
+    {
+      "text": "those boundaries can change as the",
+      "start": 340.479,
+      "duration": 3.841
+    },
+    {
+      "text": "chances of something going wrong become",
+      "start": 342.32,
+      "duration": 4.48
+    },
+    {
+      "text": "statistically verifiable with flight",
+      "start": 344.32,
+      "duration": 4.719
+    },
+    {
+      "text": "data. SpaceX actually has a great",
+      "start": 346.8,
+      "duration": 3.92
+    },
+    {
+      "text": "article that explains how they've been",
+      "start": 349.039,
+      "duration": 4.241
+    },
+    {
+      "text": "able to shrink the hazard areas around",
+      "start": 350.72,
+      "duration": 4.479
+    },
+    {
+      "text": "launches and landings. Not only have",
+      "start": 353.28,
+      "duration": 3.759
+    },
+    {
+      "text": "they done a ton of ground tests to",
+      "start": 355.199,
+      "duration": 4.161
+    },
+    {
+      "text": "really calculate the exact yield of",
+      "start": 357.039,
+      "duration": 4.801
+    },
+    {
+      "text": "specific explosions with the propellants",
+      "start": 359.36,
+      "duration": 5.279
+    },
+    {
+      "text": "they use, but also they fly the Falcon 9",
+      "start": 361.84,
+      "duration": 5.12
+    },
+    {
+      "text": "rocket way more often than any other",
+      "start": 364.639,
+      "duration": 4.56
+    },
+    {
+      "text": "rocket currently flying. This ridiculous",
+      "start": 366.96,
+      "duration": 3.76
+    },
+    {
+      "text": "flight cadence of the Falcon 9 is one of",
+      "start": 369.199,
+      "duration": 3.681
+    },
+    {
+      "text": "the reasons why SpaceX is allowed to fly",
+      "start": 370.72,
+      "duration": 4.319
+    },
+    {
+      "text": "to polar orbits out of Florida, which",
+      "start": 372.88,
+      "duration": 4.4
+    },
+    {
+      "text": "requires overflying Cuba. This is",
+      "start": 375.039,
+      "duration": 3.44
+    },
+    {
+      "text": "something that hadn't been an option",
+      "start": 377.28,
+      "duration": 3.199
+    },
+    {
+      "text": "ever since a Thorable rocket failure",
+      "start": 378.479,
+      "duration": 4.16
+    },
+    {
+      "text": "rained debris on Cuba and killed a cow",
+      "start": 380.479,
+      "duration": 4.081
+    },
+    {
+      "text": "in 1960.",
+      "start": 382.639,
+      "duration": 4.0
+    },
+    {
+      "text": "Seriously. But even in these edge cases",
+      "start": 384.56,
+      "duration": 4.079
+    },
+    {
+      "text": "like overflying another country, the",
+      "start": 386.639,
+      "duration": 3.921
+    },
+    {
+      "text": "range will need to coordinate with the",
+      "start": 388.639,
+      "duration": 4.56
+    },
+    {
+      "text": "FAA as well as the State Department to",
+      "start": 390.56,
+      "duration": 3.919
+    },
+    {
+      "text": "work out the international",
+      "start": 393.199,
+      "duration": 3.28
+    },
+    {
+      "text": "considerations. That's just one of those",
+      "start": 394.479,
+      "duration": 3.84
+    },
+    {
+      "text": "little details that might be easily",
+      "start": 396.479,
+      "duration": 4.16
+    },
+    {
+      "text": "overlooked. So, a lot of work is done",
+      "start": 398.319,
+      "duration": 4.32
+    },
+    {
+      "text": "before a rocket flies to get it",
+      "start": 400.639,
+      "duration": 3.921
+    },
+    {
+      "text": "certified. And it will receive a launch",
+      "start": 402.639,
+      "duration": 4.481
+    },
+    {
+      "text": "license from the FAA or if they're a",
+      "start": 404.56,
+      "duration": 4.24
+    },
+    {
+      "text": "government launch, they'll be issued a",
+      "start": 407.12,
+      "duration": 3.519
+    },
+    {
+      "text": "launch license by either the Department",
+      "start": 408.8,
+      "duration": 4.32
+    },
+    {
+      "text": "of Defense's range safety protocols or",
+      "start": 410.639,
+      "duration": 5.041
+    },
+    {
+      "text": "by NASA's launch services program. I",
+      "start": 413.12,
+      "duration": 3.68
+    },
+    {
+      "text": "spoke about this exact thing with",
+      "start": 415.68,
+      "duration": 3.12
+    },
+    {
+      "text": "Fireflyy's Justin Folen about what this",
+      "start": 416.8,
+      "duration": 3.839
+    },
+    {
+      "text": "process looked like for them leading up",
+      "start": 418.8,
+      "duration": 3.839
+    },
+    {
+      "text": "to their first launch. There are so many",
+      "start": 420.639,
+      "duration": 4.161
+    },
+    {
+      "text": "different aspects uh on what it takes to",
+      "start": 422.639,
+      "duration": 4.801
+    },
+    {
+      "text": "launch a rocket, right? Parts, uh paper,",
+      "start": 424.8,
+      "duration": 4.64
+    },
+    {
+      "text": "and people. And that paper, what you're",
+      "start": 427.44,
+      "duration": 4.56
+    },
+    {
+      "text": "asking about is a is a very loaded and",
+      "start": 429.44,
+      "duration": 4.479
+    },
+    {
+      "text": "big question. There are all sorts of",
+      "start": 432.0,
+      "duration": 3.52
+    },
+    {
+      "text": "documents that we have to submit to the",
+      "start": 433.919,
+      "duration": 4.161
+    },
+    {
+      "text": "range that show that we're compliant and",
+      "start": 435.52,
+      "duration": 4.16
+    },
+    {
+      "text": "that we're following all the rules that",
+      "start": 438.08,
+      "duration": 3.679
+    },
+    {
+      "text": "they have given us. We're launching on a",
+      "start": 439.68,
+      "duration": 3.359
+    },
+    {
+      "text": "Space Force base. We have to follow",
+      "start": 441.759,
+      "duration": 3.121
+    },
+    {
+      "text": "their rules. Uh the rules are set in",
+      "start": 443.039,
+      "duration": 3.361
+    },
+    {
+      "text": "place to make sure that we're staying",
+      "start": 444.88,
+      "duration": 4.08
+    },
+    {
+      "text": "safe, to make sure that the air above us",
+      "start": 446.4,
+      "duration": 4.48
+    },
+    {
+      "text": "is staying safe, that space is staying",
+      "start": 448.96,
+      "duration": 4.079
+    },
+    {
+      "text": "safe. Um and there's so many different",
+      "start": 450.88,
+      "duration": 4.879
+    },
+    {
+      "text": "rules with regards to how we design our",
+      "start": 453.039,
+      "duration": 5.681
+    },
+    {
+      "text": "systems, how we operate our systems. Um",
+      "start": 455.759,
+      "duration": 4.641
+    },
+    {
+      "text": "and then making sure that everyone else",
+      "start": 458.72,
+      "duration": 3.52
+    },
+    {
+      "text": "is out of our way and that we've got",
+      "start": 460.4,
+      "duration": 3.76
+    },
+    {
+      "text": "enough space. Making sure that in a",
+      "start": 462.24,
+      "duration": 4.799
+    },
+    {
+      "text": "worst case scenario, if uh something",
+      "start": 464.16,
+      "duration": 4.64
+    },
+    {
+      "text": "goes wrong, is everyone going to be",
+      "start": 467.039,
+      "duration": 3.361
+    },
+    {
+      "text": "okay? There's all sorts of different",
+      "start": 468.8,
+      "duration": 4.08
+    },
+    {
+      "text": "things that it takes to get a green",
+      "start": 470.4,
+      "duration": 5.44
+    },
+    {
+      "text": "light from the range um to get us",
+      "start": 472.88,
+      "duration": 3.92
+    },
+    {
+      "text": "launching this rocket.",
+      "start": 475.84,
+      "duration": 2.799
+    },
+    {
+      "text": ">> So, a rocket will have a license on hand",
+      "start": 476.8,
+      "duration": 3.6
+    },
+    {
+      "text": "before launch. And frankly, that's",
+      "start": 478.639,
+      "duration": 3.361
+    },
+    {
+      "text": "probably not that exciting. So, now",
+      "start": 480.4,
+      "duration": 3.519
+    },
+    {
+      "text": "let's go check out the heart and soul of",
+      "start": 482.0,
+      "duration": 3.68
+    },
+    {
+      "text": "the range where the actual action",
+      "start": 483.919,
+      "duration": 3.84
+    },
+    {
+      "text": "happens and all the important decisions",
+      "start": 485.68,
+      "duration": 4.48
+    },
+    {
+      "text": "are made on launch day. Welcome to the",
+      "start": 487.759,
+      "duration": 4.641
+    },
+    {
+      "text": "Western Range Operation Control Center,",
+      "start": 490.16,
+      "duration": 4.64
+    },
+    {
+      "text": "otherwise known as Rock. So, inside that",
+      "start": 492.4,
+      "duration": 3.84
+    },
+    {
+      "text": "building is kind of when you think of",
+      "start": 494.8,
+      "duration": 2.64
+    },
+    {
+      "text": "the range and you hear them maybe",
+      "start": 496.24,
+      "duration": 2.56
+    },
+    {
+      "text": "talking about, you know, the range is",
+      "start": 497.44,
+      "duration": 2.64
+    },
+    {
+      "text": "clear and all that stuff. All those",
+      "start": 498.8,
+      "duration": 2.799
+    },
+    {
+      "text": "decisions are being made in this",
+      "start": 500.08,
+      "duration": 2.959
+    },
+    {
+      "text": "building. All right. Unfortunately, this",
+      "start": 501.599,
+      "duration": 3.121
+    },
+    {
+      "text": "is probably about all the further I can",
+      "start": 503.039,
+      "duration": 3.121
+    },
+    {
+      "text": "take you for now. We have to put all",
+      "start": 504.72,
+      "duration": 3.199
+    },
+    {
+      "text": "cameras away. This is actually a highly",
+      "start": 506.16,
+      "duration": 2.96
+    },
+    {
+      "text": "classified building. I'm not even sure",
+      "start": 507.919,
+      "duration": 2.801
+    },
+    {
+      "text": "if anyone's really ever filmed in here,",
+      "start": 509.12,
+      "duration": 3.2
+    },
+    {
+      "text": "to be honest. Uh, so we're going to film",
+      "start": 510.72,
+      "duration": 3.36
+    },
+    {
+      "text": "as much as we can, but for now, the",
+      "start": 512.32,
+      "duration": 3.04
+    },
+    {
+      "text": "cameras have to go away. There's going",
+      "start": 514.08,
+      "duration": 2.48
+    },
+    {
+      "text": "to be some rooms in there that are so",
+      "start": 515.36,
+      "duration": 2.32
+    },
+    {
+      "text": "classified we can't have like any",
+      "start": 516.56,
+      "duration": 3.599
+    },
+    {
+      "text": "electronics at all, period. Uh, so we're",
+      "start": 517.68,
+      "duration": 4.239
+    },
+    {
+      "text": "gonna film what we can and the stuff",
+      "start": 520.159,
+      "duration": 3.041
+    },
+    {
+      "text": "that we can't film, I'll I'll let you",
+      "start": 521.919,
+      "duration": 3.36
+    },
+    {
+      "text": "know what I learned. So, wish us luck.",
+      "start": 523.2,
+      "duration": 4.4
+    },
+    {
+      "text": ">> Once through rigorous security, I first",
+      "start": 525.279,
+      "duration": 4.081
+    },
+    {
+      "text": "learned about weather with Mr. Addison",
+      "start": 527.6,
+      "duration": 3.359
+    },
+    {
+      "text": "Nichols, a [music] weather officer with",
+      "start": 529.36,
+      "duration": 3.84
+    },
+    {
+      "text": "the 30th Operation Support Squadron.",
+      "start": 530.959,
+      "duration": 3.761
+    },
+    {
+      "text": ">> Uh, so I'm a launch weather officer",
+      "start": 533.2,
+      "duration": 5.84
+    },
+    {
+      "text": "here. Uh, I started uh as a uh uniformed",
+      "start": 534.72,
+      "duration": 6.799
+    },
+    {
+      "text": "uh launch weather officer or LWO uh for",
+      "start": 539.04,
+      "duration": 6.0
+    },
+    {
+      "text": "short. Um, so I came out here as a as a",
+      "start": 541.519,
+      "duration": 5.921
+    },
+    {
+      "text": "captain. So, Air Force officer, now I'm",
+      "start": 545.04,
+      "duration": 4.72
+    },
+    {
+      "text": "civilian guardian, which is, uh, really",
+      "start": 547.44,
+      "duration": 6.64
+    },
+    {
+      "text": "cool. Um, this particular job, uh, the",
+      "start": 549.76,
+      "duration": 6.56
+    },
+    {
+      "text": "Air Force officer elbow positions been",
+      "start": 554.08,
+      "duration": 5.199
+    },
+    {
+      "text": "around for a little while. Um, I was",
+      "start": 556.32,
+      "duration": 4.48
+    },
+    {
+      "text": "originally stationed at Herbertfield,",
+      "start": 559.279,
+      "duration": 3.361
+    },
+    {
+      "text": "Florida. On leave, actually, I got to go",
+      "start": 560.8,
+      "duration": 4.719
+    },
+    {
+      "text": "down to Cape Canaveral. Um, and I",
+      "start": 562.64,
+      "duration": 4.96
+    },
+    {
+      "text": "witnessed a rocket launch. And at that",
+      "start": 565.519,
+      "duration": 3.281
+    },
+    {
+      "text": "point in time, that's when I actually",
+      "start": 567.6,
+      "duration": 3.28
+    },
+    {
+      "text": "overheard on the radio that Air Force",
+      "start": 568.8,
+      "duration": 4.56
+    },
+    {
+      "text": "officers and uh, are the ones that do",
+      "start": 570.88,
+      "duration": 4.079
+    },
+    {
+      "text": "the weather for rocket launches. And I",
+      "start": 573.36,
+      "duration": 2.64
+    },
+    {
+      "text": "said,",
+      "start": 574.959,
+      "duration": 2.481
+    },
+    {
+      "text": ">> \"Air force people get to do that. You",
+      "start": 576.0,
+      "duration": 2.72
+    },
+    {
+      "text": "mean I get to do that?\" That's awesome.",
+      "start": 577.44,
+      "duration": 2.8
+    },
+    {
+      "text": "I said, \"So if I ever got a chance to do",
+      "start": 578.72,
+      "duration": 2.16
+    },
+    {
+      "text": "that?\"",
+      "start": 580.24,
+      "duration": 2.719
+    },
+    {
+      "text": ">> Um, I would jump at the chance. And lo",
+      "start": 580.88,
+      "duration": 4.399
+    },
+    {
+      "text": "and behold, um, the Vanderberg spot came",
+      "start": 582.959,
+      "duration": 4.401
+    },
+    {
+      "text": "open. I jumped at it. And obviously I",
+      "start": 585.279,
+      "duration": 4.801
+    },
+    {
+      "text": "love the job. Um, so the crux of what we",
+      "start": 587.36,
+      "duration": 5.599
+    },
+    {
+      "text": "do, uh, is everything centered on what",
+      "start": 590.08,
+      "duration": 4.8
+    },
+    {
+      "text": "we call lightning launch commit",
+      "start": 592.959,
+      "duration": 5.761
+    },
+    {
+      "text": "criteria. Uh so uh in a in a nutshell uh",
+      "start": 594.88,
+      "duration": 6.56
+    },
+    {
+      "text": "as the rocket takes off the plume uh",
+      "start": 598.72,
+      "duration": 4.08
+    },
+    {
+      "text": "from the exhaust that connects the",
+      "start": 601.44,
+      "duration": 3.04
+    },
+    {
+      "text": "rocket to the ground if it's flying",
+      "start": 602.8,
+      "duration": 3.28
+    },
+    {
+      "text": "through a unique set of atmospheric",
+      "start": 604.48,
+      "duration": 3.52
+    },
+    {
+      "text": "criteria will trigger a lightning",
+      "start": 606.08,
+      "duration": 3.52
+    },
+    {
+      "text": "strikes. We'll call triggered lightning",
+      "start": 608.0,
+      "duration": 3.44
+    },
+    {
+      "text": "and uh obviously that would be",
+      "start": 609.6,
+      "duration": 3.76
+    },
+    {
+      "text": "catastrophic to the vehicle if it",
+      "start": 611.44,
+      "duration": 3.44
+    },
+    {
+      "text": "doesn't outright destroy it. It'll",
+      "start": 613.36,
+      "duration": 3.84
+    },
+    {
+      "text": "impact the avionics on it. Um tell the",
+      "start": 614.88,
+      "duration": 3.68
+    },
+    {
+      "text": "rocket to go somewhere it's not supposed",
+      "start": 617.2,
+      "duration": 4.24
+    },
+    {
+      "text": "to go um and that would cause",
+      "start": 618.56,
+      "duration": 4.64
+    },
+    {
+      "text": "catastrophic failures. Let me pause on",
+      "start": 621.44,
+      "duration": 3.68
+    },
+    {
+      "text": "that real quick and reiterate that one",
+      "start": 623.2,
+      "duration": 3.44
+    },
+    {
+      "text": "of the biggest weather considerations",
+      "start": 625.12,
+      "duration": 3.2
+    },
+    {
+      "text": "for a rocket launch is actually",
+      "start": 626.64,
+      "duration": 4.4
+    },
+    {
+      "text": "lightning strikes on ascent. Have you",
+      "start": 628.32,
+      "duration": 5.28
+    },
+    {
+      "text": "ever heard of the termce to ox? Well,",
+      "start": 631.04,
+      "duration": 4.64
+    },
+    {
+      "text": "when Apollo 12 took off on November",
+      "start": 633.6,
+      "duration": 5.28
+    },
+    {
+      "text": "14th, 1969, it was struck by lightning",
+      "start": 635.68,
+      "duration": 5.52
+    },
+    {
+      "text": "twice. This caused malfunctions in the",
+      "start": 638.88,
+      "duration": 4.48
+    },
+    {
+      "text": "command module which made the entire",
+      "start": 641.2,
+      "duration": 4.8
+    },
+    {
+      "text": "panel light up with errors. Luckily, a",
+      "start": 643.36,
+      "duration": 4.64
+    },
+    {
+      "text": "ground controller named John Aaron",
+      "start": 646.0,
+      "duration": 3.839
+    },
+    {
+      "text": "recognized the pattern of data failure",
+      "start": 648.0,
+      "duration": 3.839
+    },
+    {
+      "text": "from simulations and recommended the",
+      "start": 649.839,
+      "duration": 4.161
+    },
+    {
+      "text": "crew try moving the signal conditioning",
+      "start": 651.839,
+      "duration": 4.161
+    },
+    {
+      "text": "equipment position switch from its",
+      "start": 654.0,
+      "duration": 5.04
+    },
+    {
+      "text": "normal position to auxiliary or ox to",
+      "start": 656.0,
+      "duration": 5.12
+    },
+    {
+      "text": "receive power from the secondary power",
+      "start": 659.04,
+      "duration": 4.16
+    },
+    {
+      "text": "source. Alan Bean flipped the switch and",
+      "start": 661.12,
+      "duration": 4.32
+    },
+    {
+      "text": "it quickly cleared up the signal issues",
+      "start": 663.2,
+      "duration": 3.92
+    },
+    {
+      "text": "which allowed the crew to safely",
+      "start": 665.44,
+      "duration": 3.76
+    },
+    {
+      "text": "continue on their flight. After Apollo",
+      "start": 667.12,
+      "duration": 4.0
+    },
+    {
+      "text": "12, NASA made stricter weather launch",
+      "start": 669.2,
+      "duration": 3.92
+    },
+    {
+      "text": "commit criteria to prevent future",
+      "start": 671.12,
+      "duration": 4.32
+    },
+    {
+      "text": "incidents. Their new criteria included",
+      "start": 673.12,
+      "duration": 4.48
+    },
+    {
+      "text": "not launching within 8 kilometers of",
+      "start": 675.44,
+      "duration": 4.32
+    },
+    {
+      "text": "thunderstorms, avoiding electrically",
+      "start": 677.6,
+      "duration": 4.16
+    },
+    {
+      "text": "charged clouds, and measuring electric",
+      "start": 679.76,
+      "duration": 3.84
+    },
+    {
+      "text": "charge from devices on the ground called",
+      "start": 681.76,
+      "duration": 4.16
+    },
+    {
+      "text": "field mills. They added a time delay if",
+      "start": 683.6,
+      "duration": 4.479
+    },
+    {
+      "text": "a lightning strike was nearby, and they",
+      "start": 685.92,
+      "duration": 3.68
+    },
+    {
+      "text": "would also avoid launching in",
+      "start": 688.079,
+      "duration": 3.2
+    },
+    {
+      "text": "precipitation. These were the rules that",
+      "start": 689.6,
+      "duration": 3.28
+    },
+    {
+      "text": "were followed up until the launch of",
+      "start": 691.279,
+      "duration": 4.24
+    },
+    {
+      "text": "Atlas Centaur 67 carrying a Navy",
+      "start": 692.88,
+      "duration": 5.92
+    },
+    {
+      "text": "communication satellite in 1987 when an",
+      "start": 695.519,
+      "duration": 5.841
+    },
+    {
+      "text": "Atlas Centaur was struck by lightning 49",
+      "start": 698.8,
+      "duration": 4.4
+    },
+    {
+      "text": "seconds into flight and caused a",
+      "start": 701.36,
+      "duration": 3.599
+    },
+    {
+      "text": "guidance and navigation error which made",
+      "start": 703.2,
+      "duration": 4.48
+    },
+    {
+      "text": "the vehicle yaw hard over leading to the",
+      "start": 704.959,
+      "duration": 4.641
+    },
+    {
+      "text": "complete loss of the vehicle and the",
+      "start": 707.68,
+      "duration": 3.279
+    },
+    {
+      "text": "mission. This resulted in the",
+      "start": 709.6,
+      "duration": 2.88
+    },
+    {
+      "text": "development of a new launch commit",
+      "start": 710.959,
+      "duration": 3.601
+    },
+    {
+      "text": "criteria based on weather conditions",
+      "start": 712.48,
+      "duration": 4.16
+    },
+    {
+      "text": "which has quite a big list of",
+      "start": 714.56,
+      "duration": 4.399
+    },
+    {
+      "text": "constraints. Lightning can no longer be",
+      "start": 716.64,
+      "duration": 5.6
+    },
+    {
+      "text": "within 16 km of the pad with delays for",
+      "start": 718.959,
+      "duration": 5.521
+    },
+    {
+      "text": "high electric field readings. Rockets",
+      "start": 722.24,
+      "duration": 4.08
+    },
+    {
+      "text": "cannot launch into thick clouds with",
+      "start": 724.48,
+      "duration": 4.24
+    },
+    {
+      "text": "freezing temperatures or within 8 km of",
+      "start": 726.32,
+      "duration": 4.88
+    },
+    {
+      "text": "abnormal atmospheric conditions or 5 km",
+      "start": 728.72,
+      "duration": 4.72
+    },
+    {
+      "text": "of thunderstorm debris clouds. There's a",
+      "start": 731.2,
+      "duration": 6.24
+    },
+    {
+      "text": "minimum of 6.4 km visibility and 1.8 km",
+      "start": 733.44,
+      "duration": 6.72
+    },
+    {
+      "text": "ceiling for radar tracking. New minimum",
+      "start": 737.44,
+      "duration": 4.639
+    },
+    {
+      "text": "temperatures were developed per vehicle",
+      "start": 740.16,
+      "duration": 4.479
+    },
+    {
+      "text": "as well. And lastly, ground winds of up",
+      "start": 742.079,
+      "duration": 5.601
+    },
+    {
+      "text": "to around 55 km an hour at the launchpad",
+      "start": 744.639,
+      "duration": 5.281
+    },
+    {
+      "text": "and upper level winds are considered to",
+      "start": 747.68,
+      "duration": 4.64
+    },
+    {
+      "text": "ensure mission success. These exact",
+      "start": 749.92,
+      "duration": 4.56
+    },
+    {
+      "text": "numbers vary rocket to rocket based on",
+      "start": 752.32,
+      "duration": 4.4
+    },
+    {
+      "text": "their size, mass, and capabilities.",
+      "start": 754.48,
+      "duration": 3.84
+    },
+    {
+      "text": "Addison was telling me more about the",
+      "start": 756.72,
+      "duration": 3.28
+    },
+    {
+      "text": "wind conditions and what things are",
+      "start": 758.32,
+      "duration": 3.6
+    },
+    {
+      "text": "considered leading up to a launch. We",
+      "start": 760.0,
+      "duration": 4.079
+    },
+    {
+      "text": "have wind towers all over the base. We",
+      "start": 761.92,
+      "duration": 4.719
+    },
+    {
+      "text": "have uh low-level Doppler wind profiles",
+      "start": 764.079,
+      "duration": 5.601
+    },
+    {
+      "text": "profilers uh at the various locations",
+      "start": 766.639,
+      "duration": 4.64
+    },
+    {
+      "text": "that kind of sample the winds and the",
+      "start": 769.68,
+      "duration": 4.08
+    },
+    {
+      "text": "low levels. U and then we also release",
+      "start": 771.279,
+      "duration": 3.601
+    },
+    {
+      "text": "balloons here. Yeah.",
+      "start": 773.76,
+      "duration": 3.759
+    },
+    {
+      "text": ">> So you so you mentioned actually the",
+      "start": 774.88,
+      "duration": 4.24
+    },
+    {
+      "text": "different fuel types, right?",
+      "start": 777.519,
+      "duration": 4.961
+    },
+    {
+      "text": ">> Uh so if it's a solid rocket booster, um",
+      "start": 779.12,
+      "duration": 5.76
+    },
+    {
+      "text": "there's a like a toxic risk if something",
+      "start": 782.48,
+      "duration": 3.68
+    },
+    {
+      "text": "were to happen.",
+      "start": 784.88,
+      "duration": 4.24
+    },
+    {
+      "text": ">> So the safety office uses our balloons",
+      "start": 786.16,
+      "duration": 5.04
+    },
+    {
+      "text": "and uh they're able to determine if",
+      "start": 789.12,
+      "duration": 4.159
+    },
+    {
+      "text": "something were to happen with a toxic uh",
+      "start": 791.2,
+      "duration": 3.92
+    },
+    {
+      "text": "toxic booster, then where do those toxic",
+      "start": 793.279,
+      "duration": 3.12
+    },
+    {
+      "text": "fumes go?",
+      "start": 795.12,
+      "duration": 3.44
+    },
+    {
+      "text": ">> Right. Right. Um, if the rock is big",
+      "start": 796.399,
+      "duration": 3.841
+    },
+    {
+      "text": "enough and it explodes, there's like an",
+      "start": 798.56,
+      "duration": 4.719
+    },
+    {
+      "text": "acoustic blast risk assessment that that",
+      "start": 800.24,
+      "duration": 5.599
+    },
+    {
+      "text": "uses our balloon data. Um, a lot of the,",
+      "start": 803.279,
+      "duration": 4.321
+    },
+    {
+      "text": "uh, commercial providers out here will",
+      "start": 805.839,
+      "duration": 4.721
+    },
+    {
+      "text": "use our balloons to assess loads. So, as",
+      "start": 807.6,
+      "duration": 5.919
+    },
+    {
+      "text": "the rocket travels up, they hit max Q.",
+      "start": 810.56,
+      "duration": 5.76
+    },
+    {
+      "text": "Um, and depending on how the winds are",
+      "start": 813.519,
+      "duration": 4.641
+    },
+    {
+      "text": "at that at that particular altitude, if",
+      "start": 816.32,
+      "duration": 3.68
+    },
+    {
+      "text": "they're changing direction too rapidly,",
+      "start": 818.16,
+      "duration": 3.44
+    },
+    {
+      "text": "changing speed too rapidly, what we",
+      "start": 820.0,
+      "duration": 3.44
+    },
+    {
+      "text": "would call wind shear, or if they're",
+      "start": 821.6,
+      "duration": 3.6
+    },
+    {
+      "text": "just outright too strong, then the",
+      "start": 823.44,
+      "duration": 3.519
+    },
+    {
+      "text": "stress of the wind on that vehicle at",
+      "start": 825.2,
+      "duration": 4.4
+    },
+    {
+      "text": "max Q could exceed what the vehicle's",
+      "start": 826.959,
+      "duration": 3.44
+    },
+    {
+      "text": "capable of,",
+      "start": 829.6,
+      "duration": 1.44
+    },
+    {
+      "text": ">> right?",
+      "start": 830.399,
+      "duration": 1.841
+    },
+    {
+      "text": ">> All from balloons.",
+      "start": 831.04,
+      "duration": 2.56
+    },
+    {
+      "text": ">> Wow. Wow. [laughter]",
+      "start": 832.24,
+      "duration": 2.96
+    },
+    {
+      "text": ">> So, at Vandenberg, there's a separate",
+      "start": 833.6,
+      "duration": 3.12
+    },
+    {
+      "text": "weather station where they gather data",
+      "start": 835.2,
+      "duration": 3.199
+    },
+    {
+      "text": "from all the ground stations around the",
+      "start": 836.72,
+      "duration": 4.32
+    },
+    {
+      "text": "base and radar and even directly from",
+      "start": 838.399,
+      "duration": 4.641
+    },
+    {
+      "text": "satellite data. But Vandenberg also",
+      "start": 841.04,
+      "duration": 4.08
+    },
+    {
+      "text": "launches weather balloons twice a day",
+      "start": 843.04,
+      "duration": 3.359
+    },
+    {
+      "text": "with additional weather balloons",
+      "start": 845.12,
+      "duration": 3.12
+    },
+    {
+      "text": "launched during rocket launch campaigns",
+      "start": 846.399,
+      "duration": 4.0
+    },
+    {
+      "text": "for upper level wind data. I actually",
+      "start": 848.24,
+      "duration": 3.68
+    },
+    {
+      "text": "had the opportunity to see one of these",
+      "start": 850.399,
+      "duration": 3.201
+    },
+    {
+      "text": "weather balloons launch while I was on",
+      "start": 851.92,
+      "duration": 2.159
+    },
+    {
+      "text": "base.",
+      "start": 853.6,
+      "duration": 1.84
+    },
+    {
+      "text": ">> Nice to meet you. I'm Tim Ables's",
+      "start": 854.079,
+      "duration": 3.44
+    },
+    {
+      "text": "weather observer here at Ed Vandenberg",
+      "start": 855.44,
+      "duration": 4.0
+    },
+    {
+      "text": "Space Force Base. So I'm going to give",
+      "start": 857.519,
+      "duration": 3.921
+    },
+    {
+      "text": "you here introduction here of how we do",
+      "start": 859.44,
+      "duration": 3.759
+    },
+    {
+      "text": "the weather balloon launches here during",
+      "start": 861.44,
+      "duration": 4.72
+    },
+    {
+      "text": "our simoptics which is twice a day. Uh",
+      "start": 863.199,
+      "duration": 5.121
+    },
+    {
+      "text": "this is our weather sun that we use as a",
+      "start": 866.16,
+      "duration": 5.76
+    },
+    {
+      "text": "visa sun. uh this has in it uh uh that",
+      "start": 868.32,
+      "duration": 6.56
+    },
+    {
+      "text": "we'll send back via GPS to our equipment",
+      "start": 871.92,
+      "duration": 5.599
+    },
+    {
+      "text": "inside another building uh readings on",
+      "start": 874.88,
+      "duration": 5.84
+    },
+    {
+      "text": "humidity, winds aloft, upper air winds,",
+      "start": 877.519,
+      "duration": 6.88
+    },
+    {
+      "text": "also um temperature and dupoint as well.",
+      "start": 880.72,
+      "duration": 5.52
+    },
+    {
+      "text": "So we'll send that back to our computers",
+      "start": 884.399,
+      "duration": 3.921
+    },
+    {
+      "text": "inside and we can track this all the way",
+      "start": 886.24,
+      "duration": 4.88
+    },
+    {
+      "text": "up. Uh these balloons typically go up to",
+      "start": 888.32,
+      "duration": 6.16
+    },
+    {
+      "text": "about 100,000 ft before they burst. Um",
+      "start": 891.12,
+      "duration": 5.68
+    },
+    {
+      "text": "so and again we do these twice a day.",
+      "start": 894.48,
+      "duration": 4.799
+    },
+    {
+      "text": "They're done at over 900 weather",
+      "start": 896.8,
+      "duration": 4.719
+    },
+    {
+      "text": "stations around the globe and they're",
+      "start": 899.279,
+      "duration": 4.961
+    },
+    {
+      "text": "all released at the same time. Uh 4:00",
+      "start": 901.519,
+      "duration": 4.56
+    },
+    {
+      "text": "in the afternoon, 4:00 in the morning.",
+      "start": 904.24,
+      "duration": 3.599
+    },
+    {
+      "text": "And what that does, it gives a good",
+      "start": 906.079,
+      "duration": 4.32
+    },
+    {
+      "text": "global picture of what the what the",
+      "start": 907.839,
+      "duration": 3.841
+    },
+    {
+      "text": "weather is doing around the globe and",
+      "start": 910.399,
+      "duration": 3.361
+    },
+    {
+      "text": "the movements and temperature and winds.",
+      "start": 911.68,
+      "duration": 3.68
+    },
+    {
+      "text": "This also helps us with our with our",
+      "start": 913.76,
+      "duration": 3.84
+    },
+    {
+      "text": "rocket launches too. So they can they",
+      "start": 915.36,
+      "duration": 3.919
+    },
+    {
+      "text": "can test to see what the upper air winds",
+      "start": 917.6,
+      "duration": 3.84
+    },
+    {
+      "text": "are doing and if it's a go or no go",
+      "start": 919.279,
+      "duration": 7.0
+    },
+    {
+      "text": "based on winds. So we want to take this",
+      "start": 921.44,
+      "duration": 4.839
+    },
+    {
+      "text": "And what I do,",
+      "start": 926.959,
+      "duration": 3.56
+    },
+    {
+      "text": "we take this in one hand and the balloon",
+      "start": 932.0,
+      "duration": 3.279
+    },
+    {
+      "text": "in the other. What you want to do is",
+      "start": 933.839,
+      "duration": 3.36
+    },
+    {
+      "text": "step out here. The winds are from the",
+      "start": 935.279,
+      "duration": 3.761
+    },
+    {
+      "text": "northwest",
+      "start": 937.199,
+      "duration": 3.681
+    },
+    {
+      "text": "and this is direction southeast. We're",
+      "start": 939.04,
+      "duration": 3.2
+    },
+    {
+      "text": "looking out here. So, I'm going to step",
+      "start": 940.88,
+      "duration": 2.48
+    },
+    {
+      "text": "out. The winds are going to take the",
+      "start": 942.24,
+      "duration": 2.32
+    },
+    {
+      "text": "balloon right away. I'm going to let the",
+      "start": 943.36,
+      "duration": 2.96
+    },
+    {
+      "text": "balloon go first and then I'm going to",
+      "start": 944.56,
+      "duration": 3.839
+    },
+    {
+      "text": "let the sand go. So, we're going to take",
+      "start": 946.32,
+      "duration": 4.4
+    },
+    {
+      "text": "this under the door. It's going to go.",
+      "start": 948.399,
+      "duration": 4.721
+    },
+    {
+      "text": "There we go.",
+      "start": 950.72,
+      "duration": 5.52
+    },
+    {
+      "text": ">> Holy cow.",
+      "start": 953.12,
+      "duration": 3.12
+    },
+    {
+      "text": "Wow, that thing's moving. Okay, so we're",
+      "start": 956.88,
+      "duration": 5.04
+    },
+    {
+      "text": "getting some of the pieces of the puzzle",
+      "start": 960.56,
+      "duration": 3.68
+    },
+    {
+      "text": "put together. We now know who's tracking",
+      "start": 961.92,
+      "duration": 4.0
+    },
+    {
+      "text": "the weather and what exactly they're",
+      "start": 964.24,
+      "duration": 3.68
+    },
+    {
+      "text": "looking at. And ultimately, we know the",
+      "start": 965.92,
+      "duration": 3.919
+    },
+    {
+      "text": "launch weather officer reports to the",
+      "start": 967.92,
+      "duration": 4.159
+    },
+    {
+      "text": "launch director, which we'll get into a",
+      "start": 969.839,
+      "duration": 3.761
+    },
+    {
+      "text": "little bit later. So, that's weather in",
+      "start": 972.079,
+      "duration": 3.68
+    },
+    {
+      "text": "a nutshell. But what about the exclusion",
+      "start": 973.6,
+      "duration": 4.4
+    },
+    {
+      "text": "zone? Well, just a few doors down was",
+      "start": 975.759,
+      "duration": 4.161
+    },
+    {
+      "text": "the room where they keep an eye on the",
+      "start": 978.0,
+      "duration": 3.92
+    },
+    {
+      "text": "exclusion zone. So, I'm about to go into",
+      "start": 979.92,
+      "duration": 4.64
+    },
+    {
+      "text": "the ACC, the area control center. Uh,",
+      "start": 981.92,
+      "duration": 4.32
+    },
+    {
+      "text": "unfortunately, we cannot bring our",
+      "start": 984.56,
+      "duration": 3.839
+    },
+    {
+      "text": "cameras into this room. Uh, but I'll let",
+      "start": 986.24,
+      "duration": 4.0
+    },
+    {
+      "text": "you guys know everything we learn. Okay,",
+      "start": 988.399,
+      "duration": 4.0
+    },
+    {
+      "text": "so honestly, the room itself isn't that",
+      "start": 990.24,
+      "duration": 3.76
+    },
+    {
+      "text": "exciting. It's basically a room full of",
+      "start": 992.399,
+      "duration": 3.921
+    },
+    {
+      "text": "computers and monitors. No surprise",
+      "start": 994.0,
+      "duration": 4.24
+    },
+    {
+      "text": "there. It's a relatively small room,",
+      "start": 996.32,
+      "duration": 3.199
+    },
+    {
+      "text": "which seems like it would probably have",
+      "start": 998.24,
+      "duration": 3.2
+    },
+    {
+      "text": "about five or six people inside during a",
+      "start": 999.519,
+      "duration": 4.081
+    },
+    {
+      "text": "launch. Sitting at one station would be",
+      "start": 1001.44,
+      "duration": 4.56
+    },
+    {
+      "text": "a range safety officer who's in charge",
+      "start": 1003.6,
+      "duration": 4.479
+    },
+    {
+      "text": "of monitoring air traffic. This person",
+      "start": 1006.0,
+      "duration": 3.759
+    },
+    {
+      "text": "is specifically called the airspace",
+      "start": 1008.079,
+      "duration": 4.241
+    },
+    {
+      "text": "safety officer or ASO. Their screen",
+      "start": 1009.759,
+      "duration": 4.721
+    },
+    {
+      "text": "showed all the air traffic in the area,",
+      "start": 1012.32,
+      "duration": 3.6
+    },
+    {
+      "text": "similar to what you would see if you",
+      "start": 1014.48,
+      "duration": 4.08
+    },
+    {
+      "text": "pull up FlightAware or flight radar 24",
+      "start": 1015.92,
+      "duration": 4.8
+    },
+    {
+      "text": "and you saw all the air traffic. Now,",
+      "start": 1018.56,
+      "duration": 3.839
+    },
+    {
+      "text": "I'm sure their system is a lot more",
+      "start": 1020.72,
+      "duration": 3.119
+    },
+    {
+      "text": "sophisticated and much more",
+      "start": 1022.399,
+      "duration": 3.361
+    },
+    {
+      "text": "comprehensive than those. And they also",
+      "start": 1023.839,
+      "duration": 4.321
+    },
+    {
+      "text": "use military radar to ensure that the",
+      "start": 1025.76,
+      "duration": 4.72
+    },
+    {
+      "text": "range is actually clear. The ASO's job",
+      "start": 1028.16,
+      "duration": 4.24
+    },
+    {
+      "text": "is to make sure that no air traffic is",
+      "start": 1030.48,
+      "duration": 4.479
+    },
+    {
+      "text": "flying into the exclusion zone, which in",
+      "start": 1032.4,
+      "duration": 4.639
+    },
+    {
+      "text": "the case of being in a plane, there will",
+      "start": 1034.959,
+      "duration": 4.08
+    },
+    {
+      "text": "be a section of airspace plotted out",
+      "start": 1037.039,
+      "duration": 4.16
+    },
+    {
+      "text": "that is active around the time of launch",
+      "start": 1039.039,
+      "duration": 4.961
+    },
+    {
+      "text": "called a TFR or a temporary flight",
+      "start": 1041.199,
+      "duration": 5.201
+    },
+    {
+      "text": "restriction. A not TAM or notice to air",
+      "start": 1044.0,
+      "duration": 4.16
+    },
+    {
+      "text": "missions is published in advance of the",
+      "start": 1046.4,
+      "duration": 4.159
+    },
+    {
+      "text": "upcoming airspace closure to tell pilots",
+      "start": 1048.16,
+      "duration": 5.04
+    },
+    {
+      "text": "about the TFR, specifically where and",
+      "start": 1050.559,
+      "duration": 5.12
+    },
+    {
+      "text": "when they're in place. So each pilot has",
+      "start": 1053.2,
+      "duration": 4.0
+    },
+    {
+      "text": "to doublech checkck their routes during",
+      "start": 1055.679,
+      "duration": 3.201
+    },
+    {
+      "text": "flight planning to ensure they're not",
+      "start": 1057.2,
+      "duration": 3.839
+    },
+    {
+      "text": "violating any TFRs. The other main",
+      "start": 1058.88,
+      "duration": 4.24
+    },
+    {
+      "text": "console is for marine traffic. This is a",
+      "start": 1061.039,
+      "duration": 3.841
+    },
+    {
+      "text": "similar thing to air traffic control.",
+      "start": 1063.12,
+      "duration": 3.36
+    },
+    {
+      "text": "There's a range safety officer called",
+      "start": 1064.88,
+      "duration": 4.4
+    },
+    {
+      "text": "the marine safety officer or MSO whose",
+      "start": 1066.48,
+      "duration": 5.04
+    },
+    {
+      "text": "job it is to monitor marine traffic and",
+      "start": 1069.28,
+      "duration": 4.16
+    },
+    {
+      "text": "they coordinate with the Coast Guard to",
+      "start": 1071.52,
+      "duration": 3.84
+    },
+    {
+      "text": "ensure there are no boats within the",
+      "start": 1073.44,
+      "duration": 4.08
+    },
+    {
+      "text": "exclusion zone. Similar to air traffic,",
+      "start": 1075.36,
+      "duration": 4.48
+    },
+    {
+      "text": "the Coast Guard will publish not Mars or",
+      "start": 1077.52,
+      "duration": 4.48
+    },
+    {
+      "text": "notice to mariners or sometimes just",
+      "start": 1079.84,
+      "duration": 4.64
+    },
+    {
+      "text": "called NTMs where there are published",
+      "start": 1082.0,
+      "duration": 4.96
+    },
+    {
+      "text": "exclusion zones leading up to launches.",
+      "start": 1084.48,
+      "duration": 4.079
+    },
+    {
+      "text": "As commercial spaceflight operations",
+      "start": 1086.96,
+      "duration": 3.839
+    },
+    {
+      "text": "ramped up, weward boats and planes were",
+      "start": 1088.559,
+      "duration": 4.48
+    },
+    {
+      "text": "often the cause of scrubs or delayed",
+      "start": 1090.799,
+      "duration": 4.88
+    },
+    {
+      "text": "launches. But now, most captains are",
+      "start": 1093.039,
+      "duration": 4.561
+    },
+    {
+      "text": "more familiar with the possibility of",
+      "start": 1095.679,
+      "duration": 3.921
+    },
+    {
+      "text": "there being a rocket launch to look out",
+      "start": 1097.6,
+      "duration": 4.48
+    },
+    {
+      "text": "for when they're planning their routes.",
+      "start": 1099.6,
+      "duration": 4.56
+    },
+    {
+      "text": "And as you just heard, we did have a",
+      "start": 1102.08,
+      "duration": 5.04
+    },
+    {
+      "text": "hold hold call on the countdown. That is",
+      "start": 1104.16,
+      "duration": 4.639
+    },
+    {
+      "text": "because we had a watch item with the",
+      "start": 1107.12,
+      "duration": 4.72
+    },
+    {
+      "text": "range. Uh we did have a cruise liner uh",
+      "start": 1108.799,
+      "duration": 5.601
+    },
+    {
+      "text": "making its way towards the no-go zone uh",
+      "start": 1111.84,
+      "duration": 4.8
+    },
+    {
+      "text": "that the Coast Guard was unable to clear",
+      "start": 1114.4,
+      "duration": 5.76
+    },
+    {
+      "text": "out uh in time for T0 today. Um but",
+      "start": 1116.64,
+      "duration": 5.039
+    },
+    {
+      "text": "again, as we mentioned, we do have a",
+      "start": 1120.16,
+      "duration": 3.92
+    },
+    {
+      "text": "backup opportunity tomorrow. So we will",
+      "start": 1121.679,
+      "duration": 4.721
+    },
+    {
+      "text": "try one more time tomorrow. Lastly, the",
+      "start": 1124.08,
+      "duration": 4.24
+    },
+    {
+      "text": "range has to coordinate with Vandenberg",
+      "start": 1126.4,
+      "duration": 3.68
+    },
+    {
+      "text": "security to ensure there aren't",
+      "start": 1128.32,
+      "duration": 3.92
+    },
+    {
+      "text": "personnel within the exclusion zone on",
+      "start": 1130.08,
+      "duration": 4.88
+    },
+    {
+      "text": "the ground. Obviously, when you have an",
+      "start": 1132.24,
+      "duration": 4.559
+    },
+    {
+      "text": "already secured area like Vandenberg",
+      "start": 1134.96,
+      "duration": 4.24
+    },
+    {
+      "text": "Space Force Base, there's already a lot",
+      "start": 1136.799,
+      "duration": 4.721
+    },
+    {
+      "text": "of systems in place to keep people out,",
+      "start": 1139.2,
+      "duration": 3.839
+    },
+    {
+      "text": "but there's still additional",
+      "start": 1141.52,
+      "duration": 3.2
+    },
+    {
+      "text": "considerations from range safety",
+      "start": 1143.039,
+      "duration": 3.841
+    },
+    {
+      "text": "officers, specifically this time, ground",
+      "start": 1144.72,
+      "duration": 4.56
+    },
+    {
+      "text": "safety officers, who make sure that no",
+      "start": 1146.88,
+      "duration": 4.799
+    },
+    {
+      "text": "one, including those who work on base,",
+      "start": 1149.28,
+      "duration": 3.759
+    },
+    {
+      "text": "aren't somewhere that they're not",
+      "start": 1151.679,
+      "duration": 3.041
+    },
+    {
+      "text": "supposed to be. They'll also put up",
+      "start": 1153.039,
+      "duration": 3.601
+    },
+    {
+      "text": "additional road closures and blockages",
+      "start": 1154.72,
+      "duration": 4.4
+    },
+    {
+      "text": "that take effect before prop load begins",
+      "start": 1156.64,
+      "duration": 4.8
+    },
+    {
+      "text": "on a rocket. All range safety officers",
+      "start": 1159.12,
+      "duration": 5.12
+    },
+    {
+      "text": "report to a range operations commander",
+      "start": 1161.44,
+      "duration": 5.04
+    },
+    {
+      "text": "who will be inside the main control room",
+      "start": 1164.24,
+      "duration": 4.72
+    },
+    {
+      "text": "called the range control center. And",
+      "start": 1166.48,
+      "duration": 4.8
+    },
+    {
+      "text": "that's the heart of the western range.",
+      "start": 1168.96,
+      "duration": 4.079
+    },
+    {
+      "text": "And this is where everyone is",
+      "start": 1171.28,
+      "duration": 3.92
+    },
+    {
+      "text": "communicating with their teams to bring",
+      "start": 1173.039,
+      "duration": 4.161
+    },
+    {
+      "text": "information up to the launch decision",
+      "start": 1175.2,
+      "duration": 4.0
+    },
+    {
+      "text": "authority. In this room, I spoke with",
+      "start": 1177.2,
+      "duration": 4.0
+    },
+    {
+      "text": "one of the range operations commander,",
+      "start": 1179.2,
+      "duration": 4.24
+    },
+    {
+      "text": "Lieutenant Baronta, who explained to me",
+      "start": 1181.2,
+      "duration": 4.719
+    },
+    {
+      "text": "one more aspect of range safety that's",
+      "start": 1183.44,
+      "duration": 3.76
+    },
+    {
+      "text": "unique to Vandenberg.",
+      "start": 1185.919,
+      "duration": 3.281
+    },
+    {
+      "text": ">> So, trains, fun fact, uh they actually",
+      "start": 1187.2,
+      "duration": 3.839
+    },
+    {
+      "text": "were here long before Vandenberg Space",
+      "start": 1189.2,
+      "duration": 3.92
+    },
+    {
+      "text": "Force Base. And so, they actually have",
+      "start": 1191.039,
+      "duration": 5.281
+    },
+    {
+      "text": "priority over a launch. And so if there",
+      "start": 1193.12,
+      "duration": 4.64
+    },
+    {
+      "text": "were a train coming through what's",
+      "start": 1196.32,
+      "duration": 3.599
+    },
+    {
+      "text": "called the train protection area, we'll",
+      "start": 1197.76,
+      "duration": 3.919
+    },
+    {
+      "text": "have our area surveillance officers",
+      "start": 1199.919,
+      "duration": 4.0
+    },
+    {
+      "text": "contact those in the train and they can",
+      "start": 1201.679,
+      "duration": 4.481
+    },
+    {
+      "text": "tell them basically advise them to stop",
+      "start": 1203.919,
+      "duration": 4.721
+    },
+    {
+      "text": "or if they can keep going. Uh but again",
+      "start": 1206.16,
+      "duration": 4.32
+    },
+    {
+      "text": "they have priorities. So if they decide",
+      "start": 1208.64,
+      "duration": 5.12
+    },
+    {
+      "text": "to go then we'd have to adjust our",
+      "start": 1210.48,
+      "duration": 5.84
+    },
+    {
+      "text": "procedures uh depending on the outcome.",
+      "start": 1213.76,
+      "duration": 4.24
+    },
+    {
+      "text": "all that information whether something",
+      "start": 1216.32,
+      "duration": 4.08
+    },
+    {
+      "text": "goes down. If a constraint is violated,",
+      "start": 1218.0,
+      "duration": 4.96
+    },
+    {
+      "text": "it comes to us and what we do is we take",
+      "start": 1220.4,
+      "duration": 4.399
+    },
+    {
+      "text": "that information and we provide it to",
+      "start": 1222.96,
+      "duration": 4.48
+    },
+    {
+      "text": "our launch decision authority who is the",
+      "start": 1224.799,
+      "duration": 5.36
+    },
+    {
+      "text": "ones that give the authority to launch.",
+      "start": 1227.44,
+      "duration": 5.119
+    },
+    {
+      "text": ">> Are you talking to the customers too",
+      "start": 1230.159,
+      "duration": 4.561
+    },
+    {
+      "text": "then or the launch providers like are",
+      "start": 1232.559,
+      "duration": 4.48
+    },
+    {
+      "text": "you having to talk to to both sides of",
+      "start": 1234.72,
+      "duration": 3.839
+    },
+    {
+      "text": "the coin in that sense or are you",
+      "start": 1237.039,
+      "duration": 4.401
+    },
+    {
+      "text": "primarily only uh talking to Yeah. Like",
+      "start": 1238.559,
+      "duration": 4.321
+    },
+    {
+      "text": "who who are you actually talking to like",
+      "start": 1241.44,
+      "duration": 4.08
+    },
+    {
+      "text": "on console? Yeah. So, uh, we talk to",
+      "start": 1242.88,
+      "duration": 4.56
+    },
+    {
+      "text": "obviously the launch decision authority",
+      "start": 1245.52,
+      "duration": 3.68
+    },
+    {
+      "text": "as well as those that operate work here",
+      "start": 1247.44,
+      "duration": 3.52
+    },
+    {
+      "text": "in the range, but we are also talking to",
+      "start": 1249.2,
+      "duration": 3.92
+    },
+    {
+      "text": "the customer. Um, and so for depending",
+      "start": 1250.96,
+      "duration": 3.52
+    },
+    {
+      "text": "on the launch and depending on the",
+      "start": 1253.12,
+      "duration": 2.96
+    },
+    {
+      "text": "customer, they have a different title or",
+      "start": 1254.48,
+      "duration": 3.439
+    },
+    {
+      "text": "role um, whether it's the launch",
+      "start": 1256.08,
+      "duration": 4.88
+    },
+    {
+      "text": "conductor um, or not. But yes, we serve",
+      "start": 1257.919,
+      "duration": 5.12
+    },
+    {
+      "text": "as that interface between the customer",
+      "start": 1260.96,
+      "duration": 3.36
+    },
+    {
+      "text": "as well as the range.",
+      "start": 1263.039,
+      "duration": 2.721
+    },
+    {
+      "text": ">> There's one more big picture thing",
+      "start": 1264.32,
+      "duration": 3.76
+    },
+    {
+      "text": "leading up to the launch. This entire",
+      "start": 1265.76,
+      "duration": 4.48
+    },
+    {
+      "text": "room is full of people listening to all",
+      "start": 1268.08,
+      "duration": 4.079
+    },
+    {
+      "text": "different pieces of information and",
+      "start": 1270.24,
+      "duration": 3.919
+    },
+    {
+      "text": "communicating that up to the launch",
+      "start": 1272.159,
+      "duration": 5.52
+    },
+    {
+      "text": "decision authority or LDA. The LDA is",
+      "start": 1274.159,
+      "duration": 5.681
+    },
+    {
+      "text": "the person actually in charge of the",
+      "start": 1277.679,
+      "duration": 4.721
+    },
+    {
+      "text": "launch. They have the ultimate authority",
+      "start": 1279.84,
+      "duration": 4.88
+    },
+    {
+      "text": "to determine if it is safe to launch,",
+      "start": 1282.4,
+      "duration": 4.48
+    },
+    {
+      "text": "but they rely on the information being",
+      "start": 1284.72,
+      "duration": 4.079
+    },
+    {
+      "text": "fed to them from range operations",
+      "start": 1286.88,
+      "duration": 3.679
+    },
+    {
+      "text": "commanders like Lieutenant Baron.",
+      "start": 1288.799,
+      "duration": 3.601
+    },
+    {
+      "text": "Another range operations commander,",
+      "start": 1290.559,
+      "duration": 4.401
+    },
+    {
+      "text": "Lieutenant Rocket, yes, that's his real",
+      "start": 1292.4,
+      "duration": 4.88
+    },
+    {
+      "text": "name, gave me a little more insight on",
+      "start": 1294.96,
+      "duration": 4.48
+    },
+    {
+      "text": "what all is going on the minutes leading",
+      "start": 1297.28,
+      "duration": 3.519
+    },
+    {
+      "text": "up to a rocket launch.",
+      "start": 1299.44,
+      "duration": 3.76
+    },
+    {
+      "text": ">> There's different uh tracking stations",
+      "start": 1300.799,
+      "duration": 4.321
+    },
+    {
+      "text": "around this base that is watching the",
+      "start": 1303.2,
+      "duration": 4.56
+    },
+    {
+      "text": "rocket. So, if we had a base asset goes",
+      "start": 1305.12,
+      "duration": 4.24
+    },
+    {
+      "text": "down, maybe that rocket is completely",
+      "start": 1307.76,
+      "duration": 4.72
+    },
+    {
+      "text": "fine. But a tracking station or a",
+      "start": 1309.36,
+      "duration": 4.72
+    },
+    {
+      "text": "station that works with the flight",
+      "start": 1312.48,
+      "duration": 3.52
+    },
+    {
+      "text": "termination system, maybe that goes",
+      "start": 1314.08,
+      "duration": 3.599
+    },
+    {
+      "text": "down. That would create an unsafe",
+      "start": 1316.0,
+      "duration": 3.2
+    },
+    {
+      "text": "environment. maybe we couldn't see that",
+      "start": 1317.679,
+      "duration": 3.281
+    },
+    {
+      "text": "rocket or we didn't have enough fidelity",
+      "start": 1319.2,
+      "duration": 3.68
+    },
+    {
+      "text": "on it. So, that would be another example",
+      "start": 1320.96,
+      "duration": 3.36
+    },
+    {
+      "text": "where we would have to cancel the launch",
+      "start": 1322.88,
+      "duration": 3.039
+    },
+    {
+      "text": "or hold the launch or go into an",
+      "start": 1324.32,
+      "duration": 2.56
+    },
+    {
+      "text": "emergency hold.",
+      "start": 1325.919,
+      "duration": 3.12
+    },
+    {
+      "text": ">> So, someone might tell you, \"Oh, we just",
+      "start": 1326.88,
+      "duration": 4.72
+    },
+    {
+      "text": "lost our radar tracking dish or",
+      "start": 1329.039,
+      "duration": 4.481
+    },
+    {
+      "text": "something.\" And then it's your job then",
+      "start": 1331.6,
+      "duration": 3.68
+    },
+    {
+      "text": "to communicate that up the chain to say,",
+      "start": 1333.52,
+      "duration": 3.12
+    },
+    {
+      "text": "\"Hey, we have a dish down.\"",
+      "start": 1335.28,
+      "duration": 2.72
+    },
+    {
+      "text": ">> Yeah. And there's different steps,",
+      "start": 1336.64,
+      "duration": 3.039
+    },
+    {
+      "text": "there's different gates in the launch",
+      "start": 1338.0,
+      "duration": 3.6
+    },
+    {
+      "text": "where we need to know like, \"Hey, if",
+      "start": 1339.679,
+      "duration": 3.761
+    },
+    {
+      "text": "this radar goes down at the three-hour",
+      "start": 1341.6,
+      "duration": 4.079
+    },
+    {
+      "text": "mark, we can talk about it. What's the",
+      "start": 1343.44,
+      "duration": 3.92
+    },
+    {
+      "text": "impact?\" But if this radar goes down at",
+      "start": 1345.679,
+      "duration": 4.081
+    },
+    {
+      "text": "the 2C mark, what do we do? Do we have",
+      "start": 1347.36,
+      "duration": 4.72
+    },
+    {
+      "text": "to do an emergency hold and it's my job",
+      "start": 1349.76,
+      "duration": 4.64
+    },
+    {
+      "text": "as well as uh the elbow and the safety",
+      "start": 1352.08,
+      "duration": 4.479
+    },
+    {
+      "text": "officer to say, \"Hey, that's not a",
+      "start": 1354.4,
+      "duration": 3.759
+    },
+    {
+      "text": "problem. We don't have enough time.",
+      "start": 1356.559,
+      "duration": 3.921
+    },
+    {
+      "text": "Launch the rocket or we do have enough",
+      "start": 1358.159,
+      "duration": 5.041
+    },
+    {
+      "text": "time. Cancel the launch. Emergency hold.",
+      "start": 1360.48,
+      "duration": 4.96
+    },
+    {
+      "text": "Take a step back. Let's and make sure",
+      "start": 1363.2,
+      "duration": 5.2
+    },
+    {
+      "text": "everything is safe.\" Is do you have the",
+      "start": 1365.44,
+      "duration": 5.2
+    },
+    {
+      "text": "authority and a physical button to to",
+      "start": 1368.4,
+      "duration": 4.88
+    },
+    {
+      "text": "pause a launch uh over overriding like",
+      "start": 1370.64,
+      "duration": 4.72
+    },
+    {
+      "text": "the a launch provider even or is it all",
+      "start": 1373.28,
+      "duration": 4.399
+    },
+    {
+      "text": "always filter into the like the launch",
+      "start": 1375.36,
+      "duration": 4.4
+    },
+    {
+      "text": "director at a at a launch provider?",
+      "start": 1377.679,
+      "duration": 4.161
+    },
+    {
+      "text": ">> It that's a tough question because we",
+      "start": 1379.76,
+      "duration": 3.52
+    },
+    {
+      "text": "launch so many different vehicles out",
+      "start": 1381.84,
+      "duration": 3.04
+    },
+    {
+      "text": "here that it's different vehicle to",
+      "start": 1383.28,
+      "duration": 4.96
+    },
+    {
+      "text": "vehicle. But a standard launch is the",
+      "start": 1384.88,
+      "duration": 5.76
+    },
+    {
+      "text": "vehicle is on an automated launch like",
+      "start": 1388.24,
+      "duration": 5.28
+    },
+    {
+      "text": "system and we'll call a red range over a",
+      "start": 1390.64,
+      "duration": 4.96
+    },
+    {
+      "text": "countdown net where everyone's listening",
+      "start": 1393.52,
+      "duration": 4.399
+    },
+    {
+      "text": "and you'll have an engineer cancel that",
+      "start": 1395.6,
+      "duration": 3.84
+    },
+    {
+      "text": "automated launch sequence.",
+      "start": 1397.919,
+      "duration": 3.841
+    },
+    {
+      "text": ">> Okay. So it is so there is a little bit",
+      "start": 1399.44,
+      "duration": 4.56
+    },
+    {
+      "text": "of a so if it's 2us 2 seconds there's a",
+      "start": 1401.76,
+      "duration": 5.2
+    },
+    {
+      "text": "bit of a a rush to all of a sudden go",
+      "start": 1404.0,
+      "duration": 5.44
+    },
+    {
+      "text": "and no one uh at the range necessarily",
+      "start": 1406.96,
+      "duration": 4.56
+    },
+    {
+      "text": "has a red button to say pause the launch",
+      "start": 1409.44,
+      "duration": 4.96
+    },
+    {
+      "text": "though. It has to make its way to uh",
+      "start": 1411.52,
+      "duration": 4.639
+    },
+    {
+      "text": ">> exactly someone over the nets listening",
+      "start": 1414.4,
+      "duration": 3.6
+    },
+    {
+      "text": "on countdown net. So yeah, that that's a",
+      "start": 1416.159,
+      "duration": 3.601
+    },
+    {
+      "text": "big determination for us. So we'll have",
+      "start": 1418.0,
+      "duration": 3.28
+    },
+    {
+      "text": "different steps. For example, we have",
+      "start": 1419.76,
+      "duration": 2.799
+    },
+    {
+      "text": "something called the 45se secondond",
+      "start": 1421.28,
+      "duration": 3.84
+    },
+    {
+      "text": "rule. So once you're 45 seconds from",
+      "start": 1422.559,
+      "duration": 3.521
+    },
+    {
+      "text": "launch,",
+      "start": 1425.12,
+      "duration": 2.559
+    },
+    {
+      "text": ">> all of our constraints are removed",
+      "start": 1426.08,
+      "duration": 4.479
+    },
+    {
+      "text": "except for the absolute mandatory safety",
+      "start": 1427.679,
+      "duration": 4.801
+    },
+    {
+      "text": "constraints. Something that if we didn't",
+      "start": 1430.559,
+      "duration": 4.961
+    },
+    {
+      "text": "have would cause a massive safety issue.",
+      "start": 1432.48,
+      "duration": 4.48
+    },
+    {
+      "text": ">> Also, real quick, you might hear the",
+      "start": 1435.52,
+      "duration": 3.68
+    },
+    {
+      "text": "word nets be used often when talking",
+      "start": 1436.96,
+      "duration": 4.48
+    },
+    {
+      "text": "about the communication network. So,",
+      "start": 1439.2,
+      "duration": 3.76
+    },
+    {
+      "text": "someone might be referring to hearing it",
+      "start": 1441.44,
+      "duration": 3.04
+    },
+    {
+      "text": "over the nets or something like that,",
+      "start": 1442.96,
+      "duration": 4.32
+    },
+    {
+      "text": "and that's nets for network. The range",
+      "start": 1444.48,
+      "duration": 5.28
+    },
+    {
+      "text": "also will conduct a go no-go poll at",
+      "start": 1447.28,
+      "duration": 4.72
+    },
+    {
+      "text": "some point leading up to the launch.",
+      "start": 1449.76,
+      "duration": 4.48
+    },
+    {
+      "text": "When and what exactly that looks like",
+      "start": 1452.0,
+      "duration": 4.159
+    },
+    {
+      "text": "varies from rocket to rocket. After the",
+      "start": 1454.24,
+      "duration": 4.319
+    },
+    {
+      "text": "go no-go poll, there's a rule that if",
+      "start": 1456.159,
+      "duration": 5.281
+    },
+    {
+      "text": "anyone says hold hold over the nets, the",
+      "start": 1458.559,
+      "duration": 5.281
+    },
+    {
+      "text": "countdown is immediately cancelled. Now,",
+      "start": 1461.44,
+      "duration": 4.239
+    },
+    {
+      "text": "this is different from a single hold",
+      "start": 1463.84,
+      "duration": 3.36
+    },
+    {
+      "text": "that you might hear where a team will",
+      "start": 1465.679,
+      "duration": 3.201
+    },
+    {
+      "text": "pause the launch countdown and they'll",
+      "start": 1467.2,
+      "duration": 4.8
+    },
+    {
+      "text": "try to work the issue. A hold hold hold",
+      "start": 1468.88,
+      "duration": 5.44
+    },
+    {
+      "text": "typically means cancel everything. We're",
+      "start": 1472.0,
+      "duration": 4.0
+    },
+    {
+      "text": "not launching today. So if you hear",
+      "start": 1474.32,
+      "duration": 4.16
+    },
+    {
+      "text": "that, that's bad. It can be anything",
+      "start": 1476.0,
+      "duration": 4.799
+    },
+    {
+      "text": "from a mechanical issue on the rocket or",
+      "start": 1478.48,
+      "duration": 4.48
+    },
+    {
+      "text": "on the ground systems or a range",
+      "start": 1480.799,
+      "duration": 4.801
+    },
+    {
+      "text": "violation or weather. I'm sure most of",
+      "start": 1482.96,
+      "duration": 4.48
+    },
+    {
+      "text": "us watching this video have been",
+      "start": 1485.6,
+      "duration": 3.92
+    },
+    {
+      "text": "watching a rocket launch live and we",
+      "start": 1487.44,
+      "duration": 4.0
+    },
+    {
+      "text": "heard those dreaded words come over the",
+      "start": 1489.52,
+      "duration": 2.56
+    },
+    {
+      "text": "radio.",
+      "start": 1491.44,
+      "duration": 3.68
+    },
+    {
+      "text": ">> Hold, hold, hold. Boarding launch auto.",
+      "start": 1492.08,
+      "duration": 4.479
+    },
+    {
+      "text": ">> So that's a lot of the stuff leading up",
+      "start": 1495.12,
+      "duration": 4.559
+    },
+    {
+      "text": "to the launch. But now the big question,",
+      "start": 1496.559,
+      "duration": 4.961
+    },
+    {
+      "text": "what's actually happening during the",
+      "start": 1499.679,
+      "duration": 3.681
+    },
+    {
+      "text": "launch? For this, I went across the hall",
+      "start": 1501.52,
+      "duration": 3.519
+    },
+    {
+      "text": "to a room called the mission flight",
+      "start": 1503.36,
+      "duration": 3.919
+    },
+    {
+      "text": "control center. This is the room where",
+      "start": 1505.039,
+      "duration": 4.321
+    },
+    {
+      "text": "the termination button is. And in fact,",
+      "start": 1507.279,
+      "duration": 4.321
+    },
+    {
+      "text": "it's so classified, we couldn't even",
+      "start": 1509.36,
+      "duration": 4.4
+    },
+    {
+      "text": "bring our cameras into this room at all.",
+      "start": 1511.6,
+      "duration": 3.92
+    },
+    {
+      "text": "Within this room, teams monitor the",
+      "start": 1513.76,
+      "duration": 3.519
+    },
+    {
+      "text": "rocket launch. And there's one person",
+      "start": 1515.52,
+      "duration": 3.44
+    },
+    {
+      "text": "called the mission flight control",
+      "start": 1517.279,
+      "duration": 4.321
+    },
+    {
+      "text": "officer, or MIFCO, who's ultimately in",
+      "start": 1518.96,
+      "duration": 4.48
+    },
+    {
+      "text": "charge of terminating the rocket if it",
+      "start": 1521.6,
+      "duration": 3.92
+    },
+    {
+      "text": "veers off course. Although we couldn't",
+      "start": 1523.44,
+      "duration": 4.64
+    },
+    {
+      "text": "bring our cameras into that room, I can",
+      "start": 1525.52,
+      "duration": 4.08
+    },
+    {
+      "text": "give you a sense of what the terminal",
+      "start": 1528.08,
+      "duration": 3.599
+    },
+    {
+      "text": "looks like that the MIFCO is operating",
+      "start": 1529.6,
+      "duration": 3.92
+    },
+    {
+      "text": "from and what they're actually looking",
+      "start": 1531.679,
+      "duration": 4.401
+    },
+    {
+      "text": "at. The station has a handful of video",
+      "start": 1533.52,
+      "duration": 4.48
+    },
+    {
+      "text": "monitors of the rocket. There's a few",
+      "start": 1536.08,
+      "duration": 3.76
+    },
+    {
+      "text": "clocks and there's a few just regular",
+      "start": 1538.0,
+      "duration": 3.919
+    },
+    {
+      "text": "old computer screens. First off, the",
+      "start": 1539.84,
+      "duration": 4.16
+    },
+    {
+      "text": "officer has video feeds of the launch",
+      "start": 1541.919,
+      "duration": 4.0
+    },
+    {
+      "text": "from a handful of optical tracking",
+      "start": 1544.0,
+      "duration": 4.32
+    },
+    {
+      "text": "assets from around the base. Some of the",
+      "start": 1545.919,
+      "duration": 4.161
+    },
+    {
+      "text": "cameras are infrared, so they are able",
+      "start": 1548.32,
+      "duration": 3.68
+    },
+    {
+      "text": "to maintain a visual on the rocket",
+      "start": 1550.08,
+      "duration": 3.599
+    },
+    {
+      "text": "through clouds. Another thing of",
+      "start": 1552.0,
+      "duration": 3.039
+    },
+    {
+      "text": "interest to me was the fact that the",
+      "start": 1553.679,
+      "duration": 3.36
+    },
+    {
+      "text": "operator has a foot switch that they",
+      "start": 1555.039,
+      "duration": 3.841
+    },
+    {
+      "text": "press to open up their communications",
+      "start": 1557.039,
+      "duration": 4.0
+    },
+    {
+      "text": "instead of a push button. This allows",
+      "start": 1558.88,
+      "duration": 3.919
+    },
+    {
+      "text": "them to be able to talk on the radio and",
+      "start": 1561.039,
+      "duration": 4.88
+    },
+    {
+      "text": "be hands-free for other tasks. I just",
+      "start": 1562.799,
+      "duration": 4.561
+    },
+    {
+      "text": "thought that was kind of cool. But the",
+      "start": 1565.919,
+      "duration": 2.721
+    },
+    {
+      "text": "main screen they're probably looking at",
+      "start": 1567.36,
+      "duration": 3.199
+    },
+    {
+      "text": "most is a screen that shows the",
+      "start": 1568.64,
+      "duration": 3.68
+    },
+    {
+      "text": "trajectory line that's continually",
+      "start": 1570.559,
+      "duration": 4.0
+    },
+    {
+      "text": "plotted out as the rocket accelerates.",
+      "start": 1572.32,
+      "duration": 3.92
+    },
+    {
+      "text": "Along with the line, the computer is",
+      "start": 1574.559,
+      "duration": 4.081
+    },
+    {
+      "text": "also calculating two bounds. One is that",
+      "start": 1576.24,
+      "duration": 4.319
+    },
+    {
+      "text": "termination line, that kind of 3D bound",
+      "start": 1578.64,
+      "duration": 4.0
+    },
+    {
+      "text": "that follows the inverted cone shaped we",
+      "start": 1580.559,
+      "duration": 3.841
+    },
+    {
+      "text": "talked about earlier. If the rocket",
+      "start": 1582.64,
+      "duration": 3.919
+    },
+    {
+      "text": "crosses that line, it will need to be",
+      "start": 1584.4,
+      "duration": 4.56
+    },
+    {
+      "text": "terminated. This bound is predetermined",
+      "start": 1586.559,
+      "duration": 4.72
+    },
+    {
+      "text": "so that no debris crosses the other",
+      "start": 1588.96,
+      "duration": 4.88
+    },
+    {
+      "text": "bound called the debris impact zone.",
+      "start": 1591.279,
+      "duration": 4.721
+    },
+    {
+      "text": "These bounds are being calculated and",
+      "start": 1593.84,
+      "duration": 4.079
+    },
+    {
+      "text": "include all the variables such as",
+      "start": 1596.0,
+      "duration": 3.76
+    },
+    {
+      "text": "velocity and the heading of the rocket,",
+      "start": 1597.919,
+      "duration": 3.681
+    },
+    {
+      "text": "the materials of the rocket, and even",
+      "start": 1599.76,
+      "duration": 4.159
+    },
+    {
+      "text": "the wind and other external variables.",
+      "start": 1601.6,
+      "duration": 4.0
+    },
+    {
+      "text": "That trajectory line kind of looks a",
+      "start": 1603.919,
+      "duration": 3.281
+    },
+    {
+      "text": "little bit like Kerbal Space Program",
+      "start": 1605.6,
+      "duration": 3.12
+    },
+    {
+      "text": "where you can see the trajectory of the",
+      "start": 1607.2,
+      "duration": 4.0
+    },
+    {
+      "text": "rocket as it ascends. It's obviously a",
+      "start": 1608.72,
+      "duration": 4.24
+    },
+    {
+      "text": "lot more sophisticated than Kerbal Space",
+      "start": 1611.2,
+      "duration": 3.92
+    },
+    {
+      "text": "Program and it's taking in a ton of data",
+      "start": 1612.96,
+      "duration": 4.4
+    },
+    {
+      "text": "from all over the place. And now perhaps",
+      "start": 1615.12,
+      "duration": 4.48
+    },
+    {
+      "text": "the most important thing at this",
+      "start": 1617.36,
+      "duration": 4.319
+    },
+    {
+      "text": "station, there's a set of buttons",
+      "start": 1619.6,
+      "duration": 3.92
+    },
+    {
+      "text": "directly in front of the operator that",
+      "start": 1621.679,
+      "duration": 5.201
+    },
+    {
+      "text": "says arm and another that says destruct.",
+      "start": 1623.52,
+      "duration": 5.68
+    },
+    {
+      "text": "So what actually happens when they hit",
+      "start": 1626.88,
+      "duration": 5.039
+    },
+    {
+      "text": "the destruct button? Well, there's a few",
+      "start": 1629.2,
+      "duration": 5.04
+    },
+    {
+      "text": "methods of flight termination. Contrary",
+      "start": 1631.919,
+      "duration": 4.401
+    },
+    {
+      "text": "to popular belief, flight termination",
+      "start": 1634.24,
+      "duration": 4.24
+    },
+    {
+      "text": "systems aren't necessarily just a big",
+      "start": 1636.32,
+      "duration": 4.4
+    },
+    {
+      "text": "bomb that's supposed to grenade a rocket",
+      "start": 1638.48,
+      "duration": 5.12
+    },
+    {
+      "text": "into a million pieces. The main goal is",
+      "start": 1640.72,
+      "duration": 5.839
+    },
+    {
+      "text": "to simply stop thrust. If you stop",
+      "start": 1643.6,
+      "duration": 4.64
+    },
+    {
+      "text": "thrust, the rocket will follow a",
+      "start": 1646.559,
+      "duration": 3.521
+    },
+    {
+      "text": "ballistic trajectory, and as long as",
+      "start": 1648.24,
+      "duration": 3.6
+    },
+    {
+      "text": "it's within the bounds we just talked",
+      "start": 1650.08,
+      "duration": 3.76
+    },
+    {
+      "text": "about, it'll impact the ground safely",
+      "start": 1651.84,
+      "duration": 4.16
+    },
+    {
+      "text": "within the debris impact zone. So, one",
+      "start": 1653.84,
+      "duration": 3.439
+    },
+    {
+      "text": "of the simplest methods of flight",
+      "start": 1656.0,
+      "duration": 2.96
+    },
+    {
+      "text": "termination is just a system that",
+      "start": 1657.279,
+      "duration": 4.321
+    },
+    {
+      "text": "terminates thrust. This can be a manual",
+      "start": 1658.96,
+      "duration": 4.88
+    },
+    {
+      "text": "override to the engines that simply shut",
+      "start": 1661.6,
+      "duration": 4.64
+    },
+    {
+      "text": "them down. We especially see this on",
+      "start": 1663.84,
+      "duration": 4.079
+    },
+    {
+      "text": "smaller rockets where the total",
+      "start": 1666.24,
+      "duration": 3.919
+    },
+    {
+      "text": "potential blast from impact wouldn't be",
+      "start": 1667.919,
+      "duration": 4.081
+    },
+    {
+      "text": "too big. A good example of an engine",
+      "start": 1670.159,
+      "duration": 4.321
+    },
+    {
+      "text": "termination system is Astra's rocket 3.",
+      "start": 1672.0,
+      "duration": 4.159
+    },
+    {
+      "text": "You can tell when the engines get cut",
+      "start": 1674.48,
+      "duration": 3.439
+    },
+    {
+      "text": "off and then all of a sudden just falls",
+      "start": 1676.159,
+      "duration": 3.441
+    },
+    {
+      "text": "back down to the ground. Another good",
+      "start": 1677.919,
+      "duration": 3.36
+    },
+    {
+      "text": "one was ESR's first launch of their",
+      "start": 1679.6,
+      "duration": 3.28
+    },
+    {
+      "text": "Spectrum rocket that also had this",
+      "start": 1681.279,
+      "duration": 3.201
+    },
+    {
+      "text": "incredible shot where you see the rocket",
+      "start": 1682.88,
+      "duration": 3.44
+    },
+    {
+      "text": "begin to veer off course. The engines",
+      "start": 1684.48,
+      "duration": 4.079
+    },
+    {
+      "text": "are terminated and it falls right back",
+      "start": 1686.32,
+      "duration": 4.8
+    },
+    {
+      "text": "down intact. Now, luckily in this case,",
+      "start": 1688.559,
+      "duration": 4.561
+    },
+    {
+      "text": "the rocket didn't land back on the",
+      "start": 1691.12,
+      "duration": 5.2
+    },
+    {
+      "text": "launchpad, but it sure was close. Solid",
+      "start": 1693.12,
+      "duration": 4.88
+    },
+    {
+      "text": "rocket motors also have thrust",
+      "start": 1696.32,
+      "duration": 3.92
+    },
+    {
+      "text": "termination ports, which are explosive",
+      "start": 1698.0,
+      "duration": 4.399
+    },
+    {
+      "text": "charges that will blow open ports or",
+      "start": 1700.24,
+      "duration": 4.48
+    },
+    {
+      "text": "vents in the motor casing to reduce the",
+      "start": 1702.399,
+      "duration": 4.241
+    },
+    {
+      "text": "chamber pressure and stop thrust.",
+      "start": 1704.72,
+      "duration": 3.12
+    },
+    {
+      "text": "Another common method for flight",
+      "start": 1706.64,
+      "duration": 3.36
+    },
+    {
+      "text": "termination are linear-shaped charges.",
+      "start": 1707.84,
+      "duration": 4.16
+    },
+    {
+      "text": "These are long ribbon-like cords that",
+      "start": 1710.0,
+      "duration": 3.52
+    },
+    {
+      "text": "are typically mounted on the outside of",
+      "start": 1712.0,
+      "duration": 3.36
+    },
+    {
+      "text": "the rocket. This helps to ensure the",
+      "start": 1713.52,
+      "duration": 3.92
+    },
+    {
+      "text": "tanks are completely sliced, so it",
+      "start": 1715.36,
+      "duration": 4.319
+    },
+    {
+      "text": "splits open and pressure is lost, which",
+      "start": 1717.44,
+      "duration": 4.32
+    },
+    {
+      "text": "cuts propellant feeding the engines. In",
+      "start": 1719.679,
+      "duration": 5.201
+    },
+    {
+      "text": "2015, for the CRS7 mission, we saw the",
+      "start": 1721.76,
+      "duration": 5.519
+    },
+    {
+      "text": "in-flight abort of a Falcon 9 be",
+      "start": 1724.88,
+      "duration": 4.399
+    },
+    {
+      "text": "triggered. Its linear shaped charges",
+      "start": 1727.279,
+      "duration": 3.841
+    },
+    {
+      "text": "were activated after the second stage",
+      "start": 1729.279,
+      "duration": 3.841
+    },
+    {
+      "text": "had an issue on ascent. Lastly, there's",
+      "start": 1731.12,
+      "duration": 4.08
+    },
+    {
+      "text": "just high explosives charges, basically",
+      "start": 1733.12,
+      "duration": 4.159
+    },
+    {
+      "text": "C4 placed in strategic places on the",
+      "start": 1735.2,
+      "duration": 4.16
+    },
+    {
+      "text": "rocket. They're often mounted at common",
+      "start": 1737.279,
+      "duration": 4.0
+    },
+    {
+      "text": "bulkheads between oxidizer and fuel",
+      "start": 1739.36,
+      "duration": 3.6
+    },
+    {
+      "text": "tanks to ensure mixing of the",
+      "start": 1741.279,
+      "duration": 3.681
+    },
+    {
+      "text": "propellants to burn off as much as",
+      "start": 1742.96,
+      "duration": 4.319
+    },
+    {
+      "text": "possible before it impacts the ground.",
+      "start": 1744.96,
+      "duration": 4.8
+    },
+    {
+      "text": "Starship famously had two week of high",
+      "start": 1747.279,
+      "duration": 4.801
+    },
+    {
+      "text": "explosive charges on the first launch",
+      "start": 1749.76,
+      "duration": 4.24
+    },
+    {
+      "text": "which actually activated when the rocket",
+      "start": 1752.08,
+      "duration": 4.0
+    },
+    {
+      "text": "was out of control on ascent. The flight",
+      "start": 1754.0,
+      "duration": 4.08
+    },
+    {
+      "text": "termination was successfully triggered.",
+      "start": 1756.08,
+      "duration": 4.16
+    },
+    {
+      "text": "However, the charges just blew holes in",
+      "start": 1758.08,
+      "duration": 4.079
+    },
+    {
+      "text": "the side of the rocket and it continued",
+      "start": 1760.24,
+      "duration": 4.0
+    },
+    {
+      "text": "to spiral out of control intact.",
+      "start": 1762.159,
+      "duration": 4.081
+    },
+    {
+      "text": "Needless to say, for flight 2, they",
+      "start": 1764.24,
+      "duration": 3.679
+    },
+    {
+      "text": "beefed up the flight termination system",
+      "start": 1766.24,
+      "duration": 3.6
+    },
+    {
+      "text": "a lot, so something like this could",
+      "start": 1767.919,
+      "duration": 4.0
+    },
+    {
+      "text": "never happen again. Speaking of having",
+      "start": 1769.84,
+      "duration": 4.319
+    },
+    {
+      "text": "the termination delayed, you might",
+      "start": 1771.919,
+      "duration": 4.161
+    },
+    {
+      "text": "notice in some videos that it seems like",
+      "start": 1774.159,
+      "duration": 4.0
+    },
+    {
+      "text": "the Mythco is asleep or something.",
+      "start": 1776.08,
+      "duration": 3.839
+    },
+    {
+      "text": "They're waiting way too long to",
+      "start": 1778.159,
+      "duration": 4.0
+    },
+    {
+      "text": "terminate the rocket. Like, there's",
+      "start": 1779.919,
+      "duration": 4.0
+    },
+    {
+      "text": "clearly an issue and the rocket will",
+      "start": 1782.159,
+      "duration": 3.52
+    },
+    {
+      "text": "just keep firing and going out of",
+      "start": 1783.919,
+      "duration": 5.201
+    },
+    {
+      "text": "control and falling for far too long and",
+      "start": 1785.679,
+      "duration": 7.36
+    },
+    {
+      "text": "the MIFCO is doing nothing. Why? This is",
+      "start": 1789.12,
+      "duration": 5.84
+    },
+    {
+      "text": "intentional. As long as the rocket isn't",
+      "start": 1793.039,
+      "duration": 3.841
+    },
+    {
+      "text": "crossing that flight termination line,",
+      "start": 1794.96,
+      "duration": 3.36
+    },
+    {
+      "text": "the longer the rocket can be",
+      "start": 1796.88,
+      "duration": 3.36
+    },
+    {
+      "text": "transmitting data back to the ground,",
+      "start": 1798.32,
+      "duration": 4.56
+    },
+    {
+      "text": "the better. Every single millisecond can",
+      "start": 1800.24,
+      "duration": 4.72
+    },
+    {
+      "text": "be hundreds or thousands of channels of",
+      "start": 1802.88,
+      "duration": 4.48
+    },
+    {
+      "text": "data, and these can be used to help look",
+      "start": 1804.96,
+      "duration": 4.64
+    },
+    {
+      "text": "over afterwards to help discover the",
+      "start": 1807.36,
+      "duration": 4.16
+    },
+    {
+      "text": "root cause of the issue. Another factor",
+      "start": 1809.6,
+      "duration": 4.559
+    },
+    {
+      "text": "is if it's safe to do so. Delaying the",
+      "start": 1811.52,
+      "duration": 4.56
+    },
+    {
+      "text": "termination can minimize the debris",
+      "start": 1814.159,
+      "duration": 4.161
+    },
+    {
+      "text": "field. If you terminate a rocket several",
+      "start": 1816.08,
+      "duration": 4.479
+    },
+    {
+      "text": "kilometers in altitude, the debris field",
+      "start": 1818.32,
+      "duration": 4.719
+    },
+    {
+      "text": "will obviously be much larger than if",
+      "start": 1820.559,
+      "duration": 4.321
+    },
+    {
+      "text": "you detonate it close to the ground. But",
+      "start": 1823.039,
+      "duration": 3.601
+    },
+    {
+      "text": "something's changing in this regard.",
+      "start": 1824.88,
+      "duration": 3.279
+    },
+    {
+      "text": "Rockets have been moving towards an",
+      "start": 1826.64,
+      "duration": 3.44
+    },
+    {
+      "text": "automated flight termination system or",
+      "start": 1828.159,
+      "duration": 5.361
+    },
+    {
+      "text": "AFTS since 2017 that is a completely",
+      "start": 1830.08,
+      "duration": 5.68
+    },
+    {
+      "text": "standalone unit in charge of terminating",
+      "start": 1833.52,
+      "duration": 5.519
+    },
+    {
+      "text": "a rocket if it goes off course. AFTS is",
+      "start": 1835.76,
+      "duration": 5.36
+    },
+    {
+      "text": "outfitted with many redundant systems to",
+      "start": 1839.039,
+      "duration": 3.76
+    },
+    {
+      "text": "ensure the rocket will be terminated",
+      "start": 1841.12,
+      "duration": 4.0
+    },
+    {
+      "text": "without requiring a human in the loop.",
+      "start": 1842.799,
+      "duration": 4.48
+    },
+    {
+      "text": "Today's ranges use cuttingedge radar and",
+      "start": 1845.12,
+      "duration": 4.88
+    },
+    {
+      "text": "even AI to track rockets in real time.",
+      "start": 1847.279,
+      "duration": 5.041
+    },
+    {
+      "text": "It's a far cry from the 1960s when we",
+      "start": 1850.0,
+      "duration": 4.32
+    },
+    {
+      "text": "relied on basic telemetry. That said,",
+      "start": 1852.32,
+      "duration": 4.079
+    },
+    {
+      "text": "the Miffco will still always keep an eye",
+      "start": 1854.32,
+      "duration": 3.92
+    },
+    {
+      "text": "on the rocket and likely still has an",
+      "start": 1856.399,
+      "duration": 4.241
+    },
+    {
+      "text": "opportunity to intervene if necessary.",
+      "start": 1858.24,
+      "duration": 4.159
+    },
+    {
+      "text": "Now that we kind of know how all this",
+      "start": 1860.64,
+      "duration": 3.759
+    },
+    {
+      "text": "stuff works, I want to explain something",
+      "start": 1862.399,
+      "duration": 3.841
+    },
+    {
+      "text": "awesome that I got to see while inside",
+      "start": 1864.399,
+      "duration": 4.081
+    },
+    {
+      "text": "the mission flight control center. They",
+      "start": 1866.24,
+      "duration": 4.48
+    },
+    {
+      "text": "actually pulled up a full replay of",
+      "start": 1868.48,
+      "duration": 4.4
+    },
+    {
+      "text": "Fireflyy's first launch of their alpha",
+      "start": 1870.72,
+      "duration": 4.64
+    },
+    {
+      "text": "rocket. This replay was exactly what the",
+      "start": 1872.88,
+      "duration": 5.12
+    },
+    {
+      "text": "Mythco heard and saw during the launch.",
+      "start": 1875.36,
+      "duration": 4.24
+    },
+    {
+      "text": "For those of you unfamiliar with this",
+      "start": 1878.0,
+      "duration": 3.36
+    },
+    {
+      "text": "particular launch, it took place on",
+      "start": 1879.6,
+      "duration": 4.319
+    },
+    {
+      "text": "September 2nd, 2021, and had a",
+      "start": 1881.36,
+      "duration": 4.88
+    },
+    {
+      "text": "spectacular failure. About 15 seconds",
+      "start": 1883.919,
+      "duration": 4.401
+    },
+    {
+      "text": "into flight, an engine's power connector",
+      "start": 1886.24,
+      "duration": 4.08
+    },
+    {
+      "text": "came loose and shut down one of the four",
+      "start": 1888.32,
+      "duration": 4.16
+    },
+    {
+      "text": "engines. The vehicle actually continued",
+      "start": 1890.32,
+      "duration": 4.959
+    },
+    {
+      "text": "to climb, albeit slower than expected,",
+      "start": 1892.48,
+      "duration": 4.48
+    },
+    {
+      "text": "and it managed to continue climbing for",
+      "start": 1895.279,
+      "duration": 3.681
+    },
+    {
+      "text": "about 2 and 1/2 minutes before it",
+      "start": 1896.96,
+      "duration": 3.68
+    },
+    {
+      "text": "finally lost control. The vehicle",
+      "start": 1898.96,
+      "duration": 3.52
+    },
+    {
+      "text": "literally cartw wheeled while at its",
+      "start": 1900.64,
+      "duration": 4.24
+    },
+    {
+      "text": "maximum aerodynamic pressure and somehow",
+      "start": 1902.48,
+      "duration": 4.72
+    },
+    {
+      "text": "it remained mostly intact. It wasn't",
+      "start": 1904.88,
+      "duration": 4.0
+    },
+    {
+      "text": "until the vehicle actually got close to",
+      "start": 1907.2,
+      "duration": 3.68
+    },
+    {
+      "text": "the termination line that the MIFCO",
+      "start": 1908.88,
+      "duration": 3.76
+    },
+    {
+      "text": "terminated the rocket. It was really",
+      "start": 1910.88,
+      "duration": 3.6
+    },
+    {
+      "text": "cool hearing everyone on comm's talk",
+      "start": 1912.64,
+      "duration": 4.08
+    },
+    {
+      "text": "about the anomaly as it's happening and",
+      "start": 1914.48,
+      "duration": 3.84
+    },
+    {
+      "text": "being able to see the telemetry of the",
+      "start": 1916.72,
+      "duration": 3.839
+    },
+    {
+      "text": "rocket start to drift off course. It'd",
+      "start": 1918.32,
+      "duration": 4.4
+    },
+    {
+      "text": "be a high stress job in the moment, but",
+      "start": 1920.559,
+      "duration": 3.521
+    },
+    {
+      "text": "with the right tools and good",
+      "start": 1922.72,
+      "duration": 3.679
+    },
+    {
+      "text": "communication, it was textbook",
+      "start": 1924.08,
+      "duration": 4.16
+    },
+    {
+      "text": "execution. Before we wrap up, we",
+      "start": 1926.399,
+      "duration": 3.681
+    },
+    {
+      "text": "actually have one more vital thing to",
+      "start": 1928.24,
+      "duration": 3.12
+    },
+    {
+      "text": "talk about. Remember how at the",
+      "start": 1930.08,
+      "duration": 3.28
+    },
+    {
+      "text": "beginning we talked about how safety is",
+      "start": 1931.36,
+      "duration": 4.24
+    },
+    {
+      "text": "number one, but mission success is",
+      "start": 1933.36,
+      "duration": 4.559
+    },
+    {
+      "text": "number two. Well, missions would be",
+      "start": 1935.6,
+      "duration": 3.919
+    },
+    {
+      "text": "pointless if they weren't successful.",
+      "start": 1937.919,
+      "duration": 4.401
+    },
+    {
+      "text": "So, that's just as big of a job for the",
+      "start": 1939.519,
+      "duration": 4.481
+    },
+    {
+      "text": "range. The range is in charge of the",
+      "start": 1942.32,
+      "duration": 3.68
+    },
+    {
+      "text": "tracking and communication of the rocket",
+      "start": 1944.0,
+      "duration": 4.08
+    },
+    {
+      "text": "all the way through ascent. Maybe you've",
+      "start": 1946.0,
+      "duration": 4.0
+    },
+    {
+      "text": "heard talk about ground stations or down",
+      "start": 1948.08,
+      "duration": 3.68
+    },
+    {
+      "text": "links, or maybe you've noticed on",
+      "start": 1950.0,
+      "duration": 3.84
+    },
+    {
+      "text": "webcast times where there's no video",
+      "start": 1951.76,
+      "duration": 4.24
+    },
+    {
+      "text": "down links and they just go to a map",
+      "start": 1953.84,
+      "duration": 4.48
+    },
+    {
+      "text": "view. This happens when a rocket is not",
+      "start": 1956.0,
+      "duration": 3.84
+    },
+    {
+      "text": "flying within the line of sight of",
+      "start": 1958.32,
+      "duration": 3.92
+    },
+    {
+      "text": "ground stations. These stations actively",
+      "start": 1959.84,
+      "duration": 4.559
+    },
+    {
+      "text": "track the rocket with two axes of aiming",
+      "start": 1962.24,
+      "duration": 4.0
+    },
+    {
+      "text": "in order to focus the signal at the",
+      "start": 1964.399,
+      "duration": 3.841
+    },
+    {
+      "text": "rocket to ensure good links for",
+      "start": 1966.24,
+      "duration": 3.679
+    },
+    {
+      "text": "communication and data transfer. So",
+      "start": 1968.24,
+      "duration": 3.36
+    },
+    {
+      "text": "there's not only tracking dishes around",
+      "start": 1969.919,
+      "duration": 4.321
+    },
+    {
+      "text": "the pad, but there's even downrange",
+      "start": 1971.6,
+      "duration": 4.4
+    },
+    {
+      "text": "dishes that are a necessary part of",
+      "start": 1974.24,
+      "duration": 3.439
+    },
+    {
+      "text": "mission success. If there's a loss of",
+      "start": 1976.0,
+      "duration": 3.039
+    },
+    {
+      "text": "signal at the tracking stations",
+      "start": 1977.679,
+      "duration": 3.041
+    },
+    {
+      "text": "downrange while a rocket is still",
+      "start": 1979.039,
+      "duration": 3.921
+    },
+    {
+      "text": "accelerating, it will lead to the loss",
+      "start": 1980.72,
+      "duration": 3.839
+    },
+    {
+      "text": "of the mission. In fact, this is what",
+      "start": 1982.96,
+      "duration": 3.52
+    },
+    {
+      "text": "happened during Rocket Lab's first",
+      "start": 1984.559,
+      "duration": 5.12
+    },
+    {
+      "text": "mission in 2017. The Electron rocket was",
+      "start": 1986.48,
+      "duration": 5.28
+    },
+    {
+      "text": "actually performing flawlessly, which is",
+      "start": 1989.679,
+      "duration": 4.24
+    },
+    {
+      "text": "an incredibly impressive first launch.",
+      "start": 1991.76,
+      "duration": 4.399
+    },
+    {
+      "text": "And frankly, it's kind of unmatched by",
+      "start": 1993.919,
+      "duration": 4.48
+    },
+    {
+      "text": "any private company still to this date.",
+      "start": 1996.159,
+      "duration": 4.081
+    },
+    {
+      "text": "But unfortunately, a ground tracking",
+      "start": 1998.399,
+      "duration": 4.0
+    },
+    {
+      "text": "station had a software error that led to",
+      "start": 2000.24,
+      "duration": 4.08
+    },
+    {
+      "text": "the loss of signal and ultimately the",
+      "start": 2002.399,
+      "duration": 4.16
+    },
+    {
+      "text": "premature destruction of the rocket. And",
+      "start": 2004.32,
+      "duration": 3.68
+    },
+    {
+      "text": "that's when the range activated the",
+      "start": 2006.559,
+      "duration": 3.84
+    },
+    {
+      "text": "flight termination system. Okay, now you",
+      "start": 2008.0,
+      "duration": 4.48
+    },
+    {
+      "text": "might ask, how could they command flight",
+      "start": 2010.399,
+      "duration": 3.841
+    },
+    {
+      "text": "termination if the rocket has lost",
+      "start": 2012.48,
+      "duration": 4.559
+    },
+    {
+      "text": "contact with ground stations? Well, FTS",
+      "start": 2014.24,
+      "duration": 5.919
+    },
+    {
+      "text": "uses a dedicated one-way UHF radio",
+      "start": 2017.039,
+      "duration": 5.12
+    },
+    {
+      "text": "that's extremely powerful, and it's able",
+      "start": 2020.159,
+      "duration": 3.76
+    },
+    {
+      "text": "to reach the rocket no matter its",
+      "start": 2022.159,
+      "duration": 4.24
+    },
+    {
+      "text": "orientation or distance. Another fun",
+      "start": 2023.919,
+      "duration": 5.281
+    },
+    {
+      "text": "little fact, Starbase used to have two",
+      "start": 2026.399,
+      "duration": 5.28
+    },
+    {
+      "text": "old NASA dishes that they used for the",
+      "start": 2029.2,
+      "duration": 4.319
+    },
+    {
+      "text": "first high altitude belly flop flights",
+      "start": 2031.679,
+      "duration": 4.081
+    },
+    {
+      "text": "of Starship. In fact, while they're",
+      "start": 2033.519,
+      "duration": 4.4
+    },
+    {
+      "text": "refurbishing them, they found autographs",
+      "start": 2035.76,
+      "duration": 4.399
+    },
+    {
+      "text": "on the dishes themselves of the original",
+      "start": 2037.919,
+      "duration": 4.801
+    },
+    {
+      "text": "Mercury 7 astronauts. I think that's",
+      "start": 2040.159,
+      "duration": 4.721
+    },
+    {
+      "text": "super random, but super cool. So, yeah,",
+      "start": 2042.72,
+      "duration": 3.76
+    },
+    {
+      "text": "the range does a whole lot more than",
+      "start": 2044.88,
+      "duration": 3.519
+    },
+    {
+      "text": "just keep the public safe. They're also",
+      "start": 2046.48,
+      "duration": 4.08
+    },
+    {
+      "text": "the vital link to ensure mission success",
+      "start": 2048.399,
+      "duration": 5.041
+    },
+    {
+      "text": "from liftoff to SECO. Once the rocket is",
+      "start": 2050.56,
+      "duration": 5.279
+    },
+    {
+      "text": "safely on a nominal orbital insertion,",
+      "start": 2053.44,
+      "duration": 4.32
+    },
+    {
+      "text": "the range is done supporting the",
+      "start": 2055.839,
+      "duration": 3.681
+    },
+    {
+      "text": "mission. These days, that also does",
+      "start": 2057.76,
+      "duration": 3.44
+    },
+    {
+      "text": "include the tracking of a booster during",
+      "start": 2059.52,
+      "duration": 3.839
+    },
+    {
+      "text": "landing, which typically happens before",
+      "start": 2061.2,
+      "duration": 4.56
+    },
+    {
+      "text": "SECO, but that is also something that",
+      "start": 2063.359,
+      "duration": 4.8
+    },
+    {
+      "text": "the range has to actively keep track of.",
+      "start": 2065.76,
+      "duration": 3.68
+    },
+    {
+      "text": "But after that point, it's up to the",
+      "start": 2068.159,
+      "duration": 3.841
+    },
+    {
+      "text": "launch provider and/or the customer to",
+      "start": 2069.44,
+      "duration": 4.399
+    },
+    {
+      "text": "handle the rest of the mission. The",
+      "start": 2072.0,
+      "duration": 3.679
+    },
+    {
+      "text": "range did their job of keeping the",
+      "start": 2073.839,
+      "duration": 3.76
+    },
+    {
+      "text": "public safe, tracking, and supporting",
+      "start": 2075.679,
+      "duration": 3.761
+    },
+    {
+      "text": "the rocket on ascent for mission",
+      "start": 2077.599,
+      "duration": 3.441
+    },
+    {
+      "text": "success. Okay, that's pretty much all",
+      "start": 2079.44,
+      "duration": 4.08
+    },
+    {
+      "text": "the big things we see out at the range.",
+      "start": 2081.04,
+      "duration": 5.814
+    },
+    {
+      "text": "I think it's time we summarize.",
+      "start": 2083.52,
+      "duration": 5.354
+    },
+    {
+      "text": ">> [music]",
+      "start": 2086.854,
+      "duration": 2.02
+    },
+    {
+      "text": ">> So to summarize, the range isn't just",
+      "start": 2094.639,
+      "duration": 5.361
+    },
+    {
+      "text": "some random boundary or a green or red",
+      "start": 2097.2,
+      "duration": 5.44
+    },
+    {
+      "text": "light or some omnipotent authoritarian",
+      "start": 2100.0,
+      "duration": 5.28
+    },
+    {
+      "text": "figure overseeing every rocket launch.",
+      "start": 2102.64,
+      "duration": 5.68
+    },
+    {
+      "text": "The range is a huge team of people",
+      "start": 2105.28,
+      "duration": 5.44
+    },
+    {
+      "text": "overlooking absolutely every single",
+      "start": 2108.32,
+      "duration": 5.2
+    },
+    {
+      "text": "aspect of every single rocket launch.",
+      "start": 2110.72,
+      "duration": 4.72
+    },
+    {
+      "text": "While it's obvious that public safety is",
+      "start": 2113.52,
+      "duration": 4.559
+    },
+    {
+      "text": "the main concern, mission success relies",
+      "start": 2115.44,
+      "duration": 4.56
+    },
+    {
+      "text": "on the range making the right calls",
+      "start": 2118.079,
+      "duration": 4.321
+    },
+    {
+      "text": "every single time. And with the increase",
+      "start": 2120.0,
+      "duration": 4.24
+    },
+    {
+      "text": "in launch cadence we're seeing in modern",
+      "start": 2122.4,
+      "duration": 4.32
+    },
+    {
+      "text": "times, the range is having their work",
+      "start": 2124.24,
+      "duration": 4.24
+    },
+    {
+      "text": "cut out for them. I had the honor of",
+      "start": 2126.72,
+      "duration": 4.56
+    },
+    {
+      "text": "meeting so many talented and hardworking",
+      "start": 2128.48,
+      "duration": 4.639
+    },
+    {
+      "text": "people. And a lot of the conversations",
+      "start": 2131.28,
+      "duration": 3.92
+    },
+    {
+      "text": "off camera were enlightening and really",
+      "start": 2133.119,
+      "duration": 5.041
+    },
+    {
+      "text": "inspiring. These are passionate people",
+      "start": 2135.2,
+      "duration": 5.44
+    },
+    {
+      "text": "doing a lot of unseen work behind the",
+      "start": 2138.16,
+      "duration": 5.199
+    },
+    {
+      "text": "scenes. So, huge thank you to the United",
+      "start": 2140.64,
+      "duration": 4.32
+    },
+    {
+      "text": "States Space Force for sponsoring this",
+      "start": 2143.359,
+      "duration": 3.281
+    },
+    {
+      "text": "video, answering my questions, and",
+      "start": 2144.96,
+      "duration": 3.119
+    },
+    {
+      "text": "making this all happen. And",
+      "start": 2146.64,
+      "duration": 2.88
+    },
+    {
+      "text": "specifically, thanks to everyone at",
+      "start": 2148.079,
+      "duration": 3.52
+    },
+    {
+      "text": "Space Launch Delta 30 and everyone at",
+      "start": 2149.52,
+      "duration": 4.079
+    },
+    {
+      "text": "Team Vandenberg for helping put all this",
+      "start": 2151.599,
+      "duration": 3.921
+    },
+    {
+      "text": "together. The Space Force offers a great",
+      "start": 2153.599,
+      "duration": 3.841
+    },
+    {
+      "text": "way to get hands-on with space hardware",
+      "start": 2155.52,
+      "duration": 3.68
+    },
+    {
+      "text": "and get behind the scenes of some of the",
+      "start": 2157.44,
+      "duration": 4.0
+    },
+    {
+      "text": "biggest and most exciting missions. If",
+      "start": 2159.2,
+      "duration": 3.76
+    },
+    {
+      "text": "you've ever considered going into",
+      "start": 2161.44,
+      "duration": 3.2
+    },
+    {
+      "text": "aerospace, but you weren't sure how",
+      "start": 2162.96,
+      "duration": 4.0
+    },
+    {
+      "text": "exactly to do so, maybe hop on over to",
+      "start": 2164.64,
+      "duration": 3.84
+    },
+    {
+      "text": "their careers page or [music] just",
+      "start": 2166.96,
+      "duration": 3.84
+    },
+    {
+      "text": "browse around at spaceforce.com. And I",
+      "start": 2168.48,
+      "duration": 4.0
+    },
+    {
+      "text": "should mention there's actually hours of",
+      "start": 2170.8,
+      "duration": 3.12
+    },
+    {
+      "text": "additional footage and behind the scenes",
+      "start": 2172.48,
+      "duration": 3.119
+    },
+    {
+      "text": "clips that didn't make it into this",
+      "start": 2173.92,
+      "duration": 3.76
+    },
+    {
+      "text": "video. I had to optimize this video the",
+      "start": 2175.599,
+      "duration": 4.401
+    },
+    {
+      "text": "best I can to try to appease the ever",
+      "start": 2177.68,
+      "duration": 4.96
+    },
+    {
+      "text": "fickle YouTube algorithm. Which is why",
+      "start": 2180.0,
+      "duration": 4.88
+    },
+    {
+      "text": "I'm extremely excited to announce I'm",
+      "start": 2182.64,
+      "duration": 4.4
+    },
+    {
+      "text": "finally uploading to Nebula. Lately,",
+      "start": 2184.88,
+      "duration": 3.68
+    },
+    {
+      "text": "I've been so sick of hearing people say",
+      "start": 2187.04,
+      "duration": 2.96
+    },
+    {
+      "text": "something like, \"I didn't even know you",
+      "start": 2188.56,
+      "duration": 3.039
+    },
+    {
+      "text": "did YouTube anymore because I stopped",
+      "start": 2190.0,
+      "duration": 3.599
+    },
+    {
+      "text": "getting recommended your videos even",
+      "start": 2191.599,
+      "duration": 4.0
+    },
+    {
+      "text": "though I'm subscribed.\"",
+      "start": 2193.599,
+      "duration": 4.48
+    },
+    {
+      "text": "This is shockingly common and it's",
+      "start": 2195.599,
+      "duration": 4.321
+    },
+    {
+      "text": "extremely concerning for me as a",
+      "start": 2198.079,
+      "duration": 3.52
+    },
+    {
+      "text": "creator. Because of this, Nebula has",
+      "start": 2199.92,
+      "duration": 3.439
+    },
+    {
+      "text": "been my go-to streaming service for",
+      "start": 2201.599,
+      "duration": 4.401
+    },
+    {
+      "text": "watching in-depth curated video content.",
+      "start": 2203.359,
+      "duration": 4.321
+    },
+    {
+      "text": "As YouTube has continued to pursue",
+      "start": 2206.0,
+      "duration": 4.48
+    },
+    {
+      "text": "short-term gains by recommending me 300",
+      "start": 2207.68,
+      "duration": 5.2
+    },
+    {
+      "text": "videos about a '90s motorcycle I looked",
+      "start": 2210.48,
+      "duration": 5.2
+    },
+    {
+      "text": "up once, Nebula has focused on quality",
+      "start": 2212.88,
+      "duration": 4.719
+    },
+    {
+      "text": "over quantity. And that's why I'm",
+      "start": 2215.68,
+      "duration": 3.6
+    },
+    {
+      "text": "excited to bring the Everyday Astronaut",
+      "start": 2217.599,
+      "duration": 4.161
+    },
+    {
+      "text": "library to Nebula to join great creators",
+      "start": 2219.28,
+      "duration": 4.48
+    },
+    {
+      "text": "such as Real Engineering, Joe [music]",
+      "start": 2221.76,
+      "duration": 4.4
+    },
+    {
+      "text": "Scott, Isaac Arthur, Intega, Real",
+      "start": 2223.76,
+      "duration": 4.64
+    },
+    {
+      "text": "Lifeore, Practical Engineering, and so",
+      "start": 2226.16,
+      "duration": 4.8
+    },
+    {
+      "text": "many others. Sign up today to see adree",
+      "start": 2228.4,
+      "duration": 4.8
+    },
+    {
+      "text": "extended cut and early access videos by",
+      "start": 2230.96,
+      "duration": 4.879
+    },
+    {
+      "text": "going to go.nebula.tv/",
+      "start": 2233.2,
+      "duration": 6.08
+    },
+    {
+      "text": "everyydayastronaut for 40% off, which is",
+      "start": 2235.839,
+      "duration": 7.201
+    },
+    {
+      "text": "only $36 a year or [music] $3 a month.",
+      "start": 2239.28,
+      "duration": 5.36
+    },
+    {
+      "text": "But of course, I also have to thank our",
+      "start": 2243.04,
+      "duration": 3.36
+    },
+    {
+      "text": "Patreon supporters for helping make",
+      "start": 2244.64,
+      "duration": 3.52
+    },
+    {
+      "text": "videos like this possible. If you want",
+      "start": 2246.4,
+      "duration": 3.439
+    },
+    {
+      "text": "your name on screen here, or you want to",
+      "start": 2248.16,
+      "duration": 3.679
+    },
+    {
+      "text": "join our awesome Discord community, head",
+      "start": 2249.839,
+      "duration": 4.24
+    },
+    {
+      "text": "on over to patreon.com/",
+      "start": 2251.839,
+      "duration": 4.0
+    },
+    {
+      "text": "everyydayastronaut. And don't forget to",
+      "start": 2254.079,
+      "duration": 3.441
+    },
+    {
+      "text": "check out our awesome shop to get shirts",
+      "start": 2255.839,
+      "duration": 3.76
+    },
+    {
+      "text": "like this, our orbital shirt that's now",
+      "start": 2257.52,
+      "duration": 3.76
+    },
+    {
+      "text": "in some new colorways finally, as well",
+      "start": 2259.599,
+      "duration": 4.321
+    },
+    {
+      "text": "as things like our awesome 1/100 scale",
+      "start": 2261.28,
+      "duration": 4.72
+    },
+    {
+      "text": "metal rockets that include our Mercury",
+      "start": 2263.92,
+      "duration": 4.08
+    },
+    {
+      "text": "program rockets, the Atlas and Mercury,",
+      "start": 2266.0,
+      "duration": 4.079
+    },
+    {
+      "text": "as well as the Falcon 9. And you can",
+      "start": 2268.0,
+      "duration": 3.839
+    },
+    {
+      "text": "check out our heat shield coloranging",
+      "start": 2270.079,
+      "duration": 4.401
+    },
+    {
+      "text": "mug and lots of other really cool stuff",
+      "start": 2271.839,
+      "duration": 5.361
+    },
+    {
+      "text": "over at everydayastronaut.com/shop.",
+      "start": 2274.48,
+      "duration": 3.84
+    },
+    {
+      "text": "Thanks everybody. That's going to do it",
+      "start": 2277.2,
+      "duration": 2.72
+    },
+    {
+      "text": "for me. I'm Tim Dodd, the Everyday",
+      "start": 2278.32,
+      "duration": 3.36
+    },
+    {
+      "text": "Astronaut, bringing space down to Earth",
+      "start": 2279.92,
+      "duration": 4.746
+    },
+    {
+      "text": "for everyday people.",
+      "start": 2281.68,
+      "duration": 5.006
+    },
+    {
+      "text": "[music]",
+      "start": 2284.666,
+      "duration": 2.02
+    }
+  ],
+  "full_text": "Welcome to Vandenberg Space Force Base. Today, I'm going to be taking you guys inside of Vandenberg to get [music] some exclusive, never-beforeseen access to answer one big important question. What is the range? I feel like we hear about the range all the time on live streams. It's like this ominous sort of thing, person that's in control, but also like an exclusion zone or something. I don't quite get it. So, today we're going to be talking to some Space [music] Force based guardians who are in charge of actually keeping the public safe. We'll be talking to experts on the weather. We hear about weather scrubs all the time and the constraints on a [music] rocket if it's safe to launch. We also hear all the time about weward boats and planes and things like that in the range. So, we'll be learning who's tracking that and who's in charge of all that stuff. And lastly, we're going to talk about the flight termination system and the team of guardians who are inside of the mission flight control center, which is an area so classified we couldn't even bring our cameras into the room at all because this is where the range would send the commands to destroy a rocket in an emergency with that big red destruct button. So, let's get started. This video is made possible thanks to a partnership with United States Space Force. If you've ever watched a rocket launch live, whether in person or online, you've likely heard the range be talked about by the hosts, either saying something like, \"The range is green.\" Or you might hear them talk about how the range is not clear or red because of a weward boat or a plane or perhaps a storm cloud. >> Hold hold. boarding launch auto. It's launch director calling a hold. We have a red range for a fouled range with a ship in the hazard area. >> So, let's break down what the range actually is. The range is both the physical location that supports a rocket launch, but it's more importantly the range is actually made up of teams of people who make the decisions on launch day on whether or not it's safe to launch. Each launch site has a dedicated range. Now, I'll just be talking about the United States here, but when launching a rocket from Vandenberg Space Force Base in California, there's the Space Force's Space Launch Delta 30. At Kennedy Space Center or Cape Canaveral Space Force Station in Florida, it's the Space Force's Space Launch Delta 45. These two sites make up the vast majority of launches, but there's three more in the US that are unique. Launches from NASA's Wallups site in Virginia has their own Wallups range operations. The Pacific Spaceport in Alaska is operated by the Pacific Spaceport Complex. And SpaceX's Starbase launch site in Texas also operates their own private range, which is managed by SpaceX. Each range needs to work with multiple authorities, including the FAA, the Coast Guard, ground security, and the launch providers themselves to look over and help facilitate a rocket launch. The primary goal is always public safety. The next goal, mission success. There's always an inherent risk when launching a rocket with tons of highly explosive and sometimes toxic propellant on board. [music] So, I was curious what factors go into calculating that risk in order to know how exactly they keep [music] the range clear. [music] >> Hey, I'm Tim >> Calvin. Nice to meet you. >> Hey, nice to meet you. What do you do out here at Vandenberg Space Force Base? >> Awesome. So, I'm a Space Force responsible engineer. uh in essence I assess risk. >> So uh let's talk about that that risk is that actually when we talk about risk in the sense of like it's a risky thing like is there a tangible number? How do you do that? What's that like? >> It is a number right we need something to say how risky a situation's going to be right and numbers are the way to do it. We have huge pages of calculus that determine exactly what we're getting ourselves into for any of our launches. Uh, so does that mean like literally what variables are you bringing into this calculation that that help you determine whether or not it's safe to even launch in the first place? >> A lot. Uh, first of all, you need a lot of space to get to space, right? Uh, so everything in the physical area around where these rockets are launches gets looked at. You know, your planes, your trains, your automobiles, your boats, anything that could be in an area where it is a higher risk to whoever is in that spot gets looked at. As well as the history of the vehicle. You know, how often are we launching a specific vehicle? um something that's on its first launch or very few is going to get look that different than something that's on its 400th. Uh it all plays into that that numbers game for us. And at the end of the day, we want to say we're 100% zero risk for a launch, but that's mathematically impossible, especially for an engineer. Uh so really, we want as many nines after that decimal as possible, right? Five, six, seven, eight nines in a row before we're confident enough to go. So leading up to any rocket's launch, but especially a new rocket, there's teams of people that are assessing the risks. This comes down to the finest details, bolt by bolt, literally, with the design review of the rocket. But as a mission is actually planned out, the trajectory itself becomes a major factor. Most rockets follow a fairly similar path to reach orbit, but each rocket takes a specific path based on a host of variables, including its acceleration, its aerodynamic features, the payload mass, the staging event, the destination of the payload, etc., etc. So, once a trajectory is figured out, the rocket will have a corridor it needs to stay within. There is a little wiggle room to allow for some deviation, but the rocket will need to not exceed those boundaries. This corridor is then used to help determine the exact exclusion zones of where it is and where it's not safe for humans to be. Whether we're talking about humans on the ground or on a boat or in a plane or even just private property, remember the exclusion zone because we will talk about it often. As a rocket develops more flight heritage and history, there's a chance those boundaries can change as the chances of something going wrong become statistically verifiable with flight data. SpaceX actually has a great article that explains how they've been able to shrink the hazard areas around launches and landings. Not only have they done a ton of ground tests to really calculate the exact yield of specific explosions with the propellants they use, but also they fly the Falcon 9 rocket way more often than any other rocket currently flying. This ridiculous flight cadence of the Falcon 9 is one of the reasons why SpaceX is allowed to fly to polar orbits out of Florida, which requires overflying Cuba. This is something that hadn't been an option ever since a Thorable rocket failure rained debris on Cuba and killed a cow in 1960. Seriously. But even in these edge cases like overflying another country, the range will need to coordinate with the FAA as well as the State Department to work out the international considerations. That's just one of those little details that might be easily overlooked. So, a lot of work is done before a rocket flies to get it certified. And it will receive a launch license from the FAA or if they're a government launch, they'll be issued a launch license by either the Department of Defense's range safety protocols or by NASA's launch services program. I spoke about this exact thing with Fireflyy's Justin Folen about what this process looked like for them leading up to their first launch. There are so many different aspects uh on what it takes to launch a rocket, right? Parts, uh paper, and people. And that paper, what you're asking about is a is a very loaded and big question. There are all sorts of documents that we have to submit to the range that show that we're compliant and that we're following all the rules that they have given us. We're launching on a Space Force base. We have to follow their rules. Uh the rules are set in place to make sure that we're staying safe, to make sure that the air above us is staying safe, that space is staying safe. Um and there's so many different rules with regards to how we design our systems, how we operate our systems. Um and then making sure that everyone else is out of our way and that we've got enough space. Making sure that in a worst case scenario, if uh something goes wrong, is everyone going to be okay? There's all sorts of different things that it takes to get a green light from the range um to get us launching this rocket. >> So, a rocket will have a license on hand before launch. And frankly, that's probably not that exciting. So, now let's go check out the heart and soul of the range where the actual action happens and all the important decisions are made on launch day. Welcome to the Western Range Operation Control Center, otherwise known as Rock. So, inside that building is kind of when you think of the range and you hear them maybe talking about, you know, the range is clear and all that stuff. All those decisions are being made in this building. All right. Unfortunately, this is probably about all the further I can take you for now. We have to put all cameras away. This is actually a highly classified building. I'm not even sure if anyone's really ever filmed in here, to be honest. Uh, so we're going to film as much as we can, but for now, the cameras have to go away. There's going to be some rooms in there that are so classified we can't have like any electronics at all, period. Uh, so we're gonna film what we can and the stuff that we can't film, I'll I'll let you know what I learned. So, wish us luck. >> Once through rigorous security, I first learned about weather with Mr. Addison Nichols, a [music] weather officer with the 30th Operation Support Squadron. >> Uh, so I'm a launch weather officer here. Uh, I started uh as a uh uniformed uh launch weather officer or LWO uh for short. Um, so I came out here as a as a captain. So, Air Force officer, now I'm civilian guardian, which is, uh, really cool. Um, this particular job, uh, the Air Force officer elbow positions been around for a little while. Um, I was originally stationed at Herbertfield, Florida. On leave, actually, I got to go down to Cape Canaveral. Um, and I witnessed a rocket launch. And at that point in time, that's when I actually overheard on the radio that Air Force officers and uh, are the ones that do the weather for rocket launches. And I said, >> \"Air force people get to do that. You mean I get to do that?\" That's awesome. I said, \"So if I ever got a chance to do that?\" >> Um, I would jump at the chance. And lo and behold, um, the Vanderberg spot came open. I jumped at it. And obviously I love the job. Um, so the crux of what we do, uh, is everything centered on what we call lightning launch commit criteria. Uh so uh in a in a nutshell uh as the rocket takes off the plume uh from the exhaust that connects the rocket to the ground if it's flying through a unique set of atmospheric criteria will trigger a lightning strikes. We'll call triggered lightning and uh obviously that would be catastrophic to the vehicle if it doesn't outright destroy it. It'll impact the avionics on it. Um tell the rocket to go somewhere it's not supposed to go um and that would cause catastrophic failures. Let me pause on that real quick and reiterate that one of the biggest weather considerations for a rocket launch is actually lightning strikes on ascent. Have you ever heard of the termce to ox? Well, when Apollo 12 took off on November 14th, 1969, it was struck by lightning twice. This caused malfunctions in the command module which made the entire panel light up with errors. Luckily, a ground controller named John Aaron recognized the pattern of data failure from simulations and recommended the crew try moving the signal conditioning equipment position switch from its normal position to auxiliary or ox to receive power from the secondary power source. Alan Bean flipped the switch and it quickly cleared up the signal issues which allowed the crew to safely continue on their flight. After Apollo 12, NASA made stricter weather launch commit criteria to prevent future incidents. Their new criteria included not launching within 8 kilometers of thunderstorms, avoiding electrically charged clouds, and measuring electric charge from devices on the ground called field mills. They added a time delay if a lightning strike was nearby, and they would also avoid launching in precipitation. These were the rules that were followed up until the launch of Atlas Centaur 67 carrying a Navy communication satellite in 1987 when an Atlas Centaur was struck by lightning 49 seconds into flight and caused a guidance and navigation error which made the vehicle yaw hard over leading to the complete loss of the vehicle and the mission. This resulted in the development of a new launch commit criteria based on weather conditions which has quite a big list of constraints. Lightning can no longer be within 16 km of the pad with delays for high electric field readings. Rockets cannot launch into thick clouds with freezing temperatures or within 8 km of abnormal atmospheric conditions or 5 km of thunderstorm debris clouds. There's a minimum of 6.4 km visibility and 1.8 km ceiling for radar tracking. New minimum temperatures were developed per vehicle as well. And lastly, ground winds of up to around 55 km an hour at the launchpad and upper level winds are considered to ensure mission success. These exact numbers vary rocket to rocket based on their size, mass, and capabilities. Addison was telling me more about the wind conditions and what things are considered leading up to a launch. We have wind towers all over the base. We have uh low-level Doppler wind profiles profilers uh at the various locations that kind of sample the winds and the low levels. U and then we also release balloons here. Yeah. >> So you so you mentioned actually the different fuel types, right? >> Uh so if it's a solid rocket booster, um there's a like a toxic risk if something were to happen. >> So the safety office uses our balloons and uh they're able to determine if something were to happen with a toxic uh toxic booster, then where do those toxic fumes go? >> Right. Right. Um, if the rock is big enough and it explodes, there's like an acoustic blast risk assessment that that uses our balloon data. Um, a lot of the, uh, commercial providers out here will use our balloons to assess loads. So, as the rocket travels up, they hit max Q. Um, and depending on how the winds are at that at that particular altitude, if they're changing direction too rapidly, changing speed too rapidly, what we would call wind shear, or if they're just outright too strong, then the stress of the wind on that vehicle at max Q could exceed what the vehicle's capable of, >> right? >> All from balloons. >> Wow. Wow. [laughter] >> So, at Vandenberg, there's a separate weather station where they gather data from all the ground stations around the base and radar and even directly from satellite data. But Vandenberg also launches weather balloons twice a day with additional weather balloons launched during rocket launch campaigns for upper level wind data. I actually had the opportunity to see one of these weather balloons launch while I was on base. >> Nice to meet you. I'm Tim Ables's weather observer here at Ed Vandenberg Space Force Base. So I'm going to give you here introduction here of how we do the weather balloon launches here during our simoptics which is twice a day. Uh this is our weather sun that we use as a visa sun. uh this has in it uh uh that we'll send back via GPS to our equipment inside another building uh readings on humidity, winds aloft, upper air winds, also um temperature and dupoint as well. So we'll send that back to our computers inside and we can track this all the way up. Uh these balloons typically go up to about 100,000 ft before they burst. Um so and again we do these twice a day. They're done at over 900 weather stations around the globe and they're all released at the same time. Uh 4:00 in the afternoon, 4:00 in the morning. And what that does, it gives a good global picture of what the what the weather is doing around the globe and the movements and temperature and winds. This also helps us with our with our rocket launches too. So they can they can test to see what the upper air winds are doing and if it's a go or no go based on winds. So we want to take this And what I do, we take this in one hand and the balloon in the other. What you want to do is step out here. The winds are from the northwest and this is direction southeast. We're looking out here. So, I'm going to step out. The winds are going to take the balloon right away. I'm going to let the balloon go first and then I'm going to let the sand go. So, we're going to take this under the door. It's going to go. There we go. >> Holy cow. Wow, that thing's moving. Okay, so we're getting some of the pieces of the puzzle put together. We now know who's tracking the weather and what exactly they're looking at. And ultimately, we know the launch weather officer reports to the launch director, which we'll get into a little bit later. So, that's weather in a nutshell. But what about the exclusion zone? Well, just a few doors down was the room where they keep an eye on the exclusion zone. So, I'm about to go into the ACC, the area control center. Uh, unfortunately, we cannot bring our cameras into this room. Uh, but I'll let you guys know everything we learn. Okay, so honestly, the room itself isn't that exciting. It's basically a room full of computers and monitors. No surprise there. It's a relatively small room, which seems like it would probably have about five or six people inside during a launch. Sitting at one station would be a range safety officer who's in charge of monitoring air traffic. This person is specifically called the airspace safety officer or ASO. Their screen showed all the air traffic in the area, similar to what you would see if you pull up FlightAware or flight radar 24 and you saw all the air traffic. Now, I'm sure their system is a lot more sophisticated and much more comprehensive than those. And they also use military radar to ensure that the range is actually clear. The ASO's job is to make sure that no air traffic is flying into the exclusion zone, which in the case of being in a plane, there will be a section of airspace plotted out that is active around the time of launch called a TFR or a temporary flight restriction. A not TAM or notice to air missions is published in advance of the upcoming airspace closure to tell pilots about the TFR, specifically where and when they're in place. So each pilot has to doublech checkck their routes during flight planning to ensure they're not violating any TFRs. The other main console is for marine traffic. This is a similar thing to air traffic control. There's a range safety officer called the marine safety officer or MSO whose job it is to monitor marine traffic and they coordinate with the Coast Guard to ensure there are no boats within the exclusion zone. Similar to air traffic, the Coast Guard will publish not Mars or notice to mariners or sometimes just called NTMs where there are published exclusion zones leading up to launches. As commercial spaceflight operations ramped up, weward boats and planes were often the cause of scrubs or delayed launches. But now, most captains are more familiar with the possibility of there being a rocket launch to look out for when they're planning their routes. And as you just heard, we did have a hold hold call on the countdown. That is because we had a watch item with the range. Uh we did have a cruise liner uh making its way towards the no-go zone uh that the Coast Guard was unable to clear out uh in time for T0 today. Um but again, as we mentioned, we do have a backup opportunity tomorrow. So we will try one more time tomorrow. Lastly, the range has to coordinate with Vandenberg security to ensure there aren't personnel within the exclusion zone on the ground. Obviously, when you have an already secured area like Vandenberg Space Force Base, there's already a lot of systems in place to keep people out, but there's still additional considerations from range safety officers, specifically this time, ground safety officers, who make sure that no one, including those who work on base, aren't somewhere that they're not supposed to be. They'll also put up additional road closures and blockages that take effect before prop load begins on a rocket. All range safety officers report to a range operations commander who will be inside the main control room called the range control center. And that's the heart of the western range. And this is where everyone is communicating with their teams to bring information up to the launch decision authority. In this room, I spoke with one of the range operations commander, Lieutenant Baronta, who explained to me one more aspect of range safety that's unique to Vandenberg. >> So, trains, fun fact, uh they actually were here long before Vandenberg Space Force Base. And so, they actually have priority over a launch. And so if there were a train coming through what's called the train protection area, we'll have our area surveillance officers contact those in the train and they can tell them basically advise them to stop or if they can keep going. Uh but again they have priorities. So if they decide to go then we'd have to adjust our procedures uh depending on the outcome. all that information whether something goes down. If a constraint is violated, it comes to us and what we do is we take that information and we provide it to our launch decision authority who is the ones that give the authority to launch. >> Are you talking to the customers too then or the launch providers like are you having to talk to to both sides of the coin in that sense or are you primarily only uh talking to Yeah. Like who who are you actually talking to like on console? Yeah. So, uh, we talk to obviously the launch decision authority as well as those that operate work here in the range, but we are also talking to the customer. Um, and so for depending on the launch and depending on the customer, they have a different title or role um, whether it's the launch conductor um, or not. But yes, we serve as that interface between the customer as well as the range. >> There's one more big picture thing leading up to the launch. This entire room is full of people listening to all different pieces of information and communicating that up to the launch decision authority or LDA. The LDA is the person actually in charge of the launch. They have the ultimate authority to determine if it is safe to launch, but they rely on the information being fed to them from range operations commanders like Lieutenant Baron. Another range operations commander, Lieutenant Rocket, yes, that's his real name, gave me a little more insight on what all is going on the minutes leading up to a rocket launch. >> There's different uh tracking stations around this base that is watching the rocket. So, if we had a base asset goes down, maybe that rocket is completely fine. But a tracking station or a station that works with the flight termination system, maybe that goes down. That would create an unsafe environment. maybe we couldn't see that rocket or we didn't have enough fidelity on it. So, that would be another example where we would have to cancel the launch or hold the launch or go into an emergency hold. >> So, someone might tell you, \"Oh, we just lost our radar tracking dish or something.\" And then it's your job then to communicate that up the chain to say, \"Hey, we have a dish down.\" >> Yeah. And there's different steps, there's different gates in the launch where we need to know like, \"Hey, if this radar goes down at the three-hour mark, we can talk about it. What's the impact?\" But if this radar goes down at the 2C mark, what do we do? Do we have to do an emergency hold and it's my job as well as uh the elbow and the safety officer to say, \"Hey, that's not a problem. We don't have enough time. Launch the rocket or we do have enough time. Cancel the launch. Emergency hold. Take a step back. Let's and make sure everything is safe.\" Is do you have the authority and a physical button to to pause a launch uh over overriding like the a launch provider even or is it all always filter into the like the launch director at a at a launch provider? >> It that's a tough question because we launch so many different vehicles out here that it's different vehicle to vehicle. But a standard launch is the vehicle is on an automated launch like system and we'll call a red range over a countdown net where everyone's listening and you'll have an engineer cancel that automated launch sequence. >> Okay. So it is so there is a little bit of a so if it's 2us 2 seconds there's a bit of a a rush to all of a sudden go and no one uh at the range necessarily has a red button to say pause the launch though. It has to make its way to uh >> exactly someone over the nets listening on countdown net. So yeah, that that's a big determination for us. So we'll have different steps. For example, we have something called the 45se secondond rule. So once you're 45 seconds from launch, >> all of our constraints are removed except for the absolute mandatory safety constraints. Something that if we didn't have would cause a massive safety issue. >> Also, real quick, you might hear the word nets be used often when talking about the communication network. So, someone might be referring to hearing it over the nets or something like that, and that's nets for network. The range also will conduct a go no-go poll at some point leading up to the launch. When and what exactly that looks like varies from rocket to rocket. After the go no-go poll, there's a rule that if anyone says hold hold over the nets, the countdown is immediately cancelled. Now, this is different from a single hold that you might hear where a team will pause the launch countdown and they'll try to work the issue. A hold hold hold typically means cancel everything. We're not launching today. So if you hear that, that's bad. It can be anything from a mechanical issue on the rocket or on the ground systems or a range violation or weather. I'm sure most of us watching this video have been watching a rocket launch live and we heard those dreaded words come over the radio. >> Hold, hold, hold. Boarding launch auto. >> So that's a lot of the stuff leading up to the launch. But now the big question, what's actually happening during the launch? For this, I went across the hall to a room called the mission flight control center. This is the room where the termination button is. And in fact, it's so classified, we couldn't even bring our cameras into this room at all. Within this room, teams monitor the rocket launch. And there's one person called the mission flight control officer, or MIFCO, who's ultimately in charge of terminating the rocket if it veers off course. Although we couldn't bring our cameras into that room, I can give you a sense of what the terminal looks like that the MIFCO is operating from and what they're actually looking at. The station has a handful of video monitors of the rocket. There's a few clocks and there's a few just regular old computer screens. First off, the officer has video feeds of the launch from a handful of optical tracking assets from around the base. Some of the cameras are infrared, so they are able to maintain a visual on the rocket through clouds. Another thing of interest to me was the fact that the operator has a foot switch that they press to open up their communications instead of a push button. This allows them to be able to talk on the radio and be hands-free for other tasks. I just thought that was kind of cool. But the main screen they're probably looking at most is a screen that shows the trajectory line that's continually plotted out as the rocket accelerates. Along with the line, the computer is also calculating two bounds. One is that termination line, that kind of 3D bound that follows the inverted cone shaped we talked about earlier. If the rocket crosses that line, it will need to be terminated. This bound is predetermined so that no debris crosses the other bound called the debris impact zone. These bounds are being calculated and include all the variables such as velocity and the heading of the rocket, the materials of the rocket, and even the wind and other external variables. That trajectory line kind of looks a little bit like Kerbal Space Program where you can see the trajectory of the rocket as it ascends. It's obviously a lot more sophisticated than Kerbal Space Program and it's taking in a ton of data from all over the place. And now perhaps the most important thing at this station, there's a set of buttons directly in front of the operator that says arm and another that says destruct. So what actually happens when they hit the destruct button? Well, there's a few methods of flight termination. Contrary to popular belief, flight termination systems aren't necessarily just a big bomb that's supposed to grenade a rocket into a million pieces. The main goal is to simply stop thrust. If you stop thrust, the rocket will follow a ballistic trajectory, and as long as it's within the bounds we just talked about, it'll impact the ground safely within the debris impact zone. So, one of the simplest methods of flight termination is just a system that terminates thrust. This can be a manual override to the engines that simply shut them down. We especially see this on smaller rockets where the total potential blast from impact wouldn't be too big. A good example of an engine termination system is Astra's rocket 3. You can tell when the engines get cut off and then all of a sudden just falls back down to the ground. Another good one was ESR's first launch of their Spectrum rocket that also had this incredible shot where you see the rocket begin to veer off course. The engines are terminated and it falls right back down intact. Now, luckily in this case, the rocket didn't land back on the launchpad, but it sure was close. Solid rocket motors also have thrust termination ports, which are explosive charges that will blow open ports or vents in the motor casing to reduce the chamber pressure and stop thrust. Another common method for flight termination are linear-shaped charges. These are long ribbon-like cords that are typically mounted on the outside of the rocket. This helps to ensure the tanks are completely sliced, so it splits open and pressure is lost, which cuts propellant feeding the engines. In 2015, for the CRS7 mission, we saw the in-flight abort of a Falcon 9 be triggered. Its linear shaped charges were activated after the second stage had an issue on ascent. Lastly, there's just high explosives charges, basically C4 placed in strategic places on the rocket. They're often mounted at common bulkheads between oxidizer and fuel tanks to ensure mixing of the propellants to burn off as much as possible before it impacts the ground. Starship famously had two week of high explosive charges on the first launch which actually activated when the rocket was out of control on ascent. The flight termination was successfully triggered. However, the charges just blew holes in the side of the rocket and it continued to spiral out of control intact. Needless to say, for flight 2, they beefed up the flight termination system a lot, so something like this could never happen again. Speaking of having the termination delayed, you might notice in some videos that it seems like the Mythco is asleep or something. They're waiting way too long to terminate the rocket. Like, there's clearly an issue and the rocket will just keep firing and going out of control and falling for far too long and the MIFCO is doing nothing. Why? This is intentional. As long as the rocket isn't crossing that flight termination line, the longer the rocket can be transmitting data back to the ground, the better. Every single millisecond can be hundreds or thousands of channels of data, and these can be used to help look over afterwards to help discover the root cause of the issue. Another factor is if it's safe to do so. Delaying the termination can minimize the debris field. If you terminate a rocket several kilometers in altitude, the debris field will obviously be much larger than if you detonate it close to the ground. But something's changing in this regard. Rockets have been moving towards an automated flight termination system or AFTS since 2017 that is a completely standalone unit in charge of terminating a rocket if it goes off course. AFTS is outfitted with many redundant systems to ensure the rocket will be terminated without requiring a human in the loop. Today's ranges use cuttingedge radar and even AI to track rockets in real time. It's a far cry from the 1960s when we relied on basic telemetry. That said, the Miffco will still always keep an eye on the rocket and likely still has an opportunity to intervene if necessary. Now that we kind of know how all this stuff works, I want to explain something awesome that I got to see while inside the mission flight control center. They actually pulled up a full replay of Fireflyy's first launch of their alpha rocket. This replay was exactly what the Mythco heard and saw during the launch. For those of you unfamiliar with this particular launch, it took place on September 2nd, 2021, and had a spectacular failure. About 15 seconds into flight, an engine's power connector came loose and shut down one of the four engines. The vehicle actually continued to climb, albeit slower than expected, and it managed to continue climbing for about 2 and 1/2 minutes before it finally lost control. The vehicle literally cartw wheeled while at its maximum aerodynamic pressure and somehow it remained mostly intact. It wasn't until the vehicle actually got close to the termination line that the MIFCO terminated the rocket. It was really cool hearing everyone on comm's talk about the anomaly as it's happening and being able to see the telemetry of the rocket start to drift off course. It'd be a high stress job in the moment, but with the right tools and good communication, it was textbook execution. Before we wrap up, we actually have one more vital thing to talk about. Remember how at the beginning we talked about how safety is number one, but mission success is number two. Well, missions would be pointless if they weren't successful. So, that's just as big of a job for the range. The range is in charge of the tracking and communication of the rocket all the way through ascent. Maybe you've heard talk about ground stations or down links, or maybe you've noticed on webcast times where there's no video down links and they just go to a map view. This happens when a rocket is not flying within the line of sight of ground stations. These stations actively track the rocket with two axes of aiming in order to focus the signal at the rocket to ensure good links for communication and data transfer. So there's not only tracking dishes around the pad, but there's even downrange dishes that are a necessary part of mission success. If there's a loss of signal at the tracking stations downrange while a rocket is still accelerating, it will lead to the loss of the mission. In fact, this is what happened during Rocket Lab's first mission in 2017. The Electron rocket was actually performing flawlessly, which is an incredibly impressive first launch. And frankly, it's kind of unmatched by any private company still to this date. But unfortunately, a ground tracking station had a software error that led to the loss of signal and ultimately the premature destruction of the rocket. And that's when the range activated the flight termination system. Okay, now you might ask, how could they command flight termination if the rocket has lost contact with ground stations? Well, FTS uses a dedicated one-way UHF radio that's extremely powerful, and it's able to reach the rocket no matter its orientation or distance. Another fun little fact, Starbase used to have two old NASA dishes that they used for the first high altitude belly flop flights of Starship. In fact, while they're refurbishing them, they found autographs on the dishes themselves of the original Mercury 7 astronauts. I think that's super random, but super cool. So, yeah, the range does a whole lot more than just keep the public safe. They're also the vital link to ensure mission success from liftoff to SECO. Once the rocket is safely on a nominal orbital insertion, the range is done supporting the mission. These days, that also does include the tracking of a booster during landing, which typically happens before SECO, but that is also something that the range has to actively keep track of. But after that point, it's up to the launch provider and/or the customer to handle the rest of the mission. The range did their job of keeping the public safe, tracking, and supporting the rocket on ascent for mission success. Okay, that's pretty much all the big things we see out at the range. I think it's time we summarize. >> [music] >> So to summarize, the range isn't just some random boundary or a green or red light or some omnipotent authoritarian figure overseeing every rocket launch. The range is a huge team of people overlooking absolutely every single aspect of every single rocket launch. While it's obvious that public safety is the main concern, mission success relies on the range making the right calls every single time. And with the increase in launch cadence we're seeing in modern times, the range is having their work cut out for them. I had the honor of meeting so many talented and hardworking people. And a lot of the conversations off camera were enlightening and really inspiring. These are passionate people doing a lot of unseen work behind the scenes. So, huge thank you to the United States Space Force for sponsoring this video, answering my questions, and making this all happen. And specifically, thanks to everyone at Space Launch Delta 30 and everyone at Team Vandenberg for helping put all this together. The Space Force offers a great way to get hands-on with space hardware and get behind the scenes of some of the biggest and most exciting missions. If you've ever considered going into aerospace, but you weren't sure how exactly to do so, maybe hop on over to their careers page or [music] just browse around at spaceforce.com. And I should mention there's actually hours of additional footage and behind the scenes clips that didn't make it into this video. I had to optimize this video the best I can to try to appease the ever fickle YouTube algorithm. Which is why I'm extremely excited to announce I'm finally uploading to Nebula. Lately, I've been so sick of hearing people say something like, \"I didn't even know you did YouTube anymore because I stopped getting recommended your videos even though I'm subscribed.\" This is shockingly common and it's extremely concerning for me as a creator. Because of this, Nebula has been my go-to streaming service for watching in-depth curated video content. As YouTube has continued to pursue short-term gains by recommending me 300 videos about a '90s motorcycle I looked up once, Nebula has focused on quality over quantity. And that's why I'm excited to bring the Everyday Astronaut library to Nebula to join great creators such as Real Engineering, Joe [music] Scott, Isaac Arthur, Intega, Real Lifeore, Practical Engineering, and so many others. Sign up today to see adree extended cut and early access videos by going to go.nebula.tv/ everyydayastronaut for 40% off, which is only $36 a year or [music] $3 a month. But of course, I also have to thank our Patreon supporters for helping make videos like this possible. If you want your name on screen here, or you want to join our awesome Discord community, head on over to patreon.com/ everyydayastronaut. And don't forget to check out our awesome shop to get shirts like this, our orbital shirt that's now in some new colorways finally, as well as things like our awesome 1/100 scale metal rockets that include our Mercury program rockets, the Atlas and Mercury, as well as the Falcon 9. And you can check out our heat shield coloranging mug and lots of other really cool stuff over at everydayastronaut.com/shop. Thanks everybody. That's going to do it for me. I'm Tim Dodd, the Everyday Astronaut, bringing space down to Earth for everyday people. [music]",
+  "errors": []
+}

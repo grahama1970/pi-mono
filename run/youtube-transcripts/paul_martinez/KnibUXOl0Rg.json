@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KnibUXOl0Rg",
+    "language": "en",
+    "took_ms": 9118,
+    "method": null,
+    "title": "The Decisions and Uncertainty in OT Recovery",
+    "channel": "S4 Events",
+    "upload_date": "20230518",
+    "duration_sec": 1274,
+    "description": "Pete Anderla works for Kimberly-Clark where they need to prepare to recover from OT cyber incidents. Pete shares details and stories of the challenges Kimberly-Clark OT recovery faces and how they are working through them. A lot of the harder issues were people related. He ends with some security automation challenges for the S4 community to reduce the burden on the team.",
+    "view_count": 400
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KnibUXOl0Rg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

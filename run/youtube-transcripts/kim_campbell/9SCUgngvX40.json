@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9SCUgngvX40",
+    "language": "en",
+    "took_ms": 9608,
+    "method": null,
+    "title": "What's the difference between cruise and ballistic missiles?",
+    "channel": "Sandboxx",
+    "upload_date": "20230210",
+    "duration_sec": 58,
+    "description": "Cruise missiles and ballistic missiles have both been in the news a lot lately... but what exactly is the difference between them?\n#missiles #cruisemissile #ballisticmissile #shorts #defense",
+    "view_count": 25227
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9SCUgngvX40: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

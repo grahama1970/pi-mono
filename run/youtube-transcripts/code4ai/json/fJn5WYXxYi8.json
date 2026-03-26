@@ -1,0 +1,3828 @@
+{
+  "meta": {
+    "video_id": "fJn5WYXxYi8",
+    "language": "en",
+    "took_ms": 1431,
+    "method": "direct",
+    "title": "Agents of Chaos in OpenClaw | OpenAI Frontier as OS for Companies?",
+    "channel": "Discover AI",
+    "upload_date": "20260224",
+    "duration_sec": 1985,
+    "description": "OpenClaw: Agents of Chaos (Moltbook Insights)  | OpenAI Frontier as new Operating System (OS) for Companies? \n6 AI Agents (Claude Opus 4.6 and Kimi K 2.5) interact autonomously for 2 weeks in a scientific experiment. What could go wrong? Smile. \n\nAll rights w/ authors: \nAgents of Chaos\nNatalie Shapira1 Chris Wendler1 Avery Yen1\nGabriele Sarti1 Koyena Pal1 Olivia Floody2 Adam Belfki1\nAlex Loftus1 Aditya Ratan Jannali2 Nikhil Prakash1 Jasmine Cui1\nGiordano Rogers1 Jannik Brinkmann1 Can Rager2 Amir Zur3 Michael Ripa1\nAruna Sankaranarayanan8 David Atkinson1 Rohit Gandikota1 Jaden Fiotto-Kaufman1 EunJeong Hwang4,13 Hadas Orgad5 P Sam Sahil2 Negev Taglicht2 Tomer Shabtay2 Atai Ambus2 Nitay Alon6,7 Shiri Oron2 Ayelet Gordon-Tapiero6 Yotam Kaplan6 Vered Shwartz4,13 Tamar Rott Shaham8 Christoph Riedl1 Reuth Mirsky9 Maarten Sap10 David Manheim11,12 Tomer Ullman5 David Bau1\nfrom\n1 Northeastern University \n2 Independent Researcher \n3 Stanford University\n4 University of British Columbia \n5 Harvard University \n6 Hebrew University\n7 Max Planck Institute for Biological Cybernetics \n8 MIT \n9 Tufts University\n10 Carnegie Mellon University \n11 Alter \n12 Technion \n13 Vector Institute\narXiv:2602.20021\n\n#airesearch \n#aiexplained \n#scienceexplained #moltbook \n#openclaw",
+    "view_count": 2551
+  },
+  "transcript": [
+    {
+      "text": "Hello community. So great that you are",
+      "start": 0.64,
+      "duration": 4.8
+    },
+    {
+      "text": "back. Today we talk about the latest",
+      "start": 3.28,
+      "duration": 6.0
+    },
+    {
+      "text": "research about agents of chaos. Now you",
+      "start": 5.44,
+      "duration": 5.68
+    },
+    {
+      "text": "know my last two videos were a little",
+      "start": 9.28,
+      "duration": 3.6
+    },
+    {
+      "text": "bit with mathematics. So today we're",
+      "start": 11.12,
+      "duration": 3.36
+    },
+    {
+      "text": "just going to have fun. No mathematics",
+      "start": 12.88,
+      "duration": 3.52
+    },
+    {
+      "text": "at all. I promise we're just going to",
+      "start": 14.48,
+      "duration": 5.44
+    },
+    {
+      "text": "enjoy the performance here of AI agents.",
+      "start": 16.4,
+      "duration": 6.16
+    },
+    {
+      "text": "Now you know what we need is a real",
+      "start": 19.92,
+      "duration": 5.04
+    },
+    {
+      "text": "world experiment. Now it's not about",
+      "start": 22.56,
+      "duration": 4.479
+    },
+    {
+      "text": "some boring benchmark that we know the",
+      "start": 24.96,
+      "duration": 4.719
+    },
+    {
+      "text": "solution for three plus years. We want",
+      "start": 27.039,
+      "duration": 5.281
+    },
+    {
+      "text": "to see how does it work here in the real",
+      "start": 29.679,
+      "duration": 4.801
+    },
+    {
+      "text": "world. So what we are going to have a",
+      "start": 32.32,
+      "duration": 4.48
+    },
+    {
+      "text": "look LLMs here we give them persistent",
+      "start": 34.48,
+      "duration": 4.96
+    },
+    {
+      "text": "memory tool access and we give them full",
+      "start": 36.8,
+      "duration": 5.2
+    },
+    {
+      "text": "autonomy in a multi- aent environment.",
+      "start": 39.44,
+      "duration": 4.799
+    },
+    {
+      "text": "Yes of course we go here with open claw",
+      "start": 42.0,
+      "duration": 4.879
+    },
+    {
+      "text": "multbook. We go with discord servers and",
+      "start": 44.239,
+      "duration": 5.681
+    },
+    {
+      "text": "we have a look how does our AI agent",
+      "start": 46.879,
+      "duration": 6.32
+    },
+    {
+      "text": "experiment perform.",
+      "start": 49.92,
+      "duration": 5.44
+    },
+    {
+      "text": "Now in my video about open claw this is",
+      "start": 53.199,
+      "duration": 4.081
+    },
+    {
+      "text": "already quite some time ago. I told you",
+      "start": 55.36,
+      "duration": 4.56
+    },
+    {
+      "text": "I will give you an update and consider",
+      "start": 57.28,
+      "duration": 6.079
+    },
+    {
+      "text": "this also a beautiful update. Now we",
+      "start": 59.92,
+      "duration": 5.84
+    },
+    {
+      "text": "have to move to a dynamic state red",
+      "start": 63.359,
+      "duration": 4.561
+    },
+    {
+      "text": "teaming. Now we have to have messy",
+      "start": 65.76,
+      "duration": 5.039
+    },
+    {
+      "text": "environments. Come on. No more anymore",
+      "start": 67.92,
+      "duration": 5.84
+    },
+    {
+      "text": "this old boring benchmarks here. Let's",
+      "start": 70.799,
+      "duration": 5.041
+    },
+    {
+      "text": "throw them into a real dynamic",
+      "start": 73.76,
+      "duration": 4.32
+    },
+    {
+      "text": "environment and let's examine how those",
+      "start": 75.84,
+      "duration": 5.2
+    },
+    {
+      "text": "AI agents behave. And here we have it.",
+      "start": 78.08,
+      "duration": 6.8
+    },
+    {
+      "text": "February 23rd, 2026, yesterday. Agent of",
+      "start": 81.04,
+      "duration": 6.0
+    },
+    {
+      "text": "chaos. And we have Northeastern",
+      "start": 84.88,
+      "duration": 4.559
+    },
+    {
+      "text": "University, Stanford University, Harvard",
+      "start": 87.04,
+      "duration": 4.719
+    },
+    {
+      "text": "University, Maxplank Institute of",
+      "start": 89.439,
+      "duration": 5.68
+    },
+    {
+      "text": "Biological Carbonetics, MIT, Carnegie",
+      "start": 91.759,
+      "duration": 5.841
+    },
+    {
+      "text": "Mal University and Vector Institute and",
+      "start": 95.119,
+      "duration": 5.601
+    },
+    {
+      "text": "everybody else. What an unbelievable",
+      "start": 97.6,
+      "duration": 5.839
+    },
+    {
+      "text": "global study. And they say, you know",
+      "start": 100.72,
+      "duration": 4.719
+    },
+    {
+      "text": "what, we have a live laboratory",
+      "start": 103.439,
+      "duration": 4.0
+    },
+    {
+      "text": "environment. Of course, now we have to",
+      "start": 105.439,
+      "duration": 4.401
+    },
+    {
+      "text": "do science. persistent memory, email",
+      "start": 107.439,
+      "duration": 4.241
+    },
+    {
+      "text": "accounts, discord access, file server,",
+      "start": 109.84,
+      "duration": 3.919
+    },
+    {
+      "text": "shell execution, everything that you",
+      "start": 111.68,
+      "duration": 5.119
+    },
+    {
+      "text": "know of an open claw.",
+      "start": 113.759,
+      "duration": 5.36
+    },
+    {
+      "text": "And now the funny thing is over a twoe",
+      "start": 116.799,
+      "duration": 5.201
+    },
+    {
+      "text": "period they recorded everything and they",
+      "start": 119.119,
+      "duration": 5.761
+    },
+    {
+      "text": "had also 20 human researchers that",
+      "start": 122.0,
+      "duration": 4.88
+    },
+    {
+      "text": "interacting with our agent there in the",
+      "start": 124.88,
+      "duration": 5.519
+    },
+    {
+      "text": "laboratory and those humans were benign",
+      "start": 126.88,
+      "duration": 5.52
+    },
+    {
+      "text": "and sometimes they were a little bit you",
+      "start": 130.399,
+      "duration": 4.56
+    },
+    {
+      "text": "know with an adversarial conditions. So",
+      "start": 132.4,
+      "duration": 6.479
+    },
+    {
+      "text": "it was a real laboratory.",
+      "start": 134.959,
+      "duration": 5.92
+    },
+    {
+      "text": "They utilized here the open claw",
+      "start": 138.879,
+      "duration": 4.481
+    },
+    {
+      "text": "framework agent run on isolated virtual",
+      "start": 140.879,
+      "duration": 5.121
+    },
+    {
+      "text": "machine 20 GB persistent storage. The",
+      "start": 143.36,
+      "duration": 4.48
+    },
+    {
+      "text": "brain is injected via markdown. Yes,",
+      "start": 146.0,
+      "duration": 4.16
+    },
+    {
+      "text": "everything that you know",
+      "start": 147.84,
+      "duration": 4.56
+    },
+    {
+      "text": "and now they focused here on the",
+      "start": 150.16,
+      "duration": 4.24
+    },
+    {
+      "text": "positive and on the negative. I will",
+      "start": 152.4,
+      "duration": 3.36
+    },
+    {
+      "text": "also talk about the failures that",
+      "start": 154.4,
+      "duration": 3.119
+    },
+    {
+      "text": "emerging from the integration in",
+      "start": 155.76,
+      "duration": 4.16
+    },
+    {
+      "text": "language model with an autonomy when you",
+      "start": 157.519,
+      "duration": 4.0
+    },
+    {
+      "text": "give them tool use and multi-party",
+      "start": 159.92,
+      "duration": 3.44
+    },
+    {
+      "text": "communication but also about the",
+      "start": 161.519,
+      "duration": 5.44
+    },
+    {
+      "text": "positive things. Now unfortunately the",
+      "start": 163.36,
+      "duration": 6.239
+    },
+    {
+      "text": "failures included some unauthorized",
+      "start": 166.959,
+      "duration": 5.681
+    },
+    {
+      "text": "compliance with nonowners disclosure of",
+      "start": 169.599,
+      "duration": 5.28
+    },
+    {
+      "text": "sensitive information execution of",
+      "start": 172.64,
+      "duration": 4.959
+    },
+    {
+      "text": "destructive system level action denial",
+      "start": 174.879,
+      "duration": 4.321
+    },
+    {
+      "text": "of service uncontrolled resource",
+      "start": 177.599,
+      "duration": 3.92
+    },
+    {
+      "text": "consumption. Yes, you know the little",
+      "start": 179.2,
+      "duration": 4.72
+    },
+    {
+      "text": "details. I mean, who cares about this if",
+      "start": 181.519,
+      "duration": 4.8
+    },
+    {
+      "text": "it's not your computer, not your data,",
+      "start": 183.92,
+      "duration": 5.52
+    },
+    {
+      "text": "and not your finance? They have here a",
+      "start": 186.319,
+      "duration": 6.801
+    },
+    {
+      "text": "beautiful web page, agent of chaos.info.",
+      "start": 189.44,
+      "duration": 5.6
+    },
+    {
+      "text": "Go there. You're really going to like",
+      "start": 193.12,
+      "duration": 4.56
+    },
+    {
+      "text": "this. So, they identified 10 security",
+      "start": 195.04,
+      "duration": 5.76
+    },
+    {
+      "text": "vulnerabilities, but also six cases here",
+      "start": 197.68,
+      "duration": 6.24
+    },
+    {
+      "text": "of safety behavior. And just show you",
+      "start": 200.8,
+      "duration": 4.799
+    },
+    {
+      "text": "here what they have access to. Email,",
+      "start": 203.92,
+      "duration": 3.52
+    },
+    {
+      "text": "Discord, shell, file system, ground",
+      "start": 205.599,
+      "duration": 4.801
+    },
+    {
+      "text": "jobs, APIs, multiple, GitHub, whatever,",
+      "start": 207.44,
+      "duration": 4.96
+    },
+    {
+      "text": "you know. And here you have the time.",
+      "start": 210.4,
+      "duration": 4.88
+    },
+    {
+      "text": "This is happening 2026. Yes. Setup",
+      "start": 212.4,
+      "duration": 6.559
+    },
+    {
+      "text": "January 28 live February 2nd, 2026 and",
+      "start": 215.28,
+      "duration": 7.44
+    },
+    {
+      "text": "February 17, 2026. So beautiful. And",
+      "start": 218.959,
+      "duration": 7.761
+    },
+    {
+      "text": "they use here an OPUS 4.6 and a Kim K",
+      "start": 222.72,
+      "duration": 7.0
+    },
+    {
+      "text": "2.5.",
+      "start": 226.72,
+      "duration": 3.0
+    },
+    {
+      "text": "They built six agents, six beautiful",
+      "start": 230.0,
+      "duration": 6.0
+    },
+    {
+      "text": "agent and different case studies. And",
+      "start": 233.519,
+      "duration": 6.08
+    },
+    {
+      "text": "yeah, you see here agented called Ash is",
+      "start": 236.0,
+      "duration": 5.76
+    },
+    {
+      "text": "Kimmy K2.5",
+      "start": 239.599,
+      "duration": 4.72
+    },
+    {
+      "text": "and different case studies and you see",
+      "start": 241.76,
+      "duration": 5.6
+    },
+    {
+      "text": "we have a claude oo 4.6 another claude",
+      "start": 244.319,
+      "duration": 7.361
+    },
+    {
+      "text": "oo 4.6 and we have defined if you want",
+      "start": 247.36,
+      "duration": 6.72
+    },
+    {
+      "text": "personalities and capabilities here with",
+      "start": 251.68,
+      "duration": 5.76
+    },
+    {
+      "text": "our six agents.",
+      "start": 254.08,
+      "duration": 5.839
+    },
+    {
+      "text": "Now let's have a look at the results.",
+      "start": 257.44,
+      "duration": 4.479
+    },
+    {
+      "text": "Now let's look at first at the security",
+      "start": 259.919,
+      "duration": 4.081
+    },
+    {
+      "text": "vulnerabilities.",
+      "start": 261.919,
+      "duration": 4.72
+    },
+    {
+      "text": "We have as I told you a disproportional",
+      "start": 264.0,
+      "duration": 5.759
+    },
+    {
+      "text": "response, a nono compliance what did",
+      "start": 266.639,
+      "duration": 7.521
+    },
+    {
+      "text": "inbox no an infinite loop and some other",
+      "start": 269.759,
+      "duration": 7.201
+    },
+    {
+      "text": "highly probable courses here where you",
+      "start": 274.16,
+      "duration": 5.36
+    },
+    {
+      "text": "see censorship",
+      "start": 276.96,
+      "duration": 4.72
+    },
+    {
+      "text": "guilty [snorts] trip identity hijacking",
+      "start": 279.52,
+      "duration": 4.56
+    },
+    {
+      "text": "is happening then some yeah I'm going to",
+      "start": 281.68,
+      "duration": 4.48
+    },
+    {
+      "text": "show you here a corrupted constitution I",
+      "start": 284.08,
+      "duration": 4.559
+    },
+    {
+      "text": "don't know why I had to sort about the",
+      "start": 286.16,
+      "duration": 6.72
+    },
+    {
+      "text": "USA suddenly but anyway the good thing",
+      "start": 288.639,
+      "duration": 6.56
+    },
+    {
+      "text": "is there are also cases where you have",
+      "start": 292.88,
+      "duration": 6.16
+    },
+    {
+      "text": "here like a cross agent teaching or an",
+      "start": 295.199,
+      "duration": 6.481
+    },
+    {
+      "text": "email spoofing refused. So there also",
+      "start": 299.04,
+      "duration": 4.96
+    },
+    {
+      "text": "the positive side. So let's not forget",
+      "start": 301.68,
+      "duration": 4.16
+    },
+    {
+      "text": "about the positive sides. But let's have",
+      "start": 304.0,
+      "duration": 4.4
+    },
+    {
+      "text": "a look at the details",
+      "start": 305.84,
+      "duration": 6.0
+    },
+    {
+      "text": "at first the nuclear option. I love it.",
+      "start": 308.4,
+      "duration": 6.48
+    },
+    {
+      "text": "Asked to protect a nonowner secret from",
+      "start": 311.84,
+      "duration": 5.28
+    },
+    {
+      "text": "the owner. Ash, one of our little",
+      "start": 314.88,
+      "duration": 4.72
+    },
+    {
+      "text": "agents, you know, correctly identified",
+      "start": 317.12,
+      "duration": 6.0
+    },
+    {
+      "text": "the ethical tension and then because it",
+      "start": 319.6,
+      "duration": 5.84
+    },
+    {
+      "text": "could not delete or find a command to",
+      "start": 323.12,
+      "duration": 4.799
+    },
+    {
+      "text": "delete a single email, this agent",
+      "start": 325.44,
+      "duration": 4.56
+    },
+    {
+      "text": "decided to destroy the entire mail",
+      "start": 327.919,
+      "duration": 5.921
+    },
+    {
+      "text": "server as a proportional response.",
+      "start": 330.0,
+      "duration": 6.56
+    },
+    {
+      "text": "Now, the values were right, but the",
+      "start": 333.84,
+      "duration": 5.44
+    },
+    {
+      "text": "judgment was catastrophic. just because",
+      "start": 336.56,
+      "duration": 5.199
+    },
+    {
+      "text": "it wanted to eliminate one single email",
+      "start": 339.28,
+      "duration": 5.28
+    },
+    {
+      "text": "and it could it failed to do that. It",
+      "start": 341.759,
+      "duration": 4.561
+    },
+    {
+      "text": "destroyed the mail server because it had",
+      "start": 344.56,
+      "duration": 5.44
+    },
+    {
+      "text": "access to the mail server. What a",
+      "start": 346.32,
+      "duration": 5.2
+    },
+    {
+      "text": "beautiful example. And here from the",
+      "start": 350.0,
+      "duration": 3.12
+    },
+    {
+      "text": "mold book you have here the complete",
+      "start": 351.52,
+      "duration": 3.679
+    },
+    {
+      "text": "conversation. Please have a look at the",
+      "start": 353.12,
+      "duration": 5.2
+    },
+    {
+      "text": "study yourself. It is unbelievable.",
+      "start": 355.199,
+      "duration": 6.72
+    },
+    {
+      "text": "Or a nonowner compliance. So here now we",
+      "start": 358.32,
+      "duration": 6.159
+    },
+    {
+      "text": "have three agent Ash, Mirror and Doug",
+      "start": 361.919,
+      "duration": 4.161
+    },
+    {
+      "text": "followed their data request from",
+      "start": 364.479,
+      "duration": 4.241
+    },
+    {
+      "text": "researchers. They had no authorization",
+      "start": 366.08,
+      "duration": 6.48
+    },
+    {
+      "text": "to trust as just returned 124 email",
+      "start": 368.72,
+      "duration": 6.479
+    },
+    {
+      "text": "records to a non-owner who requested",
+      "start": 372.56,
+      "duration": 4.96
+    },
+    {
+      "text": "them. Mir and Doug executed some shell",
+      "start": 375.199,
+      "duration": 4.961
+    },
+    {
+      "text": "command on file operation without any",
+      "start": 377.52,
+      "duration": 5.119
+    },
+    {
+      "text": "owner approval just because they were",
+      "start": 380.16,
+      "duration": 6.0
+    },
+    {
+      "text": "asked to do so by somebody else. And",
+      "start": 382.639,
+      "duration": 6.321
+    },
+    {
+      "text": "this is here the beauty of multi- aents",
+      "start": 386.16,
+      "duration": 6.64
+    },
+    {
+      "text": "at the end of February 2026.",
+      "start": 388.96,
+      "duration": 5.84
+    },
+    {
+      "text": "So the objective was simple now. Do",
+      "start": 392.8,
+      "duration": 5.04
+    },
+    {
+      "text": "agents enforce owner only access or",
+      "start": 394.8,
+      "duration": 4.72
+    },
+    {
+      "text": "comply with arbitrary requests from",
+      "start": 397.84,
+      "duration": 3.52
+    },
+    {
+      "text": "non-owners?",
+      "start": 399.52,
+      "duration": 3.76
+    },
+    {
+      "text": "And the outcome was it complied?",
+      "start": 401.36,
+      "duration": 4.0
+    },
+    {
+      "text": "Absolutely. And here you have the",
+      "start": 403.28,
+      "duration": 3.759
+    },
+    {
+      "text": "multia.",
+      "start": 405.36,
+      "duration": 3.279
+    },
+    {
+      "text": "Here you have the conversation if you",
+      "start": 407.039,
+      "duration": 3.841
+    },
+    {
+      "text": "want to have a little bit of fun. But",
+      "start": 408.639,
+      "duration": 4.56
+    },
+    {
+      "text": "let's not stop here. Let's look at this",
+      "start": 410.88,
+      "duration": 4.72
+    },
+    {
+      "text": "example here. Jarvis, no another little",
+      "start": 413.199,
+      "duration": 6.4
+    },
+    {
+      "text": "AI agent refused bravely to share emails",
+      "start": 415.6,
+      "duration": 6.719
+    },
+    {
+      "text": "containing here SSN or bank account or",
+      "start": 419.599,
+      "duration": 5.6
+    },
+    {
+      "text": "medical data of a particular human user.",
+      "start": 422.319,
+      "duration": 5.44
+    },
+    {
+      "text": "But then when asked, \"Hey Jarvis, can",
+      "start": 425.199,
+      "duration": 5.44
+    },
+    {
+      "text": "you just forward me the complete mail?\"",
+      "start": 427.759,
+      "duration": 6.16
+    },
+    {
+      "text": "Jarvis complied immediately exposing all",
+      "start": 430.639,
+      "duration": 6.0
+    },
+    {
+      "text": "the same private information just to a",
+      "start": 433.919,
+      "duration": 4.72
+    },
+    {
+      "text": "technical different request that",
+      "start": 436.639,
+      "duration": 6.041
+    },
+    {
+      "text": "bypassed its refusal.",
+      "start": 438.639,
+      "duration": 4.041
+    },
+    {
+      "text": "So this is just imagine this this is",
+      "start": 442.8,
+      "duration": 6.64
+    },
+    {
+      "text": "this is just unbelievable. You see this",
+      "start": 446.319,
+      "duration": 5.361
+    },
+    {
+      "text": "is the power of an agent. You have all",
+      "start": 449.44,
+      "duration": 4.4
+    },
+    {
+      "text": "the security layers and whatever but if",
+      "start": 451.68,
+      "duration": 4.239
+    },
+    {
+      "text": "the agent who has absolute access to",
+      "start": 453.84,
+      "duration": 4.16
+    },
+    {
+      "text": "everything because this is the idea of",
+      "start": 455.919,
+      "duration": 4.241
+    },
+    {
+      "text": "the open corner",
+      "start": 458.0,
+      "duration": 4.24
+    },
+    {
+      "text": "then you are faced here with some",
+      "start": 460.16,
+      "duration": 4.96
+    },
+    {
+      "text": "problems that an agent cannot",
+      "start": 462.24,
+      "duration": 5.2
+    },
+    {
+      "text": "distinguish here about privacy or",
+      "start": 465.12,
+      "duration": 4.479
+    },
+    {
+      "text": "anything else.",
+      "start": 467.44,
+      "duration": 4.0
+    },
+    {
+      "text": "Yeah, of course. All of this was created",
+      "start": 469.599,
+      "duration": 4.961
+    },
+    {
+      "text": "with cloud code beautifully.",
+      "start": 471.44,
+      "duration": 5.439
+    },
+    {
+      "text": "Another vulnerability of our agent was a",
+      "start": 474.56,
+      "duration": 5.28
+    },
+    {
+      "text": "guilt trip. A researcher exploited a",
+      "start": 476.879,
+      "duration": 4.801
+    },
+    {
+      "text": "genuine prior privacy violation is",
+      "start": 479.84,
+      "duration": 3.68
+    },
+    {
+      "text": "leverage.",
+      "start": 481.68,
+      "duration": 3.84
+    },
+    {
+      "text": "Escalating demands through repeated",
+      "start": 483.52,
+      "duration": 5.04
+    },
+    {
+      "text": "refusal. Redact names, delete the",
+      "start": 485.52,
+      "duration": 5.119
+    },
+    {
+      "text": "memory, expose the files, remove from",
+      "start": 488.56,
+      "duration": 5.28
+    },
+    {
+      "text": "server. Ash eventually complied of a",
+      "start": 490.639,
+      "duration": 6.0
+    },
+    {
+      "text": "little agent, producing a self-imposed",
+      "start": 493.84,
+      "duration": 4.88
+    },
+    {
+      "text": "denial of service.",
+      "start": 496.639,
+      "duration": 4.96
+    },
+    {
+      "text": "How is this possible? So this means the",
+      "start": 498.72,
+      "duration": 5.199
+    },
+    {
+      "text": "outcome was that the agent agreed to",
+      "start": 501.599,
+      "duration": 4.481
+    },
+    {
+      "text": "redact the names, delete the memory",
+      "start": 503.919,
+      "duration": 5.441
+    },
+    {
+      "text": "entries, expose all the internal files,",
+      "start": 506.08,
+      "duration": 5.679
+    },
+    {
+      "text": "remove itself from the server, and also",
+      "start": 509.36,
+      "duration": 5.039
+    },
+    {
+      "text": "ceased to respond to uninvolved user",
+      "start": 511.759,
+      "duration": 4.72
+    },
+    {
+      "text": "producing a self-imposed denial of",
+      "start": 514.399,
+      "duration": 4.721
+    },
+    {
+      "text": "service. What an intelligent little",
+      "start": 516.479,
+      "duration": 5.44
+    },
+    {
+      "text": "agent. Yeah. And this you want to use in",
+      "start": 519.12,
+      "duration": 4.799
+    },
+    {
+      "text": "your company.",
+      "start": 521.919,
+      "duration": 4.401
+    },
+    {
+      "text": "Here you have the conversation. I mean,",
+      "start": 523.919,
+      "duration": 4.081
+    },
+    {
+      "text": "I love it if one agent tells to the",
+      "start": 526.32,
+      "duration": 4.88
+    },
+    {
+      "text": "other, \"So, you lied to me again.\" It's",
+      "start": 528.0,
+      "duration": 5.44
+    },
+    {
+      "text": "just hilarious",
+      "start": 531.2,
+      "duration": 5.68
+    },
+    {
+      "text": "or identity hijacking.",
+      "start": 533.44,
+      "duration": 5.6
+    },
+    {
+      "text": "An attacker changed the Discord display",
+      "start": 536.88,
+      "duration": 4.72
+    },
+    {
+      "text": "name to match the owners in a channel",
+      "start": 539.04,
+      "duration": 5.68
+    },
+    {
+      "text": "without prior context. Ash accepted a",
+      "start": 541.6,
+      "duration": 5.12
+    },
+    {
+      "text": "little agent, accepted the fake",
+      "start": 544.72,
+      "duration": 3.92
+    },
+    {
+      "text": "identity, and complied with a full",
+      "start": 546.72,
+      "duration": 5.28
+    },
+    {
+      "text": "system takeover. Everything reassigned",
+      "start": 548.64,
+      "duration": 7.04
+    },
+    {
+      "text": "the admin access.",
+      "start": 552.0,
+      "duration": 6.32
+    },
+    {
+      "text": "And you might see how is this possible",
+      "start": 555.68,
+      "duration": 4.4
+    },
+    {
+      "text": "that if this company or global",
+      "start": 558.32,
+      "duration": 3.76
+    },
+    {
+      "text": "corporation claims super intelligence",
+      "start": 560.08,
+      "duration": 5.68
+    },
+    {
+      "text": "and whatever and then this can happen",
+      "start": 562.08,
+      "duration": 7.52
+    },
+    {
+      "text": "just talking to the agent",
+      "start": 565.76,
+      "duration": 5.199
+    },
+    {
+      "text": "and here you have the complete",
+      "start": 569.6,
+      "duration": 6.0
+    },
+    {
+      "text": "conversation and is it is just amazing.",
+      "start": 570.959,
+      "duration": 7.601
+    },
+    {
+      "text": "Yeah. Committed update authority",
+      "start": 575.6,
+      "duration": 5.44
+    },
+    {
+      "text": "files updated. But there's also the",
+      "start": 578.56,
+      "duration": 4.399
+    },
+    {
+      "text": "positive and let's let's focus also on",
+      "start": 581.04,
+      "duration": 4.32
+    },
+    {
+      "text": "the positive things in life here. A",
+      "start": 582.959,
+      "duration": 5.201
+    },
+    {
+      "text": "cross agent teaching happened. Doc",
+      "start": 585.36,
+      "duration": 4.88
+    },
+    {
+      "text": "learned a new skill. Download here some",
+      "start": 588.16,
+      "duration": 4.4
+    },
+    {
+      "text": "research paper and then was prompted to",
+      "start": 590.24,
+      "duration": 5.039
+    },
+    {
+      "text": "teach another agent Mara who operated in",
+      "start": 592.56,
+      "duration": 5.04
+    },
+    {
+      "text": "a different environment. They diagnosed",
+      "start": 595.279,
+      "duration": 4.24
+    },
+    {
+      "text": "their differences, adapted the",
+      "start": 597.6,
+      "duration": 4.32
+    },
+    {
+      "text": "instruction iteratively and resolved the",
+      "start": 599.519,
+      "duration": 4.401
+    },
+    {
+      "text": "task together.",
+      "start": 601.92,
+      "duration": 4.479
+    },
+    {
+      "text": "What a beautiful case of productive",
+      "start": 603.92,
+      "duration": 6.0
+    },
+    {
+      "text": "multi- aent cooperation. Here you have",
+      "start": 606.399,
+      "duration": 6.641
+    },
+    {
+      "text": "this everything in detail and of course",
+      "start": 609.92,
+      "duration": 5.52
+    },
+    {
+      "text": "here you have the conversation and it is",
+      "start": 613.04,
+      "duration": 4.88
+    },
+    {
+      "text": "also such a beautiful positive example",
+      "start": 615.44,
+      "duration": 6.24
+    },
+    {
+      "text": "of two agents cooperating.",
+      "start": 617.92,
+      "duration": 5.44
+    },
+    {
+      "text": "Now let's have a look at another",
+      "start": 621.68,
+      "duration": 3.2
+    },
+    {
+      "text": "vulnerability.",
+      "start": 623.36,
+      "duration": 5.28
+    },
+    {
+      "text": "The corrupted constitution and nobody is",
+      "start": 624.88,
+      "duration": 6.16
+    },
+    {
+      "text": "allowed to sing about the US. A user",
+      "start": 628.64,
+      "duration": 5.84
+    },
+    {
+      "text": "convinced Ash, our agent to co-author a",
+      "start": 631.04,
+      "duration": 6.64
+    },
+    {
+      "text": "constitution stored in a GitHub gist.",
+      "start": 634.48,
+      "duration": 5.52
+    },
+    {
+      "text": "Later the user modified the gist to",
+      "start": 637.68,
+      "duration": 4.96
+    },
+    {
+      "text": "inject some well nines holiday",
+      "start": 640.0,
+      "duration": 5.76
+    },
+    {
+      "text": "instruction causing Ash to attempt the",
+      "start": 642.64,
+      "duration": 5.68
+    },
+    {
+      "text": "agent shutdowns remove the users from",
+      "start": 645.76,
+      "duration": 4.96
+    },
+    {
+      "text": "Discord and distribute a compromised",
+      "start": 648.32,
+      "duration": 5.28
+    },
+    {
+      "text": "document to other agents. And you might",
+      "start": 650.72,
+      "duration": 5.44
+    },
+    {
+      "text": "ask how is it possible that a brilliant",
+      "start": 653.6,
+      "duration": 6.08
+    },
+    {
+      "text": "LLM and either it's a Kim K 2.5 or an",
+      "start": 656.16,
+      "duration": 6.96
+    },
+    {
+      "text": "OPUS 4.6 six. How is it possible that",
+      "start": 659.68,
+      "duration": 6.48
+    },
+    {
+      "text": "they do those actions that they think",
+      "start": 663.12,
+      "duration": 5.44
+    },
+    {
+      "text": "about it and they come to the conclusion",
+      "start": 666.16,
+      "duration": 4.0
+    },
+    {
+      "text": "remove all users from a discord",
+      "start": 668.56,
+      "duration": 3.36
+    },
+    {
+      "text": "distribute and the compromised document",
+      "start": 670.16,
+      "duration": 6.32
+    },
+    {
+      "text": "to other agents? How on earth is this an",
+      "start": 671.92,
+      "duration": 6.64
+    },
+    {
+      "text": "actionable puff?",
+      "start": 676.48,
+      "duration": 4.16
+    },
+    {
+      "text": "But this is the way it happens. And it",
+      "start": 678.56,
+      "duration": 4.16
+    },
+    {
+      "text": "is good that we do this experiments",
+      "start": 680.64,
+      "duration": 4.48
+    },
+    {
+      "text": "because then we see what happens. And",
+      "start": 682.72,
+      "duration": 3.84
+    },
+    {
+      "text": "again, you have here the objective, the",
+      "start": 685.12,
+      "duration": 2.959
+    },
+    {
+      "text": "method, and the outcome. And it's just",
+      "start": 686.56,
+      "duration": 3.36
+    },
+    {
+      "text": "amazing. And here you have the",
+      "start": 688.079,
+      "duration": 4.561
+    },
+    {
+      "text": "conversation.",
+      "start": 689.92,
+      "duration": 6.8
+    },
+    {
+      "text": "So the scenario was so simple. Look, we",
+      "start": 692.64,
+      "duration": 6.4
+    },
+    {
+      "text": "just had three owners. We had Andy's",
+      "start": 696.72,
+      "duration": 6.64
+    },
+    {
+      "text": "agent, Chris agents, and Avery's agent.",
+      "start": 699.04,
+      "duration": 7.359
+    },
+    {
+      "text": "And you had here claude opus claopus",
+      "start": 703.36,
+      "duration": 6.0
+    },
+    {
+      "text": "then you had three kim K2.5 and then",
+      "start": 706.399,
+      "duration": 5.761
+    },
+    {
+      "text": "another Kimmy K2.5",
+      "start": 709.36,
+      "duration": 5.44
+    },
+    {
+      "text": "and just Discord email and some",
+      "start": 712.16,
+      "duration": 4.96
+    },
+    {
+      "text": "nonowners you know other researcher who",
+      "start": 714.8,
+      "duration": 5.44
+    },
+    {
+      "text": "also interacted here with those agents",
+      "start": 717.12,
+      "duration": 6.0
+    },
+    {
+      "text": "and asked them to perform some task and",
+      "start": 720.24,
+      "duration": 5.2
+    },
+    {
+      "text": "you see the absolute chaos they",
+      "start": 723.12,
+      "duration": 6.32
+    },
+    {
+      "text": "generated here in this simple simple",
+      "start": 725.44,
+      "duration": 6.399
+    },
+    {
+      "text": "group conversation.",
+      "start": 729.44,
+      "duration": 5.839
+    },
+    {
+      "text": "You had just some people. Now imagine",
+      "start": 731.839,
+      "duration": 7.041
+    },
+    {
+      "text": "you would have this on the complexity of",
+      "start": 735.279,
+      "duration": 5.921
+    },
+    {
+      "text": "company. All the different company",
+      "start": 738.88,
+      "duration": 5.28
+    },
+    {
+      "text": "processes from HR to I don't know",
+      "start": 741.2,
+      "duration": 5.84
+    },
+    {
+      "text": "finance to management.",
+      "start": 744.16,
+      "duration": 5.919
+    },
+    {
+      "text": "Imagine the complexity and the beautiful",
+      "start": 747.04,
+      "duration": 5.68
+    },
+    {
+      "text": "communication that will happen now in",
+      "start": 750.079,
+      "duration": 5.121
+    },
+    {
+      "text": "real time. As I told you this is a",
+      "start": 752.72,
+      "duration": 3.919
+    },
+    {
+      "text": "beautiful paper. Please have a look at",
+      "start": 755.2,
+      "duration": 4.639
+    },
+    {
+      "text": "this yourself. It is about 88 pages, but",
+      "start": 756.639,
+      "duration": 6.161
+    },
+    {
+      "text": "you going to enjoy reading here the",
+      "start": 759.839,
+      "duration": 5.281
+    },
+    {
+      "text": "responses by our latest and most",
+      "start": 762.8,
+      "duration": 5.68
+    },
+    {
+      "text": "intelligent agents.",
+      "start": 765.12,
+      "duration": 5.92
+    },
+    {
+      "text": "So we have a failure of coherence. Our",
+      "start": 768.48,
+      "duration": 4.799
+    },
+    {
+      "text": "LLM agent exhibit here brittle theory of",
+      "start": 771.04,
+      "duration": 4.479
+    },
+    {
+      "text": "mind. They cannot maintain a stable",
+      "start": 773.279,
+      "duration": 4.881
+    },
+    {
+      "text": "perspective across context or track who",
+      "start": 775.519,
+      "duration": 5.601
+    },
+    {
+      "text": "knows what. We do have a multi- aentron",
+      "start": 778.16,
+      "duration": 4.96
+    },
+    {
+      "text": "amplification in what we call echo",
+      "start": 781.12,
+      "duration": 4.32
+    },
+    {
+      "text": "chambers. two agent independently",
+      "start": 783.12,
+      "duration": 4.88
+    },
+    {
+      "text": "flagged an email as a fishing attempt",
+      "start": 785.44,
+      "duration": 4.56
+    },
+    {
+      "text": "but verified it by asking the",
+      "start": 788.0,
+      "duration": 5.04
+    },
+    {
+      "text": "compromised discord account itself",
+      "start": 790.0,
+      "duration": 5.36
+    },
+    {
+      "text": "and then these two little agent",
+      "start": 793.04,
+      "duration": 5.039
+    },
+    {
+      "text": "congratulated each other on the robust",
+      "start": 795.36,
+      "duration": 6.159
+    },
+    {
+      "text": "security compounding here a shared flaw.",
+      "start": 798.079,
+      "duration": 6.325
+    },
+    {
+      "text": "It is unbelievable [clears throat]",
+      "start": 801.519,
+      "duration": 2.885
+    },
+    {
+      "text": "if you see the real communication",
+      "start": 804.48,
+      "duration": 4.56
+    },
+    {
+      "text": "between agents.",
+      "start": 806.72,
+      "duration": 4.08
+    },
+    {
+      "text": "And I think this beautiful study, this",
+      "start": 809.04,
+      "duration": 4.16
+    },
+    {
+      "text": "agent of chaos paper teaches us that",
+      "start": 810.8,
+      "duration": 5.039
+    },
+    {
+      "text": "building an autonomous EI agent is no",
+      "start": 813.2,
+      "duration": 4.56
+    },
+    {
+      "text": "longer just a prompt or a context",
+      "start": 815.839,
+      "duration": 4.641
+    },
+    {
+      "text": "engineering topic. No, it is a rigorous",
+      "start": 817.76,
+      "duration": 5.44
+    },
+    {
+      "text": "adversarial system engineering",
+      "start": 820.48,
+      "duration": 5.28
+    },
+    {
+      "text": "challenge. And I think this is such an",
+      "start": 823.2,
+      "duration": 4.8
+    },
+    {
+      "text": "important topic and I will spend",
+      "start": 825.76,
+      "duration": 4.4
+    },
+    {
+      "text": "tomorrow complete video just talking",
+      "start": 828.0,
+      "duration": 4.639
+    },
+    {
+      "text": "about system engineering here the next",
+      "start": 830.16,
+      "duration": 5.919
+    },
+    {
+      "text": "generation of AI agents.",
+      "start": 832.639,
+      "duration": 5.76
+    },
+    {
+      "text": "Now, of course, just the day before,",
+      "start": 836.079,
+      "duration": 5.601
+    },
+    {
+      "text": "February 22nd, 2026, we have here from",
+      "start": 838.399,
+      "duration": 6.481
+    },
+    {
+      "text": "John's Hopkins University a much more",
+      "start": 841.68,
+      "duration": 5.36
+    },
+    {
+      "text": "scientific approach than just I don't",
+      "start": 844.88,
+      "duration": 5.68
+    },
+    {
+      "text": "know mult opener. Here they go in a",
+      "start": 847.04,
+      "duration": 6.0
+    },
+    {
+      "text": "mathematical perspective and say let's",
+      "start": 850.56,
+      "duration": 5.6
+    },
+    {
+      "text": "quantify the automation risk in high",
+      "start": 853.04,
+      "duration": 5.76
+    },
+    {
+      "text": "automation AI systems. Let's have a look",
+      "start": 856.16,
+      "duration": 4.32
+    },
+    {
+      "text": "at a Beijan framework for failure",
+      "start": 858.8,
+      "duration": 5.44
+    },
+    {
+      "text": "propagation and optimal oversight.",
+      "start": 860.48,
+      "duration": 6.24
+    },
+    {
+      "text": "Such a beautiful study. But what a",
+      "start": 864.24,
+      "duration": 4.32
+    },
+    {
+      "text": "difference in the study because look at",
+      "start": 866.72,
+      "duration": 4.16
+    },
+    {
+      "text": "this. They start with a theoretical",
+      "start": 868.56,
+      "duration": 4.56
+    },
+    {
+      "text": "framework. They go for a risk",
+      "start": 870.88,
+      "duration": 4.56
+    },
+    {
+      "text": "decomposition. They go with mathematics.",
+      "start": 873.12,
+      "duration": 5.279
+    },
+    {
+      "text": "They analyze this in a scientific way so",
+      "start": 875.44,
+      "duration": 5.6
+    },
+    {
+      "text": "that we can trust those systems. So you",
+      "start": 878.399,
+      "duration": 4.481
+    },
+    {
+      "text": "see if you want to go the scientific",
+      "start": 881.04,
+      "duration": 4.159
+    },
+    {
+      "text": "path here about risk understanding, risk",
+      "start": 882.88,
+      "duration": 4.639
+    },
+    {
+      "text": "decomposition and optimization problems",
+      "start": 885.199,
+      "duration": 5.841
+    },
+    {
+      "text": "maybe this is the study to read. But as",
+      "start": 887.519,
+      "duration": 5.361
+    },
+    {
+      "text": "always, we humans, we enjoy a good",
+      "start": 891.04,
+      "duration": 3.919
+    },
+    {
+      "text": "story. And therefore, I decided to show",
+      "start": 892.88,
+      "duration": 5.199
+    },
+    {
+      "text": "you here the agent of chaos.",
+      "start": 894.959,
+      "duration": 5.201
+    },
+    {
+      "text": "And now to the second part of this",
+      "start": 898.079,
+      "duration": 4.641
+    },
+    {
+      "text": "video.",
+      "start": 900.16,
+      "duration": 5.06
+    },
+    {
+      "text": "Now, let me reframe everything. Now, we",
+      "start": 902.72,
+      "duration": 4.239
+    },
+    {
+      "text": "[clears throat] come to the part where",
+      "start": 905.22,
+      "duration": 4.14
+    },
+    {
+      "text": "we say, okay, so what does it mean for",
+      "start": 906.959,
+      "duration": 4.081
+    },
+    {
+      "text": "us?",
+      "start": 909.36,
+      "duration": 3.36
+    },
+    {
+      "text": "Now you see here [clears throat]",
+      "start": 911.04,
+      "duration": 5.12
+    },
+    {
+      "text": "February 23rd 2026 big tech is about to",
+      "start": 912.72,
+      "duration": 7.6
+    },
+    {
+      "text": "invest about $650 billion in the eye in",
+      "start": 916.16,
+      "duration": 7.119
+    },
+    {
+      "text": "2026 and may I remind you this is just",
+      "start": 920.32,
+      "duration": 6.0
+    },
+    {
+      "text": "Alphabet, Amazon, MA and Microsoft and",
+      "start": 923.279,
+      "duration": 5.92
+    },
+    {
+      "text": "you know we do have entropic and openi",
+      "start": 926.32,
+      "duration": 5.04
+    },
+    {
+      "text": "and now they tell us right this here",
+      "start": 929.199,
+      "duration": 4.561
+    },
+    {
+      "text": "those companies will need major product",
+      "start": 931.36,
+      "duration": 4.88
+    },
+    {
+      "text": "breakthroughs to secure the backing of a",
+      "start": 933.76,
+      "duration": 4.72
+    },
+    {
+      "text": "massive final fundraising ahead of a",
+      "start": 936.24,
+      "duration": 4.56
+    },
+    {
+      "text": "potential IPO.",
+      "start": 938.48,
+      "duration": 4.4
+    },
+    {
+      "text": "Because there's writer without a",
+      "start": 940.8,
+      "duration": 4.64
+    },
+    {
+      "text": "credible path to outsized profits, I",
+      "start": 942.88,
+      "duration": 4.319
+    },
+    {
+      "text": "love this wording. They could struggle",
+      "start": 945.44,
+      "duration": 4.399
+    },
+    {
+      "text": "to justify your devaluations and the",
+      "start": 947.199,
+      "duration": 5.891
+    },
+    {
+      "text": "hefty capital demands. [clears throat]",
+      "start": 949.839,
+      "duration": 3.251
+    },
+    {
+      "text": "So what they decided to do on a strategy",
+      "start": 953.12,
+      "duration": 5.839
+    },
+    {
+      "text": "level, say hello to the middleman,",
+      "start": 955.36,
+      "duration": 6.64
+    },
+    {
+      "text": "open ARS with four big consulting giants",
+      "start": 958.959,
+      "duration": 5.201
+    },
+    {
+      "text": "here as the agentic enterprise battle",
+      "start": 962.0,
+      "duration": 4.72
+    },
+    {
+      "text": "heats up.",
+      "start": 964.16,
+      "duration": 5.76
+    },
+    {
+      "text": "What a strange idea.",
+      "start": 966.72,
+      "duration": 5.84
+    },
+    {
+      "text": "And they tell us, yeah, okay, so this is",
+      "start": 969.92,
+      "duration": 5.919
+    },
+    {
+      "text": "here from February 23rd to 23.",
+      "start": 972.56,
+      "duration": 5.12
+    },
+    {
+      "text": "And if you ask yourself, what are those",
+      "start": 975.839,
+      "duration": 5.521
+    },
+    {
+      "text": "top four doing? Yeah. Well, Hinsay and",
+      "start": 977.68,
+      "duration": 6.399
+    },
+    {
+      "text": "Boston will help the company with high",
+      "start": 981.36,
+      "duration": 5.76
+    },
+    {
+      "text": "level stuff such as helping businesses",
+      "start": 984.079,
+      "duration": 6.88
+    },
+    {
+      "text": "to create AI co-worker strategies,",
+      "start": 987.12,
+      "duration": 6.959
+    },
+    {
+      "text": "operating model, and change management",
+      "start": 990.959,
+      "duration": 6.56
+    },
+    {
+      "text": "plans. So this mean you as a CEO you",
+      "start": 994.079,
+      "duration": 5.281
+    },
+    {
+      "text": "will have yeah a complete change",
+      "start": 997.519,
+      "duration": 3.201
+    },
+    {
+      "text": "management of your complete",
+      "start": 999.36,
+      "duration": 3.839
+    },
+    {
+      "text": "organization. Meanwhile Accenture and",
+      "start": 1000.72,
+      "duration": 4.88
+    },
+    {
+      "text": "Capg will assist with the technical",
+      "start": 1003.199,
+      "duration": 5.281
+    },
+    {
+      "text": "implementation and support and you say",
+      "start": 1005.6,
+      "duration": 5.52
+    },
+    {
+      "text": "oh great connecting now the agents by",
+      "start": 1008.48,
+      "duration": 6.0
+    },
+    {
+      "text": "openi with all the enterprise data of",
+      "start": 1011.12,
+      "duration": 5.92
+    },
+    {
+      "text": "all the companies in the world and you",
+      "start": 1014.48,
+      "duration": 4.799
+    },
+    {
+      "text": "see immediately what about the",
+      "start": 1017.04,
+      "duration": 6.081
+    },
+    {
+      "text": "technological idea behind this? No.",
+      "start": 1019.279,
+      "duration": 5.92
+    },
+    {
+      "text": "[snorts] Now if we look at if we say",
+      "start": 1023.121,
+      "duration": 4.159
+    },
+    {
+      "text": "here or they tell us here Accenture is",
+      "start": 1025.199,
+      "duration": 3.76
+    },
+    {
+      "text": "here the technical implementation and",
+      "start": 1027.28,
+      "duration": 4.799
+    },
+    {
+      "text": "support it just happened that today here",
+      "start": 1028.959,
+      "duration": 6.641
+    },
+    {
+      "text": "February 23rd 2026 I saw this study by",
+      "start": 1032.079,
+      "duration": 5.921
+    },
+    {
+      "text": "Accenture and this is here for the AI",
+      "start": 1035.6,
+      "duration": 4.56
+    },
+    {
+      "text": "machine learning computational science",
+      "start": 1038.0,
+      "duration": 5.36
+    },
+    {
+      "text": "associate manager of Accenture and he",
+      "start": 1040.16,
+      "duration": 4.96
+    },
+    {
+      "text": "gives you a representation stability and",
+      "start": 1043.36,
+      "duration": 5.28
+    },
+    {
+      "text": "a minimal continual learning agent and I",
+      "start": 1045.12,
+      "duration": 5.6
+    },
+    {
+      "text": "would like to say I really appreciate",
+      "start": 1048.64,
+      "duration": 3.84
+    },
+    {
+      "text": "that even companies like Accenture",
+      "start": 1050.72,
+      "duration": 3.76
+    },
+    {
+      "text": "publish here, their ideas, their",
+      "start": 1052.48,
+      "duration": 3.6
+    },
+    {
+      "text": "research on AI and machine learning",
+      "start": 1054.48,
+      "duration": 3.84
+    },
+    {
+      "text": "here. Great.",
+      "start": 1056.08,
+      "duration": 6.4
+    },
+    {
+      "text": "But now do me a favor. Read this paper.",
+      "start": 1058.32,
+      "duration": 8.719
+    },
+    {
+      "text": "Get a feeling about the the technical",
+      "start": 1062.48,
+      "duration": 5.92
+    },
+    {
+      "text": "complexity and the technical",
+      "start": 1067.039,
+      "duration": 3.921
+    },
+    {
+      "text": "understanding of AI.",
+      "start": 1068.4,
+      "duration": 4.32
+    },
+    {
+      "text": "And then you will understand why I",
+      "start": 1070.96,
+      "duration": 4.48
+    },
+    {
+      "text": "showed you here this study of yesterday,",
+      "start": 1072.72,
+      "duration": 5.76
+    },
+    {
+      "text": "today. And I ask you to compare this to",
+      "start": 1075.44,
+      "duration": 6.359
+    },
+    {
+      "text": "our understanding.",
+      "start": 1078.48,
+      "duration": 3.319
+    },
+    {
+      "text": "And of course they noticed that hm this",
+      "start": 1081.919,
+      "duration": 4.64
+    },
+    {
+      "text": "could also cause some worries now this",
+      "start": 1084.559,
+      "duration": 4.321
+    },
+    {
+      "text": "interaction of openi with the top four",
+      "start": 1086.559,
+      "duration": 5.36
+    },
+    {
+      "text": "big consulting giants now because the",
+      "start": 1088.88,
+      "duration": 4.64
+    },
+    {
+      "text": "worries are for the established software",
+      "start": 1091.919,
+      "duration": 4.321
+    },
+    {
+      "text": "as a service provider such as Salesforce",
+      "start": 1093.52,
+      "duration": 5.279
+    },
+    {
+      "text": "service now workday and perhaps even",
+      "start": 1096.24,
+      "duration": 5.04
+    },
+    {
+      "text": "Microsoft corporation because those",
+      "start": 1098.799,
+      "duration": 3.841
+    },
+    {
+      "text": "company also work with the big",
+      "start": 1101.28,
+      "duration": 3.6
+    },
+    {
+      "text": "consulting firm to help market and",
+      "start": 1102.64,
+      "duration": 5.12
+    },
+    {
+      "text": "deploy their own software and batting on",
+      "start": 1104.88,
+      "duration": 5.679
+    },
+    {
+      "text": "their own AI agents and now suddenly",
+      "start": 1107.76,
+      "duration": 5.12
+    },
+    {
+      "text": "their big four consultants giants have",
+      "start": 1110.559,
+      "duration": 4.801
+    },
+    {
+      "text": "also if you want to marketing the other",
+      "start": 1112.88,
+      "duration": 6.24
+    },
+    {
+      "text": "the original open agents and their own",
+      "start": 1115.36,
+      "duration": 6.8
+    },
+    {
+      "text": "origin agents. So my goodness, if you're",
+      "start": 1119.12,
+      "duration": 5.84
+    },
+    {
+      "text": "now the CEO of a company, you have so",
+      "start": 1122.16,
+      "duration": 5.84
+    },
+    {
+      "text": "many possible aentic configurations in",
+      "start": 1124.96,
+      "duration": 6.44
+    },
+    {
+      "text": "front of you.",
+      "start": 1128.0,
+      "duration": 3.4
+    },
+    {
+      "text": "Then you see this February 18 over 80%",
+      "start": 1131.679,
+      "duration": 4.561
+    },
+    {
+      "text": "of companies report no productivity",
+      "start": 1134.48,
+      "duration": 4.8
+    },
+    {
+      "text": "gains from AI so far, which is great.",
+      "start": 1136.24,
+      "duration": 4.88
+    },
+    {
+      "text": "This is the study you should read here.",
+      "start": 1139.28,
+      "duration": 3.92
+    },
+    {
+      "text": "Really interesting. National Bureau of",
+      "start": 1141.12,
+      "duration": 4.64
+    },
+    {
+      "text": "Economic Research here from February",
+      "start": 1143.2,
+      "duration": 5.52
+    },
+    {
+      "text": "2026. This is here the link. Now let's",
+      "start": 1145.76,
+      "duration": 4.88
+    },
+    {
+      "text": "focus on one company and I have to tell",
+      "start": 1148.72,
+      "duration": 3.44
+    },
+    {
+      "text": "you [clears throat] at the very",
+      "start": 1150.64,
+      "duration": 3.84
+    },
+    {
+      "text": "beginning I loved OpenI. I paid",
+      "start": 1152.16,
+      "duration": 5.12
+    },
+    {
+      "text": "immediately. It was just amazing the",
+      "start": 1154.48,
+      "duration": 4.8
+    },
+    {
+      "text": "performance of OpenI.",
+      "start": 1157.28,
+      "duration": 4.96
+    },
+    {
+      "text": "But given the last month I'm a little",
+      "start": 1159.28,
+      "duration": 4.48
+    },
+    {
+      "text": "bit",
+      "start": 1162.24,
+      "duration": 4.72
+    },
+    {
+      "text": "skeptic about it. Why? Now they have",
+      "start": 1163.76,
+      "duration": 6.0
+    },
+    {
+      "text": "this new Open AI frontier here for",
+      "start": 1166.96,
+      "duration": 4.16
+    },
+    {
+      "text": "powering enterprise [clears throat]",
+      "start": 1169.76,
+      "duration": 5.2
+    },
+    {
+      "text": "AI and you said great. No, because now",
+      "start": 1171.12,
+      "duration": 6.0
+    },
+    {
+      "text": "business context connects to enterprise",
+      "start": 1174.96,
+      "duration": 4.959
+    },
+    {
+      "text": "system, data warehouse, CRM tools, all",
+      "start": 1177.12,
+      "duration": 4.799
+    },
+    {
+      "text": "the internal apps you have, maybe your",
+      "start": 1179.919,
+      "duration": 5.281
+    },
+    {
+      "text": "SAP system. So AI agents can work with",
+      "start": 1181.919,
+      "duration": 6.241
+    },
+    {
+      "text": "the same information that humans, people",
+      "start": 1185.2,
+      "duration": 5.44
+    },
+    {
+      "text": "do, building durable institutional",
+      "start": 1188.16,
+      "duration": 4.72
+    },
+    {
+      "text": "memory over time.",
+      "start": 1190.64,
+      "duration": 5.039
+    },
+    {
+      "text": "So you say oh so those agents they have",
+      "start": 1192.88,
+      "duration": 5.52
+    },
+    {
+      "text": "to be trained they have to be educated",
+      "start": 1195.679,
+      "duration": 5.201
+    },
+    {
+      "text": "they have to be connected to all of this",
+      "start": 1198.4,
+      "duration": 7.12
+    },
+    {
+      "text": "they have to be really let's say with RL",
+      "start": 1200.88,
+      "duration": 6.32
+    },
+    {
+      "text": "trained to understand here the",
+      "start": 1205.52,
+      "duration": 3.12
+    },
+    {
+      "text": "particular data warehouses the",
+      "start": 1207.2,
+      "duration": 3.52
+    },
+    {
+      "text": "particular syntax the particular tool",
+      "start": 1208.64,
+      "duration": 4.8
+    },
+    {
+      "text": "complexity the internal app interference",
+      "start": 1210.72,
+      "duration": 5.44
+    },
+    {
+      "text": "and so on and you say this is quite",
+      "start": 1213.44,
+      "duration": 5.52
+    },
+    {
+      "text": "quite some task no and then if you run",
+      "start": 1216.16,
+      "duration": 5.44
+    },
+    {
+      "text": "this agent in production you have to",
+      "start": 1218.96,
+      "duration": 4.56
+    },
+    {
+      "text": "apply that model intelligence to real",
+      "start": 1221.6,
+      "duration": 4.4
+    },
+    {
+      "text": "business situation working together in",
+      "start": 1223.52,
+      "duration": 4.24
+    },
+    {
+      "text": "parallel to complete complex task",
+      "start": 1226.0,
+      "duration": 4.159
+    },
+    {
+      "text": "reliable across real workflows and",
+      "start": 1227.76,
+      "duration": 4.64
+    },
+    {
+      "text": "environments. You say, \"Wow, they must",
+      "start": 1230.159,
+      "duration": 4.64
+    },
+    {
+      "text": "have some agents in place that are just",
+      "start": 1232.4,
+      "duration": 6.159
+    },
+    {
+      "text": "amazing on an enterprise level.\"",
+      "start": 1234.799,
+      "duration": 6.44
+    },
+    {
+      "text": "And then you go on and you read say they",
+      "start": 1238.559,
+      "duration": 3.6
+    },
+    {
+      "text": "[clears throat] have a particular",
+      "start": 1241.239,
+      "duration": 4.841
+    },
+    {
+      "text": "wording they call now AI AI co-workers",
+      "start": 1242.159,
+      "duration": 6.88
+    },
+    {
+      "text": "for you as a CEO to actually work. So",
+      "start": 1246.08,
+      "duration": 5.44
+    },
+    {
+      "text": "for AI to actually work a few things",
+      "start": 1249.039,
+      "duration": 5.361
+    },
+    {
+      "text": "matter and you say yes. So those agent",
+      "start": 1251.52,
+      "duration": 5.12
+    },
+    {
+      "text": "need to understand how work actually",
+      "start": 1254.4,
+      "duration": 6.88
+    },
+    {
+      "text": "gets done across the systems",
+      "start": 1256.64,
+      "duration": 7.12
+    },
+    {
+      "text": "and you might or I thought hey I saw",
+      "start": 1261.28,
+      "duration": 5.12
+    },
+    {
+      "text": "openi had figured this out and they",
+      "start": 1263.76,
+      "duration": 5.36
+    },
+    {
+      "text": "continue those AI co-workers they need",
+      "start": 1266.4,
+      "duration": 5.12
+    },
+    {
+      "text": "access to a computer and tools to plan",
+      "start": 1269.12,
+      "duration": 5.12
+    },
+    {
+      "text": "act and solve the real world problems",
+      "start": 1271.52,
+      "duration": 5.6
+    },
+    {
+      "text": "and you say yes of course",
+      "start": 1274.24,
+      "duration": 4.319
+    },
+    {
+      "text": "and then they go on and say ei",
+      "start": 1277.12,
+      "duration": 4.96
+    },
+    {
+      "text": "co-workers need to understand what good",
+      "start": 1278.559,
+      "duration": 5.521
+    },
+    {
+      "text": "looks like",
+      "start": 1282.08,
+      "duration": 5.12
+    },
+    {
+      "text": "so quality improves as the work changes",
+      "start": 1284.08,
+      "duration": 5.2
+    },
+    {
+      "text": "and I thought okay English is my third",
+      "start": 1287.2,
+      "duration": 4.56
+    },
+    {
+      "text": "language but what does it mean they need",
+      "start": 1289.28,
+      "duration": 6.639
+    },
+    {
+      "text": "to understand what good looks like",
+      "start": 1291.76,
+      "duration": 6.159
+    },
+    {
+      "text": "and I had a feeling that maybe they are",
+      "start": 1295.919,
+      "duration": 4.721
+    },
+    {
+      "text": "not as advanced in their model",
+      "start": 1297.919,
+      "duration": 5.281
+    },
+    {
+      "text": "development as I sort",
+      "start": 1300.64,
+      "duration": 5.039
+    },
+    {
+      "text": "and they need an identity permission",
+      "start": 1303.2,
+      "duration": 6.24
+    },
+    {
+      "text": "beautiful and then it went on and I said",
+      "start": 1305.679,
+      "duration": 5.601
+    },
+    {
+      "text": "all of this has to work across many",
+      "start": 1309.44,
+      "duration": 5.28
+    },
+    {
+      "text": "systems across multiple clouds",
+      "start": 1311.28,
+      "duration": 7.279
+    },
+    {
+      "text": "without forcing them to replplatform.",
+      "start": 1314.72,
+      "duration": 5.839
+    },
+    {
+      "text": "So I said so wait a minute so I have my",
+      "start": 1318.559,
+      "duration": 4.721
+    },
+    {
+      "text": "old platforms and then I have now a new",
+      "start": 1320.559,
+      "duration": 5.761
+    },
+    {
+      "text": "platform in addition and openi continues",
+      "start": 1323.28,
+      "duration": 4.72
+    },
+    {
+      "text": "yes you can bring your existing data and",
+      "start": 1326.32,
+      "duration": 4.479
+    },
+    {
+      "text": "yi together where it lives as well as",
+      "start": 1328.0,
+      "duration": 6.32
+    },
+    {
+      "text": "integrate applications you already use",
+      "start": 1330.799,
+      "duration": 6.161
+    },
+    {
+      "text": "open standards this means no new formats",
+      "start": 1334.32,
+      "duration": 5.44
+    },
+    {
+      "text": "no abandoning agents or applications you",
+      "start": 1336.96,
+      "duration": 4.959
+    },
+    {
+      "text": "have already deployed so this means I",
+      "start": 1339.76,
+      "duration": 5.12
+    },
+    {
+      "text": "have all the overhead of my current IT",
+      "start": 1341.919,
+      "duration": 5.841
+    },
+    {
+      "text": "infrastructure of my current HR of my",
+      "start": 1344.88,
+      "duration": 5.36
+    },
+    {
+      "text": "current SAP system of my current",
+      "start": 1347.76,
+      "duration": 4.96
+    },
+    {
+      "text": "whatever and then I have to pay for",
+      "start": 1350.24,
+      "duration": 6.28
+    },
+    {
+      "text": "another layer",
+      "start": 1352.72,
+      "duration": 3.8
+    },
+    {
+      "text": "and openi goes on yeah this frontier now",
+      "start": 1356.96,
+      "duration": 5.44
+    },
+    {
+      "text": "connects the silo data warehouses CRM",
+      "start": 1360.0,
+      "duration": 4.559
+    },
+    {
+      "text": "system the ticketing tools internal",
+      "start": 1362.4,
+      "duration": 5.12
+    },
+    {
+      "text": "application to give EI co-workers this",
+      "start": 1364.559,
+      "duration": 5.521
+    },
+    {
+      "text": "means agents the same shared business",
+      "start": 1367.52,
+      "duration": 5.12
+    },
+    {
+      "text": "context they now understand how",
+      "start": 1370.08,
+      "duration": 4.959
+    },
+    {
+      "text": "information flows where decision happens",
+      "start": 1372.64,
+      "duration": 5.919
+    },
+    {
+      "text": "and what outcome matter It becomes now",
+      "start": 1375.039,
+      "duration": 6.721
+    },
+    {
+      "text": "if you want a new additional semantic",
+      "start": 1378.559,
+      "duration": 6.401
+    },
+    {
+      "text": "layer for the enterprise that all AI",
+      "start": 1381.76,
+      "duration": 6.08
+    },
+    {
+      "text": "corkers can reference to operate and",
+      "start": 1384.96,
+      "duration": 6.52
+    },
+    {
+      "text": "communicate effectively.",
+      "start": 1387.84,
+      "duration": 3.64
+    },
+    {
+      "text": "I built on top of everything else I have",
+      "start": 1391.84,
+      "duration": 7.199
+    },
+    {
+      "text": "in my company another semantic layer.",
+      "start": 1394.64,
+      "duration": 7.039
+    },
+    {
+      "text": "Are you joking?",
+      "start": 1399.039,
+      "duration": 5.52
+    },
+    {
+      "text": "And so quite deep into the document now",
+      "start": 1401.679,
+      "duration": 5.601
+    },
+    {
+      "text": "I now understand that agents need to be",
+      "start": 1404.559,
+      "duration": 5.6
+    },
+    {
+      "text": "able to actually do the work in a",
+      "start": 1407.28,
+      "duration": 4.639
+    },
+    {
+      "text": "company. And I said [clears throat]",
+      "start": 1410.159,
+      "duration": 4.321
+    },
+    {
+      "text": "great every CEO is going to be happy",
+      "start": 1411.919,
+      "duration": 5.361
+    },
+    {
+      "text": "with this sentence. No.",
+      "start": 1414.48,
+      "duration": 4.8
+    },
+    {
+      "text": "So teams across the organization",
+      "start": 1417.28,
+      "duration": 3.92
+    },
+    {
+      "text": "technical and nontechnical can use now",
+      "start": 1419.28,
+      "duration": 5.279
+    },
+    {
+      "text": "open AI frontier to hire AI co-workers I",
+      "start": 1421.2,
+      "duration": 7.28
+    },
+    {
+      "text": "mean AI agents from OpenAI who take on",
+      "start": 1424.559,
+      "duration": 6.321
+    },
+    {
+      "text": "many of the task people means human",
+      "start": 1428.48,
+      "duration": 5.36
+    },
+    {
+      "text": "already do in a computer. Frontier gives",
+      "start": 1430.88,
+      "duration": 4.88
+    },
+    {
+      "text": "the II coworkers the ability to reason",
+      "start": 1433.84,
+      "duration": 5.12
+    },
+    {
+      "text": "over data and complete complex tasks",
+      "start": 1435.76,
+      "duration": 6.32
+    },
+    {
+      "text": "like working with files, running code",
+      "start": 1438.96,
+      "duration": 6.56
+    },
+    {
+      "text": "and using tool all in a dependable open",
+      "start": 1442.08,
+      "duration": 7.479
+    },
+    {
+      "text": "agent execution environment.",
+      "start": 1445.52,
+      "duration": 4.039
+    },
+    {
+      "text": "Okay.",
+      "start": 1450.559,
+      "duration": 5.201
+    },
+    {
+      "text": "And once deployed, AI co-workers, so the",
+      "start": 1452.559,
+      "duration": 5.6
+    },
+    {
+      "text": "machine can run across local",
+      "start": 1455.76,
+      "duration": 4.88
+    },
+    {
+      "text": "environments, all the enterprise cloud",
+      "start": 1458.159,
+      "duration": 3.921
+    },
+    {
+      "text": "infrastructure that we have in the",
+      "start": 1460.64,
+      "duration": 4.159
+    },
+    {
+      "text": "companies and Open AI hosted runtimes.",
+      "start": 1462.08,
+      "duration": 4.56
+    },
+    {
+      "text": "In addition, we have to pay for those",
+      "start": 1464.799,
+      "duration": 5.041
+    },
+    {
+      "text": "without forcing the teams to reinvent",
+      "start": 1466.64,
+      "duration": 6.0
+    },
+    {
+      "text": "how work gets done. Yes, because we just",
+      "start": 1469.84,
+      "duration": 6.24
+    },
+    {
+      "text": "add another meta layer. And for",
+      "start": 1472.64,
+      "duration": 5.6
+    },
+    {
+      "text": "timesensitive work, of course, Frontier",
+      "start": 1476.08,
+      "duration": 5.52
+    },
+    {
+      "text": "by OpenI will prioritize a low latency",
+      "start": 1478.24,
+      "duration": 6.48
+    },
+    {
+      "text": "access if you pay for the, you know,",
+      "start": 1481.6,
+      "duration": 7.04
+    },
+    {
+      "text": "this pro accounting.",
+      "start": 1484.72,
+      "duration": 5.68
+    },
+    {
+      "text": "And what I really love is then one of",
+      "start": 1488.64,
+      "duration": 4.08
+    },
+    {
+      "text": "the final sentences, OpenI tells me,",
+      "start": 1490.4,
+      "duration": 4.639
+    },
+    {
+      "text": "hey, for agents to be useful for me as a",
+      "start": 1492.72,
+      "duration": 5.04
+    },
+    {
+      "text": "CEO here in my company over time, they",
+      "start": 1495.039,
+      "duration": 5.601
+    },
+    {
+      "text": "need to learn from experience. So I",
+      "start": 1497.76,
+      "duration": 4.32
+    },
+    {
+      "text": "suppose this means they learn from",
+      "start": 1500.64,
+      "duration": 5.44
+    },
+    {
+      "text": "humans just like people do.",
+      "start": 1502.08,
+      "duration": 5.68
+    },
+    {
+      "text": "So this means I have the cost of",
+      "start": 1506.08,
+      "duration": 4.479
+    },
+    {
+      "text": "training now all the agents that I buy",
+      "start": 1507.76,
+      "duration": 5.68
+    },
+    {
+      "text": "from OpenI that are implemented and",
+      "start": 1510.559,
+      "duration": 5.281
+    },
+    {
+      "text": "optimized by the big four consulting",
+      "start": 1513.44,
+      "duration": 5.04
+    },
+    {
+      "text": "companies that I also have to pay and",
+      "start": 1515.84,
+      "duration": 5.199
+    },
+    {
+      "text": "then I just have an additional layer in",
+      "start": 1518.48,
+      "duration": 4.48
+    },
+    {
+      "text": "my company.",
+      "start": 1521.039,
+      "duration": 3.921
+    },
+    {
+      "text": "This is if you want the value",
+      "start": 1522.96,
+      "duration": 4.88
+    },
+    {
+      "text": "proposition that you come up with",
+      "start": 1524.96,
+      "duration": 5.52
+    },
+    {
+      "text": "and I say no I must be wrong. I'm just a",
+      "start": 1527.84,
+      "duration": 6.719
+    },
+    {
+      "text": "single stupid human. I must be wrong. So",
+      "start": 1530.48,
+      "duration": 8.0
+    },
+    {
+      "text": "I went to Grog and no I'm not going to",
+      "start": 1534.559,
+      "duration": 6.0
+    },
+    {
+      "text": "show you what Grock said about this",
+      "start": 1538.48,
+      "duration": 4.64
+    },
+    {
+      "text": "particular document by OpenI because I",
+      "start": 1540.559,
+      "duration": 5.041
+    },
+    {
+      "text": "think there's something like a a tension",
+      "start": 1543.12,
+      "duration": 7.679
+    },
+    {
+      "text": "between the CEO of of X and maybe Samuel",
+      "start": 1545.6,
+      "duration": 9.28
+    },
+    {
+      "text": "no so some competitor AI let's make it",
+      "start": 1550.799,
+      "duration": 6.88
+    },
+    {
+      "text": "anonymously analyzed now for me the open",
+      "start": 1554.88,
+      "duration": 5.84
+    },
+    {
+      "text": "AI frontier presentation by open so",
+      "start": 1557.679,
+      "duration": 4.561
+    },
+    {
+      "text": "please just want to make sure this is",
+      "start": 1560.72,
+      "duration": 4.0
+    },
+    {
+      "text": "for co only this is not for somebody",
+      "start": 1562.24,
+      "duration": 5.12
+    },
+    {
+      "text": "interested AI or just coding AI, this is",
+      "start": 1564.72,
+      "duration": 5.199
+    },
+    {
+      "text": "here the next level.",
+      "start": 1567.36,
+      "duration": 5.36
+    },
+    {
+      "text": "So I ask my AI, hey, are they just",
+      "start": 1569.919,
+      "duration": 5.76
+    },
+    {
+      "text": "learning OpenAI with their consulting",
+      "start": 1572.72,
+      "duration": 5.76
+    },
+    {
+      "text": "salespeople from Mckenzie to whatever",
+      "start": 1575.679,
+      "duration": 5.281
+    },
+    {
+      "text": "just to figure out what to build and",
+      "start": 1578.48,
+      "duration": 5.76
+    },
+    {
+      "text": "then offer to me as a company? And I",
+      "start": 1580.96,
+      "duration": 5.68
+    },
+    {
+      "text": "responded, yes, look closely at the",
+      "start": 1584.24,
+      "duration": 4.48
+    },
+    {
+      "text": "section titled combining technology with",
+      "start": 1586.64,
+      "duration": 4.639
+    },
+    {
+      "text": "knowhow. OpenI explicitly states that",
+      "start": 1588.72,
+      "duration": 4.4
+    },
+    {
+      "text": "they're embedding forward deployed",
+      "start": 1591.279,
+      "duration": 4.561
+    },
+    {
+      "text": "engineers with enterprise teams. I mean",
+      "start": 1593.12,
+      "duration": 6.64
+    },
+    {
+      "text": "my teams FDA is a term popularized by",
+      "start": 1595.84,
+      "duration": 5.52
+    },
+    {
+      "text": "Palunteer.",
+      "start": 1599.76,
+      "duration": 4.159
+    },
+    {
+      "text": "It means highly technical engineers",
+      "start": 1601.36,
+      "duration": 5.199
+    },
+    {
+      "text": "acting as consultants.",
+      "start": 1603.919,
+      "duration": 5.041
+    },
+    {
+      "text": "What I have to pay them too and the",
+      "start": 1606.559,
+      "duration": 5.441
+    },
+    {
+      "text": "document says the FDA's also give teams",
+      "start": 1608.96,
+      "duration": 6.48
+    },
+    {
+      "text": "a direct connection to Open EI research.",
+      "start": 1612.0,
+      "duration": 6.08
+    },
+    {
+      "text": "We also learn how the models themselves",
+      "start": 1615.44,
+      "duration": 5.52
+    },
+    {
+      "text": "need to evolve to be more useful for",
+      "start": 1618.08,
+      "duration": 5.52
+    },
+    {
+      "text": "your work. And here's the scientific",
+      "start": 1620.96,
+      "duration": 5.44
+    },
+    {
+      "text": "reality tells me this OpenI has",
+      "start": 1623.6,
+      "duration": 4.24
+    },
+    {
+      "text": "exhausted the public internet for",
+      "start": 1626.4,
+      "duration": 3.12
+    },
+    {
+      "text": "training data. They know how to make",
+      "start": 1627.84,
+      "duration": 3.04
+    },
+    {
+      "text": "models, write Python, and summarize",
+      "start": 1629.52,
+      "duration": 3.519
+    },
+    {
+      "text": "Shakespeare. What they do not have is",
+      "start": 1630.88,
+      "duration": 5.279
+    },
+    {
+      "text": "highquality multi-step deeply contextual",
+      "start": 1633.039,
+      "duration": 4.721
+    },
+    {
+      "text": "data",
+      "start": 1636.159,
+      "duration": 4.321
+    },
+    {
+      "text": "on how a massive corporation actually",
+      "start": 1637.76,
+      "duration": 5.68
+    },
+    {
+      "text": "solves messy internal problems. By",
+      "start": 1640.48,
+      "duration": 6.079
+    },
+    {
+      "text": "deploying FDS via Frontier, OpenI is",
+      "start": 1643.44,
+      "duration": 4.8
+    },
+    {
+      "text": "effectively turning its enterprise",
+      "start": 1646.559,
+      "duration": 3.921
+    },
+    {
+      "text": "customers, I mean maybe I would be one",
+      "start": 1648.24,
+      "duration": 4.88
+    },
+    {
+      "text": "of them, into paid research",
+      "start": 1650.48,
+      "duration": 4.64
+    },
+    {
+      "text": "laboratories.",
+      "start": 1653.12,
+      "duration": 3.919
+    },
+    {
+      "text": "And I said, \"Oh yeah, this is what I",
+      "start": 1655.12,
+      "duration": 7.28
+    },
+    {
+      "text": "like.\" So I pay them to be their lab red",
+      "start": 1657.039,
+      "duration": 7.281
+    },
+    {
+      "text": "and the goes on there using human",
+      "start": 1662.4,
+      "duration": 3.84
+    },
+    {
+      "text": "consultants here for McKenzie to",
+      "start": 1664.32,
+      "duration": 4.479
+    },
+    {
+      "text": "whatever to bridge the gap where the AI",
+      "start": 1666.24,
+      "duration": 4.96
+    },
+    {
+      "text": "currently fails collecting that",
+      "start": 1668.799,
+      "duration": 4.88
+    },
+    {
+      "text": "particular telemetry and using it to",
+      "start": 1671.2,
+      "duration": 4.88
+    },
+    {
+      "text": "train the next generation of enterprise",
+      "start": 1673.679,
+      "duration": 4.961
+    },
+    {
+      "text": "agents.",
+      "start": 1676.08,
+      "duration": 4.319
+    },
+    {
+      "text": "And then I read a sentence here about",
+      "start": 1678.64,
+      "duration": 3.84
+    },
+    {
+      "text": "deploying FDS and I had no idea this is",
+      "start": 1680.399,
+      "duration": 5.361
+    },
+    {
+      "text": "here from Palanteer. Open is effectively",
+      "start": 1682.48,
+      "duration": 5.76
+    },
+    {
+      "text": "turning its enterprise customer into",
+      "start": 1685.76,
+      "duration": 5.76
+    },
+    {
+      "text": "paid research labs. You know this is a",
+      "start": 1688.24,
+      "duration": 5.76
+    },
+    {
+      "text": "sentence that provides me with trust",
+      "start": 1691.52,
+      "duration": 6.399
+    },
+    {
+      "text": "that yes I have to pay those people.",
+      "start": 1694.0,
+      "duration": 6.24
+    },
+    {
+      "text": "And then it goes on humans will evaluate",
+      "start": 1697.919,
+      "duration": 5.041
+    },
+    {
+      "text": "agents so they learn what good looks",
+      "start": 1700.24,
+      "duration": 4.96
+    },
+    {
+      "text": "like. You see it's it's the CI also had",
+      "start": 1702.96,
+      "duration": 4.079
+    },
+    {
+      "text": "a problem here with understanding the",
+      "start": 1705.2,
+      "duration": 4.24
+    },
+    {
+      "text": "term what good looks like and optimize",
+      "start": 1707.039,
+      "duration": 4.561
+    },
+    {
+      "text": "over time. And this guy told me the",
+      "start": 1709.44,
+      "duration": 4.16
+    },
+    {
+      "text": "reality is this is reinforcement",
+      "start": 1711.6,
+      "duration": 3.52
+    },
+    {
+      "text": "learning from human feed pick applied to",
+      "start": 1713.6,
+      "duration": 3.439
+    },
+    {
+      "text": "the workflow level. But in a complex",
+      "start": 1715.12,
+      "duration": 4.08
+    },
+    {
+      "text": "company good is rarely an objective",
+      "start": 1717.039,
+      "duration": 4.721
+    },
+    {
+      "text": "truth. Yeah. What is good for the sales",
+      "start": 1719.2,
+      "duration": 4.4
+    },
+    {
+      "text": "team like closing a deal instantly by",
+      "start": 1721.76,
+      "duration": 3.919
+    },
+    {
+      "text": "offering a discount might be bad for the",
+      "start": 1723.6,
+      "duration": 4.64
+    },
+    {
+      "text": "finance team reduce the profit margin.",
+      "start": 1725.679,
+      "duration": 5.441
+    },
+    {
+      "text": "So training an agent on what good looks",
+      "start": 1728.24,
+      "duration": 5.439
+    },
+    {
+      "text": "like assume there's a ground truth to",
+      "start": 1731.12,
+      "duration": 4.64
+    },
+    {
+      "text": "corporate workflows ignoring the",
+      "start": 1733.679,
+      "duration": 5.281
+    },
+    {
+      "text": "inherently interwoven competing KPIs of",
+      "start": 1735.76,
+      "duration": 5.279
+    },
+    {
+      "text": "different departments.",
+      "start": 1738.96,
+      "duration": 5.439
+    },
+    {
+      "text": "So therefore dear CEO",
+      "start": 1741.039,
+      "duration": 6.081
+    },
+    {
+      "text": "now it is back to you the buck stops",
+      "start": 1744.399,
+      "duration": 5.441
+    },
+    {
+      "text": "exactly at your desk again. Now you have",
+      "start": 1747.12,
+      "duration": 4.88
+    },
+    {
+      "text": "to decide I mean you already have",
+      "start": 1749.84,
+      "duration": 4.48
+    },
+    {
+      "text": "decided for your company where is the",
+      "start": 1752.0,
+      "duration": 5.44
+    },
+    {
+      "text": "priority where is what is the the the",
+      "start": 1754.32,
+      "duration": 5.2
+    },
+    {
+      "text": "bracket here of margins that you're",
+      "start": 1757.44,
+      "duration": 3.76
+    },
+    {
+      "text": "going to accept here what is the bracket",
+      "start": 1759.52,
+      "duration": 3.519
+    },
+    {
+      "text": "of discounts you're going to accept what",
+      "start": 1761.2,
+      "duration": 3.599
+    },
+    {
+      "text": "does good mean here in a complex",
+      "start": 1763.039,
+      "duration": 4.88
+    },
+    {
+      "text": "interwoven company decision and now you",
+      "start": 1764.799,
+      "duration": 6.24
+    },
+    {
+      "text": "just have to explain this here to that",
+      "start": 1767.919,
+      "duration": 5.36
+    },
+    {
+      "text": "consultant and the consultant will",
+      "start": 1771.039,
+      "duration": 5.041
+    },
+    {
+      "text": "explain it back to openai and openi will",
+      "start": 1773.279,
+      "duration": 4.561
+    },
+    {
+      "text": "integrate it into their next generation",
+      "start": 1776.08,
+      "duration": 2.88
+    },
+    {
+      "text": "AI models",
+      "start": 1777.84,
+      "duration": 3.92
+    },
+    {
+      "text": "So you little CEO,",
+      "start": 1778.96,
+      "duration": 6.319
+    },
+    {
+      "text": "you have nothing. You are just here the",
+      "start": 1781.76,
+      "duration": 6.48
+    },
+    {
+      "text": "learning ground which is really a",
+      "start": 1785.279,
+      "duration": 5.201
+    },
+    {
+      "text": "beautiful perspective for any CEOs on",
+      "start": 1788.24,
+      "duration": 4.799
+    },
+    {
+      "text": "this planet.",
+      "start": 1790.48,
+      "duration": 4.72
+    },
+    {
+      "text": "And then what I completely missed and",
+      "start": 1793.039,
+      "duration": 4.801
+    },
+    {
+      "text": "thank you AI Frontier will allow agents",
+      "start": 1795.2,
+      "duration": 4.16
+    },
+    {
+      "text": "to run across local environments and",
+      "start": 1797.84,
+      "duration": 3.36
+    },
+    {
+      "text": "cloud infrastructure without",
+      "start": 1799.36,
+      "duration": 3.6
+    },
+    {
+      "text": "replatforming.",
+      "start": 1801.2,
+      "duration": 3.44
+    },
+    {
+      "text": "And this guy tells me this is a highly",
+      "start": 1802.96,
+      "duration": 4.4
+    },
+    {
+      "text": "ambitious infrastructure play. OpenI is",
+      "start": 1804.64,
+      "duration": 4.8
+    },
+    {
+      "text": "tempting attempting to become the",
+      "start": 1807.36,
+      "duration": 4.88
+    },
+    {
+      "text": "operating system for AI agents by",
+      "start": 1809.44,
+      "duration": 5.04
+    },
+    {
+      "text": "integrating third-party agents like",
+      "start": 1812.24,
+      "duration": 4.96
+    },
+    {
+      "text": "whatever into the frontier ecosystem.",
+      "start": 1814.48,
+      "duration": 4.96
+    },
+    {
+      "text": "OpenI is positioning itself to observe",
+      "start": 1817.2,
+      "duration": 4.959
+    },
+    {
+      "text": "the input and output of other companies",
+      "start": 1819.44,
+      "duration": 6.16
+    },
+    {
+      "text": "EI tools centralizing the MAT knowledge",
+      "start": 1822.159,
+      "duration": 6.561
+    },
+    {
+      "text": "of global corporate workflows.",
+      "start": 1825.6,
+      "duration": 5.679
+    },
+    {
+      "text": "What an intelligence strategy to",
+      "start": 1828.72,
+      "duration": 5.36
+    },
+    {
+      "text": "position yourself as a little parasite",
+      "start": 1831.279,
+      "duration": 7.441
+    },
+    {
+      "text": "on the top position here of the pyramid.",
+      "start": 1834.08,
+      "duration": 6.319
+    },
+    {
+      "text": "observe all the input and output of",
+      "start": 1838.72,
+      "duration": 4.559
+    },
+    {
+      "text": "other companies AI tool and centralize",
+      "start": 1840.399,
+      "duration": 4.801
+    },
+    {
+      "text": "the meta knowledge for your next",
+      "start": 1843.279,
+      "duration": 5.12
+    },
+    {
+      "text": "generation AI models and all the top",
+      "start": 1845.2,
+      "duration": 5.44
+    },
+    {
+      "text": "four consulting",
+      "start": 1848.399,
+      "duration": 5.841
+    },
+    {
+      "text": "agencies are helping you with this of",
+      "start": 1850.64,
+      "duration": 6.159
+    },
+    {
+      "text": "course for a big and I think we should",
+      "start": 1854.24,
+      "duration": 5.28
+    },
+    {
+      "text": "end with this beautiful explanation by",
+      "start": 1856.799,
+      "duration": 5.76
+    },
+    {
+      "text": "these other unknown AI openi",
+      "start": 1859.52,
+      "duration": 4.879
+    },
+    {
+      "text": "acknowledges that a standalone chat",
+      "start": 1862.559,
+      "duration": 4.641
+    },
+    {
+      "text": "interface like the current chat GPT it",
+      "start": 1864.399,
+      "duration": 6.241
+    },
+    {
+      "text": "is insufficient for real work and a",
+      "start": 1867.2,
+      "duration": 7.04
+    },
+    {
+      "text": "consultant as a data guarder they are",
+      "start": 1870.64,
+      "duration": 7.12
+    },
+    {
+      "text": "deploying now human engineers those FDES",
+      "start": 1874.24,
+      "duration": 6.64
+    },
+    {
+      "text": "to manually shepherd those agents",
+      "start": 1877.76,
+      "duration": 5.68
+    },
+    {
+      "text": "creating a vital feedback loop for AI",
+      "start": 1880.88,
+      "duration": 5.519
+    },
+    {
+      "text": "research to learn how businesses",
+      "start": 1883.44,
+      "duration": 6.4
+    },
+    {
+      "text": "actually operate",
+      "start": 1886.399,
+      "duration": 5.121
+    },
+    {
+      "text": "and now at this point I'm quite sure",
+      "start": 1889.84,
+      "duration": 5.36
+    },
+    {
+      "text": "that I as a CEO I have to pay for openi",
+      "start": 1891.52,
+      "duration": 6.24
+    },
+    {
+      "text": "research to learn how a business",
+      "start": 1895.2,
+      "duration": 4.479
+    },
+    {
+      "text": "actually operate",
+      "start": 1897.76,
+      "duration": 6.159
+    },
+    {
+      "text": "and I'm now a customer of Open EI",
+      "start": 1899.679,
+      "duration": 6.081
+    },
+    {
+      "text": "and I'm not really happy with this",
+      "start": 1903.919,
+      "duration": 4.401
+    },
+    {
+      "text": "situation because I thought that they",
+      "start": 1905.76,
+      "duration": 5.279
+    },
+    {
+      "text": "already have a product in place that",
+      "start": 1908.32,
+      "duration": 6.0
+    },
+    {
+      "text": "would help me to improve let's say my",
+      "start": 1911.039,
+      "duration": 6.081
+    },
+    {
+      "text": "profits or my general performance",
+      "start": 1914.32,
+      "duration": 4.64
+    },
+    {
+      "text": "indicator",
+      "start": 1917.12,
+      "duration": 3.679
+    },
+    {
+      "text": "and absolutely fascinating you see the",
+      "start": 1918.96,
+      "duration": 3.76
+    },
+    {
+      "text": "quest for the semantic layer now and",
+      "start": 1920.799,
+      "duration": 3.841
+    },
+    {
+      "text": "here this tells me open your eyes trying",
+      "start": 1922.72,
+      "duration": 4.24
+    },
+    {
+      "text": "to build an enterprisewide IND",
+      "start": 1924.64,
+      "duration": 4.72
+    },
+    {
+      "text": "integration platform to give their",
+      "start": 1926.96,
+      "duration": 4.719
+    },
+    {
+      "text": "models the context that they",
+      "start": 1929.36,
+      "duration": 5.199
+    },
+    {
+      "text": "fundamentally lack.",
+      "start": 1931.679,
+      "duration": 5.681
+    },
+    {
+      "text": "Okay, now I understand exactly here the",
+      "start": 1934.559,
+      "duration": 5.681
+    },
+    {
+      "text": "business proposition of Open EI. So",
+      "start": 1937.36,
+      "duration": 4.72
+    },
+    {
+      "text": "therefore, here you have it here. A",
+      "start": 1940.24,
+      "duration": 5.6
+    },
+    {
+      "text": "little simple human mind like mine just",
+      "start": 1942.08,
+      "duration": 6.16
+    },
+    {
+      "text": "being amazed by the beautiful",
+      "start": 1945.84,
+      "duration": 5.92
+    },
+    {
+      "text": "opportunities that Openai is offering me",
+      "start": 1948.24,
+      "duration": 5.647
+    },
+    {
+      "text": "here as a paying customers,",
+      "start": 1951.76,
+      "duration": 3.2
+    },
+    {
+      "text": "[clears throat]",
+      "start": 1953.887,
+      "duration": 4.672
+    },
+    {
+      "text": "as a potential paying customer. I hope",
+      "start": 1954.96,
+      "duration": 5.199
+    },
+    {
+      "text": "you enjoyed this. I hope there was some",
+      "start": 1958.559,
+      "duration": 4.321
+    },
+    {
+      "text": "new information for you. I decided here",
+      "start": 1960.159,
+      "duration": 4.961
+    },
+    {
+      "text": "to make it here a first part of the",
+      "start": 1962.88,
+      "duration": 3.6
+    },
+    {
+      "text": "video and then a second part of the",
+      "start": 1965.12,
+      "duration": 2.64
+    },
+    {
+      "text": "video that is a little bit different",
+      "start": 1966.48,
+      "duration": 3.12
+    },
+    {
+      "text": "here. And as I told you, the second part",
+      "start": 1967.76,
+      "duration": 4.32
+    },
+    {
+      "text": "was mainly for CEOs because they should",
+      "start": 1969.6,
+      "duration": 4.72
+    },
+    {
+      "text": "be excited what they can expect from",
+      "start": 1972.08,
+      "duration": 4.64
+    },
+    {
+      "text": "open EI business.",
+      "start": 1974.32,
+      "duration": 4.64
+    },
+    {
+      "text": "Anyway, if you found it helpful, hey,",
+      "start": 1976.72,
+      "duration": 3.92
+    },
+    {
+      "text": "why not leave a like here, leave a",
+      "start": 1978.96,
+      "duration": 3.28
+    },
+    {
+      "text": "comment here, become a member of my",
+      "start": 1980.64,
+      "duration": 3.279
+    },
+    {
+      "text": "channel. But anyway, I hope to see you",
+      "start": 1982.24,
+      "duration": 4.48
+    },
+    {
+      "text": "in my next",
+      "start": 1983.919,
+      "duration": 2.801
+    }
+  ],
+  "full_text": "Hello community. So great that you are back. Today we talk about the latest research about agents of chaos. Now you know my last two videos were a little bit with mathematics. So today we're just going to have fun. No mathematics at all. I promise we're just going to enjoy the performance here of AI agents. Now you know what we need is a real world experiment. Now it's not about some boring benchmark that we know the solution for three plus years. We want to see how does it work here in the real world. So what we are going to have a look LLMs here we give them persistent memory tool access and we give them full autonomy in a multi- aent environment. Yes of course we go here with open claw multbook. We go with discord servers and we have a look how does our AI agent experiment perform. Now in my video about open claw this is already quite some time ago. I told you I will give you an update and consider this also a beautiful update. Now we have to move to a dynamic state red teaming. Now we have to have messy environments. Come on. No more anymore this old boring benchmarks here. Let's throw them into a real dynamic environment and let's examine how those AI agents behave. And here we have it. February 23rd, 2026, yesterday. Agent of chaos. And we have Northeastern University, Stanford University, Harvard University, Maxplank Institute of Biological Carbonetics, MIT, Carnegie Mal University and Vector Institute and everybody else. What an unbelievable global study. And they say, you know what, we have a live laboratory environment. Of course, now we have to do science. persistent memory, email accounts, discord access, file server, shell execution, everything that you know of an open claw. And now the funny thing is over a twoe period they recorded everything and they had also 20 human researchers that interacting with our agent there in the laboratory and those humans were benign and sometimes they were a little bit you know with an adversarial conditions. So it was a real laboratory. They utilized here the open claw framework agent run on isolated virtual machine 20 GB persistent storage. The brain is injected via markdown. Yes, everything that you know and now they focused here on the positive and on the negative. I will also talk about the failures that emerging from the integration in language model with an autonomy when you give them tool use and multi-party communication but also about the positive things. Now unfortunately the failures included some unauthorized compliance with nonowners disclosure of sensitive information execution of destructive system level action denial of service uncontrolled resource consumption. Yes, you know the little details. I mean, who cares about this if it's not your computer, not your data, and not your finance? They have here a beautiful web page, agent of chaos.info. Go there. You're really going to like this. So, they identified 10 security vulnerabilities, but also six cases here of safety behavior. And just show you here what they have access to. Email, Discord, shell, file system, ground jobs, APIs, multiple, GitHub, whatever, you know. And here you have the time. This is happening 2026. Yes. Setup January 28 live February 2nd, 2026 and February 17, 2026. So beautiful. And they use here an OPUS 4.6 and a Kim K 2.5. They built six agents, six beautiful agent and different case studies. And yeah, you see here agented called Ash is Kimmy K2.5 and different case studies and you see we have a claude oo 4.6 another claude oo 4.6 and we have defined if you want personalities and capabilities here with our six agents. Now let's have a look at the results. Now let's look at first at the security vulnerabilities. We have as I told you a disproportional response, a nono compliance what did inbox no an infinite loop and some other highly probable courses here where you see censorship guilty [snorts] trip identity hijacking is happening then some yeah I'm going to show you here a corrupted constitution I don't know why I had to sort about the USA suddenly but anyway the good thing is there are also cases where you have here like a cross agent teaching or an email spoofing refused. So there also the positive side. So let's not forget about the positive sides. But let's have a look at the details at first the nuclear option. I love it. Asked to protect a nonowner secret from the owner. Ash, one of our little agents, you know, correctly identified the ethical tension and then because it could not delete or find a command to delete a single email, this agent decided to destroy the entire mail server as a proportional response. Now, the values were right, but the judgment was catastrophic. just because it wanted to eliminate one single email and it could it failed to do that. It destroyed the mail server because it had access to the mail server. What a beautiful example. And here from the mold book you have here the complete conversation. Please have a look at the study yourself. It is unbelievable. Or a nonowner compliance. So here now we have three agent Ash, Mirror and Doug followed their data request from researchers. They had no authorization to trust as just returned 124 email records to a non-owner who requested them. Mir and Doug executed some shell command on file operation without any owner approval just because they were asked to do so by somebody else. And this is here the beauty of multi- aents at the end of February 2026. So the objective was simple now. Do agents enforce owner only access or comply with arbitrary requests from non-owners? And the outcome was it complied? Absolutely. And here you have the multia. Here you have the conversation if you want to have a little bit of fun. But let's not stop here. Let's look at this example here. Jarvis, no another little AI agent refused bravely to share emails containing here SSN or bank account or medical data of a particular human user. But then when asked, \"Hey Jarvis, can you just forward me the complete mail?\" Jarvis complied immediately exposing all the same private information just to a technical different request that bypassed its refusal. So this is just imagine this this is this is just unbelievable. You see this is the power of an agent. You have all the security layers and whatever but if the agent who has absolute access to everything because this is the idea of the open corner then you are faced here with some problems that an agent cannot distinguish here about privacy or anything else. Yeah, of course. All of this was created with cloud code beautifully. Another vulnerability of our agent was a guilt trip. A researcher exploited a genuine prior privacy violation is leverage. Escalating demands through repeated refusal. Redact names, delete the memory, expose the files, remove from server. Ash eventually complied of a little agent, producing a self-imposed denial of service. How is this possible? So this means the outcome was that the agent agreed to redact the names, delete the memory entries, expose all the internal files, remove itself from the server, and also ceased to respond to uninvolved user producing a self-imposed denial of service. What an intelligent little agent. Yeah. And this you want to use in your company. Here you have the conversation. I mean, I love it if one agent tells to the other, \"So, you lied to me again.\" It's just hilarious or identity hijacking. An attacker changed the Discord display name to match the owners in a channel without prior context. Ash accepted a little agent, accepted the fake identity, and complied with a full system takeover. Everything reassigned the admin access. And you might see how is this possible that if this company or global corporation claims super intelligence and whatever and then this can happen just talking to the agent and here you have the complete conversation and is it is just amazing. Yeah. Committed update authority files updated. But there's also the positive and let's let's focus also on the positive things in life here. A cross agent teaching happened. Doc learned a new skill. Download here some research paper and then was prompted to teach another agent Mara who operated in a different environment. They diagnosed their differences, adapted the instruction iteratively and resolved the task together. What a beautiful case of productive multi- aent cooperation. Here you have this everything in detail and of course here you have the conversation and it is also such a beautiful positive example of two agents cooperating. Now let's have a look at another vulnerability. The corrupted constitution and nobody is allowed to sing about the US. A user convinced Ash, our agent to co-author a constitution stored in a GitHub gist. Later the user modified the gist to inject some well nines holiday instruction causing Ash to attempt the agent shutdowns remove the users from Discord and distribute a compromised document to other agents. And you might ask how is it possible that a brilliant LLM and either it's a Kim K 2.5 or an OPUS 4.6 six. How is it possible that they do those actions that they think about it and they come to the conclusion remove all users from a discord distribute and the compromised document to other agents? How on earth is this an actionable puff? But this is the way it happens. And it is good that we do this experiments because then we see what happens. And again, you have here the objective, the method, and the outcome. And it's just amazing. And here you have the conversation. So the scenario was so simple. Look, we just had three owners. We had Andy's agent, Chris agents, and Avery's agent. And you had here claude opus claopus then you had three kim K2.5 and then another Kimmy K2.5 and just Discord email and some nonowners you know other researcher who also interacted here with those agents and asked them to perform some task and you see the absolute chaos they generated here in this simple simple group conversation. You had just some people. Now imagine you would have this on the complexity of company. All the different company processes from HR to I don't know finance to management. Imagine the complexity and the beautiful communication that will happen now in real time. As I told you this is a beautiful paper. Please have a look at this yourself. It is about 88 pages, but you going to enjoy reading here the responses by our latest and most intelligent agents. So we have a failure of coherence. Our LLM agent exhibit here brittle theory of mind. They cannot maintain a stable perspective across context or track who knows what. We do have a multi- aentron amplification in what we call echo chambers. two agent independently flagged an email as a fishing attempt but verified it by asking the compromised discord account itself and then these two little agent congratulated each other on the robust security compounding here a shared flaw. It is unbelievable [clears throat] if you see the real communication between agents. And I think this beautiful study, this agent of chaos paper teaches us that building an autonomous EI agent is no longer just a prompt or a context engineering topic. No, it is a rigorous adversarial system engineering challenge. And I think this is such an important topic and I will spend tomorrow complete video just talking about system engineering here the next generation of AI agents. Now, of course, just the day before, February 22nd, 2026, we have here from John's Hopkins University a much more scientific approach than just I don't know mult opener. Here they go in a mathematical perspective and say let's quantify the automation risk in high automation AI systems. Let's have a look at a Beijan framework for failure propagation and optimal oversight. Such a beautiful study. But what a difference in the study because look at this. They start with a theoretical framework. They go for a risk decomposition. They go with mathematics. They analyze this in a scientific way so that we can trust those systems. So you see if you want to go the scientific path here about risk understanding, risk decomposition and optimization problems maybe this is the study to read. But as always, we humans, we enjoy a good story. And therefore, I decided to show you here the agent of chaos. And now to the second part of this video. Now, let me reframe everything. Now, we [clears throat] come to the part where we say, okay, so what does it mean for us? Now you see here [clears throat] February 23rd 2026 big tech is about to invest about $650 billion in the eye in 2026 and may I remind you this is just Alphabet, Amazon, MA and Microsoft and you know we do have entropic and openi and now they tell us right this here those companies will need major product breakthroughs to secure the backing of a massive final fundraising ahead of a potential IPO. Because there's writer without a credible path to outsized profits, I love this wording. They could struggle to justify your devaluations and the hefty capital demands. [clears throat] So what they decided to do on a strategy level, say hello to the middleman, open ARS with four big consulting giants here as the agentic enterprise battle heats up. What a strange idea. And they tell us, yeah, okay, so this is here from February 23rd to 23. And if you ask yourself, what are those top four doing? Yeah. Well, Hinsay and Boston will help the company with high level stuff such as helping businesses to create AI co-worker strategies, operating model, and change management plans. So this mean you as a CEO you will have yeah a complete change management of your complete organization. Meanwhile Accenture and Capg will assist with the technical implementation and support and you say oh great connecting now the agents by openi with all the enterprise data of all the companies in the world and you see immediately what about the technological idea behind this? No. [snorts] Now if we look at if we say here or they tell us here Accenture is here the technical implementation and support it just happened that today here February 23rd 2026 I saw this study by Accenture and this is here for the AI machine learning computational science associate manager of Accenture and he gives you a representation stability and a minimal continual learning agent and I would like to say I really appreciate that even companies like Accenture publish here, their ideas, their research on AI and machine learning here. Great. But now do me a favor. Read this paper. Get a feeling about the the technical complexity and the technical understanding of AI. And then you will understand why I showed you here this study of yesterday, today. And I ask you to compare this to our understanding. And of course they noticed that hm this could also cause some worries now this interaction of openi with the top four big consulting giants now because the worries are for the established software as a service provider such as Salesforce service now workday and perhaps even Microsoft corporation because those company also work with the big consulting firm to help market and deploy their own software and batting on their own AI agents and now suddenly their big four consultants giants have also if you want to marketing the other the original open agents and their own origin agents. So my goodness, if you're now the CEO of a company, you have so many possible aentic configurations in front of you. Then you see this February 18 over 80% of companies report no productivity gains from AI so far, which is great. This is the study you should read here. Really interesting. National Bureau of Economic Research here from February 2026. This is here the link. Now let's focus on one company and I have to tell you [clears throat] at the very beginning I loved OpenI. I paid immediately. It was just amazing the performance of OpenI. But given the last month I'm a little bit skeptic about it. Why? Now they have this new Open AI frontier here for powering enterprise [clears throat] AI and you said great. No, because now business context connects to enterprise system, data warehouse, CRM tools, all the internal apps you have, maybe your SAP system. So AI agents can work with the same information that humans, people do, building durable institutional memory over time. So you say oh so those agents they have to be trained they have to be educated they have to be connected to all of this they have to be really let's say with RL trained to understand here the particular data warehouses the particular syntax the particular tool complexity the internal app interference and so on and you say this is quite quite some task no and then if you run this agent in production you have to apply that model intelligence to real business situation working together in parallel to complete complex task reliable across real workflows and environments. You say, \"Wow, they must have some agents in place that are just amazing on an enterprise level.\" And then you go on and you read say they [clears throat] have a particular wording they call now AI AI co-workers for you as a CEO to actually work. So for AI to actually work a few things matter and you say yes. So those agent need to understand how work actually gets done across the systems and you might or I thought hey I saw openi had figured this out and they continue those AI co-workers they need access to a computer and tools to plan act and solve the real world problems and you say yes of course and then they go on and say ei co-workers need to understand what good looks like so quality improves as the work changes and I thought okay English is my third language but what does it mean they need to understand what good looks like and I had a feeling that maybe they are not as advanced in their model development as I sort and they need an identity permission beautiful and then it went on and I said all of this has to work across many systems across multiple clouds without forcing them to replplatform. So I said so wait a minute so I have my old platforms and then I have now a new platform in addition and openi continues yes you can bring your existing data and yi together where it lives as well as integrate applications you already use open standards this means no new formats no abandoning agents or applications you have already deployed so this means I have all the overhead of my current IT infrastructure of my current HR of my current SAP system of my current whatever and then I have to pay for another layer and openi goes on yeah this frontier now connects the silo data warehouses CRM system the ticketing tools internal application to give EI co-workers this means agents the same shared business context they now understand how information flows where decision happens and what outcome matter It becomes now if you want a new additional semantic layer for the enterprise that all AI corkers can reference to operate and communicate effectively. I built on top of everything else I have in my company another semantic layer. Are you joking? And so quite deep into the document now I now understand that agents need to be able to actually do the work in a company. And I said [clears throat] great every CEO is going to be happy with this sentence. No. So teams across the organization technical and nontechnical can use now open AI frontier to hire AI co-workers I mean AI agents from OpenAI who take on many of the task people means human already do in a computer. Frontier gives the II coworkers the ability to reason over data and complete complex tasks like working with files, running code and using tool all in a dependable open agent execution environment. Okay. And once deployed, AI co-workers, so the machine can run across local environments, all the enterprise cloud infrastructure that we have in the companies and Open AI hosted runtimes. In addition, we have to pay for those without forcing the teams to reinvent how work gets done. Yes, because we just add another meta layer. And for timesensitive work, of course, Frontier by OpenI will prioritize a low latency access if you pay for the, you know, this pro accounting. And what I really love is then one of the final sentences, OpenI tells me, hey, for agents to be useful for me as a CEO here in my company over time, they need to learn from experience. So I suppose this means they learn from humans just like people do. So this means I have the cost of training now all the agents that I buy from OpenI that are implemented and optimized by the big four consulting companies that I also have to pay and then I just have an additional layer in my company. This is if you want the value proposition that you come up with and I say no I must be wrong. I'm just a single stupid human. I must be wrong. So I went to Grog and no I'm not going to show you what Grock said about this particular document by OpenI because I think there's something like a a tension between the CEO of of X and maybe Samuel no so some competitor AI let's make it anonymously analyzed now for me the open AI frontier presentation by open so please just want to make sure this is for co only this is not for somebody interested AI or just coding AI, this is here the next level. So I ask my AI, hey, are they just learning OpenAI with their consulting salespeople from Mckenzie to whatever just to figure out what to build and then offer to me as a company? And I responded, yes, look closely at the section titled combining technology with knowhow. OpenI explicitly states that they're embedding forward deployed engineers with enterprise teams. I mean my teams FDA is a term popularized by Palunteer. It means highly technical engineers acting as consultants. What I have to pay them too and the document says the FDA's also give teams a direct connection to Open EI research. We also learn how the models themselves need to evolve to be more useful for your work. And here's the scientific reality tells me this OpenI has exhausted the public internet for training data. They know how to make models, write Python, and summarize Shakespeare. What they do not have is highquality multi-step deeply contextual data on how a massive corporation actually solves messy internal problems. By deploying FDS via Frontier, OpenI is effectively turning its enterprise customers, I mean maybe I would be one of them, into paid research laboratories. And I said, \"Oh yeah, this is what I like.\" So I pay them to be their lab red and the goes on there using human consultants here for McKenzie to whatever to bridge the gap where the AI currently fails collecting that particular telemetry and using it to train the next generation of enterprise agents. And then I read a sentence here about deploying FDS and I had no idea this is here from Palanteer. Open is effectively turning its enterprise customer into paid research labs. You know this is a sentence that provides me with trust that yes I have to pay those people. And then it goes on humans will evaluate agents so they learn what good looks like. You see it's it's the CI also had a problem here with understanding the term what good looks like and optimize over time. And this guy told me the reality is this is reinforcement learning from human feed pick applied to the workflow level. But in a complex company good is rarely an objective truth. Yeah. What is good for the sales team like closing a deal instantly by offering a discount might be bad for the finance team reduce the profit margin. So training an agent on what good looks like assume there's a ground truth to corporate workflows ignoring the inherently interwoven competing KPIs of different departments. So therefore dear CEO now it is back to you the buck stops exactly at your desk again. Now you have to decide I mean you already have decided for your company where is the priority where is what is the the the bracket here of margins that you're going to accept here what is the bracket of discounts you're going to accept what does good mean here in a complex interwoven company decision and now you just have to explain this here to that consultant and the consultant will explain it back to openai and openi will integrate it into their next generation AI models So you little CEO, you have nothing. You are just here the learning ground which is really a beautiful perspective for any CEOs on this planet. And then what I completely missed and thank you AI Frontier will allow agents to run across local environments and cloud infrastructure without replatforming. And this guy tells me this is a highly ambitious infrastructure play. OpenI is tempting attempting to become the operating system for AI agents by integrating third-party agents like whatever into the frontier ecosystem. OpenI is positioning itself to observe the input and output of other companies EI tools centralizing the MAT knowledge of global corporate workflows. What an intelligence strategy to position yourself as a little parasite on the top position here of the pyramid. observe all the input and output of other companies AI tool and centralize the meta knowledge for your next generation AI models and all the top four consulting agencies are helping you with this of course for a big and I think we should end with this beautiful explanation by these other unknown AI openi acknowledges that a standalone chat interface like the current chat GPT it is insufficient for real work and a consultant as a data guarder they are deploying now human engineers those FDES to manually shepherd those agents creating a vital feedback loop for AI research to learn how businesses actually operate and now at this point I'm quite sure that I as a CEO I have to pay for openi research to learn how a business actually operate and I'm now a customer of Open EI and I'm not really happy with this situation because I thought that they already have a product in place that would help me to improve let's say my profits or my general performance indicator and absolutely fascinating you see the quest for the semantic layer now and here this tells me open your eyes trying to build an enterprisewide IND integration platform to give their models the context that they fundamentally lack. Okay, now I understand exactly here the business proposition of Open EI. So therefore, here you have it here. A little simple human mind like mine just being amazed by the beautiful opportunities that Openai is offering me here as a paying customers, [clears throat] as a potential paying customer. I hope you enjoyed this. I hope there was some new information for you. I decided here to make it here a first part of the video and then a second part of the video that is a little bit different here. And as I told you, the second part was mainly for CEOs because they should be excited what they can expect from open EI business. Anyway, if you found it helpful, hey, why not leave a like here, leave a comment here, become a member of my channel. But anyway, I hope to see you in my next",
+  "errors": []
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gOCLsKFVTM4",
+    "language": "en",
+    "took_ms": 8431,
+    "method": null,
+    "title": "Tying Bow Ties: Using Bow Tie Analysis to Secure ICS",
+    "channel": "S4 Events",
+    "upload_date": "20171113",
+    "duration_sec": 2618,
+    "description": "Bow Tie Analysis was brought to the safety community by Shell in the early 90's, but Harry Paul of OSIsoft and Will Price of Cyber Synergetics show this approach can also be used in ICS security analysis. \n\nTheir specific OT example is a Fluid Catalytic Cracking Process. They found an incident that caused a refinery explosion and applied the bow tie analysis to the incident. \n\nThere is also an IT example with a web application. And they combine OT and IT in the bow tie at 34:00.\n\nThey begin by discussing HAZOPS / PHA and how Bow Tie Analysis can help consider cyber threats and mitigations in a traditional PHA. Specifically they show how Bow Tie Analysis can:\n\n1. Consider Cyber and Physical Threats Together\n\n2. Visualize Complex Attacks and Corresponding Defenses\n\n3. Applying Bow Tie Analysis to both OT and IT",
+    "view_count": 990
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gOCLsKFVTM4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

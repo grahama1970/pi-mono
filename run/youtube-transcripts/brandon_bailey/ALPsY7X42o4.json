@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ALPsY7X42o4",
+    "language": "en",
+    "took_ms": 8895,
+    "method": null,
+    "title": "DEF CON 31 - A Broken Marriage  Abusing Mixed Vendor Kerberos Stacks - Ceri Coburn",
+    "channel": "DEFCONConference",
+    "upload_date": "20230917",
+    "duration_sec": 1193,
+    "description": "The Windows Active Directory authority and the MIT/Heimdal Kerberos stacks found on Linux/Unix based hosts often coexist in harmony within the same Kerberos realm. This talk and tool demonstration will show how this marriage is a match made in hell. Microsoft's Kerberos stack relies on non standard data to identify it's users. MIT/Heimdal Kerberos stacks do not support this non standard way of identifying users. We will look at how Active Directory configuration weaknesses can be abused to escalate privileges on *inux based hosts joined to the same Active Directory authority. This will also introduce an updated version of Rubeus to take advantage of some of these weaknesses.",
+    "view_count": 21203
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ALPsY7X42o4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P-1Il4rn3L8",
+    "language": "en",
+    "took_ms": 8890,
+    "method": null,
+    "title": "New course series with Flower Labs: Federated Learning",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240724",
+    "duration_sec": 274,
+    "description": "Enroll now: https://bit.ly/4fe8azw\n\nAddressing security and privacy in applications is vital. Applications built on LLMs pose special challenges, especially regarding private data.\n\nIntroducing Federated Learning, a two-part course series built in collaboration with Flower Labs, designed to help you learn how to use Flower, a popular open source framework, to build a federated learning system, and implement federated fine-tuning of LLMs with private data. \n\nIn the first course, called Intro to Federated Learning, you'll learn about the federated training process, how to tune and customize it, how to increase data privacy, and how to manage bandwidth usage in federated learning.\n\nIn the second course, Federated Fine-tuning of LLMs with Private Data, you’ll learn to apply federated learning to LLMs. You’ll explore challenges like data memorization and the computational resources required by LLMs, and explore techniques for efficiency and privacy enhancement, such as Parameter-Efficient Fine-Tuning (PEFT) and Differential Privacy (DP).\n\nThis two-part course series is self-contained. If you already know what federated learning is, you can start directly with part two of the course.\n\nIn detail, here’s what you’ll do in part one: \n\n- Learn how federated learning is used to train a variety of models, ranging from those for processing speech and vision all the way to the large language models, across distributed data while offering key data privacy options to users and organizations.\n- Learn how to train AI on distributed data by building, customizing, and tuning a federated learning project using Flower and PyTorch.\n- Gain intuition on how to think about Private Enhancing Technologies (PETs) in the context of federated learning, and work through an example using Differential Privacy, which protects individual data points from being traced back to their source. \n- Learn about two types of differential privacy - central and local - along with the dual approach of clipping and noising to protect private data.\n- Explore the bandwidth requirements for federated learning and how you can optimize it by reducing the update size and communication frequency.\n\nIn the second part, you’ll learn how to train powerful models with your own data in a federated way, called federated LLM fine-tuning: \n\n- Understand the importance of safely training LLMs using private data, and \n- Learn about the limitations of current training data and how Federated LLM Fine-tuning can help overcome these challenges.\n- Build an LLM that is fine-tuned with private medical data to answer complex questions, where you’ll see the benefits of federated methods when using private data.\n- Learn how federated LLM fine-tuning works and how it simplifies access to private data, reduces bandwidth with Performance-Efficient Fine-Tuning (PEFT), and increases privacy to training data with Differential Privacy. \n- Understand how LLMs can leak training data, how federated LLMs can lower this risk.\n\nLearn more: https://bit.ly/4fe8azw",
+    "view_count": 4723
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P-1Il4rn3L8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "m9_feSPH47I",
+    "language": "en",
+    "took_ms": 9563,
+    "method": null,
+    "title": "DEF CON 31 War Stories - Living Next Door to Russia - Mikko Hypponen",
+    "channel": "DEFCONConference",
+    "upload_date": "20230914",
+    "duration_sec": 2866,
+    "description": "Russia is the world’s largest country. I’ve lived all my life in Finland, about a hundred miles from the Russian border. Finland has learned to live next to a very large and very unpredictable neighbor. Both my grandfathers fought Russia in the second world war. Today, Finland ranks as one of the least corrupted countries in the world, while Russia ranks as one of the most corrupted countries. How is that even possible?\n\nAs Russia has grown more aggressive over the last decade and as it violently attacked Ukraine, attitudes about neutrality changed quicky in my home country. When Finland joined NATO in April 2023, NATO more than doubled its land border with Russia – which is probably not what Putin had in mind.\n\nThis talk will summarize the developments of the Russian cyber programs and about Russian patriotic hacker groups that got us into where we are today and makes educated guesses about where Russia will be headed next.",
+    "view_count": 65269
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] m9_feSPH47I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

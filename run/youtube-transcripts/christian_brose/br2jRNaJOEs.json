@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "br2jRNaJOEs",
+    "language": "en",
+    "took_ms": 9567,
+    "method": null,
+    "title": "The Costs of Political Corruption in America: A Discussion w",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 4795,
+    "description": "Many citizens seem to believe that Congress and state legislatures are corrupt; certainly both are held in low esteem. \r\r \r\rThe Supreme Court's 2010 decision in the Citizens United case left the feeling that campaign finance reform was dead and that political corruption had been given a green light. Recent publications have identified more precisely than ever before the nature of the political problems that bedevil representative government in the United States. \r\r \r\rHudson Institute's Center fo",
+    "view_count": 1567
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] br2jRNaJOEs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

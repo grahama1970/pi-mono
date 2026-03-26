@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rWRMq9b-lOo",
+    "language": "en",
+    "took_ms": 7686,
+    "method": null,
+    "title": "Cybersecurity for the Factory of the Future and NextGen ICS",
+    "channel": "S4 Events",
+    "upload_date": "20160809",
+    "duration_sec": 2944,
+    "description": "Dr. Kevin Jones of Airbus Global Innovations gives a view on what Airbus sees as cybersecurity for the Factory of the Future. What are the challenges and what are the solutions. They are concerned not only with secrecy of the design, but also protecting the intellectual property on HOW to manufacture the product.\n\n16:50 After an intro, Kevin discusses what Airbus is doing today at 16:50.\n\n19:45 Airbus interest and efforts in monitoring the OT zones.\n\n24:50 Airbus thoughts on the Factory of the Future. \n\n29:30 Very slick video with Kevin's narration.\n\n36:10 How to protect and maintain functionality and safety of the production line when there is no security perimeter.",
+    "view_count": 548
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rWRMq9b-lOo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

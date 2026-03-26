@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "kGvU_MuxZ2c",
+    "language": "en",
+    "took_ms": 8092,
+    "method": null,
+    "title": "DEF CON 32 - Introduction to IPv6 - Denis Smajlović",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1518,
+    "description": "Most of the Internet today is running on a legacy version of the Internet Protocol: IPv4. Despite of this, the number of engineers, especially in security, who know how to use IPv6 is relatively low. In this talk we take you through why today’s Internet does not live up to its original vision, take you back to the past to show you what the IPv4 Internet used to look like, and, through this, reveal the secrets that will allow you finally understand IPv6.",
+    "view_count": 1578
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] kGvU_MuxZ2c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

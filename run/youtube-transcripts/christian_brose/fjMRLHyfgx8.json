@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fjMRLHyfgx8",
+    "language": "en",
+    "took_ms": 9139,
+    "method": null,
+    "title": "Saturday People, Sunday People: Israel through the Eyes of a",
+    "channel": "Hudson Institute",
+    "upload_date": "20121220",
+    "duration_sec": 4620,
+    "description": "Saturday People, Sunday People (Encounter) is a unique portrait of Israel as seen through the eyes of a Christian who went for a visit and stayed for more than six years. Fascinated by a land that has become an abstraction centering on international conflicts of epic proportions, Hudson Institute Adjunct Fellow Lela Gilbert arrived in Israel on a personal pilgrimage in 2006—in the midst of a raging war. What she found was a vibrant country, enlivened by warm-hearted, lively people of great intel",
+    "view_count": 324
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fjMRLHyfgx8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

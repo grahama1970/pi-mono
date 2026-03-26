@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1Oyt3zXOI6Y",
+    "language": "en",
+    "took_ms": 7875,
+    "method": null,
+    "title": "The Take | Rebeccah Heinrichs on US Nuclear Deterrence",
+    "channel": "Hudson Institute",
+    "upload_date": "20210803",
+    "duration_sec": 149,
+    "description": "In episode two of Hudson’s new video series “The Take,” Senior Fellow Rebeccah Heinrichs details the nuclear threats currently facing the United States.\n\nHeinrichs demonstrates how valuable the U.S. nuclear arsenal is to supporting our conventional forces around the globe and deterring adversaries like China and Russia. She also warns that our aging nuclear triad needs a continued bipartisan push for modernizing our weapons and delivery systems.\n\nRead more of Rebeccah’s research on nuclear deterrence: https://www.hudson.org/research/16760-extending-new-start-makes-u-s-nuclear-modernization-imperative",
+    "view_count": 2704
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1Oyt3zXOI6Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

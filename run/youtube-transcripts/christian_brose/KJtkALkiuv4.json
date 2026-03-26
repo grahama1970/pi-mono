@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KJtkALkiuv4",
+    "language": "en",
+    "took_ms": 8363,
+    "method": null,
+    "title": "The Ambassadors Series: German Ambassador Discusses the Evolving U.S.-German Relationship",
+    "channel": "Hudson Institute",
+    "upload_date": "20181107",
+    "duration_sec": 3764,
+    "description": "On November 7, Hudson Institute hosted Emily Haber, Ambassador of Germany to the United States, for a discussion about the current state of U.S.-German relations. The conversation was moderated by Walter Russell Mead, the Ravenel B. Curry Distinguished Fellow in Strategy and Statesmanship at Hudson Institute.\r\n\r\nThe evolving U.S.-German relationship is facing new challenges. While Germany is a critical transatlantic ally, recently the two nations’ leaders have differed publicly on issues ranging from defense spending to trade and Russia. However, as vital trade partners and geopolitical allies, common ground and shared aims continue to unite the two nations. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 1018
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KJtkALkiuv4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

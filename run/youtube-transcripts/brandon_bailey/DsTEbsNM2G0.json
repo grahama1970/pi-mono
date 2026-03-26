@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DsTEbsNM2G0",
+    "language": "en",
+    "took_ms": 9254,
+    "method": null,
+    "title": "DEF CON 31 - Lockpicking Village Interview - video team",
+    "channel": "DEFCONConference",
+    "upload_date": "20230812",
+    "duration_sec": 188,
+    "description": "Ali interviews a representative from the Lock Picking Village about their offerings for DEF CON 31",
+    "view_count": 2537
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DsTEbsNM2G0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

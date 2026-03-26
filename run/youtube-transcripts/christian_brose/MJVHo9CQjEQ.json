@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MJVHo9CQjEQ",
+    "language": "en",
+    "took_ms": 9373,
+    "method": null,
+    "title": "AoD Podcast | Can a US Arsenal of Democracy Handle Conflicts on Three Fronts? (feat. Jack Detsch)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240207",
+    "duration_sec": 1370,
+    "description": "With Ukraine in Europe, Israel and Gaza in the Middle East, and Taiwann in the Indo-Pacific, the United States is staring down the barrel of wars in three different regions around the globe. Can America's modern Arsenal of Democracy support rising conflicts? If it can't, are there enough allies with vested interests to join the efforts? Foreign Policy's Jack Detsch joins host Marshall Kosloff to answer these questions and more. \n\nRead Jack's piece: https://foreignpolicy.com/2024/01/04/united-states-pentagon-defense-industrial-base-china-taiwan-ukraine-israel/",
+    "view_count": 1071
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MJVHo9CQjEQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DixZG7HCTt8",
+    "language": "en",
+    "took_ms": 9092,
+    "method": null,
+    "title": "DEF CON 29 ICS Village - Lauren Zabierek -  Collaborative Cyber Defense & Enhanced Threat Intel",
+    "channel": "DEFCONConference",
+    "upload_date": "20210920",
+    "duration_sec": 1718,
+    "description": "The recent ransomware and cyber espionage campaigns prove that a fundamental redesign of our domestic cyber defensive posture is both necessary and urgent to protect against future cyber threats.  As such, we believe the time is now to develop an integrated, networked approach to collaborative defense and intelligence analysis and sharing between the federal government, state and local governments, and the private sector. My team of student researchers and I conducted several interviews with stakeholders in both the state and federal governments and the private sector and poured over existing literature.  We've  created a roadmap toward this vision, answering how a 21st century threat can be tackled by the tools available in its own time.  We don't purport to have all the answers, but we would be interested in feedback from the community on the feasiblity and desirability of these ideas.",
+    "view_count": 569
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DixZG7HCTt8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

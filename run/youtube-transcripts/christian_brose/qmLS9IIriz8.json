@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qmLS9IIriz8",
+    "language": "en",
+    "took_ms": 8828,
+    "method": null,
+    "title": "The Promising Frontiers of U.S.-Japan Cooperation in Defense Trade and Joint Development",
+    "channel": "Hudson Institute",
+    "upload_date": "20161220",
+    "duration_sec": 4919,
+    "description": "Arthur Herman, James Schoff, Pierre Chao, Farhad Jalinous, Adele Ratcliff, and James Armington on opportunities for U.S.-Japan cooperation in science and technology in military strategy and defense innovation.",
+    "view_count": 591
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qmLS9IIriz8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

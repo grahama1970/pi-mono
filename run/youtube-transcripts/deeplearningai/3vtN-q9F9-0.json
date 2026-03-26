@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3vtN-q9F9-0",
+    "language": "en",
+    "took_ms": 7933,
+    "method": null,
+    "title": "New course with TruEra and LlamaIndex: Building and Evaluating Advanced RAG",
+    "channel": "DeepLearningAI",
+    "upload_date": "20231129",
+    "duration_sec": 104,
+    "description": "Enroll now: https://bit.ly/3RjXBRB\n\nRetrieval Augmented Generation (RAG) has emerged as a pivotal use case for large language models (LLMs), allowing these models to connect to an organization's proprietary data. \n\nOur latest course, Building and Evaluating Advanced RAG Applications, will give you the tools to enhance retrieval techniques for obtaining coherent contexts (rather than getting random blocks of text) and employ evaluation metrics to iterate efficiently to a good system. This course was created in collaboration with TruEra and LlamaIndex and is instructed by their founders, Jerry Liu and Anupam Datta.\n\nWhat you’ll learn:\n\n- Two advanced retrieval methods: Sentence-window retrieval and auto-merging retrieval that perform better compared to the baseline RAG pipeline.\n- Evaluation and experiment tracking: A way evaluate and iteratively improve your RAG pipeline's performance.\n- The RAG triad: Context Relevance, Groundedness, and Answer Relevance, which are methods to evaluate the relevance and truthfulness of your LLM's response.\n\nLearn more: https://bit.ly/3RjXBRB",
+    "view_count": 5625
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3vtN-q9F9-0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

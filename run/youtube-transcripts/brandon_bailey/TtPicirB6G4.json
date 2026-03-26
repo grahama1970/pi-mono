@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TtPicirB6G4",
+    "language": "en",
+    "took_ms": 8784,
+    "method": null,
+    "title": "DEF CON 33 - Go Malware Meets IoT - Challenges, Blind Spots, and Botnets - Asher Davila",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2856,
+    "description": "AGo malware is showing up more often, especially in IoT environments. Its flexibility and ease of cross-compilation make it attractive to attackers, but it also makes life harder for analysts and defenders. Go binaries are large, statically compiled, and structured in ways that traditional tools are not designed to handle. The runtime is unfamiliar, and things like string extraction, function identification, and behavior analysis can quickly become frustrating. This talk looks at why Go malware is hard to analyze and why some detection tools struggle to keep up. We will walk through practical tips and tools to make reversing Go malware more manageable, including how to recover types, strings, and function information. To tie everything together, we will look at a recent real-world example: Pumabot, a Go-based botnet targeting IoT surveillance devices. We will dig into how it works, what it targets, and what artifacts it leaves behind. By the end of the session, you will have a better understanding of how attackers are using Go in the wild and how to be better prepared for the next time it shows up in your analysis queue.",
+    "view_count": 4394
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TtPicirB6G4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

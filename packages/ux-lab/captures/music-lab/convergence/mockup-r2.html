@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convergence Chart - R2</title>
+    <style>
+        :root {
+            --bg-deep: #0b1220;
+            --card: #1a1a1a;
+            --nvis-green: #00ff88;
+            --nvis-red: #ff4444;
+            --nvis-amber: #ffaa00;
+            --nvis-blue: #4a9eff;
+            --nvis-accent: #7c3aed;
+            --text-white: #e2e8f0;
+            --text-dim: #64748b;
+            --border-color: rgba(255, 255, 255, 0.13);
+            --border-radius: 12px;
+            --tooltip-bg: #2a2a2e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chart-container {
+            width: 640px;
+            height: 400px;
+            background-color: var(--card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 500;
+            fill: var(--text-white);
+        }
+
+        .axis-label, .legend-text {
+            font-size: 12px;
+            fill: var(--text-dim);
+        }
+
+        .grid-line {
+            stroke: var(--border-color);
+            stroke-width: 1;
+            stroke-dasharray: 2, 3;
+        }
+
+        .line-tempo { stroke: var(--nvis-green); }
+        .line-key { stroke: var(--nvis-blue); }
+        .line-chord { stroke: var(--nvis-amber); }
+        .line-dynamics { stroke: var(--nvis-red); }
+        .line-timing { stroke: var(--nvis-accent); }
+        .line-aggregate { stroke: var(--text-white); stroke-width: 3; }
+
+        .data-dot {
+            stroke-width: 2px;
+            fill: var(--bg-deep);
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <svg class="chart-svg" viewBox="0 0 592 352">
+            <text x="0" y="16" class="chart-title">Convergence Delta</text>
+
+            <!-- Y-Axis -->
+            <g transform="translate(30, 0)">
+                <g class="axis-label" text-anchor="end">
+                    <text x="-8" y="52">1.0</text>
+                    <text x="-8" y="202">0.3</text>
+                    <text x="-8" y="277">0.0</text>
+                </g>
+                <line class="grid-line" x1="0" y1="52" x2="562" y2="52"></line>
+                <line class="grid-line" x1="0" y1="127" x2="562" y2="127"></line>
+                <line class="grid-line" x1="0" y1="277" x2="562" y2="277"></line>
+            </g>
+
+            <!-- Threshold -->
+            <g transform="translate(30, 0)">
+                <line x1="0" y1="202" x2="562" y2="202" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3, 4"></line>
+                <text class="axis-label" x="558" y="196" text-anchor="end">Threshold 0.3</text>
+            </g>
+            
+            <!-- X-Axis -->
+            <g transform="translate(30, 0)" class="axis-label" text-anchor="middle">
+                <text x="56.2" y="297">1</text>
+                <text x="281" y="297">2</text>
+                <text x="505.8" y="297">3</text>
+            </g>
+            <text class="axis-label" x="311" y="320" text-anchor="middle">Round</text>
+            <text class="axis-label" x="-150" y="20" transform="rotate(-90)" text-anchor="middle">Delta Score</text>
+
+            <!-- Data Lines -->
+            <g transform="translate(30, 0)" fill="none" stroke-width="2">
+                <polyline class="line-tempo" points="56.2,84.4 281,202 505.8,254.8" />
+                <polyline class="line-key" points="56.2,277 281,277 505.8,277" />
+                <polyline class="line-chord" points="56.2,134 281,179.6 505.8,232.4" />
+                <polyline class="line-dynamics" points="56.2,109.2 281,157.2 505.8,202" />
+                <polyline class="line-timing" points="56.2,172.6 281,202 505.8,243.6" />
+                <polyline class="line-aggregate" points="56.2,120.3 281,186.64 505.8,228.04" />
+            </g>
+
+            <!-- Legend -->
+            <g class="legend-text" transform="translate(420, 5)">
+                 <rect width="10" height="10" y="0" fill="var(--nvis-green)"></rect><text x="15" y="9">tempo_delta</text>
+                 <rect width="10" height="10" y="15" fill="var(--nvis-blue)"></rect><text x="15" y="24">key_match</text>
+                 <rect width="10" height="10" y="30" fill="var(--nvis-amber)"></rect><text x="15" y="39">chord_accuracy</text>
+                 <rect width="10" height="10" y="45" fill="var(--nvis-red)"></rect><text x="15" y="54">dynamics_rmse</text>
+                 <rect width="10" height="10" y="60" fill="var(--nvis-accent)"></rect><text x="15" y="69">timing_drift_ms</text>
+            </g>
+
+            <!-- Tooltip Mockup -->
+            <g transform="translate(311, 52)">
+                <line x1="0" y1="0" x2="0" y2="225" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+
+                <!-- Data Dots for Round 2 -->
+                <circle class="data-dot line-tempo" cx="0" cy="150" r="4"></circle>
+                <circle class="data-dot line-key" cx="0" cy="225" r="4"></circle>
+                <circle class="data-dot line-chord" cx="0" cy="127.6" r="4"></circle>
+                <circle class="data-dot line-dynamics" cx="0" cy="105.2" r="4"></circle>
+                <circle class="data-dot line-timing" cx="0" cy="150" r="4"></circle>
+                <circle class="data-dot line-aggregate" cx="0" cy="134.64" r="5"></circle>
+
+                <!-- Tooltip Box -->
+                <g transform="translate(-135, -20)">
+                    <rect width="125" height="145" rx="8" ry="8" fill="var(--tooltip-bg)" stroke="var(--border-color)" />
+                    <text fill="var(--text-white)" font-size="13" font-weight="bold" x="12" y="22">Round 2</text>
+                    <g fill="var(--text-white)" font-size="12" >
+                        <text x="12" y="42"><tspan fill="var(--text-white)" font-weight="bold">0.38</tspan> Aggregate</text>
+                        <rect x="12" y="52" width="101" height="1" fill="var(--border-color)"/>
+                        <text x="12" y="68"><tspan fill="var(--nvis-green)">●</tspan> 0.30 tempo_delta</text>
+                        <text x="12" y="83"><tspan fill="var(--nvis-blue)">●</tspan> 0.00 key_match</text>
+                        <text x="12" y="98"><tspan fill="var(--nvis-amber)">●</tspan> 0.40 chord_accuracy</text>
+                        <text x="12" y="113"><tspan fill="var(--nvis-red)">●</tspan> 0.50 dynamics_rmse</text>
+                        <text x="12" y="128"><tspan fill="var(--nvis-accent)">●</tspan> 0.30 (30ms) timing_drift</text>
+                    </g>
+                </g>
+            </g>
+
+        </svg>
+    </div>
+</body>
+</html>

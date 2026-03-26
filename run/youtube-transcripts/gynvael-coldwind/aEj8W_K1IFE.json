@@ -1,0 +1,4899 @@
+{
+  "meta": {
+    "video_id": "aEj8W_K1IFE",
+    "language": "en",
+    "took_ms": 51385,
+    "method": "whisper-local",
+    "title": "Python in a hacker's toolbox - Gynvael Coldwind - PyCon PL 2015",
+    "channel": "GynvaelEN"
+  },
+  "transcript": [
+    {
+      "text": "Ladies and gentlemen, it's my pleasure to introduce you to Quigua.",
+      "start": 0.78,
+      "duration": 5.0
+    },
+    {
+      "text": "Do we talk to each President about our last presentation today?",
+      "start": 5.78,
+      "duration": 6.0
+    },
+    {
+      "text": "Before the next presentation, and he will be talking about the security more.",
+      "start": 11.78,
+      "duration": 5.0
+    },
+    {
+      "text": "Yes, sir, hello.",
+      "start": 16.78,
+      "duration": 2.0
+    },
+    {
+      "text": "Thank you for coming.",
+      "start": 18.78,
+      "duration": 1.0
+    },
+    {
+      "text": "Yes, a short warning, as you can see, this presentation may be low level.",
+      "start": 19.78,
+      "duration": 8.9
+    },
+    {
+      "text": "If you are a living on a low level, I still encourage you to stay.",
+      "start": 28.68,
+      "duration": 5.0
+    },
+    {
+      "text": "You might learn something, and you might actually like it.",
+      "start": 33.68,
+      "duration": 4.0
+    },
+    {
+      "text": "So, okay, if you're still about me, I'm a captain of General Sector.",
+      "start": 37.68,
+      "duration": 5.0
+    },
+    {
+      "text": "I'm also the author of the book, and Polish, so those of each program of mine is going to be in English next year.",
+      "start": 42.68,
+      "duration": 9.0
+    },
+    {
+      "text": "It's a violent general of the program.",
+      "start": 51.68,
+      "duration": 2.0
+    },
+    {
+      "text": "Okay, all opinions that I expressed during this talk are not my borrowers opinions.",
+      "start": 53.68,
+      "duration": 6.0
+    },
+    {
+      "text": "I don't know if my account is opinions, or my opinions.",
+      "start": 59.68,
+      "duration": 3.0
+    },
+    {
+      "text": "Thank you for remembering that.",
+      "start": 62.68,
+      "duration": 3.0
+    },
+    {
+      "text": "This note is good, because I actually during the day time, I work for security engineer,",
+      "start": 65.68,
+      "duration": 8.34
+    },
+    {
+      "text": "slash senior software engineer.",
+      "start": 74.02,
+      "duration": 3.0
+    },
+    {
+      "text": "So, yeah, that's what that borrowers make a say.",
+      "start": 77.02,
+      "duration": 4.0
+    },
+    {
+      "text": "Anyway, civil sector is a country of the flag team, a security country of the flag team.",
+      "start": 81.02,
+      "duration": 6.0
+    },
+    {
+      "text": "Basically, as a security country of the flag is a tournament,",
+      "start": 87.02,
+      "duration": 4.0
+    },
+    {
+      "text": "during which you have to solve several tasks related to security,",
+      "start": 91.02,
+      "duration": 5.0
+    },
+    {
+      "text": "ranging from 20 to 15, they are sometimes easy,",
+      "start": 96.02,
+      "duration": 4.0
+    },
+    {
+      "text": "and sometimes they are stupid, however.",
+      "start": 100.02,
+      "duration": 3.0
+    },
+    {
+      "text": "And, well, when you play a country of the flag, you sometimes encounter also a platform related to others.",
+      "start": 103.02,
+      "duration": 8.0
+    },
+    {
+      "text": "So, a couple of them are going to actually be sheltering this presentation.",
+      "start": 111.02,
+      "duration": 6.0
+    },
+    {
+      "text": "So, what's on the menu?",
+      "start": 117.02,
+      "duration": 5.56
+    },
+    {
+      "text": "On the menu today is actually a mix of random stuff,",
+      "start": 122.58,
+      "duration": 4.0
+    },
+    {
+      "text": "which relates from one side to security, and from the other side, somehow to the platform.",
+      "start": 126.58,
+      "duration": 5.0
+    },
+    {
+      "text": "And, I tried to balance programming with security attacks on the platform.",
+      "start": 131.58,
+      "duration": 7.0
+    },
+    {
+      "text": "I'm not sure, but actually worked.",
+      "start": 138.58,
+      "duration": 2.0
+    },
+    {
+      "text": "But, I think the final piece is pretty okay.",
+      "start": 140.58,
+      "duration": 6.0
+    },
+    {
+      "text": "So, let's start with the first thing.",
+      "start": 146.58,
+      "duration": 3.0
+    },
+    {
+      "text": "This is actually one of tournament challenges.",
+      "start": 149.58,
+      "duration": 3.0
+    },
+    {
+      "text": "It was during a rush and made the capture of a tournament called SocialCityF.",
+      "start": 152.58,
+      "duration": 6.0
+    },
+    {
+      "text": "It was basically what we got, it was a top file.",
+      "start": 158.58,
+      "duration": 3.0
+    },
+    {
+      "text": "So, it was a file with a top expansion.",
+      "start": 161.58,
+      "duration": 3.0
+    },
+    {
+      "text": "After analyzing it, it turned out to be a ZX Spectrum image of a like a magnetic tape.",
+      "start": 164.58,
+      "duration": 7.0
+    },
+    {
+      "text": "And, after analyzing it further, it turned out that it's a small basic load,",
+      "start": 171.58,
+      "duration": 5.0
+    },
+    {
+      "text": "which is executed.",
+      "start": 176.58,
+      "duration": 2.0
+    },
+    {
+      "text": "The ZX Spectrum was then rewritten binary,",
+      "start": 178.58,
+      "duration": 4.0
+    },
+    {
+      "text": "which was a simple programming.",
+      "start": 182.58,
+      "duration": 2.0
+    },
+    {
+      "text": "So, we had to enter a password, and once we entered the password,",
+      "start": 184.58,
+      "duration": 4.0
+    },
+    {
+      "text": "there was a QR code thing.",
+      "start": 188.58,
+      "duration": 4.0
+    },
+    {
+      "text": "Well, it's not really QR code, of course.",
+      "start": 192.58,
+      "duration": 3.0
+    },
+    {
+      "text": "But, it's a summary.",
+      "start": 195.58,
+      "duration": 2.0
+    },
+    {
+      "text": "And, whatever password you put in there, an image for it was generated.",
+      "start": 197.58,
+      "duration": 5.0
+    },
+    {
+      "text": "And, the idea was that, well, what we thought, and we were actually right.",
+      "start": 202.58,
+      "duration": 4.0
+    },
+    {
+      "text": "But, if you enter the right password, then the image will actually be for readable text.",
+      "start": 206.58,
+      "duration": 5.0
+    },
+    {
+      "text": "So, it was probably trying to take a good summary.",
+      "start": 211.58,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, the QR code here is the meaningful picture.",
+      "start": 215.58,
+      "duration": 4.47
+    },
+    {
+      "text": "So, you don't need to find the password.",
+      "start": 220.05,
+      "duration": 3.0
+    },
+    {
+      "text": "You need to find the meaningful, meaningful picture.",
+      "start": 223.05,
+      "duration": 3.0
+    },
+    {
+      "text": "It's just important, because I actually couldn't care about the password at all.",
+      "start": 226.05,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, once we're short, this isn't a reverse engineering conference,",
+      "start": 230.05,
+      "duration": 3.0
+    },
+    {
+      "text": "I'm going to skip this.",
+      "start": 233.05,
+      "duration": 2.0
+    },
+    {
+      "text": "After writing our five or ten hours of reverse engineering,",
+      "start": 235.05,
+      "duration": 3.0
+    },
+    {
+      "text": "Z80 bytecode using IDA, and ZX Spin,",
+      "start": 238.05,
+      "duration": 5.0
+    },
+    {
+      "text": "which is an emulator, which has a VTD center driver.",
+      "start": 243.05,
+      "duration": 3.0
+    },
+    {
+      "text": "I come out of the lab.",
+      "start": 246.05,
+      "duration": 3.0
+    },
+    {
+      "text": "Similarly, this is going on.",
+      "start": 249.05,
+      "duration": 2.0
+    },
+    {
+      "text": "There is a function on the address 681,",
+      "start": 251.05,
+      "duration": 4.0
+    },
+    {
+      "text": "that's an address, and that's an expected memory, right.",
+      "start": 255.05,
+      "duration": 4.0
+    },
+    {
+      "text": "And, this function is called with a 16-bit number.",
+      "start": 259.05,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, this 16-bit number is actually a hash of a password you entered.",
+      "start": 262.05,
+      "duration": 6.0
+    },
+    {
+      "text": "And, this number is used as basically the key to the encryption.",
+      "start": 268.05,
+      "duration": 5.0
+    },
+    {
+      "text": "And, at the address of 8785,",
+      "start": 273.05,
+      "duration": 4.0
+    },
+    {
+      "text": "and the memory versus this bitmap, which is rendered right.",
+      "start": 277.05,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, since I already knew where it is,",
+      "start": 281.05,
+      "duration": 4.0
+    },
+    {
+      "text": "I could display it using some script,",
+      "start": 285.05,
+      "duration": 2.0
+    },
+    {
+      "text": "but that's because of the spin back on.",
+      "start": 287.05,
+      "duration": 3.0
+    },
+    {
+      "text": "And, well, this is both what I got.",
+      "start": 290.05,
+      "duration": 2.0
+    },
+    {
+      "text": "It's the same image of you if you compare them,",
+      "start": 292.05,
+      "duration": 3.0
+    },
+    {
+      "text": "but just display them back on solid using taxes instead of nice graphics.",
+      "start": 295.05,
+      "duration": 4.0
+    },
+    {
+      "text": "If you call that installation nice graphics, of course.",
+      "start": 299.05,
+      "duration": 4.0
+    },
+    {
+      "text": "So, the idea for my type is like this.",
+      "start": 303.05,
+      "duration": 3.0
+    },
+    {
+      "text": "And, since there are only, this is only a 16-bit number,",
+      "start": 306.05,
+      "duration": 4.0
+    },
+    {
+      "text": "that means that he has to be among 65,000 bugs that fit into a 16-bit number, right.",
+      "start": 310.05,
+      "duration": 7.0
+    },
+    {
+      "text": "So, let's just generate this image for all the numbers.",
+      "start": 317.05,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, I didn't want to sit all day, probably only here,",
+      "start": 321.05,
+      "duration": 4.0
+    },
+    {
+      "text": "and type every number, and wait for it to render, right.",
+      "start": 325.05,
+      "duration": 3.0
+    },
+    {
+      "text": "It is an informer.",
+      "start": 328.05,
+      "duration": 1.0
+    },
+    {
+      "text": "But, you wanted to, you want to download a system file.",
+      "start": 329.05,
+      "duration": 3.0
+    },
+    {
+      "text": "And, ideally, you could all generate the images inside this whole HD file.",
+      "start": 332.05,
+      "duration": 6.0
+    },
+    {
+      "text": "How to develop it?",
+      "start": 338.05,
+      "duration": 1.0
+    },
+    {
+      "text": "Well, what I did, I dropped the D.",
+      "start": 339.05,
+      "duration": 2.0
+    },
+    {
+      "text": "D1 is an X-AT.",
+      "start": 341.05,
+      "duration": 3.0
+    },
+    {
+      "text": "It's not full, but it's a partial optimization of the Z-AT CPU in Python.",
+      "start": 344.05,
+      "duration": 7.0
+    },
+    {
+      "text": "And, it's actually pretty easy to use.",
+      "start": 351.05,
+      "duration": 3.0
+    },
+    {
+      "text": "It's just a CPU.",
+      "start": 354.05,
+      "duration": 1.0
+    },
+    {
+      "text": "There are no peripherals, just only the CPU.",
+      "start": 355.05,
+      "duration": 4.0
+    },
+    {
+      "text": "So, what we had to do is we had to create, like, a minimal class switch,",
+      "start": 359.05,
+      "duration": 4.0
+    },
+    {
+      "text": "pretended to be wrong memory, which was just an array, basically.",
+      "start": 363.05,
+      "duration": 3.0
+    },
+    {
+      "text": "Load the memory down of, of, of, extra of the world,",
+      "start": 366.05,
+      "duration": 6.0
+    },
+    {
+      "text": "and so, once X was running by application, it was down to memory,",
+      "start": 372.05,
+      "duration": 4.0
+    },
+    {
+      "text": "and loaded it into the RAM.",
+      "start": 376.05,
+      "duration": 2.0
+    },
+    {
+      "text": "And, next, you started to set up the CPU.",
+      "start": 378.05,
+      "duration": 3.0
+    },
+    {
+      "text": "Setting up the CPU, basically, pull it down to just transcribe it",
+      "start": 381.05,
+      "duration": 5.76
+    },
+    {
+      "text": "from the debugger of all of the registered values",
+      "start": 386.81,
+      "duration": 3.0
+    },
+    {
+      "text": "to, to make the environment identical.",
+      "start": 389.81,
+      "duration": 4.0
+    },
+    {
+      "text": "We already knew that memory would be identical, obviously.",
+      "start": 393.81,
+      "duration": 3.0
+    },
+    {
+      "text": "And then, basically, this is a for loop, right?",
+      "start": 396.81,
+      "duration": 2.0
+    },
+    {
+      "text": "So, for each half, we run in a loop, the execution of this finished rendering",
+      "start": 398.81,
+      "duration": 6.0
+    },
+    {
+      "text": "of this decompression, sorry, the conclusion.",
+      "start": 404.81,
+      "duration": 3.0
+    },
+    {
+      "text": "After that, and after that, I mean after five hours,",
+      "start": 407.81,
+      "duration": 4.0
+    },
+    {
+      "text": "because it took some time.",
+      "start": 411.81,
+      "duration": 2.0
+    },
+    {
+      "text": "It was emulation after all.",
+      "start": 413.81,
+      "duration": 2.0
+    },
+    {
+      "text": "And, by phone, I actually used five hours to make it faster,",
+      "start": 415.81,
+      "duration": 3.0
+    },
+    {
+      "text": "and that was still to take a couple of hours.",
+      "start": 418.81,
+      "duration": 2.0
+    },
+    {
+      "text": "I get a 115 megabyte file, which, which happened in the file.",
+      "start": 420.81,
+      "duration": 5.0
+    },
+    {
+      "text": "Now, actually, I have this blackstone here.",
+      "start": 425.81,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, is this?",
+      "start": 429.81,
+      "duration": 2.0
+    },
+    {
+      "text": "Have you find a flag in a file, which has the 10050 megabytes?",
+      "start": 431.81,
+      "duration": 7.0
+    },
+    {
+      "text": "It's actually super easy.",
+      "start": 438.81,
+      "duration": 2.0
+    },
+    {
+      "text": "If this is supposed to be like readable text,",
+      "start": 440.81,
+      "duration": 3.0
+    },
+    {
+      "text": "it's going to have a lot of blank space, right?",
+      "start": 443.81,
+      "duration": 3.0
+    },
+    {
+      "text": "So, it doesn't have 420 spacers.",
+      "start": 446.81,
+      "duration": 2.0
+    },
+    {
+      "text": "I actually did that already.",
+      "start": 448.81,
+      "duration": 2.0
+    },
+    {
+      "text": "Just to, you know, to test.",
+      "start": 450.81,
+      "duration": 2.0
+    },
+    {
+      "text": "And, you know, some of the refined congratulations,",
+      "start": 452.81,
+      "duration": 4.0
+    },
+    {
+      "text": "actually, is hand-led back.",
+      "start": 456.81,
+      "duration": 3.0
+    },
+    {
+      "text": "Yeah, so this was, I was actually pretty happy about the instrumentation",
+      "start": 459.81,
+      "duration": 4.0
+    },
+    {
+      "text": "for the database page.",
+      "start": 463.81,
+      "duration": 1.0
+    },
+    {
+      "text": "I was in Python, and there was some error or anything,",
+      "start": 464.81,
+      "duration": 3.0
+    },
+    {
+      "text": "which is, you know, right on the end, never read.",
+      "start": 467.81,
+      "duration": 3.0
+    },
+    {
+      "text": "So, let's go to the next chart.",
+      "start": 470.81,
+      "duration": 7.29
+    },
+    {
+      "text": "This one is, it didn't involve any programming in Python,",
+      "start": 478.1,
+      "duration": 5.0
+    },
+    {
+      "text": "but it did involve Python.",
+      "start": 483.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, what you got was a hello dot R file.",
+      "start": 485.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, hello dot R after I'm parring.",
+      "start": 488.1,
+      "duration": 2.0
+    },
+    {
+      "text": "It was quite a lot of dynamic libraries for Linux,",
+      "start": 490.1,
+      "duration": 4.0
+    },
+    {
+      "text": "library dot zip file, and also a hello executable.",
+      "start": 494.1,
+      "duration": 5.0
+    },
+    {
+      "text": "If you are meant, well, you had to pass the argument,",
+      "start": 500.1,
+      "duration": 5.0
+    },
+    {
+      "text": "and the environment you had to pass the password,",
+      "start": 505.1,
+      "duration": 3.0
+    },
+    {
+      "text": "and it told me, hey, this is correct, or this is not correct.",
+      "start": 508.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Obviously, we didn't know the password.",
+      "start": 510.1,
+      "duration": 2.0
+    },
+    {
+      "text": "So, it's, I don't know, which we didn't like.",
+      "start": 512.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, it told me that it's a compiled Python.",
+      "start": 515.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Well, what we did, they actually found the Python interpreter",
+      "start": 518.1,
+      "duration": 3.0
+    },
+    {
+      "text": "and gave it a UIC file, right?",
+      "start": 521.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Only UIC without the search group.",
+      "start": 524.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, what do you do when you get a UIC file?",
+      "start": 526.1,
+      "duration": 2.0
+    },
+    {
+      "text": "When you download the disassembly,",
+      "start": 528.1,
+      "duration": 2.0
+    },
+    {
+      "text": "the disassembly will actually take a compiler for Python, right?",
+      "start": 530.1,
+      "duration": 3.0
+    },
+    {
+      "text": "And you run it and you get, well, the likelihood.",
+      "start": 533.1,
+      "duration": 4.0
+    },
+    {
+      "text": "Yes, the likelihood, but the search group.",
+      "start": 537.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, it didn't really work.",
+      "start": 540.1,
+      "duration": 3.0
+    },
+    {
+      "text": "After looking was better and trying to build a disassembly",
+      "start": 543.1,
+      "duration": 5.0
+    },
+    {
+      "text": "and then compile it, it did a talk.",
+      "start": 548.1,
+      "duration": 3.0
+    },
+    {
+      "text": "When I compiled it, the door, I found the disassembly",
+      "start": 551.1,
+      "duration": 2.0
+    },
+    {
+      "text": "with the door, you know, that this model,",
+      "start": 553.1,
+      "duration": 2.0
+    },
+    {
+      "text": "which is in the default installation,",
+      "start": 555.1,
+      "duration": 2.0
+    },
+    {
+      "text": "and it outputted some invalid obstacles.",
+      "start": 557.1,
+      "duration": 5.0
+    },
+    {
+      "text": "Now, this is an attempt to decompile,",
+      "start": 562.1,
+      "duration": 4.0
+    },
+    {
+      "text": "which gave a similar result.",
+      "start": 566.1,
+      "duration": 3.0
+    },
+    {
+      "text": "What we did, they actually modified the interpreter",
+      "start": 569.1,
+      "duration": 3.0
+    },
+    {
+      "text": "and changed the number of obstacles.",
+      "start": 572.1,
+      "duration": 2.0
+    },
+    {
+      "text": "So, that existed to work.",
+      "start": 574.1,
+      "duration": 2.0
+    },
+    {
+      "text": "So, that's actually not bad.",
+      "start": 576.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Total voltage is not going to be a guessing game.",
+      "start": 578.1,
+      "duration": 4.0
+    },
+    {
+      "text": "For example, the inputs, there was something",
+      "start": 583.1,
+      "duration": 3.0
+    },
+    {
+      "text": "at the end of the function, which is important.",
+      "start": 586.1,
+      "duration": 2.0
+    },
+    {
+      "text": "It was at the end of the function,",
+      "start": 588.1,
+      "duration": 1.0
+    },
+    {
+      "text": "and those inputs are all correct, right?",
+      "start": 589.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, what do we expect at the end of the function?",
+      "start": 591.1,
+      "duration": 2.0
+    },
+    {
+      "text": "What are the return of all correct?",
+      "start": 593.1,
+      "duration": 2.0
+    },
+    {
+      "text": "So, if you look at the Python source code,",
+      "start": 595.1,
+      "duration": 3.0
+    },
+    {
+      "text": "you will see that one has to run a code as the value of 84",
+      "start": 598.1,
+      "duration": 5.0
+    },
+    {
+      "text": "and the average has a decrease.",
+      "start": 603.1,
+      "duration": 2.0
+    },
+    {
+      "text": "So, what we did was swap a couple of numbers",
+      "start": 605.1,
+      "duration": 2.0
+    },
+    {
+      "text": "which are really close together, which is easy to guess.",
+      "start": 607.1,
+      "duration": 4.0
+    },
+    {
+      "text": "In the end, I basically using the disassembled,",
+      "start": 611.1,
+      "duration": 4.0
+    },
+    {
+      "text": "trying to guess in the random places,",
+      "start": 615.1,
+      "duration": 2.0
+    },
+    {
+      "text": "what the output should be, and trying to using a X editor.",
+      "start": 617.1,
+      "duration": 3.0
+    },
+    {
+      "text": "So, after I'm going to find my UI C file,",
+      "start": 620.1,
+      "duration": 3.0
+    },
+    {
+      "text": "I did the disassembled, basically,",
+      "start": 623.1,
+      "duration": 3.0
+    },
+    {
+      "text": "what the swap is needed,",
+      "start": 626.1,
+      "duration": 2.0
+    },
+    {
+      "text": "but a couple of more of them, but it wasn't much.",
+      "start": 628.1,
+      "duration": 4.0
+    },
+    {
+      "text": "After a while, you could actually disassemble it.",
+      "start": 632.1,
+      "duration": 4.0
+    },
+    {
+      "text": "I didn't go for a decompiler.",
+      "start": 636.1,
+      "duration": 1.0
+    },
+    {
+      "text": "I went for the disassembled,",
+      "start": 637.1,
+      "duration": 2.0
+    },
+    {
+      "text": "because I expected some of those would be still badly,",
+      "start": 639.1,
+      "duration": 3.0
+    },
+    {
+      "text": "and I would still have to fix them during reverse-entry ring.",
+      "start": 642.1,
+      "duration": 4.0
+    },
+    {
+      "text": "This was one function called hatred.",
+      "start": 646.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Straight, it actually was a root,",
+      "start": 648.1,
+      "duration": 2.0
+    },
+    {
+      "text": "which called another function called a root,",
+      "start": 650.1,
+      "duration": 4.0
+    },
+    {
+      "text": "or a root-aid chart.",
+      "start": 654.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, this function is super short, right?",
+      "start": 656.1,
+      "duration": 2.0
+    },
+    {
+      "text": "As you can see, it's coming in here.",
+      "start": 658.1,
+      "duration": 2.0
+    },
+    {
+      "text": "It's been maybe a couple of stores",
+      "start": 660.1,
+      "duration": 2.0
+    },
+    {
+      "text": "for reverse-entry ring of the fight.",
+      "start": 662.1,
+      "duration": 3.0
+    },
+    {
+      "text": "A pair of two globals, which basically do nothing,",
+      "start": 665.1,
+      "duration": 3.0
+    },
+    {
+      "text": "and we don't care about them,",
+      "start": 668.1,
+      "duration": 1.0
+    },
+    {
+      "text": "vendors load fast, which pushes,",
+      "start": 669.1,
+      "duration": 3.0
+    },
+    {
+      "text": "in this case, the C argument,",
+      "start": 672.1,
+      "duration": 2.0
+    },
+    {
+      "text": "C is the argument of a function",
+      "start": 674.1,
+      "duration": 2.0
+    },
+    {
+      "text": "to respect for the type of the stack machine.",
+      "start": 676.1,
+      "duration": 3.0
+    },
+    {
+      "text": "And vendors, it calls function 1,",
+      "start": 679.1,
+      "duration": 3.0
+    },
+    {
+      "text": "but function 1, as you can see,",
+      "start": 682.1,
+      "duration": 2.0
+    },
+    {
+      "text": "a line above is actually the forward function.",
+      "start": 684.1,
+      "duration": 2.0
+    },
+    {
+      "text": "So, we can write that, but it was actually equal to forward.",
+      "start": 686.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Next, we load a constant value of 303,",
+      "start": 689.1,
+      "duration": 3.0
+    },
+    {
+      "text": "put it on the stack of the string,",
+      "start": 692.1,
+      "duration": 2.0
+    },
+    {
+      "text": "because it's a stack of string land.",
+      "start": 694.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Then we do subtraction.",
+      "start": 696.1,
+      "duration": 2.0
+    },
+    {
+      "text": "We get this after about below the amount.",
+      "start": 698.1,
+      "duration": 3.0
+    },
+    {
+      "text": "We do addition.",
+      "start": 701.1,
+      "duration": 1.0
+    },
+    {
+      "text": "We load another constant.",
+      "start": 702.1,
+      "duration": 2.0
+    },
+    {
+      "text": "We do module operation.",
+      "start": 704.1,
+      "duration": 4.0
+    },
+    {
+      "text": "And then we load another constant,",
+      "start": 708.1,
+      "duration": 3.0
+    },
+    {
+      "text": "we do addition, and then we call the last function",
+      "start": 711.1,
+      "duration": 3.0
+    },
+    {
+      "text": "and the return.",
+      "start": 714.1,
+      "duration": 1.0
+    },
+    {
+      "text": "So, pretty short, pretty easy to understand,",
+      "start": 715.1,
+      "duration": 3.0
+    },
+    {
+      "text": "even if you just can read English,",
+      "start": 718.1,
+      "duration": 2.0
+    },
+    {
+      "text": "and never do it by from Microsoft.",
+      "start": 720.1,
+      "duration": 2.0
+    },
+    {
+      "text": "The final code would look like this.",
+      "start": 722.1,
+      "duration": 3.48
+    },
+    {
+      "text": "Actually, the bottom part is that",
+      "start": 725.58,
+      "duration": 3.0
+    },
+    {
+      "text": "in 303 function, the virtual engineer",
+      "start": 728.58,
+      "duration": 2.0
+    },
+    {
+      "text": "delivers, because the function",
+      "start": 730.58,
+      "duration": 2.0
+    },
+    {
+      "text": "was in 303, and we needed to record it.",
+      "start": 732.58,
+      "duration": 3.0
+    },
+    {
+      "text": "And the only thing I think is the minus sign",
+      "start": 735.58,
+      "duration": 2.0
+    },
+    {
+      "text": "is to the order in the forward loop.",
+      "start": 737.58,
+      "duration": 3.0
+    },
+    {
+      "text": "Yeah.",
+      "start": 740.58,
+      "duration": 1.0
+    },
+    {
+      "text": "After running it, we get the modified",
+      "start": 741.58,
+      "duration": 2.0
+    },
+    {
+      "text": "interpreters, our people, which was the flag,",
+      "start": 743.58,
+      "duration": 2.0
+    },
+    {
+      "text": "which we decided to get the points.",
+      "start": 745.58,
+      "duration": 4.69
+    },
+    {
+      "text": "Cool.",
+      "start": 750.27,
+      "duration": 1.0
+    },
+    {
+      "text": "So, let's move to the next problem.",
+      "start": 751.27,
+      "duration": 3.0
+    },
+    {
+      "text": "How many of you know what this is after overflow?",
+      "start": 754.27,
+      "duration": 3.0
+    },
+    {
+      "text": "How many of you know what this return",
+      "start": 757.27,
+      "duration": 3.99
+    },
+    {
+      "text": "oriented programming?",
+      "start": 761.26,
+      "duration": 2.0
+    },
+    {
+      "text": "Okay, cool.",
+      "start": 763.26,
+      "duration": 1.0
+    },
+    {
+      "text": "Perfect.",
+      "start": 764.26,
+      "duration": 1.0
+    },
+    {
+      "text": "You can read it, because the next item",
+      "start": 765.26,
+      "duration": 2.0
+    },
+    {
+      "text": "is going to be talking about the return length programming.",
+      "start": 767.26,
+      "duration": 3.0
+    },
+    {
+      "text": "So, just to be sure, we are on the same page.",
+      "start": 770.26,
+      "duration": 3.0
+    },
+    {
+      "text": "What this is after overflow?",
+      "start": 773.26,
+      "duration": 2.0
+    },
+    {
+      "text": "We have a stack, and think about, like,",
+      "start": 775.26,
+      "duration": 2.0
+    },
+    {
+      "text": "see, or actually, a standard level stack, right?",
+      "start": 777.26,
+      "duration": 2.0
+    },
+    {
+      "text": "You have return address, say,",
+      "start": 779.26,
+      "duration": 2.0
+    },
+    {
+      "text": "where, if you call a function,",
+      "start": 781.26,
+      "duration": 2.0
+    },
+    {
+      "text": "return address gets set on the stack.",
+      "start": 783.26,
+      "duration": 2.0
+    },
+    {
+      "text": "Any other buffer ends something right?",
+      "start": 785.26,
+      "duration": 2.0
+    },
+    {
+      "text": "The buffer ends up being overflows,",
+      "start": 787.26,
+      "duration": 2.0
+    },
+    {
+      "text": "the buffer ends overwise, or return address.",
+      "start": 789.26,
+      "duration": 2.0
+    },
+    {
+      "text": "Basically, return address security, right?",
+      "start": 791.26,
+      "duration": 3.0
+    },
+    {
+      "text": "And now, in the old times, the attacker would override the return address",
+      "start": 794.26,
+      "duration": 7.0
+    },
+    {
+      "text": "with the address of the buffer itself,",
+      "start": 801.26,
+      "duration": 3.0
+    },
+    {
+      "text": "and if the buffer could put machine code to get executed.",
+      "start": 804.26,
+      "duration": 3.0
+    },
+    {
+      "text": "So, when the function returns,",
+      "start": 807.26,
+      "duration": 2.0
+    },
+    {
+      "text": "it actually returns to the stack,",
+      "start": 809.26,
+      "duration": 2.0
+    },
+    {
+      "text": "and so it's basically, think, attacker provided machine code,",
+      "start": 811.26,
+      "duration": 2.0
+    },
+    {
+      "text": "which, for example, dials back to his home",
+      "start": 813.26,
+      "duration": 3.0
+    },
+    {
+      "text": "and gives him a shell on your server.",
+      "start": 816.26,
+      "duration": 3.0
+    },
+    {
+      "text": "Okay.",
+      "start": 819.26,
+      "duration": 1.0
+    },
+    {
+      "text": "So, that's how it was done in the old times.",
+      "start": 820.26,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, it's a total hardware.",
+      "start": 823.26,
+      "duration": 2.0
+    },
+    {
+      "text": "Because something called a mobile execution database",
+      "start": 825.26,
+      "duration": 3.0
+    },
+    {
+      "text": "was added to Windows CPUs and a VCDU.",
+      "start": 828.26,
+      "duration": 2.0
+    },
+    {
+      "text": "It actually allows you to tell that this part of memory,",
+      "start": 830.26,
+      "duration": 3.0
+    },
+    {
+      "text": "for example, the stack, is not executed for you.",
+      "start": 833.26,
+      "duration": 2.0
+    },
+    {
+      "text": "It cannot execute any machine code hardware.",
+      "start": 835.26,
+      "duration": 3.0
+    },
+    {
+      "text": "What is good?",
+      "start": 838.26,
+      "duration": 1.0
+    },
+    {
+      "text": "Because one needs one attacker tries to return to the shell code,",
+      "start": 839.26,
+      "duration": 3.0
+    },
+    {
+      "text": "and it crashes.",
+      "start": 842.26,
+      "duration": 2.0
+    },
+    {
+      "text": "It does an interrupt from an application skill, which is good.",
+      "start": 844.26,
+      "duration": 4.0
+    },
+    {
+      "text": "Now, here is where return oriented programming comes into.",
+      "start": 848.26,
+      "duration": 4.0
+    },
+    {
+      "text": "Mainly, what we do today is you override,",
+      "start": 852.26,
+      "duration": 3.0
+    },
+    {
+      "text": "if you don't put your machine code anywhere,",
+      "start": 855.26,
+      "duration": 3.0
+    },
+    {
+      "text": "you actually don't have machine code in most of the exploits of the old.",
+      "start": 858.26,
+      "duration": 3.0
+    },
+    {
+      "text": "What you do have, you have a couple of more return addresses.",
+      "start": 861.26,
+      "duration": 4.0
+    },
+    {
+      "text": "The idea is that the first return address returns to some code,",
+      "start": 865.26,
+      "duration": 5.0
+    },
+    {
+      "text": "which is already in memory.",
+      "start": 870.26,
+      "duration": 2.0
+    },
+    {
+      "text": "And the mental code works the return instruction,",
+      "start": 872.26,
+      "duration": 3.0
+    },
+    {
+      "text": "which triggers getting the next return address from the stack,",
+      "start": 875.26,
+      "duration": 4.0
+    },
+    {
+      "text": "and returning to a template to that missing code,",
+      "start": 879.26,
+      "duration": 3.0
+    },
+    {
+      "text": "which is also ended with the return instruction.",
+      "start": 882.26,
+      "duration": 4.0
+    },
+    {
+      "text": "At the end, it's basically a chain of returns,",
+      "start": 886.26,
+      "duration": 3.0
+    },
+    {
+      "text": "and between the returns are meaningful instructions,",
+      "start": 889.26,
+      "duration": 4.0
+    },
+    {
+      "text": "which are supposed to do something.",
+      "start": 893.26,
+      "duration": 2.0
+    },
+    {
+      "text": "For example, what do you return it to usually,",
+      "start": 895.26,
+      "duration": 3.0
+    },
+    {
+      "text": "when you have the application or the libraries?",
+      "start": 898.26,
+      "duration": 3.0
+    },
+    {
+      "text": "Let's assume this is where code and machine code.",
+      "start": 901.26,
+      "duration": 2.0
+    },
+    {
+      "text": "You look for getters on getters on a random basis,",
+      "start": 903.26,
+      "duration": 3.0
+    },
+    {
+      "text": "and you return to them.",
+      "start": 906.26,
+      "duration": 2.0
+    },
+    {
+      "text": "I can't remember if you look like this.",
+      "start": 908.26,
+      "duration": 3.28
+    },
+    {
+      "text": "This doesn't, but this is a large or piece of code.",
+      "start": 911.54,
+      "duration": 3.0
+    },
+    {
+      "text": "And you just jump at the end of a function,",
+      "start": 914.54,
+      "duration": 3.0
+    },
+    {
+      "text": "and there is just a power cx on the red,",
+      "start": 917.54,
+      "duration": 3.0
+    },
+    {
+      "text": "which means, because you control the stack,",
+      "start": 920.54,
+      "duration": 3.0
+    },
+    {
+      "text": "so I can set the rcx register to a body on the stack,",
+      "start": 923.54,
+      "duration": 6.0
+    },
+    {
+      "text": "and then go to the next getter.",
+      "start": 929.54,
+      "duration": 2.0
+    },
+    {
+      "text": "And having a couple of set getters,",
+      "start": 931.54,
+      "duration": 3.0
+    },
+    {
+      "text": "or actually multiple set getters,",
+      "start": 934.54,
+      "duration": 2.0
+    },
+    {
+      "text": "allows you to execute any code you like,",
+      "start": 936.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and you don't execute your machine code,",
+      "start": 938.54,
+      "duration": 2.0
+    },
+    {
+      "text": "you execute machine code, which is already in memory.",
+      "start": 940.54,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, how do you find the getters?",
+      "start": 943.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Well, you use item, for example.",
+      "start": 945.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Personally, I use this term three.",
+      "start": 947.54,
+      "duration": 4.0
+    },
+    {
+      "text": "This is something I'm enjoying for,",
+      "start": 951.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which has bindings for background as well.",
+      "start": 953.54,
+      "duration": 2.0
+    },
+    {
+      "text": "And how do you find getters?",
+      "start": 955.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Well, after setting up some stuff,",
+      "start": 957.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which I didn't buy to the automatically,",
+      "start": 959.54,
+      "duration": 2.0
+    },
+    {
+      "text": "but it actually should be double, which is legal.",
+      "start": 961.54,
+      "duration": 4.0
+    },
+    {
+      "text": "First, a simple function, which gets a small buffer of bytes,",
+      "start": 965.54,
+      "duration": 5.0
+    },
+    {
+      "text": "and then this assembles them.",
+      "start": 970.54,
+      "duration": 2.0
+    },
+    {
+      "text": "So it translates the machine code into human readable text form.",
+      "start": 972.54,
+      "duration": 5.0
+    },
+    {
+      "text": "And it actually looks for the instruction.",
+      "start": 977.54,
+      "duration": 4.0
+    },
+    {
+      "text": "It gets to be written in the instruction and breaks.",
+      "start": 981.54,
+      "duration": 2.0
+    },
+    {
+      "text": "And it also has a list of the text, human readable form,",
+      "start": 983.54,
+      "duration": 4.0
+    },
+    {
+      "text": "if you remember.",
+      "start": 987.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, the name of this script,",
+      "start": 989.54,
+      "duration": 4.0
+    },
+    {
+      "text": "which is the super value written,",
+      "start": 993.54,
+      "duration": 2.0
+    },
+    {
+      "text": "that's the typical script,",
+      "start": 995.54,
+      "duration": 2.0
+    },
+    {
+      "text": "does this for each sequence of bytes,",
+      "start": 997.54,
+      "duration": 4.0
+    },
+    {
+      "text": "does this as a word,",
+      "start": 1001.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and find all the unique,",
+      "start": 1003.54,
+      "duration": 3.0
+    },
+    {
+      "text": "lists of instructions recipe,",
+      "start": 1006.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and put them in the file.",
+      "start": 1008.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, the file is like five megabytes, usually,",
+      "start": 1010.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and they're quite a lot of getters.",
+      "start": 1012.54,
+      "duration": 2.0
+    },
+    {
+      "text": "You can see some examples on the right.",
+      "start": 1014.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Usually, you basically look for stuff like this,",
+      "start": 1016.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which is simple, easy, just some pops,",
+      "start": 1018.54,
+      "duration": 2.0
+    },
+    {
+      "text": "some reds, maybe one hour of instructions.",
+      "start": 1020.54,
+      "duration": 2.0
+    },
+    {
+      "text": "You don't care about anything else.",
+      "start": 1022.54,
+      "duration": 2.0
+    },
+    {
+      "text": "It has this, actually, enough.",
+      "start": 1024.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Usually.",
+      "start": 1026.54,
+      "duration": 2.0
+    },
+    {
+      "text": "And if you're lucky to find a spy,",
+      "start": 1028.54,
+      "duration": 2.0
+    },
+    {
+      "text": "a megabyte, five megabytes is quite easy to look",
+      "start": 1030.54,
+      "duration": 2.0
+    },
+    {
+      "text": "with, but when you're not lucky,",
+      "start": 1032.54,
+      "duration": 2.0
+    },
+    {
+      "text": "the file is like 200 lines,",
+      "start": 1034.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and you have no options.",
+      "start": 1036.54,
+      "duration": 2.0
+    },
+    {
+      "text": "You have five getters, which just don't work.",
+      "start": 1038.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, how do you create a,",
+      "start": 1040.54,
+      "duration": 2.0
+    },
+    {
+      "text": "you need to finalize the next word.",
+      "start": 1042.54,
+      "duration": 2.0
+    },
+    {
+      "text": "How do you create a payload out of these parts,",
+      "start": 1044.54,
+      "duration": 4.0
+    },
+    {
+      "text": "where you use Python?",
+      "start": 1048.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, the way I do it,",
+      "start": 1050.54,
+      "duration": 2.0
+    },
+    {
+      "text": "is, you just create a function called DQ,",
+      "start": 1052.54,
+      "duration": 4.0
+    },
+    {
+      "text": "which stands for data,",
+      "start": 1056.54,
+      "duration": 2.0
+    },
+    {
+      "text": "where you program the assembly, you know that.",
+      "start": 1058.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Then, out of that,",
+      "start": 1060.54,
+      "duration": 2.0
+    },
+    {
+      "text": "it just gets a number,",
+      "start": 1062.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and creates an 8,",
+      "start": 1064.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and calls it doesn't 8 by value.",
+      "start": 1066.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, out of this,",
+      "start": 1068.54,
+      "duration": 2.0
+    },
+    {
+      "text": "you create small blocks.",
+      "start": 1070.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Each small block of this works exactly one gadget.",
+      "start": 1072.54,
+      "duration": 2.0
+    },
+    {
+      "text": "In this example,",
+      "start": 1074.54,
+      "duration": 2.0
+    },
+    {
+      "text": "I created a function called CenterBI,",
+      "start": 1076.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which basically fills the small text buffer",
+      "start": 1078.54,
+      "duration": 2.0
+    },
+    {
+      "text": "with the address of the gadget,",
+      "start": 1080.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and the value it's supposed to set.",
+      "start": 1082.54,
+      "duration": 2.0
+    },
+    {
+      "text": "So you don't have to worry,",
+      "start": 1084.54,
+      "duration": 2.0
+    },
+    {
+      "text": "creating about getters.",
+      "start": 1086.54,
+      "duration": 1.0
+    },
+    {
+      "text": "It's called expansion, which is of my register.",
+      "start": 1087.54,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, out of these expansions,",
+      "start": 1089.54,
+      "duration": 2.0
+    },
+    {
+      "text": "you create about your functions.",
+      "start": 1091.54,
+      "duration": 2.0
+    },
+    {
+      "text": "For example, read, which is,",
+      "start": 1093.54,
+      "duration": 2.0
+    },
+    {
+      "text": "calls the read function,",
+      "start": 1095.54,
+      "duration": 2.0
+    },
+    {
+      "text": "from my kernel,",
+      "start": 1097.54,
+      "duration": 2.0
+    },
+    {
+      "text": "with the arguments you gave it with,",
+      "start": 1099.54,
+      "duration": 2.0
+    },
+    {
+      "text": "the file district of the buffer,",
+      "start": 1101.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which is the address of memory approach,",
+      "start": 1103.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and I count how many bytes you want to read there.",
+      "start": 1105.54,
+      "duration": 2.0
+    },
+    {
+      "text": "So,",
+      "start": 1107.54,
+      "duration": 2.0
+    },
+    {
+      "text": "I think that you actually",
+      "start": 1109.54,
+      "duration": 2.0
+    },
+    {
+      "text": "will get more of these,",
+      "start": 1111.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and at the end, you put a quite large",
+      "start": 1113.54,
+      "duration": 2.0
+    },
+    {
+      "text": "network application,",
+      "start": 1115.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which has several getters,",
+      "start": 1117.54,
+      "duration": 2.0
+    },
+    {
+      "text": "which you would like.",
+      "start": 1119.54,
+      "duration": 2.0
+    },
+    {
+      "text": "In this case,",
+      "start": 1121.54,
+      "duration": 2.0
+    },
+    {
+      "text": "it changes the privileges on some memory,",
+      "start": 1123.54,
+      "duration": 2.0
+    },
+    {
+      "text": "so it's both right,",
+      "start": 1125.54,
+      "duration": 2.0
+    },
+    {
+      "text": "called a nice and usable,",
+      "start": 1127.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and three double of course,",
+      "start": 1129.54,
+      "duration": 2.0
+    },
+    {
+      "text": "and reads your data",
+      "start": 1131.54,
+      "duration": 2.0
+    },
+    {
+      "text": "from a budget center to the application,",
+      "start": 1133.54,
+      "duration": 2.0
+    },
+    {
+      "text": "it's a network application.",
+      "start": 1135.54,
+      "duration": 2.0
+    },
+    {
+      "text": "It puts it there,",
+      "start": 1137.54,
+      "duration": 2.0
+    },
+    {
+      "text": "not a sign location,",
+      "start": 1139.54,
+      "duration": 2.0
+    },
+    {
+      "text": "so you can just drop it",
+      "start": 1141.54,
+      "duration": 3.34
+    },
+    {
+      "text": "and drop your machine.",
+      "start": 1144.88,
+      "duration": 1.0
+    },
+    {
+      "text": "So, how it looks like,",
+      "start": 1145.88,
+      "duration": 2.0
+    },
+    {
+      "text": "take over it,",
+      "start": 1147.88,
+      "duration": 2.0
+    },
+    {
+      "text": "that's the second set of numbers.",
+      "start": 1149.88,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, at the end, you put it",
+      "start": 1151.88,
+      "duration": 2.0
+    },
+    {
+      "text": "somewhere in the exploit,",
+      "start": 1153.88,
+      "duration": 2.0
+    },
+    {
+      "text": "this is the call exploit,",
+      "start": 1155.88,
+      "duration": 2.0
+    },
+    {
+      "text": "and well, you just send it",
+      "start": 1157.88,
+      "duration": 2.0
+    },
+    {
+      "text": "to the application,",
+      "start": 1159.88,
+      "duration": 2.0
+    },
+    {
+      "text": "among others, that I hope that it works.",
+      "start": 1161.88,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, actually, I found,",
+      "start": 1163.88,
+      "duration": 2.0
+    },
+    {
+      "text": "I thought it would be the best language for that,",
+      "start": 1165.88,
+      "duration": 2.0
+    },
+    {
+      "text": "tested this in a couple of other languages,",
+      "start": 1167.88,
+      "duration": 2.0
+    },
+    {
+      "text": "like, for example, CN,",
+      "start": 1169.88,
+      "duration": 2.0
+    },
+    {
+      "text": "it's a tiny,",
+      "start": 1171.88,
+      "duration": 2.0
+    },
+    {
+      "text": "configuration.",
+      "start": 1173.88,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, first, I never think",
+      "start": 1175.88,
+      "duration": 2.0
+    },
+    {
+      "text": "which adds to this,",
+      "start": 1177.88,
+      "duration": 2.0
+    },
+    {
+      "text": "so I'm going to show later,",
+      "start": 1179.88,
+      "duration": 2.0
+    },
+    {
+      "text": "it's a default library type on,",
+      "start": 1181.88,
+      "duration": 2.0
+    },
+    {
+      "text": "which actually",
+      "start": 1183.88,
+      "duration": 2.0
+    },
+    {
+      "text": "gets the socket",
+      "start": 1185.88,
+      "duration": 2.0
+    },
+    {
+      "text": "and creates an interactive terminal,",
+      "start": 1187.88,
+      "duration": 2.0
+    },
+    {
+      "text": "whatever you type,",
+      "start": 1189.88,
+      "duration": 1.0
+    },
+    {
+      "text": "is sent through the socket,",
+      "start": 1190.88,
+      "duration": 2.0
+    },
+    {
+      "text": "and whatever",
+      "start": 1192.88,
+      "duration": 2.0
+    },
+    {
+      "text": "that is sent through the socket to you,",
+      "start": 1194.88,
+      "duration": 2.0
+    },
+    {
+      "text": "gets shown on the screen,",
+      "start": 1196.88,
+      "duration": 2.0
+    },
+    {
+      "text": "which is perfect,",
+      "start": 1198.88,
+      "duration": 2.0
+    },
+    {
+      "text": "if you actually Spanish",
+      "start": 1200.88,
+      "duration": 2.0
+    },
+    {
+      "text": "you don't want to do it out of entry.",
+      "start": 1202.88,
+      "duration": 4.14
+    },
+    {
+      "text": "Okay.",
+      "start": 1207.02,
+      "duration": 1.0
+    },
+    {
+      "text": "At that point,",
+      "start": 1208.02,
+      "duration": 1.0
+    },
+    {
+      "text": "this part was actually an example for you.",
+      "start": 1209.02,
+      "duration": 2.0
+    },
+    {
+      "text": "So,",
+      "start": 1211.02,
+      "duration": 2.0
+    },
+    {
+      "text": "this is",
+      "start": 1213.02,
+      "duration": 2.0
+    },
+    {
+      "text": "could also be called as",
+      "start": 1215.02,
+      "duration": 2.0
+    },
+    {
+      "text": "expected.",
+      "start": 1217.02,
+      "duration": 4.37
+    },
+    {
+      "text": "Okay, so this is actually",
+      "start": 1221.39,
+      "duration": 2.0
+    },
+    {
+      "text": "a true story,",
+      "start": 1223.39,
+      "duration": 1.0
+    },
+    {
+      "text": "well, I'm not nice.",
+      "start": 1224.39,
+      "duration": 1.0
+    },
+    {
+      "text": "This is the first company,",
+      "start": 1225.39,
+      "duration": 2.0
+    },
+    {
+      "text": "a web service which uses pickle,",
+      "start": 1227.39,
+      "duration": 2.0
+    },
+    {
+      "text": "to run pickle,",
+      "start": 1229.39,
+      "duration": 1.0
+    },
+    {
+      "text": "and save data,",
+      "start": 1230.39,
+      "duration": 1.0
+    },
+    {
+      "text": "and save meaning,",
+      "start": 1231.39,
+      "duration": 1.0
+    },
+    {
+      "text": "attacker control.",
+      "start": 1232.39,
+      "duration": 1.0
+    },
+    {
+      "text": "In this case,",
+      "start": 1233.39,
+      "duration": 1.0
+    },
+    {
+      "text": "the data is in cookies,",
+      "start": 1234.39,
+      "duration": 2.0
+    },
+    {
+      "text": "so you enter a page,",
+      "start": 1236.39,
+      "duration": 1.0
+    },
+    {
+      "text": "and the cookies is sent.",
+      "start": 1237.39,
+      "duration": 1.0
+    },
+    {
+      "text": "Now, for a couple of voices,",
+      "start": 1238.39,
+      "duration": 2.0
+    },
+    {
+      "text": "those sessions, as you know,",
+      "start": 1240.39,
+      "duration": 1.0
+    },
+    {
+      "text": "we can store session by just giving",
+      "start": 1241.39,
+      "duration": 2.0
+    },
+    {
+      "text": "a user a session ID,",
+      "start": 1243.39,
+      "duration": 1.0
+    },
+    {
+      "text": "and it sends you the session ID.",
+      "start": 1244.39,
+      "duration": 3.0
+    },
+    {
+      "text": "The other way is to store this",
+      "start": 1247.39,
+      "duration": 2.0
+    },
+    {
+      "text": "page on the browser,",
+      "start": 1249.39,
+      "duration": 4.0
+    },
+    {
+      "text": "basically, a user.",
+      "start": 1253.39,
+      "duration": 1.0
+    },
+    {
+      "text": "This is a little faster,",
+      "start": 1254.39,
+      "duration": 1.0
+    },
+    {
+      "text": "if we have a super large service",
+      "start": 1255.39,
+      "duration": 2.0
+    },
+    {
+      "text": "with thousands of servers,",
+      "start": 1257.39,
+      "duration": 1.0
+    },
+    {
+      "text": "because we don't have to worry",
+      "start": 1258.39,
+      "duration": 2.0
+    },
+    {
+      "text": "the database for each session,",
+      "start": 1260.39,
+      "duration": 1.0
+    },
+    {
+      "text": "you just get over the data.",
+      "start": 1261.39,
+      "duration": 2.0
+    },
+    {
+      "text": "The problem is when the data is unsigned",
+      "start": 1263.39,
+      "duration": 2.0
+    },
+    {
+      "text": "as it is in this case.",
+      "start": 1265.39,
+      "duration": 2.0
+    },
+    {
+      "text": "So, you have to state,",
+      "start": 1267.39,
+      "duration": 2.0
+    },
+    {
+      "text": "and the state only looks like this,",
+      "start": 1269.39,
+      "duration": 2.0
+    },
+    {
+      "text": "and as you can see,",
+      "start": 1271.39,
+      "duration": 1.0
+    },
+    {
+      "text": "basically, like a concatenation",
+      "start": 1272.39,
+      "duration": 1.0
+    },
+    {
+      "text": "of some names,",
+      "start": 1273.39,
+      "duration": 2.0
+    },
+    {
+      "text": "and, yeah, in global,",
+      "start": 1275.39,
+      "duration": 2.0
+    },
+    {
+      "text": "also, what's the strings you see here?",
+      "start": 1277.39,
+      "duration": 2.0
+    },
+    {
+      "text": "Perfect.",
+      "start": 1279.39,
+      "duration": 2.0
+    },
+    {
+      "text": "This is 64,",
+      "start": 1281.39,
+      "duration": 2.0
+    },
+    {
+      "text": "and the company is not in virtual course,",
+      "start": 1283.39,
+      "duration": 3.0
+    },
+    {
+      "text": "so after looking into it,",
+      "start": 1286.39,
+      "duration": 2.0
+    },
+    {
+      "text": "for example,",
+      "start": 1288.39,
+      "duration": 1.0
+    },
+    {
+      "text": "with WiFi,",
+      "start": 1289.39,
+      "duration": 1.0
+    },
+    {
+      "text": "the list of WiFi and WiFi and so on,",
+      "start": 1290.39,
+      "duration": 2.0
+    },
+    {
+      "text": "actually, yes.",
+      "start": 1292.39,
+      "duration": 1.0
+    },
+    {
+      "text": "Now, you get this.",
+      "start": 1293.39,
+      "duration": 2.16
+    },
+    {
+      "text": "Now, this string is actually like pure data for pickles.",
+      "start": 1295.55,
+      "duration": 3.28
+    },
+    {
+      "text": "So pickle looks like this.",
+      "start": 1298.83,
+      "duration": 1.24
+    },
+    {
+      "text": "This means this data has been pickled,",
+      "start": 1300.07,
+      "duration": 1.84
+    },
+    {
+      "text": "and you need to un-pickle it to read it, which we can do.",
+      "start": 1301.91,
+      "duration": 4.64
+    },
+    {
+      "text": "For example, like this.",
+      "start": 1306.55,
+      "duration": 1.48
+    },
+    {
+      "text": "And you get it.",
+      "start": 1308.03,
+      "duration": 1.2
+    },
+    {
+      "text": "This is already a Python dictionary.",
+      "start": 1309.23,
+      "duration": 3.44
+    },
+    {
+      "text": "Now, as you know, probably if you had the recommendation",
+      "start": 1312.67,
+      "duration": 4.08
+    },
+    {
+      "text": "for pickles, this huge red word do not use pickle.",
+      "start": 1316.75,
+      "duration": 5.32
+    },
+    {
+      "text": "Now, why do you not?",
+      "start": 1322.07,
+      "duration": 1.64
+    },
+    {
+      "text": "Why shouldn't you use pickle?",
+      "start": 1323.71,
+      "duration": 2.2
+    },
+    {
+      "text": "Let's go for obnoxualization for a second.",
+      "start": 1325.91,
+      "duration": 3.0
+    },
+    {
+      "text": "Jason does not support obnoxualization",
+      "start": 1328.91,
+      "duration": 3.52
+    },
+    {
+      "text": "and the serialization.",
+      "start": 1332.43,
+      "duration": 1.0
+    },
+    {
+      "text": "He just supports plain old data, perfect,",
+      "start": 1333.43,
+      "duration": 3.8
+    },
+    {
+      "text": "from a secret perspective.",
+      "start": 1337.23,
+      "duration": 1.2
+    },
+    {
+      "text": "I'm not sure if the programmer will have it the same way.",
+      "start": 1338.43,
+      "duration": 2.64
+    },
+    {
+      "text": "Now, PhD, the third one works.",
+      "start": 1341.07,
+      "duration": 3.72
+    },
+    {
+      "text": "It has something called serialized, and I actually",
+      "start": 1344.79,
+      "duration": 3.92
+    },
+    {
+      "text": "support creating an array, which is then",
+      "start": 1348.71,
+      "duration": 3.76
+    },
+    {
+      "text": "cast into an object.",
+      "start": 1352.47,
+      "duration": 1.28
+    },
+    {
+      "text": "It's protected, but this array is actually",
+      "start": 1353.75,
+      "duration": 1.96
+    },
+    {
+      "text": "like the fields of sound object, which is very good.",
+      "start": 1355.71,
+      "duration": 4.32
+    },
+    {
+      "text": "A method called wakeup is called only,",
+      "start": 1360.03,
+      "duration": 1.88
+    },
+    {
+      "text": "but the method is of course a programmer provided.",
+      "start": 1361.91,
+      "duration": 2.44
+    },
+    {
+      "text": "And then the extractor is called at the end,",
+      "start": 1364.35,
+      "duration": 2.0
+    },
+    {
+      "text": "because well, it's an object.",
+      "start": 1366.35,
+      "duration": 1.96
+    },
+    {
+      "text": "Now, the problem is that in some cases,",
+      "start": 1368.31,
+      "duration": 1.56
+    },
+    {
+      "text": "you can actually use a technique similar to a return",
+      "start": 1369.87,
+      "duration": 3.36
+    },
+    {
+      "text": "oriented programming to accuse it and run,",
+      "start": 1373.23,
+      "duration": 2.28
+    },
+    {
+      "text": "use like old edges already for bad purposes.",
+      "start": 1375.51,
+      "duration": 2.88
+    },
+    {
+      "text": "But well, let's go.",
+      "start": 1378.39,
+      "duration": 1.8
+    },
+    {
+      "text": "I come.",
+      "start": 1380.19,
+      "duration": 1.76
+    },
+    {
+      "text": "What make up does is make up actually allows",
+      "start": 1381.95,
+      "duration": 2.76
+    },
+    {
+      "text": "an attacker to select a extractor from a given module,",
+      "start": 1384.71,
+      "duration": 2.96
+    },
+    {
+      "text": "from any module actually, and tell what parameters",
+      "start": 1387.67,
+      "duration": 3.28
+    },
+    {
+      "text": "should this extractor be called with.",
+      "start": 1390.95,
+      "duration": 3.04
+    },
+    {
+      "text": "For example, we can call some process",
+      "start": 1393.99,
+      "duration": 2.36
+    },
+    {
+      "text": "the open which basically creates any process.",
+      "start": 1396.35,
+      "duration": 3.64
+    },
+    {
+      "text": "Now, I actually wanted to include my own function,",
+      "start": 1399.99,
+      "duration": 4.28
+    },
+    {
+      "text": "how to do it, but I found this guys website.",
+      "start": 1404.27,
+      "duration": 3.68
+    },
+    {
+      "text": "And it's actually pretty awesome of you last year,",
+      "start": 1407.95,
+      "duration": 1.92
+    },
+    {
+      "text": "so let's just use this.",
+      "start": 1409.87,
+      "duration": 2.04
+    },
+    {
+      "text": "Now, what's happening here is very similar code",
+      "start": 1411.91,
+      "duration": 3.52
+    },
+    {
+      "text": "to reduce, which when an object is pickled,",
+      "start": 1415.43,
+      "duration": 2.16
+    },
+    {
+      "text": "this method is being called.",
+      "start": 1417.59,
+      "duration": 1.52
+    },
+    {
+      "text": "And it's supposed to tell iPhone, what do you need",
+      "start": 1419.11,
+      "duration": 3.44
+    },
+    {
+      "text": "to make up this object later on?",
+      "start": 1422.55,
+      "duration": 3.28
+    },
+    {
+      "text": "And thanks to it, we can create a new class code,",
+      "start": 1425.83,
+      "duration": 3.88
+    },
+    {
+      "text": "which when it is and we go, calls the open",
+      "start": 1429.71,
+      "duration": 2.8
+    },
+    {
+      "text": "with vnsh, obviously, with standard input output",
+      "start": 1432.51,
+      "duration": 4.2
+    },
+    {
+      "text": "and now we're directly to fd.",
+      "start": 1436.71,
+      "duration": 1.68
+    },
+    {
+      "text": "fd and vnsh is 20.",
+      "start": 1438.39,
+      "duration": 1.44
+    },
+    {
+      "text": "Now, why is it 20?",
+      "start": 1439.83,
+      "duration": 1.0
+    },
+    {
+      "text": "It's not supposed to be 20, we're very contented.",
+      "start": 1440.83,
+      "duration": 2.72
+    },
+    {
+      "text": "I'll tell you in a second.",
+      "start": 1443.55,
+      "duration": 1.88
+    },
+    {
+      "text": "Anyway, the final string looks fine as well.",
+      "start": 1445.43,
+      "duration": 1.92
+    },
+    {
+      "text": "Basically, 64 right.",
+      "start": 1447.35,
+      "duration": 1.72
+    },
+    {
+      "text": "Now, why to contain this list or anything else?",
+      "start": 1449.07,
+      "duration": 3.8
+    },
+    {
+      "text": "Mainly, when you connect to a HTTP server,",
+      "start": 1452.87,
+      "duration": 4.08
+    },
+    {
+      "text": "a software that is now related on the system,",
+      "start": 1456.95,
+      "duration": 1.96
+    },
+    {
+      "text": "just forward your connection.",
+      "start": 1458.91,
+      "duration": 2.16
+    },
+    {
+      "text": "Now, if you can create a new process",
+      "start": 1461.07,
+      "duration": 3.28
+    },
+    {
+      "text": "and all the standard inputs and outputs are",
+      "start": 1464.35,
+      "duration": 2.72
+    },
+    {
+      "text": "already directly to the same subject number,",
+      "start": 1467.07,
+      "duration": 2.96
+    },
+    {
+      "text": "because we are identified by numbers,",
+      "start": 1470.03,
+      "duration": 1.96
+    },
+    {
+      "text": "then you can interact with each other.",
+      "start": 1471.99,
+      "duration": 2.0
+    },
+    {
+      "text": "And this is why I like this.",
+      "start": 1473.99,
+      "duration": 2.76
+    },
+    {
+      "text": "What we have to do is we have to maximize this",
+      "start": 1476.75,
+      "duration": 2.28
+    },
+    {
+      "text": "what I would actually do to improve my work.",
+      "start": 1479.03,
+      "duration": 4.36
+    },
+    {
+      "text": "OK, so a better version, a better version,",
+      "start": 1483.39,
+      "duration": 2.52
+    },
+    {
+      "text": "or if I could even do it like this.",
+      "start": 1485.91,
+      "duration": 2.08
+    },
+    {
+      "text": "Now, I actually have a demo for this.",
+      "start": 1487.99,
+      "duration": 3.52
+    },
+    {
+      "text": "So I have this large file, a load of load quality code,",
+      "start": 1491.51,
+      "duration": 6.56
+    },
+    {
+      "text": "which serves as my base for this kind of coding.",
+      "start": 1498.07,
+      "duration": 4.4
+    },
+    {
+      "text": "And as you can see, I basically connect.",
+      "start": 1502.47,
+      "duration": 3.04
+    },
+    {
+      "text": "You probably cannot see, I don't",
+      "start": 1505.51,
+      "duration": 1.32
+    },
+    {
+      "text": "know if I'm a bigger storyboard, but OK, is it any better?",
+      "start": 1506.83,
+      "duration": 9.14
+    },
+    {
+      "text": "Yeah, so I do connect to the web server.",
+      "start": 1515.97,
+      "duration": 4.68
+    },
+    {
+      "text": "And then I send a super-small HDB request",
+      "start": 1520.65,
+      "duration": 4.52
+    },
+    {
+      "text": "to the PC set.",
+      "start": 1525.17,
+      "duration": 1.36
+    },
+    {
+      "text": "To a demo, the PC is my first PC server,",
+      "start": 1526.53,
+      "duration": 2.28
+    },
+    {
+      "text": "so it doesn't do anything evil yet.",
+      "start": 1528.81,
+      "duration": 1.88
+    },
+    {
+      "text": "Basically, it does not exist.",
+      "start": 1540.99,
+      "duration": 1.48
+    },
+    {
+      "text": "You can just sense a nice insight.",
+      "start": 1542.47,
+      "duration": 2.6
+    },
+    {
+      "text": "But that's the desire set.",
+      "start": 1545.07,
+      "duration": 2.16
+    },
+    {
+      "text": "Now, I can have the time to think here",
+      "start": 1547.23,
+      "duration": 3.44
+    },
+    {
+      "text": "to get a more interactive file, which",
+      "start": 1550.67,
+      "duration": 1.92
+    },
+    {
+      "text": "isn't going to be really interactive yet, anyway.",
+      "start": 1552.59,
+      "duration": 5.11
+    },
+    {
+      "text": "OK, it works.",
+      "start": 1557.7,
+      "duration": 1.04
+    },
+    {
+      "text": "Basically, the server has some processing",
+      "start": 1558.74,
+      "duration": 2.32
+    },
+    {
+      "text": "to do and work like a set of five seconds.",
+      "start": 1561.06,
+      "duration": 2.96
+    },
+    {
+      "text": "That's the story.",
+      "start": 1564.02,
+      "duration": 0.88
+    },
+    {
+      "text": "And we have some HTML code work, so it seems it works.",
+      "start": 1564.9,
+      "duration": 5.2
+    },
+    {
+      "text": "Now, let's copy the part of the presentation.",
+      "start": 1570.1,
+      "duration": 3.2
+    },
+    {
+      "text": "We do need to try and do the FD to something else.",
+      "start": 1573.3,
+      "duration": 10.56
+    },
+    {
+      "text": "So I'm going to copy the file.",
+      "start": 1583.86,
+      "duration": 13.2
+    },
+    {
+      "text": "OK, now we need to set the FD to something",
+      "start": 1597.06,
+      "duration": 2.44
+    },
+    {
+      "text": "that will probably be OK.",
+      "start": 1599.5,
+      "duration": 2.88
+    },
+    {
+      "text": "It's easy.",
+      "start": 1602.38,
+      "duration": 0.84
+    },
+    {
+      "text": "If it works, it works a lot of traffic to the server.",
+      "start": 1603.22,
+      "duration": 2.64
+    },
+    {
+      "text": "It's not easy, it will be easy because there's no traffic.",
+      "start": 1605.86,
+      "duration": 3.32
+    },
+    {
+      "text": "So it's like this.",
+      "start": 1609.18,
+      "duration": 0.8
+    },
+    {
+      "text": "You have standard input, output, and output of error, right?",
+      "start": 1609.98,
+      "duration": 3.72
+    },
+    {
+      "text": "So that's free.",
+      "start": 1613.7,
+      "duration": 1.2
+    },
+    {
+      "text": "And the server is always allocated from 0, so that's 0, 1, 2.",
+      "start": 1614.9,
+      "duration": 4.04
+    },
+    {
+      "text": "Now, the server listening server listens",
+      "start": 1618.94,
+      "duration": 2.28
+    },
+    {
+      "text": "for connections, which is free.",
+      "start": 1621.22,
+      "duration": 2.04
+    },
+    {
+      "text": "So that incoming connection will probably be horrible.",
+      "start": 1623.26,
+      "duration": 5.84
+    },
+    {
+      "text": "So we do this.",
+      "start": 1629.1,
+      "duration": 1.6
+    },
+    {
+      "text": "Now, this is actually in the coaxing roles.",
+      "start": 1630.7,
+      "duration": 17.62
+    },
+    {
+      "text": "And now, we're going because it doesn't like me",
+      "start": 1648.32,
+      "duration": 7.75
+    },
+    {
+      "text": "and we're coloring the characters.",
+      "start": 1656.07,
+      "duration": 2.64
+    },
+    {
+      "text": "And then we need to remove this nice error.",
+      "start": 1658.71,
+      "duration": 8.84
+    },
+    {
+      "text": "I need to spell on the mic as well.",
+      "start": 1667.55,
+      "duration": 16.63
+    },
+    {
+      "text": "So we basically got a free show on this by using",
+      "start": 1684.18,
+      "duration": 3.12
+    },
+    {
+      "text": "the coaxing mechanism.",
+      "start": 1687.3,
+      "duration": 2.72
+    },
+    {
+      "text": "And then just to, if you really need to use the coaxing,",
+      "start": 1690.02,
+      "duration": 4.32
+    },
+    {
+      "text": "you can actually do two things.",
+      "start": 1694.34,
+      "duration": 1.2
+    },
+    {
+      "text": "That's another way, right?",
+      "start": 1695.54,
+      "duration": 1.16
+    },
+    {
+      "text": "You either sign, your traffic will sign this coaxing,",
+      "start": 1696.7,
+      "duration": 3.56
+    },
+    {
+      "text": "so it cannot be changed because we don't actually",
+      "start": 1700.26,
+      "duration": 1.8
+    },
+    {
+      "text": "only actually modify the people class",
+      "start": 1703.02,
+      "duration": 2.96
+    },
+    {
+      "text": "to about 5,000 out of you to the serialized objects,",
+      "start": 1705.98,
+      "duration": 5.0
+    },
+    {
+      "text": "which is very easy.",
+      "start": 1710.98,
+      "duration": 4.04
+    },
+    {
+      "text": "Cool.",
+      "start": 1715.02,
+      "duration": 0.64
+    },
+    {
+      "text": "So let's go back to the next topic, which is",
+      "start": 1715.66,
+      "duration": 3.76
+    },
+    {
+      "text": "scripting things with Python.",
+      "start": 1719.42,
+      "duration": 3.16
+    },
+    {
+      "text": "Actually, 2.0 can, you know, ignore the algorithm.",
+      "start": 1722.58,
+      "duration": 3.0
+    },
+    {
+      "text": "It has a wonderful API.",
+      "start": 1725.58,
+      "duration": 1.96
+    },
+    {
+      "text": "Now, it doesn't.",
+      "start": 1727.54,
+      "duration": 0.8
+    },
+    {
+      "text": "Actually, it is like one of the most worst APIs,",
+      "start": 1728.34,
+      "duration": 3.36
+    },
+    {
+      "text": "so except what is documented.",
+      "start": 1731.98,
+      "duration": 2.76
+    },
+    {
+      "text": "The documentation is really cool,",
+      "start": 1734.74,
+      "duration": 1.36
+    },
+    {
+      "text": "so you can actually make heads of it.",
+      "start": 1736.1,
+      "duration": 1.96
+    },
+    {
+      "text": "And they are so good.",
+      "start": 1738.06,
+      "duration": 1.32
+    },
+    {
+      "text": "And they are, you know, right code like that.",
+      "start": 1739.38,
+      "duration": 2.8
+    },
+    {
+      "text": "You can create a set of your functions,",
+      "start": 1742.18,
+      "duration": 2.64
+    },
+    {
+      "text": "which works well with it.",
+      "start": 1744.82,
+      "duration": 2.44
+    },
+    {
+      "text": "Actually, either API for Python is better with this bet,",
+      "start": 1747.26,
+      "duration": 5.04
+    },
+    {
+      "text": "and it's not documented at all, so yeah, so it isn't.",
+      "start": 1752.3,
+      "duration": 3.84
+    },
+    {
+      "text": "But anyway, it helped me a couple of times, for example,",
+      "start": 1756.14,
+      "duration": 2.72
+    },
+    {
+      "text": "there was an Okamu request me.",
+      "start": 1758.86,
+      "duration": 2.56
+    },
+    {
+      "text": "Okamu was entitled to a little spinary,",
+      "start": 1761.42,
+      "duration": 3.0
+    },
+    {
+      "text": "and you had to reverse engineer it,",
+      "start": 1764.42,
+      "duration": 1.56
+    },
+    {
+      "text": "and the problem was that Okamu stores all the strings",
+      "start": 1765.98,
+      "duration": 3.52
+    },
+    {
+      "text": "as well lists and tiny link requests.",
+      "start": 1769.5,
+      "duration": 5.28
+    },
+    {
+      "text": "So I must say that what Python came really",
+      "start": 1774.78,
+      "duration": 3.56
+    },
+    {
+      "text": "can be here to script TV server, actually,",
+      "start": 1778.34,
+      "duration": 2.52
+    },
+    {
+      "text": "because strings would look more readable like this",
+      "start": 1780.86,
+      "duration": 3.24
+    },
+    {
+      "text": "than just reading the first letter",
+      "start": 1784.1,
+      "duration": 3.24
+    },
+    {
+      "text": "and having to write five lines of code",
+      "start": 1787.34,
+      "duration": 1.64
+    },
+    {
+      "text": "and do you give it by hand to jump to the next letter.",
+      "start": 1788.98,
+      "duration": 4.56
+    },
+    {
+      "text": "Actually, trying to script, well,",
+      "start": 1793.54,
+      "duration": 2.32
+    },
+    {
+      "text": "do you get to more of Python?",
+      "start": 1795.86,
+      "duration": 1.48
+    },
+    {
+      "text": "I got some user interface running.",
+      "start": 1797.34,
+      "duration": 2.4
+    },
+    {
+      "text": "This is actually running in Chrome,",
+      "start": 1799.74,
+      "duration": 1.44
+    },
+    {
+      "text": "as it was a down API server.",
+      "start": 1801.18,
+      "duration": 4.56
+    },
+    {
+      "text": "But, of course, I needed to do some of it.",
+      "start": 1805.74,
+      "duration": 2.0
+    },
+    {
+      "text": "In Python, I never finished it.",
+      "start": 1807.74,
+      "duration": 1.56
+    },
+    {
+      "text": "I probably open sources some time in the future.",
+      "start": 1809.3,
+      "duration": 4.2
+    },
+    {
+      "text": "Now, Python is actually used in other places",
+      "start": 1813.5,
+      "duration": 3.52
+    },
+    {
+      "text": "I mentioned I already win back,",
+      "start": 1817.02,
+      "duration": 3.56
+    },
+    {
+      "text": "which is the Windows terminal of the bugger.",
+      "start": 1820.58,
+      "duration": 1.96
+    },
+    {
+      "text": "It's also scriptable with Python,",
+      "start": 1822.54,
+      "duration": 1.8
+    },
+    {
+      "text": "but it is certainly exception.",
+      "start": 1824.34,
+      "duration": 1.76
+    },
+    {
+      "text": "And indeed, the bugger also scriptable.",
+      "start": 1826.1,
+      "duration": 3.0
+    },
+    {
+      "text": "Now, I use it at least once in either.",
+      "start": 1829.1,
+      "duration": 3.8
+    },
+    {
+      "text": "There was a funny task which could,",
+      "start": 1832.9,
+      "duration": 2.16
+    },
+    {
+      "text": "well, you know that there are 64-bit processes",
+      "start": 1835.06,
+      "duration": 2.44
+    },
+    {
+      "text": "and 30-bit processes, right?",
+      "start": 1837.5,
+      "duration": 2.24
+    },
+    {
+      "text": "Now, you can mix code of 32 and 64-bit in one binary.",
+      "start": 1839.74,
+      "duration": 5.72
+    },
+    {
+      "text": "And I actually, there was a function",
+      "start": 1845.54,
+      "duration": 1.6
+    },
+    {
+      "text": "which was sometimes called as 32-bit code,",
+      "start": 1847.14,
+      "duration": 2.28
+    },
+    {
+      "text": "and sometimes it's 64-bit code,",
+      "start": 1849.42,
+      "duration": 1.88
+    },
+    {
+      "text": "which got really annoying to analyze it.",
+      "start": 1851.3,
+      "duration": 2.48
+    },
+    {
+      "text": "But using Python, we could just disassemble it",
+      "start": 1853.78,
+      "duration": 3.96
+    },
+    {
+      "text": "in both ways, probably in other way,",
+      "start": 1857.74,
+      "duration": 1.64
+    },
+    {
+      "text": "was code to the comments.",
+      "start": 1859.38,
+      "duration": 1.28
+    },
+    {
+      "text": "Okay, and one of the last examples.",
+      "start": 1861.7,
+      "duration": 2.28
+    },
+    {
+      "text": "So, there's this thing in Python.",
+      "start": 1865.26,
+      "duration": 2.12
+    },
+    {
+      "text": "This is called sandboxing.",
+      "start": 1867.38,
+      "duration": 1.92
+    },
+    {
+      "text": "You basically know what type of Python is, right?",
+      "start": 1869.3,
+      "duration": 1.56
+    },
+    {
+      "text": "You evaluate code which comes.",
+      "start": 1870.86,
+      "duration": 1.6
+    },
+    {
+      "text": "And you can actually, in Python, specify that,",
+      "start": 1872.46,
+      "duration": 1.92
+    },
+    {
+      "text": "hey, the code which comes from an external user,",
+      "start": 1874.38,
+      "duration": 4.52
+    },
+    {
+      "text": "I actually want you to only access some functions",
+      "start": 1878.9,
+      "duration": 2.6
+    },
+    {
+      "text": "not all functions, on the power of the environment.",
+      "start": 1881.5,
+      "duration": 2.6
+    },
+    {
+      "text": "And you can specify it.",
+      "start": 1884.1,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, let's assume we have,",
+      "start": 1886.1,
+      "duration": 2.92
+    },
+    {
+      "text": "this is actually also based on a true story.",
+      "start": 1890.3,
+      "duration": 2.16
+    },
+    {
+      "text": "Let's assume that we have a server",
+      "start": 1892.46,
+      "duration": 2.8
+    },
+    {
+      "text": "with this calculator shown here.",
+      "start": 1895.26,
+      "duration": 3.08
+    },
+    {
+      "text": "Now, you send a formula and it gives you the result, right?",
+      "start": 1898.34,
+      "duration": 5.0
+    },
+    {
+      "text": "Six, thanks, nine is for two.",
+      "start": 1903.34,
+      "duration": 2.12
+    },
+    {
+      "text": "Now, if you send something like this,",
+      "start": 1906.46,
+      "duration": 2.16
+    },
+    {
+      "text": "like zero, such as zero,",
+      "start": 1908.62,
+      "duration": 1.6
+    },
+    {
+      "text": "because if you're an attacker with a string,",
+      "start": 1910.22,
+      "duration": 2.0
+    },
+    {
+      "text": "you use some fun stuff and you see how it behaves.",
+      "start": 1912.22,
+      "duration": 3.64
+    },
+    {
+      "text": "And this case would be case by sending an error,",
+      "start": 1915.86,
+      "duration": 2.2
+    },
+    {
+      "text": "zero division error, which immediately tells you",
+      "start": 1918.06,
+      "duration": 2.92
+    },
+    {
+      "text": "this is Python, right?",
+      "start": 1920.98,
+      "duration": 1.88
+    },
+    {
+      "text": "Now, let's find a little more with a formula.",
+      "start": 1924.18,
+      "duration": 2.48
+    },
+    {
+      "text": "What would have happened when we use this formula?",
+      "start": 1926.66,
+      "duration": 2.68
+    },
+    {
+      "text": "A, it would say that it's an error.",
+      "start": 1930.34,
+      "duration": 3.24
+    },
+    {
+      "text": "B, it's a type error and C,",
+      "start": 1933.58,
+      "duration": 2.48
+    },
+    {
+      "text": "it will get detected at the UI.",
+      "start": 1936.06,
+      "duration": 2.12
+    },
+    {
+      "text": "Man, NETDI is already after you just run.",
+      "start": 1938.18,
+      "duration": 2.76
+    },
+    {
+      "text": "Why a name error, why a type error?",
+      "start": 1942.58,
+      "duration": 1.72
+    },
+    {
+      "text": "So a name error would be when open function is not found,",
+      "start": 1944.3,
+      "duration": 2.84
+    },
+    {
+      "text": "because it's not an environment.",
+      "start": 1947.14,
+      "duration": 1.52
+    },
+    {
+      "text": "A type error is because we cannot add one to a file.",
+      "start": 1948.66,
+      "duration": 3.24
+    },
+    {
+      "text": "In this case, we get a name error.",
+      "start": 1953.38,
+      "duration": 1.92
+    },
+    {
+      "text": "So open is not an environment.",
+      "start": 1955.3,
+      "duration": 2.52
+    },
+    {
+      "text": "We do another test.",
+      "start": 1958.78,
+      "duration": 1.0
+    },
+    {
+      "text": "Let's do land, like, have this array of three other man's",
+      "start": 1959.78,
+      "duration": 3.36
+    },
+    {
+      "text": "and this is something to do, right?",
+      "start": 1963.14,
+      "duration": 2.84
+    },
+    {
+      "text": "So what do we get?",
+      "start": 1965.98,
+      "duration": 1.32
+    },
+    {
+      "text": "A negative error, five, meaning the land is actually",
+      "start": 1967.3,
+      "duration": 3.44
+    },
+    {
+      "text": "in the environment or we get detected.",
+      "start": 1970.74,
+      "duration": 2.48
+    },
+    {
+      "text": "In this case, we get name error again.",
+      "start": 1973.22,
+      "duration": 2.2
+    },
+    {
+      "text": "So probably we know that the sandals are super limited.",
+      "start": 1975.42,
+      "duration": 2.92
+    },
+    {
+      "text": "It's going to be like maybe sign rules,",
+      "start": 1978.34,
+      "duration": 2.28
+    },
+    {
+      "text": "maybe cosign rules, maybe some other functions",
+      "start": 1980.62,
+      "duration": 1.92
+    },
+    {
+      "text": "that are not about it.",
+      "start": 1982.54,
+      "duration": 1.0
+    },
+    {
+      "text": "There will be no land, no open, no file, no error objects.",
+      "start": 1983.54,
+      "duration": 3.28
+    },
+    {
+      "text": "Let's do another test, just to confirm it.",
+      "start": 1988.14,
+      "duration": 2.24
+    },
+    {
+      "text": "We have an array that we don't use the land,",
+      "start": 1990.38,
+      "duration": 1.68
+    },
+    {
+      "text": "I write that you just call it the network",
+      "start": 1992.06,
+      "duration": 1.64
+    },
+    {
+      "text": "which is in the back, right, responsible for it.",
+      "start": 1993.7,
+      "duration": 2.52
+    },
+    {
+      "text": "And what do we get this time?",
+      "start": 1996.22,
+      "duration": 1.0
+    },
+    {
+      "text": "Obviously, we get back, right?",
+      "start": 1997.22,
+      "duration": 1.32
+    },
+    {
+      "text": "Because when a code is super, which means we can use",
+      "start": 1998.54,
+      "duration": 2.24
+    },
+    {
+      "text": "double, we can use under stores,",
+      "start": 2000.78,
+      "duration": 1.36
+    },
+    {
+      "text": "and we can use, well, brackets over here,",
+      "start": 2002.14,
+      "duration": 2.84
+    },
+    {
+      "text": "because we can use number.",
+      "start": 2004.98,
+      "duration": 2.2
+    },
+    {
+      "text": "So let's do some snooping around",
+      "start": 2007.18,
+      "duration": 3.36
+    },
+    {
+      "text": "Python internals, I would say,",
+      "start": 2010.54,
+      "duration": 2.48
+    },
+    {
+      "text": "because Python is a beautiful language",
+      "start": 2013.02,
+      "duration": 1.4
+    },
+    {
+      "text": "when it comes back to almost anything.",
+      "start": 2014.42,
+      "duration": 1.92
+    },
+    {
+      "text": "Now, on the yellow field is this expression",
+      "start": 2016.34,
+      "duration": 3.8
+    },
+    {
+      "text": "shown in the green field evaluated.",
+      "start": 2020.14,
+      "duration": 2.16
+    },
+    {
+      "text": "And in the gray field, it's the same expression",
+      "start": 2022.3,
+      "duration": 3.92
+    },
+    {
+      "text": "that we do a deal of it.",
+      "start": 2026.22,
+      "duration": 3.12
+    },
+    {
+      "text": "So we get all the methods, well, all the actually fields.",
+      "start": 2029.34,
+      "duration": 3.88
+    },
+    {
+      "text": "In this case, this is where a visionary hand",
+      "start": 2034.42,
+      "duration": 2.12
+    },
+    {
+      "text": "a visionary has quite a lot of fields.",
+      "start": 2036.54,
+      "duration": 1.92
+    },
+    {
+      "text": "And it has this class thing, which is super interesting.",
+      "start": 2038.46,
+      "duration": 3.76
+    },
+    {
+      "text": "As this class, we get a type of digit",
+      "start": 2042.22,
+      "duration": 2.28
+    },
+    {
+      "text": "and the type has some other stuff.",
+      "start": 2044.5,
+      "duration": 1.96
+    },
+    {
+      "text": "And it has one here, which isn't displayed",
+      "start": 2046.46,
+      "duration": 2.08
+    },
+    {
+      "text": "when you build this code base.",
+      "start": 2048.54,
+      "duration": 2.32
+    },
+    {
+      "text": "Now, if you go to base, you actually have bases",
+      "start": 2050.86,
+      "duration": 3.76
+    },
+    {
+      "text": "like a mother class of all classes,",
+      "start": 2054.62,
+      "duration": 2.28
+    },
+    {
+      "text": "which in case of Python is just popped up,",
+      "start": 2056.9,
+      "duration": 3.44
+    },
+    {
+      "text": "right, where something called popped up.",
+      "start": 2060.34,
+      "duration": 1.76
+    },
+    {
+      "text": "Now, everything in Python is a title of popped up every class,",
+      "start": 2062.1,
+      "duration": 4.08
+    },
+    {
+      "text": "right?",
+      "start": 2066.18,
+      "duration": 0.84
+    },
+    {
+      "text": "Which means if you use an algorithm called some classes,",
+      "start": 2067.02,
+      "duration": 4.36
+    },
+    {
+      "text": "then you get, this is actually does with it.",
+      "start": 2071.38,
+      "duration": 4.48
+    },
+    {
+      "text": "Because it's a standard, what we wrote as well is,",
+      "start": 2075.86,
+      "duration": 1.64
+    },
+    {
+      "text": "it does quite a lot of classes.",
+      "start": 2077.5,
+      "duration": 1.88
+    },
+    {
+      "text": "Now, there is one called war links.",
+      "start": 2079.38,
+      "duration": 3.44
+    },
+    {
+      "text": "It's, yeah, well, war link, but it was actually quite fine,",
+      "start": 2082.82,
+      "duration": 4.6
+    },
+    {
+      "text": "because it should have been over.",
+      "start": 2087.42,
+      "duration": 2.6
+    },
+    {
+      "text": "The index of this 59 in the past is the version of Python",
+      "start": 2090.02,
+      "duration": 2.92
+    },
+    {
+      "text": "on Python and environment on the couple of power rings.",
+      "start": 2092.94,
+      "duration": 3.28
+    },
+    {
+      "text": "So if you actually create a war, this is just a class",
+      "start": 2096.22,
+      "duration": 3.0
+    },
+    {
+      "text": "that you create an instance of it.",
+      "start": 2099.3,
+      "duration": 2.48
+    },
+    {
+      "text": "There's, it has a field called underscored module.",
+      "start": 2101.78,
+      "duration": 4.24
+    },
+    {
+      "text": "When you go there, you have something called pittance.",
+      "start": 2106.02,
+      "duration": 3.52
+    },
+    {
+      "text": "And pittance is quite a lot of things in Python.",
+      "start": 2109.54,
+      "duration": 3.52
+    },
+    {
+      "text": "It's, well, one of the things which is very",
+      "start": 2113.06,
+      "duration": 4.08
+    },
+    {
+      "text": "is called import.",
+      "start": 2117.14,
+      "duration": 1.0
+    },
+    {
+      "text": "You probably carry about it.",
+      "start": 2118.14,
+      "duration": 3.74
+    },
+    {
+      "text": "Yeah, it's not import.",
+      "start": 2121.88,
+      "duration": 1.96
+    },
+    {
+      "text": "And, yeah, let's just finish it, right?",
+      "start": 2123.84,
+      "duration": 3.12
+    },
+    {
+      "text": "So end of the game, we have this expression.",
+      "start": 2126.96,
+      "duration": 2.84
+    },
+    {
+      "text": "We import the local OS, then we call system,",
+      "start": 2129.8,
+      "duration": 4.2
+    },
+    {
+      "text": "and then we call matchup with a shadow",
+      "start": 2134.0,
+      "duration": 2.76
+    },
+    {
+      "text": "spanning fashion to our board.",
+      "start": 2136.76,
+      "duration": 3.24
+    },
+    {
+      "text": "And this works really good.",
+      "start": 2140.0,
+      "duration": 2.96
+    },
+    {
+      "text": "Yeah, normally you do get a shadow.",
+      "start": 2142.96,
+      "duration": 6.15
+    },
+    {
+      "text": "If you'd like to read more about Python samples,",
+      "start": 2149.11,
+      "duration": 2.92
+    },
+    {
+      "text": "you can actually go to my blog first, the slash M thingy.",
+      "start": 2152.03,
+      "duration": 4.0
+    },
+    {
+      "text": "I click some notes there.",
+      "start": 2156.03,
+      "duration": 1.72
+    },
+    {
+      "text": "And I try to write down all the interesting things",
+      "start": 2157.75,
+      "duration": 3.0
+    },
+    {
+      "text": "I find about Python samples.",
+      "start": 2160.75,
+      "duration": 3.6
+    },
+    {
+      "text": "This presentation will be in my blog",
+      "start": 2164.35,
+      "duration": 1.36
+    },
+    {
+      "text": "way, so you don't have to remember.",
+      "start": 2165.71,
+      "duration": 3.28
+    },
+    {
+      "text": "Now, a couple of funny stories related.",
+      "start": 2168.99,
+      "duration": 2.68
+    },
+    {
+      "text": "First story, there was a spanner.",
+      "start": 2171.67,
+      "duration": 2.16
+    },
+    {
+      "text": "You know what?",
+      "start": 2173.83,
+      "duration": 0.96
+    },
+    {
+      "text": "What spammers do they spank?",
+      "start": 2174.79,
+      "duration": 1.28
+    },
+    {
+      "text": "For example, they spank my friends blog, right?",
+      "start": 2176.07,
+      "duration": 4.2
+    },
+    {
+      "text": "Out of comments, and he had this cap talk.",
+      "start": 2180.27,
+      "duration": 2.12
+    },
+    {
+      "text": "It was a mathematical cap talk.",
+      "start": 2182.39,
+      "duration": 1.52
+    },
+    {
+      "text": "So you had to solve the cap talk in each time",
+      "start": 2183.91,
+      "duration": 2.4
+    },
+    {
+      "text": "you submitted the comment.",
+      "start": 2186.31,
+      "duration": 1.92
+    },
+    {
+      "text": "Now, how did the spammers solve the cap talk?",
+      "start": 2188.23,
+      "duration": 3.56
+    },
+    {
+      "text": "A, he could turn into the parts of a conversion",
+      "start": 2191.79,
+      "duration": 2.64
+    },
+    {
+      "text": "from matrix notation to reverse collision notation,",
+      "start": 2194.43,
+      "duration": 3.04
+    },
+    {
+      "text": "and then use a stack machine to calculate the result.",
+      "start": 2197.47,
+      "duration": 3.36
+    },
+    {
+      "text": "B, he used L, or the answer this one,",
+      "start": 2200.83,
+      "duration": 4.64
+    },
+    {
+      "text": "actually using this cap just solved the problem.",
+      "start": 2205.47,
+      "duration": 2.32
+    },
+    {
+      "text": "I added first the two into my friend.",
+      "start": 2207.79,
+      "duration": 16.63
+    },
+    {
+      "text": "You could be happy about it.",
+      "start": 2224.42,
+      "duration": 1.44
+    },
+    {
+      "text": "Now, there are sometimes it goes the other way around.",
+      "start": 2225.86,
+      "duration": 4.04
+    },
+    {
+      "text": "Sometimes, we're algorithmic of challenges",
+      "start": 2229.9,
+      "duration": 2.28
+    },
+    {
+      "text": "on capture the five two lines.",
+      "start": 2232.18,
+      "duration": 1.96
+    },
+    {
+      "text": "And my friend was solving one, and he, like, just to IRC",
+      "start": 2234.14,
+      "duration": 3.4
+    },
+    {
+      "text": "and says, like, so I solved several hundred of levels,",
+      "start": 2237.54,
+      "duration": 3.44
+    },
+    {
+      "text": "and suddenly I get this.",
+      "start": 2240.98,
+      "duration": 1.64
+    },
+    {
+      "text": "And he was also doing math equations.",
+      "start": 2242.62,
+      "duration": 1.92
+    },
+    {
+      "text": "But thankfully, he knows this.",
+      "start": 2244.54,
+      "duration": 1.8
+    },
+    {
+      "text": "So he had a regular expression before whenever I used,",
+      "start": 2246.34,
+      "duration": 3.6
+    },
+    {
+      "text": "just to grab against his stuff.",
+      "start": 2249.94,
+      "duration": 1.64
+    },
+    {
+      "text": "So, yeah, I want to have a huge, just like that.",
+      "start": 2251.58,
+      "duration": 3.68
+    },
+    {
+      "text": "All the secrets, what, doesn't it as measured",
+      "start": 2255.26,
+      "duration": 2.64
+    },
+    {
+      "text": "with the right exit, like, did it?",
+      "start": 2257.9,
+      "duration": 5.48
+    },
+    {
+      "text": "And I think this is the last thing I have nightmares.",
+      "start": 2263.38,
+      "duration": 4.56
+    },
+    {
+      "text": "Another example.",
+      "start": 2267.94,
+      "duration": 1.0
+    },
+    {
+      "text": "Say, story as before, we have an formula.",
+      "start": 2268.94,
+      "duration": 2.92
+    },
+    {
+      "text": "We can actually do any code.",
+      "start": 2271.86,
+      "duration": 1.88
+    },
+    {
+      "text": "And the problem is, only one thing",
+      "start": 2273.74,
+      "duration": 3.56
+    },
+    {
+      "text": "in an environment called SDD out.",
+      "start": 2277.3,
+      "duration": 2.64
+    },
+    {
+      "text": "They remove all other objects, everything.",
+      "start": 2279.94,
+      "duration": 2.16
+    },
+    {
+      "text": "The word in class, I used to remove it, everything.",
+      "start": 2282.1,
+      "duration": 2.6
+    },
+    {
+      "text": "This is only SD out.",
+      "start": 2284.7,
+      "duration": 2.04
+    },
+    {
+      "text": "Now, what they do with SDD out?",
+      "start": 2286.74,
+      "duration": 3.28
+    },
+    {
+      "text": "Let's begin with just having this.",
+      "start": 2290.02,
+      "duration": 3.28
+    },
+    {
+      "text": "And what class was it with, it has to be there, right?",
+      "start": 2293.3,
+      "duration": 3.24
+    },
+    {
+      "text": "Now, what's my class of SDD out?",
+      "start": 2296.54,
+      "duration": 3.24
+    },
+    {
+      "text": "Yeah, file, file, exactly.",
+      "start": 2299.78,
+      "duration": 2.52
+    },
+    {
+      "text": "So this is file, and having the time you can create",
+      "start": 2302.3,
+      "duration": 3.68
+    },
+    {
+      "text": "an instance of the class, right?",
+      "start": 2306.26,
+      "duration": 2.12
+    },
+    {
+      "text": "So you just open, broke, sold, man,",
+      "start": 2308.38,
+      "duration": 2.84
+    },
+    {
+      "text": "which is the file on memory.",
+      "start": 2311.22,
+      "duration": 1.76
+    },
+    {
+      "text": "So you get data access to the file on the binary memory.",
+      "start": 2312.98,
+      "duration": 3.32
+    },
+    {
+      "text": "How does it help?",
+      "start": 2317.58,
+      "duration": 1.6
+    },
+    {
+      "text": "Now, since you can just seek and read,",
+      "start": 2319.18,
+      "duration": 3.08
+    },
+    {
+      "text": "and you can just also write, you can find the others",
+      "start": 2322.26,
+      "duration": 3.48
+    },
+    {
+      "text": "of the system function, and they got the code,",
+      "start": 2325.74,
+      "duration": 3.2
+    },
+    {
+      "text": "it's a very important table.",
+      "start": 2328.94,
+      "duration": 1.36
+    },
+    {
+      "text": "So each executive automation memory is an important table,",
+      "start": 2330.3,
+      "duration": 3.76
+    },
+    {
+      "text": "and it's filled by a web login",
+      "start": 2334.06,
+      "duration": 3.04
+    },
+    {
+      "text": "with addresses of functions, right?",
+      "start": 2337.1,
+      "duration": 2.56
+    },
+    {
+      "text": "And the file can use a system,",
+      "start": 2339.66,
+      "duration": 1.76
+    },
+    {
+      "text": "so it's an address list of people.",
+      "start": 2341.42,
+      "duration": 2.56
+    },
+    {
+      "text": "You take it, and you write the same address",
+      "start": 2343.98,
+      "duration": 3.68
+    },
+    {
+      "text": "under the open entry inside the same memory table,",
+      "start": 2347.66,
+      "duration": 5.0
+    },
+    {
+      "text": "which means that if you try to open another file,",
+      "start": 2353.54,
+      "duration": 3.88
+    },
+    {
+      "text": "it will actually be really good on it.",
+      "start": 2357.42,
+      "duration": 3.0
+    },
+    {
+      "text": "And it will quickly, instead of this time of like",
+      "start": 2360.42,
+      "duration": 3.16
+    },
+    {
+      "text": "opening, cut, as there's the dust around the column,",
+      "start": 2363.58,
+      "duration": 3.0
+    },
+    {
+      "text": "because the system in the end was the world.",
+      "start": 2366.58,
+      "duration": 4.78
+    },
+    {
+      "text": "So summary, from my perspective,",
+      "start": 2371.36,
+      "duration": 2.24
+    },
+    {
+      "text": "as an offensive research on CTF player,",
+      "start": 2373.6,
+      "duration": 2.84
+    },
+    {
+      "text": "Python is epic for a lot of chapters and a lot of uses.",
+      "start": 2376.44,
+      "duration": 4.72
+    },
+    {
+      "text": "There are a lot of cool libraries for it,",
+      "start": 2381.16,
+      "duration": 1.6
+    },
+    {
+      "text": "but built in library for HTTP is super,",
+      "start": 2382.76,
+      "duration": 3.56
+    },
+    {
+      "text": "especially when you're exploiting stuff",
+      "start": 2386.32,
+      "duration": 1.88
+    },
+    {
+      "text": "like line SQL, and it gets funny.",
+      "start": 2388.2,
+      "duration": 3.32
+    },
+    {
+      "text": "It has a lot of estimations for a lot of stuff,",
+      "start": 2392.6,
+      "duration": 2.24
+    },
+    {
+      "text": "and for example, first one created by your carrier,",
+      "start": 2394.84,
+      "duration": 2.92
+    },
+    {
+      "text": "I believe, for box, box is actually a full-blown x86",
+      "start": 2397.76,
+      "duration": 4.16
+    },
+    {
+      "text": "emulator.",
+      "start": 2401.92,
+      "duration": 1.04
+    },
+    {
+      "text": "It invests, of course, emulating hypervisor,",
+      "start": 2402.96,
+      "duration": 2.28
+    },
+    {
+      "text": "so it gets on Windows 8.",
+      "start": 2405.24,
+      "duration": 1.64
+    },
+    {
+      "text": "It's pretty awesome, which I'm interested in, and Python.",
+      "start": 2406.88,
+      "duration": 3.48
+    },
+    {
+      "text": "And it's also a fun target tool",
+      "start": 2410.36,
+      "duration": 2.72
+    },
+    {
+      "text": "into, if you're into hacking, the levels of language,",
+      "start": 2413.08,
+      "duration": 3.52
+    },
+    {
+      "text": "like, spectrum up.",
+      "start": 2416.6,
+      "duration": 2.0
+    },
+    {
+      "text": "Now, this presentation actually contains",
+      "start": 2418.6,
+      "duration": 1.84
+    },
+    {
+      "text": "some of this from my other presentations,",
+      "start": 2420.44,
+      "duration": 1.84
+    },
+    {
+      "text": "the in-bata data data, on the battle of YouTube,",
+      "start": 2422.28,
+      "duration": 2.72
+    },
+    {
+      "text": "but try not to try it with you, with Mateo Future.",
+      "start": 2425.0,
+      "duration": 3.72
+    },
+    {
+      "text": "Then there was a Polish one that I didn't",
+      "start": 2428.72,
+      "duration": 1.56
+    },
+    {
+      "text": "assist with, so you can put it over,",
+      "start": 2430.28,
+      "duration": 2.04
+    },
+    {
+      "text": "and probably sometime we styled,",
+      "start": 2432.32,
+      "duration": 2.58
+    },
+    {
+      "text": "try not to stress on CTFs, we've also with Mateo.",
+      "start": 2434.9,
+      "duration": 3.18
+    },
+    {
+      "text": "You can put them up where the slides",
+      "start": 2438.08,
+      "duration": 1.8
+    },
+    {
+      "text": "were done by our online.",
+      "start": 2439.88,
+      "duration": 2.12
+    },
+    {
+      "text": "And some of the things I shown, I kind of simplified them,",
+      "start": 2442.0,
+      "duration": 2.8
+    },
+    {
+      "text": "because they had our steps.",
+      "start": 2444.8,
+      "duration": 1.32
+    },
+    {
+      "text": "So if you're into stuff like this, just look them up.",
+      "start": 2446.12,
+      "duration": 4.68
+    },
+    {
+      "text": "That's it.",
+      "start": 2451.76,
+      "duration": 0.48
+    },
+    {
+      "text": "I'm happy to answer all these questions.",
+      "start": 2452.24,
+      "duration": 1.84
+    },
+    {
+      "text": "If there are hard questions, I would say",
+      "start": 2454.08,
+      "duration": 1.88
+    },
+    {
+      "text": "that we have all the time.",
+      "start": 2455.96,
+      "duration": 1.08
+    },
+    {
+      "text": "Thank you.",
+      "start": 2457.04,
+      "duration": 8.48
+    },
+    {
+      "text": "OK, do we have time?",
+      "start": 2465.52,
+      "duration": 2.04
+    },
+    {
+      "text": "Yes, we have about 10 minutes.",
+      "start": 2467.56,
+      "duration": 3.04
+    },
+    {
+      "text": "OK, sorry for finishing it.",
+      "start": 2470.6,
+      "duration": 2.12
+    },
+    {
+      "text": "OK, so a good question about the WPDS.",
+      "start": 2472.72,
+      "duration": 4.04
+    },
+    {
+      "text": "Did you try any of the WPDS, like Ferrari,",
+      "start": 2476.76,
+      "duration": 3.32
+    },
+    {
+      "text": "Capsule Engine, and stuff like that?",
+      "start": 2480.08,
+      "duration": 1.92
+    },
+    {
+      "text": "I never noticed that if I did it.",
+      "start": 2482.0,
+      "duration": 1.6
+    },
+    {
+      "text": "I only tried three I mentioned, which",
+      "start": 2483.6,
+      "duration": 2.96
+    },
+    {
+      "text": "was to do the WPDS, and well, either for",
+      "start": 2486.56,
+      "duration": 3.4
+    },
+    {
+      "text": "I didn't actually touch the WPDS.",
+      "start": 2489.96,
+      "duration": 3.0
+    },
+    {
+      "text": "OK, thank you.",
+      "start": 2492.96,
+      "duration": 2.38
+    },
+    {
+      "text": "Did you try the one you recommended?",
+      "start": 2495.34,
+      "duration": 1.76
+    },
+    {
+      "text": "Or better written?",
+      "start": 2497.1,
+      "duration": 5.33
+    },
+    {
+      "text": "I don't know.",
+      "start": 2502.43,
+      "duration": 1.0
+    },
+    {
+      "text": "I didn't get to the WPDS, my publisher says,",
+      "start": 2503.43,
+      "duration": 19.37
+    },
+    {
+      "text": "but they have problems with some delays",
+      "start": 2522.8,
+      "duration": 4.74
+    },
+    {
+      "text": "over the past three hours, or actually,",
+      "start": 2527.54,
+      "duration": 1.44
+    },
+    {
+      "text": "the better chance we'll get it without the delay.",
+      "start": 2528.98,
+      "duration": 2.24
+    },
+    {
+      "text": "It's a way more, but the WPDS.",
+      "start": 2531.22,
+      "duration": 20.42
+    },
+    {
+      "text": "It's not directly related to your talk.",
+      "start": 2551.64,
+      "duration": 3.48
+    },
+    {
+      "text": "But why are you using Windows?",
+      "start": 2555.12,
+      "duration": 2.32
+    },
+    {
+      "text": "I...",
+      "start": 2557.44,
+      "duration": 2.0
+    },
+    {
+      "text": "I don't...",
+      "start": 2559.44,
+      "duration": 1.4
+    },
+    {
+      "text": "You know, it's a fact that you're using",
+      "start": 2560.84,
+      "duration": 4.56
+    },
+    {
+      "text": "Linux or MacOS, but why Windows?",
+      "start": 2565.4,
+      "duration": 3.24
+    },
+    {
+      "text": "OK, so it's like this.",
+      "start": 2568.64,
+      "duration": 1.44
+    },
+    {
+      "text": "I actually use both Windows and Linux.",
+      "start": 2570.08,
+      "duration": 2.36
+    },
+    {
+      "text": "I have a Linux visual machine always running in the background",
+      "start": 2572.44,
+      "duration": 2.88
+    },
+    {
+      "text": "on a set of scripts, surprise written,",
+      "start": 2575.32,
+      "duration": 2.04
+    },
+    {
+      "text": "and iPhone to better communicate between them.",
+      "start": 2577.36,
+      "duration": 2.88
+    },
+    {
+      "text": "So I try to use personal code works.",
+      "start": 2580.24,
+      "duration": 2.16
+    },
+    {
+      "text": "Now, I guess your question is welcome to security, right?",
+      "start": 2582.4,
+      "duration": 3.2
+    },
+    {
+      "text": "Why use Windows?",
+      "start": 2585.6,
+      "duration": 1.28
+    },
+    {
+      "text": "Now, I should be...",
+      "start": 2586.88,
+      "duration": 1.28
+    },
+    {
+      "text": "Problems with Windows security,",
+      "start": 2588.16,
+      "duration": 1.36
+    },
+    {
+      "text": "and all of us to be out or out of date.",
+      "start": 2589.52,
+      "duration": 2.88
+    },
+    {
+      "text": "I mean, 10 years ago, I would say,",
+      "start": 2592.4,
+      "duration": 2.92
+    },
+    {
+      "text": "like, I should have been using Windows.",
+      "start": 2595.32,
+      "duration": 1.92
+    },
+    {
+      "text": "Now, Windows is not a problem.",
+      "start": 2597.24,
+      "duration": 1.36
+    },
+    {
+      "text": "If you know the problem, first text.",
+      "start": 2598.6,
+      "duration": 1.84
+    },
+    {
+      "text": "I wouldn't recommend using it back.",
+      "start": 2600.44,
+      "duration": 1.76
+    },
+    {
+      "text": "So I think Windows is OK-ish,",
+      "start": 2602.2,
+      "duration": 3.4
+    },
+    {
+      "text": "but for example, it's a huge start, right?",
+      "start": 2605.6,
+      "duration": 1.96
+    },
+    {
+      "text": "So like, everyone's writing next place for Windows.",
+      "start": 2607.56,
+      "duration": 2.88
+    },
+    {
+      "text": "But that's not mean for the second text security,",
+      "start": 2610.44,
+      "duration": 2.08
+    },
+    {
+      "text": "but means that people are starting to look at it",
+      "start": 2612.52,
+      "duration": 2.88
+    },
+    {
+      "text": "and starting to care, especially since it's day to day 86,",
+      "start": 2615.4,
+      "duration": 2.88
+    },
+    {
+      "text": "but yeah.",
+      "start": 2618.28,
+      "duration": 1.92
+    },
+    {
+      "text": "So Windows is better especially when you go to Windows 8,",
+      "start": 2620.2,
+      "duration": 4.32
+    },
+    {
+      "text": "which I didn't buy for UI, but Windows 10 is a little better.",
+      "start": 2624.52,
+      "duration": 4.72
+    },
+    {
+      "text": "They internally had so many changes,",
+      "start": 2629.24,
+      "duration": 3.12
+    },
+    {
+      "text": "but it makes explaining harder or harder.",
+      "start": 2632.36,
+      "duration": 3.72
+    },
+    {
+      "text": "So it's pretty good, I'm sorry.",
+      "start": 2636.08,
+      "duration": 2.52
+    },
+    {
+      "text": "OK, so about the question was about actually using",
+      "start": 2638.6,
+      "duration": 27.6
+    },
+    {
+      "text": "Windows and Windows for security purposes.",
+      "start": 2666.2,
+      "duration": 2.32
+    },
+    {
+      "text": "As I said, I enjoy to use both of those.",
+      "start": 2668.52,
+      "duration": 1.92
+    },
+    {
+      "text": "So I have actually a genome from PowerRank here,",
+      "start": 2670.44,
+      "duration": 2.12
+    },
+    {
+      "text": "because I have X servers running to my Windows.",
+      "start": 2672.56,
+      "duration": 3.32
+    },
+    {
+      "text": "So with the interest of you out,",
+      "start": 2675.88,
+      "duration": 2.08
+    },
+    {
+      "text": "I agree that Windows shell is lagging.",
+      "start": 2677.96,
+      "duration": 2.52
+    },
+    {
+      "text": "I do use a different one, where the standard one is",
+      "start": 2680.48,
+      "duration": 3.0
+    },
+    {
+      "text": "called the command mode.",
+      "start": 2683.48,
+      "duration": 2.44
+    },
+    {
+      "text": "And it's based on the pattern and time.",
+      "start": 2685.92,
+      "duration": 3.48
+    },
+    {
+      "text": "It's way better than before Windows 1.",
+      "start": 2689.4,
+      "duration": 2.84
+    },
+    {
+      "text": "But being said, when it comes to tools,",
+      "start": 2692.24,
+      "duration": 1.92
+    },
+    {
+      "text": "well, some awesome stuff is mostly on Linux,",
+      "start": 2694.16,
+      "duration": 5.76
+    },
+    {
+      "text": "which is why I have a VM always run in the background.",
+      "start": 2699.92,
+      "duration": 3.2
+    },
+    {
+      "text": "Some stuff is only available to work better on Linux.",
+      "start": 2703.12,
+      "duration": 3.44
+    },
+    {
+      "text": "For example, I have a long time, which is like that",
+      "start": 2706.56,
+      "duration": 3.72
+    },
+    {
+      "text": "only disassembled people use, most of the time",
+      "start": 2710.28,
+      "duration": 3.04
+    },
+    {
+      "text": "only available for Linux, right?",
+      "start": 2713.32,
+      "duration": 3.04
+    },
+    {
+      "text": "And also, when I'm interested in Windows engineering,",
+      "start": 2716.36,
+      "duration": 4.12
+    },
+    {
+      "text": "and when it comes to Windows engineering,",
+      "start": 2720.48,
+      "duration": 1.72
+    },
+    {
+      "text": "only Windows people did a lot of super awesome stuff",
+      "start": 2722.92,
+      "duration": 3.8
+    },
+    {
+      "text": "related to that.",
+      "start": 2726.72,
+      "duration": 1.28
+    },
+    {
+      "text": "Like, for the level of reverse engineering applications",
+      "start": 2728.0,
+      "duration": 2.72
+    },
+    {
+      "text": "on Windows is this, on Windows is this, why?",
+      "start": 2730.72,
+      "duration": 1.92
+    },
+    {
+      "text": "Well, because the Windows is of that source,",
+      "start": 2732.64,
+      "duration": 1.44
+    },
+    {
+      "text": "what would be reverse, right?",
+      "start": 2734.08,
+      "duration": 2.28
+    },
+    {
+      "text": "Yeah, so if you're going to a nursing,",
+      "start": 2736.36,
+      "duration": 2.76
+    },
+    {
+      "text": "you probably say that Linux is boring at some point,",
+      "start": 2739.12,
+      "duration": 2.48
+    },
+    {
+      "text": "and just going to Windows, because people",
+      "start": 2741.6,
+      "duration": 1.4
+    },
+    {
+      "text": "care about the RMS and stuff like that,",
+      "start": 2743.0,
+      "duration": 2.36
+    },
+    {
+      "text": "PowerRank, so you have more customers.",
+      "start": 2745.36,
+      "duration": 3.56
+    },
+    {
+      "text": "Great question.",
+      "start": 2748.92,
+      "duration": 1.28
+    },
+    {
+      "text": "PowerRank, the answer is valuable, but how do I start",
+      "start": 2750.2,
+      "duration": 4.64
+    },
+    {
+      "text": "if I'd like to be drawn, draw on the site",
+      "start": 2754.84,
+      "duration": 2.32
+    },
+    {
+      "text": "to recover the next years?",
+      "start": 2757.16,
+      "duration": 2.12
+    },
+    {
+      "text": "OK, so this is a good question, actually.",
+      "start": 2759.28,
+      "duration": 1.96
+    },
+    {
+      "text": "What I recommend is just start doing workings.",
+      "start": 2761.24,
+      "duration": 4.4
+    },
+    {
+      "text": "So it's like as well as CTF, as CTF is a tournament,",
+      "start": 2765.64,
+      "duration": 4.04
+    },
+    {
+      "text": "basically, it's like I'm committed only to weeks,",
+      "start": 2769.68,
+      "duration": 2.88
+    },
+    {
+      "text": "some expertise is limited.",
+      "start": 2772.56,
+      "duration": 1.8
+    },
+    {
+      "text": "Now, a working something that goes",
+      "start": 2774.36,
+      "duration": 1.76
+    },
+    {
+      "text": "not in your life's spoils for a while with the customers.",
+      "start": 2776.12,
+      "duration": 6.0
+    },
+    {
+      "text": "So trying to do some workings first,",
+      "start": 2782.12,
+      "duration": 2.0
+    },
+    {
+      "text": "this site called WeTower.net.",
+      "start": 2784.12,
+      "duration": 3.56
+    },
+    {
+      "text": "And first, it's basically an aggregate",
+      "start": 2787.68,
+      "duration": 2.52
+    },
+    {
+      "text": "of all the workings, but a couple of awesome ones.",
+      "start": 2790.2,
+      "duration": 2.72
+    },
+    {
+      "text": "You can do them in a spare time.",
+      "start": 2792.92,
+      "duration": 2.08
+    },
+    {
+      "text": "And after you do some of them, you can try your skills",
+      "start": 2795.0,
+      "duration": 4.04
+    },
+    {
+      "text": "with a capture device.",
+      "start": 2799.04,
+      "duration": 1.36
+    },
+    {
+      "text": "Just either join a team play with some friends",
+      "start": 2800.4,
+      "duration": 2.8
+    },
+    {
+      "text": "or some open things as well,",
+      "start": 2803.2,
+      "duration": 1.32
+    },
+    {
+      "text": "or if you don't have a tournament to play with them.",
+      "start": 2804.52,
+      "duration": 2.92
+    },
+    {
+      "text": "Yeah, if you like it, if you feel",
+      "start": 2807.44,
+      "duration": 2.08
+    },
+    {
+      "text": "that you have a specific amount of time",
+      "start": 2809.52,
+      "duration": 2.48
+    },
+    {
+      "text": "when you can use some for it, then it could be an email.",
+      "start": 2812.0,
+      "duration": 7.08
+    },
+    {
+      "text": "Any other questions?",
+      "start": 2819.08,
+      "duration": 2.76
+    },
+    {
+      "text": "Just one more comment here.",
+      "start": 2821.84,
+      "duration": 1.8
+    },
+    {
+      "text": "If you go to my blog, or actually Google my blog",
+      "start": 2823.64,
+      "duration": 3.72
+    },
+    {
+      "text": "with a lot of hacking, we're supposed",
+      "start": 2827.36,
+      "duration": 2.6
+    },
+    {
+      "text": "to have quite a lot of links on how",
+      "start": 2829.96,
+      "duration": 2.12
+    },
+    {
+      "text": "to get started on hacking without breaking any laws.",
+      "start": 2832.08,
+      "duration": 3.4
+    },
+    {
+      "text": "So basically, if you don't have hacking,",
+      "start": 2835.48,
+      "duration": 1.8
+    },
+    {
+      "text": "so a lot of all the workings are listed first of all.",
+      "start": 2837.28,
+      "duration": 6.39
+    },
+    {
+      "text": "OK, you've heard my whole questions, Ben.",
+      "start": 2843.67,
+      "duration": 1.8
+    },
+    {
+      "text": "Thank you.",
+      "start": 2845.47,
+      "duration": 1.0
+    },
+    {
+      "text": "Thank you very much.",
+      "start": 2846.47,
+      "duration": 1.0
+    }
+  ],
+  "full_text": "Ladies and gentlemen, it's my pleasure to introduce you to Quigua.  Do we talk to each President about our last presentation today?  Before the next presentation, and he will be talking about the security more.  Yes, sir, hello.  Thank you for coming.  Yes, a short warning, as you can see, this presentation may be low level.  If you are a living on a low level, I still encourage you to stay.  You might learn something, and you might actually like it.  So, okay, if you're still about me, I'm a captain of General Sector.  I'm also the author of the book, and Polish, so those of each program of mine is going to be in English next year.  It's a violent general of the program.  Okay, all opinions that I expressed during this talk are not my borrowers opinions.  I don't know if my account is opinions, or my opinions.  Thank you for remembering that.  This note is good, because I actually during the day time, I work for security engineer,  slash senior software engineer.  So, yeah, that's what that borrowers make a say.  Anyway, civil sector is a country of the flag team, a security country of the flag team.  Basically, as a security country of the flag is a tournament,  during which you have to solve several tasks related to security,  ranging from 20 to 15, they are sometimes easy,  and sometimes they are stupid, however.  And, well, when you play a country of the flag, you sometimes encounter also a platform related to others.  So, a couple of them are going to actually be sheltering this presentation.  So, what's on the menu?  On the menu today is actually a mix of random stuff,  which relates from one side to security, and from the other side, somehow to the platform.  And, I tried to balance programming with security attacks on the platform.  I'm not sure, but actually worked.  But, I think the final piece is pretty okay.  So, let's start with the first thing.  This is actually one of tournament challenges.  It was during a rush and made the capture of a tournament called SocialCityF.  It was basically what we got, it was a top file.  So, it was a file with a top expansion.  After analyzing it, it turned out to be a ZX Spectrum image of a like a magnetic tape.  And, after analyzing it further, it turned out that it's a small basic load,  which is executed.  The ZX Spectrum was then rewritten binary,  which was a simple programming.  So, we had to enter a password, and once we entered the password,  there was a QR code thing.  Well, it's not really QR code, of course.  But, it's a summary.  And, whatever password you put in there, an image for it was generated.  And, the idea was that, well, what we thought, and we were actually right.  But, if you enter the right password, then the image will actually be for readable text.  So, it was probably trying to take a good summary.  Now, the QR code here is the meaningful picture.  So, you don't need to find the password.  You need to find the meaningful, meaningful picture.  It's just important, because I actually couldn't care about the password at all.  Now, once we're short, this isn't a reverse engineering conference,  I'm going to skip this.  After writing our five or ten hours of reverse engineering,  Z80 bytecode using IDA, and ZX Spin,  which is an emulator, which has a VTD center driver.  I come out of the lab.  Similarly, this is going on.  There is a function on the address 681,  that's an address, and that's an expected memory, right.  And, this function is called with a 16-bit number.  Now, this 16-bit number is actually a hash of a password you entered.  And, this number is used as basically the key to the encryption.  And, at the address of 8785,  and the memory versus this bitmap, which is rendered right.  Now, since I already knew where it is,  I could display it using some script,  but that's because of the spin back on.  And, well, this is both what I got.  It's the same image of you if you compare them,  but just display them back on solid using taxes instead of nice graphics.  If you call that installation nice graphics, of course.  So, the idea for my type is like this.  And, since there are only, this is only a 16-bit number,  that means that he has to be among 65,000 bugs that fit into a 16-bit number, right.  So, let's just generate this image for all the numbers.  Now, I didn't want to sit all day, probably only here,  and type every number, and wait for it to render, right.  It is an informer.  But, you wanted to, you want to download a system file.  And, ideally, you could all generate the images inside this whole HD file.  How to develop it?  Well, what I did, I dropped the D.  D1 is an X-AT.  It's not full, but it's a partial optimization of the Z-AT CPU in Python.  And, it's actually pretty easy to use.  It's just a CPU.  There are no peripherals, just only the CPU.  So, what we had to do is we had to create, like, a minimal class switch,  pretended to be wrong memory, which was just an array, basically.  Load the memory down of, of, of, extra of the world,  and so, once X was running by application, it was down to memory,  and loaded it into the RAM.  And, next, you started to set up the CPU.  Setting up the CPU, basically, pull it down to just transcribe it  from the debugger of all of the registered values  to, to make the environment identical.  We already knew that memory would be identical, obviously.  And then, basically, this is a for loop, right?  So, for each half, we run in a loop, the execution of this finished rendering  of this decompression, sorry, the conclusion.  After that, and after that, I mean after five hours,  because it took some time.  It was emulation after all.  And, by phone, I actually used five hours to make it faster,  and that was still to take a couple of hours.  I get a 115 megabyte file, which, which happened in the file.  Now, actually, I have this blackstone here.  Now, is this?  Have you find a flag in a file, which has the 10050 megabytes?  It's actually super easy.  If this is supposed to be like readable text,  it's going to have a lot of blank space, right?  So, it doesn't have 420 spacers.  I actually did that already.  Just to, you know, to test.  And, you know, some of the refined congratulations,  actually, is hand-led back.  Yeah, so this was, I was actually pretty happy about the instrumentation  for the database page.  I was in Python, and there was some error or anything,  which is, you know, right on the end, never read.  So, let's go to the next chart.  This one is, it didn't involve any programming in Python,  but it did involve Python.  Now, what you got was a hello dot R file.  Now, hello dot R after I'm parring.  It was quite a lot of dynamic libraries for Linux,  library dot zip file, and also a hello executable.  If you are meant, well, you had to pass the argument,  and the environment you had to pass the password,  and it told me, hey, this is correct, or this is not correct.  Obviously, we didn't know the password.  So, it's, I don't know, which we didn't like.  Now, it told me that it's a compiled Python.  Well, what we did, they actually found the Python interpreter  and gave it a UIC file, right?  Only UIC without the search group.  Now, what do you do when you get a UIC file?  When you download the disassembly,  the disassembly will actually take a compiler for Python, right?  And you run it and you get, well, the likelihood.  Yes, the likelihood, but the search group.  Now, it didn't really work.  After looking was better and trying to build a disassembly  and then compile it, it did a talk.  When I compiled it, the door, I found the disassembly  with the door, you know, that this model,  which is in the default installation,  and it outputted some invalid obstacles.  Now, this is an attempt to decompile,  which gave a similar result.  What we did, they actually modified the interpreter  and changed the number of obstacles.  So, that existed to work.  So, that's actually not bad.  Total voltage is not going to be a guessing game.  For example, the inputs, there was something  at the end of the function, which is important.  It was at the end of the function,  and those inputs are all correct, right?  Now, what do we expect at the end of the function?  What are the return of all correct?  So, if you look at the Python source code,  you will see that one has to run a code as the value of 84  and the average has a decrease.  So, what we did was swap a couple of numbers  which are really close together, which is easy to guess.  In the end, I basically using the disassembled,  trying to guess in the random places,  what the output should be, and trying to using a X editor.  So, after I'm going to find my UI C file,  I did the disassembled, basically,  what the swap is needed,  but a couple of more of them, but it wasn't much.  After a while, you could actually disassemble it.  I didn't go for a decompiler.  I went for the disassembled,  because I expected some of those would be still badly,  and I would still have to fix them during reverse-entry ring.  This was one function called hatred.  Straight, it actually was a root,  which called another function called a root,  or a root-aid chart.  Now, this function is super short, right?  As you can see, it's coming in here.  It's been maybe a couple of stores  for reverse-entry ring of the fight.  A pair of two globals, which basically do nothing,  and we don't care about them,  vendors load fast, which pushes,  in this case, the C argument,  C is the argument of a function  to respect for the type of the stack machine.  And vendors, it calls function 1,  but function 1, as you can see,  a line above is actually the forward function.  So, we can write that, but it was actually equal to forward.  Next, we load a constant value of 303,  put it on the stack of the string,  because it's a stack of string land.  Then we do subtraction.  We get this after about below the amount.  We do addition.  We load another constant.  We do module operation.  And then we load another constant,  we do addition, and then we call the last function  and the return.  So, pretty short, pretty easy to understand,  even if you just can read English,  and never do it by from Microsoft.  The final code would look like this.  Actually, the bottom part is that  in 303 function, the virtual engineer  delivers, because the function  was in 303, and we needed to record it.  And the only thing I think is the minus sign  is to the order in the forward loop.  Yeah.  After running it, we get the modified  interpreters, our people, which was the flag,  which we decided to get the points.  Cool.  So, let's move to the next problem.  How many of you know what this is after overflow?  How many of you know what this return  oriented programming?  Okay, cool.  Perfect.  You can read it, because the next item  is going to be talking about the return length programming.  So, just to be sure, we are on the same page.  What this is after overflow?  We have a stack, and think about, like,  see, or actually, a standard level stack, right?  You have return address, say,  where, if you call a function,  return address gets set on the stack.  Any other buffer ends something right?  The buffer ends up being overflows,  the buffer ends overwise, or return address.  Basically, return address security, right?  And now, in the old times, the attacker would override the return address  with the address of the buffer itself,  and if the buffer could put machine code to get executed.  So, when the function returns,  it actually returns to the stack,  and so it's basically, think, attacker provided machine code,  which, for example, dials back to his home  and gives him a shell on your server.  Okay.  So, that's how it was done in the old times.  Now, it's a total hardware.  Because something called a mobile execution database  was added to Windows CPUs and a VCDU.  It actually allows you to tell that this part of memory,  for example, the stack, is not executed for you.  It cannot execute any machine code hardware.  What is good?  Because one needs one attacker tries to return to the shell code,  and it crashes.  It does an interrupt from an application skill, which is good.  Now, here is where return oriented programming comes into.  Mainly, what we do today is you override,  if you don't put your machine code anywhere,  you actually don't have machine code in most of the exploits of the old.  What you do have, you have a couple of more return addresses.  The idea is that the first return address returns to some code,  which is already in memory.  And the mental code works the return instruction,  which triggers getting the next return address from the stack,  and returning to a template to that missing code,  which is also ended with the return instruction.  At the end, it's basically a chain of returns,  and between the returns are meaningful instructions,  which are supposed to do something.  For example, what do you return it to usually,  when you have the application or the libraries?  Let's assume this is where code and machine code.  You look for getters on getters on a random basis,  and you return to them.  I can't remember if you look like this.  This doesn't, but this is a large or piece of code.  And you just jump at the end of a function,  and there is just a power cx on the red,  which means, because you control the stack,  so I can set the rcx register to a body on the stack,  and then go to the next getter.  And having a couple of set getters,  or actually multiple set getters,  allows you to execute any code you like,  and you don't execute your machine code,  you execute machine code, which is already in memory.  Now, how do you find the getters?  Well, you use item, for example.  Personally, I use this term three.  This is something I'm enjoying for,  which has bindings for background as well.  And how do you find getters?  Well, after setting up some stuff,  which I didn't buy to the automatically,  but it actually should be double, which is legal.  First, a simple function, which gets a small buffer of bytes,  and then this assembles them.  So it translates the machine code into human readable text form.  And it actually looks for the instruction.  It gets to be written in the instruction and breaks.  And it also has a list of the text, human readable form,  if you remember.  Now, the name of this script,  which is the super value written,  that's the typical script,  does this for each sequence of bytes,  does this as a word,  and find all the unique,  lists of instructions recipe,  and put them in the file.  Now, the file is like five megabytes, usually,  and they're quite a lot of getters.  You can see some examples on the right.  Usually, you basically look for stuff like this,  which is simple, easy, just some pops,  some reds, maybe one hour of instructions.  You don't care about anything else.  It has this, actually, enough.  Usually.  And if you're lucky to find a spy,  a megabyte, five megabytes is quite easy to look  with, but when you're not lucky,  the file is like 200 lines,  and you have no options.  You have five getters, which just don't work.  Now, how do you create a,  you need to finalize the next word.  How do you create a payload out of these parts,  where you use Python?  Now, the way I do it,  is, you just create a function called DQ,  which stands for data,  where you program the assembly, you know that.  Then, out of that,  it just gets a number,  and creates an 8,  and calls it doesn't 8 by value.  Now, out of this,  you create small blocks.  Each small block of this works exactly one gadget.  In this example,  I created a function called CenterBI,  which basically fills the small text buffer  with the address of the gadget,  and the value it's supposed to set.  So you don't have to worry,  creating about getters.  It's called expansion, which is of my register.  Now, out of these expansions,  you create about your functions.  For example, read, which is,  calls the read function,  from my kernel,  with the arguments you gave it with,  the file district of the buffer,  which is the address of memory approach,  and I count how many bytes you want to read there.  So,  I think that you actually  will get more of these,  and at the end, you put a quite large  network application,  which has several getters,  which you would like.  In this case,  it changes the privileges on some memory,  so it's both right,  called a nice and usable,  and three double of course,  and reads your data  from a budget center to the application,  it's a network application.  It puts it there,  not a sign location,  so you can just drop it  and drop your machine.  So, how it looks like,  take over it,  that's the second set of numbers.  Now, at the end, you put it  somewhere in the exploit,  this is the call exploit,  and well, you just send it  to the application,  among others, that I hope that it works.  Now, actually, I found,  I thought it would be the best language for that,  tested this in a couple of other languages,  like, for example, CN,  it's a tiny,  configuration.  Now, first, I never think  which adds to this,  so I'm going to show later,  it's a default library type on,  which actually  gets the socket  and creates an interactive terminal,  whatever you type,  is sent through the socket,  and whatever  that is sent through the socket to you,  gets shown on the screen,  which is perfect,  if you actually Spanish  you don't want to do it out of entry.  Okay.  At that point,  this part was actually an example for you.  So,  this is  could also be called as  expected.  Okay, so this is actually  a true story,  well, I'm not nice.  This is the first company,  a web service which uses pickle,  to run pickle,  and save data,  and save meaning,  attacker control.  In this case,  the data is in cookies,  so you enter a page,  and the cookies is sent.  Now, for a couple of voices,  those sessions, as you know,  we can store session by just giving  a user a session ID,  and it sends you the session ID.  The other way is to store this  page on the browser,  basically, a user.  This is a little faster,  if we have a super large service  with thousands of servers,  because we don't have to worry  the database for each session,  you just get over the data.  The problem is when the data is unsigned  as it is in this case.  So, you have to state,  and the state only looks like this,  and as you can see,  basically, like a concatenation  of some names,  and, yeah, in global,  also, what's the strings you see here?  Perfect.  This is 64,  and the company is not in virtual course,  so after looking into it,  for example,  with WiFi,  the list of WiFi and WiFi and so on,  actually, yes.  Now, you get this.  Now, this string is actually like pure data for pickles.  So pickle looks like this.  This means this data has been pickled,  and you need to un-pickle it to read it, which we can do.  For example, like this.  And you get it.  This is already a Python dictionary.  Now, as you know, probably if you had the recommendation  for pickles, this huge red word do not use pickle.  Now, why do you not?  Why shouldn't you use pickle?  Let's go for obnoxualization for a second.  Jason does not support obnoxualization  and the serialization.  He just supports plain old data, perfect,  from a secret perspective.  I'm not sure if the programmer will have it the same way.  Now, PhD, the third one works.  It has something called serialized, and I actually  support creating an array, which is then  cast into an object.  It's protected, but this array is actually  like the fields of sound object, which is very good.  A method called wakeup is called only,  but the method is of course a programmer provided.  And then the extractor is called at the end,  because well, it's an object.  Now, the problem is that in some cases,  you can actually use a technique similar to a return  oriented programming to accuse it and run,  use like old edges already for bad purposes.  But well, let's go.  I come.  What make up does is make up actually allows  an attacker to select a extractor from a given module,  from any module actually, and tell what parameters  should this extractor be called with.  For example, we can call some process  the open which basically creates any process.  Now, I actually wanted to include my own function,  how to do it, but I found this guys website.  And it's actually pretty awesome of you last year,  so let's just use this.  Now, what's happening here is very similar code  to reduce, which when an object is pickled,  this method is being called.  And it's supposed to tell iPhone, what do you need  to make up this object later on?  And thanks to it, we can create a new class code,  which when it is and we go, calls the open  with vnsh, obviously, with standard input output  and now we're directly to fd.  fd and vnsh is 20.  Now, why is it 20?  It's not supposed to be 20, we're very contented.  I'll tell you in a second.  Anyway, the final string looks fine as well.  Basically, 64 right.  Now, why to contain this list or anything else?  Mainly, when you connect to a HTTP server,  a software that is now related on the system,  just forward your connection.  Now, if you can create a new process  and all the standard inputs and outputs are  already directly to the same subject number,  because we are identified by numbers,  then you can interact with each other.  And this is why I like this.  What we have to do is we have to maximize this  what I would actually do to improve my work.  OK, so a better version, a better version,  or if I could even do it like this.  Now, I actually have a demo for this.  So I have this large file, a load of load quality code,  which serves as my base for this kind of coding.  And as you can see, I basically connect.  You probably cannot see, I don't  know if I'm a bigger storyboard, but OK, is it any better?  Yeah, so I do connect to the web server.  And then I send a super-small HDB request  to the PC set.  To a demo, the PC is my first PC server,  so it doesn't do anything evil yet.  Basically, it does not exist.  You can just sense a nice insight.  But that's the desire set.  Now, I can have the time to think here  to get a more interactive file, which  isn't going to be really interactive yet, anyway.  OK, it works.  Basically, the server has some processing  to do and work like a set of five seconds.  That's the story.  And we have some HTML code work, so it seems it works.  Now, let's copy the part of the presentation.  We do need to try and do the FD to something else.  So I'm going to copy the file.  OK, now we need to set the FD to something  that will probably be OK.  It's easy.  If it works, it works a lot of traffic to the server.  It's not easy, it will be easy because there's no traffic.  So it's like this.  You have standard input, output, and output of error, right?  So that's free.  And the server is always allocated from 0, so that's 0, 1, 2.  Now, the server listening server listens  for connections, which is free.  So that incoming connection will probably be horrible.  So we do this.  Now, this is actually in the coaxing roles.  And now, we're going because it doesn't like me  and we're coloring the characters.  And then we need to remove this nice error.  I need to spell on the mic as well.  So we basically got a free show on this by using  the coaxing mechanism.  And then just to, if you really need to use the coaxing,  you can actually do two things.  That's another way, right?  You either sign, your traffic will sign this coaxing,  so it cannot be changed because we don't actually  only actually modify the people class  to about 5,000 out of you to the serialized objects,  which is very easy.  Cool.  So let's go back to the next topic, which is  scripting things with Python.  Actually, 2.0 can, you know, ignore the algorithm.  It has a wonderful API.  Now, it doesn't.  Actually, it is like one of the most worst APIs,  so except what is documented.  The documentation is really cool,  so you can actually make heads of it.  And they are so good.  And they are, you know, right code like that.  You can create a set of your functions,  which works well with it.  Actually, either API for Python is better with this bet,  and it's not documented at all, so yeah, so it isn't.  But anyway, it helped me a couple of times, for example,  there was an Okamu request me.  Okamu was entitled to a little spinary,  and you had to reverse engineer it,  and the problem was that Okamu stores all the strings  as well lists and tiny link requests.  So I must say that what Python came really  can be here to script TV server, actually,  because strings would look more readable like this  than just reading the first letter  and having to write five lines of code  and do you give it by hand to jump to the next letter.  Actually, trying to script, well,  do you get to more of Python?  I got some user interface running.  This is actually running in Chrome,  as it was a down API server.  But, of course, I needed to do some of it.  In Python, I never finished it.  I probably open sources some time in the future.  Now, Python is actually used in other places  I mentioned I already win back,  which is the Windows terminal of the bugger.  It's also scriptable with Python,  but it is certainly exception.  And indeed, the bugger also scriptable.  Now, I use it at least once in either.  There was a funny task which could,  well, you know that there are 64-bit processes  and 30-bit processes, right?  Now, you can mix code of 32 and 64-bit in one binary.  And I actually, there was a function  which was sometimes called as 32-bit code,  and sometimes it's 64-bit code,  which got really annoying to analyze it.  But using Python, we could just disassemble it  in both ways, probably in other way,  was code to the comments.  Okay, and one of the last examples.  So, there's this thing in Python.  This is called sandboxing.  You basically know what type of Python is, right?  You evaluate code which comes.  And you can actually, in Python, specify that,  hey, the code which comes from an external user,  I actually want you to only access some functions  not all functions, on the power of the environment.  And you can specify it.  Now, let's assume we have,  this is actually also based on a true story.  Let's assume that we have a server  with this calculator shown here.  Now, you send a formula and it gives you the result, right?  Six, thanks, nine is for two.  Now, if you send something like this,  like zero, such as zero,  because if you're an attacker with a string,  you use some fun stuff and you see how it behaves.  And this case would be case by sending an error,  zero division error, which immediately tells you  this is Python, right?  Now, let's find a little more with a formula.  What would have happened when we use this formula?  A, it would say that it's an error.  B, it's a type error and C,  it will get detected at the UI.  Man, NETDI is already after you just run.  Why a name error, why a type error?  So a name error would be when open function is not found,  because it's not an environment.  A type error is because we cannot add one to a file.  In this case, we get a name error.  So open is not an environment.  We do another test.  Let's do land, like, have this array of three other man's  and this is something to do, right?  So what do we get?  A negative error, five, meaning the land is actually  in the environment or we get detected.  In this case, we get name error again.  So probably we know that the sandals are super limited.  It's going to be like maybe sign rules,  maybe cosign rules, maybe some other functions  that are not about it.  There will be no land, no open, no file, no error objects.  Let's do another test, just to confirm it.  We have an array that we don't use the land,  I write that you just call it the network  which is in the back, right, responsible for it.  And what do we get this time?  Obviously, we get back, right?  Because when a code is super, which means we can use  double, we can use under stores,  and we can use, well, brackets over here,  because we can use number.  So let's do some snooping around  Python internals, I would say,  because Python is a beautiful language  when it comes back to almost anything.  Now, on the yellow field is this expression  shown in the green field evaluated.  And in the gray field, it's the same expression  that we do a deal of it.  So we get all the methods, well, all the actually fields.  In this case, this is where a visionary hand  a visionary has quite a lot of fields.  And it has this class thing, which is super interesting.  As this class, we get a type of digit  and the type has some other stuff.  And it has one here, which isn't displayed  when you build this code base.  Now, if you go to base, you actually have bases  like a mother class of all classes,  which in case of Python is just popped up,  right, where something called popped up.  Now, everything in Python is a title of popped up every class,  right?  Which means if you use an algorithm called some classes,  then you get, this is actually does with it.  Because it's a standard, what we wrote as well is,  it does quite a lot of classes.  Now, there is one called war links.  It's, yeah, well, war link, but it was actually quite fine,  because it should have been over.  The index of this 59 in the past is the version of Python  on Python and environment on the couple of power rings.  So if you actually create a war, this is just a class  that you create an instance of it.  There's, it has a field called underscored module.  When you go there, you have something called pittance.  And pittance is quite a lot of things in Python.  It's, well, one of the things which is very  is called import.  You probably carry about it.  Yeah, it's not import.  And, yeah, let's just finish it, right?  So end of the game, we have this expression.  We import the local OS, then we call system,  and then we call matchup with a shadow  spanning fashion to our board.  And this works really good.  Yeah, normally you do get a shadow.  If you'd like to read more about Python samples,  you can actually go to my blog first, the slash M thingy.  I click some notes there.  And I try to write down all the interesting things  I find about Python samples.  This presentation will be in my blog  way, so you don't have to remember.  Now, a couple of funny stories related.  First story, there was a spanner.  You know what?  What spammers do they spank?  For example, they spank my friends blog, right?  Out of comments, and he had this cap talk.  It was a mathematical cap talk.  So you had to solve the cap talk in each time  you submitted the comment.  Now, how did the spammers solve the cap talk?  A, he could turn into the parts of a conversion  from matrix notation to reverse collision notation,  and then use a stack machine to calculate the result.  B, he used L, or the answer this one,  actually using this cap just solved the problem.  I added first the two into my friend.  You could be happy about it.  Now, there are sometimes it goes the other way around.  Sometimes, we're algorithmic of challenges  on capture the five two lines.  And my friend was solving one, and he, like, just to IRC  and says, like, so I solved several hundred of levels,  and suddenly I get this.  And he was also doing math equations.  But thankfully, he knows this.  So he had a regular expression before whenever I used,  just to grab against his stuff.  So, yeah, I want to have a huge, just like that.  All the secrets, what, doesn't it as measured  with the right exit, like, did it?  And I think this is the last thing I have nightmares.  Another example.  Say, story as before, we have an formula.  We can actually do any code.  And the problem is, only one thing  in an environment called SDD out.  They remove all other objects, everything.  The word in class, I used to remove it, everything.  This is only SD out.  Now, what they do with SDD out?  Let's begin with just having this.  And what class was it with, it has to be there, right?  Now, what's my class of SDD out?  Yeah, file, file, exactly.  So this is file, and having the time you can create  an instance of the class, right?  So you just open, broke, sold, man,  which is the file on memory.  So you get data access to the file on the binary memory.  How does it help?  Now, since you can just seek and read,  and you can just also write, you can find the others  of the system function, and they got the code,  it's a very important table.  So each executive automation memory is an important table,  and it's filled by a web login  with addresses of functions, right?  And the file can use a system,  so it's an address list of people.  You take it, and you write the same address  under the open entry inside the same memory table,  which means that if you try to open another file,  it will actually be really good on it.  And it will quickly, instead of this time of like  opening, cut, as there's the dust around the column,  because the system in the end was the world.  So summary, from my perspective,  as an offensive research on CTF player,  Python is epic for a lot of chapters and a lot of uses.  There are a lot of cool libraries for it,  but built in library for HTTP is super,  especially when you're exploiting stuff  like line SQL, and it gets funny.  It has a lot of estimations for a lot of stuff,  and for example, first one created by your carrier,  I believe, for box, box is actually a full-blown x86  emulator.  It invests, of course, emulating hypervisor,  so it gets on Windows 8.  It's pretty awesome, which I'm interested in, and Python.  And it's also a fun target tool  into, if you're into hacking, the levels of language,  like, spectrum up.  Now, this presentation actually contains  some of this from my other presentations,  the in-bata data data, on the battle of YouTube,  but try not to try it with you, with Mateo Future.  Then there was a Polish one that I didn't  assist with, so you can put it over,  and probably sometime we styled,  try not to stress on CTFs, we've also with Mateo.  You can put them up where the slides  were done by our online.  And some of the things I shown, I kind of simplified them,  because they had our steps.  So if you're into stuff like this, just look them up.  That's it.  I'm happy to answer all these questions.  If there are hard questions, I would say  that we have all the time.  Thank you.  OK, do we have time?  Yes, we have about 10 minutes.  OK, sorry for finishing it.  OK, so a good question about the WPDS.  Did you try any of the WPDS, like Ferrari,  Capsule Engine, and stuff like that?  I never noticed that if I did it.  I only tried three I mentioned, which  was to do the WPDS, and well, either for  I didn't actually touch the WPDS.  OK, thank you.  Did you try the one you recommended?  Or better written?  I don't know.  I didn't get to the WPDS, my publisher says,  but they have problems with some delays  over the past three hours, or actually,  the better chance we'll get it without the delay.  It's a way more, but the WPDS.  It's not directly related to your talk.  But why are you using Windows?  I...  I don't...  You know, it's a fact that you're using  Linux or MacOS, but why Windows?  OK, so it's like this.  I actually use both Windows and Linux.  I have a Linux visual machine always running in the background  on a set of scripts, surprise written,  and iPhone to better communicate between them.  So I try to use personal code works.  Now, I guess your question is welcome to security, right?  Why use Windows?  Now, I should be...  Problems with Windows security,  and all of us to be out or out of date.  I mean, 10 years ago, I would say,  like, I should have been using Windows.  Now, Windows is not a problem.  If you know the problem, first text.  I wouldn't recommend using it back.  So I think Windows is OK-ish,  but for example, it's a huge start, right?  So like, everyone's writing next place for Windows.  But that's not mean for the second text security,  but means that people are starting to look at it  and starting to care, especially since it's day to day 86,  but yeah.  So Windows is better especially when you go to Windows 8,  which I didn't buy for UI, but Windows 10 is a little better.  They internally had so many changes,  but it makes explaining harder or harder.  So it's pretty good, I'm sorry.  OK, so about the question was about actually using  Windows and Windows for security purposes.  As I said, I enjoy to use both of those.  So I have actually a genome from PowerRank here,  because I have X servers running to my Windows.  So with the interest of you out,  I agree that Windows shell is lagging.  I do use a different one, where the standard one is  called the command mode.  And it's based on the pattern and time.  It's way better than before Windows 1.  But being said, when it comes to tools,  well, some awesome stuff is mostly on Linux,  which is why I have a VM always run in the background.  Some stuff is only available to work better on Linux.  For example, I have a long time, which is like that  only disassembled people use, most of the time  only available for Linux, right?  And also, when I'm interested in Windows engineering,  and when it comes to Windows engineering,  only Windows people did a lot of super awesome stuff  related to that.  Like, for the level of reverse engineering applications  on Windows is this, on Windows is this, why?  Well, because the Windows is of that source,  what would be reverse, right?  Yeah, so if you're going to a nursing,  you probably say that Linux is boring at some point,  and just going to Windows, because people  care about the RMS and stuff like that,  PowerRank, so you have more customers.  Great question.  PowerRank, the answer is valuable, but how do I start  if I'd like to be drawn, draw on the site  to recover the next years?  OK, so this is a good question, actually.  What I recommend is just start doing workings.  So it's like as well as CTF, as CTF is a tournament,  basically, it's like I'm committed only to weeks,  some expertise is limited.  Now, a working something that goes  not in your life's spoils for a while with the customers.  So trying to do some workings first,  this site called WeTower.net.  And first, it's basically an aggregate  of all the workings, but a couple of awesome ones.  You can do them in a spare time.  And after you do some of them, you can try your skills  with a capture device.  Just either join a team play with some friends  or some open things as well,  or if you don't have a tournament to play with them.  Yeah, if you like it, if you feel  that you have a specific amount of time  when you can use some for it, then it could be an email.  Any other questions?  Just one more comment here.  If you go to my blog, or actually Google my blog  with a lot of hacking, we're supposed  to have quite a lot of links on how  to get started on hacking without breaking any laws.  So basically, if you don't have hacking,  so a lot of all the workings are listed first of all.  OK, you've heard my whole questions, Ben.  Thank you.  Thank you very much.",
+  "errors": []
+}

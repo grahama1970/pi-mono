@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hs2Md7407c0",
+    "language": "en",
+    "took_ms": 9420,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Mathy Vanhoef - Protecting WiFi Beacons from Outside Forgeries",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 1210,
+    "description": "In this presentation, we demonstrate several attacks that are possible by spoofing Wi-Fi beacons. These beacons are periodically broadcasted by an access point to announce the presence of a network. Our attacks include, for example, reducing the throughput of nearby devices and lowering their transmission power. In the second part of the presentation, we describe a scheme to protect Wi-Fi beacons, discuss its properties, and demonstrate its implementation in Linux.",
+    "view_count": 899
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hs2Md7407c0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

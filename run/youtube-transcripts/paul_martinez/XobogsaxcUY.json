@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XobogsaxcUY",
+    "language": "en",
+    "took_ms": 9506,
+    "method": null,
+    "title": "Building Great OT Incident Response Tabletop Exercises",
+    "channel": "S4 Events",
+    "upload_date": "20230309",
+    "duration_sec": 1896,
+    "description": "Lesley Carhart of Dragos has been involved in numerous cyber incident responses in both OT and IT. They begin by highlighting the differences in Incident Response in OT (and in more detail at 21:05) and the value of tabletop exercises.\n\nLesley then digs into how to create and run a great OT tabletop exercises. Prerequisites, timelines, injects, roles and more. The tips at 19:20 are a highlight as are the what will go wrong shortly after this.",
+    "view_count": 7424
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XobogsaxcUY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

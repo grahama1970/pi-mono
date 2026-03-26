@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zjwUwGa3rLw",
+    "language": "en",
+    "took_ms": 8691,
+    "method": null,
+    "title": "An Approach To Disaster Recovery In OT",
+    "channel": "S4 Events",
+    "upload_date": "20240627",
+    "duration_sec": 1356,
+    "description": "The backend of responding to a cybersecurity incident in OT is recovery, and if the incident is significant, it will spur a larger Disaster Recovery (DR) effort. Currently most Incident Response (IR) focus is around detection, containment, and eradication. However, with OT systems, significant recovery plans often lack detail given a response to any actual or perceived cybersecurity threat that disrupts the environment.\n\nThe events of WannaCry are a stark reminder of the importance of having a DR plan where near total environment disruption occurred. To handle such large-scale human made disasters, a DR plan should specify systematic reconstitution activities contingent on different impact scenarios and provide a pathway for rapid recovery.\n\nThis talk introduces a vendor-agnostic framework that aims to parallel well-defined practices in process safety engineering (such as the commonly used four steps of process shutdown, ESD 0 - 3) and apply them to disaster recovery, considering cyber events that trigger a process loss event. Instead of focusing on data and technical recovery alone, commonly the scope of DR plans, the ICS/OT disaster recovery framework views restoration considering process and control & automation system dependencies and location, following a methodology of 4 levels of automation system compromise. Next, the framework considers different loss scenarios for the individual asset under consideration and develops recovery strategies for the respective functional components of the environment. In turn this framework provides a stepwise functional method to resume operations of automation and process control systems and ensures recovery details are measured and operationalized",
+    "view_count": 1995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zjwUwGa3rLw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "MUvT60kY61o",
+    "language": "en",
+    "took_ms": 3697,
+    "method": null,
+    "title": "Pt 1 Eve Spaceplane \"Pants Destroyer\" development",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170104",
+    "duration_sec": 12744,
+    "description": "The initial development, build and testing of our multistage Eve spaceplane the \"Pants Destroyer\". We achieved a successful entry, decent and landing (after way too much trial and error) and had a successful accent as well! We're ready to push onwards. Full dress rehearsal run next!\n\nShow your support by visiting http://patreon.com/everydayastronaut\n\nStreamed live on http://Twitch.tv/everydayastronaut on 1/3/2017\n\nInstagram @EverydayAstronaut - http://instagram.com/everydayastronaut",
+    "view_count": 48309
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] MUvT60kY61o: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

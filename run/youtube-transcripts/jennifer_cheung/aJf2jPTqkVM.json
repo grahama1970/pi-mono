@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "aJf2jPTqkVM",
+    "language": "en",
+    "took_ms": 8611,
+    "method": null,
+    "title": "DEF CON Safe ModeBlue Team Village - Olaf Hartong, Mauricio Velazco - Purple On My Mind",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3909,
+    "description": "Automated adversary simulation is often perceived as a hard, dangerous and complicated program to implement and run. Fear no longer, our methodology and tooling will let you test and measure your defenses throughout your production environment to test not only your detection rule’s resilience but the whole event pipeline as well as your team’s response procedures. In this talk, we’ll share with the audience the open source tools we built and the methodology we use that will allow them to hit the ground running at nearly no cost.",
+    "view_count": 616
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] aJf2jPTqkVM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

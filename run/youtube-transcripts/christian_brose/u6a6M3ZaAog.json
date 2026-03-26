@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "u6a6M3ZaAog",
+    "language": "en",
+    "took_ms": 8875,
+    "method": null,
+    "title": "Space 2.0: The Intersection of Space Policy and the FCC",
+    "channel": "Hudson Institute",
+    "upload_date": "20181108",
+    "duration_sec": 3453,
+    "description": "On November 8, Hudson Institute hosted a discussion with Ajit Pai, Chairman of the Federal Communications Commission, to discuss the Commission’s strategy for advancing America’s role in the new space age. \r\n\r\nChairman Pai discussed the intersection of space policy and the FCC’s efforts to promote new technologies that can strengthen the nation’s communications infrastructure. While normally not thought of as in the purview of the FCC, the agency is exploring new and better ways to enable satellite systems in low earth orbit and other space-based technologies to close the digital divide and promote innovation. The conversation also included NASA Associate Administrator Thomas Cremins and was moderated by Hudson Senior Fellow Harold Furchtgott-Roth.  - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 318
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] u6a6M3ZaAog: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

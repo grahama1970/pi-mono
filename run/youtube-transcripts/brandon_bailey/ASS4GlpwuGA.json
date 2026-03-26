@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ASS4GlpwuGA",
+    "language": "en",
+    "took_ms": 9774,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village  - Ali Abdollahi - Bypassing in Mobile Network from Red Team POV",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 1402,
+    "description": "This talk focus on reviewing implementation of new security features in mobile networks as well as detecting techniques and bypassing methods from red team perspective . The scope of the illustration include both radio (SDR) and signalling core network attacks. - The outline of the presentation // max 500 words One of the most complicated network is mobile telecom network. There are some segments include signalling, charging, packet data, Radio etc. Still there are many security holes that allow attackers to compromise the network and however telecom companies enable security mechanisms and put some security devices. In this talk, I will cover common high-tech security solutions used by telecom operators and and all ways to detect and after that bypass it as well as security recommendations to prevent theses activities. In this talk I will start the presentation with recent telecom abuse and related hacking news in 2019. In the next section I will cover common mobile network vulnerabilities and architecture. After that illustrate security of radio access network (RAN) and bypassing scenarios and techniques:\n1. Mobile Phone Registration (IMEI policies) Bypass\n2. Bypassing Unrevealed Ciphering Algorithms\n3. 5G, LTE/LTE Advanced Bypass\nThe next part of the talk will be assign to Circuit Switch network (Signaling) and the technical bypass techniques are as below:\n1. Home Routing Detection\n2. Bypassing Home Routing\n3. Signalling Firewall Detection\n4. Bypassing Signalling Firewall\nAnd at the final section I will explain security solutions to defend against these malicious techniques.",
+    "view_count": 689
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ASS4GlpwuGA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

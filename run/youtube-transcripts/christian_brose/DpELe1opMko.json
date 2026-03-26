@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DpELe1opMko",
+    "language": "en",
+    "took_ms": 10004,
+    "method": null,
+    "title": "A Book Discussion on Fables of Fortune: What Rich People Hav",
+    "channel": "Hudson Institute",
+    "upload_date": "20120813",
+    "duration_sec": 7197,
+    "description": "Hudson Institute's Bradley Center and the Center for Neighborhood Enterprise are proud to co-host a discussion of Fables of Fortune: What Rich People Have That You Don't Want by Richard Watts. Richard Watts is the Founder of Family Business Office, a legal and consulting firm that manages the fortunes of some of the nation's wealthiest families. In Fables of Fortune, \"Watts reveals the challenges the super-wealthy face, including marriages based on net worth, interfamily inheritance battles, fau",
+    "view_count": 1442
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DpELe1opMko: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

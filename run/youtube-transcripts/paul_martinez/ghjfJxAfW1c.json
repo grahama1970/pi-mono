@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ghjfJxAfW1c",
+    "language": "en",
+    "took_ms": 9282,
+    "method": null,
+    "title": "Dale Peterson S4x17 Keynote Come Together",
+    "channel": "S4 Events",
+    "upload_date": "20170123",
+    "duration_sec": 1464,
+    "description": "Dale Peterson kicks off S4x17 in Miami Beach with an explanation of why he is now optimistic about ICS  / SCADA Security. After a lost decade after 9/11, the vendors and asset owners are moving to systems that can be secured.\n\nDale then explains the importance of the ICS Community coming together with three different groups\n\n1) Operations Technology and IT\n2) Operations and Senior Management (C-Levels and Board of Directors)\n3) ICS and related fields such as economics, political and conflict theory, psychology and more\n\nThe ICS security community is still small and needs to avoid falling into the trap of being petty and insular. We need to encourage and embrace these groups who have not been part of the problem to help us with the solution.",
+    "view_count": 857
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ghjfJxAfW1c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

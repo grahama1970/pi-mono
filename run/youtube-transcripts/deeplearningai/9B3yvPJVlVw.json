@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9B3yvPJVlVw",
+    "language": "en",
+    "took_ms": 9075,
+    "method": null,
+    "title": "Document AI: How Agents add the brain to OCR's eyes",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260123",
+    "duration_sec": 77,
+    "description": "OCR can process characters but it doesn’t understand pixels. OCR has no way to reason about the headers, totals, or checkboxes found in tables, invoices, or forms. \n\nIn our course with LandingAI, \"Document AI: From OCR to Agentic Doc Extraction,\" we build agents to address these failure modes by breaking documents into pieces, applying the right tools, and mapping information to expected formats. \n\nLearn more and enroll today: https://bit.ly/3Lmuqxf",
+    "view_count": 7538
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9B3yvPJVlVw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

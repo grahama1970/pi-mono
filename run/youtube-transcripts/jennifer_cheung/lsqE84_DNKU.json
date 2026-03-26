@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lsqE84_DNKU",
+    "language": "en",
+    "took_ms": 8663,
+    "method": null,
+    "title": "DEF CON Safe Mode - Patrick Wardle - Office Drama on macOS   Q&A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1677,
+    "description": "Question and Answer session for Patrick Wardle - Office Drama on macOS",
+    "view_count": 569
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lsqE84_DNKU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

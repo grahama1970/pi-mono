@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AmAd5nYThZ0",
+    "language": "en",
+    "took_ms": 9078,
+    "method": null,
+    "title": "Risks to the Global Financial System: Remarks by Bill Rhodes",
+    "channel": "Hudson Institute",
+    "upload_date": "20161025",
+    "duration_sec": 3966,
+    "description": "Bill Rhodes, former senior vice chairman of Citigroup, addresses critical challenges facing global finance in a speech at Hudson Institute.",
+    "view_count": 519
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AmAd5nYThZ0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

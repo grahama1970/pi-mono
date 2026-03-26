@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "V65GO8c4nuQ",
+    "language": "en",
+    "took_ms": 9100,
+    "method": null,
+    "title": "Watch SpaceX launch (and land) a Falcon 9 for JCSAT18/KACIFIC",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20191217",
+    "duration_sec": 7578,
+    "description": "SpaceX will be launching the JCSAT-18 satellite to Geostationary Orbit (GEO) on top of SpaceX’s work-horse rocket, the Falcon 9. The Falcon 9 will launch from Space Launch Complex 40 (SLC-40) at Cape Canaveral Air Force Station, in Florida. The booster supporting this mission (B1056.3) flew on CRS-17 on May 4th, 2019, and again on CRS-18 on July 25th, 2019. The booster is going to be recovered on SpaceX’s droneship,  Of Course I Still Love You. The fairings are going to be recovered on Go Ms. Chief and Go Ms. Tree, which left port on 12/14/19, heading over 700km downrange.\n\nWant to learn more? Check out our Prelaunch-Preview! - https://everydayastronaut.com/prelaunch-preview-falcon-9-block-5-jcsat-18-kacific-1/\n-----------------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 157750
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] V65GO8c4nuQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

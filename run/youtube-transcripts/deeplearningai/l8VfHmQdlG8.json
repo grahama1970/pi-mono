@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "l8VfHmQdlG8",
+    "language": "en",
+    "took_ms": 9100,
+    "method": null,
+    "title": "Mathematics for Machine Learning and Data Science Specialization by DeepLearning.AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251201",
+    "duration_sec": 81,
+    "description": "Enroll in Mathematics for Machine Learning and Data Science 👉 https://bit.ly/47Hnlzr \n\nThis specialization is absolutely jam-packed with foundational machine learning and data science skills and is appropriate for both beginners and advanced AI builders alike.\n\nAs Andrew Ng shared in his latest letter of The Batch, “I believe that math isn’t about memorizing formulas; it’s about building a conceptual understanding that will hone your intuition. That’s why Luis Serrano, curriculum architect Anshuman Singh, and their team present these topics using interactive visualizations and hands-on examples. Their explanations of some concepts are the most intuitive I’ve ever seen.”\n\nHere’s a quick breakdown of the key concepts you will learn in Mathematics for Machine Learning and Data Science:\n\nVectors and Matrices\nMatrix product\nLinear Transformations\nRank, Basis, and Span\nEigenvectors and Eigenvalues\nDerivatives\nGradients\nOptimization\nGradient Descent\nGradient Descent in Neural Networks\nNewton’s Method\nProbability\nRandom Variables\nBayes Theorem\nGaussian Distribution\nVariance and Covariance\nSampling and Point Estimates\nMaximum Likelihood Estimation\nBayesian Statistics\nConfidence Intervals\nHypothesis Testing\n\nLearn more: https://bit.ly/47Hnlzr\n\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community.",
+    "view_count": 9239
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] l8VfHmQdlG8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

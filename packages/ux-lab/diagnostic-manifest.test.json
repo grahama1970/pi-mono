@@ -1,0 +1,301 @@
+{
+  "version": 2,
+  "baseUrl": "http://localhost:5173",
+  "category": "diagnostic",
+  "description": "Comprehensive diagnostic manifest — tests all critical interactions across UX Lab shell and sub-projects. Created 2026-03-25 to identify broken features after App.tsx was wiped and restored.",
+  "tests": [
+    {
+      "id": "diag_shell_tabs",
+      "group": "ux-lab-shell",
+      "label": "All 6 top-level tabs are present and clickable",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "MOCKUPS" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "COMPONENTS" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "DESIGN BOARD" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "REVIEWS" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "TESTING" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "FINAL SITE" },
+        { "action": "screenshot", "name": "diag_shell_tabs" }
+      ]
+    },
+    {
+      "id": "diag_shell_projects",
+      "group": "ux-lab-shell",
+      "label": "All 6 projects listed in sidebar",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "SPARTA Explorer" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Binary Explorer" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Music Lab Pipeline" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Prompt Lab" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "LLM Eval Lab" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Classifier Lab" },
+        { "action": "screenshot", "name": "diag_shell_projects" }
+      ]
+    },
+    {
+      "id": "diag_system_health",
+      "group": "ux-lab-shell",
+      "label": "System health indicator shows status",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "SYSTEM:" },
+        { "action": "screenshot", "name": "diag_system_health" }
+      ]
+    },
+    {
+      "id": "diag_testing_tab_loads",
+      "group": "ux-lab-shell",
+      "label": "Testing tab renders TestingPanel with manifest list",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'TESTING') { t.click(); return 'clicked TESTING'; } } return 'no TESTING tab'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "MANIFESTS" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "TEST_RUNNER" },
+        { "action": "screenshot", "name": "diag_testing_tab" }
+      ]
+    },
+    {
+      "id": "diag_testing_manifests_listed",
+      "group": "ux-lab-shell",
+      "label": "Testing tab lists all manifest files from disk",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'TESTING') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "binary-explorer" },
+        { "action": "screenshot", "name": "diag_testing_manifests" }
+      ]
+    },
+    {
+      "id": "diag_final_site_sparta",
+      "group": "final-site-routing",
+      "label": "Final Site renders SPARTA Explorer with sub-tabs",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#sparta-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "LIVE_RENDER" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Overview" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Sources" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Controls" },
+        { "action": "screenshot", "name": "diag_final_site_sparta" }
+      ]
+    },
+    {
+      "id": "diag_final_site_binary",
+      "group": "final-site-routing",
+      "label": "Final Site renders Binary Explorer with scene graph",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#binary-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "LIVE_RENDER" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "BINARIES" },
+        { "action": "screenshot", "name": "diag_final_site_binary" }
+      ]
+    },
+    {
+      "id": "diag_final_site_music",
+      "group": "final-site-routing",
+      "label": "Final Site renders Music Lab Pipeline",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent && el.textContent.trim() === 'Music Lab Pipeline' && el.offsetWidth > 0) { el.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 1000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "LIVE_RENDER" },
+        { "action": "screenshot", "name": "diag_final_site_music" }
+      ]
+    },
+    {
+      "id": "diag_design_board",
+      "group": "design-board",
+      "label": "Design Board renders DesignBoardCanvas with toolbar",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'DESIGN BOARD') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "exists", "selector": "[data-testid='design-board-canvas']" },
+        { "action": "assert", "type": "exists", "selector": "[data-testid='zoom-controls']" },
+        { "action": "screenshot", "name": "diag_design_board" }
+      ]
+    },
+    {
+      "id": "diag_reviews_tab",
+      "group": "ux-lab-shell",
+      "label": "Reviews tab renders review content",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'REVIEWS') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "screenshot", "name": "diag_reviews_tab" }
+      ]
+    },
+    {
+      "id": "diag_mockups_tab",
+      "group": "ux-lab-shell",
+      "label": "Mockups tab renders mockup gallery",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'MOCKUPS') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "screenshot", "name": "diag_mockups_tab" }
+      ]
+    },
+    {
+      "id": "diag_be_context_menu",
+      "group": "binary-explorer-interactions",
+      "label": "Binary Explorer sidebar right-click shows context menu (Rename, Delete, Duplicate, History)",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#binary-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "evaluate", "script": "(() => { const items = document.querySelectorAll('div, span'); for (const el of items) { if (el.textContent && el.textContent.trim() === 'daemon' && el.offsetWidth > 0) { const rect = el.getBoundingClientRect(); el.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: rect.left + 50, clientY: rect.top + 10 })); return 'right-clicked daemon'; } } return 'daemon not found'; })()" },
+        { "action": "wait", "ms": 1000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Rename" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Delete" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Duplicate" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "History" },
+        { "action": "screenshot", "name": "diag_be_context_menu" }
+      ]
+    },
+    {
+      "id": "diag_be_code_view_llm",
+      "group": "binary-explorer-interactions",
+      "label": "Binary Explorer Code View calls /api/scillm (not hardcoded localhost:4001)",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#binary-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "evaluate", "script": "(() => { const items = document.querySelectorAll('span, div'); for (const el of items) { if (el.textContent === 'droid' && el.offsetWidth > 0) { el.click(); return 'clicked droid'; } } return 'droid not found'; })()" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const items = document.querySelectorAll('button, span'); for (const el of items) { if (el.textContent && el.textContent.includes('Seed Namespaces')) { el.click(); return 'seeded'; } } return 'no seed button'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "evaluate", "script": "(() => { const nodes = document.querySelectorAll('[data-node-id], circle, .graph-node'); if (nodes.length > 0) { nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true })); return `clicked node (${nodes.length} total)`; } return 'no graph nodes found'; })()" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, span'); for (const t of tabs) { if (t.textContent && (t.textContent.includes('Code') || t.textContent.includes('</>'))) { t.click(); return 'clicked Code tab'; } } return 'no Code tab'; })()" },
+        { "action": "wait", "ms": 5000 },
+        { "action": "screenshot", "name": "diag_be_code_view" },
+        { "action": "evaluate", "script": "(() => { return document.body.innerText.includes('LLM service unavailable') ? 'FAIL: LLM still unavailable' : 'OK: no LLM error'; })()" }
+      ]
+    },
+    {
+      "id": "diag_be_graph_empty_scene",
+      "group": "binary-explorer-interactions",
+      "label": "Binary Explorer shows empty scene with overview on load",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#binary-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "EMPTY SCENE" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "NAMESPACES" },
+        { "action": "screenshot", "name": "diag_be_empty_scene" }
+      ]
+    },
+    {
+      "id": "diag_be_seed_namespaces",
+      "group": "binary-explorer-interactions",
+      "label": "Seed Namespaces button populates graph with namespace nodes",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#binary-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "evaluate", "script": "(() => { const btns = document.querySelectorAll('button'); for (const b of btns) { if (b.textContent && b.textContent.includes('Seed Namespaces')) { b.click(); return 'clicked seed'; } } return 'no seed button'; })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "screenshot", "name": "diag_be_seeded" },
+        { "action": "evaluate", "script": "(() => { const svg = document.querySelector('svg'); if (!svg) return 'no SVG'; const circles = svg.querySelectorAll('circle'); return `${circles.length} circles in graph`; })()" }
+      ]
+    },
+    {
+      "id": "diag_sparta_data_loads",
+      "group": "sparta-explorer",
+      "label": "SPARTA Explorer loads real data from memory daemon",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#sparta-explorer" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(() => { const tabs = document.querySelectorAll('button, div[role=tab]'); for (const t of tabs) { if (t.textContent && t.textContent.trim() === 'FINAL SITE') { t.click(); return 'clicked'; } } return 'not found'; })()" },
+        { "action": "wait", "ms": 5000 },
+        { "action": "screenshot", "name": "diag_sparta_data" },
+        { "action": "evaluate", "script": "(() => { const body = document.body.innerText; if (body.includes('Coverage Funnel')) return 'OK: Coverage Funnel present'; if (body.includes('Loading')) return 'WARN: Still loading'; return 'FAIL: No SPARTA content'; })()" }
+      ]
+    },
+    {
+      "id": "diag_hash_routing",
+      "group": "ux-lab-shell",
+      "label": "Hash routing selects correct project",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/#prompt-lab" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "evaluate", "script": "(() => { const active = document.querySelector('[class*=\"bg-tactical\"], [style*=\"accent\"]'); return active ? active.textContent?.trim() || 'found active' : 'no active project'; })()" },
+        { "action": "assert", "type": "text_contains", "selector": "body", "text": "Prompt Lab" },
+        { "action": "screenshot", "name": "diag_hash_routing" }
+      ]
+    },
+    {
+      "id": "diag_api_memory_health",
+      "group": "backend-connectivity",
+      "label": "Express server /api/health responds",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(async () => { try { const r = await fetch('/api/health'); const d = await r.json(); return `health: ${JSON.stringify(d).substring(0, 200)}`; } catch(e) { return `FAIL: ${e.message}`; } })()" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "screenshot", "name": "diag_api_health" }
+      ]
+    },
+    {
+      "id": "diag_api_scillm",
+      "group": "backend-connectivity",
+      "label": "Express server /api/scillm proxy works",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(async () => { try { const r = await fetch('/api/scillm', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({model:'text',messages:[{role:'user',content:'say ok'}],max_tokens:10}) }); const d = await r.json(); return d.choices ? 'OK: scillm responded' : `FAIL: ${JSON.stringify(d).substring(0,100)}`; } catch(e) { return `FAIL: ${e.message}`; } })()" },
+        { "action": "wait", "ms": 5000 },
+        { "action": "screenshot", "name": "diag_api_scillm" }
+      ]
+    },
+    {
+      "id": "diag_api_memory_list",
+      "group": "backend-connectivity",
+      "label": "Memory daemon list endpoint works (binary_features collection)",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 2000 },
+        { "action": "evaluate", "script": "(async () => { try { const r = await fetch('/api/memory/list', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({collection:'binary_features',limit:1}) }); const d = await r.json(); return `total: ${d.total}, items: ${d.items?.length || 0}`; } catch(e) { return `FAIL: ${e.message}`; } })()" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "screenshot", "name": "diag_api_memory" }
+      ]
+    },
+    {
+      "id": "diag_chatwel_renders",
+      "group": "ux-lab-shell",
+      "label": "ChatWell/ChatFab component renders",
+      "steps": [
+        { "action": "navigate", "url": "http://localhost:5173/" },
+        { "action": "wait", "ms": 3000 },
+        { "action": "evaluate", "script": "(() => { const chatBtns = document.querySelectorAll('button, div'); for (const b of chatBtns) { if (b.textContent && (b.textContent.includes('Chat') || b.textContent.includes('💬') || b.getAttribute('aria-label')?.includes('chat'))) return 'found chat element'; } return 'no chat element found'; })()" },
+        { "action": "screenshot", "name": "diag_chat" }
+      ]
+    }
+  ]
+}

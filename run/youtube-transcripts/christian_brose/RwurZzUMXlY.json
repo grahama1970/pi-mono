@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "RwurZzUMXlY",
+    "language": "en",
+    "took_ms": 9370,
+    "method": null,
+    "title": "Next Steps in Preventing Nuclear Terrorism",
+    "channel": "Hudson Institute",
+    "upload_date": "20121129",
+    "duration_sec": 4824,
+    "description": "9/11 demonstrated the havoc that a terrorist attack can wreak on American society. Even more frightening is one involving nuclear or radiological materials.\r\r \r\rWith so many ways of getting a bomb onto U.S. soil, the United States has employed a multi-layered defense initiative to counter these threats, including: locking down dangerous nuclear materials; interdicting loose nuclear material or nuclear-related technology that could fall into the wrong hands; and preventing terrorists, or their st",
+    "view_count": 237
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] RwurZzUMXlY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

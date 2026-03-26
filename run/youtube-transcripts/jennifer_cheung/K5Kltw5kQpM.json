@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "K5Kltw5kQpM",
+    "language": "en",
+    "took_ms": 9543,
+    "method": null,
+    "title": "DEF CON 33 - Uncovering the Secrets of Tire Pressure Monitoring Systems -  Yago Lizarribar",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1558,
+    "description": "In this talk we want to dive deep into the world of direct TPMS. These systems are used by a great portion of the cars today, and typically send information about a car’s tires wirelessly without any encryption or authentication. We show that it is feasible to capture these signals with very low cost hardware to build a tracking infrastructure. We present as well a tool that allows us to create custom TPMS messages and spoof the ECU of different cars.",
+    "view_count": 739
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] K5Kltw5kQpM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

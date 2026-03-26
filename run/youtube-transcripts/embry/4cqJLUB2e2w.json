@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4cqJLUB2e2w",
+    "language": "en",
+    "took_ms": 7696,
+    "method": null,
+    "title": "Inside SpaceX’s Crew Dragon Capsule and HQ!!!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20180906",
+    "duration_sec": 503,
+    "description": "SpaceX allowed us a rare opportunity to actually go inside their headquarters to check out their new Crew Dragon Capsule that will be flying astronauts next year!\n\nShot by Patrick Lawler @PatrickLawler\n\nMore pics and article here - https://everydayastronaut.com/inside-spacex/\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nShow your support, get a chance to win flown hardware and join our  exclusive discord channel by becoming a Patron - http://patreon.com/everydayastronaut\n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut",
+    "view_count": 955231
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4cqJLUB2e2w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

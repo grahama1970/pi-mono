@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TqKb7h8VFcA",
+    "language": "en",
+    "took_ms": 8871,
+    "method": null,
+    "title": "DEF CON 32 - Top War Stories from a TryHard Bug Bounty Hunter -Justin Rhynorater Gardner",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 3037,
+    "description": "Ask any top bug bounty hunter: the best part of a live hacking event is the Show & Tell; the time when the veil is lifted and we collectively revel in the ingenuity of the best finds from the competition. The goal of this talk is to give you that same experience. I will speak to you as the competent hackers that you are, not withholding the nitty-gritty technical details and the Ls along the way. Together, we’ll journey through the highs and the lows of my hunts, both solo and in a Live Hacking Event context. You’ll see everything from RCE to SQL injection, mass PII leakage to spying on people’s homes and workplaces. You’ll find some bugs mind-numbingly simple, and some bugs mind-bogglingly complex. Each bug in this talk was assigned the highest severity possible, and awarded somewhere between $10k-$60k in bounties.",
+    "view_count": 40239
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TqKb7h8VFcA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

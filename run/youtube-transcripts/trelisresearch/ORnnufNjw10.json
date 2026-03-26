@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ORnnufNjw10",
+    "language": "en",
+    "took_ms": 10556,
+    "method": null,
+    "title": "Transcription Models Zero to Hero - Data Prep, Train + Serve",
+    "channel": "Trelis Research",
+    "upload_date": "20260115",
+    "duration_sec": 1157,
+    "description": "Try it out at: studio.Trelis.com\n\nLearn more about fine-tuning fundamentals, see Trelis.com/advanced-audio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nDone-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\nStarting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nGet Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Introduction and overview of pipeline\n1:11 Data requirements: audio recordings and transcripts\n2:18 Uploading audio-text pairs and dataset preparation\n3:17 Saving word swaps and transcribing with model for better training\n4:20 Warning about clean text being out-of-distribution for small models\n5:20 Setting up Hugging Face token and Weights & Biases key\n6:21 Creating validation set using ChatGPT to rephrase text\n7:40 Configuring training settings and advanced parameters\n8:41 Baseline evaluation shows 7.09% word error rate\n9:46 Training begins with falling loss and word error rate\n10:47 Model training progress and high grad norm observation\n11:53 Model and logs pushed to Hugging Face Hub\n12:53 Inspecting evaluation results and specific corrections\n14:11 Spelling improvements and regressions in fine-tuned model\n15:16 Deploying model to endpoint with keep warm feature\n16:17 Auto-sleep containers and API key access options\n17:23 Testing endpoint and transcript download formats\n18:26 Evaluation tab features and future text-to-speech plans",
+    "view_count": 1291
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ORnnufNjw10: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

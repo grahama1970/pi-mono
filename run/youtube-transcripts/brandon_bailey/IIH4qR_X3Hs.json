@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IIH4qR_X3Hs",
+    "language": "en",
+    "took_ms": 8842,
+    "method": null,
+    "title": "DEF CON 32 - Fool us Once, fool us twice    Hacking Norwegian Banks - Per Thorsheim",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1331,
+    "description": "In 2021 we could get access to all personal bank accounts at the largest bank in Norway by using a single page paper form sent by snailmail. In addition to stealing all their money, we could also see all account transactions for the last 10 years, with details. In 2024 we have done the same thing to another bank. Why didn't the banks learn the first time? In this talk we'll explain what we did, lessons learned and why paper ID still is relevant and important to us all.",
+    "view_count": 588
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IIH4qR_X3Hs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

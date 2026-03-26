@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WD--zLozFOI",
+    "language": "en",
+    "took_ms": 8642,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Ibad Shah - From Discovery to Disclosure",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 900,
+    "description": "This session will discuss about journey from discovering vulnerabilities in an android application having premium features leading towards approaching relevant authorities, disclosing all of the required details and solutions. It is to be noted that the application has been downloaded by more than 1.5 million users and exploiting such vulnerabilities would have adverse affect on organization as reputational and regulatory. The talk will also focus on how security researchers can contact relevant authorities of organization more effectively and disclose such critical vulnerabilities.",
+    "view_count": 246
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WD--zLozFOI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

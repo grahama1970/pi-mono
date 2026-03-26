@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QpX16SePpVA",
+    "language": "en",
+    "took_ms": 9785,
+    "method": null,
+    "title": "Watch SpaceX's second Falcon Heavy launch LIVE from 5 miles away!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20190411",
+    "duration_sec": 5823,
+    "description": "LIVE, on site from Kennedy Space Center's NASA causeway, just 5 miles (7 km) from the landing and 6.5 miles (10 km) from the launch! This is one of the absolute best places to see a Falcon Heavy rocket launch and land. \n\nSpaceX will be launching its second Falcon Heavy rocket carrying the Arabsat-6A communications satellite to orbit. This Falcon Heavy is brand new, composed of two block 5 side boosters (B15052 & B1053) and a single block 5 core booster (B1055). After separating from the core booster, the two side boosters will return to the launch site and land at Landing Zones 1 & 2 (LZ-1 & LZ-2). Following separation from the second stage, the core booster will be landing on Autonomous Spaceport Drone Ship Of Course I Still Love You (OCISLY).\n\nNeed more info? Check here! - https://everydayastronaut.com/prelaunch-preview-falcon-heavy-arabsat-6a/\n\n------------------------------------\n\nShow your support by becoming a Patreon - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 325956
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QpX16SePpVA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

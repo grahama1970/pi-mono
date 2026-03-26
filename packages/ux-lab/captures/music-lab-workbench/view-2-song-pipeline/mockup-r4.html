@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400, height=900">
+<title>Music Lab — Song Pipeline (R4)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #141414; color: #ccc; font-family: system-ui, -apple-system, sans-serif;
+    width: 1400px; height: 900px; overflow: hidden;
+  }
+  :root {
+    --bg: #141414; --card: #1a1a1a; --border: #2a2a2a;
+    --green: #00ff88; --red: #ff4444; --amber: #ffaa00; --blue: #4a9eff; --accent: #7c3aed;
+    --vocal: #7c3aed; --bass: #4a9eff; --drums: #ff4444; --keys: #00ff88; --synth: #ffaa00; --guitar: #ff6b6b;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex; align-items: center; padding: 10px 20px; border-bottom: 1px solid var(--border); height: 44px; gap: 12px;
+  }
+  .back-arrow { color: #666; cursor: pointer; font-size: 18px; }
+  .topbar-title { font-size: 15px; font-weight: 600; color: #fff; }
+  .badge { padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+  .badge-converging { background: rgba(0,255,136,0.1); color: var(--green); }
+  .topbar-meta { font-size: 11px; color: #888; }
+  .topbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .btn-sm { padding: 4px 10px; border-radius: 4px; font-size: 10px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: #999; }
+  .btn-sm.primary { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+
+  /* Layout */
+  .layout { display: flex; height: calc(900px - 44px); }
+
+  /* Left sidebar */
+  .sidebar { width: 180px; border-right: 1px solid var(--border); padding: 12px; overflow-y: auto; flex-shrink: 0; }
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #333; }
+  .section-label { font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600; }
+
+  .pipe-step { display: flex; align-items: center; gap: 8px; padding: 5px 6px; border-radius: 4px; margin-bottom: 2px; cursor: pointer; }
+  .pipe-step:hover { background: rgba(255,255,255,0.02); }
+  .pipe-step.active { background: rgba(0,255,136,0.06); }
+  .pipe-num { font-size: 10px; font-weight: 600; width: 16px; text-align: center; }
+  .pipe-num.done { color: var(--green); }
+  .pipe-num.active { color: var(--green); }
+  .pipe-num.dim { color: #444; }
+  .pipe-name { font-size: 11px; }
+  .pipe-name.done { color: #888; }
+  .pipe-name.active { color: #fff; font-weight: 600; }
+  .pipe-name.dim { color: #444; }
+  .pipe-check { font-size: 10px; color: var(--green); margin-left: auto; }
+
+  /* Sparkline */
+  .sparkline-container { margin-top: 6px; }
+  .sparkline-svg { width: 100%; height: 48px; }
+
+  /* Main area */
+  .main { flex: 1; display: flex; overflow: hidden; }
+
+  /* Left panel - lyrics */
+  .lyrics-panel { flex: 55; border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .lyrics-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px 8px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .lyrics-title { font-size: 12px; font-weight: 600; color: #fff; }
+  .lyrics-meta { font-size: 10px; color: #555; margin-left: auto; }
+  .lyrics-body { flex: 1; overflow-y: auto; padding: 10px 14px; }
+  .lyrics-body::-webkit-scrollbar { width: 4px; }
+  .lyrics-body::-webkit-scrollbar-thumb { background: #333; }
+
+  /* Section headers */
+  .section-header { font-size: 10px; color: var(--amber); opacity: 0.6; margin: 12px 0 6px; font-weight: 600; letter-spacing: 0.5px; }
+  .section-header:first-child { margin-top: 0; }
+
+  /* Lyric line — container for word tokens */
+  .lyric-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0; padding: 3px 0; min-height: 28px; position: relative; }
+
+  /* Word tokens — THE KEY FEATURE */
+  .word {
+    display: inline-flex; flex-direction: column; align-items: center; position: relative;
+    padding: 2px 3px; margin: 0 1px; cursor: pointer; border-radius: 3px;
+    transition: background 0.1s;
+  }
+  .word:hover { background: rgba(255,255,255,0.04); }
+  .word .dynamics-hint {
+    font-size: 7px; color: #555; line-height: 1; margin-bottom: 1px; height: 8px;
+    font-weight: 600; letter-spacing: 0.3px;
+  }
+  .word .text {
+    font-size: 13px; color: #ddd; line-height: 1.3;
+    border-bottom: 2px solid transparent; padding-bottom: 1px;
+  }
+
+  /* Emotion underline colors */
+  .word.emo-haunting .text { border-bottom-color: var(--accent); }
+  .word.emo-building .text { border-bottom-color: var(--blue); }
+  .word.emo-tension .text { border-bottom-color: var(--amber); }
+  .word.emo-anthemic .text { border-bottom-color: var(--amber); }
+  .word.emo-soaring .text { border-bottom-color: var(--green); }
+  .word.emo-urgent .text { border-bottom-color: var(--red); }
+  .word.emo-catharsis .text { border-bottom-color: #ff6b6b; }
+  .word.emo-defiant .text { border-bottom-color: var(--red); }
+  .word.emo-melancholy .text { border-bottom-color: var(--accent); }
+  .word.emo-neutral .text { border-bottom-color: transparent; }
+
+  /* Selected word */
+  .word.selected {
+    background: rgba(0,255,136,0.08); outline: 1px solid rgba(0,255,136,0.3); border-radius: 3px;
+  }
+  .word.selected .text { color: #fff; }
+
+  /* Locked line indicator */
+  .lock-indicator { font-size: 10px; margin-left: 4px; opacity: 0.5; align-self: center; }
+
+  /* Word popover */
+  .word-popover {
+    position: absolute; top: 100%; left: 0; z-index: 100;
+    background: #1e1e1e; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px 12px; width: 420px; margin-top: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .pop-row { display: flex; align-items: center; gap: 8px; }
+  .pop-label { font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; width: 52px; flex-shrink: 0; font-weight: 600; }
+  .pop-input {
+    background: #222; border: 1px solid #333; border-radius: 3px; padding: 4px 8px;
+    font-size: 12px; color: #fff; font-family: inherit; width: 120px;
+  }
+  .pop-pills { display: flex; gap: 3px; flex-wrap: wrap; }
+  .pop-pill {
+    padding: 3px 7px; border-radius: 3px; font-size: 9px; color: #666;
+    background: #252525; border: 1px solid #333; cursor: pointer; white-space: nowrap;
+  }
+  .pop-pill:hover { color: #aaa; border-color: #555; }
+  .pop-pill.active-green { color: var(--green); border-color: var(--green); background: rgba(0,255,136,0.08); }
+  .pop-pill.active-amber { color: var(--amber); border-color: var(--amber); background: rgba(255,170,0,0.08); }
+  .pop-pill.active-blue { color: var(--blue); border-color: var(--blue); background: rgba(74,158,255,0.08); }
+  .pop-select {
+    background: #222; border: 1px solid #333; border-radius: 3px; padding: 3px 8px;
+    font-size: 10px; color: #aaa; font-family: inherit; cursor: pointer;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23666'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 6px center; padding-right: 20px;
+  }
+  .lock-toggle { display: flex; align-items: center; gap: 6px; }
+  .lock-switch {
+    width: 26px; height: 13px; border-radius: 7px; background: #333; position: relative;
+    display: inline-block; cursor: pointer; flex-shrink: 0;
+  }
+  .lock-switch::after {
+    content: ''; position: absolute; top: 2px; left: 2px; width: 9px; height: 9px;
+    border-radius: 50%; background: #666; transition: 0.15s;
+  }
+  .lock-switch.on { background: rgba(0,255,136,0.3); }
+  .lock-switch.on::after { left: 15px; background: var(--green); }
+  .lock-label { font-size: 10px; color: #666; }
+  .pop-actions { display: flex; gap: 6px; margin-left: auto; }
+  .pop-btn { padding: 4px 12px; border-radius: 3px; font-size: 10px; cursor: pointer; border: none; }
+  .pop-btn.apply { background: var(--green); color: #000; font-weight: 600; }
+  .pop-btn.cancel { background: #2a2a2a; color: #666; }
+
+  /* Right panel */
+  .right-panel { flex: 45; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Piano roll spec (top right) */
+  .spec-section { flex: 1; padding: 10px 14px; overflow-y: auto; border-bottom: 1px solid var(--border); }
+  .spec-section::-webkit-scrollbar { width: 3px; }
+  .spec-section::-webkit-scrollbar-thumb { background: #333; }
+  .panel-title { font-size: 11px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+
+  .metric-cards { display: flex; gap: 6px; margin-bottom: 10px; }
+  .metric-card { flex: 1; background: #111; border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; text-align: center; }
+  .metric-val { font-size: 14px; font-weight: 700; color: #fff; }
+  .metric-label { font-size: 8px; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  .chord-section { margin-bottom: 6px; }
+  .chord-label { font-size: 10px; color: #666; margin-bottom: 3px; }
+  .chord-grid { display: flex; gap: 2px; }
+  .chord-cell {
+    flex: 1; text-align: center; font-size: 10px; color: #aaa; padding: 4px 2px;
+    background: #111; border: 1px solid #222; border-radius: 2px;
+  }
+  .chord-cell.bar-count { font-size: 8px; color: #555; background: transparent; border: none; padding: 2px; }
+
+  /* Reference tracks (bottom right) */
+  .refs-section { flex: 1; padding: 10px 14px; overflow-y: auto; }
+  .refs-section::-webkit-scrollbar { width: 3px; }
+  .refs-section::-webkit-scrollbar-thumb { background: #333; }
+
+  .ref-track {
+    display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+    background: #111; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 4px;
+  }
+  .ref-art { width: 36px; height: 36px; border-radius: 3px; flex-shrink: 0; }
+  .ref-info { flex: 1; min-width: 0; }
+  .ref-title { font-size: 11px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ref-artist { font-size: 9px; color: #666; }
+  .ref-tag { font-size: 9px; color: var(--green); background: rgba(0,255,136,0.06); padding: 2px 6px; border-radius: 2px; white-space: nowrap; }
+
+  /* Bottom bar — agent reasoning */
+  .bottom-bar {
+    height: 28px; border-top: 1px solid var(--border); display: flex; align-items: center;
+    padding: 0 16px; cursor: pointer; flex-shrink: 0;
+  }
+  .bottom-bar:hover { background: rgba(255,255,255,0.01); }
+  .bottom-bar-text { font-size: 10px; color: #555; }
+  .bottom-bar-arrow { font-size: 8px; color: #444; margin-left: 6px; }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <span class="back-arrow">&larr;</span>
+  <span class="topbar-title">Whisperheads</span>
+  <span class="badge badge-converging">CONVERGING</span>
+  <span class="topbar-meta">Round 4 &middot; delta 0.18</span>
+  <div class="topbar-right">
+    <button class="btn-sm">History</button>
+    <button class="btn-sm">Export</button>
+    <button class="btn-sm primary">Audio Review</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div class="section-label">Pipeline</div>
+
+    <div class="pipe-step">
+      <span class="pipe-num done">1</span>
+      <span class="pipe-name done">Inception</span>
+      <span class="pipe-check">&#10003;</span>
+    </div>
+    <div class="pipe-step">
+      <span class="pipe-num done">2</span>
+      <span class="pipe-name done">Research</span>
+      <span class="pipe-check">&#10003;</span>
+    </div>
+    <div class="pipe-step active">
+      <span class="pipe-num active">3</span>
+      <span class="pipe-name active">Composition</span>
+    </div>
+    <div class="pipe-step">
+      <span class="pipe-num dim">4</span>
+      <span class="pipe-name dim">Generation</span>
+    </div>
+    <div class="pipe-step">
+      <span class="pipe-num dim">5</span>
+      <span class="pipe-name dim">Post-Prod</span>
+    </div>
+    <div class="pipe-step">
+      <span class="pipe-num dim">6</span>
+      <span class="pipe-name dim">Review</span>
+    </div>
+    <div class="pipe-step">
+      <span class="pipe-num dim">7</span>
+      <span class="pipe-name dim">Archive</span>
+    </div>
+
+    <div class="section-label" style="margin-top:16px;">Round History</div>
+
+    <!-- Sparkline -->
+    <div class="sparkline-container">
+      <svg class="sparkline-svg" viewBox="0 0 156 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Threshold line at 0.3 -->
+        <line x1="8" y1="23.5" x2="148" y2="23.5" stroke="#444" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="150" y="25" font-size="6" fill="#444" font-family="system-ui">0.3</text>
+        <!-- Grid lines -->
+        <line x1="8" y1="4" x2="8" y2="44" stroke="#222" stroke-width="0.5"/>
+        <line x1="55" y1="4" x2="55" y2="44" stroke="#222" stroke-width="0.5"/>
+        <line x1="101" y1="4" x2="101" y2="44" stroke="#222" stroke-width="0.5"/>
+        <line x1="148" y1="4" x2="148" y2="44" stroke="#222" stroke-width="0.5"/>
+        <!-- Convergence line: R1=0.62, R2=0.41, R3=0.28, R4=0.18 -->
+        <!-- Y scale: 0.0=44, 1.0=4, so y = 44 - (val/1.0)*40 -->
+        <!-- R1: 0.62 -> y=19.2, R2: 0.41 -> y=27.6, R3: 0.28 -> y=32.8, R4: 0.18 -> y=36.8 -->
+        <polyline points="8,19.2 55,27.6 101,32.8 148,36.8" stroke="var(--green)" stroke-width="1.5" fill="none"/>
+        <!-- Dots -->
+        <circle cx="8" cy="19.2" r="2.5" fill="var(--red)"/>
+        <circle cx="55" cy="27.6" r="2.5" fill="var(--amber)"/>
+        <circle cx="101" cy="32.8" r="2.5" fill="var(--amber)"/>
+        <circle cx="148" cy="36.8" r="2.5" fill="var(--green)"/>
+        <!-- Labels -->
+        <text x="8" y="16" font-size="7" fill="#666" text-anchor="middle" font-family="system-ui">R1</text>
+        <text x="55" y="25" font-size="7" fill="#666" text-anchor="middle" font-family="system-ui">R2</text>
+        <text x="101" y="30" font-size="7" fill="#666" text-anchor="middle" font-family="system-ui">R3</text>
+        <text x="148" y="34" font-size="7" fill="#fff" text-anchor="middle" font-family="system-ui" font-weight="600">R4</text>
+        <!-- Delta values -->
+        <text x="8" y="14" font-size="6" fill="#888" text-anchor="middle" font-family="system-ui">0.62</text>
+        <text x="55" y="36" font-size="6" fill="#888" text-anchor="middle" font-family="system-ui">0.41</text>
+        <text x="101" y="41" font-size="6" fill="#888" text-anchor="middle" font-family="system-ui">0.28</text>
+        <text x="148" y="44" font-size="6" fill="var(--green)" text-anchor="middle" font-family="system-ui">0.18</text>
+      </svg>
+    </div>
+
+    <div style="font-size:9px;color:#555;margin-top:4px;">Threshold: 0.30 &middot; Est. 1 more round</div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="main">
+    <!-- Left: Annotated Lyrics Editor -->
+    <div class="lyrics-panel">
+      <div class="lyrics-header">
+        <span class="lyrics-title">Annotated Lyrics</span>
+        <span style="font-size:9px;color:var(--accent);background:rgba(124,58,237,0.1);padding:2px 6px;border-radius:3px;">Token Mode</span>
+        <span class="lyrics-meta">18 lines &middot; 4 sections &middot; click any word</span>
+      </div>
+      <div class="lyrics-body">
+
+        <!-- [Verse 1] -->
+        <div class="section-header">[Verse 1]</div>
+
+        <!-- Line 1 -->
+        <div class="lyric-row">
+          <span class="word emo-haunting"><span class="dynamics-hint">mp</span><span class="text">Signal</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">bleeds</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">through</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">static</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">walls</span></span>
+        </div>
+
+        <!-- Line 2 — contains the SELECTED word "dreaming" -->
+        <div class="lyric-row" style="position:relative;">
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">Where</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-building selected" style="position:relative;">
+            <span class="dynamics-hint" style="color:var(--amber);">mf</span>
+            <span class="text">dreaming</span>
+            <!-- POPOVER — visible on selected word -->
+            <div class="word-popover">
+              <div class="pop-row">
+                <span class="pop-label">Text</span>
+                <input class="pop-input" type="text" value="dreaming">
+              </div>
+              <div class="pop-row">
+                <span class="pop-label">Emotion</span>
+                <div class="pop-pills">
+                  <span class="pop-pill">haunting</span>
+                  <span class="pop-pill active-blue">building</span>
+                  <span class="pop-pill">tension</span>
+                  <span class="pop-pill">anthemic</span>
+                  <span class="pop-pill">soaring</span>
+                  <span class="pop-pill">urgent</span>
+                  <span class="pop-pill">catharsis</span>
+                  <span class="pop-pill">defiant</span>
+                  <span class="pop-pill">melancholy</span>
+                </div>
+              </div>
+              <div class="pop-row">
+                <span class="pop-label">Dynamics</span>
+                <div class="pop-pills">
+                  <span class="pop-pill">pp</span>
+                  <span class="pop-pill">mp</span>
+                  <span class="pop-pill active-amber">mf</span>
+                  <span class="pop-pill">f</span>
+                  <span class="pop-pill">ff</span>
+                </div>
+              </div>
+              <div class="pop-row">
+                <span class="pop-label">Vocal</span>
+                <select class="pop-select">
+                  <option selected>belt</option>
+                  <option>falsetto</option>
+                  <option>whisper</option>
+                  <option>spoken</option>
+                  <option>breathy</option>
+                  <option>vibrato</option>
+                </select>
+                <div class="lock-toggle" style="margin-left:12px;">
+                  <span class="lock-switch"></span>
+                  <span class="lock-label">Lock</span>
+                </div>
+                <div class="pop-actions">
+                  <button class="pop-btn cancel">Cancel</button>
+                  <button class="pop-btn apply">Apply</button>
+                </div>
+              </div>
+            </div>
+          </span>
+          <span class="word emo-building"><span class="dynamics-hint"></span><span class="text">protocol</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint">f</span><span class="text">stalls</span></span>
+        </div>
+
+        <!-- Line 3 -->
+        <div class="lyric-row">
+          <span class="word emo-haunting"><span class="dynamics-hint">mp</span><span class="text">Recursive</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">whispers</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">in</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">hall</span></span>
+        </div>
+
+        <!-- Line 4 -->
+        <div class="lyric-row">
+          <span class="word emo-tension"><span class="dynamics-hint">f</span><span class="text">Echoed</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">by</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint"></span><span class="text">ones</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">who</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint"></span><span class="text">fall</span></span>
+        </div>
+
+        <!-- [Chorus] -->
+        <div class="section-header">[Chorus]</div>
+
+        <!-- Line 5 — LOCKED -->
+        <div class="lyric-row">
+          <span class="word emo-anthemic"><span class="dynamics-hint">ff</span><span class="text">We</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">are</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">whisperheads,</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">we</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">live</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">between</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">lines</span></span>
+          <span class="lock-indicator" title="Locked — agent cannot modify">&#128274;</span>
+        </div>
+
+        <!-- Line 6 -->
+        <div class="lyric-row">
+          <span class="word emo-soaring"><span class="dynamics-hint">ff</span><span class="text">Burning</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">through</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">noise,</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">we</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">never</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">tire</span></span>
+        </div>
+
+        <!-- Line 7 -->
+        <div class="lyric-row">
+          <span class="word emo-urgent"><span class="dynamics-hint">f</span><span class="text">Set</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-urgent"><span class="dynamics-hint"></span><span class="text">frequency,</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">let</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">it</span></span>
+          <span class="word emo-urgent"><span class="dynamics-hint"></span><span class="text">climb</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint">ff</span><span class="text">higher</span></span>
+        </div>
+
+        <!-- Line 8 -->
+        <div class="lyric-row">
+          <span class="word emo-catharsis"><span class="dynamics-hint">ff</span><span class="text">Until</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-catharsis"><span class="dynamics-hint"></span><span class="text">signal</span></span>
+          <span class="word emo-catharsis"><span class="dynamics-hint"></span><span class="text">breaks</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-catharsis"><span class="dynamics-hint"></span><span class="text">choir</span></span>
+        </div>
+
+        <!-- [Verse 2] -->
+        <div class="section-header">[Verse 2]</div>
+
+        <!-- Line 9 -->
+        <div class="lyric-row">
+          <span class="word emo-melancholy"><span class="dynamics-hint">mp</span><span class="text">Memory</span></span>
+          <span class="word emo-melancholy"><span class="dynamics-hint"></span><span class="text">leaks</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">into</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-melancholy"><span class="dynamics-hint"></span><span class="text">void</span></span>
+        </div>
+
+        <!-- Line 10 -->
+        <div class="lyric-row">
+          <span class="word emo-building"><span class="dynamics-hint"></span><span class="text">Every</span></span>
+          <span class="word emo-building"><span class="dynamics-hint">mf</span><span class="text">dream</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">a</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint"></span><span class="text">thread</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint">f</span><span class="text">destroyed</span></span>
+        </div>
+
+        <!-- Line 11 -->
+        <div class="lyric-row">
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">But</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">in</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-defiant"><span class="dynamics-hint">f</span><span class="text">static,</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">we</span></span>
+          <span class="word emo-defiant"><span class="dynamics-hint"></span><span class="text">find</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">our</span></span>
+          <span class="word emo-defiant"><span class="dynamics-hint">ff</span><span class="text">voice</span></span>
+        </div>
+
+        <!-- Line 12 -->
+        <div class="lyric-row">
+          <span class="word emo-soaring"><span class="dynamics-hint">ff</span><span class="text">Refusing</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">silence,</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">making</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">noise</span></span>
+        </div>
+
+        <!-- [Bridge] -->
+        <div class="section-header">[Bridge]</div>
+
+        <!-- Line 13 -->
+        <div class="lyric-row">
+          <span class="word emo-haunting"><span class="dynamics-hint">pp</span><span class="text">Somewhere</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">in</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">waveform</span></span>
+          <span class="word emo-haunting"><span class="dynamics-hint"></span><span class="text">haze</span></span>
+        </div>
+
+        <!-- Line 14 -->
+        <div class="lyric-row">
+          <span class="word emo-building"><span class="dynamics-hint">mp</span><span class="text">A</span></span>
+          <span class="word emo-building"><span class="dynamics-hint"></span><span class="text">phantom</span></span>
+          <span class="word emo-building"><span class="dynamics-hint"></span><span class="text">frequency</span></span>
+          <span class="word emo-building"><span class="dynamics-hint">mf</span><span class="text">plays</span></span>
+        </div>
+
+        <!-- Line 15 -->
+        <div class="lyric-row">
+          <span class="word emo-tension"><span class="dynamics-hint">mf</span><span class="text">Threading</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">through</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint"></span><span class="text">fractured</span></span>
+          <span class="word emo-tension"><span class="dynamics-hint">f</span><span class="text">maze</span></span>
+        </div>
+
+        <!-- [Chorus Reprise] -->
+        <div class="section-header">[Chorus Reprise]</div>
+
+        <!-- Line 16 -->
+        <div class="lyric-row">
+          <span class="word emo-anthemic"><span class="dynamics-hint">ff</span><span class="text">We</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">are</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">whisperheads,</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">we</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">live</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">between</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-anthemic"><span class="dynamics-hint"></span><span class="text">lines</span></span>
+        </div>
+
+        <!-- Line 17 -->
+        <div class="lyric-row">
+          <span class="word emo-catharsis"><span class="dynamics-hint">ff</span><span class="text">Collapsing</span></span>
+          <span class="word emo-catharsis"><span class="dynamics-hint"></span><span class="text">walls</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">of</span></span>
+          <span class="word emo-catharsis"><span class="dynamics-hint"></span><span class="text">noise</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">and</span></span>
+          <span class="word emo-catharsis"><span class="dynamics-hint"></span><span class="text">light</span></span>
+        </div>
+
+        <!-- Line 18 -->
+        <div class="lyric-row">
+          <span class="word emo-soaring"><span class="dynamics-hint">ff</span><span class="text">We</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">transmit</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">until</span></span>
+          <span class="word emo-neutral"><span class="dynamics-hint"></span><span class="text">the</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">morning</span></span>
+          <span class="word emo-soaring"><span class="dynamics-hint"></span><span class="text">light</span></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="right-panel">
+
+      <!-- Top right: Piano Roll Spec -->
+      <div class="spec-section">
+        <div class="panel-title">Piano Roll Spec</div>
+
+        <div class="metric-cards">
+          <div class="metric-card">
+            <div class="metric-val">92</div>
+            <div class="metric-label">BPM</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val">Am</div>
+            <div class="metric-label">Key</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val">4/4</div>
+            <div class="metric-label">Time Sig</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val">3:42</div>
+            <div class="metric-label">Duration</div>
+          </div>
+        </div>
+
+        <div class="chord-section">
+          <div class="chord-label">Intro <span style="color:#444;">4 bars</span></div>
+          <div class="chord-grid">
+            <div class="chord-cell">Am</div>
+            <div class="chord-cell">Em</div>
+            <div class="chord-cell">Am</div>
+            <div class="chord-cell">Em</div>
+          </div>
+        </div>
+        <div class="chord-section">
+          <div class="chord-label">Verse <span style="color:#444;">8 bars</span></div>
+          <div class="chord-grid">
+            <div class="chord-cell">Am</div>
+            <div class="chord-cell">G</div>
+            <div class="chord-cell">C</div>
+            <div class="chord-cell">F</div>
+            <div class="chord-cell">Am</div>
+            <div class="chord-cell">G</div>
+            <div class="chord-cell">C</div>
+            <div class="chord-cell">F</div>
+          </div>
+        </div>
+        <div class="chord-section">
+          <div class="chord-label">Chorus <span style="color:#444;">8 bars</span></div>
+          <div class="chord-grid">
+            <div class="chord-cell">C</div>
+            <div class="chord-cell">F</div>
+            <div class="chord-cell">Am</div>
+            <div class="chord-cell">G</div>
+            <div class="chord-cell">C</div>
+            <div class="chord-cell">F</div>
+            <div class="chord-cell">Am</div>
+            <div class="chord-cell">G</div>
+          </div>
+        </div>
+        <div class="chord-section">
+          <div class="chord-label">Bridge <span style="color:#444;">4 bars</span></div>
+          <div class="chord-grid">
+            <div class="chord-cell">Dm</div>
+            <div class="chord-cell">Em</div>
+            <div class="chord-cell">F</div>
+            <div class="chord-cell">G</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom right: Reference Tracks -->
+      <div class="refs-section">
+        <div class="panel-title">Reference Tracks <span style="font-weight:400;color:#555;font-size:9px;">via /dogpile</span></div>
+
+        <div class="ref-track">
+          <div class="ref-art" style="background:linear-gradient(135deg,#7c3aed33,#111 60%);"></div>
+          <div class="ref-info">
+            <div class="ref-title">Somebody That I Used to Know</div>
+            <div class="ref-artist">Gotye</div>
+          </div>
+          <span class="ref-tag">haunting loop</span>
+        </div>
+
+        <div class="ref-track">
+          <div class="ref-art" style="background:linear-gradient(135deg,#4a9eff33,#111 60%);"></div>
+          <div class="ref-info">
+            <div class="ref-title">Everything In Its Right Place</div>
+            <div class="ref-artist">Radiohead</div>
+          </div>
+          <span class="ref-tag">texture & space</span>
+        </div>
+
+        <div class="ref-track">
+          <div class="ref-art" style="background:linear-gradient(135deg,#ffaa0033,#111 60%);"></div>
+          <div class="ref-info">
+            <div class="ref-title">Midnight City</div>
+            <div class="ref-artist">M83</div>
+          </div>
+          <span class="ref-tag">synth anthem</span>
+        </div>
+
+        <div class="ref-track">
+          <div class="ref-art" style="background:linear-gradient(135deg,#ff444433,#111 60%);"></div>
+          <div class="ref-info">
+            <div class="ref-title">Teardrop</div>
+            <div class="ref-artist">Massive Attack</div>
+          </div>
+          <span class="ref-tag">vocal fragility</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Bottom bar: Agent Reasoning -->
+<div class="bottom-bar">
+  <span class="bottom-bar-text">Agent Reasoning</span>
+  <span class="bottom-bar-arrow">&#9654;</span>
+  <span style="font-size:9px;color:#444;margin-left:12px;">Last: "Shifted 'stalls' from building to tension for verse-end contrast" &middot; 2m ago</span>
+</div>
+
+</body>
+</html>

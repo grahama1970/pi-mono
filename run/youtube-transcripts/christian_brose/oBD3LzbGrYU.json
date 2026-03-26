@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oBD3LzbGrYU",
+    "language": "en",
+    "took_ms": 8735,
+    "method": null,
+    "title": "The Less You Know, the Better You Sleep: Russia's Road to Terror and Dictatorship under Yeltsin and",
+    "channel": "Hudson Institute",
+    "upload_date": "20160520",
+    "duration_sec": 6419,
+    "description": "David Satter, Kevin Klose, Carl Gershman, Robert Amsterdam, and Charles Davidson discuss Satter's book on Putin and the FSB's role in the 1999 apartment bombings.",
+    "view_count": 16365
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oBD3LzbGrYU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

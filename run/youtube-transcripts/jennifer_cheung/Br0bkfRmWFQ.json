@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Br0bkfRmWFQ",
+    "language": "en",
+    "took_ms": 8197,
+    "method": null,
+    "title": "DEF CON Safe Mode Rogues Village - 0x90 - Outs Forces and Equivoque: How Magicians Speak",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 3453,
+    "description": "In this talk, 0x90 explores the similarities of language between both a magician and social engineer. Learn about common language tricks and methods used in magic and how those same methods could be used to make your social engineering more effective. After learning these principals, learn how to apply them them in ethical scenarios to help practice your skills, as well as having the tools to create new ones.",
+    "view_count": 1228
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Br0bkfRmWFQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

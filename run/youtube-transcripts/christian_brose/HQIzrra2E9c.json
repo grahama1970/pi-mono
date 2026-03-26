@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HQIzrra2E9c",
+    "language": "en",
+    "took_ms": 9235,
+    "method": null,
+    "title": "Karzai Brings Afghan Peace Plan to Washington",
+    "channel": "Hudson Institute",
+    "upload_date": "20100511",
+    "duration_sec": 232,
+    "description": "Much of Afghan President Hamid Karzai's activities in Washington this week will center on his efforts to secure American support, both diplomatic and financial, for his new peace plan -- and specifically, the controversial issue of negotiating with the Taliban.\r\n\r\nThe Afghan government and its foreign backers differentiate between reconciliation and reintegration. The former concept involves negotiating a political settlement with senior Taliban leaders who are willing to break with al-Qaida. By contrast, reintegration entails inducing lower-level Taliban fighters -- who might have become Taliban fighters for non-ideological reasons, such as financial incentives -- to stop fighting and return to civilian life.\r\n\r\nUnder the terms of its proposed peace plan, which has been circulated among some foreign diplomats and Western media, the Karzai administration would demand that Taliban leaders break with al-Qaida, cease military action, and accept the main tenets of the current Afghan constitution. In return, the Afghan government would work with its international partners to remove them from the U.N. terrorist blacklist.",
+    "view_count": 101
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HQIzrra2E9c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

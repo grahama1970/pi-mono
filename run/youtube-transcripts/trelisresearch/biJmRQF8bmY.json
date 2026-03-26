@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "biJmRQF8bmY",
+    "language": "en",
+    "took_ms": 8534,
+    "method": null,
+    "title": "Improved Retrieval Augmented Generation with ALL-SORT",
+    "channel": "Trelis Research",
+    "upload_date": "20240313",
+    "duration_sec": 3425,
+    "description": "➡️ ADVANCED-inference Repo (and individual ALL-SORT scripts): https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ One-click API Templates (incl. Smaug 34B!): https://github.com/TrelisResearch/one-click-llms/\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1poQa3t5fuBfAdfXvACicFKKNUPNsk0lfsNgc10TiIUE/edit?usp=sharing\n- Smaug 34B: https://huggingface.co/abacusai/Smaug-34B-v0.1\n- E5 Embedding Model: https://huggingface.co/intfloat/e5-large-v2\n- Outlines: https://github.com/outlines-dev/outlines\n\nOTHER TRELIS LINKS:\n➡️ RunPod Affiliate Link: https://tinyurl.com/4b6ecbbn\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/ADVANCED-fine-tuning-scripts/\n➡️ ADVANCED-vision Repo: https://trelis.com/ADVANCED-vision/\n➡️ ADVANCED-transcription Repo: https://trelis.com/ADVANCED-transcription/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nTIMESTAMPS:\n0:00 Improving on RAG\n0:25 ALL-SORT - LLM sorting for retrieval\n3:04 LLM assisted retrieval\n6:22 Video Overview\n8:59 Dataset Preparation\n11:41 Question Preparation - DETAILED\n15:41 Full context prompt preparation\n17:00 Standard Vector Search Setup\n25:08 Coding ALL-SORT\n29:45 API endpoint setup\n36:09 ALL-SORT Demo\n39:29 Performance Evaluation - DETAILED\n48:35 Performance SUMMARY\n51:24 Cost comparison RAG vs Long Context vs ALL-SORT\n54:32 Latency\n56:17 Final Remarks",
+    "view_count": 7575
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] biJmRQF8bmY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

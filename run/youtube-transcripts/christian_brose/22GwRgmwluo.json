@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "22GwRgmwluo",
+    "language": "en",
+    "took_ms": 9550,
+    "method": null,
+    "title": "Countering Russian Influence in Georgia",
+    "channel": "Hudson Institute",
+    "upload_date": "20221123",
+    "duration_sec": 3307,
+    "description": "In 2008, Russia invaded and illegally occupied one-fifth of the Republic of Georgia. Now Moscow’s authoritarian influence again threatens the country.\n\nGeorgia’s wealthiest oligarch, Bidzina Ivanishvili, made his fortune in Russia and reportedly maintains business interests there. Meanwhile, anti-Western elements have sought to influence Georgia’s state institutions and civil society in recent years, and relations with the United States and European Union have become increasingly strained.\n\nRussian influence within Georgia has significant implications for Ukraine’s fight for freedom. Tbilisi’s stance toward Kyiv has been lukewarm despite strong public support for helping Ukraine. Georgia’s strategic location and economic dependence on Russia raise concerns that it could become a hub for sanctions evasion. And the recent influx of Russian émigrés has prompted fears that the Kremlin could use their presence as a pretext for further interference or aggression.\n\nPlease join leading Georgian and US experts at Hudson Institute for a discussion on countering Russia’s influence in Georgia.",
+    "view_count": 925
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 22GwRgmwluo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

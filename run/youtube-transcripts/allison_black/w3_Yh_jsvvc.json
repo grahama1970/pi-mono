@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "w3_Yh_jsvvc",
+    "language": "en",
+    "took_ms": 9159,
+    "method": null,
+    "title": "How much does it cost to train an F-22 pilot?",
+    "channel": "Sandboxx",
+    "upload_date": "20230228",
+    "duration_sec": 58,
+    "description": "The United States operates some of the most advanced and capable tactical aircraft ever to take to the skies, but what does it cost to train the pilot? The answer is... more than you might think. \n\nBack in 2019, the U.S. Air Force worked with the RAND Corporation to conduct an analysis of what the branch spends on bonuses and incentive pay aimed at retaining existing pilots, versus the cost of recruiting and training new pilots to replace them.\n\nHere's the rundown.",
+    "view_count": 123921
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] w3_Yh_jsvvc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

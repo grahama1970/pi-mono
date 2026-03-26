@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZrZKiy2KPCM",
+    "language": "en",
+    "took_ms": 8725,
+    "method": null,
+    "title": "Brave New Industrie 4 0",
+    "channel": "S4 Events",
+    "upload_date": "20160915",
+    "duration_sec": 1191,
+    "description": "Is Industrie 4.0 actually the 4th Industrial Revolution as touted by it's many proponents. Ralph Langner tackles that question in this 20 minute video from S4xEurope.\n\nRalph looks back at the characteristics of the three previous industrial revolutions (Steam Engine, Assembly Line, and Automation) and finds these lacking or different in \"Industrie 4.0\". It's a provocative video that made the attendees think about Industrie 4.0 from a different perspective.",
+    "view_count": 869
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZrZKiy2KPCM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

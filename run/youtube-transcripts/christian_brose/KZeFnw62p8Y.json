@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KZeFnw62p8Y",
+    "language": "en",
+    "took_ms": 9149,
+    "method": null,
+    "title": "ISIS, Russia, and China: Can America Win a Three-Front Information War?",
+    "channel": "Hudson Institute",
+    "upload_date": "20170418",
+    "duration_sec": 5290,
+    "description": "Jeffrey Gedmin, Martha Bayles, and Eric Brown discuss how the U.S. should respond to radical jihadist, Russian, and Chinese propaganda",
+    "view_count": 2037
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KZeFnw62p8Y: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

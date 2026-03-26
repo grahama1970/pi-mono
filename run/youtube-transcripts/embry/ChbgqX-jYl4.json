@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ChbgqX-jYl4",
+    "language": "en",
+    "took_ms": 8048,
+    "method": null,
+    "title": "Behind the Scenes Photoshop - \"Coin Operated Rocket\" with Everyday Astronaut",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170121",
+    "duration_sec": 6640,
+    "description": "Join me live every Friday at 1:00 p.m. Central (19 UTC) as I photoshop my Everyday Astronaut images on twitch.tv/everydayastronaut\n\nFollow me on Instagram @EverydayAstronaut to see the final pictures!\n\nWhat is Everyday Astronaut? Check out www.everydayastronaut.com for more info!",
+    "view_count": 2124
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ChbgqX-jYl4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

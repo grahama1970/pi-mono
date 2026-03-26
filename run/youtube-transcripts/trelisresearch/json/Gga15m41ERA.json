@@ -1,0 +1,1418 @@
+{
+  "meta": {
+    "video_id": "Gga15m41ERA",
+    "language": "en",
+    "took_ms": 1394,
+    "method": "direct",
+    "title": "Train Voxtral Transcription (ASR) Models",
+    "channel": "Trelis Research",
+    "upload_date": "20260227",
+    "duration_sec": 1039,
+    "description": "Get repo access at Trelis.com/ADVANCED-audio\n\nData Prep + Training via UI or with Claude Code:\nTry it out: https://studio.trelis.com\n\nWhite Glove Data Preparation + Training Services\nLearn More: https://trelis.com/fine-tuning-services/\n\nVideo Links:\nVoxtral ASR Comparisons: https://research.trelis.com/asr/\n\nGet Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis' Private Discord\n3. Early access to Trelis videos via Discord\n\nRunpod Affiliate Link, incl. bonus on signup: https://runpod.io?ref=jmfkcdio\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nStarting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nGet Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nTIMESTAMPS:\n0:00 Introduction: Real-time vs batch transcription models\n1:05 Voxtral performance comparison vs Whisper on multilingual tasks\n2:07 Voxtral model variants: Small (24B), Mini (4B), and Transcribe versions\n3:08 Voxtral Real-Time release and V2 features (diarization, timestamping)\n3:35 OpenWeights availability for Mini, Small, and Real-Time models\n4:39 Real-time transcription accuracy vs delay tradeoffs\n5:43 Voxtral V2 improvements and fine-tuning support overview\n6:43 Training options: Advanced Audio scripts and Transformers limitations\n7:59 Voxtral architecture: Whisper encoder with MiniStral decoder\n9:00 Multimodal input support and real-time delay injection mechanism\n10:00 Real-time model features: multiple delay values and custom audio encoder\n11:02 vLLM support for high-throughput inference and continuous batching\n12:02 Trelis Studio no-code platform for training and deployment\n13:19 Advanced transcription repo and Modal training script walkthrough\n15:25 Training dataset and baseline 7.6% word error rate results\n16:25 Evaluation comparison: base vs fine-tuned model performance\n17:06 Recommendations: Voxtral and Qwen ASR alternatives",
+    "view_count": 1078
+  },
+  "transcript": [
+    {
+      "text": " Voxtral is a series of leading open source models for transcription.",
+      "start": 0.0,
+      "duration": 3.54
+    },
+    {
+      "text": " There are two kinds right now.",
+      "start": 3.54,
+      "duration": 2.44
+    },
+    {
+      "text": " There's a real-time type for word-by-word transcription, and there's also a batch type,",
+      "start": 5.98,
+      "duration": 4.24
+    },
+    {
+      "text": " which is now a little bit older from late in 2025.",
+      "start": 10.22,
+      "duration": 2.62
+    },
+    {
+      "text": " I'm going to describe the pros and cons of these models and compare them to Whisper.",
+      "start": 12.84,
+      "duration": 4.66
+    },
+    {
+      "text": " I'll also describe how to train these models, and I'll talk a little bit about how you can",
+      "start": 17.5,
+      "duration": 4.28
+    },
+    {
+      "text": " inference them using vLLM.",
+      "start": 21.78,
+      "duration": 2.1
+    },
+    {
+      "text": " This will be particularly useful for those of you who want to run transcription models",
+      "start": 23.88,
+      "duration": 4.58
+    },
+    {
+      "text": " on device.",
+      "start": 28.46,
+      "duration": 0.66
+    },
+    {
+      "text": " Now, these models are not very, very small, so probably not recommended for a phone or",
+      "start": 29.12,
+      "duration": 4.36
+    },
+    {
+      "text": " maybe even iPad, but if you want to run them on a GPU or if you want to run them on your",
+      "start": 33.48,
+      "duration": 5.5
+    },
+    {
+      "text": " computer, say you have a Mac with more power, then these models are going to perform pretty",
+      "start": 38.98,
+      "duration": 3.78
+    },
+    {
+      "text": " well.",
+      "start": 42.76,
+      "duration": 0.26
+    },
+    {
+      "text": " So I'm going to go back and start with the release of Voxtral itself, which was late in 2025, well,",
+      "start": 43.02,
+      "duration": 8.1
+    },
+    {
+      "text": " July 15, 2025.",
+      "start": 51.12,
+      "duration": 1.26
+    },
+    {
+      "text": " This is a batch transcription model, and when it was released, it outperformed a lot of the",
+      "start": 52.38,
+      "duration": 5.18
+    },
+    {
+      "text": " proprietary models of the time, except for Scribe from Eleven Labs.",
+      "start": 57.56,
+      "duration": 3.18
+    },
+    {
+      "text": " Now, Eleven Labs have since released Scribe V2, which is even better than this, but you can see",
+      "start": 60.74,
+      "duration": 4.74
+    },
+    {
+      "text": " the word error rate on Voxtral here, Voxtral Small or Mini or Mini Transcribe or Mini.",
+      "start": 65.48,
+      "duration": 7.04
+    },
+    {
+      "text": " It's kind of better than some of the other proprietary models that were out at the time.",
+      "start": 72.52,
+      "duration": 4.34
+    },
+    {
+      "text": " So Voxtral is basically a very good transcription model, particularly multilingual.",
+      "start": 76.86,
+      "duration": 4.52
+    },
+    {
+      "text": " It looks a bit better than it actually is on Whisper.",
+      "start": 81.38,
+      "duration": 4.1
+    },
+    {
+      "text": " Whisper is way up here, but that's because Whisper is very strong on English and it is",
+      "start": 85.48,
+      "duration": 5.56
+    },
+    {
+      "text": " weaker on other non-English languages.",
+      "start": 91.04,
+      "duration": 1.9
+    },
+    {
+      "text": " So while it looks like the Voxtral models outperform Whisper by a lot here, that's because it's being",
+      "start": 92.94,
+      "duration": 4.4
+    },
+    {
+      "text": " measured on FLIR, which is a multilingual data set.",
+      "start": 97.34,
+      "duration": 2.68
+    },
+    {
+      "text": " And so actually, Whisper is probably better for English, but for the other languages, Voxtral",
+      "start": 100.02,
+      "duration": 5.32
+    },
+    {
+      "text": " is better.",
+      "start": 105.34,
+      "duration": 0.52
+    },
+    {
+      "text": " Now, it's confusing to follow all the Voxtral models because there's Voxtral, there's Voxtral",
+      "start": 106.5,
+      "duration": 3.64
+    },
+    {
+      "text": " Realtime, which is the more recent one.",
+      "start": 110.14,
+      "duration": 1.46
+    },
+    {
+      "text": " And then there are various versions of Voxtral and Realtime.",
+      "start": 111.6,
+      "duration": 4.28
+    },
+    {
+      "text": " There's Voxtral Small, Mini Transcribe and Mini.",
+      "start": 115.88,
+      "duration": 3.12
+    },
+    {
+      "text": " Voxtral Small is not actually that small.",
+      "start": 119.0,
+      "duration": 2.64
+    },
+    {
+      "text": " It's based on Whisper, or it's based rather on Mistral Small, which is a 24 billion parameter",
+      "start": 121.64,
+      "duration": 5.52
+    },
+    {
+      "text": " model.",
+      "start": 127.16,
+      "duration": 0.28
+    },
+    {
+      "text": " So it's very large, probably too large for a transcription model.",
+      "start": 127.44,
+      "duration": 2.72
+    },
+    {
+      "text": " Voxtral Mini is based on Ministral, which is a 4 billion-ish parameter model.",
+      "start": 130.16,
+      "duration": 5.06
+    },
+    {
+      "text": " So that's quite a bit smaller, but still more than twice the size of Whisper Large Turbo.",
+      "start": 135.22,
+      "duration": 4.94
+    },
+    {
+      "text": " And then Voxtral Mini Transcribe is a proprietary model, not OpenWeights.",
+      "start": 140.16,
+      "duration": 5.26
+    },
+    {
+      "text": " It's a fine tune of Voxtral Mini specifically for transcription, because in principle, Voxtral",
+      "start": 145.42,
+      "duration": 6.52
+    },
+    {
+      "text": " are not just transcription models.",
+      "start": 151.94,
+      "duration": 1.5
+    },
+    {
+      "text": " They're actually voice plus text input and text output.",
+      "start": 153.44,
+      "duration": 4.46
+    },
+    {
+      "text": " That's what a Voxtral model is.",
+      "start": 157.9,
+      "duration": 1.88
+    },
+    {
+      "text": " And of course, if you can allow voice and text input, you can also just allow voice input,",
+      "start": 159.78,
+      "duration": 4.64
+    },
+    {
+      "text": " in which case it becomes a transcription model.",
+      "start": 164.42,
+      "duration": 2.14
+    },
+    {
+      "text": " And if you tune it just for that, you improve the model primarily just because the formatting",
+      "start": 166.56,
+      "duration": 4.86
+    },
+    {
+      "text": " is improved.",
+      "start": 171.42,
+      "duration": 0.56
+    },
+    {
+      "text": " So I'll show you this in a more clear table.",
+      "start": 171.98,
+      "duration": 2.94
+    },
+    {
+      "text": " Now, to add further confusion to the matter, there is the Voxtral Real-Time series of models",
+      "start": 174.92,
+      "duration": 5.36
+    },
+    {
+      "text": " that has been released.",
+      "start": 180.28,
+      "duration": 1.3
+    },
+    {
+      "text": " And actually, this release has got two models, one of which is a real-time model and is OpenWeights.",
+      "start": 182.36,
+      "duration": 5.72
+    },
+    {
+      "text": " And the other one is Voxtral Mini Transcribe V2, which I understand is basically a better version",
+      "start": 188.08,
+      "duration": 6.0
+    },
+    {
+      "text": " of this Voxtral Mini model, which was proprietary.",
+      "start": 194.08,
+      "duration": 2.84
+    },
+    {
+      "text": " And the Voxtral Mini Transcribe 2 model is also proprietary, probably performs a little bit",
+      "start": 196.92,
+      "duration": 4.82
+    },
+    {
+      "text": " better.",
+      "start": 201.74,
+      "duration": 0.26
+    },
+    {
+      "text": " But the V2 also provides diarization and I believe timestamping as well, although I think this",
+      "start": 202.0,
+      "duration": 5.42
+    },
+    {
+      "text": " provides timestamping on the API too.",
+      "start": 207.42,
+      "duration": 1.76
+    },
+    {
+      "text": " So Voxtral Mini Transcribe and Transcribe V2, you can only get available via API from Mistral.",
+      "start": 209.18,
+      "duration": 5.38
+    },
+    {
+      "text": " Whereas Voxtral Mini, Voxtral Small and Voxtral Real-Time, which is a streaming model, are",
+      "start": 215.56,
+      "duration": 6.28
+    },
+    {
+      "text": " available OpenWeights.",
+      "start": 221.84,
+      "duration": 1.34
+    },
+    {
+      "text": " Now, if you look at the performance, you can see that Voxtral Mini Transcribe, it's still",
+      "start": 223.18,
+      "duration": 7.72
+    },
+    {
+      "text": " not, well, this is diarization actually, so this is not even available OpenWeights.",
+      "start": 230.9,
+      "duration": 5.06
+    },
+    {
+      "text": " But just as a comparison, Mistral's leading model is not quite as good as Scribe V2 here, but",
+      "start": 235.96,
+      "duration": 5.62
+    },
+    {
+      "text": " it's better than some of, say, Deepgram Assembly and Gemini's 2.5 Flash model.",
+      "start": 241.58,
+      "duration": 4.72
+    },
+    {
+      "text": " And if you look at transcription performance, it's really not far off of Scribe V2, but it's",
+      "start": 246.3,
+      "duration": 6.2
+    },
+    {
+      "text": " better than some of the other larger labs.",
+      "start": 252.5,
+      "duration": 2.34
+    },
+    {
+      "text": " And then if we look at real-time, okay, here's real-time.",
+      "start": 254.84,
+      "duration": 5.72
+    },
+    {
+      "text": " And yeah, so the real-time is shown here actually in the colored, and it actually is quite close",
+      "start": 260.56,
+      "duration": 9.16
+    },
+    {
+      "text": " to where you go on the Voxtral Mini Transcribe V2.",
+      "start": 269.72,
+      "duration": 3.34
+    },
+    {
+      "text": " But as you have more of a delay, so if you transcribe with half a second versus two and",
+      "start": 273.06,
+      "duration": 5.98
+    },
+    {
+      "text": " a half seconds of delay from the speaker, you're going to get better or worse accuracy.",
+      "start": 279.04,
+      "duration": 4.54
+    },
+    {
+      "text": " Worse accuracy is you've got a smaller delay.",
+      "start": 283.58,
+      "duration": 2.68
+    },
+    {
+      "text": " If you've more delay, then the model is more context, so it's going to do better.",
+      "start": 286.26,
+      "duration": 2.92
+    },
+    {
+      "text": " And you can see the model does well across a variety of languages, and it kind of asymptotes",
+      "start": 289.18,
+      "duration": 6.26
+    },
+    {
+      "text": " down as you make a very large delay of two and a half seconds to the performance of the",
+      "start": 295.44,
+      "duration": 4.34
+    },
+    {
+      "text": " Voxtral Mini Transcribe.",
+      "start": 299.78,
+      "duration": 1.1
+    },
+    {
+      "text": " So I suppose when you look at these graphs of performance on transcription, you can kind",
+      "start": 300.88,
+      "duration": 5.78
+    },
+    {
+      "text": " of consider that the real-time model is somewhere slightly above Voxtral Mini Transcribe.",
+      "start": 306.66,
+      "duration": 4.12
+    },
+    {
+      "text": " So it's not far off Scribe, and it's better than some of these proprietary models here.",
+      "start": 310.78,
+      "duration": 5.5
+    },
+    {
+      "text": " Now I've put together a little table that we can check out to compare some of these.",
+      "start": 318.34,
+      "duration": 4.98
+    },
+    {
+      "text": " I'll say it once more because it all gets confusing.",
+      "start": 323.32,
+      "duration": 2.62
+    },
+    {
+      "text": " You can check this out, research.Trelis.com forward slash STT for speech-to-text.",
+      "start": 325.94,
+      "duration": 5.2
+    },
+    {
+      "text": " Probably should have called that ASR.",
+      "start": 331.14,
+      "duration": 1.52
+    },
+    {
+      "text": " So we have Voxtral Mini Transcribe, Voxtral Real-Time, similar word error rate.",
+      "start": 332.66,
+      "duration": 5.88
+    },
+    {
+      "text": " Voxtral Small, Voxtral Mini Transcribe, that's the V1.",
+      "start": 338.54,
+      "duration": 4.24
+    },
+    {
+      "text": " So you can see the improvement down to V2, and then Voxtral Mini, which is the 3B open",
+      "start": 343.0,
+      "duration": 6.72
+    },
+    {
+      "text": " source model.",
+      "start": 349.72,
+      "duration": 0.58
+    },
+    {
+      "text": " And you can see these outperform Whisper, but that's primarily because Whisper performs best",
+      "start": 350.3,
+      "duration": 5.92
+    },
+    {
+      "text": " on English, and this metric for FLIR is measured across different families.",
+      "start": 356.22,
+      "duration": 3.34
+    },
+    {
+      "text": " And then here we have some of the proprietary performances.",
+      "start": 359.56,
+      "duration": 3.12
+    },
+    {
+      "text": " Now, in terms of fine-tuning support, which I'll get onto now, you can, of course, fine-tune",
+      "start": 364.46,
+      "duration": 4.12
+    },
+    {
+      "text": " Whisper, all the Whisper ones, Tiny, Base, Small, Medium, Large, or Turbo.",
+      "start": 368.58,
+      "duration": 4.82
+    },
+    {
+      "text": " You can fine-tune them with Unsloth or Transformers.",
+      "start": 373.4,
+      "duration": 3.86
+    },
+    {
+      "text": " Voxtral Mini, you can also tune with Transformers, but not yet with Unsloth.",
+      "start": 377.26,
+      "duration": 5.86
+    },
+    {
+      "text": " There is a pull request that is, well, I'm not sure if it's even a pull request yet, but there's",
+      "start": 383.12,
+      "duration": 4.98
+    },
+    {
+      "text": " a branch about integrating that.",
+      "start": 388.1,
+      "duration": 1.82
+    },
+    {
+      "text": " You can train it using scripts within Advanced Audio, if you go to Trelis.com and purchase",
+      "start": 391.18,
+      "duration": 6.06
+    },
+    {
+      "text": " Lifetime Access there.",
+      "start": 397.24,
+      "duration": 1.0
+    },
+    {
+      "text": " You can also train it on Trelis Studio, which is the Trelis training platform, and I'll briefly",
+      "start": 398.24,
+      "duration": 4.74
+    },
+    {
+      "text": " show you that.",
+      "start": 402.98,
+      "duration": 0.62
+    },
+    {
+      "text": " Voxtral Small, you can actually train that.",
+      "start": 403.6,
+      "duration": 5.32
+    },
+    {
+      "text": " I think if I refresh the page, yeah, that's fixed.",
+      "start": 408.92,
+      "duration": 2.2
+    },
+    {
+      "text": " You can actually train that on Advanced Audio using the scripts in the repo I'll share.",
+      "start": 411.12,
+      "duration": 4.34
+    },
+    {
+      "text": " That's a paid Lifetime Access.",
+      "start": 415.46,
+      "duration": 1.44
+    },
+    {
+      "text": " And Voxtral Real-Time, there's no Transformers support yet for fine-tuning.",
+      "start": 417.46,
+      "duration": 3.88
+    },
+    {
+      "text": " It's only supporting inference, but that support will be coming soon.",
+      "start": 421.34,
+      "duration": 3.18
+    },
+    {
+      "text": " I should have pending written there.",
+      "start": 424.52,
+      "duration": 1.52
+    },
+    {
+      "text": " And when that's supported, Trelis Studio and the Advanced Audio repo will support that.",
+      "start": 426.04,
+      "duration": 4.66
+    },
+    {
+      "text": " And just one more model down here.",
+      "start": 430.7,
+      "duration": 1.94
+    },
+    {
+      "text": " I haven't made a video about it for fine-tuning, but the Advanced Audio repo does include custom",
+      "start": 432.64,
+      "duration": 5.38
+    },
+    {
+      "text": " scripts for the data prep and also to do the training of a QTI speech-to-text model, and",
+      "start": 438.02,
+      "duration": 8.0
+    },
+    {
+      "text": " that they are included.",
+      "start": 446.02,
+      "duration": 1.1
+    },
+    {
+      "text": " I'm not going to go over them today.",
+      "start": 447.12,
+      "duration": 1.34
+    },
+    {
+      "text": " There's quite a lot that you have to say there to tune a streaming model around the data preparation.",
+      "start": 448.46,
+      "duration": 4.42
+    },
+    {
+      "text": " I might get around to a video at some point in the future.",
+      "start": 452.88,
+      "duration": 2.2
+    },
+    {
+      "text": " So, yeah, you can check out this page if you want to take a look for yourself at the comparisons.",
+      "start": 456.36,
+      "duration": 6.82
+    },
+    {
+      "text": " Now, I do want to quickly show a few things about how these models work.",
+      "start": 465.18,
+      "duration": 4.02
+    },
+    {
+      "text": " This is the abstract and the paper for Voxtral, and it's useful to look at this schematic diagram",
+      "start": 469.2,
+      "duration": 6.92
+    },
+    {
+      "text": " here.",
+      "start": 476.12,
+      "duration": 0.32
+    },
+    {
+      "text": " So, if you look at Whisper, Whisper is an encoder-decoder architecture.",
+      "start": 476.44,
+      "duration": 3.24
+    },
+    {
+      "text": " It encodes the audio, and then it decodes.",
+      "start": 479.68,
+      "duration": 2.62
+    },
+    {
+      "text": " And Voxtral is similar.",
+      "start": 482.3,
+      "duration": 2.4
+    },
+    {
+      "text": " It actually uses the audio encoder from Whisper.",
+      "start": 484.7,
+      "duration": 3.7
+    },
+    {
+      "text": " So, it uses the encoder here.",
+      "start": 488.62,
+      "duration": 2.0
+    },
+    {
+      "text": " It's the Whisper encoder.",
+      "start": 490.62,
+      "duration": 1.24
+    },
+    {
+      "text": " And for the decoder, it uses MiniStral.",
+      "start": 491.86,
+      "duration": 2.46
+    },
+    {
+      "text": " So, Voxtral actually has the same limitations as a Whisper in that it requires 30-second",
+      "start": 494.32,
+      "duration": 6.34
+    },
+    {
+      "text": " input audio chunks.",
+      "start": 500.66,
+      "duration": 1.1
+    },
+    {
+      "text": " And if your audio is shorter, you have to pad it out to the full 30 seconds, which means",
+      "start": 501.76,
+      "duration": 4.14
+    },
+    {
+      "text": " you need to use more flaps and more energy consumption and more power if it's a small device.",
+      "start": 505.9,
+      "duration": 5.68
+    },
+    {
+      "text": " So, this is kind of a drawback, although they get rid of that when they move to the real-time",
+      "start": 511.58,
+      "duration": 4.24
+    },
+    {
+      "text": " model.",
+      "start": 515.82,
+      "duration": 0.26
+    },
+    {
+      "text": " So, basically, the Voxtral model is stronger than Whisper, primarily because its decoder",
+      "start": 516.8,
+      "duration": 5.54
+    },
+    {
+      "text": " is stronger.",
+      "start": 522.34,
+      "duration": 0.5
+    },
+    {
+      "text": " It's a more modern decoder from MiniStral instead of the decoder that was there in the original",
+      "start": 522.84,
+      "duration": 3.86
+    },
+    {
+      "text": " Whisper paper.",
+      "start": 526.7,
+      "duration": 1.3
+    },
+    {
+      "text": " But the encoder is the same, although it's adapted then to fit with the language decoder here.",
+      "start": 528.0,
+      "duration": 6.32
+    },
+    {
+      "text": " As I said, Voxtral, in principle, is not just a transcription model.",
+      "start": 534.32,
+      "duration": 3.46
+    },
+    {
+      "text": " It also supports text input.",
+      "start": 537.78,
+      "duration": 2.24
+    },
+    {
+      "text": " So, you can ask questions of the audio, and it will respond in text.",
+      "start": 540.02,
+      "duration": 4.54
+    },
+    {
+      "text": " Or you can tune the model to just be transcription, or you can just use it with audio input only",
+      "start": 545.08,
+      "duration": 4.5
+    },
+    {
+      "text": " and not input any text.",
+      "start": 549.58,
+      "duration": 1.2
+    },
+    {
+      "text": " There's not a whole lot more I want to say here.",
+      "start": 550.78,
+      "duration": 6.36
+    },
+    {
+      "text": " I'll move and show you the paper now from Voxtral real-time.",
+      "start": 557.14,
+      "duration": 4.52
+    },
+    {
+      "text": " So, the real-time model has to change quite a bit, and the way that these real-time models",
+      "start": 562.54,
+      "duration": 7.0
+    },
+    {
+      "text": " are trained is with a delay.",
+      "start": 569.54,
+      "duration": 1.14
+    },
+    {
+      "text": " You need at least some delay because you need to have context so that when I speak, the words",
+      "start": 570.68,
+      "duration": 5.52
+    },
+    {
+      "text": " will come out afterwards.",
+      "start": 576.2,
+      "duration": 1.22
+    },
+    {
+      "text": " Obviously, the words can't come out before I speak, so there has to be a minimum delay from",
+      "start": 577.42,
+      "duration": 3.78
+    },
+    {
+      "text": " when I say a word.",
+      "start": 581.2,
+      "duration": 0.76
+    },
+    {
+      "text": " And the way that Voxtral real-time is trained is with different values of that delay in increments",
+      "start": 582.52,
+      "duration": 4.6
+    },
+    {
+      "text": " that go up to about two and a half seconds.",
+      "start": 587.12,
+      "duration": 2.02
+    },
+    {
+      "text": " And actually, that information around the delay is injected into the text decoder layers",
+      "start": 589.14,
+      "duration": 5.5
+    },
+    {
+      "text": " through ADDA norms.",
+      "start": 594.64,
+      "duration": 1.56
+    },
+    {
+      "text": " So, you can see if I search here for ADDA.",
+      "start": 596.2,
+      "duration": 3.38
+    },
+    {
+      "text": " Yeah, an adaptive RMS norm, and it's enabling a single model to operate at any delay that",
+      "start": 600.72,
+      "duration": 6.86
+    },
+    {
+      "text": " is a multiple of 80 milliseconds.",
+      "start": 607.58,
+      "duration": 1.32
+    },
+    {
+      "text": " Actually, the QTI speech-to-text model has got, depending on the model size, there are two.",
+      "start": 608.9,
+      "duration": 6.18
+    },
+    {
+      "text": " The smaller model has a shorter delay.",
+      "start": 615.08,
+      "duration": 2.62
+    },
+    {
+      "text": " The longer one has a longer delay.",
+      "start": 617.7,
+      "duration": 1.24
+    },
+    {
+      "text": " But Voxtral real-time is trained to support different values of delay, which you can input",
+      "start": 618.94,
+      "duration": 5.56
+    },
+    {
+      "text": " at real-time.",
+      "start": 624.5,
+      "duration": 0.86
+    },
+    {
+      "text": " The audio encoder is trained from scratch, I believe, in the case of Voxtral real-time,",
+      "start": 626.86,
+      "duration": 6.66
+    },
+    {
+      "text": " unlike in Voxtral, where it used the whisperer encoder.",
+      "start": 633.52,
+      "duration": 3.24
+    },
+    {
+      "text": " And the decoder probably uses Ministral.",
+      "start": 636.76,
+      "duration": 2.88
+    },
+    {
+      "text": " It's not clear.",
+      "start": 639.64,
+      "duration": 0.9
+    },
+    {
+      "text": " It's not clearly stated, but probably it's Ministral, as in the Voxtral model.",
+      "start": 640.54,
+      "duration": 4.92
+    },
+    {
+      "text": " But it's also got the addition of the information around the delay.",
+      "start": 645.46,
+      "duration": 4.96
+    },
+    {
+      "text": " So, this is the real-time model.",
+      "start": 650.42,
+      "duration": 3.6
+    },
+    {
+      "text": " Not supported just yet, but I'll plan to make a video about it.",
+      "start": 654.02,
+      "duration": 2.76
+    },
+    {
+      "text": " When it does come out.",
+      "start": 656.86,
+      "duration": 1.04
+    },
+    {
+      "text": " And the nice thing about both the real-time and the Voxtral model is they already are supported",
+      "start": 657.9,
+      "duration": 4.26
+    },
+    {
+      "text": " by vLLM.",
+      "start": 662.16,
+      "duration": 0.78
+    },
+    {
+      "text": " So, you're able to run a high-throughput server if you want to run inference for either of",
+      "start": 662.94,
+      "duration": 4.78
+    },
+    {
+      "text": " those models.",
+      "start": 667.72,
+      "duration": 0.54
+    },
+    {
+      "text": " And that's a pretty nice feature, because, for example, Whisper isn't supported with vLLM.",
+      "start": 668.26,
+      "duration": 4.3
+    },
+    {
+      "text": " You need to use something like C-Translate, which I talk about in my Whisper video.",
+      "start": 672.56,
+      "duration": 3.64
+    },
+    {
+      "text": " But it's always great to have vLLM, because that means continuous batching.",
+      "start": 676.2,
+      "duration": 4.06
+    },
+    {
+      "text": " You can send in multiple parallel requests.",
+      "start": 680.26,
+      "duration": 1.76
+    },
+    {
+      "text": " I'm going to go through the training scripts very quickly.",
+      "start": 684.8,
+      "duration": 3.3
+    },
+    {
+      "text": " Nowadays, with AI, there's not so much need to go through the code.",
+      "start": 688.1,
+      "duration": 4.04
+    },
+    {
+      "text": " But I'll give you kind of the highlights of what it takes to train.",
+      "start": 692.14,
+      "duration": 2.86
+    },
+    {
+      "text": " If you want those scripts, you can check out Trelis.com forward slash advanced dash audio.",
+      "start": 695.0,
+      "duration": 4.44
+    },
+    {
+      "text": " There are scripts there for training many types of speech-to-text and also text-to-speech models.",
+      "start": 699.44,
+      "duration": 4.92
+    },
+    {
+      "text": " There's also now Trelis Studio, so you can just run training using this no-code platform.",
+      "start": 705.56,
+      "duration": 6.38
+    },
+    {
+      "text": " It's accessible via UI, but also via API.",
+      "start": 711.94,
+      "duration": 4.14
+    },
+    {
+      "text": " In fact, if you just go to the API view, and then if you open the skills file, you can take",
+      "start": 716.08,
+      "duration": 6.36
+    },
+    {
+      "text": " this skills file and just paste it into Cloud Code.",
+      "start": 722.44,
+      "duration": 2.22
+    },
+    {
+      "text": " And then Cloud Code will help you prepare data, train, evaluate, and deploy endpoints for",
+      "start": 724.9,
+      "duration": 5.68
+    },
+    {
+      "text": " your model.",
+      "start": 730.58,
+      "duration": 0.36
+    },
+    {
+      "text": " Now, you can also view the progress of that training that Cloud Code is doing by looking at the dashboard.",
+      "start": 730.94,
+      "duration": 6.14
+    },
+    {
+      "text": " Just a note that before you get started, you should go to Settings and put in your Hugging",
+      "start": 737.08,
+      "duration": 6.18
+    },
+    {
+      "text": " Face token and put in also a Weights and Biases API key if you want to see the results coming out",
+      "start": 743.26,
+      "duration": 6.28
+    },
+    {
+      "text": " there.",
+      "start": 749.54,
+      "duration": 0.2
+    },
+    {
+      "text": " I'm just going to show you a quick training on VoxTrial.",
+      "start": 750.86,
+      "duration": 2.22
+    },
+    {
+      "text": " You can, of course, use any other custom model that's supported.",
+      "start": 753.08,
+      "duration": 3.82
+    },
+    {
+      "text": " You can train Whisper, you can train Moonshine, and we'll be adding others soon.",
+      "start": 756.9,
+      "duration": 3.82
+    },
+    {
+      "text": " But here, I'm just going to train on Latent Space data set that I've prepared.",
+      "start": 760.72,
+      "duration": 4.2
+    },
+    {
+      "text": " It's some technical jargon from AI.",
+      "start": 764.92,
+      "duration": 2.3
+    },
+    {
+      "text": " And I'm just going to kick off that training job on the VoxTrial mini model to see how this",
+      "start": 767.22,
+      "duration": 6.88
+    },
+    {
+      "text": " performs.",
+      "start": 774.1,
+      "duration": 0.4
+    },
+    {
+      "text": " It will all deploy on modal.",
+      "start": 774.5,
+      "duration": 3.52
+    },
+    {
+      "text": " It'll inject the data, start the training.",
+      "start": 778.38,
+      "duration": 2.66
+    },
+    {
+      "text": " It will actually run evaluation on the base model beforehand and then on the fine-tuned",
+      "start": 781.04,
+      "duration": 4.6
+    },
+    {
+      "text": " model so you can see that you've gotten improvements in performance.",
+      "start": 785.64,
+      "duration": 2.5
+    },
+    {
+      "text": " Now, I'll quickly show how these scripts work a little bit.",
+      "start": 788.14,
+      "duration": 5.5
+    },
+    {
+      "text": " It's not the exact scripts from Studio, but I'll show you the scripts that are in the advanced",
+      "start": 793.64,
+      "duration": 3.88
+    },
+    {
+      "text": " audio repo.",
+      "start": 797.52,
+      "duration": 0.68
+    },
+    {
+      "text": " For that, let me just go to my repo here.",
+      "start": 799.02,
+      "duration": 3.82
+    },
+    {
+      "text": " For those of you who buy it, when you buy it, you'll see it's advanced transcription.",
+      "start": 802.84,
+      "duration": 4.04
+    },
+    {
+      "text": " I might rename that, but it's what I mean by advanced audio.",
+      "start": 806.88,
+      "duration": 2.58
+    },
+    {
+      "text": " And here, you can check out the readme for VoxTrial.",
+      "start": 809.46,
+      "duration": 3.06
+    },
+    {
+      "text": " You can basically just run this VoxTrial modal train script.",
+      "start": 813.74,
+      "duration": 3.28
+    },
+    {
+      "text": " I've been using modal lately just because even though the prices are higher per unit of time,",
+      "start": 817.02,
+      "duration": 5.26
+    },
+    {
+      "text": " the spin-up time is way faster.",
+      "start": 822.28,
+      "duration": 2.52
+    },
+    {
+      "text": " So for doing short trainings, you can end up saving actually by using the spin-up.",
+      "start": 824.8,
+      "duration": 4.04
+    },
+    {
+      "text": " And it's just easier too.",
+      "start": 828.84,
+      "duration": 1.02
+    },
+    {
+      "text": " I save a lot of time.",
+      "start": 829.86,
+      "duration": 0.86
+    },
+    {
+      "text": " I won't go through the script in too much detail.",
+      "start": 832.4,
+      "duration": 2.4
+    },
+    {
+      "text": " I'll just highlight a few things.",
+      "start": 834.8,
+      "duration": 2.2
+    },
+    {
+      "text": " Learning rate here, 5U-5 seems to work fine.",
+      "start": 837.0,
+      "duration": 2.74
+    },
+    {
+      "text": " LoRa rank in alpha at 32, fairly standard values here.",
+      "start": 839.74,
+      "duration": 4.14
+    },
+    {
+      "text": " The target modules being trained are these ones here.",
+      "start": 843.88,
+      "duration": 3.72
+    },
+    {
+      "text": " QKVO, gate up and down, training linear layers in the MLPs and in the attention.",
+      "start": 847.6,
+      "duration": 6.04
+    },
+    {
+      "text": " I like to enable RS LoRa.",
+      "start": 853.64,
+      "duration": 2.42
+    },
+    {
+      "text": " And the audio tower is frozen.",
+      "start": 856.06,
+      "duration": 2.34
+    },
+    {
+      "text": " You could debatably unfreeze some and apply LoRa's there as well, but it's not done for now.",
+      "start": 858.98,
+      "duration": 6.16
+    },
+    {
+      "text": " Basically, the model is supported by transformers.",
+      "start": 865.14,
+      "duration": 6.18
+    },
+    {
+      "text": " So there's not a whole lot else to say.",
+      "start": 871.32,
+      "duration": 1.96
+    },
+    {
+      "text": " We can quickly check what's going on in the script.",
+      "start": 873.28,
+      "duration": 2.44
+    },
+    {
+      "text": " You'll see that we have the model will be loaded using VoxTrial for conditional generation.",
+      "start": 875.72,
+      "duration": 6.62
+    },
+    {
+      "text": " The data is collated.",
+      "start": 882.34,
+      "duration": 1.58
+    },
+    {
+      "text": " We run a baseline evaluation.",
+      "start": 883.92,
+      "duration": 2.94
+    },
+    {
+      "text": " And then we set up LoRa, just exactly as I said.",
+      "start": 888.86,
+      "duration": 3.14
+    },
+    {
+      "text": " And then we'll get the parameter efficient fine-tuning version of the model and set up the training arguments here.",
+      "start": 892.0,
+      "duration": 6.16
+    },
+    {
+      "text": " Then we'll create the trainer and push it up to Hub.",
+      "start": 898.16,
+      "duration": 4.0
+    },
+    {
+      "text": " There's not a whole lot special to say because I'm not talking too much about data prep here.",
+      "start": 902.16,
+      "duration": 5.46
+    },
+    {
+      "text": " If you want to check out the data set, I think it's available on Hugging Face.",
+      "start": 908.42,
+      "duration": 4.94
+    },
+    {
+      "text": " It should be an open model if I just go here.",
+      "start": 913.36,
+      "duration": 2.22
+    },
+    {
+      "text": " Yeah, you can see this is the data set that we're training on.",
+      "start": 915.58,
+      "duration": 3.08
+    },
+    {
+      "text": " It's a small data set of just eight rows.",
+      "start": 918.66,
+      "duration": 2.04
+    },
+    {
+      "text": " And there's also a validation set available separately if you want to run.",
+      "start": 920.7,
+      "duration": 4.32
+    },
+    {
+      "text": " Oh, I'll actually make them public so that you can get access to them.",
+      "start": 925.18,
+      "duration": 3.42
+    },
+    {
+      "text": " Let me just make that one public.",
+      "start": 928.6,
+      "duration": 1.86
+    },
+    {
+      "text": " And I'll also make this one here public too.",
+      "start": 931.52,
+      "duration": 2.1
+    },
+    {
+      "text": " Oops.",
+      "start": 933.62,
+      "duration": 1.14
+    },
+    {
+      "text": " It was public.",
+      "start": 934.76,
+      "duration": 1.72
+    },
+    {
+      "text": " Okay, great.",
+      "start": 936.48,
+      "duration": 1.48
+    },
+    {
+      "text": " So back to check out where we are doing.",
+      "start": 937.96,
+      "duration": 3.26
+    },
+    {
+      "text": " You can see the evaluation has already happened.",
+      "start": 941.22,
+      "duration": 3.46
+    },
+    {
+      "text": " And we've got a word error rate of 7.6%.",
+      "start": 945.22,
+      "duration": 3.1
+    },
+    {
+      "text": " The training is underway now.",
+      "start": 948.32,
+      "duration": 2.7
+    },
+    {
+      "text": " It should be really fast because there's hardly any data.",
+      "start": 951.02,
+      "duration": 2.1
+    },
+    {
+      "text": " So you can see, yeah, the data, the training should almost be done.",
+      "start": 953.12,
+      "duration": 5.52
+    },
+    {
+      "text": " Yeah, 100%.",
+      "start": 958.64,
+      "duration": 0.98
+    },
+    {
+      "text": " And it will run another evaluation.",
+      "start": 959.62,
+      "duration": 1.9
+    },
+    {
+      "text": " And we'll see what the performance is.",
+      "start": 961.52,
+      "duration": 2.92
+    },
+    {
+      "text": " It will also push the model up to Hub, to the destination that you specify here.",
+      "start": 964.44,
+      "duration": 4.26
+    },
+    {
+      "text": " And when you're done, you'll be able to see the evaluation results.",
+      "start": 968.7,
+      "duration": 5.2
+    },
+    {
+      "text": " You'll be able to link to the model.",
+      "start": 973.9,
+      "duration": 1.46
+    },
+    {
+      "text": " You can link to inspect the evaluation results and listen to them",
+      "start": 975.36,
+      "duration": 3.12
+    },
+    {
+      "text": " and see the training logs as well.",
+      "start": 978.48,
+      "duration": 1.9
+    },
+    {
+      "text": " So for example, this was an earlier run I did.",
+      "start": 980.38,
+      "duration": 2.48
+    },
+    {
+      "text": " And you can see it just ran.",
+      "start": 982.86,
+      "duration": 2.68
+    },
+    {
+      "text": " I ran just with one evaluation row.",
+      "start": 985.54,
+      "duration": 1.86
+    },
+    {
+      "text": " You can listen to the audio and compare the bass with the fine-tuned.",
+      "start": 987.4,
+      "duration": 3.84
+    },
+    {
+      "text": " I only fine-tuned on tiny rows.",
+      "start": 991.24,
+      "duration": 1.86
+    },
+    {
+      "text": " So the performance didn't actually change in that case.",
+      "start": 993.1,
+      "duration": 2.02
+    },
+    {
+      "text": " So it's now pushing this up to Hugging Face.",
+      "start": 995.12,
+      "duration": 5.12
+    },
+    {
+      "text": " It will then run evaluation.",
+      "start": 1000.24,
+      "duration": 2.26
+    },
+    {
+      "text": " And I'll be able to compare.",
+      "start": 1002.58,
+      "duration": 1.34
+    },
+    {
+      "text": " So that's pretty much it for this video.",
+      "start": 1003.92,
+      "duration": 3.5
+    },
+    {
+      "text": " If you have any questions on Voxtral, let me know.",
+      "start": 1007.42,
+      "duration": 3.02
+    },
+    {
+      "text": " I recommend using this model in general, except if you need a very small model.",
+      "start": 1010.44,
+      "duration": 6.48
+    },
+    {
+      "text": " So if you want something on device, you probably still need to think about Moonshine or maybe even the Whisper models.",
+      "start": 1016.92,
+      "duration": 5.16
+    },
+    {
+      "text": " Whisper, although it's old, is just very well supported by libraries.",
+      "start": 1022.08,
+      "duration": 3.52
+    },
+    {
+      "text": " But if you want a high-quality model otherwise, I think Voxtral is a very good open-source one.",
+      "start": 1026.1,
+      "duration": 4.74
+    },
+    {
+      "text": " There's also Qwen ASR, which is good now.",
+      "start": 1030.84,
+      "duration": 2.36
+    },
+    {
+      "text": " And I'll plan to do a video on that fairly soon as well.",
+      "start": 1033.2,
+      "duration": 2.96
+    },
+    {
+      "text": " Cheers, folks.",
+      "start": 1036.16,
+      "duration": 0.84
+    }
+  ],
+  "full_text": " Voxtral is a series of leading open source models for transcription.  There are two kinds right now.  There's a real-time type for word-by-word transcription, and there's also a batch type,  which is now a little bit older from late in 2025.  I'm going to describe the pros and cons of these models and compare them to Whisper.  I'll also describe how to train these models, and I'll talk a little bit about how you can  inference them using vLLM.  This will be particularly useful for those of you who want to run transcription models  on device.  Now, these models are not very, very small, so probably not recommended for a phone or  maybe even iPad, but if you want to run them on a GPU or if you want to run them on your  computer, say you have a Mac with more power, then these models are going to perform pretty  well.  So I'm going to go back and start with the release of Voxtral itself, which was late in 2025, well,  July 15, 2025.  This is a batch transcription model, and when it was released, it outperformed a lot of the  proprietary models of the time, except for Scribe from Eleven Labs.  Now, Eleven Labs have since released Scribe V2, which is even better than this, but you can see  the word error rate on Voxtral here, Voxtral Small or Mini or Mini Transcribe or Mini.  It's kind of better than some of the other proprietary models that were out at the time.  So Voxtral is basically a very good transcription model, particularly multilingual.  It looks a bit better than it actually is on Whisper.  Whisper is way up here, but that's because Whisper is very strong on English and it is  weaker on other non-English languages.  So while it looks like the Voxtral models outperform Whisper by a lot here, that's because it's being  measured on FLIR, which is a multilingual data set.  And so actually, Whisper is probably better for English, but for the other languages, Voxtral  is better.  Now, it's confusing to follow all the Voxtral models because there's Voxtral, there's Voxtral  Realtime, which is the more recent one.  And then there are various versions of Voxtral and Realtime.  There's Voxtral Small, Mini Transcribe and Mini.  Voxtral Small is not actually that small.  It's based on Whisper, or it's based rather on Mistral Small, which is a 24 billion parameter  model.  So it's very large, probably too large for a transcription model.  Voxtral Mini is based on Ministral, which is a 4 billion-ish parameter model.  So that's quite a bit smaller, but still more than twice the size of Whisper Large Turbo.  And then Voxtral Mini Transcribe is a proprietary model, not OpenWeights.  It's a fine tune of Voxtral Mini specifically for transcription, because in principle, Voxtral  are not just transcription models.  They're actually voice plus text input and text output.  That's what a Voxtral model is.  And of course, if you can allow voice and text input, you can also just allow voice input,  in which case it becomes a transcription model.  And if you tune it just for that, you improve the model primarily just because the formatting  is improved.  So I'll show you this in a more clear table.  Now, to add further confusion to the matter, there is the Voxtral Real-Time series of models  that has been released.  And actually, this release has got two models, one of which is a real-time model and is OpenWeights.  And the other one is Voxtral Mini Transcribe V2, which I understand is basically a better version  of this Voxtral Mini model, which was proprietary.  And the Voxtral Mini Transcribe 2 model is also proprietary, probably performs a little bit  better.  But the V2 also provides diarization and I believe timestamping as well, although I think this  provides timestamping on the API too.  So Voxtral Mini Transcribe and Transcribe V2, you can only get available via API from Mistral.  Whereas Voxtral Mini, Voxtral Small and Voxtral Real-Time, which is a streaming model, are  available OpenWeights.  Now, if you look at the performance, you can see that Voxtral Mini Transcribe, it's still  not, well, this is diarization actually, so this is not even available OpenWeights.  But just as a comparison, Mistral's leading model is not quite as good as Scribe V2 here, but  it's better than some of, say, Deepgram Assembly and Gemini's 2.5 Flash model.  And if you look at transcription performance, it's really not far off of Scribe V2, but it's  better than some of the other larger labs.  And then if we look at real-time, okay, here's real-time.  And yeah, so the real-time is shown here actually in the colored, and it actually is quite close  to where you go on the Voxtral Mini Transcribe V2.  But as you have more of a delay, so if you transcribe with half a second versus two and  a half seconds of delay from the speaker, you're going to get better or worse accuracy.  Worse accuracy is you've got a smaller delay.  If you've more delay, then the model is more context, so it's going to do better.  And you can see the model does well across a variety of languages, and it kind of asymptotes  down as you make a very large delay of two and a half seconds to the performance of the  Voxtral Mini Transcribe.  So I suppose when you look at these graphs of performance on transcription, you can kind  of consider that the real-time model is somewhere slightly above Voxtral Mini Transcribe.  So it's not far off Scribe, and it's better than some of these proprietary models here.  Now I've put together a little table that we can check out to compare some of these.  I'll say it once more because it all gets confusing.  You can check this out, research.Trelis.com forward slash STT for speech-to-text.  Probably should have called that ASR.  So we have Voxtral Mini Transcribe, Voxtral Real-Time, similar word error rate.  Voxtral Small, Voxtral Mini Transcribe, that's the V1.  So you can see the improvement down to V2, and then Voxtral Mini, which is the 3B open  source model.  And you can see these outperform Whisper, but that's primarily because Whisper performs best  on English, and this metric for FLIR is measured across different families.  And then here we have some of the proprietary performances.  Now, in terms of fine-tuning support, which I'll get onto now, you can, of course, fine-tune  Whisper, all the Whisper ones, Tiny, Base, Small, Medium, Large, or Turbo.  You can fine-tune them with Unsloth or Transformers.  Voxtral Mini, you can also tune with Transformers, but not yet with Unsloth.  There is a pull request that is, well, I'm not sure if it's even a pull request yet, but there's  a branch about integrating that.  You can train it using scripts within Advanced Audio, if you go to Trelis.com and purchase  Lifetime Access there.  You can also train it on Trelis Studio, which is the Trelis training platform, and I'll briefly  show you that.  Voxtral Small, you can actually train that.  I think if I refresh the page, yeah, that's fixed.  You can actually train that on Advanced Audio using the scripts in the repo I'll share.  That's a paid Lifetime Access.  And Voxtral Real-Time, there's no Transformers support yet for fine-tuning.  It's only supporting inference, but that support will be coming soon.  I should have pending written there.  And when that's supported, Trelis Studio and the Advanced Audio repo will support that.  And just one more model down here.  I haven't made a video about it for fine-tuning, but the Advanced Audio repo does include custom  scripts for the data prep and also to do the training of a QTI speech-to-text model, and  that they are included.  I'm not going to go over them today.  There's quite a lot that you have to say there to tune a streaming model around the data preparation.  I might get around to a video at some point in the future.  So, yeah, you can check out this page if you want to take a look for yourself at the comparisons.  Now, I do want to quickly show a few things about how these models work.  This is the abstract and the paper for Voxtral, and it's useful to look at this schematic diagram  here.  So, if you look at Whisper, Whisper is an encoder-decoder architecture.  It encodes the audio, and then it decodes.  And Voxtral is similar.  It actually uses the audio encoder from Whisper.  So, it uses the encoder here.  It's the Whisper encoder.  And for the decoder, it uses MiniStral.  So, Voxtral actually has the same limitations as a Whisper in that it requires 30-second  input audio chunks.  And if your audio is shorter, you have to pad it out to the full 30 seconds, which means  you need to use more flaps and more energy consumption and more power if it's a small device.  So, this is kind of a drawback, although they get rid of that when they move to the real-time  model.  So, basically, the Voxtral model is stronger than Whisper, primarily because its decoder  is stronger.  It's a more modern decoder from MiniStral instead of the decoder that was there in the original  Whisper paper.  But the encoder is the same, although it's adapted then to fit with the language decoder here.  As I said, Voxtral, in principle, is not just a transcription model.  It also supports text input.  So, you can ask questions of the audio, and it will respond in text.  Or you can tune the model to just be transcription, or you can just use it with audio input only  and not input any text.  There's not a whole lot more I want to say here.  I'll move and show you the paper now from Voxtral real-time.  So, the real-time model has to change quite a bit, and the way that these real-time models  are trained is with a delay.  You need at least some delay because you need to have context so that when I speak, the words  will come out afterwards.  Obviously, the words can't come out before I speak, so there has to be a minimum delay from  when I say a word.  And the way that Voxtral real-time is trained is with different values of that delay in increments  that go up to about two and a half seconds.  And actually, that information around the delay is injected into the text decoder layers  through ADDA norms.  So, you can see if I search here for ADDA.  Yeah, an adaptive RMS norm, and it's enabling a single model to operate at any delay that  is a multiple of 80 milliseconds.  Actually, the QTI speech-to-text model has got, depending on the model size, there are two.  The smaller model has a shorter delay.  The longer one has a longer delay.  But Voxtral real-time is trained to support different values of delay, which you can input  at real-time.  The audio encoder is trained from scratch, I believe, in the case of Voxtral real-time,  unlike in Voxtral, where it used the whisperer encoder.  And the decoder probably uses Ministral.  It's not clear.  It's not clearly stated, but probably it's Ministral, as in the Voxtral model.  But it's also got the addition of the information around the delay.  So, this is the real-time model.  Not supported just yet, but I'll plan to make a video about it.  When it does come out.  And the nice thing about both the real-time and the Voxtral model is they already are supported  by vLLM.  So, you're able to run a high-throughput server if you want to run inference for either of  those models.  And that's a pretty nice feature, because, for example, Whisper isn't supported with vLLM.  You need to use something like C-Translate, which I talk about in my Whisper video.  But it's always great to have vLLM, because that means continuous batching.  You can send in multiple parallel requests.  I'm going to go through the training scripts very quickly.  Nowadays, with AI, there's not so much need to go through the code.  But I'll give you kind of the highlights of what it takes to train.  If you want those scripts, you can check out Trelis.com forward slash advanced dash audio.  There are scripts there for training many types of speech-to-text and also text-to-speech models.  There's also now Trelis Studio, so you can just run training using this no-code platform.  It's accessible via UI, but also via API.  In fact, if you just go to the API view, and then if you open the skills file, you can take  this skills file and just paste it into Cloud Code.  And then Cloud Code will help you prepare data, train, evaluate, and deploy endpoints for  your model.  Now, you can also view the progress of that training that Cloud Code is doing by looking at the dashboard.  Just a note that before you get started, you should go to Settings and put in your Hugging  Face token and put in also a Weights and Biases API key if you want to see the results coming out  there.  I'm just going to show you a quick training on VoxTrial.  You can, of course, use any other custom model that's supported.  You can train Whisper, you can train Moonshine, and we'll be adding others soon.  But here, I'm just going to train on Latent Space data set that I've prepared.  It's some technical jargon from AI.  And I'm just going to kick off that training job on the VoxTrial mini model to see how this  performs.  It will all deploy on modal.  It'll inject the data, start the training.  It will actually run evaluation on the base model beforehand and then on the fine-tuned  model so you can see that you've gotten improvements in performance.  Now, I'll quickly show how these scripts work a little bit.  It's not the exact scripts from Studio, but I'll show you the scripts that are in the advanced  audio repo.  For that, let me just go to my repo here.  For those of you who buy it, when you buy it, you'll see it's advanced transcription.  I might rename that, but it's what I mean by advanced audio.  And here, you can check out the readme for VoxTrial.  You can basically just run this VoxTrial modal train script.  I've been using modal lately just because even though the prices are higher per unit of time,  the spin-up time is way faster.  So for doing short trainings, you can end up saving actually by using the spin-up.  And it's just easier too.  I save a lot of time.  I won't go through the script in too much detail.  I'll just highlight a few things.  Learning rate here, 5U-5 seems to work fine.  LoRa rank in alpha at 32, fairly standard values here.  The target modules being trained are these ones here.  QKVO, gate up and down, training linear layers in the MLPs and in the attention.  I like to enable RS LoRa.  And the audio tower is frozen.  You could debatably unfreeze some and apply LoRa's there as well, but it's not done for now.  Basically, the model is supported by transformers.  So there's not a whole lot else to say.  We can quickly check what's going on in the script.  You'll see that we have the model will be loaded using VoxTrial for conditional generation.  The data is collated.  We run a baseline evaluation.  And then we set up LoRa, just exactly as I said.  And then we'll get the parameter efficient fine-tuning version of the model and set up the training arguments here.  Then we'll create the trainer and push it up to Hub.  There's not a whole lot special to say because I'm not talking too much about data prep here.  If you want to check out the data set, I think it's available on Hugging Face.  It should be an open model if I just go here.  Yeah, you can see this is the data set that we're training on.  It's a small data set of just eight rows.  And there's also a validation set available separately if you want to run.  Oh, I'll actually make them public so that you can get access to them.  Let me just make that one public.  And I'll also make this one here public too.  Oops.  It was public.  Okay, great.  So back to check out where we are doing.  You can see the evaluation has already happened.  And we've got a word error rate of 7.6%.  The training is underway now.  It should be really fast because there's hardly any data.  So you can see, yeah, the data, the training should almost be done.  Yeah, 100%.  And it will run another evaluation.  And we'll see what the performance is.  It will also push the model up to Hub, to the destination that you specify here.  And when you're done, you'll be able to see the evaluation results.  You'll be able to link to the model.  You can link to inspect the evaluation results and listen to them  and see the training logs as well.  So for example, this was an earlier run I did.  And you can see it just ran.  I ran just with one evaluation row.  You can listen to the audio and compare the bass with the fine-tuned.  I only fine-tuned on tiny rows.  So the performance didn't actually change in that case.  So it's now pushing this up to Hugging Face.  It will then run evaluation.  And I'll be able to compare.  So that's pretty much it for this video.  If you have any questions on Voxtral, let me know.  I recommend using this model in general, except if you need a very small model.  So if you want something on device, you probably still need to think about Moonshine or maybe even the Whisper models.  Whisper, although it's old, is just very well supported by libraries.  But if you want a high-quality model otherwise, I think Voxtral is a very good open-source one.  There's also Qwen ASR, which is good now.  And I'll plan to do a video on that fairly soon as well.  Cheers, folks.",
+  "errors": []
+}

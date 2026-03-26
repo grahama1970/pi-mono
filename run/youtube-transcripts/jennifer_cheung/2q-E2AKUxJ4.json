@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2q-E2AKUxJ4",
+    "language": "en",
+    "took_ms": 8060,
+    "method": null,
+    "title": "DEF CON 30 - Eugene Lim-  You Have 1 New Appwntment - Hacking Proprietary iCalendar Properties",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2019,
+    "description": "First defined in 1998, the iCalendar standard remains ubiquitous in enterprise software. However, it did not account for modern security concerns and allowed vendors to create proprietary extensions that expanded the attack surface.\n\nI demonstrate how flawed RFC implementations led to new vulnerabilities in popular applications such as Apple Calendar, Google Calendar, Microsoft Outlook, and VMware Boxer. Attackers can trigger exploits remotely with zero user interaction due to automatic parsing of event invitations. Some of these zombie properties were abandoned years ago for their obvious security problems but continue to pop up in legacy code.\n\nFurthermore, I explain how iCalendar’s integrations with the SMTP and CalDAV protocols enable multi-stage attacks. Despite attempts to secure these technologies separately, the interactions that arise from features such as emailed event reminders require a full-stack approach to calendar security. I conclude that developers should strengthen existing iCalendar standards in terms of design and implementation.\n\nI advocate for an open-source and open-standards approach to secure iCalendar rather than proprietary fragmentation. I will release a database of proprietary iCalendar properties and a technical whitepaper.",
+    "view_count": 2658
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2q-E2AKUxJ4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

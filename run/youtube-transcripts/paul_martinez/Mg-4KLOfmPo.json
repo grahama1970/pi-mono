@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Mg-4KLOfmPo",
+    "language": "en",
+    "took_ms": 8231,
+    "method": null,
+    "title": "PAS - OT Forensics and Safe Restart",
+    "channel": "S4 Events",
+    "upload_date": "20200424",
+    "duration_sec": 1686,
+    "description": "Mark Carrigan of PAS presents Mind The Gap: Understand the Distance Between IT & OT Cyber Incident Forensic Analysis and Safe Restart.\n\nHe begins with an overview of the IT / OT differences and then provides a detailed example of inserted code attack on a Honeywell Controller. An attack that IT forensics would not find. \n\nMark continues with what is required in OT Forensics and a brief overview of PAS and their Cyber Integrity project. The last 10+ minutes of this session are Q&A on the attack example and detecting changes deep in an ICS.",
+    "view_count": 204
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Mg-4KLOfmPo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

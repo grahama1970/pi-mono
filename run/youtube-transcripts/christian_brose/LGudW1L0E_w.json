@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LGudW1L0E_w",
+    "language": "en",
+    "took_ms": 10512,
+    "method": null,
+    "title": "Book Talk: In the Centennial Footsteps of the Great War",
+    "channel": "Hudson Institute",
+    "upload_date": "20220407",
+    "duration_sec": 3204,
+    "description": "Join Hudson Institute Senior Fellow Arthur Herman for a conversation with Attila Szalay-Berzeviczy, the former president of the Budapest Stock Exchange, on his new book “In the Centennial Footsteps of the Great War,” a photographic reflection on the centenary of World War I as marked in 57 countries. Mr. Szalay-Berzeviczy will discuss how the legacy of the First World War continues to be felt today, and how these lessons can help prevent World War III. Please join Hudson Institute for this important discussion.\n\nWatch on Hudson.org: https://www.hudson.org/events/2095-virtual-event-book-talk-in-the-centennial-footsteps-of-the-great-war42022",
+    "view_count": 836
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LGudW1L0E_w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

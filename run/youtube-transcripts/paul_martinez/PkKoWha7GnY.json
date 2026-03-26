@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PkKoWha7GnY",
+    "language": "en",
+    "took_ms": 9162,
+    "method": null,
+    "title": "Europe, ENISA and ICS Security",
+    "channel": "S4 Events",
+    "upload_date": "20160823",
+    "duration_sec": 1511,
+    "description": "Rossella Mattioli of the European Union Agency for Network and Information Security (ENISA) talks about what they are doing to help Europe secure ICS in critical infrastructure and manufacturing.\n\nAfter some background on ENISA, Rossella focuses on their efforts on ICS security at 8:20 in the video. They provide a number of documents and tools to help ICS asset owners and ICS vendors, such as an analysis of the current security posture in Europe and good practice recommendations.\n\nAt 18:00 she discusses the new EU Network Information Security (NIS) Directive. It entered into force in August 2016. If you are in Europe you need to watch this part.",
+    "view_count": 681
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PkKoWha7GnY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "zmf1Kujygt8",
+    "language": "en",
+    "took_ms": 7770,
+    "method": null,
+    "title": "Data Extraction with Large Language Models",
+    "channel": "Trelis Research",
+    "upload_date": "20240125",
+    "duration_sec": 3343,
+    "description": "➡️ JSON Extraction Scripts and/or ADVANCED-inference Repo Access: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Tip Jar and Discord: https://ko-fi.com/trelisresearch \n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nResources:\n- Slides: http://tinyurl.com/3m9ckm4s\n- One-click-llms: https://github.com/TrelisResearch/one-click-llms\n- Chat interfaces: chat.trelis.com or chatbotui.com \n\nHat tip to Sagar Desai for his insights and help on this vid. Check out his blog on LLMs here: https://sdcodehub.github.io/\n\nChapters\n0:00 Introduction to Data Extraction with Language Models\n0:28 Overview of the Video\n3:26 Challenges in Data Extraction\n5:13 JSON Extraction and YAML Extraction\n13:27 Practical Demonstration of Data Extraction Using Open Chat\n31:44 Comparing GPT 4 and GPT 3.5 for data extraction\n34:37 Comparing Performance of Different Models\n40:34 Extracting Data from Long Contexts\n51:53 Exploring the Cost of Different Data Extraction Approaches\n55:43 Conclusion and Final Thoughts",
+    "view_count": 13445
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] zmf1Kujygt8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

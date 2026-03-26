@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KwI2daso3ug",
+    "language": "en",
+    "took_ms": 9095,
+    "method": null,
+    "title": "DEF CON 33 - RF Village  - Warflying in a Cessna, Part II -Matthew Thomassen, Sean McKeever",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1482,
+    "description": "our ongoing research, including things we have learned about the sniffing process and the impact of improved equipment, along with enhanced data analysis and visualizations to continue attempting to answer questions like “How many access points can you actually pick up from an airplane?”, “Is warflying better than wardriving or warbiking or warwarlking or warswimming?”, “Should I run WiGLE on my phone during my airline flight?”, “Are the airplanes flying overhead monitoring my WiFi?”, and “Why are you even doing this?”",
+    "view_count": 1237
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KwI2daso3ug: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

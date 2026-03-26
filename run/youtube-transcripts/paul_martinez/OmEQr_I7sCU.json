@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OmEQr_I7sCU",
+    "language": "en",
+    "took_ms": 8719,
+    "method": null,
+    "title": "Kaspersky Tools & Info For The ICS Security Community",
+    "channel": "S4 Events",
+    "upload_date": "20200222",
+    "duration_sec": 1156,
+    "description": "Anton Shipulin and Vladimir Dashchenko of Kaspersky take 20 minutes to go over all the contributions Kaspersky is making to educate and help the ICS security community. It's an impressive list.",
+    "view_count": 421
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OmEQr_I7sCU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

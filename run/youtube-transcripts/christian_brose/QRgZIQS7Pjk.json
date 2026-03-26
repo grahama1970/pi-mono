@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QRgZIQS7Pjk",
+    "language": "en",
+    "took_ms": 9028,
+    "method": null,
+    "title": "Is COVID-19 a Legal Basis to Weaken Copyright Law?",
+    "channel": "Hudson Institute",
+    "upload_date": "20200513",
+    "duration_sec": 2706,
+    "description": "Join Hudson Institute for a conversation with Steven Tepp, an internationally recognized copyright thought leader, who will analyze the Internet Archive’s “fair use” claim. The conversation will be moderated by Hudson Senior Fellow Harold Furchtgott-Roth.",
+    "view_count": 278
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QRgZIQS7Pjk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

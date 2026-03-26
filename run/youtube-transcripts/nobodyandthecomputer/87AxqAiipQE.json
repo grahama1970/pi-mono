@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "87AxqAiipQE",
+    "language": "en",
+    "took_ms": 8806,
+    "method": null,
+    "title": "How to lo-fi with A.I.",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230809",
+    "duration_sec": 999,
+    "description": "Feeling frazzled?\nTime to hit the brakes, kick back, and let the soothing, Zen-like melodies spun by our friendly neighborhood artificial intelligence wash over you. Get ready for tranquility on tap!\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n__________________________________________________\nColab Notebook text 2 MIDI:\nhttps://www.patreon.com/posts/lo-fi-i-beats-87437767\n\nPrompt:\nhttps://www.patreon.com/posts/prompt-for-lo-i-87437661\n__________________________________________________\ntools used in the video:\nGPT playground:\nhttps://platform.openai.com/playground\nClaude2:\nhttps://www.anthropic.com/index/claude-2\nMeta's llama2:\nhttps://labs.perplexity.ai/\nSteam isolator:\nhttps://moises.ai/\nA.I. videos:\nPika Labs.\nhttps://www.pika.art/\n__________________________________________________\n00:00 Intro\n02:09 Lo-fi & relax music history\n04: 33 Making relaxing music with A.I.\n05:30 making music with Llama2\n08:28 making music with Claude2 & Google musicLM\n11:47 GPT4 playground\n15:29 outro",
+    "view_count": 77791
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 87AxqAiipQE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

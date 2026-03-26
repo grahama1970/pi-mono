@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "f5Moynhe0XQ",
+    "language": "en",
+    "took_ms": 7546,
+    "method": null,
+    "title": "AI Dev 25 | Andrew Ng: Opening Keynote",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 580,
+    "description": "At AI Dev 25, Andrew Ng opened the day with a reflection on what it means to be an AI builder today—and why this may be the most exciting time in history to be one.\n\nIn this keynote, Andrew explores two major trends shaping AI development:\n\n- The growing availability of modular tools and building blocks (what he calls “Lego bricks”) that allow developers to rapidly create powerful applications.\n\n- The rise of AI-assisted coding, and how it’s dramatically lowering the cost of prototyping and accelerating the pace of innovation.\n\nThis talk is a call to action for developers to build boldly—and to do it together.\n\nKeep learning, \nDeepLearning.AI",
+    "view_count": 10112
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] f5Moynhe0XQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

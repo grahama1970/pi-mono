@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sUW3N79VCcw",
+    "language": "en",
+    "took_ms": 7893,
+    "method": null,
+    "title": "Tom Pace On Firmware Security Testing",
+    "channel": "S4 Events",
+    "upload_date": "20220202",
+    "duration_sec": 2725,
+    "description": "Tom Pace, who co-founded Netrise.io with Michael Scott, joins Dale Peterson to discuss Firmware Security Testing. There is a lot of firmware in ICS -- PLC's and other controllers, instruments, network infrastructure, etc. \n\nThey spend some time discussing the elements that are tested and then dive into how a product vendor and asset owner might use this type of testing. And the key question is whether there will be enduring and important product differentiation.",
+    "view_count": 744
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sUW3N79VCcw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

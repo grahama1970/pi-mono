@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "R2e6kpSnz48",
+    "language": "en",
+    "took_ms": 8894,
+    "method": null,
+    "title": "Nation State ICS Attack On A Budget",
+    "channel": "S4 Events",
+    "upload_date": "20200617",
+    "duration_sec": 1845,
+    "description": "Monta Elkins shows in detail how he modified a Cisco Firewall by adding his own micro controller to grab control at boot, and add his own firewall rules, and change config so the attacker is allowed through the firewall.\n\nThis is a supply chain, highly targeted attack that is typically described as a nation state attack. Monta is not a nation state, and it cost less than $500 including tools, and it is difficult to find.",
+    "view_count": 337
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] R2e6kpSnz48: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "y7MX6-I3Stc",
+    "language": "en",
+    "took_ms": 10932,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village - K0BAK  - The K0BAK News Van 2 of 2",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 763,
+    "description": "Come see how Pete (K0BAK) is converting an old TV news station van, the kind used to produce and relay live TV reporting, into a mobile ham radio station!",
+    "view_count": 482
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] y7MX6-I3Stc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

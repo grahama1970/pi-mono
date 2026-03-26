@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3vZjOtFyUY0",
+    "language": "en",
+    "took_ms": 8198,
+    "method": null,
+    "title": "DEF CON 29 Red Team Village - CTF Recap and Upcoming Events",
+    "channel": "DEFCONConference",
+    "upload_date": "20210926",
+    "duration_sec": 1537,
+    "description": "CTF Recap and Upcoming Events",
+    "view_count": 1234
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3vZjOtFyUY0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

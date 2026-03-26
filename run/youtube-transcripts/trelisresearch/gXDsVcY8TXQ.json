@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "gXDsVcY8TXQ",
+    "language": "en",
+    "took_ms": 8088,
+    "method": null,
+    "title": "Multi GPU Fine tuning with DDP and FSDP",
+    "channel": "Trelis Research",
+    "upload_date": "20240410",
+    "duration_sec": 4060,
+    "description": "➡️ Get Life-time Access to the complete scripts (and future improvements): https://trelis.com/advanced-fine-tuning-scripts/\n➡️ Multi-GPU test scripts (so you can follow-along): https://github.com/TrelisResearch/install-guides/tree/main/multi-gpu\n➡️ Runpod one-click fine-tuning template (affiliate link, supports Trelis' channel): https://runpod.io/console/deploy?template=ifyqsvjlzj&ref=jmfkcdio\n➡️ Newsletter: https://blog.Trelis.com\n➡️ Resources/Support/Discord: https://Trelis.com/About\n\nVIDEO RESOURCES:\n- Slides: https://docs.google.com/presentation/d/1ljBHf0z2elSuzy06UqF_N8MKiairDCUnuzMAPeUh7OA/edit?usp=sharing\n- Pytorch DDP: https://pytorch.org/tutorials/intermediate/ddp_tutorial.html \n- Pytorch FSDP: https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html\n- HuggingFace PEFT w/ FSDP: https://github.com/huggingface/peft/tree/main/examples/sft\n\nTIMESTAMPS:\n0:00 Multi-GPU Distributed Training\n0:24 Video Overview\n1:18 Choosing a GPU setup\n1:59 Understanding VRAM requirements (in detail)\n4:40 Understanding Optimisation and Gradient Descent\n7:25 How does the Adam optimizer work?\n11:16 How the Adam optimiser affects VRAM requirements\n13:43 Effect of activations, model context and batch size on VRAM\n14:40 Tip for GPU setup - start with a small batch size\n15:35 Reducing VRAM with LoRA and quantisation\n19:27 Quality trade-offs with quantisation and LoRA\n20:36 Choosing between MP, DDP or FSDP\n21:12 Distributed Data Parallel\n24:40 Model Parallel and Fully Sharded Data Parallel (FSDP)\n29:50 Trade-offs with DDP and FSDP\n31:27 How does DeepSpeed compare to FSDP\n33:33 Using FSDP and DeepSpeed with Accelerate\n36:59 Code examples for MP, DDP and FSDP\n38:31 Using SSH with rented GPUs (Runpod)\n42:35 Installation\n44:11 (slight detour) Setting a username and email for GitHub\n44:41 Basic Model Parallel (MP) fine-tuning script\n48:28 Fine-tuning script with Distributed Data Parallel (DDP)\n52:26 Fine-tuning script with Fully Shaded Data Parallel (FSDP)\n55:12 Running ‘accelerate config’ for FSDP\n59:55 Saving a model after FSDP fine-tuning\n1:00:58 Quick demo of a complete FSDP LoRA training script\n1:05:15 Quick demo of an inference script after training\n1:07:06 Wrap up",
+    "view_count": 17626
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] gXDsVcY8TXQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

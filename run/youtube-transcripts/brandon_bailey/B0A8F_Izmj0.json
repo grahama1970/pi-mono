@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B0A8F_Izmj0",
+    "language": "en",
+    "took_ms": 10085,
+    "method": null,
+    "title": "DEF CON 32 - Xiaomi The Money : Our Toronto Pwn2Own Exploit & BTS Story - Ken Gannon, Ilyes Beghdadi",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2341,
+    "description": "At Pwn2Own Toronto 2023, NCC Group was one of the two teams that compromised the Xiaomi 13 Pro. The exploit chain involved using a malicious HTML hyperlink and uploading a potentially malicious application to the Xiaomi app store.\n\nHowever, this talk is not just about the technical details of the exploit. While researching the final exploit, NCC Group discovered how an exploit could work in one region of the world, but not in other regions, and how the researchers had to travel to Canada for a day just to test if the exploit would work in Canada. This talk also discusses just how far Xiaomi is willing to go to make sure their device isn't hacked at Pwn2Own, and why only two teams were able to successfully compromise the device during the competition.",
+    "view_count": 9362
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B0A8F_Izmj0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

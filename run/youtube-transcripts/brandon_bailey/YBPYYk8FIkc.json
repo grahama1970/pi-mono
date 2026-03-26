@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YBPYYk8FIkc",
+    "language": "en",
+    "took_ms": 10370,
+    "method": null,
+    "title": "DEF CON 33 - There and Back Again: Detecting OT Devices Across Protocol Gateways - Rob King",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1313,
+    "description": "Operational Technology (OT) describes devices and protocols used to control real-world operations: factories, assembly lines, medical equipment, and so on.\n\nFor decades, this technology was isolated (more or less) from the wider world, using custom protocols and communications media. However, over the past 15 - 20 years, these devices have started using commodity protocols and media more and more. This means that these devices are now using the standard TCP/IP protocol suite, a concept referred to as \"OT/IT convergence.\"\n\nThis convergence has obvious benefits, making these devices cheaper and more manageable. However, it also makes them more accessible to attackers, and their security posture has often not kept up.\n\nAs part of this convergence process, many devices are connected via protocol gateways. These gateways speak TCP/IP, and then translate communications to proprietary OT protocols (or simply provide a NAT-style private network within an OT device rack).\n\nThis talk discusses techniques for detecting devices on the \"other side\" of these gateways. It begins with a brief introduction to the history of OT, moving on to the OT/IT convergence phenomenon. It then discusses the issue of protocol translation and provides two practical examples of discovering assets across gateways: CIP (Common Industrial Protocol) message forwarding and DNP3 (Distributed Network Protocol, version 3) address discovery.\n\nThese techniques are provided as examples to illustrate the issue of OT device discovery, and to encourage the audience to perform further research in how these sorts of devices may be discovered on networks and, ultimately, protected.",
+    "view_count": 142
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YBPYYk8FIkc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

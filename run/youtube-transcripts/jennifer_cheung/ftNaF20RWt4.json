@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ftNaF20RWt4",
+    "language": "en",
+    "took_ms": 10033,
+    "method": null,
+    "title": "DEF CON 33 - The UnRightful Heir   My dMSA Is Your New Domain Admin - Yuval Gordon",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2014,
+    "description": "Delegated Managed Service Accounts (dMSA) are Microsoft’s shiny new addition to Active Directory in Windows Server 2025. Their primary goal was to improve the security of domain environments. As it turns out, that didn’t go so well.\n\nIn this talk, we introduce BadSuccessor - an attack that abuses dMSAs to escalate privileges in Active Directory. Crucially, the attack works even if your domain doesn’t use dMSAs at all.\n\nWe’ll demonstrate how a very common, and seemingly benign, permission in Active Directory can allow us to trick a Domain Controller into issuing a Kerberos ticket for any principal - including Domain Admins and Domain Controllers. Then we’ll take it a step further, showing how the same technique can be used to obtain the NTLM hash of every user in the domain - without ever touching the domain controller.\n\nWe’ll walk through how we found this attack, how it works, and its potential impact on AD environments",
+    "view_count": 500
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ftNaF20RWt4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rlic2A7VB80",
+    "language": "en",
+    "took_ms": 7916,
+    "method": null,
+    "title": "Security Controls & Vulnerabilities in Embedded System OS",
+    "channel": "S4 Events",
+    "upload_date": "20170718",
+    "duration_sec": 2846,
+    "description": "Ali Abbasi of the University of Twente gives a highly technical talk on the security of RTOS found in PLC's and other devices. The first half covers Pin Control attacks.\n\nFor those less technical, check out the charts of security controls found in OS at 18:05 in the video. For example only 20% support ASLR and only 31% have stack canaries. Also of note:\n\n21:30 QNX RTOS Analysis \n\n28:30 Begins discussion of flawed random number generators, a big issue in RTOS.\n\n33:00 Brief review of an Aviation RTOS, where the vendor has no plans to fix it.\n\n35:15 VxWorks ... briefly. Does not include a PRNG/RNG so every vendor creates their own with easily predicted results.\n\n37:00 Control Flow Integrity for PLCs",
+    "view_count": 4862
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rlic2A7VB80: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3Ce7ZSTlrTU",
+    "language": "en",
+    "took_ms": 7906,
+    "method": null,
+    "title": "Learn how to evaluate AI agents in this new course with Arize AI!",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250219",
+    "duration_sec": 128,
+    "description": "Learn more: https://bit.ly/4b0N1at\n\nAI agents are only as good as their ability to perform reliably and improve over time. But how do you systematically evaluate their decision-making, optimize their workflows, and debug performance issues?\n\nAs agents take on increasingly complex tasks, ensuring their accuracy and efficiency is important. A structured evaluation process helps optimize outputs, identify inefficiencies, and iterate effectively—beyond trial and error.\n\nIn our new short course, Evaluating AI Agents, built in partnership with Arize AI, you’ll learn how to:\n\n- Add observability to track your agent’s steps and diagnose issues component-wise.\n- Set up structured evaluations for key components of your agentic workflow, including routers, skills, and memory.\n- Use different evaluators—code-based, LLM-as-a-Judge, and human annotations—to refine agent performance.\n- Run structured experiments to improve the agent's performance by exploring changes to the prompt, LLM model, or the agent’s logic.\n\nTaught by John Gilhuly (Head of Developer Relations) and Aman Khan (Director of Product) at Arize AI, this course gives you hands-on experience in systematically evaluating, troubleshooting, and improving AI agents—from development to production.\n\nEnroll now: https://bit.ly/4b0N1at",
+    "view_count": 4818
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3Ce7ZSTlrTU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "v45_tkKCJ54",
+    "language": "en",
+    "took_ms": 8908,
+    "method": null,
+    "title": "DEF CON 30 - Ionut Cernica - Deanonymization of TOR HTTP Hidden Services",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 1092,
+    "description": "Anonymity networks such as Tor are used to protect the identity of people or services. Several deanonymization techniques have been described over time. Some of them attacked the protocol, others exploited various configuration issues. Through this presentation I will focus on deanonymization techniques of the http services of such networks by exploiting configuration issues.\n\nIn the first part of the presentation, I will present deanonymization techniques on TOR which are public, and I will also present the techniques developed by me and the interesting story of how I came to develop them.\n\nIn the last part of my presentation, I will do a demo with the exploitation of http hidden services in TOR and I will present each technique separately. I will also present how one of the techniques can be used successfully not only in the TOR network, but also on the internet in order to obtain information about the server that will help you discover other services.",
+    "view_count": 5879
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] v45_tkKCJ54: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

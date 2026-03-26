@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wDMsh7TJuqw",
+    "language": "en",
+    "took_ms": 7952,
+    "method": null,
+    "title": "DEF CON Safe Mode Ham Radio Village - Pancake - So you have an SDR",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 3070,
+    "description": "Come learn about how to use an software defined radio (SDR) to pick up and signals, and how to identify what they are and what they mean.",
+    "view_count": 2091
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wDMsh7TJuqw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

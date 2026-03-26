@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1ezqJ4wqIo0",
+    "language": "en",
+    "took_ms": 8801,
+    "method": null,
+    "title": "Can Mexico's Peña Nieto Turn Things Around?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150212",
+    "duration_sec": 5856,
+    "description": "How can Peña Nieto turn things around? Is it already too late? To address these questions, Hudson Institute hosted a panel on Thursday, February 12th featuring Luis Rubio, Robert Pfaltzgraff, Hector Schamis, and Miguel Basáñez. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 188
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1ezqJ4wqIo0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

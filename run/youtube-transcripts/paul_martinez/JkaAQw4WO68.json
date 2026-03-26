@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JkaAQw4WO68",
+    "language": "en",
+    "took_ms": 8649,
+    "method": null,
+    "title": "Quantifying Risk Reduction Achieved By OT Security Controls",
+    "channel": "S4 Events",
+    "upload_date": "20240829",
+    "duration_sec": 1279,
+    "description": "How much does a security control reduce cyber risk? What control or mix of controls provides the most efficient cyber risk reduction? Tough questions that a team of researchers at INL and Sandia tried to answer in a project: Cyber Resilience for Wind Installations.\n\nIn this session Jake explains their quantification approach from the project, what they learned, and how they are now iterating and improving this risk reduction quantification.\n\nDale's note: this was one of the most interesting projects I've seen coming out of the lab. Not for the wind / DER aspects, but for the effort to come up with and use metrics. This was an invited talk.",
+    "view_count": 327
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JkaAQw4WO68: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

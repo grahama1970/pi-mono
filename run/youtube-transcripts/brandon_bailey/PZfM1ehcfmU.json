@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "PZfM1ehcfmU",
+    "language": "en",
+    "took_ms": 7878,
+    "method": null,
+    "title": "DEF CON 32 - Pick Your Poison: Navigating a secure clean energy transition - Emma Stewart",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1845,
+    "description": "Clean Energy technology, while essential for the energy transition, often utilizes components sourced from adversarial countries, potentially increasing cyber vulnerabilities, especially in systems managed by smaller utilities with limited cybersecurity expertise. The previous approaches of 'rip and replace' to eliminate foreign components have proved inadequate and if applied to clean energy, may be economically and technically destabilizing.\n\nThis policy session will also delve into the broader implications of a digitalized supply chain, where simplistic views of cybersecurity do not suffice. Instead, a nuanced understanding of the operational and physical realities of energy systems is essential. By discussing how to balance immediate economic pressures against long-term sustainability and security, the session aims to foster a more informed and effective policy discourse.\n\nIn summary, as the energy sector evolves to include diverse infrastructure systems—ranging from hospitals to military installations—the need for a robust, informed, and agile policy approach to cybersecurity becomes increasingly critical. This session will provide a platform for critical discourse to ensure that the transition to renewable energy is both secure and sustainable, aligning climate goals with national security imperatives",
+    "view_count": 592
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] PZfM1ehcfmU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

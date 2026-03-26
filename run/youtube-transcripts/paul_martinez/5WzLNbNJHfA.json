@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "5WzLNbNJHfA",
+    "language": "en",
+    "took_ms": 7898,
+    "method": null,
+    "title": "IIoT: Sitting Under The Sword of Damocles",
+    "channel": "S4 Events",
+    "upload_date": "20170206",
+    "duration_sec": 1815,
+    "description": "Michael Assante presents 4 IIoT related trends that will make security difficult if we don't do the right things now. They include scale, convergence/complexity, humans in the loop, and abstraction.\n\nMike knows this industry from all sides, and this is worth watching all the way through. It mostly discusses the security challenges, but the last 3 minutes, ~28 minutes, he talk about solutions.\n\nOne of the funny but apt sections is at 11:15 where Mike talks about the Data Driven Individual Animal Management where each cow in the heard generates 200MB of data per day. Think FitBits or implants for livestock. For example, cows in heat walk around a lot more. And how this can lead to the Bovine Botnet Army.",
+    "view_count": 394
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 5WzLNbNJHfA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

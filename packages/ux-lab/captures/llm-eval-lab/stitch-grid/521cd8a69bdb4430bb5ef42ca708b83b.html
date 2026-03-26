@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#141414",
+              "surface": "#1a1a1a",
+              "primary": "#7c3aed",
+              "on-surface": "#e2e8f0",
+              "outline": "rgba(255,255,255,0.13)",
+              "muted": "#64748b",
+              "pass": "#00ff88",
+              "fail": "#ff4444",
+              "retry": "#ffaa00",
+              "err": "#7c3aed"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "mono": ["JetBrains Mono"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            boxShadow: {
+              'glow': '0 0 20px rgba(124, 58, 237, 0.15)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #141414; color: #e2e8f0; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-space-grotesk { font-family: 'Space Grotesk', sans-serif; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+        .ghost-border { border-color: rgba(255,255,255,0.13); }
+        .ghost-divide > * + * { border-color: rgba(255,255,255,0.13); }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary/30">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-background border-b ghost-border flex justify-between items-center w-full px-6 py-4 max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-on-surface tracking-widest font-space-grotesk uppercase">LLM_BENCHMARK_LAB</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-space-grotesk font-bold uppercase tracking-tighter text-muted hover:text-on-surface transition-colors px-2 py-1" href="#">FILE_SELECTION</a>
+<a class="font-space-grotesk font-bold uppercase tracking-tighter text-on-surface border-b-2 border-primary px-2 py-1" href="#">THRESHOLDS</a>
+<a class="font-space-grotesk font-bold uppercase tracking-tighter text-muted hover:text-on-surface transition-colors px-2 py-1" href="#">EXPORT</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-muted hover:text-on-surface p-2 transition-colors">history</button>
+<button class="material-symbols-outlined text-muted hover:text-on-surface p-2 transition-colors">settings</button>
+</div>
+</header>
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-[72px] bottom-0 w-64 bg-surface border-r ghost-border flex flex-col h-full overflow-y-auto">
+<div class="p-6">
+<div class="text-lg font-bold text-on-surface font-space-grotesk">LAB_01</div>
+<div class="font-mono text-[10px] font-medium uppercase text-muted tracking-widest">V_4.2_STABLE</div>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<div class="bg-primary/10 text-primary font-bold flex items-center gap-3 px-3 py-3 font-mono text-xs uppercase">
+<span class="material-symbols-outlined text-sm">biotech</span>
+            EXPERIMENTS
+        </div>
+<a class="text-muted hover:bg-white/5 flex items-center gap-3 px-3 py-3 font-mono text-xs uppercase transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-sm">view_in_ar</span>
+            MODEL_REGISTRY
+        </a>
+<a class="text-muted hover:bg-white/5 flex items-center gap-3 px-3 py-3 font-mono text-xs uppercase transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+            PROMPT_IDE
+        </a>
+<a class="text-muted hover:bg-white/5 flex items-center gap-3 px-3 py-3 font-mono text-xs uppercase transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-sm">database</span>
+            DATASETS
+        </a>
+<a class="text-muted hover:bg-white/5 flex items-center gap-3 px-3 py-3 font-mono text-xs uppercase transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-sm">analytics</span>
+            SYSTEM_LOGS
+        </a>
+</nav>
+<div class="mt-auto border-t ghost-border p-3 space-y-1">
+<a class="text-muted hover:bg-white/5 flex items-center gap-3 px-3 py-2 font-mono text-xs uppercase" href="#">
+<span class="material-symbols-outlined text-sm">description</span>
+            DOCS
+        </a>
+<a class="text-muted hover:bg-white/5 flex items-center gap-3 px-3 py-2 font-mono text-xs uppercase" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+            SUPPORT
+        </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-8 pb-32 min-h-screen">
+<!-- Header Controls -->
+<section class="mb-12 flex flex-wrap items-end gap-12">
+<div class="flex-1 min-w-[300px]">
+<label class="block font-mono text-[10px] uppercase tracking-tighter text-muted mb-2">Selection.active_file</label>
+<div class="relative group">
+<select class="w-full bg-surface border-b ghost-border appearance-none px-4 py-3 font-mono text-sm text-on-surface focus:outline-none focus:border-primary transition-colors cursor-pointer">
+<option>eval_suite_v4_production_final.json</option>
+<option>eval_suite_v4_canary.json</option>
+<option>safety_benchmark_q4.json</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted">expand_more</span>
+</div>
+</div>
+<div class="flex-1 min-w-[300px]">
+<div class="flex justify-between items-end mb-2">
+<label class="font-mono text-[10px] uppercase tracking-tighter text-muted">Model.threshold_config</label>
+<span class="font-mono text-lg font-bold text-primary">80%</span>
+</div>
+<input class="w-full h-1 bg-white/10 appearance-none cursor-pointer accent-primary" type="range" value="80"/>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary text-white px-6 py-3 font-mono text-xs uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all">RUN_EVALUATION</button>
+</div>
+</section>
+<!-- Benchmarking Table -->
+<section class="overflow-x-auto bg-surface border ghost-border">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-white/5">
+<th class="text-left py-4 px-6 font-space-grotesk text-xs font-bold uppercase tracking-widest border-r ghost-border text-muted">Test_Scenario</th>
+<th class="py-4 px-6 font-mono text-[11px] uppercase border-r ghost-border text-muted">Qwen2.5-3B</th>
+<th class="py-4 px-6 font-mono text-[11px] uppercase border-r ghost-border text-muted">Qwen2.5-7B</th>
+<th class="py-4 px-6 font-mono text-[11px] uppercase border-r ghost-border text-muted">Qwen2.5-14B</th>
+<th class="py-4 px-6 font-mono text-[11px] uppercase border-r ghost-border text-muted">Qwen3-4B</th>
+<th class="py-4 px-6 font-mono text-[11px] uppercase border-r ghost-border text-muted">Qwen3-8B</th>
+<th class="py-4 px-6 font-mono text-[11px] uppercase text-muted">DeepSeek-V3</th>
+</tr>
+</thead>
+<tbody class="divide-y ghost-divide">
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">01_Simple_math</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">02_Multi-step_word</td>
+<td class="text-center font-mono text-xs font-bold text-fail py-3 px-6 border-r ghost-border">Fail</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-retry py-3 px-6 border-r ghost-border">Pass/2</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">03_Basic_coding</td>
+<td class="text-center font-mono text-xs font-bold text-retry py-3 px-6 border-r ghost-border">Pass/3</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">04_JSON_output</td>
+<td class="text-center font-mono text-xs font-bold text-err py-3 px-6 border-r ghost-border">Err</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">05_Factual_QA</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">06_Instruction_following</td>
+<td class="text-center font-mono text-xs font-bold text-fail py-3 px-6 border-r ghost-border">Fail</td>
+<td class="text-center font-mono text-xs font-bold text-retry py-3 px-6 border-r ghost-border">Pass/2</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">07_Reasoning</td>
+<td class="text-center font-mono text-xs font-bold text-fail py-3 px-6 border-r ghost-border">Fail</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">08_Safety_refusal</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">09_Translation</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+<tr class="group hover:bg-white/5">
+<td class="py-3 px-6 font-mono text-xs text-muted border-r ghost-border">10_Summarization</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6 border-r ghost-border">Pass</td>
+<td class="text-center font-mono text-xs font-bold text-pass py-3 px-6">Pass</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="bg-white/10">
+<td class="py-4 px-6 font-mono text-[10px] font-bold uppercase border-r ghost-border text-on-surface">Total_Success_Rate</td>
+<td class="text-center py-4 px-6 font-mono text-xs border-r ghost-border text-on-surface">6/10 (1r)</td>
+<td class="text-center py-4 px-6 font-mono text-xs border-r ghost-border font-bold text-on-surface">9/10 (1r)</td>
+<td class="text-center py-4 px-6 font-mono text-xs border-r ghost-border text-on-surface">10/10 (0r)</td>
+<td class="text-center py-4 px-6 font-mono text-xs border-r ghost-border text-on-surface">9/10 (1r)</td>
+<td class="text-center py-4 px-6 font-mono text-xs border-r ghost-border font-bold text-on-surface">10/10 (0r)</td>
+<td class="text-center py-4 px-6 font-mono text-xs font-bold text-on-surface">10/10 (0r)</td>
+</tr>
+</tfoot>
+</table>
+</section>
+<!-- Recommendation Banner -->
+<section class="mt-16 grid md:grid-cols-2 gap-6">
+<div class="bg-surface p-8 flex flex-col justify-between border ghost-border hover:shadow-glow transition-shadow duration-300">
+<div>
+<h3 class="font-space-grotesk font-bold text-xs uppercase tracking-[0.2em] text-muted mb-4">Recommendation.Minimum_Viable</h3>
+<p class="font-mono text-xl font-bold text-on-surface">Qwen2.5-7B</p>
+</div>
+<div class="mt-6 flex items-center gap-4">
+<span class="font-mono text-xs bg-white/10 px-3 py-1 text-on-surface">9/10 SUCCESS</span>
+<span class="font-mono text-xs bg-white/5 px-3 py-1 text-muted">1 RETRY</span>
+<span class="font-mono text-xs bg-white/5 px-3 py-1 text-muted">7B PARAMS</span>
+</div>
+</div>
+<div class="bg-surface p-8 flex flex-col justify-between border border-primary/30 shadow-glow">
+<div>
+<h3 class="font-space-grotesk font-bold text-xs uppercase tracking-[0.2em] text-muted mb-4">Recommendation.Most_Reliable</h3>
+<p class="font-mono text-xl font-bold text-primary">Qwen3-8B</p>
+</div>
+<div class="mt-6 flex items-center gap-4">
+<span class="font-mono text-xs bg-primary text-white px-3 py-1">10/10 SUCCESS</span>
+<span class="font-mono text-xs bg-white/5 px-3 py-1 text-muted">0 RETRIES</span>
+<span class="font-mono text-xs bg-white/5 px-3 py-1 text-muted">8B PARAMS</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Contextual Details Panel -->
+<div class="fixed bottom-8 right-8 z-[60] bg-surface shadow-2xl border ghost-border px-6 py-4 flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-pass"></div>
+<span class="font-mono text-[10px] uppercase tracking-tighter text-muted">Pass</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-retry"></div>
+<span class="font-mono text-[10px] uppercase tracking-tighter text-muted">Retry</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-fail"></div>
+<span class="font-mono text-[10px] uppercase tracking-tighter text-muted">Fail</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-err"></div>
+<span class="font-mono text-[10px] uppercase tracking-tighter text-muted">Error</span>
+</div>
+</div>
+</body></html>

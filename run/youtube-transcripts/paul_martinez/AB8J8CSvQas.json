@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "AB8J8CSvQas",
+    "language": "en",
+    "took_ms": 7678,
+    "method": null,
+    "title": "S4x18 Debate: Enterprise SOC or OT SOC?",
+    "channel": "S4 Events",
+    "upload_date": "20181024",
+    "duration_sec": 2090,
+    "description": "This was a great debate from S4x18. Many owner / operators have an Enterprise Secure Operations Center (SOC), and they are considering how best to handle OT incident detection and response. There are two main approaches:\n\n1. Add OT data and incident response capabilities to an Enterprise SOC, or\n\n2. Set up and run a SOC dedicated to the OT environment\n\nDan Scali of FireEye took the Enterprise SOC side and debated with Rob Lee of Dragos, who argued the OT SOC side. The great thing was these two guys are friends and respect each other, so they didn’t hesitate to argue directly and strongly.\n\nIt’s set up as a classic debate with opening statements, rebuttals and then questions to each other. Take a listen and let me know what you think about the issue in the comments.",
+    "view_count": 1633
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] AB8J8CSvQas: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

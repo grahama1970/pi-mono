@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "q7JBHFD1Bh4",
+    "language": "en",
+    "took_ms": 9335,
+    "method": null,
+    "title": "The Future of Warfare: Gaining a Tactical Edge Through Cloud and AI",
+    "channel": "Hudson Institute",
+    "upload_date": "20190530",
+    "duration_sec": 5405,
+    "description": "The Hudson Institute Task Force on Federal IT Procurement, with sponsorship from Oracle and Microsoft, hosted a panel to discuss how the Department of Defense (DoD) can best implement cloud and artificial intelligence capabilities to gain the tactical edge in future warfare. A keynote address was given by Dr. Alexander Kott, the chief scientist of the Army Research Laboratory, who then joined a discussion between Department of the Navy AI Lead Jeff Kojac and CSIS Associate Fellow Lindsey Sheppard. Hudson Senior Fellow William Schneider, Jr moderated the conversation and audience Q&A.\n\nAs warfare becomes increasingly data-centric, cloud services and the AI systems they enable will be crucial to ensuring American warfighters have access to the most advanced information and analytics available. With the award date of the DoD’s JEDI cloud coming as soon as July, the Pentagon will need to begin taking steps toward integrating cloud technology as a core component of its military operations. Whichever company wins the JEDI project must provide capabilities that are not only robust, adaptable, and interoperable, but also built for the long-term future of conflict.",
+    "view_count": 4432
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] q7JBHFD1Bh4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

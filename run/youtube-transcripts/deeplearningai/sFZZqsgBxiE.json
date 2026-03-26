@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sFZZqsgBxiE",
+    "language": "en",
+    "took_ms": 7830,
+    "method": null,
+    "title": "New course! Enroll in \"Build AI Apps with MCP Servers: Working with Box Files\"",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250917",
+    "duration_sec": 109,
+    "description": "Learn more: https://bit.ly/47IEVUk\n\nJoin Build AI Apps with MCP servers: Working with Box files, built in partnership with Box, and taught by Ben Kus, its Chief Technology Officer. \n\nYou’ll begin with an AI application that processes files manually downloaded from a Box folder and locally stored. You’ll then refactor the application to make it MCP-compliant and connect it to the Box MCP server. The server will provide the application with the required tools to process the files directly in Box. You’ll finally evolve your solution into a multi-agent system that coordinates via the A2A protocol. \n\nMCP or Model Context Protocol standardizes how context, in terms of tools and resources, is provided to LLMs. Instead of writing custom code inside your application for file search, file downloads, and text extraction, you can offload these tasks to an MCP server. An MCP client within your application can communicate with the MCP server to discover the tools and send requests to execute a certain tool. In this course, you’ll use the Box MCP server and learn how to connect it to your application to process files from a Box folder. You’ll also build a multi-agent system using Google’s Agent Development Kit. The agents will use A2A to communicate with each other, and the Box MCP server to access file and text extraction tools.\n\nIn detail, you’ll:\n\n- Build an LLM-powered invoice app that processes local PDF invoices to extract fields such as client name, total amount, and purchased product, and generates per-client reports.\n- Transform your application into an MCP-compliant app and use the tools of the Box MCP server to list the invoices within a Box folder and extract texts from each invoice, without manually downloading the files.\n- Move from a single agent to a multi-agent design: use an orchestrator to coordinate the tasks among sub-agents that use the Box MCP server and are specialized in files listing, text extraction, and reporting.\n- Design the orchestrator and subagents as A2A servers, and use an A2A client to send the user's request to the orchestrator.\n\nBy the end, you’ll know how to build an AI application and AI agents that use the MCP server to process Box content securely, without manual downloads, and that support several file types and scale better with the number of files.\n\nEnroll for free: https://bit.ly/47IEVUk",
+    "view_count": 2661
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sFZZqsgBxiE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

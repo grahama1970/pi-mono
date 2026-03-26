@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cxHV-hGxAhg",
+    "language": "en",
+    "took_ms": 7762,
+    "method": null,
+    "title": "Hudson Stands with Taiwan, Israel, and Ukraine",
+    "channel": "Hudson Institute",
+    "upload_date": "20240424",
+    "duration_sec": 117,
+    "description": "With the passage of the foreign aid bills, Hudson is proud that America stands with Taiwan, Israel, and Ukraine. We will remain steadfast in promoting the security, freedom, and prosperity of America and its allies.",
+    "view_count": 807
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cxHV-hGxAhg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

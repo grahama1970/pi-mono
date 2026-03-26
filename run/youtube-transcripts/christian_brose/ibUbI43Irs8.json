@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ibUbI43Irs8",
+    "language": "en",
+    "took_ms": 8012,
+    "method": null,
+    "title": "The Future of the 1755-1780 MHz Band",
+    "channel": "Hudson Institute",
+    "upload_date": "20130916",
+    "duration_sec": 2988,
+    "description": "The federal government is the primary consumer of much of the available radio spectrum. The Obama Administration, through the Department of Commerce, is evaluating various bands of spectrum that could be transfered from federal to commercial use. \r\nThe 25 MHz of spectrum from 1755-1780 has recently been the focus of much attention. What might this band of spectrum be used for? How soon will it likely be available for commercial use? What steps need to happen first?\r\nTo examine these and related",
+    "view_count": 108
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ibUbI43Irs8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

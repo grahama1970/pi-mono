@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#131313",
+              "surface-container": "#201f1f",
+              "surface-container-lowest": "#0e0e0e",
+              "primary": "#d2bbff",
+              "primary-container": "#7c3aed",
+              "on-surface-variant": "#ccc3d8",
+              "outline-variant": "rgba(255,255,255,0.13)"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["JetBrains Mono", "monospace"]
+            },
+            borderRadius: {
+              "xl": "0.75rem",
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .dot-grid {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+        .glow-active {
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface-variant font-body selection:bg-primary-container selection:text-white overflow-hidden">
+<!-- Top Navigation (Anchored from Shared Components JSON) -->
+<header class="fixed top-0 w-full bg-[#131313]/70 backdrop-blur-md z-50 flex items-center justify-between px-6 h-14 w-full no-border tonal-layering">
+<div class="text-lg font-bold tracking-tighter text-[#d2bbff] font-headline">DESIGN_REVIEW_V1</div>
+<nav class="hidden md:flex items-center gap-8 font-label text-[10px] tracking-widest uppercase">
+<a class="text-[#d2bbff] border-b border-[#7c3aed] transition-colors" href="#">CANVAS</a>
+<a class="text-[#ccc3d8] hover:text-[#7c3aed] transition-colors" href="#">REVISIONS</a>
+<a class="text-[#ccc3d8] hover:text-[#7c3aed] transition-colors" href="#">COLLABORATORS</a>
+<a class="text-[#ccc3d8] hover:text-[#7c3aed] transition-colors" href="#">EXPORT</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#d2bbff]">account_circle</span>
+</div>
+</header>
+<!-- Design Canvas Interface -->
+<main class="relative w-screen h-screen dot-grid bg-surface pt-14">
+<!-- Mockup Card 1: Selected -->
+<div class="absolute top-[15%] left-[10%] w-[320px] group cursor-grab active:cursor-grabbing transition-transform duration-150">
+<div class="bg-[#1a1a1a] p-3 rounded-xl border border-white/10 glow-active">
+<div class="relative aspect-[4/3] bg-surface-container-lowest rounded-lg overflow-hidden flex items-center justify-center">
+<img alt="App onboarding screen mockup" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Minimalistic mobile app onboarding screen layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDToPLs_UxyKXIwQ0dtKcUVRR5XloSbfFZyQRp_MzNnfRIV9t8s_55kPUq8EUaaTDLxM_W2Ws9lKK4ovOLqZ4AHIqF9-0W4TkiJYu9tRA5i96WEzvAcCWV0hWlfTjPWjF8amjOVGl4NSfIN7Ijq-pMNfKpXYF1Fg5hmBXokEPdQFRi4Q4foDlsKwFoyVmZQiqs79F4tKCaodS5z73V0FY-4dGR5mCl-hAhiHc6ROs38Y5CS-wQWz2CQhhn_E3u4AEi8mAZpEO4Pk1WN"/>
+<div class="absolute top-2 right-2 bg-black/40 backdrop-blur-md p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white/50 text-sm">drag_indicator</span>
+</div>
+</div>
+</div>
+<div class="mt-3 px-1 flex justify-between items-center">
+<span class="font-label text-[11px] text-[#d2bbff] tracking-tight">ONBOARDING_FLOW_V2.PNG</span>
+<span class="font-label text-[9px] text-white/20">8.4MB</span>
+</div>
+</div>
+<!-- Mockup Card 2 -->
+<div class="absolute top-[45%] left-[45%] w-[280px] group cursor-grab active:cursor-grabbing transition-transform duration-150 rotate-[-2deg]">
+<div class="bg-[#1a1a1a] p-3 rounded-xl border border-white/10">
+<div class="relative aspect-[16/10] bg-surface-container-lowest rounded-lg overflow-hidden">
+<img alt="Landing page desktop mockup" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Dark themed luxury landing page hero section design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ7VBE5BKYTK4RGEU4q_Xislkz-kkYrP71gjusC2UMkT-asxc8zU2y2iN43-GKXSHtXFe7LjObrFl6DNEh0TlkYUSUV0OC5Luyq4wS5ZSwLP81khQAUW_u3YSIWIhAigxj0NYosO7v_-akRoAkQjbFvmYAWf4UH5O9fljeQpRDXcc1lmuyR6Z3Fdx-6TO-YFqyYgHdpJdgqjp8kolPVeYkiHyEP7PmEbnwZpw1dfzIBWVY2lkssBBG0uWKtkFEbf7dJj2Vruw2mLC8"/>
+<div class="absolute top-2 right-2 bg-black/40 backdrop-blur-md p-1 rounded-md">
+<span class="material-symbols-outlined text-white/30 text-sm">drag_indicator</span>
+</div>
+</div>
+</div>
+<div class="mt-3 px-1">
+<span class="font-label text-[11px] text-on-surface-variant/60 tracking-tight">HERO_SECTION_DARK.WEBP</span>
+</div>
+</div>
+<!-- Mockup Card 3 -->
+<div class="absolute top-[20%] right-[15%] w-[340px] group cursor-grab active:cursor-grabbing transition-transform duration-150 rotate-[1deg]">
+<div class="bg-[#1a1a1a] p-3 rounded-xl border border-white/10">
+<div class="relative aspect-[1/1] bg-surface-container-lowest rounded-lg overflow-hidden">
+<img alt="Abstract UI pattern mockup" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="Modern abstract geometric patterns for background textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmvrvyC_rLwh9efQwc0TneU1Rt3DDiHoa2KWLXsWa1o-_T84Xy2QYpTD3N6-K3POIaR71hpHSKcWw104xHor3Qde3X0c41fvSL5o3oRoKF37UY9Bnhb6HibohAZWEu0mVotJyCTHflM32QfQRZoCG-ukLC6D_hY7a9R0-P85Z-TNUFR7Qk4Q_YVK1nA9--dDh03t_3LBQl_eTx6ygiaZxukNuEw8cYu87E9Sa_bEb-oARoY1pD6zypioXoYTXIy22JRnT2FYRKGUNN"/>
+<div class="absolute top-2 right-2 bg-black/40 backdrop-blur-md p-1 rounded-md">
+<span class="material-symbols-outlined text-white/30 text-sm">drag_indicator</span>
+</div>
+</div>
+</div>
+<div class="mt-3 px-1">
+<span class="font-label text-[11px] text-on-surface-variant/60 tracking-tight">TEXTURE_EXPLORATION_01.JPG</span>
+</div>
+</div>
+<!-- Mockup Card 4 -->
+<div class="absolute bottom-[10%] right-[30%] w-[300px] group cursor-grab active:cursor-grabbing transition-transform duration-150 rotate-[-1deg]">
+<div class="bg-[#1a1a1a] p-3 rounded-xl border border-white/10">
+<div class="relative aspect-[3/4] bg-surface-container-lowest rounded-lg overflow-hidden">
+<img alt="Component library style guide" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="A systematic layout of UI components and color palettes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcbb-f5qdj90vEsb439_uZ0kp-V03_WEzXQ1HtSIttFh8eOAXVlb7RcnYYRQsgmzyYlELAMqb44YzB1W59txiokyfT0IHkB9JqO3MQF1vwvKHkh_zAvy34XF0uB5OKWxvMya__wNUvcXulGmyx3uOmK9PZCo98SsJu7pB1KMlUlaCnHiNsrdo4PiQmhi9jiEAxysqu_ShvYbfEXqp7_8cVL1t3ZmHocIija8SdBPpKTJWIemtERmSMYTqaCQmVBdRTKZKLdamJ0A8M"/>
+<div class="absolute top-2 right-2 bg-black/40 backdrop-blur-md p-1 rounded-md">
+<span class="material-symbols-outlined text-white/30 text-sm">drag_indicator</span>
+</div>
+</div>
+</div>
+<div class="mt-3 px-1">
+<span class="font-label text-[11px] text-on-surface-variant/60 tracking-tight">CORE_COMPONENTS_REF.PNG</span>
+</div>
+</div>
+<!-- Bottom Left Zoom Bar -->
+<div class="fixed bottom-8 left-8 z-50 flex items-center gap-1 p-1 bg-[#201f1f]/80 backdrop-blur-lg rounded-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.4)] h-10">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<div class="px-3 min-w-[50px] text-center">
+<span class="font-label text-[11px] text-primary">84%</span>
+</div>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<div class="w-[1px] h-4 bg-white/10 mx-1"></div>
+<button class="px-3 h-8 flex items-center justify-center font-label text-[9px] text-on-surface-variant hover:bg-white/5 rounded-lg tracking-widest transition-colors">
+                FIT
+            </button>
+</div>
+<!-- Canvas Toolbar (Shared Components Logic - BottomNavBar) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-row gap-2 p-2 bg-[#201f1f]/80 backdrop-blur-lg rounded-xl border border-white/10 shadow-[0_0_20px_rgba(124,58,237,0.3)]">
+<!-- Active Tab: SELECT -->
+<button class="text-[#ccc3d8] p-2 hover:bg-white/5 rounded-lg transition-colors flex flex-col items-center gap-1 min-w-[64px]">
+<span class="material-symbols-outlined">pan_tool</span>
+<span class="font-label text-[8px] uppercase tracking-widest">PAN</span>
+</button>
+<button class="bg-[#7c3aed] text-white rounded-lg p-2 shadow-[0_0_10px_#7c3aed] flex flex-col items-center gap-1 min-w-[64px] scale-90 transition-transform">
+<span class="material-symbols-outlined">near_me</span>
+<span class="font-label text-[8px] uppercase tracking-widest">SELECT</span>
+</button>
+<button class="text-[#ccc3d8] p-2 hover:bg-white/5 rounded-lg transition-colors flex flex-col items-center gap-1 min-w-[64px]">
+<span class="material-symbols-outlined">edit_square</span>
+<span class="font-label text-[8px] uppercase tracking-widest">ANNOTATE</span>
+</button>
+<button class="text-[#ccc3d8] p-2 hover:bg-white/5 rounded-lg transition-colors flex flex-col items-center gap-1 min-w-[64px]">
+<span class="material-symbols-outlined">zoom_in</span>
+<span class="font-label text-[8px] uppercase tracking-widest">ZOOM</span>
+</button>
+</div>
+<!-- Contextual Status (Tactical Elegance) -->
+<div class="fixed bottom-8 right-8 flex items-center gap-4 bg-surface-container p-3 rounded-xl border border-outline-variant">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-[#00ff88] shadow-[0_0_8px_#00ff88]"></div>
+<span class="font-label text-[10px] text-on-surface-variant/80 uppercase tracking-wider">System Nominal</span>
+</div>
+<div class="w-[1px] h-3 bg-white/10"></div>
+<div class="font-label text-[10px] text-on-surface-variant/40 tracking-wider">
+                SYNCED: 12:44:02
+            </div>
+</div>
+</main>
+</body></html>

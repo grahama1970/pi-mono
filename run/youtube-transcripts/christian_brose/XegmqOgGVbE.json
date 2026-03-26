@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "XegmqOgGVbE",
+    "language": "en",
+    "took_ms": 9253,
+    "method": null,
+    "title": "Consumer Privacy in the Obama Administration: A Discussion w",
+    "channel": "Hudson Institute",
+    "upload_date": "20120827",
+    "duration_sec": 3588,
+    "description": "The Obama Administration recently unveiled a \"Consumer Privacy Bill of Rights\" as part of a comprehensive blueprint to improve consumers' privacy protections and ensure that the Internet remains an engine for innovation and economic growth. Assistant Secretary for Communications and Information, and Administrator of the National Telecommunications and Information Administration (NTIA), U.S. Department of Commerce, Lawrence E. Strickling will discuss the administration's privacy policy",
+    "view_count": 454
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] XegmqOgGVbE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

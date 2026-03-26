@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cHsRxkfxvq8",
+    "language": "en",
+    "took_ms": 10655,
+    "method": null,
+    "title": "DEF CON 32 - The Rise and Fall of Binary Exploitation - Stephen Sims",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2860,
+    "description": "For the past 20+ years binary exploitation has been seen as the ultimate challenge and prize, when exploiting large applications and operating systems. During this period, the question of \"How much longer will we be able to do this?\" has been asked countless times, and with good reason. Memory safety and corruption issues with low-level languages have been an enormous challenge for OS and application developers. There are certainly efforts to move to \"safer\" languages such as Rust, but those languages need to mature a bit longer before they're able to stand up to the capabilities of a language like C++.\n\nThanks to exploit mitigations and memory protections, a large number of these vulnerabilities are not exploitable. There are the mature mitigations, such as Data Execution Prevention (DEP) and Address Space Layout Randomization (ASLR), and then newer ones such as Control-flow Enforcement Technology (CET) and Virtualization Based Security (VBS). A large number of these mitigations are not enabled by default on the Windows OS, due to the fact that many need to be tested to ensure they do not break production applications. In this presentation, we will take a technical dive into the state of binary exploitation and the effectiveness of the many available mitigations, by looking at the way they're enforced.",
+    "view_count": 5555
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cHsRxkfxvq8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

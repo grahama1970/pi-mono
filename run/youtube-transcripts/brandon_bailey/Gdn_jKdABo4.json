@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Gdn_jKdABo4",
+    "language": "en",
+    "took_ms": 9082,
+    "method": null,
+    "title": "DEF CON 31 - Reproductive Justice in the Age of Digital Surveillance - McSherry, Bertash, Barnett",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 3177,
+    "description": "In the year since the Supreme Court overturned federal legal protections for reproductive rights, people seeking, providing, and supporting reproductive healthcare are grappling with the challenges of digital surveillance. Multiple services and apps track our movements and communications, and that data can be used by law enforcement and private parties to police and punish abortion access. Lawsuits and prosecutions are already underway and are likely to increase as states continue to pass or expand anti-abortion laws and undermine legal protections for online expression and privacy.\n\nBut the fight is far from over. At the state and federal level, lawmakers, activists, and technologists are taking steps to establish and shore up legal and practical protections for secure and private healthcare access.\n\nThis panel brings together legal and security experts to lead a discussion about defending reproductive justice in the digital age Ð what has already been accomplished, whatÕs coming, and how hackers can help. It will build on and update a discussion held last year, also led by EFF and DDF.",
+    "view_count": 1407
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Gdn_jKdABo4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

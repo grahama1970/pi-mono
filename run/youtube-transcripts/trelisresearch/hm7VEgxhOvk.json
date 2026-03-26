@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hm7VEgxhOvk",
+    "language": "en",
+    "took_ms": 9814,
+    "method": null,
+    "title": "Speculative Decoding Explained",
+    "channel": "Trelis Research",
+    "upload_date": "20231221",
+    "duration_sec": 2254,
+    "description": "One Click Templates Repo (free): https://github.com/TrelisResearch/one-click-llms\n\nAdvanced Inference Repo (Paid Lifetime Membership): https://trelis.com/enterprise-server-api-and-inference-guide/\n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- Runpod - https://tinyurl.com/4b6ecbbn\n\nLLM Updates Newsletter: Trelis.Substack.com\n\nChapters\n0:00 Faster inference with Speculative Decoding\n0:22 Video Overview\n1:09 How speculative decoding works?\n5:45 Naive speculative decoding\n7:16 Prompt based n-gram speculation\n9:31 Lookahead decoding\n11:48 Assisted decoding\n13:41 Summary of Decoding Techniques\n15:20 Performance Testing\n32:28 Summary of Results\n34:24 Tips for faster inference",
+    "view_count": 7719
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hm7VEgxhOvk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

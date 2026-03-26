@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7bKGljbnJQI",
+    "language": "en",
+    "took_ms": 8952,
+    "method": null,
+    "title": "DEF CON 30 BiC Village - Birhanu Eshete - State of the Model",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 3563,
+    "description": "With the fast-paced adoption of Machine Learning (ML) in high-stakes application domains such as autonomous vehicles, healthcare, finance, and criminal justice, its trustworthiness has lately been put under scrutiny. In this talk, we will first highlight security, privacy, transparency, and fairness pitfalls in ML and establish what it takes for ML to be trustworthy. We then dive into promising steps and remaining challenges in the quest towards ML that we will confidently deploy to drive our cars, diagnose our illnesses, or manage our finances.",
+    "view_count": 1644
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7bKGljbnJQI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

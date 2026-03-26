@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "i0aQIwaW6Nk",
+    "language": "en",
+    "took_ms": 8166,
+    "method": null,
+    "title": "A Conversation with former Australian Prime Minister Tony Abbott",
+    "channel": "Hudson Institute",
+    "upload_date": "20211101",
+    "duration_sec": 1994,
+    "description": "Former Australian Prime Minister Tony Abbott (2012-2015) will discuss security challenges in Asia with Hudson Institute’s Walter P. Stern Distinguished Fellow Kenneth Weinstein. Abbott, who recently visited Taiwan, will offer his thoughts on the fate of Taiwan; the growing China challenge; the recently announced Australia-UK-US (AUKUS) trilateral security partnership; and the future of the Five Eyes intelligence sharing alliance involving the AUKUS nations, Canada and New Zealand. Please join Hudson Institute for this important discussion.",
+    "view_count": 2731
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] i0aQIwaW6Nk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

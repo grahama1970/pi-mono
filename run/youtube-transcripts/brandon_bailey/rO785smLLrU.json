@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rO785smLLrU",
+    "language": "en",
+    "took_ms": 8003,
+    "method": null,
+    "title": "DEF CON 33 - Help! Linux in my Webcam! (•_•) - Mickey Shkatov, Jesse Michael",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2485,
+    "description": "In this talk, we dive into a world of webcams that secretly run Linux. What started as a casual curiosity turned into a deep dive into embedded Linux systems, obscure supply chains, and alarming security oversights.\n\nAlong the way, we discovered how decisions made far upstream – by silicon vendors and OEMs – can introduce vulnerabilities that quietly ship in tens of thousands of devices.\n\nThis presentation explores the broader implications of insecure firmware, broken update mechanisms, and the surprising autonomy of devices many assume to be simple peripherals.\n\nWe share how we traced the tech stack from brand-name distributors back to little-known chipset manufacturers, and what that journey revealed about responsibility, transparency, and the risks of neglecting security at the hardware-software boundary.\n\nCome for curiosity, stay for the demos and laughs.",
+    "view_count": 5428
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rO785smLLrU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

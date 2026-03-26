@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pY7S5CUqPxI",
+    "language": "en",
+    "took_ms": 8980,
+    "method": null,
+    "title": "DEF CON 31 - A Pain in the NAS  Exploiting Cloud Connectivity to PWN your NAS - Moshe, Brizinov",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2618,
+    "description": "Have you ever wondered how you can access your family pictures on your home network-attached storage (NAS) device remotely from your mobile? Do you know how this magic works? At Pwn2Own Toronto 2022, we chained multiple bugs to exploit both Synology and Western Digital NAS devices by abusing vulnerabilities in the device, cloud and the mutual trust between them.\n\nIn our research, we reviewed the pairing mechanism of NAS devices with the WD and Synology cloud platforms. To our surprise we discovered that devices authenticate to the cloud using a hardware identifier which is later used by users to remotely access their devices. Using this, we were able to impersonate any given NAS device and perform phishing attacks that yielded us admin rights on any targeted WD or Synology device.\n\nIn this talk, we will explain the pairing process of WD and Synology NAS. We will elaborate on the overall architecture of their cloud offering and focus on the vulnerabilities we found including ways to enumerate and impersonate all edge devices using certificate transparency log (CTL), and steal cloud proxy auth tokens. This enabled us to download every file saved on the NAS devices, alter or encrypt them, and bypass NAT/Firewall protection to achieve full remote code execution on all cloud-connected NAS (and to gain $$$ from Pwn2Own).",
+    "view_count": 22534
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pY7S5CUqPxI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

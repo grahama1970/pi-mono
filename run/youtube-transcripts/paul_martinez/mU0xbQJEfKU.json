@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mU0xbQJEfKU",
+    "language": "en",
+    "took_ms": 7730,
+    "method": null,
+    "title": "The Easy Button for Cyber/Physical ICS Attacks",
+    "channel": "S4 Events",
+    "upload_date": "20160725",
+    "duration_sec": 1114,
+    "description": "We are seeing a lot of pendulum swings in industrial control system (ICS) security popular thinking. For years it was thought to be trivial to cause a physical impact because the cyber components and protocols were insecure by design. Yes it was trivial to cause a cyber impact, but it required some level of engineering and automation knowledge to cause a physical impact unless the hacker was just lucky.\n\nNow there have been a series of presentations and articles talking about how detailed engineering and automation knowledge is required to cause a physical impact. This was certainly true of Stuxnet, but not every attack is Stuxnet. \n\nConsider the Ukrainian power outage incident. In this case the attacker only needed to watch the Operators go through displays to figure out how to open relays using a nice GUI.\n\nDigital Bond’s Reid Wightman had similar thoughts that “the it’s hard to cause physical damage” camp might be overstating this case and gives a vivid demonstration with variable frequency drives in his S4x16 Easy Button session shown below.\n\nThe vendors are consider enough to identify what frequency will cause the damage, and then allow the attacker to cause that condition. \n\nHere’s the pull quote from the Reid’s session:\n\n\"There are devices that do both control and protection, and if you rely on the same device for both control and protection you are probably lining yourself up for failure.\"",
+    "view_count": 828
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mU0xbQJEfKU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

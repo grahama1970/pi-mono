@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KH-fvzGQztM",
+    "language": "en",
+    "took_ms": 9354,
+    "method": null,
+    "title": "A Test of Will: Why Taiwan Matters",
+    "channel": "Hudson Institute",
+    "upload_date": "20230302",
+    "duration_sec": 3335,
+    "description": "Please join Hudson Institute’s China Center for a speech from Senator Dan Sullivan (R-AK) on the importance of defending Taiwan amid increasing tension between the United States and China.",
+    "view_count": 6475
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KH-fvzGQztM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

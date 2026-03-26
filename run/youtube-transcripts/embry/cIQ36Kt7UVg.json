@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cIQ36Kt7UVg",
+    "language": "en",
+    "took_ms": 9175,
+    "method": null,
+    "title": "A conversation with Elon Musk about Starship",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20191001",
+    "duration_sec": 1026,
+    "description": "After Elon Musk gave his presentation about the progress of SpaceX's Starship program, I had the opportunity to pick his brain just a little. In general I wanted to let him talk a lot and see where his mind went, but luckily for us aerospace enthusiasts, I got a little juicy extra bit of conversation at the end. \n\n------------------------------\n'\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 3184353
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cIQ36Kt7UVg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

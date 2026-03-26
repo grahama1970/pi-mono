@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "IyInMgXj4k4",
+    "language": "en",
+    "took_ms": 7529,
+    "method": null,
+    "title": "DEF CON 32   Finding 0days in Vilo Home Routers   Justin Mott & Ava Petersen",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1685,
+    "description": "From January to May 2024, a team of student researchers at Brigham Young University looked for 0days in a consumer-grade home router made by Vilo Living. By April 2024, they had found 9 zero days, 6 of which were critical. This presentation covers the process they went through from initial reconnaissance to hardware hacking to finding buffer overflows to reporting the bugs to the organization. Outline: Initial recon - OSINT on the company, previous vulnerabilities released (none), and black-box interactions with network services on the LAN Hardware hacking - identifying chips on the board, connecting to the UART interface, deciphering boot up info, dumping the flash memory (didn’t work), and observing reads/writes by the CPU to flash memory to obtain the firmware Cloud enumeration - discovering the AWS S3 buckets and IoT infrastructure, tracing cloud interactions (authenticating to the router remotely, retrieving MQTT certificates, etc.) Firmware enumeration - kernel + libc version, arch, how to emulate binaries on an x86 machine, compiling code to run on the router, what binary does what, etc. Vulnerability discovery - finishing reversing custom TCP protocol for mobile app-router interactions, searching for stack overflows, lack of authentication, command injection (and accidentally bricking 3 routers), info leaks, reviewing the 9 vulnerabilities we discovered, weaponizing and chaining some of the vulnerabilities, etc. Vendor disclosure - difficulty contacting the vendor in May 2024 with vulnerability details (they were almost dead), how the disclosure process went, filing for CVEs in June, publishing vuln details in August Conclusion - how stupid easy it is to hack IoT devices, how IoT vendors treat security issues, where future research can focus",
+    "view_count": 591
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] IyInMgXj4k4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wmMa8AsIlZ8",
+    "language": "en",
+    "took_ms": 9027,
+    "method": null,
+    "title": "A.I. MIDIs is all you need!",
+    "channel": "Nobody & The Computer",
+    "upload_date": "20230313",
+    "duration_sec": 540,
+    "description": "Get ready to unleash your inner music genius with the help of AI! In this video, we'll show you how to use Spotify Basic Pitch, OpenAI MuseNet,  Google Magenta and other A.I. MIDI projects to create MIDI files that will blow your mind.\n---------------------------------------------------------------------------------\nJump on the hype train for this channel, and help me crank out even more wicked videos like this one:\nhttps://www.patreon.com/NobodyandTheComputer\n---------------------------------------------------------------------------------\ncontact me: \nnobodyandthecomputer@gmail.com\n\nBASIC PITCH: \nhttps://basicpitch.spotify.com/\nMUSENET: \nhttps://openai.com/research/musenet\nMAGENTA STUDIO: \nhttps://magenta.tensorflow.org/studio/\nLOS ANGELES MUSIC COMPOSER: \nhttps://github.com/asigalov61/Los-Angeles-Music-Composer\n\n00:00 Intro\n00:50 History of MIDIS\n01:57 What is MIDI\n02:52 Spotify Basic Pitch\n04:00 OpenAI Musenet\n04:25 Google Magenta Studio\n08:04 Los Angeles Music Composer\n08:40 The End\n\nSo why wait? Join us as we explore the cutting-edge world of MIDI and AI, and unleash your music genius!",
+    "view_count": 314482
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wmMa8AsIlZ8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

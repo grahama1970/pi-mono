@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Jd5yi-YO-AQ",
+    "language": "en",
+    "took_ms": 8241,
+    "method": null,
+    "title": "Michael Doran on Iran's New, Easier Path to a Nuclear Bomb",
+    "channel": "Hudson Institute",
+    "upload_date": "20151021",
+    "duration_sec": 145,
+    "description": "Hudson Institute Senior Fellow Michael Doran on how the JCPOA strengthens Iran's power in the region and eases its pathway to a nuclear bomb.",
+    "view_count": 854
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Jd5yi-YO-AQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

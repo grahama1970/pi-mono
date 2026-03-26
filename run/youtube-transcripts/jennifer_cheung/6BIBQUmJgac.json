@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6BIBQUmJgac",
+    "language": "en",
+    "took_ms": 8039,
+    "method": null,
+    "title": "DEF CON 33 Preview - Malware Village",
+    "channel": "DEFCONConference",
+    "upload_date": "20250803",
+    "duration_sec": 158,
+    "description": "Preview of the DEF CON 33 Malware Village.",
+    "view_count": 6300
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6BIBQUmJgac: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

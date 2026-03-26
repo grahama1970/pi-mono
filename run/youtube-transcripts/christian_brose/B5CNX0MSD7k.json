@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B5CNX0MSD7k",
+    "language": "en",
+    "took_ms": 8311,
+    "method": null,
+    "title": "IRS + 501 (C)(4) = SOS?",
+    "channel": "Hudson Institute",
+    "upload_date": "20130918",
+    "duration_sec": 5090,
+    "description": "\"So I guess my bottom line here is that we at the IRS should apologize for that, it was not intentional, and as soon as we found out what was going on, we took steps to make it better and I don't expect that to reoccur.\" So stated director of the IRS Exempt Organizations division Lois Lerner last May 10, as she explained to a meeting of the American Bar Association that her employees had singled out for extended examination scores of applicants for 501 (c)(4) status that \"used names like Tea Par",
+    "view_count": 339
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B5CNX0MSD7k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

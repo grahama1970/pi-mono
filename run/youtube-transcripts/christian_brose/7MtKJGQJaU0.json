@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7MtKJGQJaU0",
+    "language": "en",
+    "took_ms": 8448,
+    "method": null,
+    "title": "Fighting for Democracy in Venezuela with Leopoldo López",
+    "channel": "Hudson Institute",
+    "upload_date": "20230509",
+    "duration_sec": 2192,
+    "description": "While the corrupt Nicolás Maduro regime presides over a deteriorating economy and mass emigration, the Venezuelan democratic opposition is organizing to hold the dictator accountable ahead of planned elections in 2024. \n\nPlease join Hudson Institute for a discussion with Venezuelan pro-democracy leader Leopoldo López on the situation in Venezuela, the growing alliance between authoritarian regimes, and the prospects for democracy in Venezuela and beyond. A former mayor of the municipality of Chacao, López is the founder and coordinator of the opposition party Voluntad Popular and co-founder of the World Liberty Congress. Since leaving Venezuela in 2020, he has lived in exile in Spain.",
+    "view_count": 709
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7MtKJGQJaU0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

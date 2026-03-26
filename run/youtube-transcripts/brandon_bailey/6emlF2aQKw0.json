@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6emlF2aQKw0",
+    "language": "en",
+    "took_ms": 8713,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Rod Soto - Detection Challenges in Cloud Connected Credential  Attacks",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2781,
+    "description": "With the widespread adoption of cloud technologies, many companies are now managing environments where the line between the perimeter and the internet is blurred. This presentation outlines the challenges defenders face in the light of the implementation of new technologies that enable users to operate seamlessly between the cloud and the perimeter. A “converged” perimeter brings new attacks such as Golden SAML, Pass The SAML, Oauth Token Hijacking which are some of the manifestations of current and future challenges in these types of environments. Presenters will propose a new approach based on current attack research and new defense posture, with specific detections developed to address these new threats.",
+    "view_count": 464
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6emlF2aQKw0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

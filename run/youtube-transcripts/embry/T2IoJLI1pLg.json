@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "T2IoJLI1pLg",
+    "language": "en",
+    "took_ms": 9752,
+    "method": null,
+    "title": "Watch Rocket Lab attempt to recover a rocket to reuse it! #babycomeback",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230718",
+    "duration_sec": 5274,
+    "description": "Rocket Lab is preparing for its rideshare Baby Come Back mission launching from Launch Complex-1B, Māhia Peninsula, New Zealand. This mission will deploy seven satellites to space for multiple customers (NASA, Space Flight Laboratory, and Spire Global) and will mark the sixth launch for the company in 2023. Moreover, the Baby Come Back mission will see a marine recovery of the first stage after it returns to Earth under a parachute.\n\nFor more info, check out our Prelaunch Preview! - https://everydayastronaut.com/baby-come-back-electron/\n\n00:00 - Intro\n03:25 - Prelaunch Preview\n08:30 - Q&A\n15:40 - Go / No-Go Poll\n16:35 - Q&A\n27:10 - T - 30 seconds\n27:40 - Liftoff!\n30:05 - MECO / Stage Separation\n36:35 - SECO\n38:15 - Q&A\n1:04:30 - Ocean Recovery\n1:16:40 - Payload Deployment Beginning\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music",
+    "view_count": 105421
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] T2IoJLI1pLg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

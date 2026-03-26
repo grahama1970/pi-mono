@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "OEMnm1GAYlQ",
+    "language": "en",
+    "took_ms": 8714,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village - Breaking Down Bias in the Cyber Stack - Kaleeque Pierce, Jess Hoffman",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 3630,
+    "description": "Bias shows up in security controls, hiring pipelines, and more. Learn how to detect and disrupt it across your organization’s cyber stack.",
+    "view_count": 446
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] OEMnm1GAYlQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

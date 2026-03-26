@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bOcj9-ETgXo",
+    "language": "en",
+    "took_ms": 7846,
+    "method": null,
+    "title": "A RASP Journey To Level 1 Device Security",
+    "channel": "S4 Events",
+    "upload_date": "20241010",
+    "duration_sec": 1587,
+    "description": "This session provides a deep dive into the rise of memory safety vulnerabilities, severe limitations in current defense strategies, and shows how RASP technologies tackle memory safety vulnerabilities through advanced techniques and real-time protection mechanisms to keep devices secure.\n\nThese innovative approaches not only enhance the security posture of software applications but also allow organizations to proactively defend against emerging threats, ultimately safeguarding the integrity and availability of critical systems.\n\nShane has a unique perspective born from years of ethical hacking experience. He takes you on a journey through the critical importance of memory safety and demonstrate how RASP technology can be leveraged as a proactive defense.",
+    "view_count": 310
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bOcj9-ETgXo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Hr_M9bfXcSQ",
+    "language": "en",
+    "took_ms": 8077,
+    "method": null,
+    "title": "Remarks by Senator Tom Cotton on Crime and Justice in America",
+    "channel": "Hudson Institute",
+    "upload_date": "20160519",
+    "duration_sec": 2742,
+    "description": "Senator Tom Cotton (R-AR) speaks on the current trends in criminal justice policy.",
+    "view_count": 7127
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Hr_M9bfXcSQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

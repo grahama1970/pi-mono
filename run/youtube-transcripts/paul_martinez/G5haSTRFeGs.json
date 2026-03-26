@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "G5haSTRFeGs",
+    "language": "en",
+    "took_ms": 9142,
+    "method": null,
+    "title": "Zones & Conduits In The Cloud",
+    "channel": "S4 Events",
+    "upload_date": "20250827",
+    "duration_sec": 1934,
+    "description": "SCADA in the cloud already exists on the market today, and OT migration to the cloud is unlikely to subside. Dennis presents how Chevron is evaluating where it is appropriate to make the transition from on premises OT to the cloud OT. And for OT in the cloud what is the best way to implement zone and conduit based security.\n\nAfter a quick review of what zones and conduits looks like in the traditional on-premises environment, Dennis shows how conduits can be built to the Cloud, and finally what those cloud zones and conduits should be designed to allow for the full functionality that is expected, and to meet security and safety expectations.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 374
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] G5haSTRFeGs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

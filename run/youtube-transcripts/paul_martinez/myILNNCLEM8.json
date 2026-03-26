@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "myILNNCLEM8",
+    "language": "en",
+    "took_ms": 7457,
+    "method": null,
+    "title": "2. Asset Management and Security with Ralph Langner",
+    "channel": "S4 Events",
+    "upload_date": "20201208",
+    "duration_sec": 2822,
+    "description": "Ralph Langner of Stuxnet fame has been spending most of the past five years working on ICS asset management. He begins by asking questions about how much the audience knows about their assets, PLC’s, computers, networks and even sites. Unfortunately the answers are typically only hunches and probabilities. As Deming said,”Without data, you’re just another person with an opinion.”\n\nRalph is always a compelling and interesting speaker, and he brings his flair and strong opinions to the Highway.\n\nHe closes with two important claims/statements:\n\n1) If you don’t know what you have, you cannot know your risk\n\n2) If you can’t manage what you have, you cannot manage your risk.",
+    "view_count": 964
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] myILNNCLEM8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

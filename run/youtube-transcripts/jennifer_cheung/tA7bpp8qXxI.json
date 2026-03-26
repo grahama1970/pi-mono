@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tA7bpp8qXxI",
+    "language": "en",
+    "took_ms": 8057,
+    "method": null,
+    "title": "DEF CON 32 - How To Keep IoT From Becoming An IoTrash - Roberts, Wysopal, Doctorow, Wheeler, Giese",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2803,
+    "description": "In a world where technology and software are intertwined with our daily lives more than ever, a silent threat grows in the shadows.\n\nEnd-of-life devices—abandoned by manufacturers - power our homes, hospitals, businesses and critical infrastructure. From the depths of the cyber underground, malicious software from cybercriminal and nation-state actors is seizing these forgotten devices and conscripting them into botnets and other malicious infrastructure.\n\nFor example, Black Lotus Labs revealed a chilling trend: 40,000 small office home office (SOHO) routers compromised and enrolled in the sinister 'Faceless' botnet - now powered by devices you own and thought were safe.\n\nAnd it's not just routers. Critical medical devices, essential security hardware—smart home appliances. No gadget is safe. And, with the Internet of Things set to double in the next decade, billions of vulnerable devices marketed and sold to connect us risk robbing, dividing and defeating us in the years to come: a process one expert has termed “enshittification.”\n\nAfter years of warnings from the cybersecurity community, alarms are finally sounding in the halls of power. But more is needed: a clarion call to reset, to redefine ownership and security in an age of smart, connected devices before it's too late.\n\nIn this panel you’ll be enlisted to join the fight. You’ll hear from experts working at the forefront of a fight to challenge the status quo and seek solutions to safeguard our digital futures.Are you ready to stand up for your right to a secure, connected world? The battle for control, for transparency- for a sustainable and resilient digital future begins now!",
+    "view_count": 901
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tA7bpp8qXxI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

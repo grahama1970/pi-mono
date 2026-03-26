@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "v0LXCvT1LNA",
+    "language": "en",
+    "took_ms": 8942,
+    "method": null,
+    "title": "Designing for Failure: Lessons from Aerospace to OT",
+    "channel": "S4 Events",
+    "upload_date": "20251013",
+    "duration_sec": 228,
+    "description": "From the S4x25 Stage: How do you want your system to fail?\n\nNot if. Not why. But how.\n\nEpisode 2 of Unsolicited Response digs into failure-tolerant design—what aerospace taught us, and what OT still needs to learn.",
+    "view_count": 81
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] v0LXCvT1LNA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

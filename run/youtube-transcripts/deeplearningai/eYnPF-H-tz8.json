@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "eYnPF-H-tz8",
+    "language": "en",
+    "took_ms": 9693,
+    "method": null,
+    "title": "AI Dev 25 | Chaya Nayak: Unlocking the Power of Llama",
+    "channel": "DeepLearningAI",
+    "upload_date": "20250327",
+    "duration_sec": 783,
+    "description": "At AI Dev 25, Chaya Nayak, Director of Product Management for Generative AI at Meta, offered a deep dive into the capabilities and vision behind Llama, Meta’s open-source family of generative AI models.\n\nChaya walked through the current landscape of Llama models, the developer tools designed to support them—such as Llama Stack and LlamaGuard, the role of community-driven development in shaping Llama’s future, and why open-source collaboration is essential to innovation in AI.\n\nThis talk is a valuable resource for developers, researchers, and product builders interested in building with open source models and contributing to their evolution.",
+    "view_count": 2005
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] eYnPF-H-tz8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "W42mmbDHx-s",
+    "language": "en",
+    "took_ms": 7771,
+    "method": null,
+    "title": "ICS Security: November Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20211202",
+    "duration_sec": 3096,
+    "description": "Patrick Miller joins me to discuss the top three stories of the month, plus wins, fails and predictions. One story I'm really interested in getting Patrick's thoughts on is the Water sector (AWWA) pointing at the NERC CIP structure as a model to follow.",
+    "view_count": 170
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] W42mmbDHx-s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7oHK7KH3nhQ",
+    "language": "en",
+    "took_ms": 8720,
+    "method": null,
+    "title": "New Course - AI Essentials for Office Workers",
+    "channel": "Trelis Research",
+    "upload_date": "20240322",
+    "duration_sec": 283,
+    "description": "➡️ Full Course Details: https://trelis.com/ai-essentials-for-office-workers/\n\nChatGPT Conversation from Mini-Lesson #1: https://chat.openai.com/share/c3ebce50-b606-423e-a90e-d3f905a47b82\n\nOTHER TRELIS LINKS:\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/ADVANCED-fine-tuning-scripts/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ One-click API Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ ADVANCED-vision Repo: https://trelis.com/ADVANCED-vision/\n➡️ ADVANCED-transcription Repo: https://trelis.com/ADVANCED-transcription/\n➡️ Trelis Function-calling Models: https://trelis.com/function-calling/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Discord Server (Monthly Subscription, Paid): https://ko-fi.com/trelisresearch",
+    "view_count": 514
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7oHK7KH3nhQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

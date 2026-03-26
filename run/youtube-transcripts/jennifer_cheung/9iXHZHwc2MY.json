@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "9iXHZHwc2MY",
+    "language": "en",
+    "took_ms": 7890,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - Airborne WiFi: Rogue Waves in the Sky - m0nkeydrag0n",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1571,
+    "description": "Have you traveled and used in-flight internet services on airlines?  Guess what…Evil Twins have been discovered in the wild on commercial airlines.  This talk covers a tale of two people, the passenger in a rush to connect to in-flight services and the SOC analyst charged with the task of unraveling the truth.\n\nThis talk will introduce the many components that comprise the on-wing infrastrucutre and how they relate to the passengers as they journey through the skies.  Tasked with unraveling a tip, the SOC Analyst must understand the relationships of the pieces to the pizzle, from tying together the logged events and knowing what the infrastructure is on-wing, ultimately piecing together a bigger puzzle via other telemetry provided by ads-b, satellite or more.\n\nThe key takeaways I’ll be focusing on are what an analyst should do to prepare themselves to hunt in this arena, processing that evdence to support their hypothesis and unlock the truth behind that pesky browser portal that didn’t feel right.  Joine me for a talk about Evil Twins in the sky!",
+    "view_count": 1527
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 9iXHZHwc2MY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

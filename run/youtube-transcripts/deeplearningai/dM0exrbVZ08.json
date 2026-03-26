@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dM0exrbVZ08",
+    "language": "en",
+    "took_ms": 10325,
+    "method": null,
+    "title": "Surpassing Human-Level Performance (C3W1L11)",
+    "channel": "DeepLearningAI",
+    "upload_date": "20170825",
+    "duration_sec": 382,
+    "description": "Take the Deep Learning Specialization: http://bit.ly/2VOTUqW\nCheck out all our courses: https://www.deeplearning.ai\nSubscribe to The Batch, our weekly newsletter: https://www.deeplearning.ai/thebatch\n\nFollow us: \nTwitter: https://twitter.com/deeplearningai_\nFacebook: https://www.facebook.com/deeplearningHQ/\nLinkedin: https://www.linkedin.com/company/deeplearningai",
+    "view_count": 16884
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dM0exrbVZ08: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

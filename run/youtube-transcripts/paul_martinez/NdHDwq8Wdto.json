@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "NdHDwq8Wdto",
+    "language": "en",
+    "took_ms": 9468,
+    "method": null,
+    "title": "Zero Trust Applications For The Grid",
+    "channel": "S4 Events",
+    "upload_date": "20220526",
+    "duration_sec": 1738,
+    "description": "David Lawrence of Duke Energy talks about how they are implementing zero-trust applications, particularly on their newer microgrids. He goes into detail on an actual system, design criteria, and how they secured it. It's a must watch if you are in the electric sector and interesting to all.",
+    "view_count": 1084
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] NdHDwq8Wdto: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

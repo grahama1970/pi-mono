@@ -1,0 +1,99 @@
+# Merge /create-table-classifier into /classifier-lab
+# /create-table-classifier has 16 scripts doing the same thing classifier-lab does.
+# Consolidate into one skill per Unix philosophy: one tool, one job.
+
+name: "Merge create-table-classifier into classifier-lab"
+runner: pi
+backend: claude
+mode: code
+
+tasks:
+  - id: audit-scripts
+    skill: /assess
+    description: >
+      Audit all 16 scripts in create-table-classifier/scripts/.
+      Map each to its equivalent in classifier-lab or identify as new capability.
+    definition_of_done:
+      - Mapping table: create-table-classifier script → classifier-lab equivalent
+      - List of scripts with NO equivalent (need migration)
+      - List of scripts that are dead/unused
+
+  - id: migrate-data-collection
+    skill: /classifier-lab
+    description: >
+      Move collect_merge_data.py and collect_training_data.py into classifier-lab/scripts/
+      as data collection modules. Wire into run.sh as `./run.sh collect --corpus PATH`.
+      This becomes classifier-lab's Data phase for real corpus data.
+    depends_on: [audit-scripts]
+    definition_of_done:
+      - collect_merge_data.py works from classifier-lab dir
+      - `./run.sh collect --corpus /mnt/storage12tb/extractor_corpus` runs successfully
+      - Output goes to classifier-lab data dir
+
+  - id: migrate-grpo-training
+    skill: /classifier-lab
+    description: >
+      Move train_grpo.py, train_sft.py, train_dit.py into classifier-lab/scripts/.
+      Wire as training strategies: `./run.sh benchmark --strategy grpo|sft|dit`.
+      These are training approaches, not modalities.
+    depends_on: [audit-scripts]
+    definition_of_done:
+      - GRPO training available via classifier-lab benchmark
+      - SFT warmup available as a flag
+
+  - id: migrate-shadow-deploy
+    skill: /classifier-lab
+    description: >
+      Move shadow_s00_inference.py and shadow_s00_feedback.py into classifier-lab
+      as the shadow mode deployment path. Wire into Promote tab's "Extended Shadow Mode".
+    depends_on: [audit-scripts]
+    definition_of_done:
+      - Shadow inference works from classifier-lab
+      - Promote tab can deploy to shadow mode
+
+  - id: migrate-self-improve
+    skill: /classifier-lab
+    description: >
+      Verify self_improve.py in create-table-classifier is equivalent to
+      classifier-lab's self-improvement loop. If it has unique logic (e.g., GRPO
+      reward shaping), extract that into classifier-lab.
+    depends_on: [audit-scripts]
+    definition_of_done:
+      - Any unique self-improvement logic ported
+      - No capability loss from deprecation
+
+  - id: update-skill-md
+    skill: /best-practices-skills
+    description: >
+      Update classifier-lab/SKILL.md to document the new capabilities:
+      data collection, GRPO training, shadow deploy.
+      Add triggers for table-specific queries.
+    depends_on: [migrate-data-collection, migrate-grpo-training, migrate-shadow-deploy]
+    definition_of_done:
+      - SKILL.md has triggers for table classifier tasks
+      - SKILL.md documents --strategy grpo|sft
+      - SKILL.md documents ./run.sh collect
+
+  - id: deprecate-create-table-classifier
+    skill: /cleanup
+    description: >
+      Mark create-table-classifier as deprecated. Move data symlinks to
+      classifier-lab. Remove from skills-manifest.json. Keep the skill dir
+      but add DEPRECATED notice to SKILL.md pointing to classifier-lab.
+    depends_on: [update-skill-md]
+    definition_of_done:
+      - SKILL.md has DEPRECATED header with redirect
+      - Data accessible from classifier-lab
+      - skills-manifest.json updated
+      - /skills-ci scan passes
+
+  - id: verify-no-regression
+    skill: /test
+    description: >
+      Run classifier-lab sanity.sh and verify all migrated capabilities work.
+      Run the table-merge-clf benchmark from classifier-lab (not create-table-classifier).
+    depends_on: [deprecate-create-table-classifier]
+    definition_of_done:
+      - sanity.sh passes
+      - benchmark --modality tabular works with merge_features_tabular.jsonl
+      - No imports reference create-table-classifier

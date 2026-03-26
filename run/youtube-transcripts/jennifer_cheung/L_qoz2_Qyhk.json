@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "L_qoz2_Qyhk",
+    "language": "en",
+    "took_ms": 9382,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Daniel Miessler -  Mechanizing Methodology Automating Discovery",
+    "channel": "DEFCONConference",
+    "upload_date": "20200820",
+    "duration_sec": 1180,
+    "description": "There are a million techniques out there for finding new attack surface and finding potential vulnerabilities; the problem is finding the time to run your entire methodology against all your targets. This talk will take you through finding new attack surface, performing multiple types of test against those targets, and sending real-time alerts---all on a continuous basis using automation from a cloud-based Linux host.",
+    "view_count": 2339
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] L_qoz2_Qyhk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

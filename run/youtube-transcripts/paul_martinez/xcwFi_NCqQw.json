@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xcwFi_NCqQw",
+    "language": "en",
+    "took_ms": 8711,
+    "method": null,
+    "title": "S4x25 Training Course: Threat, Vulnerability, and Risk Assessments For ICS",
+    "channel": "S4 Events",
+    "upload_date": "20241206",
+    "duration_sec": 185,
+    "description": "Joel Langill, aka SCADAhacker, has provided this 3 minute video to give you a better idea of the content and format for his course.",
+    "view_count": 140
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xcwFi_NCqQw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

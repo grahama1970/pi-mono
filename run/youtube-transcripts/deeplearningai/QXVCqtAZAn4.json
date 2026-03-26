@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QXVCqtAZAn4",
+    "language": "en",
+    "took_ms": 8414,
+    "method": null,
+    "title": "Aligning LLMs with Direct Preference Optimization",
+    "channel": "DeepLearningAI",
+    "upload_date": "20240208",
+    "duration_sec": 3486,
+    "description": "In this workshop, Lewis Tunstall and Edward Beeching from Hugging Face will discuss a powerful alignment technique called Direct Preference Optimisation (DPO) which was used to train Zephyr (https://arxiv.org/abs/2310.16944) and is rapidly becoming the de facto method to boost the performance of open chat models. \n\nBy the end of this workshop, attendees will:\n\nUnderstand the steps involved in fine-tuning LLMs for chat applications.\nLearn the theory behind Direct Preference Optimisation and how to apply it in practice with the Hugging Face TRL library.\nKnow what metrics to consider when evaluating chat models.\n\nTake a moment to register for our community forum:\nhttps://bit.ly/48UIIve\n\nTake a moment to register for our short courses here:\nhttps://bit.ly/420iXHx\n\nWorkshop Notebooks:\n\nNotebook #1:\nhttps://colab.research.google.com/drive/1WNSVtM82oknmzL1QrJlNu--yNaWbp6o9?usp=sharing&utm_campaign=Events%20Follow%20Up&utm_source=hs_email&utm_medium=email&_hsenc=p2ANqtz--zYcYKj9_o5fLbt_D3P4tzLanpAyfFm14Z2NXEvCZxbsjLtax9y5mYCzRg-opvXZhsYGEH\n\nNotebook #2:\nhttps://colab.research.google.com/drive/1mWiOFBy3zY6OdINEvHN9EPoQ_VIvfFKw?usp=sharing&utm_campaign=Events%20Follow%20Up&utm_source=hs_email&utm_medium=email&_hsenc=p2ANqtz--zYcYKj9_o5fLbt_D3P4tzLanpAyfFm14Z2NXEvCZxbsjLtax9y5mYCzRg-opvXZhsYGEH\n\nSlides:\nhttps://docs.google.com/presentation/d/1S8ao40-CdclRU0D2D9FdyN5x8fZL1Iv5/edit?_hsenc=p2ANqtz--zYcYKj9_o5fLbt_D3P4tzLanpAyfFm14Z2NXEvCZxbsjLtax9y5mYCzRg-opvXZhsYGEH#slide=id.p1\n\nAbout DeepLearning.AI\n\nDeepLearning.AI is an education technology company that is empowering the global workforce to build an AI-powered future through world-class education, hands-on training, and a collaborative community. Take your generative AI skills to the next level with short courses help you learn new skills, tools, and concepts efficiently.\n\nAbout Hugging Face\n\nHugging Face is an AI company specializing in natural language processing (NLP) and machine learning, and is known for its open-source contributions and collaborative approach to AI research and development. The company is famous for developing the Transformers library, which offers a wide range of pretrained models and tools for a variety of NLP tasks, making it easier for researchers and developers to implement state-of-the-art AI solutions. Hugging Face also fosters a vibrant community for AI enthusiasts and professionals, providing a platform for sharing models, datasets, and research, which significantly contributes to the advancement of AI technology.\n\nSpeakers:\n\nLewis Tunstall, Machine Learning Engineer, Hugging Face\nhttps://www.linkedin.com/in/lewis-tunstall/\n\nEdward Beeching, Research Scientist, Hugging Face\nhttps://www.linkedin.com/in/ed-beeching-3553b468/",
+    "view_count": 34101
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QXVCqtAZAn4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

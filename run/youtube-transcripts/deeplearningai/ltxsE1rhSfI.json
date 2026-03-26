@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ltxsE1rhSfI",
+    "language": "en",
+    "took_ms": 9088,
+    "method": null,
+    "title": "New course! Document AI: From OCR to Agentic Doc Extraction",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260114",
+    "duration_sec": 211,
+    "description": "Learn more: https://bit.ly/4bsaJP0\n\nJoin this new short course on Document AI, built with LandingAI and taught by David Park, Senior Director of Applied AI, and Andrea Kropp, Applied AI Engineer at LandingAI.\n\nMuch of the world's data is locked in PDFs, JPEGs and other documents. Traditional OCR extracts text but loses critical information—the layout of tables with merged cells, the relationship between charts and captions, the reading order of multi-column layouts. This course shows you how to build agentic workflows that process documents the way humans do: breaking them into parts, examining each piece carefully, and extracting information through multiple iterations.\n\nYou'll start by exploring traditional OCR. After understanding its limitations, you’ll build agents equipped with additional tools for document processing  like layout detection, reading order, and  multimodal reasoning models. Next, you'll learn to use the Agentic Document Extraction (ADE) framework from LandingAI to automate this workflow. ADE treats documents as visual objects. It uses custom models to parse complex elements and ground extracted fields to  precise locations on the page. You'll integrate ADE into RAG applications and deploy them as production-ready pipelines on AWS.\n \nIn detail, you'll:\n\n- Explore traditional OCR methods to extract text from documents. \n- Understand their limitations when handling tables, handwriting, or scanned images.\n- Learn how OCR evolved from early shape-based classifiers to modern deep learning systems. Apply models for layout detection to chunk documents into regions of interests with bounding boxes. \n- Use models for reading order to sort information into logical sequences. \n- Employ vision language models to capture both text and images from documents. \n- Process challenging features like attestations, formulas, or barcodes with LandingAI's Agentic Document Extraction (ADE). Parse documents as Markdown and extract key-value pairs as JSON without losing context in layout. \n- Build a RAG application that preprocesses documents with ADE, stores parsed chunks in a vector database, and retrieves text for queries along with cropped images from the respective source documents.\n- Implement an event-driven pipeline on AWS that automatically triggers ADE on uploads to S3, loads parsed documents into a Bedrock Knowledge Base, and interrogates them with Strands Agents.\n\nDocument AI is transforming how organizations unlock value from unstructured data. Whether you're handling financial invoices, medical records, or academic papers, this course gives you the tools and techniques to build systems for intelligent document processing.\n\nEnroll now: https://bit.ly/4bsaJP0",
+    "view_count": 6271
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ltxsE1rhSfI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

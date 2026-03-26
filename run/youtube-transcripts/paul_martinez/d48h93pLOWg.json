@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "d48h93pLOWg",
+    "language": "en",
+    "took_ms": 9710,
+    "method": null,
+    "title": "OnRamp: Cyber Informed Engineering",
+    "channel": "S4 Events",
+    "upload_date": "20250404",
+    "duration_sec": 1620,
+    "description": "Cyber Informed Engineering (CIE) brings in knowledge about the engineering and underlying process to the security and cyber risk management program. Learn how to design your system to not only reduce the likelihood of a cyber attack but also reduce the consequences if a cyber attack succeeds.\n\nAndrew Ohrt has led numerous CIE projects. He will get you up to speed on what CIE is, where it makes sense, what skills are required, and how you can get started if this approach is a fit.\n\nThe OnRamp is S4's 101-Level Training Course. Check out the OnRamp playlist on the S4 Events Youtube Channel. This year's 5 sessions update the OnRamp training with topics that have become more important the last two years.",
+    "view_count": 363
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] d48h93pLOWg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

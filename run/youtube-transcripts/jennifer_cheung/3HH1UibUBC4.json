@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3HH1UibUBC4",
+    "language": "en",
+    "took_ms": 8641,
+    "method": null,
+    "title": "DEF CON 30 - Silk vs. the NOC",
+    "channel": "DEFCONConference",
+    "upload_date": "20220816",
+    "duration_sec": 280,
+    "description": "Silk versus DEF CON NOC security, Who will prevail?\n\nCheck out Silk's work at YouTube.com/alexchaveriat and YouTube.com/hackerhangouts",
+    "view_count": 3371
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3HH1UibUBC4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

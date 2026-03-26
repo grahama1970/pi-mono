@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3Ypu9xZTr0Q",
+    "language": "en",
+    "took_ms": 7950,
+    "method": null,
+    "title": "Medical Device Security: Uncomfortable Truths Require Uncomfortable Responses",
+    "channel": "S4 Events",
+    "upload_date": "20170209",
+    "duration_sec": 2190,
+    "description": "Josh Corman of I Am The Cavalry and the Atlantic Council is deep into the medical device cybersecurity issue and dealing with the FDA, device vendors, providers, insurance companies and others to help dig out of this problem that he describes as uncomfortable truths.\n\nAt 19:00 Josh compares the MedSec/St. Jude disclosure and compares this to the J. Radcliffe/Johnson & Johnson disclosure. This is followed by what FDA has done and plans on doing in future.\n\nThe end of the session expands this beyond medical security and looks at other efforts in the government to secure ICS in other sectors.",
+    "view_count": 402
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3Ypu9xZTr0Q: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

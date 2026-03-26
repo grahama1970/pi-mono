@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e_CR4kN0XE4",
+    "language": "en",
+    "took_ms": 8363,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Panel discussion: Breaking the Limits of AI Growth: from Hardware to Application",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 2379,
+    "description": "From large models to real-time applications and product-level tradeoffs, the path to scalable AI is full of hard engineering choices. In this panel, Kay Zhu, CTO of Mainfunc (Genspark), Michael Kearns, Amazon Scholar; Professor of Computer and Information Science at UPenn, Hatice Ozen, Head of Developer Relations at Groq, and Josh Gordon, Head of AI Developer Relations at Google, examine the most pressing bottlenecks and possible growth opportunites in AI development across hardware, infrastructure, modeling, and applications. \n\nModerated by Aishwarya Srinivasan (Fireworks AI), the discussion explores what it takes to optimize the full AI stack, how research is aligning (or not) with production needs, and whether breakthroughs in architecture or cross-layer design could change the game.\n\n----------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 414
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e_CR4kN0XE4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

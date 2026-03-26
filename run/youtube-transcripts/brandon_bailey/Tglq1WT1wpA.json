@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Tglq1WT1wpA",
+    "language": "en",
+    "took_ms": 8985,
+    "method": null,
+    "title": "DEF CON 33 - Sometimes you find bugs, sometimes bugs find you - Jasmin Landry JR0ch17",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1554,
+    "description": "Bug bounty hunting is often portrayed as methodical recon, crafted payloads, and targeted testing. But sometimes, the most interesting vulnerabilities don’t come from planned attacks — they come from the chaos. In this talk, I’ll walk through a handful of real bugs I’ve reported over the years that found me instead. From unexpected blind XSS triggers in places I wasn’t even actively testing, to getting quietly added to internal distribution lists and receiving sensitive data I never asked for, to those classic “WTF” moments that every seasoned hunter has experienced — this talk highlights the unpredictable and serendipitous side of bug bounty.\n\nWe’ll explore how these moments happened, what they revealed about the systems in question, and what they taught me about staying alert beyond traditional recon. Whether you’re an experienced hunter or just getting started, this talk is a reminder that in bug bounty, sometimes the best findings aren’t hunted — they’re stumbled into.",
+    "view_count": 690
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Tglq1WT1wpA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

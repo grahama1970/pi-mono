@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "HJYTMhbtKVU",
+    "language": "en",
+    "took_ms": 7588,
+    "method": null,
+    "title": "DEF CON 33 - Threat Dynamics on the Seas - John Mauger, & Michael Sulmeyer & Adam Segal",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2479,
+    "description": "The tides are changing. The seas are the key frontier for power projection and commerce by nations, companies, and militaries -- and surveillance and cybersecurity tradecraft are rapidly reshaping sea-side threat dynamics. Join three of the biggest minds national security to explore threats to the maritime domain as the strategic centerpiece for conflict in the digital age. From port cranes to drug smuggling, and Navy ships to undersea cables, the fight is everywhere.",
+    "view_count": 359
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] HJYTMhbtKVU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

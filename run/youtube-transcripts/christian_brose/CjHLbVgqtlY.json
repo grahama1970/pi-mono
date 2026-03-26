@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "CjHLbVgqtlY",
+    "language": "en",
+    "took_ms": 8636,
+    "method": null,
+    "title": "Creating Clarity For Nonprofits",
+    "channel": "Hudson Institute",
+    "upload_date": "20140930",
+    "duration_sec": 4819,
+    "description": "Hudson Institute and Public Citizen presented the recent results of a bipartisan poll asking voters across the country what their opinions are on clearer rules for political activity and the relationship between changing IRS rules and free speech. Pollsters Celinda Lake, of Lake Research Partners, a Democratic polling firm, and Robert Carpenter, of Chesapeake Beach Consulting, a Republican polling firm, presented the poll results. Also joining the panel was John Tyler, General Counsel for the Ewing Marion Kauffman Foundation, a leading foundation focused on education and entrepreneurship, and Lisa Gilbert, Director of Congress Watch at Public Citizen, a nonprofit that works to ensure all citizens have a voice in the nation’s capital. Hudson Institute's William Schambra moderated the discussion.",
+    "view_count": 164
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] CjHLbVgqtlY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "qTrUG92IMCo",
+    "language": "en",
+    "took_ms": 7573,
+    "method": null,
+    "title": "Behind the Scenes Photoshop - \"Moon Restaurant\" with Everyday Astronaut",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170114",
+    "duration_sec": 6700,
+    "description": "Join me live every Friday at 1:00 p.m. Central (19 UTC) as I photoshop my Everyday Astronaut images on twitch.tv/everydayastronaut\n\nFollow me on Instagram @EverydayAstronaut to see the final pictures!",
+    "view_count": 2032
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] qTrUG92IMCo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

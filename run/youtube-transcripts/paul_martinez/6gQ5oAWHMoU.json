@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6gQ5oAWHMoU",
+    "language": "en",
+    "took_ms": 11352,
+    "method": null,
+    "title": "SUNBURST From The Inside – Tim Brown, CISO of SolarWinds",
+    "channel": "S4 Events",
+    "upload_date": "20220531",
+    "duration_sec": 1906,
+    "description": "Tim Brown was the CISO at SolarWinds prior to the incident, during the incident, and he survived in the position during the incident. Tim provides lessons learned from the incident. Perhaps most interesting are his candid comments at the end and during the Q&A on how he kept his job after this incident.",
+    "view_count": 2283
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6gQ5oAWHMoU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

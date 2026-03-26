@@ -1,0 +1,170 @@
+meta:
+  title: "monitor-codebase fixes + treesitter violations command"
+  created: "2026-03-17"
+  primary_persona: "Graham Anderson"
+  goal: >
+    Fix remaining monitor-codebase issues from assessment, then add a violations
+    command to treesitter-tools as the foundation for eliminating bespoke ast.walk()
+    across 11 files. Consumer refactoring (skills-ci, test-lab, quality_checks.py)
+    is a separate follow-up plan.
+
+tasks:
+  # ===== Wave 0: Quick monitor-codebase fixes =====
+
+  - id: T1
+    title: "Fix monitor-codebase quick issues (help text, dead code, compgen)"
+    lane: "0"
+    runner: local
+    backend: sonnet
+    mode: one-shot
+    depends_on: []
+    prompt: >
+      In .pi/skills/monitor-codebase/run.sh:
+      1. Fix help text: add --force to usage line
+      2. Delete scoped_grep() function — dead code after removing Python grep checks
+      3. Fix detect_best_practices(): replace compgen -G with find on get_scan_dirs()
+         output — compgen globs entire tree, too slow on 37GB projects
+    implementation:
+      - .pi/skills/monitor-codebase/run.sh
+    definition_of_done:
+      assertion: "help text shows --force, no scoped_grep, detect uses scoped dirs"
+      sanity_command: "grep 'force' .pi/skills/monitor-codebase/run.sh && ! grep -q 'scoped_grep' .pi/skills/monitor-codebase/run.sh"
+
+  - id: T2
+    title: "Make fix dispatch visible as step 10/10"
+    lane: "0"
+    runner: local
+    backend: sonnet
+    mode: one-shot
+    depends_on: []
+    prompt: >
+      In scan_project(): rename steps from [1/9] to [1/10], add fix dispatch as
+      visible [10/10] step with output showing violation count, target model,
+      that /subagent-service Docker handles execution.
+      Update SKILL.md pipeline table to show 10 steps.
+    implementation:
+      - .pi/skills/monitor-codebase/run.sh
+      - .pi/skills/monitor-codebase/SKILL.md
+    definition_of_done:
+      assertion: "Fix dispatch is step 10/10"
+      sanity_command: "grep '10/10' .pi/skills/monitor-codebase/run.sh"
+
+  # ===== Wave 1: Add violations command to treesitter-tools =====
+
+  - id: T3
+    title: "Add violations command to treesitter-tools"
+    lane: "1"
+    runner: local
+    backend: sonnet
+    mode: iterative
+    depends_on: []
+    prompt: >
+      In ~/workspace/experiments/treesitter-tools/, create violations.py that uses
+      tree-sitter queries (NOT Python ast module) to detect:
+
+      Phase 1 rules (import/structure):
+      - banned-import-logging: (import_statement) or (import_from_statement) with logging
+      - banned-import-requests: same for requests
+      - banned-import-argparse: same for argparse
+      - file-length: >800 lines
+      - bare-except: except clause without exception type
+      - mutable-default: function parameter with list/dict/set default
+
+      Use run_query() from core.py for tree-sitter queries. Filter results in Python.
+      Output: JSON list of {rule, file, line, message, severity}.
+      CLI: treesitter-tools violations <path> [--rules X,Y] [--json] [--exclude-rules X,Y]
+
+      Verify against /tmp/test_imports.py fixture.
+    implementation:
+      - ~/workspace/experiments/treesitter-tools/src/treesitter_tools/violations.py
+      - ~/workspace/experiments/treesitter-tools/src/treesitter_tools/cli.py
+    tests:
+      - "violations detects import logging and import argparse in fixture"
+      - "violations --exclude-rules banned-import-logging skips logging"
+    definition_of_done:
+      test_file: "tests/test_violations.py"
+      assertion: "treesitter-tools violations /tmp/test_imports.py --json detects 2 banned imports"
+      sanity_command: "cd ~/workspace/experiments/treesitter-tools && uv run treesitter-tools violations /tmp/test_imports.py --json"
+
+  - id: T4
+    title: "Add prompt/AQL/regex violation rules to treesitter-tools"
+    lane: "1"
+    runner: local
+    backend: sonnet
+    mode: iterative
+    depends_on: [T3]
+    prompt: >
+      Extend violations.py with Phase 2 rules:
+      - inline-prompt: string_content nodes >200 chars with 2+ prompt indicators
+      - regex-classifier: function_definition containing 3+ call nodes to re.search/match/findall AND 2+ if_statement nodes
+      - bespoke-aql: string nodes containing FOR...IN...FILTER/RETURN AQL pattern
+      - hardcoded-skill-path: string nodes containing ~/.pi/skills/
+
+      Use tree-sitter queries to find structural nodes, then lightweight string
+      matching on extracted text. NOT regex on raw source.
+    implementation:
+      - ~/workspace/experiments/treesitter-tools/src/treesitter_tools/violations.py
+    definition_of_done:
+      assertion: "Phase 2 rules detect violations in test fixtures"
+      sanity_command: "cd ~/workspace/experiments/treesitter-tools && uv run treesitter-tools violations tests/ --rules inline-prompt,bespoke-aql --json"
+
+  # ===== Wave 2: Verify =====
+
+  - id: T5
+    title: "Run skills-ci scan — verify zero regressions"
+    lane: "2"
+    runner: local
+    backend: sonnet
+    mode: one-shot
+    depends_on: [T1, T2]
+    prompt: >
+      Run skills-ci scan. Baseline: 59 errors, 902 warnings.
+      Verify equal or lower. Also verify monitor-codebase quality_checks.py
+      still works against fetcher project.
+    definition_of_done:
+      assertion: "59 errors, 902 warnings or fewer"
+      sanity_command: "cd .pi/skills/skills-ci && uv run python skills_ci.py --mode scan 2>&1 | grep 'Violations:'"
+
+  - id: T6
+    title: "Checkpoint and update memory"
+    lane: "2"
+    runner: local
+    backend: sonnet
+    mode: one-shot
+    depends_on: [T3, T4, T5]
+    prompt: >
+      Update project memory with treesitter violations command.
+      Save checkpoint. Document that consumer refactoring (replacing ast.walk in
+      quality_checks.py, quality_scanners.py, python_tests.py, service_tests.py)
+      is the next plan.
+    definition_of_done:
+      assertion: "Memory and checkpoint updated"
+
+concurrency:
+  max_parallel: 2
+
+execution:
+  dag_order:
+    wave_0: [T1, T2]
+    wave_1: [T3, T4]
+    wave_2: [T5, T6]
+
+notes: >
+  Consumer refactoring (replacing bespoke ast.walk in 4+ files with treesitter
+  violations calls) is a SEPARATE follow-up plan. This plan establishes the
+  treesitter violations API that consumers will compose.
+
+  Files with ast.walk that will be refactored in follow-up:
+  - .pi/skills/monitor-codebase/quality_checks.py (430 lines → ~80)
+  - .pi/skills/skills-ci/quality_scanners.py (414 lines)
+  - .pi/skills/test-lab/generators/python_tests.py (266 lines)
+  - .pi/skills/test-lab/generators/service_tests.py (170 lines)
+
+  Files with ast.walk that are EXEMPT (different purpose):
+  - skills-ci/scanners.py (dep scanning, not violation detection)
+  - skills-ci/dep_scanner.py (dependency completeness)
+  - lie-detector/invariants.py (formal verification)
+  - lie-detector/sealed_grading.py (tamper detection)
+  - ingest-code/ingest_code.py (knowledge extraction)
+  - prompt-lab/prompt_extractor.py (prompt extraction)
+  - create-figure/graphviz_backend.py (graph rendering)

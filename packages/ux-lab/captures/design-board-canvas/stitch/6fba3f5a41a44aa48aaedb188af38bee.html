@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UX Lab - Canvas Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-primary-fixed-variant": "#5a00c6",
+            "primary": "#d2bbff",
+            "outline": "#958da1",
+            "on-secondary-fixed-variant": "#005228",
+            "on-tertiary": "#00315d",
+            "surface-container-low": "#1c1b1b",
+            "on-error": "#690005",
+            "on-secondary-fixed": "#00210c",
+            "secondary-container": "#34ff8d",
+            "on-primary": "#3f008e",
+            "primary-container": "#7c3aed",
+            "on-surface": "#e5e2e1",
+            "background": "#131313",
+            "outline-variant": "#4a4455",
+            "on-tertiary-fixed-variant": "#004884",
+            "tertiary-fixed": "#d4e3ff",
+            "on-tertiary-container": "#dae7ff",
+            "on-tertiary-fixed": "#001c39",
+            "tertiary-fixed-dim": "#a4c9ff",
+            "on-primary-container": "#ede0ff",
+            "inverse-on-surface": "#313030",
+            "inverse-surface": "#e5e2e1",
+            "primary-fixed": "#eaddff",
+            "surface-container-lowest": "#0e0e0e",
+            "tertiary": "#a4c9ff",
+            "tertiary-container": "#0068bb",
+            "on-primary-fixed": "#25005a",
+            "secondary-fixed": "#60ff99",
+            "secondary-fixed-dim": "#00e479",
+            "on-background": "#e5e2e1",
+            "primary-fixed-dim": "#d2bbff",
+            "surface-bright": "#393939",
+            "surface-container-high": "#2a2a2a",
+            "on-error-container": "#ffdad6",
+            "surface-dim": "#131313",
+            "surface": "#131313",
+            "on-secondary-container": "#007239",
+            "error": "#ffb4ab",
+            "surface-variant": "#353534",
+            "surface-container": "#201f1f",
+            "secondary": "#f5fff3",
+            "inverse-primary": "#732ee4",
+            "error-container": "#93000a",
+            "on-secondary": "#003919",
+            "surface-tint": "#d2bbff",
+            "surface-container-highest": "#353534",
+            "on-surface-variant": "#ccc3d8"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["JetBrains Mono"]
+          },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #131313;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glow-primary {
+      box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+    }
+    .ghost-border {
+      border: 1px solid rgba(255, 255, 255, 0.13);
+    }
+  </style>
+</head>
+<body class="font-body text-on-surface select-none overflow-hidden">
+<!-- TopNavBar Implementation -->
+<header class="bg-[#131313] dark:bg-[#131313] border-b border-white/10 flex justify-between items-center w-full px-6 h-14 fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="text-lg font-bold tracking-tight text-[#d2bbff] font-headline">UX Lab</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-gray-500 hover:text-gray-300 font-label text-[10px] tracking-widest uppercase" href="#">Files</a>
+<a class="text-gray-500 hover:text-gray-300 font-label text-[10px] tracking-widest uppercase" href="#">Assets</a>
+<a class="text-[#d2bbff] border-b-2 border-[#7c3aed] pb-1 font-label text-[10px] tracking-widest uppercase" href="#">Canvas</a>
+<a class="text-gray-500 hover:text-gray-300 font-label text-[10px] tracking-widest uppercase" href="#">History</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 mr-4">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-tighter">v2.4.0-stable</span>
+</div>
+<button class="ghost-border px-4 py-1.5 rounded-lg text-primary hover:bg-white/5 transition-all font-body text-sm">Share</button>
+<button class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded-lg font-medium hover:opacity-90 transition-all active:scale-95 text-sm glow-primary">Deploy</button>
+<div class="flex items-center gap-2 ml-2">
+<button class="p-2 hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</button>
+<button class="p-2 hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications_active</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden ml-2 border border-white/10">
+<img alt="Current User Avatar" data-alt="User profile illustration in minimalist style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgO3-fx6bGYvquk2LZ46VoMlKrMyWaYrCPp5LlbxQrLzDgmGpveV38zSmdQr3xnyje6hi_n4d-wNabwxTV0vgyumsudikOLQkd_itPzHim1aOl_3SkP6i1EGNJtj1vr17KzmAGnFU1ekZwUCT7HGhBjTw6iUfqPwdQa99W-9ix6eHQFcu8OC74HiNtWZVVfy2OOjaidxm-KZEreisH0Bf4YOM9nhvETw6vg-eUPx_8Rp76CXdVjdIjsuMxWn857CJplKatLhodLA-K"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar Implementation (Left - Explorer) -->
+<aside class="bg-[#201f1f] dark:bg-[#201f1f] border-r border-white/5 fixed left-0 top-14 bottom-0 w-64 flex flex-col h-full py-4 z-40 transition-transform duration-300">
+<div class="px-6 mb-6">
+<div class="flex items-center gap-3 mb-1">
+<span class="material-symbols-outlined text-primary scale-75">grid_view</span>
+<h2 class="font-headline text-[#d2bbff] text-sm font-semibold uppercase tracking-wider">Project Structure</h2>
+</div>
+<p class="font-label text-[9px] text-gray-500 uppercase tracking-widest">Workspace / Revision A</p>
+</div>
+<div class="flex-1 overflow-y-auto space-y-1">
+<div class="bg-[#7c3aed]/20 text-[#d2bbff] border-l-2 border-[#7c3aed] px-6 py-2 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-sm">folder_open</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Explorer</span>
+</div>
+<div class="text-gray-500 hover:bg-white/5 px-6 py-2 flex items-center gap-3 cursor-pointer transition-all hover:text-white">
+<span class="material-symbols-outlined text-sm">layers</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Layers</span>
+</div>
+<div class="text-gray-500 hover:bg-white/5 px-6 py-2 flex items-center gap-3 cursor-pointer transition-all hover:text-white">
+<span class="material-symbols-outlined text-sm">database</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Assets</span>
+</div>
+<div class="text-gray-500 hover:bg-white/5 px-6 py-2 flex items-center gap-3 cursor-pointer transition-all hover:text-white">
+<span class="material-symbols-outlined text-sm">extension</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Plugins</span>
+</div>
+<div class="text-gray-500 hover:bg-white/5 px-6 py-2 flex items-center gap-3 cursor-pointer transition-all hover:text-white">
+<span class="material-symbols-outlined text-sm">info</span>
+<span class="font-label text-[10px] uppercase tracking-widest">Info</span>
+</div>
+</div>
+<div class="p-4 mt-auto">
+<button class="w-full py-3 bg-surface-container-highest ghost-border rounded-xl text-primary font-label text-[10px] uppercase tracking-[0.2em] hover:bg-white/10 transition-colors">
+        New Layer
+      </button>
+<div class="mt-4 space-y-2 border-t border-white/5 pt-4">
+<div class="text-gray-500 hover:text-white px-2 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="font-label text-[10px] uppercase">Support</span>
+</div>
+<div class="text-gray-500 hover:text-white px-2 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-label text-[10px] uppercase">Logs</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Sidebar (Properties - Generated) -->
+<aside class="bg-[#201f1f] border-l border-white/5 fixed right-0 top-14 bottom-0 w-72 flex flex-col z-40">
+<div class="p-6 border-b border-white/5">
+<h3 class="font-headline text-on-surface-variant text-xs uppercase tracking-[0.2em] mb-4">Properties</h3>
+<div class="space-y-4">
+<div class="space-y-2">
+<label class="font-label text-[9px] text-outline uppercase tracking-widest">X Position</label>
+<div class="bg-surface-container-lowest ghost-border rounded-lg px-3 py-2 text-primary font-label text-xs">
+            1,240 px
+          </div>
+</div>
+<div class="space-y-2">
+<label class="font-label text-[9px] text-outline uppercase tracking-widest">Y Position</label>
+<div class="bg-surface-container-lowest ghost-border rounded-lg px-3 py-2 text-primary font-label text-xs">
+            842 px
+          </div>
+</div>
+<div class="space-y-2">
+<label class="font-label text-[9px] text-outline uppercase tracking-widest">Opacity</label>
+<div class="flex items-center gap-4">
+<div class="h-1 flex-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[80%]"></div>
+</div>
+<span class="font-label text-xs text-primary">80%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline text-on-surface-variant text-xs uppercase tracking-[0.2em] mb-4">Active Comparison</h3>
+<div class="p-3 bg-surface-container-highest rounded-xl border border-primary/20 glow-primary mb-4">
+<div class="aspect-video bg-background rounded-lg mb-2 overflow-hidden">
+<img alt="Mockup Detail" class="w-full h-full object-cover opacity-60" data-alt="Technical UI interface details with violet glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr7OuV9BkPCSACf71nyYvB812UyJB23qQgrkE2QDbwPvgXHJ1Bi6M8higDPZcJvLMCGZ09kd2zZp1hVtUWwBM87wh8SLF5gEJLztMLOG03Q3am88z18zAkx7J-pAYZYKb-mLmQ0KkW84O1vIAInpP0uQcfMXYj2jKzAsmoH3vO3NxUxXLjf6XmP4L6PZTh4brChrFtFmOLwQtlExCoFBiv6r5Woq6CCqf2E_Qc-mmkZBnmUskNpg5AKRQIZ3Wb_4wATiALAeK-kv7G"/>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-[10px] text-primary uppercase">MOCK_UP_04</span>
+<span class="material-symbols-outlined text-secondary-fixed-dim text-xs">check_circle</span>
+</div>
+</div>
+<div class="p-3 bg-surface-container rounded-xl ghost-border opacity-50">
+<div class="aspect-video bg-background rounded-lg mb-2 overflow-hidden">
+<img alt="Mockup Detail" data-alt="Minimalist website layout wireframe illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2PoB3XUlkP_cSE-I79Sh0d7-iTC2wVcOilIqNiP0HC-Tt-m76QtYduGKJ64NkiApZff1g-pew7IHcXYQjlBqgB2crsYgAEEb4iP3YAUytUHoJFCqRnq8szjPphopB5jd1OJVrqC1EjdZX0DkOfgaYct6jifGCP4MrZuf7-o0fUY7dg1b7FPOFsr0V-a_FJDv-SBrRsUAnlVYbLPjz-DP0BdK82T9pT7SOTZZmo741Pu4VZyGGS_mkb33fYqEsOYSODy_DM5f21b0y"/>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-[10px] text-on-surface-variant uppercase">MOCK_UP_05</span>
+<span class="material-symbols-outlined text-on-surface-variant text-xs">circle</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Canvas Area -->
+<main class="ml-64 mr-72 mt-14 h-[calc(100vh-3.5rem)] relative overflow-hidden">
+<!-- Draggable Mockup Container -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="grid grid-cols-2 gap-12 pointer-events-auto">
+<!-- Card 1 (Inactive) -->
+<div class="w-80 flex flex-col gap-3 group">
+<div class="bg-[#1a1a1a] ghost-border rounded-xl p-4 transition-all hover:bg-[#222] cursor-grab active:cursor-grabbing">
+<div class="aspect-[4/3] bg-surface-container-lowest rounded-lg overflow-hidden mb-2">
+<img alt="UI Mockup 1" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Abstract mobile app design with dark theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT10JN9aOBWBFfvDVDSnX1OPYSCP8mrqKzLKnRiTkMyd-Uso9xppPjQL0Hi8Y284ZGZwKIeuaoze4DyZ_BHYX8qc7_DteU61gpL6y2F8WwQg4zcYswYQToovoW-CblB2uo4cvDZxWlvQQMt7TB0SPf4tvplrg8cQYZHwx9FlyWxyq0JV8cM8_jgg98mT7E21tRSKzf-xTazyj-c7dLeQ9gP5-nKP1FPSt3gTMMs1D8iCBILs3UNg7AWo-JV7mnVVoSbjs7okxHloCz"/>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant w-1/3"></div>
+</div>
+</div>
+<div class="px-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Dashboard_V1_Final</div>
+<div class="font-label text-[8px] text-surface-container-highest mt-0.5">LAST SYNC: 12:44:02</div>
+</div>
+</div>
+<!-- Card 2 (Active/Selected) -->
+<div class="w-80 flex flex-col gap-3 group">
+<div class="bg-[#1a1a1a] border border-primary/40 glow-primary rounded-xl p-4 cursor-grab active:cursor-grabbing">
+<div class="aspect-[4/3] bg-surface-container-lowest rounded-lg overflow-hidden mb-2 relative">
+<img alt="UI Mockup 2" class="w-full h-full object-cover" data-alt="High-fidelity interface design on a laptop screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbFjDfo6vRZg1dZD2nQFm86gKq9RoLdeM-KISNxNVgpvia-hAnO6xQmZ9-ZsHqMfanxPBLcHFIe54CDPBvRAJxqBg1zURXBSg5zREY4ixUN0oeXH6_UObt4tV4dqrLdUf2q6DMZQ49GCMu5tmVxZZfK343-BKEbJJ6XV1nV-48yqPSWPYlDVbcUSlRs0hGhtrv3PljqW8g6gCxNIGPZgWlEQpcM-xXzkXtcCCAh_uv74jcWn4hCuBF-IT6qWj2AgTtZWrzA9CG8Wsh"/>
+<div class="absolute inset-0 bg-primary/5"></div>
+<div class="absolute top-2 right-2 px-2 py-0.5 rounded bg-primary-container text-[8px] font-label text-on-primary-container">SELECTED</div>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-full shadow-[0_0_8px_rgba(124,58,237,0.5)]"></div>
+</div>
+</div>
+<div class="px-2">
+<div class="font-label text-[10px] text-primary uppercase tracking-widest">Dashboard_V2_Review</div>
+<div class="font-label text-[8px] text-primary/40 mt-0.5">LAST SYNC: 14:22:18</div>
+</div>
+</div>
+<!-- Card 3 (Inactive) -->
+<div class="w-80 flex flex-col gap-3 group translate-y-8">
+<div class="bg-[#1a1a1a] ghost-border rounded-xl p-4 transition-all hover:bg-[#222] cursor-grab active:cursor-grabbing">
+<div class="aspect-[4/3] bg-surface-container-lowest rounded-lg overflow-hidden mb-2">
+<img alt="UI Mockup 3" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Modern web design layout with large typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmOOJSJS7zdikcUw_EmBaPBbXR5U1hPQrtOlUYYnlSYyWWfpFu2512VN7vbVNDdR2ZmJ9onD2eblEyx1lSsROsjYQq55IUjTb1y9OYYKXXYwdlT9NvYG9flMeYLN_HlbnWJhZDJh8Yrubub8lfOkJWzGNZT8AkodwgLY2oQwj7U1HI1PaADM-vKIkYcBkVsqy7ma3mJw-uMLtpWjsV7k7xZe-2-T8YjWh3xwwFcX8aXGRWdpvhoYrw06si4bEiJFAPhpwyNiOD_kp_"/>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant w-1/4"></div>
+</div>
+</div>
+<div class="px-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Settings_Config_Mock</div>
+<div class="font-label text-[8px] text-surface-container-highest mt-0.5">LAST SYNC: 09:12:44</div>
+</div>
+</div>
+<!-- Card 4 (Inactive) -->
+<div class="w-80 flex flex-col gap-3 group translate-y-8">
+<div class="bg-[#1a1a1a] ghost-border rounded-xl p-4 transition-all hover:bg-[#222] cursor-grab active:cursor-grabbing">
+<div class="aspect-[4/3] bg-surface-container-lowest rounded-lg overflow-hidden mb-2">
+<img alt="UI Mockup 4" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="User interface style guide with color swatches" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL6J3exMoL0Qb_4AzatoqgrAWVSFTqvatvL6oWGBJgynAE_CLaAN0bzVOI3kw1aeGYCM79NRUQR-YOMQmBE8eHlZnVQnCNmwbdtRXcx29U3qX4xJSkdU9fJoLXZ1IoWhkCZtjU6rWhjd0vKQBqP9fIQxSe0HwxEU1PHBXuUR_vdnk-i2FQB2Ks7gkqRuQnLtw3wyVuuOXmQf7YgOupXWsSTPv1oZMWy3GXwhlJdE4iruEax2T32bKwb-nTQ-629j-Q54l9x22MDiCO"/>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant w-1/2"></div>
+</div>
+</div>
+<div class="px-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Asset_Library_V1</div>
+<div class="font-label text-[8px] text-surface-container-highest mt-0.5">LAST SYNC: 16:55:01</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Zoom Controls) Implementation -->
+<footer class="bg-[#131313]/80 backdrop-blur-md border border-white/10 fixed bottom-6 left-6 w-auto rounded-lg flex items-center gap-4 px-4 py-2 z-50">
+<div class="flex items-center gap-1 border-r border-white/10 pr-4">
+<button class="p-1.5 hover:bg-white/10 rounded transition-colors text-gray-400">
+<span class="material-symbols-outlined text-sm">zoom_out</span>
+</button>
+<div class="font-label text-xs text-[#00ff88] min-w-[3rem] text-center">100%</div>
+<button class="p-1.5 hover:bg-white/10 rounded transition-colors text-gray-400">
+<span class="material-symbols-outlined text-sm">zoom_in</span>
+</button>
+</div>
+<button class="flex items-center gap-2 text-gray-400 hover:text-[#00ff88] hover:bg-white/10 px-2 py-1 rounded transition-colors active:scale-95">
+<span class="material-symbols-outlined text-sm">fullscreen</span>
+<span class="font-label text-[10px] uppercase">Fit</span>
+</button>
+<button class="flex items-center gap-2 text-gray-400 hover:text-[#00ff88] hover:bg-white/10 px-2 py-1 rounded transition-colors active:scale-95">
+<span class="material-symbols-outlined text-sm">grid_4x4</span>
+<span class="font-label text-[10px] uppercase">Grid</span>
+</button>
+<div class="flex items-center gap-2 text-[#00ff88] px-2 py-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label text-[10px] uppercase">Synced</span>
+</div>
+</footer>
+<!-- FAB Overlay (Generated) -->
+<button class="fixed bottom-6 right-6 w-14 h-14 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center shadow-lg glow-primary hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "6ZF6Gl7aEHU",
+    "language": "en",
+    "took_ms": 9435,
+    "method": null,
+    "title": "AoD Podcast | The New Techno-industrial Pax Americana (feat. Aaron Slodov of Atomic Industries)",
+    "channel": "Hudson Institute",
+    "upload_date": "20240626",
+    "duration_sec": 2091,
+    "description": "Aaron Slodov, CEO of Atomic Industries, joins Marshall Kosloff to discuss how the US can strengthen its industrial base through the use of next generation technology to produce more quality at a better margin to more effectively deter adversaries. \n\nRead Aaron's \"Techno-Industrialist Manifesto\" in Pirate Wires: https://www.piratewires.com/p/techno-industrialist-manifesto",
+    "view_count": 1022
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 6ZF6Gl7aEHU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

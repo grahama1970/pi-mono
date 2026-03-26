@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "wYa_TilYtPw",
+    "language": "en",
+    "took_ms": 7834,
+    "method": null,
+    "title": "Kleptocratic Regimes and National Security: A Pervasive Threat and How It Can be Neutralized (9)",
+    "channel": "Hudson Institute",
+    "upload_date": "20171115",
+    "duration_sec": 788,
+    "description": "Michael Loughnane: Creating Public-Private Synergy for Improving the Accountability of Politically Exposed Persons",
+    "view_count": 83
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] wYa_TilYtPw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

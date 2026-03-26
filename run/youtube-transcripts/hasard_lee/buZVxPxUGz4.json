@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "buZVxPxUGz4",
+    "language": "en",
+    "took_ms": 8012,
+    "method": null,
+    "title": "Carrier COBRA Landing",
+    "channel": "Hasard Lee",
+    "upload_date": "20230516",
+    "duration_sec": 57,
+    "description": "",
+    "view_count": 49016
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] buZVxPxUGz4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

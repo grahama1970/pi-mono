@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "11Yv2Ru7gF8",
+    "language": "en",
+    "took_ms": 9573,
+    "method": null,
+    "title": "DEF CON 32 - Iconv, set the charset to RCE  exploiting  glibc to hack the PHP engine - Charles Fox",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2580,
+    "description": "Upon its discovery, CVE-2024-2961, a very old buffer overflow in the glibc, seemed like a terrible bug. Within the prism of the PHP engine, however, the vulnerability shone, and provided both a new remote code execution vector and a few 0-days.\n\nThis talk will first walk you through the discovery of the bug and its limitations, before describing the conception of remote binary PHP exploits using this bug, and through them offer unique insight in the internal of the engine of the web language, and the difficulties one faces when exploiting it.\n\nAfter this, it will reveal the impact on PHP's ecosystem, from well-known functions to unsuspected sinks, by showcasing the vulnerability on several popular libraries and applications.",
+    "view_count": 1347
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 11Yv2Ru7gF8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

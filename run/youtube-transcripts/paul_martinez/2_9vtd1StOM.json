@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "2_9vtd1StOM",
+    "language": "en",
+    "took_ms": 8585,
+    "method": null,
+    "title": "S4x25 Feedback & Review",
+    "channel": "S4 Events",
+    "upload_date": "20250306",
+    "duration_sec": 1393,
+    "description": "If you're not interested in S4, skip this episode. Dale goes over the feedback from the survey and S4 Event's own thoughts on the event, Tampa, and more.",
+    "view_count": 251
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 2_9vtd1StOM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

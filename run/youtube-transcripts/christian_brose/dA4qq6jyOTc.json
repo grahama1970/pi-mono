@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "dA4qq6jyOTc",
+    "language": "en",
+    "took_ms": 9494,
+    "method": null,
+    "title": "Hudson Institute Celebrates 60 Years",
+    "channel": "Hudson Institute",
+    "upload_date": "20211209",
+    "duration_sec": 382,
+    "description": "Hudson Institute celebrates its 60th anniversary this year, marking more than half a century of policy research dedicated to keeping America and its allies secure, free, and prosperous. Founded in 1961 by Herman Kahn, Max Singer, and Oscar M. Ruebhausen, Hudson was established to foster a better understanding of deterrence in the atomic age and create the conditions for the free world to triumph over communism. At the outset, Hudson focused much of its policy output on military research projects; however, over time it broadened its focus to include foreign and domestic policy, and social and economic issues, applying Kahn’s innovative and rigorous intellectual approach to a range of policy challenges.\n\nWatch the video and join us in celebrating Hudson’s decades-long tradition of unconventional thinking, visionaries like Herman Kahn, and the transformational impact of Hudson Chairman Emeritus Walter P. Stern.",
+    "view_count": 828
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] dA4qq6jyOTc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

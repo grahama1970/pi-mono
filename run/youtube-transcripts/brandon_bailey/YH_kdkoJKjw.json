@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "YH_kdkoJKjw",
+    "language": "en",
+    "took_ms": 9143,
+    "method": null,
+    "title": "DEF CON 29 Biohacking Village - Vee Schmitt, Ken Kato - Red vs Blue vs Green",
+    "channel": "DEFCONConference",
+    "upload_date": "20210925",
+    "duration_sec": 2309,
+    "description": "Often when it comes Medical Devices and Healthcare everyone has an opinion. Ever wonder why there is such a difference of opinion. Deep diving into the context and perspective of the various teams involved in the manufacturing, attacking, and defending of medical devices. We explore and discuss why these opinions are different and how we can better communicate our perspective to one another. This talk explores the complexity and constraints that each team faces and how if the silos are broken down it makes for a more collaborative understanding and coming full circle. Often you will that it is Red versus Blue then versus Green. We work against each other rather than coming full circle logically and openly discussing problems in this space. The main theme of this talk is that differences in opinions are often needed to solve complex problems. Let’s face it the secure manufacturing and implementation of these devices is a complex problem. Lifting the veil of problems that each of these team’s face",
+    "view_count": 426
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] YH_kdkoJKjw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

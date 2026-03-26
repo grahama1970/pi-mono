@@ -1,0 +1,913 @@
+{
+  "meta": {
+    "video_id": "6V7nxj_rAD4",
+    "language": "en",
+    "took_ms": 1156,
+    "method": "direct",
+    "title": "AI World Models: Google Genie vs PixVerse R1 - Control vs Chaos",
+    "channel": "AI Video School",
+    "upload_date": "20260204",
+    "duration_sec": 556,
+    "description": "Google Genie and PixVerse R1 are both AI world models, but they represent completely different approaches to real-time AI video generation. In this comparison, I test both interactive video generators using the same prompts to show you the key differences and show how to create worlds in both. I also show actual gameplay so you can decide which actually feels more like a video game.\n\n🍿 Watch my other PixVerse R1 video where I compare live AI generation to the invention of the motion picture: https://youtu.be/cvXpWUY718o\n\n🔗 Links\n- Project Genie: https://labs.google/fx/projectgenie\n- PixVerse R1: https://realtime.pixverse.ai/\n\n📬 Sign up for my newsletter and get my free AI Video Prompt Sidekick for ChatGPT + updates on AI filmmaking courses\nhttps://aivideoschool.xyz\n\n🍿 AI Movies and How I Made Them\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RzcTWyiaBqQ-zSGE-U0FsAg \n\n🎓 AI Video Tutorials, Comparisons, Workflows\nhttps://www.youtube.com/playlist?list=PLZrJsckCh5RwGHkhWM7SB6-FFycNdagTF \n\n📚 Chapters\n00:00 Genie and PixVerse side-by-side\n02:07 Creating a world in Google Genie (plus gameplay)\n03:43 Creating a world in PixVerse R1 (plus gameplay)\n08:46 Completely different approaches to world models\n\n#GoogleGenie #PixVerseR1 #WorldModels #AIVideo #AITools #GenerativeAI #pixverse #googleai #aigames",
+    "view_count": 2086
+  },
+  "transcript": [
+    {
+      "text": "Google Genie and Pixver R1 are two",
+      "start": 4.0,
+      "duration": 5.28
+    },
+    {
+      "text": "exciting AI [music] world models, but",
+      "start": 7.12,
+      "duration": 4.639
+    },
+    {
+      "text": "they honestly couldn't feel more",
+      "start": 9.28,
+      "duration": 4.319
+    },
+    {
+      "text": "different. I've had the chance to play",
+      "start": 11.759,
+      "duration": 4.08
+    },
+    {
+      "text": "around with both of them, and I want to",
+      "start": 13.599,
+      "duration": 4.321
+    },
+    {
+      "text": "give you a quick overview that will",
+      "start": 15.839,
+      "duration": 4.481
+    },
+    {
+      "text": "hopefully show when [music] to use which",
+      "start": 17.92,
+      "duration": 5.279
+    },
+    {
+      "text": "one. My main interest in world models is",
+      "start": 20.32,
+      "duration": 5.28
+    },
+    {
+      "text": "the ability to immerse an audience in",
+      "start": 23.199,
+      "duration": 4.561
+    },
+    {
+      "text": "the world of a movie. I thought I could",
+      "start": 25.6,
+      "duration": 3.839
+    },
+    {
+      "text": "take an image [music] from this movie",
+      "start": 27.76,
+      "duration": 4.319
+    },
+    {
+      "text": "and create a world that let you explore",
+      "start": 29.439,
+      "duration": 4.96
+    },
+    {
+      "text": "her environment, but it's not quite",
+      "start": 32.079,
+      "duration": 4.64
+    },
+    {
+      "text": "there yet. Having played around with",
+      "start": 34.399,
+      "duration": 5.441
+    },
+    {
+      "text": "both Genie and R1, I came up with a",
+      "start": 36.719,
+      "duration": 7.876
+    },
+    {
+      "text": "quick list of the differences. [music]",
+      "start": 39.84,
+      "duration": 4.755
+    },
+    {
+      "text": "Google Genie allows you to prompt and",
+      "start": 45.28,
+      "duration": 4.72
+    },
+    {
+      "text": "iterate to create the opening image of a",
+      "start": 47.6,
+      "duration": 4.88
+    },
+    {
+      "text": "world. Then you have 60 seconds to",
+      "start": 50.0,
+      "duration": 6.559
+    },
+    {
+      "text": "explore it using keys on your keyboard.",
+      "start": 52.48,
+      "duration": 7.52
+    },
+    {
+      "text": "Pix R1 gives you five minutes, but that",
+      "start": 56.559,
+      "duration": 5.361
+    },
+    {
+      "text": "includes the time it takes to write or",
+      "start": 60.0,
+      "duration": 4.879
+    },
+    {
+      "text": "paste the prompt. Then you use text",
+      "start": 61.92,
+      "duration": 5.28
+    },
+    {
+      "text": "prompts more to change the environment",
+      "start": 64.879,
+      "duration": 4.321
+    },
+    {
+      "text": "than to navigate it like you would a",
+      "start": 67.2,
+      "duration": 3.68
+    },
+    {
+      "text": "traditional video game. You'll see what",
+      "start": 69.2,
+      "duration": 2.88
+    },
+    {
+      "text": "I mean if you stick around for the",
+      "start": 70.88,
+      "duration": 3.36
+    },
+    {
+      "text": "gameplay demo. Google Genie feels like",
+      "start": 72.08,
+      "duration": 4.719
+    },
+    {
+      "text": "playing an early stage video game that's",
+      "start": 74.24,
+      "duration": 5.84
+    },
+    {
+      "text": "still in production. Pix R1 feels like",
+      "start": 76.799,
+      "duration": 5.36
+    },
+    {
+      "text": "you're having a surreal fever dream",
+      "start": 80.08,
+      "duration": 4.56
+    },
+    {
+      "text": "where anything can happen.",
+      "start": 82.159,
+      "duration": 6.241
+    },
+    {
+      "text": "Google Genie has more control,",
+      "start": 84.64,
+      "duration": 9.72
+    },
+    {
+      "text": "but Pixver R1 feels surreal chaotic.",
+      "start": 88.4,
+      "duration": 5.96
+    },
+    {
+      "text": "Google Genie's graphic quality is more",
+      "start": 94.4,
+      "duration": 4.64
+    },
+    {
+      "text": "consistent, more persistent, more",
+      "start": 97.119,
+      "duration": 4.081
+    },
+    {
+      "text": "gamelike.",
+      "start": 99.04,
+      "duration": 5.2
+    },
+    {
+      "text": "Pix R1 doesn't have the same consistency",
+      "start": 101.2,
+      "duration": 6.0
+    },
+    {
+      "text": "and is definitely not persistent, but",
+      "start": 104.24,
+      "duration": 6.68
+    },
+    {
+      "text": "that's kind of the point.",
+      "start": 107.2,
+      "duration": 3.72
+    },
+    {
+      "text": "All right, that's the quick overview.",
+      "start": 111.04,
+      "duration": 3.2
+    },
+    {
+      "text": "I'm going to show you the difference by",
+      "start": 112.64,
+      "duration": 4.0
+    },
+    {
+      "text": "using the same prompt to create worlds",
+      "start": 114.24,
+      "duration": 5.519
+    },
+    {
+      "text": "in both Genie and in R1. You'll probably",
+      "start": 116.64,
+      "duration": 4.72
+    },
+    {
+      "text": "have your favorite based on what you're",
+      "start": 119.759,
+      "duration": 3.521
+    },
+    {
+      "text": "hoping to do. And I definitely have my",
+      "start": 121.36,
+      "duration": 5.056
+    },
+    {
+      "text": "favorite, at least for now.",
+      "start": 123.28,
+      "duration": 5.156
+    },
+    {
+      "text": "[music]",
+      "start": 126.416,
+      "duration": 2.02
+    },
+    {
+      "text": "Okay, I want to try this one cuz it's",
+      "start": 128.959,
+      "duration": 2.801
+    },
+    {
+      "text": "kind of realistic. It looks like it",
+      "start": 130.319,
+      "duration": 3.441
+    },
+    {
+      "text": "would be fun to explore this grassy",
+      "start": 131.76,
+      "duration": 5.68
+    },
+    {
+      "text": "field. So, let's try this.",
+      "start": 133.76,
+      "duration": 5.6
+    },
+    {
+      "text": "So, it's while it's building it, it's",
+      "start": 137.44,
+      "duration": 4.159
+    },
+    {
+      "text": "telling us here's how you move around.",
+      "start": 139.36,
+      "duration": 6.599
+    },
+    {
+      "text": "So, we can look around with the arrows.",
+      "start": 141.599,
+      "duration": 4.36
+    },
+    {
+      "text": "We jump with the space",
+      "start": 146.56,
+      "duration": 6.56
+    },
+    {
+      "text": "and then move around with WD.",
+      "start": 148.959,
+      "duration": 7.28
+    },
+    {
+      "text": "Okay, there's a fox. So, let's let's see",
+      "start": 153.12,
+      "duration": 4.8
+    },
+    {
+      "text": "if we can Whoops. Let's see if we can",
+      "start": 156.239,
+      "duration": 5.161
+    },
+    {
+      "text": "follow that fox.",
+      "start": 157.92,
+      "duration": 3.48
+    },
+    {
+      "text": "Turn. I'm using the arrows to follow it.",
+      "start": 162.0,
+      "duration": 5.48
+    },
+    {
+      "text": "There's another one.",
+      "start": 163.92,
+      "duration": 3.56
+    },
+    {
+      "text": "Just moving along.",
+      "start": 172.48,
+      "duration": 7.52
+    },
+    {
+      "text": "Let's go this way. No.",
+      "start": 175.519,
+      "duration": 6.321
+    },
+    {
+      "text": "Just start walking. Let's follow this",
+      "start": 180.0,
+      "duration": 4.84
+    },
+    {
+      "text": "guy.",
+      "start": 181.84,
+      "duration": 3.0
+    },
+    {
+      "text": "Can't really go. If you like double tap,",
+      "start": 187.28,
+      "duration": 4.239
+    },
+    {
+      "text": "you can't really go faster. Kind of a",
+      "start": 189.04,
+      "duration": 7.72
+    },
+    {
+      "text": "plotting pace. Is that a skunk?",
+      "start": 191.519,
+      "duration": 5.241
+    },
+    {
+      "text": "I want to get sprayed.",
+      "start": 197.599,
+      "duration": 4.881
+    },
+    {
+      "text": "It's kind of hard to move. Okay, that's",
+      "start": 200.959,
+      "duration": 4.681
+    },
+    {
+      "text": "not as",
+      "start": 202.48,
+      "duration": 3.16
+    },
+    {
+      "text": "And",
+      "start": 211.76,
+      "duration": 3.0
+    },
+    {
+      "text": "so we saw a couple foxes. We thought we",
+      "start": 216.879,
+      "duration": 5.601
+    },
+    {
+      "text": "saw a skunk, but it wasn't. All right,",
+      "start": 220.239,
+      "duration": 5.64
+    },
+    {
+      "text": "so that's it.",
+      "start": 222.48,
+      "duration": 3.399
+    },
+    {
+      "text": "So this is Pix [music]",
+      "start": 226.0,
+      "duration": 3.28
+    },
+    {
+      "text": "R1. I did a different video about it",
+      "start": 227.2,
+      "duration": 4.0
+    },
+    {
+      "text": "which is linked in the description. I",
+      "start": 229.28,
+      "duration": 3.679
+    },
+    {
+      "text": "think this is very cool and very",
+      "start": 231.2,
+      "duration": 4.16
+    },
+    {
+      "text": "surreal. This is a totally different",
+      "start": 232.959,
+      "duration": 5.36
+    },
+    {
+      "text": "experience. So we got 5 minutes to do",
+      "start": 235.36,
+      "duration": 5.84
+    },
+    {
+      "text": "this. Let's make it point of view. Let's",
+      "start": 238.319,
+      "duration": 6.681
+    },
+    {
+      "text": "paste it all in there.",
+      "start": 241.2,
+      "duration": 3.8
+    },
+    {
+      "text": "I did the the realistic realtime loading",
+      "start": 245.68,
+      "duration": 5.199
+    },
+    {
+      "text": "screen for Genie. So I'll [music] do it",
+      "start": 248.799,
+      "duration": 5.321
+    },
+    {
+      "text": "here, too.",
+      "start": 250.879,
+      "duration": 3.241
+    },
+    {
+      "text": "Got a lot more foxes in this one. Um,",
+      "start": 255.92,
+      "duration": 7.24
+    },
+    {
+      "text": "I'm going to add a wolf.",
+      "start": 259.28,
+      "duration": 3.88
+    },
+    {
+      "text": "So, I'm not actually moving in Gemini.",
+      "start": 264.0,
+      "duration": 4.24
+    },
+    {
+      "text": "[music] I was using the keyboard to",
+      "start": 266.587,
+      "duration": 3.013
+    },
+    {
+      "text": "move, but it's just moving",
+      "start": 268.24,
+      "duration": 3.679
+    },
+    {
+      "text": "automatically. And then I'll type these",
+      "start": 269.6,
+      "duration": 5.28
+    },
+    {
+      "text": "prompts to change the action. So, let's",
+      "start": 271.919,
+      "duration": 4.961
+    },
+    {
+      "text": "have a giraffe show up. So, we've got",
+      "start": 274.88,
+      "duration": 5.48
+    },
+    {
+      "text": "our wolf here.",
+      "start": 276.88,
+      "duration": 3.48
+    },
+    {
+      "text": "So, there's our giraffe in the middle.",
+      "start": 287.04,
+      "duration": 6.159
+    },
+    {
+      "text": "Really sloppy eater.",
+      "start": 290.8,
+      "duration": 5.2
+    },
+    {
+      "text": "Um, there's the sky, too. We couldn't",
+      "start": 293.199,
+      "duration": 4.161
+    },
+    {
+      "text": "really change the [music] environment in",
+      "start": 296.0,
+      "duration": 3.919
+    },
+    {
+      "text": "Gemini, but we can say northern lights.",
+      "start": 297.36,
+      "duration": 4.0
+    },
+    {
+      "text": "And let's see if we can change the sky.",
+      "start": 299.919,
+      "duration": 3.521
+    },
+    {
+      "text": "So, we see northern lights. We know",
+      "start": 301.36,
+      "duration": 6.0
+    },
+    {
+      "text": "there's a lot of meteorites, meteorites,",
+      "start": 303.44,
+      "duration": 7.319
+    },
+    {
+      "text": "meteor showers.",
+      "start": 307.36,
+      "duration": 3.399
+    },
+    {
+      "text": ">> [music]",
+      "start": 315.713,
+      "duration": 4.407
+    },
+    {
+      "text": ">> So now we have the northern lights.",
+      "start": 315.919,
+      "duration": 4.201
+    },
+    {
+      "text": "[music]",
+      "start": 321.608,
+      "duration": 2.02
+    },
+    {
+      "text": ">> [music]",
+      "start": 333.398,
+      "duration": 2.02
+    },
+    {
+      "text": ">> if you see what I mean about it being",
+      "start": 338.4,
+      "duration": 4.16
+    },
+    {
+      "text": "dreamlike. We're going underwater and it",
+      "start": 339.919,
+      "duration": 4.801
+    },
+    {
+      "text": "just kind of seamlessly makes everything",
+      "start": 342.56,
+      "duration": 6.76
+    },
+    {
+      "text": "underwater and he pops up that way.",
+      "start": 344.72,
+      "duration": 4.6
+    },
+    {
+      "text": "There's fish swimming in the logs.",
+      "start": 350.0,
+      "duration": 8.56
+    },
+    {
+      "text": "There's our koiish sort of",
+      "start": 354.16,
+      "duration": 4.4
+    },
+    {
+      "text": "Let's have a liinal [music] creature.",
+      "start": 359.759,
+      "duration": 3.961
+    },
+    {
+      "text": "It's kind of cool. It made them dance",
+      "start": 363.759,
+      "duration": 5.841
+    },
+    {
+      "text": "the way a real fox might dance.",
+      "start": 365.44,
+      "duration": 5.92
+    },
+    {
+      "text": "Like they weren't doing like break dance",
+      "start": 369.6,
+      "duration": 5.319
+    },
+    {
+      "text": "moves or something.",
+      "start": 371.36,
+      "duration": 3.559
+    },
+    {
+      "text": "There's our liinal creatures",
+      "start": 376.319,
+      "duration": 6.32
+    },
+    {
+      "text": "trailing. I think AI tends to like",
+      "start": 379.759,
+      "duration": 5.041
+    },
+    {
+      "text": "bioluminescent clothes. So, I think",
+      "start": 382.639,
+      "duration": 3.761
+    },
+    {
+      "text": "that's why they have bioluminescent",
+      "start": 384.8,
+      "duration": 4.6
+    },
+    {
+      "text": "clothes.",
+      "start": 386.4,
+      "duration": 3.0
+    },
+    {
+      "text": "Still have all of our foxes.",
+      "start": 389.68,
+      "duration": 3.959
+    },
+    {
+      "text": "Nice little closeup there.",
+      "start": 394.0,
+      "duration": 5.039
+    },
+    {
+      "text": "As you can see, it's just constantly",
+      "start": 397.28,
+      "duration": 3.919
+    },
+    {
+      "text": "changing. You can sit here and watch or",
+      "start": 399.039,
+      "duration": 4.72
+    },
+    {
+      "text": "you can interact and add another prompt",
+      "start": 401.199,
+      "duration": 5.521
+    },
+    {
+      "text": "to change the environment.",
+      "start": 403.759,
+      "duration": 5.44
+    },
+    {
+      "text": "It feels like an immersive and chaotic",
+      "start": 406.72,
+      "duration": 4.8
+    },
+    {
+      "text": "experience in the best way possible in",
+      "start": 409.199,
+      "duration": 5.481
+    },
+    {
+      "text": "my opinion.",
+      "start": 411.52,
+      "duration": 3.16
+    },
+    {
+      "text": "See that? See how he turned they turned",
+      "start": 417.039,
+      "duration": 5.28
+    },
+    {
+      "text": "into aliens? That was kind of cool.",
+      "start": 419.039,
+      "duration": 5.6
+    },
+    {
+      "text": "And there's a spaceship with drones that",
+      "start": 422.319,
+      "duration": 5.561
+    },
+    {
+      "text": "pop out.",
+      "start": 424.639,
+      "duration": 3.241
+    },
+    {
+      "text": "Jellyfish.",
+      "start": 430.479,
+      "duration": 3.12
+    },
+    {
+      "text": "I think these are kind of like things",
+      "start": 432.16,
+      "duration": 5.759
+    },
+    {
+      "text": "that AI likes. [music]",
+      "start": 433.599,
+      "duration": 6.32
+    },
+    {
+      "text": "They're kind aliens taking care of the",
+      "start": 437.919,
+      "duration": 4.801
+    },
+    {
+      "text": "foxes. Foxes like, \"Let me go in your",
+      "start": 439.919,
+      "duration": 4.881
+    },
+    {
+      "text": "ship",
+      "start": 442.72,
+      "duration": 4.8
+    },
+    {
+      "text": "and hop on a drone and fly into [music]",
+      "start": 444.8,
+      "duration": 6.08
+    },
+    {
+      "text": "the sky.\" And then they were somewhere",
+      "start": 447.52,
+      "duration": 5.519
+    },
+    {
+      "text": "for a minute.",
+      "start": 450.88,
+      "duration": 5.48
+    },
+    {
+      "text": "Was an orange.",
+      "start": 453.039,
+      "duration": 3.321
+    },
+    {
+      "text": "They're flying.",
+      "start": 460.24,
+      "duration": 3.239
+    },
+    {
+      "text": "If you wanted control, if you wanted",
+      "start": 467.68,
+      "duration": 4.16
+    },
+    {
+      "text": "control, this would drive you nuts",
+      "start": 469.68,
+      "duration": 4.16
+    },
+    {
+      "text": "probably. But if you're here for like",
+      "start": 471.84,
+      "duration": 4.16
+    },
+    {
+      "text": "the entertaining factor of like how can",
+      "start": 473.84,
+      "duration": 4.079
+    },
+    {
+      "text": "you change what's happening? [music]",
+      "start": 476.0,
+      "duration": 5.639
+    },
+    {
+      "text": "It's really fun.",
+      "start": 477.919,
+      "duration": 3.72
+    },
+    {
+      "text": "They're moving towards the planet. Let's",
+      "start": 482.72,
+      "duration": 3.36
+    },
+    {
+      "text": "see if we get some Saturn's rings in",
+      "start": 484.319,
+      "duration": 3.761
+    },
+    {
+      "text": "there.",
+      "start": 486.08,
+      "duration": 5.119
+    },
+    {
+      "text": "There's like foxes with jetpacks.",
+      "start": 488.08,
+      "duration": 7.519
+    },
+    {
+      "text": "There's the rings and some",
+      "start": 491.199,
+      "duration": 8.626
+    },
+    {
+      "text": "clouds and a moon. [music]",
+      "start": 495.599,
+      "duration": 4.226
+    },
+    {
+      "text": "Feels very surreal and trippy in a great",
+      "start": 506.72,
+      "duration": 6.039
+    },
+    {
+      "text": "way.",
+      "start": 509.759,
+      "duration": 3.0
+    },
+    {
+      "text": "Going through some [music] wormhole in",
+      "start": 513.519,
+      "duration": 4.601
+    },
+    {
+      "text": "the galaxy.",
+      "start": 514.88,
+      "duration": 3.24
+    },
+    {
+      "text": "Fox opens his mouth as I",
+      "start": 519.2,
+      "duration": 5.6
+    },
+    {
+      "text": "That was a good way to end it. So, do",
+      "start": 523.12,
+      "duration": 4.399
+    },
+    {
+      "text": "you see what I mean? It is a completely",
+      "start": 524.8,
+      "duration": 4.64
+    },
+    {
+      "text": "different [music] experience when you're",
+      "start": 527.519,
+      "duration": 5.44
+    },
+    {
+      "text": "the person driving that open world in",
+      "start": 529.44,
+      "duration": 6.48
+    },
+    {
+      "text": "R1. It's even more chaotic. Thank you",
+      "start": 532.959,
+      "duration": 4.641
+    },
+    {
+      "text": "for watching. Go check out my other",
+      "start": 535.92,
+      "duration": 4.0
+    },
+    {
+      "text": "video about Pixver R1 [music] where I",
+      "start": 537.6,
+      "duration": 4.64
+    },
+    {
+      "text": "compare it to the early days of motion",
+      "start": 539.92,
+      "duration": 4.0
+    },
+    {
+      "text": "picture cameras. All right, there are",
+      "start": 542.24,
+      "duration": 3.36
+    },
+    {
+      "text": "links in the description and don't",
+      "start": 543.92,
+      "duration": 3.011
+    },
+    {
+      "text": "forget to subscribe to my Substack",
+      "start": 545.6,
+      "duration": 2.08
+    },
+    {
+      "text": "[music]",
+      "start": 546.931,
+      "duration": 3.749
+    },
+    {
+      "text": "newsletter.",
+      "start": 547.68,
+      "duration": 3.0
+    }
+  ],
+  "full_text": "Google Genie and Pixver R1 are two exciting AI [music] world models, but they honestly couldn't feel more different. I've had the chance to play around with both of them, and I want to give you a quick overview that will hopefully show when [music] to use which one. My main interest in world models is the ability to immerse an audience in the world of a movie. I thought I could take an image [music] from this movie and create a world that let you explore her environment, but it's not quite there yet. Having played around with both Genie and R1, I came up with a quick list of the differences. [music] Google Genie allows you to prompt and iterate to create the opening image of a world. Then you have 60 seconds to explore it using keys on your keyboard. Pix R1 gives you five minutes, but that includes the time it takes to write or paste the prompt. Then you use text prompts more to change the environment than to navigate it like you would a traditional video game. You'll see what I mean if you stick around for the gameplay demo. Google Genie feels like playing an early stage video game that's still in production. Pix R1 feels like you're having a surreal fever dream where anything can happen. Google Genie has more control, but Pixver R1 feels surreal chaotic. Google Genie's graphic quality is more consistent, more persistent, more gamelike. Pix R1 doesn't have the same consistency and is definitely not persistent, but that's kind of the point. All right, that's the quick overview. I'm going to show you the difference by using the same prompt to create worlds in both Genie and in R1. You'll probably have your favorite based on what you're hoping to do. And I definitely have my favorite, at least for now. [music] Okay, I want to try this one cuz it's kind of realistic. It looks like it would be fun to explore this grassy field. So, let's try this. So, it's while it's building it, it's telling us here's how you move around. So, we can look around with the arrows. We jump with the space and then move around with WD. Okay, there's a fox. So, let's let's see if we can Whoops. Let's see if we can follow that fox. Turn. I'm using the arrows to follow it. There's another one. Just moving along. Let's go this way. No. Just start walking. Let's follow this guy. Can't really go. If you like double tap, you can't really go faster. Kind of a plotting pace. Is that a skunk? I want to get sprayed. It's kind of hard to move. Okay, that's not as And so we saw a couple foxes. We thought we saw a skunk, but it wasn't. All right, so that's it. So this is Pix [music] R1. I did a different video about it which is linked in the description. I think this is very cool and very surreal. This is a totally different experience. So we got 5 minutes to do this. Let's make it point of view. Let's paste it all in there. I did the the realistic realtime loading screen for Genie. So I'll [music] do it here, too. Got a lot more foxes in this one. Um, I'm going to add a wolf. So, I'm not actually moving in Gemini. [music] I was using the keyboard to move, but it's just moving automatically. And then I'll type these prompts to change the action. So, let's have a giraffe show up. So, we've got our wolf here. So, there's our giraffe in the middle. Really sloppy eater. Um, there's the sky, too. We couldn't really change the [music] environment in Gemini, but we can say northern lights. And let's see if we can change the sky. So, we see northern lights. We know there's a lot of meteorites, meteorites, meteor showers. >> [music] >> So now we have the northern lights. [music] >> [music] >> if you see what I mean about it being dreamlike. We're going underwater and it just kind of seamlessly makes everything underwater and he pops up that way. There's fish swimming in the logs. There's our koiish sort of Let's have a liinal [music] creature. It's kind of cool. It made them dance the way a real fox might dance. Like they weren't doing like break dance moves or something. There's our liinal creatures trailing. I think AI tends to like bioluminescent clothes. So, I think that's why they have bioluminescent clothes. Still have all of our foxes. Nice little closeup there. As you can see, it's just constantly changing. You can sit here and watch or you can interact and add another prompt to change the environment. It feels like an immersive and chaotic experience in the best way possible in my opinion. See that? See how he turned they turned into aliens? That was kind of cool. And there's a spaceship with drones that pop out. Jellyfish. I think these are kind of like things that AI likes. [music] They're kind aliens taking care of the foxes. Foxes like, \"Let me go in your ship and hop on a drone and fly into [music] the sky.\" And then they were somewhere for a minute. Was an orange. They're flying. If you wanted control, if you wanted control, this would drive you nuts probably. But if you're here for like the entertaining factor of like how can you change what's happening? [music] It's really fun. They're moving towards the planet. Let's see if we get some Saturn's rings in there. There's like foxes with jetpacks. There's the rings and some clouds and a moon. [music] Feels very surreal and trippy in a great way. Going through some [music] wormhole in the galaxy. Fox opens his mouth as I That was a good way to end it. So, do you see what I mean? It is a completely different [music] experience when you're the person driving that open world in R1. It's even more chaotic. Thank you for watching. Go check out my other video about Pixver R1 [music] where I compare it to the early days of motion picture cameras. All right, there are links in the description and don't forget to subscribe to my Substack [music] newsletter.",
+  "errors": []
+}

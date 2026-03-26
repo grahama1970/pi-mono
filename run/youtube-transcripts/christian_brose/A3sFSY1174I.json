@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "A3sFSY1174I",
+    "language": "en",
+    "took_ms": 9039,
+    "method": null,
+    "title": "The Future of Egypt: A Somalia on the Nile or a Stable, Robust U.S. Ally in the Region?",
+    "channel": "Hudson Institute",
+    "upload_date": "20150717",
+    "duration_sec": 5501,
+    "description": "Samuel Tadros, Mokhtar Awad, Jantzen Garnett, and Lee Smith discuss Egypt's future.",
+    "view_count": 5455
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] A3sFSY1174I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

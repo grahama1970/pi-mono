@@ -1,0 +1,15 @@
+{
+  "baseUrl": "http://127.0.0.1:5173",
+  "tests": [
+    {
+      "id": "binary_explorer_screenshot",
+      "name": "Binary Explorer Screenshot",
+      "group": "binary-explorer",
+      "steps": [
+        {"action": "navigate", "url": "http://127.0.0.1:5173/#binary-explorer"},
+        {"action": "wait", "ms": 3000},
+        {"action": "screenshot", "name": "binary_explorer_main"}
+      ]
+    }
+  ]
+}

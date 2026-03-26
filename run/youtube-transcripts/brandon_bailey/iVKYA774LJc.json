@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iVKYA774LJc",
+    "language": "en",
+    "took_ms": 9065,
+    "method": null,
+    "title": "DEFCON 29 IoT Village - Hutch - Alexa Have You Been Compromised",
+    "channel": "DEFCONConference",
+    "upload_date": "20210831",
+    "duration_sec": 2435,
+    "description": "As voice assistant technologies (such as Amazon Alexa and Google Assistant) become increasingly sophisticated, we are beginning to see adoption of these technologies in the workplace. Whether supporting conference room communications, or even supporting interactions between an organization and its customers — these technologies are becoming increasingly integrated into the ways that we do business. While implementations of these solutions can streamline operations, they are not always without risk. During this talk, the speaker will discuss lessons learned during a recent penetration test of a large-scale “Alexa for Business” implementation in a hospital environment where voice assistants were implemented to assist with patient interactions during the peak of the COVID-19 pandemic. The speaker will provide a live demonstration of how a cyber-criminal could potentially use pre-staged AWS Lambda functions to compromise an “Alexa for Business” device with less than one-minute of physical access. Multiple attack scenarios will be discussed to include making Alexa verbally abuse her users (resulting in possible reputation damage), remote eavesdropping on user interactions, and even active “vishing” (voice phishing) attacks to obtain sensitive information. Finally, the talk will conclude with a discussion of best-practice hardening measures that can be taken to prevent your “Alexa for Business” devices from being transformed into foul-mouthed miscreants with malicious intent.",
+    "view_count": 1305
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iVKYA774LJc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

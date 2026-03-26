@@ -1,0 +1,460 @@
+## UX Lab Shell — Comprehensive Test Manifest
+## Every interactive element, expected behavior, and current status
+## Tests must run via CDP (Chrome DevTools Protocol) over WebSocket — NOT mouse hijacking
+
+# ═══════════════════════════════════════════════════════════════════
+# SIDEBAR
+# ═══════════════════════════════════════════════════════════════════
+
+- id: sidebar_collapse
+  element: "button[title='collapse sidebar'] or PanelLeftClose icon"
+  action: click
+  expected: "Sidebar collapses from 280px to 52px, shows project initials only"
+  status: UNTESTED
+
+- id: sidebar_expand
+  element: "PanelLeft icon (when collapsed)"
+  action: click
+  expected: "Sidebar expands from 52px to 280px, shows full project names"
+  status: UNTESTED
+
+- id: sidebar_search
+  element: "input[placeholder='Search projects']"
+  action: "type 'Binary'"
+  expected: "Project list filters to show only Binary Explorer"
+  status: UNTESTED
+
+- id: sidebar_search_clear
+  element: "input[placeholder='Search projects']"
+  action: "clear text"
+  expected: "All 5 projects visible again"
+  status: UNTESTED
+
+- id: sidebar_select_sparta
+  element: "SPARTA Explorer project item"
+  action: click
+  expected: "Project highlighted with accent border, Mockups tab shows SPARTA screenshots"
+  status: UNTESTED
+
+- id: sidebar_select_binary
+  element: "Binary Explorer project item"
+  action: click
+  expected: "Binary Explorer highlighted, Components tab renders BinaryExplorerView"
+  status: UNTESTED
+
+- id: sidebar_select_music
+  element: "Music Lab Pipeline project item"
+  action: click
+  expected: "Music Lab highlighted, Components tab renders MusicLabWorkbench"
+  status: UNTESTED
+
+- id: sidebar_select_prompt
+  element: "Prompt Lab project item"
+  action: click
+  expected: "Prompt Lab highlighted, Components tab renders PromptLabView"
+  status: UNTESTED
+
+- id: sidebar_thumbnails
+  element: "Project thumbnail images"
+  action: visual_check
+  expected: "Projects with Stitch captures show screenshot thumbnails, not generic grid icons"
+  status: BUG_LIKELY — thumbnails may 404 if capture path doesn't match
+
+- id: sidebar_collapsed_initials
+  element: "Project initials when sidebar collapsed"
+  action: visual_check
+  expected: "Each project shows unique 2-letter initials (SP, BI, ML, PL, UX)"
+  status: UNTESTED
+
+- id: sidebar_collapsed_tooltip
+  element: "Hover over collapsed project item"
+  action: hover
+  expected: "Tooltip shows full project name"
+  status: UNTESTED
+
+- id: sidebar_active_highlight
+  element: "Selected project in sidebar"
+  action: visual_check
+  expected: "Active project has accent left border + tinted background, both expanded and collapsed"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# TOP TAB BAR
+# ═══════════════════════════════════════════════════════════════════
+
+- id: tab_mockups
+  element: "MOCKUPS tab"
+  action: click
+  expected: "Mockups view renders — screenshot grid for selected project"
+  status: UNTESTED
+
+- id: tab_components
+  element: "COMPONENTS tab"
+  action: click
+  expected: "Components view renders — live React component for selected project"
+  status: UNTESTED
+
+- id: tab_design_board
+  element: "DESIGN BOARD tab"
+  action: click
+  expected: "Design Board canvas renders with draggable artifacts"
+  status: UNTESTED
+
+- id: tab_reviews
+  element: "REVIEWS tab"
+  action: click
+  expected: "Reviews VLM diff slider renders"
+  status: UNTESTED
+
+- id: tab_testing
+  element: "TESTING tab"
+  action: click
+  expected: "Testing manifest panel renders with node list"
+  status: UNTESTED
+
+- id: tab_final_site
+  element: "FINAL SITE tab"
+  action: click
+  expected: "Selected project's React component renders inline (not iframe)"
+  status: UNTESTED
+
+- id: tab_active_indicator
+  element: "Active tab"
+  action: visual_check
+  expected: "Active tab has accent underline and text color"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# MOCKUPS VIEW
+# ═══════════════════════════════════════════════════════════════════
+
+- id: mockups_grid_loads
+  element: "Mockups screenshot grid"
+  action: visual_check
+  expected: "Grid shows real PNG screenshots from /captures/{project}/stitch/"
+  status: BUG_LIKELY — API returns captures dirs not matching project IDs
+
+- id: mockups_grid_hover
+  element: "Mockup thumbnail card"
+  action: hover
+  expected: "Card border highlights, image opacity increases, name overlay appears"
+  status: UNTESTED
+
+- id: mockups_empty_state
+  element: "Mockups view with no captures"
+  action: "select project with no stitch/ dir"
+  expected: "Shows empty state message, not error"
+  status: UNTESTED
+
+- id: mockups_terminal
+  element: "Terminal log panel at bottom"
+  action: visual_check
+  expected: "Shows real fetch logs, not hardcoded strings"
+  status: PARTIAL — logs are semi-real (shows fetch results)
+
+# ═══════════════════════════════════════════════════════════════════
+# COMPONENTS VIEW
+# ═══════════════════════════════════════════════════════════════════
+
+- id: components_sparta_renders
+  element: "SPARTA Explorer in Components tab"
+  action: "select SPARTA project, click Components tab"
+  expected: "Full SPARTA Explorer with sub-tabs (Overview, Sources, Controls, etc.) renders"
+  status: UNTESTED
+
+- id: components_binary_renders
+  element: "Binary Explorer in Components tab"
+  action: "select Binary Explorer, click Components tab"
+  expected: "Binary Explorer graph with 166 nodes renders"
+  status: KNOWN_WORKING — verified earlier in session
+
+- id: components_music_renders
+  element: "Music Lab in Components tab"
+  action: "select Music Lab, click Components tab"
+  expected: "MusicLabWorkbench pipeline view renders"
+  status: UNTESTED
+
+- id: components_prompt_renders
+  element: "Prompt Lab in Components tab"
+  action: "select Prompt Lab, click Components tab"
+  expected: "PromptLabView renders"
+  status: UNTESTED
+
+- id: components_no_project
+  element: "Components tab with no project selected"
+  action: "click Components tab without selecting a project"
+  expected: "Shows component library (Gemini's demo components) or empty state"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# DESIGN BOARD (INFINITE CANVAS)
+# ═══════════════════════════════════════════════════════════════════
+
+- id: canvas_drag_artifact
+  element: "Draggable artifact card"
+  action: "mousedown + mousemove + mouseup"
+  expected: "Artifact moves with cursor, position updates in HUD"
+  status: KNOWN_WORKING — basic drag works
+
+- id: canvas_zoom_in
+  element: "+ button in canvas controls"
+  action: click
+  expected: "Canvas zooms in by 25%, zoom percentage updates in HUD"
+  status: JUST_FIXED — wired this session
+
+- id: canvas_zoom_out
+  element: "- button in canvas controls"
+  action: click
+  expected: "Canvas zooms out by 20%, zoom percentage updates in HUD"
+  status: JUST_FIXED
+
+- id: canvas_scroll_zoom
+  element: "Canvas area"
+  action: "scroll wheel up/down"
+  expected: "Canvas zooms in/out smoothly"
+  status: JUST_FIXED
+
+- id: canvas_fit_to_screen
+  element: "Maximize icon button"
+  action: click
+  expected: "Canvas resets to 100% zoom and 0,0 pan"
+  status: JUST_FIXED
+
+- id: canvas_pan_mode
+  element: "Hand icon button"
+  action: click
+  expected: "Toggles pan mode — cursor changes to grab, drag moves canvas not artifacts"
+  status: JUST_FIXED
+
+- id: canvas_pan_drag
+  element: "Canvas in pan mode"
+  action: "click + drag on empty canvas area"
+  expected: "Canvas pans, all artifacts move together"
+  status: JUST_FIXED — needs verification
+
+- id: canvas_reset
+  element: "RESET_LAYOUT button"
+  action: click
+  expected: "Artifacts return to default positions, zoom resets"
+  status: UNTESTED
+
+- id: canvas_svg_connections
+  element: "Dashed line between artifacts"
+  action: visual_check
+  expected: "Line connects artifact 1 to artifact 2, updates when artifacts move"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# REVIEWS (VLM DIFF)
+# ═══════════════════════════════════════════════════════════════════
+
+- id: reviews_slider
+  element: "Diff slider handle"
+  action: "drag left/right"
+  expected: "Mockup vs implementation split view adjusts, revealing one side"
+  status: UNTESTED
+
+- id: reviews_approve
+  element: "APPROVE button"
+  action: click
+  expected: "Some feedback action (toast, state change)"
+  status: STUB — button exists but no handler
+
+- id: reviews_reject
+  element: "REJECT_WITH_FEEDBACK button"
+  action: click
+  expected: "Opens feedback input or triggers rejection flow"
+  status: STUB
+
+- id: reviews_ai_suggestions
+  element: "AI discrepancy analysis panel"
+  action: visual_check
+  expected: "Shows real VLM comparison results, not hardcoded text"
+  status: STUB — shows hardcoded placeholder text
+
+# ═══════════════════════════════════════════════════════════════════
+# TESTING MANIFEST
+# ═══════════════════════════════════════════════════════════════════
+
+- id: testing_node_list
+  element: "Node manifest list"
+  action: visual_check
+  expected: "Shows test nodes with status indicators (PASSED/FAILED/INCONCLUSIVE)"
+  status: STUB — hardcoded demo nodes
+
+- id: testing_run
+  element: "RUN_TEST button"
+  action: click
+  expected: "Calls /api/projects/:id/test-interactions, streams results to log"
+  status: PARTIAL — calls API but API returns simulated steps
+
+- id: testing_import
+  element: "Import manifest button"
+  action: click
+  expected: "Prompt for JSON, imports nodes into manifest"
+  status: UNTESTED
+
+- id: testing_add_node
+  element: "Add node button"
+  action: click
+  expected: "Adds new test node to manifest"
+  status: UNTESTED
+
+- id: testing_select_node
+  element: "Click a test node in list"
+  action: click
+  expected: "Node highlighted, detail panel shows expected target and properties"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# FINAL SITE
+# ═══════════════════════════════════════════════════════════════════
+
+- id: final_site_renders
+  element: "Final Site tab content"
+  action: "select project, click Final Site"
+  expected: "Selected project's live React component renders inline"
+  status: JUST_FIXED — replaced iframe with direct component render
+
+- id: final_site_sparta
+  element: "Final Site with SPARTA selected"
+  action: click
+  expected: "Full SPARTA Explorer with all sub-tabs renders"
+  status: UNTESTED
+
+- id: final_site_binary
+  element: "Final Site with Binary Explorer selected"
+  action: click
+  expected: "Binary Explorer graph renders at full size"
+  status: UNTESTED
+
+- id: final_site_no_project
+  element: "Final Site with no project selected"
+  action: click
+  expected: "Shows 'NO_FINAL_SITE_VIEW_FOR' message"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# HASH ROUTING
+# ═══════════════════════════════════════════════════════════════════
+
+- id: hash_binary_explorer
+  element: "URL: #binary-explorer/droid"
+  action: "navigate to URL"
+  expected: "Binary Explorer selected in sidebar, Components tab active, graph renders"
+  status: KNOWN_WORKING — verified earlier
+
+- id: hash_music_lab
+  element: "URL: #music-lab"
+  action: "navigate to URL"
+  expected: "Music Lab selected in sidebar"
+  status: UNTESTED
+
+- id: hash_sparta
+  element: "URL: #sparta"
+  action: "navigate to URL"
+  expected: "SPARTA Explorer selected in sidebar"
+  status: UNTESTED
+
+- id: hash_prompt_lab
+  element: "URL: #prompt-lab"
+  action: "navigate to URL"
+  expected: "Prompt Lab selected in sidebar"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# WEBSOCKET / REAL-TIME
+# ═══════════════════════════════════════════════════════════════════
+
+- id: ws_connects
+  element: "WebSocket connection"
+  action: "page load"
+  expected: "Console shows '[AGENT_BUS] Connected', useAgentBus returns connected=true"
+  status: UNTESTED
+
+- id: ws_pipeline_events
+  element: "Pipeline stage events"
+  action: "run music-lab pipeline"
+  expected: "Pipeline events appear in real-time in the Mockups terminal or pipeline view"
+  status: UNTESTED
+
+- id: ws_narration
+  element: "Agent narration"
+  action: "send narration event via WebSocket"
+  expected: "Narration text appears in UI"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# API ENDPOINTS
+# ═══════════════════════════════════════════════════════════════════
+
+- id: api_projects
+  element: "GET /api/projects"
+  action: "curl http://localhost:3001/api/projects"
+  expected: "Returns JSON array of 5 projects (but currently returns captures dirs)"
+  status: BUG — API scans captures/ but sidebar uses hardcoded projects. Mismatch.
+
+- id: api_mockups
+  element: "GET /api/projects/:id/mockups"
+  action: "curl http://localhost:3001/api/projects/music-lab-pipeline/mockups"
+  expected: "Returns array of PNG mockups from stitch/ dir"
+  status: UNTESTED
+
+- id: api_components
+  element: "GET /api/projects/:id/components"
+  action: "curl http://localhost:3001/api/projects/music-lab/components"
+  expected: "Returns array of TSX files with line counts"
+  status: UNTESTED — path may not match (music-lab vs music-lab-pipeline)
+
+- id: api_pipeline
+  element: "GET /api/pipeline/status"
+  action: "curl http://localhost:3001/api/pipeline/status"
+  expected: "Returns pipeline_results.json with stage statuses"
+  status: UNTESTED — file path may be wrong
+
+- id: api_memory_recall
+  element: "POST /api/memory/recall"
+  action: "curl -X POST http://localhost:3001/api/memory/recall -d '{\"query\":\"test\"}'"
+  expected: "Returns recall results from ArangoDB via Unix socket"
+  status: UNTESTED
+
+- id: api_scillm
+  element: "POST /api/scillm"
+  action: "curl -X POST http://localhost:3001/api/scillm -d '{...}'"
+  expected: "Proxies to localhost:4001, returns LLM response"
+  status: UNTESTED
+
+- id: api_mockup_primary
+  element: "GET /api/projects/:id/mockup-primary"
+  action: "curl http://localhost:3001/api/projects/music-lab-pipeline/mockup-primary"
+  expected: "Returns first PNG from stitch/ dir as image"
+  status: UNTESTED
+
+# ═══════════════════════════════════════════════════════════════════
+# KNOWN BUGS (from this session)
+# ═══════════════════════════════════════════════════════════════════
+
+- id: bug_project_icons
+  description: "Project sidebar shows generic grid icons instead of screenshot thumbnails"
+  severity: MEDIUM
+  cause: "Thumbnail paths in hardcoded projects may not match actual file paths in captures/"
+
+- id: bug_mockups_no_data
+  description: "Mockups tab may show empty grid for projects whose ID doesn't match a captures/ directory name"
+  severity: HIGH
+  cause: "Sidebar uses hardcoded project IDs (sparta-explorer) but captures/ has different dir names (composed-explorer)"
+
+- id: bug_reviews_placeholder
+  description: "Reviews tab shows hardcoded AI suggestions, not real VLM comparison"
+  severity: LOW
+  cause: "VLM endpoint not called, placeholder text displayed"
+
+- id: bug_testing_simulated
+  description: "Testing tab runs simulated steps, not real CDP interactions"
+  severity: MEDIUM
+  cause: "Server endpoint returns hardcoded steps, no Puppeteer/Playwright integration"
+
+- id: bug_components_tab_empty
+  description: "Components tab shows Gemini's demo components (TacticalButton, HUD_Overlay) when no project is selected instead of actual project component list"
+  severity: LOW
+  cause: "Gemini's demo components are hardcoded, should fetch from /api/projects/:id/components"

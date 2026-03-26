@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "oGkICBTs_as",
+    "language": "en",
+    "took_ms": 8137,
+    "method": null,
+    "title": "S4x24 Preview",
+    "channel": "S4 Events",
+    "upload_date": "20240228",
+    "duration_sec": 2854,
+    "description": "If you are attending S4x24, especially if this is your first S4, this episode will help you. The episode covers the S4x24 mobile app, what's happening each day, where everything is, and is chock full of tips.",
+    "view_count": 1252
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] oGkICBTs_as: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

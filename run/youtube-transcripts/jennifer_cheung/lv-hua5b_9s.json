@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "lv-hua5b_9s",
+    "language": "en",
+    "took_ms": 7950,
+    "method": null,
+    "title": "DEF CON 33 - Man in the Malware: Intercepting Adversarial Communications - Ben 'polygonben' Folland",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1987,
+    "description": "In this talk, the speaker details how a threat actor’s OPSEC slip—testing their own keylogger and infostealer on their hacking machine—provided a real-time view into a cybercrime operation. By intercepting Telegram-based command-and-control (C2) communications, the speaker obtained hundreds of screenshots and keylogs of the threat actors desktop, revealing the entire cybercrime operation. The session also covers the creation of Telegram bot tokens, which were then embedded in malware to enable covert data exfiltration and remote control.\n\nThrough automated analysis techniques, including VirusTotal and custom YARA rules, the speaker tracked samples communicating with Telegram’s API, extracted thousands of bot tokens that were used to forward stolen data, used these to intercept communications, and mapped backend infrastructure through screenshots of the threat actors desktop. This process led to the discovery of links to broader phishing and malware campaigns, underscoring how trusted platforms like Telegram can be abused by malicious actors.",
+    "view_count": 503
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] lv-hua5b_9s: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

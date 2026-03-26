@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "-5bArYeJ3sU",
+    "language": "en",
+    "took_ms": 8683,
+    "method": null,
+    "title": "DEF CON 33 - How AI + Hardware can Transforming Point-of-Care Workflows - PamirAI",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 772,
+    "description": "The Bio / medical industry creates huge amounts of data—vital-sign streams, imaging, clinician notes— Knowledge base requirements are very heavy, so a little help from a specialized llm can boost the productivity alot. Our new layered technology, accomplishes just this\n\nHardware layer: A customized CM5 board, an RP2040 co-processor, and a sunlight-readable E-ink display strike the sweet spot LLM entirely on-device + many other transcription models + TTS models.\n\nSoftware layer – Our “MCP Hub” turns plain-language requests like “track heart rate every five minutes” into a reliable data log, even when Wi-Fi is down. With the help of AI coding, any sensor can start to work within 5min.",
+    "view_count": 144
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] -5bArYeJ3sU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

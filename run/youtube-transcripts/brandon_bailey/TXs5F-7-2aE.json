@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TXs5F-7-2aE",
+    "language": "en",
+    "took_ms": 7859,
+    "method": null,
+    "title": "DEF CON 33 - Finding and Exploiting Kernel Vulnerabilities in the eBPF Subsystem - Agostino Panico",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2161,
+    "description": "Extended Berkeley Packet Filter (eBPF) has revolutionized Linux kernel programmability, but its complex verification and JIT compilation mechanisms present a significant attack surface. This talk provides a technical deep-dive into discovering and exploiting vulnerabilities in the eBPF subsystem, with three key contributions: state-aware fuzzing methodologies specifically designed for eBPF, focusing on verifier state tracking bugs, JIT compiler flaws, and helper function validation bypasses. These techniques go beyond traditional fuzzing by incorporating knowledge of the verifier's internal state machine.\n\nSystematic approach to weaponizing verifier bypasses into practical kernel exploits, including converting bounds calculation errors into arbitrary read/write primitives, bypassing KASLR via targeted information leaks, and achieving privilege escalation through carefully constructed memory corruption.\n\nSecurity architecture of eBPF and provide concrete recommendations for hardening the subsystem against these attacks, including improvements to the verifier's state tracking, JIT compiler security, and runtime validation.",
+    "view_count": 782
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TXs5F-7-2aE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

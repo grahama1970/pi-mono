@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "mrb_3z5OP2M",
+    "language": "en",
+    "took_ms": 8951,
+    "method": null,
+    "title": "DEF CON 32 - Bluetooth Blues: Unmasking CVE 2023-52709-The TI BLE5-Stack Attack - Kevin Mitchell",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 1590,
+    "description": "In this talk, I will detail my discovery and analysis of CVE 2023-52709, a vulnerability in the TI Bluetooth stack. This flaw allows the stack to fail in generating a resolvable Random Private Address (RPA), which can lead to a Denial of Service (DoS) for already bonded peer devices. The discussion will cover the technical aspects of the vulnerability, the implications for automotive security, and potential mitigation strategies.",
+    "view_count": 959
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] mrb_3z5OP2M: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "rSDQDhB7Qtg",
+    "language": "en",
+    "took_ms": 8011,
+    "method": null,
+    "title": "DEF CON Safe Mode Aerospace Village - Martin Strohmeier -  Dissecting Wireless Privacy in Aviation",
+    "channel": "DEFCONConference",
+    "upload_date": "20200824",
+    "duration_sec": 1206,
+    "description": "A multitude of wireless technologies are used within air traffic communication. From a conceptual perspective, all of them are insecure as confidentiality was never part of their design and they could not keep up with the change in threat models. This talk analyzes the current state of wireless privacy in aviation, covering air traffic control and datalink communication. We show how combining publicly available data sources enables global tracking of every aircraft for anyone interested. In particular, we present various case studies to demonstrate how anyone can undermine the privacy of military, governmental and corporate operators. Finally, we look at some industry responses and illustrate the futility of the current attempts to maintain privacy for aircraft owners in a world of ubiquitous sensor surveillance.",
+    "view_count": 387
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] rSDQDhB7Qtg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

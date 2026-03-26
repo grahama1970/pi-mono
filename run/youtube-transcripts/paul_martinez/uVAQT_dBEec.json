@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "uVAQT_dBEec",
+    "language": "en",
+    "took_ms": 8129,
+    "method": null,
+    "title": "ICS Spear Phishing",
+    "channel": "S4 Events",
+    "upload_date": "20160712",
+    "duration_sec": 2172,
+    "description": "Based on the spear phishing results on generic corporate users, and the number of asset owners that allow numerous corporate computers/users to access the ICS, we felt confident that spear phishing ICS administrators, technicians and others would be an easy way for an Internet attacker to gain access to an ICS. But there were no statistics or evidence to prove this point.\n\nSo we put together a team to test the assumption and create an interesting S4x13 presentation.\n\nStep 1 was to find a researcher who could perform the Open Source Intelligence (OSINT) and identify the spear phishing targets and their emails. We believe that Critical Intelligence is the best at ICS OSINT, and they graciously assigned Tyler Klingler to the research project.\n\nStep 2 was to find an organization to perform the spear phishing. After Digital Bond received a spear phishing attack we had some conversations with PhishMe. They have an engine and procedures to perform and monitor spear phishing attacks as security awareness efforts. PhishMe quickly signed on to the efforts.\n\nStep 3 was to find ICS asset owners to participate. They would get the OSINT, spear phishing and analysis at no charge. All results would be anonymized to the asset owner’s satisfaction. Even with this free service, it took a bit of doing to find three organizations to participate.\n\nWatch the video and see the results.",
+    "view_count": 457
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] uVAQT_dBEec: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

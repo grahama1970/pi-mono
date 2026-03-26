@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "0mX5H_Gaicg",
+    "language": "en",
+    "took_ms": 8592,
+    "method": null,
+    "title": "Slow Motion tracking shot of #SpaceX’s #Starship / Super Heavy Integrated Test Flight!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20230423",
+    "duration_sec": 60,
+    "description": "Check out the full video here - \nhttps://youtu.be/NCYSVmSPM7E",
+    "view_count": 1075665
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 0mX5H_Gaicg: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jk1OMo8Gcsk",
+    "language": "en",
+    "took_ms": 8726,
+    "method": null,
+    "title": "DEF CON 30 - Patrick Wardle - You’re Muted Rooted Exploiting Zoom on macOS",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 2442,
+    "description": "With a recent market cap of over $100 billion and the genericization of its name, the popularity of Zoom is undeniable. But what about its security? This imperative question is often quite personal, as who amongst us isn't jumping on weekly (daily?) Zoom calls?\n\nIn this talk, we’ll explore Zoom’s macOS application to uncover several critical security flaws. Flaws, that provided a local unprivileged attacker a direct and reliable path to root.\n\nThe first flaw, presents itself subtly in a core cryptographic validation routine, while the second is due to a nuanced trust issue between Zoom’s client and its privileged helper component.\n\nAfter detailing both root cause analysis and full exploitation of these flaws, we’ll end the talk by showing how such issues could be avoided …both by Zoom, but also in other macOS applications.",
+    "view_count": 1755
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jk1OMo8Gcsk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

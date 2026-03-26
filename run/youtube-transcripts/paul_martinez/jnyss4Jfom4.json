@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jnyss4Jfom4",
+    "language": "en",
+    "took_ms": 8861,
+    "method": null,
+    "title": "Cloud As A Governance Plane",
+    "channel": "S4 Events",
+    "upload_date": "20250331",
+    "duration_sec": 1301,
+    "description": "Discover how a simple badge-swipe solution for tracking line downtime evolved into conversations around Cloud DMZ architecture, using the cloud as a governance plane, to manage both cybersecurity risks and operational excellence across globally distributed manufacturing facilities.",
+    "view_count": 155
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jnyss4Jfom4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

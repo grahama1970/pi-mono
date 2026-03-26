@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "fD24YnpwqeQ",
+    "language": "en",
+    "took_ms": 9001,
+    "method": null,
+    "title": "Prospects for Christians in the Path of Persecution",
+    "channel": "Hudson Institute",
+    "upload_date": "20150319",
+    "duration_sec": 4149,
+    "description": "Nina Shea and Samuel Tadros, both of Hudson Institute’s Center for Religious Freedom, joined His Grace Bishop Angaelos for an in-depth discussion of the threats facing the Coptic community. - Captured Live on Ustream at http://www.ustream.tv/channel/hudson-institute",
+    "view_count": 363
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] fD24YnpwqeQ: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "UL_c4K5dTuc",
+    "language": "en",
+    "took_ms": 9606,
+    "method": null,
+    "title": "DEF CON 33 - Hacking Space to Defend It: Generating IoBs with SPARTA - Brandon Bailey",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1535,
+    "description": "As we know, spacecraft will become prime targets in the modern cyber threat landscape, as they perform critical functions like communication, navigation, and Earth observation. While the launch of the SPARTA framework in October 2022 gave the community insight into potential threats, it didn’t address how to detect them in practical scenarios. In 2025, our research took a different approach as we didn’t just theorize about threats, we actively exploited space systems using SPARTA techniques to figure out what Indicators of Behavior (IoBs) would look like in a real-world attack scenario.\n\nBy leveraging offensive cyber techniques from SPARTA, we identified the specific patterns and behaviors that adversaries might exhibit when targeting spacecraft. These insights allowed us to systematically develop IoBs tailored to the operational constraints and unique environments of space systems. As a result, we demonstrated how Intrusion Detection Systems (IDS) for spacecraft can be designed with realistic, data-driven threat profiles.\n\nThis presentation will walk through our methodology, from exploiting space systems to crafting practical IoBs, and how these insights can directly translate to building robust IDS solutions. We’ll show how a threat-informed, hands-on approach to cybersecurity can transform theoretical knowledge into practical defenses for space infrastructure.",
+    "view_count": 243
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] UL_c4K5dTuc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

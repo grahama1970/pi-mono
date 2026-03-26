@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "3bKTeD5iqWw",
+    "language": "en",
+    "took_ms": 7875,
+    "method": null,
+    "title": "Richard Weitz on the New Iraqi Government",
+    "channel": "Hudson Institute",
+    "upload_date": "20101116",
+    "duration_sec": 259,
+    "description": "Hudson Senior Fellow and Director of the Center for Political-Military Analysis Richard Weitz discusses the new Iraqi government and what it may mean for the future of the country.",
+    "view_count": 70
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 3bKTeD5iqWw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

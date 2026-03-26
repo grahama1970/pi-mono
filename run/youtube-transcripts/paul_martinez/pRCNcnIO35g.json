@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "pRCNcnIO35g",
+    "language": "en",
+    "took_ms": 8706,
+    "method": null,
+    "title": "PLC (In)Security ... SCADA Apologist or SCADA Realist?",
+    "channel": "S4 Events",
+    "upload_date": "20210421",
+    "duration_sec": 2610,
+    "description": "Here is a debate between Eric Byres and Dale Peterson from S4x14, January 2014 that centers on the most important issue of Level 1 / PLC insecurity. \n\nThe question in the debate: Is Eric Byres a SCADA Apologist or a SCADA Realist? You will see from the clips at the start there was disagreement on stage between the two friends.\n\nIt came down to then and in 2021 on whether you believe the fact that PLC's are insecure by design / lack authentication / will do whatever they are told by legitimate user or attacker is a problem that needs to be prioritized and can be addressed in the short run. \n\nI add about six minutes of 2021 comments at the start and then 6:20 the debate starts. At 30:50 you get questions from the audience, and it is fun to see all the ICS security pioneers in the smaller S4 room mixing it up.",
+    "view_count": 527
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] pRCNcnIO35g: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

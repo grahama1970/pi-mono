@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "woFzxb2_0_k",
+    "language": "en",
+    "took_ms": 8923,
+    "method": null,
+    "title": "September: ICS Security Month In Review",
+    "channel": "S4 Events",
+    "upload_date": "20211007",
+    "duration_sec": 3453,
+    "description": "Joel Langill joins me live to discuss the top 3 stories of September plus wins, fails and a prediction. We will put up your comments and questions live as well. Really like to see your wins, fails and predictions during the broadcast.",
+    "view_count": 190
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] woFzxb2_0_k: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

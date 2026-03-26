@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "_J0Az8_NweU",
+    "language": "en",
+    "took_ms": 8377,
+    "method": null,
+    "title": "Survey of ICS Firmware Security",
+    "channel": "S4 Events",
+    "upload_date": "20200701",
+    "duration_sec": 2229,
+    "description": "Ang Cui of Red Balloon Security worked with INL and Cyber ITL on identifying vulnerabilities in ICS firmware. The partnership made sense because: \n- INL has a lot of ICS firmware\n- Red Balloon has the capability to automate the unpacking and analysis of firmware\n- Cyber ITL is developing security metrics that have a lot of mindshare (partnership with Consumer Reports as an example)\n\nThe background and process is covered in the first half, and then the early results of the 40+ firmware tested begin at 20:40. A key element was determining if the vulnerability was accessible from the network.",
+    "view_count": 312
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] _J0Az8_NweU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

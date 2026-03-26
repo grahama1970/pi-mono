@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "tFuiQKUHcdY",
+    "language": "en",
+    "took_ms": 7704,
+    "method": null,
+    "title": "How to use LLMs for Fact Checking",
+    "channel": "Trelis Research",
+    "upload_date": "20240905",
+    "duration_sec": 2439,
+    "description": "➡️ ADVANCED-inference Repo (incl. fact checking scripts in this vid.): https://trelis.com/ADVANCED-inference/\n➡️ Runpod Affiliate Link: https://runpod.io?ref=jmfkcdio\n➡️ One-click GPU templates: https://github.com/TrelisResearch/one-click-llms\n\nOTHER TRELIS LINKS:\n➡️ Trelis Newsletter: https://blog.Trelis.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nVIDEO LINKS:\n- Slides: https://docs.google.com/presentation/d/1mr9S3wdnRr_xofII2xNR0pcQOQdE1f7yFsgR3I94rck/edit?usp=sharing\n\nTIMESTAMPS:\n0:00 Intro - fact checking with LLMs\n0:33 Video Overview\n2:15 #1 Citation Verification Technique\n5:06 #2 Enforcing Structured Responses (regex / json) with OpenAI\n8:54 #3  Context Focusing\n11:44 Comparing Long Context vs Retrieval approaches to fact-checking\n13:37 Test Document Preparation (adding errors to the Irish Constitution)\n16:15 Long Context Fact Checking (whole document as context)\n22:37 Long Context Fact Checking with Structured Responses\n24:38 Setting up structured responses with Gemini and Openai GPT-4o\n27:19 Hacking structured responses with Claude\n28:26 Fact checking with bm25 and cosine similarity retrieval\n38:53 Results: Long Context vs Structured vs Retrieval Approaches\n40:03 Video Resources",
+    "view_count": 2764
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] tFuiQKUHcdY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

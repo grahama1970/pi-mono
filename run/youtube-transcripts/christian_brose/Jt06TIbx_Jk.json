@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "Jt06TIbx_Jk",
+    "language": "en",
+    "took_ms": 8227,
+    "method": null,
+    "title": "Reporting from the Frontline of the War in Ukraine",
+    "channel": "Hudson Institute",
+    "upload_date": "20220411",
+    "duration_sec": 2341,
+    "description": "Please join Hudson Institute Distinguished Fellow Ken Weinstein for a discussion with Research Fellow James Barnett on his on-the-ground reporting from Ukraine and neighboring countries. Following two weeks inside Western and Southern Ukraine, Barnett details what he witnessed and how Ukrainian moral and unity stands strong in the face of the ongoing Russian invasion.\n\nWatch on Hudson.org: https://www.hudson.org/events/2100-virtual-event-reporting-from-the-frontline-of-the-war-in-ukraine-42022",
+    "view_count": 995
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] Jt06TIbx_Jk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

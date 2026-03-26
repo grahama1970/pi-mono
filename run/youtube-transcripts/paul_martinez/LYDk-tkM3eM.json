@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "LYDk-tkM3eM",
+    "language": "en",
+    "took_ms": 8702,
+    "method": null,
+    "title": "Your IDS Rules For ICS Stink (and how to fix them)",
+    "channel": "S4 Events",
+    "upload_date": "20250507",
+    "duration_sec": 1724,
+    "description": "IDS rules for ICS are no longer bleeding edge. They are common. Unfortunately many are also quite bad. Bad because evasion techniques can bypass a lot of the published rules.\n\nPreprocessors can sometimes 'fix' these failings, and they also can introduce new failings.\n\nReid helps you evaluate the rules your using, and more importantly provide you with some tips on how to use advanced features to deal with the problems seen regularly in ICS rules for IDS.\n\nSubscribe to Dale’s ICS Security: Friday News & Notes email here:\nhttps://friday.dale-peterson.com/signup\nCheck out S4x26. Feb 23 - 26 in Miami South Beach:\nhttps://s4xevents.com",
+    "view_count": 649
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] LYDk-tkM3eM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

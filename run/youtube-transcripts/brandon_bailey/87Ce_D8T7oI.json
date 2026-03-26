@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "87Ce_D8T7oI",
+    "language": "en",
+    "took_ms": 7596,
+    "method": null,
+    "title": "DEF CON 33 - Remote code execution via MIDI messages - Anna Antonenko",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2358,
+    "description": "I’m sure you’ve heard of MIDI – it’s a protocol and file format that’s used to exchange audio generation data such as “note on” and “note off” events. But what if I told you that there’s a MIDI implementation out there in the wild that, when excited in just the right ways, can do stuff the original product designers never intended to do? In this talk, we’ll dive into the wonderful world that is hardware reverse engineering. We’ll explore what JTAG and UART are and how we can use them to hack modern digital devices. We’ll dump the firmware of a Yamaha music keyboard and discover what is essentially a backdoor in the MIDI implementation – and exploit it to play Bad Apple on the keyboard’s dot matrix LCD.",
+    "view_count": 460
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 87Ce_D8T7oI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

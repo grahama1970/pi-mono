@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "QjSI8SLSUgI",
+    "language": "en",
+    "took_ms": 7752,
+    "method": null,
+    "title": "Securely Exporting ICS Data",
+    "channel": "S4 Events",
+    "upload_date": "20170914",
+    "duration_sec": 2465,
+    "description": "A primer on how to securely export ICS data for predictive maintenance, billing, or even to allow executives to track Plant performance on their phone or anywhere on the Internet without risking the integrity or availability of the ICS. It also covers emergency remote access.\n\nDale Peterson goes into detail on GE's Turbine Monitoring in Atlanta which was IIoT before the term was coined.\n\nRecommend playing this at 1.25 speed. It is from a S4xJapan session with simultaneous translation in Japanese so Dale spoke more slowly.",
+    "view_count": 449
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] QjSI8SLSUgI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

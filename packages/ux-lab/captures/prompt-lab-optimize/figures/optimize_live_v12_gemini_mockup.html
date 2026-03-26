@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Lab</title>
+    <style>
+        :root {
+            --bg: #0b1220;
+            --text: #e2e8f0;
+            --accent: #7c3aed;
+            --green: #00ff88;
+            --red: #ff4444;
+            --amber: #ffaa00;
+            --blue: #4a9eff;
+            --border: #1e293b;
+            --surface: #131c2e;
+        }
+
+        body {
+            margin: 0;
+            font-family: monospace;
+            font-size: 10px;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll if content overflows */
+        }
+
+        .left-pane {
+            width: 340px;
+            border-right: 1px solid var(--border);
+            padding: 16px; /* Padding inside the pane */
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Spacing between major sections */
+            overflow-y: auto; /* Allow scrolling if left pane content overflows */
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+        }
+
+        .header-div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-title {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 9px;
+            color: #64748b;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            background-color: var(--surface);
+            color: var(--text);
+            font-family: monospace;
+            font-size: 10px;
+            border: 1px solid var(--border);
+            padding: 8px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        .section-title {
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .test-cases-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .test-case-item {
+            border-bottom: 1px solid var(--border);
+            padding: 6px 0;
+            display: flex;
+            flex-wrap: wrap; /* Allow pills to wrap */
+            align-items: center;
+            gap: 4px; /* Spacing between elements in the item */
+        }
+
+        .test-case-item:last-of-type {
+            border-bottom: none; /* No border for the last item */
+        }
+
+        .test-case-id {
+            font-size: 9px;
+            color: var(--accent);
+            white-space: nowrap; /* Prevent ID from wrapping */
+        }
+
+        .test-case-separator {
+            font-size: 9px;
+            color: var(--text);
+            margin: 0 2px;
+        }
+
+        .test-case-description {
+            font-size: 9px;
+            color: var(--text);
+            flex-grow: 1; /* Allow description to take available space */
+        }
+
+        .pill-group {
+            margin-left: auto; /* Push pills to the right */
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 7px;
+            color: white;
+            white-space: nowrap; /* Prevent pill text from wrapping */
+        }
+
+        .pill.accent { background-color: var(--accent); }
+        .pill.blue { background-color: var(--blue); }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px; /* Space above buttons */
+        }
+
+        .small-button {
+            font-size: 9px;
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 2px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .model-chips-section {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .model-chip {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            cursor: pointer;
+            white-space: nowrap;
+            margin: 2px; /* Margin as per requirement */
+        }
+
+        .model-chip.selected {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .model-chip.unselected {
+            background-color: var(--surface);
+            color: #64748b;
+        }
+
+        .optimize-button {
+            width: 100%;
+            background-color: var(--green);
+            color: var(--bg);
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px;
+            border-radius: 4px;
+            margin-top: 8px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-pane">
+        <div class="header-div">
+            <span class="header-title">prompt-lab optimize</span>
+            <span class="header-subtitle">taxonomy_v1</span>
+        </div>
+
+        <textarea placeholder="Enter your prompt here..."></textarea>
+
+        <div>
+            <div class="section-title">Test Cases (3)</div>
+            <div class="test-cases-list">
+                <div class="test-case-item">
+                    <span class="test-case-id">T1547.001</span>
+                    <span class="test-case-separator">|</span>
+                    <span class="test-case-description">Registry Run Keys / Startup Folder</span>
+                    <div class="pill-group">
+                        <span class="pill accent">Corruption</span>
+                        <span class="pill blue">Persist</span>
+                    </div>
+                </div>
+                <div class="test-case-item">
+                    <span class="test-case-id">SI-2</span>
+                    <span class="test-case-separator">|</span>
+                    <span class="test-case-description">Flaw Remediation</span>
+                    <div class="pill-group">
+                        <span class="pill accent">Resilience</span>
+                        <span class="pill accent">Fragility</span>
+                        <span class="pill blue">Harden</span>
+                    </div>
+                </div>
+                <div class="test-case-item">
+                    <span class="test-case-id">d3f:NetworkIsolation</span>
+                    <span class="test-case-separator">|</span>
+                    <span class="test-case-description">Network Isolation</span>
+                    <div class="pill-group">
+                        <span class="pill accent">Resilience</span>
+                        <span class="pill blue">Isolate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="small-button">+ Add Custom</button>
+            <button class="small-button">Import from Ground Truth</button>
+        </div>
+
+        <div>
+            <div class="section-title">Models</div>
+            <div class="model-chips-section">
+                <span class="model-chip selected">DeepSeek-V3</span>
+                <span class="model-chip selected">qwen2.5:7b</span>
+                <span class="model-chip selected">text-gemini</span>
+                <span class="model-chip unselected">qwen2.5:14b</span>
+            </div>
+        </div>
+
+        <button class="optimize-button">Optimize 3 Models</button>
+    </div>
+<style>
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .spinner {
+    border: 2px solid #f3f3f3; /* Light grey */
+    border-top: 2px solid var(--accent); /* Accent color */
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+</style>
+<div class="right-pane" style="flex:1;padding:8px;overflow-y:auto;display:flex;flex-direction:column;font-family:monospace;font-size:10px;color:var(--text);background-color:var(--bg)">
+  <table style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:9px">
+    <thead>
+      <tr>
+        <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Model</th>
+        <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Status</th>
+        <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">F1</th>
+        <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Rounds</th>
+        <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Fixed</th>
+        <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-left:2px solid var(--accent);cursor:pointer;" onmouseover="this.style.backgroundColor='var(--surface)'" onmouseout="this.style.backgroundColor='transparent'">
+        <td style="padding:4px">DeepSeek-V3 with <span style="background-color:#00ff8833;color:var(--green);padding:1px 3px;border-radius:2px;font-size:7px">BEST</span></td>
+        <td style="padding:4px"><span style="color:var(--green)">PASS</span></td>
+        <td style="padding:4px">0.929</td>
+        <td style="padding:4px">2</td>
+        <td style="padding:4px">1/1</td>
+        <td style="padding:4px">4.2s</td>
+      </tr>
+      <tr style="cursor:pointer;" onmouseover="this.style.backgroundColor='var(--surface)'" onmouseout="this.style.backgroundColor='transparent'">
+        <td style="padding:4px">qwen2.5:7b</td>
+        <td style="padding:4px"><span style="color:var(--green)">PASS</span></td>
+        <td style="padding:4px">0.881</td>
+        <td style="padding:4px">4</td>
+        <td style="padding:4px">3/3</td>
+        <td style="padding:4px">38.1s</td>
+      </tr>
+      <tr style="cursor:pointer;" onmouseover="this.style.backgroundColor='var(--surface)'" onmouseout="this.style.backgroundColor='transparent'">
+        <td style="padding:4px">text-gemini</td>
+        <td style="padding:4px"><span style="color:var(--accent)">Running...</span><span class="spinner"></span></td>
+        <td style="padding:4px">—</td>
+        <td style="padding:4px">2...</td>
+        <td style="padding:4px">1...</td>
+        <td style="padding:4px">...</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="border:1px solid var(--green);border-radius:4px;padding:8px;margin-bottom:8px;flex:1;overflow-y:auto">
+    <span style="font-size:10px;font-weight:bold;color:var(--green);margin-bottom:6px;display:block">FINAL RESULT</span>
+    <table style="width:100%;border-collapse:collapse;font-size:9px">
+      <thead>
+        <tr>
+          <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Test Case</th>
+          <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Response</th>
+          <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">F1</th>
+          <th style="padding:4px;border-bottom:1px solid var(--border);text-align:left;color:#64748b">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:4px">Registry Run Keys</td>
+          <td style="padding:4px"><code style="font-size:9px;background-color:transparent;color:var(--text)">{"conceptual":["Corruption"],"tactical":["Persist"],"confidence":0.95}</code></td>
+          <td style="padding:4px"><span style="color:var(--green)">1.000</span></td>
+          <td style="padding:4px"><span style="color:var(--green)">PASS</span></td>
+        </tr>
+        <tr>
+          <td style="padding:4px">Flaw Remediation</td>
+          <td style="padding:4px"><code style="font-size:9px;background-color:transparent;color:var(--text)">{"conceptual":["Resilience","Fragility"],"tactical":["Harden"],"confidence":0.9}</code></td>
+          <td style="padding:4px"><span style="color:var(--green)">0.857</span></td>
+          <td style="padding:4px"><span style="color:var(--green)">PASS</span></td>
+        </tr>
+        <tr>
+          <td style="padding:4px">Network Isolation</td>
+          <td style="padding:4px"><code style="font-size:9px;background-color:transparent;color:var(--text)">{"conceptual":["Resilience"],"tactical":["Isolate"],"confidence":0.92}</code></td>
+          <td style="padding:4px"><span style="color:var(--green)">0.929</span></td>
+          <td style="padding:4px"><span style="color:var(--green)">PASS</span></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:4px;text-align:right;font-weight:bold">Avg F1</td>
+          <td style="padding:4px;font-weight:bold">0.929</td>
+          <td style="padding:4px">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <span style="font-size:9px;color:#64748b">Converged prompt → taxonomy_v1.deepseek-v3.txt</span>
+    <pre style="border:1px solid var(--accent);border-radius:4px;padding:6px;font-size:9px;background-color:var(--surface);white-space:pre-wrap;margin:4px 0;color:var(--text)">You are a cybersecurity taxonomy classifier.
+Extract conceptual and tactical bridge tags from the given security control or technique.
+Return ONLY valid JSON: {"conceptual":[...],"tactical":[...],"confidence":0.8}
+IMPORTANT: Use ONLY exact tag names. "Persistence" is NOT a tag — use "Persist".
+Valid conceptual: Precision, Resilience, Fragility, Corruption, Loyalty, Stealth
+Valid tactical: Model, Harden, Detect, Isolate, Restore, Evade, Exploit, Persist
+Choose tags that best describe the PRIMARY purpose. Be precise, not exhaustive.</pre>
+
+    <div style="padding:4px;color:#64748b;font-size:9px;cursor:pointer">&#9656; Iteration log (2 rounds, 6 eval calls)</div>
+
+    <div style="border-top:1px solid var(--border);padding:8px;display:flex;align-items:center;gap:8px;margin-top:auto">
+        <button style="border:1px solid var(--green);color:var(--green);background:transparent;padding:4px 10px;border-radius:3px;font-size:10px;cursor:pointer;font-family:monospace">Approve &amp; Save All</button>
+        <button style="border:1px solid #64748b;color:#64748b;background:transparent;padding:4px 10px;border-radius:3px;font-size:10px;cursor:pointer;font-family:monospace">Reject</button>
+        <span style="font-size:8px;color:#475569">Saves 3 per-model prompts + updates taxonomy_v1.txt with DeepSeek-V3 (best F1)</span>
+    </div>
+</div>
+</body>
+</html>

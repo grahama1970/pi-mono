@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hWOuW471DiA",
+    "language": "en",
+    "took_ms": 8823,
+    "method": null,
+    "title": "James A. Baker III’s Washington: A Conversation with Peter Baker and Susan B. Glasser",
+    "channel": "Hudson Institute",
+    "upload_date": "20201119",
+    "duration_sec": 3602,
+    "description": "Join Hudson Institute for a discussion with Peter Baker and Susan B. Glasser, coauthors of the recently published The Man Who Ran Washington: The Life and Times of James A. Baker III. Hudson Institute Distinguished Fellow Walter Russell Mead will moderate the conversation.\n\nTheir new biography chronicles James Addison Baker III’s political career – over four presidencies and six presidential elections; from campaign manager to White House Chief of Staff to campaign manager again and in cabinet roles as Secretary of the Treasury under Ronald Reagan and Secretary of State under George H. W. Bush. For decades, Baker was known as the man who knew Washington – and the art of politics – better than anyone else.",
+    "view_count": 689
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hWOuW471DiA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

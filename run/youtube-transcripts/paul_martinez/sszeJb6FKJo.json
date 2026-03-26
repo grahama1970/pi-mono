@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "sszeJb6FKJo",
+    "language": "en",
+    "took_ms": 8189,
+    "method": null,
+    "title": "CISA Attack Surface Scanning Service",
+    "channel": "S4 Events",
+    "upload_date": "20231206",
+    "duration_sec": 1801,
+    "description": "Dale is joined by Steve Pozza, CISA Section Chief of Operational Resilience, and Tom Millar, CISA Branch Chief of Resilience, to discuss some of CISA's security services for asset owners. They discuss:\n\n- The Internet accessible attack surface enumeration and vulnerability scanning surface.\n- Asset owners can buy products or services to do this. Why is the government doing this?\n- What CISA is doing with this attack surface data?\n- How is CISA measuring the success of this service offering?\n- Other broadly available services and tools, the cybersecurity performance goals (CPG assessment) ~500 done in 2023 (and their thinking about self-assessments), Malcom traffic analysis tool, and a couple of other tools.\nLinks",
+    "view_count": 397
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] sszeJb6FKJo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

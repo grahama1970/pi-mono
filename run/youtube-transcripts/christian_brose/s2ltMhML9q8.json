@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "s2ltMhML9q8",
+    "language": "en",
+    "took_ms": 8436,
+    "method": null,
+    "title": "Argentina at the Crossroads",
+    "channel": "Hudson Institute",
+    "upload_date": "20140115",
+    "duration_sec": 5532,
+    "description": "Argentinians face an escalating crisis of eroding democratic rights and economic freedoms. Over the last decade Argentinian leaders have seized nearly $30 billion in private pension funds, ended central bank independence, and have nationalized major industries. Voices of opposition from journalists, investors, and political leaders are being silenced through President Cristina Kirchner's dismantling of independent media outlets, such as Argentina's largest newspapers Clarín and La Nación.\r\nWith",
+    "view_count": 190
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] s2ltMhML9q8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

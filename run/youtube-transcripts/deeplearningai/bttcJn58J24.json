@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "bttcJn58J24",
+    "language": "en",
+    "took_ms": 8238,
+    "method": null,
+    "title": "AI Dev 25 x NYC | Panel Discussion: Software Development in the Age of AI",
+    "channel": "DeepLearningAI",
+    "upload_date": "20251205",
+    "duration_sec": 2999,
+    "description": "Artificial intelligence is redefining how software is conceived, built, and maintained. \n\nThis panel brought together Laurence Moroney, Director of AI at Arm, Andrew Ng, Founder of DeepLearning.AI, Malte Ubl, CTO of Vercel, and Fabian Hedin, CTO of Lovable, to examine how intelligent systems are transforming the software development lifecycle. \n\nThe discussion explored advances in AI-assisted coding, automated optimization, and adaptive frameworks. \n\nAttendees learned how these technologies are reshaping engineering workflows, accelerating innovation, and changing the role of developers in an AI-driven world.\n\n--------------\n\nJoin us at AI Dev 26 x San Francisco! Tickets: https://ai-dev.deeplearning.ai/",
+    "view_count": 1342
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] bttcJn58J24: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "SyupAcnURtA",
+    "language": "en",
+    "took_ms": 8742,
+    "method": null,
+    "title": "Havex Deep Dive",
+    "channel": "S4 Events",
+    "upload_date": "20170903",
+    "duration_sec": 3851,
+    "description": "Corey Thuen of Digital Bond Labs looks in detail at the OPC aspects of the Havex malware at S4xJapan.",
+    "view_count": 946
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] SyupAcnURtA: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

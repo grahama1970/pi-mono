@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "DogZmNn3zLs",
+    "language": "en",
+    "took_ms": 8487,
+    "method": null,
+    "title": "A CEO's Perspective On Being Hit With Ransomware",
+    "channel": "S4 Events",
+    "upload_date": "20221107",
+    "duration_sec": 1453,
+    "description": "European energy industry company Volue was hit with ransomware in May 2021. KraftCERT played a key role helping Volue respond to this ransomware. Volue CEO Trond Straume and Margret Raaum, CEO of KraftCERT, tell the story of the incident, incident response and their lessons learned.",
+    "view_count": 350
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] DogZmNn3zLs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

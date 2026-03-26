@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "cNSzjU6yqn4",
+    "language": "en",
+    "took_ms": 9248,
+    "method": null,
+    "title": "Align Audio and Text for Speech Recognition Model Training",
+    "channel": "Trelis Research",
+    "upload_date": "20260114",
+    "duration_sec": 1616,
+    "description": "Get repo access at Trelis.com/ADVANCED-audio\n\nGet Trelis All Access (Trelis.com/All-Access)\n1. Access all SEVEN Trelis Github Repos (-robotics, -vision, -evals, -fine-tuning, -inference, -voice, -time-series)\n2. Support via Github Issues & Trelis' Private Discord\n3. Early access to Trelis videos via Discord\n\nTip: If you subscribe here on YouTube, click the bell to be notified of new vids\n\nDone-for-you Custom Fine-tuning Services\nLearn More: https://trelis.com/fine-tuning-services/\n\nStarting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\nGet Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\nVideo Links:\n- Trelis Studio: https://studio.trelis.com\n- CTC Alignment: https://github.com/MahmoudAshraf97/ctc-forced-aligner\n\nTIMESTAMPS:\n0:00 Introduction to audio-text alignment for model training\n1:05 Demo of Audio Alignment interface with two models\n2:06 MMS-FA model and commercially-licensed CTC aligner alternative\n3:10 Word timestamps enable sentence detection for clean training chunks\n4:21 Multi-step alignment process: normalization, emissions, and character probabilities\n5:21 Viterbi process calculates most likely path for final alignment\n6:44 Trelis Studio data preparation workflow with audio upload\n7:45 Realignment process creates clean 20-30 second chunks with sentence boundaries\n8:46 Review of resulting dataset with clean chunks and word timestamps\n10:01 Fine-tuning Whisper without timestamps causes catastrophic forgetting\n12:07 Emissions are character probabilities generated per audio frame\n13:09 Wave2Vec models and text normalization process\n15:49 Torch Audio forced aligner non-commercial license restriction\n18:56 Viterbi method for mapping ground truth text to audio windows\n21:54 Emissions model training using unlabeled data approach\n23:34 Multiple valid sequences kept during alignment process\n25:36 Wave2Vec pre-training uses masked audio prediction\n26:36 Conclusion with repository reference at Trelis.com/advanced-audio",
+    "view_count": 854
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] cNSzjU6yqn4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

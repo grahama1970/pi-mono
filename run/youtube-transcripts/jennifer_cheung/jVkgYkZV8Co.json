@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jVkgYkZV8Co",
+    "language": "en",
+    "took_ms": 8471,
+    "method": null,
+    "title": "DEF CON 33 - Hacking OBD II Emissions Testing - Archwisp",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 818,
+    "description": "We're going to explore how OBD-II emissions testing works and how you might go about convincing the scanner that everything is fine.",
+    "view_count": 7166
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jVkgYkZV8Co: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

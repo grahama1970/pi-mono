@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "KhWtkZmOPn4",
+    "language": "en",
+    "took_ms": 8903,
+    "method": null,
+    "title": "DEF CON 33 - How to secure unique ecosystem shipping 1 billion+ cores? - Adam Zabrocki, Marko Mitic",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2225,
+    "description": "Security research has been focused on securing well-known, widely replicated ecosystems where problems and solutions are shared across the industry. But what happens when you build something no one else has? How do you secure an architecture that's both proprietary and deployed at billion-core scale?\n\nIn 2016, NVIDIA began transitioning its internal Falcon microprocessor, used in nearly all GPU products, to a RISC-V based architecture. Today, each chipset has 10-40 cores, and in 2024, NVIDIA surpassed 1 billion RISC-V cores shipped. This success came with unique security challenges, ones that existing models couldn't solve.\n\nTo address them, we created a custom SW and HW security architecture from scratch. Including a purpose-built Separation Kernel SW, novel RISC-V ISA extensions like Pointer Masking, IOPMP (later ratified), and unique secure boot and attestation solution. But how do you future-proof a proprietary ecosystem against tomorrow's threats?\n\nIn this talk, we'll share what we learned, and what's next. From HW-assisted memory safety (HWASAN, MTE) to control-flow integrity (CFI) and CHERI-like models, we'll explore how NVIDIA is preparing not only its RISC-V ecosystem for the evolving threat landscape. If you care about real-world security at an unprecedented scale, this is a journey you won't want to miss.",
+    "view_count": 1300
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] KhWtkZmOPn4: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

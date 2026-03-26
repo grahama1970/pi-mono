@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "xMfXqtcni_I",
+    "language": "en",
+    "took_ms": 10235,
+    "method": null,
+    "title": "DEF CON 33 - Satellite Networks Under Siege: Cybersecurity Challenges of Targeted DDoS - Roee Idan",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 1455,
+    "description": "Satellite Networks Under Siege: Cybersecurity Challenges of Targeted DDoS Attacks explores how the rapid evolution of Low Earth Orbit constellations, such as those providing global broadband, has introduced a new frontier of cybersecurity challenges. This presentation delves deep into the unique vulnerabilities of satellite networks—including dynamic topologies, limited bandwidth, and predictable orbital patterns—that enable adversaries to execute persistent, targeted DDoS attacks with minimal botnet footprints. Attendees will learn about advanced attack methodologies and frameworks—exemplified by research on approaches like the HYDRA framework—that optimize botnet composition and allocation for multi-zone disruptions. Combining detailed theoretical models, simulation results, and optimization techniques, this talk provides a comprehensive analysis of both attack strategies and the emerging countermeasures. Focusing on enhancing cybersecurity for critical communication infrastructures, this session presents actionable insights drawn from thorough analysis and illustrative case studies, offering practical recommendations and a clear framework for understanding both offensive tactics and defensive measures essential for securing satellite communications.",
+    "view_count": 405
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] xMfXqtcni_I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "p5gqmtTBe54",
+    "language": "en",
+    "took_ms": 7769,
+    "method": null,
+    "title": "DEF CON 29 Voting Village - Bob Sullivan - A Journalist’s Perspective on Fake News",
+    "channel": "DEFCONConference",
+    "upload_date": "20210922",
+    "duration_sec": 640,
+    "description": "Why pseudo-events led to fake news.",
+    "view_count": 523
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] p5gqmtTBe54: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

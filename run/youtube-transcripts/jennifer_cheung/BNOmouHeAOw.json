@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BNOmouHeAOw",
+    "language": "en",
+    "took_ms": 8832,
+    "method": null,
+    "title": "DEF CON 33 - RF Village - The dirty laundry of stored value washing cards - Aidan Nakache, Equip",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 1857,
+    "description": "This talk details a comprehensive reverse engineering analysis of stored-value laundry cards, prevalent in facilities worldwide. The widespread adoption of localised contactless payment solutions, attributed to their convenience, necessitates understanding their internal operations. This analysis explores the mechanisms behind value storage and modification within these cards. During this investigation, a data structure was identified that presented a significant vulnerability. The implications of this vulnerability raise serious concerns, which extend beyond laundry facilities, potentially impacting the security of similar contactless systems globally.",
+    "view_count": 2900
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BNOmouHeAOw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

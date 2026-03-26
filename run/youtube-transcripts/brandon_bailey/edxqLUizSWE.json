@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "edxqLUizSWE",
+    "language": "en",
+    "took_ms": 7898,
+    "method": null,
+    "title": "DEF CON 33 - Voting Village - A NY Legal Challenge to ExpressVote XL's Barcode Use - Susan Lerner",
+    "channel": "DEFCONConference",
+    "upload_date": "20251104",
+    "duration_sec": 1254,
+    "description": "Susan Lerner provides an overview of the ongoing litigation in New York state court, Common Cause NY v. Kosinski, which challenges the legality of using the ES&S ExpressVote XL all-in-one ballot marking device and tabulator under New York law. The ExpressVote XL records votes in barcodes - unreadable to the naked eye - which, Common Cause NY asserts, violates New York law. NY statute provides that all voters must have the opportunity to verify their votes before they are cast. Notably, the federal Help America Vote Act includes the same provision. Should Common Cause NY prevail in state court, the decision could spark further action.\n\nThe recording or votes in barcodes or QR codes has been controversial ever since its introduction. In 2019, Colorado Secretary of State Jenna Griswald (D) announced an initiative to end encoding votes in barcodes/QR codes in Colorado. In March, Donald Trump issued an executive order that sought to prohibit encoding votes in barcodes/QR codes in federally certified voting machines. \n\nThis talk will explore the legal arguments at issue in the NY case, that could have repercussions elsewhere.",
+    "view_count": 263
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] edxqLUizSWE: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

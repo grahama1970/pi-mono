@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7ryw3A_pFGY",
+    "language": "en",
+    "took_ms": 8797,
+    "method": null,
+    "title": "DEF CON Safe Mode Red Team Village - Tim Wadhwa-Brown - All of the Threats Intelligence Modeling",
+    "channel": "DEFCONConference",
+    "upload_date": "20200819",
+    "duration_sec": 3060,
+    "description": "ATT&CK is a game changer and where it works, it can enable both blue and red teams to co-exist and work effectively together. However, what happens when it falls short and the threat intelligence and hypotheses don't exist? How do you build threat intelligence and threat hunt hypotheses from first principles. What do attackers on UNIX do when bitcoin miners aren't their motivation?\nI’ll go into:\n* The target I chose and why – we have ~40 years’ experience looking at UNIX from an offensive standpoint, why wouldn't attackers\n* Building a collection worksheet and the information you'll need to track\n* Figuring out what TTPs the bad guys are using to attack UNIX when no-one has documented them previously – faced with a lack of DFIR reports, how do you validate your hypotheses\n* Working out whether your customer is exposed and why this matters\n* Translating concepts we see in the wild into things our customer can consume\n* What this means for users of ATT&CK",
+    "view_count": 665
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7ryw3A_pFGY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

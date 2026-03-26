@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "D-w-aYxSjmU",
+    "language": "en",
+    "took_ms": 9475,
+    "method": null,
+    "title": "ICS Incident Response",
+    "channel": "S4 Events",
+    "upload_date": "20190730",
+    "duration_sec": 202,
+    "description": "3-minutes of highlights from Chris Sistrunk's session on ICS Incident Response at the OnRamp ICS Security Training.",
+    "view_count": 294
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] D-w-aYxSjmU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

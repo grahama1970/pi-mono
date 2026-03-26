@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8ux_t7R-heM",
+    "language": "en",
+    "took_ms": 9571,
+    "method": null,
+    "title": "[SCRUB DONT WATCH] Watch SpaceX hop Starship SN-5!",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20200804",
+    "duration_sec": 9019,
+    "description": "Gene and Rachel from Spadre [@SouthPadreIsle] are right at the edge of the exclusion zone with one of my slow motion cameras to catch SpaceX perform a test flight of Starship SN-5!\n\nFollow my friends @SpacePadreIsle for all their hard work and help! - https://twitter.com/SpacePadreIsle\n\n--------------------------\n\nWant to support what I do? Consider becoming a Patreon supporter for access to exclusive livestreams, our discord channel and subreddit! - http://patreon.com/everydayastronaut\n\nOr become a YouTube member for some bonus perks as well! - https://www.youtube.com/channel/UC6uKrU_WqJ1R2HMTY3LIx5Q/join\n\nThe best place for all your space merch needs!\nhttps://everydayastronaut.com/shop/\n\nAll music is original! Check out my album \"Maximum Aerodynamic Pressure\" anywhere you listen to music (Spotify, iTunes, Google Play, Amazon, etc) or click here for easy links - http://everydayastronaut.com/music\n\nI'm the cohost of an awesome podcast where we talk all about current technologies and how they shape our future! http://ourludicrousfuture.com or here on YouTube https://www.youtube.com/ourludicrousfuture",
+    "view_count": 634991
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8ux_t7R-heM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

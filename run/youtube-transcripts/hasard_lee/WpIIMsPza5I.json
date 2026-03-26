@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "WpIIMsPza5I",
+    "language": "en",
+    "took_ms": 8137,
+    "method": null,
+    "title": "Combat Show of Force by F-16 and F-15",
+    "channel": "Hasard Lee",
+    "upload_date": "20230201",
+    "duration_sec": 24,
+    "description": "",
+    "view_count": 97493
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] WpIIMsPza5I: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

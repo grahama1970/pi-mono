@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "e93V9TWnxJo",
+    "language": "en",
+    "took_ms": 8886,
+    "method": null,
+    "title": "DEF CON 33 - Inside Look at a Chinese Operational Relay Network - Michael Torres, Zane Hoffman",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2012,
+    "description": "Operational relay box (ORB) networks are used by hackers to obscure their true origin, effectively turning a network of computers into their own private TOR network. This talk is an inside look at a relay network we believe to be based in the People’s Republic of China based entirely on public data we stumbled upon. It will contain an unprecedented level of detail into the specific tools, networks, and development techniques used to create and operate an ORB network.\n\nIf you’re a cloud provider trying to stop this type of abuse, a defender trying to understand how to detect when a relay is being used, or a wanna-be attacker, this is the talk for you. We name the cloud providers, data storage systems, software tools, domain names, email addresses, and passwords that they use to create, maintain, and operate their network.",
+    "view_count": 1187
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] e93V9TWnxJo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

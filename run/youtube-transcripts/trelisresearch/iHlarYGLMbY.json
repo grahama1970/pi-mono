@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "iHlarYGLMbY",
+    "language": "en",
+    "took_ms": 9114,
+    "method": null,
+    "title": "How does GRPO work?",
+    "channel": "Trelis Research",
+    "upload_date": "20250212",
+    "duration_sec": 1964,
+    "description": "🔔 If you subscribe, click the bell to be notified of new vids 🔔\n\n🛠 Build & Deploy Faster\nFine-tuning, Inference, Audio, Evals, and Vision Tools: https://trelis.com\n\n💡 Need Technical or Market Assistance?\nBook a Consult Here: https://forms.gle/wJXVZXwioKMktjyVA\n\n🤝 Are You a Top Developer?\nWork for Trelis: https://trelis.com/jobs/\n\n💸 Starting a New Project/Venture?\nApply for a Trelis Grant: https://trelis.com/trelis-ai-grants/\n\n📧 Get Trelis AI Tutorials by Email\nSubscribe on Substack: https://trelis.substack.com\n\n📸 Thumbnail Tutorial\nSee How It’s Made: https://youtu.be/ThKYjTdkyP8\n\nTIMESTAMPS:\n00:00 Introduction to Reinforcement Learning\n00:30 Understanding Supervised Fine Tuning\n01:30 Exploring ORPO: Odds Ratio Preference Optimization\n06:57 Diving into GRPO: Group Relative Policy Optimization\n08:31 Challenges and Rewards in GRPO\n14:12 History and Evolution of Policy Optimization\n19:30 Trust Region Policy Optimization (TRPO) and Proximal Policy Optimization (PPO)\n22:26 Simplifying PPO with GRPO\n29:34 Final Thoughts on GRPO and Reinforcement Learning",
+    "view_count": 7742
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] iHlarYGLMbY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "duz7UXxR7tc",
+    "language": "en",
+    "took_ms": 7613,
+    "method": null,
+    "title": "DEF CON 30 - Harley Geiger, Leonard Bailey - Hacking Law is for Hackers",
+    "channel": "DEFCONConference",
+    "upload_date": "20221020",
+    "duration_sec": 5259,
+    "description": "What a year for hacker law! 2021-2022 saw major changes to laws that regulate hacking, such as the notorious CFAA, the grotesque DMCA Sec. 1201, and China's grisly \"Management of Security Vulnerabilities\" regulation. This presentation will walk through each of these developments and etail their implications for security researchers. We'll give background on how these laws have recently changed, identify areas of continued risk for hackers, and suggest concrete ways for the security community to make additional progress in shaping a favorable legal environment. An extended roundtable discussion will follow the presentation.",
+    "view_count": 983
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] duz7UXxR7tc: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

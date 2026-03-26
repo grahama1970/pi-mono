@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "4rC2Z5El-8E",
+    "language": "en",
+    "took_ms": 9419,
+    "method": null,
+    "title": "Can SpaceX Reuse a second stage?",
+    "channel": "Everyday Astronaut",
+    "upload_date": "20170621",
+    "duration_sec": 1035,
+    "description": "SpaceX makes first stage recovery and reuse look routine these days. In March, Elon Musk said he wants to start trying to recover and reuse the second stage... Why is that a bigger deal than the first stage? Find out! \n\nMusic by Everyday Astronaut - http://soundcloud.com/everydayastronaut\n\nEveryday Astronaut hats, prints, shirts and more at - https://everydayastronaut.com/shop/\n\nShow your support on Patreon - http://patreon.com/everydayastronaut\n\nAmazing SpaceX legs, gridfins, and RCS Kerbal Mods by svendii - \nhttps://mods.curse.com/ksp-mods/kerbal/239291-kerbal-reusability-expansion",
+    "view_count": 639397
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 4rC2Z5El-8E: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "8HA1MPaqPSs",
+    "language": "en",
+    "took_ms": 8202,
+    "method": null,
+    "title": "China Looks at the West: A Book Discussion with Christopher Ford",
+    "channel": "Hudson Institute",
+    "upload_date": "20150911",
+    "duration_sec": 6800,
+    "description": "Congressman Randy Forbes, Christopher Ford, Elbridge Colby, Maochun Yu, and Michael Pillsbury discuss China Looks at the West and Sino-U.S. relations.",
+    "view_count": 11584
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 8HA1MPaqPSs: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

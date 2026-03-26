@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "O9f8GWnHl7w",
+    "language": "en",
+    "took_ms": 8699,
+    "method": null,
+    "title": "Transformers from Scratch - Part #2",
+    "channel": "Trelis Research",
+    "upload_date": "20240517",
+    "duration_sec": 3413,
+    "description": "➡️ Learn more about Trelis Resources at Trelis.com/About\n\nTIMESTAMPS\n0:00 Welcome and Link to Colab Notebook\n3:20 Encoder versus Decoder Architectures\n8:34 What is the GPT-4o architecture?\n10:37 Recap of transformer for weather prediction\n15:30 Pre layer norm versus post layer norm\n19:42 RoPE vs Sinusoidal Positional Embeddings\n26:00 Dummy Data Generation\n26:40 Transformer Architecture Initialisation\n30:48 Forward pass test\n32:40 Training loop setup and test on dummy data\n39:10 Weather data import\n45:40 Training and Results Visualisation\n47:20 Can the model predict the weather?\n51:32 Is volatility in the loss graph a problem?\n53:50 How to improve the model further?",
+    "view_count": 539
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] O9f8GWnHl7w: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

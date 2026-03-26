@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "1NYHUaG5nj8",
+    "language": "en",
+    "took_ms": 8961,
+    "method": null,
+    "title": "Tribute ship, USS Somerset - 20th Anniversary of 9/11",
+    "channel": "Sandboxx",
+    "upload_date": "20210908",
+    "duration_sec": 332,
+    "description": "September 11, 2001, the U.S. came under attack when four commercial airliners were hijacked and used to strike targets on the ground.\n\nNearly 3,000 people tragically lost their lives. Because of the actions of the 40 passengers and crew aboard Flight 93, the fourth attack was thwarted, causing the plane to crash in a field in Stonycreek Township, Penn., near Shanksville in Somerset County.\n\nIn honor of those 40 and their bravery, the USS Somerset is the final of the 9/11 tribute ships to be commissioned, joining the USS New York and the USS Arlington.\n\n\nDefense Media Activity video by Jonathan Snyder",
+    "view_count": 1800
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 1NYHUaG5nj8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

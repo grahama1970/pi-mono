@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "JresQlHSvhI",
+    "language": "en",
+    "took_ms": 7849,
+    "method": null,
+    "title": "DEF CON 31 Packet Hacking Village - Death by 1000 Likes  - Will Kay",
+    "channel": "DEFCONConference",
+    "upload_date": "20230915",
+    "duration_sec": 2736,
+    "description": "As lonely Aussies attending our first Defcon last year, we were frequently drawn to the hilarity/uniquness of the Wall of Sheep board. One of our group suggested people leaking at the con was super entertaining, but what about throughout the rest of the year? We decided to use the time between DC30 and DC31 scraping the r/defcon subreddit to create the Wall of Sheep - online edition.",
+    "view_count": 2269
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] JresQlHSvhI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

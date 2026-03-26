@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TqLRpUmpBWY",
+    "language": "en",
+    "took_ms": 8805,
+    "method": null,
+    "title": "DEF CON 32 - Open Source Hacker V.  Government Lawyer - Rebecca Lively, Eddie Zaneski",
+    "channel": "DEFCONConference",
+    "upload_date": "20241016",
+    "duration_sec": 2087,
+    "description": "Join a recovering government attorney and an open-source hacker for a fiery debate that dives into the world of DoD cybersecurity inefficiencies. Rebecca, a former DoD lawyer, pairs her intricate understanding of perplexing government policies with Eddie’s fresh, critical (and dare we say naive?) insights from the private sector. This session will explore the frustrating “how” behind the government’s “why,” from slow booting government laptops to the realities of “military-grade technology.” Together, they will challenge the status quo, proposing innovative, open-source inspired solutions to streamline and secure DoD operations. Expect a dynamic exchange filled with real-world frustrations, enlightening explanations, and a hacker’s touch on how to fix what’s broken.",
+    "view_count": 951
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TqLRpUmpBWY: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "hqMyvBk6_Zk",
+    "language": "en",
+    "took_ms": 8139,
+    "method": null,
+    "title": "Counterbalance | Ep. 5: Ed Husain, Islam and the West",
+    "channel": "Hudson Institute",
+    "upload_date": "20210331",
+    "duration_sec": 3356,
+    "description": "Mike and Marshall talked to Ed Husain, the author of The Islamist, a memoir of his time inside radical Islamism, who long ago rejected extremism and now advises governments and political leaders on Islam and the Middle East. Ed shared his views on the relations between the Islam and the West today, the fate of secularism in the Muslim Middle East, the Abraham Accords and more.\n\nSubscribe: https://podcasts.apple.com/us/podcast/counterbalance/id1553960915",
+    "view_count": 852
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] hqMyvBk6_Zk: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

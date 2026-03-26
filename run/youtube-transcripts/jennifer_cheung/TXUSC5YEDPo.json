@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "TXUSC5YEDPo",
+    "language": "en",
+    "took_ms": 8710,
+    "method": null,
+    "title": "DEF CON 33 - SSH Honeypots and Walkthrough Workshops: A History - Ryan Mitchell",
+    "channel": "DEFCONConference",
+    "upload_date": "20251010",
+    "duration_sec": 2085,
+    "description": "At DEF CON 24, an SSH honeypot on the open network held a puzzle that would go on to inspire the first Walkthrough Workshop. Although the Walkthrough Workshops at the Packet Hacking Village no longer feature Cowrie, its echoes live on at DEF CON. Out of the box, Cowrie is a medium-interaction SSH honeypot, but this level of interaction can be raised with a little elbow grease. From custom commands and adventure games to file systems laid out as spatial cubes, this talk explores several years of Cowrie-based challenges that will bash your expectations of terminal interaction.",
+    "view_count": 722
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] TXUSC5YEDPo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "jfX4YIWScoo",
+    "language": "en",
+    "took_ms": 8761,
+    "method": null,
+    "title": "DEF CON 32 - Hacker Jeopardy - Night 1",
+    "channel": "DEFCONConference",
+    "upload_date": "20241007",
+    "duration_sec": 6881,
+    "description": "Night One of DEF CON 32's premier hacker game show -  Hacker Jeopardy!",
+    "view_count": 8438
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] jfX4YIWScoo: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

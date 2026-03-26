@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "B_TX4J4lZlI",
+    "language": "en",
+    "took_ms": 8967,
+    "method": null,
+    "title": "DEF CON Safe Mode Blockchain Village - Ryan Rubin - Is DeFi Ready for Prime Time   Q and A",
+    "channel": "DEFCONConference",
+    "upload_date": "20200817",
+    "duration_sec": 362,
+    "description": "",
+    "view_count": 296
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] B_TX4J4lZlI: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

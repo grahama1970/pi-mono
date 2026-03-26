@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ThoANocoGxw",
+    "language": "en",
+    "took_ms": 8149,
+    "method": null,
+    "title": "The Organization of Islamic Cooperation: Free Speech Implica",
+    "channel": "Hudson Institute",
+    "upload_date": "20140117",
+    "duration_sec": 3452,
+    "description": "\"Islamophobia\" is a widely used yet vague and controversial term referring to anti-Muslim bigotry. In recent years, identifying, monitoring, reporting on, and working to ban Islamophobia worldwide has been a major focus of the Organization of Islamic Cooperation (OIC). \r\nThe OIC is an international body of 56 member states that is based in Saudi Arabia and active within the United Nations. While the United States has formally recognized its work in the past -- US ambassadors have observ",
+    "view_count": 3895
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ThoANocoGxw: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

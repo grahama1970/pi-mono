@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P6FYV6z42ek",
+    "language": "en",
+    "took_ms": 7933,
+    "method": null,
+    "title": "Distributed Energy Resource (DER) Attack Vectors",
+    "channel": "S4 Events",
+    "upload_date": "20200409",
+    "duration_sec": 1523,
+    "description": "Maggie Morganti of Oak Ridge National Lab (ORNL) looks at \"demand side\" attacks - getting into devices on the consumer side and causing the problems with grid reliability. Particularly looking at demand side attacks on low inertia systems. A utility doesn't have jurisdiction to protect a customer's system.\n\nShe moves from the typical air conditioner demand side model to looking at the larger power consumption devices or sites, such as a poorly protected small or medium sized manufacturing plant. And then how the grid inertia is decreasing.\n\nMaggie finishes with some ORNL research projects trying to address these attacks.",
+    "view_count": 645
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P6FYV6z42ek: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

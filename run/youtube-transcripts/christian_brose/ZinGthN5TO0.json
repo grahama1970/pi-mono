@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "ZinGthN5TO0",
+    "language": "en",
+    "took_ms": 8079,
+    "method": null,
+    "title": "Chuck Blahous on the Cost of Living Adjustment for Seniors",
+    "channel": "Hudson Institute",
+    "upload_date": "20091026",
+    "duration_sec": 325,
+    "description": "Senior Fellow Chuck Blahous discusses the Cost of Living Adjustment (COLA) for seniors. Is the $250 payment to seniors, proposed by the Obama administration, the right move?",
+    "view_count": 121
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] ZinGthN5TO0: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

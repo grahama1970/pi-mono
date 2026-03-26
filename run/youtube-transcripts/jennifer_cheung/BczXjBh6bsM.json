@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "BczXjBh6bsM",
+    "language": "en",
+    "took_ms": 7930,
+    "method": null,
+    "title": "DEF CON 33 - BiC Village  -  B I C  Pick   DEF CON 33 Badge Walkthrough - Eli McRae",
+    "channel": "DEFCONConference",
+    "upload_date": "20251022",
+    "duration_sec": 884,
+    "description": "Join us for a guided walkthrough of the Blacks in Cybersecurity Village (BIC) badge from DEF CON 33, led by the badge’s developer. Explore the PCB design, embedded circuits, and how this year’s badge supports SAOs.",
+    "view_count": 392
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] BczXjBh6bsM: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "7zppmPvenB8",
+    "language": "en",
+    "took_ms": 8001,
+    "method": null,
+    "title": "Why Your AI Team Is Slow",
+    "channel": "DeepLearningAI",
+    "upload_date": "20260207",
+    "duration_sec": 42,
+    "description": "Most AI teams don’t fail because of bad models.\nThey fail because no one agrees on what “winning” means.\n\nIf you try to optimize accuracy, recall, latency, and edge cases at once, progress stalls. High-performing teams pick one metric to win and treat everything else as a constraint.",
+    "view_count": 5978
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] 7zppmPvenB8: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

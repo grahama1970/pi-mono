@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "yxWUHDfix_c",
+    "language": "en",
+    "took_ms": 8353,
+    "method": null,
+    "title": "The Best Tiny LLMs",
+    "channel": "Trelis Research",
+    "upload_date": "20240103",
+    "duration_sec": 3745,
+    "description": "➡️ Trelis Function-calling Models (incl. Trelis Tiny): https://trelis.com/function-calling/\n➡️ ADVANCED-inference Repo: https://trelis.com/enterprise-server-api-and-inference-guide/\n➡️ ADVANCED-fine-tuning Repo: https://trelis.com/advanced-fine-tuning-scripts/\n➡️ One-click Fine-tuning & Inference Templates: https://github.com/TrelisResearch/one-click-llms/\n➡️ Trelis Newsletter: https://Trelis.Substack.com\n➡️ Trelis Resources and Support: https://Trelis.com/About\n\nAffiliate Links (support the channel):\n- Vast AI - https://cloud.vast.ai/?ref_id=98762\n- RunPod - https://tinyurl.com/4b6ecbbn\n\nResources:\n- Slides: http://tinyurl.com/4kvnu4ad\n- Chat fine-tuning datasets: https://huggingface.co/collections/Trelis/chat-fine-tuning-datasets-6595dcff8174ea23bccb60df\n- One-click LLM templates: https://github.com/TrelisResearch/one-click-llms/tree/main\n\nModels:\n- DeepSeek Coder 1.3B: https://huggingface.co/deepseek-ai/deepseek-coder-1.3b-instruct\n- Phi 2: https://huggingface.co/microsoft/phi-2\n- TinyLlama: https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0\n- Trelis Tiny: https://huggingface.co/Trelis/Tiny\n\nRepo Access (purchase includes lifetime access to improvements):\n- ADVANCED Fine-tuning: https://trelis.com/advanced-fine-tuning-scripts/\n- ADVANCED Inference: https://trelis.com/enterprise-server-api-and-inference-guide/\n\nChapters:\n0:00 Best Small Language Models\n0:19 Video Overview\n1:23 Benefits of Tiny LLMs\n2:09 Fine-tuning and Inference Repo Overviews\n4:28 Performance Comparison - TinyLlama, DeepSeek Coder and Phi 2\n16:21 Fine-tuning Tiny Language Models\n33:55 Function-calling quantized models with llama.cpp\n44:44 Challenges and Tricks - Function-calling with Tiny Models\n1:00:00 What are the best Tiny Language models?\n\nReminder: Be careful when using private keys (e.g. OpenAI or HuggingFace). If they are exposed, make sure to rotate them, as I do after each video.",
+    "view_count": 15494
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] yxWUHDfix_c: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}

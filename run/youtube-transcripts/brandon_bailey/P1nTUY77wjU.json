@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "video_id": "P1nTUY77wjU",
+    "language": "en",
+    "took_ms": 8911,
+    "method": null,
+    "title": "DEF CON 29 Cloud Village - Kavisha Sheth - AWS Cloud Attack Vectors and Security Controls",
+    "channel": "DEFCONConference",
+    "upload_date": "20210911",
+    "duration_sec": 2377,
+    "description": "In the last decade, cloud computing has been incorporated in various industries, from Health to Military, which has been meticulously guided by exploring related technologies in the industry and academia alike. The enterprise computing model have shifted from on-site infrastructure to remote data centers which is accessible via internet and managed by cloud service providers.However, Many companies breached on AWS moved sensitive data to AWS without following best practices or implementing cloud security controls correctly. Main objective of the session is to bring awareness about some of the AWS cloud attack vectors and as well as security controls that can help. You get to know discovery, identification and exploitation of security weaknesses, misconfigurations lead to complete compromise of the cloud infrastructure. As,Cloud attack vectors and security controls are different as security professional you need to be aware about attack vector and controls. So, you will also learn about what can be possible best practices, detective controls to avoid some of the misconfigurations. In this session: - Learn about how an attacker can perform reconnaissance, leverage network, AWS Lambda functions, S3 misconfiguration and implementation in weaknesses to steal credentials and data. - Learn how misconfigurations and other leading cloud vulnerabilities put you at risk to exploitation with some real world example - Learn about Security controls, possible best practices, detective controls to avoid these misconfigurations",
+    "view_count": 1533
+  },
+  "transcript": [],
+  "full_text": "",
+  "errors": [
+    "Download failed - yt-dlp error: ERROR: [youtube] P1nTUY77wjU: Unable to download API page: ('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required')) (caused by ProxyError(\"('Unable to connect to proxy', OSError('Tunnel connection failed: 402 Payment Required'))\")); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+  ]
+}
